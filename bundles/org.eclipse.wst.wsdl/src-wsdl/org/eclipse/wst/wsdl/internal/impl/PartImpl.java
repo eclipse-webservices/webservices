@@ -380,7 +380,6 @@ public class PartImpl extends WSDLElementImpl implements Part
   public void setExtensionAttribute(QName name, QName value)
   {
     String localName = name.getLocalPart();
-    String nsURI = name.getNamespaceURI();
     if (localName == null)
       return;
 
@@ -647,10 +646,10 @@ public class PartImpl extends WSDLElementImpl implements Part
     }
 
     String elementAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.ELEMENT_ATTRIBUTE);
-    setElementName(elementAttr != null ? createQName(definition, elementAttr) : null);
+    setElementName(elementAttr != null ? createQName(definition, elementAttr, element) : null);
 		    
     String typeAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.TYPE_ATTRIBUTE);
-    setTypeName(typeAttr != null ? createQName(definition, typeAttr) : null);
+    setTypeName(typeAttr != null ? createQName(definition, typeAttr, element) : null);
 
     reconcileReferences(false);
   }

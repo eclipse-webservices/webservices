@@ -480,7 +480,7 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
     if (element != null && element.hasAttribute(SOAPConstants.MESSAGE_ATTRIBUTE))
     {
       Definition definition = getEnclosingDefinition();
-      QName messageQName = createQName(definition, element.getAttribute(SOAPConstants.MESSAGE_ATTRIBUTE));
+      QName messageQName = createQName(definition, element.getAttribute(SOAPConstants.MESSAGE_ATTRIBUTE), element);
       Message newMessage = (messageQName != null) ? (Message) definition.getMessage(messageQName) : null;
       if (newMessage != null && newMessage != getMessage())
         setMessage(newMessage);

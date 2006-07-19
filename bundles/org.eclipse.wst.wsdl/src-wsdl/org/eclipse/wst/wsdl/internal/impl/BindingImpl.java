@@ -774,7 +774,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     if (element != null)
     {
       Definition definition = (Definition) getEnclosingDefinition();
-      QName portTypeQName = createQName(definition, element.getAttribute("type"));
+      QName portTypeQName = createQName(definition, element.getAttribute(WSDLConstants.TYPE_ATTRIBUTE), element);
       PortType newPortType = portTypeQName != null ? (PortType) definition.getPortType(portTypeQName) : null;
       if (newPortType != getEPortType())
       {

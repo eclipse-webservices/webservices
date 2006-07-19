@@ -340,7 +340,6 @@ public class PortImpl extends ExtensibleElementImpl implements Port
 
   public void reconcileAttributes(Element changedElement)
   {
-    Definition definition = getEnclosingDefinition();
     setName(changedElement.getAttribute("name"));
     reconcileReferences(false);
   }
@@ -425,7 +424,7 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     if (element != null)
     {
       Definition definition = getEnclosingDefinition();
-      QName bindingQName = createQName(definition, element.getAttribute("binding"));
+      QName bindingQName = createQName(definition, element.getAttribute(WSDLConstants.BINDING_ATTRIBUTE), element);
       Binding newBinding = (bindingQName != null) ? (Binding) definition.getBinding(bindingQName) : null;
       if (newBinding != getEBinding())
       {

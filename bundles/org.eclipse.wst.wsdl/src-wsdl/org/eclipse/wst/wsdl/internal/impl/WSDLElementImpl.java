@@ -37,6 +37,7 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.util.XSDConstants;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -707,13 +708,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       }
     }
    
-    boolean isNew = false;
     if (childElement == null)
     {
       ((WSDLElementImpl)wsdlElement).isReconciling = true;
       childElement = ((WSDLElementImpl)wsdlElement).createElement();
       ((WSDLElementImpl)wsdlElement).isReconciling = false;
-      isNew = true;
       if (childElement == null)
       {
          //System.out.println("not created! " + wsdlElement);
@@ -978,12 +977,43 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   // Some subclasses use this method
   protected QName createQName(Definition definition, String prefixedName)
   {
+    // Delegate to the new form to preserve backward compatibility in case someone
+    // else calls this method.
+    
+    return createQName(definition, prefixedName, null);
+  }
+
+  /**
+   * Creates a QName from a prefixed name. Takes into account locally defined
+   * namespace prefixes.
+   * 
+   * @param definition
+   *          the enclosing definition. Must not be null.
+   * @param prefixedName
+   *          the prefixed name to convert to QName
+   * @param element
+   *          the enclosing element. May be null in which case the prefix is
+   *          only looked up among the ones defined at the definition level.
+   * @return the QName equivalent for the given prefixed name, or null if a
+   *         namespace prefix cannot be found for the given namespace URI or if
+   *         the prefixed name is null.
+   */
+  protected QName createQName(Definition definition, String prefixedName, Element element)
+  {
     QName qname = null;
     if (prefixedName != null)
     {
-      int index = prefixedName.indexOf(":");
-      String prefix = (index == -1) ? "" : prefixedName.substring(0, index);
+      int index = prefixedName.indexOf(":"); ////$NON-NLS-1$
+      String prefix = (index == -1) ? "" : prefixedName.substring(0, index); //$NON-NLS-1$
       String namespace = definition.getNamespace(prefix);
+      
+      if (namespace == null && element != null)
+      {
+        // Try to find a locally defined namespace prefix.
+        
+        namespace = getNamespaceURIFromPrefix(element, prefix);
+      }
+      
       if (namespace != null)
       {
         String localPart = prefixedName.substring(index + 1);
@@ -992,6 +1022,64 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     }
     return qname;
   }
+
+  /**
+   * Given a prefix and a node, finds the namespace URI pointed to by the
+   * prefix. Walks the element containment hierarchy until it finds one or it
+   * reaches the document root.
+   * 
+   * @param node
+   *          the starting node
+   * @param prefix
+   *          the prefix to find an xmlns:prefix=uri for
+   * 
+   * @return the namespace URI or null if not found
+   */
+  private static String getNamespaceURIFromPrefix(Node node, String prefix)
+  {
+    if (node == null || prefix == null)
+    {
+      return null;
+    }
+
+    Node currentNode = node;
+
+    while (currentNode != null && currentNode.getNodeType() == Node.ELEMENT_NODE)
+    {
+      String namespaceURI = getAttributeNS((Element) currentNode, XSDConstants.XMLNS_URI_2000, prefix);
+
+      if (namespaceURI != null)
+      {
+        return namespaceURI;
+      }
+      else
+      {
+        currentNode = currentNode.getParentNode();
+      }
+    }
+
+    return null;
+  }
+  
+  /**
+   * Retrieves an attribute's value.
+   * @param element the containing element.
+   * @param namespaceURI the namespace URI.
+   * @param localPart the local name.
+   * @return the attribute's value if present, or null if not. 
+   */
+  private static String getAttributeNS(Element element, String namespaceURI, String localPart)
+  {
+    String attributeValue = null;
+    Attr attribute = element.getAttributeNodeNS(namespaceURI, localPart);
+
+    if (attribute != null)
+    {
+      attributeValue = attribute.getValue();
+    }
+
+    return attributeValue;
+  }  
 
   //
   // For reconciliation: Model -> DOM

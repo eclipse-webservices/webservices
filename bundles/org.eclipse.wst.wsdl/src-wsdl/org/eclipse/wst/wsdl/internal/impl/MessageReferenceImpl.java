@@ -332,7 +332,7 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
     if (element != null)
     {
       Definition definition = getEnclosingDefinition();      
-      QName messageQName = createQName(definition, element.getAttribute("message"));
+      QName messageQName = createQName(definition, element.getAttribute(WSDLConstants.MESSAGE_ATTRIBUTE), element);
       Message newMessage = messageQName != null ? (Message) definition.getMessage(messageQName) : null;
       if (newMessage != getEMessage())
       {
