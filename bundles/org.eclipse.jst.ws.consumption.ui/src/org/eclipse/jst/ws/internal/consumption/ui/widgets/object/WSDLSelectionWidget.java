@@ -16,6 +16,7 @@
  * 20060525   142281 joan@ca.ibm.com - Joan Haggarty
  * 20060607   144932 kathy@ca.ibm.com - Kathy Chan
  * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060719   139977 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -102,7 +103,10 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   /*CONTEXT_ID PCON0005 for the Wizard WSDL Validation summary message of the WSDL Selection Page*/
   private Text validationSummaryText_;
   private Text validationSummaryText2_;
-
+  
+  /*CONTEXT_ID PCON0006 for the Stop Wizard WSDL Validation button of the WSDL Selection Page*/
+  private Button stopValidationButton_;
+  private final String INFOPOP_PCON_BUTTON_STOP_VALIDATION = "PCON0006";
   
   public WSDLSelectionWidget()
   {
@@ -116,6 +120,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       {
 		  msgViewer_.setInput(validateWSDLJob_.getValidationMessages());
 		  updateValidationSummary(validateWSDLJob_.getValidationMessageSeverity());
+		  setValidationInProgress(false);
       }
     };
     
@@ -195,6 +200,26 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     validationSummaryText2_.setEditable(false);
     validationSummaryText2_.setLayoutData(gd1);
     
+    stopValidationButton_ = uiUtils.createPushButton(parent, 
+    			ConsumptionUIMessages.LABEL_BUTTON_STOP_WSDL_VALIDATION, 
+    			ConsumptionUIMessages.TOOLTIP_STOP_VALIDATION_BUTTON, 
+    			INFOPOP_PCON_BUTTON_STOP_VALIDATION);
+    setValidationInProgress(false);
+    
+    stopValidationButton_.addSelectionListener(
+    		new SelectionListener()
+    		{
+    			public void widgetDefaultSelected(SelectionEvent event)
+    			{
+    				handleStopValidationButton();
+    			}
+
+    			public void widgetSelected(SelectionEvent event)
+    			{
+    				handleStopValidationButton();
+    			} 
+    		});
+    
     setMessageSummary();
     return this;
   }
@@ -268,6 +293,36 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     statusListener_.handleEvent(null);
   }
   
+  private void setValidationInProgress(boolean validating) {
+	  stopValidationButton_.setEnabled(validating);
+  }
+  
+  private void handleStopValidationButton()
+  {
+	  IJobManager    jobManager     = Platform.getJobManager();
+	  Job[]          jobs           = jobManager.find( ValidateWSDLJob.VALIDATE_WSDL_JOB_FAMILY );
+	  ValidateWSDLJob existingValidateWSDLJob = null;
+	  
+	  if( jobs.length > 0 )
+	  {
+		  for (int i=0; i<jobs.length; i++) {
+			  existingValidateWSDLJob = (ValidateWSDLJob)jobs[i];
+
+			  if (existingValidateWSDLJob.getState() != Job.NONE) { 
+				  existingValidateWSDLJob.cancel();
+			  }
+		  }
+	  }
+	  clearValidationMessages();
+	  setValidationInProgress(false);
+  }
+  
+  private void clearValidationMessages() {
+	  msgViewer_.clearInput();
+	  validationSummaryText_.setText(" " );
+	  validationSummaryText2_.setText(" ");
+  }
+  
   public IStatus getStatus()
   {
     // Timer validation
@@ -280,19 +335,21 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     // Validate the String representation of the Web service URI
     // For example, is it pointing to an existing resource in the workspace?
     String wsPath  = webServiceURI.getText();
-    if( wsPath == null || wsPath.length() <= 0 )
-      return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WEB_SERVICE_URI );
+    if( wsPath == null || wsPath.length() <= 0 ) {
+    	clearValidationMessages();
+    	return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WEB_SERVICE_URI );
+    }
     else if( wsPath.indexOf(':') < 0 )
     {
-      IResource res = ResourceUtils.findResource(wsPath);
-      if( res == null ) {
-    	  msgViewer_.clearInput();
-        return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.PAGE_MSG_NO_SUCH_FILE, new Object[] {wsPath}) );
-      }
-      else if( res.getType() != IResource.FILE ) {
-    	  msgViewer_.clearInput();
-        return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WEB_SERVICE_URI );
-      }
+    	IResource res = ResourceUtils.findResource(wsPath);
+    	if( res == null ) {
+    		clearValidationMessages();
+    		return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.PAGE_MSG_NO_SUCH_FILE, new Object[] {wsPath}) );
+    	}
+    	else if( res.getType() != IResource.FILE ) {
+    		clearValidationMessages();
+    		return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WEB_SERVICE_URI );
+    	}
     }
 
     
@@ -305,8 +362,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       {
         int severity = status.getSeverity();
         if (severity == Status.ERROR || severity == Status.WARNING) {
-        	msgViewer_.clearInput();
-          return status;
+        	clearValidationMessages();
+        	return status;
         }
       }
     }
@@ -316,8 +373,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
         {
           String wsdlURI = iFile2URI((IFile)ResourceUtils.findResource(wsPath));
           if (webServicesParser.getWSDLDefinition(wsdlURI) == null) {
-        	  msgViewer_.clearInput();
-            return StatusUtils.errorStatus(ConsumptionUIMessages.PAGE_MSG_SELECTION_MUST_BE_WSDL );
+        	  clearValidationMessages();
+        	  return StatusUtils.errorStatus(ConsumptionUIMessages.PAGE_MSG_SELECTION_MUST_BE_WSDL );
           }
         }
     }
@@ -375,6 +432,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 
 					  if (!wsdlURI.equals(existingValidateWSDLJob.getWsdlURI())) {
 						  existingValidateWSDLJob.cancel();
+						  setValidationInProgress(false);
 					  } else {						  
 						  startWSDLValidation = false;
 					  }
@@ -393,6 +451,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 	  validateWSDLJob_ = new ValidateWSDLJob(wsdlURI);
 	  validateWSDLJob_.addJobChangeListener( jobChangeAdapter_ );
 	  validateWSDLJob_.schedule();
+	  setValidationInProgress(true);
   }
   
   public void updateValidationSummary(int messageSeverity)

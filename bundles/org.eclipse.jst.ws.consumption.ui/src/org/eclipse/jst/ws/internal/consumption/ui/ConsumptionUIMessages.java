@@ -24,6 +24,7 @@
  * 20060426   138647 joan@ca.ibm.com - Joan Haggarty
  * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060719   139977 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -357,6 +358,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String WARNING_IF_CONTINUE;
 	public static String VALIDATION_COMPLETED;
 	public static String TOOLTIP_VALIDATE_TEXT_MESSAGE_SUMMARY;
+	public static String LABEL_BUTTON_STOP_WSDL_VALIDATION;
+	public static String TOOLTIP_STOP_VALIDATION_BUTTON;
 	public static String PAGE_TITLE_WS_START_SERVER;
 	public static String PAGE_DESC_WS_START_SERVER;
 	public static String LABEL_START_SERVER_TEXT1;
