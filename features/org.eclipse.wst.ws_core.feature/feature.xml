@@ -9,7 +9,7 @@
       %description
    </description>
 
-   <license url="license.html">
+   <license url="license.html"> 
       %license
    </license>
 
@@ -21,8 +21,8 @@
       <import feature="org.apache.xerces.feature" version="2.7.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.platform" version="3.1.1" match="equivalent"/>
       <import feature="org.eclipse.emf" version="2.1.1" match="equivalent"/>
-      <import feature="org.eclipse.wst.common_core.feature" version="1.0.2" match="equivalent"/>
-      <import feature="org.eclipse.wst.server_core.feature" version="1.0.2" match="equivalent"/>
+      <import feature="org.eclipse.wst.common_core.feature" version="1.0.3" match="equivalent"/>
+      <import feature="org.eclipse.wst.server_core.feature" version="1.0.3" match="equivalent"/>
       <import feature="org.eclipse.xsd" version="2.1.1" match="equivalent"/>
    </requires>
 
