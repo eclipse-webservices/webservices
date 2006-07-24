@@ -18,7 +18,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11OpenImportAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
@@ -51,11 +50,9 @@ public class W11Import extends WSDLBaseAdapter implements IImport {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[3];
+		String[] actionIDs = new String[2];
 		actionIDs[0] = W11OpenImportAction.ID;
-		actionIDs[1] = ASDDeleteAction.ID;
-    actionIDs[2] = ShowPropertiesViewAction.ID;
-    
+		actionIDs[1] = ASDDeleteAction.ID;    
 		return actionIDs;
 	}
 	

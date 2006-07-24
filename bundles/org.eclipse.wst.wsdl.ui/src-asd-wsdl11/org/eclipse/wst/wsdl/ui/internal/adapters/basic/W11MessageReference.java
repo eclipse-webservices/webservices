@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.commands.Command;
@@ -38,7 +37,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
@@ -206,7 +204,6 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  actions.add(W11SetNewMessageAction.ID);
 	  actions.add(W11SetExistingMessageAction.ID);
 	  actions.add(BaseSelectionAction.SUBMENU_END_ID);
-    actions.add(ShowPropertiesViewAction.ID);
 //    if (isReadOnly()) {
 //      actions.add(OpenInNewEditor.ID);
 //    }

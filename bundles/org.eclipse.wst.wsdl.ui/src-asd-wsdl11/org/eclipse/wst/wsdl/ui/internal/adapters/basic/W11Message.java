@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
@@ -26,7 +25,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddPartCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
@@ -64,7 +62,6 @@ public class W11Message extends WSDLBaseAdapter implements IMessage {
     List actionIDs = new ArrayList();
     actionIDs.add(W11AddPartAction.ID);
     actionIDs.add(ASDDeleteAction.ID);
-    actionIDs.add(ShowPropertiesViewAction.ID);
     if (isReadOnly()) {
       actionIDs.add(OpenInNewEditor.ID);
     }

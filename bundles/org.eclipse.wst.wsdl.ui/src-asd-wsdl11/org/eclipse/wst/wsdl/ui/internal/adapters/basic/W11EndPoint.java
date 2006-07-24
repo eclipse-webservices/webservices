@@ -36,7 +36,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
@@ -60,7 +59,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	}
     
     protected List getAddressExtensiblityElements()
-    {
+    {       
         addressExtensiblityElements = new ArrayList();
         thingsToListenTo = new ArrayList();
         Port port = (Port) getTarget();          
@@ -82,7 +81,8 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
           IASDObject object = (IASDObject)i.next();
           object.registerListener(this);
         }  
-        return addressExtensiblityElements;
+       
+      return addressExtensiblityElements;
     }
     
     protected void clearAddressExtensiblityElements()
@@ -152,7 +152,6 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
     actionIDs.add(ASDSetExistingBindingAction.ID);
     actionIDs.add(BaseSelectionAction.SUBMENU_END_ID);
     actionIDs.add(ASDDeleteAction.ID);
-    actionIDs.add(ShowPropertiesViewAction.ID);
     if (isReadOnly()) {
       actionIDs.add(OpenInNewEditor.ID);
     }

@@ -13,9 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.wsdl.OperationType;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
@@ -35,7 +33,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInputAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOutputAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
@@ -101,7 +98,6 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 		actions.addAll(getValidInputOutpuActions());
 		actions.add(ASDAddFaultAction.ID);
 		actions.add(ASDDeleteAction.ID);
-    actions.add(ShowPropertiesViewAction.ID);
     if (isReadOnly()) {
       actions.add(OpenInNewEditor.ID);
     }

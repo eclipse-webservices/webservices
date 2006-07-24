@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -23,7 +22,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ICategoryAdapter;
@@ -124,7 +122,6 @@ public class W11CategoryAdapter extends WSDLBaseAdapter implements ICategoryAdap
 	        break;
 	      }
 	    }
-      actionIDs.add(ShowPropertiesViewAction.ID);
 	    return (String [])actionIDs.toArray(new String[0]);
 	  }
 	  

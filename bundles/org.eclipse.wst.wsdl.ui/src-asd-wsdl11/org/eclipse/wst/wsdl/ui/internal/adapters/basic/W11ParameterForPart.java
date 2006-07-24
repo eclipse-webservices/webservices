@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.part.MultiPageEditorPart;
@@ -36,7 +35,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
@@ -154,7 +152,6 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		  
 		  actions.add(ASDDeleteAction.ID);
       
-      actions.add(ShowPropertiesViewAction.ID);
       if (isReadOnly()) {
         actions.add(OpenInNewEditor.ID);
       }

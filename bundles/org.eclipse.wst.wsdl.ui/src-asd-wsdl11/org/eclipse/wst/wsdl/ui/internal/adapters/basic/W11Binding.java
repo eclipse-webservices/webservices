@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -39,7 +38,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDGenerateBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingContentPlaceHolder;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
@@ -202,7 +200,6 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
     actionIDs.add(ASDSetExistingInterfaceAction.ID);
     actionIDs.add(BaseSelectionAction.SUBMENU_END_ID);
     actionIDs.add(ASDDeleteAction.ID);
-    actionIDs.add(ShowPropertiesViewAction.ID);
     if (isReadOnly()) {
       actionIDs.add(OpenInNewEditor.ID);
     }

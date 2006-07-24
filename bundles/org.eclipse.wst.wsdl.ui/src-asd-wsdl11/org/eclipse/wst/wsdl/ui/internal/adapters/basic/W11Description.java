@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.NotificationImpl;
@@ -34,7 +33,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11EditNamespacesComma
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
@@ -227,11 +225,10 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	}
 	
 	public String[] getActions(Object object) {
-		String[] actionIDs = new String[4];
+		String[] actionIDs = new String[3];
 		actionIDs[0] = ASDAddServiceAction.ID;
 		actionIDs[1] = ASDAddBindingAction.ID;
 		actionIDs[2] = ASDAddInterfaceAction.ID;
-    actionIDs[3] = ShowPropertiesViewAction.ID;
 		
 		return actionIDs;
 	}

@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Service;
@@ -23,7 +22,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddEndPointCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddEndPointAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
-import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
@@ -53,8 +51,7 @@ public class W11Service extends WSDLBaseAdapter implements IService {
     List actionIDs = new ArrayList();
 		actionIDs.add(ASDAddEndPointAction.ID);
 		actionIDs.add(ASDDeleteAction.ID);
-    
-    actionIDs.add(ShowPropertiesViewAction.ID);
+
     if (isReadOnly()) {
       actionIDs.add(OpenInNewEditor.ID);
     }
