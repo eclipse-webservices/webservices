@@ -31,6 +31,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInputAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOutputAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddParameterAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddSchemaAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddServiceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
@@ -193,6 +194,10 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
     action = new ASDAddImportAction(this);
     action.setSelectionProvider(getSelectionManager());
     registry.registerAction(action);
+    
+    action = new ASDAddParameterAction(this);
+    action.setSelectionProvider(getSelectionManager());
+    registry.registerAction(action);    
     
     action = new ASDAddSchemaAction(this);
     action.setSelectionProvider(getSelectionManager());

@@ -9,20 +9,38 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.properties.sections;
-
 import org.eclipse.jface.viewers.IFilter;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
 
-public class W11ParameterSectionFilter implements IFilter {
-	// rmah: we should consider other ways of 'extending' this capability
-	// rather than simply checking a variable....
-	public static boolean showW11ParameterSection = true;
-	
-	public boolean select(Object toTest) {
-		if (toTest instanceof IParameter && showW11ParameterSection) {
-			return true;
-		}
-		
-		return false;
-	}
+public class W11ParameterSectionFilter implements IFilter
+{
+  public boolean select(Object toTest)
+  {
+    boolean result = false;
+    if (toTest instanceof IParameter)
+    {  
+      result = true;
+      try
+      {
+        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        EditorModeManager manager = (EditorModeManager) editor.getAdapter(EditorModeManager.class);
+        if (manager != null)
+        {
+          EditorModeSectionFilter filter = (EditorModeSectionFilter) manager.getCurrentMode().getAdapter(EditorModeSectionFilter.class);
+          if (filter != null)
+          {
+            result = filter.isApplicable(W11ParameterSection.class, toTest);
+          }
+        }
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+      }
+    }
+    return result;
+  }
 }

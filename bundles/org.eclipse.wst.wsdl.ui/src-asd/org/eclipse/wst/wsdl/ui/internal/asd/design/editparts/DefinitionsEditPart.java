@@ -90,6 +90,11 @@ public class DefinitionsEditPart extends BaseEditPart {
 	    // TODO Auto-generated method stub
 	  }
 	  
+      public void setModelChildren(List list)
+      {
+        collections = list;
+      }
+      
 	  protected List getModelChildren()
 	  { 
 	    if (collections == null)

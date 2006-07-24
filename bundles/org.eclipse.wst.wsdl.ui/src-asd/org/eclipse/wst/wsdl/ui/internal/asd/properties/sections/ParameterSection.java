@@ -187,9 +187,15 @@ public class ParameterSection extends NameSection {
 	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
 		if (parameterRefManager != null) {
 			return parameterRefManager;
-		}
-		
-		parameterRefManager = ReferenceEditManagerHelper.getXSDTypeReferenceEditManager((IASDObject) getModel());
+		}		
+        if (getModel() instanceof IASDObject)
+        {  
+		  parameterRefManager = ReferenceEditManagerHelper.getXSDTypeReferenceEditManager((IASDObject) getModel());
+        }
+        else
+        {
+          System.out.println("model" + getModel());
+        }  
 		return parameterRefManager;
 	}
 	

@@ -43,13 +43,17 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Interface;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Message;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Operation;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForAttribute;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForElement;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Service;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11AddressExtensibilityElementAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11ExtensibilityElementAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
+import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDConcreteComponent;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 
 public class WSDLAdapterFactory extends AdapterFactoryImpl
@@ -126,6 +130,14 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
       {
     	  adapter = new W11ParameterForPart(); 
       }
+      else if (target instanceof XSDElementDeclaration)
+      {
+          adapter = new W11ParameterForElement();
+      }
+      else if (target instanceof XSDAttributeUse)
+      {
+          adapter = new W11ParameterForAttribute();
+      }        
       else if (target instanceof Message || 
                target instanceof XSDConcreteComponent)
       {

@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.asd.outline;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -28,13 +27,25 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.INamedObject;
 
 public class ASDContentOutlineProvider implements ITreeContentProvider, ILabelProvider, IASDObjectListener {
 	protected Viewer viewer;
+    
+    /**
+     * @deprecated
+     */
 	protected ASDMultiPageEditor editor;
 	protected List listeners = new ArrayList();
+    
+    /**
+     * @deprecated
+     */    
 	protected IDescription description;
-	
+
+    public ASDContentOutlineProvider()
+    {      
+    }
+    
 	public ASDContentOutlineProvider(ASDMultiPageEditor editor, IDescription description) {
-		this.editor = editor;
-		this.description = description;
+	  this.editor = editor;
+      this.description = description;
 	}
 	
 	public Object[] getChildren(Object parentElement) {
@@ -90,7 +101,8 @@ public class ASDContentOutlineProvider implements ITreeContentProvider, ILabelPr
     
 	public String getText(Object element) {
 		String text = null;
-		if (element instanceof INamedObject) {
+         
+        if (element instanceof INamedObject) { 
 			text =  ((INamedObject) element).getName();
 		}
 		else if (element instanceof ITreeElement) {

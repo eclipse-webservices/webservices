@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.MessageReference;
+import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -28,6 +29,9 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddFaultParameterCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInputParameterCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOutputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderParametersCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
@@ -223,6 +227,24 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  return new W11DeleteCommand(this);
   }
   
+  public Command getAddParamterCommand() {
+      Command command = null;
+      Operation operation = (Operation)getMessageReference().eContainer();
+      if (getKind() == KIND_INPUT)
+      {    
+        command = new W11AddInputParameterCommand(operation);
+      }  
+      else if (getKind() == KIND_OUTPUT)
+      {
+        command = new W11AddOutputParameterCommand(operation);        
+      } 
+      else
+      {
+        command = new W11AddFaultParameterCommand(operation, (Fault)getMessageReference());        
+      } 
+      return command;
+  }  
+  
 	public Image getImage() {
 	    if (getKind() == KIND_INPUT)
 	    {
@@ -254,16 +276,43 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	    }
 	    return "NoName";
 	}
+    
+	public List getParameters2() 
+    {
+	  if (parameters == null)
+	  {
+	    parameters = new ArrayList();
+	    otherThingsToListenTo = new ArrayList();
+	    WSDLVisitorForParameters visitorForParameters = new WSDLVisitorForParameters();
+	    visitorForParameters.visitMessageReference(getMessageReference());
+	    populateAdapterList(visitorForParameters.concreteComponents, parameters);
+	    populateAdapterList(visitorForParameters.thingsToListenTo, otherThingsToListenTo);
+
+	    // now we listen to all the 'things we need to listen to'
+	    //
+	    for (Iterator i = otherThingsToListenTo.iterator(); i.hasNext();)
+	    {
+	      Adapter adapter = (Adapter) i.next();
+	      if (adapter instanceof IASDObject)
+	      {
+	        IASDObject asdObject = (IASDObject) adapter;
+	        asdObject.registerListener(this);
+	      }
+	    } 
+	  }
+	  return parameters;
+	}    
 	
 	public ITreeElement[] getChildren() {
+      /*
 		List parts = getParameters();
 		ITreeElement[] treeElements = new ITreeElement[parts.size()];
 		
 		for (int index = 0; index < parts.size(); index++) {
 			treeElements[index] = (ITreeElement) parts.get(index);
 		}
-		
-		return treeElements;
+		*/
+		return ITreeElement.EMPTY_LIST;
 	}
 
 	public boolean hasChildren() {

@@ -23,12 +23,16 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ColumnEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.ContextMenuParticipant;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
 
 
 public class DesignViewContextMenuProvider extends ContextMenuProvider
@@ -62,6 +66,12 @@ public class DesignViewContextMenuProvider extends ContextMenuProvider
   public void buildContextMenu(IMenuManager menu)
   {
 	IMenuManager currentMenu = menu;
+    
+    IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+	EditorModeManager manager = (EditorModeManager)editor.getAdapter(EditorModeManager.class);
+	ContextMenuParticipant contextMenuParticipant = manager != null ? manager.getCurrentMode().getContextMenuParticipant() : null;
+
+        
     currentMenu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
     ActionRegistry registry = getEditorActionRegistry();
     ISelection selection = selectionProvider.getSelection();
@@ -72,31 +82,48 @@ public class DesignViewContextMenuProvider extends ContextMenuProvider
     {
       Object selectedObject = ((StructuredSelection) selection).getFirstElement();
       selectedObject = getAppropriateSelection(selectedObject);
+
+      if (contextMenuParticipant != null)
+      {
+        // Convert editparts to model objects as selections
+        Object o = selectedObject;
+        if (o instanceof EditPart)
+        {
+          o = ((EditPart)selectedObject).getModel();
+        }                   
+        contextMenuParticipant.contributeActions(o, menu);
+      }  
+      
       if (selectedObject instanceof IActionProvider)
       {
         IActionProvider actionProvider = (IActionProvider) selectedObject;
         String[] actions = actionProvider.getActions(activePart);
         for (int i = 0; i < actions.length; i++)
         {
-        	String id = actions[i];
-        	if (id.startsWith(BaseSelectionAction.SUBMENU_START_ID)) {
-        		String text = id.substring(BaseSelectionAction.SUBMENU_START_ID.length());
-        		IMenuManager subMenu = new MenuManager(text);
-        		currentMenu.add(subMenu);
-        		currentMenu = subMenu;
-        	}
-        	else if (id.startsWith(BaseSelectionAction.SUBMENU_END_ID)) {
-        		currentMenu = getParentMenu(menu, currentMenu);
-        	}
-        	else {
-	            IAction action = registry.getAction(id);
-	            if (action != null) {
-	            	action.isEnabled();
-	            	currentMenu.add(action);
-	            }
-        	}
-        }
+          String id = actions[i];          
+          if (contextMenuParticipant == null || contextMenuParticipant.isApplicable(selectedObject, id))
+          {          
+            if (id.startsWith(BaseSelectionAction.SUBMENU_START_ID)) {
+              String text = id.substring(BaseSelectionAction.SUBMENU_START_ID.length());
+              IMenuManager subMenu = new MenuManager(text);
+              currentMenu.add(subMenu);
+              currentMenu = subMenu;
+            }
+            else if (id.startsWith(BaseSelectionAction.SUBMENU_END_ID)) {
+              currentMenu = getParentMenu(menu, currentMenu);
+            }
+            else 
+            {
+              IAction action = registry.getAction(id);
+              if (action != null) {
+                action.isEnabled();
+                currentMenu.add(action);
+              }
+            }
+          }  
+        }     
         
+        menu.add(registry.getAction(ShowPropertiesViewAction.ID));
         menu.add(new Separator());       
         menu.add(new Separator("refactoring-slot-temp"));  //$NON-NLS-1$
         menu.add(new Separator());       

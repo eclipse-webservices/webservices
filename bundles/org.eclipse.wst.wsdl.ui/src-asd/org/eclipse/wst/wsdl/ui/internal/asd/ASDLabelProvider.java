@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd;
 
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
 
 public class ASDLabelProvider extends LabelProvider {
 	/**
@@ -24,6 +28,17 @@ public class ASDLabelProvider extends LabelProvider {
 		super();
 	}
 	
+    private ILabelProvider getDelegate()
+    {
+      ILabelProvider labelProvider = null;   
+      IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+      EditorModeManager manager = (EditorModeManager) editor.getAdapter(EditorModeManager.class);
+      if (manager != null)
+      {
+        labelProvider = (ILabelProvider) manager.getCurrentMode().getAdapter(ILabelProvider.class);
+      }
+      return labelProvider;
+    }
 	/**
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
 	 */
@@ -34,8 +49,11 @@ public class ASDLabelProvider extends LabelProvider {
 		Image result = null;           
 		if (object instanceof StructuredSelection) {
 			Object selected = ((StructuredSelection)object).getFirstElement();
-			
-			if (selected instanceof ITreeElement) {
+		    ILabelProvider delegate = getDelegate();
+            if (delegate != null) {
+              result = delegate.getImage(selected);
+            }
+            else if (selected instanceof ITreeElement) {
 				result = ((ITreeElement) selected).getImage();
 			}
 		}
@@ -55,9 +73,13 @@ public class ASDLabelProvider extends LabelProvider {
 		if (object instanceof StructuredSelection) {
 			selected = ((StructuredSelection) object).getFirstElement();
 			
-			if (selected instanceof ITreeElement) {
-				result = ((ITreeElement) selected).getText();
-			}
+            ILabelProvider delegate = getDelegate();
+            if (delegate != null) {
+              result = delegate.getText(selected);
+            }
+            else if (selected instanceof ITreeElement) {
+                result = ((ITreeElement) selected).getText();
+            }
 			
 			if (selected instanceof IASDObject && ((IASDObject) selected).isReadOnly()) {
 				result  = result + " (" + Messages.getString("_UI_LABEL_READ_ONLY") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

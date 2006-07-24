@@ -11,19 +11,21 @@
 package org.eclipse.wst.wsdl.ui.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -56,7 +58,10 @@ import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDirectEditAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicalViewer;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.DefinitionsEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ASDContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.ASDEditPartFactoryHelper;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
@@ -72,6 +77,8 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorMode;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 import org.eclipse.xsd.XSDSchema;
@@ -93,6 +100,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	protected WSDLSelectionManagerSelectionListener fWSDLSelectionListener;
 
   private IStructuredModel structuredModel;
+  private final static String WSDL_EDITOR_MODE_EXTENSION_ID = "org.eclipse.wst.wsdl.ui.editorModes"; //$NON-NLS-N$  
   
   public IDescription buildModel(IFileEditorInput editorInput) {   
 	  try {
@@ -462,4 +470,41 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
   public IOpenExternalEditorHelper getOpenExternalEditorHelper() {
     return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
   }
+  
+  
+  protected EditorModeManager createEditorModeManager()
+  {
+    return new EditorModeManager(WSDL_EDITOR_MODE_EXTENSION_ID)
+    {
+      public void init()
+      {
+        addMode(new DefaultEditorMode());
+        super.init();
+      }
+    };
+  }
+  
+  public void editorModeChanged(EditorMode newEditorMode)
+  {
+    EditPartFactory editPartFactory = newEditorMode.getEditPartFactory();
+    if (editPartFactory != null)
+    {  
+      graphicalViewer.setEditPartFactory(editPartFactory);
+      if (graphicalViewer instanceof DesignViewGraphicalViewer)
+      {  
+        DesignViewGraphicalViewer viewer = (DesignViewGraphicalViewer)graphicalViewer;
+        DefinitionsEditPart editPart = (DefinitionsEditPart)viewer.getRootEditPart().getContents();
+        editPart.setModelChildren(Collections.EMPTY_LIST);
+        editPart.refresh();
+        editPart.setModelChildren(null);
+        editPart.refresh();        
+      }
+    }  
+    IContentProvider provider = newEditorMode.getOutlineProvider();
+    if (provider != null)
+    {
+      ((ASDContentOutlinePage)getContentOutlinePage()).getTreeViewer().setContentProvider(provider);
+      ((ASDContentOutlinePage)getContentOutlinePage()).getTreeViewer().refresh();  
+    }  
+  }  
 }
