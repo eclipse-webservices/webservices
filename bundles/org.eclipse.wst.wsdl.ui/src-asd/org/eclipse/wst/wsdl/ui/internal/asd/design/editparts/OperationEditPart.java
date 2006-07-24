@@ -21,6 +21,8 @@ import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
@@ -42,7 +44,7 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
   public OperationEditPart()
   {
   }
-  
+
   protected IFigure createFigure()
   {
     Figure figure = new Figure();
@@ -104,6 +106,12 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     else if (hitTest(label, cursorLocation) && isReadOnly()) {
       doOpenNewEditor();    
     }
+  }
+  
+  public void performRequest(Request req) {
+	  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
+		  performDirectEdit(null);
+	  }
   }
   
   public Label getLabelFigure() {

@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.Iterator;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
@@ -29,6 +30,8 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.tools.DirectEditManager;
@@ -119,7 +122,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   public void performDirectEdit(Point cursorLocation)
   {
     this.cursorLocation = cursorLocation;
-    if (hitTest(getLabelFigure(), cursorLocation) && !isReadOnly()) {
+    if (cursorLocation == null || hitTest(getLabelFigure(), cursorLocation) && !isReadOnly()) {
     	manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
     	manager.show();
     }
@@ -127,10 +130,16 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
       doOpenNewEditor();
     }
   }
+  
+  public void performRequest(Request req) {
+	  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
+		  performDirectEdit(null);
+	  }
+  }
 
   public Label getLabelFigure()
   {
-    if (translateBounds(nameLabel.getBounds()).contains(cursorLocation))
+    if (cursorLocation == null || translateBounds(nameLabel.getBounds()).contains(cursorLocation))
     {
       return nameLabel;
     }
@@ -324,7 +333,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   public Command getSetProperLabelCommand(String newValue)
   {
     // TODO: rmah: We need to translate the point...
-    if (translateBounds(nameLabel.getBounds()).contains(cursorLocation))
+    if (cursorLocation == null || translateBounds(nameLabel.getBounds()).contains(cursorLocation))
     {
       return ((IEndPoint) getModel()).getSetNameCommand(newValue);
     }

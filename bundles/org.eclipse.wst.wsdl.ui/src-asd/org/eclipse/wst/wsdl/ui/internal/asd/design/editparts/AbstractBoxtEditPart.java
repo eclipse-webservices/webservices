@@ -17,6 +17,8 @@ import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelCellEditorLocator;
@@ -67,6 +69,12 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
         hitTestFigure(figure.getHeadingFigure(), cursorLocation)) && isReadOnly()) {
       doOpenNewEditor();
     }
+  }
+  
+  public void performRequest(Request req) {
+	  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
+		  performDirectEdit(null);
+	  }
   }
   
   public Label getLabelFigure() {

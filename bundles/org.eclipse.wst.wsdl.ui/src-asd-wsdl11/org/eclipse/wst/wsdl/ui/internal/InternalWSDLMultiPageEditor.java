@@ -20,7 +20,9 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -29,6 +31,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.wst.sse.core.StructuredModelManager;
@@ -51,6 +54,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddMessageAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDirectEditAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.ASDEditPartFactoryHelper;
@@ -350,6 +354,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
+		graphicalViewer.getKeyHandler().put(KeyStroke.getPressed(SWT.F2, 0), getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 		setEditPartFactory(ASDEditPartFactoryHelper.getInstance().getEditPartFactory());
 	}
 	
@@ -444,10 +449,14 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    action = new W11OpenImportAction(this);
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);
-      
-      action = new OpenInNewEditor(this);
-      action.setSelectionProvider(getSelectionManager());
-      registry.registerAction(action);
+
+	    action = new OpenInNewEditor(this);
+	    action.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(action);
+
+	    ASDDirectEditAction directEditAction = new ASDDirectEditAction(this);
+	    directEditAction.setSelectionProvider(getSelectionManager());
+	    registry.registerAction(directEditAction);
 	  }
 	
   public IOpenExternalEditorHelper getOpenExternalEditorHelper() {

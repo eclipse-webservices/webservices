@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
@@ -27,6 +28,7 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
@@ -137,6 +139,12 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     else if (hitTest(parameterName, cursorLocation) && isReadOnly()) {
       doOpenNewEditor();
     }
+  }
+  
+  public void performRequest(Request req) {
+	  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
+		  performDirectEdit(null);
+	  }
   }
   
   protected void createEditPolicies()

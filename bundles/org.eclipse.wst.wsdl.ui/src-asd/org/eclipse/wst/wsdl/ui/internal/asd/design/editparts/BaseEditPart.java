@@ -147,14 +147,6 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
   {      
     KeyBoardAccessibilityEditPolicy navigationEditPolicy = new KeyBoardAccessibilityEditPolicy()
     {           
-      public void performDirectEdit(EditPart editPart)
-      {
-        if (editPart instanceof INamedEditPart)
-        { 
-          ((INamedEditPart)editPart).performDirectEdit(null);          
-        }
-      }
-      
       public EditPart getRelativeEditPart(EditPart editPart, int direction)
       {          
         return BaseEditPart.this.getRelativeEditPart(direction);            

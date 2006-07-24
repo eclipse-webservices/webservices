@@ -23,6 +23,8 @@ import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelCellEditorLocator;
@@ -129,6 +131,12 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     else if ((hitTest(headingFigure.getLabel(), cursorLocation) ||
               hitTestFigure(headingFigure, cursorLocation)) && isReadOnly()) {
       doOpenNewEditor();
+	  }
+  }
+  
+  public void performRequest(Request req) {
+	  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
+		  performDirectEdit(null);
 	  }
   }
   

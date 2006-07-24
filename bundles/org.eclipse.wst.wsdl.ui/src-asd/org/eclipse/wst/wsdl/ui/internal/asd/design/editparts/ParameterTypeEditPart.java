@@ -28,6 +28,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
@@ -129,6 +131,12 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
       else if (hitTest(parameterType, cursorLocation) && isReadOnly()) {
         doOpenNewEditor();
       }
+	  }
+	  
+	  public void performRequest(Request req) {
+		  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
+			  performDirectEdit(null);
+		  }
 	  }
 	  
 	  public void activate() {
