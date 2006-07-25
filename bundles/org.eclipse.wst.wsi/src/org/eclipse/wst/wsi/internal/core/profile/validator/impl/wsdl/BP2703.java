@@ -54,58 +54,7 @@ public class BP2703 extends AssertionProcess
     EntryContext entryContext)
     throws WSIException
   {
-
-    result = AssertionResult.RESULT_PASSED;
-
-    try
-    {
-      Definition def = (Definition) entryContext.getEntry().getEntryDetail();
-
-      if (def == null)
-      {
-        throw new AssertionFailException("Definition null");
-      }
-
-      String wsdlURI = entryContext.getEntry().getReferenceID();
-
-      Map namespaces = def.getNamespaces();
-      for (Iterator iter = namespaces.values().iterator(); iter.hasNext();)
-      {
-        String ns = (String) iter.next();
-
-        if (WSIConstants.NS_URI_WSDL.equalsIgnoreCase(ns))
-        {
-        	XMLUtils.parseXMLDocument(wsdlURI, TestUtils.getWSDLSchemaLocation());
-        }
-
-        if (WSIConstants.NS_URI_WSDL_SOAP.equalsIgnoreCase(ns))
-        {
-        	XMLUtils.parseXMLDocument(wsdlURI, TestUtils.getWSDLSOAPSchemaLocation());
-        }
-      }
-    }
-
-    catch (WSIException e)
-    {
-      if (e.getTargetException() instanceof SAXException)
-      {
-        result = AssertionResult.RESULT_FAILED;
-        failureDetail =
-          this.validator.createFailureDetail(
-            Utils.getExceptionDetails(e.getTargetException()),
-            entryContext);
-      }
-    }
-
-    catch (Exception e)
-    {
-      result = AssertionResult.RESULT_FAILED;
-      failureDetail =
-        this.validator.createFailureDetail(Utils.getExceptionDetails(e), entryContext);
-    }
-
-    // Return assertion result
-    return validator.createAssertionResult(testAssertion, result, failureDetail);
+    // note that this assertion is redundant, since the base wsdl validator checks this already.
+    return validator.createAssertionResult(testAssertion, AssertionResult.RESULT_PASSED, failureDetail);
   }
-
 }

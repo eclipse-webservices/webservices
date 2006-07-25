@@ -575,7 +575,9 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
 		         id.equals("BP2114") ||
 		         id.equals("BP2123") ||
 		         id.equals("SSBP2209") ||
-		         id.equals("AP2209"));
+		         id.equals("AP2209") ||
+		         id.equals("BP2700")	         
+		         );
 	 }
 	 return result;
 }

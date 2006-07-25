@@ -63,7 +63,7 @@ public class AP2908 extends AssertionProcess implements WSITag
       Binding wsdlBinding = (Binding) entryContext.getEntry().getEntryDetail();
 
       // Since WSDL4J 1.4 ignores any attributes of mime:part, use Xerces 2.6.2 instead
-      Document doc = XMLUtils.parseXMLDocument(validator.wsdlURL);
+      Document doc = validator.parseXMLDocumentURL(validator.wsdlURL, null);
 
       // Finding the wsdl:binding element being processed
       Element binding = getBindingElement(
@@ -125,10 +125,6 @@ public class AP2908 extends AssertionProcess implements WSITag
       if (!multipartsFound)
         throw new AssertionNotApplicableException();
     }
-    catch (IOException ioe)
-    {
-      result = AssertionResult.RESULT_NOT_APPLICABLE;
-    }
     catch (AssertionNotApplicableException anae)
     {
       result = AssertionResult.RESULT_NOT_APPLICABLE;
@@ -139,6 +135,11 @@ public class AP2908 extends AssertionProcess implements WSITag
       failureDetail = validator.createFailureDetail(
         afe.getMessage(), entryContext);
     }
+    catch (Exception ioe)
+    {
+      result = AssertionResult.RESULT_NOT_APPLICABLE;
+    }
+    
     // Return assertion result
     return validator.createAssertionResult(
       testAssertion, result, failureDetail);

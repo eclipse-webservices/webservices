@@ -100,7 +100,7 @@ public class BP4200 extends AssertionProcessVisitor implements WSITag
     try
 	{
       // getting WSDL document.
-      Document doc = XMLUtils.parseXMLDocument(definition.getDocumentBaseURI());
+      Document doc = validator.parseXMLDocumentURL(definition.getDocumentBaseURI(), null);
       if (doc != null)
       {   
         checkElement(doc.getDocumentElement());

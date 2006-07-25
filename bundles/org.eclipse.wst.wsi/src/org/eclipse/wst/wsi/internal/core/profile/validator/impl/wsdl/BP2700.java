@@ -54,7 +54,7 @@ public class BP2700 extends AssertionProcess
       // TEMP: Need to define a better way to get the WSDL URI
       String wsdlURI = entryContext.getEntry().getReferenceID();
       // non-validating parse
-      XMLUtils.parseXMLDocument(wsdlURI);
+      validator.parseXMLDocumentURL(wsdlURI, null);
     }
 
     catch (WSIException e)
