@@ -40,7 +40,7 @@ public class DefinitionsEditPart extends BaseEditPart {
 	    Panel panel = new Panel();    
         ToolbarLayout toolbarLayout = new ToolbarLayout(true);
         panel.setLayoutManager(toolbarLayout);
-        panel.setBorder(new MarginBorder(30));
+        panel.setBorder(new MarginBorder(60, 30, 30, 30));
 	    contentPane = new Figure();
 	    panel.add(contentPane);
 

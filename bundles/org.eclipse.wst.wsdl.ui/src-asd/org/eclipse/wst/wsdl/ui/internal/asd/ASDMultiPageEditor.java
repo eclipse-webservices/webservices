@@ -20,6 +20,11 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -76,6 +81,39 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
   {
     return "org.eclipse.wst.wsdl.ui.internal.WSDLEditor"; //$NON-NLS-1$
   }
+  
+  private class InternalLayout extends StackLayout
+  {
+    public InternalLayout() {
+      super();  
+    }
+    
+    protected void layout(Composite composite, boolean flushCache) {
+      Control children[] = composite.getChildren();
+      Rectangle rect = composite.getClientArea();
+      rect.x += marginWidth;
+      rect.y += marginHeight;
+      rect.width -= 2 * marginWidth;
+      rect.height -= 2 * marginHeight;
+      
+      for (int i = 0; i < children.length; i++) {
+        if (i == 0 && modeCombo != null) { // For the drop down toolbar
+          children[i].setBounds(rect.x + rect.width - 50 - maxLength, rect.y + 10, maxLength + 20, 26);
+        }
+        else {// For the main graph viewer
+          children[i].setBounds(rect);          
+        }
+      }       
+    }               
+  }
+  
+  protected Composite createGraphPageComposite() {    
+    Composite parent = new Composite(getContainer(), SWT.FLAT);
+    parent.setLayout(new InternalLayout());
+    createViewModeToolbar(parent);
+    return parent;
+  }
+
   
   public IContentOutlinePage getContentOutlinePage() {
 	  if ((fOutlinePage == null) || fOutlinePage.getControl() == null || (fOutlinePage.getControl().isDisposed())) {
