@@ -98,7 +98,7 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
       
       for (int i = 0; i < children.length; i++) {
         if (i == 0 && modeCombo != null) { // For the drop down toolbar
-          children[i].setBounds(rect.x + rect.width - 50 - maxLength, rect.y + 10, maxLength + 20, 26);
+          children[i].setBounds(rect.x + rect.width - 90 - maxLength, rect.y + 10, maxLength + 60, 26);
         }
         else {// For the main graph viewer
           children[i].setBounds(rect);          
