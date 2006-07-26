@@ -11,9 +11,9 @@
 package org.eclipse.wst.wsdl.ui.internal.commands;
 
 import org.eclipse.wst.wsdl.ExtensibleElement;
+import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceTable;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddExtensionCommand;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -36,18 +36,12 @@ public class AddExtensionElementCommand extends AddExtensionCommand
     super.execute();
     Element parentElement = input.getElement();
     Document doc = parentElement.getOwnerDocument();
-    Element rootElement = doc.createElementNS(extensionsSchemaSpec.getNamespaceURI(), element.getName());
     
-//  TODO (cs) gotta fix this... need a simple way to compute a unique prefix
-//    createUniquePrefix(parentElement);
-    String prefix = "p"; 
-    rootElement.setPrefix(prefix);
-    newElement = rootElement;
+    Element newElement = doc.createElementNS(extensionsSchemaSpec.getNamespaceURI(), element.getName());
     
-    Attr nsURIAttribute = doc.createAttribute("xmlns:"+prefix);
-    nsURIAttribute.setValue(extensionsSchemaSpec.getNamespaceURI());
-    rootElement.setAttributeNode(nsURIAttribute);
-    parentElement.appendChild(rootElement);
+    String prefix = addNamespaceDeclarationIfRequired(doc.getDocumentElement(), "p", extensionsSchemaSpec.getNamespaceURI());
+    newElement.setPrefix(prefix);
+    parentElement.appendChild(newElement);
   }
 
   public void undo()
@@ -58,4 +52,28 @@ public class AddExtensionElementCommand extends AddExtensionCommand
   {
     return newElement;
   }
+  
+  private String addNamespaceDeclarationIfRequired(Element rootElement, String prefixHint, String namespace)
+  {
+    String prefix = null;      
+    NamespaceTable namespaceTable = new NamespaceTable(rootElement.getOwnerDocument());
+    namespaceTable.addElement(rootElement);
+    prefix = namespaceTable.getPrefixForURI(namespace);
+    if (prefix == null)
+    { 
+      String basePrefix = prefixHint;
+      prefix = basePrefix;
+      String xmlnsColon = "xmlns:"; //$NON-NLS-1$
+      String attributeName = xmlnsColon + prefix;
+      int count = 0;
+      while (rootElement.getAttribute(attributeName) != null)
+      {
+        count++;
+        prefix = basePrefix + count;
+        attributeName = xmlnsColon + prefix;
+      }      
+      rootElement.setAttribute(attributeName, namespace);  
+    }    
+    return prefix;
+  }  
 }
