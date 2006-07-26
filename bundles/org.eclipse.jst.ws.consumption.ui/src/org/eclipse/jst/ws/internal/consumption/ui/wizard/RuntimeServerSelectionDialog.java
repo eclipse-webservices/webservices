@@ -12,6 +12,8 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060327   131605 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
+ * 20060726   150865 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060726   150867 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -20,6 +22,7 @@ import java.util.Vector;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -28,7 +31,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -36,6 +38,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -65,6 +68,9 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   private Button viewSelectionByRuntimeButton_;
   private Button viewSelectionByServerButton_;
   private Button viewSelectionByExploreButton_;
+  private ILabelProvider labelProvider_;
+  private Image serverTypesIcon;
+  private Image existingServersIcon;
 
   /*
    * CONTEXT_ID PWRS0001 for the selection of runtime, server and project combination
@@ -122,6 +128,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
     setIsExistingServer(ids.getServerInstanceId() != null);
     serverLabels_ = new Hashtable();
     existingServersTable_ = new Hashtable();
+    labelProvider_ = ServerUICore.getLabelProvider();
   }
   
   public void setSelectServerFirst(boolean selectServerFirst) {
@@ -351,15 +358,13 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
 
   private void setOKStatusMessage() {
     messageBanner_.setText(ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION);
-    Color black = new Color(thisShell.getDisplay(), 0x00, 0, 0);
-    messageBanner_.setForeground(black);
+    messageBanner_.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
     enableOKButton();
   }
 
   private void setERRORStatusMessage(String message) {
     messageBanner_.setText(message);
-    Color red = new Color(thisShell.getDisplay(), 0xFF, 0, 0);
-    messageBanner_.setForeground(red);
+    messageBanner_.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
     disableOKButton();
   }
 
@@ -374,10 +379,27 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   }
 
   protected void okPressed() {
-    setReturnCode(OK);
+	if (labelProvider_!=null)
+	    labelProvider_.dispose();
+	if (existingServersIcon!=null)
+		existingServersIcon.dispose();
+	if (serverTypesIcon!=null)
+		serverTypesIcon.dispose();
+	setReturnCode(OK);
     close();
   }
 
+  protected void cancelPressed() {
+	if (labelProvider_!=null)
+		labelProvider_.dispose();
+	if (existingServersIcon!=null)
+		existingServersIcon.dispose();
+	if (serverTypesIcon!=null)
+		serverTypesIcon.dispose();	
+	setReturnCode(CANCEL);
+	close();
+  }
+  
   /**
    * Called when an event occurs on the page. Handles the event and revalidates the page.
    * 
@@ -574,8 +596,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       existingServersTree[0] = new TreeItem(serverList, SWT.NONE);
       existingServersTree[0].setText(ConsumptionUIMessages.LABEL_TREE_EXISTING_SERVERS);
       ImageDescriptor id = WebServiceConsumptionUIPlugin.getImageDescriptor(EXISTING_SERVERS_ICON);
-      if (id != null)
-        existingServersTree[0].setImage(id.createImage());
+      if (id != null) {
+    	existingServersIcon = id.createImage();
+        existingServersTree[0].setImage(existingServersIcon);
+      }
       for (int k = 0; k < serverIds.length; k++) {
         IServerType serverType = ServerCore.findServerType(((IServer) existingServersTable_.get(serverIds[k])).getServerType().getId());
         if (serverType != null) {
@@ -590,7 +614,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
             selectedServerLabel_ = serverIds[k];
             selectedServerFactoryID_ = selectedServer_.getServerType().getId();
           }
-          existingServerItems[k].setImage(ServerUICore.getLabelProvider().getImage(serverType));
+          existingServerItems[k].setImage(labelProvider_.getImage(serverType));
         }
       }
     }
@@ -601,8 +625,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
       serverTypesTree[0] = new TreeItem(serverList, SWT.NONE);
       serverTypesTree[0].setText(ConsumptionUIMessages.LABEL_TREE_SERVER_TYPES);
       ImageDescriptor id = WebServiceConsumptionUIPlugin.getImageDescriptor(SERVER_TYPES_ICON);
-      if (id != null)
-        serverTypesTree[0].setImage(id.createImage());
+      if (id != null) {
+    	serverTypesIcon = id.createImage();
+        serverTypesTree[0].setImage(serverTypesIcon);
+      }
       Hashtable categories_ = new Hashtable();
       Hashtable categoryTreeItem = new Hashtable();
       String[] serverIds = null;
@@ -631,7 +657,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
               categories_.put(serverType, runtimeType);
               if (categoryTreeItem.get(runtimeType) == null) {
                 String categoryText = runtimeType.getName();
-                Image categoryImage = ServerUICore.getLabelProvider().getImage(runtimeType);
+                Image categoryImage = labelProvider_.getImage(runtimeType);
                 parent[i] = new TreeItem(serverTypesTree[0], SWT.NONE);
                 parent[i].setText(categoryText);
                 parent[i].setImage(categoryImage);
@@ -641,7 +667,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
                 parent[i] = (TreeItem) categoryTreeItem.get(runtimeType);
               }
               String factoryText = serverType.getName();
-              Image factoryImage = ServerUICore.getLabelProvider().getImage(serverType);
+              Image factoryImage = labelProvider_.getImage(serverType);
               item[i] = new TreeItem(parent[i], SWT.NONE);
               item[i].setText(factoryText);
               item[i].setImage(factoryImage);

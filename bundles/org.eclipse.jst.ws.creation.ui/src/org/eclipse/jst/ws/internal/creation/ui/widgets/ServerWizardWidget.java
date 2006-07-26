@@ -36,6 +36,7 @@
  * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
  * 20060616   147317 joan@ca.ibm.com - Joan Haggarty
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
+ * 20060726   150865 sengpl@ca.ibm.com -  Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -83,7 +84,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -434,7 +434,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 		serviceScale_.setLayoutData(layoutData1);		
 		
 		topologySpot_ = new Label(serviceComposite_, SWT.BORDER | SWT.TOP );
-		topologySpot_.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+		topologySpot_.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
 		
 		GridData layoutData2 = new GridData();		

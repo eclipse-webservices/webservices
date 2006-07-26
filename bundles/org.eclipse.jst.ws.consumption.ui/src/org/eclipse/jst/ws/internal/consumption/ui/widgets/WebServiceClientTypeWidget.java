@@ -28,6 +28,7 @@
  * 20060607   144049 joan@ca.ibm.com - Joan Haggarty
  * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
+ * 20060726   150865 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -58,7 +59,6 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -297,7 +297,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	clientScale_.setLayoutData(layoutData1);
 		
 	topologySpot_ = new Label(clientComposite_ , SWT.CENTER | SWT.BORDER );
-	topologySpot_.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+	topologySpot_.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 	if (clientOnly_)
 		topologySpot_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT_ONLY);
 	else
