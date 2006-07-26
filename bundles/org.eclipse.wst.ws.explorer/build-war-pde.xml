@@ -63,7 +63,7 @@
 				</fileset>
 			</classpath>
 		</java>
-		<javac destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false">
+		<javac debug="true" destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false">
 			<src path="${wsexplorerDir}"/>
 			<classpath>
 				<dirset dir="${buildDirectory}">

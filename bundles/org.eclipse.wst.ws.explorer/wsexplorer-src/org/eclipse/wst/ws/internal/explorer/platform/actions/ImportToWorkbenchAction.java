@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060721   149070 gilberta@ca.ibm.com - Gilbert Andrews, update to respect preferences
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
@@ -24,6 +27,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
@@ -132,11 +136,10 @@ public abstract class ImportToWorkbenchAction extends FormAction {
       return targetFileResource_.getResourceAttributes().isReadOnly();
     }
 
-    // TODO: ResourceContext need to move to org.eclipse.wst.ws.
+    
     public boolean isCheckoutFilesEnabled()
     {
-    	return true;
-//      return WebServicePlugin.getInstance().getResourceContext().isCheckoutFilesEnabled();
+    	return PersistentResourceContext.getInstance().isCheckoutFilesEnabled();
     }
 
     public String getWebServicePluginFileMessage(String messageId)
@@ -145,11 +148,10 @@ public abstract class ImportToWorkbenchAction extends FormAction {
       return controller_.getMessage(messageId,new String[]{iProject_.getFullPath().toString(),importedFileName});
     }
 
-    // TODO: ResourceContext need to move to org.eclipse.wst.ws. 
+    
     public boolean isOverwriteFilesEnabled()
     {
-    	return true;
-//      return WebServicePlugin.getInstance().getResourceContext().isOverwriteFilesEnabled();
+    	return PersistentResourceContext.getInstance().isOverwriteFilesEnabled();
     }
 
     public boolean validateEdit()
