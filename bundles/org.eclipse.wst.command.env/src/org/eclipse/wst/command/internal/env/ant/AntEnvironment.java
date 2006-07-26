@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
+ * 20060726   151614 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ant;
 
@@ -31,7 +32,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.EnvironmentMessages;
 import org.eclipse.wst.command.internal.env.core.CommandManager;
-import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.BeanModifier;
 import org.eclipse.wst.command.internal.env.core.data.ClassEntry;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
@@ -76,28 +77,51 @@ public class AntEnvironment extends EclipseEnvironment{
 
 	// Ant property IDs
 	private static final String VERBOSE_PROPERTY = "Verbose"; //$NON-NLS-1$
+	private static final String OVERWRITE_PROPERTY = "OverwriteFilesEnabled"; //$NON-NLS-1$
+	private static final String CREATEFOLDER_PROPERTY = "CreateFoldersEnabled"; //$NON-NLS-1$
+	private static final String CHECKOUT_PROPERTY = "CheckoutFilesEnabled"; //$NON-NLS-1$
 	private static final String SCENARIO_TYPE_PROPERTY = "ScenarioType"; //$NON-NLS-1$
 	
     private AntController controller_;
 	
-	public AntEnvironment(AntController controller, ResourceContext context, IStatusHandler handler, Hashtable properties)
+	public AntEnvironment(AntController controller, TransientResourceContext context, IStatusHandler handler, Hashtable properties)
 	{
 	   super(controller.getOperationManager(), context, handler);
 	   antProperties_ = properties;	
-	   controller_ = controller;	   
+	   controller_ = controller;	
+	   setContext( context );
 	}
 	
+	private void setContext(TransientResourceContext context) 
+	{
+	  Boolean overwriteSet    = getBooleanProperty( OVERWRITE_PROPERTY );
+	  Boolean createfolderSet = getBooleanProperty( CREATEFOLDER_PROPERTY );
+	  Boolean checkoutSet     = getBooleanProperty( CHECKOUT_PROPERTY );
+	  
+	  if( overwriteSet != null ) context.setOverwriteFilesEnabled( overwriteSet.booleanValue() );
+	  if( createfolderSet != null ) context.setCreateFoldersEnabled( createfolderSet.booleanValue() );
+	  if( checkoutSet != null ) context.setCheckoutFilesEnabled( checkoutSet.booleanValue() );
+	}
+
 	public boolean verbose()
 	{
-	  String verbose=getProperty(VERBOSE_PROPERTY);		
+	  Boolean result = getBooleanProperty( VERBOSE_PROPERTY );
 	  
-	  if (verbose != null)
+	  return result == null ? false : result.booleanValue();
+	}
+	
+	public Boolean getBooleanProperty( String property )
+	{
+	  String  value  = getProperty( property );	
+	  Boolean result = null;
+		  
+	  if( value != null )
 	  {
-		  verbose = verbose.toLowerCase();
-		  if (verbose.equals("true"))
-			  return true;
-	  }		  
-	  return false;
+		value = value.toLowerCase();
+		result = new Boolean( value.equals( "true") );
+	  }
+	  
+	  return result;
 	}
 	
 	// returns String since the property table built by Ant is property value pairs where the value is a String

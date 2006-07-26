@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060726   151614 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.wst.command.internal.env.ant;
@@ -19,6 +22,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.command.internal.env.EnvironmentMessages;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.CommandManager;
+import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
@@ -43,9 +47,9 @@ public class AntController {
 	   // construct the environment - passing in the property table	   
 	   // --maintains link to property table plus any other environment properties
 	   // --code to access extension point mappings for operations to retrieve data from property table
-	   PersistentResourceContext  resourceContext = PersistentResourceContext.getInstance();
-	   AntStatusHandler handler         = new AntStatusHandler();
-	   AntEnvironment environment = new AntEnvironment(this, resourceContext, handler, properties);
+	   TransientResourceContext  resourceContext = (TransientResourceContext)PersistentResourceContext.getInstance().copy();
+	   AntStatusHandler          handler         = new AntStatusHandler();
+	   AntEnvironment            environment     = new AntEnvironment(this, resourceContext, handler, properties);
        
 	   // construct data manager for maintaining state across operations
 	   DataFlowManager dataManager = new DataFlowManager( new DataMappingRegistryImpl(), environment);
