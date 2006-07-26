@@ -18,6 +18,7 @@
  * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060725   149351 makandre@ca.ibm.com - Andrew Mak, Deleted service definition keeps reappearing
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -226,27 +227,22 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
  {
      webServiceURI_ = uri;    
      wsdlDialog_.setWebServiceURI(uri);
-     String wsdlDialogDisplayableString = wsdlDialog_.getDisplayableSelectionString();
+
      if (uri != null && uri.length() > 0)
      {
-       if (wsdlDialogDisplayableString != null && wsdlDialogDisplayableString.length() > 0)
-       {
-    	   serviceImpl_.removeModifyListener(objectModifyListener_);
-    	   serviceImpl_.setText(wsdlDialogDisplayableString);
-    	   serviceImpl_.addModifyListener(objectModifyListener_);
-       }
-       else 
-       {
     	   //This else clause is to handle the call to the enclosing method
     	   //when the page first comes up since wsdlDialog_ will not have been
     	   //properly initialized with a WSDLSelectionWidgetWrapper containing
     	   //a non-null WSDLSelectionWidget.
+    	   //***149351*** always use this code re-evaluate the path.  We cannot
+    	   //depend on getDisplayableSelectionString() from wsdlDialog_ because 
+    	   //it will not be in sync with the uri value after the dialog closes.
+    	   
     	   EclipseIPath2URLStringTransformer transformer = new EclipseIPath2URLStringTransformer();
     	   webServiceURI_ = (String)transformer.transform(uri);
     	   serviceImpl_.removeModifyListener(objectModifyListener_);
     	   serviceImpl_.setText(uri);    	 
     	   serviceImpl_.addModifyListener(objectModifyListener_);
-       }
      }
      
  }
@@ -379,7 +375,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		clientRTDefaultCmd.setTestService(getTestService().booleanValue());
 		clientRTDefaultCmd.setWebServicesParser(getWebServicesParser());
 		clientRTDefaultCmd.setWsdlURI(getWsdlURI());
-		clientRTDefaultCmd.execute(null, null);
 		
 		clientRTDefaultCmd.execute(null, null);
 		  
@@ -391,7 +386,8 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 	}
   
 	public IStatus getStatus() {
-		IStatus status = Status.OK_STATUS;
+				
+		validObjectSelection_ = false;	// assume false at first
 
 		IStatus missingFieldStatus = checkMissingFieldStatus();
 		if (missingFieldStatus.getSeverity() == IStatus.ERROR) {
@@ -417,7 +413,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 		validationState_ = ValidationUtils.VALIDATE_NONE;
 		clientWidget_.setValidationState(ValidationUtils.VALIDATE_NONE);
 
-		return status;
+		return Status.OK_STATUS;
 	}
 	
 	private IStatus checkMissingFieldStatus() {
