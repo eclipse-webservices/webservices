@@ -11,6 +11,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060222   127443 jesper@selskabet.org - Jesper S Moller
+ * 20060726   144824 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -60,7 +61,19 @@
        Element[] instanceDocuments = frag.genInstanceDocumentsFromParameterValues(!operElement.isUseLiteral(), soapEnvelopeNamespaceTable, XMLUtils.createNewDocument(null));
        for (int i = 0; i < instanceDocuments.length; i++)
        {
-         sourceContent.append(XMLUtils.serialize(instanceDocuments[i], true));
+    	 String serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
+		 if (serializedFragment == null)
+		 {
+			 // On Some JRE's (Sun java 5) elements with an attribute with the xsi
+			 // prefix do not serialize properly because the namespace can not
+			 // be found so the string returned comes back as null. To workaround
+			 // this problem try adding in the namespace declaration attribute
+			 // and retry the serialization (bug 144824)			 
+			 instanceDocuments[i].setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+			 serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
+		 }
+    	 
+    	 sourceContent.append(serializedFragment);
          sourceContent.append(HTMLUtils.LINE_SEPARATOR);
        }     
      }
@@ -153,7 +166,7 @@
     </td>
   </tr>
 </table>
-<table
+<table>
 <%
     }
 
