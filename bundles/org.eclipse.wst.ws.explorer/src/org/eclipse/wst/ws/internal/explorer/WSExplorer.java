@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060721   151409 makandre - Andrew Mak, WSE does not open in external browser on RH
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer;
 
@@ -108,24 +111,22 @@ public class WSExplorer {
 		}
 		// launch Web Services Explorer
 		try {
-			URL url = new URL(sb.toString());
-			if (forceLaunchOutsideIDE) {
-				if (System.getProperty("os.name").toLowerCase().indexOf("win") == -1)
-					Runtime.getRuntime()
-							.exec("mozilla " + url.toExternalForm());
-				else
-					Runtime.getRuntime().exec(
-							"cmd /C start iexplore " + url.toExternalForm());
-			} else {
+			IWorkbenchBrowserSupport browserSupport = ExplorerPlugin.getInstance().getWorkbench().getBrowserSupport();
+			IWebBrowser browser = null;
+			
+			if (forceLaunchOutsideIDE)
+				browser = browserSupport.getExternalBrowser();
+			else {
 				// browserId
 				StringBuffer browserId = new StringBuffer();
 				browserId.append(ExplorerPlugin.ID);
 				browserId.append(getContextName());
 				
-				IWorkbenchBrowserSupport browserSupport = ExplorerPlugin.getInstance().getWorkbench().getBrowserSupport();
-				IWebBrowser browser = browserSupport.createBrowser(browserId.toString());
-				browser.openURL(url);
+				browser = browserSupport.createBrowser(browserId.toString());				
 			}
+			
+			browser.openURL(new URL(sb.toString()));
+			
 		} catch (Exception e) {
 			return new Status(IStatus.ERROR, ExplorerPlugin.ID, 0,
 					ExplorerPlugin.getMessage("%MSG_ERROR_LAUNCH_WSEXPLORER"),
