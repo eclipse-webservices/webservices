@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
@@ -35,6 +36,10 @@ import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDPackage;
+import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -302,6 +307,31 @@ public class OpenOnSelectionHelper extends WSDLSwitch
   private boolean isMatchingAttribute(String value)
   {
     return attr != null && value.equals(attr.getName());
+  }
+
+  public Object defaultCase(EObject object)
+  {
+    EClass theEClass = object.eClass();
+    if (theEClass.eContainer() == XSDPackage.eINSTANCE)
+    {
+      Object result = object;
+      switch (theEClass.getClassifierID())
+      {
+        case XSDPackage.XSD_ELEMENT_DECLARATION:
+          if (isMatchingAttribute(XSDConstants.REF_ATTRIBUTE))
+          {
+            result = ((XSDElementDeclaration)object).getResolvedElementDeclaration();
+          }
+          return result;     
+        case XSDPackage.XSD_COMPLEX_TYPE_DEFINITION:
+          if (isMatchingAttribute(XSDConstants.BASE_ATTRIBUTE))
+          {
+            result = ((XSDComplexTypeDefinition)object).getBaseTypeDefinition();
+          }
+          return result;          
+      }
+    }
+    return super.defaultCase(object);
   }
 
 }

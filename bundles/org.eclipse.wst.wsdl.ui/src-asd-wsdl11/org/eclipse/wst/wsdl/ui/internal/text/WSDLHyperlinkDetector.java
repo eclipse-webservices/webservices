@@ -21,13 +21,13 @@ import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
-import org.eclipse.wst.xsd.ui.internal.editor.BaseHyperlinkDetector;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDHyperlinkDetector;
 /**
  * Detects hyperlinks for WSDL files. Used by the WSDL text editor to provide a
  * "Go to declaration" functionality similar with the one provided by the Java
  * editor.
  */
-public class WSDLHyperlinkDetector extends BaseHyperlinkDetector
+public class WSDLHyperlinkDetector extends XSDHyperlinkDetector
 {
   /*
    * (non-Javadoc)
@@ -95,7 +95,8 @@ public class WSDLHyperlinkDetector extends BaseHyperlinkDetector
    */
   protected boolean isLinkableAttribute(String name)
   {
-    boolean isLinkable = name.equals(WSDLConstants.BINDING_ATTRIBUTE) || 
+    boolean isLinkable = super.isLinkableAttribute(name)||
+    name.equals(WSDLConstants.BINDING_ATTRIBUTE) || 
     name.equals(WSDLConstants.ELEMENT_ATTRIBUTE) || 
     name.equals(WSDLConstants.TYPE_ATTRIBUTE) || 
     name.equals(WSDLConstants.MESSAGE_ATTRIBUTE); 
