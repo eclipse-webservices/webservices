@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060726   145676 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
@@ -117,6 +120,7 @@ public class TypeFactory
     if (javaHelpers.isArray()||
     		javaHelpers.getJavaName().equals(MAP_NAME)||
     		javaHelpers.getJavaName().equals(VECTOR_NAME)||
+    		javaHelpers.getJavaName().equals(DATA_HANDLER)||
     		javaHelpers.getJavaName().equals("java.lang.class")	) return true;
     
     return false;
@@ -127,6 +131,7 @@ public class TypeFactory
   public static String VECTOR_NAME = "java.util.Vector";
   public static String ARRAY_NAME = ArrayElement.ARRAY_NAME;
   public static String PRIMITIVE_ARRAY_NAME = "primitivearray";
+  public static String DATA_HANDLER = "javax.activation.DataHandler";
 
   public static boolean isRecognizedReturnType(JavaHelpers javaHelpers)
   {
