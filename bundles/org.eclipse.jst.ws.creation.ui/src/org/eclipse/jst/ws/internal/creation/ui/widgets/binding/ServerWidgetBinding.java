@@ -21,6 +21,7 @@
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  * 20060609    86421 kathy@ca.ibm.com - Kathy Chan
+ * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -170,7 +171,6 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
     
-	dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", TestDefaultingFragment.class);
 	dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", ClientFragment.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "GenerateProxy", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceProjectName", ServerWizardWidget.class);
@@ -454,7 +454,6 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", PublishWSWidget.class, "PublishToPublicUDDI", null);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "GenerateProxy", ServerRuntimeSelectionWidgetDefaultingCommand.class);
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallClient", ClientExtensionDefaultingCommand.class);
-      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestService", ClientExtensionDefaultingCommand.class); // KSC
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "RunTestClient", ClientExtensionDefaultingCommand.class); 
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "GenerateProxy", ClientExtensionDefaultingCommand.class); // KSC
       dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ResourceContext", ClientExtensionDefaultingCommand.class);
@@ -560,10 +559,16 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientProjectEAR", WebServiceClientTestArrivalCommand.class);
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "LaunchedServiceTestName", WebServiceClientTestArrivalCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient",ClientTestDelegateCommand.class); 
       
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "RunTestClient", ClientTestDelegateCommand.class);
+      
+      dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestClient", ClientExtensionDefaultingCommand.class, "TestService", null);
+   	  dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestClient", TestDefaultingFragment.class, "GenerateProxy", null);
+   	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", TestDefaultingFragment.class, "GenerateProxy", null);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestFragment.class, "GenerateProxy", null);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", FinishTestFragment.class, "GenerateProxy", null);
+
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WsdlURI", ClientTestDelegateCommand.class);
            
@@ -577,9 +582,6 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServerInstance", ClientExtensionOutputCommand.class, "ExistingServerId", null);
       
       // Map ClientExtensionOutputCommand
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", WebServiceClientTestArrivalCommand.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "SetEndpointMethod", ClientTestDelegateCommand.class);

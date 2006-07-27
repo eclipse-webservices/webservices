@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -26,6 +27,7 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
   private boolean           installService_;
   private boolean           startService_;
   private boolean           testService_;
+  private boolean           testClient_;
   private boolean           runTestClient_;
   private boolean           publishService_;
   private boolean           generateProxy_;
@@ -166,6 +168,14 @@ public class ServerWizardWidgetOutputCommand extends ClientWizardWidgetOutputCom
 
 	public void setDeployService(boolean deployService) {
 		this.deployService_ = deployService;
+	}
+
+	public boolean getTestClient() {
+		return testClient_;
+	}
+
+	public void setTestClient(boolean testClient_) {
+		this.testClient_ = testClient_;
 	}
 
 }
