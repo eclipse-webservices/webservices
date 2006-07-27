@@ -33,6 +33,11 @@ public abstract class SelectNodeAction extends NodeAction
     selectedNode_ = nodeManager_.getSelectedNode();
   }
 
+  public void performExtendedAction()
+  {
+	 //the extended classes can interject here  
+  }
+  
   public boolean run()
   {
     int nodeId = Integer.parseInt((String)propertyTable_.get(ActionInputs.NODEID));
@@ -41,6 +46,7 @@ public abstract class SelectNodeAction extends NodeAction
       // Ensure that the node is visible.
       makeNodeVisible(nodeManager_.getNode(nodeId));
       performBaseAction(nodeId);
+      performExtendedAction();
       addToHistory(getPerspectiveId(),getActionLinkForHistory());
       return true;
     }

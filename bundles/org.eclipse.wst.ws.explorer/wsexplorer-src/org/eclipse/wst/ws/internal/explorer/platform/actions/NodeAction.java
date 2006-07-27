@@ -70,6 +70,17 @@ public abstract class NodeAction extends LinkAction
   }
 
   /**
+   * Make a node visible. A node is visible when all of its ancestors are expanded.
+   * @param Node The node to be made visible.
+   * @return boolean Indicator for whether or not the tree structure was changed (i.e. expanded to show the node in question).
+   */
+   public final void setTreeRefreshNeeded()
+   {
+     requiresTreeViewRefresh_ = true;
+     
+   }
+  
+  /**
   * Select a node with id nodeId.
   * @param int The id of the node to be selected.
   */

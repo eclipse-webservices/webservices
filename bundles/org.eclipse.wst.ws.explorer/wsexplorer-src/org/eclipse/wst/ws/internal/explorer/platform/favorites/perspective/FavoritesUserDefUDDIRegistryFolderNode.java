@@ -15,6 +15,8 @@ import org.eclipse.wst.ws.internal.datamodel.ElementAdapter;
 import org.eclipse.wst.ws.internal.datamodel.RelAddEvent;
 import org.eclipse.wst.ws.internal.datamodel.RelRemoveEvent;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.SelectFavoritesNodeAction;
+import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.SelectFavoritesUserDefUDDIRegistryNodeAction;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 
@@ -58,4 +60,10 @@ public class FavoritesUserDefUDDIRegistryFolderNode extends FavoritesNavigatorFo
     FavoritesPerspective favPerspective = nodeManager_.getController().getFavoritesPerspective();
     new ListFavoriteUserDefUDDIRegistryTool(toolManager_, favPerspective.getMessage("ALT_LIST_FAVORITE_USER_DEF_UDDI_REGISTRY"));
   }
+
+  protected String getLinkActionHref() {
+      return SelectFavoritesUserDefUDDIRegistryNodeAction.getActionLink(nodeId_, false);
+  }
+
+
 }

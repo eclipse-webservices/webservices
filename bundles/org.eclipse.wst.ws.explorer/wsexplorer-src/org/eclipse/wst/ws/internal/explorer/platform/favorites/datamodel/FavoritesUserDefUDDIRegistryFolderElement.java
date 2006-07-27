@@ -39,42 +39,48 @@ public class FavoritesUserDefUDDIRegistryFolderElement extends FavoritesFolderEl
 
   public void init(FavoritesMainElement favMainElement)
   {
-    RegistryService regService = RegistryService.instance();
-    IRegistryManager regManager = regService.getDefaultRegistryManager();
-    try
-    {
-      String[] regURIs = regManager.getRegistryURIs();
-      for (int i = 0; i < regURIs.length; i++)
-      {
-        Registry reg = regManager.loadRegistry(regURIs[i]);
-        if (reg instanceof UDDIRegistry)
-        {
-          UDDIRegistry uddiReg = (UDDIRegistry)reg;
-          List names = uddiReg.getName();
-          String displayName = names != null && !names.isEmpty() ? ((Name)names.get(0)).getValue() : "";
-          FavoritesUserDefUDDIRegistryElement favUserDefUDDIRegElement = new FavoritesUserDefUDDIRegistryElement(displayName, getModel());
-          favUserDefUDDIRegElement.setNames(names);
-          favUserDefUDDIRegElement.setDescs(uddiReg.getDescription());
-          favUserDefUDDIRegElement.setVersion(uddiReg.getVersion());
-          favUserDefUDDIRegElement.setDefaultLogin(uddiReg.getDefaultLogin());
-          favUserDefUDDIRegElement.setDefaultPassword(uddiReg.getDefaultPassword());
-          favUserDefUDDIRegElement.setInquiryURL(uddiReg.getDiscoveryURL());
-          favUserDefUDDIRegElement.setPublishURL(uddiReg.getPublicationURL());
-          favUserDefUDDIRegElement.setSecureInquiryURL(uddiReg.getSecuredDiscoveryURL());
-          favUserDefUDDIRegElement.setSecurePublishURL(uddiReg.getSecuredPublicationURL());
-          Taxonomy[] taxonomies = regManager.loadTaxonomies(UDDIRegistryService.instance().getTaxonomyURIs(uddiReg));
-          favUserDefUDDIRegElement.setTaxonomies(taxonomies);
-          connect(favUserDefUDDIRegElement, FavoritesModelConstants.REL_USER_DEF_UDDI_REGISTRY_NODE, ModelConstants.REL_OWNER);
-        }
-      }
-    }
-    catch (CoreException ce)
-    {
-      // TODO: Better error reporting
-      ce.printStackTrace();
-    }
+    refresh();
   }
 
+  public void refresh(){
+	    disconnectRel(FavoritesModelConstants.REL_USER_DEF_UDDI_REGISTRY_NODE);
+	    RegistryService regService = RegistryService.instance();
+	    IRegistryManager regManager = regService.getDefaultRegistryManager();
+	    try
+	    {
+	      String[] regURIs = regManager.getRegistryURIs();
+	      for (int i = 0; i < regURIs.length; i++)
+	      {
+	        Registry reg = regManager.loadRegistry(regURIs[i]);
+	        if (reg instanceof UDDIRegistry)
+	        {
+	          UDDIRegistry uddiReg = (UDDIRegistry)reg;
+	          List names = uddiReg.getName();
+	          String displayName = names != null && !names.isEmpty() ? ((Name)names.get(0)).getValue() : "";
+	          FavoritesUserDefUDDIRegistryElement favUserDefUDDIRegElement = new FavoritesUserDefUDDIRegistryElement(displayName, getModel());
+	          favUserDefUDDIRegElement.setNames(names);
+	          favUserDefUDDIRegElement.setDescs(uddiReg.getDescription());
+	          favUserDefUDDIRegElement.setVersion(uddiReg.getVersion());
+	          favUserDefUDDIRegElement.setDefaultLogin(uddiReg.getDefaultLogin());
+	          favUserDefUDDIRegElement.setDefaultPassword(uddiReg.getDefaultPassword());
+	          favUserDefUDDIRegElement.setInquiryURL(uddiReg.getDiscoveryURL());
+	          favUserDefUDDIRegElement.setPublishURL(uddiReg.getPublicationURL());
+	          favUserDefUDDIRegElement.setSecureInquiryURL(uddiReg.getSecuredDiscoveryURL());
+	          favUserDefUDDIRegElement.setSecurePublishURL(uddiReg.getSecuredPublicationURL());
+	          Taxonomy[] taxonomies = regManager.loadTaxonomies(UDDIRegistryService.instance().getTaxonomyURIs(uddiReg));
+	          favUserDefUDDIRegElement.setTaxonomies(taxonomies);
+	          connect(favUserDefUDDIRegElement, FavoritesModelConstants.REL_USER_DEF_UDDI_REGISTRY_NODE, ModelConstants.REL_OWNER);
+	        }
+	      }
+	    }
+	    catch (CoreException ce)
+	    {
+	      // TODO: Better error reporting
+	      ce.printStackTrace();
+	    }  
+  }
+  
+  
   public boolean addFavorite(Hashtable table)
   {
     // do nothing
@@ -101,6 +107,6 @@ public class FavoritesUserDefUDDIRegistryFolderElement extends FavoritesFolderEl
 
   public Enumeration getAllFavorites()
   {
-    return getElements(FavoritesModelConstants.REL_USER_DEF_UDDI_REGISTRY_NODE);
+     return getElements(FavoritesModelConstants.REL_USER_DEF_UDDI_REGISTRY_NODE);
   }
 }
