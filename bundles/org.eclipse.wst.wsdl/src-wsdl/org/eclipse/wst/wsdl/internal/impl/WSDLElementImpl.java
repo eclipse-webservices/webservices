@@ -1446,27 +1446,31 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   
   public WSDLElement getBestWSDLElement(List elementPath)
   {
-    WSDLElement result = this;
-    for (Iterator components = getWSDLContents().iterator(); components.hasNext(); )
-    {
-      WSDLElementImpl childWSDLElement = (WSDLElementImpl)components.next();
-      if (elementPath.contains(childWSDLElement.getElement()))
-      {
-        result = childWSDLElement;
-        WSDLElement betterWSDLElement = childWSDLElement.getBestWSDLElement(elementPath);
-        if (betterWSDLElement != null)
-        {
-          result = betterWSDLElement;
-        }
+	  WSDLElement result = this;
+	  for (Iterator components = getWSDLContents().iterator(); components.hasNext(); )
+	  {
+		  Object object = components.next();
+		  if (object instanceof WSDLElementImpl) {
+			  WSDLElementImpl childWSDLElement = (WSDLElementImpl) object;
 
-        if (!considerAllContainsForBestWSDLElement())
-        {
-          break;
-        }
-      }
-    }
+			  if (elementPath.contains(childWSDLElement.getElement()))
+			  {
+				  result = childWSDLElement;
+				  WSDLElement betterWSDLElement = childWSDLElement.getBestWSDLElement(elementPath);
+				  if (betterWSDLElement != null)
+				  {
+					  result = betterWSDLElement;
+				  }
 
-    return result;
+				  if (!considerAllContainsForBestWSDLElement())
+				  {
+					  break;
+				  }
+			  }
+		  }
+	  }
+
+	  return result;
   }
 
   protected boolean considerAllContainsForBestWSDLElement()
