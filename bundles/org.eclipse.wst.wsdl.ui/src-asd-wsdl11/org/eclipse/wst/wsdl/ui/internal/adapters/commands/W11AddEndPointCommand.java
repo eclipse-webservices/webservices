@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import java.util.List;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
@@ -22,13 +21,13 @@ import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.wizards.PortWizard;
 
-public class W11AddEndPointCommand extends Command implements IASDAddCommand
+public class W11AddEndPointCommand extends W11TopLevelElementCommand implements IASDAddCommand
 {
     private Service service;
     private Port port;
     
     public W11AddEndPointCommand(Service service) {
-        super(Messages.getString("_UI_ACTION_ADD"));
+        super(Messages.getString("_UI_ACTION_ADD"), service.getEnclosingDefinition());
         this.service = service;
     }
     
@@ -41,6 +40,8 @@ public class W11AddEndPointCommand extends Command implements IASDAddCommand
 		if (result == Window.OK && service.getEPorts().size() > 0) {
 			List ports = service.getEPorts();
 			port = (Port) ports.get(ports.size() - 1);
+			
+			formatChild(port.getElement());
 		}
     }
 

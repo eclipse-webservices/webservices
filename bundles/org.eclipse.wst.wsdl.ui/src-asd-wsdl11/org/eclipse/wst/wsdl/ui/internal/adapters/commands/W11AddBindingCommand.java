@@ -10,19 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddBindingCommand extends W11TopLevelElementCommand {
+public class W11AddBindingCommand extends W11TopLevelElementCommand implements IASDAddCommand {
 	private String newName;
 	private Binding newBinding;
 	
@@ -48,23 +43,10 @@ public class W11AddBindingCommand extends W11TopLevelElementCommand {
 		command.run();
 		
 		newBinding = (Binding) command.getWSDLElement();
-		selectNewElement(newBinding);
+		formatChild(newBinding.getElement());
 	}
 	
-    // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
-    // are currently very generic, so we have no way of getting to the newly created element.  The action
-    // only sees these commands as generic Command objects.
-    private void selectNewElement(Notifier element) {
-    	try {
-	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
-	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
-	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
-	        	if (provider != null) {
-	        		provider.setSelection(new StructuredSelection(adapted));
-	        	}
-	        }
-    	}
-    	catch (Exception e) {}
-    }
+	public Object getNewlyAddedComponent() {
+		return newBinding;
+	}
 }

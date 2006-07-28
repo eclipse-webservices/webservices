@@ -40,6 +40,11 @@ public class ASDAddMessageAction extends BaseSelectionAction {
 				Command command = ((IDescription) o).getAddMessageCommand();
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
+			    
+			    if (command instanceof IASDAddCommand) {
+			    	Object object = ((IASDAddCommand) command).getNewlyAddedComponent();
+			    	performSelection(object);
+			    }
 			}
 		}  
 	}

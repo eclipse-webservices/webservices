@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.wsdl.Binding;
@@ -18,11 +18,11 @@ import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.wizards.BindingWizard;
 
-public class W11GenerateBindingCommand extends Command {
+public class W11GenerateBindingCommand extends W11TopLevelElementCommand {
 	protected Binding binding;
 	
 	public W11GenerateBindingCommand(Binding binding) {
-        super(Messages.getString("_UI_GENERATE_BINDING_CONTENT"));
+        super(Messages.getString("_UI_GENERATE_BINDING_CONTENT"), binding.getEnclosingDefinition());
 		this.binding = binding;
 	}
 	
@@ -32,6 +32,8 @@ public class W11GenerateBindingCommand extends Command {
 		wizard.setPortTypeName(ComponentReferenceUtil.getPortTypeReference(binding));
 		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
 		wizardDialog.create();
-		wizardDialog.open();
+		if (wizardDialog.open() == Window.OK) {
+			formatChild(binding.getElement());
+		}
 	}
 }

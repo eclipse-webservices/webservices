@@ -16,7 +16,6 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
-import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.OperationEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
@@ -63,9 +62,9 @@ public class ASDAddOperationAction extends BaseSelectionAction {
 		}  
 	}
 	
+	/*
+	 * @deprecated.  To be removed post WTP 1.5
+	 */
 	protected void doDirectEdit(EditPart ep) {
-		if (ep instanceof OperationEditPart) {
-			((OperationEditPart) ep).performDirectEdit(null);
-		}
 	}
 }

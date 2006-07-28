@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
@@ -28,6 +29,9 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XSDComponentHelper;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDModelGroup;
@@ -36,6 +40,7 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.w3c.dom.Element;
 
 public abstract class AddBaseParameterCommand {
 	public static int PART_ELEMENT_SEQ_ELEMENT     = 0;
@@ -111,7 +116,7 @@ public abstract class AddBaseParameterCommand {
 		if (originalElement != null) {
 			XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, originalElement);
 		}
-		
+		formatChild(anonXSDElement.getElement());
 		return returnedXSDElement;
 	}
 	
@@ -177,8 +182,7 @@ public abstract class AddBaseParameterCommand {
 //			part.setTypeDefinition(topLevelType);
 			String prefixedName = getPrefixedComponentName(part.getEnclosingDefinition(), topLevelType);
 			ComponentReferenceUtil.setComponentReference(part, true, prefixedName);
-
-			
+			formatChild(topLevelType.getElement());
 		}
 		else if (style == PART_COMPLEXTYPE) {
 			XSDComplexTypeDefinition complexType = null;
@@ -202,6 +206,7 @@ public abstract class AddBaseParameterCommand {
 //				part.setTypeDefinition(complexType);
 				String prefixedName = getPrefixedComponentName(part.getEnclosingDefinition(), complexType);
 				ComponentReferenceUtil.setComponentReference(part, true, prefixedName);
+				formatChild(complexType.getElement());
 			}	
 		}
 		
@@ -232,6 +237,7 @@ public abstract class AddBaseParameterCommand {
 		else {
 			part = (Part) message.getEParts().get(0);
 		}
+		formatChild(message.getElement());
 		
 		return part;
 	}
@@ -487,6 +493,27 @@ public abstract class AddBaseParameterCommand {
     	}
     	
     	return isSequencePattern;
+    }
+    
+    protected void formatChild(Element child)
+    {
+      if (child instanceof IDOMNode)
+      {
+        IDOMModel model = ((IDOMNode)child).getModel();
+        try
+        {
+          // tell the model that we are about to make a big model change
+          model.aboutToChangeModel();
+          
+          IStructuredFormatProcessor formatProcessor = new FormatProcessorXML();
+          formatProcessor.formatNode(child);
+        }
+        finally
+        {
+          // tell the model that we are done with the big model change
+          model.changedModel(); 
+        }
+      }
     }
 
 	protected abstract String getAnonymousXSDElementBaseName();

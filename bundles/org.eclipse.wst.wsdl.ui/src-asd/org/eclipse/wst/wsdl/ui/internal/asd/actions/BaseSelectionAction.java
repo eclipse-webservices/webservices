@@ -17,6 +17,8 @@ import java.util.List;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.gef.ui.parts.AbstractEditPartViewer;
 import org.eclipse.jface.viewers.ISelection;
@@ -96,17 +98,9 @@ public abstract class BaseSelectionAction extends SelectionAction
   protected void selectAndDirectEdit(final Object o) {
 	  Runnable runnable = new Runnable() {
 		  public void run() {
-			  // TODO: We shouldn't know about WSDLAdapterFactoryHelper here....
 			  if (o instanceof Notifier) {
-				  Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt((Notifier) o);
-				  IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-				  if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
-					  ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
-					  if (provider != null) {
-						  provider.setSelection(new StructuredSelection(adapted));
-						  activateDirectEdit();
-					  }
-				  }
+				  performSelection(o);
+				  activateDirectEdit();
 			  }
 		  }};
 		  Display.getCurrent().asyncExec(runnable);
@@ -126,5 +120,29 @@ public abstract class BaseSelectionAction extends SelectionAction
 	}
 	
 	protected void doDirectEdit(EditPart ep) {
+		Request request = new Request();
+		request.setType(RequestConstants.REQ_DIRECT_EDIT);
+		ep.performRequest(request);
 	}
+	
+    protected void performSelection(Object object) {
+		if (!(object instanceof Notifier)) {
+			return;
+		}
+		
+		Notifier element = (Notifier) object;
+		
+    	try {
+			// TODO: We shouldn't know about WSDLAdapterFactoryHelper here....
+	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
+	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
+	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
+	        	if (provider != null) {
+	        		provider.setSelection(new StructuredSelection(adapted));
+	        	}
+	        }
+    	}
+    	catch (Exception e) {}
+    }
 }

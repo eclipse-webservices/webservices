@@ -16,6 +16,8 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
 public class AddOutputParameterCommand extends AddBaseParameterCommand {
+	private Output output;
+	
 	public AddOutputParameterCommand(Operation operation, int style) {
 		super(operation, style);
 	}
@@ -26,12 +28,13 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 	public void run() {
 		Part part = null;
 		if (operation.getEOutput() != null) {
+			output = operation.getEOutput();
 			part = createWSDLComponents(operation.getEOutput());
 		}
 		else {
 			AddOutputCommand command = new AddOutputCommand(operation, null);
 			command.run();
-			Output output = (Output) command.getWSDLElement();
+			output = (Output) command.getWSDLElement();
 			part = createWSDLComponents(output);
 		}
 		
@@ -72,5 +75,9 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 		}
 		
 		return newWSDLPartName;
+	}
+	
+	public Output getOutput() {
+		return output;
 	}
 }

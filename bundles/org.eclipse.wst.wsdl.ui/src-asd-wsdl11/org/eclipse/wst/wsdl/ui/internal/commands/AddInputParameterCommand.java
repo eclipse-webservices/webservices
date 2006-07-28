@@ -15,7 +15,8 @@ import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
-public class AddInputParameterCommand extends AddBaseParameterCommand {	
+public class AddInputParameterCommand extends AddBaseParameterCommand {
+	private Input input;
 	public AddInputParameterCommand(Operation operation, int style) {
 		super(operation, style);
 	}
@@ -26,12 +27,13 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 	public void run() {
 		Part part = null;
 		if (operation.getEInput() != null) {
+			input = operation.getEInput();
 			part = createWSDLComponents(operation.getEInput());
 		}
 		else {
 			AddInputCommand command = new AddInputCommand(operation, null);
 			command.run();
-			Input input = (Input) command.getWSDLElement();
+			input = (Input) command.getWSDLElement();
 			part = createWSDLComponents(input);
 		}
 		
@@ -72,5 +74,9 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 		}
 		
 		return newWSDLPartName;
+	}
+	
+	public Input getInput() {
+		return input;
 	}
 }

@@ -10,23 +10,18 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputParameterCommand;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddOutputParameterCommand extends Command {
+public class W11AddOutputParameterCommand extends W11TopLevelElementCommand implements IASDAddCommand {
 	protected Operation operation;
+	private Object output;
 	
 	public W11AddOutputParameterCommand(Operation operation) {
-        super(Messages.getString("_UI_ACTION_ADD_OUTPUT"));
+        super(Messages.getString("_UI_ACTION_ADD_OUTPUT"), operation.getEnclosingDefinition());
 		this.operation = operation;
 	}
 	
@@ -38,23 +33,12 @@ public class W11AddOutputParameterCommand extends Command {
 		}
 		AddOutputParameterCommand command = new AddOutputParameterCommand(operation, pattern);
 		command.run();
-		selectNewElement(operation.getEOutput());
+		formatChild(operation.getEOutput().getElement());
+		formatChild(command.getXSDElementDeclaration().getContainer().getContainer().getContainer().getElement());
+		output = operation.getEOutput();
 	}
 	
-    // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
-    // are currently very generic, so we have no way of getting to the newly created element.  The action
-    // only sees these commands as generic Command objects.
-    private void selectNewElement(Notifier element) {
-    	try {
-	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
-	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
-	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
-	        	if (provider != null) {
-	        		provider.setSelection(new StructuredSelection(adapted));
-	        	}
-	        }
-    	}
-    	catch (Exception e) {}
-    }
+	public Object getNewlyAddedComponent() {
+		return output;
+	}
 }

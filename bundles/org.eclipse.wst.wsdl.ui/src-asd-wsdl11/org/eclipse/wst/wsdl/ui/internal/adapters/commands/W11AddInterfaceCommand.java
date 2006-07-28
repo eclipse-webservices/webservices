@@ -51,6 +51,7 @@ public class W11AddInterfaceCommand extends W11TopLevelElementCommand implements
 		IInterface iInterface = (IInterface) WSDLAdapterFactoryHelper.getInstance().adapt(newPortType);
 		Command addOperationCommand = iInterface.getAddOperationCommand();
 		addOperationCommand.execute();
+		formatChild(newPortType.getElement());
 	}
 	
 	public Object getNewlyAddedComponent() {

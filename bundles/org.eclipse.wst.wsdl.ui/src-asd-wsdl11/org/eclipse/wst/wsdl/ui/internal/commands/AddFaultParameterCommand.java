@@ -84,4 +84,8 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 
 		return faultName;
 	}
+	
+	public Fault getFault() {
+		return fault;
+	}
 }

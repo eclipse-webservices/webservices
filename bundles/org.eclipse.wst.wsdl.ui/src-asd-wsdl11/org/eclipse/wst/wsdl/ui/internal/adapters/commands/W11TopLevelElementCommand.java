@@ -18,11 +18,15 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
+import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -37,6 +41,27 @@ public class W11TopLevelElementCommand extends Command
   {
     super(label);
     this.definition = definition;
+  }
+  
+  protected void formatChild(Element child)
+  {
+    if (child instanceof IDOMNode)
+    {
+      IDOMModel model = ((IDOMNode)child).getModel();
+      try
+      {
+        // tell the model that we are about to make a big model change
+        model.aboutToChangeModel();
+        
+        IStructuredFormatProcessor formatProcessor = new FormatProcessorXML();
+        formatProcessor.formatNode(child);
+      }
+      finally
+      {
+        // tell the model that we are done with the big model change
+        model.changedModel(); 
+      }
+    }
   }
 
   public void execute()

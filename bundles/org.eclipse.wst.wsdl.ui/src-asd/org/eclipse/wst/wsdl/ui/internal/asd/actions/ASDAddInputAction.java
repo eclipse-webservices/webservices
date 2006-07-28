@@ -48,6 +48,11 @@ public class ASDAddInputAction extends BaseSelectionAction {
 				Command command = iOperation.getAddInputCommand();
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
+			    
+			    if (command instanceof IASDAddCommand) {
+			    	Object object = ((IASDAddCommand) command).getNewlyAddedComponent();
+			    	performSelection(object);
+			    }
 			}
 		}  
 	}

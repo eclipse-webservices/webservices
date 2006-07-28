@@ -40,6 +40,11 @@ public class ASDAddSchemaAction extends BaseSelectionAction {
 				Command command = ((IDescription) o).getAddSchemaCommand();
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
+			    
+			    if (command instanceof IASDAddCommand) {
+			    	Object object = ((IASDAddCommand) command).getNewlyAddedComponent();
+			    	performSelection(object);
+			    }
 			}
 		}  
 	}

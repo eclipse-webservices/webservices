@@ -14,10 +14,11 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultParameterCommand;
 
-public class W11AddFaultParameterCommand extends Command {
+public class W11AddFaultParameterCommand extends Command implements IASDAddCommand {
 	protected Operation operation;
 	protected Fault fault;
 	
@@ -33,5 +34,10 @@ public class W11AddFaultParameterCommand extends Command {
 		AddFaultParameterCommand command = new AddFaultParameterCommand(operation, fault);
 		command.setStyle(pattern);
 		command.run();
+		fault = command.getFault();
+	}
+	
+	public Object getNewlyAddedComponent() {
+		return fault;
 	}
 }

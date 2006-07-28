@@ -10,19 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
-public class W11AddMessageCommand extends W11TopLevelElementCommand {
+public class W11AddMessageCommand extends W11TopLevelElementCommand implements IASDAddCommand {
     private String newName;
     private Message message;
 	
@@ -43,27 +38,14 @@ public class W11AddMessageCommand extends W11TopLevelElementCommand {
     	AddMessageCommand command = new AddMessageCommand(definition, newName, true);
         command.run();
         message = (Message) command.getWSDLElement();
-        selectNewElement(message);
+        formatChild(message.getElement());
     }
     
     public Message getNewMessage() {
     	return message;
     }
     
-    // TODO: We should probably be selecting the new element at the "action level"....  However, our actions
-    // are currently very generic, so we have no way of getting to the newly created element.  The action
-    // only sees these commands as generic Command objects.
-    private void selectNewElement(Notifier element) {
-    	try {
-	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
-	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
-	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
-	        	if (provider != null) {
-	        		provider.setSelection(new StructuredSelection(adapted));
-	        	}
-	        }
-    	}
-    	catch (Exception e) {}
+    public Object getNewlyAddedComponent() {
+    	return message;
     }
 }

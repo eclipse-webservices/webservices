@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import javax.wsdl.OperationType;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
@@ -33,12 +32,12 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
-public class W11AddOperationCommand extends Command implements IASDAddCommand {
+public class W11AddOperationCommand extends W11TopLevelElementCommand implements IASDAddCommand {
 	private PortType portType;
 	private Operation operation;
 	
 	public W11AddOperationCommand(PortType portType) {
-        super(Messages.getString("_UI_ACTION_ADD_OPERATION"));
+        super(Messages.getString("_UI_ACTION_ADD_OPERATION"), portType.getEnclosingDefinition());
 		this.portType = portType;
 	}
 	
@@ -55,6 +54,7 @@ public class W11AddOperationCommand extends Command implements IASDAddCommand {
 		createParameter(operation, null, IMessageReference.KIND_OUTPUT);
 
 		operation.setStyle(OperationType.REQUEST_RESPONSE);
+		formatChild(operation.getElement());
 	}
 	
 	public Object getNewlyAddedComponent() {
