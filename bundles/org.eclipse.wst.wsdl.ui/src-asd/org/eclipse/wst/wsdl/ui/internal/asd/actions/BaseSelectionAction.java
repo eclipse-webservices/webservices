@@ -114,7 +114,12 @@ public abstract class BaseSelectionAction extends SelectionAction
 			if (graphicalViewer instanceof AbstractEditPartViewer) {
 				AbstractEditPartViewer viewer = (AbstractEditPartViewer) graphicalViewer;
 				Object obj = viewer.getSelectedEditParts().get(0);
-				doDirectEdit((EditPart) obj);
+				// todo: rmah: we need to completely remove all implementations of doDirectEdit().
+				// Use performRequest() instead.
+//				doDirectEdit((EditPart) obj);
+				Request request = new Request();
+				request.setType(RequestConstants.REQ_DIRECT_EDIT);
+				((EditPart) obj).performRequest(request);
 			}
 		}
 	}
