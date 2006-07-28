@@ -293,10 +293,9 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 			return null;
 		}
 	}
-
-	private IOpenExternalEditorHelper openExternalEditorHelper;
+ 
 	private IOpenExternalEditorHelper getExternalEditorOpener() {
-		if (openExternalEditorHelper == null) {
+		IOpenExternalEditorHelper openExternalEditorHelper = null;
 			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				if (page.getActiveEditor() != null) {
@@ -307,7 +306,6 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 					}
 				}
 			}
-		}
 
 		return openExternalEditorHelper;
 	}

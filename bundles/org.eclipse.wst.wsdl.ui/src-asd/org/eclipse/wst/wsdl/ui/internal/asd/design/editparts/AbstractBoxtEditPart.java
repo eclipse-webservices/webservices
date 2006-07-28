@@ -19,6 +19,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelCellEditorLocator;
@@ -73,7 +74,11 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
   
   public void performRequest(Request req) {
 	  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
-		  performDirectEdit(null);
+		  Point location = null;
+		  if (req instanceof DirectEditRequest) {
+			  location = ((DirectEditRequest) req).getLocation();			  
+		  }
+		  performDirectEdit(location);
 	  }
   }
   
