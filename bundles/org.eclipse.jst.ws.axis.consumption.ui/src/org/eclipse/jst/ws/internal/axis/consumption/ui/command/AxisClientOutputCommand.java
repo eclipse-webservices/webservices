@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
@@ -24,6 +27,7 @@ public class AxisClientOutputCommand extends AbstractDataModelOperation {
 	
 	private IWebServiceClient wsc_;
 	private String proxyBean_;
+	private String proxyEndpoint_;
 	  
 		/**
 		* Default CTOR
@@ -38,11 +42,16 @@ public class AxisClientOutputCommand extends AbstractDataModelOperation {
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 	{	
 		wsc_.getWebServiceClientInfo().setImplURL(proxyBean_);
+		wsc_.getWebServiceClientInfo().setProxyEndpoint(proxyEndpoint_);
 		return Status.OK_STATUS;
 	  }
 
 	public void setProxyBean(String proxyBean) {
 		this.proxyBean_ = proxyBean;
+	}
+
+	public void setProxyEndpoint(String proxyEndpoint) {
+		this.proxyEndpoint_ = proxyEndpoint;
 	}
 	  
 		

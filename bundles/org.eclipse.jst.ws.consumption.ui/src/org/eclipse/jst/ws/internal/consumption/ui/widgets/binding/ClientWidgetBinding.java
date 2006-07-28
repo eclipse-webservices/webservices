@@ -22,6 +22,7 @@
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  * 20060530   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060717   146332 makandre@ca.ibm.com - Andrew Mak
+ * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -386,7 +387,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       
       // Map ClientExtensionOutputCommand command.
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", WebServiceClientTestArrivalCommand.class);      
-	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class);      
+	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class); 
+	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyEndpoint", GetMonitorCommand.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishTestFragment.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "SetEndpointMethod", ClientTestDelegateCommand.class);

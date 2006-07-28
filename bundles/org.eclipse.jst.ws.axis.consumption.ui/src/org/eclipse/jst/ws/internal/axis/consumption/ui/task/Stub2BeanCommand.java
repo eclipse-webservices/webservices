@@ -12,6 +12,7 @@
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060515   118315 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -57,6 +58,7 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
   private Vector portTypes_;
   private String proxyBean_;
   private String outputFolder_;
+  private String proxyEndpoint_;
   
   private IProject clientProject_;
   
@@ -143,6 +145,7 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
         }
         if (soapAddress != null)
         {
+          proxyEndpoint_ = soapAddress.getLocationURI();
           PortType portType = port.getBinding().getPortType();
           QName portTypeQName = portType.getQName();
           StringBuffer portTypeID = new StringBuffer();
@@ -272,5 +275,9 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
 	public void setOutputFolder( String outputFolder )
 	{
 		outputFolder_ = outputFolder;
+	}
+
+	public String getProxyEndpoint() {
+		return proxyEndpoint_;
 	}
 }

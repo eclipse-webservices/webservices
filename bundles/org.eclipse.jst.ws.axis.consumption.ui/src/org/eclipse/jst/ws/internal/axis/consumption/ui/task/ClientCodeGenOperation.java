@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -41,6 +42,7 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 	private WebServicesParser webServicesParser;
 	private String outputFolder;
 	private String proxyBean;
+	private String proxyEndpoint;
 	
 	private RefreshProjectCommand refreshProjectCommand = null;
 
@@ -110,6 +112,7 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 					throw new CoreException(status);
 				}
 				proxyBean = stub2BeanCommand.getProxyBean();
+				proxyEndpoint = stub2BeanCommand.getProxyEndpoint();
 			  
 				// RefreshProjectCommand
 				refreshProjectCommand.setEnvironment(env);
@@ -146,6 +149,10 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 		
 	public String getProxyBean() {
 		return proxyBean;
+	}
+	
+	public String getProxyEndpoint() {
+		return proxyEndpoint;
 	}
 	
 }

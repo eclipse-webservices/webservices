@@ -12,6 +12,7 @@
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.wsrt;
@@ -151,6 +152,7 @@ public class AxisWebServiceClient extends AbstractWebServiceClient
 		registry.addMapping(AxisClientDefaultingCommand.class, "ValidationManager", BuildProjectCommand.class);
 		
 		registry.addMapping(ClientCodeGenOperation.class, "ProxyBean", AxisClientOutputCommand.class, "ProxyBean", null);
+		registry.addMapping(ClientCodeGenOperation.class, "ProxyEndpoint", AxisClientOutputCommand.class);
 //		registry.addMapping(AxisClientDefaultingCommand.class, "GenerateProxy", ClientExtensionOutputCommand.class);
 //		registry.addMapping(AxisClientDefaultingCommand.class, "SetEndpointMethod", ClientExtensionOutputCommand.class);
 	}

@@ -22,11 +22,13 @@
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  * 20060609    86421 kathy@ca.ibm.com - Kathy Chan
  * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
+ * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.ComputeEndpointCommand;
+import org.eclipse.jst.ws.internal.consumption.command.common.ComputeProxyEndpointCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.ManageServerStartUpCommand;
 import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
@@ -127,6 +129,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", CreateMonitorCommand.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", ComputeEndpointCommand.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "MonitorService", ComputeProxyEndpointCommand.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "PublishService", ServerWizardWidget.class);    
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientGeneration", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InstallClient", ServerWizardWidget.class);
@@ -153,6 +156,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidget.class, "TestService", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "MonitorService", CreateMonitorCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "MonitorService", ComputeEndpointCommand.class);
+    dataRegistry.addMapping(ServerWizardWidget.class, "MonitorService", ComputeProxyEndpointCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "PublishService", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "GenerateProxy", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidget.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
@@ -205,10 +209,18 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     
     // CreateMonitorCommand
     dataRegistry.addMapping(CreateMonitorCommand.class, "MonitoredPort", ComputeEndpointCommand.class);
+    dataRegistry.addMapping(CreateMonitorCommand.class, "MonitoredPort", ComputeProxyEndpointCommand.class);
     
     // ComputeEndpointCommand
     dataRegistry.addMapping(ComputeEndpointCommand.class, "Endpoint", ServiceTestWidget.class);
     dataRegistry.addMapping(ComputeEndpointCommand.class, "Endpoint", ClientTestDelegateCommand.class);
+    dataRegistry.addMapping(ComputeEndpointCommand.class, "Endpoint", ComputeProxyEndpointCommand.class);
+    
+    //  ComputeProxyEndpointCommand
+    dataRegistry.addMapping(ComputeProxyEndpointCommand.class, "Endpoint", ClientTestDelegateCommand.class);
+    
+    // 145426
+    dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyEndpoint", ComputeProxyEndpointCommand.class);
 
     //ServiceTestWidget mappings    
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", ServiceTestWidget.class);
@@ -399,6 +411,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add( new ServiceTestFragment( "TestService") );
       add( new SimpleFragment(new TestDefaultingFragment(),""));
       add( new ClientFragment() );
+      add( new SimpleFragment(new ComputeProxyEndpointCommand(), ""));
       add( new ClientTestFragment( "ClientTestWidget") );
       add( new SimpleFragment( "Publish") );
       add(publishToPrivateUDDICmdFrag);
@@ -414,7 +427,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     public void registerDataMappings(DataMappingRegistry dataRegistry)
     {
       publishToPrivateUDDICmdFrag.registerDataMappings(dataMappingRegistry_);   
-
+      
       dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ServerWizardWidgetDefaultingCommand.class );            
 
       // Map ServerWizardWidgetDefaultingCommand to ObjectSelectionOutputCommand

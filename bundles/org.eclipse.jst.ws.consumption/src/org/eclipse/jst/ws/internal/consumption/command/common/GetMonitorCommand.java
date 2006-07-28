@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060612   146564 kathy@ca.ibm.com - Kathy Chan
+ * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -53,6 +54,7 @@ public class GetMonitorCommand extends AbstractDataModelOperation
   private WebServicesParser webServicesParser;
   private String wsdlURI;
   private List endpoints;
+  private String proxyEndpoint;
 
   public GetMonitorCommand()
   {
@@ -152,14 +154,24 @@ public class GetMonitorCommand extends AbstractDataModelOperation
                   {
                     try
                     {
-                      if (!m.isRunning())
-                        m.start();
-                      StringBuffer sb = new StringBuffer(endpointURL.getProtocol());
-                      sb.append("://localhost:");
-                      sb.append(String.valueOf(m.getLocalPort()));
-                      sb.append(endpointURL.getFile());
-                      endpoints.add(sb.toString());
-                    }
+                      		if (!m.isRunning())
+                      			m.start();
+                      		// Use the endpoint that matches with the proxy the extension passes to us if it is set
+                      		if (proxyEndpoint != null) {
+                      			try {
+                      				endpointURL = new URL(proxyEndpoint);
+                      			} catch (MalformedURLException murle)
+    			                { 
+                      				// ignore proxy endpoint 
+    			                }
+                      		}
+                      		StringBuffer sb = new StringBuffer(endpointURL.getProtocol());
+                      		sb.append("://localhost:");
+                      		sb.append(String.valueOf(m.getLocalPort()));
+                      		sb.append(endpointURL.getFile());
+                      		endpoints.add(sb.toString());
+    					}
+                     
                     catch (Throwable t)
                     {
                       IStatus warning = StatusUtils.warningStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[]{String.valueOf(port), endpoint}), t);
@@ -210,5 +222,12 @@ public class GetMonitorCommand extends AbstractDataModelOperation
   public List getEndpoints()
   {
     return endpoints;
+  }
+  
+  /**
+   * @param proxyEndpoint The proxyEndpoint to set.
+   */
+  public void setProxyEndpoint(String proxyEndpoint) {
+  	this.proxyEndpoint = proxyEndpoint;
   }
 }
