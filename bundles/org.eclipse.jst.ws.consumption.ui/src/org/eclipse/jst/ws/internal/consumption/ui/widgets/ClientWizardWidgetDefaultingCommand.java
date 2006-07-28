@@ -12,6 +12,8 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060728   150560 kathy@ca.ibm.com - Kathy Chan
+ * 20060728   151078 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -34,6 +36,7 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
 	private boolean developClient_;
 	private boolean assembleClient_;
 	private boolean deployClient_;
+	private boolean installClient_;
 	private boolean startClient_;
 	private boolean testClient_;
 	private boolean clientOnly_ = false;
@@ -59,9 +62,9 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
     return new Boolean( getScenarioContext().getMonitorWebService());
   }
   
-  public Boolean getInstallClient()
+  public boolean getInstallClient()
   {
-    return new Boolean( getScenarioContext().getInstallClient() );  
+    return installClient_; 
   }
   
   public boolean getRunTestClient()
@@ -71,7 +74,7 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
   
   public int getClientGeneration()
   {
-	  return getScenarioContext().getGenerateClient();
+	  return clientGeneration_;
   }
 
   public ResourceContext getResourceContext()
@@ -120,14 +123,18 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
   
   protected void defaultClientScale() {
 	  clientGeneration_ = getScenarioContext().getGenerateClient();
-
-	  if (clientOnly_) {
+	  
+	  if (clientOnly_ && clientGeneration_ == ScenarioContext.WS_NONE) {
 		  developClient_ = true;
+		  assembleClient_ = true;
+		  deployClient_ = true;
+		  clientGeneration_ = ScenarioContext.WS_DEPLOY;
 	  } else {
 		  developClient_ = clientGeneration_ <= ScenarioContext.WS_DEVELOP;
+		  assembleClient_ = clientGeneration_ <= ScenarioContext.WS_ASSEMBLE;
+		  deployClient_ = clientGeneration_ <= ScenarioContext.WS_DEPLOY;
 	  }
-	  assembleClient_ = clientGeneration_ <= ScenarioContext.WS_ASSEMBLE;
-	  deployClient_ = clientGeneration_ <= ScenarioContext.WS_DEPLOY;
+	  installClient_ = clientGeneration_ <= ScenarioContext.WS_INSTALL;
 	  startClient_ = clientGeneration_ <= ScenarioContext.WS_START;
 	  testClient_ = clientGeneration_ <= ScenarioContext.WS_TEST;
   }
