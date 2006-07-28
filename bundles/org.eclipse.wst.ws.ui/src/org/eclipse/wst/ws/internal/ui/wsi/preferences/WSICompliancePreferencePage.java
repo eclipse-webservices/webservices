@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060310   131352 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060728   151632 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.wsi.preferences;
 
@@ -70,9 +71,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
   private Button validateRemoteWsdlButton_;
   /*CONTEXT_ID PWSI00011 for the Wizard WSDL validation for all files button on the Profile Compliance and Validation page*/
   private Button validateAllWsdlButton_;
-  private Text waitForWsdlValidationLabel_;
-  /*CONTEXT_ID PWSI00012 for the Wait for pending WSDL validation to complete checkbox on the Profile Compliance and Validation page*/
-  private Button waitForWSDLValidationCheckbox_;
   
 
   /*
@@ -91,10 +89,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
    * CONTEXT_ID PWRS0012 for the wsdl validation label of the profile validation preference page
    */
   private String INFOPOP_PWSI_WSDLVAL_LABEL = WSUIPlugin.ID + ".PWSI0012";
-  /*
-   * CONTEXT_ID PWRS0013 for the wait for wsdl validation checkbox of the profile validation preference page
-   */
-  private String INFOPOP_PWSI_BUTTON_WAIT_FOR_WSDLVAL = WSUIPlugin.ID + ".PWSI0013";
 
  /**
    * Creates preference page controls on demand.
@@ -181,17 +175,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     helpSystem.setHelp(validateAllWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_ALL);
     
     new Label(validationSelectionGroup_, SWT.NONE);;
-    
-    waitForWsdlValidationLabel_ = new Text(validationSelectionGroup_, SWT.READ_ONLY);
-    waitForWsdlValidationLabel_.setText(WstWSUIPluginMessages.LABEL_WAIT_FOR_WSDLVAL);
-    waitForWsdlValidationLabel_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_LABEL_WAIT_FOR_WSDLVAL);
-    
-    waitForWSDLValidationCheckbox_ = new Button(validationSelectionGroup_, SWT.CHECK);
-    waitForWSDLValidationCheckbox_.setText(WstWSUIPluginMessages.BUTTON_WAIT_FOR_WSDLVAL);            
-    waitForWSDLValidationCheckbox_.addListener(SWT.Selection, this);
-    waitForWSDLValidationCheckbox_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_BUTTON_WAIT_FOR_WSDLVAL);
-    helpSystem.setHelp(waitForWSDLValidationCheckbox_, INFOPOP_PWSI_BUTTON_WAIT_FOR_WSDLVAL);
-    
+        
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
     return parent;
@@ -248,7 +232,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     validateAllWsdlButton_.setSelection(false);
     processWSDLValidationSelection(validationSelection);
     
-    waitForWSDLValidationCheckbox_.setSelection(WSPlugin.getInstance().getWaitForWSDLValidationContext().getDefault());
     WSPlugin.getInstance().getWaitForWSDLValidationContext().setWaitForWSDLValidation(WSPlugin.getInstance().getWaitForWSDLValidationContext().getDefault());
     
   }
@@ -270,7 +253,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     String validationSelection = WSPlugin.getInstance().getWSDLValidationContext().getPersistentWSDLValidation();
     processWSDLValidationSelection(validationSelection);
     
-    waitForWSDLValidationCheckbox_.setSelection(WSPlugin.getInstance().getWaitForWSDLValidationContext().getPersistentWaitForWSDLValidation());
   }
 
   private void processWSDLValidationSelection(String validationSelection) {
@@ -362,22 +344,17 @@ private String getWSISelection(PersistentWSIContext context)
    */
   public void handleEvent(Event event) {
 	  
-	  if (waitForWSDLValidationCheckbox_ == event.widget) {		   		  
-		  WSPlugin.getInstance().getWaitForWSDLValidationContext().setWaitForWSDLValidation(waitForWSDLValidationCheckbox_.getSelection());
-	  } else {
-		  String wsdlValdationSelection = null;
-		  if (validateNoWsdlButton_ == event.widget) {
-			  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_NO_WSDL;
-		  }
-		  else if (validateRemoteWsdlButton_ == event.widget) {
-			  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL;
-		  }
-		  else if (validateAllWsdlButton_ == event.widget) {
-			  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_ALL_WSDL;
-		  }
-		  WSPlugin.getInstance().getWSDLValidationContext().updateWSDLValidation(wsdlValdationSelection);
+	  String wsdlValdationSelection = null;
+	  if (validateNoWsdlButton_ == event.widget) {
+		  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_NO_WSDL;
 	  }
-	  
+	  else if (validateRemoteWsdlButton_ == event.widget) {
+		  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_REMOTE_WSDL;
+	  }
+	  else if (validateAllWsdlButton_ == event.widget) {
+		  wsdlValdationSelection = PersistentWSDLValidationContext.VALIDATE_ALL_WSDL;
+	  }
+	  WSPlugin.getInstance().getWSDLValidationContext().updateWSDLValidation(wsdlValdationSelection);
 	  
   }
 
