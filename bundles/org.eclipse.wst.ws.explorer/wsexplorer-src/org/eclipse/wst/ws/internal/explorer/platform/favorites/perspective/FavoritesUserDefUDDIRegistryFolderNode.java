@@ -15,7 +15,6 @@ import org.eclipse.wst.ws.internal.datamodel.ElementAdapter;
 import org.eclipse.wst.ws.internal.datamodel.RelAddEvent;
 import org.eclipse.wst.ws.internal.datamodel.RelRemoveEvent;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
-import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.SelectFavoritesNodeAction;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.actions.SelectFavoritesUserDefUDDIRegistryNodeAction;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.constants.FavoritesModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
