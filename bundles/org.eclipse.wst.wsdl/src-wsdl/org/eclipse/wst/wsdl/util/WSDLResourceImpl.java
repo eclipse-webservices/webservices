@@ -75,9 +75,10 @@ public class WSDLResourceImpl extends ResourceImpl
   private boolean useExtensionFactories = true;
   private boolean continueOnLoadError = true;
 
-  public static String USE_EXTENSION_FACTORIES = "USE_EXTENSION_FACTORIES"; //$NON-NLS-1$
-  public static String CONTINUE_ON_LOAD_ERROR = "CONTINUE_ON_LOAD_ERROR"; //$NON-NLS-1$
-  public static String WSDL_ENCODING = "WSDL_ENCODING"; //$NON-NLS-1$
+  public static final String USE_EXTENSION_FACTORIES = "USE_EXTENSION_FACTORIES"; //$NON-NLS-1$
+  public static final String CONTINUE_ON_LOAD_ERROR = "CONTINUE_ON_LOAD_ERROR"; //$NON-NLS-1$
+  public static final String WSDL_ENCODING = "WSDL_ENCODING"; //$NON-NLS-1$
+  public static final String WSDL_PROGRESS_MONITOR = "WSDL_PROGRESS_MONITOR"; //$NON-NLS-1$
   
   /**
    * Add this option with a value of Boolean.TRUE to the options map when
@@ -90,7 +91,7 @@ public class WSDLResourceImpl extends ResourceImpl
    * @see WSDLParser#getStartLine(org.w3c.dom.Node)
    * @see WSDLParser#getEndLine(org.w3c.dom.Node)
    */
-  public static String TRACK_LOCATION = "TRACK_LOCATION"; //$NON-NLS-1$
+  public static final String TRACK_LOCATION = "TRACK_LOCATION"; //$NON-NLS-1$
 
   /**
    * Creates an instance of the resource. 
@@ -174,7 +175,7 @@ public class WSDLResourceImpl extends ResourceImpl
     // This is important for stand-alone execution to work correctly.
     //
     IProgressMonitor progressMonitor = null;
-    Object monitor = options == null ? null : options.get("WSDL_PROGRESS_MONITOR");
+    Object monitor = options == null ? null : options.get(WSDL_PROGRESS_MONITOR);
     if (monitor != null)
     {
       progressMonitor = (IProgressMonitor) monitor;

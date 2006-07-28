@@ -10,10 +10,17 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.text;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.IProgressService;
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapter;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.wsdl.Definition;
@@ -22,10 +29,12 @@ import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.ui.internal.extensions.ExtensibleTypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xsd.ui.internal.util.ModelReconcileAdapter;
 import org.eclipse.wst.xsd.ui.internal.util.XSDSchemaLocationResolverAdapterFactory;
+import org.eclipse.xsd.util.XSDResourceImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -62,7 +71,7 @@ public class WSDLModelAdapter implements INodeAdapter
     return createDefinition(document);
   }
 
-  public Definition createDefinition(Document document)
+  public Definition createDefinition(final Document document)
   {
     try
     {
@@ -94,15 +103,48 @@ public class WSDLModelAdapter implements INodeAdapter
       definition = WSDLFactory.eINSTANCE.createDefinition();
       definition.setDocumentBaseURI(uri.toString());
       definition.setDocument(document);
-      definition.setElement(document.getDocumentElement());
-      
+
       WSDLResourceFactoryImpl resourceFactory = new WSDLResourceFactoryImpl();
       Resource resource = resourceFactory.createResource(uri);
       resourceSet.getResources().add(resource);
       resource.getContents().add(definition);
       resource.setModified(false);
-      ((DefinitionImpl) definition).reconcileReferences(true);
-      
+
+      IRunnableWithProgress setElementOperation = new IRunnableWithProgress()
+      {
+        public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+        {
+          // Use the animated flavour as we don't know beforehand how many ticks we need.
+          // The task name will be displayed by the code in WSDLResourceImpl and XSDResourceImpl.
+          
+          monitor.beginTask("", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+
+          Map loadOptions = resourceSet.getLoadOptions();
+          
+          loadOptions.put(WSDLResourceImpl.WSDL_PROGRESS_MONITOR, monitor);
+          loadOptions.put(XSDResourceImpl.XSD_PROGRESS_MONITOR, monitor);
+          
+          definition.setElement(document.getDocumentElement());
+          ((DefinitionImpl) definition).reconcileReferences(true);
+          
+          loadOptions.remove(WSDLResourceImpl.WSDL_PROGRESS_MONITOR);
+          loadOptions.remove(XSDResourceImpl.XSD_PROGRESS_MONITOR);
+        }
+      };
+
+      IProgressService progressService = PlatformUI.getWorkbench().getProgressService();
+      try
+      {
+        progressService.busyCursorWhile(setElementOperation);
+      }
+      catch (InvocationTargetException e)
+      {
+        e.printStackTrace();
+      }
+      catch (InterruptedException e)
+      {
+        e.printStackTrace();
+      }             
       
       // attach an adapter to keep the WSDL model and DOM in sync
       //
