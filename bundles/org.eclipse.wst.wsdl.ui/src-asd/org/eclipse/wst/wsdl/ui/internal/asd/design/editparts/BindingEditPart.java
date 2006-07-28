@@ -29,7 +29,6 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.connections.CenteredConnectionAnchor;
-import org.eclipse.wst.wsdl.ui.internal.asd.design.connections.TopLeftConnectionAnchor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BoxComponentFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ComponentReferenceConnection;
@@ -61,7 +60,7 @@ public class BindingEditPart extends BaseEditPart
 
   public IFigure getContentPane()
   {
-    return ((BoxComponentFigure) getFigure()).getContentPane();
+    return figure.getContentPane();
   }
 
   protected List getModelChildren()
@@ -240,9 +239,9 @@ public class BindingEditPart extends BaseEditPart
       if (connectionFigure != null)
       {
         AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
-        BoxComponentFigure boxComponentFigure = (BoxComponentFigure) referenceTypePart.getFigure();
+        IFigure refFigure= referenceTypePart.getFigure();
         connectionFigure.setSourceAnchor(new CenteredConnectionAnchor(getFigure(), CenteredConnectionAnchor.RIGHT, 0));
-        connectionFigure.setTargetAnchor(new TopLeftConnectionAnchor(boxComponentFigure, boxComponentFigure.getLabel()));
+        connectionFigure.setTargetAnchor(new CenteredConnectionAnchor(refFigure, CenteredConnectionAnchor.HEADER_LEFT, 0, 11));
         connectionFigure.setHighlight(false);
         connectionFigure.setVisible(true);
       }

@@ -170,6 +170,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
         {
           return ((Adapter)model).getTarget(); 
         }
+		else if (type == IOpenExternalEditorHelper.class) {
+			return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
+		}
+
         else if (type == XSDTypeReferenceEditManager.class)
         {
           IEditorInput editorInput = getEditorInput();
@@ -467,6 +471,9 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    registry.registerAction(directEditAction);
 	  }
 	
+  /*
+   * @deprecated: rmah: remove the method below post WTP1.5.  Use getAdapter() method instead.
+   */
   public IOpenExternalEditorHelper getOpenExternalEditorHelper() {
     return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
   }

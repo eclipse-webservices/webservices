@@ -48,7 +48,7 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
 
   public IFigure getContentPane()
   {
-    return ((BoxComponentFigure) getFigure()).getContentPane();
+    return figure.getContentPane();
   }
 
   protected void createEditPolicies()
@@ -91,8 +91,8 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
   {
     super.refreshVisuals();
     WSDLBaseAdapter box = (WSDLBaseAdapter) getModel();
-    ((BoxComponentFigure) getFigure()).headingFigure.setIsReadOnly(box.isReadOnly());
-    ((BoxComponentFigure) getFigure()).getLabel().setText(box.getName());
+    figure.headingFigure.setIsReadOnly(box.isReadOnly());
+    figure.getLabel().setText(box.getName());
   }
 
   public void addFeedback()
