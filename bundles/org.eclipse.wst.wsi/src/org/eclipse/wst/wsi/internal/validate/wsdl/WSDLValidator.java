@@ -296,7 +296,7 @@ public class WSDLValidator implements IWSDLValidator
 	  catch (WSIAnalyzerException e)
 	  {
 		// TODO: Add code to log error 
-		System.out.println("Unable to run WS-I WSDL conformance check.\n" + e);
+		valInfo.addWarning(WSIConstants.WSI_PREFIX + "A problem occured while running the WS-I WSDL conformance check: " + e, 1, 0, valInfo.getFileURI());
 	  }
     }
   }

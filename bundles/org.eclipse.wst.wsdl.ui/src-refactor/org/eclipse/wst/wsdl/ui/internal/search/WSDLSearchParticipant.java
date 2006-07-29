@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.search;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.wst.common.core.search.SearchParticipant;
 import org.eclipse.wst.common.core.search.SearchPlugin;
@@ -31,21 +30,12 @@ public class WSDLSearchParticipant extends XMLSearchParticipant {
 	private static String ID = "org.eclipse.wst.wsdl.search.WSDLSearchParticipant";
 	private static String XSD_PARTICIPANNT_ID = "org.eclipse.wst.xsd.search.XSDSearchParticipant";
 
+
 	
-	public WSDLSearchParticipant()
-	{
-	  super();
-      id = ID;
-	}
-	
-	public String[] getSupportedContentTypes()
-	{
-	  String[] result = { "org.eclipse.wst.wsdl.wsdlsource" };
-	  return result;
-	}
-	
-	public boolean isApplicable(SearchPattern pattern, Map searchOptions)
-	{
+	public  boolean initialize(SearchPattern pattern, String[] contentTypes){
+		
+		super.initialize(pattern, contentTypes);
+		id = ID;
 		if(pattern instanceof XMLComponentSearchPattern ){
 			XMLComponentSearchPattern componentPattern = (XMLComponentSearchPattern)pattern;
 			String namespace = componentPattern.getMetaName().getNamespace();
@@ -55,16 +45,17 @@ public class WSDLSearchParticipant extends XMLSearchParticipant {
 			}
 		}
 		return false;
-	}	
-	
+	}
+
+
 	public ComponentSearchContributor getSearchContributor() {
 
 		return new WSDLSearchContributor();
 	}
 	
-  public void beginSearching(SearchPattern pattern, Map searchOptions) {
+  public void beginSearching(SearchPattern pattern) {
 		
-		super.beginSearching(pattern, searchOptions);
+		super.beginSearching(pattern);
 		List patterns = new ArrayList();
 		if(pattern instanceof XMLComponentDeclarationPattern){
 			

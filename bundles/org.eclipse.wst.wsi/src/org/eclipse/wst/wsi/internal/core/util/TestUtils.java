@@ -69,8 +69,8 @@ public final class TestUtils
         + toolInfo.getVersion()
         + ", Release Date: "
         + toolInfo.getReleaseDate());
-    System.out.println(WSIConstants.COPYRIGHT);
-    System.out.println(" ");
+    // System.out.println(WSIConstants.COPYRIGHT);
+    // System.out.println(" ");
   }
 
   /** 

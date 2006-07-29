@@ -75,7 +75,7 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
 	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(generateLabel, generateLabel, parent);
 	addField(generateBindingOnSave);
 	
-	String showGenerateDialogLabel = "Prompt Regenerate Binding on save";   // TODO: Externalize
+	String showGenerateDialogLabel = WSDLEditorPlugin.getWSDLString("_UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE");
 	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(showGenerateDialogLabel, showGenerateDialogLabel, parent);
 	addField(showGenerateDialog);
 

@@ -33,8 +33,7 @@ public class AllTestCases extends TestCase
   {
     TestSuite suite = new TestSuite();
     
-    // Bug 123547 - comment out this test for now.
-    // suite.addTest(InlineSchemaTest.suite());  
+    suite.addTest(InlineSchemaTest.suite());  
     suite.addTest(LoadAndSerializationTest.suite());
     suite.addTest(SemanticTest.suite());
     suite.addTest(WSDLGenerationTest.suite());

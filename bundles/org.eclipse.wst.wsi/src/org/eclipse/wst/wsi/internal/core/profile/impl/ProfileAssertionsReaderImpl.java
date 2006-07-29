@@ -10,12 +10,17 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.impl;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
+import org.eclipse.wst.wsi.internal.WSITestToolsEclipseProperties;
+import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.profile.EntryTypeList;
@@ -27,7 +32,9 @@ import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
 import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 import org.xml.sax.Attributes;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -93,7 +100,32 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
 
       // Set content handler to inner class
       reader.setContentHandler(new ProfileAssertionsHandler());
+      
+      if(WSITestToolsProperties.getEclipseContext())
+      {
+    	  EntityResolver resolver = new EntityResolver(){
 
+			public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+				URIResolver resolver = WSITestToolsEclipseProperties.getURIResolver();
+				String uri = resolver.resolve("", publicId, systemId);
+				String physicalLocation = resolver.resolvePhysicalLocation("", publicId, uri);
+				InputSource is = null;
+				try
+				{
+					URL url = new URL(physicalLocation);
+					is = new InputSource(uri);
+					is.setByteStream(url.openStream());
+				}
+				catch(Exception e)
+				{
+					// Do nothing if opening the stream fails.
+				}
+				return is;
+			}
+    		  
+    	  };
+    	  reader.setEntityResolver(resolver);
+      }
       // Parse profile definition file
       reader.parse(inputSource);
     }
@@ -107,15 +139,24 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
       //Check to see if the version of test asssertion document is supported
       if (!Utils.isValidProfileTADVersion(profileAssertions))
       {
-        throw new WSIException(
+    	String tadVersion = profileAssertions.getTADVersion();
+    	if(tadVersion != null)
+    	{
+    	  String tadName = profileAssertions.getTADName();
+          throw new WSIException(
           "\nVersion "
-            + profileAssertions.getTADVersion()
+            + tadVersion
             + " of the \""
-            + profileAssertions.getTADName()
+            + tadName
             + "\"\n"
             + "document is not compatible with this version of"
             + "\n"
             + "the test tools.");
+    	}
+    	else
+    	{
+    	  throw new WSIException("WS-I validation was unable to run. Unable to read the test assertion document.");
+    	}
       }
     }
 

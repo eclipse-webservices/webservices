@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+
+<!--org.eclipse.wst.command.env.ui-->
+<context id="PPAD0001">
+<!--Action Dialogs Preference Page-->
+<description>You can use this page to choose which Web services popup actions are displayed or hidden. When using the Web services wizards launced from a popup menu you may see a check box that gives you the option of hiding the popup action that you have just performed. If you select that checkbox it will select the respective checkbox on this preference page. If you have chosen to hide a popup action that you want to display use this page to make the popup action visible.
+</description>
+</context>
+
+<context id="PPAD0002">
+<!--show all check box on the Action Dialogs Preference Page-->
+<description>By selecting this checkbox, all valid Web services popup actions will be displayed when you select a file in your workspace and right-click it. Alternately you can select to display or hide individual popup actions.
+</description>
+</context>
+
+<context id="PPAD0003">
+<!--hide all check box on the Action Dialogs Preference Page-->
+<description>By selecting this checkbox, all Web services popup actions will be hidden when you select a file in your workspace and right-click it. Alternately you can select to display or hide individual popup actions.
+</description>
+</context>
+
+<context id="TWP0001">
+<!--show/hide check box-->
+<description>When using the Web services wizards launced from a popup menu, this check box that gives you the option of hiding the popup action that you have just performed. If you select the checkbox it will select the respective checkbox on the Web services > Popup Dialog Selection preference page. If you have chosen to hide a popup action that you want to display, go to Window > Preferences > Web services > Popup Dialog Selection, and use this page to make the popup action visible.
+</description>
+</context>
+
+</contexts>

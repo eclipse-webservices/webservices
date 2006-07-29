@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060204 124143   rsinha@ca.ibm.com - Rupam Kuehner          
- * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner     
+ * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner 
+ * 20060411 136134   kathy@ca.ibm.com - Kathy Chan    
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -232,6 +233,10 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_PCON_BUTTON_BROWSE_WS;
 	public static String TOOLTIP_VALIDATE_TEXT_MESSAGE;
 	public static String TOOLTIP_TABLE_VALIDATE_MESSAGE;
+	public static String TABLE_COLUMN_VALIDATION_SEVERITY;
+	public static String TABLE_COLUMN_VALIDATION_LINE;
+	public static String TABLE_COLUMN_VALIDATION_COLUMN;
+	public static String TABLE_COLUMN_VALIDATION_MESSAGE;
 	public static String TOOLTIP_PWSM_PAGE;
 	public static String TOOLTIP_PWSM_CHECKBOX_TEST;
 	public static String TOOLTIP_PWSM_COMBOBOX_TEST;

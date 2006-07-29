@@ -260,22 +260,6 @@ public class WSDLResourceImpl extends ResourceImpl
       documentBuilderFactory.setNamespaceAware(true);
       documentBuilderFactory.setValidating(false);
 
-      try
-      {
-        // Using a deferred DOM document in the WSDL model may cause a
-        // performance problem in terms of memory consumption in particular.
-        // We're attempting to use the feature which instructs the Xerces parser
-        // to not use deferred DOM trees.
-        // TODO Convert to use setFeature when it becomes available. The Xerces
-        // versions < 2.7.1 do not fully support setFeature, so we have to use
-        // setAttribute.
-        documentBuilderFactory.setAttribute("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE); //$NON-NLS-1$
-      }
-      catch (IllegalArgumentException e)
-      {
-        // Ignore, as the code will have to run with parsers other than Xerces.
-      }      
-
       DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
       // TBD - Revisit

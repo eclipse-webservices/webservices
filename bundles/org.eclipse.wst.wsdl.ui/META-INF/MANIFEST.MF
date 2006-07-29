@@ -30,7 +30,6 @@ Export-Package: org.eclipse.wst.wsdl.ui.internal,
  org.eclipse.wst.wsdl.ui.internal.parameters,
  org.eclipse.wst.wsdl.ui.internal.properties.section,
  org.eclipse.wst.wsdl.ui.internal.reconciler,
- org.eclipse.wst.wsdl.ui.internal.refactor,
  org.eclipse.wst.wsdl.ui.internal.text,
  org.eclipse.wst.wsdl.ui.internal.typesystem,
  org.eclipse.wst.wsdl.ui.internal.util,
@@ -66,14 +65,11 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.xsd,
  org.eclipse.wst.wsdl,
  org.eclipse.wst.common.ui.properties,
- org.eclipse.wst.common.core,
  org.eclipse.wst.xsd.ui,
  org.eclipse.emf.edit,
  org.eclipse.emf.edit.ui,
  org.eclipse.wst.validation,
  org.wsdl4j,
- org.eclipse.wst.wsdl.validation,
- org.eclipse.ltk.core.refactoring,
- org.eclipse.ltk.ui.refactoring
+ org.eclipse.wst.wsdl.validation
 Eclipse-AutoStart: true
 Plugin-Class: org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin
