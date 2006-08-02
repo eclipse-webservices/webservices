@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060721   151409 makandre - Andrew Mak, WSE does not open in external browser on RH
+ * 20060721   151409 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on RH
+ * 20060802   150428 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer;
 
