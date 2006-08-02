@@ -6,12 +6,16 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060728	  151723 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
@@ -240,6 +244,9 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		  //runtimeLabels[i] = WebServiceServerRuntimeTypeRegistry.getInstance().getRuntimeLabel(ids[i]);
       runtimeLabels[i] = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(ids[i]);
 		}
+
+		//sort the labels (bug 151723)
+		Arrays.sort(runtimeLabels);
 		runtime_.setItems(runtimeLabels);
 	  }
 		

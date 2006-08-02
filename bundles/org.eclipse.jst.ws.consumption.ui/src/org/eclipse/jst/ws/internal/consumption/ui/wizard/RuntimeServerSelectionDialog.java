@@ -14,9 +14,12 @@
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  * 20060726   150865 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060726   150867 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060728	  151723 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -544,6 +547,10 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
 	  runtimes = WebServiceRuntimeExtensionUtils2.getRuntimesByClientType(typeId_);
     }
 
+    //sort the runtimes based on the runtime name (bug 151723)
+    Comparator comparator = new RuntimeNameComparator();
+    Arrays.sort(runtimes, comparator);
+    
     TreeItem[] runtimeName = new TreeItem[runtimes.length];
 
     if (runtimes != null) {
@@ -558,8 +565,28 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
         }
       }
     }
-  }
+  }  
 
+  private class RuntimeNameComparator implements Comparator
+  {
+	public RuntimeNameComparator()
+	{		
+	}
+	//Compare to runtime ID strings by their labels.  Used for sorting.
+	public int compare(Object item1, Object item2) {
+		try {
+			String runtime1 = (String)item1;
+			String runtime2 = (String)item2;		
+			
+			return getRuntimeLabel(runtime1).compareToIgnoreCase(getRuntimeLabel(runtime2));
+		}
+		catch (Exception e)
+		{ //Just in case of class cast exception or NPE.  should never happen
+		}		
+		return 0;
+	}
+  }
+  
   private String getRuntimeLabel(String type) {
     return getRuntime(type).getLabel();
   }
