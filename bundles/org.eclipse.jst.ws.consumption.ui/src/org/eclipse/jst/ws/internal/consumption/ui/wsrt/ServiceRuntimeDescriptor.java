@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060802   152150 mahutch@ca.ibm.com
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -73,21 +76,25 @@ public class ServiceRuntimeDescriptor
       IConfigurationElement[] facetElems = elem.getChildren("required-facet-version");
       for (int i = 0; i < facetElems.length; i++)
       {
-        RequiredFacetVersion rfv = new RequiredFacetVersion();
-        IProjectFacet projectFacet = ProjectFacetsManager.getProjectFacet(facetElems[i].getAttribute("facet"));        
-        IProjectFacetVersion projectFacetVersion = projectFacet.getVersion(facetElems[i].getAttribute("version"));
-        rfv.setProjectFacetVersion(projectFacetVersion);
-        String allowNewerValue = facetElems[i].getAttribute("allow-newer");
-        if (allowNewerValue == null)
-        {
-          rfv.setAllowNewer(false);
-        }
-        else
-        {
-          rfv.setAllowNewer(Boolean.valueOf(allowNewerValue).booleanValue());
-        }
-        
-        requiredFacetVersionList.add(rfv);
+    	String facetID = facetElems[i].getAttribute("facet");
+    	if (ProjectFacetsManager.isProjectFacetDefined(facetID))
+    	{
+	        RequiredFacetVersion rfv = new RequiredFacetVersion();
+	        IProjectFacet projectFacet = ProjectFacetsManager.getProjectFacet(facetID);        
+	        IProjectFacetVersion projectFacetVersion = projectFacet.getVersion(facetElems[i].getAttribute("version"));
+	        rfv.setProjectFacetVersion(projectFacetVersion);
+	        String allowNewerValue = facetElems[i].getAttribute("allow-newer");
+	        if (allowNewerValue == null)
+	        {
+	          rfv.setAllowNewer(false);
+	        }
+	        else
+	        {
+	          rfv.setAllowNewer(Boolean.valueOf(allowNewerValue).booleanValue());
+	        }
+	        
+	        requiredFacetVersionList.add(rfv);
+    	}    	
       }
       
       requiredFacetVersions = (RequiredFacetVersion[])requiredFacetVersionList.toArray(new RequiredFacetVersion[]{});
