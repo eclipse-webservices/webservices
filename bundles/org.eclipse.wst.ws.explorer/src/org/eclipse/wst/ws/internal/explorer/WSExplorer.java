@@ -32,6 +32,8 @@ public class WSExplorer {
 
 	private static int launchOptionsKey_ = 0;
 
+	private IWebBrowser internalBrowser_ = null;
+	
 	public WSExplorer() {
 	}
 
@@ -114,15 +116,18 @@ public class WSExplorer {
 			IWorkbenchBrowserSupport browserSupport = ExplorerPlugin.getInstance().getWorkbench().getBrowserSupport();
 			IWebBrowser browser = null;
 			
-			if (forceLaunchOutsideIDE)
+			if (forceLaunchOutsideIDE) {
 				browser = browserSupport.getExternalBrowser();
+			}
 			else {
 				// browserId
 				StringBuffer browserId = new StringBuffer();
 				browserId.append(ExplorerPlugin.ID);
 				browserId.append(getContextName());
 				
-				browser = browserSupport.createBrowser(browserId.toString());				
+				if (internalBrowser_==null)
+					internalBrowser_ = browserSupport.createBrowser(browserId.toString());
+				browser = internalBrowser_;
 			}
 			
 			browser.openURL(new URL(sb.toString()));
