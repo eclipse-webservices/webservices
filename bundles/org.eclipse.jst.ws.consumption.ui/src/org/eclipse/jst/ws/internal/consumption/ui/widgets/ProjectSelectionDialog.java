@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20060802   148731 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -50,7 +51,7 @@ public class ProjectSelectionDialog extends SimpleDialog {
 	
 	  protected Point getInitialSize()
 	  {
-	    return new Point( 250, 300 );  
+	    return this.getShell().computeSize(250, SWT.DEFAULT, true); 
 	  }
 
 

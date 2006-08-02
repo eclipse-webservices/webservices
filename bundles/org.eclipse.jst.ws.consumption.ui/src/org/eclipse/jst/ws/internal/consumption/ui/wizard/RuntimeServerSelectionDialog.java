@@ -15,6 +15,7 @@
  * 20060726   150865 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060726   150867 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060728	  151723 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20060802   148731 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -140,7 +141,7 @@ public class RuntimeServerSelectionDialog extends Dialog implements Listener {
   
   protected Point getInitialSize()
   {
-	  return new Point( 550, 390 );
+	  return this.getShell().computeSize(550, SWT.DEFAULT, true);
   }
 
   public TypeRuntimeServer getTypeRuntimeServer() {
