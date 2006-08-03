@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060731   120378 makandre@ca.ibm.com - Andrew Mak, Fields not visible in Large font settings
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -14,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -42,15 +46,28 @@ public class SimpleWizardPage extends WizardPage implements PageWizardDataEvents
   } 	  
   	
   public void createControl( Composite parent ) 
-  {
-  	Composite control = new Composite( parent, SWT.NONE );
-  	control.setLayout( new GridLayout() );
-  	control.setLayoutData( new GridData( GridData.FILL_BOTH ));
-  	
-	dataEvents_ = widget_.addControls( control, statusListener_ );
-	  
+  {	  
+	ScrolledComposite control = new ScrolledComposite( parent, SWT.V_SCROLL );	
+	Composite inner = internalCreateControl(control);
+	
+	control.setExpandHorizontal(true);
+  	control.setExpandVertical(true);
+	control.setContent(inner);  	
+    control.setMinSize(inner.computeSize(SWT.DEFAULT, SWT.DEFAULT));	
+	
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(control);
     setControl( control );
+  }
+	
+  protected Composite internalCreateControl( Composite parent ) {
+
+	Composite control = new Composite( parent, SWT.NONE );
+	control.setLayout( new GridLayout() );
+  	control.setLayoutData( new GridData( GridData.FILL_BOTH ));
+	
+	dataEvents_ = widget_.addControls( control, statusListener_ );	
+	
+	return control;
   }
   
   public WidgetDataEvents getDataEvents()

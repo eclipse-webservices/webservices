@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20060417   136596 joan@ca.ibm.com - Joan Haggarty
+ * 20060731   120378 makandre@ca.ibm.com - Andrew Mak, Fields not visible in Large font settings
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets.popup;
 
@@ -122,7 +123,6 @@ public class DynamicPopupWizard extends DynamicWizard implements IActionDelegate
 	  init( PlatformUI.getWorkbench(), getSelection() );  
 	    
 	  WizardDialog dialog= new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), this);
-	  dialog.setPageSize( 400, 530 );
 	  dialog.create();
     
     if( getStartingPage() != null )

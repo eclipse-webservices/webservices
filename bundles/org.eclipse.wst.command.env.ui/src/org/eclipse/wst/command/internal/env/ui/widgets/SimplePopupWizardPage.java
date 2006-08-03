@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060731   120378 makandre@ca.ibm.com - Andrew Mak, Fields not visible in Large font settings
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -34,20 +37,11 @@ public class SimplePopupWizardPage extends SimpleWizardPage
   	id_ = id;
   } 	  
   	
-  public void createControl( Composite parent ) 
-  {
-  	      Composite                      composite = new Composite( parent, SWT.NONE );
+  protected Composite internalCreateControl( Composite parent ) 
+  {  	
+	Composite composite = super.internalCreateControl(parent);
+	  
   	final PersistentActionDialogsContext context   = PersistentActionDialogsContext.getInstance();
-  	
-    GridLayout gridlayout   = new GridLayout();
-    gridlayout.marginHeight = 0;
-    gridlayout.marginWidth  = 0;
-    
-    composite.setLayout( gridlayout );
-    GridData griddata = new GridData(GridData.FILL_BOTH );
-    composite.setLayoutData( griddata );
-      	
-  	super.createControl( composite );
   	
   	// If the current page is null then this must be the first page.
   	if( pageManager_.getCurrentPage() == null && context.showCheckbox(id_) )
@@ -73,6 +67,6 @@ public class SimplePopupWizardPage extends SimpleWizardPage
       PlatformUI.getWorkbench().getHelpSystem().setHelp( button, infopop );  	
   	}
   	
-  	setControl( composite );
+  	return composite;
   }  
 }  
