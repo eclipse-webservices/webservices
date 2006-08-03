@@ -17,6 +17,7 @@
  * 20060607   144932 kathy@ca.ibm.com - Kathy Chan
  * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
  * 20060719   139977 kathy@ca.ibm.com - Kathy Chan
+ * 20060803   152701 cbrealey@ca.ibm.com - Chris Brealey
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -192,7 +193,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     
     validationSummaryText_ = new Text( parent, SWT.WRAP);
     validationSummaryText_.setEditable(false);
-    GridData gd1 = new GridData(GridData.FILL_BOTH);
+    GridData gd1 = new GridData(SWT.FILL, SWT.FILL, false, false);
     validationSummaryText_.setLayoutData(gd1);
     validationSummaryText_.setToolTipText( ConsumptionUIMessages.TOOLTIP_VALIDATE_TEXT_MESSAGE_SUMMARY );
     
@@ -385,15 +386,19 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     	 boolean isRemote = true;
     	if (tree.isEnabled()) { // is wsil
     		wsdlURI1 = tree.getWsdlURI();
-    		if (wsdlURI1.startsWith("file:")) {
+    		if (wsdlURI1.startsWith("file:") || wsdlURI1.startsWith("platform:"))
+    		{
     			isRemote = false;
     		}
-    	} else { // is wsil
-    	
-    		if( wsPath.indexOf(':') < 0 )
-    		{      	// not remote
+    	} else {
+    		if (wsPath.indexOf(':') < 0)
+    		{
     			isRemote = false;
     			wsdlURI1 = iFile2URI((IFile)ResourceUtils.findResource(wsPath));
+    		}
+    		else if (wsPath.startsWith("file:") || wsPath.startsWith("platform:"))
+    		{
+    			isRemote = false;
     		}
     	}
   	  
