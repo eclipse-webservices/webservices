@@ -29,10 +29,8 @@ WSIL allows you to go directly to the service provider and ask for the services
 it provides. For more information on the Web Services Inspection Language
 specification, refer to  <xref href="http://www-106.ibm.com/developerworks/webservices/library/ws-wsilspec.html"
 scope="external"> www.ibm.com/developerworks/webservices/library/ws-wsilspec.html</xref>.
- For more information on UDDI and the <tm tmclass="ibm" tmowner="IBM Corporation"
-tmtype="reg" trademark="IBM">IBM</tm> UDDI Business registries, refer to  <xref
-href="http://www.ibm.com/services/uddi/index.html" scope="external">www.ibm.com/services/uddi/index.html</xref>.</p><p>You
-can discover a Web service in two ways using the Web Services Explorer:</p></context>
+ .</p><p>You can discover a Web service in two ways using the Web Services
+Explorer:</p></context>
 <result><ul>
 <li> <xref href="#tdiscov/discover_from_uddi">Discovering a Web service from
 a UDDI registry</xref> </li>
