@@ -19,6 +19,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
  * 20060725   149351 makandre@ca.ibm.com - Andrew Mak, Deleted service definition keeps reappearing
+ * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -30,6 +31,7 @@ import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.Timer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -42,6 +44,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -56,7 +59,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class ClientWizardWidget extends SimpleWidgetDataContributor
+public class ClientWizardWidget extends SimpleWidgetDataContributor implements Runnable
 {  
   private WebServiceClientTypeWidget clientWidget_;
   private Button overwriteButton_;
@@ -88,6 +91,18 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
   /* CONTEXT_ID WSWSCEN0001 for the Scenario Page */
   private String INFOPOP_WSWSCEN_PAGE = "WSWSCEN0001";
   
+  /**
+   * Run this ClientWizardWidget, which validates the entry field values. 
+   */
+  public void run() {
+	  validationState_ = ValidationUtils.VALIDATE_ALL;
+	  statusListener_.handleEvent(null);
+	  if (validObjectSelection_)
+		  callObjectTransformation(wsdlValidatorWidget_.getProject(), 
+				  wsdlValidatorWidget_.getComponentName(), 
+				  wsdlValidatorWidget_.getWsdlURI());	  
+  }
+  
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
@@ -104,12 +119,10 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor
 	
 	objectModifyListener_ = new ModifyListener(){
 		public void modifyText(ModifyEvent e) {
-		   		validationState_ = ValidationUtils.VALIDATE_ALL;
-				statusListener_.handleEvent(null);
-				if (validObjectSelection_)
-					callObjectTransformation(wsdlValidatorWidget_.getProject(), 
-							wsdlValidatorWidget_.getComponentName(), 
-							wsdlValidatorWidget_.getWsdlURI());
+			if (serviceImpl_.getText().indexOf(':') > 0)
+		        Timer.newInstance(Display.getCurrent(), ClientWizardWidget.this).startTimer();
+		    else
+		        run();
 		}
 	};
 	

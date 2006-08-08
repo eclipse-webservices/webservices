@@ -37,6 +37,7 @@
  * 20060616   147317 joan@ca.ibm.com - Joan Haggarty
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  * 20060726   150865 sengpl@ca.ibm.com -  Seng Phung-Lu
+ * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -60,6 +61,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.IObjectSelectio
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionRegistry;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.ObjectSelectionWidget;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.Timer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
@@ -111,7 +113,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
-public class ServerWizardWidget extends SimpleWidgetDataContributor {
+public class ServerWizardWidget extends SimpleWidgetDataContributor implements Runnable {
 	
 	//INFOPOPS
     /* CONTEXT_ID WSWSCEN0001 for the Scenario Page */
@@ -220,6 +222,35 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 	
 	private Composite serviceComposite_;
 	
+	/**
+	 * Run this ServerWizardWidget, which validates the entry field values.
+	 */
+	public void run() {
+		typedText_ = true;
+		
+		validationState_ = ValidationUtils.VALIDATE_ALL;
+		statusListener_.handleEvent(null);
+			
+		if (serviceImpl_.getText().trim().equals(""))
+			validObjectSelection_ = false;
+		
+		if (validObjectSelection_)
+		{
+			if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
+		       {
+				IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
+				callObjectTransformation(launchable.getObjectSelection(), launchable.getProject(), launchable.getComponentName());								
+		       }
+			else 
+			{
+				IObjectSelectionWidget widget = (IObjectSelectionWidget)objectSelectionWidget_;
+				callObjectTransformation(widget.getObjectSelection(), widget.getProject(), widget.getComponentName());
+		    }	
+		}
+		else
+			setObjectSelection(null);
+	}
+	
 	public WidgetDataEvents addControls(Composite parent,
 			Listener statusListener) {
 		
@@ -300,29 +331,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor {
 			
 			objectModifyListener_ = new ModifyListener(){
 				public void modifyText(ModifyEvent e) {
-					typedText_ = true;
-					
-					validationState_ = ValidationUtils.VALIDATE_ALL;
-						statusListener_.handleEvent(null);
-						
-						if (serviceImpl_.getText().trim().equals(""))
-							validObjectSelection_ = false;
-						
-						if (validObjectSelection_)
-						{
-							if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
-						       {
-								IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
-								callObjectTransformation(launchable.getObjectSelection(), launchable.getProject(), launchable.getComponentName());								
-						       }
-							else 
-							{
-								IObjectSelectionWidget widget = (IObjectSelectionWidget)objectSelectionWidget_;
-								callObjectTransformation(widget.getObjectSelection(), widget.getProject(), widget.getComponentName());
-						    }	
-						}
-						else
-							setObjectSelection(null);
+				    if (serviceImpl_.getText().indexOf(':') > 0)
+				        Timer.newInstance(Display.getCurrent(), ServerWizardWidget.this).startTimer();
+				    else
+				        run();
 				}
 			};
 			
