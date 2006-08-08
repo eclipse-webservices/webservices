@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.wst.ws_core.feature"
       label="%featureName"
-      version="1.5.0.qualifier"
+      version="1.5.1.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -13,7 +13,7 @@
       %copyright
    </copyright>
 
-   <license url="license.html">
+   <license url="%licenseURL">
       %license
    </license>
 
@@ -22,7 +22,7 @@
    </url>
 
    <requires>
-       <import feature="org.apache.commons_logging.feature" version="1.0.4"/>
+      <import feature="org.apache.commons_logging.feature" version="1.0.4"/>
       <import feature="org.apache.jakarta_log4j.feature" version="1.2.8"/>
       <import feature="org.apache.axis.feature" version="1.2.1" match="greaterOrEqual"/>
       <import feature="org.apache.wsil4j.feature" version="1.0.0" match="greaterOrEqual"/>
