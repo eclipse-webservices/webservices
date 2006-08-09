@@ -50,6 +50,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 {
   protected Label nameLabel;
   protected Label addressLabel;
+  private Label hoverHelpLabel = new Label("");
   protected Figure addressBoxFigure;
   protected ComponentReferenceConnection connectionFigure;
   protected final static int MAX_ADDRESS_WIDTH = 150;
@@ -170,6 +171,23 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     IEndPoint endPoint = (IEndPoint) getModel();
     nameLabel.setText(endPoint.getName());
     addressLabel.setText(endPoint.getAddress());
+    
+    Rectangle textBounds = addressLabel.getTextBounds();
+    Rectangle bounds = addressLabel.getBounds();
+    int textPlacement = addressLabel.getTextPlacement();
+    int xDelta = textBounds.x - bounds.x;
+    int xTextIncrease = textPlacement - xDelta;
+    int textSize = textBounds.width + xTextIncrease;
+    int boundSize = bounds.width;
+
+    if (textSize > boundSize) {
+    	hoverHelpLabel.setText(" " + endPoint.getAddress()  + " ");
+        addressLabel.setToolTip(hoverHelpLabel);
+    }
+    else {
+        addressLabel.setToolTip(null);
+    }
+
     refreshConnections();
     super.refreshVisuals();
   }
