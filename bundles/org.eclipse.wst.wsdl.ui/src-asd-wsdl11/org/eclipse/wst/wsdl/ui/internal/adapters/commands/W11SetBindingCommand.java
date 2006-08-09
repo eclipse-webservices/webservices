@@ -10,22 +10,27 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 
-public class W11SetBindingCommand extends Command {
+public class W11SetBindingCommand extends W11TopLevelElementCommand {
 	private Port port;
 	private Binding binding;
 	
 	public W11SetBindingCommand(Port port, Binding binding) {
-        super(Messages.getString("_UI_ACTION_SET_BINDING"));
+        super(Messages.getString("_UI_ACTION_SET_BINDING"), port.getEnclosingDefinition());
 		this.port = port;
 		this.binding = binding;
 	}
 	
 	public void execute() {
-		port.setEBinding(binding);
+		try {
+			beginRecording(port.getElement());
+			port.setEBinding(binding);
+		}
+		finally {
+			endRecording(port.getElement());
+		}
 	}
 }

@@ -32,16 +32,23 @@ public class W11AddEndPointCommand extends W11TopLevelElementCommand implements 
     }
     
     public void execute() {
-    	PortWizard wizard = new PortWizard(service);
-		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
-		wizardDialog.create();
-
-		int result = wizardDialog.open();
-		if (result == Window.OK && service.getEPorts().size() > 0) {
-			List ports = service.getEPorts();
-			port = (Port) ports.get(ports.size() - 1);
+		try {
+			beginRecording(definition.getElement());
 			
-			formatChild(port.getElement());
+	    	PortWizard wizard = new PortWizard(service);
+			WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+			wizardDialog.create();
+
+			int result = wizardDialog.open();
+			if (result == Window.OK && service.getEPorts().size() > 0) {
+				List ports = service.getEPorts();
+				port = (Port) ports.get(ports.size() - 1);
+				
+				formatChild(port.getElement());
+			}
+		}
+		finally {
+			endRecording(definition.getElement());
 		}
     }
 

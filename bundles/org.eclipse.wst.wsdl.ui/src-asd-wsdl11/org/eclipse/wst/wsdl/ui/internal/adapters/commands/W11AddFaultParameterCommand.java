@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
@@ -18,23 +17,30 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultParameterCommand;
 
-public class W11AddFaultParameterCommand extends Command implements IASDAddCommand {
+public class W11AddFaultParameterCommand extends W11TopLevelElementCommand implements IASDAddCommand {
 	protected Operation operation;
 	protected Fault fault;
 	
 	public W11AddFaultParameterCommand(Operation operation, Fault fault) {
-        super(Messages.getString("_UI_ACTION_ADD_FAULT"));
+        super(Messages.getString("_UI_ACTION_ADD_FAULT"), operation.getEnclosingDefinition());
 		this.operation = operation;
 		this.fault = fault;
 	}
 	
 	public void execute() {
-		// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-		int pattern = AddBaseParameterCommand.getParameterPattern(operation);
-		AddFaultParameterCommand command = new AddFaultParameterCommand(operation, fault);
-		command.setStyle(pattern);
-		command.run();
-		fault = command.getFault();
+		try {
+			beginRecording(operation.getElement());
+
+			// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
+			int pattern = AddBaseParameterCommand.getParameterPattern(operation);
+			AddFaultParameterCommand command = new AddFaultParameterCommand(operation, fault);
+			command.setStyle(pattern);
+			command.run();
+			fault = command.getFault();
+		}
+		finally {
+			endRecording(operation.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

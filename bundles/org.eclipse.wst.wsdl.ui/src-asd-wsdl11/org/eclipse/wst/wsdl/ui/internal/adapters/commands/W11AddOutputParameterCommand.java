@@ -26,16 +26,23 @@ public class W11AddOutputParameterCommand extends W11TopLevelElementCommand impl
 	}
 	
 	public void execute() {
-		// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-		int pattern = AddBaseParameterCommand.getParameterPattern(operation, false);
-		if (pattern == -1) {
-			pattern = AddBaseParameterCommand.getParameterPattern(operation);
+		try {
+			beginRecording(operation.getElement());
+
+			// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
+			int pattern = AddBaseParameterCommand.getParameterPattern(operation, false);
+			if (pattern == -1) {
+				pattern = AddBaseParameterCommand.getParameterPattern(operation);
+			}
+			AddOutputParameterCommand command = new AddOutputParameterCommand(operation, pattern);
+			command.run();
+			formatChild(operation.getEOutput().getElement());
+			formatChild(command.getXSDElementDeclaration().getContainer().getContainer().getContainer().getElement());
+			output = operation.getEOutput();
 		}
-		AddOutputParameterCommand command = new AddOutputParameterCommand(operation, pattern);
-		command.run();
-		formatChild(operation.getEOutput().getElement());
-		formatChild(command.getXSDElementDeclaration().getContainer().getContainer().getContainer().getElement());
-		output = operation.getEOutput();
+		finally {
+			endRecording(operation.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

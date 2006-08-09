@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
@@ -26,16 +26,22 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 
 
-public class W11DeleteParameterCommand extends Command {
+public class W11DeleteParameterCommand extends W11TopLevelElementCommand {
 	private IParameter parameter;
 	
-	public W11DeleteParameterCommand(IParameter paramter) {
-        super(Messages.getString("_UI_ACTION_DELETE"));
-		this.parameter = paramter;
+	public W11DeleteParameterCommand(IParameter param) {
+        super(Messages.getString("_UI_ACTION_DELETE"), ((WSDLElement) ((WSDLBaseAdapter) param).getTarget()).getEnclosingDefinition());
+		this.parameter = param;
 	}
 	
 	public void execute() {
-	    delete();
+		try {
+			beginRecording(definition.getElement());
+			delete();
+		}
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 	
 	private void delete() {

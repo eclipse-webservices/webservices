@@ -12,19 +12,19 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import java.util.List;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 
-public class W11ReorderParametersCommand extends Command {
+public class W11ReorderParametersCommand extends W11TopLevelElementCommand {
     protected IParameter leftSibling;
     protected IParameter rightSibling;
     protected IParameter movingParameter;
     
     public W11ReorderParametersCommand(IParameter leftSibling, IParameter rightSibling, IParameter movingParameter) {
-        super("");  // TODO: Need to add String here...
+        super(Messages.getString("_UI_ACTION_REORDER_PART"), null);
         this.leftSibling = leftSibling;
         this.rightSibling = rightSibling;
         this.movingParameter = movingParameter;
@@ -34,7 +34,7 @@ public class W11ReorderParametersCommand extends Command {
 		Part leftSibElement = null;
 		Part rightSibElement = null;
 		Part movingChild = null;
-		
+
 		if (leftSibling instanceof W11ParameterForPart) {
 			leftSibElement = (Part) ((W11ParameterForPart) leftSibling).getTarget(); 
 		}
@@ -49,32 +49,38 @@ public class W11ReorderParametersCommand extends Command {
 			return;
 		}
     	
-    	if (movingChild != null) {    		
-    		Message message = (Message) movingChild.eContainer();
-			List parts = message.getEParts();
+    	if (movingChild != null) {
+    		try {
+    			beginRecording(movingChild.getElement());
+        		Message message = (Message) movingChild.eContainer();
+    			List parts = message.getEParts();
 
-			parts.remove(movingChild);
+    			parts.remove(movingChild);
 
-			int leftIndex = -1, rightIndex = -1;
-			if (leftSibElement != null) {
-				leftIndex = parts.indexOf(leftSibElement);
-			}
-			if (rightSibElement != null) {
-				rightIndex = parts.indexOf(rightSibElement);
-			}
+    			int leftIndex = -1, rightIndex = -1;
+    			if (leftSibElement != null) {
+    				leftIndex = parts.indexOf(leftSibElement);
+    			}
+    			if (rightSibElement != null) {
+    				rightIndex = parts.indexOf(rightSibElement);
+    			}
 
-			if (leftIndex == -1) {
-				// Add moving child to the front
-				parts.add(0, movingChild);  				
-			}
-			else if (rightIndex == -1) {
-				// Add moving child to the end
-				parts.add(movingChild);
-			}
-			else {
-				// Add moving child after the occurence of the left sibling
-				parts.add(leftIndex + 1, movingChild);
-			}
+    			if (leftIndex == -1) {
+    				// Add moving child to the front
+    				parts.add(0, movingChild);  				
+    			}
+    			else if (rightIndex == -1) {
+    				// Add moving child to the end
+    				parts.add(movingChild);
+    			}
+    			else {
+    				// Add moving child after the occurence of the left sibling
+    				parts.add(leftIndex + 1, movingChild);
+    			}
+    		}
+    		finally {
+    			endRecording(movingChild.getElement());
+    		}
     	}
     }
 }

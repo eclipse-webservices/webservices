@@ -26,18 +26,25 @@ public class W11AddInputParameterCommand extends W11TopLevelElementCommand imple
 	}
 	
 	public void execute() {
-		// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-		int pattern = AddBaseParameterCommand.getParameterPattern(operation, true);
-		if (pattern == -1) {
-			pattern = AddBaseParameterCommand.getParameterPattern(operation);
+		try {
+			beginRecording(operation.getElement());
+
+			// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
+			int pattern = AddBaseParameterCommand.getParameterPattern(operation, true);
+			if (pattern == -1) {
+				pattern = AddBaseParameterCommand.getParameterPattern(operation);
+			}
+			AddInputParameterCommand command = new AddInputParameterCommand(operation, pattern);
+			command.run();
+			
+			formatChild(operation.getEInput().getElement());
+			formatChild(command.getXSDElementDeclaration().getContainer().getContainer().getContainer().getElement());
+			
+			input = operation.getEInput();
 		}
-		AddInputParameterCommand command = new AddInputParameterCommand(operation, pattern);
-		command.run();
-		
-		formatChild(operation.getEInput().getElement());
-		formatChild(command.getXSDElementDeclaration().getContainer().getContainer().getContainer().getElement());
-		
-		input = operation.getEInput();		
+		finally {
+			endRecording(operation.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

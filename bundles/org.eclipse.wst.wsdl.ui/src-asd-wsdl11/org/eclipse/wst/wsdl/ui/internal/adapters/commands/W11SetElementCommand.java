@@ -12,11 +12,9 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import java.util.List;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -24,50 +22,54 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDElementReferenceEditManager;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
-import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 import org.eclipse.xsd.XSDSchema;
-import org.w3c.dom.Element;
 
-public class W11SetElementCommand extends Command {
+public class W11SetElementCommand extends W11TopLevelElementCommand {
 	private Object parent;
 	private String action;
 	private boolean continueApply;
 	
+	// TODO: rmah: signature of this method should changed post WTP 1.5.  Instead of taking in
+	// an "Object parent", it should be "Part parent".
 	public W11SetElementCommand(Object parent, String action) {
-        super(Messages.getString("_UI_ACTION_SET_ELEMENT"));
+        super(Messages.getString("_UI_ACTION_SET_ELEMENT"), ((Part) parent).getEnclosingDefinition());
 		this.parent = parent;
 		this.action = action;
 	}
 	
 	public void execute()
 	{
-		ComponentReferenceEditManager componentReferenceEditManager = getComponentReferenceEditManager();
-		continueApply = true; 
-		if (parent instanceof Part)
-		{
-			Part part = (Part) parent;
-			if (action.equals(IParameter.SET_NEW_ACTION_ID))
+		try {
+			beginRecording(definition.getElement());
+
+			ComponentReferenceEditManager componentReferenceEditManager = getComponentReferenceEditManager();
+			continueApply = true; 
+			if (parent instanceof Part)
 			{
-				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
-				
-				// Set the reference to the new type
-				if (continueApply)
-					componentReferenceEditManager.modifyComponentReference(part, newValue);
+				Part part = (Part) parent;
+				if (action.equals(IParameter.SET_NEW_ACTION_ID))
+				{
+					ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
+
+					// Set the reference to the new type
+					if (continueApply)
+						componentReferenceEditManager.modifyComponentReference(part, newValue);
+				}
+				else
+				{
+					ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
+					if (continueApply)
+						componentReferenceEditManager.modifyComponentReference(part, newValue);
+				}
+				formatChild(part.getElement());
 			}
-			else
-			{
-				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
-				if (continueApply)
-					componentReferenceEditManager.modifyComponentReference(part, newValue);
-			}
-			formatChild(part.getElement());
 		}
-		
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 	
 	private Object invokeDialog(IComponentDialog dialog)
@@ -116,26 +118,5 @@ public class W11SetElementCommand extends Command {
 			}
 		}  
 		return result;
-	}
-	
-	protected void formatChild(Element child)
-	{
-		if (child instanceof IDOMNode)
-		{
-			IDOMModel model = ((IDOMNode)child).getModel();
-			try
-			{
-				// tell the model that we are about to make a big model change
-				model.aboutToChangeModel();
-				
-				IStructuredFormatProcessor formatProcessor = new FormatProcessorXML();
-				formatProcessor.formatNode(child);
-			}
-			finally
-			{
-				// tell the model that we are done with the big model change
-				model.changedModel(); 
-			}
-		}
 	}
 }

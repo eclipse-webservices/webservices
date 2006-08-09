@@ -30,15 +30,21 @@ public class W11AddMessageCommand extends W11TopLevelElementCommand implements I
 	}
 
     public void execute() {
-      super.execute();
-		if (newName == null || newName.equals("")) { //$NON-NLS-1$
-			newName = NameUtil.buildUniqueMessageName(definition, "NewMessage"); //$NON-NLS-1$
-		}
-
-    	AddMessageCommand command = new AddMessageCommand(definition, newName, true);
-        command.run();
-        message = (Message) command.getWSDLElement();
-        formatChild(message.getElement());
+    	try {
+    		beginRecording(definition.getElement());
+    		super.execute();
+			if (newName == null || newName.equals("")) { //$NON-NLS-1$
+				newName = NameUtil.buildUniqueMessageName(definition, "NewMessage"); //$NON-NLS-1$
+			}
+	
+	    	AddMessageCommand command = new AddMessageCommand(definition, newName, true);
+	        command.run();
+	        message = (Message) command.getWSDLElement();
+	        formatChild(message.getElement());
+    	}
+    	finally {
+    		endRecording(definition.getElement());
+    	}
     }
     
     public Message getNewMessage() {

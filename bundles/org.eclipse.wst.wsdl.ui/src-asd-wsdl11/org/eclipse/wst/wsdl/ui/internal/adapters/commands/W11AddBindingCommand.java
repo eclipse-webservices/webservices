@@ -34,16 +34,22 @@ public class W11AddBindingCommand extends W11TopLevelElementCommand implements I
 	}
 	
 	public void execute() {
-    super.execute();
-		if (newName == null || newName.equals("")) { //$NON-NLS-1$
-			newName = NameUtil.buildUniqueBindingName(definition, "NewBinding"); //$NON-NLS-1$
+		try {
+			beginRecording(definition.getElement());
+			super.execute();
+			if (newName == null || newName.equals("")) { //$NON-NLS-1$
+				newName = NameUtil.buildUniqueBindingName(definition, "NewBinding"); //$NON-NLS-1$
+			}
+			
+			AddBindingCommand command = new AddBindingCommand(definition, newName);
+			command.run();
+			
+			newBinding = (Binding) command.getWSDLElement();
+			formatChild(newBinding.getElement());
 		}
-		
-		AddBindingCommand command = new AddBindingCommand(definition, newName);
-		command.run();
-		
-		newBinding = (Binding) command.getWSDLElement();
-		formatChild(newBinding.getElement());
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

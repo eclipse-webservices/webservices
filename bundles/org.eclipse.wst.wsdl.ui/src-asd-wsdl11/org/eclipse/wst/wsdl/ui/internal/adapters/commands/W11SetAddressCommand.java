@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
@@ -36,21 +35,28 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class W11SetAddressCommand extends Command {
+public class W11SetAddressCommand extends W11TopLevelElementCommand {
 	private Port port;
 	private String newAddress;
 	
 	public W11SetAddressCommand(Port port, String newAddress) {
-        super("");  // TODO: Need to add String here...
+        super("", port.getEnclosingDefinition());  // TODO: Need to add String here...
 		this.port = port;
 		this.newAddress = newAddress;
 	}
 	
 	public void execute() {
-		// Should the actual set address code live in it's 'own separate' command??
-		if (!setAddress()) {
-			createNewExtensibilityElement();
-			setAddress();
+		try {
+			beginRecording(port.getElement());
+
+			// Should the actual set address code live in it's 'own separate' command??
+			if (!setAddress()) {
+				createNewExtensibilityElement();
+				setAddress();
+			}
+		}
+		finally {
+			endRecording(port.getElement());
 		}
 	}
 	

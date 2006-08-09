@@ -27,18 +27,24 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand implements I
 	}
 	
 	public void execute() {
-    super.execute();
-		String newName = NameUtil.buildUniqueServiceName(definition);
-		AddServiceCommand command = new AddServiceCommand(definition, newName, false);
-		command.run();
-		service = (Service) command.getWSDLElement();
-		
-		PortGenerator portGenerator = new PortGenerator(service);
-		portGenerator.setContentGenerator(new SOAPContentGenerator());
-		portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort"));
-		portGenerator.generatePort();
-		
-		formatChild(service.getElement());
+		try {
+			beginRecording(definition.getElement());
+			super.execute();
+			String newName = NameUtil.buildUniqueServiceName(definition);
+			AddServiceCommand command = new AddServiceCommand(definition, newName, false);
+			command.run();
+			service = (Service) command.getWSDLElement();
+			
+			PortGenerator portGenerator = new PortGenerator(service);
+			portGenerator.setContentGenerator(new SOAPContentGenerator());
+			portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort"));
+			portGenerator.generatePort();
+			
+			formatChild(service.getElement());
+		}
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

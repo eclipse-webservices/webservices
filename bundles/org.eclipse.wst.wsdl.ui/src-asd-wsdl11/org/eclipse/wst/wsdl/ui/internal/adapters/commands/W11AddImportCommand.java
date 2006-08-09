@@ -19,17 +19,24 @@ public class W11AddImportCommand extends W11TopLevelElementCommand implements IA
 	private Object component;
 	
 	public W11AddImportCommand(Definition definition) {
-    super(Messages.getString("_UI_ACTION_ADD_IMPORT"), definition);
+		super(Messages.getString("_UI_ACTION_ADD_IMPORT"), definition);
 	}
 	
 	public void execute() {
-    super.execute();
-		String namespace = ""; //$NON-NLS-1$
-		String location = ""; //$NON-NLS-1$
-		AddImportCommand command = new AddImportCommand(definition, namespace, location);
-		command.run();
-		formatChild(command.getWSDLElement().getElement());
-		component = command.getWSDLElement();
+		try {
+			beginRecording(definition.getElement());
+
+			super.execute();
+			String namespace = ""; //$NON-NLS-1$
+			String location = ""; //$NON-NLS-1$
+			AddImportCommand command = new AddImportCommand(definition, namespace, location);
+			command.run();
+			formatChild(command.getWSDLElement().getElement());
+			component = command.getWSDLElement();
+		}
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 
 	public Object getNewlyAddedComponent() {

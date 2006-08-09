@@ -37,21 +37,27 @@ public class W11AddInterfaceCommand extends W11TopLevelElementCommand implements
 	}
 	
 	public void execute() {
-    super.execute();
-		if (newName == null || newName.equals("")) { //$NON-NLS-1$
-			newName = NameUtil.buildUniquePortTypeName(definition, "NewPortType"); //$NON-NLS-1$
+		try {
+			beginRecording(definition.getElement());
+			super.execute();
+			if (newName == null || newName.equals("")) { //$NON-NLS-1$
+				newName = NameUtil.buildUniquePortTypeName(definition, "NewPortType"); //$NON-NLS-1$
+			}
+			// Add the Port Type
+			AddPortTypeCommand command = new AddPortTypeCommand(definition, newName, false);
+			command.run();
+			
+			newPortType = (PortType) command.getWSDLElement();
+			
+			// Add the Operation
+			IInterface iInterface = (IInterface) WSDLAdapterFactoryHelper.getInstance().adapt(newPortType);
+			Command addOperationCommand = iInterface.getAddOperationCommand();
+			addOperationCommand.execute();
+			formatChild(newPortType.getElement());
 		}
-		// Add the Port Type
-		AddPortTypeCommand command = new AddPortTypeCommand(definition, newName, false);
-		command.run();
-		
-		newPortType = (PortType) command.getWSDLElement();
-		
-		// Add the Operation
-		IInterface iInterface = (IInterface) WSDLAdapterFactoryHelper.getInstance().adapt(newPortType);
-		Command addOperationCommand = iInterface.getAddOperationCommand();
-		addOperationCommand.execute();
-		formatChild(newPortType.getElement());
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

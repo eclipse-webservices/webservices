@@ -574,7 +574,8 @@ public class MessageImpl extends WSDLElementImpl implements Message
     Message message = (Message) component;
     if (modelObject instanceof Part)
     {
-      message.getEParts().clear();
+      message.getEParts().remove(modelObject);
+//      message.getEParts().clear();
     }
   }
 

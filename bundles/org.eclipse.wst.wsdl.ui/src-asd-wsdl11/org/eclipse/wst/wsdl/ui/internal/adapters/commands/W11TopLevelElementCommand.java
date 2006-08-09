@@ -43,6 +43,22 @@ public class W11TopLevelElementCommand extends Command
     this.definition = definition;
   }
   
+  protected void beginRecording(Object element) {
+	  if (element instanceof IDOMNode) {
+		  ((IDOMNode) element).getModel().beginRecording(this, getUndoDescription());
+	  }
+  }
+  
+  protected void endRecording(Object element) {
+	  if (element instanceof IDOMNode) {
+		  ((IDOMNode) element).getModel().endRecording(this);
+	  }
+  }
+  
+  protected String getUndoDescription() {
+	  return getLabel();
+  }
+  
   protected void formatChild(Element child)
   {
     if (child instanceof IDOMNode)

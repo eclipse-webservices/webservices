@@ -10,22 +10,27 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 
-public class W11SetInterfaceCommand extends Command {
+public class W11SetInterfaceCommand extends W11TopLevelElementCommand {
 	private Binding binding;
 	private PortType portType;
 	
 	public W11SetInterfaceCommand(Binding binding, PortType portType) {
-        super(Messages.getString("_UI_ACTION_SET_PORTTYPE"));
+        super(Messages.getString("_UI_ACTION_SET_PORTTYPE"), binding.getEnclosingDefinition());
 		this.binding = binding;
 		this.portType = portType;
 	}
 	
 	public void execute() {
-		binding.setEPortType(portType);
+		try {
+			beginRecording(binding.getElement());
+			binding.setEPortType(portType);
+		}
+		finally {
+			endRecording(binding.getElement());
+		}
 	}
 }

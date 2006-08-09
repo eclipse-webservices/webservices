@@ -42,19 +42,26 @@ public class W11AddOperationCommand extends W11TopLevelElementCommand implements
 	}
 	
 	public void execute() {
-		String name = NameUtil.getOperationName(portType);
-		AddOperationCommand operationCommand = new AddOperationCommand(portType, name);
-		operationCommand.run();
-		operation = (Operation) operationCommand.getWSDLElement();
-
-		createMessage(operation, IMessageReference.KIND_INPUT);
-		createMessage(operation, IMessageReference.KIND_OUTPUT);
-
-		createParameter(operation, null, IMessageReference.KIND_INPUT);
-		createParameter(operation, null, IMessageReference.KIND_OUTPUT);
-
-		operation.setStyle(OperationType.REQUEST_RESPONSE);
-		formatChild(operation.getElement());
+		try {
+			beginRecording(portType.getElement());
+			
+			String name = NameUtil.getOperationName(portType);
+			AddOperationCommand operationCommand = new AddOperationCommand(portType, name);
+			operationCommand.run();
+			operation = (Operation) operationCommand.getWSDLElement();
+	
+			createMessage(operation, IMessageReference.KIND_INPUT);
+			createMessage(operation, IMessageReference.KIND_OUTPUT);
+	
+			createParameter(operation, null, IMessageReference.KIND_INPUT);
+			createParameter(operation, null, IMessageReference.KIND_OUTPUT);
+	
+			operation.setStyle(OperationType.REQUEST_RESPONSE);
+			formatChild(operation.getElement());
+		}
+		finally {
+			endRecording(portType.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

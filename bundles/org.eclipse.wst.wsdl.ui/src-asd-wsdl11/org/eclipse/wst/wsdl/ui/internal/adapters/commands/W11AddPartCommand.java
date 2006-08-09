@@ -27,10 +27,17 @@ public class W11AddPartCommand extends W11TopLevelElementCommand implements IASD
     }
     
     public void execute() {
-    	AddPartCommand command = new AddPartCommand(message, NameUtil.buildUniquePartName(message, "NewPart")); //$NON-NLS-1$
-        command.run();
-        part = (Part) command.getWSDLElement();
-        formatChild(part.getElement());
+    	try {
+    		beginRecording(message.getElement());
+
+	    	AddPartCommand command = new AddPartCommand(message, NameUtil.buildUniquePartName(message, "NewPart")); //$NON-NLS-1$
+	        command.run();
+	        part = (Part) command.getWSDLElement();
+	        formatChild(part.getElement());
+    	}
+    	finally {
+    		endRecording(message.getElement());
+    	}
     }
     
 	public Object getNewlyAddedComponent() {

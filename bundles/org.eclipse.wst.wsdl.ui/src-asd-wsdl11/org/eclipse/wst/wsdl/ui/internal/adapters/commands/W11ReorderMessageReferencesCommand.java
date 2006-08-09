@@ -12,18 +12,18 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import javax.wsdl.OperationType;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Operation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 
-public class W11ReorderMessageReferencesCommand extends Command {
+public class W11ReorderMessageReferencesCommand extends W11TopLevelElementCommand {
 	protected IMessageReference leftSibling;
 	protected IMessageReference rightSibling;
 	protected IMessageReference movingParameter;
 	
 	public W11ReorderMessageReferencesCommand(IMessageReference leftSibling, IMessageReference rightSibling, IMessageReference movingParameter) {
-        super("");  // TODO: Need to add String here...
+        super(Messages.getString("_UI_ACTION_REORDER_MESSAGE_REFERENCE"), null);
 		this.leftSibling = leftSibling;
 		this.rightSibling = rightSibling;
 		this.movingParameter = movingParameter;
@@ -40,43 +40,47 @@ public class W11ReorderMessageReferencesCommand extends Command {
 			movingChild = (IMessageReference) movingParameter;
 		}
 		
-		if (movingChild.getKind() == IMessageReference.KIND_INPUT) {
-			W11Operation w11Operation = (W11Operation) movingChild.getOwnerOperation();
-			Operation operation = (Operation) w11Operation.getTarget();
-			
-			if (leftSibElement == null) {
-				// Input/Output style
-				setInputOutputOrder(operation, true);
-			}
-			else if (leftSibElement != null && leftSibElement.getKind() == IMessageReference.KIND_INPUT) {
-				if (rightSibling.getKind() == IMessageReference.KIND_OUTPUT) {
+		W11Operation w11Operation = (W11Operation) movingChild.getOwnerOperation();
+		Operation operation = (Operation) w11Operation.getTarget();
+		
+		try {
+			beginRecording(operation.getElement());
+
+			if (movingChild.getKind() == IMessageReference.KIND_INPUT) {
+				if (leftSibElement == null) {
 					// Input/Output style
 					setInputOutputOrder(operation, true);
 				}
-			}
-			else {
-				// Output/Input style
-				setInputOutputOrder(operation, false);
-			}
-		}
-		else if (movingChild.getKind() == IMessageReference.KIND_OUTPUT) {
-			W11Operation w11Operation = (W11Operation) movingChild.getOwnerOperation();
-			Operation operation = (Operation) w11Operation.getTarget();
-			
-			if (leftSibElement == null) {
-				// Output/Input style
-				setInputOutputOrder(operation, false);
-			}
-			else if (leftSibElement != null && leftSibElement.getKind() == IMessageReference.KIND_OUTPUT) {
-				if (rightSibling.getKind() == IMessageReference.KIND_INPUT) {
+				else if (leftSibElement != null && leftSibElement.getKind() == IMessageReference.KIND_INPUT) {
+					if (rightSibling.getKind() == IMessageReference.KIND_OUTPUT) {
+						// Input/Output style
+						setInputOutputOrder(operation, true);
+					}
+				}
+				else {
 					// Output/Input style
 					setInputOutputOrder(operation, false);
 				}
 			}
-			else {
-				// Input/Output style
-				setInputOutputOrder(operation, true);
+			else if (movingChild.getKind() == IMessageReference.KIND_OUTPUT) {
+				if (leftSibElement == null) {
+					// Output/Input style
+					setInputOutputOrder(operation, false);
+				}
+				else if (leftSibElement != null && leftSibElement.getKind() == IMessageReference.KIND_OUTPUT) {
+					if (rightSibling.getKind() == IMessageReference.KIND_INPUT) {
+						// Output/Input style
+						setInputOutputOrder(operation, false);
+					}
+				}
+				else {
+					// Input/Output style
+					setInputOutputOrder(operation, true);
+				}
 			}
+		}
+		finally {
+			endRecording(operation.getElement());
 		}
 	}
 	

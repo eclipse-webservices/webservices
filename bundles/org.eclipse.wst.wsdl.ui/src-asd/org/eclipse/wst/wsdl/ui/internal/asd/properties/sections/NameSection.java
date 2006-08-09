@@ -122,7 +122,7 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 	 */
 	public void refresh() {
 		super.refresh();
-		if (nameText.isFocusControl()) {
+		if (nameText.isDisposed() || nameText.isFocusControl()) {
 			return;
 		}
 		

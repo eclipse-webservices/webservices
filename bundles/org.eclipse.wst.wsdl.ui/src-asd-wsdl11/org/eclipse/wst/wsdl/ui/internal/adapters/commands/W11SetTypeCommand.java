@@ -12,11 +12,9 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import java.util.List;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -24,52 +22,59 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.edit.WSDLXSDTypeReferenceEditManager;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
-import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDSchema;
-import org.w3c.dom.Element;
 
-public class W11SetTypeCommand extends Command {
+public class W11SetTypeCommand extends W11TopLevelElementCommand {
 	private Object parent;
 	private String action;
 	private boolean continueApply;
 	
 	public W11SetTypeCommand(Object parent, String action) {
-        super(Messages.getString("_UI_ACTION_SET_TYPE"));
+        super(Messages.getString("_UI_ACTION_SET_TYPE"), null);
 		this.parent = parent;
 		this.action = action;
 	}
 	
 	public void execute()
 	{
-		ComponentReferenceEditManager componentReferenceEditManager = getComponentReferenceEditManager();
-		continueApply = true; 
-		if (action.equals(IParameter.SET_NEW_ACTION_ID))
-		{
-			ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
-			
-			// Set the reference to the new type
-			if (continueApply)
-				componentReferenceEditManager.modifyComponentReference(parent, newValue);
+		try {
+			if (parent instanceof WSDLElement) {
+				beginRecording(((WSDLElement) parent).getElement());
+			}
+
+			ComponentReferenceEditManager componentReferenceEditManager = getComponentReferenceEditManager();
+			continueApply = true; 
+			if (action.equals(IParameter.SET_NEW_ACTION_ID))
+			{
+				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
+
+				// Set the reference to the new type
+				if (continueApply)
+					componentReferenceEditManager.modifyComponentReference(parent, newValue);
+			}
+			else
+			{
+				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
+				if (continueApply)
+					componentReferenceEditManager.modifyComponentReference(parent, newValue);
+			}
+
+			// Format
+			if (parent instanceof WSDLElement) {
+				formatChild(((WSDLElement) parent).getElement());
+			}
+			else if (parent instanceof XSDConcreteComponent) {
+				formatChild(((XSDConcreteComponent) parent).getElement());
+			}
 		}
-		else
-		{
-			ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
-			if (continueApply)
-				componentReferenceEditManager.modifyComponentReference(parent, newValue);
-		}
-		
-		// Format
-		if (parent instanceof WSDLElement) {
-			formatChild(((WSDLElement) parent).getElement());
-		}
-		else if (parent instanceof XSDConcreteComponent) {
-			formatChild(((XSDConcreteComponent) parent).getElement());
+		finally {
+			if (parent instanceof WSDLElement) {
+				endRecording(((WSDLElement) parent).getElement());
+			}
 		}
 	}
 	
@@ -119,26 +124,5 @@ public class W11SetTypeCommand extends Command {
 			}
 		}  
 		return result;
-	}
-	
-	protected void formatChild(Element child)
-	{
-		if (child instanceof IDOMNode)
-		{
-			IDOMModel model = ((IDOMNode)child).getModel();
-			try
-			{
-				// tell the model that we are about to make a big model change
-				model.aboutToChangeModel();
-				
-				IStructuredFormatProcessor formatProcessor = new FormatProcessorXML();
-				formatProcessor.formatNode(child);
-			}
-			finally
-			{
-				// tell the model that we are done with the big model change
-				model.changedModel(); 
-			}
-		}
 	}
 }

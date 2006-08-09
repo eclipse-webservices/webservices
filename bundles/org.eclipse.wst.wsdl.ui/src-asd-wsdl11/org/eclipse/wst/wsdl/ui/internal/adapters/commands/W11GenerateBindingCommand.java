@@ -27,13 +27,20 @@ public class W11GenerateBindingCommand extends W11TopLevelElementCommand {
 	}
 	
 	public void execute() {
-		BindingWizard wizard = new BindingWizard(binding.getEnclosingDefinition(), binding, BindingWizard.KIND_REGENERATE_BINDING);
-		wizard.setBindingName(ComponentReferenceUtil.getName(binding));
-		wizard.setPortTypeName(ComponentReferenceUtil.getPortTypeReference(binding));
-		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
-		wizardDialog.create();
-		if (wizardDialog.open() == Window.OK) {
-			formatChild(binding.getElement());
+		try {
+			beginRecording(definition.getElement());
+
+			BindingWizard wizard = new BindingWizard(binding.getEnclosingDefinition(), binding, BindingWizard.KIND_REGENERATE_BINDING);
+			wizard.setBindingName(ComponentReferenceUtil.getName(binding));
+			wizard.setPortTypeName(ComponentReferenceUtil.getPortTypeReference(binding));
+			WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+			wizardDialog.create();
+			if (wizardDialog.open() == Window.OK) {
+				formatChild(binding.getElement());
+			}
+		}
+		finally {
+			endRecording(definition.getElement());
 		}
 	}
 }

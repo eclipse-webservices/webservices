@@ -30,31 +30,37 @@ public class W11AddSchemaCommand extends W11TopLevelElementCommand implements IA
 	}
 	
 	public void execute() {
-	  super.execute();
+		try {
+			beginRecording(definition.getElement());
+			super.execute();
     
-		String tns = definition.getTargetNamespace();
-		List existingNamespaces = new ArrayList();
-		Types types = definition.getETypes();
-
-		if (types != null) {
-			Iterator eeIt = types.getEExtensibilityElements().iterator();
-			while (eeIt.hasNext()) {
-				Object item = eeIt.next();
-				if (item instanceof XSDSchemaExtensibilityElement) {
-					XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) item;
-					if (eeElement.getSchema() != null) {
-						String ns = eeElement.getSchema().getTargetNamespace();
-						existingNamespaces.add(ns);
+			String tns = definition.getTargetNamespace();
+			List existingNamespaces = new ArrayList();
+			Types types = definition.getETypes();
+	
+			if (types != null) {
+				Iterator eeIt = types.getEExtensibilityElements().iterator();
+				while (eeIt.hasNext()) {
+					Object item = eeIt.next();
+					if (item instanceof XSDSchemaExtensibilityElement) {
+						XSDSchemaExtensibilityElement eeElement = (XSDSchemaExtensibilityElement) item;
+						if (eeElement.getSchema() != null) {
+							String ns = eeElement.getSchema().getTargetNamespace();
+							existingNamespaces.add(ns);
+						}
 					}
-				}
-			} 
+				} 
+			}
+			tns = NameUtil.getUniqueNameHelper(tns, existingNamespaces);
+			
+			AddXSDSchemaCommand command = new AddXSDSchemaCommand(definition, tns);
+			command.run();
+			formatChild(command.getWSDLElement().getElement());
+			schema = command.getWSDLElement();
 		}
-		tns = NameUtil.getUniqueNameHelper(tns, existingNamespaces);
-		
-		AddXSDSchemaCommand command = new AddXSDSchemaCommand(definition, tns);
-		command.run();
-		formatChild(command.getWSDLElement().getElement());
-		schema = command.getWSDLElement();
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 	
 	public Object getNewlyAddedComponent() {

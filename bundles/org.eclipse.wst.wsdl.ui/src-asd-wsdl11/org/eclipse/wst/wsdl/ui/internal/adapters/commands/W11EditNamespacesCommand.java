@@ -39,28 +39,30 @@ public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 	}
 	
 	public void execute() {
-      super.execute();
-		  if (targetNamespacePrefix != null) {
-			  		Element element = definition.getElement();
-			  		
-			  		// Remove the old prefix
-			  		String oldPrefix = definition.getPrefix(definition.getTargetNamespace());
-			  		element.removeAttribute("xmlns:"+oldPrefix); 
-			  		
-			  		// Set the new prefix
-			  	  	element.setAttribute("xmlns:" + targetNamespacePrefix, definition.getTargetNamespace());
-			  }
-			  if (targetNamespace != null) {
-				    String newValue = targetNamespace;
-				    String prefix = definition.getPrefix(definition.getTargetNamespace());
-				    definition.setTargetNamespace(newValue);
-				    definition.getElement().setAttribute("xmlns:" + prefix, newValue);
-			  }
-			  
-		if (namespacesInfoList != null) {
-			DOMNamespaceInfoManager namespaceInfoManager = new DOMNamespaceInfoManager();
-			
-/*
+		try {
+			beginRecording(definition.getElement());
+			super.execute();
+			if (targetNamespacePrefix != null) {
+				Element element = definition.getElement();
+
+				// Remove the old prefix
+				String oldPrefix = definition.getPrefix(definition.getTargetNamespace());
+				element.removeAttribute("xmlns:"+oldPrefix); 
+
+				// Set the new prefix
+				element.setAttribute("xmlns:" + targetNamespacePrefix, definition.getTargetNamespace());
+			}
+			if (targetNamespace != null) {
+				String newValue = targetNamespace;
+				String prefix = definition.getPrefix(definition.getTargetNamespace());
+				definition.setTargetNamespace(newValue);
+				definition.getElement().setAttribute("xmlns:" + prefix, newValue);
+			}
+
+			if (namespacesInfoList != null) {
+				DOMNamespaceInfoManager namespaceInfoManager = new DOMNamespaceInfoManager();
+
+				/*
 		      List namespaceInfoList = namespaceInfoManager.getNamespaceInfoList(element);
 //		      List oldNamespaceInfoList = NamespaceInfo.cloneNamespaceInfoList(namespaceInfoList);
 
@@ -73,12 +75,12 @@ public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 		        NamespaceInfo oldCopy = new NamespaceInfo(info);
 		        info.setProperty("oldCopy", oldCopy); //$NON-NLS-1$
 		      }
-*/
-		      
-	        namespaceInfoManager.removeNamespaceInfo(definition.getElement());
-	        namespaceInfoManager.addNamespaceInfo(definition.getElement(), namespacesInfoList, false);
-	        
-	        /*
+				 */
+
+				namespaceInfoManager.removeNamespaceInfo(definition.getElement());
+				namespaceInfoManager.addNamespaceInfo(definition.getElement(), namespacesInfoList, false);
+
+				/*
 	        // see if we need to rename any prefixes
 	        Map prefixMapping = createPrefixMapping(oldNamespaceInfoList, namespaceInfoList);
 	        if (prefixMapping.size() > 0)
@@ -88,17 +90,17 @@ public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 	          replacePrefixAction.run();
 	          //manager.getModel().changedModel();
 	        }
-	*/   
-		}
-		
-		/*
+				 */   
+			}
+
+			/*
 		 // Could not modify (more specifically remove) namespaces via model.....
 		 // should revisit this
 		if (targetNamespace != null || targetNamespacePrefix != null) {
 			Map map = definition.getNamespaces();
 			String oldTargetNamespace = definition.getTargetNamespace();
 			String oldPrefix = null;
-			
+
 			Iterator it = map.keySet().iterator();
 			while (it.hasNext()) {
 				String key = (String) it.next();
@@ -108,7 +110,7 @@ public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 					break;
 				}
 			}
-			
+
 			if (oldPrefix != null && !oldPrefix.equals(targetNamespacePrefix)) {
 				map.remove(oldPrefix);
 				definition.updateElement();
@@ -126,8 +128,11 @@ public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 			definition.setTargetNamespace(tns);
 //			map.put(prefix, tns);
 		}
-		*/
-
+			 */
+		}
+		finally {
+			endRecording(definition.getElement());
+		}
 	}
 	
 	/*
