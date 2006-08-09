@@ -297,8 +297,8 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
           testAssertion.setEntryTypeName(
             atts.getValue("", WSIConstants.ATTR_ENTRY_TYPE));
           
-          // if assertion already checked then disable it
-          if (alreadyChecked(id))
+          // if assertion is not required or it has already been checked by core validator then disable it
+          if (alreadyChecked(id) || !(testAssertion.getType().equals(TestAssertion.TYPE_REQUIRED)))
         	  testAssertion.setEnabled(false);
           else
         	  testAssertion.setEnabled(Boolean.valueOf(atts.getValue("", WSIConstants.ATTR_ENABLED)).booleanValue());

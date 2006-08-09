@@ -21,7 +21,8 @@ import java.util.Vector;
 public interface TestAssertion
 {
   public static final String TYPE_INFORMATIONAL = "informational";
-  
+  public static final String TYPE_RECOMMENDED = "recommended";
+  public static final String TYPE_REQUIRED = "required";
   /**
    * Get test assertion id.
    * @return test assertion id.
