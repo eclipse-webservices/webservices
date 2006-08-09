@@ -19,13 +19,13 @@ import java.util.List;
 
 import javax.wsdl.WSDLException;
 
+import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.WSIFileNotFoundException;
 import org.eclipse.wst.wsi.internal.core.log.LogReader;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntryHandler;
-import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertionsReader;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EnvelopeValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
@@ -145,12 +145,15 @@ public class BasicProfileAnalyzer extends Analyzer
 
     try
     {
-      // Read profile assertions
-      ProfileAssertionsReader profileAssertionsReader =
-        documentFactory.newProfileAssertionsReader();
-      this.profileAssertions =
-        profileAssertionsReader.readProfileAssertions(
+      this.profileAssertions = WSITestToolsProperties.getProfileAssertions(
           getAnalyzerConfig().getTestAssertionsDocumentLocation());
+
+      if (this.profileAssertions == null)
+      {
+ 		 throw new WSIException(messageList.getMessage(
+ 				 "config20",
+ 		         "The WS-I Test Assertion Document (TAD)document was either not found or could not be processed."));  
+      }
 
       // Create report from document factory
       report = documentFactory.newReport();

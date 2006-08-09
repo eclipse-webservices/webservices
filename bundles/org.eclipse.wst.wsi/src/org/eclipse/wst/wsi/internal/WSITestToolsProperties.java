@@ -10,6 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
+import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
+import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertionsReader;
+
 /**
  * WS-I test tools property.
  */
@@ -28,6 +36,8 @@ public class WSITestToolsProperties
   public static final String IGNORE_NON_WSI = "2";
   
   protected static boolean eclipseContext = false;
+  protected static Map uriToAssertionsMap = new HashMap();
+  protected static DocumentFactory documentFactory = null;
 
   /**
    *  Constructor.
@@ -57,6 +67,42 @@ public class WSITestToolsProperties
   public static WSIPreferences checkWSIPreferences(String fileuri)
   {
   	return new WSIPreferences();
+  }
+  
+  /**
+   * Returns the profile assertions located at the given URI.
+   * @param assertionsURI  the location of the TAD.
+   * @return the profile assertions located at the given URI.
+ * @throws WSIException 
+   */
+  public static ProfileAssertions getProfileAssertions(String assertionsURI) throws WSIException
+  {
+	 ProfileAssertions result = null;
+	 if (assertionsURI != null)
+	 {
+	   try
+	   {
+	     if (uriToAssertionsMap.containsKey(assertionsURI))
+		   result = (ProfileAssertions)uriToAssertionsMap.get(assertionsURI);
+	     else
+	     {
+	       // Read profile assertions
+	       if (documentFactory == null)
+	    	   documentFactory = DocumentFactory.newInstance();
+	       ProfileAssertionsReader profileAssertionsReader = documentFactory.newProfileAssertionsReader();
+	       result = profileAssertionsReader.readProfileAssertions(assertionsURI);
+           if (result != null)
+           {
+        	 uriToAssertionsMap.put(assertionsURI, result);
+           }
+	     }
+	   }
+	   catch (Exception e)
+	   {
+		 result = null;
+	   }
+	 }
+	 return result;
   }
   
   /**
