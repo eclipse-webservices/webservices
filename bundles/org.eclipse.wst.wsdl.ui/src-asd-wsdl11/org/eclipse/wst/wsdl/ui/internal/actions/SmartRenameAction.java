@@ -47,7 +47,8 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	protected Object element;
 	protected String newName;
 	private List messageReferences; // This variable should be accessed by method getAllMessageReferences()
-	protected Node node;   
+	protected Node node;
+	private boolean renameParent = true;
 	
 	public SmartRenameAction(Object element, String newName) {
 		setText("Smart Rename Action"); // Do not translate //$NON-NLS-1$
@@ -63,6 +64,15 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	public String getUndoDescription() {
 	  return Messages.getString("_UI_ACTION_RENAME");  //$NON-NLS-1$
 	}
+	
+	/*
+	 * boolean argument is used to determine if the top level (parent) object should be renamed
+	 * itself.  Otherwise, only the "child" objects will be renamed.
+	 */
+	public void run(boolean renameParent) {
+		this.renameParent = renameParent;
+		run();
+	}
 
 	public void run() {
 		RenameAction renamer;
@@ -77,9 +87,11 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 				return;
 			}
 			
-			// Rename Operation 
-			renamer = new RenameAction(operation, newName);
-			renamer.run();
+			// Rename Operation
+			if (renameParent) {
+				renamer = new RenameAction(operation, newName);
+				renamer.run();
+			}
 			
 			// Rename Input
 			Input input = operation.getEInput();
@@ -170,7 +182,9 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 				return;
 			}
 			
-			input.setName(newName);
+			if (renameParent) {
+				input.setName(newName);
+			}
 
 //			 Rename Messages and Parts
 			Message msg;
@@ -203,7 +217,9 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 				return;
 			}
 			
-			output.setName(newName);
+			if (renameParent) {
+				output.setName(newName);
+			}
 
 //			 Rename Messages and Parts
 			Message msg;
@@ -234,8 +250,10 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			}
 			
 			// Rename the Fault
-			renamer = new RenameAction(fault, newName);
-			renamer.run();
+			if (renameParent) {
+				renamer = new RenameAction(fault, newName);
+				renamer.run();
+			}
 
 			// Rename the Message and Parts
 			if (msg != null) {
@@ -259,10 +277,14 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 				return;
 			}
 
-			renameMessageHelper(msg, computeNewMessageName(msg, oldName, newName));
+			String newMessageName = computeNewMessageName(msg, oldName, newName);
+			if (renameParent) {
+				renameMessageHelper(msg, newMessageName);
+			}
 					
 			if (msg.getEParts() != null)
-				renamePartsHelper(msg.getEParts(), oldMessageName, msg.getQName().getLocalPart(), true);
+				renamePartsHelper(msg.getEParts(), oldMessageName, newMessageName, true);
+//				renamePartsHelper(msg.getEParts(), oldMessageName, msg.getQName().getLocalPart(), true);
 		}
 		else if (element instanceof Part) {
 			Part part = (Part) element;
@@ -272,8 +294,10 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 				return;
 			}
 			
-			renamer = new RenameAction(element, newName);
-			renamer.run();
+			if (renameParent) {
+				renamer = new RenameAction(element, newName);
+				renamer.run();
+			}
 			
 //			Rename Elements
 			renameXSDElement(part, oldPartName, newName);
@@ -282,8 +306,10 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			Port port = (Port) element;
 			String oldPortName = port.getName();
 			
-			renamer = new RenameAction(element, newName);
-			renamer.run();
+			if (renameParent) {
+				renamer = new RenameAction(element, newName);
+				renamer.run();
+			}
 
 //			Rename Binding
 			Binding binding = port.getEBinding();
@@ -319,8 +345,11 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 					renamer.run();
 					
 					// Rename Elements
-					renameXSDElement(part, oldPartName, newPartName);
+//					renameXSDElement(part, oldPartName, newPartName);
 				}
+				
+				// Rename Elements
+				renameXSDElement(part, oldSubString, newSubString);
 			}
 		}
 	}
@@ -544,7 +573,8 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	
 	private void renameElementDeclarationHelper(XSDElementDeclaration elementDeclaration, String oldXSDName, String newXSDName) {
 		if (elementDeclaration != null && elementDeclaration.getName().startsWith(oldXSDName)) {
-			elementDeclaration.setName(newXSDName);
+			String newElementName = replaceSectionWithSubString(elementDeclaration.getName(), oldXSDName, newXSDName, 0);
+			elementDeclaration.setName(newElementName);
 		}
 	}
 	

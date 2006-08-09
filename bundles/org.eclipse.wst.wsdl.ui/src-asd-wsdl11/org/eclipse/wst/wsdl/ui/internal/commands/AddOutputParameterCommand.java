@@ -52,8 +52,8 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getNewXSDElementBaseName() {
 		if (newXSDElementName == null) {
-//			newXSDElementName = "output"; //$NON-NLS-1$
-			newXSDElementName = getWSDLPartName();
+			newXSDElementName = "out"; //$NON-NLS-1$
+//			newXSDElementName = getWSDLPartName();
 		}
 		
 		return newXSDElementName;

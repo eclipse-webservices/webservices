@@ -13,6 +13,8 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.wsdl.OperationType;
+
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Fault;
@@ -29,12 +31,15 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputCommand;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddInputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOperationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputCommand;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPartCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddPortTypeCommand;
@@ -141,11 +146,23 @@ public class CreateWSDLElementHelper {
 		AddOperationCommand action = new AddOperationCommand(portType, operationName);
 		action.run();
 		Operation operation = (Operation) action.getWSDLElement();
-  		CreateWSDLElementHelper.createOutput(portType, operation);
-		CreateWSDLElementHelper.createInput(portType, operation, null);
+		
+		int style = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
+  		if (PART_TYPE_OR_DEFINITION == PART_INFO_TYPE_DEFINITION) {
+  			style = AddBaseParameterCommand.PART_SIMPLETYPE;
+  		}
+  		else if (PART_TYPE_OR_DEFINITION == PART_INFO_ELEMENT_DECLARATION) {
+  			style = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
+//  			style = AddBaseParameterCommand.PART_ELEMENT;
+  		}
+  		
+		AddInputParameterCommand inputCommand = new AddInputParameterCommand(operation, style);
+		inputCommand.run();
+		AddOutputParameterCommand outputCommand = new AddOutputParameterCommand(operation, style);
+		outputCommand.run();
+		operation.setStyle(OperationType.REQUEST_RESPONSE);
 
-//  		((PortTypeImpl) portType).updateElement(false);
-   		return operation;
+		return operation;
   	}
 
   	public static Input createInput(PortType portType, Operation operation, String inputName) {

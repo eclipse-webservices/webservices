@@ -108,13 +108,15 @@ public class W11RenameCommand extends Command {
 		}
 		else if (object instanceof W11Message) {
 			Message message = (Message) ((W11Message) object).getTarget();
-			Iterator parts = message.getEParts().iterator();
+//			Iterator parts = message.getEParts().iterator();
 			origName = message.getQName().getLocalPart();
 			
-			while (parts.hasNext()) {
-				SmartRenameAction action = new SmartRenameAction(parts.next(), newName);
-				action.run();
-			}
+			SmartRenameAction action = new SmartRenameAction(message, newName);
+			action.run(false);
+//			while (parts.hasNext()) {
+//				SmartRenameAction action = new SmartRenameAction(parts.next(), newName);
+//				action.run();
+//			}
 		}
 		else if (object instanceof W11ParameterForPart) {
 			Part part = (Part) ((W11ParameterForPart) object).getTarget();

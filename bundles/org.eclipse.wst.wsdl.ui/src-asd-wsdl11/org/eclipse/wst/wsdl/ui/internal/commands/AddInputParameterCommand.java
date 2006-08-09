@@ -51,8 +51,8 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getNewXSDElementBaseName() {
 		if (newXSDElementName == null) {
-//			newXSDElementName = "input"; //$NON-NLS-1$
-			newXSDElementName = getWSDLPartName();
+			newXSDElementName = "in"; //$NON-NLS-1$
+//			newXSDElementName = getWSDLPartName();
 		}
 		
 		return newXSDElementName;

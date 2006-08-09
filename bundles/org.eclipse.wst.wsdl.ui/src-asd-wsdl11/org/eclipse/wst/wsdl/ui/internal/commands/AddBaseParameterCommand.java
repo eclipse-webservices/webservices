@@ -124,23 +124,21 @@ public abstract class AddBaseParameterCommand {
 		XSDElementDeclaration returnedXSDElement = null;
 		XSDElementDeclaration partElement = part.getElementDeclaration();
 		
-		if (true || style == PART_ELEMENT_SEQ_ELEMENT) {
+		if (style == PART_ELEMENT_SEQ_ELEMENT) {
 			returnedXSDElement = createPartElementSeqElementPattern(part, partElement);
 		}
 		else if (style == PART_ELEMENT) {
 			if (partElement == null) {
 				returnedXSDElement = XSDComponentHelper.createXSDElementDeclarationCommand(part.getEnclosingDefinition(), getNewXSDElementBaseName(), part);
+				if (returnedXSDElement != null && !returnedXSDElement.equals(part.getElementDeclaration())) {
+//					part.setElementDeclaration(returnedXSDElement);
+					String prefixedName = getPrefixedComponentName(part.getEnclosingDefinition(), returnedXSDElement);
+					ComponentReferenceUtil.setComponentReference(part, false, prefixedName);
+				}
 			}
 			else {
 				returnedXSDElement = createPartElementSeqElementPattern(part, partElement);
 			}
-			
-			if (returnedXSDElement != null && !returnedXSDElement.equals(part.getElementDeclaration())) {
-//				part.setElementDeclaration(returnedXSDElement);
-				String prefixedName = getPrefixedComponentName(part.getEnclosingDefinition(), returnedXSDElement);
-				ComponentReferenceUtil.setComponentReference(part, false, prefixedName);
-
-			}	
 		}
 		
 		return returnedXSDElement;
@@ -230,7 +228,11 @@ public abstract class AddBaseParameterCommand {
 		
 		if (message.getEParts().size() == 0) {
 			// Create Part
-			AddPartCommand command = new AddPartCommand(message, getWSDLPartName());
+			String partName = getWSDLPartName();
+			if (style == PART_ELEMENT_SEQ_ELEMENT) {
+				partName = getDocLitWrappedPartName();
+			}
+			AddPartCommand command = new AddPartCommand(message, partName);
 			command.run();
 			part = (Part) command.getWSDLElement();
 		}
@@ -240,6 +242,10 @@ public abstract class AddBaseParameterCommand {
 		formatChild(message.getElement());
 		
 		return part;
+	}
+	
+	private String getDocLitWrappedPartName() {
+		return "parameters";
 	}
 	
 	protected XSDElementDeclaration createXSDObjects(Part part) {

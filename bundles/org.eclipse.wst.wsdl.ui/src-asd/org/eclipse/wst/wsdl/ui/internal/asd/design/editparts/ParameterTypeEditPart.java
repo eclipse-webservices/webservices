@@ -105,8 +105,10 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 		}
 
 		// Force the LinkIconColumn to resize and relayout itself.
-		((Figure) getInterfaceEditPart().getLinkIconColumn()).invalidate();
-		refreshLinkFigure(new Point(-1, -1));
+		if (getInterfaceEditPart() != null) {
+			((Figure) getInterfaceEditPart().getLinkIconColumn()).invalidate();
+			refreshLinkFigure(new Point(-1, -1));
+		}
 	}
 
 	private InterfaceEditPart getInterfaceEditPart() {
