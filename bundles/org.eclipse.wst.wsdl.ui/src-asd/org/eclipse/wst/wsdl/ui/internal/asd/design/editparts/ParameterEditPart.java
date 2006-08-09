@@ -27,6 +27,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.DirectEditManager;
@@ -173,6 +174,17 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     parameterName.setText(parameter.getName());
     if (labelImage != null) {
     	parameterName.setIcon(labelImage);
+    }
+    
+    // Resize column widths.  Sizes may have shrunk.
+    rowLayout.getColumnData().clearColumnWidths();
+    for (EditPart parent = getParent(); parent != null; parent = parent.getParent())
+    {
+      if (parent instanceof InterfaceEditPart)
+      { 
+        ((GraphicalEditPart)parent).getFigure().invalidateTree();
+        break;
+      }
     }
   }
   

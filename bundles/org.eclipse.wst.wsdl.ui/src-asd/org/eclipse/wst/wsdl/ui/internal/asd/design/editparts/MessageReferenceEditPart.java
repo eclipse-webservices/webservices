@@ -21,6 +21,7 @@ import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDDragAndDropEditPolicy;
@@ -134,6 +135,17 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     IMessageReference message = (IMessageReference)getModel();    
     label.setText(message.getText());
     label.setIcon(message.getImage()); 
+    
+    // Resize column widths.  Sizes may have shrunk.
+    rowLayout.getColumnData().clearColumnWidths();
+    for (EditPart parent = getParent(); parent != null; parent = parent.getParent())
+    {
+      if (parent instanceof InterfaceEditPart)
+      { 
+        ((GraphicalEditPart)parent).getFigure().invalidateTree();
+        break;
+      }
+    }
   }
 
   protected List getModelChildren()
