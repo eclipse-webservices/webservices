@@ -18,6 +18,7 @@
  * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
  * 20060719   139977 kathy@ca.ibm.com - Kathy Chan
  * 20060803   152701 cbrealey@ca.ibm.com - Chris Brealey
+ * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
