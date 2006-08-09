@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
+ * Copyright (c) 2002, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060606   105069 mahutch@ca.ibm.com - Mark Hutchinson          
+ * 20060606   105069 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20060803   152790 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.popup;
 
@@ -18,6 +19,7 @@ import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -34,6 +36,7 @@ import org.eclipse.wst.ws.internal.monitor.GetMonitorCommand;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
 public class PopupTestWSDL extends Action implements IActionDelegate
 {
@@ -42,7 +45,7 @@ public class PopupTestWSDL extends Action implements IActionDelegate
     super(ExplorerPlugin.getMessage("%POPUP_TEST_WSDL"));
   }
 
-  private IStructuredSelection getWorkbenchSelection()
+  protected IStructuredSelection getWorkbenchSelection()
   {
     IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
     if (window != null)
@@ -87,36 +90,48 @@ public class PopupTestWSDL extends Action implements IActionDelegate
           Definition definition = serviceImpl.getEnclosingDefinition();        
           wsdlURL = definition.getLocation();
         }        
-        /* TODO: Move this up to org.eclipse.jst.ws.ui.
-        if (object instanceof ServiceRef)
-        {
-          ServiceRef serviceImpl = (ServiceRef)object;
-          wsdlURL = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
-        }
+
         if (object instanceof WSDLResourceImpl)
         {
           WSDLResourceImpl WSDLRImpl = (WSDLResourceImpl)object;
-          wsdlURL = J2EEActionAdapterFactory.getWSDLURI(WSDLRImpl);
+          Definition definition = WSDLRImpl.getDefinition();
+          wsdlURL = definition.getLocation();
         }
-        */
-        GetMonitorCommand getMonitorCmd = new GetMonitorCommand();
-        getMonitorCmd.setMonitorService(true);
-        getMonitorCmd.setCreate(false);
-        getMonitorCmd.setWebServicesParser(new WebServicesParser());
-        getMonitorCmd.setWsdlURI(wsdlURL);
-        getMonitorCmd.execute(null, null);
-        List endpoints = getMonitorCmd.getEndpoints();
-        for (Iterator endpointsIt = endpoints.iterator(); endpointsIt.hasNext();)
-          launchOptions.add(new LaunchOption(LaunchOptions.WEB_SERVICE_ENDPOINT, (String)endpointsIt.next()));
-        launchOptions.add(new LaunchOption(LaunchOptions.WSDL_URL, wsdlURL));
-		launchOptions.add(new LaunchOption(LaunchOptions.STATE_LOCATION,stateLocation));
-		launchOptions.add(new LaunchOption(LaunchOptions.DEFAULT_FAVORITES_LOCATION,defaultFavoritesLocation));
+        
+       addLaunchOptions(launchOptions, wsdlURL, stateLocation, defaultFavoritesLocation);        
       }
     }
     command.setLaunchOptions((LaunchOption[])launchOptions.toArray(new LaunchOption[0]));
     command.execute();
   }
 
+  /**
+   * Set and add the WEB_SERVICE_ENDPOINT, WSDL_URL, STATE_LOCATIION and 
+   * DEFAULT_FAVORITES_LOCATION LaunchOptions to the launchOptions vector
+   * 
+   * @param launchOptions - vector of launchOptions to add to
+   * @param wsdlURL
+   * @param stateLocation
+   * @param defaultFavoritesLocation
+   */
+  protected void addLaunchOptions(Vector launchOptions, String wsdlURL, String stateLocation, String defaultFavoritesLocation)
+  {
+	  GetMonitorCommand getMonitorCmd = new GetMonitorCommand();
+      getMonitorCmd.setMonitorService(true);
+      getMonitorCmd.setCreate(false);
+      getMonitorCmd.setWebServicesParser(new WebServicesParser());
+      getMonitorCmd.setWsdlURI(wsdlURL);
+      getMonitorCmd.execute(null, null);
+      List endpoints = getMonitorCmd.getEndpoints();
+      for (Iterator endpointsIt = endpoints.iterator(); endpointsIt.hasNext();)
+      {
+    	  launchOptions.add(new LaunchOption(LaunchOptions.WEB_SERVICE_ENDPOINT, (String)endpointsIt.next()));
+      }
+      launchOptions.add(new LaunchOption(LaunchOptions.WSDL_URL, wsdlURL));
+	  launchOptions.add(new LaunchOption(LaunchOptions.STATE_LOCATION,stateLocation));
+	  launchOptions.add(new LaunchOption(LaunchOptions.DEFAULT_FAVORITES_LOCATION,defaultFavoritesLocation));
+  }
+  
   public void run(IAction action)
   {
     run();
