@@ -80,6 +80,8 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
   private boolean validObjectSelection_ = true;
   private WSDLSelectionWidgetWrapper wsdlValidatorWidget_;
 
+  private Timer timer_ = null;
+  
   /* CONTEXT_ID WSWSCEN0020 for the Service Implemenation text field of the Scenario Page */
 	 private String INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL = "WSWSCEN0020";
 
@@ -119,8 +121,10 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	
 	objectModifyListener_ = new ModifyListener(){
 		public void modifyText(ModifyEvent e) {
-			if (serviceImpl_.getText().indexOf(':') > 0)
-		        Timer.newInstance(Display.getCurrent(), ClientWizardWidget.this).startTimer();
+			if (serviceImpl_.getText().indexOf(':') > 0) {
+		        timer_ = Timer.newInstance(timer_, Display.getCurrent(), ClientWizardWidget.this);
+		        timer_.startTimer();
+			}
 		    else
 		        run();
 		}

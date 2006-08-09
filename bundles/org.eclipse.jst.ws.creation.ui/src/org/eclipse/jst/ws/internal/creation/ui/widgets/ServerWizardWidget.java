@@ -189,6 +189,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	
 	private ResourceContext resourceContext_;
 	
+	private Timer timer_ = null;
+	
 	private String GRAPHIC_SERVICE_0="icons/service_test.jpg"; //$NON-NLS-N$
 	private String GRAPHIC_SERVICE_1="icons/service_run.jpg";  //$NON-NLS-N$
 	private String GRAPHIC_SERVICE_2="icons/service_install.jpg"; //$NON-NLS-N$
@@ -331,8 +333,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			
 			objectModifyListener_ = new ModifyListener(){
 				public void modifyText(ModifyEvent e) {
-				    if (serviceImpl_.getText().indexOf(':') > 0)
-				        Timer.newInstance(Display.getCurrent(), ServerWizardWidget.this).startTimer();
+				    if (serviceImpl_.getText().indexOf(':') > 0) {
+				        timer_ = Timer.newInstance(timer_, Display.getCurrent(), ServerWizardWidget.this);
+				        timer_.startTimer();
+				    }
 				    else
 				        run();
 				}

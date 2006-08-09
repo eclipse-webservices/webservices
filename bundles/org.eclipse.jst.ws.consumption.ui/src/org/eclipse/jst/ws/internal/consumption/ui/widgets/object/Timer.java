@@ -15,9 +15,9 @@ import org.eclipse.swt.widgets.Display;
 
 public class Timer extends Thread
 {
-  private static Timer instance = null;
   private final long ONE_SECOND = 1000;
   private long refreshTime;
+  private boolean isRunning = true;
   private Display display;
   private Runnable runnable;
 
@@ -27,16 +27,17 @@ public class Timer extends Thread
     this.runnable = runnable;
   }
 
-  public synchronized static Timer newInstance(Display display, Runnable runnable)
+  public synchronized static Timer newInstance(Timer timer, Display display, Runnable runnable)
   {
-    if (instance == null)
-      instance = new Timer(display, runnable);
-    return instance;
+    if (!Timer.isRunning(timer))
+      return new Timer(display, runnable);
+    
+    return timer;
   }
   
-  public synchronized static boolean isRunning()
+  public synchronized static boolean isRunning(Timer timer)
   {
-    return instance != null;
+    return timer != null && timer.isRunning;
   }
 
   public synchronized void startTimer()
@@ -65,7 +66,7 @@ public class Timer extends Thread
       }
       currTime = getCurrentTime();
     }
-    instance = null;
+    isRunning = false;
     display.syncExec(runnable);
   }
 }

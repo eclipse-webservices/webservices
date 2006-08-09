@@ -85,6 +85,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private Listener  statusListener_;
   private WSDLSelectionTreeWidget tree;
   
+  private Timer timer_ = null;
+  
   /*CONTEXT_ID PCON0001 for the WSDL Selection Page*/
   private final String INFOPOP_PCON_PAGE = "PCON0001";
 
@@ -240,8 +242,10 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   private void handleWebServiceURIModifyEvent()
   {
-    if (webServiceURI.getText().indexOf(':') > 0)
-      Timer.newInstance(Display.getCurrent(), this).startTimer();
+    if (webServiceURI.getText().indexOf(':') > 0) {
+      timer_ = Timer.newInstance(timer_, Display.getCurrent(), this);
+      timer_.startTimer();
+    }
     else
       handleWebServiceURI();
     statusListener_.handleEvent(null);
@@ -356,7 +360,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     
     // Validate the content of the Web service URI
     // For example, is selection a WSDL URI?
-    if (!Timer.isRunning() && tree.isEnabled())
+    if (!Timer.isRunning(timer_) && tree.isEnabled())
     {
       IStatus status = tree.getStatus();
       if (status != null)
@@ -381,7 +385,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     }
     
     
-    if (!Timer.isRunning()) {
+    if (!Timer.isRunning(timer_)) {
     	String wsdlURI1 = wsPath;
     	 boolean isRemote = true;
     	if (tree.isEnabled()) { // is wsil
