@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="www.example.org/NoSchemaSchemaNamespaceImport/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="NoSchemaSchemaNamespaceImport"
+	targetNamespace="www.example.org/NoSchemaSchemaNamespaceImport/"
+	xmlns:elms="common.elements">
+	<wsdl:types>
+		<schema
+			targetNamespace="common.elements"
+			xmlns="http://www.w3.org/2001/XMLSchema">
+			<complexType name="MyType">
+				<sequence>
+					<element name="MyElement" type="xsd:string" />
+				</sequence>
+			</complexType>
+		</schema>
+		<schema
+			targetNamespace="www.example.org/NoSchemaSchemaNamespaceImport/"
+			xmlns="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="common.elements"/>
+			<element name="NewOperationResponse" type="elms:MyType" />
+			<element name="NewOperationRequest" type="xsd:string" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part element="tns:NewOperationResponse"
+			name="NewOperationResponse" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part element="tns:NewOperationRequest"
+			name="NewOperationRequest" />
+	</wsdl:message>
+</wsdl:definitions>

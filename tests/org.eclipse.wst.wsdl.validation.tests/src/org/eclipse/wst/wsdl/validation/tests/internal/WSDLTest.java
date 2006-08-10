@@ -312,6 +312,19 @@ public class WSDLTest extends BaseTestCase
   }
   
   /**
+   * Test /WSDL/Import/NoSchemeSchemaNamespaceImport/NoSchemeSchemaNamespaceImport.wsdl
+   */
+  public void testNoSchemeSchemaNamespaceImport()
+  {
+    String testname = "NoSchemeSchemaNamespaceImport";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + WSDL_DIR + "Import/NoSchemeSchemaNamespaceImport/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + WSDL_DIR + "Import/NoSchemeSchemaNamespaceImport/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + WSDL_DIR + "Import/NoSchemeSchemaNamespaceImport/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
    * CYCLIC TESTS
    */
   
