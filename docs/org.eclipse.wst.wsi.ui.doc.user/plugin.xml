@@ -19,10 +19,9 @@
 
 <extension point="org.eclipse.help.toc">
     <toc file="wswsitest_toc.xml"/>   
- </extension>
+</extension>
 
 	<extension point="org.eclipse.help.index">
       <index file="org.eclipse.wst.wsi.ui.doc.userindex.xml"/>
 </extension>
-
 </plugin>

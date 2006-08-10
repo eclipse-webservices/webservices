@@ -30,14 +30,13 @@ steps:</p></context>
 <steps>
 <step><cmd>Select a WSDL file in the  <b>Project Navigator</b> view.</cmd>
 </step>
-<step><cmd>Right-click the WSDL file, and select  <b>Validate WSDL file.</b></cmd>
-</step>
+<step><cmd>Right-click the WSDL file, and select  <b>Validate</b></cmd></step>
 </steps>
 <result>Any problems encountered while validating the file will be shown in
 the  <b>Tasks</b> view.<p>When you rebuild a project or save a resource, the
 WSDL Validator can be set to run automatically. To do this, from the Window
-menu, select  <b>Preferences</b> >  <b>Validation</b>. Ensure that the check
-box beside WSDL Validator is selected.</p></result>
+menu, select  <b>Preferences</b> >  <b>Validation</b>. Ensure that the WSDL
+Validator check box in the Build column is selected.</p></result>
 </taskbody>
 <related-links>
 <linklist><title>Related Concepts</title>
