@@ -218,8 +218,6 @@ public class InlineSchemaGenerator
     String elementName = elem.getTagName();
     xsdString.append("<").append(elementName);
 
-    boolean foundSchemaLocation = false; // flag if schemalocation is defined
-    String namespace = ""; // the namespace if we're checking an import or include
     String namePrefix = ""; // the xmlns prefix used for the elements
     // Get all of the attributes for this element and append them to the xsdString
     NamedNodeMap atts = elem.getAttributes();
@@ -230,19 +228,14 @@ public class InlineSchemaGenerator
       String nodeName = n.getNodeName();
       if (nodeName.equalsIgnoreCase(SCHEMALOCATION) && filelocation != null)
       {
-        foundSchemaLocation = true;
         String relativePath = n.getNodeValue();
         xsdString.append(relativePath).append("\"");   
       }
       else
       {
         String nodeValue = n.getNodeValue();
-        if (nodeName.equalsIgnoreCase(NAMESPACE))
-        {
-          namespace = nodeValue;
-        }
         // get the name prefix for this schema to use in generating import statements
-        else if (nodeName.indexOf(XMLNS) != -1)
+        if (nodeName.indexOf(XMLNS) != -1)
         {
 
           if (nodeValue.equalsIgnoreCase(elem.getNamespaceURI()))
@@ -266,10 +259,10 @@ public class InlineSchemaGenerator
         xsdString.append(nodeValue).append("\"");
       }
     }
-    if (elementName.equalsIgnoreCase("import") && !foundSchemaLocation)
-    {
-      xsdString.append(" ").append(SCHEMALOCATION).append("=\"").append(namespace).append("\"");
-    }
+//    if (elementName.equalsIgnoreCase("import") && !foundSchemaLocation)
+//    {
+//      xsdString.append(" ").append(SCHEMALOCATION).append("=\"").append(namespace).append("\"");
+//    }
     // add in any required NS declarations from parent elements
     if (reqNSDecl != null)
     {
