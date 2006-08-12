@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060811   153482 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.codegen;
@@ -105,18 +108,25 @@ public class Generator implements VisitorAction
     proxyBaseName = proxyBase;  
   }
 
-  private static final char[] BAD_SYMBOLS = {'-', ' '}; // symbols that can appear in the folder name but it is not allowed in a java bean name
-  private static final char UNDERSCORE = '_';	// replace the above ones by underscore
+  private static final char UNDERSCORE = '_';
   public String getSessionBeanId()
   {
     String name = getClientFolderPath();
     int index = name.lastIndexOf("/");
     index++;
-    String newName = name.substring(index);
-    for ( int i = 0; i < BAD_SYMBOLS.length; i++ ) {
-    	newName = newName.replace ( BAD_SYMBOLS[i], UNDERSCORE );
+    StringBuffer newName = new StringBuffer(name.substring(index));
+    
+    //We need to make this a valid java identifier
+    //To do this we will replace any character that is not valid with an underscore
+    for (int i = 0; i < newName.length(); i++)
+    {
+    	char c = newName.charAt(i);
+    	if (i == 0 && !Character.isJavaIdentifierStart(c) || !Character.isJavaIdentifierPart(c))
+    	{
+    		newName.setCharAt(i,UNDERSCORE);
+    	}
     }
-    return newName+ "id";
+    return newName + "id";
   }
 
   /*
