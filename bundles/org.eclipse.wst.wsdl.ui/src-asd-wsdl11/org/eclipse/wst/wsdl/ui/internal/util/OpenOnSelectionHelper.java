@@ -36,9 +36,10 @@ import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.wst.xsd.ui.internal.editor.XSDHyperlinkTargetLocator;
-import org.eclipse.xsd.XSDConcreteComponent;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDPackage;
+import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -311,16 +312,26 @@ public class OpenOnSelectionHelper extends WSDLSwitch
   public Object defaultCase(EObject object)
   {
     EClass theEClass = object.eClass();
-    
     if (theEClass.eContainer() == XSDPackage.eINSTANCE)
     {
-      // Handle navigation between inline schema components.
-      
-      XSDHyperlinkTargetLocator xsdHyperlinkTargetLocator = new XSDHyperlinkTargetLocator();
-      String attributeName = attr != null ? attr.getName(): null;
-      return xsdHyperlinkTargetLocator.locate((XSDConcreteComponent) object, attributeName);
+      Object result = object;
+      switch (theEClass.getClassifierID())
+      {
+        case XSDPackage.XSD_ELEMENT_DECLARATION:
+          if (isMatchingAttribute(XSDConstants.REF_ATTRIBUTE))
+          {
+            result = ((XSDElementDeclaration)object).getResolvedElementDeclaration();
+          }
+          return result;     
+        case XSDPackage.XSD_COMPLEX_TYPE_DEFINITION:
+          if (isMatchingAttribute(XSDConstants.BASE_ATTRIBUTE))
+          {
+            result = ((XSDComplexTypeDefinition)object).getBaseTypeDefinition();
+          }
+          return result;          
+      }
     }
-    
     return super.defaultCase(object);
   }
+
 }
