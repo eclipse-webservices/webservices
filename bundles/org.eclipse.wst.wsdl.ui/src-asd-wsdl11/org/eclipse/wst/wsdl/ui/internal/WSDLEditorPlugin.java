@@ -71,6 +71,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
 		if (registry == null) {
 			registry = new ExtensionsSchemasRegistry("org.eclipse.wst.wsdl.ui.extensionCategories"); //$NON-NLS-1$
             registry.__internalSetDeprecatedExtensionId("org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription");
+            registry.setPrefStore(WSDLEditorPlugin.getInstance().getPreferenceStore() );
 		}
 		
 		return registry;

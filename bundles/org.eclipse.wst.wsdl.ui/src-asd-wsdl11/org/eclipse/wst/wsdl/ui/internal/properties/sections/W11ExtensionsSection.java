@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.Viewer;
@@ -159,6 +160,11 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
   protected ExtensionsSchemasRegistry getExtensionsSchemasRegistry()
   {
     return WSDLEditorPlugin.getInstance().getExtensionsSchemasRegistry();
+  }
+  
+  protected IPreferenceStore getPrefStore()
+  {
+	return WSDLEditorPlugin.getInstance().getPreferenceStore();
   }
  
   static class WSDLExtensionTreeContentProvider extends DOMExtensionTreeContentProvider
