@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.INamedObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class InterfaceColumn extends AbstractModelCollection {
@@ -19,7 +24,11 @@ public class InterfaceColumn extends AbstractModelCollection {
 	}
 	
 	public ITreeElement[] getChildren() {
-		Object array[] = ((IDescription)model).getInterfaces().toArray();
+		List interfaces = ((IDescription)model).getInterfaces();		
+		Comparator compare = new NamedObjectComparator();
+		Collections.sort(interfaces, compare);
+		Object array[] = interfaces.toArray();
+		
 		ITreeElement treeElement[] = new ITreeElement[array.length];
 		for (int index = 0; index < array.length; index++) {
 			treeElement[index] = (ITreeElement) array[index];
@@ -27,8 +36,7 @@ public class InterfaceColumn extends AbstractModelCollection {
 		
 		return treeElement;
 	}
-	
-	
+
 	public boolean hasChildren() {
 		ITreeElement treeElement[] = getChildren();
 		if (treeElement.length > 0) {
@@ -40,5 +48,17 @@ public class InterfaceColumn extends AbstractModelCollection {
 	
 	public String getText() {
 		return "definition"; //$NON-NLS-1$
+	}
+	
+	private class NamedObjectComparator implements Comparator{
+		public int compare(Object o1, Object o2) {
+			if (o1 instanceof INamedObject && o2 instanceof INamedObject) {
+				String name1 = ((INamedObject) o1).getName();
+				String name2 = ((INamedObject) o2).getName();
+				return name1.compareTo(name2);
+			}
+			
+			return -1;
+		}
 	}
 }
