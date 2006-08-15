@@ -58,21 +58,6 @@
       </validator>
    </extension>
    
-<!-- ======================================================= -->
-<!-- Extension point: org.eclipse.ui.editors                 -->
-<!-- Purpose: Specify editor for file with extension wsimsg. -->
-<!-- ======================================================= -->
-   <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            name="%_UI_LOG_EDITOR"
-            extensions="wsimsg"
-            icon="icons/wsi_logfile_obj.gif"
-            class="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart"
-            id="org.eclipse.wst.wsi.ui.internal.WSILogEditor">
-      </editor>
-   </extension>
-   
    <!-- ======================================================= -->
    <!-- Extension point: org.eclipse.core.runtime.contentTypes  --> 
    <!-- Purpose: Specify file association for wsimsg.           -->
