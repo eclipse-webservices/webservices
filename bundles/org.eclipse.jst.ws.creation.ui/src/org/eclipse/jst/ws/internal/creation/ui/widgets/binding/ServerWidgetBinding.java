@@ -23,6 +23,7 @@
  * 20060609    86421 kathy@ca.ibm.com - Kathy Chan
  * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
+ * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -79,6 +80,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
+import org.eclipse.wst.ws.internal.ui.command.OpenEditorCommand;
 
 public class ServerWidgetBinding implements CommandWidgetBinding
 {
@@ -415,6 +417,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add( new ClientTestFragment( "ClientTestWidget") );
       add( new SimpleFragment( "Publish") );
       add(publishToPrivateUDDICmdFrag);
+      add( new SimpleFragment( new OpenEditorCommand(), "") );
       add(new LaunchFragment());
       add(new FinishFragment());
       
@@ -620,7 +623,10 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR",ClientTestDelegateCommand.class);    
     
-    
+      // Map OpenEditorCommand
+      dataRegistry.addMapping( PreServiceDevelopCommand.class, "WebService", OpenEditorCommand.class );
+      dataRegistry.addMapping( PreServiceDevelopCommand.class, "Context",    OpenEditorCommand.class );      
+      
       //Map Finish Command 
       
       

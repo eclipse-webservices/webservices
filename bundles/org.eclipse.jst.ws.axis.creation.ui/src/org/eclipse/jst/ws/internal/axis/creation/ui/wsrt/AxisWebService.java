@@ -17,6 +17,7 @@
  * 20060517   142327 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060524   130755 kathy@ca.ibm.com - Kathy Chan
  * 20060607   144978 kathy@ca.ibm.com - Kathy Chan
+ * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -32,7 +33,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisOutputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisRunInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUAxisInputCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation;
-import org.eclipse.jst.ws.internal.axis.creation.ui.command.ComputeAxisSkeletonBeanCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.CopyDeploymentFileCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.JavaToWSDLMethodCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.command.ModifyWSDLEndpointAddressCommand;
@@ -47,7 +47,6 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeleto
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.command.OpenJavaEditorCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
 import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.env.core.ICommandFactory;
@@ -161,10 +160,7 @@ public class AxisWebService extends AbstractWebService
 			}
 			commands.add( new CopyDeploymentFileCommand( project, earProject ) );
 			commands.add(new RefreshProjectCommand());
-			if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
-				commands.add(new ComputeAxisSkeletonBeanCommand());
-				commands.add(new OpenJavaEditorCommand());
-			}
+
 			return new SimpleCommandFactory(commands);
 		}
 	}
@@ -324,14 +320,6 @@ public class AxisWebService extends AbstractWebService
 	    // AxisOutputCommand
 	    dataRegistry.addMapping(TDCodeGenOperation.class, "WsdlURI", AxisOutputCommand.class);
 	    dataRegistry.addMapping(TDCodeGenOperation.class, "JavaWSDLParam", AxisOutputCommand.class); 
-	    
-	    // ComputeAxisSkeletonBeanCommand
-	    dataRegistry.addMapping(TDCodeGenOperation.class, "JavaWSDLParam", ComputeAxisSkeletonBeanCommand.class);
-	    
-	    // OpenJavaEditorCommand
-	    dataRegistry.addMapping(ComputeAxisSkeletonBeanCommand.class, "ClassNames", OpenJavaEditorCommand.class);
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", OpenJavaEditorCommand.class, "Project", projectTransformer);
-	    
 	  }
 	public AxisWebServiceInfo getAxisWebServiceInfo() {
 		return axisWebServiceInfo_;
