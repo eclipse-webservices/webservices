@@ -23,14 +23,6 @@ public class Validator extends AbstractNestedValidator
 {
   protected HashMap xsdGrammarPools = new HashMap();
   protected HashMap xmlGrammarPools = new HashMap();
-  
-  /* (non-Javadoc)
-   * @see org.eclipse.wst.xml.core.internal.validation.core.AbstractNestedValidator#getValidatorName()
-   */
-  protected String getValidatorName() 
-  {
-	return WSDLValidationMessages.Message_WSDL_validation_message_ui;
-  }
 
   /** 
    * Create and configure the two grammar pools for this WSDL validation context.
