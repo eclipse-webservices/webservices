@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.wsdl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +25,7 @@ import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.xml.WSDLReader;
 
+import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.wsdl.xsd.InlineSchemaValidator;
 import org.eclipse.wst.wsi.internal.core.xml.XMLTags;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
@@ -46,6 +48,11 @@ public class WSDLDocument
    * Definition element.
    */
   protected Definition definitions = null;
+
+  /**
+   * Document element
+   */
+  protected Document document = null;
 
   /**
    * WSDL element list with line and column numbers.
@@ -90,7 +97,7 @@ public class WSDLDocument
       //wsdlReader.setFeature(com.ibm.wsdl.Constants.FEATURE_IMPORT_DOCUMENTS,true);
 
       // Parse the WSDL document
-      Document document = XMLUtils.parseXMLDocument(fileName);
+      document = XMLUtils.parseXMLDocument(fileName);
       this.definitions = wsdlReader.readWSDL(fileName, document);
 
       // Since inline schema validator is used by several assertions, validate all
@@ -124,6 +131,7 @@ public class WSDLDocument
   {
     this.fileName = fileName;
     this.definitions = definitions;
+    this.document = null;
     schemas.clear();
     schemasValidationErrors.clear();
   }
@@ -136,6 +144,28 @@ public class WSDLDocument
   {
     // Return the document location
     return this.fileName;
+  }
+
+  /**
+   * Get the document element of the WSDL document.
+   * @return the document element
+   */
+  public Document getDocument()
+  {
+    if (document == null && definitions != null)
+    {
+      try
+      {
+        document = XMLUtils.parseXMLDocument(definitions.getDocumentBaseURI());
+      }
+      catch (IOException ioe)
+      {
+      }
+      catch (WSIException wsie)
+      {
+      }
+    }
+    return document;
   }
 
   /**

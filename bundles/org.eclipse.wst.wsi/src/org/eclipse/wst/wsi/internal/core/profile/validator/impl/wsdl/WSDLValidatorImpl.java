@@ -1499,7 +1499,11 @@ public class WSDLValidatorImpl
     try
     {
       // Need to read the file directly, since WSDL4J always puts in the default WSDL namespace
-      Document document = parseXMLDocumentURL(def.getDocumentBaseURI(), null);
+      Document document = wsdlDocument.getDocument();
+      if (document == null)
+      {
+        document = parseXMLDocumentURL(def.getDocumentBaseURI(), null);
+      }
 
       if (document != null)
       {
