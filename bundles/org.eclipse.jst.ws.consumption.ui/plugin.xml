@@ -624,6 +624,8 @@
     wsClientImplIds="org.eclipse.jst.ws.client.type.java"
     moduletypes="webmodule"
     methodsneeded="true"
+    codeGenerated="true"
+    serverRequired="true"
     class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.GSTCWebServiceTester">
   </tester>
 </extension>
@@ -635,6 +637,8 @@
     wsClientImplIds="org.eclipse.jst.ws.client.type.java"
     moduletypes="webmodule"
     methodsneeded="false"
+    codeGenerated="false"
+    serverRequired="false"
     class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WSEWebServiceTester">
   </tester>
 </extension>

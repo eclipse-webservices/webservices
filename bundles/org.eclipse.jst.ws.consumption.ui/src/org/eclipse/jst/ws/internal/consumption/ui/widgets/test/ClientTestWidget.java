@@ -10,9 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060815   104870 makandre@ca.ibm.com - Andrew Mak, enable/disable test page controls base on settings in test facility extension
  *******************************************************************************/
-/**
- */
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import org.eclipse.core.resources.IContainer;
@@ -26,6 +25,8 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
+import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.swt.SWT;
@@ -130,6 +131,14 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     									ConsumptionUIMessages.TOOLTIP_PWSM_COMBOBOX_TEST,
                                           INFOPOP_PWSM_COMBOBOX_TEST,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
+    testTypeCombo_.addSelectionListener(
+    		new SelectionAdapter() {
+    			public void widgetSelected(SelectionEvent e) {
+    				handleTestFacilitySelection();
+    			}
+    		}
+    );    
+    
     new Label( comboGroup_, SWT.NONE );
     
     projectCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_JSP_PROJECT_NAME,
@@ -286,12 +295,43 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     boolean enabled = testCheckbox_.getSelection();
     
     testTypeCombo_.setEnabled( enabled );
+    
+    if (enabled && testFacilities_ != null) {
+    	handleTestFacilitySelection();
+    	return;
+    }    
+
     sampleFolderText_.setEnabled( enabled );
     methodsTree_.setEnabled( enabled );
     runTestCheckbox_.setEnabled( enabled );
     selectAllMethodsButton_.setEnabled( enabled );
     deselectAllMethodsButton_.setEnabled( enabled );
     sampleFolderBrowseButton_.setEnabled( enabled );
+  }
+  
+  private void handleTestFacilitySelection() {
+	  
+	  String clientTestID = getTestFacility().getSelection();
+	  	
+	  WebServiceTestExtension testExtension = 
+		  (WebServiceTestExtension) WebServiceTestRegistry.getInstance()
+		  .getWebServiceExtensionsByName(clientTestID);
+	    
+      boolean hasCodeGen = testExtension.isCodeGenNeeded();
+      
+      // folder selection is only applicable for test facilities with codegen
+      sampleFolderText_.setEnabled( hasCodeGen );
+      sampleFolderBrowseButton_.setEnabled( hasCodeGen );
+      
+      boolean hasMethods = testExtension.areMethodsNeeded();
+      
+      // method selection is only applicable for test facilities with methods
+      methodsTree_.setEnabled( hasMethods );      
+      selectAllMethodsButton_.setEnabled( hasMethods );
+      deselectAllMethodsButton_.setEnabled( hasMethods );
+      
+      // run on server only applicable for test facilities that needs launching
+      runTestCheckbox_.setEnabled( testExtension.isServerNeeded() );
   }
   
   private void handleSelectAll( boolean value )
@@ -321,6 +361,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     testFacilities_ = testFacilities;
     testTypeCombo_.setItems( testFacilities.getList() );
     testTypeCombo_.select( testFacilities.getIndex() );
+    handleTestFacilitySelection();
   }
   
   public SelectionList getTestFacility()
