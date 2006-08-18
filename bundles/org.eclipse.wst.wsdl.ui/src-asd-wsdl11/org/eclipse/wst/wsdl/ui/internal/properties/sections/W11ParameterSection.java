@@ -16,7 +16,9 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
@@ -39,30 +41,30 @@ public class W11ParameterSection extends ParameterSection {
 		super.createControlArea();
 		FormData data;
 		
-		typeRadio = getWidgetFactory().createButton(composite, Messages.getString("_UI_LABEL_TYPE"), SWT.RADIO); //$NON-NLS-1$
-		elementRadio = getWidgetFactory().createButton(composite, Messages.getString("_UI_LABEL_ELEMENT"), SWT.RADIO);	 //$NON-NLS-1$
 		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_REFERENCE_KIND") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		Composite comp = getWidgetFactory().createComposite(composite);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		layout.marginRight = 5;
+		comp.setLayout(layout);
 		
+		data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(comp, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(comp, 0, SWT.CENTER);
+		referenceKindLabel.setLayoutData(data);
+		
+		typeRadio = getWidgetFactory().createButton(comp, Messages.getString("_UI_LABEL_TYPE"), SWT.RADIO); //$NON-NLS-1$
+		elementRadio = getWidgetFactory().createButton(comp, Messages.getString("_UI_LABEL_ELEMENT"), SWT.RADIO);	 //$NON-NLS-1$
 		typeRadio.addSelectionListener(this);
 		elementRadio.addSelectionListener(this);
 		
 		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(typeRadio, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(typeRadio, 0, SWT.CENTER);
-		referenceKindLabel.setLayoutData(data);
-		
-		data = new FormData();
 		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(elementRadio, -ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
-		typeRadio.setLayoutData(data);
-		
-		data = new FormData();
-		data.left = new FormAttachment(0, 160);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
-		elementRadio.setLayoutData(data);
+		comp.setLayoutData(data);
 	}
 	
 	public void doWidgetSelected(SelectionEvent e) {
