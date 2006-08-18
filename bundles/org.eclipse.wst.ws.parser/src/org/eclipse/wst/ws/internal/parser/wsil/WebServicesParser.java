@@ -12,6 +12,7 @@
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060517   142324 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060711   150301 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060818   154393 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.parser.wsil;
@@ -148,9 +149,16 @@ public class WebServicesParser
       byte[] b = getInputStreamAsByteArray(wsilURI);
       wsEntity.setBytes(b);
       setHTTPSettings(wsEntity);
-      InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(b), byteEncoding );
+      
+      // This parser only checks the header of HTML for a particular encoding.
+      // It doesn't check the encoding for general XML documents like WSDL and WSIL.
+      // This causing this parser to alway use UTF-8 as the encoding.  Therefore,
+      // since we can not trust the encoding specified we will not use it.  Instead,
+      // we will just let the WSIL parser figure out what encoding to use.
+      
+      //InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(b), byteEncoding );
       wsilDocument = WSILDocument.newInstance();
-      wsilDocument.read(isr);
+      wsilDocument.read(wsilURI);
       wsEntity.setType(WebServiceEntity.TYPE_WSIL);
       wsEntity.setModel(wsilDocument);
     }
