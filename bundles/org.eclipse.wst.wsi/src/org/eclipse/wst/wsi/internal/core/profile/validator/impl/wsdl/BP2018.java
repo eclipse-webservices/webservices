@@ -78,14 +78,16 @@ public class BP2018 extends AssertionProcess implements WSITag
   {
     result = AssertionResult.RESULT_PASSED;
 
-    // Get the location of the WSDL document
-    Definition definition =
-      (Definition) entryContext.getEntry().getEntryDetail();
     try
     {
       // Parse the WSDL document as an XML file
-      Document doc =
-        validator.parseXMLDocumentURL(definition.getDocumentBaseURI(), null);
+      Document doc = entryContext.getWSDLDocument().getDocument();
+      if (doc == null)
+      {
+        // Get the location of the WSDL document
+        Definition definition = (Definition) entryContext.getEntry().getEntryDetail();
+        doc = validator.parseXMLDocumentURL(definition.getDocumentBaseURI(), null);
+      }
 
       Element root = doc.getDocumentElement(); // get definition
 
@@ -113,6 +115,7 @@ public class BP2018 extends AssertionProcess implements WSITag
     catch (Throwable t)
     {
       result = AssertionResult.RESULT_NOT_APPLICABLE;
+      Definition definition = (Definition) entryContext.getEntry().getEntryDetail();
       failureDetail =
         this.validator.createFailureDetail(
           "An error occurred while processing the document at "
