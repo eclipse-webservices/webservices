@@ -4,7 +4,7 @@
 
 	<extension point="org.eclipse.ui.editors">
 		<editor
-			name="WSDL Editor"
+			name="%_UI_EDITOR_NAME"
 			icon="icons/wsdl_file_obj.gif"
 			class="org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor"
 			contributorClass="org.eclipse.wst.wsdl.ui.internal.WSDLActionBarContributor"
