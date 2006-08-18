@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.WSITag;
 import org.eclipse.wst.wsi.internal.core.analyzer.AssertionFailException;
-import org.eclipse.wst.wsi.internal.core.analyzer.AssertionNotApplicableException;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.AssertionProcess;
@@ -63,7 +61,11 @@ public class AP2908 extends AssertionProcess implements WSITag
       Binding wsdlBinding = (Binding) entryContext.getEntry().getEntryDetail();
 
       // Since WSDL4J 1.4 ignores any attributes of mime:part, use Xerces 2.6.2 instead
-      Document doc = validator.parseXMLDocumentURL(validator.wsdlURL, null);
+      Document doc = entryContext.getWSDLDocument().getDocument();
+      if (doc == null)
+      {
+        doc = validator.parseXMLDocumentURL(validator.wsdlURL, null);
+      }
 
       // Finding the wsdl:binding element being processed
       Element binding = getBindingElement(
@@ -123,11 +125,7 @@ public class AP2908 extends AssertionProcess implements WSITag
       // If the binding contains no one mime:multipartRelated element,
       // the assertion is not applicable
       if (!multipartsFound)
-        throw new AssertionNotApplicableException();
-    }
-    catch (AssertionNotApplicableException anae)
-    {
-      result = AssertionResult.RESULT_NOT_APPLICABLE;
+        result = AssertionResult.RESULT_NOT_APPLICABLE;
     }
     catch (AssertionFailException afe)
     {
