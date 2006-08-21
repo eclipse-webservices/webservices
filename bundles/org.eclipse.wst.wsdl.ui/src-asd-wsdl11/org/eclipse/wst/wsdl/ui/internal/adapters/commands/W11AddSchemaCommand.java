@@ -26,7 +26,7 @@ public class W11AddSchemaCommand extends W11TopLevelElementCommand implements IA
 	private Object schema;
 	
 	public W11AddSchemaCommand(Definition definition) {
-    super(Messages.getString("_UI_ACTION_ADD_SCHEMA"), definition);
+    super(Messages._UI_ACTION_ADD_SCHEMA, definition);
 	}
 	
 	public void execute() {

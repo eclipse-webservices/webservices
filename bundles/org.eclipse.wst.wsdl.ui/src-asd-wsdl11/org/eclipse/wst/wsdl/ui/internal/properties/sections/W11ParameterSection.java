@@ -41,7 +41,7 @@ public class W11ParameterSection extends ParameterSection {
 		super.createControlArea();
 		FormData data;
 		
-		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_REFERENCE_KIND") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_REFERENCE_KIND + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		Composite comp = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
@@ -56,8 +56,8 @@ public class W11ParameterSection extends ParameterSection {
 		data.top = new FormAttachment(comp, 0, SWT.CENTER);
 		referenceKindLabel.setLayoutData(data);
 		
-		typeRadio = getWidgetFactory().createButton(comp, Messages.getString("_UI_LABEL_TYPE"), SWT.RADIO); //$NON-NLS-1$
-		elementRadio = getWidgetFactory().createButton(comp, Messages.getString("_UI_LABEL_ELEMENT"), SWT.RADIO);	 //$NON-NLS-1$
+		typeRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_TYPE, SWT.RADIO); //$NON-NLS-1$
+		elementRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_ELEMENT, SWT.RADIO);	 //$NON-NLS-1$
 		typeRadio.addSelectionListener(this);
 		elementRadio.addSelectionListener(this);
 		
@@ -72,12 +72,12 @@ public class W11ParameterSection extends ParameterSection {
 		Part part = (Part) parameter.getTarget();
 		
 		if (e.widget == typeRadio && typeRadio.getSelection()) {
-			comboLabel.setText(Messages.getString("_UI_LABEL_TYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+			comboLabel.setText(Messages._UI_LABEL_TYPE+ ":"); //$NON-NLS-1$ //$NON-NLS-2$
 			ComponentReferenceUtil.setComponentReference(part, true, null);
 			super.refreshCombo();
 		}
 		else if (e.widget == elementRadio && elementRadio.getSelection()) {
-			comboLabel.setText(Messages.getString("_UI_LABEL_ELEMENT") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+			comboLabel.setText(Messages._UI_LABEL_ELEMENT + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 			ComponentReferenceUtil.setComponentReference(part, false, null);
 			refreshElementCombo();
 		}
@@ -176,13 +176,13 @@ public class W11ParameterSection extends ParameterSection {
 			if (part.getTypeDefinition() != null) {
 				typeRadio.setSelection(true);
 				elementRadio.setSelection(false);
-				comboLabel.setText(Messages.getString("_UI_LABEL_TYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+				comboLabel.setText(Messages._UI_LABEL_TYPE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 				handleTypeScenario = true;
 			}
 			else if (part.getElementDeclaration() != null) {
 				typeRadio.setSelection(false);
 				elementRadio.setSelection(true);
-				comboLabel.setText(Messages.getString("_UI_LABEL_ELEMENT") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+				comboLabel.setText(Messages._UI_LABEL_ELEMENT + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 				handleTypeScenario = false;
 				refreshElementCombo();			
 			}

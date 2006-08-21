@@ -58,7 +58,7 @@ public class NamespaceTable extends Composite
 {
   protected static final String NAMESPACE_URI = XMLCommonResources.getInstance().getString("_UI_LABEL_NAMESPACE_NAME"); 
   protected static final String PREFIX = XMLCommonResources.getInstance().getString("_UI_LABEL_PREFIX"); 
-  protected static final String INCLUDE = Messages.getString("_UI_TITLE_SELECT"); //$NON-NLS-1$
+  protected static final String INCLUDE = Messages._UI_TITLE_SELECT; //$NON-NLS-1$
     
   protected List namespaceInfoList = new Vector();
   protected List checkedList = new Vector();
@@ -100,7 +100,7 @@ public class NamespaceTable extends Composite
     setLayoutData(fillGD);             
     
     Group namespaceInfoGroup = new Group(this, SWT.NONE);
-    namespaceInfoGroup.setText(Messages.getString("_UI_LABEL_NAMESPACE_URIS_TO_BE_INCLUDED")); //$NON-NLS-1$
+    namespaceInfoGroup.setText(Messages._UI_LABEL_NAMESPACE_URIS_TO_BE_INCLUDED); //$NON-NLS-1$
     namespaceInfoGroup.setLayout(new GridLayout());   
     GridData gd = fillGD;
     if (widthHint != -1)
@@ -328,7 +328,7 @@ public class NamespaceTable extends Composite
     gd.grabExcessHorizontalSpace = true;
 
     addButton = new Button(buttonComposite, SWT.NONE);
-    addButton.setText(Messages.getString("_UI_ACTION_ADD")); //$NON-NLS-1$
+    addButton.setText(Messages._UI_ACTION_ADD); //$NON-NLS-1$
     addButton.setLayoutData(gd);//ViewUtility.createHorizontalFill());
     addButton.addSelectionListener(selectionListener);
   }

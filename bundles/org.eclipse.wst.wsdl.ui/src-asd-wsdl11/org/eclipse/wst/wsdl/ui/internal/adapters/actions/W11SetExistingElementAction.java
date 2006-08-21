@@ -28,7 +28,7 @@ public class W11SetExistingElementAction extends BaseSelectionAction {
 	public W11SetExistingElementAction(IWorkbenchPart part) {
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_EXISTING_ELEMENT")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_EXISTING_ELEMENT); //$NON-NLS-1$
 //		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/message_obj.gif"));
 	}
 	

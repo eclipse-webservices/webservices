@@ -157,7 +157,7 @@ public class W11TopLevelElementCommand extends Command
   }
   private static String getDefaultNamespace(Definition definition)
   {
-    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"));
+    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE);
 
     if (!namespace.endsWith("/"))
     {

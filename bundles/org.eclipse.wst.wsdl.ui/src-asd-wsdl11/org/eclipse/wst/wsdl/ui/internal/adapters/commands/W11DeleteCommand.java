@@ -45,7 +45,7 @@ public class W11DeleteCommand extends W11TopLevelElementCommand {
 	protected WSDLBaseAdapter object;
 	
 	public W11DeleteCommand(WSDLBaseAdapter object) {
-        super(Messages.getString("_UI_ACTION_DELETE"), null);
+        super(Messages._UI_ACTION_DELETE, null);
 		this.object = object;
 	}
 	

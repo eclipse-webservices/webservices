@@ -35,7 +35,7 @@ public class W11SetElementCommand extends W11TopLevelElementCommand {
 	// TODO: rmah: signature of this method should changed post WTP 1.5.  Instead of taking in
 	// an "Object parent", it should be "Part parent".
 	public W11SetElementCommand(Object parent, String action) {
-        super(Messages.getString("_UI_ACTION_SET_ELEMENT"), ((Part) parent).getEnclosingDefinition());
+        super(Messages._UI_ACTION_SET_ELEMENT, ((Part) parent).getEnclosingDefinition());
 		this.parent = parent;
 		this.action = action;
 	}

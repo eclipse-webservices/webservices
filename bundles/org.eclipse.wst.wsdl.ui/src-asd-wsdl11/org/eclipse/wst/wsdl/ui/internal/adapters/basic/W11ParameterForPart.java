@@ -140,12 +140,12 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		  actions.addAll(((W11Operation) operation).getValidInputOutpuActions());
 		  actions.add(ASDAddFaultAction.ID);
 		  
-		  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_TYPE")); //$NON-NLS-1$
+		  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages._UI_ACTION_SET_TYPE); //$NON-NLS-1$
 		  actions.add(W11SetNewTypeAction.ID);
 		  actions.add(W11SetExistingTypeAction.ID);
 		  actions.add(BaseSelectionAction.SUBMENU_END_ID);
 
-		  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_ELEMENT")); //$NON-NLS-1$
+		  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages._UI_ACTION_SET_ELEMENT); //$NON-NLS-1$
 		  actions.add(W11SetNewElementAction.ID);
 		  actions.add(W11SetExistingElementAction.ID);
 		  actions.add(BaseSelectionAction.SUBMENU_END_ID);		  

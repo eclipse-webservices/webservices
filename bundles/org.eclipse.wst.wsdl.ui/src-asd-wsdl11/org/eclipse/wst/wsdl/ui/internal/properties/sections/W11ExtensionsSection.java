@@ -66,7 +66,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
       if (o instanceof XSDElementDeclaration)
       {
         XSDElementDeclaration element = (XSDElementDeclaration) o;
-        addExtensionCommand = new AddExtensionElementCommand(Messages.getString("_UI_LABEL_ADD_EXTENSION_ELEMENT"), extensibleElement, element); //$NON-NLS-1$
+        addExtensionCommand = new AddExtensionElementCommand(Messages._UI_LABEL_ADD_EXTENSION_ELEMENT, extensibleElement, element); //$NON-NLS-1$
       }
       else if (o instanceof XSDAttributeDeclaration)
       {

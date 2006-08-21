@@ -223,12 +223,12 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 
 		// Need new icon
 		this.setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(InternalWSDLMultiPageEditor.class, "icons/new_wsdl_wiz.gif")); //$NON-NLS-1$
-		this.setWindowTitle(Messages.getString("_UI_TITLE_NEW_WSDL_FILE")); //$NON-NLS-1$
+		this.setWindowTitle(Messages._UI_TITLE_NEW_WSDL_FILE); //$NON-NLS-1$
 	}
 
 	public void addPages() {
 		newFilePage = new WSDLNewFilePage(selection);
-		optionsPage = new WSDLNewFileOptionsPage(Messages.getString("_UI_TITLE_OPTIONS"), Messages.getString("_UI_TITLE_OPTIONS"), null); //$NON-NLS-1$ //$NON-NLS-2$
+		optionsPage = new WSDLNewFileOptionsPage(Messages._UI_TITLE_OPTIONS, Messages._UI_TITLE_OPTIONS, null); //$NON-NLS-1$ //$NON-NLS-2$
 		addPage(newFilePage);
 		addPage(optionsPage);
 	}

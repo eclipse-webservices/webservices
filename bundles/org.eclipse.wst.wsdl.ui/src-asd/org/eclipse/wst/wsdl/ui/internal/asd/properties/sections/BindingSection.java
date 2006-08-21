@@ -46,9 +46,9 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 	
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory) {
 		super.createControls(parent, factory);
-		comboLabel.setText(org.eclipse.wst.wsdl.ui.internal.asd.Messages.getString("_UI_LABEL_PORTTYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		comboLabel.setText(org.eclipse.wst.wsdl.ui.internal.asd.Messages._UI_LABEL_PORTTYPE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_BINDING_PROTOCOL"));
+		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL);
 		protocolValue= getWidgetFactory().createCLabel(composite, "");
 		
 		// Layout protocolLabel
@@ -96,7 +96,7 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		regenBindingButton.setLayoutData(data);
 		*/
 
-		String buttonLabel = org.eclipse.wst.wsdl.ui.internal.asd.Messages.getString("_UI_GENERATE_BINDING_CONTENT");
+		String buttonLabel = org.eclipse.wst.wsdl.ui.internal.asd.Messages._UI_GENERATE_BINDING_CONTENT;
 		regenBindingButton = getWidgetFactory().createButton(composite, buttonLabel, SWT.PUSH);
 
 		// Layout button

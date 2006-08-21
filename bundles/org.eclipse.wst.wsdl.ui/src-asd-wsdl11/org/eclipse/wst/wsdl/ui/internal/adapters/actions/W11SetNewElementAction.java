@@ -28,7 +28,7 @@ public class W11SetNewElementAction extends BaseSelectionAction {
 	public W11SetNewElementAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_NEW_ELEMENT")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_NEW_ELEMENT); //$NON-NLS-1$
 //		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/service_obj.gif"));
 	}
 	

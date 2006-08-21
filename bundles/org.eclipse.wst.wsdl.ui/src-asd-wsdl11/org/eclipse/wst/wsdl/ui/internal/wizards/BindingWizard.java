@@ -76,7 +76,7 @@ public class BindingWizard extends Wizard
     this.kind = kind;	
 	bindingGenerator = new BindingGenerator(definition, binding);
 
-    setWindowTitle(Messages.getString("_UI_BINDING_WIZARD")); //$NON-NLS-1$
+    setWindowTitle(Messages._UI_BINDING_WIZARD); //$NON-NLS-1$
     //setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(WSDLEditorPlugin.class, "icons/NewXML.gif"));
   }
 
@@ -189,7 +189,7 @@ public class BindingWizard extends Wizard
   
   private String getDefaultNamespace(Definition definition)
   {
-    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE")); //$NON-NLS-1$
+    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
     if (!namespace.endsWith("/")) { //$NON-NLS-1$
     	namespace = namespace.concat("/"); //$NON-NLS-1$
     }
@@ -209,7 +209,7 @@ public class BindingWizard extends Wizard
     Node node = document;
     if (node instanceof IDOMNode)
     {
-      ((IDOMNode)node).getModel().beginRecording(this, Messages.getString("_UI_ACTION_ADD_BINDING"));   //$NON-NLS-1$
+      ((IDOMNode)node).getModel().beginRecording(this, Messages._UI_ACTION_ADD_BINDING);   //$NON-NLS-1$
     }
   }
   
@@ -228,8 +228,8 @@ public class BindingWizard extends Wizard
     public BindingWizardOptionsPage()
     {
       super("SpecifyBindingPage"); //$NON-NLS-1$
-      setTitle(Messages.getString("_UI_TITLE_SPECIFY_BINDING_DETAILS")); //$NON-NLS-1$
-      setDescription(Messages.getString("_UI_SPECIFY_BINDING_DETAILS_LABEL")); //$NON-NLS-1$
+      setTitle(Messages._UI_TITLE_SPECIFY_BINDING_DETAILS); //$NON-NLS-1$
+      setDescription(Messages._UI_SPECIFY_BINDING_DETAILS_LABEL); //$NON-NLS-1$
     }
 
     protected BindingGenerator getBindingGenerator()
@@ -264,7 +264,7 @@ public class BindingWizard extends Wizard
 
     public String getRefNameLabelText()
     {
-      return Messages.getString("_UI_PORT_TYPE"); //$NON-NLS-1$
+      return Messages._UI_PORT_TYPE; //$NON-NLS-1$
     }
 
     public List getRefNames()

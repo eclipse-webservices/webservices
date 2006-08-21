@@ -19,7 +19,7 @@ public class W11SetInterfaceCommand extends W11TopLevelElementCommand {
 	private PortType portType;
 	
 	public W11SetInterfaceCommand(Binding binding, PortType portType) {
-        super(Messages.getString("_UI_ACTION_SET_PORTTYPE"), binding.getEnclosingDefinition());
+        super(Messages._UI_ACTION_SET_PORTTYPE, binding.getEnclosingDefinition());
 		this.binding = binding;
 		this.portType = portType;
 	}

@@ -200,7 +200,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  actions.add(ASDAddFaultAction.ID);
 	  actions.add(W11AddPartAction.ID);
 	  actions.add(ASDDeleteAction.ID);
-	  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_MESSAGE")); //$NON-NLS-1$
+	  actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages._UI_ACTION_SET_MESSAGE); //$NON-NLS-1$
 	  actions.add(W11SetNewMessageAction.ID);
 	  actions.add(W11SetExistingMessageAction.ID);
 	  actions.add(BaseSelectionAction.SUBMENU_END_ID);

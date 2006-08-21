@@ -40,7 +40,7 @@ public class W11AddPartAction extends BaseSelectionAction {
 	public W11AddPartAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_ADD_PART")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_ADD_PART); //$NON-NLS-1$
 		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/part_obj.gif")); //$NON-NLS-1$
 	}
 	

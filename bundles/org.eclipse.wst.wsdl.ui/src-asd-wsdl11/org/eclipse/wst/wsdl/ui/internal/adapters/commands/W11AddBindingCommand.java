@@ -22,7 +22,7 @@ public class W11AddBindingCommand extends W11TopLevelElementCommand implements I
 	private Binding newBinding;
 	
 	public W11AddBindingCommand(Definition definition) {
-    super(Messages.getString("_UI_ACTION_ADD_BINDING"), definition);
+    super(Messages._UI_ACTION_ADD_BINDING, definition);
 	}
 	
 	public void setNewBindingName(String newName) {

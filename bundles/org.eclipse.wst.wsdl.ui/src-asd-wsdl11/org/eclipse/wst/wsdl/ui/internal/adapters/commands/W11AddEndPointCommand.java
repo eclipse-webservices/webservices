@@ -27,7 +27,7 @@ public class W11AddEndPointCommand extends W11TopLevelElementCommand implements 
     private Port port;
     
     public W11AddEndPointCommand(Service service) {
-        super(Messages.getString("_UI_ACTION_ADD"), service.getEnclosingDefinition());
+        super(Messages._UI_ACTION_ADD, service.getEnclosingDefinition());
         this.service = service;
     }
     

@@ -34,7 +34,7 @@ public class W11SetTypeCommand extends W11TopLevelElementCommand {
 	private boolean continueApply;
 	
 	public W11SetTypeCommand(Object parent, String action) {
-        super(Messages.getString("_UI_ACTION_SET_TYPE"), null);
+        super(Messages._UI_ACTION_SET_TYPE, null);
 		this.parent = parent;
 		this.action = action;
 	}

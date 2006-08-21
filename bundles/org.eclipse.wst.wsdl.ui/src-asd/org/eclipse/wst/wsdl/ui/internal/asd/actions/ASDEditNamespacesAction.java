@@ -35,7 +35,7 @@ public class ASDEditNamespacesAction extends BaseSelectionAction {
 	public ASDEditNamespacesAction(IWorkbenchPart part, IDescription description) {
 		super(part);
 		setId(ID);
-		String text = Messages.getString("_UI_EDIT_NAMESPACES"); //$NON-NLS-1$
+		String text = Messages._UI_EDIT_NAMESPACES; //$NON-NLS-1$
 		setText(text);
 		
 		this.description = description;
@@ -59,7 +59,7 @@ public class ASDEditNamespacesAction extends BaseSelectionAction {
 			IPath path = new Path(definition.getDocumentBaseURI());
 			List namespaceInfoList = w11Description.getNamespacesInfo();
 			String tns = description.getTargetNamespace();
-			EditNamespacesDialog dialog = new EditNamespacesDialog(WSDLEditorPlugin.getShell(), path, Messages.getString("_UI_EDIT_NAMESPACES_DIALOG_TITLE"), tns, namespaceInfoList); //$NON-NLS-1$
+			EditNamespacesDialog dialog = new EditNamespacesDialog(WSDLEditorPlugin.getShell(), path, Messages._UI_EDIT_NAMESPACES_DIALOG_TITLE, tns, namespaceInfoList); //$NON-NLS-1$
 			int rc = dialog.createAndOpen();
 			if (rc == IDialogConstants.OK_ID) {
 				List newInfoList = dialog.getNamespaceInfoList();

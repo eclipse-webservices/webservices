@@ -65,17 +65,17 @@ public class SoapBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
     separator.setLayoutData(gd);
 
     Label optionsHeading = new Label(control, SWT.NONE);
-    optionsHeading.setText(Messages.getString("_UI_LABEL_SOAP_BINDING_OPTIONS")); //$NON-NLS-1$
+    optionsHeading.setText(Messages._UI_LABEL_SOAP_BINDING_OPTIONS); //$NON-NLS-1$
 
     docLiteral = new Button(control, SWT.RADIO);
-    docLiteral.setText(Messages.getString("_UI_RADIO_DOCUMENT_LITERAL")); //$NON-NLS-1$
+    docLiteral.setText(Messages._UI_RADIO_DOCUMENT_LITERAL); //$NON-NLS-1$
     docLiteral.setSelection(true);
 
     rpcLiteral = new Button(control, SWT.RADIO);
-    rpcLiteral.setText(Messages.getString("_UI_RADIO_RPC_LITERAL")); //$NON-NLS-1$
+    rpcLiteral.setText(Messages._UI_RADIO_RPC_LITERAL); //$NON-NLS-1$
     
     rpcEncoded = new Button(control, SWT.RADIO);
-    rpcEncoded.setText(Messages.getString("_UI_RADIO_RPC_ENCODED")); //$NON-NLS-1$
+    rpcEncoded.setText(Messages._UI_RADIO_RPC_ENCODED); //$NON-NLS-1$
 
     if (generator.getName() != null)
     {

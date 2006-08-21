@@ -21,7 +21,7 @@ public class W11AddOutputParameterCommand extends W11TopLevelElementCommand impl
 	private Object output;
 	
 	public W11AddOutputParameterCommand(Operation operation) {
-        super(Messages.getString("_UI_ACTION_ADD_OUTPUT"), operation.getEnclosingDefinition());
+        super(Messages._UI_ACTION_ADD_OUTPUT, operation.getEnclosingDefinition());
 		this.operation = operation;
 	}
 	

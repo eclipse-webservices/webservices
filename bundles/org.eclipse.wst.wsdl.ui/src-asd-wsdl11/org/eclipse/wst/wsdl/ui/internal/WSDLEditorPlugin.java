@@ -278,9 +278,9 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     store.setDefault(DEFAULT_PAGE, DESIGN_PAGE);
     
     // WSDLPreferencePage prefs
-    store.setDefault(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE"), DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
-    store.setDefault(Messages.getString("_UI_PREF_PAGE_AUTO_REGENERATE_BINDING"), false); //$NON-NLS-1$
-    store.setDefault(Messages.getString("_UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE"), false);	// TODO: Externalize //$NON-NLS-1$
+    store.setDefault(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE, DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
+    store.setDefault(Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING, false); //$NON-NLS-1$
+    store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false);	// TODO: Externalize //$NON-NLS-1$
     // Do we need this preference below?  Look at WSDLPreferencePage.java
 //    store.setDefault("Defualt Location:", "http://www.example.com");
   }

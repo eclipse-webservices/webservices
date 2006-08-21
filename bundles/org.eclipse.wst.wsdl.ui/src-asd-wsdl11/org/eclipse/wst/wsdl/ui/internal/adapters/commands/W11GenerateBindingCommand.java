@@ -22,7 +22,7 @@ public class W11GenerateBindingCommand extends W11TopLevelElementCommand {
 	protected Binding binding;
 	
 	public W11GenerateBindingCommand(Binding binding) {
-        super(Messages.getString("_UI_GENERATE_BINDING_CONTENT"), binding.getEnclosingDefinition());
+        super(Messages._UI_GENERATE_BINDING_CONTENT, binding.getEnclosingDefinition());
 		this.binding = binding;
 	}
 	

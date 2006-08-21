@@ -25,7 +25,7 @@ public class ASDAddInputAction extends BaseSelectionAction {
 	public ASDAddInputAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_ADD_INPUT"));   //$NON-NLS-1$
+		setText(Messages._UI_ACTION_ADD_INPUT);   //$NON-NLS-1$
 		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/input_obj.gif")); //$NON-NLS-1$
 	}
 	

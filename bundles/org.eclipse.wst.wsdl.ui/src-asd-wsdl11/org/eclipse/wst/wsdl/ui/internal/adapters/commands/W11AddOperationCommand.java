@@ -37,7 +37,7 @@ public class W11AddOperationCommand extends W11TopLevelElementCommand implements
 	private Operation operation;
 	
 	public W11AddOperationCommand(PortType portType) {
-        super(Messages.getString("_UI_ACTION_ADD_OPERATION"), portType.getEnclosingDefinition());
+        super(Messages._UI_ACTION_ADD_OPERATION, portType.getEnclosingDefinition());
 		this.portType = portType;
 	}
 	

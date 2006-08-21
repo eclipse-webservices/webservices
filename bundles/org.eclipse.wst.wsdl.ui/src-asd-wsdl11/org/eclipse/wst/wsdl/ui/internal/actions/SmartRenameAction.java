@@ -62,7 +62,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	}
 
 	public String getUndoDescription() {
-	  return Messages.getString("_UI_ACTION_RENAME");  //$NON-NLS-1$
+	  return Messages._UI_ACTION_RENAME;  //$NON-NLS-1$
 	}
 	
 	/*

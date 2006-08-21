@@ -25,7 +25,7 @@ public class ASDAddInterfaceAction extends BaseSelectionAction {
 	public ASDAddInterfaceAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_ADD_PORTTYPE")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_ADD_PORTTYPE); //$NON-NLS-1$
 		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/porttype_obj.gif")); //$NON-NLS-1$
 	}
 	

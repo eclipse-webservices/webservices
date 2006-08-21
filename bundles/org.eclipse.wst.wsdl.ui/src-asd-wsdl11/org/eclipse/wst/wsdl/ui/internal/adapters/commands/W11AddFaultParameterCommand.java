@@ -22,7 +22,7 @@ public class W11AddFaultParameterCommand extends W11TopLevelElementCommand imple
 	protected Fault fault;
 	
 	public W11AddFaultParameterCommand(Operation operation, Fault fault) {
-        super(Messages.getString("_UI_ACTION_ADD_FAULT"), operation.getEnclosingDefinition());
+        super(Messages._UI_ACTION_ADD_FAULT, operation.getEnclosingDefinition());
 		this.operation = operation;
 		this.fault = fault;
 	}

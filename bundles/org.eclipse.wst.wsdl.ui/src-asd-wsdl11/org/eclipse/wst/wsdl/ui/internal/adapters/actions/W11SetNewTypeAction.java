@@ -37,7 +37,7 @@ public class W11SetNewTypeAction extends BaseSelectionAction {
 	public W11SetNewTypeAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_NEW_TYPE")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_NEW_TYPE); //$NON-NLS-1$
 //		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/service_obj.gif"));
 	}
 	

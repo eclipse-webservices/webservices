@@ -23,7 +23,7 @@ public class W11OpenImportAction extends BaseSelectionAction {
 	public W11OpenImportAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_OPEN_IMPORT")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_OPEN_IMPORT); //$NON-NLS-1$
 	}
 	
 	public void run() {

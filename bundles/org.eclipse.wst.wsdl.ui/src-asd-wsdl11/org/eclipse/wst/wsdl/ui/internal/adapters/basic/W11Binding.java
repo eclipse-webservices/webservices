@@ -195,7 +195,7 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 	public String[] getActions(Object object) {
     List actionIDs = new ArrayList();
     actionIDs.add(ASDGenerateBindingAction.ID);
-    actionIDs.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_PORTTYPE")); //$NON-NLS-1$
+    actionIDs.add(BaseSelectionAction.SUBMENU_START_ID + Messages._UI_ACTION_SET_PORTTYPE); //$NON-NLS-1$
     actionIDs.add(ASDSetNewInterfaceAction.ID);
     actionIDs.add(ASDSetExistingInterfaceAction.ID);
     actionIDs.add(BaseSelectionAction.SUBMENU_END_ID);

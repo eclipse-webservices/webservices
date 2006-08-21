@@ -30,7 +30,7 @@ public class W11DeleteParameterCommand extends W11TopLevelElementCommand {
 	private IParameter parameter;
 	
 	public W11DeleteParameterCommand(IParameter param) {
-        super(Messages.getString("_UI_ACTION_DELETE"), ((WSDLElement) ((WSDLBaseAdapter) param).getTarget()).getEnclosingDefinition());
+        super(Messages._UI_ACTION_DELETE, ((WSDLElement) ((WSDLBaseAdapter) param).getTarget()).getEnclosingDefinition());
 		this.parameter = param;
 	}
 	

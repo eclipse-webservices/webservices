@@ -62,11 +62,11 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	    	WSDLComponentDescriptionProvider descriptionProvider = new WSDLComponentDescriptionProvider();
 	    	final WSDLBindingSearchListProvider searchListProvider = new WSDLBindingSearchListProvider(definition);
 	    	ComponentSearchListDialogConfiguration configuration = new ComponentSearchListDialogConfiguration();
-	    	configuration.setFilterLabelText(Messages.getString("_UI_LABEL_NAME_FILTER"));
+	    	configuration.setFilterLabelText(Messages._UI_LABEL_NAME_FILTER);
 	        configuration.setDescriptionProvider(descriptionProvider);
 	        configuration.setSearchListProvider(searchListProvider);
 	        
-	        String dialogTitle = Messages.getString("_UI_TITLE_SPECIFY_BINDING"); //$NON-NLS-1$
+	        String dialogTitle = Messages._UI_TITLE_SPECIFY_BINDING; //$NON-NLS-1$
 	        dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
 	        
 	        IFile file = getFile();
@@ -80,12 +80,12 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	      final WSDLInterfaceSearchListProvider searchListProvider = new WSDLInterfaceSearchListProvider(definition);
 	     
 	      ComponentSearchListDialogConfiguration configuration = new ComponentSearchListDialogConfiguration();
-	      configuration.setFilterLabelText(Messages.getString("_UI_LABEL_NAME_FILTER"));
+	      configuration.setFilterLabelText(Messages._UI_LABEL_NAME_FILTER);
 	      configuration.setDescriptionProvider(descriptionProvider);
 	      configuration.setSearchListProvider(searchListProvider);
 	      //configuration.setNewComponentHandler(new NewTypeButtonHandler());
 	      
-	      String dialogTitle = Messages.getString("_UI_TITLE_SPECIFY_PORTTYPE"); //$NON-NLS-1$
+	      String dialogTitle = Messages._UI_TITLE_SPECIFY_PORTTYPE; //$NON-NLS-1$
 	      dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
 	      
 	      IFile file = getFile();
@@ -99,12 +99,12 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	      final WSDLMessageSearchListProvider searchListProvider = new WSDLMessageSearchListProvider(definition);
 	     
 	      ComponentSearchListDialogConfiguration configuration = new ComponentSearchListDialogConfiguration();
-	      configuration.setFilterLabelText(Messages.getString("_UI_LABEL_NAME_FILTER"));
+	      configuration.setFilterLabelText(Messages._UI_LABEL_NAME_FILTER);
 	      configuration.setDescriptionProvider(descriptionProvider);
 	      configuration.setSearchListProvider(searchListProvider);
 	      //configuration.setNewComponentHandler(new NewTypeButtonHandler());
 	      
-	      String dialogTitle = Messages.getString("_UI_TITLE_SPECIFY_MESSAGE"); //$NON-NLS-1$
+	      String dialogTitle = Messages._UI_TITLE_SPECIFY_MESSAGE; //$NON-NLS-1$
 	      dialog = new ScopedComponentSearchListDialog(shell, dialogTitle, configuration);
 	      
 	      IFile file = getFile();

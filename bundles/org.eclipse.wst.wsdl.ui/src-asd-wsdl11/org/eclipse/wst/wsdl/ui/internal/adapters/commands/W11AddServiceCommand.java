@@ -23,7 +23,7 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand implements I
 	private Service service;
 	
 	public W11AddServiceCommand(Definition definition) {
-	  super(Messages.getString("_UI_ACTION_ADD_SERVICE"), definition);
+	  super(Messages._UI_ACTION_ADD_SERVICE, definition);
 	}
 	
 	public void execute() {

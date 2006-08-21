@@ -25,8 +25,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 
 public abstract class ReferenceSection extends NameSection {
-	public static String BROWSE_STRING = Messages.getString("_UI_BUTTON_BROWSE"); //$NON-NLS-1$
-	public static String NEW_STRING = Messages.getString("_UI_BUTTON_NEW"); //$NON-NLS-1$
+	public static String BROWSE_STRING = Messages._UI_BUTTON_BROWSE; //$NON-NLS-1$
+	public static String NEW_STRING = Messages._UI_BUTTON_NEW; //$NON-NLS-1$
 	protected CCombo combo;
 	protected CLabel comboLabel;
 	

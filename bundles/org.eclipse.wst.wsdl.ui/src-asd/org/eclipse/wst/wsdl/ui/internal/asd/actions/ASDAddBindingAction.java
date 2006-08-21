@@ -24,7 +24,7 @@ public class ASDAddBindingAction extends BaseSelectionAction {
 	public ASDAddBindingAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_ADD_BINDING")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_ADD_BINDING); //$NON-NLS-1$
 		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/binding_obj.gif")); //$NON-NLS-1$
 	}
 	

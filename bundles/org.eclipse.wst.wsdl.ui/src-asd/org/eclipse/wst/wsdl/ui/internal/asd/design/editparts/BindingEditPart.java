@@ -209,7 +209,7 @@ public class BindingEditPart extends BaseEditPart
       figure.getLabel().setIcon(binding.getImage());
       
       // Show the name of the IBinding with hover help
-      String prependString = Messages.getString("_UI_LABEL_BINDING");
+      String prependString = Messages._UI_LABEL_BINDING;
       hoverHelpLabel.setText(" " + prependString + " : " + binding.getName() + " ");
       figure.setToolTip(hoverHelpLabel);
     }

@@ -147,7 +147,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
     Collection actionIDs = new ArrayList();
 
     actionIDs.add(ASDAddEndPointAction.ID);
-    actionIDs.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_BINDING")); //$NON-NLS-1$
+    actionIDs.add(BaseSelectionAction.SUBMENU_START_ID + Messages._UI_ACTION_SET_BINDING); //$NON-NLS-1$
     actionIDs.add(ASDSetNewBindingAction.ID);
     actionIDs.add(ASDSetExistingBindingAction.ID);
     actionIDs.add(BaseSelectionAction.SUBMENU_END_ID);

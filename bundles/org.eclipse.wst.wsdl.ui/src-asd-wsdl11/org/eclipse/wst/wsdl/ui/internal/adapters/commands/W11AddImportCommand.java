@@ -19,7 +19,7 @@ public class W11AddImportCommand extends W11TopLevelElementCommand implements IA
 	private Object component;
 	
 	public W11AddImportCommand(Definition definition) {
-		super(Messages.getString("_UI_ACTION_ADD_IMPORT"), definition);
+		super(Messages._UI_ACTION_ADD_IMPORT, definition);
 	}
 	
 	public void execute() {

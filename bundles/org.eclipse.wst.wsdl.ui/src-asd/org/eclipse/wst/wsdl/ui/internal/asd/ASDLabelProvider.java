@@ -82,7 +82,7 @@ public class ASDLabelProvider extends LabelProvider {
             }
 			
 			if (selected instanceof IASDObject && ((IASDObject) selected).isReadOnly()) {
-				result  = result + " (" + Messages.getString("_UI_LABEL_READ_ONLY") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				result  = result + " (" + Messages._UI_LABEL_READ_ONLY + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 		

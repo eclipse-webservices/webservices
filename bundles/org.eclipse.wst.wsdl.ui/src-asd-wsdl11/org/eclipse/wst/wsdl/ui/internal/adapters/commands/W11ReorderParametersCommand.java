@@ -24,7 +24,7 @@ public class W11ReorderParametersCommand extends W11TopLevelElementCommand {
     protected IParameter movingParameter;
     
     public W11ReorderParametersCommand(IParameter leftSibling, IParameter rightSibling, IParameter movingParameter) {
-        super(Messages.getString("_UI_ACTION_REORDER_PART"), null);
+        super(Messages._UI_ACTION_REORDER_PART, null);
         this.leftSibling = leftSibling;
         this.rightSibling = rightSibling;
         this.movingParameter = movingParameter;

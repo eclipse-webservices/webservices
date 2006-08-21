@@ -25,7 +25,7 @@ public class W11AddInterfaceCommand extends W11TopLevelElementCommand implements
 	private PortType newPortType;
 	
 	public W11AddInterfaceCommand(Definition definition) {
-    super(Messages.getString("_UI_ACTION_ADD_PORTTYPE"), definition);
+    super(Messages._UI_ACTION_ADD_PORTTYPE, definition);
 	}
 	
 	public void setNewPortTypeName(String newName) {

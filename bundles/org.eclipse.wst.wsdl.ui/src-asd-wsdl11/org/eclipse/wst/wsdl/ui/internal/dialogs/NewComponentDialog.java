@@ -106,7 +106,7 @@ public class NewComponentDialog extends Dialog implements ModifyListener
     composite.setLayoutData(gdFill);
 
     Label nameLabel = new Label(composite, SWT.NONE);
-    nameLabel.setText(Messages.getString("_UI_LABEL_NAME")); //$NON-NLS-1$
+    nameLabel.setText(Messages._UI_LABEL_NAME); //$NON-NLS-1$
 
     nameField = new Text(composite, SWT.SINGLE | SWT.BORDER);
     GridData gd= new GridData();
@@ -146,7 +146,7 @@ public class NewComponentDialog extends Dialog implements ModifyListener
   	Iterator iterator = usedNames.iterator();
   	while (iterator.hasNext()) {
   		if (name.equalsIgnoreCase((String) iterator.next())) {
-  			return Messages.getString("_UI_LABEL_WARNING_DUPLICATE_NAME_EXISTS"); //$NON-NLS-1$
+  			return Messages._UI_LABEL_WARNING_DUPLICATE_NAME_EXISTS; //$NON-NLS-1$
   		}
   	}
   	

@@ -22,7 +22,7 @@ public class W11AddPartCommand extends W11TopLevelElementCommand implements IASD
     private Part part;
     
     public W11AddPartCommand(Message message) {
-        super(Messages.getString("_UI_ACTION_ADD_PART"), message.getEnclosingDefinition());
+        super(Messages._UI_ACTION_ADD_PART, message.getEnclosingDefinition());
         this.message = message;
     }
     

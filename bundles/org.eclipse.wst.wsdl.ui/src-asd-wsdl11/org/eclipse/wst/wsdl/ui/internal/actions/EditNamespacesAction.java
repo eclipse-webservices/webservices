@@ -35,7 +35,7 @@ public class EditNamespacesAction extends Action
 
   public EditNamespacesAction(Definition definition)
   {
-    setText(Messages.getString("_UI_EDIT_NAMESPACES")); //$NON-NLS-1$
+    setText(Messages._UI_EDIT_NAMESPACES); //$NON-NLS-1$
     this.definition = definition;
   }
 
@@ -59,7 +59,7 @@ public class EditNamespacesAction extends Action
       }
 
 	  IPath path = new Path(definition.getDocumentBaseURI());
-      EditNamespacesDialog dialog = new EditNamespacesDialog(WSDLEditorPlugin.getShell(),  path, Messages.getString("_UI_EDIT_NAMESPACES_DIALOG_TITLE"), definition.getTargetNamespace(), namespaceInfoList); //$NON-NLS-1$
+      EditNamespacesDialog dialog = new EditNamespacesDialog(WSDLEditorPlugin.getShell(),  path, Messages._UI_EDIT_NAMESPACES_DIALOG_TITLE, definition.getTargetNamespace(), namespaceInfoList); //$NON-NLS-1$
       int rc = dialog.createAndOpen();
       if (rc == IDialogConstants.OK_ID)
       {      	

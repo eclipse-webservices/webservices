@@ -49,8 +49,8 @@ public class TypeReferenceDirectEditManager extends ComboBoxCellEditorManager
 	    ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
 	    if (editManager != null)
 	    {
-	       list.add(Messages.getString("_UI_BUTTON_BROWSE")); //$NON-NLS-1$
-	       list.add(Messages.getString("_UI_BUTTON_NEW")); //$NON-NLS-1$
+	       list.add(Messages._UI_BUTTON_BROWSE); //$NON-NLS-1$
+	       list.add(Messages._UI_BUTTON_NEW); //$NON-NLS-1$
 	       ComponentSpecification[] quickPicks = editManager.getQuickPicks();
 	       if (quickPicks != null)
 	       {

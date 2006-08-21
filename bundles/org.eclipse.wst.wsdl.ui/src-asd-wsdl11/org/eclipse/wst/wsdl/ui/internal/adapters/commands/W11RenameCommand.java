@@ -64,7 +64,7 @@ public class W11RenameCommand extends W11TopLevelElementCommand {
 	protected String newName = ""; //$NON-NLS-1$
 
 	public W11RenameCommand(WSDLBaseAdapter object, String newName) {
-		super(Messages.getString("_UI_ACTION_RENAME"), ((WSDLElement) object.getTarget()).getEnclosingDefinition());
+		super(Messages._UI_ACTION_RENAME, ((WSDLElement) object.getTarget()).getEnclosingDefinition());
 		this.object = object;
 		this.newName = newName;
 	}

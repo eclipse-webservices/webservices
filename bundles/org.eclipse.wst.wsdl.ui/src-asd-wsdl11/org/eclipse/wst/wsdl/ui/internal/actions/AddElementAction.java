@@ -153,7 +153,7 @@ public class AddElementAction extends BaseNodeAction {
 
 
 	public String getUndoDescription() {
-		return Messages.getString("_UI_ACTION_ADD"); //$NON-NLS-1$
+		return Messages._UI_ACTION_ADD; //$NON-NLS-1$
 	}
 
 
@@ -286,7 +286,7 @@ public class AddElementAction extends BaseNodeAction {
 	}
 
 	private String getDefaultNamespace() {
-		String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages.getString("_UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE")); //$NON-NLS-1$
+		String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
 		if (!namespace.endsWith("/")) { //$NON-NLS-1$
 			namespace = namespace.concat("/"); //$NON-NLS-1$
 		}

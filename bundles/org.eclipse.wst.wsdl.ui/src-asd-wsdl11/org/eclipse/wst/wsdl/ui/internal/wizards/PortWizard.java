@@ -48,7 +48,7 @@ public class PortWizard extends Wizard
   {
     super();
     portGenerator = new PortGenerator(service);
-    setWindowTitle(Messages.getString("_UI_PORT_WIZARD")); //$NON-NLS-1$
+    setWindowTitle(Messages._UI_PORT_WIZARD); //$NON-NLS-1$
     //setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(WSDLEditorPlugin.class, "icons/NewXML.gif"));
   }
 
@@ -96,8 +96,8 @@ public class PortWizard extends Wizard
     public PortWizardOptionsPage(int style)
     {
       super("SpecifyPortPage"); //$NON-NLS-1$
-      setTitle(Messages.getString("_UI_SPECIFY_PORT_DETAILS")); //$NON-NLS-1$
-      setDescription(Messages.getString("_UI_SPECIFY_PORT_DETAILS_TO_BE_CREATED")); //$NON-NLS-1$
+      setTitle(Messages._UI_SPECIFY_PORT_DETAILS); //$NON-NLS-1$
+      setDescription(Messages._UI_SPECIFY_PORT_DETAILS_TO_BE_CREATED); //$NON-NLS-1$
     }
 
     public PortGenerator getGenerator()
@@ -123,7 +123,7 @@ public class PortWizard extends Wizard
 
     public String getRefNameLabelText()
     {
-      return Messages.getString("_UI_BINDING"); //$NON-NLS-1$
+      return Messages._UI_BINDING; //$NON-NLS-1$
     }
 
     public List getRefNames()

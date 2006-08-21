@@ -23,7 +23,7 @@ public class ASDGenerateBindingAction extends BaseSelectionAction {
 	public ASDGenerateBindingAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_GENERATE_BINDING_CONTENT"));   //$NON-NLS-1$
+		setText(Messages._UI_GENERATE_BINDING_CONTENT);   //$NON-NLS-1$
 //		setImageDescriptor(WSDLEditorPlugin.getImageDescriptor("icons/input_obj.gif"));
 	}
 	

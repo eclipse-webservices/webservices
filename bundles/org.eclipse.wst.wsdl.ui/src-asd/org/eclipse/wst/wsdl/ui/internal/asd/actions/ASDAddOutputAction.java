@@ -25,7 +25,7 @@ public class ASDAddOutputAction extends BaseSelectionAction {
 	public ASDAddOutputAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_ADD_OUTPUT")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_ADD_OUTPUT); //$NON-NLS-1$
 		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/output_obj.gif")); //$NON-NLS-1$
 	}
 	

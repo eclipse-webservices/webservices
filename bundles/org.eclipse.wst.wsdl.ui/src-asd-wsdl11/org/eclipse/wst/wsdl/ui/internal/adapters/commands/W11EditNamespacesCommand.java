@@ -23,7 +23,7 @@ public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 	private String targetNamespacePrefix;
 	
 	public W11EditNamespacesCommand(Definition definition) {
-	  super(Messages.getString("_UI_EDIT_NAMESPACES"), definition);
+	  super(Messages._UI_EDIT_NAMESPACES, definition);
 	}
 	
 	public void setNamespacesInfo(List namespaces) {

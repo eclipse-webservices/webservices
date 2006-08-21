@@ -63,7 +63,7 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 		data.top = new FormAttachment(0, 0);
 		nameText.setLayoutData(data);
 		
-		nameLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_NAME") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		nameLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAME + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(nameText, -ITabbedPropertyConstants.HSPACE);
@@ -81,7 +81,7 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
       renameHyperlink = getWidgetFactory().createImageHyperlink(composite, SWT.NONE);
 
       renameHyperlink.setImage(WSDLEditorPlugin.getInstance().getImage("icons/quickassist.gif")); //$NON-NLS-1$
-      renameHyperlink.setToolTipText(Messages.getString("_UI_TOOLTIP_RENAME_REFACTOR"));
+      renameHyperlink.setToolTipText(Messages._UI_TOOLTIP_RENAME_REFACTOR);
       renameHyperlink.addHyperlinkListener(this);
     }
 

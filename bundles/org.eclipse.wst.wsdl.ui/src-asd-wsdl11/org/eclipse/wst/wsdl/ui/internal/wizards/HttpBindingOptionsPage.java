@@ -67,7 +67,7 @@ public class HttpBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
     separator.setLayoutData(gd);
 
     Label optionsHeading = new Label(control, SWT.NONE);
-    optionsHeading.setText(Messages.getString("_UI_LABEL_HTTP_BINDING_OPTIONS")); //$NON-NLS-1$
+    optionsHeading.setText(Messages._UI_LABEL_HTTP_BINDING_OPTIONS); //$NON-NLS-1$
 
     getButton = new Button(control, SWT.RADIO);
     getButton.setText("HTTP GET"); //$NON-NLS-1$

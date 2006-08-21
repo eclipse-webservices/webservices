@@ -21,7 +21,7 @@ public class W11AddInputParameterCommand extends W11TopLevelElementCommand imple
 	private Object input;
 	
 	public W11AddInputParameterCommand(Operation operation) {
-        super(Messages.getString("_UI_ACTION_ADD_INPUT"), operation.getEnclosingDefinition());
+        super(Messages._UI_ACTION_ADD_INPUT, operation.getEnclosingDefinition());
 		this.operation = operation;
 	}
 	

@@ -89,7 +89,7 @@ public class WSDLEditorResourceChangeHandler
 	
   	if (policy == WSDLEditorPlugin.DEPENDECIES_CHANGED_POLICY_PROMPT)
   	{
-		doReload = MessageDialog.openQuestion(wsdlEditor.getSite().getShell(), Messages.getString("_UI_DEPENDENCIES_CHANGED"), Messages.getString("_UI_DEPENDENCIES_CHANGED_REFRESH"));  	 //$NON-NLS-1$ //$NON-NLS-2$
+		doReload = MessageDialog.openQuestion(wsdlEditor.getSite().getShell(), Messages._UI_DEPENDENCIES_CHANGED, Messages._UI_DEPENDENCIES_CHANGED_REFRESH);  	 //$NON-NLS-1$ //$NON-NLS-2$
   	}
   	else if (policy == WSDLEditorPlugin.DEPENDECIES_CHANGED_POLICY_RELOAD)
   	{

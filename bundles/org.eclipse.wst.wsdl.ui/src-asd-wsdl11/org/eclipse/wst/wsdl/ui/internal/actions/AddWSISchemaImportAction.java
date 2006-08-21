@@ -45,7 +45,7 @@ public class AddWSISchemaImportAction extends BaseNodeAction
     
     public String getUndoDescription()
     {
-    	return Messages.getString("_UI_ACTION_ADD_IMPORT"); //$NON-NLS-1$
+    	return Messages._UI_ACTION_ADD_IMPORT; //$NON-NLS-1$
     }
 
     protected Element getOrCreateTypesElement()

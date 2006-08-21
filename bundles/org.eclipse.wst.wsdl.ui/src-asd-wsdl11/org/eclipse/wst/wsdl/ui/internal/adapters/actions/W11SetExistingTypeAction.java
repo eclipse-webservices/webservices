@@ -28,7 +28,7 @@ public class W11SetExistingTypeAction extends BaseSelectionAction {
 	public W11SetExistingTypeAction(IWorkbenchPart part) {
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_EXISTING_TYPE")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_EXISTING_TYPE); //$NON-NLS-1$
 //		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/message_obj.gif"));
 	}
 	

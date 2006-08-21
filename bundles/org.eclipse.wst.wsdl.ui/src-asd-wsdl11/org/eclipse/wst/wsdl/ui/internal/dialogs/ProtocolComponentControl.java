@@ -57,7 +57,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
   protected String name;
   protected String refName;
 
-  protected String UNSPECIFIED = Messages.getString("_UI_UNSPECIFIED"); //$NON-NLS-1$
+  protected String UNSPECIFIED = Messages._UI_UNSPECIFIED; //$NON-NLS-1$
   //protected BindingGenerator bindingGenerator;
 
   public ProtocolComponentControl(Composite parent, BaseGenerator generator, boolean showOverwriteButton)
@@ -112,7 +112,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     // row 3
     //
     Label protocolLabel = new Label(labelValueComposite, SWT.NONE);
-    protocolLabel.setText(Messages.getString("_UI_LABEL_BINDING_PROTOCOL")); //$NON-NLS-1$
+    protocolLabel.setText(Messages._UI_LABEL_BINDING_PROTOCOL); //$NON-NLS-1$
     protocolCombo = new Combo(labelValueComposite, SWT.READ_ONLY);
     GridData gdProtocol= new GridData();
     gdProtocol.horizontalAlignment= GridData.FILL;
@@ -126,7 +126,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     if (showOverwriteButton)
     {
       overwriteButton = new Button(this, SWT.CHECK);
-      overwriteButton.setText(Messages.getString("_UI_CHECKBOX_OVERWRITE")); //$NON-NLS-1$
+      overwriteButton.setText(Messages._UI_CHECKBOX_OVERWRITE); //$NON-NLS-1$
       overwriteButton.addSelectionListener(this);
     }
 
@@ -164,7 +164,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
 
   public String getComponentNameLabelText()
   {
-    return Messages.getString("_UI_LABEL_NAME"); //$NON-NLS-1$
+    return Messages._UI_LABEL_NAME; //$NON-NLS-1$
   }
 
   private GridData createGridData(boolean both, int span)

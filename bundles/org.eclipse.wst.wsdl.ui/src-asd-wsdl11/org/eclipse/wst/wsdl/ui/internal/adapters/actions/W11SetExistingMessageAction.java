@@ -28,7 +28,7 @@ public class W11SetExistingMessageAction extends BaseSelectionAction {
 	public W11SetExistingMessageAction(IWorkbenchPart part) {
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_EXISTING_MESSAGE")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_EXISTING_MESSAGE); //$NON-NLS-1$
 //		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/message_obj.gif"));
 	}
 	

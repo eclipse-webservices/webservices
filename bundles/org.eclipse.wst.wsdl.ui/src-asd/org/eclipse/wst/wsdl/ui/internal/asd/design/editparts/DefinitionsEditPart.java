@@ -128,7 +128,7 @@ public class DefinitionsEditPart extends BaseEditPart {
       }
       else
       {
-        messageLabel.setText(Messages.getString("_UI_LABEL_RIGHT_CLICK_TO_INSERT_CONTENT")); //$NON-NLS-1$
+        messageLabel.setText(Messages._UI_LABEL_RIGHT_CLICK_TO_INSERT_CONTENT); //$NON-NLS-1$
         if (!contentPane.getChildren().contains(messageLabel))
           contentPane.add(messageLabel);
       }

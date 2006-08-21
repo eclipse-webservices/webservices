@@ -74,7 +74,7 @@ public class W11ParameterForAttribute extends WSDLBaseAdapter implements IParame
           //list.add(ASDAddInputAction.ID);
           //list.add(ASDAddOutputAction.ID);
           //list.add(ASDAddFaultAction.ID);
-          actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages.getString("_UI_ACTION_SET_TYPE")); //$NON-NLS-1$
+          actions.add(BaseSelectionAction.SUBMENU_START_ID + Messages._UI_ACTION_SET_TYPE); //$NON-NLS-1$
           actions.add(W11SetNewTypeAction.ID);
           actions.add(W11SetExistingTypeAction.ID);
           actions.add(BaseSelectionAction.SUBMENU_END_ID);

@@ -34,7 +34,7 @@ public class ASDDeleteAction extends BaseSelectionAction {
 	public ASDDeleteAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_DELETE")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_DELETE); //$NON-NLS-1$
 		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/delete_obj.gif")); //$NON-NLS-1$
 	}
 	

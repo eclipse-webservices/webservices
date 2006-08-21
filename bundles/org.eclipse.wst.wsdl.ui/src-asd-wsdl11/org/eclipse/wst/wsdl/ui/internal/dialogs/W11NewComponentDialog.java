@@ -50,19 +50,19 @@ public class W11NewComponentDialog implements IComponentDialog {
 		
 		Shell shell = Display.getCurrent().getActiveShell();
 		if (qualifiedName == IWSDLSearchConstants.BINDING_META_NAME) {
-			String dialogTitle = Messages.getString("_UI_LABEL_NEW_BINDING"); //$NON-NLS-1$
+			String dialogTitle = Messages._UI_LABEL_NEW_BINDING; //$NON-NLS-1$
 			String baseName = NameUtil.buildUniqueBindingName(getDefinition(), "NewBinding"); //$NON-NLS-1$
 			List usedNames = NameUtil.getUsedBindingNames(getDefinition());
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName, usedNames);
 		}
 		else if (qualifiedName == IWSDLSearchConstants.PORT_TYPE_META_NAME) {
-			String dialogTitle = Messages.getString("_UI_LABEL_NEW_PORTTYPE"); //$NON-NLS-1$
+			String dialogTitle = Messages._UI_LABEL_NEW_PORTTYPE; //$NON-NLS-1$
 			String baseName = NameUtil.buildUniquePortTypeName(getDefinition(), "NewPortType"); //$NON-NLS-1$
 			List usedNames = NameUtil.getUsedPortTypeNames(getDefinition());
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName, usedNames);
 		}
 		else if (qualifiedName == IWSDLSearchConstants.MESSAGE_META_NAME) {
-			String dialogTitle = Messages.getString("_UI_LABEL_NEW_MESSAGE"); //$NON-NLS-1$
+			String dialogTitle = Messages._UI_LABEL_NEW_MESSAGE; //$NON-NLS-1$
 			String baseName = NameUtil.buildUniqueMessageName(getDefinition(), "NewMessage"); //$NON-NLS-1$
 			List usedNames = NameUtil.getUsedMessageNames(getDefinition());
 			dialog = new NewComponentDialog(shell, dialogTitle, baseName, usedNames);

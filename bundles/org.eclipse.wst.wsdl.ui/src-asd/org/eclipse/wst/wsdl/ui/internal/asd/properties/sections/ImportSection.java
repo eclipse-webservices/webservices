@@ -67,7 +67,7 @@ public class ImportSection extends ASDAbstractSection
 		data.top = new FormAttachment(0, 0);
 		namespaceText.setLayoutData(data);
 
-		CLabel namespaceLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_NAMESPACE")); //$NON-NLS-1$
+		CLabel namespaceLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAMESPACE); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(namespaceText, -ITabbedPropertyConstants.HSPACE);
@@ -83,7 +83,7 @@ public class ImportSection extends ASDAbstractSection
 		data.top = new FormAttachment(namespaceText, +ITabbedPropertyConstants.VSPACE);
 		prefixText.setLayoutData(data);
 
-		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_PREFIX")); //$NON-NLS-1$
+		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_PREFIX); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(prefixText, -ITabbedPropertyConstants.HSPACE);
@@ -94,7 +94,7 @@ public class ImportSection extends ASDAbstractSection
 		locationText.setEditable(false);
 //		locationText.addListener(SWT.Modify, this);
 
-		CLabel locationLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_LOCATION")); //$NON-NLS-1$
+		CLabel locationLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_LOCATION); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(locationText, -ITabbedPropertyConstants.HSPACE);
@@ -217,9 +217,9 @@ public class ImportSection extends ASDAbstractSection
 
 			dialog.addFilterExtensions(filters, excludedFiles);
 			dialog.create();
-			dialog.getShell().setText(org.eclipse.wst.wsdl.ui.internal.Messages.getString("_UI_TITLE_SELECT")); //$NON-NLS-1$
-			dialog.setTitle(org.eclipse.wst.wsdl.ui.internal.Messages.getString("_UI_TITLE_SELECT_FILE")); //$NON-NLS-1$
-			dialog.setMessage(org.eclipse.wst.wsdl.ui.internal.Messages.getString("_UI_DESCRIPTION_SELECT_WSDL_OR_XSD")); //$NON-NLS-1$
+			dialog.getShell().setText(org.eclipse.wst.wsdl.ui.internal.Messages._UI_TITLE_SELECT); //$NON-NLS-1$
+			dialog.setTitle(org.eclipse.wst.wsdl.ui.internal.Messages._UI_TITLE_SELECT_FILE); //$NON-NLS-1$
+			dialog.setMessage(org.eclipse.wst.wsdl.ui.internal.Messages._UI_DESCRIPTION_SELECT_WSDL_OR_XSD); //$NON-NLS-1$
 			int rc = dialog.open();
 			if (rc == IDialogConstants.OK_ID)
 			{

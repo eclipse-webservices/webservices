@@ -53,7 +53,7 @@ public class EndPointSection extends ReferenceSection {
 		FormData data;
 		
 		// Address row
-		CLabel addressLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_ADDRESS") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		CLabel addressLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_ADDRESS + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		addressText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 		
 		data = new FormData();
@@ -69,7 +69,7 @@ public class EndPointSection extends ReferenceSection {
 		addressText.setLayoutData(data);
 
 		// Protocol Row
-		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_BINDING_PROTOCOL") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		protocolValueLabel = getWidgetFactory().createCLabel(composite, "----"); //$NON-NLS-1$
 		
 		data = new FormData();
@@ -85,7 +85,7 @@ public class EndPointSection extends ReferenceSection {
 		protocolValueLabel.setLayoutData(data);
 		protocolValueLabel.addListener(SWT.Modify, this);
 
-		comboLabel.setText(Messages.getString("_UI_LABEL_BINDING") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		comboLabel.setText(Messages._UI_LABEL_BINDING + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/*

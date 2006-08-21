@@ -28,8 +28,8 @@ import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
 public class ParameterSection extends NameSection {
-	protected static String NEW_STRING = Messages.getString("_UI_BUTTON_NEW"); //$NON-NLS-1$
-	protected static String BROWSE_STRING = Messages.getString("_UI_BUTTON_BROWSE"); //$NON-NLS-1$
+	protected static String NEW_STRING = Messages._UI_BUTTON_NEW; //$NON-NLS-1$
+	protected static String BROWSE_STRING = Messages._UI_BUTTON_BROWSE; //$NON-NLS-1$
 	protected CLabel comboLabel; 
 	protected CCombo combo;
 	protected boolean handleTypeScenario = true;
@@ -50,7 +50,7 @@ public class ParameterSection extends NameSection {
 		combo.addListener(SWT.Modify, this);
 		combo.addSelectionListener(this);
 		
-		comboLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_LABEL_TYPE") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		comboLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_TYPE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(combo, -ITabbedPropertyConstants.HSPACE);

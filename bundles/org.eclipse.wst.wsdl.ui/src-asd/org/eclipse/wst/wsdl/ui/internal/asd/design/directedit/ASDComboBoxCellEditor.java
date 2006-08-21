@@ -290,10 +290,10 @@ public class ASDComboBoxCellEditor extends CellEditor {
     	selection = comboBox.getSelectionIndex();
     	String stringSelection = items[selection];
     	
-    	if (stringSelection.equals(Messages.getString("_UI_BUTTON_BROWSE"))) { //$NON-NLS-1$
+    	if (stringSelection.equals(Messages._UI_BUTTON_BROWSE)) { //$NON-NLS-1$
     		newValue = invokeDialog(componentReferenceEditManager.getBrowseDialog());
     	}
-    	else if (stringSelection.equals(Messages.getString("_UI_BUTTON_NEW"))) { //$NON-NLS-1$
+    	else if (stringSelection.equals(Messages._UI_BUTTON_NEW)) { //$NON-NLS-1$
     		newValue = invokeDialog(componentReferenceEditManager.getNewDialog());
     	}
 

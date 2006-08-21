@@ -29,7 +29,7 @@ public class OpenInNewEditor extends BaseSelectionAction
   public OpenInNewEditor(IWorkbenchPart part)
   {
     super(part);
-    setText(Messages.getString("_UI_ACTION_OPEN_IN_NEW_EDITOR")); //$NON-NLS-1$
+    setText(Messages._UI_ACTION_OPEN_IN_NEW_EDITOR); //$NON-NLS-1$
     setId(ID);
     setImageDescriptor(ASDEditorPlugin.getImageDescriptorFromPlugin("wsdl_file_obj.gif")); //$NON-NLS-1$
   }

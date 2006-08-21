@@ -24,7 +24,7 @@ public class ASDAddEndPointAction extends BaseSelectionAction {
 	public ASDAddEndPointAction(IWorkbenchPart part)	{
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_ADD_PORT")); //$NON-NLS-1$
+		setText(Messages._UI_ACTION_ADD_PORT); //$NON-NLS-1$
 		setImageDescriptor(ASDEditorPlugin.getImageDescriptor("icons/port_obj.gif")); //$NON-NLS-1$
 	}
 	

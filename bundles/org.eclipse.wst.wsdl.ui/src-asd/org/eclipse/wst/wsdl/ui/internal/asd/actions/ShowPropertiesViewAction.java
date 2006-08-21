@@ -31,7 +31,7 @@ public class ShowPropertiesViewAction extends BaseSelectionAction
   {
 		super(part);
 		setId(ID);
-		setText(Messages.getString("_UI_ACTION_SHOW_PROPERTIES"));
+		setText(Messages._UI_ACTION_SHOW_PROPERTIES);
 		setToolTipText(getText());
     setImageDescriptor(ASDEditorPlugin.getImageDescriptorFromPlugin("icons/elcl16/showproperties_obj.gif") ); //$NON-NLS-1$
 	  setDisabledImageDescriptor(ASDEditorPlugin.getImageDescriptorFromPlugin("icons/dlcl16/showproperties_obj.gif") ); //$NON-NLS-1$

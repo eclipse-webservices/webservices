@@ -23,7 +23,7 @@ public class W11ReorderMessageReferencesCommand extends W11TopLevelElementComman
 	protected IMessageReference movingParameter;
 	
 	public W11ReorderMessageReferencesCommand(IMessageReference leftSibling, IMessageReference rightSibling, IMessageReference movingParameter) {
-        super(Messages.getString("_UI_ACTION_REORDER_MESSAGE_REFERENCE"), null);
+        super(Messages._UI_ACTION_REORDER_MESSAGE_REFERENCE, null);
 		this.leftSibling = leftSibling;
 		this.rightSibling = rightSibling;
 		this.movingParameter = movingParameter;

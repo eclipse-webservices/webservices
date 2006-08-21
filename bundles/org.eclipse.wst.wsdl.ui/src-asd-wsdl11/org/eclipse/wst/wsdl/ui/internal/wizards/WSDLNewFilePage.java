@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -25,9 +26,9 @@ public class WSDLNewFilePage extends WizardNewFileCreationPage
 {
   public WSDLNewFilePage(IStructuredSelection selection) 
   {
-    super(Messages.getString("_UI_TITLE_NEW_WSDL_FILE"), selection); //$NON-NLS-1$
-    setTitle(Messages.getString("_UI_TITLE_NEW_WSDL_FILE")); //$NON-NLS-1$
-    setDescription(Messages.getString("_UI_LABEL_CREATE_NEW_WSDL_FILE")); //$NON-NLS-1$
+    super(Messages._UI_TITLE_NEW_WSDL_FILE, selection); //$NON-NLS-1$
+    setTitle(Messages._UI_TITLE_NEW_WSDL_FILE); //$NON-NLS-1$
+    setDescription(Messages._UI_LABEL_CREATE_NEW_WSDL_FILE); //$NON-NLS-1$
   }
 
   public void createControl(Composite parent) 
@@ -46,7 +47,7 @@ public class WSDLNewFilePage extends WizardNewFileCreationPage
     String extension = newName.getFileExtension();
     if (extension == null || !extension.equalsIgnoreCase("wsdl"))  //$NON-NLS-1$
     {
-      setErrorMessage(Messages.getString("_UI_ERROR_FILE_MUST_END_WITH_WSDL")); //$NON-NLS-1$
+      setErrorMessage(Messages._UI_ERROR_FILE_MUST_END_WITH_WSDL); //$NON-NLS-1$
       return false;
     }
     else 
@@ -59,7 +60,7 @@ public class WSDLNewFilePage extends WizardNewFileCreationPage
     if (sameName != null) 
     {
 //       String qualifiedFileName = getContainerFullPath().toString() + '/' + fullFileName;
-       setErrorMessage(Messages.getString("_UI_ERROR_FILE_ALREADY_EXISTS", sameName)); //$NON-NLS-1$
+       setErrorMessage(NLS.bind(Messages._UI_ERROR_FILE_ALREADY_EXISTS, sameName)); //$NON-NLS-1$
        return false;
     }
 

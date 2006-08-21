@@ -87,7 +87,7 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
             if (isInlineSchema(file)) {
               XSDFileEditorInput editorInput = new XSDFileEditorInput(file, schema);
 					
-							editorInput.setEditorName(Messages.getString("_UI_LABEL_INLINE_SCHEMA_OF") + file.getName()); //$NON-NLS-1$
+							editorInput.setEditorName(Messages._UI_LABEL_INLINE_SCHEMA_OF + file.getName()); //$NON-NLS-1$
 							IEditorReference [] refs = page.getEditorReferences();
 							int length = refs.length;
 							for (int i = 0; i < length; i++)

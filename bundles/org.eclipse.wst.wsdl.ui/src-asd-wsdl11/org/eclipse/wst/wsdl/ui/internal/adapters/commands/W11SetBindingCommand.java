@@ -19,7 +19,7 @@ public class W11SetBindingCommand extends W11TopLevelElementCommand {
 	private Binding binding;
 	
 	public W11SetBindingCommand(Port port, Binding binding) {
-        super(Messages.getString("_UI_ACTION_SET_BINDING"), port.getEnclosingDefinition());
+        super(Messages._UI_ACTION_SET_BINDING, port.getEnclosingDefinition());
 		this.port = port;
 		this.binding = binding;
 	}

@@ -32,7 +32,7 @@ public class AddImportAction extends AddElementAction
   
   public AddImportAction(IEditorPart part, Definition definition, Node parentNode, String prefix, String namespace, String location)
   {
-    super(Messages.getString("_UI_ACTION_ADD_IMPORT"), "icons/import_obj.gif", parentNode, prefix, "import"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    super(Messages._UI_ACTION_ADD_IMPORT, "icons/import_obj.gif", parentNode, prefix, "import"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	  setDefinition(definition);
 	  setComputeTopLevelRefChild(true);
 	  this.namespace = namespace;

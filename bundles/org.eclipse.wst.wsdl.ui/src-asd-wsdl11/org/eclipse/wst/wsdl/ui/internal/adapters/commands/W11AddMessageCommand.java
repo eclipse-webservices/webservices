@@ -22,7 +22,7 @@ public class W11AddMessageCommand extends W11TopLevelElementCommand implements I
     private Message message;
 	
     public W11AddMessageCommand(Definition definition) {
-        super(Messages.getString("_UI_ACTION_ADD_MESSAGE"), definition);
+        super(Messages._UI_ACTION_ADD_MESSAGE, definition);
     }
     
 	public void setNewMessageName(String newName) {
