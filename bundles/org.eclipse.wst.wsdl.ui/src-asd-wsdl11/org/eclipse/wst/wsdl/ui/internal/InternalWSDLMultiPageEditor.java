@@ -220,7 +220,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
             	return new W11MessageReferenceEditManager((W11Description) getModel(), fileEditorInput.getFile());
             }        	
         }
-		
+        else if (type == ProductCustomizationProvider.class)
+        {
+          return WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
+        }  		
 		return super.getAdapter(type);
 	}
 	

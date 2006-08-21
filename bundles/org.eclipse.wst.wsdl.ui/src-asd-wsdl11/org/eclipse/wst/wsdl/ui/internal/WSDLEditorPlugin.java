@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.wsdl.ui.internal.extensions.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extensions.WSDLEditorConfiguration;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
 import org.eclipse.wst.xsd.ui.internal.common.properties.sections.appinfo.ExtensionsSchemasRegistry;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -305,6 +306,36 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     //return getPreferenceStore().getInt(DEPENDECIES_CHANGED_POLICY);
     return dependenciesChangedPolicy;
   }
+  
+  
+  private static final String PRODUCT_CUSTOMIZATION_PROVIDER_PLUGIN_ID = "org.eclipse.wst.wsdl.ui.productCustomizationProviderPluginId"; //$NON-NLS-1$
+  private static final String PRODUCT_CUSTOMIZATION_PROVIDER_CLASS_NAME = "org.eclipse.wst.wsdl.ui.productCustomizationProviderClassName"; //$NON-NLS-1$
+  
+  private static ProductCustomizationProvider productCustomizationProvider;
+  private static boolean productCustomizationProviderInitialized = false;
+  
+  public ProductCustomizationProvider getProductCustomizationProvider()
+  {
+    if (!productCustomizationProviderInitialized)
+    {
+      productCustomizationProviderInitialized = true;
+      String pluginName = getPreferenceStore().getString(PRODUCT_CUSTOMIZATION_PROVIDER_PLUGIN_ID);
+      String className = getPreferenceStore().getString(PRODUCT_CUSTOMIZATION_PROVIDER_CLASS_NAME);
+      if (pluginName != null && className != null)
+      {
+        try
+        {
+          Bundle bundle = Platform.getBundle(pluginName);
+          Class clazz = bundle.loadClass(className);
+          productCustomizationProvider = (ProductCustomizationProvider)clazz.newInstance();
+        }          
+        catch (Exception e)
+        {          
+        }
+      }
+    }  
+    return productCustomizationProvider;
+  }   
 }
 
 class BaseRegistryReader
