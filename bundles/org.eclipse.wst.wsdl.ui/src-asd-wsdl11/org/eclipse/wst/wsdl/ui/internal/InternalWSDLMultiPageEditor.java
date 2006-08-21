@@ -62,7 +62,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicalViewer;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.DefinitionsEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ASDContentOutlinePage;
-import org.eclipse.wst.wsdl.ui.internal.asd.util.ASDEditPartFactoryHelper;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11BindingReferenceEditManager;
 import org.eclipse.wst.wsdl.ui.internal.edit.W11InterfaceReferenceEditManager;
@@ -79,6 +78,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorMode;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 import org.eclipse.xsd.XSDSchema;
@@ -367,7 +367,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
 		graphicalViewer.getKeyHandler().put(KeyStroke.getPressed(SWT.F2, 0), getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
-		setEditPartFactory(ASDEditPartFactoryHelper.getInstance().getEditPartFactory());
+		setEditPartFactory(getEditorModeManager().getCurrentMode().getEditPartFactory());
 	}
 	
 	protected void createPages() {
@@ -478,17 +478,39 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
     return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
   }
   
+  private static final String DEFAULT_EDITOR_MODE_ID = "org.eclipse.wst.wsdl.ui.defaultEditorModeId"; //$NON-NLS-1$
   
   protected EditorModeManager createEditorModeManager()
   {
-    return new EditorModeManager(WSDL_EDITOR_MODE_EXTENSION_ID)
+    final ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)getAdapter(ProductCustomizationProvider.class);
+    EditorModeManager manager = new EditorModeManager(WSDL_EDITOR_MODE_EXTENSION_ID)
     {
       public void init()
       {
-        addMode(new DefaultEditorMode());
+        if (productCustomizationProvider == null || 
+            productCustomizationProvider.isEditorModeApplicable(DefaultEditorMode.ID))
+        {          
+          addMode(new DefaultEditorMode());
+        }  
         super.init();
       }
+      
+      protected EditorMode getDefaultMode()
+      {
+        String defaultModeId = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(DEFAULT_EDITOR_MODE_ID);
+        if (defaultModeId != null)
+        {
+          EditorMode editorMode = getEditorMode(defaultModeId);
+          if (editorMode != null)
+          {
+            return editorMode;
+          }  
+        }               
+        return super.getDefaultMode();
+      }      
     };
+    manager.setProductCustomizationProvider(productCustomizationProvider);
+    return manager;
   }
   
   public void editorModeChanged(EditorMode newEditorMode)

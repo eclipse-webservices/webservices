@@ -18,7 +18,10 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
+import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -54,7 +57,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.DirectEditSelectio
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ASDEditPartFactory;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ASDContentOutlinePage;
-import org.eclipse.wst.wsdl.ui.internal.asd.outline.ASDContentOutlineProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.ASDTabbedPropertySheetPage;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.CommonMultiPageEditor;
@@ -117,11 +119,11 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
   
   public IContentOutlinePage getContentOutlinePage() {
 	  if ((fOutlinePage == null) || fOutlinePage.getControl() == null || (fOutlinePage.getControl().isDisposed())) {
-		  ASDContentOutlineProvider provider = new ASDContentOutlineProvider(this, model);
-      
+		  IContentProvider  provider = getEditorModeManager().getCurrentMode().getOutlineProvider();
+          
       ASDContentOutlinePage outlinePage = new ASDContentOutlinePage(this, menuProvider);
-		  outlinePage.setContentProvider(provider);
-		  outlinePage.setLabelProvider(provider);
+		  outlinePage.setContentProvider((ITreeContentProvider)provider);
+		  outlinePage.setLabelProvider((ILabelProvider)provider);
 		  outlinePage.setModel(getModel());
 		  outlinePage.addSelectionChangedListener(getSelectionManager());
       getSelectionManager().addSelectionChangedListener(outlinePage);

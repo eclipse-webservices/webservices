@@ -19,7 +19,9 @@ import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorMode;
 
 public class DefaultEditorMode extends EditorMode
 {
-  private EditorModeSectionFilter sectionFilter = null;
+  private EditorModeSectionFilter sectionFilter = null;  
+  public final static String ID =  DefaultEditorMode.class.getName();
+  
   public String getDisplayName()
   {
     return "default";
@@ -32,7 +34,7 @@ public class DefaultEditorMode extends EditorMode
 
   public String getId()
   {
-    return getClass().getName();
+    return ID;
   }
 
   public IContentProvider getOutlineProvider()

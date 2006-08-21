@@ -7,6 +7,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicalViewer;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ASDEditPartFactory;
 
+/**
+ * @depracated
+ */
 public class ASDEditPartFactoryHelper {
 	private static ASDEditPartFactoryHelper instance;
 	
