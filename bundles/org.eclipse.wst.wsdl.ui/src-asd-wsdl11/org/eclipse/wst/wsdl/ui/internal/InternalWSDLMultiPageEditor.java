@@ -59,6 +59,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDirectEditAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicalViewer;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.KeyboardDragImpl;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.DefinitionsEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ASDContentOutlinePage;
@@ -76,6 +77,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xsd.ui.internal.adt.design.IKeyboardDrag;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorMode;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
@@ -223,7 +225,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
         else if (type == ProductCustomizationProvider.class)
         {
           return WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
-        }  		
+        }
+        else if (type == IKeyboardDrag.class) {
+			return new KeyboardDragImpl();
+		}
 		return super.getAdapter(type);
 	}
 	
