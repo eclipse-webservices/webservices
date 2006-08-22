@@ -11,7 +11,14 @@
 
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.wst.ws.internal.datamodel.Rel;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
+import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.TreeElement;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue;
@@ -32,13 +39,43 @@ public abstract class ClearNodeAction extends NodeAction
     {
       Node node = nodeManager_.getNode(nodeId);
       TreeElement element = node.getTreeElement();
-      element.disconnectAll();
+      //element.disconnectAll();
+      List elements2remove = new ArrayList();
+      collectElements2Remove(element, elements2remove);
+      for (Iterator it = elements2remove.iterator(); it.hasNext();)
+      {
+        TreeElement e = (TreeElement)it.next();
+        e.getModel().removeElement(e);
+      }
+      nodeManager_.removeFromNodeTable(nodeId);
       // Do not add this to the history.
       MessageQueue messageQueue = controller_.getCurrentPerspective().getMessageQueue();
       messageQueue.addMessage(controller_.getMessage("MSG_INFO_NODE_CLEARED",node.getNodeName()));
       return true;
     }
     return false;
+  }
+
+  private void collectElements2Remove(TreeElement element, List elements2remove)
+  {
+    if (!elements2remove.contains(element))
+    {
+      elements2remove.add(element);
+      Enumeration rels = element.getRels();
+      while (rels.hasMoreElements())
+      {
+        Rel rel = (Rel)rels.nextElement();
+        String relName = rel.getName();
+        if (!ModelConstants.REL_OWNER.equals(relName))
+        {
+          Enumeration children = element.getElements(rel.getName());
+          while (children.hasMoreElements())
+          {
+            collectElements2Remove((TreeElement)children.nextElement(), elements2remove);
+          }
+        }
+      }
+    }
   }
 
   public final String getActionLinkForHistory()
