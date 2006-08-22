@@ -97,12 +97,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.HyperlinkGroup;
 import org.eclipse.ui.forms.HyperlinkSettings;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.eclipse.ui.internal.Workbench;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.ui.widgets.PageInfo;
@@ -347,7 +348,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			browseButton_ = utils.createPushButton(typeComposite,
 					ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 
-			browseDialog_ = new ServiceImplSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			browseDialog_ = new ServiceImplSelectionDialog(workbench.getActiveWorkbenchWindow().getShell(), 
 					new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
 							new WidgetContributorFactory()
 					{	
@@ -490,7 +492,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			public void linkExited(HyperlinkEvent e){}			
 		});
 		
-		projectDialog_ = new ProjectSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		projectDialog_ = new ProjectSelectionDialog(workbench.getActiveWorkbenchWindow().getShell(), 
 				new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_PROJECT_SETTINGS, "", 
                         new WidgetContributorFactory()
   						{	
@@ -625,8 +628,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		//  question - where to pick it up from?
 		//Remember the current values
 		TypeRuntimeServer currentServiceTRS = getServiceTypeRuntimeServer();
+		IWorkbench workbench = PlatformUI.getWorkbench();
 		RuntimeServerSelectionDialog rssd = new RuntimeServerSelectionDialog(
-				Workbench.getInstance().getActiveWorkbenchWindow().getShell(), mode, currentServiceTRS, "14");	
+				workbench.getActiveWorkbenchWindow().getShell(), mode, currentServiceTRS, "14");	
 		rssd.setSelectServerFirst(selectServerFirst);		
 		int result = rssd.open();		
 		if (result == Window.OK)
@@ -1558,7 +1562,8 @@ private void handleTypeChange()
 		       {      	
 				 IObjectSelectionLaunchable launchable = ((IObjectSelectionLaunchable)objectSelectionWidget_);
 				 launchable.setInitialSelection(getObjectSelection());
-		         result = launchable.launch(Workbench.getInstance().getActiveWorkbenchWindow().getShell());
+				 IWorkbench workbench = PlatformUI.getWorkbench();
+		         result = launchable.launch(workbench.getActiveWorkbenchWindow().getShell());
 		         if (result == Dialog.OK)
 		         {
 		        	 serviceImpl_.removeModifyListener(objectModifyListener_);
