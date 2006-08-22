@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060504   119296 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060822   154750 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.common;
 
@@ -63,7 +64,8 @@ public class TimedOperation implements IUndoableOperation
         }
         catch( InterruptedException exc )
         {
-          Status errorStatus = new Status( IStatus.ERROR,"id", 0, exc.getMessage(), exc );
+          String message     = exc.getMessage();
+          Status errorStatus = new Status( IStatus.ERROR,"id", 0, message == null ? "" : message, exc );
           executeThread.interrupt();
           return errorStatus;
         }
@@ -101,7 +103,9 @@ public class TimedOperation implements IUndoableOperation
       }
       catch( Throwable exc )
       {
-        returnStatus = new Status( IStatus.ERROR,"id", 0, exc.getMessage(), exc );
+        String message = exc.getMessage();
+        
+        returnStatus = new Status( IStatus.ERROR,"id", 0, message == null ? "" : message, exc );
       }
       finally
       {

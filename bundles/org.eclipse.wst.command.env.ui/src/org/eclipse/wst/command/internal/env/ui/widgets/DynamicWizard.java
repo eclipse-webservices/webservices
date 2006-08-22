@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060822   154750 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -380,7 +381,6 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
 	  canFinishRegistry_    = null; 
 	  pageManager_          = null;
 	  wizardTitle_          = null;
-	  dataObjectCommand_    = null;
 	  commandWidgetBinding_ = null;
 	  WidgetRegistry.initialize();
   }
