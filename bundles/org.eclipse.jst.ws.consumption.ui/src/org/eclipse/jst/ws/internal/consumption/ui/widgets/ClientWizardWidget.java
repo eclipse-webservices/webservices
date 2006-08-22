@@ -48,7 +48,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.ui.widgets.PageInfo;
@@ -135,7 +136,8 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	browseButton_ = utils.createPushButton(typeComposite,
 			ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 	
-    wsdlDialog_ = new WSDLSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
+	IWorkbench workbench = PlatformUI.getWorkbench();
+    wsdlDialog_ = new WSDLSelectionDialog(workbench.getActiveWorkbenchWindow().getShell(), 
 		  						new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
 		                        new WidgetContributorFactory()
 		  						{	

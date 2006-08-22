@@ -69,12 +69,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.HyperlinkGroup;
 import org.eclipse.ui.forms.HyperlinkSettings;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.eclipse.ui.internal.Workbench;
 import org.eclipse.wst.command.internal.env.ui.widgets.PageInfo;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
@@ -340,7 +341,8 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		public void linkExited(HyperlinkEvent e){}			
 	});
 	
-	projectDialog_ = new ProjectSelectionDialog(Workbench.getInstance().getActiveWorkbenchWindow().getShell(), 
+	IWorkbench workbench = PlatformUI.getWorkbench();
+	projectDialog_ = new ProjectSelectionDialog(workbench.getActiveWorkbenchWindow().getShell(), 
 			new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_CLIENT_PROJECT_SETTINGS, "", 
                     new WidgetContributorFactory()
 						{	
