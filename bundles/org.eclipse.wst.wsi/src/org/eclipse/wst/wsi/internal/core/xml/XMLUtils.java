@@ -291,6 +291,8 @@ public final class XMLUtils
 		return document;
 	}
 
+	private static DocumentBuilder builder = null;
+
 	/**
 	 * Parse an XML document from a reader and return the document object.
 	 * 
@@ -307,19 +309,22 @@ public final class XMLUtils
 		{
     	  Thread.currentThread().setContextClassLoader(XMLUtils.class.getClassLoader());   
 
-  		  // Get the document factory
-		  DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
+    	  if (builder == null)
+    	  {
+  		    // Get the document factory
+		    DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
 
-		  // Set namespace aware, but for now do not validate
-		  factory.setNamespaceAware(true);
-		  factory.setIgnoringElementContentWhitespace(true);
+		    // Set namespace aware, but for now do not validate
+		    factory.setNamespaceAware(true);
+		    factory.setIgnoringElementContentWhitespace(true);
 
-		  // ADD: This should be set to true when we have access to the schema
-		  // document
-		  factory.setValidating(false);
+		    // ADD: This should be set to true when we have access to the schema
+		    // document
+		    factory.setValidating(false);
 
- 		  // Parse the document
-		  DocumentBuilder builder = factory.newDocumentBuilder();
+		    builder = factory.newDocumentBuilder();
+    	  }
+		  // Parse the document
 		  doc = builder.parse(source);
 		  // workaround for compatibility Xerces 2.2.1 with Xerces 2.6.2,
 		  // Xerces 2.6.2 supported XML 1.1 but WSI-tool and Xerces 2.2.1
@@ -366,19 +371,22 @@ public final class XMLUtils
 		  // Create input source
 		  InputSource inputSource = new InputSource(reader);
 
-		  // Get the document factory
-		  DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
+		  if (builder == null)
+		  {
+		    // Get the document factory
+		    DocumentBuilderFactory factory = new org.eclipse.wst.wsi.internal.core.xml.jaxp.DocumentBuilderFactoryImpl();
 
-		  // Set namespace aware, but for now do not validate
-		  factory.setNamespaceAware(true);
-		  factory.setIgnoringElementContentWhitespace(true);
+		    // Set namespace aware, but for now do not validate
+		    factory.setNamespaceAware(true);
+		    factory.setIgnoringElementContentWhitespace(true);
 
-		  // ADD: This should be set to true when we have access to the schema
-		  // document
-		  factory.setValidating(false);
+		    // ADD: This should be set to true when we have access to the schema
+		    // document
+		    factory.setValidating(false);
 
+		    builder = factory.newDocumentBuilder();
+		  }
 		  // Parse the document
-		  DocumentBuilder builder = factory.newDocumentBuilder();
 		  doc = builder.parse(inputSource);
 	   	  // workaround for compatibility Xerces 2.2.1 with Xerces 2.6.2,
 		  // Xerces 2.6.2 supported XML 1.1 but WSI-tool and Xerces 2.2.1
@@ -1297,17 +1305,17 @@ public final class XMLUtils
 			throw new IllegalArgumentException("Element can not be NULL");
 		if (attributeName == null)
 			throw new IllegalArgumentException("Attribute name can not be NULL");
-		if (attributeName.getLocalPart() == null)
+		String nsURI = attributeName.getNamespaceURI();
+		String localPart = attributeName.getLocalPart();
+		if (localPart == null)
 			throw new IllegalArgumentException(
 					"Local part of the attribute name can not be NULL");
 
-		attributeName.getNamespaceURI();
-		attributeName.getLocalPart();
-		Attr a = el.getAttributeNodeNS(attributeName.getNamespaceURI(),
-				attributeName.getLocalPart());
+		Attr a = el.getAttributeNodeNS(nsURI,
+				localPart);
 		if (a == null)
 			// try to get with null namespace
-			a = el.getAttributeNodeNS(null, attributeName.getLocalPart());
+			a = el.getAttributeNodeNS(null, localPart);
 		return a;
 	}
 
