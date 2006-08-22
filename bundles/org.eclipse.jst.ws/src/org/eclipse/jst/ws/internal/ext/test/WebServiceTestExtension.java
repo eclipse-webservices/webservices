@@ -10,9 +10,13 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060816   104870 kathy@ca.ibm.com - Kathy Chan
+ * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.ext.test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jst.ws.internal.ext.WebServiceExtensionImpl;
@@ -29,9 +33,33 @@ public class WebServiceTestExtension extends WebServiceExtensionImpl
   // Copyright
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
 
+  private List supportedRuntimes_ = new ArrayList();
+  
   public WebServiceTestExtension(IConfigurationElement configElement)
   {
     super(configElement);
+       
+    String runtimesList = getConfigElement().getAttribute("supportedClientRuntimes");  
+   
+    addRuntimes(runtimesList);
+  }
+  
+  /**
+   * Adds a list of space delimited runtime IDs.
+   * 
+   * @param runtimesList The list of runtime IDs.
+   */
+  public void addRuntimes(String runtimesList) {
+	  
+	  if (runtimesList == null)
+		  return;
+	  
+	  String[] runtimes = runtimesList.split("\\s+");
+	    
+	  for (int i = 0; i < runtimes.length; i++) {	    	
+		  if (runtimes[i].length() > 0)
+			  supportedRuntimes_.add(runtimes[i]);   
+	  }
   }
   
   /**
@@ -115,7 +143,36 @@ public class WebServiceTestExtension extends WebServiceExtensionImpl
 	return false;  
   }
   	
-  
+  /**
+   * Returns the id attribute of this WebServiceTestExtension
+   * 
+   * @return The value of the id attribute.
+   */
+  public String getId() {
+	return getConfigElement().getAttribute( "id" ); 
+  }
+   
+  /**
+   * Does this extension allow extenders to restrict the runtimes that are supported?
+   *  
+   * @return The value of the allowRunimesRestriction attribute, false if not present.
+   */
+  public boolean allowClientRuntimesRestriction() {
+	  return Boolean.valueOf(getConfigElement().getAttribute( "allowClientRuntimesRestriction" )).booleanValue();
+  }  
+       
+  /**
+   * Determines if this WebServiceTestExtension supports the give client runtime ID.
+   * 
+   * @return true if the client runtime ID is supported, false otherwise.
+   */
+  public boolean supportsRuntime(String runtimeId) {
+	  
+	 if (!allowClientRuntimesRestriction() || supportedRuntimes_.isEmpty())
+		 return true;
+	  
+	 return supportedRuntimes_.contains(runtimeId);
+  }
 }
 
 

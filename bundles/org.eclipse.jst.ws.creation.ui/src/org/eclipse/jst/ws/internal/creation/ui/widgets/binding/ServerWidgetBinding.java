@@ -24,6 +24,7 @@
  * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
+ * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -411,8 +412,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       add(new SimpleFragment(new CreateMonitorCommand(), ""));
       add(new SimpleFragment(new ComputeEndpointCommand(), ""));
       add( new ServiceTestFragment( "TestService") );
-      add( new SimpleFragment(new TestDefaultingFragment(),""));
       add( new ClientFragment() );
+      add( new SimpleFragment(new TestDefaultingFragment(),"")); 
       add( new SimpleFragment(new ComputeProxyEndpointCommand(), ""));
       add( new ClientTestFragment( "ClientTestWidget") );
       add( new SimpleFragment( "Publish") );
@@ -582,6 +583,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestClient", ClientExtensionDefaultingCommand.class, "TestService", null);
    	  dataRegistry.addMapping(ServerWizardWidgetOutputCommand.class, "TestClient", TestDefaultingFragment.class, "GenerateProxy", null);
    	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", TestDefaultingFragment.class, "GenerateProxy", null);
+   	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientRuntimeId", TestDefaultingFragment.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestFragment.class, "GenerateProxy", null);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", FinishTestFragment.class, "GenerateProxy", null);
 

@@ -626,6 +626,7 @@
     methodsneeded="true"
     codeGenerated="true"
     serverRequired="true"
+    allowClientRuntimesRestriction="true"
     class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.GSTCWebServiceTester">
   </tester>
 </extension>

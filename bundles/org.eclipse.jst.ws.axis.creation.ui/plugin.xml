@@ -88,6 +88,15 @@
 
       </clientRuntime>
     </extension>        
+    
+    <!-- extend WebServiceSampleTest to support the Axis client runtimes -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.tester">
+      <tester
+         id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceSampleTest"
+         supportedClientRuntimes="org.eclipse.jst.ws.axis.consumption.web org.eclipse.jst.ws.axis.consumption.java">
+      </tester>
+    </extension>
+    
       <extension
            point="org.eclipse.wst.command.env.antDataMapping">
         <map

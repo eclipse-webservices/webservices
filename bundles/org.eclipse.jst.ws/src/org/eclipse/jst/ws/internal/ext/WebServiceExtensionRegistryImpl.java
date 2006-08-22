@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.ext;
@@ -26,9 +29,9 @@ public abstract class WebServiceExtensionRegistryImpl implements WebServiceExten
   // Copyright
   public static final String copyright = "(c) Copyright IBM Corporation 2000, 2002.";
   
-  private Hashtable nameExtensionTable_;
-  private Vector id_;
-  private Vector label_;
+  protected Hashtable nameExtensionTable_;
+  protected Vector id_;
+  protected Vector label_;
   private LabelsAndIds labelsandids_;
     
   public WebServiceExtensionRegistryImpl()
@@ -58,7 +61,7 @@ public abstract class WebServiceExtensionRegistryImpl implements WebServiceExten
   * This is done by querying the plugin registry for all extensions
   * that extend webServiceClientTest  
   */
-  private void loadExtensions ()
+  protected void loadExtensions ()
   {    
     IConfigurationElement[] config = getConfigElements();
 
