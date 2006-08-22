@@ -90,6 +90,8 @@ public class WSDLValidator implements IWSDLValidator
 	  withAttachments = true;
 	}
 	String wsiLevel = WSITestToolsProperties.WARN_NON_WSI;
+	WSIPreferences wsiPreference = null;
+	String uri = valInfo.getFileURI();
 	if(attValue != null)
 	{
 	  String value = (String)attValue;
@@ -106,11 +108,13 @@ public class WSDLValidator implements IWSDLValidator
 	{
 	  if(WSITestToolsProperties.getEclipseContext())
 	  {
-		wsiLevel = WSITestToolsEclipseProperties.checkWSIPreferences(valInfo.getFileURI()).getComplianceLevel();
+		wsiPreference = WSITestToolsEclipseProperties.checkWSIPreferences(uri);
+		wsiLevel = wsiPreference.getComplianceLevel();
 	  }
 	  else
 	  {
-		wsiLevel = WSITestToolsProperties.checkWSIPreferences(valInfo.getFileURI()).getComplianceLevel();
+		wsiPreference = WSITestToolsProperties.checkWSIPreferences(uri);
+		wsiLevel = wsiPreference.getComplianceLevel();
 	  }
 	}
 	// If we are ignoring WS-I then don't run the tests.
@@ -122,7 +126,6 @@ public class WSDLValidator implements IWSDLValidator
   	wsiValid = true;
   	Definition definition = null;
 	boolean hasAnalyzerConfig = false;
-	String uri = valInfo.getFileURI();
   	try
   	{
       //WSDLFactory factory = WSDLFactory.newInstance();
@@ -171,8 +174,11 @@ public class WSDLValidator implements IWSDLValidator
 	    preferences.setTADFile(WSITestToolsProperties.SSBP_ASSERTION_FILE);
 	    wsdlAnalyzer = new WSDLAnalyzer(uri, preferences);
 	  }
-	  else
+	  else if(wsiPreference != null)
 	  {
+		wsdlAnalyzer = new WSDLAnalyzer(uri, wsiPreference);
+	  }
+	  else {
 		// default preference setting
 	  	wsdlAnalyzer = new WSDLAnalyzer(uri);
 	  }
