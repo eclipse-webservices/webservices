@@ -20,6 +20,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -29,9 +30,11 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.help.WorkbenchHelp;
 import org.eclipse.ui.part.PageBook;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.ValidateHelper;
@@ -53,6 +56,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   protected Button rpcEncRadio;
   protected Button httpGetRadio;
   protected Button httpPostRadio;
+  protected Link WSIPreferenceLink;
   
 //  private BindingGenerator generator;
 
@@ -158,6 +162,9 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    protocolCombo.select(0);
    protocolCombo.addModifyListener(this);
    
+
+
+   
    sepLabel = new Label(base, SWT.SEPARATOR | SWT.HORIZONTAL);
    GridData sepData = new GridData();
    sepData.horizontalAlignment = GridData.FILL;
@@ -186,6 +193,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    rpcLitRadio.setText(SOAP_RPC_LITERAL);
    rpcEncRadio.setText(SOAP_RPC_ENCODED);
    docLitRadio.setSelection(true);
+
    
    ///////////////////////// Http Page
    httpPage = new Composite(protocolPageBook, SWT.NONE);
@@ -209,13 +217,28 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    protocolPageBook.showPage(soapPage);
    protocolPageBook.setVisible(true);
    
+   WSIPreferenceLink = new Link(base, SWT.NONE);
+   WSIPreferenceLink.setText("<A>" + Messages.getString("_WSI_COMPLIANCE_LINK_TEXT") + "</A>");
+   WSIPreferenceLink.addSelectionListener(new SelectionAdapter() {
+		public void widgetSelected(SelectionEvent e) {
+			getNewWSDLWizard().openProjectWSIProperties();
+			setPageComplete(isPageComplete());
+		}
+	});
+   
+   WSIPreferenceLink.setLayoutData(new GridData(GridData.GRAB_VERTICAL | GridData.VERTICAL_ALIGN_END));
    ////////////////////////// Add Selection Listeners
    createSkeletonCheckBox.addSelectionListener(this);
+   
+
+   rpcEncRadio.addSelectionListener(this);
+   
    
 //   BindingProtocolComponentControl component = new BindingProtocolComponentControl(base, generator, false);
 //   component.initFields();
    
     setControl(base);
+    
   }
 
   private NewWSDLWizard getNewWSDLWizard()
@@ -278,6 +301,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   public void modifyText(ModifyEvent e)
   {
+
     if (e.widget == targetNamespaceText)
     {
       startDelayedEvent(e);
@@ -294,6 +318,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 		else if (protocolCombo.getText().equals("HTTP")) { //$NON-NLS-1$
 			protocolPageBook.showPage(httpPage);
 		}
+		setPageComplete(isPageComplete());
 	}
   }
 
@@ -307,6 +332,9 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     boolean ready = true;
 
     setErrorMessage(null);
+    setMessage(null);
+
+    //this.setMessage(Messages.getString("_UI_DESCRIPTION_NEW_WSDL_FILE"),this.NONE);  //$NON-NLS-1$
 
     // so that the page doesn't immediately show up with an error
     if (targetNamespaceText.getText().trim().equals("")) //$NON-NLS-1$
@@ -323,9 +351,46 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
       ready = false;
     }
     
+    if (createSkeletonCheckBox.getSelection()) {
+
+        if (!validateWSICompliance()) {
+        	
+        	ready = false;
+        }
+    }
+    else {
+    	this.setMessage(Messages.getString("_UI_DESCRIPTION_NEW_WSDL_FILE"),this.NONE);  //$NON-NLS-1$
+    }
+ 
     return ready;
   }
 
+  protected boolean validateWSICompliance() {
+	  String WSICompliance = getNewWSDLWizard().getWSIPreferences();
+  
+	  if (!(protocolCombo.getText().equals("SOAP"))) {
+		  if (WSICompliance.equals(PersistentWSIContext.STOP_NON_WSI)) {
+			  this.setErrorMessage(Messages.getString("_ERROR_WSI_COMPLIANCE_SOAP_PROTOCOL"));
+			  return false;
+		  } else if (WSICompliance.equals(PersistentWSIContext.WARN_NON_WSI)) {
+			  this.setMessage(Messages.getString("_WARN_WSI_COMPLIANCE_SOAP_PROTOCOL"), this.WARNING);
+			  return true;
+		  }
+	  } else if (rpcEncRadio.getSelection()) {
+		  if (WSICompliance.equals(PersistentWSIContext.STOP_NON_WSI)) {
+			  this.setErrorMessage(Messages.getString("_ERROR_WSI_COMPLIANCE_RPC_ENCODING"));
+			  return false;
+		  } else if (WSICompliance.equals(PersistentWSIContext.WARN_NON_WSI)) {
+			  this.setMessage(Messages.getString("_WARN_WSI_COMPLIANCE_RPC_ENCODING"), this.WARNING);
+			  return true;
+		  }
+	  } else {
+		  this.setMessage(Messages.getString("_UI_DESCRIPTION_NEW_WSDL_FILE"),this.NONE);  //$NON-NLS-1$
+	  }
+
+	  return true;
+  }
+  
   protected boolean validatePrefix(String prefix)
   {
     String errorMessage = ValidateHelper.checkXMLPrefix(prefix);
@@ -507,9 +572,13 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   public void widgetDefaultSelected(SelectionEvent e) {
   }
-
+  
   public void widgetSelected(SelectionEvent e) {
-  	 if (e.widget == createSkeletonCheckBox) {
+  	 if (e.widget == rpcEncRadio) {
+  		setPageComplete(isPageComplete());
+  	 }
+	  
+	  if (e.widget == createSkeletonCheckBox) {
   	 	if (createSkeletonCheckBox.getSelection()) {
   	 		wsdlSkeletonGroup.setVisible(true);
   	 		sepLabel.setVisible(true);
@@ -520,6 +589,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   	 		sepLabel.setVisible(false);
   	 		protocolPageBook.setVisible(false);
   	 	}
+  	 	setPageComplete(isPageComplete());
   	 }
   }
   
@@ -559,7 +629,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 		info8.prefix = "xsd"; //$NON-NLS-1$
 		info8.uri = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
 		namespaces.addElement(info8);
-		
+
 		return namespaces;
   }
   
@@ -608,4 +678,5 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   		return false;
   	}
   }
-}
+  }
+

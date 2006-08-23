@@ -18,6 +18,8 @@ import java.util.Vector;
 import javax.xml.namespace.QName;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -29,15 +31,20 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wst.common.ui.internal.UIPlugin;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
@@ -406,4 +413,31 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 			return validator;
 		}
 	} // ///////////////////////// here
+	
+	
+	public void openProjectWSIProperties() {
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newFilePage.getContainerFullPath().toString());
+		//PreferencesUtil.createPropertyDialogOn(shell,targetProject,null,null,null).open();
+
+		PreferencesUtil.createPropertyDialogOn(shell,targetProject,WSICompliancePropertyPage.PAGE_ID ,new String[] {WSICompliancePropertyPage.PAGE_ID},null).open();
+	}
+	
+	  public String getWSIPreferences() {
+		  IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newFilePage.getContainerFullPath().toString());
+		  PersistentWSIContext WSISSBcontext = WSPlugin.getInstance().getWSISSBPContext();
+		  
+		     if (WSISSBcontext.projectStopNonWSICompliances(targetProject))
+		      {
+		        return (PersistentWSIContext.STOP_NON_WSI);
+		      } 
+		      else if (WSISSBcontext.projectWarnNonWSICompliances(targetProject))
+		      {
+		        return (PersistentWSIContext.WARN_NON_WSI);
+		      }
+		      else 
+		      {
+		    	return (PersistentWSIContext.IGNORE_NON_WSI);
+		      }
+	  }
 }

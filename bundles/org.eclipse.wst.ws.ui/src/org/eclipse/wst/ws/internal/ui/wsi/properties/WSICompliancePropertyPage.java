@@ -34,6 +34,9 @@ import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
 public class WSICompliancePropertyPage extends PropertyPage implements SelectionListener
 {
+	
+	public static final String PAGE_ID= "org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"; //$NON-NLS-1$
+	
   
   /*CONTEXT_ID PWSI0001 for the WS-I Preference Page*/
   private String INFOPOP_PWSI_PAGE = WSUIPlugin.ID + ".PWSI0000";
