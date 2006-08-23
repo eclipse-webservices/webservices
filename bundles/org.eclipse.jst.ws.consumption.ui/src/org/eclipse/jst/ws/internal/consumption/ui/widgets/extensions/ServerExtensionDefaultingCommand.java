@@ -12,6 +12,7 @@
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20060823   154938 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -397,6 +398,9 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
         testService = Boolean.FALSE;
       }
     }
+
+	// calculate the most appropriate clientRuntimeId based on current settings.
+	serviceRuntimeId_ = WebServiceRuntimeExtensionUtils2.getServiceRuntimeId( serviceIds_, serviceProjectName_, serviceComponentType_);   
     
     return status;
   }

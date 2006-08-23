@@ -12,6 +12,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144350 kathy@ca.ibm.com - Kathy Chan
+ * 20060823   154938 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
@@ -122,6 +123,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "ResourceContext", PreServiceDevelopCommand.class);			
 	
 	dataRegistry.addMapping( ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", PreServiceDevelopCommand.class, "ModuleType", null);
+	dataRegistry.addMapping( ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", ServerExtensionDefaultingCommand.class );
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceRuntimeId", ServerExtensionDefaultingCommand.class);
 	dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", PreServiceDevelopCommand.class );
 	dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceRuntimeId", PreServiceDevelopCommand.class );
