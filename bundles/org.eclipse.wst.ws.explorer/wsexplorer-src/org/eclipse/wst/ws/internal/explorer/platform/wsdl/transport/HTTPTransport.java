@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060131   125777 jesper@selskabet.org - Jesper S Moller
  * 20060222   118019 andyzhai@ca.ibm.com - Andy Zhai
  * 20060222   128564 jesper@selskabet.org - Jesper S Moller
+ * 20060823    99034 makandre@ca.ibm.com - Andrew Mak, WSE support for basic-authenticating firewalls
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
@@ -44,6 +45,8 @@ public class HTTPTransport
   private final String SYS_PROP_HTTP_NON_PROXY_HOSTS = "http.nonProxyHosts";
   
   private final String HTTP_METHOD = "POST";
+  private final String HTTP_CONNECT = "CONNECT";
+  private final String HTTP_VERSION_1_0 = "HTTP/1.0";
   private final String HTTP_VERSION = "HTTP/1.1";
   private final String HTTP_HEADER_SOAP_ACTION = "SOAPAction";
   public static final String HTTP_HEADER_AUTH = "Authorization";
@@ -62,7 +65,7 @@ public class HTTPTransport
   private final String HTTP_HEADER_CONNECTION = "Connection";
   
   private final int HTTP_CODE_CONTINUE = 100;
-  //private final int HTTP_CODE_OK = 200;
+  private final int HTTP_CODE_OK = 200;
   private final int HTTP_CODE_EXCEPTION = 300;
 
   private final String IBM_WEB_SERVICES_EXPLORER = "IBM Web Services Explorer";
@@ -472,6 +475,61 @@ public class HTTPTransport
     return headers;
   }
 
+  /**
+   * Builds the first line of a connection request to the proxy server
+   * 
+   * @param url The URL that we want to ultimately connect to.
+   * @return A string of the form "CONNECT &lt;hostname&gt;:&lt;port&gt; HTTP/1.0".
+   */
+  private StringBuffer getConnectMethod(URL url) {
+	
+	  StringBuffer sb = new StringBuffer(HTTP_CONNECT);
+	  sb.append(SPACE);	  
+	  sb.append(url.getHost());
+	  sb.append(COLON);
+	  sb.append(url.getPort());
+	  sb.append(SPACE);
+	  sb.append(HTTP_VERSION_1_0);
+	  sb.append(NEW_LINE);
+	  return sb;
+  }
+  
+  /**
+   * Construct a socket to the proxy server which be used to tunnel through.
+   * 
+   * @param url The URL that we want to ultimately connect to.
+   * @param proxyHost The proxy host.
+   * @param proxyPort The proxy port.
+   * @return A connected socket to the proxy server. 
+   * @throws IOException 
+   */
+  private Socket buildTunnelSocket(URL url, String proxyHost, int proxyPort) throws IOException {
+
+	  StringBuffer httpHeader = new StringBuffer();
+	  httpHeader.append(getConnectMethod(url));
+	  httpHeader.append(getProxyAuthentication());       
+	  httpHeader.append(NEW_LINE);
+    
+	  Socket tunnel = new Socket(proxyHost, proxyPort);
+    
+	  InputStream  is = tunnel.getInputStream();
+	  OutputStream os = tunnel.getOutputStream();
+    
+	  os.write(httpHeader.toString().getBytes(DEFAULT_HTTP_HEADER_ENCODING));        
+	  os.flush();
+    
+	  HTTPResponse httpResponse = new HTTPResponse();
+	  readHTTPResponseHeader(is, httpResponse);
+    
+	  int code = httpResponse.getStatusCode();
+
+	  // ensure we are successfully connected to the proxy
+	  if (code != HTTP_CODE_OK)
+		  throw new HTTPException(code, httpResponse.getStatusMessage(), httpResponse.getHeaders());
+	  
+	  return tunnel;
+  }
+  
   private Socket buildSocket(URL url) throws UnknownHostException, IOException
   {
     Socket s = null;
@@ -492,8 +550,9 @@ public class HTTPTransport
 
       if (proxyHost != null && proxyHost.length() > 0 && !isHostInNonProxyHosts(host, nonProxyHosts, DEFAULT_CASE_SENSITIVE_FOR_HOST_NAME))
       {
-        // TODO:
         // SSL with proxy server
+        Socket tunnel = buildTunnelSocket(url, proxyHost, proxyPort);       
+        s = ((SSLSocketFactory) SSLSocketFactory.getDefault()).createSocket(tunnel, host, port, true);    	  
       }
       else
         s = SSLSocketFactory.getDefault().createSocket(host, (port > 0 ? port : DEFAULT_HTTPS_PORT));
