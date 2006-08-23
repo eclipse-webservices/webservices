@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060726   145676 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20060823	  145643 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
@@ -43,6 +44,7 @@ public class TypeFactory
   public static final String LONG_NAME                  = "java.lang.Long";
   public static final String SHORT_NAME                 = "java.lang.Short";
   public static final String CHARACTER_NAME            = "java.lang.Character";
+  public static final String OBJECT_NAME			   = "java.lang.Object";
   public static final String PRIM_BOOLEAN_NAME         = "boolean";
   public static final String PRIM_BYTE_NAME            = "byte";
   public static final String PRIM_DOUBLE_NAME          = "double";
@@ -101,7 +103,8 @@ public class TypeFactory
         type.equals(DATE_NAME)                ||
         type.equals(GREGORIAN_CALENDAR_NAME) ||
         type.equals(CALENDAR_NAME)           || 
-        type.equals(URL_NAME)                 ||    
+        type.equals(URL_NAME)                 ||
+        type.equals(OBJECT_NAME)			 ||
         type.equals(STRING_NAME))  return true;      
      return false; 
   
@@ -117,10 +120,12 @@ public class TypeFactory
   public static boolean isUnSupportedType(JavaHelpers javaHelpers)
   {
     //we also dont support arrays
+	//java.lang.Objects are ok for return types but not for input type
     if (javaHelpers.isArray()||
     		javaHelpers.getJavaName().equals(MAP_NAME)||
     		javaHelpers.getJavaName().equals(VECTOR_NAME)||
     		javaHelpers.getJavaName().equals(DATA_HANDLER)||
+    		javaHelpers.getJavaName().equals(OBJECT_NAME) ||
     		javaHelpers.getJavaName().equals("java.lang.class")	) return true;
     
     return false;
@@ -138,10 +143,12 @@ public class TypeFactory
     //arrays 
     //Hashtable
     //Vectors
+	//java.lang.Objects are ok for return types
     if (javaHelpers.isArray()) return true;
     else if (javaHelpers.getJavaName().equals(HASHTABLE_NAME))return true;
     else if (javaHelpers.getJavaName().equals(VECTOR_NAME))return true;
     else if (javaHelpers.getJavaName().equals(MAP_NAME))return true;
+    else if (javaHelpers.getJavaName().equals(OBJECT_NAME))return true;
     else return false;
   }
 
@@ -150,10 +157,12 @@ public class TypeFactory
     //arrays 
     //Hashtable
     //Vectors
+	//java.lang.Objects are ok for return types
     if (type.startsWith(ARRAY_NAME)) return true;
     else if (type.equals(HASHTABLE_NAME))return true;
     else if (type.equals(VECTOR_NAME))return true;
     else if (type.equals(MAP_NAME))return true;
+    else if (type.equals(OBJECT_NAME)) return true;
     else return false;
   }
 
@@ -218,6 +227,7 @@ public class TypeFactory
     else if (type.equals(HASHTABLE_NAME))            datatype = new HashtableType();
     else if (type.equals(VECTOR_NAME))               datatype = new VectorType();
     else if (type.equals(MAP_NAME))                  datatype = new MapType();
+    else if (type.equals(OBJECT_NAME))				datatype = new ObjectType();
 
     // need to see if it is an object array
     //or a primitive
