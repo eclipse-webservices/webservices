@@ -31,6 +31,8 @@ import org.eclipse.wst.wsi.internal.core.profile.impl.ProfileAssertionsImpl;
 import org.eclipse.wst.wsi.internal.core.profile.impl.ProfileAssertionsReaderImpl;
 import org.eclipse.wst.wsi.internal.core.report.Report;
 import org.eclipse.wst.wsi.internal.core.report.ReportWriter;
+import org.eclipse.wst.wsi.internal.core.report.Reporter;
+import org.eclipse.wst.wsi.internal.core.report.impl.DefaultReporter;
 import org.eclipse.wst.wsi.internal.core.report.impl.ReportImpl;
 import org.eclipse.wst.wsi.internal.core.report.impl.ReportWriterImpl;
 
@@ -141,6 +143,14 @@ public class DocumentFactoryImpl extends DocumentFactory
   {
     // Return implementation
     return new ReportWriterImpl();
+  }
+
+  /**
+   * Create a new instance of a DefaultReporter
+   */
+  public Reporter newReporter(Report report, ReportWriter reportWriter)
+  {
+    return new DefaultReporter(report, reportWriter);
   }
 
   /**

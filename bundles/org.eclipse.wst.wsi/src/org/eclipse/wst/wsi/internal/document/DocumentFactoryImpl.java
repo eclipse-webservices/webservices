@@ -13,8 +13,10 @@ package org.eclipse.wst.wsi.internal.document;
 
 import org.eclipse.wst.wsi.internal.core.report.Report;
 import org.eclipse.wst.wsi.internal.core.report.ReportWriter;
-import org.eclipse.wst.wsi.internal.core.report.impl.ReportImpl;
+import org.eclipse.wst.wsi.internal.core.report.Reporter;
+import org.eclipse.wst.wsi.internal.report.NullReportImpl;
 import org.eclipse.wst.wsi.internal.report.ReportNoWriterImpl;
+import org.eclipse.wst.wsi.internal.report.SimpleReporter;
 
 /**
  * DocumentFactoryImpl
@@ -48,7 +50,15 @@ public class DocumentFactoryImpl extends org.eclipse.wst.wsi.internal.core.docum
    */
   public Report newReport()
   {
-    return new ReportImpl();
+    return new NullReportImpl();
   }
 
+  /**
+   * Create a reporter.
+   * @return newly created reporter.
+   */
+  public Reporter newReporter(Report report, ReportWriter reportWriter)
+  {
+    return new SimpleReporter(report, reportWriter);
+  }
 }

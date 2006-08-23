@@ -22,6 +22,7 @@ import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertionsReader;
 import org.eclipse.wst.wsi.internal.core.report.Report;
 import org.eclipse.wst.wsi.internal.core.report.ReportWriter;
+import org.eclipse.wst.wsi.internal.core.report.Reporter;
 import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 
 /**
@@ -159,6 +160,12 @@ public abstract class DocumentFactory
    * @return newly created log writer.
    */
   public abstract LogWriter newLogWriter();
+
+  /**
+   * Create a reporter.
+   * @return newly created reporter.
+   */
+  public abstract Reporter newReporter(Report report, ReportWriter reportWriter);
 
   // ADD: Add other writers
 
