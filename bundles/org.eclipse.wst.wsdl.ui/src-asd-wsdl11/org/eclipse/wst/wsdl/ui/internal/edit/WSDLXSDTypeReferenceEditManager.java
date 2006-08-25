@@ -22,6 +22,8 @@ import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDTypeDefinitionCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
+import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
+import org.eclipse.wst.xsd.ui.internal.dialogs.NewTypeDialog;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDTypeReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.search.IXSDSearchConstants;
 import org.eclipse.xsd.XSDAttributeUse;
@@ -40,6 +42,20 @@ public class WSDLXSDTypeReferenceEditManager extends XSDTypeReferenceEditManager
 			setSchemas(getInlineSchemas(description));
 		}
 	}
+	
+	public IComponentDialog getNewDialog()
+	{
+		if (schemas.length > 0) {
+			NewTypeDialog newTypeDialog = new NewTypeDialog(schemas[0]);
+			newTypeDialog.allowAnonymousType(false);
+			return newTypeDialog;
+		}
+		else {
+			NewTypeDialog newTypeDialog = new NewTypeDialog();
+			newTypeDialog.allowAnonymousType(false);
+			return newTypeDialog;
+		}
+	}	
 
 	public void modifyComponentReference(Object referencingObject, ComponentSpecification component) {
 		if (referencingObject instanceof Adapter) {
