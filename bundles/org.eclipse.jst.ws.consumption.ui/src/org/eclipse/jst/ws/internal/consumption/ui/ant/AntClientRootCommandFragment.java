@@ -13,15 +13,16 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144350 kathy@ca.ibm.com - Kathy Chan
+ * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.ant;
 
-import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingOperation;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;

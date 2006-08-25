@@ -13,13 +13,14 @@
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144350 kathy@ca.ibm.com - Kathy Chan
  * 20060823   154938 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
-import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingOperation;
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionFragment;

@@ -25,6 +25,7 @@
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
+ * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -33,10 +34,10 @@ import org.eclipse.jst.ws.internal.consumption.command.common.ComputeEndpointCom
 import org.eclipse.jst.ws.internal.consumption.command.common.ComputeProxyEndpointCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.ManageServerStartUpCommand;
-import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ServerInstToIServerTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.selection.SelectionTransformer;

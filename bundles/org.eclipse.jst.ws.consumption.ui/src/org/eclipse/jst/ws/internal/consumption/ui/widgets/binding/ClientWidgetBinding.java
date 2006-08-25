@@ -24,15 +24,16 @@
  * 20060717   146332 makandre@ca.ibm.com - Andrew Mak
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
+ * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
 import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
-import org.eclipse.jst.ws.internal.consumption.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidget;

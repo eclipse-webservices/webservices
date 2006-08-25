@@ -11,13 +11,13 @@
  * -------- -------- -----------------------------------------------------------
  * 20060224   129387 pmoogk@ca.ibm.com - Peter Moogk
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
+ * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -39,7 +39,6 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class ObjectSelectionWidget extends AbstractObjectSelectionWidget implements IObjectSelectionWidget
 {
-  private IConfigurationElement[] elements;
   private Composite parent;
   private Listener statusListener;
   private Composite composite;
@@ -51,7 +50,6 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   
   public WidgetDataEvents addControls(Composite parentComposite, Listener statListener)
   {
-    elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
     this.parent = parentComposite;
     this.statusListener = statListener;
     composite = null;
@@ -92,60 +90,45 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
           objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
         }
 
-        if (objectSelectionWidgetId != null && objectSelectionWidgetId.length() > 0)
+        child = ObjectSelectionRegistry.getInstance().getSelectionWidget( objectSelectionWidgetId );
+        
+        if( child != null )
         {
-          for (int i = 0; i < elements.length; i++)
-          {
-            if (objectSelectionWidgetId.equals(elements[i].getAttribute("id")))
-            {
-              try
-              {
-                Object object = elements[i].createExecutableExtension("class");
-                if (object instanceof IObjectSelectionWidget)
-                {
-                  Control shell = parent.getShell();
-                  composite = new Composite(parent, SWT.NONE);
-                  GridLayout gl = new GridLayout();
-                  gl.marginHeight = 0;
-                  gl.marginWidth = 0;
-                  GridData gd = new GridData(GridData.FILL_BOTH);
-                  composite.setLayout(gl);
-                  composite.setLayoutData(gd);
-                  child = (IObjectSelectionWidget)object;
-                  child.addControls(composite, statusListener);
-                  child.setInitialSelection(initialSelection);                  
+          Control shell = parent.getShell();
+          composite = new Composite(parent, SWT.NONE);
+          GridLayout gl = new GridLayout();
+          gl.marginHeight = 0;
+          gl.marginWidth = 0;
+          GridData gd = new GridData(GridData.FILL_BOTH);
+          composite.setLayout(gl);
+          composite.setLayoutData(gd);
+          child.addControls(composite, statusListener);
+          child.setInitialSelection(initialSelection);                  
 
-                  Point origSize = shell.getSize();
-                  Point compSize = composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                  int   newX     = origSize.x;
-                  int   newY     = origSize.y;
+          Point origSize = shell.getSize();
+          Point compSize = composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+          int   newX     = origSize.x;
+          int   newY     = origSize.y;
                   
-                  // Note: we are trying to determine here if the wizard page should
-                  //       be resized based on the size of the control that is
-                  //       given to us by the extension.  The hard coded constants
-                  //       below represent the vertical and horizontal pixels that need
-                  //       to go around object selection control.  Hopefully, a more
-                  //       programatic method of doing this can be found in the future.
-                  if( compSize.x + 20 > origSize.x )
-                  {
-                    newX = compSize.x + 20;
-                  }
-                  
-                  if( compSize.y + 205 > origSize.y )
-                  {
-                    newY = compSize.y + 205;
-                  }
-   
-                  widgetSize_ = new Point(newX, newY);                  
-                  
-                  return;
-                }
-              }
-              catch (CoreException ce)
-              {
-              }
-            }
+          // Note: we are trying to determine here if the wizard page should
+          //       be resized based on the size of the control that is
+          //       given to us by the extension.  The hard coded constants
+          //       below represent the vertical and horizontal pixels that need
+          //       to go around object selection control.  Hopefully, a more
+          //       programatic method of doing this can be found in the future.
+          if( compSize.x + 20 > origSize.x )
+          {
+            newX = compSize.x + 20;
           }
+                  
+          if( compSize.y + 205 > origSize.y )
+          {
+            newY = compSize.y + 205;
+          }
+   
+          widgetSize_ = new Point(newX, newY);                  
+                  
+          return;
         }
       }
     }
