@@ -99,11 +99,11 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
   private DirectEditManager manager;
     
   public void performDirectEdit(Point cursorLocation){
-	  if (cursorLocation == null || hitTest(label, cursorLocation) && !isReadOnly()) {
+	  if (cursorLocation == null || hitTest(getFigure().getBounds(), cursorLocation) && !isReadOnly()) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }
-    else if (hitTest(label, cursorLocation) && isReadOnly()) {
+    else if (hitTest(getFigure().getBounds(), cursorLocation) && isReadOnly()) {
       doOpenNewEditor();    
     }
   }

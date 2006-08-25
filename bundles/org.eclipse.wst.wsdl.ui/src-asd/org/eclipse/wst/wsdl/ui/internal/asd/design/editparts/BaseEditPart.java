@@ -96,6 +96,10 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
 	  
   }
   
+  protected boolean hitTest(Rectangle rectangle, Point location) {
+	  return rectangle.contains(location);
+  }
+  
   protected boolean hitTest(Label target, Point location) {
 	  Rectangle origB = target.getTextBounds().getCopy();
 	  Rectangle transB = target.getTextBounds().getCopy();

@@ -94,8 +94,13 @@ public class W11ParameterForElement extends WSDLBaseAdapter implements IParamete
   public Command getSetNameCommand(String newName) {    
     return new W11RenameCommand(this, newName) {
       public void execute() {
-
-        getXSDElementDeclaration().setName(newName);
+  		try {
+			beginRecording(getXSDElementDeclaration().getElement());
+			getXSDElementDeclaration().setName(newName);
+  		}
+  		finally {
+  			endRecording(getXSDElementDeclaration().getElement());
+  		}
       }
     };  
   }
