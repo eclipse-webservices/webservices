@@ -11,17 +11,15 @@
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060815   104870 makandre@ca.ibm.com - Andrew Mak, enable/disable test page controls base on settings in test facility extension
+ * 20060815   153903 makandre@ca.ibm.com - Andrew Mak, Browse does not work in generate client test page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
@@ -106,6 +104,9 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   private IStructuredSelection initialSelection_;
   private boolean isTestWidget = false;
   
+  private IPath webContentPath_;
+  private IResource webContent_;
+    
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
     isTestWidget = true;
@@ -239,23 +240,21 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   private void handleFolderText()
   {
+	// webContentPath_ is set when jspFolderText_ is set for the first time.  Therefore,
+	// if webContentPath_ is still null, there is no need to touch jspFolderText_ yet.
+	  
+	if (webContentPath_ == null)
+		return;
+	  
   	String folder = sampleFolderText_.getText();	
-    String jspFolder = jspFolderText_.getText();
-    int index = jspFolder.lastIndexOf(Path.SEPARATOR);
-    if(index == -1) return;
-    jspFolder = jspFolder.substring(0,index + 1);
-    jspFolder = jspFolder + folder;
-    jspFolderText_.setText(jspFolder);
+    jspFolderText_.setText(webContentPath_.toString() + IPath.SEPARATOR + folder);
   }
   
   private void handleSampleBrowse()
   {
     IPath      selectedPath       = null;
     IResource  initialResource    = null;
-    IPath      projectPath        = new Path( projectCombo_.getText() ).makeAbsolute();
-    IResource  project            = ResourceUtils.findResource( projectPath );
-//    IContainer webModuleContainer = ResourceUtils.getWebModuleServerRoot( (IProject)project);
-    IContainer webModuleContainer = J2EEUtils.getFirstWebContentContainer((IProject)project);  
+    
     try
     {
       initialResource = ResourceUtils.getResourceFromSelection( initialSelection_ );
@@ -264,10 +263,10 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     {  
     }
     
-    if( initialResource == null )initialResource = project;
+    if( initialResource == null )initialResource = webContent_;
     
     IResource resource = DialogUtils.browseResources( comboGroup_.getShell(), 
-                                                      project,
+                                                      webContent_,
                                                       initialResource, 
                                                       folderFilter_ );
     
@@ -275,9 +274,9 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     {
       selectedPath = resource.getFullPath();   
     
-      int webModuleSegments = selectedPath.matchingFirstSegments(webModuleContainer.getFullPath());
+      int webModuleSegments = selectedPath.matchingFirstSegments(webContentPath_);
       
-      if ( webModuleSegments < 2 )
+      if ( webModuleSegments < webContentPath_.segmentCount() )
       {
         sampleFolderText_.setText("");
         handleFolderText();
@@ -321,7 +320,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
       
       // folder selection is only applicable for test facilities with codegen
       sampleFolderText_.setEnabled( hasCodeGen );
-      sampleFolderBrowseButton_.setEnabled( hasCodeGen );
+      sampleFolderBrowseButton_.setEnabled( hasCodeGen && webContent_ != null );
       
       boolean hasMethods = testExtension.areMethodsNeeded();
       
@@ -375,15 +374,33 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     return testTypeCombo_.getText();
   }
   
+  /**
+   * Given a project name which may be of the (obsolete) format "project/module",
+   * return only the project part of the name
+   * 
+   * @param project The project name.
+   * @return If the name has the format "project/module", returns only "project", 
+   * otherwise returns the name as is.
+   */
+  private String extractProjectName(String project) {
+	  
+	  int index = project.indexOf("/");
+	  
+	  if (index != -1)
+		  project = project.substring(0, index);
+	  
+	  return project;
+  }
+  
   public void setSampleProject(String clientProject) 
   {
-	projectCombo_.setItems( new String[]{ clientProject } );
+	projectCombo_.setItems( new String[]{ extractProjectName(clientProject) } );
 	projectCombo_.select(0);
   }
   
   public void setSampleProjectEAR(String clientProjectEAR) 
   {
-    earCombo_.setItems( new String[]{ clientProjectEAR } );
+    earCombo_.setItems( new String[]{ extractProjectName(clientProjectEAR) } );
     earCombo_.select(0);
   }
   
@@ -404,6 +421,10 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   public void setJspFolder( String folder )
   {
+	webContentPath_ = (new Path(folder)).removeLastSegments(1);
+	webContent_ = ResourceUtils.findResource(webContentPath_);	
+	sampleFolderBrowseButton_.setEnabled(webContent_ != null);
+	  
     jspFolderText_.setText( folder );
   }
   

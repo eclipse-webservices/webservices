@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2004 IBM Corporation and others.
+ * Copyright (c) 2003, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060608   144500 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20060818   153903 makandre@ca.ibm.com - Andrew Mak, Browse does not work in generate client test page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -83,8 +84,9 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
 	
     //Get the sample Folder ready
     StringBuffer sb = new StringBuffer();
-    
-    if (webcontentPath != null)
+
+    // *need* to double-check that clientIProject is a web project
+    if (webcontentPath != null && J2EEUtils.isWebComponent(clientIProject))
     {	
     	String path = webcontentPath.toString();
     	sb.append(path).append("/");
