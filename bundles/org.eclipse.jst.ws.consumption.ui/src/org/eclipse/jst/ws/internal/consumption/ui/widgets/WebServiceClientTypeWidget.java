@@ -29,6 +29,7 @@
  * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  * 20060726   150865 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -165,6 +166,15 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		initImageRegistry();
 		validationState_ = ValidationUtils.VALIDATE_ALL;
 	}
+    
+  /**
+   * Returns the main client group composite.
+   * 
+   * @return The client group composite.
+   */
+  public Composite getGroupComposite() {
+	  return clientGroupComposite_;	  
+  }
   
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#addControls(org.eclipse.swt.widgets.Composite, org.eclipse.swt.widgets.Listener)
@@ -431,6 +441,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		  hCompClient_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
 		  clientDetailsLabel_.setText(ConsumptionUIMessages.LABEL_SUMMARY_NO_CLIENT);		  
 	  }	  
+	  clientDetailsLabel_.pack(true);
 	  hLinkClientProject_.pack(true);
 	  hLinkClientEAR_.pack(true);
 	  clientGroupComposite_.pack(true);

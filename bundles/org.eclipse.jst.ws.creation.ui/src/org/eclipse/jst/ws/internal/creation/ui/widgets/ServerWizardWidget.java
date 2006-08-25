@@ -38,6 +38,7 @@
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  * 20060726   150865 sengpl@ca.ibm.com -  Seng Phung-Lu
  * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
+ * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -137,6 +138,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	 private String INFOPOP_WSWSCEN_HYPERLINK_PROJECTS  = "WSWSCEN0024";
 	 /* CONTEXT_ID WSWSCEN0030 for the Overwrite Files checkbox of the Scenario Page */
 	 private String INFOPOP_WSWSCEN_CHECKBOX_OVERWRITE = "WSWSCEN0030";
+	 
+	 private int RESIZE_PADDING = 30;
 	 
 	private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
 	private Listener statusListener_;
@@ -254,11 +257,27 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			setObjectSelection(null);
 	}
 	
+	/**
+	 * Compares the main group composites of the service and client sections,
+	 * returns the one that is wider to be used as referenced for horizontal
+	 * resizing of the dialog.
+	 * 
+	 * @return Either the service or client group composite, which ever one is wider.
+	 */
+	private Composite getReferencedComposite() {
+	
+		int serviceWidth = groupComposite_.getSize().x;
+		int clientWidth  = clientWidget_.getGroupComposite().getSize().x;
+		
+		return serviceWidth > clientWidth ? groupComposite_ : clientWidget_.getGroupComposite();
+	}
+	
 	public WidgetDataEvents addControls(Composite parent,
 			Listener statusListener) {
 		
 		String createPluginId = "org.eclipse.jst.ws.creation.ui";
-		UIUtils utils = new UIUtils(createPluginId);
+		final UIUtils utils = new UIUtils(createPluginId);
+		final Composite fParent = parent;
 		statusListener_ = statusListener;
 		utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
 		
@@ -372,17 +391,22 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	    GridData gcGridData = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
 	    groupComposite_.setLayoutData(gcGridData);		
 	    
-	    groupComposite_.addControlListener(new ControlListener()
+	    ControlListener groupCompositeListener = new ControlListener()
 		{
 			public void controlMoved(ControlEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			public void controlResized(ControlEvent e) {
-				groupComposite_.pack(true);				
+				((Composite) e.getSource()).pack(true);								
+				
+				utils.horizontalResize(fParent, getReferencedComposite(), 0);
+				utils.horizontalResize(fParent.getShell(), fParent, RESIZE_PADDING);	
 			}
-		});
+		};
 	    
+		groupComposite_.addControlListener(groupCompositeListener);
+		
 		serviceComposite_ =  new Composite(groupComposite_, SWT.NONE);
 		GridLayout gridlayout   = new GridLayout();
 	    gridlayout.numColumns   = 2;
@@ -543,6 +567,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		// Add client widgets...
 		clientWidget_ = new WebServiceClientTypeWidget(false);
 	    clientWidget_.addControls(parent, statusListener );
+	    clientWidget_.getGroupComposite().addControlListener(groupCompositeListener);
 	    clientWidget_.enableClientSlider(serviceScale_.getSelection()<=ScenarioContext.WS_START);
 		
 		// Advanced buttons section

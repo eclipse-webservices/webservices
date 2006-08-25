@@ -20,6 +20,7 @@
  * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
  * 20060725   149351 makandre@ca.ibm.com - Andrew Mak, Deleted service definition keeps reappearing
  * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
+ * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -38,6 +39,8 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -62,6 +65,8 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ClientWizardWidget extends SimpleWidgetDataContributor implements Runnable
 {  
+  private int RESIZE_PADDING = 30;	
+	
   private WebServiceClientTypeWidget clientWidget_;
   private Button overwriteButton_;
   private Button monitorService_;
@@ -109,7 +114,8 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    UIUtils      utils    = new UIUtils( pluginId );
+    final UIUtils utils   = new UIUtils( pluginId );
+    final Composite fParent = parent;
     utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
 
     statusListener_ = statusListener;
@@ -155,6 +161,22 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
     clientWidget_ = new WebServiceClientTypeWidget(true);
     clientWidget_.addControls(clientComposite , statusListener );
    
+    clientWidget_.getGroupComposite().addControlListener(new ControlListener() {
+    	
+    	public void controlMoved(ControlEvent e) {
+    		// TODO Auto-generated method stub
+    		
+    	}
+    	
+    	public void controlResized(ControlEvent e) {
+    		Composite composite = clientWidget_.getGroupComposite();
+    		composite.pack(true);
+    		
+			utils.horizontalResize(fParent, composite, 10);
+			utils.horizontalResize(fParent.getShell(), fParent, RESIZE_PADDING);	
+    	}
+    });
+    
     //  Create test service check box.
     Composite buttonGroup = utils.createComposite(clientComposite,1);
     

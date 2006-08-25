@@ -1,16 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.common;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -213,4 +217,20 @@ public class UIUtils
 	  if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( ctrl, infoPopid_ + "." + infopop );
   }
   
+  /**
+   * Resizes the width of the target composite so that it is as wide as the
+   * reference composite plus a padding value.  
+   * 
+   * @param target The composite to resize.
+   * @param reference The reference composite
+   * @param padding The padding value
+   */
+  public void horizontalResize(Composite target, Composite reference, int padding) {
+		
+		Point originalSize  = target.getSize();
+		Point referenceSize = reference.getSize();
+		
+		if (referenceSize.x + padding > originalSize.x)
+			target.setSize(referenceSize.x + padding, originalSize.y);
+  }  
 }
