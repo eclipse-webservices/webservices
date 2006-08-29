@@ -9,7 +9,7 @@ editor.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>WSDL<indexterm>creating</indexterm></indexterm><indexterm>Web
 services<indexterm>creating WSDL</indexterm></indexterm></keywords>
-</metadata></prolog><?Pub Caret?>
+</metadata></prolog>
 <taskbody>
 <context><p>To create a WSDL file, follow these steps:</p></context>
 <steps>
@@ -38,17 +38,32 @@ generate the WSDL elements required for your service, including bindings,
 ports and messages. You can then modify these to meet the requirements of
 your Web service.</info></substep>
 <substep><cmd>If you have chosen to create a WSDL skeleton, select the binding
-options you want to use in the WSDL document. The options are SOAP and HTTP.</cmd>
-<info> If you select SOAP you can then select the encoding style you want
-to use. If you select HTTP you can select whether to create an HTTP getter
-or setter.<draft-comment>RATLC00975711 - provide more info in the section
-on creating a WSDL file; information on the protocols; the SOAP binding types
-[SOAP Binding Options: document literal - sends an entire XML document in
-a SOAP message; rpc literal - sends XML data in one parameter of a remote
-procedure call; rpc encoded - sends serialized XML data in one or more parameters
-of a remote procedure call; HTTP Binding options: HTTP GET - send a simple
-query request; HTTP POST - send a request or update</draft-comment></info>
-</substep>
+options you want to use in the WSDL document. The options are SOAP and HTTP.
+Use the SOAP protocol when you want to exchange structured and typed information.
+Use the HTTP protocol when you want your application client to just request
+or update information<?Pub Caret?>.</cmd><info> If you select SOAP you can
+then select the encoding style you want to use.<ul>
+<li><b>Document literal</b>. Document style messages, literal encoding. Use
+this style of binding when you want to send SOAP messages that can be validated
+by an XML validator.  All the data types in the SOAP message body are defined
+in a schema, so the WSDL parts must point to schema elements. </li>
+<li><b>RPC literal</b>. RPC style messages, literal encoding. Use this style
+of binding when you want to specify the operation method names in your SOAP
+messages so a server can dispatch the specified methods.  Data types must
+be defined, so the WSDL parts must point to XSD types.</li>
+<li><b>RPC encoded</b>. RPC style messages and SOAP encoding. Use this style
+of binding when you want to encode data graphs in your SOAP messages so a
+server can deserialize the object data.  Data types must be defined, so the
+WSDL parts must point to XSD types.</li>
+</ul> If you select HTTP you can select whether to create an HTTP getter or
+setter.<ul>
+<li><b>HTTP GET</b>. A GET request fetches data from a Web server based on
+an URL value and a set of HTTP headers. Use this method when you want to retrieve
+information specified in the request. </li>
+<li><b>HTTP POST</b>. A POST request sends additional data to the server,
+specified after the URL and the headers. Use this method when you want to
+send data enclosed in the body of the request.</li>
+</ul></info></substep>
 </substeps>
 </step>
 <step><cmd>Click  <b>Finish</b>.</cmd><info>The WSDL file opens in the WSDL
@@ -73,4 +88,4 @@ href="../images/httpskel.gif" placement="break"></image></p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000004048?>
+<?Pub *0000004991?>
