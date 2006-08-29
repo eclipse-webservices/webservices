@@ -38,8 +38,8 @@ Export-Package: org.eclipse.wst.wsdl.ui.internal;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.properties.sections,
  org.eclipse.wst.wsdl.ui.internal.reconciler;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.refactor;x-internal:=true,
- org.eclipse.wst.wsdl.ui.internal.refactor.actions;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.search;x-internal:=true,
+ org.eclipse.wst.wsdl.ui.internal.search.actions;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.soap.customizations;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.text;x-internal:=true,
  org.eclipse.wst.wsdl.ui.internal.util;x-internal:=true,
@@ -81,5 +81,6 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.wst.command.env;bundle-version="[1.0.102,1.1.0)",
  org.eclipse.wst.ws;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.wst.command.env.core;bundle-version="[1.0.101,1.1.0)",
- org.eclipse.wst.ws.ui;bundle-version="[1.0.101,1.1.0)"
+ org.eclipse.wst.ws.ui;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.search;bundle-version="[3.2.0,4.0.0)"
 Eclipse-LazyStart: true
