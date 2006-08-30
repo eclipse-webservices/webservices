@@ -68,7 +68,8 @@ navtitle="Discovering and importing a Web service" scope="peer"></topicref>
 <topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/tsampappa.dita"
 navtitle="Generating a Java client proxy from a WSDL document using the Axis run-time environment"
 scope="peer"></topicref>
-</topicref>
+<anchor id="extending_ws_client_creation"/></topicref>
+<navref mapref="../org.eclipse.wst.command.env.doc.user/wsaxisant_toc.ditamap"/>
 </topicref>
 <topicref navtitle="Testing and validating Web services">
 <topicref href="../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/ttestwsdl.dita"

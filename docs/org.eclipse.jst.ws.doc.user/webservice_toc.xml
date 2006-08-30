@@ -44,7 +44,9 @@
 <topic label="Creating Web service clients">
 <topic label="Discovering and importing a Web service" href="../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tdiscov.html"/>
 <topic label="Generating a Java client proxy from a WSDL document using the Axis run-time environment" href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/tsampappa.html"/>
+<anchor id="extending_ws_client_creation"/>
 </topic>
+<link toc="../org.eclipse.wst.command.env.doc.user/wsaxisant_toc.xml"/>
 </topic>
 <topic label="Testing and validating Web services">
 <topic label="Testing WSDL documents and Web services with the WSDL Explorer" href="../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/ttestwsdl.html"/>

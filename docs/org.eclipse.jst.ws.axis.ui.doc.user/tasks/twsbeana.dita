@@ -28,7 +28,11 @@ container as your server, you must install it, configure an instance of it,
 and create a Web project targeted to it as described in <xref href="ttomcatserv.dita"
 scope="local">Creating an Apache Tomcat server and Web project</xref></li>
 <li>Create or import a bean into the <tm tmclass="special" tmowner="Sun Microsystems, Inc."
-tmtype="tm" trademark="Java">Java</tm> source folder of the Web project.</li>
+tmtype="tm" trademark="Java">Java</tm> source folder of the Web project. To
+import, select the <b>Java Resources: src</b> folder, and from the file menu
+select <menucascade><uicontrol>Import</uicontrol><uicontrol>General</uicontrol>
+<uicontrol>File System</uicontrol></menucascade> and browse to where your
+package is.</li>
 </ol></p></prereq>
 <context>To create a Web service from a bean using the Apache Axis run-time
 environment:</context>
@@ -47,13 +51,19 @@ will be used to generate the service.</cmd>
 <substeps id="createstep4ul">
 <substep><cmd>Select the stages of Web services development that you want
 to complete using the slider:</cmd><info><ul>
-<li>Develop: this will create the service code</li>
-<li>Assemble: </li>
-<li>Deploy: this will create the deployment code for the service</li>
-<li>Install: this will install the service on the chosen server</li>
+<li>Develop: this will develop the WSDL definition and implementation of the
+Web service. This includes such tasks as creating the modules which will contain
+the generated code, WSDL files, deployment descriptors, and Java files when
+appropriate.</li>
+<li>Assemble: this ensures the project that will host the Web service or client
+gets associated to an EAR when required by the target application server.</li>
+<li>Deploy: this will create the deployment code for the service.</li>
+<li>Install: this will install and configure the Web module and EARs on the
+target server.</li>
 <li>Start: this will start the server once the service has been installed
-on it</li>
-<li>Test: this will provide various options for testing the service</li>
+on it. The server-config.wsdd file will be generated.</li>
+<li>Test: this will provide various options for testing the service, such
+as using the Web Service Explorer or sample JSPs.</li>
 </ul></info></substep>
 <substep><cmd>Select your server: the default server is displayed. If you
 want to deploy your service to a different server click the link to specify
