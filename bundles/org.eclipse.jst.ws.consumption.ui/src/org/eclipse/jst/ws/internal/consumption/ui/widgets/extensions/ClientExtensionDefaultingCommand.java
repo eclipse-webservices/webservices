@@ -14,6 +14,7 @@
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060818   154402 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060830   151091 kathy@ca.ibm.com - Kathy Chan, Client side still enabled when there's only stub server
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -605,6 +606,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
       if (nonStubRuntime == null)
       {
         installClient = Boolean.FALSE;
+        startClient = false;
         testService = Boolean.FALSE;
       }
     }
