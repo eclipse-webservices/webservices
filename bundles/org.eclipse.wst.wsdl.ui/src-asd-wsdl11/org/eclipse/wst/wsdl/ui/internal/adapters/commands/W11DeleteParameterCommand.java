@@ -24,23 +24,35 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
+import org.w3c.dom.Element;
 
 
 public class W11DeleteParameterCommand extends W11TopLevelElementCommand {
 	private IParameter parameter;
 	
 	public W11DeleteParameterCommand(IParameter param) {
-        super(Messages._UI_ACTION_DELETE, ((WSDLElement) ((WSDLBaseAdapter) param).getTarget()).getEnclosingDefinition());
+        super(Messages._UI_ACTION_DELETE, null);
 		this.parameter = param;
 	}
 	
 	public void execute() {
-		try {
-			beginRecording(definition.getElement());
-			delete();
+		Object object = ((WSDLBaseAdapter) parameter).getTarget();
+		Element element = null;
+		if (object instanceof XSDElementDeclaration) {
+			element = ((XSDElementDeclaration) object).getElement();
 		}
-		finally {
-			endRecording(definition.getElement());
+		else if (object instanceof WSDLElement) {
+			element = ((Part) object).getElement();
+		}
+		
+		if (element != null) {
+			try {
+				beginRecording(element);
+				delete();
+			}
+			finally {
+				endRecording(element);
+			}
 		}
 	}
 	
