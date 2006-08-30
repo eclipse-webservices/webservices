@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -14,7 +17,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -48,29 +50,12 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     // Transformation
     if (objectSelectionWidgetId_ != null && objectSelectionWidgetId_.length() > 0)
     {
-      IConfigurationElement[] elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
-      for (int i = 0; i < elements.length; i++)
+      Transformer transformer          = ObjectSelectionRegistry.getInstance().getTransformer(objectSelectionWidgetId_);
+      Object      transformedSelection = transformer == null ? null : transformer.transform(objectSelection_);
+      
+      if (transformedSelection instanceof IStructuredSelection)
       {
-        if (objectSelectionWidgetId_.equals(elements[i].getAttribute("id")))
-        {
-          String transformerId = elements[i].getAttribute("transformer");
-          if (transformerId != null && transformerId.length() > 0)
-          {
-            try
-            {
-              Object transformer = elements[i].createExecutableExtension("transformer");
-              if (transformer instanceof Transformer)
-              {
-                Object transformedSelection = ((Transformer)transformer).transform(objectSelection_);
-                if (transformedSelection instanceof IStructuredSelection)
-                  objectSelection_ = (IStructuredSelection)transformedSelection;
-              }
-            }
-            catch (CoreException ce)
-            {
-            }
-          }
-        }
+        objectSelection_ = (IStructuredSelection)transformedSelection;
       }
     }
 	
@@ -117,29 +102,13 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
           objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
         }        
         
-		objectSelectionWidgetId_ = objectSelectionWidgetId;
-		
-        if (objectSelectionWidgetId_ != null && objectSelectionWidgetId_.length() > 0)
+		    objectSelectionWidgetId_ = objectSelectionWidgetId;
+        
+		    Object object = ObjectSelectionRegistry.getInstance().getSelectionWidget(objectSelectionWidgetId_);
+        
+        if( object instanceof IObjectSelectionWidget )
         {
-          IConfigurationElement[] elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
-          for (int i = 0; i < elements.length; i++)
-          {
-            if (objectSelectionWidgetId_.equals(elements[i].getAttribute("id")))
-            {
-              try
-              {
-                Object object = elements[i].createExecutableExtension("class");
-                if (object instanceof IObjectSelectionWidget)
-                {
-                  objectSelectionWidget_ = (IObjectSelectionWidget)object;
-                  return;
-                }
-              }
-              catch (CoreException ce)
-              {
-              }
-            }
-          }
+          objectSelectionWidget_ = (IObjectSelectionWidget)object;
         }
       }
     }

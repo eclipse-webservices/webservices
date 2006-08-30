@@ -41,12 +41,12 @@
  * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
+ * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
@@ -1370,40 +1370,33 @@ private void handleTypeChange()
 	  // looks through extensions and returns the appropriate selection widget
 	  private Object getSelectionWidget()
 	  {
-			String wst = getServiceTypeRuntimeServer().getTypeId();
-			int scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(wst);
-			String implId = WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(wst);
-		    WebServiceImpl wsimpl = WebServiceRuntimeExtensionUtils2.getWebServiceImplById(implId);
+			String         wst      = getServiceTypeRuntimeServer().getTypeId();
+			int            scenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(wst);
+			String         implId   = WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(wst);
+		  WebServiceImpl wsimpl   = WebServiceRuntimeExtensionUtils2.getWebServiceImplById(implId);
+      Object         result   = null;
+        
 		    
-		      if (wsimpl != null)
-		      {
-		        String objectSelectionWidgetId = null;
-		        if (scenario == WebServiceScenario.TOPDOWN)
-		        {
-		          objectSelectionWidgetId = "org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget";
-		        }
-		        else
-		        {
-		          objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
-		        }
-			
-	        IConfigurationElement[] elements = ObjectSelectionRegistry.getInstance().getConfigurationElements();
-			   for (int i = 0; i < elements.length; i++)
-		          {
-		            if (objectSelectionWidgetId.equals(elements[i].getAttribute("id")))
-		            {
-                        try
-		            	{
-		            	   Object object = elements[i].createExecutableExtension("class");
-		            	   String modifyString = elements[i].getAttribute("external_modify");
-		            	   serviceImpl_.setEditable(new Boolean(modifyString).booleanValue());
-		                   return object;
-		                }
-		            	catch (Throwable t){ }
-		            }
-		         }
-	        }
-		    return null;
+		  if (wsimpl != null)
+		  {
+		    String objectSelectionWidgetId = null;
+		    if (scenario == WebServiceScenario.TOPDOWN)
+		    {
+		      objectSelectionWidgetId = "org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget";
+		    }
+		    else
+		    {
+		      objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
+		    }
+        
+        ObjectSelectionRegistry registry = ObjectSelectionRegistry.getInstance();
+        boolean editable = registry.getExternalModify( objectSelectionWidgetId );
+                
+        serviceImpl_.setEditable( editable );
+        result = registry.getSelectionWidget( objectSelectionWidgetId );
+      }
+      
+		  return result;
 	  }
 	 
 	// for the purposes of disabling the service implementation controls from the preferences dialog

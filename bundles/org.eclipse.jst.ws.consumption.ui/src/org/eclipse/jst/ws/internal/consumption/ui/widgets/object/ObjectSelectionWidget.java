@@ -90,7 +90,12 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
           objectSelectionWidgetId = wsimpl.getObjectSelectionWidget();
         }
 
-        child = ObjectSelectionRegistry.getInstance().getSelectionWidget( objectSelectionWidgetId );
+        Object object = ObjectSelectionRegistry.getInstance().getSelectionWidget( objectSelectionWidgetId );
+        
+        if( object instanceof IObjectSelectionWidget )
+        {
+          child = (IObjectSelectionWidget)object;
+        }
         
         if( child != null )
         {
