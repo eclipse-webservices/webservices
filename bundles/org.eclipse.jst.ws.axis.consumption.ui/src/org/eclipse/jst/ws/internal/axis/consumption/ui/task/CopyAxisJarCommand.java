@@ -12,6 +12,7 @@
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060517   142342 kathy@ca.ibm.com - Kathy Chan
+ * 20060828	  155439 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -60,6 +61,26 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	  "saaj.jar",
 	  "wsdl4j-1.5.1.jar"
   };
+  //these are the jar sizes that correspond to the jars in JARLIST.
+  private static long[] JARSIZES = {
+	  1632995L, 	// axis.jar
+	  71442L,		// commons-discovery-0.2.jar
+	  32062L,		// jaxrpc.jar
+	  19419L,		// saaj.jar	
+	  126771L		// wsdl4j-1.5.1.jar
+  };
+  private static long COMMON_LOGGING_JAR_SIZE = 38015L;
+  //Web Services Jars Used in previous Versions of WTP but now obsolete
+  private static String[] OBSOLETE_JARS = new String[]{
+	  "commons-discovery.jar",
+	  "commons-logging.jar",
+	  "log4j-1.2.4.jar",
+	  "log4j-1.2.8.jar",
+	  "wsdl4j.jar",
+	  "axis-ant.jar"
+  };
+  
+  
   public static String COMMON_LOGGING_PLUGIN_ID = "org.apache.commons_logging"; //$NON-NLS-1$
   public static String COMMON_LOGGING_JAR = "commons-logging-1.0.4.jar"; //$NON-NLS-1$
   public static String PATH_TO_JARS_IN_PLUGIN = "lib/";
@@ -121,6 +142,8 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
       return;
     }
 	
+    deleteObsoleteJars(webModulePath);
+    
 	for (int i=0; i<JARLIST.length; ) {
 		copyIFile(AXIS_RUNTIME_PLUGIN_ID, "lib/"+JARLIST[i], webModulePath, "WEB-INF/lib/"+JARLIST[i++], status, env, monitor); 
 	    if (status.getSeverity() == Status.ERROR)
@@ -162,6 +185,72 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 
     }
   }
+
+  /*
+   * Check for any obsolete Jars in WEB-INF/lib folder
+   * Obsolete jars would be found in projects migrated
+   * from older versions of WTP
+   */
+  private void deleteObsoleteJars(IPath webModulePath)
+  {  
+	  //First check for Any jars that have names that are known to be obsolete
+	  for (int i=0; i <OBSOLETE_JARS.length; i++)
+	  {
+		  IPath path = webModulePath.append("WEB-INF/lib/" + OBSOLETE_JARS[i]);
+		  
+		  IFile resource = ResourceUtils.getWorkspaceRoot().getFile(path);
+		  if (resource.exists())
+		  {
+			  deleteResource(resource);
+		  }
+	  }
+	  /*
+	   * Next check for jars with the same name as a Jar in JARLIST
+	   * but that have a different size than in JARSIZES.  We need to 
+	   * do this because a jar could have the same name but still be out
+	   * of date so size is only way to check.
+	   * E.g. all versions of axis have the same name of axis.jar
+	   */
+	  for (int i=0; i< JARLIST.length; i++)
+	  {
+		  IPath path = webModulePath.append("WEB-INF/lib/" + JARLIST[i]);
+		  IFile resource = ResourceUtils.getWorkspaceRoot().getFile(path);
+		  if (resource.exists())
+		  {
+			  //calculate the size of the resource by getting the java.io.File    	  
+			  long fileSize =resource.getLocation().toFile().length();
+			  if (fileSize != JARSIZES[i])
+			  {
+				  deleteResource(resource);
+			  }
+		  }
+	  }
+	  //Finally check logging plugin (only left seperate because not in JARLIST)
+	  IPath path = webModulePath.append("WEB-INF/lib/" + COMMON_LOGGING_JAR);
+	  IFile resource = ResourceUtils.getWorkspaceRoot().getFile(path);
+	  if (resource.exists())
+	  {
+		  //calculate the size of the resource by getting the java.io.File    	  
+		  long fileSize =resource.getLocation().toFile().length();
+		  if (fileSize != COMMON_LOGGING_JAR_SIZE)
+		  {
+			  deleteResource(resource);
+		  }
+	  }
+  }
+  
+  private void deleteResource(IFile resource)
+  {	  //delete the resource
+	  try
+	  {
+		  //System.out.println("Obsolete Jar!! " + resource.getName());
+		  resource.delete(true, null);
+	  }
+	  catch (Exception e)
+	  {  //e.printStackTrace();
+	  }
+  }
+ 
 
   public IStatus addAxisJarsToBuildPath(IProject p, IEnvironment env, IProgressMonitor monitor)
   {
