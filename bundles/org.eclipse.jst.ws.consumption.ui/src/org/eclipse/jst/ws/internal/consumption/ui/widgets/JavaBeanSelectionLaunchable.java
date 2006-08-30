@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060719   149352 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20060826   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -62,6 +63,8 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 	      	setBeanClass((ServiceImplBeanImpl)object);
 	      else if(object instanceof BeanLink)
 	      	setBeanClass((BeanLink)object);
+	      else if (object instanceof String)
+	    	beanClassString_ = (String) object; // use for displayable string
 	    }
 	  }
 

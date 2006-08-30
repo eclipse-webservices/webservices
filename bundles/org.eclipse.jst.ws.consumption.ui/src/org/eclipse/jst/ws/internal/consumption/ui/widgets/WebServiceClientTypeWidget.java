@@ -29,7 +29,8 @@
  * 20060614   146270 joan@ca.ibm.com - Joan Haggarty
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  * 20060726   150865 sengpl@ca.ibm.com - Seng Phung-Lu
- * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -85,7 +86,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 
-public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
+public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor implements IPackable
 {    
 	 // INFOPOPS	 
 	 /* CONTEXT_ID WSWSCEN0022 for the Server hyperlink of the Scenario Page */
@@ -161,29 +162,40 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
   
   private Composite clientGroupComposite_ ;
 	
+  private UIUtils utils_ = new UIUtils("org.eclipse.jst.ws.consumption.ui");
+  private IPackable packable_ = null;  
+  
   public WebServiceClientTypeWidget(boolean clientOnly) {
 	    clientOnly_ = clientOnly;
 		initImageRegistry();
 		validationState_ = ValidationUtils.VALIDATE_ALL;
 	}
-    
-  /**
-   * Returns the main client group composite.
-   * 
-   * @return The client group composite.
-   */
-  public Composite getGroupComposite() {
-	  return clientGroupComposite_;	  
-  }
+   
+    /**
+     * Give this widget a handle to an IPackable instance, which will also be
+     * packed when this widget's packIt() is called.
+     * 
+     * @param packable The IPackable instance.
+     */
+    public void setPackable(IPackable packable) {
+    	packable_ = packable;
+    }
+  
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.internal.consumption.ui.widgets.IPackable#packIt()
+	 */
+	public void packIt() {
+		clientGroupComposite_.pack(true);		
+		utils_.horizontalResize(clientGroupComposite_.getShell(), clientGroupComposite_, UIUtils.DEFAULT_PADDING);
+		if (!clientOnly_ && packable_ != null)
+			packable_.packIt();
+	}
   
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.WidgetContributor#addControls(org.eclipse.swt.widgets.Composite, org.eclipse.swt.widgets.Listener)
    */
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
-	String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    UIUtils      utils    = new UIUtils( pluginId );   
-	
     statusListener_ = statusListener;
     Composite clientTypeComposite = new Composite(parent, SWT.NONE);
 	GridLayout cclayout = new GridLayout();
@@ -194,7 +206,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     clientTypeComposite.setLayoutData(ccGridData);
     
     int comboStyle = SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY;
-    clientTypeCombo_ = utils.createCombo( clientTypeComposite, 
+    clientTypeCombo_ = utils_.createCombo( clientTypeComposite, 
     		ConsumptionUIMessages.LABEL_WEBSERVICECLIENTTYPE,
     		ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_CLIENTTYPE, 
     		INFOPOP_WSWSCEN_COMBO_CLIENTTYPE, 
@@ -243,11 +255,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     gridlayout.horizontalSpacing=0;
     gridlayout.marginHeight=0;
     clientComposite_.setLayout( gridlayout );
-    GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+    GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     clientComposite_.setLayoutData(scGridData);
     
     clientScale_ = new Scale(clientComposite_ , SWT.VERTICAL | SWT.BORDER);		
-	utils.createInfoPop(clientScale_, INFOPOP_WSWSCEN_SCALE_CLIENT);	
+	utils_.createInfoPop(clientScale_, INFOPOP_WSWSCEN_SCALE_CLIENT);	
 	clientScale_.setMinimum(0);
 	clientScale_.setMaximum(6);
 	clientScale_.setIncrement(1);
@@ -324,13 +336,13 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	
 	setGraphics(getClientGeneration());
 		
-	hCompClient_ = utils.createComposite(clientGroupComposite_, 1);
+	hCompClient_ = utils_.createComposite(clientGroupComposite_, 1);
 	
 	clientDetailsLabel_ = new Label(hCompClient_, SWT.NONE);
 	clientDetailsLabel_.setText(ConsumptionUIMessages.LABEL_SUMMARY);
 	
 	hLinkClientServer_= new Hyperlink(hCompClient_, SWT.NULL);
-	utils.createInfoPop(hLinkClientServer_, INFOPOP_WSWSCEN_HYPERLINK_SERVER);
+	utils_.createInfoPop(hLinkClientServer_, INFOPOP_WSWSCEN_HYPERLINK_SERVER);
 	hLinkClientServer_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_SERVER);
 	hLinkClientServer_.addHyperlinkListener(new IHyperlinkListener(){
 		public void linkActivated(HyperlinkEvent e){			
@@ -341,7 +353,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	});
 	
 	hLinkClientRuntime_ = new Hyperlink(hCompClient_, SWT.NULL);
-	utils.createInfoPop(hLinkClientRuntime_, INFOPOP_WSWSCEN_HYPERLINK_RUNTIME);
+	utils_.createInfoPop(hLinkClientRuntime_, INFOPOP_WSWSCEN_HYPERLINK_RUNTIME);
 	hLinkClientRuntime_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_RUNTIME);
 	hLinkClientRuntime_.addHyperlinkListener(new IHyperlinkListener(){
 		public void linkActivated(HyperlinkEvent e){			
@@ -363,7 +375,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 						}));
 	
 	hLinkClientProject_ = new Hyperlink(hCompClient_, SWT.NULL);
-	utils.createInfoPop(hLinkClientRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
+	utils_.createInfoPop(hLinkClientRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
 	hLinkClientProject_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK);
 	hLinkClientProject_.addHyperlinkListener(new IHyperlinkListener(){
 		public void linkActivated(HyperlinkEvent e){			
@@ -374,7 +386,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	});
 	
 	hLinkClientEAR_ = new Hyperlink(hCompClient_, SWT.NULL);	
-	utils.createInfoPop(hLinkClientRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
+	utils_.createInfoPop(hLinkClientRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
 	hLinkClientEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_CLIENTPROJECT_LINK);
 	hLinkClientEAR_.addHyperlinkListener(new IHyperlinkListener(){
 		public void linkActivated(HyperlinkEvent e){			
@@ -444,7 +456,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  clientDetailsLabel_.pack(true);
 	  hLinkClientProject_.pack(true);
 	  hLinkClientEAR_.pack(true);
-	  clientGroupComposite_.pack(true);
+	  packIt();
   }
 
   public void setTypeRuntimeServer( TypeRuntimeServer ids )
@@ -492,13 +504,13 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 		if (!newServerText.equals(currentServerText))
 		{
 			hLinkClientServer_.pack(true);
-			clientGroupComposite_.pack(true);
+			packIt();
 		}			
 		
 		if (!newRuntimeText.equals(currentRuntimeText))
 		{
 			hLinkClientRuntime_.pack(true);
-			clientGroupComposite_.pack(true);
+			packIt();
 		} 	
 	}
 	
@@ -653,12 +665,12 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 			if (!newProjectName.equals(currentProjectName))
 			{
 				hLinkClientProject_.pack(true);
-				clientGroupComposite_.pack(true);
+				packIt();
 			}
 			if (!newEarProjectName.equals(currentEarProjectName))
 			{
 				hLinkClientEAR_.pack(true);
-				clientGroupComposite_.pack(true);
+				packIt();
 			}
 		}		
 	}
@@ -851,7 +863,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
     projectName_ = name;      
 	hLinkClientProject_.setText(CLIENT_PROJECT_PREFIX + " " + projectName_);	
 	hLinkClientProject_.pack(true);   
-	clientGroupComposite_.pack(true);
+	packIt();
   }
   
   public String getClientProjectName()
@@ -875,7 +887,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor
 	  {    	
 		  hLinkClientEAR_.setText(CLIENT_EAR_PREFIX + " " + earProjectName_);
 		  hLinkClientEAR_.pack(true); 
-		  clientGroupComposite_.pack(true);
+		  packIt();
 	  }  
   }
 	    

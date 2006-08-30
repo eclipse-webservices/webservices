@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.common;
 
@@ -31,6 +32,11 @@ import org.eclipse.ui.PlatformUI;
 
 public class UIUtils 
 {
+	/**
+	 * A default padding value for horizontalResize().
+	 */
+	public final static int DEFAULT_PADDING = 35;
+	
   String       infoPopid_;
   
   public UIUtils( String infoPopid )
@@ -229,6 +235,8 @@ public class UIUtils
 		
 		Point originalSize  = target.getSize();
 		Point referenceSize = reference.getSize();
+		
+		padding = padding >= 0 ? padding : DEFAULT_PADDING;
 		
 		if (referenceSize.x + padding > originalSize.x)
 			target.setSize(referenceSize.x + padding, originalSize.y);

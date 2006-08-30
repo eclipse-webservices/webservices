@@ -20,7 +20,9 @@
  * 20060612   145081 pmoogk@ca.ibm.com - Peter Moogk
  * 20060725   149351 makandre@ca.ibm.com - Andrew Mak, Deleted service definition keeps reappearing
  * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
- * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
+ * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -39,8 +41,6 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -65,8 +65,6 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ClientWizardWidget extends SimpleWidgetDataContributor implements Runnable
 {  
-  private int RESIZE_PADDING = 30;	
-	
   private WebServiceClientTypeWidget clientWidget_;
   private Button overwriteButton_;
   private Button monitorService_;
@@ -114,8 +112,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
   public WidgetDataEvents addControls( Composite parent, Listener statusListener)
   {
     String       pluginId = "org.eclipse.jst.ws.consumption.ui";
-    final UIUtils utils   = new UIUtils( pluginId );
-    final Composite fParent = parent;
+    UIUtils      utils    = new UIUtils( pluginId );
     utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
 
     statusListener_ = statusListener;
@@ -156,27 +153,11 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	
 	utils.createHorizontalSeparator(parent, 1);
 	
-	Composite clientComposite = utils.createComposite( parent, 1 );
+	Composite clientComposite = utils.createComposite( parent, 1, 0, 0 );
 	
     clientWidget_ = new WebServiceClientTypeWidget(true);
     clientWidget_.addControls(clientComposite , statusListener );
    
-    clientWidget_.getGroupComposite().addControlListener(new ControlListener() {
-    	
-    	public void controlMoved(ControlEvent e) {
-    		// TODO Auto-generated method stub
-    		
-    	}
-    	
-    	public void controlResized(ControlEvent e) {
-    		Composite composite = clientWidget_.getGroupComposite();
-    		composite.pack(true);
-    		
-			utils.horizontalResize(fParent, composite, 10);
-			utils.horizontalResize(fParent.getShell(), fParent, RESIZE_PADDING);	
-    	}
-    });
-    
     //  Create test service check box.
     Composite buttonGroup = utils.createComposite(clientComposite,1);
     
@@ -267,26 +248,21 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
  public void setWebServiceURI(String uri)
  {
      webServiceURI_ = uri;    
-     wsdlDialog_.setWebServiceURI(uri);
-
-     if (uri != null && uri.length() > 0)
-     {
-    	   //This else clause is to handle the call to the enclosing method
-    	   //when the page first comes up since wsdlDialog_ will not have been
-    	   //properly initialized with a WSDLSelectionWidgetWrapper containing
-    	   //a non-null WSDLSelectionWidget.
-    	   //***149351*** always use this code re-evaluate the path.  We cannot
-    	   //depend on getDisplayableSelectionString() from wsdlDialog_ because 
-    	   //it will not be in sync with the uri value after the dialog closes.
-    	   
-    	   EclipseIPath2URLStringTransformer transformer = new EclipseIPath2URLStringTransformer();
-    	   webServiceURI_ = (String)transformer.transform(uri);
-    	   serviceImpl_.removeModifyListener(objectModifyListener_);
-    	   serviceImpl_.setText(uri);    	 
-    	   serviceImpl_.addModifyListener(objectModifyListener_);
-     }
-     
  }
+ 
+public void internalize() {		
+
+	if (webServiceURI_ == null || webServiceURI_.length() == 0)
+		return;
+
+	serviceImpl_.removeModifyListener(objectModifyListener_);
+	serviceImpl_.setText(webServiceURI_);    	 
+	serviceImpl_.addModifyListener(objectModifyListener_);
+		
+	EclipseIPath2URLStringTransformer transformer = new EclipseIPath2URLStringTransformer();
+	webServiceURI_ = (String) transformer.transform(webServiceURI_);    
+}
+ 
  public void setProject(IProject project)
  {
      project_ = project;

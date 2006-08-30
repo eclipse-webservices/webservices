@@ -12,6 +12,7 @@
  * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060418   136180 kathy@ca.ibm.com - Kathy Chan
  * 20060524   141194 joan@ca.ibm.com - Joan Haggarty
+ * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -62,6 +63,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
   private Vector ejbComponentProjectNames;
   private Hashtable ejbValuesByEARSelectionCache;
   private Listener  statusListener_;
+  private String displayString_ = "";
   /* CONTEXT_ID PEBD0001 for the EAR Projects drop-down box */
   private String INFOPOP_PEBD_EAR_PROJECTS = "org.eclipse.jst.ws.consumption.ui.PEBD0001";
   /* CONTEXT_ID PEBD0002 for the table containing all of the bean names */
@@ -280,6 +282,8 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
           selectedBeanIndex = new Integer(ejbBeanNames.indexOf(session.getName()));
         }
       }
+      else if (object instanceof String)
+    	  displayString_ = (String) object; // save for display use
     }
   }
 
@@ -333,6 +337,16 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     }
     return null;
   }    
+  
+  public String getObjectSelectionDisplayableString() {
+	  
+	  if (ejbBeanNames == null)
+		  return displayString_;
+	  
+	  int index = selectedBeanIndex == null ? 0 : selectedBeanIndex.intValue();
+	  String bean = (String) ejbBeanNames.get(index);
+	  return bean == null ? displayString_ : bean;
+  }
   
   public IStatus validateSelection(IStructuredSelection objectSelection)
   {

@@ -38,7 +38,9 @@
  * 20060717   150577 makandre@ca.ibm.com - Andrew Mak
  * 20060726   150865 sengpl@ca.ibm.com -  Seng Phung-Lu
  * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
- * 20060817   140017 makandre - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
+ * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
+ * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -56,6 +58,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.IObjectSelectionLaunchable;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.IPackable;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ProjectSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WebServiceClientTypeWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.IObjectSelectionWidget;
@@ -115,7 +118,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
-public class ServerWizardWidget extends SimpleWidgetDataContributor implements Runnable {
+public class ServerWizardWidget extends SimpleWidgetDataContributor implements Runnable, IPackable {
 	
 	//INFOPOPS
     /* CONTEXT_ID WSWSCEN0001 for the Scenario Page */
@@ -139,14 +142,11 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	 /* CONTEXT_ID WSWSCEN0030 for the Overwrite Files checkbox of the Scenario Page */
 	 private String INFOPOP_WSWSCEN_CHECKBOX_OVERWRITE = "WSWSCEN0030";
 	 
-	 private int RESIZE_PADDING = 30;
-	 
 	private ScaleSelectionListener scaleSelectionListener = new ScaleSelectionListener();
 	private Listener statusListener_;
 	private ModifyListener objectModifyListener_ ;
 	private int validationState_;
 	boolean validObjectSelection_ = true;
-	boolean typedText_=false;
 
 	private ImageRegistry imageReg_;
 	
@@ -194,6 +194,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	private ResourceContext resourceContext_;
 	
 	private Timer timer_ = null;
+		
+	private UIUtils utils_ = new UIUtils("org.eclipse.jst.ws.creation.ui");
 	
 	private String GRAPHIC_SERVICE_0="icons/service_test.jpg"; //$NON-NLS-N$
 	private String GRAPHIC_SERVICE_1="icons/service_run.jpg";  //$NON-NLS-N$
@@ -232,7 +234,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	 * Run this ServerWizardWidget, which validates the entry field values.
 	 */
 	public void run() {
-		typedText_ = true;
 		
 		validationState_ = ValidationUtils.VALIDATE_ALL;
 		statusListener_.handleEvent(null);
@@ -258,32 +259,30 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	}
 	
 	/**
-	 * Compares the main group composites of the service and client sections,
-	 * returns the one that is wider to be used as referenced for horizontal
-	 * resizing of the dialog.
-	 * 
-	 * @return Either the service or client group composite, which ever one is wider.
+	 * Pack this widget and the client-side widget as well. 
 	 */
-	private Composite getReferencedComposite() {
+	private void packSelf() {
+		packIt();
+		clientWidget_.packIt();
+	}
 	
-		int serviceWidth = groupComposite_.getSize().x;
-		int clientWidth  = clientWidget_.getGroupComposite().getSize().x;
-		
-		return serviceWidth > clientWidth ? groupComposite_ : clientWidget_.getGroupComposite();
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.internal.consumption.ui.widgets.IPackable#packIt()
+	 */
+	public void packIt() {		
+		groupComposite_.pack(true);
+		utils_.horizontalResize(groupComposite_.getShell(), groupComposite_, UIUtils.DEFAULT_PADDING);
 	}
 	
 	public WidgetDataEvents addControls(Composite parent,
 			Listener statusListener) {
-		
-		String createPluginId = "org.eclipse.jst.ws.creation.ui";
-		final UIUtils utils = new UIUtils(createPluginId);
-		final Composite fParent = parent;
+				
 		statusListener_ = statusListener;
-		utils.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
+		utils_.createInfoPop(parent, INFOPOP_WSWSCEN_PAGE);
 		
-		Composite typeComposite = utils.createComposite(parent, 3);
+		Composite typeComposite = utils_.createComposite(parent, 3);
 
-		webserviceType_ = utils.createCombo(typeComposite,
+		webserviceType_ = utils_.createCombo(typeComposite,
 				ConsumptionUIMessages.LABEL_WEBSERVICETYPE,
 				ConsumptionUIMessages.TOOLTIP_PWPR_COMBO_TYPE,
 				INFOPOP_WSWSCEN_COMBO_SERVICETYPE, SWT.SINGLE | SWT.BORDER
@@ -349,7 +348,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);		    
 			serviceImpl_.setLayoutData( griddata );
 			serviceImpl_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
-			utils.createInfoPop(serviceImpl_, INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL);
+			utils_.createInfoPop(serviceImpl_, INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL);
 			
 			objectModifyListener_ = new ModifyListener(){
 				public void modifyText(ModifyEvent e) {
@@ -364,7 +363,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			
 			serviceImpl_.addModifyListener(objectModifyListener_);
 
-			browseButton_ = utils.createPushButton(typeComposite,
+			browseButton_ = utils_.createPushButton(typeComposite,
 					ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 
 			IWorkbench workbench = PlatformUI.getWorkbench();
@@ -391,36 +390,31 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	    GridData gcGridData = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
 	    groupComposite_.setLayoutData(gcGridData);		
 	    
-	    ControlListener groupCompositeListener = new ControlListener()
+	    groupComposite_.addControlListener(new ControlListener()
 		{
 			public void controlMoved(ControlEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			public void controlResized(ControlEvent e) {
-				((Composite) e.getSource()).pack(true);								
-				
-				utils.horizontalResize(fParent, getReferencedComposite(), 0);
-				utils.horizontalResize(fParent.getShell(), fParent, RESIZE_PADDING);	
+				groupComposite_.pack(true);				
 			}
-		};
+		});
 	    
-		groupComposite_.addControlListener(groupCompositeListener);
-		
 		serviceComposite_ =  new Composite(groupComposite_, SWT.NONE);
 		GridLayout gridlayout   = new GridLayout();
 	    gridlayout.numColumns   = 2;
 	    gridlayout.horizontalSpacing=0;
 	    gridlayout.marginHeight=0;
 	    serviceComposite_.setLayout( gridlayout );
-	    GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+	    GridData scGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 	    serviceComposite_.setLayoutData(scGridData);    
 	    
 		serviceComposite_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);
 	
 		
 		serviceScale_ = new Scale(serviceComposite_, SWT.VERTICAL | SWT.BORDER);
-	    utils.createInfoPop(serviceScale_, INFOPOP_WSWSCEN_SCALE_SERVICE);
+	    utils_.createInfoPop(serviceScale_, INFOPOP_WSWSCEN_SCALE_SERVICE);
 		serviceScale_.setMinimum(0);
 		serviceScale_.setMaximum(6);
 		serviceScale_.setIncrement(1);
@@ -489,13 +483,13 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 				
 		setGraphics(getServiceGeneration());
 		
-		hCompService_ = utils.createComposite(groupComposite_, 1);
+		hCompService_ = utils_.createComposite(groupComposite_, 1);
 		
 		Label serviceDetailsLabel = new Label(hCompService_, SWT.NONE);
 		serviceDetailsLabel.setText(ConsumptionUIMessages.LABEL_SUMMARY);
 		
 		hLinkServiceServer_= new Hyperlink(hCompService_, SWT.NULL);
-		utils.createInfoPop(hLinkServiceServer_, INFOPOP_WSWSCEN_HYPERLINK_SERVER);
+		utils_.createInfoPop(hLinkServiceServer_, INFOPOP_WSWSCEN_HYPERLINK_SERVER);
 		hLinkServiceServer_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_SERVER);
 		hLinkServiceServer_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){				
@@ -506,7 +500,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		});
 
 		hLinkServiceRuntime_ = new Hyperlink(hCompService_, SWT.NULL);
-		utils.createInfoPop(hLinkServiceRuntime_, INFOPOP_WSWSCEN_HYPERLINK_RUNTIME);
+		utils_.createInfoPop(hLinkServiceRuntime_, INFOPOP_WSWSCEN_HYPERLINK_RUNTIME);
 		hLinkServiceRuntime_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWRS_TEXT_RUNTIME);
 		hLinkServiceRuntime_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){
@@ -528,7 +522,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
   						}));
 		
 		hLinkServiceProject_= new Hyperlink(hCompService_, SWT.NULL);
-		utils.createInfoPop(hLinkServiceRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
+		utils_.createInfoPop(hLinkServiceRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
 		hLinkServiceProject_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK);
 		hLinkServiceProject_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){
@@ -539,7 +533,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		});
 		
 		hLinkServiceEAR_= new Hyperlink(hCompService_, SWT.NULL);
-		utils.createInfoPop(hLinkServiceRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
+		utils_.createInfoPop(hLinkServiceRuntime_, INFOPOP_WSWSCEN_HYPERLINK_PROJECTS);
 		hLinkServiceEAR_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SERVICEPROJECT_LINK);
 		hLinkServiceEAR_.addHyperlinkListener(new IHyperlinkListener(){
 			public void linkActivated(HyperlinkEvent e){
@@ -562,28 +556,28 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		serverRuntimeGroup.add(hLinkServiceEAR_);
 		serverRuntimeGroup.setHyperlinkUnderlineMode(HyperlinkSettings.UNDERLINE_ALWAYS);
     
-		utils.createHorizontalSeparator(parent, 1);		
+		utils_.createHorizontalSeparator(parent, 1);		
 		
 		// Add client widgets...
 		clientWidget_ = new WebServiceClientTypeWidget(false);
 	    clientWidget_.addControls(parent, statusListener );
-	    clientWidget_.getGroupComposite().addControlListener(groupCompositeListener);
+	    clientWidget_.setPackable(this);
 	    clientWidget_.enableClientSlider(serviceScale_.getSelection()<=ScenarioContext.WS_START);
 		
 		// Advanced buttons section
-		utils.createHorizontalSeparator(parent, 3);
+		utils_.createHorizontalSeparator(parent, 3);
 		
-		Composite advancedButtonPanel = utils.createComposite(parent, 1);
+		Composite advancedButtonPanel = utils_.createComposite(parent, 1);
 		
-		publishButton_ = utils.createCheckbox(advancedButtonPanel,
+		publishButton_ = utils_.createCheckbox(advancedButtonPanel,
 				ConsumptionUIMessages.BUTTON_WSWSCEN_PUBLISH, ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_LAUNCH_WS, INFOPOP_WSWSCEN_CHECKBOX_LAUNCH_WS);		
-		monitorButton_ = utils.createCheckbox(advancedButtonPanel,
+		monitorButton_ = utils_.createCheckbox(advancedButtonPanel,
 				ConsumptionUIMessages.CHECKBOX_MONITOR_WEBSERVICE, ConsumptionUIMessages.TOOLTIP_PWPR_CHECKBOX_MONITOR_SERVICE, INFOPOP_WSWSCEN_CHECKBOX_MONITOR_SERVICE);
 
 		if (displayPreferences_ && getResourceContext().isOverwriteFilesEnabled()) {
-			utils.createHorizontalSeparator(parent, 1);			
-			Composite prefButtonPanel = utils.createComposite(parent, 1);
-			overwriteButton_ = utils.createCheckbox(prefButtonPanel,
+			utils_.createHorizontalSeparator(parent, 1);			
+			Composite prefButtonPanel = utils_.createComposite(parent, 1);
+			overwriteButton_ = utils_.createCheckbox(prefButtonPanel,
 					ConsumptionUIMessages.CHECKBOX_OVERWRITE_FILES, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_OVERWRITE_FILES, INFOPOP_WSWSCEN_CHECKBOX_OVERWRITE);
 			overwriteButton_.setSelection(getResourceContext()
 					.isOverwriteFilesEnabled());
@@ -630,12 +624,12 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			if (!newProjectName.equals(currentProjectName))
 			{
 				hLinkServiceProject_.pack(true);
-				groupComposite_.pack(true);	 
+				packSelf();	 
 			}
 			if (!newEarProjectName.equals(currentEarProjectName))
 			{
 				hLinkServiceEAR_.pack(true);
-				groupComposite_.pack(true);	  					
+				packSelf();	  					
 			}
 		}
 	}
@@ -788,13 +782,13 @@ private void handleTypeChange()
 			if (!newServerText.equals(currentServerText))
 			{
 				hLinkServiceServer_.pack(true);
-				groupComposite_.pack(true);
+				packSelf();
 			}			
 			
 			if (!newRuntimeText.equals(currentRuntimeText))
 			{
 				hLinkServiceRuntime_.pack(true);
-				groupComposite_.pack(true);
+				packSelf();
 			} 
 		}				
 		labelIds_ = labelIds;
@@ -864,7 +858,7 @@ private void handleTypeChange()
 		
 		/*for popup case need to make sure that the UI is refreshed based on 
 		changes to data*/
-		groupComposite_.pack(true);
+		packSelf();
 	}	
 
 	public int getServiceGeneration()
@@ -945,7 +939,7 @@ private void handleTypeChange()
 		clientWidget_.setClientGeneration(value);
 		/*for popup case need to make sure that the UI is refreshed based on 
 			changes to data*/
-		groupComposite_.pack(true);
+		packSelf();
 	}
 	
 	public String getClientEarProjectName()
@@ -983,19 +977,6 @@ private void handleTypeChange()
 	public void setObjectSelection(IStructuredSelection selection )
 	{
 		objectSelection_ = selection;
-        if (selection != null && selection.size()==1)
-        {
-        	//Update the serviceImpl_ field.
-        	Object[] selectionArray = selection.toArray();
-        	Object selectedObject = selectionArray[0];
-        	if (selectedObject instanceof String && !typedText_)
-        	{
-        		serviceImpl_.removeModifyListener(objectModifyListener_);
-        		serviceImpl_.setText((String)selectedObject);  
-        		serviceImpl_.addModifyListener(objectModifyListener_);
-	        }
-        }
-        typedText_=false;	
 	}
 	
 	public WebServicesParser getWebServicesParser()
@@ -1010,6 +991,34 @@ private void handleTypeChange()
 	}
 	
 	public void internalize() {		
+		
+		if (preferencesPage_)
+			return;
+		
+		if (objectSelectionWidget_ == null)
+			objectSelectionWidget_ = getSelectionWidget();
+		
+		String displayable = null;
+		
+		if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable) {		
+			IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable) objectSelectionWidget_;
+			launchable.setInitialSelection(objectSelection_);
+			
+			displayable = launchable.getObjectSelectionDisplayableString();
+		}
+		else {
+			IObjectSelectionWidget selectionWidget = (IObjectSelectionWidget) objectSelectionWidget_;
+			selectionWidget.setInitialSelection(objectSelection_);
+		
+		    displayable = selectionWidget.getObjectSelectionDisplayableString();
+		}
+		
+		if (displayable == null || displayable.length() == 0)
+			return;
+			
+		serviceImpl_.removeModifyListener(objectModifyListener_);
+		serviceImpl_.setText(displayable);
+		serviceImpl_.addModifyListener(objectModifyListener_);
 	}
 
 	public IStatus getStatus() {
@@ -1618,7 +1627,6 @@ private void handleTypeChange()
 			   // call ObjectSelectionOutputCommand to carry out any transformation on the objectSelection
 			   if (result == Dialog.OK)
 			   {
-				   typedText_=false;
 				   callObjectTransformation(objectSelection, project, componentName);				   
 			       validationState_ = ValidationUtils.VALIDATE_ALL;
 			       statusListener_.handleEvent(null); // validate the page

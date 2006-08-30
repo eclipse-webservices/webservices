@@ -19,6 +19,7 @@
  * 20060719   139977 kathy@ca.ibm.com - Kathy Chan
  * 20060803   152701 cbrealey@ca.ibm.com - Chris Brealey
  * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
+ * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -42,6 +43,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.TimedWSDLSelectionConditionCommand;
@@ -84,9 +86,12 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   private Composite parent_;
   private Listener  statusListener_;
+  private ModifyListener modifyListener_;
   private WSDLSelectionTreeWidget tree;
   
   private Timer timer_ = null;
+  
+  private UniversalPathTransformer transformer_ = new UniversalPathTransformer();
   
   /*CONTEXT_ID PCON0001 for the WSDL Selection Page*/
   private final String INFOPOP_PCON_PAGE = "PCON0001";
@@ -160,14 +165,17 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     webServiceURI = uiUtils.createText( wsdlGroup, null, 
     						ConsumptionUIMessages.TOOLTIP_PCON_TEXT_WS, 
     						INFOPOP_PCON_TEXT_WSDL, SWT.SINGLE | SWT.BORDER );
-    webServiceURI.addModifyListener(
+    modifyListener_ =
       new ModifyListener()
       {
         public void modifyText(ModifyEvent event)
         {
           handleWebServiceURIModifyEvent();
         }
-      });
+      };
+    
+    webServiceURI.addModifyListener(modifyListener_);
+    
 //    webServiceURI.addListener( SWT.Modify, statusListener );
 
     wsBrowseButton_ = uiUtils.createPushButton( wsdlGroup, ConsumptionUIMessages.BUTTON_BROWSE, 
@@ -252,10 +260,12 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     statusListener_.handleEvent(null);
   }
   
-  private void handleWebServiceURI()
-  {
-    String wsURI = webServiceURI.getText();
-    
+  private void handleWebServiceURI() {
+	  handleWebServiceURI(webServiceURI.getText());
+  }
+  
+  private void handleWebServiceURI(String wsURI)
+  {    
     if (wsURI.indexOf(':') < 0)
     {
       IFile file = uri2IFile(wsURI);
@@ -516,8 +526,11 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
       
       if (wsdlURI != null && webServiceURI != null)
       {
-        webServiceURI.setText(wsdlURI);       
-        handleWebServiceURI();
+        handleWebServiceURI(wsdlURI);
+    	
+        webServiceURI.removeModifyListener(modifyListener_);
+        webServiceURI.setText(getObjectSelectionDisplayableString());       
+        webServiceURI.addModifyListener(modifyListener_);
       }
     }  
   }
@@ -659,11 +672,11 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   {	
     if (tree != null)
     {
-      return tree.getWsdlURI();
+      return transformer_.toPath(tree.getWsdlURI());
     }
     else
     {
-	    return wsdlURI_;
+	    return transformer_.toPath(wsdlURI_);
     }
 	}
   
