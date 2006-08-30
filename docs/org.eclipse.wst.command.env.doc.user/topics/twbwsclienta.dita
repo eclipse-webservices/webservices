@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "task.dtd">
+<task id="twsclienta" xml:lang="en-us">
+<title>Creating a Web service client using Ant tasks</title>
+<titlealts>
+<searchtitle>Creating an Axis runtime Web service client from a WSDL file
+using command line tools</searchtitle>
+</titlealts>
+<shortdesc>If you have a WSDL file you can use Ant through the Eclipse workspace
+to generate a Web service client using the Axis run-time environment.</shortdesc>
+<taskbody>
+<prereq>Before creating the Web service client you must:<ul>
+<li>complete the prerequisites listed in: <xref href="cwsaxisant.dita"></xref></li>
+<li>create or import a WSDL file into the dynamic Web project you created.</li>
+</ul></prereq>
+<context>In order to create the Web service client you need to modify the
+Ant file and the Ant properties file.</context>
+<steps>
+<step><cmd>Edit the Ant file (<userinput>wsgen.xml</userinput>) that you imported
+in the prerequisite steps. Ensure that it points to the client Ant properties
+file: it should contain a line stating <userinput>&lt;property file="axisclient.properties"/></userinput>.</cmd>
+<info>Save any changes that you have made.</info></step>
+<step><cmd>Edit the <userinput>axisclient.properties</userinput> file that
+you imported in the prerequisite steps.</cmd>
+<substeps>
+<substep><cmd>Ensure that the scenarioType parameter is set to client.</cmd>
+</substep>
+<substep><cmd>Set the workspace parameter so that it points to the location
+of your WSDL file.</cmd></substep>
+<substep><cmd>All other parameters are optional and should be deleted if not
+explicitly set. The default values for the remaining parameters will be retrieved
+from the dynamic project settings. For additional information on how to set
+these parameters refer to: <xref href="rwsclienta.dita"></xref></cmd></substep>
+</substeps>
+<info>Save the <userinput>axisclient.properties</userinput> file.</info></step>
+<step><cmd>Right-click <userinput>wsgen.xml</userinput> and select <menucascade>
+<uicontrol>Run As</uicontrol><uicontrol>Ant Build...</uicontrol></menucascade></cmd>
+</step>
+<step><cmd>In the dialog that opens, select the <uicontrol>JRE</uicontrol> tab
+and select <uicontrol>Run in the same JRE as the workspace</uicontrol>.</cmd>
+<info>Click <uicontrol>Apply</uicontrol> and then click <uicontrol>Run</uicontrol>.</info>
+</step>
+<step><cmd>Once your Web service has been generated the console displays a <userinput>Build
+Successful</userinput> message.</cmd></step>
+</steps>
+<result>The following files will have been created and placed in the dynamic
+Web project's WebContent\wsdl folder:<ul>
+<li><i>Service_name</i>SOAP.wsdl </li>
+</ul>The following files will have been created and placed in the dynamic
+Web project's WebContent\WEB-INF folder:<ul>
+<li>undeploy.wsdd</li>
+<li>deploy.wsdd </li>
+</ul>The following files will have been created and placed under the dynamic
+Web project's src folder. Depending on the WSDL file on which the Web service
+client is based, the files for your Web service client may be different:<ul>
+<li><i>Service_name</i>Proxy.java</li>
+<li>get<i>Service_name</i>.java</li>
+<li>get<i>Service_name</i>Locator.java</li>
+<li>get<i>Service_name</i>Soap.java</li>
+<li>get<i>Service_name</i>SoapProxy.java</li>
+<li>get<i>Service_name</i>SoapStub.java</li>
+</ul> </result>
+</taskbody>
+</task>
