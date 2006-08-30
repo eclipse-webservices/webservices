@@ -99,6 +99,8 @@ public class WSDLValidatorImpl
    * Entry container map.
    */
   protected HashMap containerMap = new HashMap();
+  
+  protected boolean processDefAssertions = true;
 
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.WSDLValidator#init(org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext, org.wsi.test.profile.ProfileArtifact, org.wsi.test.report.ReportArtifact, java.lang.String, org.wsi.wsdl.WSDLDocument, org.wsi.test.report.Reporter)
@@ -112,6 +114,19 @@ public class WSDLValidatorImpl
     Reporter reporter)
     throws WSIException
   {
+    init(analyzerContext, profileArtifact, reportArtifact, wsdlURL, wsdlDocument, reporter, true);
+  }
+
+  public void init(
+    AnalyzerContext analyzerContext,
+    ProfileArtifact profileArtifact,
+    ReportArtifact reportArtifact,
+    String wsdlURL,
+    WSDLDocument wsdlDocument,
+    Reporter reporter,
+    boolean processDefAssertions)
+    throws WSIException
+  {
     // BaseValidatorImpl
     super.init(analyzerContext, profileArtifact, reportArtifact, reporter);
     this.wsdlDocument = wsdlDocument;
@@ -120,6 +135,8 @@ public class WSDLValidatorImpl
 
     if (wsdlURL != null)
       this.wsdlURL = wsdlURL;
+
+    this.processDefAssertions = processDefAssertions;
   }
 
   /* (non-Javadoc)
@@ -170,9 +187,12 @@ public class WSDLValidatorImpl
 
     // always process Import, Definitions & Types assertions 
     // TEMP:
-    processDefinitionAssertions(classPrefix, candidate);
-    processTypesAssertions(classPrefix, candidate);
-    processImportAssertions(classPrefix, candidate);
+    if (processDefAssertions)
+    {
+      processDefinitionAssertions(classPrefix, candidate);
+      processTypesAssertions(classPrefix, candidate);
+      processImportAssertions(classPrefix, candidate);
+    }
 
     // Process the element hierarchy in the WSDL document starting with the one that was specified  
     // FIX: Element finding already completed by CandidateInfo constructor - so use that rather than retest here  

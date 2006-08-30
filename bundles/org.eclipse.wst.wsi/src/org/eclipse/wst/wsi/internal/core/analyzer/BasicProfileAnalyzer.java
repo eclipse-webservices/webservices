@@ -31,6 +31,7 @@ import org.eclipse.wst.wsi.internal.core.profile.validator.EnvelopeValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.UDDIValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.WSDLValidator;
+import org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl.WSDLValidatorImpl;
 import org.eclipse.wst.wsi.internal.core.report.ArtifactReference;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.report.Report;
@@ -125,6 +126,8 @@ public class BasicProfileAnalyzer extends Analyzer
 
   }
 
+  private WSDLValidator wsdlValidator;
+
   /**
    * Process all conformance validation functions.
    * @return status code.
@@ -208,11 +211,15 @@ public class BasicProfileAnalyzer extends Analyzer
       reportArtifact =
         setCurrentArtifact(ArtifactType.ARTIFACT_TYPE_DESCRIPTION);
 
-      // Call WSDLValidator 
+      // Call WSDLValidator
+      if (wsdlValidator == null)
+      {
+        wsdlValidator = factory.newWSDLValidator();
+      }
       wsdlDocument =
         validateWSDL(
           reportArtifact,
-          factory.newWSDLValidator(),
+          wsdlValidator,
           wsdlURI,
           wsdlDocument);
 
@@ -364,14 +371,30 @@ public class BasicProfileAnalyzer extends Analyzer
   {
     WSDLDocument returnWSDLDocument = null;
 
+    // TODO: The instanceof check is needed to avoid an API change
+    // in the WTP 1.5.1 release. We should clean this up later.
     // Init WSDLValidator
-    wsdlValidator.init(
-      this.analyzerContext,
-      this.profileAssertions.getArtifact(ArtifactType.TYPE_DESCRIPTION),
-      reportArtifact,
-      wsdlURI,
-      document,
-      this.reporter);
+    if (wsdlValidator instanceof WSDLValidatorImpl)
+    {
+      ((WSDLValidatorImpl)wsdlValidator).init(
+        this.analyzerContext,
+        this.profileAssertions.getArtifact(ArtifactType.TYPE_DESCRIPTION),
+        reportArtifact,
+        wsdlURI,
+        document,
+        this.reporter,
+        getAnalyzerConfigIndex() == 0);
+    }
+    else
+    {
+      wsdlValidator.init(
+        this.analyzerContext,
+        this.profileAssertions.getArtifact(ArtifactType.TYPE_DESCRIPTION),
+        reportArtifact,
+        wsdlURI,
+        document,
+        this.reporter);
+    }
 
     // If a WSDL URI was specified or located in a UDDI registry, then process the WSDL tests
     if (wsdlURI != null || document != null)

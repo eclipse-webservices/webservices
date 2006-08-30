@@ -229,6 +229,11 @@ public abstract class Analyzer
     this.analyzerConfigIndex = index;
   }
 
+  protected int getAnalyzerConfigIndex()
+  {
+    return this.analyzerConfigIndex;
+  }
+
   /**
    * Get analyzer configuration information.
    * @return analyzer configuration information.
