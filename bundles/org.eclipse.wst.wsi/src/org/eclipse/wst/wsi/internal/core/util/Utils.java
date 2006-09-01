@@ -28,7 +28,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.ResourceBundle;
 import com.ibm.icu.util.StringTokenizer;
 import java.util.Vector;
@@ -52,6 +54,22 @@ public final class Utils
 {
   public static final byte CR = (byte) '\r';
   public static final byte LF = (byte) '\n';
+
+  
+  private static Map validProfileTADVersions;
+  
+  /* Register Basic Profile TAD versions */
+  static {
+      validProfileTADVersions = new HashMap();
+      registerValidProfileTADVersion(WSIConstants.BASIC_PROFILE_TAD_NAME,
+              WSIConstants.BASIC_PROFILE_TAD_VERSION);
+      registerValidProfileTADVersion(WSIConstants.BASIC_PROFILE_1_1_TAD_NAME,
+              WSIConstants.BASIC_PROFILE_1_1_TAD_VERSION);
+      registerValidProfileTADVersion(WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_NAME,
+              WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_VERSION);
+      registerValidProfileTADVersion(WSIConstants.ATTACHMENTS_PROFILE_TAD_NAME,
+              WSIConstants.ATTACHMENTS_PROFILE_TAD_VERSION);
+  }
 
   /**
    * Common timestamp format.
@@ -1133,6 +1151,17 @@ public final class Utils
       v.add(array[i]);
     return v;
   }
+
+  /**
+   * Designates legal versions for the profile test assertion document
+   * @param name - the TAD name
+   * @param version - the legal version
+   */
+  public static void registerValidProfileTADVersion(String name, String version)
+  {
+      validProfileTADVersions.put(name, version);
+  }
+  
   /**
    * Checks to ensure that version of the profile test assertion 
    * document is supported in this version of the test tools.
@@ -1142,29 +1171,15 @@ public final class Utils
    */
   public static boolean isValidProfileTADVersion(ProfileAssertions profileAssertions)
   {
-    boolean result = false;
 
     String name = profileAssertions.getTADName();
     String version = profileAssertions.getTADVersion();
 
-    if (WSIConstants.BASIC_PROFILE_TAD_NAME.equals(name))
-    {
-      result =
-        checkVersionNumber(WSIConstants.BASIC_PROFILE_TAD_VERSION, version);
-    } else if (WSIConstants.BASIC_PROFILE_1_1_TAD_NAME.equals(name))
-    {  
-      result =
-        checkVersionNumber(WSIConstants.BASIC_PROFILE_1_1_TAD_VERSION, version);
-    } else if (WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_NAME.equals(name))
-    {
-      result =
-        checkVersionNumber(WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_VERSION, version);
-    } else if (WSIConstants.ATTACHMENTS_PROFILE_TAD_NAME.equals(name))
-    {
-      result =
-        checkVersionNumber(WSIConstants.ATTACHMENTS_PROFILE_TAD_VERSION, version);
-    }
-    return result;
+    if (validProfileTADVersions.containsKey(name))
+        return checkVersionNumber((String) validProfileTADVersions.get(name),
+                version);
+    else
+        return false;
   }
 
   /**
