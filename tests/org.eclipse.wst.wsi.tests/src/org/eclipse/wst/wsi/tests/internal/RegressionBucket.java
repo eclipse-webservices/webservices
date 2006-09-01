@@ -28,10 +28,14 @@ public class RegressionBucket extends TestSuite {
 	  public static Test suite() 
 	  {
 	    TestSuite suite= new TestSuite("Regression Bucket");
-	    if (tadIsAvailable(WSITestToolsProperties.SSBP_ASSERTION_FILE))
-	      suite.addTest(new TestSuite(WSDLConformanceSSBPTest.class));
-	    if (tadIsAvailable(WSITestToolsProperties.AP_ASSERTION_FILE))
-	      suite.addTest(new TestSuite(WSDLConformanceAPTest.class));
+	    if (tadIsAvailable(WSITestToolsProperties.SSBP_ASSERTION_FILE)) {
+              suite.addTest(new TestSuite(WSDLConformanceSSBPTest.class));
+              suite.addTest(new TestSuite(MessageLogConformanceSSBPTest.class));
+        }
+	    if (tadIsAvailable(WSITestToolsProperties.AP_ASSERTION_FILE)) {
+              suite.addTest(new TestSuite(WSDLConformanceAPTest.class));
+              suite.addTest(new TestSuite(MessageLogConformanceAPTest.class));
+        }
 	    
 	    return suite;
 	  }
