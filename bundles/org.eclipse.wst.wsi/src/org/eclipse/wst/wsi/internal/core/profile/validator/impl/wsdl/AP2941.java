@@ -145,6 +145,8 @@ public class AP2941 extends AssertionProcess implements WSITag
               }
             }
           }
+          // Going through all the soap:headerfaultS
+          faultNames.addAll(findAllHeaderFaults(bindingOperation));
           // If not true that all the wsdl:faultS are bound,
           // the assertion failed
           if (!faultNames.containsAll(
@@ -311,6 +313,30 @@ public class AP2941 extends AssertionProcess implements WSITag
     return false;
   }
 
+  private List findAllHeaderFaults(BindingOperation bindingOp)
+  {
+    List headerFaults = new ArrayList();
+    if (bindingOp == null)
+      return headerFaults;
+    List ioElements = bindingOp.getBindingInput().getExtensibilityElements();
+    ioElements.addAll(bindingOp.getBindingOutput().getExtensibilityElements());
+    for (int i = 0; i < ioElements.size(); i++)
+    {
+      ExtensibilityElement extElem = (ExtensibilityElement) ioElements.get(i);
+      if (extElem.getElementType().equals(WSDL_SOAP_HEADER)) {
+        List shfList = ((SOAPHeader) extElem).getSOAPHeaderFaults();
+        for (int j = 0; j < shfList.size(); j++)
+          headerFaults.add(((SOAPHeaderFault) shfList.get(j)).getPart());
+      }
+      else if (!extElem.getElementType().equals(WSDL_SOAP_BODY)) {
+        List elList = getHeaderFaults((
+                  (UnknownExtensibilityElement) extElem).getElement());
+        for (int j = 0; j < elList.size(); j++)
+          headerFaults.add(((Element)elList.get(j)).getAttribute("part"));
+      }
+    }
+    return headerFaults;
+  }
   /**
    * Collects all the element's child elements of the soap:headerfault type.
    * @param element an element that can have soap:headerfault elements.

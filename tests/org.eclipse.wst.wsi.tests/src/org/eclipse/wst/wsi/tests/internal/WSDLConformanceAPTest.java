@@ -52,6 +52,9 @@ public class WSDLConformanceAPTest extends CoreWSDLConformanceTest
   public void test_2117_3() { runTest("bp", "2117-3", TAD_ID_AP); }
   public void test_2406_1() { runTest("bp", "2406-1", TAD_ID_AP); }
 
+  // ap tests
+  public void test_2941_1() { runTest("ap", "2941-1", TAD_ID_AP); } 
+
   // redundant tests -- assertions failures caught by base wsdl validator.
   public void test_2010_1() { runTest("redundant", "2010-1", TAD_ID_AP); }
   public void test_2011_1() { runTest("redundant", "2011-1", TAD_ID_AP); } 
