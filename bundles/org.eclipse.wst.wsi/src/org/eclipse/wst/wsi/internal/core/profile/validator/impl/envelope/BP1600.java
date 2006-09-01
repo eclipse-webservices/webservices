@@ -116,6 +116,7 @@ public class BP1600 extends AssertionProcess
 
       // Getting the first sub element of the envelope
       element = XMLUtils.getFirstChild(element);
+      Collection headerNamespaces = collectNamespaces(element.getAttributes());
 
       // If the child is soap:Header
       if (element != null
@@ -133,6 +134,7 @@ public class BP1600 extends AssertionProcess
 
           // If the entry is not in the namespaces, the assertion failed
           if (!envelopeNamespaces.contains(headerEntry.getNamespaceURI())
+            && !headerNamespaces.contains(headerEntry.getNamespaceURI())
             && !headerEntryNamespaces.contains(headerEntry.getNamespaceURI()))
             throw new AssertionFailException("The header entry "
               + headerEntry.getNodeName() + " is not namespace-qualified");
