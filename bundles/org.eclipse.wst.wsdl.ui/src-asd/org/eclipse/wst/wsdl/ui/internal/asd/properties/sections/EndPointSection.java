@@ -27,6 +27,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
@@ -67,6 +68,7 @@ public class EndPointSection extends ReferenceSection {
 		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
 		addressText.setLayoutData(data);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(addressText, ASDEditorCSHelpIds.PROPERTIES_PORT_ADDRESS_TEXT);
 
 		// Protocol Row
 		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL + ":"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -84,8 +86,11 @@ public class EndPointSection extends ReferenceSection {
 		data.top = new FormAttachment(addressText, +ITabbedPropertyConstants.VSPACE);
 		protocolValueLabel.setLayoutData(data);
 		protocolValueLabel.addListener(SWT.Modify, this);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolValueLabel, ASDEditorCSHelpIds.PROPERTIES_PORT_PROTOCOL_TEXT);
 
 		comboLabel.setText(Messages._UI_LABEL_BINDING + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, ASDEditorCSHelpIds.PROPERTIES_PORT_BINDING_COMBO);
 	}
 
 	/*

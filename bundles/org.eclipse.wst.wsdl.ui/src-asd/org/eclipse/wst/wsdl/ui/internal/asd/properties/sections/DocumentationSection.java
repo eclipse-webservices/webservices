@@ -16,10 +16,12 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.actions.AddElementAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -44,6 +46,7 @@ public class DocumentationSection extends ASDAbstractSection {
 		data.top = new FormAttachment(0, 0);
 		data.bottom = new FormAttachment(100, 0);
 		docText.setLayoutData(data);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(docText, ASDEditorCSHelpIds.PROPERTIES_DOCUMENTATION_TAB);
 	}
 
 	/*

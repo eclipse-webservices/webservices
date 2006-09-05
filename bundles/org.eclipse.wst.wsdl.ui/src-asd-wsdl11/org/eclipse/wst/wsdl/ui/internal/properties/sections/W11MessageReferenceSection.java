@@ -18,12 +18,14 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection;
@@ -53,6 +55,7 @@ public class W11MessageReferenceSection extends NameSection {
 		combo.setBackground(composite.getBackground());
 		combo.addListener(SWT.Modify, this);
 		combo.addSelectionListener(this);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, ASDEditorCSHelpIds.PROPERTIES_MESSAGE_REF_MESSAGE_COMBO);
 		
 		comboLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_MESSAGE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();

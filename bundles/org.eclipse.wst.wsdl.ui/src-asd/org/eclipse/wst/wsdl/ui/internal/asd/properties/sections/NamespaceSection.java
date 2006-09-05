@@ -29,6 +29,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11EditNamespacesCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDEditNamespacesAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
@@ -70,14 +71,17 @@ public class NamespaceSection extends ASDAbstractSection {
 		// name
 		CLabel nameLabel = getWidgetFactory().createCLabel(composite, nameString); //$NON-NLS-1$
 		nameText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(nameText, ASDEditorCSHelpIds.PROPERTIES_NAME_TEXT);
 		
 		// prefix
 		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, prefixString); //$NON-NLS-1$
 		prefixText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(prefixText, ASDEditorCSHelpIds.PROPERTIES_DEF_PREFIX_TEXT);
 		
 		// targetnamespace
 		CLabel targetNamespaceLabel = getWidgetFactory().createCLabel(composite, namespaceString); //$NON-NLS-1$
 		targetNamespaceText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(targetNamespaceText, ASDEditorCSHelpIds.PROPERTIES_DEF_TNS_TEXT);
 		
 		// Advanced button
 		button = getWidgetFactory().createButton(composite, Messages._UI_SECTION_ADVANCED_ATTRIBUTES + "...", SWT.PUSH); //$NON-NLS-1$ //$NON-NLS-2$

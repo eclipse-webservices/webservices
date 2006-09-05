@@ -21,12 +21,14 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -242,6 +244,7 @@ public class BindingWizard extends Wizard
       ProtocolComponentControl protocolComponentControl = new BindingProtocolComponentControl(parent, bindingGenerator, true);
       protocolComponentControl.initFields();
       setControl(protocolComponentControl);
+      PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolComponentControl, ASDEditorCSHelpIds.BINDING_WIZARD);
     }
   }
 

@@ -29,6 +29,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
@@ -107,6 +108,10 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		regenBindingButton.setLayoutData(data);
 
 		regenBindingButton.addSelectionListener(this);
+		
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolValue, ASDEditorCSHelpIds.PROPERTIES_BINDING_PROTOCOL_TEXT);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(regenBindingButton, ASDEditorCSHelpIds.PROPERTIES_BINDING_GEN_BINDING_BUTTON);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, ASDEditorCSHelpIds.PROPERTIES_BINDING_PORTTYPE_COMBO);
 	}
 	
 	public void refresh() {

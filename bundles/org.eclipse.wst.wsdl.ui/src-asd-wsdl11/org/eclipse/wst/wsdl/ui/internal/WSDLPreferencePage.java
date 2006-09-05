@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 
 public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -69,11 +71,12 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     compositeLayout.numColumns = 2;
     addField(targetNamespace);
     targetNamespace.setFocus();
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(targetNamespace.getTextControl(composite), ASDEditorCSHelpIds.WSDL_PREF_DEFAULT_TNS);
 	
 	String generateLabel = Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING; //$NON-NLS-1$
 	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(generateLabel, generateLabel, parent);
 	addField(generateBindingOnSave);
-	
+    
 	String showGenerateDialogLabel = Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE;   // TODO: Externalize //$NON-NLS-1$
 	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(showGenerateDialogLabel, showGenerateDialogLabel, parent);
 	addField(showGenerateDialog);

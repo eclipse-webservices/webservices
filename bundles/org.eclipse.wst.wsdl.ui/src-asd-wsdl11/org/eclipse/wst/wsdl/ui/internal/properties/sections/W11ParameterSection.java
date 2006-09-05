@@ -20,11 +20,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.ParameterSection;
@@ -60,6 +62,8 @@ public class W11ParameterSection extends ParameterSection {
 		elementRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_ELEMENT, SWT.RADIO);	 //$NON-NLS-1$
 		typeRadio.addSelectionListener(this);
 		elementRadio.addSelectionListener(this);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(typeRadio, ASDEditorCSHelpIds.PROPERTIES_PART_TYPE_RADIO);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(elementRadio, ASDEditorCSHelpIds.PROPERTIES_PART_ELEMENT_RADIO);
 		
 		data = new FormData();
 		data.left = new FormAttachment(0, 100);

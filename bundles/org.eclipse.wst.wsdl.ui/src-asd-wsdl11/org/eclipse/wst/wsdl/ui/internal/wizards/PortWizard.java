@@ -18,10 +18,12 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -110,6 +112,7 @@ public class PortWizard extends Wizard
       ProtocolComponentControl protocolComponentControl = new PortProtocolComponentControl(parent, portGenerator);
       protocolComponentControl.initFields();
       setControl(protocolComponentControl);
+      PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolComponentControl, ASDEditorCSHelpIds.PORT_WIZARD);
     }
   }
 

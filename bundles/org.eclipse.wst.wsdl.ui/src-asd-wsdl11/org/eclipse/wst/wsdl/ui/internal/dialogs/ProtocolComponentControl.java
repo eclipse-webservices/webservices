@@ -29,11 +29,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
 import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
 import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage;
 
 public abstract class ProtocolComponentControl extends Composite implements SelectionListener, ModifyListener
@@ -86,8 +88,9 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     gdName.grabExcessHorizontalSpace= true;
     componentNameField.setLayoutData(gdName);
     componentNameField.addModifyListener(this);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(componentNameField, ASDEditorCSHelpIds.PROTOCOL_COMPONENT_NAME_TEXT);
     //createPlaceHolder(labelValueComposite);
-
+    
     // row 2
     //
     Label refNameLabel = new Label(labelValueComposite, SWT.NONE);
@@ -98,6 +101,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     gdRefName.grabExcessHorizontalSpace= true;
     refNameCombo.setLayoutData(gdRefName);
     refNameCombo.addSelectionListener(this);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(refNameCombo, ASDEditorCSHelpIds.PROTOCOL_COMPONENT_REF_COMBO);
 
     //refBrowseButton = new Button(labelValueComposite, SWT.NONE);
     //refBrowseButton.setText("  ...  ");
@@ -119,6 +123,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     gdProtocol.grabExcessHorizontalSpace= true;
     protocolCombo.setLayoutData(gdProtocol);
     protocolCombo.addSelectionListener(this);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.PROTOCOL_COMPONENT_PROTOCOL_COMBO);
     //createPlaceHolder(labelValueComposite);
 
     // optional overwrite button
@@ -128,6 +133,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
       overwriteButton = new Button(this, SWT.CHECK);
       overwriteButton.setText(Messages._UI_CHECKBOX_OVERWRITE); //$NON-NLS-1$
       overwriteButton.addSelectionListener(this);
+      PlatformUI.getWorkbench().getHelpSystem().setHelp(overwriteButton, ASDEditorCSHelpIds.pROTOCOL_COMPONENT_OVERWRITE_CHECKBOX);
     }
 
     // protocol specific settings

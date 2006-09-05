@@ -30,6 +30,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.ISelectionMapper;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
@@ -62,7 +63,8 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 		data.right = new FormAttachment(100, -rightMarginSpace);
 		data.top = new FormAttachment(0, 0);
 		nameText.setLayoutData(data);
-		
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(nameText, ASDEditorCSHelpIds.PROPERTIES_NAME_TEXT);
+
 		nameLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAME + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);

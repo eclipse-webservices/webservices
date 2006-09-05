@@ -32,11 +32,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.WorkbenchHelp;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.util.ValidateHelper;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.eclipse.wst.xml.ui.internal.dialogs.UpdateListener;
@@ -116,6 +118,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     targetNamespaceText.setLayoutData(textData);
     
     targetNamespaceText.addModifyListener(this);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(targetNamespaceText, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_TNS_TEXT);
 
     Label prefix = new Label(wsdlGroup, SWT.LEFT);
     prefix.setText(Messages._UI_LABEL_PREFIX_WITH_COLON); //$NON-NLS-1$\
@@ -132,6 +135,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     prefixText.setLayoutData(prefixTextData);
 
     prefixText.addModifyListener(this);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(prefixText, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_PREFIX_TEXT);
     
     //    XMLCatalog xmlCatalog = XMLCatalogRegistry.getInstance().lookupOrCreateXMLCatalog("default");
     //    SelectXMLCatalogIdPanel catalog = new SelectXMLCatalogIdPanel(base, xmlCatalog);
@@ -140,6 +144,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     createSkeletonCheckBox = new Button(base, SWT.CHECK);
     createSkeletonCheckBox.setText(Messages._UI_LABEL_CREATE_WSDL_SKELETON); //$NON-NLS-1$
     createSkeletonCheckBox.setSelection(true);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(createSkeletonCheckBox, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_CREATE_SKELETON_CHECKBOX);
     
     wsdlSkeletonGroup = new Composite(base, SWT.NONE);
     GridLayout layout2 = new GridLayout();
@@ -161,10 +166,8 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    protocolCombo.add(HTTP_PROTOCOL);
    protocolCombo.select(0);
    protocolCombo.addModifyListener(this);
-   
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_PROTOCOL_COMBO);
 
-
-   
    sepLabel = new Label(base, SWT.SEPARATOR | SWT.HORIZONTAL);
    GridData sepData = new GridData();
    sepData.horizontalAlignment = GridData.FILL;
@@ -193,7 +196,9 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    rpcLitRadio.setText(SOAP_RPC_LITERAL);
    rpcEncRadio.setText(SOAP_RPC_ENCODED);
    docLitRadio.setSelection(true);
-
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(docLitRadio, ASDEditorCSHelpIds.DOC_LIT_RADIO);
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(rpcLitRadio, ASDEditorCSHelpIds.RPC_LIT_RADIO);
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(rpcEncRadio, ASDEditorCSHelpIds.RPC_ENCODED_RADIO);
    
    ///////////////////////// Http Page
    httpPage = new Composite(protocolPageBook, SWT.NONE);
@@ -211,6 +216,8 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    httpGetRadio.setText(HTTP_GET);
    httpPostRadio.setText(HTTP_POST);
    httpGetRadio.setSelection(true);
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(httpGetRadio, ASDEditorCSHelpIds.HTTP_GET_RADIO);
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(httpPostRadio, ASDEditorCSHelpIds.HTTP_POST_RADIO);
    
    wsdlSkeletonGroup.setVisible(true);
    sepLabel.setVisible(true);
@@ -236,6 +243,8 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    
 //   BindingProtocolComponentControl component = new BindingProtocolComponentControl(base, generator, false);
 //   component.initFields();
+   
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
    
     setControl(base);
     
