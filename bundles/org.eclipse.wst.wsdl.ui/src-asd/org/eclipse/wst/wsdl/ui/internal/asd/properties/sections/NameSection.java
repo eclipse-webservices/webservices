@@ -71,7 +71,7 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 		data.right = new FormAttachment(nameText, -ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(nameText, 0, SWT.CENTER);
 		nameLabel.setLayoutData(data);
-		nameText.addListener(SWT.Modify, this);
+		applyTextListeners(nameText);
 	}
 	
   private void showRefactorButton() {

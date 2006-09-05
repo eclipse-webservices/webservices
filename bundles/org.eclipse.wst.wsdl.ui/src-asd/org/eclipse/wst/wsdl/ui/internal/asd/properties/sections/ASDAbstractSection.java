@@ -50,6 +50,7 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 	protected Composite composite;
 	protected int rightMarginSpace;
 	protected int tableMinimumWidth = 50;
+	protected CustomListener customListener = new CustomListener();
 	
 	protected List listeners = new ArrayList();
 	
@@ -202,6 +203,18 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 		return listenerEnabled;
 	}
 	
+    public void applyTextListeners(Control control)
+    {
+      control.addListener(SWT.FocusOut, customListener);
+      control.addListener(SWT.KeyDown, customListener);
+    }
+    
+    public void removeListeners(Control control)
+    {
+      control.removeListener(SWT.FocusOut, customListener);
+      control.removeListener(SWT.KeyDown, customListener);
+    }
+	
 	/**
 	 * Set the value of listenerEnabled.
 	 * @param v  Value to assign to listenerEnabled.
@@ -216,7 +229,8 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 		if (isListenerEnabled() && !isInDoHandle) 
 		{
 			isInDoHandle = true;
-			startDelayedEvent(event);
+//			startDelayedEvent(event);
+			doHandleEvent(event);
 			isInDoHandle = false;
 		} // end of if ()
 	}
@@ -290,6 +304,43 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 		}
 		
 	}
+	   
+    class CustomListener implements Listener
+    {
+      boolean isHandlingEvent = false;
+      public void handleEvent(Event event)
+      {
+        if (isListenerEnabled() && !isReadOnly) 
+        {
+          switch (event.type)
+          {
+            case SWT.KeyDown :
+            {
+              if (event.character == SWT.CR)
+              {
+                if (!isHandlingEvent)
+                {
+                  isHandlingEvent = true;
+                  doHandleEvent(event);
+                  isHandlingEvent = false;
+                }
+              }
+              break;
+            }
+            case SWT.FocusOut :
+            {
+              if (!isHandlingEvent)
+              {
+                isHandlingEvent = true;
+                doHandleEvent(event);
+                isHandlingEvent = false;
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
 	
 	boolean isInDoHandle;
 	/**

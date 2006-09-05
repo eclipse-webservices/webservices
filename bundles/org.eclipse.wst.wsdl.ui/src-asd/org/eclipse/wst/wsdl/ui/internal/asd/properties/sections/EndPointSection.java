@@ -97,7 +97,7 @@ public class EndPointSection extends ReferenceSection {
 	 * @see org.eclipse.wst.common.ui.properties.internal.provisional.view.ITabbedPropertySection#refresh()
 	 */
 	public void refresh() {
-		addressText.removeListener(SWT.Modify, this);
+		removeListeners(addressText);
 
 		super.refresh();
 
@@ -121,7 +121,7 @@ public class EndPointSection extends ReferenceSection {
 		
 		setControlForegroundColor(addressText);
 		setControlForegroundColor(protocolValueLabel);
-		addressText.addListener(SWT.Modify, this);
+		applyTextListeners(addressText);
 	}
 	
 	protected ComponentReferenceEditManager getComponentReferenceEditManager() {

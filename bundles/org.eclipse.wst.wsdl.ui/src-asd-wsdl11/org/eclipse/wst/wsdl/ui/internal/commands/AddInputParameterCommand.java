@@ -43,7 +43,12 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getAnonymousXSDElementBaseName() {
 		if (newAnonymousXSDElementName == null) {
-			newAnonymousXSDElementName = getWSDLPartName();
+			if (this.style == AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT) {
+				newAnonymousXSDElementName = operation.getName();
+			}
+			else {
+				newAnonymousXSDElementName = getWSDLPartName();
+			}
 		}
 		
 		return newAnonymousXSDElementName;
@@ -54,7 +59,7 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 			newXSDElementName = "in"; //$NON-NLS-1$
 //			newXSDElementName = getWSDLPartName();
 		}
-		
+
 		return newXSDElementName;
 	}
 	

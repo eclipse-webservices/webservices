@@ -39,7 +39,7 @@ public class DocumentationSection extends ASDAbstractSection {
 		composite =	getWidgetFactory().createFlatFormComposite(parent);
 
 		docText = getWidgetFactory().createText(composite, "", SWT.MULTI | SWT.NONE | SWT.H_SCROLL | SWT.V_SCROLL); //$NON-NLS-1$
-		docText.addListener(SWT.Modify, this);
+		docText.addListener(SWT.KeyDown, this);
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);

@@ -114,7 +114,7 @@ public class NamespaceSection extends ASDAbstractSection {
 		dataNameText.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		dataNameText.top = new FormAttachment(0, 0);
 		nameText.setLayoutData(dataNameText);
-		nameText.addListener(SWT.Modify, this);
+		applyTextListeners(nameText);
 		
 		// prefix text field
 		FormData dataPrefixText = new FormData();
@@ -122,7 +122,7 @@ public class NamespaceSection extends ASDAbstractSection {
 		dataPrefixText.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		dataPrefixText.top = new FormAttachment(nameText, +ITabbedPropertyConstants.VSPACE);
 		prefixText.setLayoutData(dataPrefixText);
-		prefixText.addListener(SWT.Modify, this);
+		applyTextListeners(prefixText);
 		
 		// targetnamespace text field
 		FormData data = new FormData();
@@ -130,7 +130,7 @@ public class NamespaceSection extends ASDAbstractSection {
 		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(prefixText, +ITabbedPropertyConstants.VSPACE);
 		targetNamespaceText.setLayoutData(data);
-		targetNamespaceText.addListener(SWT.Modify, this);
+		applyTextListeners(targetNamespaceText);
 		
 		// Advanced button layout
 		FormData dataButton = new FormData();

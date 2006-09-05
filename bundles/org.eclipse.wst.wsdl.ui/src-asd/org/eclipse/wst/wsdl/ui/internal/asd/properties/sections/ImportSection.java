@@ -76,7 +76,7 @@ public class ImportSection extends ASDAbstractSection
 
 		prefixText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 //		prefixText.setEditable(false);
-		prefixText.addListener(SWT.Modify, this);
+		applyTextListeners(prefixText);
 		data = new FormData();
 		data.left = new FormAttachment(0, 100);
 		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);

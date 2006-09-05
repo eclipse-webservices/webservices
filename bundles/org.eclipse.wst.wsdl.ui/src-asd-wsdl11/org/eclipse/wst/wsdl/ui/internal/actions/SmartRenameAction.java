@@ -29,6 +29,7 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Node;
@@ -49,6 +50,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 	private List messageReferences; // This variable should be accessed by method getAllMessageReferences()
 	protected Node node;
 	private boolean renameParent = true;
+	private String oldName;
 	
 	public SmartRenameAction(Object element, String newName) {
 		setText("Smart Rename Action"); // Do not translate //$NON-NLS-1$
@@ -76,7 +78,6 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 
 	public void run() {
 		RenameAction renamer;
-		String oldName;
 		
 		beginRecording();
 		if (element instanceof Operation) {
@@ -569,6 +570,19 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			QName qname = new QName(part.getElementName().getNamespaceURI(), newXSDName);
 			part.setElementName(qname);			
 		}
+		else if (elementDeclaration != null && element instanceof Operation) {
+			Operation operation = (Operation) element;
+			if (AddBaseParameterCommand.getParameterPattern(operation, true) == AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT) {
+				if (elementDeclaration.getName().equals(oldName)) {
+					renameElementDeclarationHelper(elementDeclaration, oldName, newName);
+					
+					// Here we rename the element reference.
+					//
+					QName qname = new QName(part.getElementName().getNamespaceURI(), newName);
+					part.setElementName(qname);	
+				}
+			}
+		}
 	}
 	
 	private void renameElementDeclarationHelper(XSDElementDeclaration elementDeclaration, String oldXSDName, String newXSDName) {
@@ -577,5 +591,4 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 			elementDeclaration.setName(newElementName);
 		}
 	}
-	
 }
