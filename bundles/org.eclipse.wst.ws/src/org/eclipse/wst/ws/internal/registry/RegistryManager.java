@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060517   131582 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20060906   141796 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.registry;
@@ -111,6 +112,14 @@ public class RegistryManager implements IRegistryManager
 		return new URL(urlString);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.ws.internal.registry.IRegistryManager#refreshManager()
+	 */
+	public void refreshManager ()
+	{
+		index_ = null;
+	}
+	
 	/**
 	 * Caches and returns the index model. On first call,
 	 * if an index document exists, the index is loaded

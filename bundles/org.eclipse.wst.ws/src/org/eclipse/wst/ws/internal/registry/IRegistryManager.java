@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060906   141796 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.registry;
@@ -87,6 +90,16 @@ public interface IRegistryManager
 	 * @see #saveRegistry(Registry)
 	 */
 	public void addTaxonomyFinder ( String className, ITaxonomyFinder taxonomyFinder );
+
+    /**
+     * Destroys the index of registries and taxonomies in memory.
+     * Subsequent calls to <code>getIndex()</code> and other methods
+     * of this interface will cause the index to be reloaded.
+     * This method should be called anytime the caller suspects the
+     * persistent index has changed and wishes to load the changes
+     * into the current <code>IRegistryManager</code>.
+     */
+    public void refreshManager ();
 
 	/**
 	 * Saves a <code>Taxonomy</code> model to an XML document
