@@ -13,6 +13,7 @@
  * 20060517   142324 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060711   150301 pmoogk@ca.ibm.com - Peter Moogk
  * 20060818   154393 pmoogk@ca.ibm.com - Peter Moogk
+ * 20060906   156420 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.parser.wsil;
@@ -26,7 +27,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Hashtable;
-
 import javax.wsdl.Definition;
 import javax.wsdl.WSDLException;
 import javax.wsdl.factory.WSDLFactory;
@@ -34,7 +34,6 @@ import javax.wsdl.xml.WSDLReader;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.wsil.Abstract;
 import org.apache.wsil.Description;
 import org.apache.wsil.Inspection;
@@ -47,13 +46,16 @@ import org.apache.wsil.extension.ExtensionElement;
 import org.apache.wsil.extension.uddi.ServiceDescription;
 import org.apache.wsil.extension.uddi.UDDIConstants;
 import org.apache.wsil.extension.wsdl.WSDLConstants;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.ws.internal.parser.disco.DISCOContractReference;
 import org.eclipse.wst.ws.internal.parser.disco.DISCOParser;
 import org.eclipse.wst.ws.internal.parser.disco.DISCOReference;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import sun.misc.BASE64Encoder;
 
 public class WebServicesParser
@@ -137,28 +139,58 @@ public class WebServicesParser
   public WSILDocument getWSILDocumentVerbose(String wsilURI, String byteEncoding ) throws MalformedURLException, IOException, WWWAuthenticationException, WSILException
   {
     WebServiceEntity wsEntity = getWebServiceEntityByURI(wsilURI);
+    
     if (wsEntity == null)
     {
       wsEntity = new WebServiceEntity();
       wsEntity.setURI(wsilURI);
       uriToEntityTable_.put(wsilURI, wsEntity);
     }
+    
     WSILDocument wsilDocument = (WSILDocument)wsEntity.getModel();
+    
     if (wsilDocument == null)
     {
-      byte[] b = getInputStreamAsByteArray(wsilURI);
-      wsEntity.setBytes(b);
-      setHTTPSettings(wsEntity);
+      // For some reason WSDL4J is not reading the content type properly for platform resources.  Therefore, we will get
+      // the stream directly from Eclipse if we find a platform protocol specified in the URL.
+      if( wsilURI.startsWith( "platform:/resource" ) )
+      {
+        String    path     = wsilURI.substring(18);
+        IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember( path );
+        
+        if( resource instanceof IFile )
+        {
+          try
+          {
+            IFile             file   = (IFile)resource;
+            InputStream       stream = file.getContents();
+            InputStreamReader reader = new InputStreamReader( stream, file.getCharset() );
+          
+            wsilDocument = WSILDocument.newInstance();
+            wsilDocument.read( reader );
+          }
+          catch( CoreException exc ){}
+        }
+      }
+      else
+      {
+        // TODO the following 3 lines of code should probably be removed, since
+        // the WSDL4J parser does not need a byte stream.
+        byte[] b = getInputStreamAsByteArray(wsilURI);
+        wsEntity.setBytes(b);
+        setHTTPSettings(wsEntity);
       
-      // This parser only checks the header of HTML for a particular encoding.
-      // It doesn't check the encoding for general XML documents like WSDL and WSIL.
-      // This causing this parser to alway use UTF-8 as the encoding.  Therefore,
-      // since we can not trust the encoding specified we will not use it.  Instead,
-      // we will just let the WSIL parser figure out what encoding to use.
+        // This parser only checks the header of HTML for a particular encoding.
+        // It doesn't check the encoding for general XML documents like WSDL and WSIL.
+        // This causing this parser to alway use UTF-8 as the encoding.  Therefore,
+        // since we can not trust the encoding specified we will not use it.  Instead,
+        // we will just let the WSIL parser figure out what encoding to use.
       
-      //InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(b), byteEncoding );
-      wsilDocument = WSILDocument.newInstance();
-      wsilDocument.read(wsilURI);
+        //InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(b), byteEncoding );
+        wsilDocument = WSILDocument.newInstance();
+        wsilDocument.read(wsilURI);
+      }
+      
       wsEntity.setType(WebServiceEntity.TYPE_WSIL);
       wsEntity.setModel(wsilDocument);
     }
