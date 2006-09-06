@@ -17,6 +17,7 @@
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060510   140868 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060524   141024 joan@ca.ibm.com - Joan Haggarty
+ * 20060829   145449 makandre@ca.ibm.com - Andrew Mak, Web service client project type dropdown disabled after selecting client project
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -331,7 +332,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       if (project.exists())
       {
         projectType_.setEnabled(false);
-        projectType_.setText("");        
+        projectType_.deselectAll();        
       }
       else
       {
