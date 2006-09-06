@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060906   156398 jeffliu@ca.ibm.com - Jeffrey Liu
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.actions;
@@ -47,7 +50,8 @@ public abstract class ClearNodeAction extends NodeAction
         TreeElement e = (TreeElement)it.next();
         e.getModel().removeElement(e);
       }
-      nodeManager_.removeFromNodeTable(nodeId);
+      if (element.getModel().getRootElement() != element)
+        nodeManager_.removeFromNodeTable(nodeId);
       // Do not add this to the history.
       MessageQueue messageQueue = controller_.getCurrentPerspective().getMessageQueue();
       messageQueue.addMessage(controller_.getMessage("MSG_INFO_NODE_CLEARED",node.getNodeName()));
@@ -60,7 +64,8 @@ public abstract class ClearNodeAction extends NodeAction
   {
     if (!elements2remove.contains(element))
     {
-      elements2remove.add(element);
+      if (element.getModel().getRootElement() != element)
+        elements2remove.add(element);
       Enumeration rels = element.getRels();
       while (rels.hasMoreElements())
       {
