@@ -10,19 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.edit;
 
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.common.core.search.scope.SearchScope;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentList;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
 
 public class WSDLBindingSearchListProvider extends WSDLBaseSearchListProvider {
-	private Definition definition;
-	
 	public WSDLBindingSearchListProvider(Definition definition) {
 		this.definition = definition;
 	}
@@ -30,25 +27,18 @@ public class WSDLBindingSearchListProvider extends WSDLBaseSearchListProvider {
 	public void populateComponentList(IComponentList list, SearchScope scope, IProgressMonitor pm) {
 		// Grab explictly defined components
 		createWSDLComponentObjects(list, definition.getEBindings(), IWSDLSearchConstants.BINDING_META_NAME);
+
+		// Files excluded if we search with the search engine later
+		HashMap exclusions = new HashMap();	
+		exclusions.put(definition.getDocumentBaseURI(), Boolean.TRUE);		
 		
-		// Grab directly imported components
-		Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
-		while (importsIt.hasNext()) {
-			Import importItem = (Import) importsIt.next();
-			Definition importDefinition = importItem.getEDefinition();
-			if (importDefinition != null)
-			{		
-		  	  List importedComponents = importDefinition.getEBindings();			
-			  createWSDLComponentObjects(list, importedComponents, IWSDLSearchConstants.BINDING_META_NAME);
-			}  
-		}
-		
-		if (scope != null) {
-			WSDLComponentFinder finder = new WSDLComponentFinder(IWSDLSearchConstants.BINDING_META_NAME);
-			Iterator it = finder.getWorkbenchResourceComponents(scope).iterator();
-			while (it.hasNext()) {
-				list.add(it.next());
-			}
-		}
+		// Grab directly imported components and update the exclusions 'list'
+		getImportedComponents(list, IWSDLSearchConstants.BINDING_META_NAME, exclusions);
+
+		searchOutsideCurrentResource(list, scope, IWSDLSearchConstants.BINDING_META_NAME, exclusions);
+	}
+
+	protected List getSearchingComponents(Definition importDefinition) {
+		return importDefinition.getEBindings();
 	}
 }

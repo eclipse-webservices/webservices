@@ -11,20 +11,29 @@
 package org.eclipse.wst.wsdl.ui.internal.edit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.common.core.search.pattern.QualifiedName;
+import org.eclipse.wst.common.core.search.scope.SearchScope;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentList;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentSearchListProvider;
+import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
+import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 
 public abstract class WSDLBaseSearchListProvider implements IComponentSearchListProvider {
+	
+	protected Definition definition;
+	
 	protected void createWSDLComponentObjects(IComponentList list, List inputComponents, QualifiedName metaName) {
 		Iterator it = inputComponents.iterator();
 		while (it.hasNext()) {
@@ -63,5 +72,39 @@ public abstract class WSDLBaseSearchListProvider implements IComponentSearchList
 		}
 		
 		return list;
+	}
+	
+	//TODO (trung) make this one abstract when we are in development phase again
+	protected List getSearchingComponents(Definition importDefinition) {
+		return new ArrayList();
+	}
+	
+	protected void getImportedComponents(IComponentList list, QualifiedName metaName, HashMap exclusions) {		
+		Iterator importsIt = getWSDLFileImports(definition.getEImports()).iterator();
+		while (importsIt.hasNext()) {
+			Import importItem = (Import) importsIt.next();
+			String location = importItem.getDefinition().getDocumentBaseURI();
+			exclusions.put(location, Boolean.TRUE );
+			Definition importDefinition = importItem.getEDefinition();
+			if (importDefinition != null)
+			{
+		  	  List importedComponents = getSearchingComponents(importDefinition);			
+			  createWSDLComponentObjects(list, importedComponents, metaName);
+			}
+		}
+	}
+	
+	protected void searchOutsideCurrentResource(IComponentList list, SearchScope scope, QualifiedName metaName, Map exclusions) {
+		if (scope != null) {
+			WSDLComponentFinder finder = new WSDLComponentFinder(metaName);
+			Iterator it = finder.getWorkbenchResourceComponents(scope).iterator(); 
+			while (it.hasNext()) {
+				ComponentSpecification item = (ComponentSpecification) it.next();
+				String itemURI = URIHelper.getPlatformURI(item.getFile());
+				if (exclusions.get(itemURI) == null){
+					list.add(item);
+				}
+			}
+		}
 	}
 }
