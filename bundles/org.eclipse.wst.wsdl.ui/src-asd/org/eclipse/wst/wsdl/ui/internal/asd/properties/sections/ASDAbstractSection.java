@@ -399,7 +399,7 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
     protected void executeCommand(Command command) {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         
-        if ((CommandStack) page.getActiveEditor().getAdapter(CommandStack.class) != null) {
+        if (page.getActiveEditor() != null && page.getActiveEditor().getAdapter(CommandStack.class) != null) {
             CommandStack stack = (CommandStack) page.getActiveEditor().getAdapter(CommandStack.class);
             stack.execute(command);
         }
