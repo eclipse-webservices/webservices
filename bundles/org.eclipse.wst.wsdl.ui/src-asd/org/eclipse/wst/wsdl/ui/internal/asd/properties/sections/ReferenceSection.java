@@ -61,6 +61,21 @@ public abstract class ReferenceSection extends NameSection {
 		
 		combo.addListener(SWT.Modify, this);
 	}
+	
+	public void handleEvent(Event event)
+	{
+		if (event.widget == combo) {
+			if (isListenerEnabled() && !isInDoHandle) 
+			{
+				isInDoHandle = true;
+				startDelayedEvent(event);
+				isInDoHandle = false;
+			}
+		}
+		else {
+			super.handleEvent(event);
+		}
+	}
 
 	/*
 	 * @see org.eclipse.wst.common.ui.properties.internal.provisional.view.ITabbedPropertySection#refresh()
