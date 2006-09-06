@@ -4,13 +4,14 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060608   144500 mahutch@ca.ibm.com - Mark Hutchinson
  * 20060818   153903 makandre@ca.ibm.com - Andrew Mak, Browse does not work in generate client test page
+ * 20060906   154548 gilberta@ca.ibm.com - Gilbert Andrews, This fixes name collisions when creating a sample project
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -27,6 +28,7 @@ import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.JavaMofReflectionCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
@@ -177,9 +179,30 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
 	  sampleC = clientC + DEFAULT_SAMPLE_WEB_PROJECT_EXT;
 	  sampleProject = sampleP + "/" + sampleC;
 	  
+	  String sampleTemp = sampleP;
 	  
-	}  
-	sampleProjectEAR = clientProjectEAR;
+	  boolean nameFound = false;
+	  int i = 1;
+	  while(!nameFound){
+		  IProject sampleIProject = (IProject)ProjectUtilities.getProject(sampleTemp);
+		  if(sampleIProject.exists() && !J2EEProjectUtilities.isDynamicWebProject(sampleIProject)){
+			  sampleTemp = sampleP + Integer.toString(i);
+			  sampleProject = sampleTemp + "/" + sampleC;
+		      
+		  }
+		  else
+			  nameFound = true; 
+		  
+		  i++;
+	  }
+	  sampleP = sampleTemp;
+    
+  	}  
+	
+  	
+  	
+  	
+  	sampleProjectEAR = clientProjectEAR;
 	if (sampleProjectEAR == null || sampleProjectEAR.length()==0){
 	  sampleProjectEAR = sampleP + DEFAULT_SAMPLE_EAR_PROJECT_EXT + "/" + sampleC + DEFAULT_SAMPLE_EAR_PROJECT_EXT;	
 	}
