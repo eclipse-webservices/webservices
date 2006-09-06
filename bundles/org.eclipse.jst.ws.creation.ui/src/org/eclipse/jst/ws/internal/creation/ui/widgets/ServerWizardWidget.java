@@ -42,6 +42,7 @@
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
+ * 20060831   155441 makandre@ca.ibm.com - Andrew Mak, Small tweak for this bug
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -262,7 +263,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	 * Pack this widget and the client-side widget as well. 
 	 */
 	private void packSelf() {
-		packIt();
+		// don't need to call packIt(), since clientWidget_ has a callback to packIt() already.
 		clientWidget_.packIt();
 	}
 	
@@ -1254,7 +1255,7 @@ private void handleTypeChange()
 		serviceProjectName_= name;
 		hLinkServiceProject_.setText(SERVICE_PROJECT_PREFIX + " " + serviceProjectName_);
 		hLinkServiceProject_.pack(true);
-		groupComposite_.pack(true);	
+		packSelf();	
 	  }
 	
 	 public void setServiceEarProjectName(String name)
@@ -1270,7 +1271,7 @@ private void handleTypeChange()
 		  {			 
 			  hLinkServiceEAR_.setText(SERVICE_EAR_PREFIX + " " + serviceEarProjectName_);
 			  hLinkServiceEAR_.pack(true);
-			  groupComposite_.pack(true);
+			  packSelf();
 		  }
 	  }
 	 public void setServiceComponentType( String type )
