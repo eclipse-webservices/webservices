@@ -417,14 +417,14 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 	
 	public void openProjectWSIProperties() {
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newFilePage.getContainerFullPath().toString());
+		IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getFile(newFilePage.getContainerFullPath().append(newFilePage.getFileName())).getProject();
 		//PreferencesUtil.createPropertyDialogOn(shell,targetProject,null,null,null).open();
 
 		PreferencesUtil.createPropertyDialogOn(shell,targetProject,WSICompliancePropertyPage.PAGE_ID ,new String[] {WSICompliancePropertyPage.PAGE_ID},null).open();
 	}
 	
 	  public String getWSIPreferences() {
-		  IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newFilePage.getContainerFullPath().toString());
+		  IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getFile(newFilePage.getContainerFullPath().append(newFilePage.getFileName())).getProject();
 		  PersistentWSIContext WSISSBcontext = WSPlugin.getInstance().getWSISSBPContext();
 		  
 		     if (WSISSBcontext.projectStopNonWSICompliances(targetProject))
