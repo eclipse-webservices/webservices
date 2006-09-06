@@ -17,6 +17,7 @@
  * 20060425   137831 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
+ * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -667,7 +668,10 @@ public class ValidationUtils
 	 */
 	public boolean serverNeedsEAR(String serverTypeId)
 	{
-	    if (serverTypeId != null && serverTypeId.length() > 0) {
+		if (serverTypeId == null) {
+			return false;
+		}
+	    if (serverTypeId.length() > 0) {
 			String targetId = ServerUtils.getRuntimeTargetIdFromFactoryId(serverTypeId);
 			if (targetId != null && targetId.length() > 0) {
 				if (!ServerUtils.isTargetValidForEAR(targetId, "13")) // rm j2ee

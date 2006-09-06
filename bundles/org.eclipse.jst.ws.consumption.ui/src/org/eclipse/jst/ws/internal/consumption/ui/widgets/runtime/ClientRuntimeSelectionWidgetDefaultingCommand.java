@@ -21,6 +21,7 @@
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
+ * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -340,6 +341,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
             clientNeedEAR_ = false;
           }
         }
+      } else {  // serverId == null, assume that it does not need EAR
+    	  clientNeedEAR_ = false;
+    	  
       }
     }
     
