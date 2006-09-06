@@ -20,6 +20,7 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -97,13 +98,14 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
   }
   
   private DirectEditManager manager;
-    
   public void performDirectEdit(Point cursorLocation){
-	  if (cursorLocation == null || hitTest(getFigure().getBounds(), cursorLocation) && !isReadOnly()) {
+	  Rectangle textArea = getLabelFigure().getBounds();
+	  textArea.width = getFigure().getBounds().width;
+	  if (cursorLocation == null || hitTest(textArea, cursorLocation) && !isReadOnly()) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }
-    else if (hitTest(getFigure().getBounds(), cursorLocation) && isReadOnly()) {
+    else if (getFigure() instanceof Figure && hitTestFigure((Figure) getFigure(), cursorLocation) && isReadOnly()) {
       doOpenNewEditor();    
     }
   }

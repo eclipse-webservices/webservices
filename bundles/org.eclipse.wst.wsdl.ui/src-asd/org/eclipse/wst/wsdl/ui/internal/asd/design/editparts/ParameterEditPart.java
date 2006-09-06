@@ -137,7 +137,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
 		manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		manager.show();
 	  }
-    else if (hitTest(getFigure().getBounds(), cursorLocation) && isReadOnly()) {
+    else if (getFigure() instanceof Figure && hitTestFigure((Figure) getFigure(), cursorLocation) && isReadOnly()) {
       doOpenNewEditor();
     }
   }

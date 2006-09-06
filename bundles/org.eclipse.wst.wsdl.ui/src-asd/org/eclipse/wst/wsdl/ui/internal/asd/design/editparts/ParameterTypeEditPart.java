@@ -153,7 +153,8 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 
 		}
-		else if (hitTest(parameterType, cursorLocation) && isReadOnly()) {
+		else if (parameterType.getParent() instanceof Figure &&
+				 hitTestFigure((Figure) parameterType.getParent(), cursorLocation) && isReadOnly()) {
 			doOpenNewEditor();
 		}
 	}

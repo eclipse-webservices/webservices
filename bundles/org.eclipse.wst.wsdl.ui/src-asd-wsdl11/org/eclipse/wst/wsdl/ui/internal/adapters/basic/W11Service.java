@@ -122,7 +122,10 @@ public class W11Service extends WSDLBaseAdapter implements IService {
 	      else if (binding1 == null && binding2 != null) {
 	        return 1;
 	      }
-
+	      else if (binding1 == null && binding2 == null) {
+	    	  return 0;
+	      }
+	      
 	      PortType portType1 = binding1.getEPortType();
 	      PortType portType2 = binding2.getEPortType();
 
