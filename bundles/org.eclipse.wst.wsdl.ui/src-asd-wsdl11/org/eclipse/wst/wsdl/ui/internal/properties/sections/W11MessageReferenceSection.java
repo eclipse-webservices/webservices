@@ -144,6 +144,21 @@ public class W11MessageReferenceSection extends NameSection {
 		return false;
 	}
 	
+	public void handleEvent(Event event)
+	{
+		if (event.widget == combo) {
+			if (isListenerEnabled() && !isInDoHandle) 
+			{
+				isInDoHandle = true;
+				startDelayedEvent(event);
+				isInDoHandle = false;
+			}
+		}
+		else {
+			super.handleEvent(event);
+		}
+	}
+	
 	public void doHandleEvent(Event event)
 	{
 		super.doHandleEvent(event);

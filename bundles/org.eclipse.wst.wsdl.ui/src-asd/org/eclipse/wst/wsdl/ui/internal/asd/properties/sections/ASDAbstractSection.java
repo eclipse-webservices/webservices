@@ -342,7 +342,7 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
       }
     }
 	
-	boolean isInDoHandle;
+	protected boolean isInDoHandle;
 	/**
 	 * Get the value of isInDoHandle.
 	 * @return value of isInDoHandle.
