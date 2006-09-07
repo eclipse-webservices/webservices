@@ -150,16 +150,29 @@ public class NamespaceSection extends ASDAbstractSection {
 			IDescription description = (IDescription) obj;
 
 			if (event.widget == nameText) {
-				Command command = description.getSetNameCommand(nameText.getText());
-				executeCommand(command);
+				String newName = nameText.getText();
+				if (!newName.equals(description.getName())) {
+					Command command = description.getSetNameCommand(newName);
+					executeCommand(command);
+				}
 			}
 			else if (event.widget == prefixText || event.widget == targetNamespaceText) {
-				// TODO: The code below is not generic.  We need to revisit this to ensure it is
-				// generic.  IDescription needs a getNamespacesInfo() and getEditNamespacesCommand()...
-				W11EditNamespacesCommand command = (W11EditNamespacesCommand) ((W11Description) description).getEditNamespacesCommand();
-				command.setTargetNamespace(targetNamespaceText.getText());
-				command.setTargetNamespacePrefix(prefixText.getText());
-				executeCommand(command);
+				String newTargetNS = targetNamespaceText.getText();				
+				String newPrefix = prefixText.getText();
+				
+				boolean targetNSdiff = !newTargetNS.equals(description.getTargetNamespace());
+				boolean prefixDiff = !newPrefix.equals(description.getTargetNamespacePrefix());
+				if (targetNSdiff || prefixDiff ) {
+					// TODO: The code below is not generic.  We need to revisit this to ensure it is
+					// generic.  IDescription needs a getNamespacesInfo() and getEditNamespacesCommand()...
+					W11EditNamespacesCommand command = 
+						(W11EditNamespacesCommand) ((W11Description) description).getEditNamespacesCommand();
+					if (targetNSdiff)
+					  command.setTargetNamespace(newTargetNS);
+					if (prefixDiff)
+					  command.setTargetNamespacePrefix(newPrefix);
+					executeCommand(command);
+				}
 			}
 		}
 

@@ -171,8 +171,10 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 			}
 			
 			if (namedObject != null) {
-				Command command = namedObject.getSetNameCommand(newValue);
-				executeCommand(command);
+				if ( !newValue.equals( namedObject.getName() ) ){
+				  Command command = namedObject.getSetNameCommand(newValue);
+				  executeCommand(command);
+				}
 			}
 		}
 	}

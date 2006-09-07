@@ -208,6 +208,10 @@ public class EndPointSection extends ReferenceSection {
 			  newAddress = ""; //$NON-NLS-1$
 		  }
 		  
+		  String oldAddress = getOldAddress();
+		  if (oldAddress.equals(newAddress))
+			  return;
+		  
 		  IEndPoint endPoint = (IEndPoint) getModel();
 		  Command command = endPoint.getSetAddressCommand(newAddress);
 		  executeCommand(command);
@@ -215,5 +219,17 @@ public class EndPointSection extends ReferenceSection {
 	  else {
 		  super.doHandleEvent(event);
 	  }
+  }
+
+  private String getOldAddress() {
+	  String value = null;
+	  if (getModel() instanceof W11EndPoint) {
+		  value = ((W11EndPoint) getModel()).getAddress();
+	  }
+
+	  if (value == null) {
+		  value = ""; //$NON-NLS-1$
+	  }
+	  return value;
   }
 }

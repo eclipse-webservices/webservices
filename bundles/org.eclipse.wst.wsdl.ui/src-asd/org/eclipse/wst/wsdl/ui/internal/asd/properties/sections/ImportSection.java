@@ -181,6 +181,9 @@ public class ImportSection extends ASDAbstractSection
 	public void doHandleEvent(Event event) {
 		// TODO: We have some WSDL11 Impl specific knowledge below... We should try to remove this...
 		if (event.widget == prefixText && locationText.getText().length() > 0 && namespaceText.getText().length() > 0 && getModel() instanceof W11Import) {
+			if (oldPrefixValue.equals(prefixText.getText()))
+			  return;
+			
 			W11Import w11Import = (W11Import) getModel();
 			Import importObj = (Import) w11Import.getTarget();
 //			org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
