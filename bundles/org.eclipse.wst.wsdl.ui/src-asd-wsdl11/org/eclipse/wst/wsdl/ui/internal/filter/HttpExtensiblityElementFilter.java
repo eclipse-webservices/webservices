@@ -21,7 +21,7 @@ public class HttpExtensiblityElementFilter implements ExtensiblityElementFilter
 	
   public boolean isValidContext(Element parentElement, String localName)
   {
-  	boolean result = false;
+  	boolean result = true;   
     
     String parentElementName = parentElement.getLocalName();
 	if (parentElementName.equals("binding")) //$NON-NLS-1$
@@ -45,8 +45,7 @@ public class HttpExtensiblityElementFilter implements ExtensiblityElementFilter
 	else if (parentElementName.equals("port")) //$NON-NLS-1$
 	{
 	  result = localName.equals("address"); 	   //$NON-NLS-1$
-	}	
-    
+	}	    
     return result;
   }     
 }
