@@ -23,6 +23,7 @@
  * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
+ * 20060907   156211 makandre@ca.ibm.com - Andrew Mak, Selecting service definition invalidated project config when creating web service java client
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -104,7 +105,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	  validationState_ = ValidationUtils.VALIDATE_ALL;
 	  statusListener_.handleEvent(null);
 	  if (validObjectSelection_)
-		  callObjectTransformation(wsdlValidatorWidget_.getProject(), 
+		  callObjectTransformation(project_, 
 				  wsdlValidatorWidget_.getComponentName(), 
 				  wsdlValidatorWidget_.getWsdlURI());	  
   }
@@ -526,7 +527,7 @@ public void internalize() {
 			   serviceImpl_.addModifyListener(objectModifyListener_);
 			   
 			   // call WSDLSelectionOutputCommand to carry out any transformation on the objectSelection
-	           callObjectTransformation(wsdlDialog_.getProject(),
+	           callObjectTransformation(project_,
 	        			wsdlDialog_.getComponentName(), wsdlDialog_.getWebServiceURI());
 	           
 		       validationState_ = ValidationUtils.VALIDATE_ALL;
