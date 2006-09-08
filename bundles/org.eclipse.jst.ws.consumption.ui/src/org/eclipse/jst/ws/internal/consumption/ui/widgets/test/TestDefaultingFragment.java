@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
+ * 20060907   156606 makandre@ca.ibm.com - Andrew Mak, no sample JSP in the pop-up action of Generate Sample JSPs
  *******************************************************************************/
 /*
  * Created on May 4, 2004
@@ -90,7 +91,7 @@ public class TestDefaultingFragment extends AbstractDataModelOperation
     	  (WebServiceTestExtension) WebServiceTestRegistry.getInstance()
     	  .getWebServiceExtensionsByName(testTypes[i]);
 		  
-      if (!extension.supportsRuntime(clientRuntimeId_))
+      if (clientRuntimeId_ != null && !extension.supportsRuntime(clientRuntimeId_))
     	  continue;
     	
 	  if(testTypes[i].equals(launchedServiceTestName))
