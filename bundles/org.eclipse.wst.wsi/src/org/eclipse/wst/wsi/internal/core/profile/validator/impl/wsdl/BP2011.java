@@ -76,7 +76,7 @@ public class BP2011 extends AssertionProcess implements WSITag
     EntryContext entryContext)
     throws WSIException
   {
-    result = result = AssertionResult.RESULT_NOT_APPLICABLE;
+    result = AssertionResult.RESULT_NOT_APPLICABLE;
 
     //Definition def = (Definition) entryContext.getEntry().getEntryDetail();
     Types types = (Types) entryContext.getEntry().getEntryDetail();

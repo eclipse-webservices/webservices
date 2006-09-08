@@ -275,7 +275,7 @@ public class ProfileAssertionsReaderImpl implements ProfileAssertionsReader
 
           // Set type
           artifact.setType(
-            ArtifactType.newArtifactType(
+            ArtifactType.getArtifactType(
               atts.getValue(WSIConstants.ATTR_TYPE)));
 
           // ADD: Get specification list

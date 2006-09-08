@@ -26,6 +26,15 @@ import org.eclipse.wst.wsi.internal.core.report.Reporter;
  */
 public interface UDDIValidator extends BaseValidator
 {
+  /** Discovery artifact type */
+  public static final String TYPE_DISCOVERY = "discovery";
+
+  /** Binding template discovery entry type. */
+  public static final String TYPE_DISCOVERY_BINDINGTEMPLATE = "bindingTemplate";
+
+  /** tModel discovery entry type. */
+  public static final String TYPE_DISCOVERY_TMODEL = "tModel";
+
   /**
    * Initiailize validation test procedure.
    * @param analyzerContext the analyzerContext.
@@ -34,6 +43,12 @@ public interface UDDIValidator extends BaseValidator
    * @param uddiReference   a UDDI reference.
    * @param reporter        a Reporter object.
    * @throws WSIException if UDDI validator could not be initialized.
+   * @deprecated -- use init(AnalyzerContext analyzerContext,
+   *                         ProfileAssertions assertions,
+   *                         ReportArtifact reportArtifact,
+   *                         AnalyzerConfig analyzerConfig,
+   *                         Reporter reporter)
+
    */
   public void init(
     AnalyzerContext analyzerContext,
@@ -49,6 +64,7 @@ public interface UDDIValidator extends BaseValidator
    *         is the URL for the WSDL document.
    * @throws WSIException WSIException if an unexpected error occurred
    *         while processing the UDDIentries.
+   * @deprecated -- use validateArtifact()
    */
   public String validate() throws WSIException;
 }

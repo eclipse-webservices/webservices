@@ -14,8 +14,8 @@ package org.eclipse.wst.wsi.internal.core.profile.validator.impl.envelope;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EnvelopeValidator;
+import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.BaseMessageValidator;
-import org.eclipse.wst.wsi.internal.core.util.EntryType;
 
 /**
  * @version 1.0
@@ -24,6 +24,26 @@ public class EnvelopeValidatorImpl
   extends BaseMessageValidator
   implements EnvelopeValidator
 {
+  /**
+   * Get the artifact type that this validator applies to.
+   * @return the artifact type (a String)
+   */
+  public String getArtifactType() {
+      return TYPE_ENVELOPE;
+  }
+
+  /**
+   * Get the collection of entry types that this validator applies to.
+   * @return an array of entry types (Strings)
+   */
+  public String[] getEntryTypes() {
+      return new String[] {
+              TYPE_ENVELOPE_REQUEST,
+              TYPE_ENVELOPE_RESPONSE,
+              TYPE_ENVELOPE_ANY
+      };
+  }
+
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.impl.BaseValidatorImpl#isPrimaryEntryTypeMatch(org.wsi.test.profile.TestAssertion, org.wsi.test.profile.validator.EntryContext)
    */
@@ -34,19 +54,19 @@ public class EnvelopeValidatorImpl
     boolean match = false;
 
     // Verify that the entry and test assertion have the same primary context
-    if ((testAssertion.getEntryTypeName().equals(EntryType.TYPE_ENVELOPE_ANY))
-      || (testAssertion.getEntryTypeName().equals(EntryType.TYPE_ENVELOPE_REQUEST)
+    if ((testAssertion.getEntryTypeName().equals(TYPE_ENVELOPE_ANY))
+      || (testAssertion.getEntryTypeName().equals(TYPE_ENVELOPE_REQUEST)
         && (entryContext
           .getEntry()
           .getEntryType()
           .getTypeName()
-          .equals(EntryType.TYPE_MESSAGE_REQUEST)))
-      || (testAssertion.getEntryTypeName().equals(EntryType.TYPE_ENVELOPE_RESPONSE)
+          .equals(MessageValidator.TYPE_MESSAGE_REQUEST)))
+      || (testAssertion.getEntryTypeName().equals(TYPE_ENVELOPE_RESPONSE)
         && (entryContext
           .getEntry()
           .getEntryType()
           .getTypeName()
-          .equals(EntryType.TYPE_MESSAGE_RESPONSE))))
+          .equals(MessageValidator.TYPE_MESSAGE_RESPONSE))))
     {
       match = true;
     }

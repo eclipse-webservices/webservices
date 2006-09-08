@@ -14,6 +14,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.wsdl.Binding;
+
+import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
 import org.uddi4j.UDDIException;
 import org.uddi4j.client.UDDIProxy;
 import org.uddi4j.datatype.binding.BindingTemplate;
@@ -332,5 +336,208 @@ public final class UDDIUtils
     }
 
     return returnString;
+  }
+
+  /**
+   * Find the wsdlSpec tModel associated with a binding.
+   */
+  public static TModel findTModel(
+    UDDIProxy uddiProxy,
+    BindingTemplate bindingTemplate,
+    boolean verboseOption)
+    throws WSIException
+  {
+    TModel tModel = null;
+
+    // Get the list of tModel references associated with this bindingTemplate
+    Iterator iterator =
+      bindingTemplate
+        .getTModelInstanceDetails()
+        .getTModelInstanceInfoVector()
+        .iterator();
+
+    // Process each tModel reference
+    Vector tModelKeyList = new Vector();
+    while (iterator.hasNext())
+    {
+      // Get tModelInstanceInfo
+      TModelInstanceInfo tModelInstanceInfo =
+        (TModelInstanceInfo) iterator.next();
+
+      // Add key to list
+      tModelKeyList.add(tModelInstanceInfo.getTModelKey());
+    }
+
+    // Get the tModels associated with the bindingTemplate
+    if (tModelKeyList.size() > 0)
+    {
+      try
+      {
+        // Get the tModel details
+        TModelDetail tModelDetail = uddiProxy.get_tModelDetail(tModelKeyList);
+
+        // Get the list of tModels
+        Iterator tModelIterator = tModelDetail.getTModelVector().iterator();
+
+        //boolean tModelFound = false;
+        TModel nextTModel = null;
+
+        // Go through the list of tModels
+        while ((tModelIterator.hasNext()) && (tModel == null))
+        {
+          // Get next tModel in list
+          nextTModel = (TModel) tModelIterator.next();
+
+          if (verboseOption)
+          {
+            System.err.println(
+              "      TModel referenced from bindingTemplate - "
+                + UDDIUtils.tModelToString(nextTModel));
+          }
+
+          // If this is a wsdlSpec tModel, then this is the tModel we want
+          if (isWsdlSpec(nextTModel))
+            tModel = nextTModel;
+        }
+      }
+
+      catch (Exception e)
+      {
+        // Throw WSIException
+        throw new WSIException("Could not get tModel details.", e);
+      }
+    }
+
+    else
+    {
+      // Throw exception
+      //throw new WSIException("UDDI bindingTemplate did not contain any tModel references.");
+    }
+
+    return tModel;
+  }
+  
+  /**
+   * Determine if this is a wsdlSpec tModel.
+   */
+  public static boolean isWsdlSpec(TModel tModel)
+  {
+    boolean tModelFound = false;
+    CategoryBag categoryBag = null;
+    Iterator categoryBagIterator = null;
+
+    // Determine if the catetgoryBag contains wsdlSpec
+    if ((categoryBag = tModel.getCategoryBag()) != null)
+    {
+      // Get the list of keyed references
+      categoryBagIterator = categoryBag.getKeyedReferenceVector().iterator();
+
+      KeyedReference keyedReference = null;
+
+      // Go through the list of keyed references
+      while (categoryBagIterator.hasNext() && !(tModelFound))
+      {
+        // Get next keyed reference
+        keyedReference = (KeyedReference) categoryBagIterator.next();
+
+        // If this is a types taxonomy tModel and the value is wsdlSpec, then this is the tModel we want
+        // REMOVE: It is not necessary to check the key name
+        //if (keyedReference.getTModelKey().equalsIgnoreCase(TModel.TYPES_TMODEL_KEY) &&
+        //   "wsdlSpec".equals(keyedReference.getKeyValue()) &&
+        //   ("types".equals(keyedReference.getKeyName()) ||
+        //    "uddi-org:types".equals(keyedReference.getKeyName()))) {
+        //  tModelFound = true;
+        //}
+        if (keyedReference
+          .getTModelKey()
+          .equalsIgnoreCase(TModel.TYPES_TMODEL_KEY)
+          && "wsdlSpec".equals(keyedReference.getKeyValue()))
+        {
+          tModelFound = true;
+        }
+      }
+    }
+
+    return tModelFound;
+  }
+  /**
+   * Get an OverviewURL from tModel.
+   */
+  public static String getOverviewURL(TModel tModel)
+  {
+    if (tModel != null
+      && tModel.getOverviewDoc() != null
+      && tModel.getOverviewDoc().getOverviewURL() != null)
+    {
+      return tModel.getOverviewDoc().getOverviewURL().getText();
+    }
+    return null;
+  }
+  
+
+  /**
+   * Get WSDL document.
+   */
+  public static String getWSDLLocation(String wsdlLocation)
+  {
+    int index;
+
+    // Check if the overviewURL contains a fragment identifier
+    if ((index = wsdlLocation.indexOf("#")) > -1)
+    {
+      wsdlLocation = wsdlLocation.substring(0, index);
+    }
+    return wsdlLocation;
+  }
+  /**
+   * Get WSDL binding from the overviewURL in the tModel.
+   */
+  public static Binding getBinding(String overviewURL, WSDLDocument wsdlDocument)
+  {
+    int index;
+    int nameIndex;
+
+    Binding[] bindings = wsdlDocument.getBindings();
+    if (bindings == null || bindings.length == 0)
+      return null;
+
+    if (overviewURL != null)
+    {
+      // Check if the overviewURL contains a fragment identifier
+      if ((index = overviewURL.indexOf("#")) > -1)
+      {
+        // TEMP: Need to use a real XPath evaluator like Xalan
+        String nameAttribute = "@name=";
+
+        // Locate name reference
+        if ((nameIndex =
+          overviewURL.substring(index + 1).indexOf(nameAttribute))
+          > -1)
+        {
+          // Get the next character which should be a quote
+          int firstQuoteIndex = index + 1 + nameIndex + nameAttribute.length();
+          String quote =
+            overviewURL.substring(firstQuoteIndex, firstQuoteIndex + 1);
+
+          // Get the part of the URL which should contain the binding name
+          String urlPart = overviewURL.substring(firstQuoteIndex + 1);
+
+          // Find the next quote
+          int nextQuoteIndex;
+          if ((nextQuoteIndex = urlPart.indexOf(quote)) > -1)
+          {
+            String bindingName = urlPart.substring(0, nextQuoteIndex);
+            //look for binding with the specified name
+            for (int i = 0; i < bindings.length; i++)
+            {
+              if (bindingName.equals(bindings[i].getQName().getLocalPart()))
+                return bindings[i];
+            }
+          }
+        }
+      }
+    }
+
+    return bindings[0];
   }
 }

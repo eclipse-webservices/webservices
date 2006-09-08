@@ -47,17 +47,25 @@ import org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext;
 import org.eclipse.wst.wsi.internal.core.analyzer.CandidateInfo;
 import org.eclipse.wst.wsi.internal.core.analyzer.ServiceReference;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
+import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
 import org.eclipse.wst.wsi.internal.core.log.Log;
+import org.eclipse.wst.wsi.internal.core.log.LogReader;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
+import org.eclipse.wst.wsi.internal.core.log.MessageEntryHandler;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
+import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
+import org.eclipse.wst.wsi.internal.core.profile.validator.LogValidator;
+import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl.WSDLValidatorImpl;
+import org.eclipse.wst.wsi.internal.core.report.ArtifactReference;
 import org.eclipse.wst.wsi.internal.core.report.FailureDetail;
 import org.eclipse.wst.wsi.internal.core.report.ReportArtifact;
 import org.eclipse.wst.wsi.internal.core.report.Reporter;
 import org.eclipse.wst.wsi.internal.core.util.EntryType;
 import org.eclipse.wst.wsi.internal.core.util.HTTPUtils;
+import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLUtils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
@@ -85,6 +93,7 @@ import com.ibm.wsdl.util.xml.DOMUtils;
  */
 public abstract class BaseMessageValidator
   extends BaseValidatorImpl
+  implements LogValidator
 {
   /**
   * WSDL document.
@@ -96,6 +105,24 @@ public abstract class BaseMessageValidator
    */
   protected MessageEntry logEntry;
   protected Log log;
+  
+  private boolean testable;
+  private AnalyzerConfig analyzerConfig;
+
+  public void init(AnalyzerContext analyzerContext,
+          ProfileAssertions assertions,
+          ReportArtifact reportArtifact,
+          AnalyzerConfig analyzerConfig,
+          Reporter reporter)
+          throws WSIException {
+
+      super.init(analyzerContext, assertions.getArtifact(getArtifactType()),
+              reportArtifact, reporter);
+
+      testable = analyzerConfig.getLogLocation() != null;
+      this.analyzerConfig = analyzerConfig;
+      this.wsdlDocument = (WSDLDocument) analyzerContext.getWsdlDocument();
+  }
 
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.MessageValidator#init(org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext, org.wsi.test.profile.ProfileArtifact, org.wsi.test.report.ReportArtifact, org.wsi.wsdl.WSDLDocument, org.wsi.test.report.Reporter)
@@ -110,6 +137,9 @@ public abstract class BaseMessageValidator
   {
     // BaseValidatorImpl
     super.init(analyzerContext, profileArtifact, reportArtifact, reporter);
+
+    this.analyzerConfig = Utils.getAnalyzerConfig(reporter);
+    testable = ((analyzerConfig != null) && (analyzerConfig.getLogLocation() != null));	
 
     // Save input references
     this.wsdlDocument = wsdlDocument;
@@ -140,7 +170,7 @@ public abstract class BaseMessageValidator
     /* If Service Description (WSDL/UDDI) NOT supplied in analyzer config OR
      * Service Description IS supplied and the current message correlates to it...
      */
-    if ((wsdlDocument == null)
+    if ((!analyzerConfig.isWSDLReferenceSet())
       || messageCorrelatesToService(
         entryContext,
         analyzerConfig.getCorrelationType()))
@@ -990,14 +1020,14 @@ public abstract class BaseMessageValidator
       List extensibles = null;
       BindingOperation bindingOp = op[k];
 
-      if (messageEntryType.isType(EntryType.TYPE_MESSAGE_REQUEST)
+      if (messageEntryType.isType(MessageValidator.TYPE_MESSAGE_REQUEST)
         && (bindingOp.getOperation().getInput() != null))
       {
         name = bindingOp.getOperation().getName();
         extensibles = bindingOp.getBindingInput().getExtensibilityElements();
       }
       else if (
-        messageEntryType.isType(EntryType.TYPE_MESSAGE_RESPONSE)
+        messageEntryType.isType(MessageValidator.TYPE_MESSAGE_RESPONSE)
           && (bindingOp.getOperation().getOutput() != null))
       {
         name = bindingOp.getOperation().getName() + "Response";
@@ -1041,14 +1071,14 @@ public abstract class BaseMessageValidator
       List extensibles = null;
       BindingOperation bindingOp = op[k];
 
-      if (messageEntryType.isType(EntryType.TYPE_MESSAGE_REQUEST)
+      if (messageEntryType.isType(MessageValidator.TYPE_MESSAGE_REQUEST)
         && (bindingOp.getOperation().getInput() != null))
       {
         wsdlMessage = bindingOp.getOperation().getInput().getMessage();
         extensibles = bindingOp.getBindingInput().getExtensibilityElements();
       }
       else if (
-        messageEntryType.isType(EntryType.TYPE_MESSAGE_RESPONSE)
+        messageEntryType.isType(MessageValidator.TYPE_MESSAGE_RESPONSE)
           && (bindingOp.getOperation().getOutput() != null))
       {
         wsdlMessage = bindingOp.getOperation().getOutput().getMessage();
@@ -1242,11 +1272,11 @@ public abstract class BaseMessageValidator
     BindingOperation[] wsdlOperations)
   {
 
-    if (messageType.isType(EntryType.ENTRY_TYPE_REQUEST))
+    if (messageType.isType(EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_REQUEST)))
     {
       return getInputDocLitOperations(partElementQName, wsdlOperations);
     }
-    else if (messageType.isType(EntryType.ENTRY_TYPE_RESPONSE))
+    else if (messageType.isType(EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_RESPONSE)))
     {
       return getOutputDocLitOperations(partElementQName, wsdlOperations);
     }
@@ -1833,5 +1863,48 @@ public abstract class BaseMessageValidator
         }
     }
     return result;
+  }
+
+  /**
+   * Returns true if these tests should be run (depending on the analyzer
+   * config)
+   */
+  public boolean runTests() { return testable; }
+  
+  public void validateArtifact() throws WSIException {
+      // Get the log file reader
+      LogReader logReader = DocumentFactory.newInstance().newLogReader();
+
+      // Create log reader callback
+      LogProcessor envelopeProcessor = new LogProcessor(this);
+
+      // Start reading the log file
+      logReader.readLog(analyzerConfig.getLogLocation(), envelopeProcessor);
+  }
+
+  protected class LogProcessor implements MessageEntryHandler {
+      LogValidator validator = null;
+
+    /**
+     * Create message processor as a log reader callback function.
+     */
+      LogProcessor(LogValidator validator) {
+          this.validator = validator;
+      }
+
+    /**
+     * Process artifact reference.
+     */
+    public void processArtifactReference(ArtifactReference artifactReference)
+            throws WSIException {
+        reporter.addArtifactReference(artifactReference);
+    }
+
+    /**
+     * Process a single log entry.
+     */
+    public void processLogEntry(EntryContext entryContext) throws WSIException {
+        validator.validate(entryContext);
+    }
   }
 }

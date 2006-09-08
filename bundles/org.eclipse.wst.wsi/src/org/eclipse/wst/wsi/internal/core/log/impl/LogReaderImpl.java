@@ -27,6 +27,7 @@ import org.eclipse.wst.wsi.internal.core.log.MimeParts;
 import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.CommentImpl;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
+import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.report.ArtifactReference;
 import org.eclipse.wst.wsi.internal.core.report.Entry;
 import org.eclipse.wst.wsi.internal.core.report.impl.ArtifactReferenceImpl;
@@ -594,7 +595,7 @@ public class LogReaderImpl implements LogReader
               //Entry entry = this.reporter.getReport().createEntry();
               Entry entry = new EntryImpl();
               entry.setEntryType(
-                  EntryType.getEntryType(EntryType.TYPE_MESSAGE_REQUEST));
+                  EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_REQUEST));
               entry.setReferenceID(messageEntryRequest.getId());
               entry.setEntryDetail(messageEntryRequest);
 
@@ -613,7 +614,7 @@ public class LogReaderImpl implements LogReader
             //Entry entry = this.reporter.getReport().createEntry();
             Entry entry = new EntryImpl();
             entry.setEntryType(
-                EntryType.getEntryType(EntryType.TYPE_MESSAGE_RESPONSE));
+                EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_RESPONSE));
             entry.setReferenceID(messageEntryResponse.getId());
             entry.setEntryDetail(messageEntryResponse);
 

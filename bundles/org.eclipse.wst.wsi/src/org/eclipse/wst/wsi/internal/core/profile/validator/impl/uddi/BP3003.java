@@ -15,6 +15,7 @@ import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.AssertionProcess;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
+import org.eclipse.wst.wsi.internal.core.util.UDDIUtils;
 import org.uddi4j.datatype.tmodel.TModel;
 
 
@@ -59,7 +60,7 @@ public class BP3003 extends AssertionProcess
     }
 
     // If there is a tModel and it is not categorized as "wsdlSpec", then fail
-    else if (!(validator.isWsdlSpec(tModel)))
+    else if (!(UDDIUtils.isWsdlSpec(tModel)))
     {
       result = AssertionResult.RESULT_FAILED;
       failureDetailMessage =
@@ -69,13 +70,6 @@ public class BP3003 extends AssertionProcess
           + "The categoryBag is: ["
           + this.validator.categoryBagToString(tModel.getCategoryBag())
           + "]";
-    }
-
-    // Else get the WSDL document location and set it and the binding element in analyzer context
-    else
-    {
-      // set WSDL location in analyzer context
-      validator.setWSDLLocation(validator.getWSDLLocation(validator.getOverviewURL(tModel)));
     }
 
     // Return assertion result

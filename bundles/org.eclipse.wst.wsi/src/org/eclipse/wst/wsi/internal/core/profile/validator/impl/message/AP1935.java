@@ -76,7 +76,7 @@ public class AP1935 extends AssertionProcess
       	MimePart root = parts.getRootPart();
         while (iparts.hasNext())
         {
-          i = i = 1;
+          i = 1;
           try
           {
         	MimePart part = (MimePart)iparts.next();

@@ -24,23 +24,26 @@ import javax.wsdl.WSDLException;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext;
 import org.eclipse.wst.wsi.internal.core.analyzer.ServiceReference;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.UDDIReference;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.impl.WSDLElementImpl;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
+import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.UDDIValidator;
+import org.eclipse.wst.wsi.internal.core.profile.validator.WSDLValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.BaseValidatorImpl;
 import org.eclipse.wst.wsi.internal.core.report.Entry;
 import org.eclipse.wst.wsi.internal.core.report.ReportArtifact;
 import org.eclipse.wst.wsi.internal.core.report.Reporter;
 import org.eclipse.wst.wsi.internal.core.util.EntryType;
 import org.eclipse.wst.wsi.internal.core.util.UDDIUtils;
+import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
 import org.uddi4j.client.UDDIProxy;
 import org.uddi4j.datatype.binding.BindingTemplate;
-import org.uddi4j.datatype.binding.TModelInstanceInfo;
 import org.uddi4j.datatype.tmodel.TModel;
 import org.uddi4j.response.BindingDetail;
 import org.uddi4j.response.TModelDetail;
@@ -67,6 +70,38 @@ public class UDDIValidatorImpl
    * UDDI proxy.
    */
   protected UDDIProxy uddiProxy;
+  private boolean testable;
+
+  /**
+   * Get the artifact type that this validator applies to.
+   * @return the artifact type (a String)
+   */
+  public String getArtifactType() {
+      return TYPE_DISCOVERY;
+  }
+
+  /**
+   * Get the collection of entry types that this validator applies to.
+   * @return an array of entry types (Strings)
+   */
+  public String[] getEntryTypes() {
+      return new String[] {
+              TYPE_DISCOVERY_BINDINGTEMPLATE,
+              TYPE_DISCOVERY_TMODEL};
+  }
+  
+  public void init(
+          AnalyzerContext analyzerContext,
+          ProfileAssertions assertions,
+          ReportArtifact reportArtifact,
+          AnalyzerConfig analyzerConfig,
+          Reporter reporter)
+          throws WSIException {
+      super.init(analyzerContext,
+              assertions.getArtifact(TYPE_DISCOVERY), reportArtifact, reporter);
+      this.uddiReference = analyzerConfig.getUDDIReference();
+      testable = analyzerConfig.isUDDIReferenceSet();
+  }
 
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.UDDIValidator#init(org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext, org.wsi.test.profile.ProfileArtifact, org.wsi.test.report.ReportArtifact, org.wsi.test.analyzer.config.UDDIReference, org.wsi.test.report.Reporter)
@@ -82,16 +117,17 @@ public class UDDIValidatorImpl
     // BaseValidatorImpl
     super.init(analyzerContext, profileArtifact, reportArtifact, reporter);
 
+    AnalyzerConfig analyzerConfig = Utils.getAnalyzerConfig(reporter);
+    testable = ((analyzerConfig != null) && (analyzerConfig.isUDDIReferenceSet()));	
+
     // Save input references
     this.uddiReference = uddiReference;
   }
-
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.UDDIValidator#validate()
    */
-  public String validate() throws WSIException
+  public void validateArtifact() throws WSIException
   {
-    String wsdlURL = null;
     Entry entry = null;
 
     BindingTemplate bindingTemplate = null;
@@ -152,7 +188,8 @@ public class UDDIValidatorImpl
           }
 
           // Get the wsdlSpec tModel
-          tModel = findTModel(uddiProxy, bindingTemplate);
+          tModel = UDDIUtils.findTModel(uddiProxy, bindingTemplate,
+                  verboseOption);
         }
 
         // Else it has to be a tModel
@@ -174,7 +211,7 @@ public class UDDIValidatorImpl
       if (bindingTemplate == null)
       {
         setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DISCOVERY_BINDINGTEMPLATE));
+          EntryType.getEntryType(TYPE_DISCOVERY_BINDINGTEMPLATE));
       }
 
       // If there is a bindingTemplate, then process test assertions for it
@@ -183,7 +220,7 @@ public class UDDIValidatorImpl
         // Create entry
         entry = this.reporter.getReport().createEntry();
         entry.setEntryType(
-          EntryType.getEntryType(EntryType.TYPE_DISCOVERY_BINDINGTEMPLATE));
+          EntryType.getEntryType(TYPE_DISCOVERY_BINDINGTEMPLATE));
         entry.setReferenceID(bindingTemplate.getBindingKey());
         entry.setEntryDetail(bindingTemplate);
 
@@ -196,30 +233,10 @@ public class UDDIValidatorImpl
       // NOTE: From this point forward, if a bindingTemplate does NOT have a wsdlSpec tModel,
       //       the tModel will be NULL.
 
-      //Parse WSDL document, and get WSDL document url, binding name and namespace
-      try
-      {
-        String overviewURL = getOverviewURL(tModel);
-        wsdlURL = getWSDLLocation(overviewURL);
-        WSDLDocument wsdlDocument = getWSDLDocument(wsdlURL);
-
-        // ADD: The WSDL binding is used in WSI3001 and should be moved to the entryContext
-        getBinding(overviewURL, wsdlDocument);
-      }
-
-      catch (Exception e)
-      {
-        // ADD:
-        if (verboseOption)
-        {
-          System.err.println("    EXCEPTION: " + e.toString());
-        }
-      }
-
       // Create entry
       entry = this.reporter.getReport().createEntry();
       entry.setEntryType(
-        EntryType.getEntryType(EntryType.TYPE_DISCOVERY_TMODEL));
+        EntryType.getEntryType(TYPE_DISCOVERY_TMODEL));
       entry.setReferenceID(
         (tModel == null ? "[tModel]" : tModel.getTModelKey()));
       entry.setEntryDetail(tModel);
@@ -243,14 +260,19 @@ public class UDDIValidatorImpl
 
     // Cleanup
     cleanup();
-
-    // Get WSDL location
-    wsdlURL = this.analyzerContext.getServiceReference().getWSDLLocation();
-
-    // Return WSDL URL
-    return wsdlURL;
   }
 
+  /* (non-Javadoc)
+   * @see org.wsi.test.profile.validator.UDDIValidator#validate()
+   */
+  /** @deprecated -- use validateArtifact(). */
+  public String validate() throws WSIException
+  {
+    validateArtifact();
+    // Get WSDL location
+    return this.analyzerContext.getServiceReference().getWSDLLocation();
+  }
+  
   /**
    * Set WSDL binding in the service reference portion of the analyzer context.
    */
@@ -273,7 +295,7 @@ public class UDDIValidatorImpl
       wsdlElement = new WSDLElementImpl();
       wsdlElement.setName(bindingName);
       wsdlElement.setNamespace(namespace);
-      wsdlElement.setType(EntryType.TYPE_DESCRIPTION_BINDING);
+      wsdlElement.setType(WSDLValidator.TYPE_DESCRIPTION_BINDING);
     }
 
     // Set the wsdlElement in the service reference
@@ -297,86 +319,9 @@ public class UDDIValidatorImpl
     analyzerContext.setServiceReference(serviceReference);
   }
 
-  /**
-   * Find the wsdlSpec tModel associated with a binding.
-   */
-  private TModel findTModel(
-    UDDIProxy uddiProxy,
-    BindingTemplate bindingTemplate)
-    throws WSIException
-  {
-    TModel tModel = null;
-
-    // Get the list of tModel references associated with this bindingTemplate
-    Iterator iterator =
-      bindingTemplate
-        .getTModelInstanceDetails()
-        .getTModelInstanceInfoVector()
-        .iterator();
-
-    // Process each tModel reference
-    Vector tModelKeyList = new Vector();
-    while (iterator.hasNext())
-    {
-      // Get tModelInstanceInfo
-      TModelInstanceInfo tModelInstanceInfo =
-        (TModelInstanceInfo) iterator.next();
-
-      // Add key to list
-      tModelKeyList.add(tModelInstanceInfo.getTModelKey());
-    }
-
-    // Get the tModels associated with the bindingTemplate
-    if (tModelKeyList.size() > 0)
-    {
-      try
-      {
-        // Get the tModel details
-        TModelDetail tModelDetail = uddiProxy.get_tModelDetail(tModelKeyList);
-
-        // Get the list of tModels
-        Iterator tModelIterator = tModelDetail.getTModelVector().iterator();
-
-        //boolean tModelFound = false;
-        TModel nextTModel = null;
-
-        // Go through the list of tModels
-        while ((tModelIterator.hasNext()) && (tModel == null))
-        {
-          // Get next tModel in list
-          nextTModel = (TModel) tModelIterator.next();
-
-          if (verboseOption)
-          {
-            System.err.println(
-              "      TModel referenced from bindingTemplate - "
-                + UDDIUtils.tModelToString(nextTModel));
-          }
-
-          // If this is a wsdlSpec tModel, then this is the tModel we want
-          if (isWsdlSpec(nextTModel))
-            tModel = nextTModel;
-        }
-      }
-
-      catch (Exception e)
-      {
-        // Throw WSIException
-        throw new WSIException("Could not get tModel details.", e);
-      }
-    }
-
-    else
-    {
-      // Throw exception
-      //throw new WSIException("UDDI bindingTemplate did not contain any tModel references.");
-    }
-
-    return tModel;
-  }
-
-  /**
+   /**
    * Determine if this is a wsdlSpec tModel.
+   * @deprecated -- use UDDIUtils.isWsdlSpec(String wsdlLocation).
    */
   protected boolean isWsdlSpec(TModel tModel)
   {
@@ -421,6 +366,7 @@ public class UDDIValidatorImpl
 
   /**
    * Get an OverviewURL from tModel.
+   * @deprecated -- use UDDIUtils.getOverviewURL(String wsdlLocation).
    */
   protected String getOverviewURL(TModel tModel)
   {
@@ -435,6 +381,7 @@ public class UDDIValidatorImpl
 
   /**
    * Get WSDL document.
+   * @deprecated -- use UDDIUtils.getWSDLLocation(String wsdlLocation).
    */
   protected String getWSDLLocation(String wsdlLocation)
   {
@@ -447,14 +394,14 @@ public class UDDIValidatorImpl
     }
     return wsdlLocation;
   }
-
+ 
   /**
    * Get WSDL document.
    */
   protected WSDLDocument getWSDLDocument(String wsdlLocation)
     throws MalformedURLException, WSDLException
   {
-    return new WSDLDocument(getWSDLLocation(wsdlLocation));
+    return new WSDLDocument(UDDIUtils.getWSDLLocation(wsdlLocation));
   }
 
   /**
@@ -587,4 +534,9 @@ public class UDDIValidatorImpl
     return notApplicable;
   }
 
+  /**
+   * Returns true if these tests should be run (depending on the analyzer
+   * config)
+   */
+  public boolean runTests() { return testable; }
 }

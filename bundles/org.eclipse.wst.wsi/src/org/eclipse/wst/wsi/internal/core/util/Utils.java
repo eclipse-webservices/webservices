@@ -35,13 +35,16 @@ import java.util.ResourceBundle;
 import com.ibm.icu.util.StringTokenizer;
 import java.util.Vector;
 
+import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
 import org.eclipse.wst.wsi.internal.core.log.MimePart;
 import org.eclipse.wst.wsi.internal.core.log.MimeParts;
 import org.eclipse.wst.wsi.internal.core.log.impl.MimePartImpl;
 import org.eclipse.wst.wsi.internal.core.log.impl.MimePartsImpl;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
+import org.eclipse.wst.wsi.internal.core.report.Reporter;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 
 import com.ibm.icu.text.SimpleDateFormat;
@@ -57,19 +60,6 @@ public final class Utils
 
   
   private static Map validProfileTADVersions;
-  
-  /* Register Basic Profile TAD versions */
-  static {
-      validProfileTADVersions = new HashMap();
-      registerValidProfileTADVersion(WSIConstants.BASIC_PROFILE_TAD_NAME,
-              WSIConstants.BASIC_PROFILE_TAD_VERSION);
-      registerValidProfileTADVersion(WSIConstants.BASIC_PROFILE_1_1_TAD_NAME,
-              WSIConstants.BASIC_PROFILE_1_1_TAD_VERSION);
-      registerValidProfileTADVersion(WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_NAME,
-              WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_VERSION);
-      registerValidProfileTADVersion(WSIConstants.ATTACHMENTS_PROFILE_TAD_NAME,
-              WSIConstants.ATTACHMENTS_PROFILE_TAD_VERSION);
-  }
 
   /**
    * Common timestamp format.
@@ -1159,6 +1149,8 @@ public final class Utils
    */
   public static void registerValidProfileTADVersion(String name, String version)
   {
+      if (validProfileTADVersions == null)
+          validProfileTADVersions = new HashMap();
       validProfileTADVersions.put(name, version);
   }
   
@@ -1174,6 +1166,12 @@ public final class Utils
 
     String name = profileAssertions.getTADName();
     String version = profileAssertions.getTADVersion();
+    
+    if (validProfileTADVersions == null) {
+       String versions[][] = WSITestToolsPlugin.getPlugin().getAllTADVersions();
+       for (int i = 0; i < versions.length; i++)
+           registerValidProfileTADVersion(versions[i][0], versions[i][1]);
+    }
 
     if (validProfileTADVersions.containsKey(name))
         return checkVersionNumber((String) validProfileTADVersions.get(name),
@@ -1427,5 +1425,22 @@ public final class Utils
   	  System.out.println(Utils.toXMLString(parts));
 	}
   	catch (Exception e){}
+  }
+
+  public static AnalyzerConfig getAnalyzerConfig(Reporter reporter) 
+  {
+	AnalyzerConfig result = null;
+	if (reporter != null)
+	{
+	  try
+	  {
+		result = reporter.getReport().getReportContext().getAnalyzer().getAnalyzerConfig();
+	  }
+	  catch (Exception e)
+	  {
+		result = null;
+	  }
+	}
+	return result;
   }
 }

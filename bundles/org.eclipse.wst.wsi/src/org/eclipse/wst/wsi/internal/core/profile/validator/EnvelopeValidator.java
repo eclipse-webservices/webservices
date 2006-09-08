@@ -22,7 +22,7 @@ import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
  *
  * @version 1.0
  */
-public interface EnvelopeValidator extends BaseValidator
+public interface EnvelopeValidator extends LogValidator
 {
 
   /**
@@ -33,6 +33,11 @@ public interface EnvelopeValidator extends BaseValidator
    * @param wsdlDocument the Web service definition
    * @param reporter the reporter which is used to add errors to the conformance report
    * @throws WSIException if message validator could not be initialized.
+   * @deprecated -- use init(AnalyzerContext analyzerContext,
+   *                         ProfileAssertions assertions,
+   *                         ReportArtifact reportArtifact,
+   *                         AnalyzerConfig analyzerConfig,
+   *                         Reporter reporter)
    */
   public void init(
     AnalyzerContext analyzerContext,
@@ -41,12 +46,16 @@ public interface EnvelopeValidator extends BaseValidator
     WSDLDocument wsdlDocument,
     Reporter reporter)
     throws WSIException;
+  
+  /** Envelope artifact type */
+  public static final String TYPE_ENVELOPE = "envelope";
 
-  /**
-   * Validate the envelope located by the log entry. 
-   * @param entryContext a log entry locating an envelope.
-   * @throws WSIException if an unexpected error occurred while
-   *         processing the log entry.
-   */
-  public void validate(EntryContext entryContext) throws WSIException;
+  /** Request envelope entry type. */
+  public static final String TYPE_ENVELOPE_REQUEST = "requestEnvelope";
+
+  /** Response envelope entry type. */
+  public static final String TYPE_ENVELOPE_RESPONSE = "responseEnvelope";
+
+  /** Any envelope entry type. */
+  public static final String TYPE_ENVELOPE_ANY = "anyEnvelope";
 }

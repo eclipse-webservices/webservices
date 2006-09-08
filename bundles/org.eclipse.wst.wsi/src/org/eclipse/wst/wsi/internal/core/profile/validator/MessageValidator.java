@@ -24,7 +24,7 @@ import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
  * @author Peter Brittenham
  * @author Graham Turrell (gturrell@uk.ibm.com)
  */
-public interface MessageValidator extends BaseValidator
+public interface MessageValidator extends LogValidator
 {
   /**
    * HTTP 1.0 version indicator.
@@ -41,6 +41,24 @@ public interface MessageValidator extends BaseValidator
    */
   public static final String HTTP_POST = "POST";
 
+  /** Message artifact type */
+  public static final String TYPE_MESSAGE = "message";
+
+  /** Request message entry type. */
+  public static final String TYPE_MESSAGE_REQUEST = "requestMessage";
+
+  /** Response message entry type. */
+  public static final String TYPE_MESSAGE_RESPONSE = "responseMessage";
+
+  /** Any message entry type. */
+  public static final String TYPE_MESSAGE_ANY = "anyMessage";
+
+  /** Mime part message entry type. */
+  public static final String TYPE_MIME_PART = "part";
+
+  /** Mime root part message entry type. */
+  public static final String TYPE_MIME_ROOT_PART = "root-part";
+
   /**
    * Initiailize validation test procedure.
    * @param analyzerContext the analyzerContext.
@@ -49,6 +67,11 @@ public interface MessageValidator extends BaseValidator
    * @param wsdlDocument the Web service definition
    * @param reporter the reporter which is used to add errors to the conformance report
    * @throws WSIException if message validator could not be initialized.
+   * @deprecated -- use init(AnalyzerContext analyzerContext,
+   *                         ProfileAssertions assertions,
+   *                         ReportArtifact reportArtifact,
+   *                         AnalyzerConfig analyzerConfig,
+   *                         Reporter reporter)
    */
   public void init(
     AnalyzerContext analyzerContext,
@@ -57,12 +80,4 @@ public interface MessageValidator extends BaseValidator
     WSDLDocument wsdlDocument,
     Reporter reporter)
     throws WSIException;
-
-  /**
-   * Validate the message located by the log entry. 
-   * @param entryContext a log entry locating a message.
-   * @throws WSIException if an unexpected error occurred while 
-   *         processing the log entry.
-   */
-  public void validate(EntryContext entryContext) throws WSIException;
 }

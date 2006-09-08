@@ -20,6 +20,7 @@ import org.eclipse.wst.wsi.internal.core.WSITag;
 import org.eclipse.wst.wsi.internal.core.analyzer.AssertionNotApplicableException;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
+import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.AssertionProcess;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.BaseMessageValidator;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
@@ -70,7 +71,7 @@ public class AP1920 extends AssertionProcess
         throw new AssertionNotApplicableException();
       
       BindingOperation bindingOperation = validator.getOperationMatch(
-          EntryType.getEntryType(EntryType.TYPE_MESSAGE_REQUEST),
+          EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_REQUEST),
           entryContext.getRequestDocument());
 
       // If there is no matched operation, the assertion is not applicable

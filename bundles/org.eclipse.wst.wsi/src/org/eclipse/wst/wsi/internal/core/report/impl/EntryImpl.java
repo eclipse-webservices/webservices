@@ -15,6 +15,8 @@ import java.io.StringWriter;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
+import org.eclipse.wst.wsi.internal.core.profile.validator.EnvelopeValidator;
+import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.report.Entry;
 import org.eclipse.wst.wsi.internal.core.report.EntryContainer;
@@ -219,7 +221,7 @@ public class EntryImpl extends EntryResultImpl implements Entry
 
     // If target is a log entry, then add reference to it
     if ((entryType != null)
-      && (entryType.getArtifactType().isMessages())
+      && (entryType.getArtifactType().equals(MessageValidator.TYPE_MESSAGE))
       && (showLogEntry))
     {
       MessageEntry logEntry = (MessageEntry) entryDetail;
@@ -263,12 +265,12 @@ public class EntryImpl extends EntryResultImpl implements Entry
   	String envelopeEntryTypeName = messageEntryTypeName;
   	if (messageEntryTypeName != null)
   	{
-  	if (messageEntryTypeName.equals(EntryType.TYPE_MESSAGE_ANY))
-  		envelopeEntryTypeName = EntryType.TYPE_ENVELOPE_ANY;
-  	else if (messageEntryTypeName.equals(EntryType.TYPE_MESSAGE_REQUEST))
-  		envelopeEntryTypeName = EntryType.TYPE_ENVELOPE_REQUEST;
-  	else if (messageEntryTypeName.equals(EntryType.TYPE_MESSAGE_RESPONSE))
-  		envelopeEntryTypeName = EntryType.TYPE_ENVELOPE_RESPONSE;
+  	if (messageEntryTypeName.equals(MessageValidator.TYPE_MESSAGE_ANY))
+  		envelopeEntryTypeName = EnvelopeValidator.TYPE_ENVELOPE_ANY;
+  	else if (messageEntryTypeName.equals(MessageValidator.TYPE_MESSAGE_REQUEST))
+  		envelopeEntryTypeName = EnvelopeValidator.TYPE_ENVELOPE_REQUEST;
+  	else if (messageEntryTypeName.equals(MessageValidator.TYPE_MESSAGE_RESPONSE))
+  		envelopeEntryTypeName = EnvelopeValidator.TYPE_ENVELOPE_RESPONSE;
   	}
 
   	return envelopeEntryTypeName;

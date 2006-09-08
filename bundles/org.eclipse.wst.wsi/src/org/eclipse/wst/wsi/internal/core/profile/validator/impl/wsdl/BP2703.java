@@ -10,22 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.wsdl.Definition;
-
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
-import org.eclipse.wst.wsi.internal.core.analyzer.AssertionFailException;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.AssertionProcess;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
-import org.eclipse.wst.wsi.internal.core.util.TestUtils;
-import org.eclipse.wst.wsi.internal.core.util.Utils;
-import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
-import org.xml.sax.SAXException;
 
 
 /**

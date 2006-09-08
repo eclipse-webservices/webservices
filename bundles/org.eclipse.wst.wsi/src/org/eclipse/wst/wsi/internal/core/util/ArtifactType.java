@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
+
 /**
  * This class ...
  * 
@@ -23,26 +28,36 @@ public class ArtifactType
    */
   private String type;
 
+  private static Map typeMap;
+
   /**
    * ReportArtifact types.
    */
+  /** @deprecated -- use EnvelopeValidator.TYPE_ENVELOPE **/ 
   public static final String TYPE_ENVELOPE = "envelope";
+  /** @deprecated -- use MessageValidator.TYPE_MESSAGE **/ 
   public static final String TYPE_MESSAGE = "message";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION **/ 
   public static final String TYPE_DESCRIPTION = "description";
+  /** @deprecated -- use UDDIValidator.TYPE_DISCOVERY **/ 
   public static final String TYPE_DISCOVERY = "discovery";
 
   /**
    * ReportArtifact types.
    */
+  /** @deprecated -- use getArtifactType(String typeName) to access ArtifactType **/ 
   public static final ArtifactType ARTIFACT_TYPE_ENVELOPE =
     new ArtifactType(TYPE_ENVELOPE);
+  /** @deprecated -- use getArtifactType(String typeName) to access ArtifactType **/ 
   public static final ArtifactType ARTIFACT_TYPE_MESSAGE =
     new ArtifactType(TYPE_MESSAGE);
+  /** @deprecated -- use getArtifactType(String typeName) to access ArtifactType **/
   public static final ArtifactType ARTIFACT_TYPE_DESCRIPTION =
     new ArtifactType(TYPE_DESCRIPTION);
+  /** @deprecated -- use getArtifactType(String typeName) to access ArtifactType **/
   public static final ArtifactType ARTIFACT_TYPE_DISCOVERY =
     new ArtifactType(TYPE_DISCOVERY);
-
+  
   /**
    * Create artifact type.
    */
@@ -54,6 +69,8 @@ public class ArtifactType
   /**
    * Is artifact type envelope.
    * @return true if artifact type envelope.
+   * @deprecated -- an artifactType is no longer restricted to envelope, 
+   *                message, description or discovery.
    */
   public boolean isEnvelope()
   {
@@ -63,6 +80,8 @@ public class ArtifactType
   /**
    * Is artifact type messages.
    * @return true if artifact type messages.
+   * @deprecated -- an artifactType is no longer restricted to envelope, 
+   *                message, description or discovery.
    */
   public boolean isMessages()
   {
@@ -72,6 +91,8 @@ public class ArtifactType
   /**
    * Is artifact type description.
    * @return true if artifact type description.
+   * @deprecated -- an artifactType is no longer restricted to envelope, 
+   *                message, description or discovery.
    */
   public boolean isDescription()
   {
@@ -81,6 +102,8 @@ public class ArtifactType
   /**
    * Is artifact type discovery.
    * @return true if artifact type discovery.
+   * @deprecated -- an artifactType is no longer restricted to envelope, 
+   *                message, description or discovery.
    */
   public boolean isDiscovery()
   {
@@ -97,10 +120,45 @@ public class ArtifactType
   }
 
   /**
+   * Instantiates a new artifact type and adds it to the registry map
+   * @param name - the artifact name (matches artifact type attribute from TAD)
+   */
+  public static void registerArtifactType(String name) {
+      if (typeMap == null)
+          typeMap = new HashMap();
+      typeMap.put(name, new ArtifactType(name));
+  }
+  
+  /**
    * Create artifact type.
    * @param typeName artifact type name.
    * @return newly created artifact type.
    * @throws RuntimeException if artifact type name is invalid or inappropriate.
+   */
+  public static final ArtifactType getArtifactType(String typeName)
+    throws RuntimeException
+  {
+      if (typeMap == null) {
+          String types[] = WSITestToolsPlugin.getPlugin().getArtifactTypes();
+          for (int i = 0; i < types.length; i++)
+              registerArtifactType(types[i]);
+      }
+      
+    if (typeMap.containsKey(typeName))
+        return (ArtifactType) typeMap.get(typeName);
+     else {
+         throw new RuntimeException(
+                 "Could not create new artifact type using invalid type name: "
+                 + typeName + ".");
+     }
+  }
+  
+    /**
+   * Create artifact type.
+   * @param typeName artifact type name.
+   * @return newly created artifact type.
+   * @throws RuntimeException if artifact type name is invalid or inappropriate.
+   * @deprecated -- use getArtifactType(String typeName)
    */
   public static final ArtifactType newArtifactType(String typeName)
     throws RuntimeException

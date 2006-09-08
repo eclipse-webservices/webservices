@@ -15,8 +15,10 @@ package org.eclipse.wst.wsi.internal.core.analyzer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.wsdl.Binding;
 import javax.wsdl.WSDLException;
 
 import org.eclipse.wst.wsi.internal.WSITestToolsProperties;
@@ -24,15 +26,12 @@ import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.WSIFileNotFoundException;
-import org.eclipse.wst.wsi.internal.core.log.LogReader;
-import org.eclipse.wst.wsi.internal.core.log.MessageEntryHandler;
-import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
-import org.eclipse.wst.wsi.internal.core.profile.validator.EnvelopeValidator;
-import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
-import org.eclipse.wst.wsi.internal.core.profile.validator.UDDIValidator;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.UDDIReference;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.impl.WSDLElementImpl;
+import org.eclipse.wst.wsi.internal.core.profile.validator.BaseValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.WSDLValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl.WSDLValidatorImpl;
-import org.eclipse.wst.wsi.internal.core.report.ArtifactReference;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.report.Report;
 import org.eclipse.wst.wsi.internal.core.report.ReportArtifact;
@@ -40,9 +39,15 @@ import org.eclipse.wst.wsi.internal.core.report.ReportContext;
 import org.eclipse.wst.wsi.internal.core.report.ReportWriter;
 import org.eclipse.wst.wsi.internal.core.report.impl.DefaultReporter;
 import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
+import org.eclipse.wst.wsi.internal.core.util.UDDIUtils;
 import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
 import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
+import org.uddi4j.client.UDDIProxy;
+import org.uddi4j.datatype.binding.BindingTemplate;
+import org.uddi4j.datatype.tmodel.TModel;
+import org.uddi4j.response.BindingDetail;
+import org.uddi4j.response.TModelDetail;
 import org.uddi4j.transport.TransportFactory;
 
 
@@ -65,6 +70,7 @@ public class BasicProfileAnalyzer extends Analyzer
    * WSDL document to analyze.
    */
   protected WSDLDocument wsdlDocument = null;
+  private WSDLValidator wsdlValidator;
 
   /**
    * Basic profile analyzer.
@@ -125,9 +131,61 @@ public class BasicProfileAnalyzer extends Analyzer
     }
 
   }
+  
+  private WSDLDocument getWsdlFromUddi() {
+      WSDLDocument wsdlDoc = null;
+      try {
+          UDDIProxy uddiProxy = new UDDIProxy();
+          UDDIReference uddiReference = getAnalyzerConfig().getUDDIReference();
+          uddiProxy.setInquiryURL(uddiReference.getInquiryURL());
+          TModel tModel = null;
 
-  private WSDLValidator wsdlValidator;
+          if (uddiReference.getKeyType().equals(UDDIReference.BINDING_KEY)) {
+              BindingDetail bindingDetail = uddiProxy.get_bindingDetail(
+                      uddiReference.getKey());
+              BindingTemplate bindingTemplate = (BindingTemplate) bindingDetail.
+                      getBindingTemplateVector().elementAt(0);
+              tModel = UDDIUtils.findTModel(uddiProxy, bindingTemplate, false);
+          } else { // UDDIReference.TMODEL_KEY
+              TModelDetail tModelDetail = uddiProxy.get_tModelDetail(
+                          uddiReference.getKey());
+              tModel = (TModel) tModelDetail.getTModelVector().elementAt(0);
+          }
 
+          String overviewURL = UDDIUtils.getOverviewURL(tModel);
+          String wsdlURI = UDDIUtils.getWSDLLocation(overviewURL);
+          wsdlDoc = new WSDLDocument(wsdlURI);
+
+          /* TODO:  I refactored this code from BSP3001 but I'm not sure that
+           * it's correct.  This overrides the <wsdlElement> child of
+           * <uddiReference> from the config file, which never gets used.
+           */
+          // If the wsdlElement does not exist, then set it
+          if (analyzerContext.getServiceReference().getWSDLElement() == null)
+          {
+              Binding binding = UDDIUtils.getBinding(overviewURL, wsdlDoc);
+              String bindingName =
+                  binding == null ? null : binding.getQName().getLocalPart();
+                String namespace =
+                  binding == null ? null : binding.getQName().getNamespaceURI();
+
+            // Get WSDL binding from the overviewURL and set in analyzerContext
+            WSDLElement wsdlElement = new WSDLElementImpl();
+            wsdlElement.setName(bindingName);
+            wsdlElement.setNamespace(namespace);
+            wsdlElement.setType(WSDLValidator.TYPE_DESCRIPTION_BINDING);
+            analyzerContext.getServiceReference().setWSDLElement(wsdlElement);
+          }
+          return wsdlDoc;
+
+      } catch (Exception e) {
+        /* If the wsdlDoc is set at the point of the exception, return it;
+         * otherwise return null. */
+        return wsdlDoc;
+    }
+  }
+  
+  
   /**
    * Process all conformance validation functions.
    * @return status code.
@@ -139,8 +197,6 @@ public class BasicProfileAnalyzer extends Analyzer
 
     Report report = null;
     ReportArtifact reportArtifact = null;
-    String wsdlURI = null;
-    //WSDLDocument wsdlDocument = null;
 
     // Set up initial analyzer context based on entries in the config file
     this.analyzerContext =
@@ -149,14 +205,13 @@ public class BasicProfileAnalyzer extends Analyzer
     try
     {
       this.profileAssertions = WSITestToolsProperties.getProfileAssertions(
-          getAnalyzerConfig().getTestAssertionsDocumentLocation());
+                getAnalyzerConfig().getTestAssertionsDocumentLocation());
 
       if (this.profileAssertions == null)
       {
- 		 throw new WSIException(messageList.getMessage(
- 				 "config20",
- 		         "The WS-I Test Assertion Document (TAD)document was either not found or could not be processed."));  
-      }
+        throw new WSIException(messageList.getMessage("config20",
+       		   "The WS-I Test Assertion Document (TAD)document was either not found or could not be processed."));  
+      }	
 
       // Create report from document factory
       report = documentFactory.newReport();
@@ -179,106 +234,40 @@ public class BasicProfileAnalyzer extends Analyzer
       // Create reporter
       this.reporter = new DefaultReporter(report, reportWriter);
 
+      // fetch WSDL if not set in constructor
+      // First, attempt to get the WSDL URI from a UDDI tModel
+      if ((wsdlDocument == null) && (getAnalyzerConfig().isUDDIReferenceSet()))
+              wsdlDocument = getWsdlFromUddi();
+
+      /* Next, try to use the WSDL settings from the config file.  If we can't
+       * fetch that WSDL, and the config file is set up to test a WSDL, then the
+       * validator fails here. */
+      if ((wsdlDocument == null) && (getAnalyzerConfig().isWSDLReferenceSet()))
+      {
+          wsdlDocument = new WSDLDocument(getAnalyzerConfig().
+                  getWSDLLocation());
+
+          if (wsdlDocument == null)
+              throw new WSIException(messageList.getMessage("config05",
+                      "WSDL document was either not found or could not be " + 
+                      "processed."));
+      }
+      analyzerContext.setWsdlDocument(wsdlDocument);
+
       // Start writing report
       this.reporter.startReport();
 
-      // --------------------------------
-      // DISCOVERY ARTIFACT:
-      // --------------------------------
-
-      // Set current artifact
-      reportArtifact = setCurrentArtifact(ArtifactType.ARTIFACT_TYPE_DISCOVERY);
-
-      // If UDDI options specified, then process UDDI test assertions
-      if ((wsdlURI = validateUDDI(reportArtifact, factory.newUDDIValidator()))
-        == null)
-      {
-        if (getAnalyzerConfig().isWSDLReferenceSet())
-        {
-          // Otherwise use the WSDL options to get the WSDL location
-          wsdlURI = getAnalyzerConfig().getWSDLLocation();
-        }
-      }
-
-      // Indicate that we are done with this artifact
-      this.reporter.endCurrentArtifact();
-
-      // --------------------------------
-      // DESCRIPTION ARTIFACT:
-      // --------------------------------
-
-      // Set current artifact
-      reportArtifact =
-        setCurrentArtifact(ArtifactType.ARTIFACT_TYPE_DESCRIPTION);
-
-      // Call WSDLValidator
-      if (wsdlValidator == null)
-      {
-        wsdlValidator = factory.newWSDLValidator();
-      }
-      wsdlDocument =
-        validateWSDL(
-          reportArtifact,
-          wsdlValidator,
-          wsdlURI,
-          wsdlDocument);
-
-      // If WSDL document object is null, then throw exception
-      if ((wsdlDocument == null) && (getAnalyzerConfig().isWSDLReferenceSet()))
-      {
-        throw new WSIException(
-          messageList.getMessage(
-            "config05",
-            "WSDL document was either not found or could not be processed."));
-      }
-
-      // Indicate that we are done with this artifact
-      this.reporter.endCurrentArtifact();
-
-      // REMOVE:
-      // If processing log entries and there isn't a WSDL URI, 
-      // then throw an exception since it is required to process the log entries
-      //if ((wsdlURI == null) && (analyzerConfig.getLogLocation() != null)) {
-      //  throw new WSIException("Must specify the WSDL document location to validate message log.");
-      //}
-
-      // --------------------------------
-      // MESSAGE ARTIFACT:
-      // --------------------------------
-
-      // Set current artifact
-      reportArtifact = setCurrentArtifact(ArtifactType.ARTIFACT_TYPE_MESSAGE);
-
-      // Process test assertions for the messages
-      validateMessages(
-        reportArtifact,
-        factory.newMessageValidator(),
-        wsdlDocument);
-
-      // Indicate that we are done with this artifact
-      this.reporter.endCurrentArtifact();
-
-      // --------------------------------
-      // ENVELOPE ARTIFACT:
-      // --------------------------------
-
-      // If that is not the Basic Profile 1.0, then process
-      // the envelope artifact
-      if (!profileAssertions.getTADName()
-        .equals(WSIConstants.BASIC_PROFILE_TAD_NAME))
-      {
-
-        // Set current artifact
-        reportArtifact = setCurrentArtifact(ArtifactType.ARTIFACT_TYPE_ENVELOPE);
-
-        // Process test assertions for the envelopes
-        validateEnvelopes(
-          reportArtifact,
-          factory.newEnvelopeValidator(),
-          wsdlDocument);
-
-        // Indicate that we are done with this artifact
-        this.reporter.endCurrentArtifact();
+      // Walk through the artifact elements from the TAD, validating each one
+      profileAssertions.getArtifactList().keySet().iterator();
+      for (Iterator i = profileAssertions.getArtifactList().keySet().iterator();
+              i.hasNext(); ) {
+          String artifactType = (String) i.next();
+          // Set current artifact
+          reportArtifact = setCurrentArtifact(ArtifactType.getArtifactType(
+                  artifactType));
+          validate(reportArtifact, factory.getValidatorForArtifact(
+                  artifactType));
+          this.reporter.endCurrentArtifact();
       }
 
       // Finish the conformance report
@@ -324,181 +313,28 @@ public class BasicProfileAnalyzer extends Analyzer
   }
 
   /**
-   * Run UDDI test assertions.
+   * Run test assertions.
    */
-  private String validateUDDI(
-    ReportArtifact reportArtifact,
-    UDDIValidator uddiValidator)
-    throws WSIException
+  private void validate(ReportArtifact reportArtifact, BaseValidator validator)
+          throws WSIException 
   {
-    String wsdlURI = null;
-
-    // Init UDDIValidator
-    uddiValidator.init(
-      this.analyzerContext,
-      this.profileAssertions.getArtifact(ArtifactType.TYPE_DISCOVERY),
-      reportArtifact,
-      getAnalyzerConfig().getUDDIReference(),
-      this.reporter);
-
-    // Call UDDIValidator 
-    if (getAnalyzerConfig().isUDDIReferenceSet())
-    {
-      wsdlURI = uddiValidator.validate();
-
-      // Cleanup
-      uddiValidator.cleanup();
-    }
-
+    if (validator instanceof WSDLValidatorImpl)
+	{
+    	((WSDLValidatorImpl)validator).init(analyzerContext, profileAssertions, reportArtifact, getAnalyzerConfig(), reporter,
+    			getAnalyzerConfigIndex() == 0);
+	}
     else
     {
-      // Set all missingInput
-      uddiValidator.setAllMissingInput();
+      validator.init(analyzerContext, profileAssertions, reportArtifact, getAnalyzerConfig(), reporter);
     }
 
-    return wsdlURI;
-  }
-
-  /**
-   * Run WSDL test assertions.
-   */
-  private WSDLDocument validateWSDL(
-    ReportArtifact reportArtifact,
-    WSDLValidator wsdlValidator,
-    String wsdlURI,
-    WSDLDocument document)
-    throws WSIException
-  {
-    WSDLDocument returnWSDLDocument = null;
-
-    // TODO: The instanceof check is needed to avoid an API change
-    // in the WTP 1.5.1 release. We should clean this up later.
-    // Init WSDLValidator
-    if (wsdlValidator instanceof WSDLValidatorImpl)
+    if (validator.runTests()) {
+        validator.validateArtifact();
+        validator.cleanup();
+    } 
+    else 
     {
-      ((WSDLValidatorImpl)wsdlValidator).init(
-        this.analyzerContext,
-        this.profileAssertions.getArtifact(ArtifactType.TYPE_DESCRIPTION),
-        reportArtifact,
-        wsdlURI,
-        document,
-        this.reporter,
-        getAnalyzerConfigIndex() == 0);
-    }
-    else
-    {
-      wsdlValidator.init(
-        this.analyzerContext,
-        this.profileAssertions.getArtifact(ArtifactType.TYPE_DESCRIPTION),
-        reportArtifact,
-        wsdlURI,
-        document,
-        this.reporter);
-    }
-
-    // If a WSDL URI was specified or located in a UDDI registry, then process the WSDL tests
-    if (wsdlURI != null || document != null)
-    {
-      // Call WSDLValidator 
-      returnWSDLDocument = wsdlValidator.validate();
-
-      // Cleanup
-      wsdlValidator.cleanup();
-    }
-
-    else
-    {
-      // Set all missingInput
-      wsdlValidator.setAllMissingInput();
-    }
-
-    return returnWSDLDocument;
-  }
-
-  /**
-   * Run message test assertions.
-   */
-  private void validateMessages(
-    ReportArtifact reportArtifact,
-    MessageValidator messageValidator,
-    WSDLDocument document)
-    throws WSIException
-  {
-    //Log log = null;
-    //MessageEntry logEntry = null;
-
-    // Init MessageValidator
-    messageValidator.init(
-      this.analyzerContext,
-      this.profileAssertions.getArtifact(ArtifactType.TYPE_MESSAGE),
-      reportArtifact,
-      document,
-      this.reporter);
-
-    // If the log file location was specified, then process test assertions for the messages
-    if (getAnalyzerConfig().getLogLocation() != null)
-    {
-      // Get the log file reader
-      LogReader logReader = documentFactory.newLogReader();
-
-      // Create log reader callback
-      MessageProcessor messageProcessor =
-        new MessageProcessor(messageValidator);
-
-      // Start reading the log file
-      logReader.readLog(getAnalyzerConfig().getLogLocation(), messageProcessor);
-
-      // Cleanup
-      messageValidator.cleanup();
-    }
-
-    // Otherwise all are missingInput
-    else
-    {
-      // Set all missingInput
-      messageValidator.setAllMissingInput();
-    }
-  }
-
-  /**
-   * Run envelope test assertions.
-   */
-  private void validateEnvelopes(
-    ReportArtifact reportArtifact,
-    EnvelopeValidator envelopeValidator,
-    WSDLDocument document)
-    throws WSIException
-  {
-    // Init envelopeValidator
-    envelopeValidator.init(
-      this.analyzerContext,
-      this.profileAssertions.getArtifact(ArtifactType.TYPE_ENVELOPE),
-      reportArtifact,
-      document,
-      this.reporter);
-
-    // If the log file location was specified, then process test assertions for the messages
-    if (getAnalyzerConfig().getLogLocation() != null)
-    {
-      // Get the log file reader
-      LogReader logReader = documentFactory.newLogReader();
-
-      // Create log reader callback
-      EnvelopeProcessor envelopeProcessor =
-        new EnvelopeProcessor(envelopeValidator);
-
-      // Start reading the log file
-      logReader.readLog(getAnalyzerConfig().getLogLocation(), envelopeProcessor);
-
-      // Cleanup
-      envelopeValidator.cleanup();
-    }
-
-    // Otherwise all are missingInput
-    else
-    {
-      // Set all missingInput
-      envelopeValidator.setAllMissingInput();
+      validator.setAllMissingInput();
     }
   }
 
@@ -611,75 +447,5 @@ public class BasicProfileAnalyzer extends Analyzer
         t = nested;
     }
     t.printStackTrace();
-  }
-
-  /**
-   * Message processor class.
-   */
-  class MessageProcessor implements MessageEntryHandler
-  {
-    MessageValidator messageValidator = null;
-
-    /**
-     * Create message processor as a log reader callback function.
-     */
-    MessageProcessor(MessageValidator messageValidator)
-    {
-      this.messageValidator = messageValidator;
-    }
-
-    /**
-     * Process artifact reference.
-     */
-    public void processArtifactReference(ArtifactReference artifactReference)
-      throws WSIException
-    {
-      reporter.addArtifactReference(artifactReference);
-    }
-
-    /**
-     * Process a single log entry.
-     */
-    public void processLogEntry(EntryContext entryContext) throws WSIException
-    {
-      // Validate message
-      messageValidator.validate(entryContext);
-    }
-
-  }
-
-  /**
-   * Envelope processor class.
-   */
-  class EnvelopeProcessor implements MessageEntryHandler
-  {
-    EnvelopeValidator envelopeValidator = null;
-
-    /**
-     * Create envelope processor as a log reader callback function.
-     */
-    EnvelopeProcessor(EnvelopeValidator envelopeValidator)
-    {
-      this.envelopeValidator = envelopeValidator;
-    }
-
-    /**
-     * Process artifact reference.
-     */
-    public void processArtifactReference(ArtifactReference artifactReference)
-      throws WSIException
-    {
-      reporter.addArtifactReference(artifactReference);
-    }
-
-    /**
-     * Process a single log entry.
-     */
-    public void processLogEntry(EntryContext entryContext) throws WSIException
-    {
-      // Validate envelopes
-      envelopeValidator.validate(entryContext);
-    }
-
   }
 }

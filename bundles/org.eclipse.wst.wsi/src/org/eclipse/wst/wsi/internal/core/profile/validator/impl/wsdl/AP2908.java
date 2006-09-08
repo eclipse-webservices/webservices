@@ -64,7 +64,7 @@ public class AP2908 extends AssertionProcess implements WSITag
       Document doc = entryContext.getWSDLDocument().getDocument();
       if (doc == null)
       {
-        doc = validator.parseXMLDocumentURL(validator.wsdlURL, null);
+        doc = validator.parseXMLDocumentURL(validator.wsdlDocument.getLocation(), null);
       }
 
       // Finding the wsdl:binding element being processed

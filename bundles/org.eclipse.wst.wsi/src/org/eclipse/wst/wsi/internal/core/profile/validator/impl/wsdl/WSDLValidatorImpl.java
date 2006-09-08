@@ -51,8 +51,10 @@ import org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext;
 import org.eclipse.wst.wsi.internal.core.analyzer.AssertionFailException;
 import org.eclipse.wst.wsi.internal.core.analyzer.CandidateInfo;
 import org.eclipse.wst.wsi.internal.core.analyzer.ServiceReference;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
 import org.eclipse.wst.wsi.internal.core.profile.ProfileArtifact;
+import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
 import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.WSDLValidator;
@@ -72,7 +74,6 @@ import org.eclipse.wst.wsi.internal.core.xml.schema.XMLSchemaValidator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * The WSDL validator will verify that the WSDL and associated XML schema definitions
  * are in conformance with the profile.
@@ -81,12 +82,14 @@ import org.w3c.dom.Element;
  * @author Peter Brittenham (peterbr@us.ibm.com)
  * @author Graham Turrell 	(gturrell@uk.ibm.com)
  */
+
 public class WSDLValidatorImpl
   extends BaseValidatorImpl
   implements WSDLValidator
 {
   /**
    * WSDL URL.
+   * @deprecated -- access the wsdl url via wsdlDocument field.
    */
   protected String wsdlURL;
 
@@ -94,13 +97,73 @@ public class WSDLValidatorImpl
    * WSDL document.
    */
   protected WSDLDocument wsdlDocument = null;
-
+  private boolean testable;
+  
   /**
    * Entry container map.
    */
   protected HashMap containerMap = new HashMap();
   
   protected boolean processDefAssertions = true;
+
+  /**
+   * Get the artifact type that this validator applies to.
+   * @return the artifact type (a String)
+   */
+  public String getArtifactType() 
+  {  
+      return TYPE_DESCRIPTION;
+  }
+
+  /**
+   * Get the collection of entry types that this validator applies to.
+   * @return an array of entry types (Strings)
+   */
+  public String[] getEntryTypes() 
+  {
+      return new String[] {
+              TYPE_DESCRIPTION_DEFINITIONS,
+              TYPE_DESCRIPTION_IMPORT,
+              TYPE_DESCRIPTION_TYPES,
+              TYPE_DESCRIPTION_MESSAGE,
+              TYPE_DESCRIPTION_OPERATION,
+              TYPE_DESCRIPTION_PORTTYPE,
+              TYPE_DESCRIPTION_BINDING,
+              TYPE_DESCRIPTION_PORT
+      };
+  }
+
+  /* (non-Javadoc)
+   * @see org.wsi.test.profile.validator.WSDLValidator#init(org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext, org.wsi.test.profile.ProfileArtifact, org.wsi.test.report.ReportArtifact, java.lang.String, org.wsi.wsdl.WSDLDocument, org.wsi.test.report.Reporter)
+   */
+  public void init(
+    AnalyzerContext analyzerContext,
+    ProfileAssertions assertions,
+    ReportArtifact reportArtifact,
+    AnalyzerConfig analyzerConfig,
+    Reporter reporter)
+    throws WSIException
+  {
+    init(analyzerContext, assertions, reportArtifact, analyzerConfig, reporter, true);
+  }
+
+  public void init(
+    AnalyzerContext analyzerContext,
+    ProfileAssertions assertions,
+    ReportArtifact reportArtifact,
+    AnalyzerConfig analyzerConfig,
+    Reporter reporter,
+    boolean processDefAssertions)
+    throws WSIException
+  {
+    // BaseValidatorImpl
+    super.init(analyzerContext, assertions.getArtifact(TYPE_DESCRIPTION), reportArtifact, reporter);
+    this.wsdlDocument = analyzerContext.getWsdlDocument();
+    testable = analyzerContext.getWsdlDocument() != null;
+    if (this.wsdlDocument != null)
+      this.wsdlURL = wsdlDocument.getLocation();
+    this.processDefAssertions = processDefAssertions;
+  }
 
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.WSDLValidator#init(org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext, org.wsi.test.profile.ProfileArtifact, org.wsi.test.report.ReportArtifact, java.lang.String, org.wsi.wsdl.WSDLDocument, org.wsi.test.report.Reporter)
@@ -130,19 +193,19 @@ public class WSDLValidatorImpl
     // BaseValidatorImpl
     super.init(analyzerContext, profileArtifact, reportArtifact, reporter);
     this.wsdlDocument = wsdlDocument;
+    testable = (wsdlDocument != null);
     if (wsdlDocument != null)
       this.wsdlURL = wsdlDocument.getLocation();
 
     if (wsdlURL != null)
       this.wsdlURL = wsdlURL;
-
     this.processDefAssertions = processDefAssertions;
   }
 
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.WSDLValidator#validate()
    */
-  public WSDLDocument validate() throws WSIException
+  public void validateArtifact() throws WSIException
   {
     //WSDLDocument wsdlDocument = null;
     Service service = null;
@@ -156,20 +219,6 @@ public class WSDLValidatorImpl
     // now the inner classes moved out from validator
     //String classPrefix = this.getClass().getName() + "$";
     String classPrefix = this.getClass().getPackage().getName()+".";
-
-    try
-    {
-      // Validate the WSDL service description
-      if (this.wsdlDocument == null)
-        this.wsdlDocument = new WSDLDocument(wsdlURL);
-    }
-
-    catch (Exception e)
-    {
-      // ADD: Certain exceptions should result in validation errors
-
-      throw new WSIException(e.getMessage(), e);
-    }
 
     // Get the definition element
     Definition definition = wsdlDocument.getDefinitions();
@@ -230,14 +279,10 @@ public class WSDLValidatorImpl
       {
         //throw new WSIRuntimeException("Could not locate WSDL binding for port: " + port.getName());  
         // Set missingInput for all binding, portType, operation and message test assertions 
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_BINDING));
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORTTYPE));
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_MESSAGE));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_BINDING));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_PORTTYPE));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_MESSAGE));
       }
 
       else
@@ -254,12 +299,9 @@ public class WSDLValidatorImpl
         {
           //throw new WSIRuntimeException("Could not locate WSDL portType for binding: " + binding.getQName().getLocalPart());
           // Set missingInput for all portType, operation and message test assertions 
-          setMissingInput(
-            EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORTTYPE));
-          setMissingInput(
-            EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
-          setMissingInput(
-            EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_MESSAGE));
+          setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_PORTTYPE));
+          setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
+          setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_MESSAGE));
         }
 
         else
@@ -328,12 +370,9 @@ public class WSDLValidatorImpl
           //throw new WSIRuntimeException("Could not locate WSDL PortType for Binding: " + binding.getQName().getLocalPart());
 
           // Set missingInput for all portType, operation and message test assertions 
-          setMissingInput(
-            EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORTTYPE));
-          setMissingInput(
-            EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
-          setMissingInput(
-            EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_MESSAGE));
+          setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_PORTTYPE));
+          setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
+          setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_MESSAGE));
         }
 
         else
@@ -363,14 +402,10 @@ public class WSDLValidatorImpl
       else
       {
         // Set missingInput for all binding, portType, operation and message test assertions 
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_BINDING));
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORTTYPE));
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_MESSAGE));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_BINDING));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_PORTTYPE));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_MESSAGE));
       }
     }
 
@@ -391,8 +426,7 @@ public class WSDLValidatorImpl
       }
 
       // Set missingInput for all binding test assertions 
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_BINDING));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_BINDING));
 
       processPortTypeAssertions(
         portType,
@@ -446,10 +480,8 @@ public class WSDLValidatorImpl
       }
 
       // Set missingInput for all binding and portType test assertions 
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_BINDING));
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORTTYPE));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_BINDING));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_PORTTYPE));
 
       processOperationAssertions(
         operation,
@@ -481,12 +513,9 @@ public class WSDLValidatorImpl
       }
 
       // Set missingInput for all binding, portType, and operation test assertions 
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_BINDING));
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORTTYPE));
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_BINDING));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_PORTTYPE));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
 
       processMessageAssertions(
         message,
@@ -504,11 +533,19 @@ public class WSDLValidatorImpl
 
     // Cleanup
     cleanup();
+  }
 
+ /* (non-Javadoc)
+  * @see org.wsi.test.profile.validator.WSDLValidator#validate()
+  */
+  /** @deprecated -- use validateArtifact(). */
+  public WSDLDocument validate() throws WSIException
+  {
+    validateArtifact();
+    
     // Return WSDL document
     return this.wsdlDocument;
   }
-
   /**
    * Get entry container using the filename for WSDL document.
    * @param filename a file name.
@@ -588,8 +625,7 @@ public class WSDLValidatorImpl
         continue;
       // Create entry 
       entry = this.reporter.getReport().createEntry();
-      entry.setEntryType(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_DEFINITIONS));
+      entry.setEntryType(EntryType.getEntryType(TYPE_DESCRIPTION_DEFINITIONS));
       entry.setReferenceID(definition.getDocumentBaseURI());
       entry.setEntryDetail(definition);
 
@@ -627,7 +663,7 @@ public class WSDLValidatorImpl
     if (wsdlTypes == null || wsdlTypes.length == 0)
     {
       // Set missingInput for all test assertions with this entry type
-      setMissingInput(EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_TYPES));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_TYPES));
     }
 
     else
@@ -643,8 +679,7 @@ public class WSDLValidatorImpl
 
         // Create entry 
         entry = this.reporter.getReport().createEntry();
-        entry.setEntryType(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_TYPES));
+        entry.setEntryType(EntryType.getEntryType(TYPE_DESCRIPTION_TYPES));
         entry.setReferenceID(
           candidate.getDefinition(types).getDocumentBaseURI() + "-Types");
         entry.setEntryDetail(types);
@@ -682,8 +717,7 @@ public class WSDLValidatorImpl
     if (wsdlImports == null || wsdlImports.length == 0)
     {
       // Set missingInput for all test assertions with this entry type
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_IMPORT));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_IMPORT));
     }
 
     else
@@ -693,8 +727,7 @@ public class WSDLValidatorImpl
         Import wsdlImport = wsdlImports[i];
         // Create entry 
         entry = this.reporter.getReport().createEntry();
-        entry.setEntryType(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_IMPORT));
+        entry.setEntryType(EntryType.getEntryType(TYPE_DESCRIPTION_IMPORT));
         entry.setReferenceID(wsdlImport.getNamespaceURI());
         entry.setEntryDetail(wsdlImport);
 
@@ -730,7 +763,7 @@ public class WSDLValidatorImpl
 
     // Create entry 	  
     entry = this.reporter.getReport().createEntry();
-    entry.setEntryType(EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORT));
+    entry.setEntryType(EntryType.getEntryType(TYPE_DESCRIPTION_PORT));
     entry.setReferenceID(port.getName());
     entry.setParentElementName(
       serviceReference.getWSDLElement().getParentElementName());
@@ -762,7 +795,7 @@ public class WSDLValidatorImpl
     // Create entry 
     entry = this.reporter.getReport().createEntry();
     entry.setEntryType(
-      EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_BINDING));
+      EntryType.getEntryType(TYPE_DESCRIPTION_BINDING));
     entry.setReferenceID(bindingQName.toString());
     entry.setEntryDetail(binding);
 
@@ -799,8 +832,7 @@ public class WSDLValidatorImpl
 
     // Create entry 
     entry = this.reporter.getReport().createEntry();
-    entry.setEntryType(
-      EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_PORTTYPE));
+    entry.setEntryType(EntryType.getEntryType(TYPE_DESCRIPTION_PORTTYPE));
     entry.setReferenceID(portTypeQName.toString());
     entry.setEntryDetail(portType);
 
@@ -838,8 +870,7 @@ public class WSDLValidatorImpl
 
     // Create entry 
     entry = this.reporter.getReport().createEntry();
-    entry.setEntryType(
-      EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
+    entry.setEntryType(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
     entry.setReferenceID(operation.getName());
     entry.setParentElementName(portType.getQName().getLocalPart());
     entry.setEntryDetail(operation);
@@ -874,8 +905,7 @@ public class WSDLValidatorImpl
     // For each operation, 
     if (portType.getOperations() == null)
     {
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
     }
 
     else
@@ -886,8 +916,7 @@ public class WSDLValidatorImpl
       {
         operation = (Operation) opIt.next();
         if (operation == null || operation.isUndefined())
-          setMissingInput(
-            EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_OPERATION));
+          setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_OPERATION));
         else
           processOperationAssertions(
             operation,
@@ -921,8 +950,7 @@ public class WSDLValidatorImpl
 
     // Create entry 
     entry = this.reporter.getReport().createEntry();
-    entry.setEntryType(
-      EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_MESSAGE));
+    entry.setEntryType(EntryType.getEntryType(TYPE_DESCRIPTION_MESSAGE));
     entry.setReferenceID(messageQName.toString());
     entry.setEntryDetail(message);
 
@@ -1033,8 +1061,7 @@ public class WSDLValidatorImpl
       if (messageSet.size() == 0)
       {
         // Set all message test assertion results to missingInput
-        setMissingInput(
-          EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_MESSAGE));
+        setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_MESSAGE));
       }
 
       else
@@ -1090,8 +1117,7 @@ public class WSDLValidatorImpl
     if (messageSet.size() == 0)
     {
       // Set all message test assertion results to missingInput
-      setMissingInput(
-        EntryType.getEntryType(EntryType.TYPE_DESCRIPTION_MESSAGE));
+      setMissingInput(EntryType.getEntryType(TYPE_DESCRIPTION_MESSAGE));
     }
 
     else
@@ -2335,4 +2361,10 @@ public class WSDLValidatorImpl
     return true;
 
   }
+  
+  /**
+   * Returns true if these tests should be run (depending on the analyzer
+   * config)
+   */
+  public boolean runTests() { return testable; } 
 }

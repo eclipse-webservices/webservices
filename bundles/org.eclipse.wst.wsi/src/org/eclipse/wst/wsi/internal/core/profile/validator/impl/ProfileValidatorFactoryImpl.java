@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
 import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.eclipse.wst.wsi.internal.core.profile.validator.BaseValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EnvelopeValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.ProfileValidatorFactory;
@@ -29,7 +34,29 @@ import org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl.WSDLValidat
  */
 public class ProfileValidatorFactoryImpl extends ProfileValidatorFactory
 {
-  /* (non-Javadoc)
+  private static Map validatorRegistry;
+
+  public static void addToValidatatorRegistry(String artifactName,
+          BaseValidator validatorClass) {
+      if (validatorRegistry == null)
+          validatorRegistry = new HashMap();
+      validatorRegistry.put(artifactName, validatorClass);
+  }
+
+  public BaseValidator getValidatorForArtifact(String artifactName) 
+          throws WSIException {
+      if (validatorRegistry == null) {
+          BaseValidator validators[] = WSITestToolsPlugin.getPlugin().
+                  getBaseValidators();
+          for (int i = 0; i < validators.length; i++)
+              addToValidatatorRegistry(validators[i].getArtifactType(),
+              validators[i]);
+          
+      }
+      return (BaseValidator) validatorRegistry.get(artifactName);
+  }
+  
+    /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.ProfileValidatorFactory#newUDDIValidator()
    */
   public UDDIValidator newUDDIValidator() throws WSIException

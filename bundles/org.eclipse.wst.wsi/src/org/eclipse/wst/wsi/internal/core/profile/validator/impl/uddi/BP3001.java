@@ -21,6 +21,7 @@ import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.AssertionProcess;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
+import org.eclipse.wst.wsi.internal.core.util.UDDIUtils;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
 import org.uddi4j.datatype.OverviewDoc;
 import org.uddi4j.datatype.tmodel.TModel;
@@ -104,7 +105,7 @@ public class BP3001 extends AssertionProcess
         }
 
         // Get binding
-        binding = validator.getBinding(urlText, wsdlDocument);
+        binding = UDDIUtils.getBinding(urlText, wsdlDocument);
 
         // See if the binding is in the WSDL document
         if (binding == null
@@ -146,12 +147,6 @@ public class BP3001 extends AssertionProcess
     else
     {
       setFaultMessage(key);
-    }
-
-    if (result == AssertionResult.RESULT_PASSED)
-    {
-      // Set the binding that will be used
-      validator.setWSDLBinding(binding);
     }
 
     // Return assertion result

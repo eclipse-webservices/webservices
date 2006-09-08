@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer;
 
+import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
+
 /**
  * This class contains contextual information which is required by test assertions across all artifacts.
  * 
@@ -20,6 +22,7 @@ public class AnalyzerContext
 {
   protected ServiceReference serviceReference = null;
   protected CandidateInfo candidateInfo = null;
+  protected WSDLDocument wsdlDocument = null;
 
   /**
    * Do not allow the usage of the null constructor.
@@ -75,5 +78,23 @@ public class AnalyzerContext
   public void setCandidateInfo(CandidateInfo candidateInfo)
   {
     this.candidateInfo = candidateInfo;
+  }
+  
+  /**
+   * Returns the wsdlDocument.
+   * @return WSDLDocument.
+   * @see #setWsdlDocument
+   */
+  public WSDLDocument getWsdlDocument() {
+      return wsdlDocument;
+  }
+
+  /**
+   * Sets the wsdlDocument.
+   * @param wsdlDocument the wsdlDocument to set.
+   * @see #getWsdlDocument
+   */
+  public void setWsdlDocument(WSDLDocument wsdlDocument) {
+      this.wsdlDocument = wsdlDocument;
   }
 }

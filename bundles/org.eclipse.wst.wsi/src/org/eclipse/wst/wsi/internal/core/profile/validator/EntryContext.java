@@ -105,7 +105,7 @@ public class EntryContext
     }
 
     // need some exception handling in here and more careful checking
-    if (entry.getEntryType().equals(EntryType.ENTRY_TYPE_REQUEST))
+    if (entry.getEntryType().equals(EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_REQUEST)))
     {
       this.messageEntry = request;
       this.messageEntryDocument = requestDocument;

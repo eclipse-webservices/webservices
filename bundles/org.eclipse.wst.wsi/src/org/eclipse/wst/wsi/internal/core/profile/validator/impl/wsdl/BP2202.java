@@ -76,7 +76,7 @@ public class BP2202 extends AssertionProcess implements WSITag
     EntryContext entryContext)
     throws WSIException
   {
-    result = result = AssertionResult.RESULT_NOT_APPLICABLE;
+    result = AssertionResult.RESULT_NOT_APPLICABLE;
 
     //Definition def = (Definition) entryContext.getEntry().getEntryDetail();
     Types types = (Types) entryContext.getEntry().getEntryDetail();
@@ -195,7 +195,7 @@ public class BP2202 extends AssertionProcess implements WSITag
            processSchema(schema.getDocumentElement(),
               XMLUtils.createURLString(schemaLocation.getValue(), context));
         }
-        result = result = AssertionResult.RESULT_PASSED;
+        result = AssertionResult.RESULT_PASSED;
       }
       catch (Throwable t)
       {

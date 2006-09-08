@@ -439,21 +439,22 @@ public interface WSIConstants {
 	/**
 	 * WS-I names and versions of the profile test assertion document supported
 	 * in the current version of the test tools.
-	 */
+     */
+	/** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String BASIC_PROFILE_TAD_NAME = "Basic Profile Test Assertions";
-
+    /** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String BASIC_PROFILE_1_1_TAD_NAME = "Basic Profile 1.1 Test Assertions";
-
+    /** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String SIMPLE_SOAP_BINDINGS_PROFILE_TAD_NAME = "Simple Soap Binding Profile [1.0] (with Basic Profile [1.1]) Test Assertions";
-
+    /** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String ATTACHMENTS_PROFILE_TAD_NAME = "Attachments Profile [1.0] (with Basic Profile [1.1] and Simple Soap Binding Profile [1.0]) Test Assertions";
-
+    /** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String BASIC_PROFILE_TAD_VERSION = "1.1.0";
-
+    /** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String BASIC_PROFILE_1_1_TAD_VERSION = "1.1.0";
-
+    /** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String SIMPLE_SOAP_BINDINGS_PROFILE_TAD_VERSION = "1.0.0";
-
+    /** @deprecated -- this has been replaced with a TAD registry mechanism. */
 	public static final String ATTACHMENTS_PROFILE_TAD_VERSION = "1.0.0";
 
 	/**

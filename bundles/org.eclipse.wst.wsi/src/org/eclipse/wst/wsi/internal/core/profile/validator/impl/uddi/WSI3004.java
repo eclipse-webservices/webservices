@@ -102,11 +102,11 @@ public class WSI3004 extends AssertionProcessVisitor implements WSITag
     try
     {
       // Read the WSDL document
-      String overviewURL = validator.getOverviewURL(tModel);
+      String overviewURL = UDDIUtils.getOverviewURL(tModel);
       WSDLDocument wsdlDocument = validator.getWSDLDocument(overviewURL);
 
       // Get binding
-      Binding binding = validator.getBinding(overviewURL, wsdlDocument);
+      Binding binding = UDDIUtils.getBinding(overviewURL, wsdlDocument);
       String bindingName = binding.getQName().getLocalPart();
 
       // Get claims

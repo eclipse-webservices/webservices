@@ -17,7 +17,7 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
-import org.eclipse.wst.wsi.internal.core.util.EntryType;
+import org.eclipse.wst.wsi.internal.core.profile.validator.WSDLValidator;
 
 /**
  * The implementation for WSDL definitions. 
@@ -117,7 +117,7 @@ public class WSDLElementImpl implements WSDLElement
    */
   public boolean isPort()
   {
-    return type.equals(EntryType.TYPE_DESCRIPTION_PORT);
+    return type.equals(WSDLValidator.TYPE_DESCRIPTION_PORT);
   }
 
   /**
@@ -125,7 +125,7 @@ public class WSDLElementImpl implements WSDLElement
    */
   public boolean isBinding()
   {
-    return type.equals(EntryType.TYPE_DESCRIPTION_BINDING);
+    return type.equals(WSDLValidator.TYPE_DESCRIPTION_BINDING);
   }
 
   /**
@@ -133,7 +133,7 @@ public class WSDLElementImpl implements WSDLElement
    */
   public boolean isPortType()
   {
-    return type.equals(EntryType.TYPE_DESCRIPTION_PORTTYPE);
+    return type.equals(WSDLValidator.TYPE_DESCRIPTION_PORTTYPE);
   }
 
   /**
@@ -141,7 +141,7 @@ public class WSDLElementImpl implements WSDLElement
    */
   public boolean isOperation()
   {
-    return type.equals(EntryType.TYPE_DESCRIPTION_OPERATION);
+    return type.equals(WSDLValidator.TYPE_DESCRIPTION_OPERATION);
   }
 
   /**
@@ -149,7 +149,7 @@ public class WSDLElementImpl implements WSDLElement
    */
   public boolean isMessage()
   {
-    return type.equals(EntryType.TYPE_DESCRIPTION_MESSAGE);
+    return type.equals(WSDLValidator.TYPE_DESCRIPTION_MESSAGE);
   }
 
   /**

@@ -28,7 +28,7 @@ import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLElement;
 import org.eclipse.wst.wsi.internal.core.analyzer.config.WSDLReference;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
-import org.eclipse.wst.wsi.internal.core.util.EntryType;
+import org.eclipse.wst.wsi.internal.core.profile.validator.WSDLValidator;
 import org.eclipse.wst.wsi.internal.core.util.MessageList;
 import org.eclipse.wst.wsi.internal.core.util.TestUtils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
@@ -381,20 +381,20 @@ public class AnalyzerConfigReaderImpl implements AnalyzerConfigReader
     if (((wsdlReference
       .getWSDLElement()
       .getType()
-      .equalsIgnoreCase(EntryType.TYPE_DESCRIPTION_PORT))
+      .equalsIgnoreCase(WSDLValidator.TYPE_DESCRIPTION_PORT))
       || (wsdlReference
         .getWSDLElement()
         .getType()
-        .equalsIgnoreCase(EntryType.TYPE_DESCRIPTION_OPERATION)))
+        .equalsIgnoreCase(WSDLValidator.TYPE_DESCRIPTION_OPERATION)))
       && (wsdlReference.getWSDLElement().getParentElementName() == null))
     {
       throw new IllegalArgumentException(
         getMessage(
           "config09",
           "The parentElementName attribute must be specified with a WSDL type of "
-            + EntryType.TYPE_DESCRIPTION_PORT
+            + WSDLValidator.TYPE_DESCRIPTION_PORT
             + " or "
-            + EntryType.TYPE_DESCRIPTION_OPERATION
+            + WSDLValidator.TYPE_DESCRIPTION_OPERATION
             + "."));
     }
   }

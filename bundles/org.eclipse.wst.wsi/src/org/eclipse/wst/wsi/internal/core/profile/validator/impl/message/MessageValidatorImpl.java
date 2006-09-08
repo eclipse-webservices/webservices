@@ -14,7 +14,6 @@ import org.eclipse.wst.wsi.internal.core.profile.TestAssertion;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.BaseMessageValidator;
-import org.eclipse.wst.wsi.internal.core.util.EntryType;
 
 /**
  * @version 1.0
@@ -23,6 +22,28 @@ public class MessageValidatorImpl
   extends BaseMessageValidator
   implements MessageValidator
 {
+  /**
+   * Get the artifact type that this validator applies to.
+   * @return the artifact type (a String)
+   */
+  public String getArtifactType() {
+      return TYPE_MESSAGE;
+  }
+
+  /**
+   * Get the collection of entry types that this validator applies to.
+   * @return an array of entry types (Strings)
+   */
+  public String[] getEntryTypes() {
+      return new String[] {
+              TYPE_MESSAGE_REQUEST,
+              TYPE_MESSAGE_RESPONSE,
+              TYPE_MESSAGE_ANY,
+              TYPE_MIME_PART,
+              TYPE_MIME_ROOT_PART
+      };
+  }
+
   /* (non-Javadoc)
    * @see org.wsi.test.profile.validator.impl.BaseValidatorImpl#isPrimaryEntryTypeMatch(org.wsi.test.profile.TestAssertion, org.wsi.test.profile.validator.EntryContext)
    */
@@ -33,21 +54,21 @@ public class MessageValidatorImpl
     boolean match = false;
 
     // Verify that the entry and test assertion have the same primary context
-    if ((testAssertion.getEntryTypeName().equals(EntryType.TYPE_MESSAGE_ANY))
-      || (testAssertion.getEntryTypeName().equals(EntryType.TYPE_MESSAGE_REQUEST)
+    if ((testAssertion.getEntryTypeName().equals(TYPE_MESSAGE_ANY))
+      || (testAssertion.getEntryTypeName().equals(TYPE_MESSAGE_REQUEST)
         && (entryContext
           .getEntry()
           .getEntryType()
           .getTypeName()
-          .equals(EntryType.TYPE_MESSAGE_REQUEST)))
-      || (testAssertion.getEntryTypeName().equals(EntryType.TYPE_MESSAGE_RESPONSE)
+          .equals(TYPE_MESSAGE_REQUEST)))
+      || (testAssertion.getEntryTypeName().equals(TYPE_MESSAGE_RESPONSE)
         && (entryContext
           .getEntry()
           .getEntryType()
           .getTypeName()
-          .equals(EntryType.TYPE_MESSAGE_RESPONSE)))
-      || testAssertion.getEntryTypeName().equals(EntryType.TYPE_MIME_ROOT_PART)
-      || testAssertion.getEntryTypeName().equals(EntryType.TYPE_MIME_PART))
+          .equals(TYPE_MESSAGE_RESPONSE)))
+      || testAssertion.getEntryTypeName().equals(TYPE_MIME_ROOT_PART)
+      || testAssertion.getEntryTypeName().equals(TYPE_MIME_PART))
     {
       match = true;
     }

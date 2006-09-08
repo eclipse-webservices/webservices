@@ -11,6 +11,11 @@
 package org.eclipse.wst.wsi.internal.core.profile.validator;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
+import org.eclipse.wst.wsi.internal.core.analyzer.AnalyzerContext;
+import org.eclipse.wst.wsi.internal.core.analyzer.config.AnalyzerConfig;
+import org.eclipse.wst.wsi.internal.core.profile.ProfileAssertions;
+import org.eclipse.wst.wsi.internal.core.report.ReportArtifact;
+import org.eclipse.wst.wsi.internal.core.report.Reporter;
 import org.w3c.dom.Document;
 
 /**
@@ -47,4 +52,47 @@ public interface BaseValidator
     String baseURI,
     String schema)
     throws WSIException;
+
+  /**
+   * Initiailize validation test procedure.
+   * @param analyzerContext the analyzerContext.
+   * @param assertions      the assertions
+   * @param reportArtifact  the report artifact.
+   * @param analyzerConfig  the analyzerConfig
+   * @param reporter        the reporter which is used to add errors to the
+   *                        conformance report
+   * @throws WSIException   if message validator could not be initialized.
+   */
+  public void init(
+    AnalyzerContext analyzerContext,
+    ProfileAssertions assertions,
+    ReportArtifact reportArtifact,
+    AnalyzerConfig analyzerConfig,
+    Reporter reporter)
+    throws WSIException;
+
+  /**
+   * Determines if this validator should be run (depending on the analyzer
+   * config)
+   * @return boolean  true if validator should be run, false if not
+   */
+  public boolean runTests();
+
+  /**
+   * Run the validator
+   * @throws WSIException if an unexpected error occurs during validation
+   */
+  public void validateArtifact() throws WSIException;
+  
+  /**
+   * Get the artifact type that this validator applies to.
+   * @return the artifact type (a String)
+   */
+  public String getArtifactType();
+
+  /**
+   * Get the collection of entry types that this validator applies to.
+   * @return an array of entry types (Strings)
+   */
+  public String[] getEntryTypes();
 }

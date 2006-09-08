@@ -21,10 +21,20 @@ import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
  */
 public abstract class ProfileValidatorFactory
 {
+  /**
+   * Create a new instance of a validator depending on the given artifact name
+   * @param artifactName - String containing the artifact name from the TAD
+   * @return an object that implements the BaseValidator interface.
+   * @throws WSIException if the validator cannot be instantiated
+   */
+  public abstract BaseValidator getValidatorForArtifact(String artifactName)
+          throws WSIException;
+
   /** 
    * Create a new instance of a UDDI validator.
    * @return  an object that implements the WSDLValidator interface.
-   * @throws WSIException if UDDI validator cannot be instantiated. 
+   * @throws WSIException if UDDI validator cannot be instantiated.
+   * @deprecated -- use getValidatorForArtifact(String artifactName).
    */
   public abstract UDDIValidator newUDDIValidator() throws WSIException;
 
@@ -32,6 +42,7 @@ public abstract class ProfileValidatorFactory
    * Create a new instance of a WSDL validator.
    * @return an object that implements the WSDLValidator interface. 
    * @throws WSIException if WSDL validator cannot be instantiated.
+   * @deprecated -- use getValidatorForArtifact(String artifactName).
    */
   public abstract WSDLValidator newWSDLValidator() throws WSIException;
 
@@ -41,7 +52,8 @@ public abstract class ProfileValidatorFactory
    * message validator?
    *
    * @return an object that implements the MessageValidator interface.
-   * @throws WSIException if message validatorcannot be instantiated. 
+   * @throws WSIException if message validatorcannot be instantiated.
+   * @deprecated -- use getValidatorForArtifact(String artifactName).
    */
   public abstract MessageValidator newMessageValidator() throws WSIException;
 
@@ -49,6 +61,7 @@ public abstract class ProfileValidatorFactory
    * Create a new instance of an envelope validator.
    * @return an object that implements the EnvelopeValidator interface.
    * @throws WSIException if message validator cannot be instantiated. 
+   * @deprecated -- use getValidatorForArtifact(String artifactName).
    */
   public abstract EnvelopeValidator newEnvelopeValidator() throws WSIException;
 

@@ -13,6 +13,9 @@ package org.eclipse.wst.wsi.internal.core.util;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
+import org.eclipse.wst.wsi.internal.core.profile.validator.BaseValidator;
+
 /**
  * This class ...
  * 
@@ -34,118 +37,114 @@ public class EntryType
   /**
    * Entry types accessible by type name.
    */
-  protected static final TreeMap entryTypeMap = new TreeMap();
+  protected static TreeMap entryTypeMap;
 
   /**
    * Entry type names accessible by artifact.
    */
   protected static final TreeMap entryTypeNameMap = new TreeMap();
-  static {
-    entryTypeNameMap.put(ArtifactType.TYPE_ENVELOPE, new Vector());
-    entryTypeNameMap.put(ArtifactType.TYPE_MESSAGE, new Vector());
-    entryTypeNameMap.put(ArtifactType.TYPE_DESCRIPTION, new Vector());
-    entryTypeNameMap.put(ArtifactType.TYPE_DISCOVERY, new Vector());
-  }
 
   /**
    * Envelope entry types.
    */
+  /** @deprecated -- use EnvelopeValidator.TYPE_ENVELOPE_REQUEST */
   public static final String TYPE_ENVELOPE_REQUEST = "requestEnvelope";
+  /** @deprecated -- use EnvelopeValidator.TYPE_ENVELOPE_RESPONSE */
   public static final String TYPE_ENVELOPE_RESPONSE = "responseEnvelope";
+  /** @deprecated -- use EnvelopeValidator.TYPE_ENVELOPE_ANYT */
   public static final String TYPE_ENVELOPE_ANY = "anyEnvelope";
 
   /**
    * Message entry types.
    */
+  /** @deprecated -- use MessageValidator.TYPE_MESSAGE_REQUEST */
   public static final String TYPE_MESSAGE_REQUEST = "requestMessage";
+  /** @deprecated -- use MessageValidator.TYPE_MESSAGE_RESPONSE */
   public static final String TYPE_MESSAGE_RESPONSE = "responseMessage";
+  /** @deprecated -- use MessageValidator.TYPE_MESSAGE_ANY */
   public static final String TYPE_MESSAGE_ANY = "anyMessage";
 
   /**
    * MIME entry types.
    */
+  /** @deprecated -- use MessageValidator.TYPE_MIME_PART */
   public static final String TYPE_MIME_PART = "part";
+  /** @deprecated -- use MessageValidator.TYPE_MIME_ROOT_PART */
   public static final String TYPE_MIME_ROOT_PART = "root-part";
 
   /**
    * Description entry types.
    */
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_DEFINITIONS */
   public static final String TYPE_DESCRIPTION_DEFINITIONS = "definitions";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_IMPORT */
   public static final String TYPE_DESCRIPTION_IMPORT = "import";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_TYPES */
   public static final String TYPE_DESCRIPTION_TYPES = "types";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_MESSAGE */
   public static final String TYPE_DESCRIPTION_MESSAGE = "message";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_OPERATION */
   public static final String TYPE_DESCRIPTION_OPERATION = "operation";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_PORTTYPE */
   public static final String TYPE_DESCRIPTION_PORTTYPE = "portType";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_BINDING */
   public static final String TYPE_DESCRIPTION_BINDING = "binding";
+  /** @deprecated -- use WSDLValidator.TYPE_DESCRIPTION_PORT */
   public static final String TYPE_DESCRIPTION_PORT = "port";
 
   /**
    * Discovery entry types.
    */
+  /** @deprecated -- use UDDIValidator.TYPE_DISCOVERY_BINDINGTEMPLATE */
   public static final String TYPE_DISCOVERY_BINDINGTEMPLATE = "bindingTemplate";
+  /** @deprecated -- use UDDIValidator.TYPE_DISCOVERY_TMODEL */
   public static final String TYPE_DISCOVERY_TMODEL = "tModel";
 
   /**
    * Envelope entry types.
    */
-  public static final EntryType ENTRY_TYPE_REQUESTENV =
-    newEntryType(ArtifactType.ARTIFACT_TYPE_ENVELOPE, TYPE_ENVELOPE_REQUEST);
-  public static final EntryType ENTRY_TYPE_RESPONSEENV =
-    newEntryType(ArtifactType.ARTIFACT_TYPE_ENVELOPE, TYPE_ENVELOPE_RESPONSE);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_REQUESTENV = getEntryType(TYPE_ENVELOPE_REQUEST);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_RESPONSEENV = getEntryType(TYPE_ENVELOPE_RESPONSE);
 
   /**
    * Message entry types.
    */
-  public static final EntryType ENTRY_TYPE_REQUEST =
-    newEntryType(ArtifactType.ARTIFACT_TYPE_MESSAGE, TYPE_MESSAGE_REQUEST);
-  public static final EntryType ENTRY_TYPE_RESPONSE =
-    newEntryType(ArtifactType.ARTIFACT_TYPE_MESSAGE, TYPE_MESSAGE_RESPONSE);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_REQUEST = getEntryType(TYPE_MESSAGE_REQUEST);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_RESPONSE = getEntryType(TYPE_MESSAGE_RESPONSE);
   //  public static final EntryType ENTRY_TYPE_ANYENTRY = 
   //        new EntryType(ArtifactType.ARTIFACT_TYPE_MESSAGES, TYPE_MESSAGE_ANYENTRY);
 
   /**
    * Description entry types.
    */
-  public static final EntryType ENTRY_TYPE_DEFINITIONS =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DESCRIPTION,
-      TYPE_DESCRIPTION_DEFINITIONS);
-  public static final EntryType ENTRY_TYPE_IMPORT =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DESCRIPTION,
-      TYPE_DESCRIPTION_IMPORT);
-  public static final EntryType ENTRY_TYPE_TYPES =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DESCRIPTION,
-      TYPE_DESCRIPTION_TYPES);
-  public static final EntryType ENTRY_TYPE_MESSAGE =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DESCRIPTION,
-      TYPE_DESCRIPTION_MESSAGE);
-  public static final EntryType ENTRY_TYPE_OPERATION =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DESCRIPTION,
-      TYPE_DESCRIPTION_OPERATION);
-  public static final EntryType ENTRY_TYPE_PORTTYPE =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DESCRIPTION,
-      TYPE_DESCRIPTION_PORTTYPE);
-  public static final EntryType ENTRY_TYPE_BINDING =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DESCRIPTION,
-      TYPE_DESCRIPTION_BINDING);
-  public static final EntryType ENTRY_TYPE_PORT =
-    newEntryType(ArtifactType.ARTIFACT_TYPE_DESCRIPTION, TYPE_DESCRIPTION_PORT);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_DEFINITIONS = getEntryType(TYPE_DESCRIPTION_DEFINITIONS);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_IMPORT = getEntryType(TYPE_DESCRIPTION_IMPORT);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_TYPES = getEntryType(TYPE_DESCRIPTION_TYPES);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_MESSAGE = getEntryType(TYPE_DESCRIPTION_MESSAGE);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_OPERATION = getEntryType(TYPE_DESCRIPTION_OPERATION);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_PORTTYPE = getEntryType(TYPE_DESCRIPTION_PORTTYPE);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_BINDING = getEntryType(TYPE_DESCRIPTION_BINDING);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_PORT = getEntryType(TYPE_DESCRIPTION_PORT);
 
   /**
    * Discovery entry types.
    */
-  public static final EntryType ENTRY_TYPE_BINDINGTEMPLATE =
-    newEntryType(
-      ArtifactType.ARTIFACT_TYPE_DISCOVERY,
-      TYPE_DISCOVERY_BINDINGTEMPLATE);
-  public static final EntryType ENTRY_TYPE_TMODEL =
-    newEntryType(ArtifactType.ARTIFACT_TYPE_DISCOVERY, TYPE_DISCOVERY_TMODEL);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_BINDINGTEMPLATE = getEntryType(TYPE_DISCOVERY_BINDINGTEMPLATE);
+  /** @deprecated -- use getEntryType(String typeName) to access EntryType. */
+  public static final EntryType ENTRY_TYPE_TMODEL = getEntryType(TYPE_DISCOVERY_TMODEL);
 
   /**
    * Create entry type.
@@ -213,6 +212,16 @@ public class EntryType
   public static final EntryType getEntryType(String typeName)
     throws RuntimeException
   {
+    if (entryTypeMap == null) {
+        BaseValidator validators[] = WSITestToolsPlugin.getPlugin()
+                .getBaseValidators();
+        for (int i = 0; i < validators.length; i++) {
+            String entryTypes[] = validators[i].getEntryTypes();
+            for (int j = 0; j < entryTypes.length; j++)
+                registerEntryType(ArtifactType.getArtifactType(
+                        validators[i].getArtifactType()), entryTypes[j]);
+        }
+    }
     // Get the entry type by type name
     EntryType entryType = (EntryType) entryTypeMap.get(typeName);
 
@@ -254,7 +263,7 @@ public class EntryType
   /**
    * Get list of type names for a specified artifact type name.
    */
-  private static final EntryType newEntryType(
+  public static final EntryType registerEntryType(
     ArtifactType artifactType,
     String typeName)
   {
@@ -263,12 +272,21 @@ public class EntryType
     // Create entry type
     entryType = new EntryType(artifactType, typeName);
 
+    if (entryTypeMap == null) {
+        entryTypeMap = new TreeMap();
+    }
     // Add to entry type map
     entryTypeMap.put(typeName, entryType);
 
     // Get the entry type name vector for the artifact type
     Vector entryTypeNameList =
       (Vector) entryTypeNameMap.get(artifactType.getTypeName());
+    
+    // Lazy initialize
+    if (entryTypeNameList == null) {
+        entryTypeNameList = new Vector();
+        entryTypeNameMap.put(artifactType.getTypeName(), entryTypeNameList);
+    }
 
     // Add the type name to the list
     entryTypeNameList.add(typeName);

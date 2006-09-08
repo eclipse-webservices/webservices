@@ -26,6 +26,33 @@ import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
  */
 public interface WSDLValidator extends BaseValidator
 {
+  /** Description artifact type */
+  public static final String TYPE_DESCRIPTION = "description";
+	 
+  /** Definitions description entry type. */
+  public static final String TYPE_DESCRIPTION_DEFINITIONS = "definitions";
+
+  /** Import description entry type. */
+  public static final String TYPE_DESCRIPTION_IMPORT = "import";
+
+  /** Types description entry type. */
+  public static final String TYPE_DESCRIPTION_TYPES = "types";
+
+  /** Message description entry type. */
+  public static final String TYPE_DESCRIPTION_MESSAGE = "message";
+
+  /** Operation description entry type. */
+  public static final String TYPE_DESCRIPTION_OPERATION = "operation";
+
+  /** PortType description entry type. */
+  public static final String TYPE_DESCRIPTION_PORTTYPE = "portType";
+
+  /** Binding description entry type. */
+  public static final String TYPE_DESCRIPTION_BINDING = "binding";
+
+  /** Port description entry type. */
+  public static final String TYPE_DESCRIPTION_PORT = "port";
+
   /**
    * Initiailize validation test procedure.
    * @param analyzerContext the analyzerContext.
@@ -35,6 +62,11 @@ public interface WSDLValidator extends BaseValidator
    * @param wsdlDocument    the WSDL document.
    * @param reporter        a Reporter object.
    * @throws WSIException if WSDL validator could not be initialized.
+   * @deprecated -- use init(AnalyzerContext analyzerContext,
+   *                         ProfileAssertions assertions,
+   *                         ReportArtifact reportArtifact,
+   *                         AnalyzerConfig analyzerConfig,
+   *                         Reporter reporter)
    */
   public void init(
     AnalyzerContext analyzerContext,
@@ -50,6 +82,7 @@ public interface WSDLValidator extends BaseValidator
    * @return the WSDL document.
    * @throws WSIException if an unexpected error occurred
    *         while validating he WSDL based service description.
+   * @deprecated  -- use validateArtifact()
    */
   public WSDLDocument validate() throws WSIException;
 }
