@@ -87,16 +87,18 @@ public class EntryContext
           requestDocument = XMLUtils.parseXML(request.getMessage());
       }
 
-      if(response.isMimeContent()) 
-      {
-      	MimePart part = response.getMimeParts().getRootPart();
-      	if ((part != null) && (part.getContent().length() > 0))
-          responseDocument = XMLUtils.parseXML(part.getContent());
-      }
-      else 
-      {
-        if (response.getMessage().length() > 0)
-          responseDocument = XMLUtils.parseXML(response.getMessage());
+      if (response != null) {
+          if(response.isMimeContent()) 
+          {
+          	MimePart part = response.getMimeParts().getRootPart();
+          	if ((part != null) && (part.getContent().length() > 0))
+              responseDocument = XMLUtils.parseXML(part.getContent());
+          }
+          else 
+          {
+            if (response.getMessage().length() > 0)
+              responseDocument = XMLUtils.parseXML(response.getMessage());
+          }
       }
     }
 

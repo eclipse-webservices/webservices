@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="141966">
+  <description>
+    This is an example of a message log file that contains only a request and
+    breaks requirement 1011.
+  </description>
+  <expectedFailures>
+	<assertion id="BP1309" tadID="SSBP10"/>
+	<assertion id="BP1309" tadID="AP10"/>
+  </expectedFailures>
+</testcase>

@@ -579,9 +579,6 @@ public class LogReaderImpl implements LogReader
                 mimeParts,
                 entryElementLocation);
 
-          // Add log entry to the list
-          messageEntryList.add(messageEntryResponse);
-
           if (logEntryHandler != null)
           {
             // look up the request message
@@ -642,6 +639,20 @@ public class LogReaderImpl implements LogReader
       //once message validation is done.
       //if (msgValidator!=null)
       //logEntryList.clear();
+        
+        /* Process all remaining requests in the messageEntryList */
+        for (int i = 0; i < messageEntryList.size(); i++) {
+            MessageEntry logEntry = (MessageEntry) messageEntryList.get(i);
+            Entry entry = new EntryImpl();
+            entry.setEntryType(EntryType.getEntryType(
+                    MessageValidator.TYPE_MESSAGE_REQUEST));
+            entry.setReferenceID(logEntry.getId());
+            entry.setEntryDetail(logEntry);
+            EntryContext requestTargetContext =
+                new EntryContext(entry, logEntry, null);
+            if (requestTargetContext != null)
+                processLogEntry(requestTargetContext);
+        }
     }
 
     /**
@@ -713,6 +724,7 @@ public class LogReaderImpl implements LogReader
             // From above, this should be the corresponding request. Check as far as possible.
             if (logEntry.getType().equals(MessageEntry.TYPE_REQUEST))
             {
+              messageEntryList.remove(entry);
               return logEntry;
             }
             else
