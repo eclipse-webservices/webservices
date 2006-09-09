@@ -95,7 +95,7 @@ public class LogBuilder
    * @param requestResponses: a list of messages in the form of request-response pairs.
    * @return a log based on a list of request-response pairs.
    */
-  public Log buildLog(List requestResponses) throws WSIException
+  public Log buildLog(List requestResponses)
   {
     log = new LogImpl();
     logMonitorInformation();
@@ -107,7 +107,7 @@ public class LogBuilder
       if ((rr != null) && (!omitRequestResponse(rr))) {
           try {
               logRequestResponse(rr);
-          } catch (WSIException e) {
+          } catch (Exception e) {
               /* Empty catch block.  This request/response pair is not a valid SOAP
                * message, so skip it. */
           }
@@ -127,7 +127,7 @@ public class LogBuilder
    * Log the request-response pair.
    *@param rr: a request-response pair.
    */
-  protected void logRequestResponse(RequestHandler rr) throws WSIException
+  protected void logRequestResponse(RequestHandler rr)
   {
     if (rr != null)
     {
