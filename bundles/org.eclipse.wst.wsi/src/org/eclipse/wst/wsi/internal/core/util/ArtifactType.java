@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
@@ -29,6 +31,7 @@ public class ArtifactType
   private String type;
 
   private static Map typeMap;
+  private static List loggableArtifactTypes; 
 
   /**
    * ReportArtifact types.
@@ -64,6 +67,19 @@ public class ArtifactType
   private ArtifactType(String type)
   {
     this.type = type;
+  }
+
+  /** Returns true if this artifact can be output to the report. */
+  public boolean isLoggable() 
+  {
+    if (loggableArtifactTypes == null) 
+    {
+      String artifactArray[] = WSITestToolsPlugin.getPlugin().getAllReportArtifactTypes();
+      loggableArtifactTypes = new ArrayList(artifactArray.length);
+      for (int i = 0; i < artifactArray.length; i++)
+         loggableArtifactTypes.add(artifactArray[i]);
+    }
+    return loggableArtifactTypes.contains(type);
   }
 
   /**

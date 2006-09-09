@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
+import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
 import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;
@@ -94,7 +95,7 @@ public class LogBuilder
    * @param requestResponses: a list of messages in the form of request-response pairs.
    * @return a log based on a list of request-response pairs.
    */
-  public Log buildLog(List requestResponses)
+  public Log buildLog(List requestResponses) throws WSIException
   {
     log = new LogImpl();
     logMonitorInformation();
@@ -103,9 +104,13 @@ public class LogBuilder
     for (Iterator i = requestResponses.iterator(); i.hasNext();)
     {
       RequestHandler rr = (RequestHandler)i.next();
-      if ((rr != null) && (!omitRequestResponse(rr)))
-      {
-        logRequestResponse(rr);
+      if ((rr != null) && (!omitRequestResponse(rr))) {
+          try {
+              logRequestResponse(rr);
+          } catch (WSIException e) {
+              /* Empty catch block.  This request/response pair is not a valid SOAP
+               * message, so skip it. */
+          }
       }
     }
     return log;
@@ -122,45 +127,54 @@ public class LogBuilder
    * Log the request-response pair.
    *@param rr: a request-response pair.
    */
-  protected void logRequestResponse(RequestHandler rr)
+  protected void logRequestResponse(RequestHandler rr) throws WSIException
   {
     if (rr != null)
     {
-      String requestHeader = new String(rr.getRequestHeader());
-      String responseHeader = new String(rr.getResponseHeader());
+      byte[] requestHeaderBytes = rr.getRequestHeader();
+      byte[] responseHeaderBytes = rr.getResponseHeader();
       
-      byte[] unchunkedRequestBody = rr.getRequestContent();
-      byte[] unchunkedResponseBody = rr.getResponseContent();
- 
-      long timestamp = rr.getDate().getTime();
-      String localHostAndPort = "localhost:" + rr.getLocalPort();
-      String remoteHostAndPort = rr.getRemoteHost() + ":" + rr.getRemotePort();
+      if ((requestHeaderBytes != null) && (responseHeaderBytes != null))
+      {
+        String requestHeader = new String(requestHeaderBytes);
+        String responseHeader = new String(responseHeaderBytes);
 
-      int requestId  = getNextAvailableId();
-      int responseId = getNextAvailableId();
-      int conversationId = getNextAvailableConversationId();
+        byte[] unchunkedRequestBody = rr.getRequestContent();
+        byte[] unchunkedResponseBody = rr.getResponseContent();
+        
+        if ((unchunkedRequestBody != null) && (unchunkedResponseBody != null))
+        {
+          long timestamp = rr.getDate().getTime();
+          String localHostAndPort = "localhost:" + rr.getLocalPort();
+          String remoteHostAndPort = rr.getRemoteHost() + ":" + rr.getRemotePort();
 
-      MessageEntry messageEntryRequest = createMessageEntry(requestId, conversationId, 
+          int requestId  = getNextAvailableId();
+          int responseId = getNextAvailableId();
+          int conversationId = getNextAvailableConversationId();
+
+          MessageEntry messageEntryRequest = createMessageEntry(requestId, conversationId, 
                 MessageEntry.TYPE_REQUEST, timestamp, localHostAndPort,
                 remoteHostAndPort, unchunkedRequestBody, requestHeader);
 
-      MessageEntry messageEntryResponse = createMessageEntry(responseId, conversationId, 
+          MessageEntry messageEntryResponse = createMessageEntry(responseId, conversationId, 
                 MessageEntry.TYPE_RESPONSE, timestamp + rr.getResponseTime(), remoteHostAndPort,
                 localHostAndPort, unchunkedResponseBody, responseHeader);
-      try
-      {
-        if ((messageEntryRequest != null) &&
-            (messageEntryResponse != null) &&
-            ((messageEntryRequest.isMimeContent()) ||
-			 (isMessageWithBrackets(messageEntryRequest.getMessage()))))
-        {
-                log.addLogEntry(messageEntryRequest);
-               log.addLogEntry(messageEntryResponse);
+          try
+          {
+            if ((messageEntryRequest != null) &&
+                (messageEntryResponse != null) &&
+                ((messageEntryRequest.isMimeContent()) ||
+			     (isMessageWithBrackets(messageEntryRequest.getMessage()))))
+            {
+              log.addLogEntry(messageEntryRequest);
+              log.addLogEntry(messageEntryResponse);
+            }
+          }
+          catch (Exception e)
+          {
+            // ignore the request response pair
+          }
         }
-      }
-      catch (Exception e)
-      {
-        // ignore the request response pair
       }
     }
   }
@@ -306,12 +320,15 @@ public class LogBuilder
    * @param rr: a request-response pair.
    * @return true if the request-response pair should be omitted from the log.
    */
-  private boolean omitRequestResponse(RequestHandler rr) 
+  private boolean omitRequestResponse(RequestHandler rr)
   {
     boolean omit = false;
     if (rr != null)
     {
-      String request = rr.getRequestHeader().toString();
+      byte[] requestBytes = rr.getRequestHeader();
+      if (requestBytes == null)
+          return true;
+      String request = requestBytes.toString();
       if ((request != null) &&
           ((request.startsWith("CONNECT")) ||
            (request.startsWith("TRACE")) || 

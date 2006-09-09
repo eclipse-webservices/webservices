@@ -70,7 +70,7 @@ public class BasicProfileAnalyzer extends Analyzer
    * WSDL document to analyze.
    */
   protected WSDLDocument wsdlDocument = null;
-  private WSDLValidator wsdlValidator;
+  // private WSDLValidator wsdlValidator;
 
   /**
    * Basic profile analyzer.

@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
+import org.eclipse.wst.wsi.internal.core.document.DocumentElement;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EnvelopeValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
@@ -205,28 +205,26 @@ public class EntryImpl extends EntryResultImpl implements Entry
     }
 
     if (this.referenceID != null)
-      pw.print(
-        WSIConstants.ATTR_REFERENCE_ID + "=\"" + XMLUtils.xmlEscapedString(this.referenceID) + "\"");
+      pw.print(WSIConstants.ATTR_REFERENCE_ID + "=\"" + XMLUtils.xmlEscapedString(this.referenceID) + "\" ");
+
 
     // If service name was set then add it
     //if (parentElementName != null) {
     //  pw.print(" " + WSIConstants.ATTR_PARENT_ELEMENT_NAME + "=\"" + this.parentElementName + "\"");
     //}
 
-    // End element
-    pw.println(">");
-
     // ADD: Need to check for config option that specifies 
     //      that log entries should be added
 
     // If target is a log entry, then add reference to it
-    if ((entryType != null)
-      && (entryType.getArtifactType().equals(MessageValidator.TYPE_MESSAGE))
-      && (showLogEntry))
+    if ((entryType != null) && (entryType.getArtifactType().isLoggable()) && (showLogEntry)) 
     {
-      MessageEntry logEntry = (MessageEntry) entryDetail;
-      pw.println(logEntry.toXMLString(WSIConstants.NS_NAME_WSI_LOG));
+      DocumentElement logEntry = (DocumentElement) entryDetail;
+      pw.println("value=\"" + logEntry.toXMLString(WSIConstants.NS_NAME_WSI_LOG) + "\" ");
     }
+   
+    // End element
+    pw.println(">");
 
     return sw.toString();
   }

@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.profile.validator.BaseValidator;
+import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.envelope.EnvelopeValidatorImpl;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.message.MessageValidatorImpl;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.uddi.UDDIValidatorImpl;
@@ -36,13 +37,13 @@ public class WSITestToolsPlugin extends Plugin
   private static Plugin instance;
   protected final String PLUGIN_PROPERTIES = "wsivalidate";
   protected static final String PLUGIN_ID = "org.eclipse.wst.wsi";
-  protected static final String VALIDATOR_EXT_ID = PLUGIN_ID + ".validator";
-  protected static final String TAD_VERSION_EXT_ID = PLUGIN_ID +
-          ".tad_versions";
+  protected static final String VALIDATOR_EXT_ID = PLUGIN_ID + ".wsivalidator";
+  protected static final String TAD_VERSION_EXT_ID = PLUGIN_ID + ".tads";
+  protected static final String REPORT_ARTIFACT_TYPES_EXT_ID = PLUGIN_ID + ".reportArtifactTypes";
   protected static final String ATT_CLASS = "class";
   protected static final String ATT_TAD_NAME = "tad_name";
   protected static final String ATT_TAD_VERSION = "version";
-  //protected ResourceBundle resourcebundle = null;
+  protected static final String ATT_ARTIFACT_TYPE = "artifactType";
 
   /* Holds validators read from the platform registry.  Lazy initialized in
    * computeValidators().  */
@@ -54,6 +55,10 @@ public class WSITestToolsPlugin extends Plugin
    *   1: the TAD version string
    * Lazy initialized in computeTADVersions().  */
   private String tadVersions[][];
+
+  /* Holds artifact type names for reporting read from the platform registry.
+   * Lazy initialized in getAllReportArtifactTypes().  */
+  private String reportArtifactTypes[];
 
   /**
    * Constructor for wsiTestToolsPlugin.
@@ -188,5 +193,40 @@ public class WSITestToolsPlugin extends Plugin
       tadVersions = (String[][]) results.toArray(new String[0][0]);
     }
     return tadVersions;
+  }
+  
+  /* Computes the list of artifact types by scanning the platform registry. */
+  private String[] computeReportArtifactTypes() 
+  {
+    IExtensionRegistry registry = Platform.getExtensionRegistry();
+    IExtensionPoint extensionPoint = registry.getExtensionPoint(REPORT_ARTIFACT_TYPES_EXT_ID);
+    IExtension[] extensions = extensionPoint.getExtensions();
+    ArrayList results = new ArrayList();
+    for (int i = 0; i < extensions.length; i++) 
+    {
+      IConfigurationElement reportArtifactElements[] = extensions[i].getConfigurationElements();
+      for (int j = 0; j < reportArtifactElements.length; j++) 
+      {
+        String reportArtifact = reportArtifactElements[j].getAttribute(ATT_ARTIFACT_TYPE);
+        results.add(reportArtifact);
+      }
+    }
+    return (String[]) results.toArray(new String[0]);
+  }
+  
+  /**
+   * Find all report artifact types tags found in the platform registry
+   * extension points org.eclipse.wst.wsi.reportArtifactTypes.
+   * @return an array containing these Strings
+   */
+  public String[] getAllReportArtifactTypes() 
+  {
+    if (reportArtifactTypes == null)
+    {
+      ArrayList results = new ArrayList();
+      results.add(MessageValidator.TYPE_MESSAGE);
+      reportArtifactTypes = (String[]) results.toArray(new String[0]);
+    }
+    return reportArtifactTypes;
   }
 }
