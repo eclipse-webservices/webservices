@@ -18,13 +18,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.profile.validator.BaseValidator;
-import org.eclipse.wst.wsi.internal.core.profile.validator.MessageValidator;
-import org.eclipse.wst.wsi.internal.core.profile.validator.impl.envelope.EnvelopeValidatorImpl;
-import org.eclipse.wst.wsi.internal.core.profile.validator.impl.message.MessageValidatorImpl;
-import org.eclipse.wst.wsi.internal.core.profile.validator.impl.uddi.UDDIValidatorImpl;
-import org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl.WSDLValidatorImpl;
 
 /**
  * The WS-I test tools plugin.
@@ -41,7 +35,7 @@ public class WSITestToolsPlugin extends Plugin
   protected static final String TAD_VERSION_EXT_ID = PLUGIN_ID + ".tads";
   protected static final String REPORT_ARTIFACT_TYPES_EXT_ID = PLUGIN_ID + ".reportArtifactTypes";
   protected static final String ATT_CLASS = "class";
-  protected static final String ATT_TAD_NAME = "tad_name";
+  protected static final String ATT_TAD_NAME = "name";
   protected static final String ATT_TAD_VERSION = "version";
   protected static final String ATT_ARTIFACT_TYPE = "artifactType";
 
@@ -122,16 +116,9 @@ public class WSITestToolsPlugin extends Plugin
    */
   public BaseValidator[] getBaseValidators() 
   {
-    if (validators == null)
-    {
-    	ArrayList results = new ArrayList();
-    	results.add(new UDDIValidatorImpl());
-    	results.add(new WSDLValidatorImpl());
-    	results.add(new MessageValidatorImpl());
-    	results.add(new EnvelopeValidatorImpl());
-    	validators = (BaseValidator[]) results.toArray(new BaseValidator[0]);
-    }
-    return validators;
+	if (validators == null)
+	  validators = computeValidators();
+    return validators;  
   }
 
   /**
@@ -183,16 +170,9 @@ public class WSITestToolsPlugin extends Plugin
    */
   public String[][] getAllTADVersions() 
   {
-    if (tadVersions == null)
-    {
-      ArrayList results = new ArrayList();
-      results.add(new String[]{WSIConstants.BASIC_PROFILE_TAD_NAME, WSIConstants.BASIC_PROFILE_TAD_VERSION});
-      results.add(new String[]{WSIConstants.BASIC_PROFILE_1_1_TAD_NAME, WSIConstants.BASIC_PROFILE_1_1_TAD_VERSION});
-      results.add(new String[]{WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_NAME, WSIConstants.SIMPLE_SOAP_BINDINGS_PROFILE_TAD_VERSION});
-      results.add(new String[]{WSIConstants.ATTACHMENTS_PROFILE_TAD_NAME, WSIConstants.ATTACHMENTS_PROFILE_TAD_VERSION});
-      tadVersions = (String[][]) results.toArray(new String[0][0]);
-    }
-    return tadVersions;
+	if (tadVersions == null)
+	  tadVersions = computeTADVersions();
+    return tadVersions;  
   }
   
   /* Computes the list of artifact types by scanning the platform registry. */
@@ -222,11 +202,7 @@ public class WSITestToolsPlugin extends Plugin
   public String[] getAllReportArtifactTypes() 
   {
     if (reportArtifactTypes == null)
-    {
-      ArrayList results = new ArrayList();
-      results.add(MessageValidator.TYPE_MESSAGE);
-      reportArtifactTypes = (String[]) results.toArray(new String[0]);
-    }
+        reportArtifactTypes = computeReportArtifactTypes();
     return reportArtifactTypes;
   }
 }

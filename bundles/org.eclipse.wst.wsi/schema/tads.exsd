@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.wst.wsi">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.wst.wsi" id="tads" name="Test Assertion Documents"/>
+      </appInfo>
+      <documentation>
+         The tads extension point allows clients to denote additional Test Assertion Documents that they can handle.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <documentation>
+            (no description available)
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="tad"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="tad">
+      <annotation>
+         <documentation>
+            (no description available)
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="version" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         WTP 2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a TAD version contribution:
+&lt;pre&gt;
+&lt;extension
+        id=&quot;bpTadVersions&quot;
+        name=&quot;%_UI_WSI_BP_TAD_VERSIONS&quot;
+        point=&quot;org.eclipse.wst.wsi.tad_versions&quot;&gt;
+     &lt;tad
+        name=&quot;Basic Profile Test Assertions&quot;
+        version=&quot;1.1.0&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         No API is associated with this extension point.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         No implementation is associated with this extension point.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="bsp.org.eclipse.wst.wsi">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="bsp.org.eclipse.wst.wsi" id="wsivalidator" name="WS-I Validator"/>
+      </appInfo>
+      <documentation>
+         The WS-I Validator extension point allows clients to contribute a validator that can validate different WS-I Profiles.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <documentation>
+            (no description available)
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="wsivalidator"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="wsivalidator">
+      <annotation>
+         <documentation>
+            (no description available)
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.wst.wsi.internal.core.profile.validator.BaseValidator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         WTP 2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a WS-I Validator contribution:
+&lt;pre&gt;
+&lt;extension
+        id=&quot;messageValidator&quot;
+        name=&quot;%_UI_WSI_FRAMEWORK_MESSAGE_VALIDATOR&quot;
+        point=&quot;org.eclipse.wst.wsi.validator&quot;&gt;
+     &lt;wsi_validator
+        class=&quot;org.eclipse.wst.wsi.internal.core.profile.validator.impl.message.MessageValidatorImpl&quot;/&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The supplied class must implement &lt;code&gt;org.eclipse.wst.wsi.internal.core.profile.validator.BaseValidator&lt;/code&gt;.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         &lt;code&gt;
+org.eclipse.wst.wsi.internal.core.profile.validator.impl.message.MessageValidatorImpl
+&lt;/code&gt;
+Contributes WS-I validation logic for the Basic Profile validation of messages.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>
