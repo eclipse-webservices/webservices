@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.analyzer;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -575,35 +576,38 @@ public class CandidateInfo
   {
 
     HashSet importSet = new HashSet();
+    importSet =  getAllImports(new ArrayList(), rootDef);
+    return (importSet);
+  }
+  
+  private HashSet getAllImports(List alreadyProcessedDefinitions, Definition rootDef) 
+  {
+	HashSet importSet = new HashSet();
+	if ((rootDef != null) && (!alreadyProcessedDefinitions.contains(rootDef)))
+	{
+      alreadyProcessedDefinitions.add(rootDef);	
+	  Map importMap = rootDef.getImports();
+      Iterator i = importMap.values().iterator();
 
-    Map importMap = rootDef.getImports();
-    Iterator i = importMap.values().iterator();
-
-    while (i.hasNext())
-    {
-      List nextImportList = (List) (i.next());
-      Iterator listIt = nextImportList.iterator();
-      while (listIt.hasNext())
+      while (i.hasNext())
       {
-        Import nextImport = (Import) listIt.next();
-        if (nextImport != null)
+        List nextImportList = (List) (i.next());
+        Iterator listIt = nextImportList.iterator();
+        while (listIt.hasNext())
         {
-          // its a wsdl document
-          importSet.add(nextImport);
-          if (nextImport.getDefinition() != null)
+          Import nextImport = (Import) listIt.next();
+          if (nextImport != null)
           {
-            HashSet subTreeImports = getAllImports(nextImport.getDefinition());
-            Iterator subIt = subTreeImports.iterator();
-            while (subIt.hasNext())
-            {
-              importSet.add((Import) (subIt.next()));
-            }
+            importSet.add(nextImport);
+            Definition def = nextImport.getDefinition();
+       	    HashSet nestedImports = getAllImports(alreadyProcessedDefinitions, def);
+            for (Iterator j = nestedImports.iterator(); j.hasNext();)
+              importSet.add(j.next());
           }
         }
       }
     }
-
-    return (importSet);
+    return importSet;
   }
 
   /**

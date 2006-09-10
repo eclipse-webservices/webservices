@@ -12,6 +12,7 @@ package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1732,32 +1733,46 @@ public class WSDLValidatorImpl
    */
   protected List getWSDLTargetNamespaceList(Definition definition)
   {
-    List list = new Vector();
+    return getWSDLTargetNamespaceList(definition, new ArrayList());
+  }
 
-    // Always add current document targetNamespace
-    if (definition.getTargetNamespace() != null)
-      list.add(definition.getTargetNamespace());
-
-    // Get list of imported WSDL documents
-    Map importMap = definition.getImports();
-
-    Import imp;
-
-    // Add each imports targetNamespace to the list
-    if (importMap != null && !importMap.isEmpty())
+  /**
+   * Build list of WSDL targetNamespaces.
+   * @param definition a Definition object.
+   * @return list of WSDL targetNamespaces.
+   */
+  protected List getWSDLTargetNamespaceList(Definition definition, List alreadyProcessedDefinitions)
+  {
+    List list = new ArrayList();
+    if ((definition != null) && (!alreadyProcessedDefinitions.contains(definition)))
     {
-      Iterator values = importMap.values().iterator();
-      List importList;
-      while (values.hasNext())
+      alreadyProcessedDefinitions.add(definition);
+      
+      // Always add current document targetNamespace
+      if (definition.getTargetNamespace() != null)
+        list.add(definition.getTargetNamespace());
+
+      // Get list of imported WSDL documents
+      Map importMap = definition.getImports();
+
+      Import imp;
+
+      // Add each imports targetNamespace to the list
+      if (importMap != null && !importMap.isEmpty())
       {
-        importList = (List) values.next();
-        Iterator imports = importList.iterator();
-        while (imports.hasNext())
+        Iterator values = importMap.values().iterator();
+        List importList;
+        while (values.hasNext())
         {
-          imp = (Import) imports.next();
-          if (imp != null && imp.getDefinition() != null)
-          list.addAll(getWSDLTargetNamespaceList(imp.getDefinition()));
+          importList = (List) values.next();
+          Iterator imports = importList.iterator();
+          while (imports.hasNext())
+          {
+            imp = (Import) imports.next();
+            if (imp != null && imp.getDefinition() != null)
+            list.addAll(getWSDLTargetNamespaceList(imp.getDefinition(), alreadyProcessedDefinitions));
             // list.add(imp.getDefinition().getTargetNamespace());
+          }
         }
       }
     }

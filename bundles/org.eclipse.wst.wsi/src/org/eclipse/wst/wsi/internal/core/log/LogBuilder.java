@@ -20,7 +20,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.wsi.internal.core.ToolInfo;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
-import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.common.AddStyleSheet;
 import org.eclipse.wst.wsi.internal.core.common.impl.AddStyleSheetImpl;
 import org.eclipse.wst.wsi.internal.core.document.DocumentFactory;

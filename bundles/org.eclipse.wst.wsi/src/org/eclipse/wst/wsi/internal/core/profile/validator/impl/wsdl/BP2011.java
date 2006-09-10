@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -103,7 +104,7 @@ public class BP2011 extends AssertionProcess implements WSITag
         ExtensibilityElement el = (ExtensibilityElement) it.next();
         if (el instanceof UnknownExtensibilityElement)
           searchForSchema(((UnknownExtensibilityElement) el).getElement(),
-              definition.getDocumentBaseURI());
+              definition.getDocumentBaseURI(), new ArrayList());
       }
     }
 
@@ -120,27 +121,30 @@ public class BP2011 extends AssertionProcess implements WSITag
   /* Search xsd schema or xsd import from node. If node is xsd import it's loading schema.
    * @param n - UnknownExtencibilityElement
   */
-  private void searchForSchema(Node n, String context)
+  private void searchForSchema(Node n, String context, List processedSchemas)
   {
-    while (n != null)
+    if ((n!= null) && (!processedSchemas.contains(n)))
     {
-      // searches for xsd:import element
-      if (Node.ELEMENT_NODE == n.getNodeType())
+      while (n != null)
       {
-        // if xsd:schema element is found -> process schema
-        if (XMLUtils.equals(n, ELEM_XSD_SCHEMA))
-          processSchema(n, context);
-        else
-          // if xsd:import element is found -> load schema and process schema
-          // FIXED: if xsd:import is found and parent element is xsd:schema
-          if (XMLUtils.equals(n, ELEM_XSD_IMPORT)
-            && XMLUtils.equals(n.getParentNode(), ELEM_XSD_SCHEMA))
-            loadSchema(n, context);
+        // searches for xsd:import element
+        if (Node.ELEMENT_NODE == n.getNodeType())
+        {
+          // if xsd:schema element is found -> process schema
+          if (XMLUtils.equals(n, ELEM_XSD_SCHEMA))
+            processSchema(n, context, processedSchemas);
           else
-            // else iterate element recursively
-            searchForSchema(n.getFirstChild(), context);
+            // if xsd:import element is found -> load schema and process schema
+            // FIXED: if xsd:import is found and parent element is xsd:schema
+            if (XMLUtils.equals(n, ELEM_XSD_IMPORT)
+              && XMLUtils.equals(n.getParentNode(), ELEM_XSD_SCHEMA))
+              loadSchema(n, context, processedSchemas);
+            else
+              // else iterate element recursively
+              searchForSchema(n.getFirstChild(), context, processedSchemas);
+        }
+        n = n.getNextSibling();
       }
-      n = n.getNextSibling();
     }
   }
 
@@ -148,7 +152,7 @@ public class BP2011 extends AssertionProcess implements WSITag
    * It loads xsd schema and then check the version 1.0 and looking for xsd:schema element for next process.
    * @param importNode xsd schema
   */
-  private void loadSchema(Node importNode, String context)
+  private void loadSchema(Node importNode, String context, List processedSchemas)
   {
     Element im = (Element) importNode;
     Attr schemaLocation = XMLUtils.getAttribute(im, ATTR_XSD_SCHEMALOCATION);
@@ -170,7 +174,7 @@ public class BP2011 extends AssertionProcess implements WSITag
         if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
         {
           processSchema(schema.getDocumentElement(),
-            XMLUtils.createURLString(schemaLocation.getValue(), context));
+            XMLUtils.createURLString(schemaLocation.getValue(), context), processedSchemas);
         }
         result = AssertionResult.RESULT_PASSED;
       }
@@ -326,16 +330,20 @@ public class BP2011 extends AssertionProcess implements WSITag
    * It's loking for xsd import and load it if find.
    * @param schema xsd schema
   */
-  private void processSchema(Node schema, String context)
+  private void processSchema(Node schema, String context, List processedSchemas)
   {
-    Node n = schema.getFirstChild();
-    while (n != null)
-    {
-      if (Node.ELEMENT_NODE == n.getNodeType()
-        && XMLUtils.equals(n, ELEM_XSD_IMPORT))
-        loadSchema(n, context);
+	if ((schema != null) && (!processedSchemas.contains(schema)))
+	{
+	  processedSchemas.add(schema);
+      Node n = schema.getFirstChild();
+      while (n != null)
+      {
+        if (Node.ELEMENT_NODE == n.getNodeType()
+          && XMLUtils.equals(n, ELEM_XSD_IMPORT))
+          loadSchema(n, context, processedSchemas);
 
-      n = n.getNextSibling();
-    }
+        n = n.getNextSibling();
+      }
+	}
   }
 }

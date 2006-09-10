@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,7 +81,7 @@ public final class WSDLUtil
         {
           Iterator it2 = v.iterator();
           while (it2.hasNext())
-            expandDefinition(def, (Import) it2.next());
+            expandDefinition(def, (Import) it2.next(), new ArrayList());
         }
       }
     }
@@ -91,45 +92,50 @@ public final class WSDLUtil
    * @param target WSDL definition.
    * @param im internal method.
    */
-  static private void expandDefinition(Definition target, Import im)
+  static private void expandDefinition(Definition target, Import im, List processedDefinitions)
   {
-    if (im != null && im.getDefinition() != null)
+    if (im != null)
     {
       Definition d = im.getDefinition();
-      if (d.getMessages() != null)
+      if ((d != null) && (!processedDefinitions.contains(d)))
       {
-        Iterator it = d.getMessages().values().iterator();
-        while (it.hasNext())
-          target.addMessage((Message) it.next());
-      }
-      if (d.getPortTypes() != null)
-      {
-        Iterator it = d.getPortTypes().values().iterator();
-        while (it.hasNext())
-          target.addPortType((PortType) it.next());
-      }
-      if (d.getBindings() != null)
-      {
-        Iterator it = d.getBindings().values().iterator();
-        while (it.hasNext())
-          target.addBinding((Binding) it.next());
-      }
-      if (d.getServices() != null)
-      {
-        Iterator it = d.getServices().values().iterator();
-        while (it.hasNext())
-          target.addService((Service) it.next());
-      }
+    	processedDefinitions.add(d);
 
-      Iterator it = d.getImports().values().iterator();
-      while (it.hasNext())
-      {
-        List v = (List) it.next();
-        if (v != null)
+        if (d.getMessages() != null)
         {
-          Iterator it2 = v.iterator();
-          while (it2.hasNext())
-            expandDefinition(target, (Import) it2.next());
+          Iterator it = d.getMessages().values().iterator();
+          while (it.hasNext())
+            target.addMessage((Message) it.next());
+        }
+        if (d.getPortTypes() != null)
+        {
+          Iterator it = d.getPortTypes().values().iterator();
+          while (it.hasNext())
+            target.addPortType((PortType) it.next());
+        }
+        if (d.getBindings() != null)
+        {
+          Iterator it = d.getBindings().values().iterator();
+          while (it.hasNext())
+            target.addBinding((Binding) it.next());
+        }
+        if (d.getServices() != null)
+        {
+          Iterator it = d.getServices().values().iterator();
+          while (it.hasNext())
+            target.addService((Service) it.next());
+        }
+
+        Iterator it = d.getImports().values().iterator();
+        while (it.hasNext())
+        {
+          List v = (List) it.next();
+          if (v != null)
+          {
+            Iterator it2 = v.iterator();
+            while (it2.hasNext())
+              expandDefinition(target, (Import) it2.next(), processedDefinitions);
+          }
         }
       }
     }

@@ -9,7 +9,9 @@
  *   IBM - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.wsdl.traversal;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -147,12 +149,14 @@ public class WSDLTraversal
   private boolean visitSOAPHeaderFault = false;
   private boolean visitSOAPOperation = false;
 
+  List alreadyTraversedDefinitions;
   /**
    * Default constructor.
    * @see java.lang.Object#Object()
    */
   public WSDLTraversal()
   {
+	alreadyTraversedDefinitions = new ArrayList();
   }
 
   /**
@@ -1822,16 +1826,20 @@ public class WSDLTraversal
     Object parent,
     WSDLTraversalContext ctx)
   {
+	if ((objDefinition == null) || (this.alreadyTraversedDefinitions.contains(objDefinition)))
+	{
+	  return;	
+	}
+	this.alreadyTraversedDefinitions.add(objDefinition);
     ctx.resumeDefinitionProcessing();
     ctx.setDefinition(objDefinition);
+
     if (visitDefinition)
     {
       visitor.visit(objDefinition, parent, ctx);
       if (!ctx.processDefinition())
         return;
     }
-    if (objDefinition == null)
-      return;
     if (traverseDefinition2Import && objDefinition.getImports() != null)
     {
       Iterator it = objDefinition.getImports().values().iterator();
@@ -2560,7 +2568,18 @@ public class WSDLTraversal
         return;
     }
     if (traverseImport2Definition)
-      traverse(objImport.getDefinition(), objImport, ctx);
+    {
+      try
+      {
+        Definition definition = objImport.getDefinition();
+        if ((definition != null) && (!alreadyTraversedDefinitions.contains(definition)))
+        {
+          alreadyTraversedDefinitions.add(definition);
+          traverse(objImport.getDefinition(), objImport, ctx);
+        }
+      }
+      catch (Exception e){}
+    }
   }
 
   /**

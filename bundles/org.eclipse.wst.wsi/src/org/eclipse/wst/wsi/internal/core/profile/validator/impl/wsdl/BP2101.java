@@ -20,8 +20,6 @@ import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
 import org.eclipse.wst.wsi.internal.core.profile.validator.impl.AssertionProcessVisitor;
 import org.eclipse.wst.wsi.internal.core.report.AssertionResult;
 import org.eclipse.wst.wsi.internal.core.util.ErrorList;
-import org.eclipse.wst.wsi.internal.core.util.TestUtils;
-import org.eclipse.wst.wsi.internal.core.util.Utils;
 import org.eclipse.wst.wsi.internal.core.wsdl.traversal.WSDLTraversal;
 import org.eclipse.wst.wsi.internal.core.wsdl.traversal.WSDLTraversalContext;
 
@@ -54,7 +52,8 @@ public class BP2101 extends AssertionProcessVisitor implements WSITag
   public void visit(Import im, Object parent, WSDLTraversalContext ctx)
   {
     importFound = true;
-
+    try
+    {
     // by the way : WSDL4J throws Exception if imported WSDL is not resolved
     // but documentation says that im.getDefinition() will be equal to null
     if (im.getDefinition() == null)
@@ -63,24 +62,15 @@ public class BP2101 extends AssertionProcessVisitor implements WSITag
           + ":"
           + im.getLocationURI()
           + "\nImport element does not reference a WSDL definition.");
-    else
-      try
-      {
-        // try to parse WSDL according to the WSDL schema
-        validator.parseXMLDocumentURL(
-           im.getLocationURI(),
-           ((Definition)parent).getDocumentBaseURI(),
-           TestUtils.getWSDLSchemaLocation());
-      }
-      catch (Throwable t)
-      {
-        errors.add(
-          im.getNamespaceURI()
-            + ":"
-            + im.getLocationURI()
-            + "\n"
-            + Utils.getExceptionDetails(t));
-      }
+    }
+    catch (Exception e)
+    {
+      errors.add(
+        im.getNamespaceURI()
+          + ":"
+          + im.getLocationURI()
+          + "\nImport element does not reference a WSDL definition.");
+    }
   }
 
   public AssertionResult validate(

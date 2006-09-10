@@ -421,7 +421,7 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
       {
         // if xsd:schema element is found -> process schema
         if (XMLUtils.equals(n, ELEM_XSD_SCHEMA))
-          processSchema(n, context);
+          processSchema(n, context, new ArrayList());
       }
       n = n.getNextSibling();
     }
@@ -433,7 +433,7 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
    * @param importNode
    * @param context
    */
-  private void loadSchema(Node importNode, String context)
+  private void loadSchema(Node importNode, String context, List processedSchemas)
   {
     Element im = (Element) importNode;
     Attr schemaLocation = XMLUtils.getAttribute(im, ATTR_XSD_SCHEMALOCATION);
@@ -455,7 +455,7 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
           if (XMLUtils.equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
             processSchema(
               schema.getDocumentElement(),
-              urlString);
+              urlString, processedSchemas);
     	}
       }
       catch (Throwable t)
@@ -471,66 +471,70 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
    * @param schema
    * @param context
    */
-  private void processSchema(Node schema, String context)
+  private void processSchema(Node schema, String context, List processedSchemas)
   {
-    Attr a = XMLUtils.getAttribute((Element) schema, ATTR_XSD_TARGETNAMESPACE);
-    String targetNamespace = (a != null) ? a.getValue() : "";
-    // iterate schema
-    Node n = schema.getFirstChild();
-    // !! we suppose that xsd:import element is occured only within xsd:schema element        
-    while (n != null)
-    {
-      if (Node.ELEMENT_NODE == n.getNodeType())
+	if ((schema != null) && (!processedSchemas.contains(schema)))
+	{
+	  processedSchemas.add(schema);
+      Attr a = XMLUtils.getAttribute((Element) schema, ATTR_XSD_TARGETNAMESPACE);
+      String targetNamespace = (a != null) ? a.getValue() : "";
+      // iterate schema
+      Node n = schema.getFirstChild();
+      // !! we suppose that xsd:import element is occured only within xsd:schema element        
+      while (n != null)
       {
-        if (XMLUtils.equals(n, ELEM_XSD_ELEMENT))
+        if (Node.ELEMENT_NODE == n.getNodeType())
         {
-          Element el = (Element) n;
-          a = XMLUtils.getAttribute(el, ATTR_XSD_NAME);
-          QName element =
-            new QName(targetNamespace, (a != null) ? a.getValue() : "");
-
-          a = XMLUtils.getAttribute(el, ATTR_XSD_TYPE);
-          QName type = null;
-          if (a != null)
+          if (XMLUtils.equals(n, ELEM_XSD_ELEMENT))
           {
-            String t = a.getValue();
-            // if type contains ':', it means that it contains qname
-            int i = t.indexOf(':');
-            if (i != -1)
+            Element el = (Element) n;
+            a = XMLUtils.getAttribute(el, ATTR_XSD_NAME);
+            QName element =
+              new QName(targetNamespace, (a != null) ? a.getValue() : "");
+
+            a = XMLUtils.getAttribute(el, ATTR_XSD_TYPE);
+            QName type = null;
+            if (a != null)
             {
-              String prefix = t.substring(0, i);
-              String nsURI = XMLUtils.findNamespaceURI(n, prefix);
-              type = new QName(nsURI, t.substring(i + 1));
+              String t = a.getValue();
+              // if type contains ':', it means that it contains qname
+              int i = t.indexOf(':');
+              if (i != -1)
+              {
+                String prefix = t.substring(0, i);
+                String nsURI = XMLUtils.findNamespaceURI(n, prefix);
+                type = new QName(nsURI, t.substring(i + 1));
+              }
+              else
+                type = new QName(targetNamespace, t);
             }
             else
-              type = new QName(targetNamespace, t);
+            {
+              // suppose that element directly contains type declaration
+              type = element;
+              checkType(n, type);
+            }
+
+            element2Type.put(element, type);
           }
-          else
+          else if (XMLUtils.equals(n, ELEM_XSD_IMPORT))
+            loadSchema(n, context, processedSchemas);
+          else if (XMLUtils.equals(n, ELEM_XSD_INCLUDE))
+            loadSchema(n, context, processedSchemas);
+          else if (XMLUtils.equals(n, ELEM_XSD_COMPLEXTYPE))
           {
-            // suppose that element directly contains type declaration
-            type = element;
+            Element el = (Element) n;
+            a = XMLUtils.getAttribute(el, ATTR_XSD_NAME);
+            QName type =
+              new QName(targetNamespace, (a != null) ? a.getValue() : "");
             checkType(n, type);
           }
 
-          element2Type.put(element, type);
-        }
-        else if (XMLUtils.equals(n, ELEM_XSD_IMPORT))
-          loadSchema(n, context);
-        else if (XMLUtils.equals(n, ELEM_XSD_INCLUDE))
-            loadSchema(n, context);
-        else if (XMLUtils.equals(n, ELEM_XSD_COMPLEXTYPE))
-        {
-          Element el = (Element) n;
-          a = XMLUtils.getAttribute(el, ATTR_XSD_NAME);
-          QName type =
-            new QName(targetNamespace, (a != null) ? a.getValue() : "");
-          checkType(n, type);
         }
 
+        n = n.getNextSibling();
       }
-
-      n = n.getNextSibling();
-    }
+	}
   }
 
   /**

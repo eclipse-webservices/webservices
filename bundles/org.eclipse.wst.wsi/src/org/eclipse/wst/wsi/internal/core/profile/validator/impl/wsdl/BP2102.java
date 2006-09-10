@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +85,7 @@ public class BP2102 extends AssertionProcess implements WSITag
           if (el instanceof UnknownExtensibilityElement
             && el.getElementType().equals(ELEM_XSD_SCHEMA))
             testNode(((UnknownExtensibilityElement) el).getElement(),
-              definition.getDocumentBaseURI());
+              definition.getDocumentBaseURI(), new ArrayList());
 
           if (result.equals(AssertionResult.RESULT_FAILED))
           {
@@ -118,86 +119,92 @@ public class BP2102 extends AssertionProcess implements WSITag
    * definition (e.g. WSDL).
   * @param n - Unknown extensibility element
   */
-  private void testNode(Node n, String context)
+  private void testNode(Node n, String context, List processedSchemas)
   {
-    while (n != null)
-    {
-      // searches for xsd:import element
-      if (Node.ELEMENT_NODE == n.getNodeType())
+	if ((n != null) && (!processedSchemas.contains(n)))
+	{
+      if (XMLUtils.equals(n.getParentNode(), ELEM_XSD_SCHEMA))
+         processedSchemas.add(n);    	
+
+      while (n != null)
       {
-        if (XMLUtils.equals(n, ELEM_XSD_IMPORT))
+        // searches for xsd:import element
+        if (Node.ELEMENT_NODE == n.getNodeType())
         {
-          importFound = true;
-
-          Element im = (Element) n;
-          // Getting the schemaLocation and the namespace attributes
-          Attr schemaLocation =
-            XMLUtils.getAttribute(im, ATTR_XSD_SCHEMALOCATION);
-          Attr namespace = XMLUtils.getAttribute(im, ATTR_XSD_NAMESPACE);
-          // If there is only the namespace attribute of import element
-          if (schemaLocation == null && namespace != null)
+          if (XMLUtils.equals(n, ELEM_XSD_IMPORT))
           {
-            // Getting all the inline schemas of the wsdl definition
-            Map schemasMap = validator.wsdlDocument.getSchemas();
-            // If an inline schema imported is defined
-            if (schemasMap.keySet().contains(namespace.getValue()))
+            importFound = true;
+
+            Element im = (Element) n;
+            // Getting the schemaLocation and the namespace attributes
+            Attr schemaLocation =
+              XMLUtils.getAttribute(im, ATTR_XSD_SCHEMALOCATION);
+            Attr namespace = XMLUtils.getAttribute(im, ATTR_XSD_NAMESPACE);
+            // If there is only the namespace attribute of import element
+            if (schemaLocation == null && namespace != null)
             {
+              // Getting all the inline schemas of the wsdl definition
+              Map schemasMap = validator.wsdlDocument.getSchemas();
               // If an inline schema imported is defined
-              // (that means the schema is valid),
-              // continue with the next element
-              n = n.getNextSibling();
-              continue;
-            }
-
-            // no schemaLocation so try the namespace 
-            schemaLocation = namespace;
-          }
-
-          // try to parse imported XSD
-          if (schemaLocation != null && schemaLocation.getValue() != null)
-          {
-            try
-            {
-              // if any error or root element is not XSD schema -> error
-              // !! ATTENTION
-              // root XSD SCHEMA SCHEMA is not valid                            
-              //Document schema = XMLUtils.parseXMLDocumentURL(schemaLocation.getValue(), XSD_SCHEMALOCATION, context);
-              Document schema =
-                validator.parseXMLDocumentURL(schemaLocation.getValue(), context);
-
-              // If the import is valid, then check its contents
-              if (XMLUtils
-                .equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
+              if (schemasMap.keySet().contains(namespace.getValue()))
               {
-                // Check content of imported document
-                testNode(schema.getDocumentElement().getFirstChild(),
-                  XMLUtils.createURLString(schemaLocation.getValue(), context));
+                // If an inline schema imported is defined
+                // (that means the schema is valid),
+                // continue with the next element
+                n = n.getNextSibling();
+                continue;
               }
 
-              else
+              // no schemaLocation so try the namespace 
+              schemaLocation = namespace;
+            }
+
+            // try to parse imported XSD
+            if (schemaLocation != null && schemaLocation.getValue() != null)
+            {
+              try
               {
-                throw new Exception();
+                // if any error or root element is not XSD schema -> error
+                // !! ATTENTION
+                // root XSD SCHEMA SCHEMA is not valid                            
+                //Document schema = XMLUtils.parseXMLDocumentURL(schemaLocation.getValue(), XSD_SCHEMALOCATION, context);
+                Document schema =
+                  validator.parseXMLDocumentURL(schemaLocation.getValue(), context);
+
+                // If the import is valid, then check its contents
+                if (XMLUtils
+                  .equals(schema.getDocumentElement(), ELEM_XSD_SCHEMA))
+                {
+                  // Check content of imported document
+                  testNode(schema.getDocumentElement().getFirstChild(),
+                    XMLUtils.createURLString(schemaLocation.getValue(), context), processedSchemas);
+                }
+
+                else
+                {
+                  throw new Exception();
+                }
+              }
+              catch (Throwable t)
+              {
+                result = AssertionResult.RESULT_FAILED;
+                failureDetailMessage = schemaLocation.getValue();
+                break;
               }
             }
-            catch (Throwable t)
+            else
             {
-              result = AssertionResult.RESULT_FAILED;
-              failureDetailMessage = schemaLocation.getValue();
+              //result = AssertionResult.RESULT_FAILED;
+              result = AssertionResult.RESULT_NOT_APPLICABLE;
+              failureDetailMessage =
+                "schemaLocation == null and namespace == null";
               break;
             }
           }
-          else
-          {
-            //result = AssertionResult.RESULT_FAILED;
-            result = AssertionResult.RESULT_NOT_APPLICABLE;
-            failureDetailMessage =
-              "schemaLocation == null and namespace == null";
-            break;
-          }
+          testNode(n.getFirstChild(), context, processedSchemas);
         }
-        testNode(n.getFirstChild(), context);
+        n = n.getNextSibling();
       }
-      n = n.getNextSibling();
     }
   }
 }
