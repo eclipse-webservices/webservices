@@ -244,8 +244,8 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 //   BindingProtocolComponentControl component = new BindingProtocolComponentControl(base, generator, false);
 //   component.initFields();
    
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
-   
+   PlatformUI.getWorkbench().getHelpSystem().setHelp(base, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
+
     setControl(base);
     
   }

@@ -21,7 +21,9 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 
@@ -68,6 +70,7 @@ public class ASDContentOutlinePage extends ContentOutlinePage {
 		menuManager.addMenuListener(menuListener);
 		
 	    getSite().registerContextMenu("org.eclipse.wst.wsdl.wsdleditor", menuManager, wsdlEditor.getSelectionManager()); //$NON-NLS-1$
+		  PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),ASDEditorCSHelpIds.WSDL_OUTLINE_VIEW); 
 	}
 	
 	protected boolean processingSelectionChange = false;

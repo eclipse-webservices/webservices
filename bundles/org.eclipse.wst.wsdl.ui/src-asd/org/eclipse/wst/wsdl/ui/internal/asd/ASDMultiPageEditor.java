@@ -29,6 +29,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
@@ -149,6 +150,8 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
     setActivePage(getDefaultPageTypeIndex());
     
     getSelectionManager().setSelection(new StructuredSelection(getModel()));
+    
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(graphicalViewer.getControl(), ASDEditorCSHelpIds.WSDL_DESIGN_VIEW);
   }
   
   protected int getDefaultPageTypeIndex() {
