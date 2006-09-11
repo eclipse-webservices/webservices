@@ -131,7 +131,6 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   protected void refreshVisuals()
   {   
     super.refreshVisuals();
-    
     IMessageReference message = (IMessageReference)getModel();    
     label.setText(message.getText());
     label.setIcon(message.getImage()); 
@@ -146,6 +145,24 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
         break;
       }
     }
+  }
+  
+  private Label messageLabel;
+  
+  protected void refreshChildren() {
+	  super.refreshChildren();
+	  
+	  if (getModelChildren().size() > 0) {
+		  if (messageLabel != null) {
+			  contentPane.remove(messageLabel);
+			  messageLabel = null;
+		  }
+	  }
+	  else if (messageLabel == null){
+		  messageLabel = new Label();
+		  messageLabel.setText(((IMessageReference)getModel()).getPreview());
+		  contentPane.add(messageLabel);
+	  }
   }
 
   protected List getModelChildren()

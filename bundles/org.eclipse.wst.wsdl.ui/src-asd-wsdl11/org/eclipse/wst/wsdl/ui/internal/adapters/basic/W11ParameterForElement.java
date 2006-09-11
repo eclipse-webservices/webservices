@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingTypeAction;
@@ -26,6 +27,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 
@@ -115,8 +117,27 @@ public class W11ParameterForElement extends WSDLBaseAdapter implements IParamete
 	}
 	
 	public String getText() {
-		return "parameter - element"; 
+		return getParameterString() + " - element"; 
 	}
+	
+	  private String getParameterString() {
+		  String string = "parameter";
+
+		  if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null &&
+				  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null &&
+				  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() != null) {
+			  Object object = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getAdapter(ProductCustomizationProvider.class);
+			  if (object instanceof ProductCustomizationProvider) {
+				  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
+				  String newString = productCustomizationProvider.getProductString("_UI_LABEL_PARAMETER");
+				  if (newString != null) {
+					  string = newString;
+				  }
+			  }
+		  }
+
+		  return string;
+	  }
 	
 	public ITreeElement[] getChildren() {
 		return new ITreeElement[0];

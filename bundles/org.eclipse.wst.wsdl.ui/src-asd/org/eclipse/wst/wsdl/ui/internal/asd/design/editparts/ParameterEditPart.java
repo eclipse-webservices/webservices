@@ -133,7 +133,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   private DirectEditManager manager;
   
   public void performDirectEdit(Point cursorLocation){
-	  if (!isReadOnly() && (cursorLocation == null || hitTest(getFigure().getBounds(), cursorLocation))) {
+	  if (!isReadOnly() && (cursorLocation == null || hitTest(getLabelFigure().getBounds(), cursorLocation))) {
 		manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		manager.show();
 	  }

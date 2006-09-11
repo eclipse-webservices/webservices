@@ -17,11 +17,13 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
+import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
@@ -44,6 +46,11 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDModelGroup;
+import org.eclipse.xsd.XSDParticle;
+import org.eclipse.xsd.XSDTypeDefinition;
 
 
 public class W11MessageReference extends WSDLBaseAdapter implements IMessageReference, IASDObjectListener
@@ -51,7 +58,8 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   protected int messageKind = -1;
   protected List parameters = null;
   protected List otherThingsToListenTo = null;
-
+  private String previewString = "";
+  
   public W11MessageReference(int messageKind)
   {
     this.messageKind = messageKind;
@@ -63,6 +71,9 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   }
   
   public String getPreview() {
+	  return "  (" + previewString + ")  ";
+	  
+	  /*
 	  String previewString = "()";
 	  List params = getParameters();
 	  // For now, just look at the first Part for the preview
@@ -73,6 +84,38 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  }	  
 	  
 	  return previewString;
+	  */
+  }
+  
+  private String getMessageString(String key, Object[] args) {
+	  String string = null;
+
+	  if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null &&
+			  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null &&
+			  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() != null) {
+		  Object object = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getAdapter(ProductCustomizationProvider.class);
+		  if (object instanceof ProductCustomizationProvider) {
+			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
+			  String newString = productCustomizationProvider.getProductString(key, args);
+			  if (newString != null) {
+				  string = newString;
+			  }
+		  }
+	  }
+
+	  return string;
+  }
+  
+  private String getInvalidElementReferenceString() {
+	  String string = null;
+	  String[] args = new String[1];
+	  args[0] = "element";
+	  string = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
+	  if (string == null) {
+		  string = "Invalid element reference";
+	  }
+	  
+	  return string;
   }
   
   // Convenience method
@@ -149,6 +192,23 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
           asdObject.registerListener(this);
         }
       }
+	  
+	  if (messageRef == null || messageRef.getEMessage() == null) {
+		  String[] args = new String[1];
+		  args[0] = "message";
+		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
+		  if (previewString == null) {
+			  previewString = "Invalid message reference";
+		  }
+	  }
+	  else if (parts.size() <= 0) {
+		  String[] args = new String[1];
+		  args[0] = "part";
+		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
+		  if (previewString == null) {
+			  previewString = "Invalid part reference";
+		  }
+	  }
 	  
 	  return parameters;
     }
@@ -297,6 +357,71 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	      }
 	    } 
 	  }
+	  
+	  MessageReference messageRef = getMessageReference();
+	  if (messageRef == null || messageRef.getEMessage() == null) {
+		  String[] args = new String[1];
+		  args[0] = "message";
+		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
+		  if (previewString == null) {
+			  previewString = "Invalid message reference";
+		  }
+	  }
+	  else if (messageRef.getEMessage().getEParts().size() <= 0) {
+		  String[] args = new String[1];
+		  args[0] = "part";
+		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
+		  if (previewString == null) {
+			  previewString = "Invalid part reference";
+		  }
+	  }
+	  else {
+		  Part part = (Part) messageRef.getEMessage().getEParts().get(0);
+		  XSDElementDeclaration xsdElement = part.getElementDeclaration();
+		  if (xsdElement == null) {
+			  // No XSD Element
+			  previewString = getInvalidElementReferenceString();
+		  }
+		  else {
+			  XSDTypeDefinition xsdType = xsdElement.getAnonymousTypeDefinition();
+			  if (xsdType == null) {
+				  // No anonymous XSD Type 
+				  previewString = getInvalidElementReferenceString();
+			  }
+			  else {
+				  List contents = xsdType.eContents();
+				  if (contents.size() > 0 && contents.get(0) instanceof XSDParticle) {
+					  XSDParticle particle = (XSDParticle) contents.get(0);
+					  List particleContents = particle.eContents();
+					  if (particleContents.size() > 0 && particleContents.get(0) instanceof XSDModelGroup) {
+						  XSDModelGroup modelGroup = (XSDModelGroup) particleContents.get(0);
+						  List modelContents = modelGroup.eContents();
+						  if (modelContents.size() > 0 && modelContents.get(0) instanceof XSDParticle) {
+							  XSDParticle innerParticle = (XSDParticle) modelContents.get(0);
+							  List innerContents = innerParticle.eContents();
+							  if (!(innerContents.size() > 0 && innerContents.get(0) instanceof XSDElementDeclaration)) {
+								  // No inner XSD Element
+								  previewString = getInvalidElementReferenceString();
+							  }
+						  }
+						  else {
+							  // No inner XSDParticle
+							  previewString = getInvalidElementReferenceString();
+						  }
+					  }
+					  else {
+						  // No XSDModelGroup
+						  previewString = getInvalidElementReferenceString();
+					  }
+				  }
+				  else {
+					  // No XSDParticle
+					  previewString = getInvalidElementReferenceString();
+				  }
+			  }
+		  }
+	  }
+	  
 	  return parameters;
 	}    
 	
