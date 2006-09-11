@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
 import javax.wsdl.OperationType;
 
-import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
@@ -25,7 +24,6 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputParameterCommand;
-import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageReferenceCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOperationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddOutputCommand;
@@ -86,9 +84,9 @@ public class W11AddOperationCommand extends W11TopLevelElementCommand implements
 	    messageRefCommand.run();
 	    messageRef = (MessageReference) messageRefCommand.getWSDLElement();
 	    
-	    AddMessageCommand command = new AddMessageCommand(messageRef.getEnclosingDefinition(), NameUtil.getMessageName(messageRef));
-	    command.run();
-	    messageRef.setEMessage((Message) command.getWSDLElement());
+//	    AddMessageCommand command = new AddMessageCommand(messageRef.getEnclosingDefinition(), NameUtil.getMessageName(messageRef));
+//	    command.run();
+//	    messageRef.setEMessage((Message) command.getWSDLElement());
 	    
 	    return messageRef;
 	}

@@ -244,7 +244,7 @@ public abstract class AddBaseParameterCommand {
 		return part;
 	}
 	
-	private String getDocLitWrappedPartName() {
+	protected String getDocLitWrappedPartName() {
 		return "parameters";
 	}
 	
@@ -262,7 +262,7 @@ public abstract class AddBaseParameterCommand {
 		return returnedXSDElement;
 	}
 	
-    private String getPrefixedComponentName(Definition definition, XSDNamedComponent component) {
+    protected String getPrefixedComponentName(Definition definition, XSDNamedComponent component) {
     	String name = component.getName();
     	String tns = component.getTargetNamespace();
         List prefixes = getPrefixes(definition, tns);
