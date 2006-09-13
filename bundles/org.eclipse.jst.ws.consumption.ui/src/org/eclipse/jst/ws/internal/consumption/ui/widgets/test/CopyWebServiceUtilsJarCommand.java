@@ -1,18 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060912   157039 makandre@ca.ibm.com - Andrew Mak, new webserviceutils.jar not copied in client generation
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,6 +40,7 @@ import org.eclipse.wst.command.internal.env.core.context.TransientResourceContex
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.common.BundleUtils;
 
 
 public class CopyWebServiceUtilsJarCommand extends AbstractDataModelOperation 
@@ -100,10 +109,15 @@ private IStatus copyIFile(String source, IPath targetPath, String targetFile, Pl
        context.setCreateFoldersEnabled(true);
        context.setCheckoutFilesEnabled(true);
        IResource resource = FileResourceUtils.findResource(target);
-       if(resource != null) return Status.OK_STATUS;
+       URL sourceURL = BundleUtils.getURLFromBundle( WebServiceConsumptionPlugin.ID, source );       
+       if(resource != null) {    	      	   
+    	   File sourceFile = new File(new URI(FileLocator.toFileURL(sourceURL).toString()));   
+    	   if (resource.getLocation().toFile().length() == sourceFile.length())
+    		   return Status.OK_STATUS;
+       }
        FileResourceUtils.createFile(context, 
                       							target,
-                                    plugin.openStream(new Path(source)),
+                                    sourceURL.openStream(),
                                     monitor,
                                     env.getStatusHandler());
     }
