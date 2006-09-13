@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060427   136449 brunssen@us.ibm.com - Vince Brunssen  
+ * 20060912   141796 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
@@ -17,9 +18,17 @@ import java.net.MalformedURLException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.constants.UDDIModelConstants;
+import org.eclipse.wst.ws.internal.model.v10.registry.Registry;
+import org.eclipse.wst.ws.internal.model.v10.taxonomy.Taxonomy;
+import org.eclipse.wst.ws.internal.model.v10.uddiregistry.UDDIRegistry;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
+import org.eclipse.wst.ws.internal.registry.IRegistryManager;
+import org.eclipse.wst.ws.internal.registry.RegistryService;
+import org.eclipse.wst.ws.internal.registry.UDDIRegistryService;
 import org.uddi4j.UDDIException;
 import org.uddi4j.client.UDDIProxy;
 import org.uddi4j.datatype.Description;
@@ -235,4 +244,56 @@ public class RegistryElement extends AbstractUDDIElement
   {
     return categoriesDirectory_;
   }
+
+  public void refreshMeta(){
+	    
+	  RegistryService regService = RegistryService.instance();
+	  IRegistryManager regManager = regService.getDefaultRegistryManager();
+	  
+	  
+	  try
+	  {
+    	  regManager.refreshManager();
+		  String[] regURIs = regManager.getRegistryURIs();
+		  for (int i = 0; i < regURIs.length; i++)
+		  {
+			  Registry reg = regManager.loadRegistry(regURIs[i]);
+			  if (reg instanceof UDDIRegistry)
+			  {
+				  UDDIRegistry uddiReg = (UDDIRegistry)reg;
+				  if(uddiReg.getDiscoveryURL().equals(getInquiryURL())){
+					  
+					  
+					 
+					  Taxonomy[] taxonomies = regManager.loadTaxonomies(UDDIRegistryService.instance().getTaxonomyURIs(uddiReg));
+					  if (taxonomies != null)
+				        {
+				          Hashtable taxonomyTable = new Hashtable();
+				          for (int j=0; j<taxonomies.length; j++)
+				          {
+				            Taxonomy taxonomy = taxonomies[j];
+				            String name = taxonomy.getName();
+				            String tmodelKey = taxonomy.getTmodelKey();
+				            CategoryModel catModel = new CategoryModel();
+				            catModel.setDisplayName(name);
+				            catModel.setCategoryKey(name);
+				            catModel.setTModelKey(tmodelKey);
+				            catModel.loadFromTaxonomy(taxonomy);
+				            taxonomyTable.put(tmodelKey, catModel);
+				          }
+				          
+				          setUserDefinedCategories(taxonomyTable);
+				        }   
+				  }
+		  
+			  }
+	  
+		  }
+	  }catch (CoreException ce)
+	  {
+		  // TODO: Better error reporting
+		  ce.printStackTrace();
+	  }  
+  }
+
 }

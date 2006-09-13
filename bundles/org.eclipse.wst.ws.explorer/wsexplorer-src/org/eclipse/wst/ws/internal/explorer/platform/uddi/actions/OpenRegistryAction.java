@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060912   141796 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 
@@ -215,8 +218,6 @@ public class OpenRegistryAction extends UDDIPropertiesFormAction
         gatherWSUserDefinedCategories(proxy,categoryModels);
         if (categoryModels.size() > 0)
           registryElement.setUserDefinedCategories(categoryModels);
-        else
-          messageQueue.addMessage(uddiPerspective.getMessage("MSG_INFO_NO_USER_DEFINED_CATEGORIES_FOUND"));
       }
       registryElement.setCategoriesDirectory(categoriesDirectory);
       uddiMainElement.connect(registryElement,UDDIModelConstants.REL_REGISTRIES,ModelConstants.REL_OWNER);
