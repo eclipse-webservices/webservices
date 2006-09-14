@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.wsdl.OperationType;
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
@@ -23,6 +24,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingInput;
@@ -38,7 +40,6 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
@@ -102,7 +103,7 @@ public class BugFixesTest extends TestCase
           }
         });
 
-    suite.addTest(new BugFixesTest("ImportsElementOrder")
+    suite.addTest(new BugFixesTest("ImportsElementOrder") //$NON-NLS-1$
     {
       protected void runTest()
       {
@@ -110,7 +111,7 @@ public class BugFixesTest extends TestCase
       }
     });
 
-    suite.addTest(new BugFixesTest("ResolveWSDLElement")
+    suite.addTest(new BugFixesTest("ResolveWSDLElement") //$NON-NLS-1$
     {
       protected void runTest()
       {
@@ -118,7 +119,7 @@ public class BugFixesTest extends TestCase
       }
     });
 
-    suite.addTest(new BugFixesTest("PartsSerialization")
+    suite.addTest(new BugFixesTest("PartsSerialization") //$NON-NLS-1$
     {
       protected void runTest()
       {
@@ -126,7 +127,7 @@ public class BugFixesTest extends TestCase
       }
     });
 
-    suite.addTest(new BugFixesTest("ImportsSerialization")
+    suite.addTest(new BugFixesTest("ImportsSerialization") //$NON-NLS-1$
     {
       protected void runTest()
       {
@@ -134,11 +135,19 @@ public class BugFixesTest extends TestCase
       }
     });
 
-    suite.addTest(new BugFixesTest("LocalNamespacePrefixes")
+    suite.addTest(new BugFixesTest("LocalNamespacePrefixes") //$NON-NLS-1$
     {
       protected void runTest()
       {
         testSupportsLocalNamespacePrefixes();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("OperationExtensionElements") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testTolleratesExtensionElementsForOperation();
       }
     });
 
@@ -151,10 +160,14 @@ public class BugFixesTest extends TestCase
 
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl()); //$NON-NLS-1$
     WSDLPackage pkg = WSDLPackage.eINSTANCE;
+    // Silences unused variable warning.
+    pkg.eClass();
 
     // We need this for XSD <import>.
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl()); //$NON-NLS-1$
     XSDPackage xsdpkg = XSDPackage.eINSTANCE;
+    // Silences unused variable warning.
+    xsdpkg.eClass();
   }
 
   protected void tearDown() throws Exception
@@ -540,5 +553,30 @@ public class BugFixesTest extends TestCase
     String elementAttributeValue = partElement.getAttribute(WSDLConstants.ELEMENT_ATTRIBUTE);
     
     assertEquals(elementAttributeValue, "parttns:" + responseElementDeclaration.getName());
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=157107
+   */
+  public void testTolleratesExtensionElementsForOperation()
+  {
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/OperationStyle/OperationStyleTest.wsdl"); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+    
+    PortType portType = (PortType) definition.getEPortTypes().get(0);
+    EList operations = portType.getEOperations();
+    
+    Operation operation = (Operation) operations.get(0);
+    OperationType operationType = operation.getStyle();
+    
+    assertEquals(OperationType.REQUEST_RESPONSE, operationType);
   }
 }

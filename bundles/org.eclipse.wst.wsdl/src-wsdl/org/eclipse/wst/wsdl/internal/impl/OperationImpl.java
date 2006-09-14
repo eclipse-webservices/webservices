@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -219,8 +219,6 @@ public class OperationImpl extends WSDLElementImpl implements Operation
   
   private List parameterOrdering = null; // a list of part names (WSDL4J)
 
-  private Map faults;
-
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -274,9 +272,20 @@ public class OperationImpl extends WSDLElementImpl implements Operation
       if (child.getNodeType() != Node.ELEMENT_NODE)
         continue;
       
+      String nsURI = child.getNamespaceURI();
+      
+      if (!WSDLConstants.WSDL_NAMESPACE_URI.equals(nsURI) )
+      {
+        // Skip over any non-WSDL elements. For example, to support new WSDL 
+        // use cases we have to tolerate extensibility elements at the operation level.
+        
+        continue;
+      }
+
       messageRefType = WSDLUtil.getInstance().getWSDLType((Element)child);
+      
       switch (state)
-	  {
+      {
         case 0: // initial state     
           if (WSDLConstants.INPUT == messageRefType)
             state = 1; 
@@ -329,12 +338,12 @@ public class OperationImpl extends WSDLElementImpl implements Operation
           break;
         default: // cannot happen (-1)
           break;
-	  }
+      }
     }
     
     OperationType opType = null;
     switch (state)
-	{
+    {
       case 1:
       case 11:
       	opType = OperationType.ONE_WAY;
@@ -351,7 +360,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
         break;
       default: // invalid
         break;
-	}
+    }
     return opType;    
   }
   /**

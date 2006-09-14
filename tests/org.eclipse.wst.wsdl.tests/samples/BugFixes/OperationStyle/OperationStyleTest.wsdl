@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://example.org"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="OperationStyleTest" targetNamespace="http://example.org">
+
+	<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+		<jaxws:enableWrapperStyle>true</jaxws:enableWrapperStyle>
+		<jaxws:enableAsyncMapping>false</jaxws:enableAsyncMapping>
+	</jaxws:bindings>
+
+	<types>
+		<xsd:schema targetNamespace="http://example.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified" xmlns:tns="http://example.org">
+
+			<xsd:element name="quoteRequest" type="tns:quoteRequestType" />
+
+			<xsd:complexType name="quoteRequestType">
+				<xsd:sequence>
+					<xsd:element name="stockSymbol" type="xsd:int" />
+					<xsd:element name="transactionDate" type="xsd:date" />
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:element name="quoteResponse" type="tns:quoteResponseType" />
+
+			<xsd:complexType name="quoteResponseType">
+				<xsd:sequence>
+					<xsd:element name="value" type="xsd:double" />
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:element name="quoteError" type="xsd:string" />
+
+		</xsd:schema>
+	</types>
+
+	<message name="Quote">
+		<part name="params" element="tns:quoteRequest" />
+	</message>
+
+	<message name="QuoteResponse">
+		<part name="result" element="tns:quoteResponse" />
+	</message>
+
+	<message name="QuoteError">
+		<part name="error" element="tns:quoteError" />
+	</message>
+
+	<portType name="QuotePortType">
+
+		<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+			<jaxws:class name="QuoteProviderImpl" />
+			<jaxws:enableWrapperStyle>true</jaxws:enableWrapperStyle>
+			<jaxws:enableAsyncMapping>false</jaxws:enableAsyncMapping>
+		</jaxws:bindings>
+
+		<operation name="GetQuote">
+
+			<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+				xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+				<jaxws:method name="getQuote" />
+				<jaxws:parameter part="wsdl:definitions/wsdl:message[@name='Quote']/wsdl:part[@name='params']"
+					childElementName="tns:stockSymbol" name="symbol" />
+				<jaxws:parameter part="wsdl:definitions/wsdl:message[@name='Quote']/wsdl:part[@name='params']"
+					childElementName="tns:transactionDate" name="date" />
+				<jaxws:enableWrapperStyle>true</jaxws:enableWrapperStyle>
+				<jaxws:enableAsyncMapping>false</jaxws:enableAsyncMapping>
+			</jaxws:bindings>
+
+			<input message="tns:Quote" />
+
+			<output message="tns:QuoteResponse" />
+
+			<fault name="QuoteError" message="tns:QuoteError">
+
+				<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+					<jaxws:class name="QuoteException" />
+				</jaxws:bindings>
+
+			</fault>
+		</operation>
+	</portType>
+
+	<binding name="QuoteBinding" type="tns:QuotePortType">
+
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+
+		<operation name="GetQuote">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+			<fault name="QuoteError">
+				<soap:fault name="QuoteError" use="literal" />
+			</fault>
+		</operation>
+
+	</binding>
+
+	<service name="QuoteService">
+
+		<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+			<jaxws:class name="QuotationService" />
+		</jaxws:bindings>
+
+		<port name="QuotePort" binding="tns:QuoteBinding">
+
+			<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+				<jaxws:method name="getQuotationService" />
+			</jaxws:bindings>
+
+			<soap:address location="http://localhost:8080/quote" />
+
+		</port>
+
+	</service>
+
+</definitions>
