@@ -553,5 +553,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
       }  
 
     }  
+  }
+  
+  protected void storeCurrentModePreference(String id)
+  {
+    WSDLEditorPlugin.getInstance().getPreferenceStore().setValue(DEFAULT_EDITOR_MODE_ID, id);    
   }  
 }
