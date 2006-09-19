@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
@@ -540,8 +541,17 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
     IContentProvider provider = newEditorMode.getOutlineProvider();
     if (provider != null)
     {
-      ((ASDContentOutlinePage)getContentOutlinePage()).getTreeViewer().setContentProvider(provider);
-      ((ASDContentOutlinePage)getContentOutlinePage()).getTreeViewer().refresh();  
+      ASDContentOutlinePage outline = (ASDContentOutlinePage)getContentOutlinePage();
+      if (outline != null)
+      {
+        TreeViewer treeViewer = outline.getTreeViewer();
+        if (treeViewer != null)
+        {      
+          outline.getTreeViewer().setContentProvider(provider);
+          outline.getTreeViewer().refresh();
+        }
+      }  
+
     }  
   }  
 }
