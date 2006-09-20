@@ -12,6 +12,4 @@ public class MessageLogConformanceAPTest extends CoreMessageLogConformanceTest {
     public void test_1309_1() { runTest("bp", "1309-1", TAD_ID_AP); } 
     public void test_1309_2() { runTest("bp", "1309-2", TAD_ID_AP); } 
     public void test_1600_1() { runTest("bp", "1600-1", TAD_ID_AP); }
-
-    public void test_bugz_141966() { runTest("bugzilla", "141966", TAD_ID_AP); }
 }

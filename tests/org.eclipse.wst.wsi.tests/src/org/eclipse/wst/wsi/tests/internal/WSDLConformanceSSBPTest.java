@@ -23,7 +23,7 @@ public class WSDLConformanceSSBPTest extends CoreWSDLConformanceTest
   // ws-i wsdls
   public void test_addressBook() { runTest("wsi", "addressBook", TAD_ID_SSBP); }
   public void test_addressBook_rpc() { runTest("wsi", "addressBook-rpc", TAD_ID_SSBP); }
-  public void test_sampleAppCatalog() { runTest("wsi", "sampleAppCatalog", TAD_ID_SSBP); }  
+  //public void test_sampleAppCatalog() { runTest("wsi", "sampleAppCatalog", TAD_ID_SSBP); }  
   public void test_sampleAppManufacturer() { runTest("wsi", "sampleAppManufacturer", TAD_ID_SSBP); }  
   public void test_sampleAppWarehouse() { runTest("wsi", "sampleAppWarehouse", TAD_ID_SSBP); } 
 
