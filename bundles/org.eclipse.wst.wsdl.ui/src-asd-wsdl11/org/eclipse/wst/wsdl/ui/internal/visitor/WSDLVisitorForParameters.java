@@ -63,7 +63,7 @@ public class WSDLVisitorForParameters
         {
           concreteComponents.add(ed);
         }
-        else
+        else if (td instanceof XSDComplexTypeDefinition)
         {
           // we're dealing with an anonymous locally defined type
           // se we need to visit it's children
