@@ -151,18 +151,22 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   
   protected void refreshChildren() {
 	  super.refreshChildren();
-	  
-	  if (getModelChildren().size() > 0) {
-		  if (messageLabel != null) {
-			  contentPane.remove(messageLabel);
-			  messageLabel = null;
-		  }
-	  }
-	  else if (messageLabel == null){
-		  messageLabel = new Label();
-		  messageLabel.setText(((IMessageReference)getModel()).getPreview());
-		  contentPane.add(messageLabel);
-	  }
+      refreshMessage();
+  }
+  
+  protected void refreshMessage()
+  {
+      if (getModelChildren().size() > 0) {
+          if (messageLabel != null) {
+              contentPane.remove(messageLabel);
+              messageLabel = null;
+          }
+      }
+      else if (messageLabel == null){
+          messageLabel = new Label();
+          messageLabel.setText(((IMessageReference)getModel()).getPreview());
+          contentPane.add(messageLabel);
+      }    
   }
 
   protected List getModelChildren()
