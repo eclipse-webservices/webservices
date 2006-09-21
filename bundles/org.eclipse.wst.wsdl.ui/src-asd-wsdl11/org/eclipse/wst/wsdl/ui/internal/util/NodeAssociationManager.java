@@ -47,7 +47,14 @@ public class NodeAssociationManager
         
 
   public Object getModelObjectForNode(Object rootObject, Element targetNode)
-  {                                                                       
+  {                                
+    if (targetNode != null && targetNode.getParentNode() == null)
+    {
+      // The element was already removed from the DOM, common scenario during undo.
+      // The parent element's reconciliation will take care of reconciling it.
+      return null;
+    }
+    
     int currentIndex = 0;
 
     Element[] elementChain = getParentElementChain((Element)targetNode);
