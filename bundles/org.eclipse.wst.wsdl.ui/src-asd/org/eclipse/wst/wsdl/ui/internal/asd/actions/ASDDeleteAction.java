@@ -15,6 +15,8 @@ import java.util.Iterator;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
@@ -79,6 +81,13 @@ public class ASDDeleteAction extends BaseSelectionAction {
 			if (command != null) {
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
+
+			    if (object instanceof WSDLBaseAdapter) {
+			    	Object target = ((WSDLBaseAdapter) object).getTarget();
+			    	if (target instanceof WSDLElement) {
+			    		performSelection(((WSDLElement) target).getEnclosingDefinition());
+			    	}
+			    }
 			}
 		}  
 	}
