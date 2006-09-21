@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.ContentOutline;
 import org.eclipse.wst.wsdl.Message;
@@ -41,7 +40,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
-import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -76,22 +74,7 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
   }
   
   private String getNoNameSpecifiedString() {
-	  String string = "no name specified";
-
-	  if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null &&
-			  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null &&
-			  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() != null) {
-		  Object object = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getAdapter(ProductCustomizationProvider.class);
-		  if (object instanceof ProductCustomizationProvider) {
-			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			  String newString = productCustomizationProvider.getProductString("_UI_LABEL_NO_NAME_SPECIFIED");
-			  if (newString != null) {
-				  string = newString;
-			  }
-		  }
-	  }
-
-	  return "(" + string + ")";
+	  return "";
   }
 
   public String getComponentNameQualifier()
