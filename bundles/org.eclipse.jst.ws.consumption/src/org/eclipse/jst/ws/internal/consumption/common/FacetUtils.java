@@ -15,6 +15,7 @@
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
+ * 20060920   158061 kathy@ca.ibm.com - Kathy Chan, Do not add module to EAR when adding J2EE facets to project
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -36,6 +37,14 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jst.j2ee.internal.ejb.project.operations.EjbFacetInstallDataModelProvider;
+import org.eclipse.jst.j2ee.internal.ejb.project.operations.IEjbFacetInstallDataModelProperties;
+import org.eclipse.jst.j2ee.project.facet.AppClientFacetInstallDataModelProvider;
+import org.eclipse.jst.j2ee.project.facet.IAppClientFacetInstallDataModelProperties;
+import org.eclipse.jst.j2ee.project.facet.IUtilityFacetInstallDataModelProperties;
+import org.eclipse.jst.j2ee.project.facet.UtilityFacetInstallDataModelProvider;
+import org.eclipse.jst.j2ee.web.project.facet.IWebFacetInstallDataModelProperties;
+import org.eclipse.jst.j2ee.web.project.facet.WebFacetInstallDataModelProvider;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
@@ -44,6 +53,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
@@ -380,14 +391,49 @@ public class FacetUtils
     
     while(facets.hasNext())
     {
-      IProjectFacetVersion fv = (IProjectFacetVersion)facets.next();
-      Action action = new Action(Type.INSTALL, fv, null);
-      actions.add(action);
+    	IProjectFacetVersion fv = (IProjectFacetVersion)facets.next();
+    	if (fv != null) {
+    		IProjectFacet pf = fv.getProjectFacet();
+    		Action action = new Action(Type.INSTALL, fv, getConfigObject(pf));
+    		actions.add(action);
+    	}
     }
     
     return actions;
   }
   
+  /**
+   * Returns the data model config object for the given project facet
+   * For J2EE facets, set Add_TO_EAR properties of the data model to false, 
+   * for other facets, just return null
+   * @param facetID
+   * @return data model config object
+   */
+  public static Object getConfigObject(IProjectFacet projectFacet)
+  {
+	  
+	  IDataModel dm = null;
+	  if (projectFacet != null) {
+		  String facetId = projectFacet.getId();
+		  if (facetId != null) {
+			  // set Add to EAR to false
+			  if (facetId.equals(IModuleConstants.JST_WEB_MODULE)) { 
+				  dm = DataModelFactory.createDataModel(new WebFacetInstallDataModelProvider());
+				  dm.setBooleanProperty(IWebFacetInstallDataModelProperties.ADD_TO_EAR, false);
+			  } else if (facetId.equals(IModuleConstants.JST_EJB_MODULE)) {
+				  dm = DataModelFactory.createDataModel(new EjbFacetInstallDataModelProvider());
+				  dm.setBooleanProperty(IEjbFacetInstallDataModelProperties.ADD_TO_EAR, false);
+			  } else if (facetId.equals(IModuleConstants.JST_APPCLIENT_MODULE)) {
+				  dm = DataModelFactory.createDataModel(new AppClientFacetInstallDataModelProvider());
+				  dm.setBooleanProperty(IAppClientFacetInstallDataModelProperties.ADD_TO_EAR, false);
+			  } else if (facetId.equals(IModuleConstants.JST_UTILITY_MODULE)) {
+				  dm = DataModelFactory.createDataModel(new UtilityFacetInstallDataModelProvider());
+				  dm.setBooleanProperty(IUtilityFacetInstallDataModelProperties.ADD_TO_EAR, false);
+			  }
+		  }
+	  }
+	  return dm;
+  }
   /**
    * Returns the {@link FacetMatcher} calculated when checking the required facet versions 
    * against the facet versions.
@@ -1335,5 +1381,5 @@ public class FacetUtils
     
     return false;
   }
-  
+      
 }
