@@ -22,7 +22,6 @@ package org.eclipse.jst.ws.internal.consumption.common;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -189,7 +188,7 @@ public class FacetUtils
         IFacetedProject fproject = ProjectFacetsManager.create(project);
         if (fproject != null)
         {
-          return fproject.getPrimaryRuntime();
+          return fproject.getRuntime();
         }
       } catch (CoreException ce)
       {
@@ -981,7 +980,7 @@ public class FacetUtils
       {
         try
         {
-          fProject.setTargetedRuntimes(Collections.singleton(fRuntime), shellMonitor);
+          fProject.setRuntime(fRuntime, shellMonitor);
         } catch (CoreException e)
         {
           status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
@@ -1007,7 +1006,7 @@ public class FacetUtils
     {
     	try
         {
-          fProject.setTargetedRuntimes(Collections.singleton(fRuntime), null); //jvh - happens here...
+          fProject.setRuntime(fRuntime, null); //jvh - happens here...
         } catch (CoreException e)
         {
           status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
