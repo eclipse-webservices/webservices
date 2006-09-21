@@ -17,7 +17,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.MessageReference;
@@ -90,16 +89,12 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   private String getMessageString(String key, Object[] args) {
 	  String string = null;
 
-	  if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null &&
-			  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null &&
-			  PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() != null) {
-		  Object object = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getAdapter(ProductCustomizationProvider.class);
-		  if (object instanceof ProductCustomizationProvider) {
-			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			  String newString = productCustomizationProvider.getProductString(key, args);
-			  if (newString != null) {
-				  string = newString;
-			  }
+	  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
+	  if (object instanceof ProductCustomizationProvider) {
+		  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
+		  String newString = productCustomizationProvider.getProductString(key, args);
+		  if (newString != null) {
+			  string = newString;
 		  }
 	  }
 

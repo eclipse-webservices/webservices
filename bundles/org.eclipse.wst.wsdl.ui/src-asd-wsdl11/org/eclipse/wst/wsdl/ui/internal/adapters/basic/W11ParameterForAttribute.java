@@ -12,10 +12,11 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingTypeAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewTypeAction;
@@ -100,22 +101,17 @@ public class W11ParameterForAttribute extends WSDLBaseAdapter implements IParame
 	}
 	
 	public String getText() {
-		return getParameterString() + " - attribute";
+		return getParameterString() + " - attribute"; 
 	}
 	
 	private String getParameterString() {
-		String string = "parameter";
-
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null &&
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null &&
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() != null) {
-			Object object = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getAdapter(ProductCustomizationProvider.class);
-			if (object instanceof ProductCustomizationProvider) {
-				ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-				String newString = productCustomizationProvider.getProductString("_UI_LABEL_PARAMETER");
-				if (newString != null) {
-					string = newString;
-				}
+		String string = "";
+		Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
+		if (object instanceof ProductCustomizationProvider) {
+			ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
+			String newString = productCustomizationProvider.getProductString("_UI_LABEL_PARAMETER");
+			if (newString != null) {
+				string = newString;
 			}
 		}
 
