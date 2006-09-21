@@ -502,7 +502,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           fProject = ProjectFacetsManager.create(project);
           if (fProject != null)
           {
-            fRuntime = fProject.getRuntime();
+            fRuntime = fProject.getPrimaryRuntime();
           }
         } catch (CoreException ce)
         {
@@ -644,7 +644,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        fProject = ProjectFacetsManager.create(project);
 	        if (fProject != null)
 	        {
-	          fRuntime = fProject.getRuntime();
+	          fRuntime = fProject.getPrimaryRuntime();
 	        }
 	      } catch (CoreException ce)
 	      {
