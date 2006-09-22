@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+	<extension point="org.eclipse.ui.editors">
+		<editor
+			name="%_UI_EDITOR_NAME"
+			icon="icons/wsdl_file_obj.gif"
+			class="org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor"
+			contributorClass="org.eclipse.wst.wsdl.ui.internal.WSDLActionBarContributor"
+			id="org.eclipse.wst.wsdl.ui.internal.WSDLEditor">
+			<contentTypeBinding
+				contentTypeId="org.eclipse.wst.wsdl.wsdlsource" />
+		</editor>
+	</extension>
+	
+		<extension point="org.eclipse.ui.newWizards">
+		<category
+			id="org.eclipse.jst.ws.ui.new"
+			name="%_UI_LABEL_NEW_CATEGORY_NAME_WS" />
+		<wizard
+			id="org.eclipse.wst.wsdl.ui"
+			name="WSDL"
+			class="org.eclipse.wst.wsdl.ui.internal.wizards.NewWSDLWizard"
+			category="org.eclipse.jst.ws.ui.new"
+			icon="icons/wsdl_file_obj.gif">
+			<description>%_UI_LABEL_CREATE_NEW_WSDL_FILE</description>
+			<selection class="org.eclipse.core.resources.IResource" />
+		</wizard>
+
+		<wizard
+			id="org.eclipse.wst.wsdl.ui"
+			name="WSDL"
+			class="org.eclipse.wst.wsdl.ui.internal.wizards.NewWSDLWizard"
+			category="org.eclipse.wst.XMLCategory"
+			icon="icons/wsdl_file_obj.gif">
+			<description>%_UI_LABEL_CREATE_NEW_WSDL_FILE</description>
+			<selection class="org.eclipse.core.resources.IResource" />
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.preferencePages">
+		<!-- place everything in "Web and XML" -->
+		<page
+			name="%_UI_WSDL_LABEL"
+			category="org.eclipse.wst.sse.ui.internal.provisional.preferences"
+			class="org.eclipse.wst.wsdl.ui.internal.WSDLPreferencePage"
+			id="org.eclipse.wst.wsdl.ui.internal.WSDLPreferencePage" />
+	</extension>
+
+	<!-- This extension point is used to suplement WSDL 1.1 schemas in order to   -->
+	<!-- constrain the extensiblity elements that are allowed at the 'wsdl' level -->
+	<extension-point
+		id="extensibilityElementFilter"
+		name="Extensiblity Element Filter"
+		schema="schema/extensibilityElementFilter.exsd" />
+		
+    <extension-point id="WSDLEditorExtensionConfiguration" name="WSDLEditorExtensionConfiguration"/>
+    <extension-point id="editorModes" name="%WSDLEditorModes"/>
+    
+    <!-- this extension point is deprecated, use extensionCategories -->
+	<extension-point id="ExtensionsSchemasDescription" name="this extension point is deprecated"/>	
+	<extension-point id="extensionCategories" name="Extension Categories"/>		
+	<extension
+		point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+		<propertyContributor
+			contributorId="org.eclipse.wst.wsdl.ui.internal.WSDLEditor"
+
+			labelProvider="org.eclipse.wst.wsdl.ui.internal.asd.ASDLabelProvider">			
+			<propertyCategory category="general"></propertyCategory>
+			<propertyCategory category="documentation"></propertyCategory>
+			<propertyCategory category="extensibility"></propertyCategory>
+		</propertyContributor>
+	</extension>
+	<extension
+		point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+		<propertyTabs
+			contributorId="org.eclipse.wst.wsdl.ui.internal.WSDLEditor">
+			<propertyTab
+				label="%_UI_LABEL_GENERAL"
+				category="general"
+				id="org.eclipse.wst.xmlwebservices.general">
+			</propertyTab>
+			<propertyTab
+				label="%_UI_LABEL_EXTENSIONS"
+				category="extensibility"
+				id="org.eclipse.wst.xmlwebservices.extensibility">
+			</propertyTab>
+			<propertyTab
+				label="%_UI_LABEL_DOCUMENTATION"
+				category="documentation"
+				id="org.eclipse.wst.xmlwebservices.documentation">
+			</propertyTab>
+		</propertyTabs>
+	</extension>
+	
+	<extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
+   <propertySections contributorId="org.eclipse.wst.wsdl.ui.internal.WSDLEditor">
+     <propertySection tab="org.eclipse.wst.xmlwebservices.documentation" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.DocumentationSection"
+	 	id="prop.section.DocumentationSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject">
+	    </input>
+	 </propertySection>
+   
+   	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection"  
+	 	id="prop.section.NameSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage">
+	    </input>
+	 </propertySection>
+	 
+   	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ParameterSection"
+        filter="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ParameterSectionFilter"
+	 	id="prop.section.W11ParameterSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter">
+	    </input>
+	 </propertySection>
+	 
+   	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection"  
+	 	id="prop.section.NameSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection"  
+	 	id="prop.section.NameSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface">
+	    </input>
+	 </propertySection>
+
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection"  
+	 	id="prop.section.NameSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IService">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.EndPointSection"  
+	 	id="prop.section.EndPointSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint">
+	    </input>
+	 </propertySection>
+
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.BindingSection"  
+	 	id="prop.section.BindingSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.ImportSection"  
+	 	id="prop.section.ImportSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport">
+	    </input>
+	 </propertySection>
+	 <!--
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.asd.editor.properties.sections.SchemaSection"  
+	 	id="prop.section.SchemaSection">
+	    <input type="org.eclipse.wst.wsdl.asd.facade.IType">
+	    </input>
+	 </propertySection>	 
+	-->
+
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NamespaceSection"
+	 	id="prop.section.NamespaceSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NamespaceSection"
+	 	id="prop.section.NamespaceSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NamespaceSection"
+	 	id="prop.section.NamespaceSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11CategoryAdapter">
+	    </input>
+	 </propertySection>
+	 
+
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general" 
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11MessageReferenceSection"
+		filter="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11MessageReferenceSectionFilter"
+	 	id="prop.section.MessageReferenceSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference">
+	    </input>
+	 </propertySection>
+	 
+	 <!-- move to wsdl specific plugin -->
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.extensibility" 
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ExtensionsSection"
+	 	id="prop.section.W11ApplicationInfoSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.extensibility" 
+        class="org.eclipse.wst.wsdl.ui.internal.properties.sections.W11ExtensionsSection"
+	 	id="prop.section.W11ApplicationInfoSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection">
+	    </input>
+	 </propertySection>
+	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general"
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection"
+	 	id="prop.section.NameSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation">
+	    </input>
+	 </propertySection>
+	 	 
+	 <propertySection tab="org.eclipse.wst.xmlwebservices.general"
+        class="org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.NameSection"
+	 	id="prop.section.NameSection">
+	    <input type="org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference">
+	    </input>
+	 </propertySection>
+  </propertySections>
+</extension>
+
+   <extension point="org.eclipse.wst.wsdl.ui.extensionCategories">
+     <category
+     	displayName="HTTP"
+      	namespaceURI="http://schemas.xmlsoap.org/wsdl/http/">
+      </category>
+
+     <category
+     	displayName="SOAP"
+      	namespaceURI="http://schemas.xmlsoap.org/wsdl/soap/">
+     </category>
+
+     <category
+        displayName="MIME"
+      	namespaceURI="http://schemas.xmlsoap.org/wsdl/mime/">
+     </category>
+   </extension>
+   
+   <extension point="org.eclipse.ui.popupMenus"> 
+      <objectContribution 
+         id="org.eclipse.wst.wsdl.ui.refactoring.menu.objectContrib" 
+         objectClass="org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter">  
+         <action
+            id="org.eclipse.wst.wsdleditor.refactoring.menu.refactorGroup.object" 
+            enablesFor="1"
+            style="pulldown"
+            menubarPath="refactoring-slot-temp"
+            label="%_UI_LABEL_REFACTOR" 
+            class="org.eclipse.wst.wsdl.ui.internal.refactor.actions.WSDLRefactorGroupActionDelegate"> 
+         </action>          
+      </objectContribution>               
+    </extension>
+    
+	<extension point="org.eclipse.ui.popupMenus"> 
+      <objectContribution 
+         id="org.eclipse.wst.wsdl.ui.searchReferences.menu.objectContrib" 
+         objectClass="org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter">  
+         <action
+            id="org.eclipse.wst.wsdleditor.searchReferences.menu.searchReferences.object" 
+            enablesFor="1"
+            style="pulldown"
+            menubarPath="searchReferences-slot-temp"
+            label="References" 
+            class="org.eclipse.wst.wsdl.ui.internal.search.actions.WSDLSearchReferencesGroupActionDelegate"> 
+         </action>          
+      </objectContribution>               
+    </extension>    
+	
+		<!-- intialize wsdl source validator -->
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+		<validator
+			scope="total"
+			class="org.eclipse.wst.wsdl.ui.internal.reconciler.DelegatingSourceValidatorForWSDL"
+			id="org.eclipse.wst.wsdl.ui.internal.reconciler.DelegatingSourceValidatorForWSDL">
+			<contentTypeIdentifier
+				id="org.eclipse.wst.wsdl.wsdlsource">
+				<partitionType id="org.eclipse.wst.xml.XML_DEFAULT">
+				</partitionType>
+			</contentTypeIdentifier>
+		</validator>
+	</extension>
+	
+		<extension point="org.eclipse.wst.sse.ui.editorConfiguration">
+		<!-- add preference pages to the context menu action (ID must correspond to the declared "path" above) -->
+<!--
+		<provisionalDefinition
+			type="preferencepages"
+			value="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
+			target="org.eclipse.wst.wsdl.ui.internal.WSDLEditor.source" />
+-->
+		<sourceViewerConfiguration
+			class="org.eclipse.wst.wsdl.ui.internal.StructuredTextViewerConfigurationWSDL"
+			target="org.eclipse.wst.wsdl.wsdlsource" />
+<!--			
+		<contentOutlineConfiguration
+			class="org.eclipse.wst.wsdl.ui.internal.outline.WSDLContentOutlineConfiguration"
+			target="org.eclipse.wst.wsdl.wsdlsource" />
+-->
+	</extension>
+	
+		<!-- this extension point is used to augment the ModelQuery to provide WSDL specific guided editing -->
+	<extension point="org.eclipse.wst.xml.core.modelQueryExtensions">
+		<modelQueryExtension
+			class="org.eclipse.wst.wsdl.ui.internal.text.WSDLModelQueryExtension"
+			contentType="org.eclipse.wst.wsdl.wsdlsource">
+		</modelQueryExtension>
+	</extension>
+   
+        <!-- Search participant extension that supports XMLComponentSearchPatten on WSDL resources -->
+	 <extension   
+		point="org.eclipse.wst.common.core.searchParticipants">
+		<searchParticipant
+			id="org.eclipse.wst.wsdl.search.WSDLSearchParticipant"
+			class="org.eclipse.wst.wsdl.ui.internal.search.WSDLSearchParticipant">
+			<enablement>
+			   <or>
+			      <with variable="pattern">
+					<instanceof value="org.eclipse.wst.xml.core.internal.search.XMLComponentSearchPattern"/>			   
+				  </with>
+				</or>
+			</enablement>
+		</searchParticipant>
+	 </extension>
+	
+
+
+	<!-- Refactoring CORE -->
+	<extension
+		point="org.eclipse.ltk.core.refactoring.renameParticipants">
+		<renameParticipant
+			name="WSDL Rename Particpant"           
+			class="org.eclipse.wst.wsdl.ui.internal.refactor.WSDLComponentRenameParticipant"
+			id="org.eclipse.wst.wsdl.ui.refactoring.WSDLComponentRenameParticipant">
+			<enablement>
+			   <or>
+			   <with variable="element">
+					<instanceof value="org.eclipse.wst.wsdl.WSDLElement"/>			   
+				</with>
+			   <with variable="element">
+					<instanceof value="org.eclipse.xsd.XSDNamedComponent"/>								
+				</with>							
+				</or>
+			</enablement>			
+		</renameParticipant>
+	</extension>
+	
+	 	<!--  Refactoring UI extensions -->
+   <extension point="org.eclipse.ui.popupMenus"> 
+      <objectContribution 
+         id="org.eclipse.wst.wsdl.ui.refactoring.menu.objectContrib" 
+         objectClass="org.eclipse.wst.wsdl.WSDLElement"> 
+         <action
+            id="org.eclipse.wst.wsdl.ui.refactoring.menu.refactorGroup.object" 
+            enablesFor="1"
+            style="pulldown"
+            menubarPath="additions"
+            label="%refactoring.menu.label" 
+            class="org.eclipse.wst.wsdl.ui.internal.refactor.actions.WSDLRefactorGroupActionDelegate"> 
+         </action> 
+      </objectContribution>   
+   
+    <viewerContribution
+        id="org.eclipse.wst.xsd.ui.refactoring.menu.source"
+        targetID="org.eclipse.wst.wsdl.wsdlsource.source.EditorContext">
+	    <action id="org.eclipse.wst.wsdl.ui.refactoring.menu.refactorGroup.source"
+       		style="pulldown"
+            menubarPath="additions"
+            label="%refactoring.menu.label" 
+            class="org.eclipse.wst.wsdl.ui.internal.refactor.actions.WSDLRefactorGroupActionDelegate"> 
+  	    </action>
+       </viewerContribution>       
+     </extension>
+          
+     <extension point="org.eclipse.ui.commands">
+		<command
+			name="%command.wsdl.refactor.rename.element.name"
+			description="%command.wsdl.refactor.rename.element.description"
+			categoryId="org.eclipse.ui.category.edit"
+			id="org.eclipse.wst.wsdl.ui.refactor.rename.element">
+		</command>
+	</extension>   
+	
+		<extension point="org.eclipse.ui.editorActions">
+		<editorContribution
+			id="org.eclipse.ui.articles.action.contribution.editor"
+			targetID="org.eclipse.wst.wsdl.ui.internal.WSDLEditor">
+
+			<menu
+				id="WSDLEditor"
+				label="%_UI_EDITOR_NAME"
+				path="additions">
+				<separator name="group1" />
+			</menu>
+
+			<action
+				id="org.eclipse.wst.wsdl.ui.actions.ReloadDependenciesActionDelegate"
+				label="%_UI_RELOAD_DEPENDENCIES"
+				icon="icons/reloadgrammar.gif"
+				tooltip="Reload Dependencies"
+				menubarPath="WSDLEditor/group1"
+				class="org.eclipse.wst.wsdl.ui.internal.ReloadDependenciesActionDelegate">
+			</action>
+
+			<!--
+				<action
+				id="org.eclipse.wst.wsdl.ui.internal.actions.ValidateActionDelegate" 
+				label="%_UI_ACTION_VALIDATE_WSDL_DOCUMENT" 
+				icon="icons/validate.gif" 
+				tooltip="%_UI_ACTION_VALIDATE_WSDL_DOCUMENT"
+				menubarPath="WSDLEditor/group1"
+				toolbarPath="%Normal/WSDLEditor"
+				class="org.eclipse.wst.wsdl.ui.internal.actions.ValidateActionDelegate"> 
+				</action>      
+			-->
+
+		</editorContribution>
+        <editorContribution
+            targetID="org.eclipse.wst.wsdl.wsdlsource.source"
+            id="org.eclipse.wst.wsdl.wsdlsource.ruler.actions">
+         <action
+               label="%AddBookmark.label"
+               helpContextId="org.eclipse.ui.bookmark_action_context"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.ui.texteditor.BookmarkRulerAction"/>
+         <action
+               label="%SelectRuler.label"
+               class="org.eclipse.ui.texteditor.SelectRulerAction"
+               actionID="RulerClick"
+               id="org.eclipse.ui.texteditor.SelectRulerAction"/>
+        </editorContribution>
+	</extension>
+   
+   <!-- ===================================================================== -->
+	
+	<extension
+		point="org.eclipse.wst.wsdl.ui.extensibilityElementFilter">
+		<extensibilityElementFilter
+			namespace="http://schemas.xmlsoap.org/wsdl/soap/"
+			class="org.eclipse.wst.wsdl.ui.internal.filter.SoapExtensiblityElementFilter">
+		</extensibilityElementFilter>
+	</extension>
+
+	<extension
+		point="org.eclipse.wst.wsdl.ui.extensibilityElementFilter">
+		<extensibilityElementFilter
+			namespace="http://schemas.xmlsoap.org/wsdl/http/"
+			class="org.eclipse.wst.wsdl.ui.internal.filter.HttpExtensiblityElementFilter">
+		</extensibilityElementFilter>
+	</extension>
+
+	<extension
+		point="org.eclipse.wst.wsdl.ui.extensibilityElementFilter">
+		<extensibilityElementFilter
+			namespace="http://schemas.xmlsoap.org/wsdl/mime/"
+			class="org.eclipse.wst.wsdl.ui.internal.filter.MimeExtensiblityElementFilter">
+		</extensibilityElementFilter>
+	</extension>
+
+
+	<extension
+		point="org.eclipse.wst.wsdl.ui.extensibilityElementFilter">
+		<extensibilityElementFilter
+			namespace="http://www.w3.org/2001/XMLSchema"
+			class="org.eclipse.wst.wsdl.ui.internal.filter.XSDExtensiblityElementFilter">
+		</extensibilityElementFilter>
+	</extension>
+	
+	<extension
+  	   point="org.eclipse.wst.xsd.ui.extensibilityNodeCustomizations">
+       <nodeCustomization
+			namespace="http://schemas.xmlsoap.org/wsdl/soap/"
+			nodeEditorProviderClass="org.eclipse.wst.wsdl.ui.internal.soap.customizations.SOAPNodeEditorProvider"
+			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.label.providers.SOAPLabelProvider">
+		</nodeCustomization>		
+       <nodeCustomization
+			namespace="http://schemas.xmlsoap.org/wsdl/http/"
+			nodeEditorProviderClass="org.eclipse.wst.wsdl.ui.internal.soap.customizations.SOAPNodeEditorProvider"
+			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.label.providers.HTTPLabelProvider">
+		</nodeCustomization>					
+	</extension>	
+</plugin>

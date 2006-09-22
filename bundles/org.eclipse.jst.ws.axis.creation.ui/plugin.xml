@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+   
+   <!-- Server Defaulters -->
+   
+   <extension point="org.eclipse.jst.ws.consumption.serverDefaulter">
+      <serverDefaulter
+         class="org.eclipse.jst.ws.internal.axis.creation.ui.command.AxisServerDefaulter">
+      </serverDefaulter>
+   </extension>
+   
+   <!--
+   <extension point="org.eclipse.jst.ws.consumption.ui.webServiceRuntime">
+  	<webServiceRuntime
+    id="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
+    label="%LABEL_RUNTIME_AXIS_11"
+    serviceTypes="org.eclipse.jst.ws.serviceType.java"
+    clientTypes="org.eclipse.jst.ws.clientType.java.webOnly"
+    servletLevels="23 24"
+    j2eeLevels="13 14"
+    servers="org.eclipse.jst.server.tomcat.40 org.eclipse.jst.server.tomcat.41 org.eclipse.jst.server.tomcat.50 org.eclipse.jst.server.tomcat.55 org.eclipse.jst.server.geronimo.10"
+    class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">
+  	</webServiceRuntime>
+	</extension> 
+   -->
+   
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="AxisBeanConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.BUConfigCommand"
+             class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisBeanConfigWidgetFactory"/>
+    </extension> 
+    
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory   
+             id="AxisSkeletonConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.axis.creation.ui.task.TDConfigCommand"
+             class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisSkeletonConfigWidgetFactory"/>
+    </extension> 
+    
+    <!-- M9 extensions -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.runtimes">
+      <runtime
+        id="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
+        label="%LABEL_RUNTIME_AXIS_11"
+        serverRequired="false"/>
+    </extension>
+
+    <!-- define support for Axis Java bean bottom up and top-down support in web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.serviceRuntimes">
+      <serviceRuntime
+        id="org.eclipse.jst.ws.axis.creation.java"
+        serviceImplementationTypeId="org.eclipse.jst.ws.wsImpl.java"
+        runtimeId="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
+        bottomUp="true"
+        topDown="true"
+        class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">
+
+        <required-facet-version facet="jst.web" version="2.3" allow-newer="true"/>
+
+      </serviceRuntime>
+    </extension>   
+
+    <!-- define support for Axis Java clients in Java projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.clientRuntimes">
+      <clientRuntime
+        id="org.eclipse.jst.ws.axis.consumption.java"
+        clientImplementationTypeId="org.eclipse.jst.ws.client.type.java"
+        runtimeId="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
+        class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">
+
+        <required-facet-version facet="jst.utility" version="1.0" allow-newer="true"/>
+
+      </clientRuntime>
+    </extension>    
+    
+    <!-- define support for Axis Java clients in Web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.clientRuntimes">
+      <clientRuntime
+        id="org.eclipse.jst.ws.axis.consumption.web"
+        clientImplementationTypeId="org.eclipse.jst.ws.client.type.java"
+        runtimeId="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
+        class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">
+
+        <required-facet-version facet="jst.web" version="2.3" allow-newer="true"/>
+
+      </clientRuntime>
+    </extension>        
+    
+    <!-- extend WebServiceSampleTest to support the Axis client runtimes -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.tester">
+      <tester
+         id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceSampleTest"
+         supportedClientRuntimes="org.eclipse.jst.ws.axis.consumption.web org.eclipse.jst.ws.axis.consumption.java">
+      </tester>
+    </extension>
+    
+      <extension
+           point="org.eclipse.wst.command.env.antDataMapping">
+        <map
+              key="InitialSelection"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.task.DefaultsForServerJavaWSDLCommand"
+              property="ObjectSelection"
+              transform="org.eclipse.jst.ws.internal.common.String2SelectionTransformer"/>
+        <map
+              key="JavaOutput"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+        <map
+              key="Mappings"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+        <map
+              key="Methods"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+        <map
+              key="Style"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+        <map
+              key="Use"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
+       
+        <map
+              key="JavaOutput"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
+        <map
+              key="Mappings"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
+        <map
+              key="Methods"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
+		<map
+              key="Style"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
+        <map
+              key="Use"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              property="JavaWSDLParam"
+              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
+  </extension> 
+
+</plugin>
