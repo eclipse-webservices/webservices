@@ -1,21 +1,27 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20060921 [158210] kathy@ca.ibm.com - Kathy Chan, Calling incremental build on the project before adding to server
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -64,7 +70,30 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    IProject iproject = ProjectUtilities.getProject(project);
 	    if (!J2EEUtils.isJavaComponent(iproject))
 	    {      
-	      IModule imodule = ServerUtils.getModule(iproject);
+	    	IModule imodule = ServerUtils.getModule(iproject);
+	    	// TODO:  This workaround for 156768 should be removed once the defect is fixed
+	    	if (imodule == null) {
+	    	    // calling incremental build on the project before trying again
+	    		iproject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,null);
+	    		// wait for the incremental build to complete before trying again
+	    		try 
+	    		{
+	    			Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+	    		} 
+	    		catch( InterruptedException exc ) 
+	    		{
+	    			// Assuming that the autobuilder has actually completed.	
+	    		}
+	    		imodule = ServerUtils.getModule(iproject);
+	    		if (imodule == null) {  
+	    			// return error if module is still null after 1 retry
+	    			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[]{module}) );
+	    			env.getStatusHandler().reportError(status);
+	    			return status;
+	    		}
+	    	}
+	    	// end of workaround for 156768
+	    	
 	      if (!ServerUtil.containsModule(server, imodule, null))
 	      {
 	        IModule[] imodules = new IModule[]{imodule};
@@ -75,7 +104,7 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    }
 	    } catch (CoreException e)
 	    {
-	      status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[]{module}) );
+	      status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[]{module}), e);
 	      env.getStatusHandler().reportError(status);
 	      return status;      
 	    } finally
@@ -88,7 +117,7 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	        }
 	      } catch (CoreException ce)
 	      {
-	        status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[] { module }) );
+	        status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[] { module }), ce);
 	        env.getStatusHandler().reportError(status);
 	        return status;
 	      }      
