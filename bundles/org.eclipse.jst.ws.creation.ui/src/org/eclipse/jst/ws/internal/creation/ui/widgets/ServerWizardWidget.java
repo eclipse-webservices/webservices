@@ -43,6 +43,7 @@
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
  * 20060831   155441 makandre@ca.ibm.com - Andrew Mak, Small tweak for this bug
+ * 20061003   159142 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1004,13 +1005,12 @@ private void handleTypeChange()
 		if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable) {		
 			IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable) objectSelectionWidget_;
 			launchable.setInitialSelection(objectSelection_);
-			
+			objectSelection_ = launchable.getObjectSelection();
 			displayable = launchable.getObjectSelectionDisplayableString();
 		}
 		else {
 			IObjectSelectionWidget selectionWidget = (IObjectSelectionWidget) objectSelectionWidget_;
 			selectionWidget.setInitialSelection(objectSelection_);
-		
 		    displayable = selectionWidget.getObjectSelectionDisplayableString();
 		}
 		
