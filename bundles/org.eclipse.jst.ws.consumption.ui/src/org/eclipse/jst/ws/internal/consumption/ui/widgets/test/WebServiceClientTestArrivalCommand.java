@@ -12,6 +12,7 @@
  * 20060608   144500 mahutch@ca.ibm.com - Mark Hutchinson
  * 20060818   153903 makandre@ca.ibm.com - Andrew Mak, Browse does not work in generate client test page
  * 20060906   154548 gilberta@ca.ibm.com - Gilbert Andrews, This fixes name collisions when creating a sample project
+ * 20060922   158177 makandre@ca.ibm.com - Andrew Mak, NPE when creating web service client into existing Java project with test
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -82,13 +83,16 @@ public class WebServiceClientTestArrivalCommand extends AbstractDataModelOperati
 	IStatus status = Status.OK_STATUS;
   	
 	sampleProjectAndEarSetup(env);
-	IPath webcontentPath = J2EEUtils.getWebContentPath(clientIProject);
+	IPath webcontentPath = null;
+
+	// *need* to double-check that clientIProject is a web project
+	if (J2EEUtils.isWebComponent(clientIProject))
+		webcontentPath = J2EEUtils.getWebContentPath(clientIProject);
 	
     //Get the sample Folder ready
     StringBuffer sb = new StringBuffer();
-
-    // *need* to double-check that clientIProject is a web project
-    if (webcontentPath != null && J2EEUtils.isWebComponent(clientIProject))
+    
+    if (webcontentPath != null)
     {	
     	String path = webcontentPath.toString();
     	sb.append(path).append("/");
