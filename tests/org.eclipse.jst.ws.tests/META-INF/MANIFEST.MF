@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.tests
-Bundle-Version: 1.0.100
+Bundle-Version: 1.0.100.qualifier
 Bundle-ClassPath: tests.jar
 Bundle-Activator: org.eclipse.jst.ws.tests.plugin.TestsPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER

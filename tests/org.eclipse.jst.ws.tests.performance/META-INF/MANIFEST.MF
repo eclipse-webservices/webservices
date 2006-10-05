@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.tests.performance
-Bundle-Version: 1.0.100
+Bundle-Version: 1.0.100.qualifier
 Bundle-ClassPath: axisPerfmsr.jar
 Bundle-Activator: org.eclipse.jst.ws.tests.performance.plugin.PerformancePlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
