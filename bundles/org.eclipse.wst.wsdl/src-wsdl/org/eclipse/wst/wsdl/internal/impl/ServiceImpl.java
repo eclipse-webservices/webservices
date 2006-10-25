@@ -145,8 +145,6 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    */
   protected String resourceURI = RESOURCE_URI_EDEFAULT;
 
-  private Map ports;
-
   /**
    * The cached value of the '{@link #getEPorts() <em>EPorts</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -522,8 +520,8 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
   public void reconcileAttributes(Element changedElement)
   {
     Definition definition = getEnclosingDefinition();
-
-    QName qname = new QName(definition.getTargetNamespace(), changedElement.getAttribute("name"));
+    String name = changedElement.getAttribute(WSDLConstants.NAME_ATTRIBUTE);
+    QName qname = new QName(definition.getTargetNamespace(), name == null ? "" : name); //$NON-NLS-1$
     setQName(qname);
   }
 

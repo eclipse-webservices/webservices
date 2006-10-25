@@ -155,8 +155,6 @@ public class MessageImpl extends WSDLElementImpl implements Message
    */
   protected EList eParts = null;
 
-  private Map parts;
-
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -534,16 +532,9 @@ public class MessageImpl extends WSDLElementImpl implements Message
   public void reconcileAttributes(Element changedElement)
   {
     Definition definition = getEnclosingDefinition();
-    String newName = null;
-    if (changedElement.hasAttribute("name"))
-    {
-      newName = changedElement.getAttribute("name");
-    }
-    if (newName != null)
-    {
-      QName qname = new QName(definition.getTargetNamespace(), newName);
-      setQName(qname);
-    }
+    String name = changedElement.getAttribute(WSDLConstants.NAME_ATTRIBUTE);
+    QName qname = new QName(definition.getTargetNamespace(), name == null ? "" : name); //$NON-NLS-1$
+    setQName(qname);
   }
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)

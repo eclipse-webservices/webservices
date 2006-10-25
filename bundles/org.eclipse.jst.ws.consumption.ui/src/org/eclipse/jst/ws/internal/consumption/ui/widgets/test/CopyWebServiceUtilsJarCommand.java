@@ -10,12 +10,12 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060912   157039 makandre@ca.ibm.com - Andrew Mak, new webserviceutils.jar not copied in client generation
+ * 20061025   161250 makandre@ca.ibm.com - Andrew Mak, Installations or workspace paths with spaces break Sample Gen and Java Editor Launch
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 
 import org.eclipse.core.resources.IProject;
@@ -111,7 +111,7 @@ private IStatus copyIFile(String source, IPath targetPath, String targetFile, Pl
        IResource resource = FileResourceUtils.findResource(target);
        URL sourceURL = BundleUtils.getURLFromBundle( WebServiceConsumptionPlugin.ID, source );       
        if(resource != null) {    	      	   
-    	   File sourceFile = new File(new URI(FileLocator.toFileURL(sourceURL).toString()));   
+    	   File sourceFile = new File(FileLocator.toFileURL(sourceURL).getPath());   
     	   if (resource.getLocation().toFile().length() == sourceFile.length())
     		   return Status.OK_STATUS;
        }

@@ -642,8 +642,8 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
   public void reconcileAttributes(Element changedElement)
   {
     Definition definition = getEnclosingDefinition();
-
-    QName qname = new QName(definition.getTargetNamespace(), changedElement.getAttribute("name"));
+    String name = changedElement.getAttribute(WSDLConstants.NAME_ATTRIBUTE);
+    QName qname = new QName(definition.getTargetNamespace(), name == null ? "" : name); //$NON-NLS-1$
     setQName(qname);
     reconcileReferences(false);
   }

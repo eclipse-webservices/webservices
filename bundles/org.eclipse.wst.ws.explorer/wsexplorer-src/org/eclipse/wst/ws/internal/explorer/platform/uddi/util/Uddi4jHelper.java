@@ -1,18 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20061004   148052 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
@@ -305,7 +311,28 @@ public class Uddi4jHelper
   
   public String[] getImports(Definition def, String wsdlUrl)
   {
-    Import[] imports = (Import [])def.getImports().values().toArray(new Import[0]);
+  
+	  
+	Map importsMap = def.getImports();
+    Collection values = importsMap.values();
+    Iterator it = values.iterator();
+    
+    Vector importsVec = new Vector();  
+    for(int i =0;it.hasNext();i++){
+    	ArrayList aList = (ArrayList)it.next();
+        Iterator itImports = aList.iterator();
+        while(itImports.hasNext()){
+        	importsVec.add(itImports.next());
+        }
+    }
+    Import imports[] = new Import[importsVec.size()] ;
+    Iterator itVec = importsVec.iterator();
+    for(int j = 0;itVec.hasNext();j++){
+    	imports[j] = (Import)itVec.next();
+    }
+    
+    
+    
     String[] importStrings = new String[imports.length];
     String s;
     if (wsdlUrl != null && wsdlUrl.indexOf('/') != -1)
