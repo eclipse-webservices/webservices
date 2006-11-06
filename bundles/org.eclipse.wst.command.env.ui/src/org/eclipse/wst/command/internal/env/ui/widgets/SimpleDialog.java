@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060418   136335 joan@ca.ibm.com - Joan Haggarty
  * 20060418   136759 joan@ca.ibm.com - Joan Haggarty
+ * 20061106   142500 david.schneider@unisys.com - David Schneider
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -59,7 +60,7 @@ public abstract class SimpleDialog extends Dialog implements DialogDataEvents
     
     //Call extenders override of the callSetters method to intialize any data in widget
     callSetters();   
-    org.eclipse.jface.dialogs.Dialog.applyDialogFont(control);
+    Dialog.applyDialogFont(parent);
     return control;
   }  
   
