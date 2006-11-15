@@ -406,12 +406,18 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
   {
     if (element != null)
     {
-      BindingOperation bop = (BindingOperation)getContainer();
-      Operation op = bop.getEOperation();
-      if (op != null)
+      BindingOperation bindingOperation = (BindingOperation)getContainer();
+      Operation operation = bindingOperation.getEOperation();
+      String faultName = getName();
+      
+      if (operation != null && faultName != null)
       {
-      	// TBD - Revisit API. Get the first Fault.
-        setFault((Fault)op.getEFaults().get(0));
+        javax.wsdl.Fault fault = operation.getFault(faultName);
+
+        if (fault != getFault())
+        {
+          setFault(fault);
+        }
       }
     }
     super.reconcileReferences(deep);

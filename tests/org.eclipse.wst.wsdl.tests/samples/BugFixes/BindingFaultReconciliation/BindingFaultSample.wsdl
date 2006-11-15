@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/BindingFaultSample/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="BindingFaultSample" targetNamespace="http://www.example.org/BindingFaultSample/">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/BindingFaultSample/"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="Operation1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Operation1Response">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Operation1Fault">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="fault" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Operation2">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="in" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Operation2Response">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Operation2Fault1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Operation2Fault1" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Operation2Fault2">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Operation2Fault2" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="Operation1Request">
+		<wsdl:part element="tns:Operation1" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="Operation1Response">
+		<wsdl:part element="tns:Operation1Response" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="Operation1Fault">
+		<wsdl:part name="Fault" element="tns:Operation1Fault" />
+	</wsdl:message>
+	<wsdl:message name="Operation2Request">
+		<wsdl:part name="parameters" element="tns:Operation2"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="Operation2Response">
+		<wsdl:part name="parameters" element="tns:Operation2Response"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="Operation2Fault1">
+		<wsdl:part name="parameters" element="tns:Operation2Fault1"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="Operation2Fault2">
+		<wsdl:part name="parameters" element="tns:Operation2Fault2"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="SamplePort">
+		<wsdl:operation name="Operation1">
+			<wsdl:input message="tns:Operation1Request" />
+			<wsdl:output message="tns:Operation1Response" />
+		</wsdl:operation>
+		<wsdl:operation name="Operation2">
+			<wsdl:input message="tns:Operation2Request" />
+			<wsdl:output message="tns:Operation2Response" />
+			<wsdl:fault name="Operation2Fault1" message="tns:Operation2Fault1" />
+			<wsdl:fault name="Operation2Fault2" message="tns:Operation2Fault2" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SamplePortSOAPBinding" type="tns:SamplePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Operation1">
+			<soap:operation soapAction="http://www.example.org/BindingFaultSample/Operation1" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="Operation1Fault">
+				<soap:fault name="Operation1Fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="Operation2">
+			<soap:operation soapAction="http://www.example.org/BindingFaultSample/Operation2" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="Operation2Fault1">
+				<soap:fault use="literal" name="Operation2Fault1" />
+			</wsdl:fault>
+			<wsdl:fault name="Operation2Fault2">
+				<soap:fault use="literal" name="Operation2Fault2" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SampleService">
+		<wsdl:port binding="tns:SamplePortSOAPBinding" name="SamplePort">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -27,9 +27,11 @@ import junit.framework.TestSuite;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Binding;
+import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
@@ -148,6 +150,14 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testTolleratesExtensionElementsForOperation();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("ReconcilesBindingFaults") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testReconcilesBindingFaults();
       }
     });
 
@@ -578,5 +588,64 @@ public class BugFixesTest extends TestCase
     OperationType operationType = operation.getStyle();
     
     assertEquals(OperationType.REQUEST_RESPONSE, operationType);
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=164565
+   */
+  public void testReconcilesBindingFaults()
+  {
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/BindingFaultReconciliation/BindingFaultSample.wsdl"); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    // Test the abnormal case when the binding operation tries to bind a fault
+    // but the fault is missing in the corresponding operation. In this case the
+    // fault obtained from the binding operation's fault should be null.
+
+    List bindings = definition.getEBindings();
+    Binding binding = (Binding) bindings.get(0);
+    List bindingOperations = binding.getBindingOperations();
+    BindingOperation bindingOperation = (BindingOperation) bindingOperations.get(0);
+    BindingFault bindingFault = (BindingFault) bindingOperation.getBindingFault("Operation1Fault"); //$NON-NLS-1$
+    Fault fault = bindingFault.getEFault();
+    assertNull(fault);
+
+    // Test the normal case when the operation and binding operation are in
+    // synch. In this case the fault defined in the operation should match
+    // the one obtained from the binding operation's fault.
+
+    List portTypes = definition.getEPortTypes();
+    PortType portType = (PortType) portTypes.get(0);
+    EList operations = portType.getEOperations();
+
+    Operation operation = (Operation) operations.get(1);
+    javax.wsdl.Fault expectedFault1 = operation.getFault("Operation2Fault1"); //$NON-NLS-1$
+    javax.wsdl.Fault expectedFault2 = operation.getFault("Operation2Fault2"); //$NON-NLS-1$
+
+    BindingOperation bindingOperation2 = (BindingOperation) bindingOperations.get(1);
+
+    // Make sure the fault obtained from the binding fault is not null and
+    // matches the one in the corresponding operation.
+    
+    BindingFault bindingFault1 = (BindingFault) bindingOperation2.getBindingFault("Operation2Fault1"); //$NON-NLS-1$
+    javax.wsdl.Fault actualFault1 = bindingFault1.getEFault();
+    assertNotNull(actualFault1);
+    assertEquals(expectedFault1, actualFault1);
+
+    // Make sure the fault obtained from the binding fault is not null and
+    // matches the one in the corresponding operation.
+
+    BindingFault bindingFault2 = (BindingFault) bindingOperation2.getBindingFault("Operation2Fault2"); //$NON-NLS-1$
+    javax.wsdl.Fault actualFault2 = bindingFault2.getEFault();
+    assertNotNull(actualFault2);
+    assertEquals(expectedFault2, actualFault2);
   }
 }
