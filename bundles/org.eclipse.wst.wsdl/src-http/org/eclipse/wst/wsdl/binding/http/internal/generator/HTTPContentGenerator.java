@@ -225,24 +225,6 @@ public class HTTPContentGenerator implements ContentGenerator
 	  return (parent instanceof Binding)? (Binding) parent : null;
   }
   
-  private List getMessageReferenceBindingObjects(Object genericBindingObject) {
-	  List list = new ArrayList();
-	  Binding binding = getBindingObject(genericBindingObject);
-	  
-	  if (binding != null) {
-		  Iterator operationsIt = binding.getEBindingOperations().iterator();
-	  
-		  while (operationsIt.hasNext()) {
-			  BindingOperation op = (BindingOperation) operationsIt.next();
-			  list.add(op.getEBindingInput());
-			  list.add(op.getEBindingOutput());
-			  list.addAll(op.getEBindingFaults());
-		  }	  
-	  }
-	  
-	  return list;
-  }
-  
   private Object getGenericBindingObjectParent(Object genericBindingObject) {
 	  Object parent = null;
 	  

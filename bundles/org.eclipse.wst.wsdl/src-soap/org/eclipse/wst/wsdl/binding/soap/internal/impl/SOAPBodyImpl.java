@@ -514,35 +514,6 @@ public void setEncodingStyles(List list)
     }
   } 
   
-  // KB: Workaround the problem in Message.addPart(Part)
-  // After adding a part to a message 
-  // Part.getMessage() returns null.
-  private Message getMessage(Part part)
-  {
-	  Message message = null;
-	  Object obj = part.eContainer();
-	  if (obj instanceof Message)
-		  message = (Message)obj;
-	  return message;	  
-  } 
-  
-  /*
-  public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
-  {
-    switch (WSDLUtil.getInstance().getWSDLType(child))
-    {
-      case WSDLConstants.PART :
-        Part part = WSDLFactory.eINSTANCE.createPart();
-        part.setEnclosingDefinition(getEnclosingDefinition());
-        part.setElement(child);
-        getParts().add(part);
-        break;
-      default :
-        break;
-    }
-  }
-  */
-  
   public QName getElementType()
   {
     if (elementType == null)

@@ -130,8 +130,6 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    */
   protected EList eBindingFaults = null;
 
-  private Map bindingFaults;
-
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
