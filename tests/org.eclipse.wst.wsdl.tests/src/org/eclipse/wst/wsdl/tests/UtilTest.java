@@ -130,11 +130,10 @@ public class UtilTest extends TestCase {
 	  {
         try
 		{
-		  WSDLConstants wsdlConstants = new WSDLConstants();
 		  int type = WSDLConstants.nodeType(WSDLConstants.PORT_ELEMENT_TAG);
 		  Assert.assertTrue("Node type is not that of port", type == 10);
 		  
-	      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadAndPrintTest.wsdl");
+	      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadStoreCompare/LoadAndPrintTest.wsdl");
 	      Assert.assertTrue(definition.eResource() instanceof WSDLResourceImpl);
 
 		  int definitionNodeType = WSDLConstants.nodeType(definition.getElement());
@@ -176,19 +175,19 @@ public class UtilTest extends TestCase {
 		  WSDLResourceImpl resourceImpl = new WSDLResourceImpl(URI.createFileURI("./samples/createResourceTest.wsdl"));
           Assert.assertTrue("Resource is not of type WSDLResourceImpl", resourceImpl instanceof WSDLResourceImpl);
 		  
-	      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadAndPrintTest.wsdl");
+	      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadStoreCompare/LoadAndPrintTest.wsdl");
 	      Assert.assertTrue(definition.eResource() instanceof WSDLResourceImpl);
 		  Element element = definition.getElement();
 		  Document document = definition.getDocument();
 
 	      if (element != null)
 	      {
-	        resourceImpl.serialize(System.out, element, null);
+          WSDLResourceImpl.serialize(System.out, element, null);
 	      }
 		  
 		  if (document != null)
 		  {
-			resourceImpl.serialize(System.out, document, null);
+        WSDLResourceImpl.serialize(System.out, document, null);
 		  }
 		  
 		  try

@@ -161,6 +161,14 @@ public class BugFixesTest extends TestCase
       }
     });
 
+    suite.addTest(new BugFixesTest("DuplicateSAXErrorDiagnostics") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testAvoidDuplicateSAXExceptionDiagnostics();
+      }
+    });
+
     return suite;
   }
 
@@ -647,5 +655,30 @@ public class BugFixesTest extends TestCase
     javax.wsdl.Fault actualFault2 = bindingFault2.getEFault();
     assertNotNull(actualFault2);
     assertEquals(expectedFault2, actualFault2);
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=161059
+   */
+  public void testAvoidDuplicateSAXExceptionDiagnostics()
+  {
+    Definition definition = null;
+
+    try
+    {
+      // Make sure we track location to allow the WSDLParser to kick in.
+
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/DuplicateSAXException/SAXException.wsdl", true, true); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+    
+    Resource resource = definition.eResource();
+    EList errors = resource.getErrors();
+    int expectedSize = 1;
+    int actualSize = errors.size();
+    assertEquals(expectedSize, actualSize);
   }
 }

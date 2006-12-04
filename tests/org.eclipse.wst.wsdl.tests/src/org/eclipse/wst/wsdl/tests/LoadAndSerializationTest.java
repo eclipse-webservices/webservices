@@ -103,7 +103,7 @@ public class LoadAndSerializationTest extends TestCase
 		dir = new File(TEST_DATA_DIR);
 	else	
 		// KB: if you are here, fix text.xml
-        dir = new File(PLUGIN_ABSOLUTE_PATH + "samples"); // fallback
+        dir = new File(PLUGIN_ABSOLUTE_PATH + "samples/LoadStoreCompare"); // fallback
 	
     if (dir.exists() && dir.isDirectory())
     {

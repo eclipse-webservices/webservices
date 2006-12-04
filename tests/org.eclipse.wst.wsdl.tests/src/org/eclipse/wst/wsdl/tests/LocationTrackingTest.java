@@ -61,7 +61,7 @@ public class LocationTrackingTest extends TestCase
   {
     try
     {
-      String fileName = WSDLTestsPlugin.getInstallURL() + "/samples/LoadAndPrintTest.wsdl"; //$NON-NLS-1$
+      String fileName = WSDLTestsPlugin.getInstallURL() + "/samples/LoadStoreCompare/LoadAndPrintTest.wsdl"; //$NON-NLS-1$
       Definition definition = DefinitionLoader.load(fileName, true, true);
       Assert.assertNotNull(definition);
       Assert.assertTrue(definition.eResource() instanceof WSDLResourceImpl);

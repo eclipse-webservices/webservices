@@ -412,7 +412,7 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   {
     try
     {
-      Definition def = loadDefinitionForWSDL4J("./samples/LoadAndPrintTest.wsdl");
+      Definition def = loadDefinitionForWSDL4J("./samples/LoadStoreCompare/LoadAndPrintTest.wsdl");
       WSDL4JAPITest test = new WSDL4JAPITest(def);
       test.visit();
       serialize(test.newDefinition,"./samples/ClonedLoadAndPrintTest.wsdl");

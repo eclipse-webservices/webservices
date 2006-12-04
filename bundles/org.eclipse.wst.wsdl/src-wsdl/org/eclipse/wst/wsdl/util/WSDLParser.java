@@ -443,7 +443,10 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
     }
     catch (SAXException exception)
     {
-      fatalError(exception);
+      if (diagnostics.isEmpty())
+      {
+        fatalError(exception);
+      }
     }
   }
 
@@ -465,7 +468,10 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
     }
     catch (SAXException exception)
     {
-      fatalError(exception);
+      if (diagnostics.isEmpty())
+      {
+        fatalError(exception);
+      }
     }
   }
 

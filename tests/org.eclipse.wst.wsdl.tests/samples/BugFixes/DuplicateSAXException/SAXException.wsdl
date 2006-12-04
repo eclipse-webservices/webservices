@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+	xmlns:tns="http://www.example.org/NamespacePrefixNotBound/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="NamespacePrefixNotBound"
+	targetNamespace="http://www.example.org/NamespacePrefixNotBound/">
+	<undefined:test />
+</wsdl:definitions>

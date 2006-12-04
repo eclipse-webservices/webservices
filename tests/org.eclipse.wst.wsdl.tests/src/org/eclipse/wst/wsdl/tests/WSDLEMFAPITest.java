@@ -576,7 +576,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
   {
     try
     {
-      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH +"samples/LoadAndPrintTest.wsdl",true);
+      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH +"samples/LoadStoreCompare/LoadAndPrintTest.wsdl",true);
       WSDLEMFAPITest test = new WSDLEMFAPITest(def);
       test.visit();      
       serialize(test.newDefinition);

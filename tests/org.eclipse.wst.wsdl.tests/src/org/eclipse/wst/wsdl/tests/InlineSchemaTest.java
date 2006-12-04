@@ -110,7 +110,7 @@ public class InlineSchemaTest extends TestCase
   {
     try
     {
-      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH +"samples/LoadAndPrintTest.wsdl");
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH +"samples/LoadStoreCompare/LoadAndPrintTest.wsdl");
       traverseDefinition(definition);
     }
     catch (Exception e)
@@ -123,7 +123,7 @@ public class InlineSchemaTest extends TestCase
   {
     try
     {
-      Definition definition = loadDefinitionForWSDL4J("./samples/LoadAndPrintTest.wsdl");
+      Definition definition = loadDefinitionForWSDL4J("./samples/LoadStoreCompare/LoadAndPrintTest.wsdl");
       traverseDefinition(definition);
     }
     catch (Exception e)

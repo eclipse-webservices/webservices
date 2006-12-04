@@ -496,7 +496,7 @@ public class SemanticTest extends DefinitionVisitor
   {
     try
     {
-      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadAndPrintTest.wsdl",true);
+      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadStoreCompare/LoadAndPrintTest.wsdl",true);
       SemanticTest test = new SemanticTest(def);
       test.visit();
     }
