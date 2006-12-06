@@ -24,6 +24,7 @@ import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntryHandler;
 import org.eclipse.wst.wsi.internal.core.log.MimePart;
 import org.eclipse.wst.wsi.internal.core.log.MimeParts;
+import org.eclipse.wst.wsi.internal.core.log.RequestHandler;
 import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.CommentImpl;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
@@ -559,8 +560,7 @@ public class LogReaderImpl implements LogReader
 
           // Add log entry to the list
           messageEntryList.add(messageEntryRequest);
-
-          // Request is now processed only when the response is received.             
+          // Request is now processed only when the response is received.
         }
 
         else if (MessageEntry.TYPE_RESPONSE.equalsIgnoreCase(type))
@@ -585,7 +585,7 @@ public class LogReaderImpl implements LogReader
             // ISSUE : need to throw & catch a nullpointerexception in here...
             MessageEntry messageEntryRequest = findRelatedRequest(messageEntryResponse);
 
-            if (messageEntryRequest != null)
+            if (!omitRequest(messageEntryRequest))
             {
               // Create entry 
               // ADD: Need to create entry from report
@@ -604,24 +604,24 @@ public class LogReaderImpl implements LogReader
                     messageEntryResponse);
               if (requestTargetContext != null)
                 processLogEntry(requestTargetContext);
-            }
 
-            // Create entry 
-            // ADD: Need to create entry from report
-            //Entry entry = this.reporter.getReport().createEntry();
-            Entry entry = new EntryImpl();
-            entry.setEntryType(
+              // Create entry 
+              // ADD: Need to create entry from report
+              //Entry entry = this.reporter.getReport().createEntry();
+              entry = new EntryImpl();
+              entry.setEntryType(
                 EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_RESPONSE));
-            entry.setReferenceID(messageEntryResponse.getId());
-            entry.setEntryDetail(messageEntryResponse);
+              entry.setReferenceID(messageEntryResponse.getId());
+              entry.setEntryDetail(messageEntryResponse);
 
-            EntryContext responseTargetContext =
-              new EntryContext(
+              EntryContext responseTargetContext =
+                new EntryContext(
                   entry,
                   messageEntryRequest,
                   messageEntryResponse);
-            if (responseTargetContext != null)
-              processLogEntry(responseTargetContext);
+              if (responseTargetContext != null)
+                processLogEntry(responseTargetContext);
+            }
           }
         }
       }
@@ -643,15 +643,18 @@ public class LogReaderImpl implements LogReader
         /* Process all remaining requests in the messageEntryList */
         for (int i = 0; i < messageEntryList.size(); i++) {
             MessageEntry logEntry = (MessageEntry) messageEntryList.get(i);
-            Entry entry = new EntryImpl();
-            entry.setEntryType(EntryType.getEntryType(
+            if (!omitRequest(logEntry))
+            {
+              Entry entry = new EntryImpl();
+              entry.setEntryType(EntryType.getEntryType(
                     MessageValidator.TYPE_MESSAGE_REQUEST));
-            entry.setReferenceID(logEntry.getId());
-            entry.setEntryDetail(logEntry);
-            EntryContext requestTargetContext =
+              entry.setReferenceID(logEntry.getId());
+              entry.setEntryDetail(logEntry);
+              EntryContext requestTargetContext =
                 new EntryContext(entry, logEntry, null);
-            if (requestTargetContext != null)
+              if (requestTargetContext != null)
                 processLogEntry(requestTargetContext);
+            }
         }
     }
 
@@ -709,27 +712,30 @@ public class LogReaderImpl implements LogReader
     // could be made more efficient by keeping a much smaller list of unresponded requests...
     public MessageEntry findRelatedRequest(MessageEntry logEntryResponse)
     {
-      for (int entry = messageEntryList.size() - 1; entry >= 0; entry--)
+      if (logEntryResponse != null)
       {
-        // Get the log entry of the matching request
-        MessageEntry logEntry = (MessageEntry) messageEntryList.get(entry);
-        // Ignore own entry
-        if (!logEntryResponse.equals(logEntry))
+        for (int entry = messageEntryList.size() - 1; entry >= 0; entry--)
         {
-          if (logEntryResponse
-            .getConversationId()
-            .equals(logEntry.getConversationId()))
+          // Get the log entry of the matching request
+          MessageEntry logEntry = (MessageEntry) messageEntryList.get(entry);
+          // Ignore own entry
+          if (!logEntryResponse.equals(logEntry))
           {
-            // found the most recently read message with the same conversationID.
-            // From above, this should be the corresponding request. Check as far as possible.
-            if (logEntry.getType().equals(MessageEntry.TYPE_REQUEST))
+            if (logEntryResponse
+              .getConversationId()
+              .equals(logEntry.getConversationId()))
             {
-              messageEntryList.remove(entry);
-              return logEntry;
-            }
-            else
-            {
-              return null; // expected a request. need to throw an exception!
+              // found the most recently read message with the same conversationID.
+              // From above, this should be the corresponding request. Check as far as possible.
+              if (logEntry.getType().equals(MessageEntry.TYPE_REQUEST))
+              {
+                messageEntryList.remove(entry);
+                return logEntry;
+              }
+              else
+              {
+                return null; // expected a request. need to throw an exception!
+              }
             }
           }
         }
@@ -794,4 +800,46 @@ public class LogReaderImpl implements LogReader
     }
 
   } //End ContentHandler
+  
+  /**
+   * Check for HTTP messages that should not be logged.
+   * @param rr: a request-response pair.
+   * @return true if the request-response pair should be omitted from the log.
+   */
+  private boolean omitRequest(MessageEntry messageEntryRequest)
+  {
+    boolean omit = false;
+    if (messageEntryRequest == null)
+       omit = true;
+    else
+    {
+      String requestHeaders = messageEntryRequest.getHTTPHeaders();
+      if ((requestHeaders != null) &&
+          ((requestHeaders.startsWith("CONNECT")) ||
+           (requestHeaders.startsWith("TRACE")) || 
+           (requestHeaders.startsWith("DELETE")) || 
+           (requestHeaders.startsWith("OPTIONS")) || 
+           (requestHeaders.startsWith("HEAD")) ||
+           ((requestHeaders.startsWith("GET")) &&
+        	(!isMessageWithBrackets(messageEntryRequest.getMessage())))))
+      { 
+        omit = true;
+      }
+    }
+    return omit;
+  }
+
+  /**
+   * Returns true if the content of the message has at least
+   * one left and one right bracket.
+   * @param message: a message content.
+   * @return true if the content of the message has at least
+   *         one left and one right bracket.
+   */
+  public boolean isMessageWithBrackets(String message)
+  {
+    return ((message != null) && 
+            (message.indexOf("<")!= -1) && 
+            (message.indexOf(">") != -1));
+  }
 }
