@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060726   151614 pmoogk@ca.ibm.com - Peter Moogk
+ * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  *******************************************************************************/
 
 package org.eclipse.wst.command.internal.env.ant;
@@ -75,6 +76,9 @@ public class AntController {
 	      
 	   //ready to start running operations
  	   ((AntOperationManager)getOperationManager()).moveForwardToNextStop(new NullProgressMonitor());
+
+ 	   if (!operationManager_.getLastStatus().isOK()) 		   
+ 		   operationManager_.undoToLastStop();
    }
    
    private void createOperationManager(CommandFragment frag, DataFlowManager mgr, AntEnvironment env)

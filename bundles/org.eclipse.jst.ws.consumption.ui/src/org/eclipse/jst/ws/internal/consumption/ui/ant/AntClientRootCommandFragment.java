@@ -14,10 +14,12 @@
  * 20060530   144358 kathy@ca.ibm.com - Kathy Chan
  * 20060530   144350 kathy@ca.ibm.com - Kathy Chan
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
+ * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.ant;
 
 import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingOperation;
+import org.eclipse.jst.ws.internal.consumption.ui.command.AntRestoringCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
@@ -77,7 +79,7 @@ public class AntClientRootCommandFragment extends SequenceFragment{
   add( new SimpleFragment( new ClientExtensionOutputCommand(), "" ) );
  
   add(new FinishFragment());
-  
+  add( new SimpleFragment( new AntRestoringCommand(), "" ));
   add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
  
   }
@@ -214,5 +216,6 @@ public class AntClientRootCommandFragment extends SequenceFragment{
       dataRegistry.addMapping( ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarProjectName", DeployClientFragment.class, "EarProject", null );
       dataRegistry.addMapping( ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarComponentName", DeployClientFragment.class, "Ear", null );  
           
+      dataRegistry.addMapping(AntDefaultingOperation.class, "RendererValidation", AntRestoringCommand.class);          
    }        
 }
