@@ -18,6 +18,7 @@
  * 20060524   130755 kathy@ca.ibm.com - Kathy Chan
  * 20060607   144978 kathy@ca.ibm.com - Kathy Chan
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
+ * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -186,7 +187,8 @@ public class AxisWebService extends AbstractWebService
 	    //DefaultsForServerJavaWSDLCommand
 	    registry.addMapping(BUAxisDefaultingCommand.class, "JavaWSDLParam", DefaultsForServerJavaWSDLCommand.class);
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", DefaultsForServerJavaWSDLCommand.class, "ServiceProject", new StringToIProjectTransformer());
-        registry.addMapping(BUAxisInputCommand.class, "ServiceServerTypeID", DefaultsForServerJavaWSDLCommand.class);        
+        registry.addMapping(BUAxisInputCommand.class, "ServiceServerTypeID", DefaultsForServerJavaWSDLCommand.class); 
+        registry.addMapping(BUAxisInputCommand.class, "ServiceExistingServer", DefaultsForServerJavaWSDLCommand.class);        
 	    registry.addMapping(BUAxisDefaultingCommand.class, "JavaBeanName", DefaultsForServerJavaWSDLCommand.class);
 	    registry.addMapping(BUAxisDefaultingCommand.class, "Parser", DefaultsForServerJavaWSDLCommand.class);
 	    
@@ -292,7 +294,8 @@ public class AxisWebService extends AbstractWebService
 	    
 	    // Skeleton2WSDLCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", TDCodeGenOperation.class, "ServerProject", projectTransformer);
-	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", TDCodeGenOperation.class);	    
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceServerTypeID", TDCodeGenOperation.class);
+	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServiceExistingServer", TDCodeGenOperation.class);	
 
 	    // RefreshProjectCommand
 	    dataRegistry.addMapping(TDAxisInputCommand.class, "ServerProject", RefreshProjectCommand.class, "Project", projectTransformer);

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
+ * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -51,6 +52,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class Skeleton2WSDLCommand extends AbstractDataModelOperation
@@ -63,6 +65,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
   private JavaWSDLParameter javaWSDLParam;
   private IProject serverProject;
   private String serviceServerTypeID_;  
+  private IServer serviceExistingServer;  
   private final String TEMP_URI = "http://tempuri.org/"; //$NON-NLS-1$
 
   public Skeleton2WSDLCommand( ) {
@@ -210,7 +213,7 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
       String projectURL = null;
       if (serviceServerTypeID_ != null && serviceServerTypeID_.length()>0)
       {
-	    projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, serviceServerTypeID_);
+	    projectURL = ServerUtils.getEncodedWebComponentURL(serverProject, serviceServerTypeID_, serviceExistingServer);
       }
       
       if (projectURL == null) // either no server type defined or server not able to get project URL
@@ -278,6 +281,10 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
   public void setServiceServerTypeID(String id)
   {
     serviceServerTypeID_ = id;
-  }  
+  }
+
+public void setServiceExistingServer(IServer existingServer) {
+	serviceExistingServer = existingServer;
+}  
 
 }

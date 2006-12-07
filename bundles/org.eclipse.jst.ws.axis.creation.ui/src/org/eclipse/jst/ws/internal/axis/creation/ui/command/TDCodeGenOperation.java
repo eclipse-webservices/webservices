@@ -12,6 +12,7 @@
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060517   142327 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -30,6 +31,7 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.task.Skeleton2WSDLCommand;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
@@ -54,6 +56,7 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 	private Skeleton2WSDLCommand skeleton2WSDLCommand = null;
 	private IProject serverProject;
 	private String serviceServerTypeID;
+	private IServer serviceExistingServer;
 	  
 	// UpdateWebXMLCommand
 	private UpdateWEBXMLCommand updateWebXMLCommand = null;
@@ -144,6 +147,7 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 			skeleton2WSDLCommand.setJavaWSDLParam(javaWSDLParam);
 			skeleton2WSDLCommand.setServerProject(serverProject);
 			skeleton2WSDLCommand.setServiceServerTypeID(serviceServerTypeID);
+			skeleton2WSDLCommand.setServiceExistingServer(serviceExistingServer);
 			status = skeleton2WSDLCommand.execute(monitor, info);
 			if (status.getSeverity() == Status.ERROR) {
 				throw new CoreException(status);
@@ -222,5 +226,9 @@ public class TDCodeGenOperation extends AbstractDataModelOperation {
 	public void setServiceServerTypeID(String id) {
 	  this.serviceServerTypeID = id;
 	}
+	
+	public void setServiceExistingServer(IServer server) {
+		  this.serviceExistingServer = server;
+		}
 
 }

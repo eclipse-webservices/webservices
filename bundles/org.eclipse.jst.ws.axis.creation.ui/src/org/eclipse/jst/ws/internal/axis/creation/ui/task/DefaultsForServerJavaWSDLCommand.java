@@ -12,6 +12,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060524   128601 andyzhai@ca.ibm.com - Andy Zhai
+ * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -43,6 +44,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsil.Utils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
@@ -62,6 +64,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
 	public final byte MODE_BEAN = (byte) 0;
 	public final String SERVICE_NAME_EXT = "Service"; //$NON-NLS-1$
 	private final String TEMP_URI = "http://tempuri.org/"; //$NON-NLS-1$
+	private IServer serviceExistingServer;
 
 	public DefaultsForServerJavaWSDLCommand( ) 
 	{
@@ -170,7 +173,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
         String projectURL = null;
         if (serviceServerTypeID_ != null && serviceServerTypeID_.length()>0)
         {
-		  projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, serviceServerTypeID_);          
+		  projectURL = ServerUtils.getEncodedWebComponentURL(serviceProject_, serviceServerTypeID_, serviceExistingServer);          
         }
         if (projectURL == null) // either no server type defined or server not able to get project URL
         { 
@@ -252,4 +255,7 @@ public class DefaultsForServerJavaWSDLCommand extends AbstractDataModelOperation
     serviceServerTypeID_ = id;
   }
   
+  public void setServiceExistingServer(IServer existingServer) {
+		serviceExistingServer = existingServer;
+	} 
 }

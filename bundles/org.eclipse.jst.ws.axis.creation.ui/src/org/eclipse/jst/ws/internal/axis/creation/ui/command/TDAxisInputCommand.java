@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
+ * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -19,6 +20,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
@@ -30,6 +33,7 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 
 	  private String serverServer_;
       private String serviceServerTypeID_; 
+	  private IServer serviceExistingServer_ = null;
 	  private String wsdlURI_;
 	  private WebServiceInfo webServiceInfo_;
 	  	  
@@ -47,7 +51,21 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 		public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
 		{	    
 		serverServer_ = ws_.getWebServiceInfo().getServerInstanceId();
-        serviceServerTypeID_ = ws_.getWebServiceInfo().getServerFactoryId();
+
+		String serverInstanceId = ws_.getWebServiceInfo().getServerInstanceId();
+		String serverFactoryId = ws_.getWebServiceInfo().getServerFactoryId();
+		if (serverInstanceId != null) { // server exists
+	    	serviceExistingServer_ = ServerCore.findServer(serverInstanceId);
+			if (serviceExistingServer_ != null)
+		    {
+		      serviceServerTypeID_ = serviceExistingServer_.getServerType().getId();
+		    }
+	    }
+	    else
+	    {
+	    	serviceServerTypeID_ = serverFactoryId;
+	    }
+		
 		wsdlURI_ = ws_.getWebServiceInfo().getWsdlURL();
 		webServiceInfo_ = ws_.getWebServiceInfo();
 		
@@ -79,5 +97,10 @@ public class TDAxisInputCommand extends AbstractDataModelOperation {
 		public WebServiceInfo getWebServiceInfo() {
 			return webServiceInfo_;
 		}
+		
+		public IServer getServiceExistingServer()
+		  {
+		    return serviceExistingServer_;
+		  }
 
 }
