@@ -4,12 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060419   132905 cbrealey@ca.ibm.com - Chris Brealey          
+ * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -38,6 +39,7 @@ public class BUAxisInputCommand extends AbstractDataModelOperation {
 	private String javaBeanName_;
 
 	  private String serviceServerTypeID_;
+	  private IServer serviceExistingServer_ = null;
 	  
 		/**
 		* Default CTOR
@@ -88,13 +90,11 @@ public class BUAxisInputCommand extends AbstractDataModelOperation {
 			}
 		}
 		
-		IServer serviceExistingServer=null;
-		
 		if (serverInstanceId != null) { // server exists
-	    	serviceExistingServer = ServerCore.findServer(serverInstanceId);
-			if (serviceExistingServer != null)
+	    	serviceExistingServer_ = ServerCore.findServer(serverInstanceId);
+			if (serviceExistingServer_ != null)
 		    {
-		      serviceServerTypeID_ = serviceExistingServer.getServerType().getId();
+		      serviceServerTypeID_ = serviceExistingServer_.getServerType().getId();
 		    }
 	    }
 	    else
@@ -121,4 +121,9 @@ public class BUAxisInputCommand extends AbstractDataModelOperation {
 		public String getJavaBeanName() {
 			return javaBeanName_;
 		}
+		
+		public IServer getServiceExistingServer()
+		  {
+		    return serviceExistingServer_;
+		  }
 }

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060204  124408   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
+ * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -27,7 +28,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
@@ -407,67 +407,57 @@ public final class ServerUtils {
   
 	/**
 	 * Returns the URL string corresponding to the web server module root of the
-	 * component in a server instance or null if the project has no Web nature
-	 * or has no association to a server instance.
+	 * component based on a server factory ID or null if the project has no Web nature
+	 * or the module root cannot be determined (e.g. For some types of 
+	 * servers, we would not be able to get module root URL if the server has not been started).
+	 * Note that we are not relying on which server the module is currently associated with to determine
+	 * the correct module server root because the project might be associated with a server but we need the
+	 * module root based on another server factory ID.
 	 * 
 	 * @param project
 	 *            The project.
-	 * @return The web server module root URL or null if the project has no Web
-	 *         nature or has no association to a server instance.
+	 * @param serverFactoryId server factory ID
+	 * @return The web server module root URL or null 
 	 */
 	public static String getWebComponentURL(IProject project, String serverFactoryId) {
 		String webProjectURL = null;
 		IModule module = getModule(project);
 		if (module != null) {
-			IServer serverInstance = getServerForModule(module);
-			if (serverInstance != null) {
-				IURLProvider urlProvider = (IURLProvider) serverInstance.loadAdapter(IURLProvider.class, null);
-				if (urlProvider!=null) {
-					URL url = urlProvider.getModuleRootURL(module);
-					if (url != null) {
-						String s = url.toString();
-						webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
+			IServerType serverType = ServerCore.findServerType(serverFactoryId);               
+			if (serverType!=null)
+			{
+				try {
+					//Choose a Runtime which is not a stub
+					IRuntime nonStubRuntime = null;
+					IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
+					String serverRuntimeTypeId = serverType.getRuntimeType().getId();
+					for (int i = 0; i < runtimes.length; i++) {
+						IRuntime runtime = runtimes[i];
+						String thisRuntimeTypeId = runtime.getRuntimeType().getId();
+						if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
+							//Found an appropriate IRuntime that is not a stub
+							nonStubRuntime = runtime;
+							break;
+						}
 					}
-				}
-			}
-			else {
-				//IRuntime projectTarget = ServerCore.getProjectProperties(project).getRuntimeTarget();
-                IServerType serverType = ServerCore.findServerType(serverFactoryId);               
-				if (serverType!=null)
-				{
-					try {
-                        //Choose a Runtime which is not a stub
-                        IRuntime nonStubRuntime = null;
-                        IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
-                        String serverRuntimeTypeId = serverType.getRuntimeType().getId();
-                        for (int i = 0; i < runtimes.length; i++) {
-                            IRuntime runtime = runtimes[i];
-                            String thisRuntimeTypeId = runtime.getRuntimeType().getId();
-                            if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
-                                //Found an appropriate IRuntime that is not a stub
-                                nonStubRuntime = runtime;
-                                break;
-                            }
-                        }
-                        
-                        if (nonStubRuntime != null)
-                        {
-					      IServerWorkingCopy serverWC = serverType.createServer(null, null, nonStubRuntime, null);
-						  IURLProvider urlProvider = (IURLProvider) serverWC.loadAdapter(IURLProvider.class, null);
-						  if (urlProvider!=null) {
-						     URL url = urlProvider.getModuleRootURL(module);							
-							 if (url != null) {
+
+					if (nonStubRuntime != null)
+					{
+						IServerWorkingCopy serverWC = serverType.createServer(null, null, nonStubRuntime, null);
+						IURLProvider urlProvider = (IURLProvider) serverWC.loadAdapter(IURLProvider.class, null);
+						if (urlProvider!=null) {
+							URL url = urlProvider.getModuleRootURL(module);							
+							if (url != null) {
 								String s = url.toString();
 								webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
-							 }				
-						  }
-                        }
-
-					} catch(CoreException ce){
-                        Logger.getLogger().log(ce);
+							}				
+						}
 					}
-					
+
+				} catch(CoreException ce){
+					Logger.getLogger().log(ce);
 				}
+
 			}
 		}
 		return webProjectURL;
@@ -475,13 +465,18 @@ public final class ServerUtils {
 
 	/**
 	 * Returns the URL string corresponding to the web server module root of the
-	 * project in a server instance or null if the project has no Web nature or
-	 * has no association to a server instance.
+	 * component based on a server factory ID and server.  Returns null if the project has no Web nature
+	 * or the module root cannot be determined (e.g. For some types of 
+	 * servers, we would not be able to get module root URL if the server has not been started).
+	 * Note that we are not relying on which server the module is currently associated with to determine
+	 * the correct module server root because the project might be associated with a server but we need the
+	 * module root based on another server / server factory ID.
 	 * 
 	 * @param project
 	 *            The project.
-	 * @return The web server module root URL or null if the project has no Web
-	 *         nature or has no association to a server instance.
+	 * @param serverFactoryId server factory ID
+	 * @param server Server id
+	 * @return The web server module root URL or null 
 	 */
 	public static String getWebComponentURL(IProject project,
 			String serverFactoryId, IServer server) {
@@ -489,9 +484,8 @@ public final class ServerUtils {
 		String webProjectURL = null;
 		IModule module = getModule(project);
 		if (module != null) {
-			IServer serverInstance = ServerUtils.getServerForModule(module, serverFactoryId, server, true, new NullProgressMonitor());
-			if (serverInstance != null) {
-                IURLProvider urlProvider = (IURLProvider) serverInstance.loadAdapter(IURLProvider.class, null);
+			if (server != null) {
+                IURLProvider urlProvider = (IURLProvider) server.loadAdapter(IURLProvider.class, null);
                 if (urlProvider!=null) {
                     URL url = urlProvider.getModuleRootURL(module);              
 					if (url != null) {
@@ -499,6 +493,8 @@ public final class ServerUtils {
 					  webProjectURL = (s.endsWith("/") ? s.substring(0, s.length() - 1) : s);
                     }
 				}
+			} else {
+				webProjectURL = getWebComponentURL(project, serverFactoryId);
 			}
 		}
 		return webProjectURL;
