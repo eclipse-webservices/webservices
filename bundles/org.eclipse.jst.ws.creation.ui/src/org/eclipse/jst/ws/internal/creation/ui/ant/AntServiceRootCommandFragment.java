@@ -14,10 +14,12 @@
  * 20060530   144350 kathy@ca.ibm.com - Kathy Chan
  * 20060823   154938 pmoogk@ca.ibm.com - Peter Moogk
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
+ * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
 import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingOperation;
+import org.eclipse.jst.ws.internal.consumption.ui.command.AntRestoringCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ScenarioCleanupCommand;
@@ -64,6 +66,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     add( new ServiceRootFragment() );
     add( new SimpleFragment( new ServerExtensionOutputCommand(), "" ));
     add(new FinishFragment());
+    add( new SimpleFragment( new AntRestoringCommand(), "" ));
     add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
   }
   
@@ -142,6 +145,8 @@ public class AntServiceRootCommandFragment extends SequenceFragment
 
     // Map ServerExtensionOutputCommand for ServerStart()
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProjectEAR", ServerExtensionOutputCommand.class, "EarProjectName", null);
+    
+    dataRegistry.addMapping(AntDefaultingOperation.class, "RendererValidation", AntRestoringCommand.class);
     
   }
 

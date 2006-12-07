@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
+ * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.fragment;
 
@@ -401,10 +402,10 @@ public class CommandFragmentEngine implements CommandManager
   	    
   	  if( cmd != null )
   	  {
-  	    dataManager_.process( cmd );
-  	  	  
   	    try
   	    {
+  	      dataManager_.process( cmd );  	    	
+  	    	
           status = initBeforeExecute( cmd );
           
   	      environment_.getLog().log(ILog.INFO, "command", 5001, this, "runCommand", "Executing: " + cmd.getClass().getName());
