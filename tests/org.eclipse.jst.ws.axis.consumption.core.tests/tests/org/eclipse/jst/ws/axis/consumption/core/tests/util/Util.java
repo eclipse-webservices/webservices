@@ -12,6 +12,7 @@
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
  * 20060711   147862 cbrealey@ca.ibm.com - Chris Brealey
  * 20060711   147864 cbrealey@ca.ibm.com - Chris Brealey
+ * 20061211   162288 makandre@ca.ibm.com - Andrew Mak, workspace paths with spaces break Java Editor Launch
  *******************************************************************************/
 
 package org.eclipse.jst.ws.axis.consumption.core.tests.util;
@@ -19,6 +20,7 @@ package org.eclipse.jst.ws.axis.consumption.core.tests.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,6 +48,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.osgi.framework.Bundle;
 
 public class Util
@@ -145,8 +148,11 @@ public class Util
 		try
 		{
 			URL localAxisURL = FileLocator.toFileURL(axisURL);
-			File file = new File(new URI(localAxisURL.toString()));
+			File file = new File(new URI(URIEncoder.encode(localAxisURL.toString(), "UTF-8")));
 			return new Path(file.toString());
+		}
+		catch (UnsupportedEncodingException uee) {
+			throw new CoreException(new Status(IStatus.ERROR,"",0,"Unable to encode jar path for plugin org.apache.axis",uee));			
 		}
 		catch (IOException ioe)
 		{

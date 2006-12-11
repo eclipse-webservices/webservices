@@ -10,17 +10,14 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
+ * 20061025   162288 makandre@ca.ibm.com - Andrew Mak, workspace paths with spaces break Java Editor Launch
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.command;
 
-import java.net.URI;
-
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -41,6 +38,7 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
  */
 public class OpenEditorCommand extends AbstractDataModelOperation {
 
+	private final static String FILE_PROTOCOL     = "file:/";
 	private final static String PLATFORM_RESOURCE = "platform:/resource/";
 	
 	private IWebService webService;
@@ -79,24 +77,30 @@ public class OpenEditorCommand extends AbstractDataModelOperation {
 		if (implURLs == null)
 			return Status.OK_STATUS;
 		
-		IFile file = null;
+		IFile file;
 		
 		for (int i = 0; i < implURLs.length; i++) {
 			try {    						
-				URI uri    = new URI(implURLs[i]); 				
-				IPath path = URIUtil.toPath(uri);
+				String implURL = implURLs[i];
+				file = null;
 				
 				// local filesystem path
-				if (path != null)
-					file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+				if (implURL.startsWith(FILE_PROTOCOL)) {
+					implURL = implURL.substring(FILE_PROTOCOL.length());				
+					file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(implURL));
+				}
+				else {	
+					// platform path
+					if (implURL.startsWith(PLATFORM_RESOURCE))
+						implURL = implURL.substring(PLATFORM_RESOURCE.length());
 				
-				// platform path
-				else if (implURLs[i].startsWith(PLATFORM_RESOURCE)) {
-					path = new Path(uri.getPath()).removeFirstSegments(1);					
-					file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+					if (implURL.indexOf(':') != -1)
+						continue;
+					
+					file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(implURL));
 				}
 						
-				if (file == null)
+				if (file == null || !file.exists())
 					continue;
 				
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
