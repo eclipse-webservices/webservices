@@ -22,6 +22,7 @@
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060831   155883 makandre@ca.ibm.com - Andrew Mak, service impl field doesn't work after switching from BU to TD
  * 20061106   142500 david.schneider@unisys.com - David Schneider, WTP properties pages fonts don't follow Eclipse preferences
+ * 20061211   161589 makandre@ca.ibm.com - Andrew Mak, NPE in service generation after opening and cancelling from browse dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -558,7 +559,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   public IStructuredSelection getObjectSelection()
   {
 	  StructuredSelection ss; 
-	  if (tree != null)
+	  if (tree != null && tree.getWsdlURI() != null)
 		  ss = new StructuredSelection(tree.getWsdlURI());
 	  else
 		  ss = new StructuredSelection(wsdlURI_);
