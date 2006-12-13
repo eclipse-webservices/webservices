@@ -21,6 +21,7 @@
  * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060831   155883 makandre@ca.ibm.com - Andrew Mak, service impl field doesn't work after switching from BU to TD
+ * 20061211   161589 makandre@ca.ibm.com - Andrew Mak, NPE in service generation after opening and cancelling from browse dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -555,7 +556,7 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   public IStructuredSelection getObjectSelection()
   {
 	  StructuredSelection ss; 
-	  if (tree != null)
+	  if (tree != null && tree.getWsdlURI() != null)
 		  ss = new StructuredSelection(tree.getWsdlURI());
 	  else
 		  ss = new StructuredSelection(wsdlURI_);
