@@ -44,6 +44,7 @@
  * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
  * 20060831   155441 makandre@ca.ibm.com - Andrew Mak, Small tweak for this bug
  * 20061003   159142 kathy@ca.ibm.com - Kathy Chan
+ * 20061212   164177 makandre@ca.ibm.com - Andrew Mak, Incorrect validation error complaining about runtime not supporting a project type
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -237,11 +238,9 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	 */
 	public void run() {
 		
-		validationState_ = ValidationUtils.VALIDATE_ALL;
-		statusListener_.handleEvent(null);
-			
-		if (serviceImpl_.getText().trim().equals(""))
-			validObjectSelection_ = false;
+		// do minimal check here, this call will determine if we at least
+		// have a "validObjectSelection_"
+		checkServiceImplTextStatus();
 		
 		if (validObjectSelection_)
 		{
@@ -258,6 +257,10 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		}
 		else
 			setObjectSelection(null);
+		
+		// do full validation after all transformations and calculations have occurred
+		validationState_ = ValidationUtils.VALIDATE_ALL;
+		statusListener_.handleEvent(null);		
 	}
 	
 	/**
