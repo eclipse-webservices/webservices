@@ -24,6 +24,7 @@
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  * 20060907   156211 makandre@ca.ibm.com - Andrew Mak, Selecting service definition invalidated project config when creating web service java client
+ * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -503,7 +504,9 @@ public void internalize() {
            setWebServicesParser(wsdlOutputCommand.getWebServicesParser());
            setWebServiceURI(wsdlOutputCommand.getWsdlURI());
            
-	       refreshClientRuntimeSelection();
+           // bug 159911: our starting point is a wsdl, we should not need to
+           // refresh the runtime everytime the user specify a new wsdl path
+           // refreshClientRuntimeSelection();
      }
 	
   private class WSDLBrowseListener implements SelectionListener
