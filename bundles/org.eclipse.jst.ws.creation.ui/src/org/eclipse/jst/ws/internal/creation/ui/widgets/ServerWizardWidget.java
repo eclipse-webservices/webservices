@@ -44,6 +44,8 @@
  * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
  * 20060831   155441 makandre@ca.ibm.com - Andrew Mak, Small tweak for this bug
  * 20061003   159142 kathy@ca.ibm.com - Kathy Chan
+ * 20061212   164177 makandre@ca.ibm.com - Andrew Mak, Incorrect validation error complaining about runtime not supporting a project type
+ * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -199,6 +201,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		
 	private UIUtils utils_ = new UIUtils("org.eclipse.jst.ws.creation.ui");
 	
+	private boolean forceRefreshRuntime = false;
+	
 	private String GRAPHIC_SERVICE_0="icons/service_test.jpg"; //$NON-NLS-N$
 	private String GRAPHIC_SERVICE_1="icons/service_run.jpg";  //$NON-NLS-N$
 	private String GRAPHIC_SERVICE_2="icons/service_install.jpg"; //$NON-NLS-N$
@@ -237,27 +241,31 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	 */
 	public void run() {
 		
-		validationState_ = ValidationUtils.VALIDATE_ALL;
-		statusListener_.handleEvent(null);
-			
-		if (serviceImpl_.getText().trim().equals(""))
-			validObjectSelection_ = false;
+		// do minimal check here, this call will determine if we at least
+		// have a "validObjectSelection_"
+		checkServiceImplTextStatus();
 		
 		if (validObjectSelection_)
 		{
+			boolean refreshRuntime = (getWebServiceScenario() != WebServiceScenario.TOPDOWN); 
+			
 			if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
 		       {
 				IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
-				callObjectTransformation(launchable.getObjectSelection(), launchable.getProject(), launchable.getComponentName());								
+				callObjectTransformation(launchable.getObjectSelection(), launchable.getProject(), launchable.getComponentName(), refreshRuntime);								
 		       }
 			else 
 			{
 				IObjectSelectionWidget widget = (IObjectSelectionWidget)objectSelectionWidget_;
-				callObjectTransformation(widget.getObjectSelection(), widget.getProject(), widget.getComponentName());
+				callObjectTransformation(widget.getObjectSelection(), widget.getProject(), widget.getComponentName(), refreshRuntime);
 		    }	
 		}
 		else
 			setObjectSelection(null);
+		
+		// do full validation after all transformations and calculations have occurred
+		validationState_ = ValidationUtils.VALIDATE_ALL;
+		statusListener_.handleEvent(null);		
 	}
 	
 	/**
@@ -310,13 +318,31 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 					// implementation/definition based on the web service type
 					handleTypeChange();					
 
+					// After bug 159911, we will not refresh the runtime in TOPDOWN scenario unless we absolutely
+					// have to.  Therefore, if we are switching from another scenario type, we should check if the 
+					// current selections are valid for this TOPDOWN scenario, if not, try to pick a more suitable 
+					// runtime.
+					if (currentScenario == WebServiceScenario.TOPDOWN) {
+						validationState_ = ValidationUtils.VALIDATE_SERVER_RUNTIME_CHANGES;
+						
+						// this will force a refresh the next time the wsdl is changed
+						forceRefreshRuntime = !checkErrorStatus().isOK();
+					}
+					
 					//if the web service type change is from one top-down type to another
 					//top-down type leave the object selection field in tact and refresh
 					//the server/runtime project defaulting.
 					//Otherwise clear the object selection field since it's value is not valid anymore
 					if (oldScenario==WebServiceScenario.TOPDOWN && currentScenario==WebServiceScenario.TOPDOWN)						
 					{
-						refreshServerRuntimeSelection();					
+						// if switching from one TOPDOWN scenario to another TOPDOWN scenario and
+						// we've determined that the current runtime selection is not suitable, we 
+						// can refresh the runtime now (don't need to wait for the next time the
+						// wsdl is changed).
+						if (forceRefreshRuntime) {
+							refreshServerRuntimeSelection();
+							forceRefreshRuntime = false;
+						}
 					}
 					else
 					{
@@ -1496,7 +1522,7 @@ private void handleTypeChange()
 		
 	
 	private void callObjectTransformation(IStructuredSelection objectSelection,
-			IProject project, String componentName)
+			IProject project, String componentName, boolean refreshRuntime)
 	{
 		ObjectSelectionOutputCommand objOutputCommand = new ObjectSelectionOutputCommand();
 		   objOutputCommand.setTypeRuntimeServer(getServiceTypeRuntimeServer());
@@ -1509,7 +1535,11 @@ private void handleTypeChange()
 	       setWebServicesParser(objOutputCommand.getWebServicesParser());
 	       setObjectSelection(objOutputCommand.getObjectSelection());
 	       setProject(objOutputCommand.getProject());      		       
-	       refreshServerRuntimeSelection();  
+	       
+	       if (refreshRuntime || forceRefreshRuntime)
+	    	   refreshServerRuntimeSelection();  
+	       
+	       forceRefreshRuntime = false;
 	}
 	
 	private class ScaleSelectionListener implements SelectionListener
@@ -1621,7 +1651,7 @@ private void handleTypeChange()
 			   // call ObjectSelectionOutputCommand to carry out any transformation on the objectSelection
 			   if (result == Dialog.OK)
 			   {
-				   callObjectTransformation(objectSelection, project, componentName);				   
+				   callObjectTransformation(objectSelection, project, componentName, getWebServiceScenario() != WebServiceScenario.TOPDOWN);				   
 			       validationState_ = ValidationUtils.VALIDATE_ALL;
 			       statusListener_.handleEvent(null); // validate the page
 			   }			   
