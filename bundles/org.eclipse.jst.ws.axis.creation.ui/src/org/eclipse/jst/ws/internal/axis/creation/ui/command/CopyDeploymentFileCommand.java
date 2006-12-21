@@ -10,10 +10,12 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060524   130755 kathy@ca.ibm.com - Kathy Chan
+ * 20061221   168787 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -27,6 +29,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
@@ -97,31 +100,37 @@ public class CopyDeploymentFileCommand extends AbstractDataModelOperation
 					  serverModules = new IModule [] {EARProjectModule, projectModule};
 				  }
 				  IPath publishDirPath = publishHelper.getPublishDirectory(serverModules);
+				  
 				  if (publishDirPath != null) {
-					  IPath path = new Path( WEB_INF ).append( SERVER_CONFIG );
-					  IPath serverConfigPath = publishDirPath.append(path);
-					  if (serverConfigPath != null) {
-						  IVirtualFolder rootFolder = component.getRootFolder();
-						  if (rootFolder != null) {			  
-							  IVirtualFile newLocation = rootFolder.getFile(path);
-							  IPath targetPath = newLocation.getWorkspaceRelativePath();
-							  
-							  if (targetPath != null) {
-								  finStream = new FileInputStream(serverConfigPath.toString());
-								  if (finStream != null) {
-									  IStatusHandler statusHandler = environment.getStatusHandler();
-									  ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
-									  FileResourceUtils.createFile(context,  
-											  targetPath,
-											  finStream,
-											  monitor,
-											  statusHandler);
-									  finStream.close();
+					  IVirtualFolder rootFolder = component.getRootFolder();
+					  IPath rootFolderPath = ResourceUtils.getWorkspaceRoot().getFile(rootFolder.getWorkspaceRelativePath()).getLocation();
+					  if (rootFolderPath != null) {
+						  File rootFolderFile = rootFolderPath.toFile();
+						  File publishDirFile = publishDirPath.toFile();
+						  if (!rootFolderFile.equals(publishDirFile)) {
+							  // copy the server-config.wsdd if the publish directory is not in the same as the project root folder
+							  IPath path = new Path( WEB_INF ).append( SERVER_CONFIG );
+							  IPath serverConfigPath = publishDirPath.append(path);
+							  if (serverConfigPath != null) {			  
+								  IVirtualFile newLocation = rootFolder.getFile(path);
+								  IPath targetPath = newLocation.getWorkspaceRelativePath();
+								  if (targetPath != null) {
+									  finStream = new FileInputStream(serverConfigPath.toString());
+									  if (finStream != null) {
+										  IStatusHandler statusHandler = environment.getStatusHandler();
+										  ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
+										  FileResourceUtils.createFile(context,  
+												  targetPath,
+												  finStream,
+												  monitor,
+												  statusHandler);
+										  finStream.close();
+									  }
 								  }
 							  }
 						  }
 					  }
-				  }
+				  }  
 			  } 	  		  
 		  }	  
 	  }
