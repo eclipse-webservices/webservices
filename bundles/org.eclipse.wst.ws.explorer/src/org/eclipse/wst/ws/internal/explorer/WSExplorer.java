@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060721   151409 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on RH
  * 20060802   150428 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20061219   168620 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on Linux
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer;
 
@@ -23,6 +24,7 @@ import java.net.URLEncoder;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
@@ -119,6 +121,23 @@ public class WSExplorer {
 			
 			if (forceLaunchOutsideIDE) {
 				browser = browserSupport.getExternalBrowser();
+				
+				// external browser support uses swt Program.findProgram() to locate an appropriate browser for HTML files
+				// certain versions of swt Program class need to be run from the UI thread, otherwise findProgram() does not
+				// work properly (this applies to Linux only).  The code below is to workaround this problem.
+				
+				// Display.getCurrent() will be null if this is not the UI thread
+				if (Display.getCurrent() == null) {
+					
+					// create a runnable to open the browser, run it in the UI thread
+					OpenBrowserRunnable runnable = new OpenBrowserRunnable(browser, new URL(sb.toString()));
+					Display.getDefault().syncExec(runnable);
+					
+					if (runnable.getException() != null)
+						throw runnable.getException();
+				}
+				else
+					browser.openURL(new URL(sb.toString()));
 			}
 			else {
 				// browserId
@@ -129,10 +148,8 @@ public class WSExplorer {
 				if (internalBrowser_==null)
 					internalBrowser_ = browserSupport.createBrowser(browserId.toString());
 				browser = internalBrowser_;
+				browser.openURL(new URL(sb.toString()));
 			}
-			
-			browser.openURL(new URL(sb.toString()));
-			
 		} catch (Exception e) {
 			return new Status(IStatus.ERROR, ExplorerPlugin.ID, 0,
 					ExplorerPlugin.getMessage("%MSG_ERROR_LAUNCH_WSEXPLORER"),
@@ -232,5 +249,34 @@ public class WSExplorer {
 			}
 		}
 		return launch(wb, sel, options, forceLaunchOutsideIDE);
+	}
+}
+
+/**
+ * Helper class for opening a browser and storing the
+ * Exception thrown if it was unsuccessful. 
+ */
+class OpenBrowserRunnable implements Runnable {
+	
+	private IWebBrowser browser;
+	private URL url;
+	private Exception exception = null;
+	
+	public OpenBrowserRunnable(IWebBrowser browser, URL url) {
+		this.browser = browser;
+		this.url = url;
+	}
+	
+	public void run() {
+		try {
+			browser.openURL(url);			
+		}
+		catch (Exception e) {
+			exception = e;
+		}
+	}
+	
+	public Exception getException() {
+		return exception;
 	}
 }
