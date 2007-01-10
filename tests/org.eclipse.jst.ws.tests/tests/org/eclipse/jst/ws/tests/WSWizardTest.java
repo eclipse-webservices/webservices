@@ -6,13 +6,15 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
@@ -58,7 +60,7 @@ public abstract class WSWizardTest extends TestCase implements WSJUnitConstants
 		installServer();
 		
 		// unzip pre-configured workspace projects
-		if (!ProjectUtilities.getProject(WSJUnitConstants.BU_PROJECT_NAME).exists())
+		//if (!ProjectUtilities.getProject(WSJUnitConstants.BU_PROJECT_NAME).exists())
 			createProjects();		
 		
 		installInputData();
@@ -147,7 +149,7 @@ public abstract class WSWizardTest extends TestCase implements WSJUnitConstants
 	protected void tearDown() throws Exception
 	{
 		stopServer();
-//		deleteServer();
+		deleteServer();
 //      deleteInputData();
 //		deleteServerRuntime();
 	}

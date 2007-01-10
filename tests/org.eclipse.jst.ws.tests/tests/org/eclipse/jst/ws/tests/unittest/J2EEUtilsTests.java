@@ -1,6 +1,16 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2004 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  * 
- */
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
 import junit.framework.Test;
@@ -108,7 +118,7 @@ public class J2EEUtilsTests extends TestCase implements WSJUnitConstants{
 		  IVirtualComponent vc2 = J2EEUtils.getVirtualComponent(project2);
 		  int j2 = J2EEUtils.getJ2EEVersion(vc2);
 		  System.out.println("J2EEVersions p1: "+j2);		  
-		  assertEquals(J2EEVersionConstants.SERVLET_2_3, j2);
+		  assertEquals(J2EEVersionConstants.SERVLET_2_4, j2);
 		  
 		  System.out.println("< END: testJ2EEVersionMethods ...");
 	  }

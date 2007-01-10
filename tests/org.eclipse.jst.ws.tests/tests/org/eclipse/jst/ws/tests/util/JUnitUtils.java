@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -17,15 +20,13 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -42,8 +43,10 @@ import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsConte
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
+import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EnvironmentUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
@@ -299,30 +302,23 @@ public class JUnitUtils {
 		serverRuntimeCtx.setServerFactoryId(serverTypeId);		
 	}
 	
+
 	private static IStatus launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
-		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint("org.eclipse.ui.popupMenus").getExtensions();
-		for (int i=0;i<extensions.length;i++)
-		{
-			if (extensions[i].getNamespace().equals(pluginNS));
-			{
-				IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
-				for (int j=0;j<configElements.length;j++)
-				{
-					if (configElements[j].getAttribute("id").equals(wizardId) && configElements[j].getAttribute("objectClass").equals(objectClassId))
-					{
-						IConfigurationElement actionElement = configElements[j].getChildren()[0];
-						AccumulateStatusHandler statusHandler = new AccumulateStatusHandler();
-						DynamicPopupJUnitWizard wizard = new DynamicPopupJUnitWizard(statusHandler);
-						wizard.setInitializationData(actionElement,null,null);
-						wizard.selectionChanged(null,initialSelection);
-						wizard.run(null);
-						return statusHandler.getStatus();
-					}
-				}
-			}
-		}
-		return StatusUtils.errorStatus( "No wizard found for: " );
+		IStatusHandler statusHandler = new EclipseStatusHandler();
+
+        DynamicPopupJUnitWizard wizard = new DynamicPopupJUnitWizard(statusHandler);
+        wizard.setInitialData(wizardId);
+        ProgressMonitorDialog monitor = new ProgressMonitorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+        try {
+        	wizard.runHeadLess(initialSelection, monitor);
+        } 
+        catch (Exception e){
+        	e.printStackTrace();
+        	return StatusUtils.errorStatus(e);
+        }
+        return Status.OK_STATUS;
+
 	}
 	
 	public static IStatus launchCreationWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
