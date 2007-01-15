@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060728	  151723 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070109   130965 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -132,14 +133,17 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		String selectedText = getServerSelection();
 		serverToRuntimeToJ2EE_.getList().setSelectionValue(selectedText);
 		
+		// TODO (see bug 116025) - Since the server and runtime set in serverToRuntimeToJ2EE is just the list of 
+		// all servers and all runtime (i.e. no validation checking is being done), no need to update the runtime,
+		// just keep the original value.
 		//Update the runtime -------------------------------
-		setRuntimeItems(serverToRuntimeToJ2EE_.getChoice().getList().getList());
-		if (serverToRuntimeToJ2EE_.getChoice().getList().getList().length > 0)
-		  serverToRuntimeToJ2EE_.getChoice().getList().setIndex(0);
-		
-		String newRuntimeText = serverToRuntimeToJ2EE_.getChoice().getList().getSelection();
-		if (newRuntimeText!=null && newRuntimeText.length()>0)
-			setRuntimeSelection(newRuntimeText);		
+//		setRuntimeItems(serverToRuntimeToJ2EE_.getChoice().getList().getList());
+//		if (serverToRuntimeToJ2EE_.getChoice().getList().getList().length > 0)
+//		  serverToRuntimeToJ2EE_.getChoice().getList().setIndex(0);
+//		
+//		String newRuntimeText = serverToRuntimeToJ2EE_.getChoice().getList().getSelection();
+//		if (newRuntimeText!=null && newRuntimeText.length()>0)
+//			setRuntimeSelection(newRuntimeText);		
 		
 		startListening();
 	}
