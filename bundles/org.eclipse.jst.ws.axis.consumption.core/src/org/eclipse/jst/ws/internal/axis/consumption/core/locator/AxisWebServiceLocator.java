@@ -13,6 +13,7 @@
  * 20060517   140832 andyzhai@ca.ibm.com - Andy Zhai
  * 20060620   147862 cbrealey@ca.ibm.com - Chris Brealey
  * 20060620   147864 cbrealey@ca.ibm.com - Chris Brealey
+ * 20061214   165716 makandre@ca.ibm.com - Andrew Mak, Web Service finder does not locate Axis Web service deployed on certain servers
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.core.locator;
@@ -385,8 +386,8 @@ public class AxisWebServiceLocator extends AbstractWebServiceLocator
 	{
 		for (int i = 0; i < ports.length; i++)
 		{
-			String name = ports[i].getName(); 
-			if ( name != null && name.trim().toLowerCase().equals("http")) return ports[i];
+			String protocol = ports[i].getProtocol(); 
+			if ( protocol != null && protocol.trim().toLowerCase().equals("http")) return ports[i];
 		}
 		return null;
 	}
