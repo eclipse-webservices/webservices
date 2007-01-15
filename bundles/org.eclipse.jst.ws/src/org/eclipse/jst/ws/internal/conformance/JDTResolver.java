@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060419   132905 cbrealey@ca.ibm.com - Chris Brealey
  * 20060711   149411 cbrealey@ca.ibm.com - Chris Brealey
+ * 20070102   196371 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.conformance;
 
@@ -566,8 +567,13 @@ public class JDTResolver
 	 */
 	public String getTypeNameFromSignature ( String signature )
 	{
+
 		String packageName = Signature.getSignatureQualifier(signature);
 		String baseName = Signature.getSignatureSimpleName(signature);
+		if (baseName.endsWith("[]")){
+			baseName = baseName.substring(0, baseName.indexOf("["));
+		}
+			
 		String typeName = (packageName.trim().equals("")?"":packageName+".") + baseName;
 		return typeName;
 	}
