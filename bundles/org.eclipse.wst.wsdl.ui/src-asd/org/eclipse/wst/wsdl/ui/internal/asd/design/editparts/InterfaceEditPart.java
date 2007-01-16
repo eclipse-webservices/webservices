@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
@@ -20,13 +21,10 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BoxComponentFigure;
-import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.LinkIconFigure;
+//import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BaseLinkIconFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 
@@ -44,86 +42,74 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
   
   protected IFigure createFigure()
   {
-	IFigure outer = new Figure();
-	outer.setLayoutManager(new ToolbarLayout(true));
-    boxFigure = (BoxComponentFigure)super.createFigure();
-    boxFigure.getLabel().setIcon(((IInterface) getModel()).getImage());
-    boxFigure.setBackgroundColor(ColorConstants.orange);
-    boxFigure.setBorder(new LineBorder(1));
-    ToolbarLayout toolbarLayout = new ToolbarLayout(false);
-    toolbarLayout.setStretchMinorAxis(true);
-    boxFigure.setLayoutManager(toolbarLayout);
-    outer.add(boxFigure);
-    linkIconColumn = new RectangleFigure();
-    linkIconColumn.setOutline(false);
-    linkIconColumn.setLayoutManager(new ToolbarLayout() {
-		public void layout(IFigure parent) {
-			super.layout(parent);
-			
-			// We need to layout on the y-axis
-			Iterator children = parent.getChildren().iterator();
-			while (children.hasNext()) {
-				Object item = children.next();
-				if (item instanceof LinkIconFigure) {
-					LinkIconFigure linkFigure = (LinkIconFigure) item;
-					AbstractGraphicalEditPart ep = linkFigure.getAssociatedEditPart();
-					IFigure associatedFigure = ep.getFigure();
-					if (associatedFigure != null) {
-						// Update the bounds
-						Rectangle associatedBounds = associatedFigure.getBounds();
-						Rectangle linkFigureBounds = linkFigure.getBounds();
-						if (linkFigureBounds.y == associatedBounds.y) {
-							break;
-						}
-						
-						linkFigure.setFigureLocation(new Point(associatedBounds.x, associatedBounds.y));
+		IFigure outer = new Figure() {
+			public void validate() {
+				super.validate();
+				// If we don't layout our Link Icon Column at this point, the link icons
+				// will not be properly updated in the scenario where a porttype is added
+				// or removed.  The link icons of the existing porttypes will not be updated.
+				getLinkIconColumn().getLayoutManager().layout(getLinkIconColumn());
+			}
+		};
+		
+		outer.setLayoutManager(new ToolbarLayout(true));
+	    boxFigure = (BoxComponentFigure) super.createFigure();
+	    boxFigure.getLabel().setIcon(((IInterface) getModel()).getImage());
+	    boxFigure.setBackgroundColor(ColorConstants.orange);
+	    boxFigure.setBorder(new LineBorder(1));
+	    ToolbarLayout toolbarLayout = new ToolbarLayout(false);
+	    toolbarLayout.setStretchMinorAxis(true);
+	    boxFigure.setLayoutManager(toolbarLayout);
+	    outer.add(boxFigure);
+	    linkIconColumn = new RectangleFigure();
+	    linkIconColumn.setOutline(false);
+	    linkIconColumn.setLayoutManager(new ToolbarLayout() {
+			public void layout(IFigure parent) {
+				super.layout(parent);
+				
+				// We need to layout on the y-axis
+				Iterator children = parent.getChildren().iterator();
+				while (children.hasNext()) {
+					Object item = children.next();
+					if (item instanceof IFigure) {
+						IFigure figure = (IFigure) item;
+						figure.getLayoutManager().layout(figure);
 					}
 				}
 			}
-		}
-		
-		protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
-			Dimension dimension = super.calculatePreferredSize(container, wHint, hHint);
 			
-			// Calculate the height
-			Iterator it = getFigure().getChildren().iterator();
-			while (it.hasNext()) {
-				Object item = it.next();
-				if (item instanceof BoxComponentFigure) {
-					dimension.height = ((IFigure) item).getPreferredSize().height;
-					break;
+			protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
+				Dimension dimension = super.calculatePreferredSize(container, wHint, hHint);
+				
+				// Calculate the height
+				Iterator it = container.getParent().getChildren().iterator();
+				while (it.hasNext()) {
+					Object item = it.next();
+					if (item instanceof BoxComponentFigure) {
+						dimension.height = ((IFigure) item).getPreferredSize().height;
+						break;
+					}
 				}
-			}
 
-			// Calculate the width
-			it = container.getChildren().iterator();
-			while (it.hasNext()) {
-				Object item = it.next();
-				if (item instanceof LinkIconFigure) {
-					dimension.width = dimension.width + ((LinkIconFigure) item).horizontalBuffer;					
-					break;
-				}
+				return dimension;
 			}
-
-			return dimension;
-		}
-    });
-    
-    outer.add(linkIconColumn);
-    
-    // rmah: The block of code below has been moved from refreshVisuals().  We're
-    // assuming the read-only state of the EditPart will never change once the
-    // EditPart has been created.
-    if (isReadOnly()) 
-    {
-    	figure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
-    }
-    else
-    {
-    	figure.getLabel().setForegroundColor(ColorConstants.black);
-    }
-    
-    return outer;
+	    });
+	    
+	    outer.add(linkIconColumn);
+	    
+	    // rmah: The block of code below has been moved from refreshVisuals().  We're
+	    // assuming the read-only state of the EditPart will never change once the
+	    // EditPart has been created.
+	    if (isReadOnly()) 
+	    {
+	    	figure.getLabel().setForegroundColor(DesignViewGraphicsConstants.readOnlyLabelColor);
+	    }
+	    else
+	    {
+	    	figure.getLabel().setForegroundColor(ColorConstants.black);
+	    }
+	    
+	    return outer;
   }
   
   public static void attachToInterfaceEditPart(EditPart editPart, RowLayout rowLayout)

@@ -20,6 +20,8 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultParameterCommand;
 public class W11AddFaultParameterCommand extends W11TopLevelElementCommand implements IASDAddCommand {
 	protected Operation operation;
 	protected Fault fault;
+	protected Object newObject;
+	private int parameterPattern = -1;
 	
 	public W11AddFaultParameterCommand(Operation operation, Fault fault) {
         super(Messages._UI_ACTION_ADD_FAULT, operation.getEnclosingDefinition());
@@ -27,16 +29,32 @@ public class W11AddFaultParameterCommand extends W11TopLevelElementCommand imple
 		this.fault = fault;
 	}
 	
+	public void setParameterPattern(int pattern) {
+		parameterPattern = pattern;
+	}
+	
 	public void execute() {
 		try {
 			beginRecording(operation.getElement());
 
-			// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-			int pattern = AddBaseParameterCommand.getParameterPattern(operation);
+			if (parameterPattern == -1) {
+				// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
+				parameterPattern = AddFaultParameterCommand.getParameterPatternForFault(operation, fault);
+				if (parameterPattern == -1) {
+					parameterPattern = AddBaseParameterCommand.getParameterPattern(operation);
+				}
+			}
+			
 			AddFaultParameterCommand command = new AddFaultParameterCommand(operation, fault);
-			command.setStyle(pattern);
+			command.setStyle(parameterPattern);
 			command.run();
 			fault = command.getFault();
+			newObject = command.getNewlyAddedComponentPart();
+			
+			if (command.getXSDElementDeclaration() != null) {
+				// Try to grab the "inner" XSDElement
+				newObject = getNewXSDElement(command.getXSDElementDeclaration());
+			}
 		}
 		finally {
 			endRecording(operation.getElement());
@@ -44,6 +62,6 @@ public class W11AddFaultParameterCommand extends W11TopLevelElementCommand imple
 	}
 	
 	public Object getNewlyAddedComponent() {
-		return fault;
+		return newObject;
 	}
 }

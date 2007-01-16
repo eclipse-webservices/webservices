@@ -149,7 +149,8 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 	
 	protected Object getModelToOpenOn(Object object) {
 		if (object instanceof XSDElementDeclaration) {
-			return ((XSDElementDeclaration) object).getTypeDefinition();
+			XSDElementDeclaration xsdElement = ((XSDElementDeclaration) object).getResolvedElementDeclaration();
+			return xsdElement.getTypeDefinition();
 		}
 		else if (object instanceof Part) {
 			Object elementOrType = ((Part) object).getElementDeclaration();
@@ -170,5 +171,30 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 	protected boolean isInlineSchema(IFile file) {
 		// Should there be a better test for this?  The IFiles are different so we can't use file == wsdlFile.
 		return file.getFullPath().equals(wsdlFile.getFullPath());
+	}
+	
+	public boolean isValid() {
+		if (object instanceof WSDLBaseAdapter) {
+			Object notifier = ((WSDLBaseAdapter) object).getTarget();
+			Object openOnModel = getModelToOpenOn(notifier);
+
+			// We check to ensure it's element != null.  If it does, then it's a sign of a
+			// bad reference (is invalid).
+			if (openOnModel instanceof XSDConcreteComponent && ((XSDConcreteComponent) openOnModel).getElement() != null) {
+				XSDConcreteComponent xsdComponent = (XSDConcreteComponent) openOnModel;
+
+				XSDSchema schema = getSchema(xsdComponent);
+				if (schema != null) {
+					String schemaLocation = URIHelper.removePlatformResourceProtocol(schema.getSchemaLocation());
+					IPath schemaPath = new Path(schemaLocation);
+					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(schemaPath);
+					if (file != null && file.exists()) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 }

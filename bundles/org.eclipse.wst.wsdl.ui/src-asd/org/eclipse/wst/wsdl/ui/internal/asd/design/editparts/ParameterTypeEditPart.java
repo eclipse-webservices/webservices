@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
@@ -38,10 +40,12 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.TypeReferenceDirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
-import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.LinkIconFigure;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BaseLinkIconFigure;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ModelDiagnosticInfo;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
+import org.eclipse.wst.wsdl.ui.internal.util.W11OpenExternalEditorHelper;
 
 import org.eclipse.draw2d.MouseMotionListener.Stub;
 
@@ -58,7 +62,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	  }
 	  
 	protected MyMouseEventListener mouseEventListener;
-	private LinkIconFigure linkIconFigure;
+	private BaseLinkIconFigure linkIconFigure;
 
 	protected IFigure createFigure()
 	{
@@ -101,7 +105,33 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 			if (image != null)
 			{
 				parameterType.setIcon(image);
-			}            
+			}
+
+			parameterType.setForegroundColor(ColorConstants.black);
+
+			List diagnosticMessages = new ArrayList(); 
+			// TODO: rmah: We should not know about W11ParameterForPart here.  Modify
+			// IParameter post WTP 1.5 to include the getDiagnosticMessages() method.
+			if (getModel() instanceof W11ParameterForPart) {
+				W11ParameterForPart paramForPart = (W11ParameterForPart) getModel();
+				diagnosticMessages = paramForPart.getDiagnosticMessages();
+			}
+
+			Iterator it = diagnosticMessages.iterator();
+			ModelDiagnosticInfo errorInfo = null;
+			while (it.hasNext() && errorInfo == null) {
+				ModelDiagnosticInfo temp = (ModelDiagnosticInfo) it.next();
+				if (temp.getType() == ModelDiagnosticInfo.ERROR_TYPE) {
+					errorInfo = temp;
+					break;
+				}
+			}
+
+			if (errorInfo != null) {
+				parameterType.setText(errorInfo.getDescriptionText());
+				parameterType.setForegroundColor(errorInfo.getDescriptionTextColor());
+				parameterType.setIcon(null);
+			}
 		}
 
 		// Force the LinkIconColumn to resize and relayout itself.
@@ -255,13 +285,11 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 	// Methods below handle the Link Figure.....
 	private void emphasizeLinkFigure() {
-		linkIconFigure.setForegroundColor(ColorConstants.blue);
-		linkIconFigure.setBackgroundColor(ColorConstants.blue);
+		linkIconFigure.setColor(ColorConstants.blue);
 	}
 
 	private void unemphasizeLinkFigure() {
-		linkIconFigure.setForegroundColor(ColorConstants.lightGray);
-		linkIconFigure.setBackgroundColor(ColorConstants.lightGray);
+		linkIconFigure.setColor(ColorConstants.lightGray);
 	}
 
 	private boolean pointerInRange(Rectangle figBounds, Point pointer) {
@@ -269,7 +297,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 		int entireX = figBounds.x;
 		int entireY = figBounds.y;
-		int entireWidth = figBounds.width + linkBounds.width + linkIconFigure.horizontalBuffer;
+		int entireWidth = figBounds.width + linkBounds.width;
 		int entireHeight = figBounds.height;
 		Rectangle entireBounds = new Rectangle(entireX, entireY, entireWidth, entireHeight);
 
@@ -315,19 +343,31 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 	private void refreshLinkFigure(Point point) {
 		Rectangle figBounds = getFigure().getParent().getParent().getBounds();
-		if (getExternalEditorOpener() != null) {
-			if (getExternalEditorOpener().linkApplicable()) {
+		// TODO: rmah:  We should not know about W11OpenExternalEditorHelper here.  Post WTP 1.5, we should add the
+		// isValid() method to interface IOpenExternalEditorHelper.java
+		if (getExternalEditorOpener() instanceof W11OpenExternalEditorHelper) {
+			W11OpenExternalEditorHelper openHelper = (W11OpenExternalEditorHelper) getExternalEditorOpener();
+
+			if (openHelper.linkApplicable()) {
 				if (!figureContainsLinkFigure(getInterfaceEditPart().getLinkIconColumn())) {
-					linkIconFigure = new LinkIconFigure(this);
+					linkIconFigure = new BaseLinkIconFigure(this);
 					getInterfaceEditPart().getLinkIconColumn().add(linkIconFigure);
 				}
-
-				if (pointerInRange(figBounds, point)) {
-					emphasizeLinkFigure();
+				
+				if (openHelper.isValid()) {
+					linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.VALID_SCHEMA_LINK_STYLE);
+					
+					if (pointerInRange(figBounds, point)) {
+						emphasizeLinkFigure();
+					}
+					else {
+						unemphasizeLinkFigure();
+					}
 				}
 				else {
-					unemphasizeLinkFigure();
+					linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.INVALID_SCHEMA_LINK_STYLE);
 				}
+					
 			}
 			else {
 				if (containsLinkFigure()) {

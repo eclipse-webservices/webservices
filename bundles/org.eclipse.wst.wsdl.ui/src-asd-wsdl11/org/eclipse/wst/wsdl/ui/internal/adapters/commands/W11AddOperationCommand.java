@@ -100,7 +100,7 @@ public class W11AddOperationCommand extends W11TopLevelElementCommand implements
 			  if (parameterPattern == -1) {
 				  parameterPattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;
 			  }
-			  addParameterCommand = new AddInputParameterCommand(operation, parameterPattern);
+			  addParameterCommand = new AddInputParameterCommand(operation, parameterPattern, true);
 		  }
 		  else if (kind == IMessageReference.KIND_OUTPUT) {
 			  int parameterPattern = AddBaseParameterCommand.getParameterPattern(portType, false);

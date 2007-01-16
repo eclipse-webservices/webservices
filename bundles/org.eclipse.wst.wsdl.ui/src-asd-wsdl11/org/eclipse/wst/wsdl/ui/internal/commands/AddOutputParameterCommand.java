@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.commands;
 
+import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
@@ -38,13 +39,19 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 			part = createWSDLComponents(output);
 		}
 		
+		newPart = part;
 		// Create necessary XSD Objects starting with the Part reference
 		newXSDElement = createXSDObjects(part);
 	}
 	
 	protected String getAnonymousXSDElementBaseName() {
 		if (newAnonymousXSDElementName == null) {
-			newAnonymousXSDElementName = getWSDLPartName();
+			if (this.style == AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT) {
+				newAnonymousXSDElementName = operation.getName() + "Response"; //$NON-NLS-1$;
+			}
+			else {
+				newAnonymousXSDElementName = getWSDLPartName();
+			}
 		}
 		
 		return newAnonymousXSDElementName;
@@ -77,7 +84,12 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 		return newWSDLPartName;
 	}
 	
+	// TODO: remove this method and use getMessageReference() instead
 	public Output getOutput() {
+		return output;
+	}
+	
+	public MessageReference getMessageReference() {
 		return output;
 	}
 }

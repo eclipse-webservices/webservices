@@ -15,36 +15,53 @@ import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputParameterCommand;
+import org.eclipse.xsd.XSDConcreteComponent;
 
 public class W11AddInputParameterCommand extends W11TopLevelElementCommand implements IASDAddCommand{
 	protected Operation operation;
 	private Object input;
+	private int parameterPattern = -1;
 	
 	public W11AddInputParameterCommand(Operation operation) {
         super(Messages._UI_ACTION_ADD_INPUT, operation.getEnclosingDefinition());
 		this.operation = operation;
 	}
 	
+	public void setParameterPattern(int pattern) {
+		parameterPattern = pattern;
+	}
+	
 	public void execute() {
 		try {
 			beginRecording(operation.getElement());
 
-			// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
-			int pattern = AddBaseParameterCommand.getParameterPattern(operation, true);
-			if (pattern == -1) {
-				pattern = AddBaseParameterCommand.getParameterPattern(operation);
+			if (parameterPattern == -1) {
+				// Determine which Pattern we should use.  For example, ADDBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT
+				parameterPattern = AddBaseParameterCommand.getParameterPattern(operation, true);
+				if (parameterPattern == -1) {
+					parameterPattern = AddBaseParameterCommand.getParameterPattern(operation);
+				}
 			}
-			AddInputParameterCommand command = new AddInputParameterCommand(operation, pattern);
+			
+			AddInputParameterCommand command = new AddInputParameterCommand(operation, parameterPattern);
 			command.run();
+			input = command.getNewlyAddedComponentPart();
 			
 			formatChild(operation.getEInput().getElement());
-			formatChild(command.getXSDElementDeclaration().getContainer().getContainer().getContainer().getElement());
-			
-			input = operation.getEInput();
+			if (command.getXSDElementDeclaration() != null) {
+				// Try to grab the "inner" XSDElement
+				input = getNewXSDElement(command.getXSDElementDeclaration());
+				formatChild(getXSDParent(command.getXSDElementDeclaration()).getElement());
+			}
 		}
 		finally {
 			endRecording(operation.getElement());
 		}
+	}
+	
+	protected XSDConcreteComponent getXSDParent(XSDConcreteComponent xsd) {
+		XSDConcreteComponent parent = xsd.getSchema();
+		return parent;
 	}
 	
 	public Object getNewlyAddedComponent() {

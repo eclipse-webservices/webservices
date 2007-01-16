@@ -22,11 +22,13 @@ import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.adapters.visitor.W11FindInnerElementVisitor;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -83,6 +85,11 @@ public class W11TopLevelElementCommand extends Command
   public void execute()
   {
     ensureDefinition(definition);
+  }
+  
+  protected XSDElementDeclaration getNewXSDElement(XSDElementDeclaration xsdElement) { 
+	  W11FindInnerElementVisitor visitor = new W11FindInnerElementVisitor();
+	  return visitor.getInnerXSDElement(xsdElement);
   }
 
   public static void ensureDefinition(Definition definition)

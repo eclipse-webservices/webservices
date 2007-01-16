@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.commands.Command;
@@ -34,10 +35,12 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInputParameterCo
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOutputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderParametersCommand;
+import org.eclipse.wst.wsdl.ui.internal.adapters.visitor.W11FindInnerElementVisitor;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ModelDiagnosticInfo;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
@@ -47,9 +50,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDModelGroup;
-import org.eclipse.xsd.XSDParticle;
-import org.eclipse.xsd.XSDTypeDefinition;
 
 
 public class W11MessageReference extends WSDLBaseAdapter implements IMessageReference, IASDObjectListener
@@ -187,23 +187,6 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
           asdObject.registerListener(this);
         }
       }
-	  
-	  if (messageRef == null || messageRef.getEMessage() == null) {
-		  String[] args = new String[1];
-		  args[0] = "message";
-		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
-		  if (previewString == null) {
-			  previewString = "Invalid message reference";
-		  }
-	  }
-	  else if (parts.size() <= 0) {
-		  String[] args = new String[1];
-		  args[0] = "part";
-		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
-		  if (previewString == null) {
-			  previewString = "Invalid part reference";
-		  }
-	  }
 	  
 	  return parameters;
     }
@@ -352,71 +335,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	      }
 	    } 
 	  }
-	  
-	  MessageReference messageRef = getMessageReference();
-	  if (messageRef == null || messageRef.getEMessage() == null) {
-		  String[] args = new String[1];
-		  args[0] = "message";
-		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
-		  if (previewString == null) {
-			  previewString = "Invalid message reference";
-		  }
-	  }
-	  else if (messageRef.getEMessage().getEParts().size() <= 0) {
-		  String[] args = new String[1];
-		  args[0] = "part";
-		  previewString = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
-		  if (previewString == null) {
-			  previewString = "Invalid part reference";
-		  }
-	  }
-	  else {
-		  Part part = (Part) messageRef.getEMessage().getEParts().get(0);
-		  XSDElementDeclaration xsdElement = part.getElementDeclaration();
-		  if (xsdElement == null) {
-			  // No XSD Element
-			  previewString = getInvalidElementReferenceString();
-		  }
-		  else {
-			  XSDTypeDefinition xsdType = xsdElement.getAnonymousTypeDefinition();
-			  if (xsdType == null) {
-				  // No anonymous XSD Type 
-				  previewString = getInvalidElementReferenceString();
-			  }
-			  else {
-				  List contents = xsdType.eContents();
-				  if (contents.size() > 0 && contents.get(0) instanceof XSDParticle) {
-					  XSDParticle particle = (XSDParticle) contents.get(0);
-					  List particleContents = particle.eContents();
-					  if (particleContents.size() > 0 && particleContents.get(0) instanceof XSDModelGroup) {
-						  XSDModelGroup modelGroup = (XSDModelGroup) particleContents.get(0);
-						  List modelContents = modelGroup.eContents();
-						  if (modelContents.size() > 0 && modelContents.get(0) instanceof XSDParticle) {
-							  XSDParticle innerParticle = (XSDParticle) modelContents.get(0);
-							  List innerContents = innerParticle.eContents();
-							  if (!(innerContents.size() > 0 && innerContents.get(0) instanceof XSDElementDeclaration)) {
-								  // No inner XSD Element
-								  previewString = getInvalidElementReferenceString();
-							  }
-						  }
-						  else {
-							  // No inner XSDParticle
-							  previewString = getInvalidElementReferenceString();
-						  }
-					  }
-					  else {
-						  // No XSDModelGroup
-						  previewString = getInvalidElementReferenceString();
-					  }
-				  }
-				  else {
-					  // No XSDParticle
-					  previewString = getInvalidElementReferenceString();
-				  }
-			  }
-		  }
-	  }
-	  
+
 	  return parameters;
 	}    
 	
@@ -443,4 +362,133 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	public ITreeElement getParent() {
 		return null;
 	}
+
+	private void processAdvancedW11MessageReference() {
+		diagnosticMessages = new ArrayList();
+
+		MessageReference messageRef = (MessageReference) getTarget();
+		List parts = new ArrayList();
+		if (messageRef.getEMessage() != null) {
+			if (messageRef.getEMessage().getEParts() != null) {
+				parts = messageRef.getEMessage().getEParts();
+			}
+		}
+
+		if (messageRef == null || messageRef.getEMessage() == null) {
+			addErrorDiagnosticMessage(getUndefinedArg1String("message"));
+		}
+		else if (parts.size() <= 0) {
+			String[] args = new String[1];
+			args[0] = "part";
+			addWarningDiagnosticMessage(getStringForKey("_UI_LABEL_NO_OBJECT_SPECIFIED_ARG1", args));
+		}
+	}
+
+	private void processSimplifiedW11MessageReference() {
+		diagnosticMessages = new ArrayList();
+		
+		MessageReference messageRef = (MessageReference) getTarget();
+		  if (messageRef == null || messageRef.getEMessage() == null) {
+			  addErrorDiagnosticMessage(getUndefinedArg1String("message"));
+		  }
+		  else if (messageRef.getEMessage().getEParts().size() <= 0) {
+			  addWarningDiagnosticMessage(getNoParametersSpecifiedString());
+		  }
+		  else {
+			  Part part = (Part) messageRef.getEMessage().getEParts().get(0);
+			  XSDElementDeclaration xsdElement = part.getElementDeclaration();
+			  if (xsdElement == null || xsdElement.getSchema() == null) {
+				  // No XSD Element
+				  addErrorDiagnosticMessage(getUndefinedArg1String("element"));
+			  }
+			  else {
+				  MyInnerElementVisitor visitor = new MyInnerElementVisitor();
+				  visitor.findErrorsAndWarnings(xsdElement);
+				  diagnosticMessages.addAll(visitor.getDiagnosticMessages());
+			  }
+		  }
+	}
+
+	private void addErrorDiagnosticMessage(String txt) {
+		diagnosticMessages.add(new ModelDiagnosticInfo(txt, ModelDiagnosticInfo.ERROR_TYPE, null));
+	}
+	
+	private void addWarningDiagnosticMessage(String txt) {
+		diagnosticMessages.add(new ModelDiagnosticInfo(txt, ModelDiagnosticInfo.WARNING_TYPE, null));		
+	}
+	
+	protected List diagnosticMessages = new ArrayList();
+	
+	// TODO: rmah: Post WTP 1.5, we should rename this to be something like getAdvancedW11MessageReference()
+	public List getDiagnosticMessages() {
+		processAdvancedW11MessageReference();
+		return diagnosticMessages;
+	}
+	
+	// TODO: rmah: Post WTP 1.5, we should rename this to be something like getSimplifiedW11MessageReference()
+	public List getDiagnosticMessages2() {
+		processSimplifiedW11MessageReference();
+		return diagnosticMessages;
+	}
+	
+	private class MyInnerElementVisitor extends W11FindInnerElementVisitor {
+		private List diagMessages = new ArrayList();
+		
+		public void findErrorsAndWarnings(XSDElementDeclaration xsdElement) {
+			if (xsdElement.getTypeDefinition() == null || xsdElement.getTypeDefinition().getSchema() == null) {
+				// No XSD type (non anonymous) defined
+				diagMessages.add(new ModelDiagnosticInfo(getUndefinedArg1String("type"), ModelDiagnosticInfo.ERROR_TYPE, null));
+			}
+
+			XSDElementDeclaration innerElement = super.getInnerXSDElement(xsdElement);
+			if (innerElement.equals(xsdElement)) {
+				diagMessages.add(new ModelDiagnosticInfo(getNoParametersSpecifiedString(), ModelDiagnosticInfo.WARNING_TYPE, null));
+			}
+		}
+		
+		public List getDiagnosticMessages() {
+			return diagMessages;
+		}
+	}
+	
+	  private String getUndefinedArg1String(String arg) {
+		  String[] args = new String[1];
+		  args[0] = arg;
+		  String newString = getStringForKey("_UI_LABEL_UNDEFINED_ARG1", args);
+		  return newString;
+	  }
+	  
+	  private String getNoParametersSpecifiedString() {
+		  String string = null;
+		  String[] args = new String[0];
+		  string = getStringForKey("_UI_LABEL_NO_PARAMETERS_SPECIFIED", args);
+		  return string;
+	  }
+	  
+	  private String getStringForKey(String key, Object[] args) {
+		  String newString = "";
+		  newString = Messages.getString(key, args);
+		  
+		  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
+		  if (object instanceof ProductCustomizationProvider) {
+			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
+			  String customizedString = "";
+			  if (args == null) {
+				  customizedString = productCustomizationProvider.getProductString(key);
+			  }
+			  else {
+				  customizedString = productCustomizationProvider.getProductString(key, args);
+			  }
+			  
+			  if (customizedString != null && !customizedString.equals("")) {
+				  newString = customizedString;
+			  }
+		  }
+
+		  if (newString == null) {
+			  newString = "";
+		  }
+
+		  return newString;
+	  }
   }

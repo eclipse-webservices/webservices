@@ -35,11 +35,13 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ModelDiagnosticInfo;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -248,4 +250,46 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		
 		return false;
 	}
+
+	public List getDiagnosticMessages() {
+		List errors = new ArrayList();
+		Part part = (Part) getTarget();
+		if (part.getElementDeclaration() == null && part.getTypeDefinition() == null) {
+			String[] args = new String[2];
+			args[0] = "element";
+			args[1] = "type";
+			String newString = getStringForKey("_UI_LABEL_OR_UNDEFINED_ARG2", args);
+			ModelDiagnosticInfo info = new ModelDiagnosticInfo(newString, ModelDiagnosticInfo.ERROR_TYPE, null);
+			errors.add(info);
+		}
+		
+		return errors;
+	}
+	
+	  private String getStringForKey(String key, Object[] args) {
+		  String newString = "";
+		  newString = Messages.getString(key, args);
+
+		  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
+		  if (object instanceof ProductCustomizationProvider) {
+			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
+			  String customizedString = "";
+			  if (args == null) {
+				  customizedString = productCustomizationProvider.getProductString(key);
+			  }
+			  else {
+				  customizedString = productCustomizationProvider.getProductString(key, args);
+			  }
+			  
+			  if (customizedString != null && !customizedString.equals("")) {
+				  newString = customizedString;
+			  }
+		  }
+
+		  if (newString == null) {
+			  newString = "";
+		  }
+
+		  return newString;
+	  }
 }

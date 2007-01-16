@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
@@ -18,16 +20,19 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDDragAndDropEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDGraphNodeDragTracker;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ListFigure;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ModelDiagnosticInfo;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 
@@ -36,6 +41,9 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   protected Figure contentPane;  
   protected Label label;
   protected RowLayout rowLayout;
+  
+  private Figure messageLabelWrapper;
+  private Label messageLabel;
   
   protected ASDSelectionEditPolicy selectionHandlesEditPolicy = new ASDSelectionEditPolicy();
   
@@ -147,26 +155,98 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     }
   }
   
-  private Label messageLabel;
-  
   protected void refreshChildren() {
 	  super.refreshChildren();
       refreshMessage();
   }
   
-  protected void refreshMessage()
-  {
-      if (getModelChildren().size() > 0) {
-          if (messageLabel != null) {
-              contentPane.remove(messageLabel);
-              messageLabel = null;
-          }
-      }
-      else if (messageLabel == null){
-          messageLabel = new Label();
-          messageLabel.setText(((IMessageReference)getModel()).getPreview());
-          contentPane.add(messageLabel);
-      }    
+  protected void refreshMessage() {
+	  if (getModelChildren().size() > 0) {
+		  if (messageLabelWrapper != null) {
+			  contentPane.remove(messageLabelWrapper);
+			  messageLabelWrapper = null;
+		  }
+	  }
+	  else {
+		  if (messageLabelWrapper == null) {
+			  messageLabelWrapper = new Figure();
+			  messageLabel = new Label();
+			  
+			  ToolbarLayout toolbarLayout = new ToolbarLayout(false)
+			    {
+				  // We want to center the text
+			       public void layout(IFigure parent)
+			       {
+			         super.layout(parent);
+
+			         if (parent.getChildren().size() == 1 && parent.getChildren().get(0) instanceof Label)
+			         {
+			            parent.setSize(parent.getSize().width, parent.getSize().height + 3);
+			            Label child = (Label) parent.getChildren().get(0);
+			            int newXAmount = (parent.getSize().width - child.getSize().width) / 2;
+			            Point p = child.getLocation();
+			            child.setLocation(new Point(p.x + newXAmount, p.y + 3));
+			         }  
+			       }
+			    };     
+
+			  messageLabelWrapper.setLayoutManager(toolbarLayout);
+			  messageLabelWrapper.add(messageLabel);
+			  contentPane.add(messageLabelWrapper);
+		  }
+		  
+		  List errorList = getErrors();
+		  List warnList = getWarnings();
+
+		  if (errorList.size() > 0) {
+			  ModelDiagnosticInfo info = (ModelDiagnosticInfo) errorList.get(0);
+			  messageLabel.setText("  " + info.getDescriptionText() + "  "); 
+			  messageLabel.setForegroundColor(info.getDescriptionTextColor());
+		  }
+		  else if (warnList.size() > 0){
+			  ModelDiagnosticInfo info = (ModelDiagnosticInfo) warnList.get(0);
+			  messageLabel.setText("  " + info.getDescriptionText() + "  "); 
+			  messageLabel.setForegroundColor(info.getDescriptionTextColor());
+		  }
+		  else {
+			  messageLabel.setText("");
+			  messageLabel.setForegroundColor(ColorConstants.black);
+		  }
+	  }
+  }
+  
+  protected List getErrors() {
+	  // TODO: rmah: We should not know about W11MessageReference here.  Modify
+	  // MessageReference post WTP 1.5 to include the getDiagnosticMessages() method.
+	  if (getModel() instanceof W11MessageReference) {
+		  W11MessageReference messageRef = (W11MessageReference) getModel();
+		  return getDiagnosticMessageType(messageRef.getDiagnosticMessages(), ModelDiagnosticInfo.ERROR_TYPE);
+	  }
+	  
+	  return new ArrayList();
+  }
+  
+  protected List getWarnings() {
+	  // TODO: rmah: We should not know about W11MessageReference here.  Modify
+	  // MessageReference post WTP 1.5 to include the getDiagnosticMessages() method.
+	  if (getModel() instanceof W11MessageReference) {
+		  W11MessageReference messageRef = (W11MessageReference) getModel();
+		  return getDiagnosticMessageType(messageRef.getDiagnosticMessages(), ModelDiagnosticInfo.WARNING_TYPE);
+	  }
+	  
+	  return new ArrayList();
+  }
+  
+  protected List getDiagnosticMessageType(List diagnosticInfo, int type) {
+	  List listType = new ArrayList();
+	  for (int index = 0; index < diagnosticInfo.size(); index++) {
+		  ModelDiagnosticInfo info = (ModelDiagnosticInfo) diagnosticInfo.get(index);
+		  if (info.getType() == type) {
+			  listType.add(info);
+		  }
+	  }
+	  
+	  return listType;
   }
 
   protected List getModelChildren()

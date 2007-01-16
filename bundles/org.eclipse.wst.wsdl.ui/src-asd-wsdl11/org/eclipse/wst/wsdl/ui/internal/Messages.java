@@ -30,6 +30,10 @@ public class Messages {
 		return MessageFormat.format(getString(key), new Object [] { arg0 });
 	}
 
+	public static String getString(String key, Object[] args) {
+		return MessageFormat.format(getString(key), args);
+	}
+	
 	public static String _UI_DEPENDENCIES_CHANGED;
 	public static String _UI_DEPENDENCIES_CHANGED_REFRESH;
 	public static String _UI_EDIT_NAMESPACES_DIALOG_TITLE;

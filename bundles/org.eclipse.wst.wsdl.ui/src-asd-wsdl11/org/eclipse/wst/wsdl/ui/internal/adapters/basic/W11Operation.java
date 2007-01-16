@@ -13,13 +13,18 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.wsdl.OperationType;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
+import org.eclipse.wst.wsdl.ui.internal.DefaultEditorMode;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
@@ -37,6 +42,8 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
 
 public class W11Operation extends WSDLBaseAdapter implements IOperation {
 	public List getMessages()
@@ -111,15 +118,39 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 	}
 	
 	public Command getAddInputCommand() {
-		return new W11AddInputParameterCommand(getOperation());
+		W11AddInputParameterCommand command = new W11AddInputParameterCommand(getOperation());
+		
+        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        EditorModeManager manager = (EditorModeManager) editor.getAdapter(EditorModeManager.class);
+		if (manager.getCurrentMode().getId() != DefaultEditorMode.class.getName()) {
+			command.setParameterPattern(AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT);
+		}
+
+		return command;
 	}
 	
 	public Command getAddOutputCommand() {
-		return new W11AddOutputParameterCommand(getOperation());
+		W11AddOutputParameterCommand command = new W11AddOutputParameterCommand(getOperation());
+		
+        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        EditorModeManager manager = (EditorModeManager) editor.getAdapter(EditorModeManager.class);
+		if (manager.getCurrentMode().getId() != DefaultEditorMode.class.getName()) {
+			command.setParameterPattern(AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT);
+		}
+
+		return command;
 	}
 	
 	public Command getAddFaultCommand(Object fault) {
-		return new W11AddFaultParameterCommand(getOperation(), null);
+		W11AddFaultParameterCommand command = new W11AddFaultParameterCommand(getOperation(), null);
+		
+        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        EditorModeManager manager = (EditorModeManager) editor.getAdapter(EditorModeManager.class);
+		if (manager.getCurrentMode().getId() != DefaultEditorMode.class.getName()) {
+			command.setParameterPattern(AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT);
+		}
+
+		return command;
 	}
 	
 	public Command getReorderMessageReferencesCommand(IMessageReference leftSibling, IMessageReference rightSibling, IMessageReference movingMessageRef) {

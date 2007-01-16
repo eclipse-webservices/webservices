@@ -30,9 +30,16 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 public class AddInputParameterCommand extends AddBaseParameterCommand {
+	protected boolean createXSDObjects = true;
+	protected boolean reuseExistingMessage = false;
 	private Input input;
 	public AddInputParameterCommand(Operation operation, int style) {
 		super(operation, style);
+	}
+
+	public AddInputParameterCommand(Operation operation, int style, boolean reuseMessage) {
+		super(operation, style);
+		reuseExistingMessage = reuseMessage;
 	}
 	
 	/*
@@ -56,18 +63,17 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 			part = createWSDLComponents(input);
 		}
 		
+		newPart = part;
 		// Create necessary XSD Objects starting with the Part reference
 		if (createXSDObjects)
 			newXSDElement = createXSDObjects(part);
 	}
 	
-	private boolean createXSDObjects = true;
-	
 	protected Part createDocLitWrappedWSDLComponents(MessageReference messageRef) {
 		Message message = messageRef.getEMessage();
 		Part part = null;
 
-		if (message == null) {
+		if (reuseExistingMessage && message == null) {
 			// See if we can use an existing Message
 			Message existingMessage = null;
 			String messageName = getIdealMessageName(messageRef);
@@ -136,7 +142,7 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 			}
 		}
 
-		if (message == null) {
+		if (message == null || message.eContainer() == null) {
 			// Create Message
 			AddMessageCommand command = new AddMessageCommand(messageRef.getEnclosingDefinition(), getWSDLMessageName());
 			command.run();
@@ -200,10 +206,11 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 		return newWSDLPartName;
 	}
 	
+	// TODO: remove this method and use getMessageReference() instead
 	public Input getInput() {
 		return input;
 	}
-	
+
 	protected XSDElementDeclaration createPartElementSeqElementPattern(Part part, XSDElementDeclaration partElement) {
 		XSDElementDeclaration returnedXSDElement = null;
 
@@ -259,7 +266,7 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 				ComponentReferenceUtil.setComponentReference(part, false, prefixedName);
 				part.setTypeDefinition(null);
 
-				if (partElement != null) {
+				if (partElement != null && partElement.getSchema() != null) {
 					originalElement = partElement;
 					// Remove the 'original' XSDElement as a Global Element
 					partElement.getSchema().getContents().remove(partElement);
@@ -296,5 +303,9 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 		messageName = operation.getName() + "Request";
 		
 		return messageName;
+	}
+	
+	public MessageReference getMessageReference() {
+		return input;
 	}
 }

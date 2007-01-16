@@ -46,6 +46,11 @@ public class ASDAddParameterAction extends BaseSelectionAction {
                 Command command = w11MessageReference.getAddParamterCommand();
                 CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
                 stack.execute(command);
+                
+			    if (command instanceof IASDAddCommand) {
+			    	Object object = ((IASDAddCommand) command).getNewlyAddedComponent();
+			    	selectAndDirectEdit(object);
+			    }
             }
         }  
     }

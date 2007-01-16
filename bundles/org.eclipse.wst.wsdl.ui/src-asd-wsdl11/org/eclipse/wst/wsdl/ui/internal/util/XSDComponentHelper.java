@@ -254,7 +254,8 @@ public class XSDComponentHelper {
 				Object eeElement = eeIt.next();
 				if (eeElement instanceof XSDSchemaExtensibilityElement) {
 					XSDSchemaExtensibilityElement ee = (XSDSchemaExtensibilityElement) eeElement;
-					if (ee.getSchema().getTargetNamespace().equals(wsdlTargetNamespace)) {
+					if (ee.getSchema().getTargetNamespace() != null &&
+						ee.getSchema().getTargetNamespace().equals(wsdlTargetNamespace)) {
 						schema = ee.getSchema();
 						break;
 					}

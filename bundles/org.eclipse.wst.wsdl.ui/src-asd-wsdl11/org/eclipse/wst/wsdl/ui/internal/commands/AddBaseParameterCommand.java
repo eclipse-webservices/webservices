@@ -52,6 +52,7 @@ public abstract class AddBaseParameterCommand {
 	protected int style = 0;
 	protected Operation operation;
 	protected XSDElementDeclaration newXSDElement;
+	protected Part newPart;
 	
 	protected String newAnonymousXSDElementName;
 	protected String newXSDElementName;
@@ -88,14 +89,14 @@ public abstract class AddBaseParameterCommand {
 		XSDElementDeclaration anonXSDElement = null;
 		
 		// Create the XSDElement (anonymous) referenced by the Part if necessary
-		if (partElement == null || partElement.getAnonymousTypeDefinition() == null) {
+		if (partElement == null || partElement.getAnonymousTypeDefinition() == null || partElement.getSchema() == null) {
 			anonXSDElement = XSDComponentHelper.createAnonymousXSDElementDefinition(getAnonymousXSDElementBaseName(), part);
 //			part.setElementDeclaration(anonXSDElement);
 			String prefixedName = getPrefixedComponentName(part.getEnclosingDefinition(), anonXSDElement);
 			ComponentReferenceUtil.setComponentReference(part, false, prefixedName);
 			part.setTypeDefinition(null);
 			
-			if (partElement != null) {
+			if (partElement != null && partElement.getSchema() != null) {
 				originalElement = partElement;
 				// Remove the 'original' XSDElement as a Global Element
 				partElement.getSchema().getContents().remove(partElement);
@@ -105,17 +106,18 @@ public abstract class AddBaseParameterCommand {
 			anonXSDElement = partElement;
 		}
 		
+		// Add the 'original' XSDElement if it's type wasn't anonymous
+		if (originalElement != null) {
+			XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, originalElement);
+		}
+		
 		// Create a new XSDElement
 		XSDModelGroup modelGroup = XSDComponentHelper.getXSDModelGroup(anonXSDElement, part.getEnclosingDefinition());
 		returnedXSDElement = XSDComponentHelper.createXSDElementDeclarationCommand(null, getNewXSDElementBaseName(), modelGroup);
 		
 		// Add the newly created XSDElement to the ModelGroup
 		XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, returnedXSDElement);
-		
-		// Add the 'original' XSDElement if it's type wasn't anonymous
-		if (originalElement != null) {
-			XSDComponentHelper.addXSDElementToModelGroup(anonXSDElement, originalElement);
-		}
+
 		formatChild(anonXSDElement.getElement());
 		return returnedXSDElement;
 	}
@@ -218,7 +220,7 @@ public abstract class AddBaseParameterCommand {
 		Message message = messageRef.getEMessage();
 		Part part = null;
 		
-		if (message == null) {
+		if (message == null || message.eContainer() == null) {
 			// Create Message
 			AddMessageCommand command = new AddMessageCommand(messageRef.getEnclosingDefinition(), getWSDLMessageName());
 			command.run();
@@ -237,7 +239,8 @@ public abstract class AddBaseParameterCommand {
 			part = (Part) command.getWSDLElement();
 		}
 		else {
-			part = (Part) message.getEParts().get(0);
+			// there is an existing Part
+//			part = (Part) message.getEParts().get(0);
 		}
 		formatChild(message.getElement());
 		
@@ -247,19 +250,45 @@ public abstract class AddBaseParameterCommand {
 	protected String getDocLitWrappedPartName() {
 		return "parameters";
 	}
-	
+
 	protected XSDElementDeclaration createXSDObjects(Part part) {
 		XSDElementDeclaration returnedXSDElement = null;
 		if (isPartElementReference()) {
 			// Is a Part --> Element reference
+			if (part == null && getMessageReference() != null && getMessageReference().getEMessage() != null) {
+				part = (Part) getMessageReference().getEMessage().getEParts().get(0);
+			}
+			
 			returnedXSDElement = createPartElementReferenceComponents(part);
 		}
 		else {
 			// Is a Part --> Complex Type reference
-			returnedXSDElement = createPartComplexTypeReference(part);
+//			returnedXSDElement = createPartComplexTypeReference(part);
+			
+			// If it's a Part --> Type reference, adding a new parameter always means adding a new Part
+			// with a string reference.  Because of this case, we should really rename this method instead
+			// of createXSDObjects() since we may end up creating a Part.
+			if (part == null && getMessageReference() != null && getMessageReference().getEMessage() != null) {
+				List partNames = new ArrayList();
+				Message message = getMessageReference().getEMessage();
+				Iterator it = message.getEParts().iterator();
+				while (it.hasNext()) {
+					Part item = (Part) it.next();
+					partNames.add(item.getName());
+				}
+				String partName = NameUtil.getUniqueNameHelper(getWSDLPartName(), partNames);
+				AddPartCommand command = new AddPartCommand(message, partName);
+				command.run();
+				newPart = (Part) command.getWSDLElement();
+			}
 		}
 		
 		return returnedXSDElement;
+	}
+	
+	// TODO: rmah: Post WTP 1.5, this method should be made abstract
+	public MessageReference getMessageReference() {
+		return null;
 	}
 	
     protected String getPrefixedComponentName(Definition definition, XSDNamedComponent component) {
@@ -520,6 +549,10 @@ public abstract class AddBaseParameterCommand {
           model.changedModel(); 
         }
       }
+    }
+    
+    public Part getNewlyAddedComponentPart() {
+    	return newPart;
     }
 
 	protected abstract String getAnonymousXSDElementBaseName();

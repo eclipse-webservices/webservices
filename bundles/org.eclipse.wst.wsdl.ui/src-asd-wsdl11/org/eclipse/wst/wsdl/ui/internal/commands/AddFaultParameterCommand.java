@@ -10,14 +10,87 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.commands;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.wst.wsdl.Fault;
+import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDModelGroup;
+import org.eclipse.xsd.XSDParticle;
+import org.eclipse.xsd.XSDTypeDefinition;
 
 public class AddFaultParameterCommand extends AddBaseParameterCommand {
 	protected Fault fault;
 	private String faultName;
+	
+    public static int getParameterPatternForFault(Operation operation, Fault fault) {
+    	int pattern = -1;
+    	if (fault != null) {
+    		pattern = getPattern(fault.getEMessage());
+    	}
+		if (pattern == -1) {
+			pattern = AddBaseParameterCommand.getParameterPattern(operation);
+		}
+		
+		return pattern;
+    }
+    
+    private static int getPattern(Message message) {
+    	int pattern = -1;
+		if (message != null) {
+			Iterator parts = message.getEParts().iterator();
+			while (parts.hasNext()) {
+				Part part = (Part) parts.next();
+				if (part.getElementDeclaration() != null) {
+					pattern = AddBaseParameterCommand.PART_ELEMENT;
+
+					XSDElementDeclaration xsdElement = part.getElementDeclaration();
+					if (isSequencePattern(xsdElement.getTypeDefinition())) {
+						pattern = AddBaseParameterCommand.PART_ELEMENT_SEQ_ELEMENT;	
+					}					
+					break;
+				}
+				else if (part.getTypeDefinition() != null) {
+					pattern = AddBaseParameterCommand.PART_SIMPLETYPE;
+					
+					if (part.getTypeDefinition() instanceof XSDComplexTypeDefinition) {
+						pattern = AddBaseParameterCommand.PART_COMPLEXTYPE;
+						
+						XSDComplexTypeDefinition xsdType = (XSDComplexTypeDefinition) part.getTypeDefinition();
+						if (isSequencePattern(xsdType)) {
+							pattern = AddBaseParameterCommand.PART_COMPLEXTYPE_SEQ_ELEMENT; 
+						}
+					}
+					break;
+				}
+			}
+		}
+		
+		return pattern;
+    }
+    
+    private static boolean isSequencePattern(XSDTypeDefinition type) {
+    	boolean isSequencePattern = false;
+    	
+    	if (type instanceof XSDComplexTypeDefinition) {
+    		XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition) type;
+
+	    	if (complexType.getContent() instanceof XSDParticle) {
+				XSDParticle particle = (XSDParticle) complexType.getContent();
+				if (particle.getContent() instanceof XSDModelGroup) {
+					isSequencePattern = true;
+				}
+			}
+    	}
+    	
+    	return isSequencePattern;
+    }
 	
 	public AddFaultParameterCommand(Operation operation, Fault fault) {
 		super(operation, AddBaseParameterCommand.PART_ELEMENT);
@@ -35,6 +108,7 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 		}
 		
 		Part part = createWSDLComponents(fault);
+		newPart = part;
 		
 		// Create necessary XSD Objects starting with the Part reference
 		newXSDElement = createXSDObjects(part);
@@ -59,6 +133,8 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 	protected String getWSDLMessageName() {
 		if (newWSDLMessageName == null) {
 			newWSDLMessageName = operation.getName() + "_" + getFaultName() + "Msg"; //$NON-NLS-1$ //$NON-NLS-2$
+			List usedNames = NameUtil.getUsedMessageNames(operation.getEnclosingDefinition());
+			newWSDLMessageName = NameUtil.getUniqueNameHelper(newWSDLMessageName, usedNames);
 		}
 		
 		return newWSDLMessageName;
@@ -85,7 +161,12 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 		return faultName;
 	}
 	
+	// TODO: remove this method and use getMessageReference() instead
 	public Fault getFault() {
+		return fault;
+	}
+	
+	public MessageReference getMessageReference() {
 		return fault;
 	}
 }
