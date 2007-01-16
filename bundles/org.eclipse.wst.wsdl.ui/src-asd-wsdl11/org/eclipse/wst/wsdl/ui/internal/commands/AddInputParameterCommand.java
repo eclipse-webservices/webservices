@@ -20,6 +20,7 @@ import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.wst.wsdl.ui.internal.adapters.visitor.W11FindInnerElementVisitor;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XSDComponentHelper;
@@ -99,42 +100,15 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 						if (existingElement != null && existingElement.getName().equals(operation.getName())) {
 							// There is an existing XSD Element with the proper name
 							// See if the XSD Element has an anonymous type with a sequence and an XSD Element
-							XSDTypeDefinition xsdType = existingElement.getAnonymousTypeDefinition();
+							W11FindInnerElementVisitor visitor = new W11FindInnerElementVisitor();
+							XSDElementDeclaration innerElement = visitor.getInnerXSDElement(existingElement);
+							if (!innerElement.equals(existingElement)) {
+								// Found an existing inner XSD Element
+								createXSDObjects = false;
 
-							if (xsdType != null) {
-								List contents = xsdType.eContents();
-								if (contents.size() > 0 && contents.get(0) instanceof XSDParticle) {
-									XSDParticle particle = (XSDParticle) contents.get(0);
-									List particleContents = particle.eContents();
-									if (particleContents.size() > 0 && particleContents.get(0) instanceof XSDModelGroup) {
-										XSDModelGroup modelGroup = (XSDModelGroup) particleContents.get(0);
-										List modelContents = modelGroup.eContents();
-										if (modelContents.size() > 0 && modelContents.get(0) instanceof XSDParticle) {
-											XSDParticle innerParticle = (XSDParticle) modelContents.get(0);
-											List innerContents = innerParticle.eContents();
-											if (innerContents.size() > 0 && innerContents.get(0) instanceof XSDElementDeclaration) {
-												// inner XSD Element exists
-												createXSDObjects = false;
-
-												// set the MessageReference --> Message reference
-												messageRef.setEMessage(existingMessage);
-												message = existingMessage;
-											}
-										}
-										else {
-											// No inner XSDParticle
-
-										}
-									}
-									else {
-										// No XSDModelGroup
-
-									}
-								}
-								else {
-									// No XSDParticle
-
-								}
+								// set the MessageReference --> Message reference
+								messageRef.setEMessage(existingMessage);
+								message = existingMessage;
 							}
 						}
 					}
