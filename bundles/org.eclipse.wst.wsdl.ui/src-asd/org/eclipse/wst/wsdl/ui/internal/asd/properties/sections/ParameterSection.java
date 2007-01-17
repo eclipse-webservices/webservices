@@ -86,6 +86,8 @@ public class ParameterSection extends NameSection {
 			return;
 		}
 		
+		setListenerEnabled(false);
+		
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, ASDEditorCSHelpIds.PROPERTIES_PART_ELEMENT_COMBO);
 
 		if (handleTypeScenario) {
@@ -94,6 +96,8 @@ public class ParameterSection extends NameSection {
 		}
 		
 		setControlForegroundColor(combo);
+		
+		setListenerEnabled(true);
 	}
 	
 	protected void refreshCombo() {
@@ -179,6 +183,7 @@ public class ParameterSection extends NameSection {
 		super.doHandleEvent(event);
 		if (event.widget == combo && handleTypeScenario) {
 			handleComboSelection();
+			refresh();
 		}
 	}
 	

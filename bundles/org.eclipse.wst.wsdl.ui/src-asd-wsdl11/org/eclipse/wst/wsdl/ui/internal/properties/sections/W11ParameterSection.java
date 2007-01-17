@@ -114,6 +114,7 @@ public class W11ParameterSection extends ParameterSection {
 		}
 		
 		super.doHandleEvent(event);
+		refresh();
 	}
 	
 	protected void refreshElementCombo() {
@@ -173,6 +174,8 @@ public class W11ParameterSection extends ParameterSection {
 	}
 	
 	public void refresh() {
+		setListenerEnabled(false);
+		
 		Object model = getModel();
 		if (model instanceof W11ParameterForPart) {
 			W11ParameterForPart param = (W11ParameterForPart) model;
@@ -201,6 +204,7 @@ public class W11ParameterSection extends ParameterSection {
 		setControlForegroundColor(typeRadio);
 		
 		super.refresh();
+		setListenerEnabled(true);
 	}
 	
 	protected ComponentReferenceEditManager getElementComponentReferenceEditManager() {
