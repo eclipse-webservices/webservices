@@ -12,6 +12,7 @@
  * 20060224   129387 pmoogk@ca.ibm.com - Peter Moogk
  * 20060410   135441 joan@ca.ibm.com - Joan Haggarty
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
+ * 20061220   161232 makandre@ca.ibm.com - Andrew Mak, AbstractObjectSelectionWidget.setInitialSelection(IStructuredSelection initialSelection) called twice each time Browse pressed
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -42,7 +43,6 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
   private Composite parent;
   private Listener statusListener;
   private Composite composite;
-  private IStructuredSelection initialSelection;
   private IProject project;
   private String componentName;
   private IObjectSelectionWidget child;
@@ -108,7 +108,6 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
           composite.setLayout(gl);
           composite.setLayoutData(gd);
           child.addControls(composite, statusListener);
-          child.setInitialSelection(initialSelection);                  
 
           Point origSize = shell.getSize();
           Point compSize = composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -146,7 +145,6 @@ public class ObjectSelectionWidget extends AbstractObjectSelectionWidget impleme
 
   public void setInitialSelection(IStructuredSelection initialSelection)
   {
-    this.initialSelection = initialSelection;
     project = getProjectFromInitialSelection(initialSelection);
     componentName = getComponentNameFromInitialSelection(initialSelection);
     if (child != null)
