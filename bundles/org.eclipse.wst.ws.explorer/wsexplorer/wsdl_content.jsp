@@ -12,6 +12,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
  * 20060524   142499 jeffliu@ca.ibm.com - Jeffrey Liu
+ * 20070109   169553 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.core.resources.*,
@@ -40,7 +41,9 @@
    Controller controller = (Controller)currentSession.getAttribute("controller");
    int wsdlType = controller.getWSDLType();
    
-   WebServiceCategory mainCategory = null;
+   Vector wsInfoCache = new Vector();
+   int workspaceStart = -1;
+   int workspaceEnd   = -1;
    
 %>
 <html>
@@ -141,7 +144,14 @@
 <%
        Iterator it = finder.getWebServicesByCategory(category,null);
        if(category.getId().equals("org.eclipse.wst.ws.internal.wsfinder.category.workspace")){
-       mainCategory = category;
+
+    	   workspaceStart = wsInfoCache.size();
+    	   workspaceEnd   = workspaceStart;
+    	   
+    	   while (it.hasNext()) {
+        	   wsInfoCache.add(it.next());
+        	   workspaceEnd++;
+    	   }
 %>
       document.getElementById("projects").style.display = ""; 
       fillWebProjects();
@@ -159,6 +169,7 @@
 %>
       document.forms[0].<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>.options[x++] = new Option("<%=wsdl%>", "<%=wsdl%>"); 
 <%
+           wsInfoCache.add(wsi);
          }
        }
 %>
@@ -177,7 +188,7 @@
       document.forms[0].webProjectWSDLURL.options[0] = null;
 <%
      TreeSet urls = new TreeSet();
-     Iterator wsIterator = WebServiceFinder.instance().getWebServices(null);    
+     Iterator wsIterator = wsInfoCache.iterator();
      while (wsIterator.hasNext())
      {
        WebServiceInfo wsInfo = (WebServiceInfo)wsIterator.next();
@@ -234,7 +245,7 @@
          String httpsProtocol = "https://";
          wsdlURLs_.removeAllElements();
 
-		 Iterator ws = WebServiceFinder.instance().getWebServicesByCategory(mainCategory,null);        
+		 Iterator ws = wsInfoCache.subList(workspaceStart, workspaceEnd).iterator();
 
          while (ws.hasNext())
          {
