@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
+ * 20070112   165721 makandre@ca.ibm.com - Andrew Mak, WSDL import cannot use relative import with to parent directories
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -47,7 +48,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLCommand;
+import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLTreeCommand;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -175,16 +176,20 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
      }
 
      // copy WSDL
-     CopyWSDLCommand copyWSDLCommand = new CopyWSDLCommand();
-     copyWSDLCommand.setWebServicesParser(webServicesParser);
-     copyWSDLCommand.setWsdlURI(wsdlURL);
-     copyWSDLCommand.setDestinationURI(outputFile.getLocation().toFile().toURL().toString());
-     copyWSDLCommand.setDefinition(definition);
-     copyWSDLCommand.setEnvironment(environment);
-     IStatus status = copyWSDLCommand.execute(null, null);
+     CopyWSDLTreeCommand copyWSDLTreeCommand = new CopyWSDLTreeCommand();
+     copyWSDLTreeCommand.setWebServicesParser(webServicesParser);
+     copyWSDLTreeCommand.setWsdlURI(wsdlURL);
+     copyWSDLTreeCommand.setDestinationURI(outputFile.getLocation().toFile().toURL().toString());
+     copyWSDLTreeCommand.setDefinition(definition);
+     copyWSDLTreeCommand.setEnvironment(environment);
+     IStatus status = copyWSDLTreeCommand.execute(null, null);
      if(status!=null && status.getSeverity()==Status.ERROR) {
        return status;
      }
+     
+     // update wsdl location
+     String newPath = outputFile.getParent().getLocation().append(copyWSDLTreeCommand.getWSDLRelPath()).toString();
+     javaWSDLParam.setOutputWsdlLocation(newPath);
     } 
     catch (Exception e) {
       IStatus status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WRITE_WSDL, new String[] { wsdlLocation }), e);
