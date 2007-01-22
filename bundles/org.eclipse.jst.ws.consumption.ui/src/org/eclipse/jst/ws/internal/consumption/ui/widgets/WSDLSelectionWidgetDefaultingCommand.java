@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -18,11 +21,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
@@ -31,9 +36,12 @@ import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {
   private IStructuredSelection selection_;
+  private UniversalPathTransformer transformer_ = new UniversalPathTransformer();  
   
   public String getWebServiceURI()
   {
+    String uri = "";
+    
   	if (selection_ != null && !selection_.isEmpty())
   	{
   	  Object firstSel = selection_.getFirstElement();
@@ -43,28 +51,30 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   	    String ext = ifile.getFileExtension();
   	    if (ext != null && (ext.equals("wsdl") || ext.equals("wsil") || ext.equals("html")))
   	    {
-  	      return ifile.getFullPath().toString();
+  	      uri = ifile.getFullPath().toString();
   	    }
   	  }
   	  if (firstSel instanceof ServiceImpl)
       {
         ServiceImpl serviceImpl = (ServiceImpl)firstSel;
-        return J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
+        uri = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
       }
   	  if (firstSel instanceof ServiceRef)
       {
   	    ServiceRef serviceRef = (ServiceRef)firstSel;
-        return J2EEActionAdapterFactory.getWSDLURI(serviceRef);
+        uri = J2EEActionAdapterFactory.getWSDLURI(serviceRef);
       }
   	  if (firstSel instanceof WSDLResourceImpl)
   	  {
   	    WSDLResourceImpl wsdlRI = (WSDLResourceImpl)firstSel;
-  	    return J2EEActionAdapterFactory.getWSDLURI(wsdlRI);
+  	    uri = J2EEActionAdapterFactory.getWSDLURI(wsdlRI);
   	  }
   	  if (firstSel instanceof String)
-  	    return (String)firstSel;
+  	    uri = (String)firstSel;
+  	  
+  	  uri = transformer_.toPath(uri);
   	}
-    return "";
+    return uri;
   }
  
   public void setInitialSelection( IStructuredSelection selection )
@@ -112,9 +122,9 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
         { 
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
           if (resource==null) 
-            return null;
-          IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
-          return p;
+            return ResourceUtils.getProjectOf(new Path(getWebServiceURI()));
+          else
+            return ResourceUtils.getProjectOf(resource.getFullPath());
         } catch(CoreException e)
         {
           return null;
@@ -134,10 +144,11 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
         try
         { 
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          IVirtualComponent comp;
           if (resource==null) 
-            return null;
-          
-          IVirtualComponent comp = ResourceUtils.getComponentOf(resource);
+            comp = ResourceUtils.getComponentOf(new Path(getWebServiceURI())) ;
+          else 
+            comp = ResourceUtils.getComponentOf(resource);
           if (comp!=null)
           {
             return comp.getName();
