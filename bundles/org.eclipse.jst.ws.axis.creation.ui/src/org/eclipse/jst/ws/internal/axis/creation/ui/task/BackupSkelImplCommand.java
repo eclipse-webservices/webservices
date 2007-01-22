@@ -12,6 +12,7 @@
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
  * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
  * 20060524 127343   mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070116 169138   mahutch@ca.ibm.com - Mark Hutchinson	
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -118,7 +119,11 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
 		  service = (Service) definition.getServices().values().iterator().next();
 		  port = (Port) service.getPorts().values().iterator().next();
 		  Binding binding = port.getBinding();
-		  beanName.append(binding.getQName().getLocalPart());
+		  
+		  String qName = binding.getQName().getLocalPart();		  
+		  beanName.append(qName.substring(0,1).toUpperCase());//Fix for bug 169138, need to ensure first char is uppercase
+		  beanName.append(qName.substring(1));
+
 		  beanName.append(IMPL);
 		  String beanNameString = beanName.toString();
 		  javaWSDLParam.setBeanName(beanNameString);
