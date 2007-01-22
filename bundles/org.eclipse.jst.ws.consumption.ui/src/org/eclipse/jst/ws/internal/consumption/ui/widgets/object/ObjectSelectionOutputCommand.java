@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
+ * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -19,9 +20,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -42,6 +47,10 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
   private IProject               project_;
   private String                 componentName_;
   private WebServicesParser      parser_;
+  
+  private UniversalPathTransformer transformer_ = new UniversalPathTransformer();
+  
+  private boolean                topDown_ = false;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
@@ -96,6 +105,7 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
         if (scenario == WebServiceScenario.TOPDOWN)
         {
           objectSelectionWidgetId = "org.eclipse.jst.ws.internal.consumption.ui.widgets.object.WSDLSelectionWidget";
+          topDown_ = true;
         }
         else
         {
@@ -158,6 +168,8 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
   
   public IProject getProject()
   {
+    if (project_ == null && topDown_)
+      project_ = getProjectFromTransformedSelection();
     return project_;
   }
   
@@ -168,6 +180,8 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
   
   public String getComponentName()
   {
+    if (componentName_ == null && topDown_)
+      componentName_ = getComponentNameFromTransformedSelection();
     return componentName_;
   }
 
@@ -184,6 +198,27 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     return parser_;
   }
   
+  private IResource findResourceFromSelection(Object selection) throws CoreException {
+	  
+      IResource resource = ResourceUtils.getResourceFromSelection(selection); 
+	  
+      // try finding at least the project using the EMF way
+      if (resource == null && selection instanceof EObject)
+          resource = ProjectUtilities.getProject(selection);
+	  
+      return resource;
+  }
+  
+  private IProject getProjectFromTransformedSelection() {
+    if (objectSelection_ != null && objectSelection_.size() == 1)
+    {
+      Object obj = objectSelection_.getFirstElement();
+      if (obj instanceof String) 
+        return ResourceUtils.getProjectOf(new Path(transformer_.toPath((String) obj)));
+    }
+    return null;	  
+  }
+  
   private IProject getProjectFromObjectSelection(IStructuredSelection selection)
   {
     if (selection != null && selection.size() == 1)
@@ -193,9 +228,11 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
       {
         try
         { 
-          IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          IResource resource = findResourceFromSelection(obj);
           if (resource==null) 
             return null;
+          if (resource instanceof IProject)
+        	return (IProject) resource;
           IProject p = ResourceUtils.getProjectOf(resource.getFullPath());
           return p;
         } catch(CoreException e)
@@ -208,6 +245,18 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     return null;
   }
   
+  private String getComponentNameFromTransformedSelection() {
+    if (objectSelection_ != null && objectSelection_.size() == 1)
+    {
+      Object obj = objectSelection_.getFirstElement();
+      if (obj instanceof String) { 
+        IVirtualComponent comp = ResourceUtils.getComponentOf(new Path(transformer_.toPath((String) obj)));
+        return comp == null ? null : comp.getName();
+      }
+    }
+    return null;	  
+  }
+  
   private String getComponentNameFromObjectSelection(IStructuredSelection selection)
   {
     if (selection != null && selection.size() == 1)
@@ -217,7 +266,7 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
       {
         try
         { 
-          IResource resource = ResourceUtils.getResourceFromSelection(obj);
+          IResource resource = findResourceFromSelection(obj);
           if (resource==null) 
             return null;
      
