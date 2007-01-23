@@ -22,6 +22,7 @@
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
+ * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -70,6 +71,7 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -655,12 +657,13 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	    if (fRuntime != null)
 	    {
 	      //Get a server type that has the same runtime type.
-	      IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);      
+	      IRuntime sRuntime = FacetUtil.getRuntime(fRuntime); 
+	      IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
 	      IServerType firstMatchingServerType = null;
 	      for (int i=0; i<serverTypes.length; i++)
 	      {
 	        IServerType thisServerType = serverTypes[i];
-	        if (thisServerType.getRuntimeType().getId().equals(sRuntime.getRuntimeType().getId()))
+	        if (sRuntimeType != null && thisServerType.getRuntimeType().getId().equals(sRuntimeType.getId()))
 	        {
 	          if (firstMatchingServerType == null)
 	          {
@@ -693,7 +696,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        {
 	          Set facetsClone = new HashSet();
 	          facetsClone.addAll(facets);          
-	          if (facetMatcher.getFacetsToAdd() != null)
+	          if (facetMatcher != null && facetMatcher.getFacetsToAdd() != null)
 	          {
 	            Iterator itr = facetMatcher.getFacetsToAdd().iterator();
 	            while (itr.hasNext())
@@ -732,7 +735,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        {
 	          org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)runtimesItr.next();
 	          IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
-	          if (thisServerType.getRuntimeType().getId().equals(sRuntime.getRuntimeType().getId()))
+	          IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
+	          if (sRuntimeType != null && thisServerType.getRuntimeType().getId().equals(sRuntimeType.getId()))
 	          {
 	            serverType = thisServerType;
 	          }          
@@ -748,10 +752,11 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime) itr
 	            .next();
 	        IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
+	        IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
 	        for (int i = 0; i < serverTypes.length; i++)
 	        {
 	          IServerType thisServerType = serverTypes[i];
-	          if (thisServerType.getRuntimeType().getId().equals(sRuntime.getRuntimeType().getId()))
+	          if (sRuntimeType != null && thisServerType.getRuntimeType().getId().equals(sRuntimeType.getId()))
 	          {
 	            serverType = thisServerType;
 	            break outer;

@@ -18,6 +18,7 @@
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
+ * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -72,6 +73,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -554,7 +556,8 @@ public class ValidationUtils
     {
       org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)itr.next();
       IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
-      if (runtimeTypeId.equals(sRuntime.getRuntimeType().getId()))
+      IRuntimeType runtimeType = sRuntime.getRuntimeType();
+      if (runtimeType != null && runtimeTypeId.equals(runtimeType.getId()))
       {
         //found a match
         return true;

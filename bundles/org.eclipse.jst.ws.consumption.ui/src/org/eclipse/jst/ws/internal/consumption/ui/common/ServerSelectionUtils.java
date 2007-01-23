@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060324   116750 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.common;
@@ -25,6 +26,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.ws.internal.consumption.common.IServerDefaulter;
 import org.eclipse.jst.ws.internal.consumption.common.ServerInfo;
 import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
@@ -72,14 +74,22 @@ public class ServerSelectionUtils
       return null;
     
     ArrayList compatibleServersList = new ArrayList();
-    String runtimeId = runtime.getRuntimeType().getId();
-    for (int i=0; i<servers.length; i++)
+    IRuntimeType runtimeType = runtime.getRuntimeType();
+    if (runtimeType != null)
     {
-      IServer server = (IServer)servers[i];
-      String serverRuntimeId = server.getRuntime().getRuntimeType().getId();
-      if (serverRuntimeId.equals(runtimeId))
-        compatibleServersList.add(server);
-      
+    	String runtimeId = runtimeType.getId();
+		for (int i=0; i<servers.length; i++)
+		{
+		  IServer server = (IServer)servers[i];
+		  IRuntimeType runtimeType2 = server.getRuntime().getRuntimeType();
+		  if (runtimeType2 != null)
+		  {
+			  String serverRuntimeId = runtimeType2.getId();
+			  if (serverRuntimeId.equals(runtimeId))
+			    compatibleServersList.add(server);
+		  }
+		  
+		}
     }
     if (compatibleServersList.size()<1)
       return null;
