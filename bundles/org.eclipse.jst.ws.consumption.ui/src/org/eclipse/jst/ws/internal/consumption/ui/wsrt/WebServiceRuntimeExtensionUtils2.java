@@ -14,6 +14,7 @@
  * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060324   116750 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -41,6 +42,7 @@ import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
+import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
@@ -258,11 +260,15 @@ public class WebServiceRuntimeExtensionUtils2
       for (int i=0; i<serverTypeIds.length; i++)
       {
         IServerType serverType = ServerCore.findServerType(serverTypeIds[i]);
-        String runtimeTypeId = serverType.getRuntimeType().getId();
-        if (runtimeTypeId.equals(sRuntime.getRuntimeType().getId()))
+        IRuntimeType runtimeType = serverType.getRuntimeType();
+        if (runtimeType != null)
         {
-          supportedServerFactoryIds.add(serverTypeIds[i]);          
-        }        
+	        String runtimeTypeId = runtimeType.getId();
+	        if (sRuntime != null && sRuntime.getRuntimeType() != null && runtimeTypeId.equals(sRuntime.getRuntimeType().getId()))
+	        {
+	          supportedServerFactoryIds.add(serverTypeIds[i]);          
+	        }      
+        }
       }
     }
     
@@ -1646,16 +1652,25 @@ public class WebServiceRuntimeExtensionUtils2
       IServerType st = sts[i];
       for (int j=0; j<rts.length; j++)
       {
+    	if (st == null || st.getRuntimeType() == null) break;    	  
         org.eclipse.wst.server.core.IRuntime rt = rts[j];
         // If the server type has the same runtime type as this runtime, add it to the list
         String serverTypeRuntimeTypeId = st.getRuntimeType().getId();
-        String runtimeRuntimeTypeId = rt.getRuntimeType().getId();
-        if (serverTypeRuntimeTypeId.equals(runtimeRuntimeTypeId))
+        
+        if (rt != null)
         {
-          if (!fids.contains(st.getId()))
-          {
-            fids.add(st.getId());
-          }
+        	IRuntimeType rtType = rt.getRuntimeType();
+        	if (rtType != null)
+        	{
+		        String runtimeRuntimeTypeId = rtType.getId();
+		        if (serverTypeRuntimeTypeId.equals(runtimeRuntimeTypeId))
+		        {
+		          if (!fids.contains(st.getId()))
+		          {
+		            fids.add(st.getId());
+		          }
+		        }
+        	}
         }
       }
     }

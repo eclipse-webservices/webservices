@@ -12,6 +12,7 @@
  * 20060204  124408   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
+ * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -433,11 +434,15 @@ public final class ServerUtils {
 					String serverRuntimeTypeId = serverType.getRuntimeType().getId();
 					for (int i = 0; i < runtimes.length; i++) {
 						IRuntime runtime = runtimes[i];
-						String thisRuntimeTypeId = runtime.getRuntimeType().getId();
-						if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
-							//Found an appropriate IRuntime that is not a stub
-							nonStubRuntime = runtime;
-							break;
+						IRuntimeType runtimeType = runtime.getRuntimeType();
+						if (runtimeType != null)
+						{
+							String thisRuntimeTypeId = runtimeType.getId();
+							if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
+								//Found an appropriate IRuntime that is not a stub
+								nonStubRuntime = runtime;
+								break;
+							}
 						}
 					}
 
@@ -617,9 +622,13 @@ public final class ServerUtils {
         List runtimes = Arrays.asList(ServerUtil.getRuntimes(moduleType, stJ2EEVersion));    
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
-			String thisRuntimeTypeId = runtime.getRuntimeType().getId();
-			if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
-				return runtime.getId();
+			IRuntimeType runtimeType = runtime.getRuntimeType();
+			if (runtimeType != null)
+			{
+				String thisRuntimeTypeId = runtimeType.getId();
+				if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
+					return runtime.getId();
+				}
 			}
 		}
 
@@ -682,9 +691,13 @@ public final class ServerUtils {
         List runtimes = Arrays.asList(ServerUtil.getRuntimes(earModuleType, stJ2EEVersion));
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
-			String thisId = runtime.getRuntimeType().getId();
-			if (thisId.equals(runtimeTargetId))
-				return true;
+			IRuntimeType runtimeType = runtime.getRuntimeType();
+			if (runtimeType != null)
+			{
+				String thisId = runtimeType.getId();
+				if (thisId.equals(runtimeTargetId))
+					return true;
+			}
 		}
 
 		return false;
@@ -707,9 +720,13 @@ public final class ServerUtils {
         List runtimes = Arrays.asList(ServerUtil.getRuntimes(projectType, stJ2EEVersion));    
 		for (int i = 0; i < runtimes.size(); i++) {
 			IRuntime runtime = (IRuntime) runtimes.get(i);
-			String thisId = runtime.getRuntimeType().getId();
-			if (thisId.equals(runtimeTargetId))
-				return true;
+			IRuntimeType runtimeType = runtime.getRuntimeType();
+			if (runtimeType != null)
+			{
+				String thisId = runtimeType.getId();
+				if (thisId.equals(runtimeTargetId))
+					return true;
+			}
 		}
 
 		return false;
@@ -772,14 +789,18 @@ public final class ServerUtils {
       for (int i = 0; i < runtimes.length; i++)
       {
         IRuntime runtime = runtimes[i];
-        String thisRuntimeTypeId = runtime.getRuntimeType().getId();
-        if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub())
-        {
-          // Found an appropriate IRuntime that is not a stub
-          //foundNonStubRuntime = true;
-          nonStubRuntime = runtime;
-          break;
-        }
+        IRuntimeType runtimeType = runtime.getRuntimeType();
+    	if (runtimeType != null)
+    	{
+    		String thisRuntimeTypeId = runtimeType.getId();
+	        if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub())
+	        {
+	          // Found an appropriate IRuntime that is not a stub
+	          //foundNonStubRuntime = true;
+	          nonStubRuntime = runtime;
+	          break;
+	        }
+    	}
       }
     }
     
