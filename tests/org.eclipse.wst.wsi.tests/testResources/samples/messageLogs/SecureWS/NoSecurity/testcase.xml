@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testcase name="Encryption">
+  <description>
+    This is an example of a message log file that contains a message with no security.
+  </description>
+  <expectedFailures/>
+</testcase>

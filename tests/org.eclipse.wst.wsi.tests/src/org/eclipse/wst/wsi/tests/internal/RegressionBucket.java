@@ -31,6 +31,7 @@ public class RegressionBucket extends TestSuite {
 	    if (tadIsAvailable(WSITestToolsProperties.SSBP_ASSERTION_FILE)) {
               suite.addTest(new TestSuite(WSDLConformanceSSBPTest.class));
               suite.addTest(new TestSuite(MessageLogConformanceSSBPTest.class));
+              suite.addTest(new TestSuite(MessageLogConformanceSecureWSTest.class));
         }
 	    if (tadIsAvailable(WSITestToolsProperties.AP_ASSERTION_FILE)) {
               suite.addTest(new TestSuite(WSDLConformanceAPTest.class));
