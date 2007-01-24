@@ -173,8 +173,7 @@ public class MessageAnalyzer
   	    try
 		{
 		  analyzerconfig.setLogLocation(URIEncoder.encode(filename, "UTF8"));
-		  analyzerconfig.setTestAssertionsDocumentLocation(
-			   URIEncoder.encode(wsiPreferences.getTADFile(), "UTF8"));
+		  analyzerconfig.setTestAssertionsDocumentLocation(wsiPreferences.getTADFile());
 		}
 		catch (UnsupportedEncodingException uee)
 		{

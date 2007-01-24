@@ -323,16 +323,7 @@ public class WSDLAnalyzer
       analyzerconfig.setAddStyleSheet(addstylesheet);
       analyzerconfig.setReplaceReport(true);
       //analyzerconfig.setLogLocation(filename);
-	  try
-	 {
-	   analyzerconfig.setTestAssertionsDocumentLocation(
-		 URIEncoder.encode(wsiPreferences.getTADFile(), "UTF8"));
-	 }
-	 catch (UnsupportedEncodingException uee)
-	 {
-	   analyzerconfig.setTestAssertionsDocumentLocation(URIEncoder.encode(wsiPreferences.getTADFile(), "UTF8"));
-
-	 }
+      analyzerconfig.setTestAssertionsDocumentLocation(wsiPreferences.getTADFile());
       analyzerconfig.setVerboseOption(false);
 
       // set the wsdlReference
