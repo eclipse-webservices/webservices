@@ -111,6 +111,10 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
     return cname;
   }
   
+  private boolean hasProtocol(String url) {	  
+    return url.indexOf(":") != -1;	  
+  }
+  
   private IProject getProjectFromInitialSelection(IStructuredSelection selection)
   {
     if (selection != null && selection.size() == 1)
@@ -121,8 +125,11 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
         try
         { 
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
-          if (resource==null) 
-            return ResourceUtils.getProjectOf(new Path(getWebServiceURI()));
+          if (resource==null) {
+            String uri = getWebServiceURI();
+            if (hasProtocol(uri)) return null;
+            return ResourceUtils.getProjectOf(new Path(uri));
+          }
           else
             return ResourceUtils.getProjectOf(resource.getFullPath());
         } catch(CoreException e)
@@ -145,8 +152,11 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
         { 
           IResource resource = ResourceUtils.getResourceFromSelection(obj);
           IVirtualComponent comp;
-          if (resource==null) 
-            comp = ResourceUtils.getComponentOf(new Path(getWebServiceURI())) ;
+          if (resource==null) {
+            String uri = getWebServiceURI();
+            if (hasProtocol(uri)) return null;              
+            comp = ResourceUtils.getComponentOf(new Path(uri)) ;
+          }
           else 
             comp = ResourceUtils.getComponentOf(resource);
           if (comp!=null)
