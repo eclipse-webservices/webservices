@@ -198,6 +198,10 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     return parser_;
   }
   
+  private boolean hasProtocol(String url) { 
+    return url.indexOf(":") != -1;  
+  }
+  
   private IResource findResourceFromSelection(Object selection) throws CoreException {
 	  
       IResource resource = ResourceUtils.getResourceFromSelection(selection); 
@@ -213,8 +217,11 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     if (objectSelection_ != null && objectSelection_.size() == 1)
     {
       Object obj = objectSelection_.getFirstElement();
-      if (obj instanceof String) 
-        return ResourceUtils.getProjectOf(new Path(transformer_.toPath((String) obj)));
+      if (obj instanceof String) {
+        String str = transformer_.toPath((String) obj);
+        if (hasProtocol(str)) return null;
+        return ResourceUtils.getProjectOf(new Path(str));
+      }
     }
     return null;	  
   }
@@ -250,7 +257,9 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     {
       Object obj = objectSelection_.getFirstElement();
       if (obj instanceof String) { 
-        IVirtualComponent comp = ResourceUtils.getComponentOf(new Path(transformer_.toPath((String) obj)));
+        String str = transformer_.toPath((String) obj);
+        if (hasProtocol(str)) return null;
+        IVirtualComponent comp = ResourceUtils.getComponentOf(new Path(str));
         return comp == null ? null : comp.getName();
       }
     }
