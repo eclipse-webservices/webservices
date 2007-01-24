@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  * 20060920   158061 kathy@ca.ibm.com - Kathy Chan, Do not add module to EAR when adding J2EE facets to project
+ * 20070124   162326 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -1063,7 +1064,7 @@ public class FacetUtils
       jdkComplianceLevel = javaProject.getOption("org.eclipse.jdt.core.compiler.compliance", false);
       if (jdkComplianceLevel == null)
       {
-        jdkComplianceLevel = (String)JavaCore.getDefaultOptions().get("org.eclipse.jdt.core.compiler.compliance");
+        jdkComplianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
         if (jdkComplianceLevel == null)
         {
           jdkComplianceLevel = "1.4";
