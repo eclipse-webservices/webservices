@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.validation.tests.internal;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -25,6 +26,12 @@ import junit.framework.TestCase;
 
 import org.apache.xerces.util.XMLGrammarPoolImpl;
 import org.apache.xerces.xni.grammars.XMLGrammarPool;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.validation.internal.Constants;
@@ -278,5 +285,93 @@ public class BaseTestCase extends TestCase
     {
       return "";
     }
+  }
+  
+  /**
+   * Create a project in the workspace with the given name and
+   * add the specified files to the project.
+   * 
+   * @param projectName The name for the project.
+   * @param files An array of file names in the file system that
+   *              will be copied into the project.
+   * @return The created project.
+   */
+  protected IProject createSimpleProject(String projectName, String[] files)
+  {
+    final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    final IProject project = workspace.getRoot().getProject(projectName);
+    if(!project.exists())
+    {
+      try
+	  {
+        project.create(null);
+      }
+      catch(CoreException e)
+	  {
+        fail("Could not create project " + projectName + e);
+      } 
+    }
+    if(!project.isOpen())
+    {
+      try
+	  {
+        project.open(null);
+	  }
+      catch(CoreException e)
+      {
+        fail("Could not open project " + projectName + e);
+	  }
+    }
+    try
+    {
+      IProjectDescription projectDescription = project.getDescription(); 
+      projectDescription.setName(projectName);
+      project.setDescription(projectDescription, null);
+    }
+    catch(Exception e)
+    {
+      fail("Unable to set project properties for project " + projectName + ". " + e);
+    }
+
+    if(files != null)
+    {
+      int numfiles = files.length;
+      for(int i = 0; i < numfiles; i++)
+      {
+        try
+		{
+          String filename = files[i];
+          filename = filename.replace('\\','/');
+          if(filename.startsWith("file:"))
+          {
+            filename = filename.substring(5);
+			while(filename.startsWith("/"))
+	        {
+	          filename = filename.substring(1);
+	        }
+          }
+          
+          File file = new File(filename);
+          FileInputStream in = new FileInputStream(file);
+          IFile iFile = project.getFile(file.getName());
+          if(!iFile.exists())
+          {
+            iFile.create(in, true, null);
+            in.close();
+          }
+		}
+        catch(Exception e)
+		{
+		  fail("Unable to locate file " + files[i]);
+		} 
+      }
+    }
+    try
+    {
+      project.refreshLocal(-1, null);
+    }
+    catch(Exception e)
+    {}
+    return project;
   }
 }

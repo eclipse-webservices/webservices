@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %_PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.wsdl.validation.tests
-Bundle-Version: 1.0.202
+Bundle-Version: 1.0.203
 Bundle-ClassPath: wsdlvalidatetests.jar
 Bundle-Activator: org.eclipse.wst.wsdl.validation.tests.internal.WSDLValidatorTestsPlugin
 Bundle-Vendor: %_PROVIDER_NAME
