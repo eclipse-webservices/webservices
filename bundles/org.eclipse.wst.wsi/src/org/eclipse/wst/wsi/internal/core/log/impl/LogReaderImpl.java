@@ -24,7 +24,6 @@ import org.eclipse.wst.wsi.internal.core.log.MessageEntry;
 import org.eclipse.wst.wsi.internal.core.log.MessageEntryHandler;
 import org.eclipse.wst.wsi.internal.core.log.MimePart;
 import org.eclipse.wst.wsi.internal.core.log.MimeParts;
-import org.eclipse.wst.wsi.internal.core.log.RequestHandler;
 import org.eclipse.wst.wsi.internal.core.monitor.config.Comment;
 import org.eclipse.wst.wsi.internal.core.monitor.config.impl.CommentImpl;
 import org.eclipse.wst.wsi.internal.core.profile.validator.EntryContext;
@@ -585,42 +584,49 @@ public class LogReaderImpl implements LogReader
             // ISSUE : need to throw & catch a nullpointerexception in here...
             MessageEntry messageEntryRequest = findRelatedRequest(messageEntryResponse);
 
-            if (!omitRequest(messageEntryRequest))
+            if (messageEntryRequest != null)
             {
-              // Create entry 
-              // ADD: Need to create entry from report
-              //Entry entry = this.reporter.getReport().createEntry();
-              Entry entry = new EntryImpl();
-              entry.setEntryType(
-                  EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_REQUEST));
-              entry.setReferenceID(messageEntryRequest.getId());
-              entry.setEntryDetail(messageEntryRequest);
-
-              // Create the context for the request-response pair
-              EntryContext requestTargetContext =
-                new EntryContext(
-                    entry,
-                    messageEntryRequest,
-                    messageEntryResponse);
-              if (requestTargetContext != null)
-                processLogEntry(requestTargetContext);
-
-              // Create entry 
-              // ADD: Need to create entry from report
-              //Entry entry = this.reporter.getReport().createEntry();
-              entry = new EntryImpl();
-              entry.setEntryType(
-                EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_RESPONSE));
-              entry.setReferenceID(messageEntryResponse.getId());
-              entry.setEntryDetail(messageEntryResponse);
-
-              EntryContext responseTargetContext =
-                new EntryContext(
-                  entry,
-                  messageEntryRequest,
-                  messageEntryResponse);
-              if (responseTargetContext != null)
-                processLogEntry(responseTargetContext);
+              if (!isMessageEncrypted(messageEntryRequest.getMessage()) &&
+                  !isMessageEncrypted(messageEntryResponse.getMessage()))
+              {
+	        if (!omitRequest(messageEntryRequest))
+	        {
+	          // Create entry 
+	          // ADD: Need to create entry from report
+	          //Entry entry = this.reporter.getReport().createEntry();
+	          Entry entry = new EntryImpl();
+	          entry.setEntryType(
+	                EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_REQUEST));
+	          entry.setReferenceID(messageEntryRequest.getId());
+	          entry.setEntryDetail(messageEntryRequest);
+	
+	          // Create the context for the request-response pair
+	          EntryContext requestTargetContext =
+	               new EntryContext(
+	                    entry,
+	                    messageEntryRequest,
+	                    messageEntryResponse);
+	          if (requestTargetContext != null)
+	            processLogEntry(requestTargetContext);
+	
+	          // Create entry 
+	          // ADD: Need to create entry from report
+	          //Entry entry = this.reporter.getReport().createEntry();
+	          entry = new EntryImpl();
+	          entry.setEntryType(
+	            EntryType.getEntryType(MessageValidator.TYPE_MESSAGE_RESPONSE));
+	          entry.setReferenceID(messageEntryResponse.getId());
+	          entry.setEntryDetail(messageEntryResponse);
+	
+	          EntryContext responseTargetContext =
+	                new EntryContext(
+	                  entry,
+	                  messageEntryRequest,
+	                  messageEntryResponse);
+	          if (responseTargetContext != null)
+	            processLogEntry(responseTargetContext);
+	        }
+	      }
             }
           }
         }
@@ -841,5 +847,11 @@ public class LogReaderImpl implements LogReader
     return ((message != null) && 
             (message.indexOf("<")!= -1) && 
             (message.indexOf(">") != -1));
+  }
+  
+  private boolean isMessageEncrypted(String message)
+  {
+    return ((message != null) && 
+	    (message.contains("<EncryptedKey ")));
   }
 }
