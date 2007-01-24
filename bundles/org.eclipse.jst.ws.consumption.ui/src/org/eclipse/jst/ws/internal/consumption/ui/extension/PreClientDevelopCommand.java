@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060516   126965 kathy@ca.ibm.com - Kathy Chan
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20070123   167487 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -30,6 +31,7 @@ import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.common.HTTPUtility;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
@@ -95,7 +97,10 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 		  wsInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
 		  wsInfo.setState(WebServiceState.UNKNOWN_LITERAL);
 		  wsInfo.setWebServiceRuntimeId(typeRuntimeServer_.getRuntimeId());
-		  wsInfo.setWsdlURL(wsdlURI_);
+		  
+		  // check for redirection in the wsdl
+		  HTTPUtility httpUtil = new HTTPUtility();		  
+		  wsInfo.setWsdlURL(httpUtil.handleRedirect(wsdlURI_));
 
 		  webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
 		  WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
