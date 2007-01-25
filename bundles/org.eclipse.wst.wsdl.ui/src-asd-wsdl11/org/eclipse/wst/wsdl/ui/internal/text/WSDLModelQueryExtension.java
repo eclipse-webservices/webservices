@@ -103,6 +103,10 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
           }
         }
       }
+      else
+      {
+        return super.isApplicableChildElement(parentNode, namespace, name);
+      }
     }
     return result;
   }
