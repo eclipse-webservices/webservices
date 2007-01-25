@@ -852,6 +852,6 @@ public class LogReaderImpl implements LogReader
   private boolean isMessageEncrypted(String message)
   {
     return ((message != null) && 
-	    (message.contains("<EncryptedKey ")));
+	    (message.indexOf("<EncryptedKey ") != -1));
   }
 }
