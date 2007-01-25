@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060717   146707 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070124   167487 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -38,6 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
+import org.eclipse.wst.ws.internal.common.HTTPUtility;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
@@ -98,14 +100,15 @@ public class WSDLElement extends WSDLCommonElement
   public WSDLElement(String name, Model model, String wsdlUrl)
   {
     super(name, model);
-    wsdlUrl_ = wsdlUrl;
+    setWsdlUrl(wsdlUrl);
     definition_ = null;
     schemaList_ = new Vector();
 	schemaURI_ = new Vector();
   }
 
   public void setWsdlUrl(String wsdlUrl) {
-    wsdlUrl_ = wsdlUrl;
+	  HTTPUtility http = new HTTPUtility();
+	  wsdlUrl_ = http.handleRedirect(wsdlUrl);
   }
 
   public String getWsdlUrl() {
@@ -151,6 +154,8 @@ public class WSDLElement extends WSDLCommonElement
 	  
     Vector errorMessages = new Vector();
     definition_ = loadWSDL(wsdlUrl_);
+    
+    
     if (definition_ != null)
     {
       setDocumentation(definition_.getDocumentationElement());
