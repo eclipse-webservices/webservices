@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<testcase name="2941-1">
-  <description>
-    This is an example of a conformant wsdl with a soap:headerfault element that
-    should pass test assertion BP2941.
-  </description>
-</testcase>
