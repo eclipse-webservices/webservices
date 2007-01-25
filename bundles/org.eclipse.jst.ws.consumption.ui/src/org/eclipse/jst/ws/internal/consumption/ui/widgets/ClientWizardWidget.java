@@ -25,6 +25,7 @@
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  * 20060907   156211 makandre@ca.ibm.com - Andrew Mak, Selecting service definition invalidated project config when creating web service java client
  * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
+ * 20060125   159911 kathy@ca.ibm.com - Kathy Chan, Remove unused method and imports
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -37,7 +38,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.Timer;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -382,29 +382,7 @@ public void internalize() {
     monitorService_.setSelection(value.booleanValue());
   }
 
-  private void refreshClientRuntimeSelection()
-	{		
-		//new up ServerRuntimeSelectionWidgetDefaultingCommand
-		ClientRuntimeSelectionWidgetDefaultingCommand clientRTDefaultCmd = new ClientRuntimeSelectionWidgetDefaultingCommand();
-		
-		clientRTDefaultCmd.setResourceContext(resourceContext_);
-		clientRTDefaultCmd.setClientEarProjectName(getClientEarProjectName());
-		clientRTDefaultCmd.setClientInitialProject(getProject());  
-        clientRTDefaultCmd.setClientTypeRuntimeServer(getClientTypeRuntimeServer());
-		clientRTDefaultCmd.setTestService(getTestService().booleanValue());
-		clientRTDefaultCmd.setWebServicesParser(getWebServicesParser());
-		clientRTDefaultCmd.setWsdlURI(getWsdlURI());
-		
-		clientRTDefaultCmd.execute(null, null);
-		  
-		setClientComponentType(clientRTDefaultCmd.getClientComponentType());
-		setClientEarProjectName(clientRTDefaultCmd.getClientEarProjectName());
-		setClientNeedEAR(clientRTDefaultCmd.getClientNeedEAR());
-		setClientProjectName(clientRTDefaultCmd.getClientProjectName());
-		setClientTypeRuntimeServer(clientRTDefaultCmd.getClientTypeRuntimeServer());
-	}
-  
-	public IStatus getStatus() {
+  public IStatus getStatus() {
 				
 		validObjectSelection_ = false;	// assume false at first
 
