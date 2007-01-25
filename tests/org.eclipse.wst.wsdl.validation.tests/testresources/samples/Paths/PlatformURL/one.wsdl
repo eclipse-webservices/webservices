@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/one/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="one" targetNamespace="http://www.example.org/one/">
-<wsdl:import
-  namespace="http://www.example.org/two/"
-  location="platform:/test/two.wsdl"/>
-</wsdl:definitions>
