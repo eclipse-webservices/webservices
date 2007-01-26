@@ -573,13 +573,13 @@ public class PathsTest extends BaseTestCase
   public void testPlatformURL()
   {
 	String testname = "one";
-	String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + PATHS_DIR + "PlatformURL/" + testname + ".wsdl";
-	String testfile2 = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + PATHS_DIR + "PlatformURL/two.wsdl";
+	String testfile = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + PATHS_DIR + "PlatformURL/" + testname + ".wsdl";
+	String testfile2 = PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + PATHS_DIR + "PlatformURL/two.wsdl";
 	String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + PATHS_DIR + "PlatformURL/" + testname + ".wsdl-log";
 	String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + PATHS_DIR + "PlatformURL/" + testname + ".wsdl-log";
 	 
 	createSimpleProject("test", new String[]{testfile,testfile2});
 	
-	runTest(testfile, loglocation, idealloglocation);
+	runTest(FILE_PROTOCOL + testfile, loglocation, idealloglocation);
   }
 }

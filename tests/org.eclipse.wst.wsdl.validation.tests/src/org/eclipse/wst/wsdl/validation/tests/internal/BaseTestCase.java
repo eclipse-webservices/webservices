@@ -342,14 +342,6 @@ public class BaseTestCase extends TestCase
 		{
           String filename = files[i];
           filename = filename.replace('\\','/');
-          if(filename.startsWith("file:"))
-          {
-            filename = filename.substring(5);
-			while(filename.startsWith("/"))
-	        {
-	          filename = filename.substring(1);
-	        }
-          }
           
           File file = new File(filename);
           FileInputStream in = new FileInputStream(file);
