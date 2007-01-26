@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@
  * 20060726   150865 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
+ * 20070126   138484 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -44,6 +45,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ClientRuntimeSelectionWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime.ProjectSelectionWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.RuntimeServerSelectionDialog;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -164,6 +166,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 	
   private UIUtils utils_ = new UIUtils("org.eclipse.jst.ws.consumption.ui");
   private IPackable packable_ = null;  
+  private LabelsAndIds labelIds_;
   
   public WebServiceClientTypeWidget(boolean clientOnly) {
 	    clientOnly_ = clientOnly;
@@ -218,9 +221,14 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				// TODO - a change in the client type should result in a recalcualtion
-				// of page defaults. Not an issue at this point since 
-				// there is only one possible client type.
+				String oldTypeId = ids_.getTypeId();
+				int currentSelectionIdx = clientTypeCombo_.getSelectionIndex();
+				String currentTypeId = labelIds_.getIds_()[currentSelectionIdx];
+				if (!oldTypeId.equals(currentTypeId)) {		
+					// handle changing client type
+					ids_.setTypeId(currentTypeId);
+					refreshServerRuntimeSelection();
+				}
 				validationState_ = ValidationUtils.VALIDATE_ALL;
 				statusListener_.handleEvent(null);
 			}
@@ -466,6 +474,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
     String[]                     clientIds  = labelIds.getIds_();
     String                       selectedId = ids.getTypeId();
     
+    labelIds_ = labelIds;
 	// rskreg
     clientTypeCombo_.setItems( labelIds.getLabels_() );
     
@@ -1016,6 +1025,28 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
 		}
-	}  
+	} 
+  
+  private void refreshServerRuntimeSelection()
+	{		
+		//new up ServerRuntimeSelectionWidgetDefaultingCommand
+		ClientRuntimeSelectionWidgetDefaultingCommand clientRTDefaultCmd = new ClientRuntimeSelectionWidgetDefaultingCommand();
+		
+		  //call setters of new defaulting command:
+		  clientRTDefaultCmd.setClientInitialSelection(getObjectSelection());
+		  clientRTDefaultCmd.setClientInitialProject(getProject());	      
+	      clientRTDefaultCmd.setClientTypeRuntimeServer(getTypeRuntimeServer());
+		  clientRTDefaultCmd.setWebServicesParser(getWebServicesParser());     
+	      clientRTDefaultCmd.setClientEarProjectName(getClientEarProjectName());
+		  		  
+		  clientRTDefaultCmd.execute(null, null);
+		  
+		  //perform mappings from the defaulting command to the project settings...	
+		  setClientProjectName(clientRTDefaultCmd.getClientProjectName());
+		  setClientEarProjectName(clientRTDefaultCmd.getClientEarProjectName());
+		  setClientComponentType(clientRTDefaultCmd.getClientComponentType());
+		  setTypeRuntimeServer(clientRTDefaultCmd.getClientTypeRuntimeServer());
+          setClientNeedEAR(clientRTDefaultCmd.getClientNeedEAR());
+	}
 }
 
