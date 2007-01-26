@@ -11,11 +11,8 @@
 
 package org.eclipse.wst.wsdl.validation.internal.eclipse;
 
-import java.io.IOException;
 import java.net.URL;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
@@ -80,11 +77,10 @@ public class URIResolverWrapper implements IExtensibleURIResolver
       {
     	  try
     	  {
-    		  IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(url);
-    		  URL tempurl = FileLocator.toFileURL(res.getLocation().toFile().toURL());
-    		  result = tempurl.toExternalForm();
+    		  URL fileURL = FileLocator.toFileURL(new URL(url));
+    		  result = fileURL.toExternalForm();
     	  }
-    	  catch(IOException e)
+    	  catch(Exception e)
     	  {
     		  // Can't resolve using the FileLocator in this
     		  // case so do nothing.
