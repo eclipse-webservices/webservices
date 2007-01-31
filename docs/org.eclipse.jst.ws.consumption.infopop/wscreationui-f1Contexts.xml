@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.contexts"?>
 <!-- /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -75,15 +75,12 @@
 <!-- First Page-->
 <description>On this page select the artifact from which your Web service or client will be created, and the stages of Web services development that you want
 to complete:
-<ul>
-<li>Develop: this will create the service code</li>
-<li>Assemble: this ensures that the project that will host the Web service or 
-client gets associated to an EAR when required by the target application server</li>
-<li>Deploy: this will create the deployment code for the service</li>
-<li>Install: this will install the service on the chosen server</li>
-<li>Start: this will start the server once the service has been installed on it</li>
-<li>Test: this will provide various options for testing the service</li>
-</ul>
+- Develop: this will create the service code
+- Assemble: this ensures that the project that will host the Web service or client gets associated to an EAR when required by the target application server
+- Deploy: this will create the deployment code for the service
+- Install: this will install the service on the chosen server
+- Start: this will start the server once the service has been installed on it
+- Test: this will provide various options for testing the service
 Select the server and runtime for your Web service or client, and whether or not you want to publish or monitor the service.
 </description>
 </context>
@@ -117,14 +114,13 @@ will be used to generate the service</description>
 <!--Service slider of the First Page-->
 <description>Select the stages of Web services development that you want
 to complete using the slider:
-<ul>
-<li>Develop: this will create the service code</li>
-<li>Assemble: </li>
-<li>Deploy: this will create the deployment code for the service</li>
-<li>Install: this will install the service on the chosen server</li>
-<li>Start: this will start the server once the service has been installed on it</li>
-<li>Test: this will provide various options for testing the service</li>
-</ul></description>
+- Develop: this will create the service code
+- Assemble: this ensures that the project that will host the Web service or client gets associated to an EAR when required by the target application server
+- Deploy: this will create the deployment code for the service
+- Install: this will install the service on the chosen server
+- Start: this will start the server once the service has been installed on it
+- Test: this will provide various options for testing the service
+</description>
 </context>
 
 <context id="WSWSCEN0022">
@@ -159,14 +155,13 @@ service will be overwritten by the client's generated artifacts.</description>
 <!--Client slider of the First Page-->
 <description>Select the stages of Web services client development that you want
 to complete using the slider:
-<ul>
-<li>Develop: this will create the client code</li>
-<li>Assemble: </li>
-<li>Deploy: this will create the deployment code for the client</li>
-<li>Install: this will install the client on the chosen server</li>
-<li>Start: this will start the server once the client has been installed on it</li>
-<li>Test: this will provide various options for testing the client</li>
-</ul></description>
+- Develop: this will create the client code
+- Assemble: this ensures that the project that will host the Web service or client gets associated to an EAR when required by the target application server
+- Deploy: this will create the deployment code for the client
+- Install: this will install the client on the chosen server
+- Start: this will start the server once the client has been installed on it
+- Test: this will provide various options for testing the client
+</description>
 </context>
 
 <context id="WSWSCEN0030">

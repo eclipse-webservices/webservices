@@ -17,46 +17,36 @@
 <context id="PWSI0001">
 <!--desc-->
 <description>The Web services WS-I validation tools support the level of WS-I compliance outlined in the WS-I Basic Profile 1.1, the WS-I Simple SOAP Binding Profile 1.0 (WS-I SSBP), and the WS-I Attachments Profile 1.0 (WS-I AP). You can choose to make your Web service compliant or non-compliant, depending on your needs. For example, encoded style (RPC/encoded), SOAP over JMS protocols, and secured Web services, are not WS-I compliant.
-<br />
+
 You can set the level of compliance for either the Basic Profile and the Simple SOAP Binding Profile, or for the Attachments Profile. You can select from three levels of compliance with WS-I specifications:
-<ul>
-<li>Require WS-I compliance - this level prevents you from creating a non-compliant Web service.</li>
-<li>Suggest WS-I compliance - this level allows you to create a non-compliant Web service, but provides a visible warning stating how the service is non-compliant.</li>
-<li>Ignore WS-I compliance - this level allows you to create a non-compliant Web service and does not notify you of non-compliance.</li>
-</ul>
-<br />
+- Require WS-I compliance - this level prevents you from creating a non-compliant Web service.
+- Suggest WS-I compliance - this level allows you to create a non-compliant Web service, but provides a visible warning stating how the service is non-compliant.
+- Ignore WS-I compliance - this level allows you to create a non-compliant Web service and does not notify you of non-compliance.
+
 You can also select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
-<br />
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
+
 If you select to wait for WSDL validation to complete, the Web services wizards will prevent you from going forward and completing additional wizard pages once you have selected your WSDL file until that WSDL file has been validated. If the WSDL file is not valid, you will be given the option of exiting the wizard or continuing with the invalid WSDL file.
 </description>
 </context>
 
 <context id="PWSI0004">
 <description>The Web services WS-I validation tools support the level of WS-I compliance outlined in the WS-I Basic Profile 1.1, the WS-I Simple SOAP Binding Profile 1.0 (WS-I SSBP), and the WS-I Attachments Profile 1.0 (WS-I AP). You can choose to make your Web service compliant or non-compliant, depending on your needs. For example, encoded style (RPC/encoded), SOAP over JMS protocols, and secured Web services, are not WS-I compliant.
-<br />
 You can set the level of compliance for either the Basic Profile and the Simple SOAP Binding Profile, or for the Attachments Profile. You can select from three levels of compliance with WS-I specifications:
-<ul>
-<li>Require WS-I compliance - this level prevents you from creating a non-compliant Web service.</li>
-<li>Suggest WS-I compliance - this level allows you to create a non-compliant Web service, but provides a visible warning stating how the service is non-compliant.</li>
-<li>Ignore WS-I compliance - this level allows you to create a non-compliant Web service and does not notify you of non-compliance.</li>
-</ul>
+- Require WS-I compliance - this level prevents you from creating a non-compliant Web service.
+- Suggest WS-I compliance - this level allows you to create a non-compliant Web service, but provides a visible warning stating how the service is non-compliant.
+- Ignore WS-I compliance - this level allows you to create a non-compliant Web service and does not notify you of non-compliance.
 </description>
 </context>
 
 <context id="PWSI0008">
 <description>The Web services WS-I validation tools support the level of WS-I compliance outlined in the WS-I Basic Profile 1.1, the WS-I Simple SOAP Binding Profile 1.0 (WS-I SSBP), and the WS-I Attachments Profile 1.0 (WS-I AP). You can choose to make your Web service compliant or non-compliant, depending on your needs. For example, encoded style (RPC/encoded), SOAP over JMS protocols, and secured Web services, are not WS-I compliant.
-<br />
 You can set the level of compliance for either the Basic Profile and the Simple SOAP Binding Profile, or for the Attachments Profile. You can select from three levels of compliance with WS-I specifications:
-<ul>
-<li>Require WS-I compliance - this level prevents you from creating a non-compliant Web service.</li>
-<li>Suggest WS-I compliance - this level allows you to create a non-compliant Web service, but provides a visible warning stating how the service is non-compliant.</li>
-<li>Ignore WS-I compliance - this level allows you to create a non-compliant Web service and does not notify you of non-compliance.</li>
-</ul>
+- Require WS-I compliance - this level prevents you from creating a non-compliant Web service.
+- Suggest WS-I compliance - this level allows you to create a non-compliant Web service, but provides a visible warning stating how the service is non-compliant.
+- Ignore WS-I compliance - this level allows you to create a non-compliant Web service and does not notify you of non-compliance.
 </description>
 </context>
 
@@ -64,11 +54,9 @@ You can set the level of compliance for either the Basic Profile and the Simple 
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
 </description>
 </context>
 
@@ -76,11 +64,9 @@ You can select which types of WSDL files to run validation on:
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
 </description>
 </context>
 
@@ -88,11 +74,9 @@ You can select which types of WSDL files to run validation on:
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
 </description>
 </context>
 
@@ -107,11 +91,9 @@ If you select to wait for WSDL validation to complete, the Web services wizards 
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
 </description>
 </context>
 
@@ -119,11 +101,9 @@ You can select which types of WSDL files to run validation on:
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
 </description>
 </context>
 
@@ -131,11 +111,9 @@ You can select which types of WSDL files to run validation on:
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
 </description>
 </context>
 
@@ -143,11 +121,9 @@ You can select which types of WSDL files to run validation on:
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
-<ul>
-<li>By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.</li>
-<li>By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.</li>
-<li>By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.</li>
-</ul>
+- By selecting "No wizard WSDL validation" the wizards will not run validation on the WSDL file.
+- By selecting to run validation on remote files, the wizards will only validate WSDL files that exist outside of your workspace.
+- By selecting to run validation on all WSDL files the wizard will validate all WSDL files, regardless of where they reside.
 </description>
 </context>
 
