@@ -127,7 +127,7 @@ public interface WSIConstants {
 	 * WSDL SOAP binding namespace.
 	 */
 	public final static String NS_URI_WSDL_SOAP = "http://schemas.xmlsoap.org/wsdl/soap/";
-
+	public final static String NS_URI_WSDL_SOAP12 = "http://schemas.xmlsoap.org/wsdl/soap12/";
 	public final static String NS_NAME_WSDL_SOAP = "soap";
 
 	/**
@@ -480,5 +480,4 @@ public interface WSIConstants {
 	public static final String HTTP_PREFIX = "http:";
 	public static final String FILE_PROTOCOL = "file:///";
 	public static final String WSI_PREFIX = "WS-I: ";
-
 }

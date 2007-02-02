@@ -42,6 +42,7 @@ import org.eclipse.wst.wsi.internal.core.util.ArtifactType;
 import org.eclipse.wst.wsi.internal.core.util.UDDIUtils;
 import org.eclipse.wst.wsi.internal.core.util.WSIProperties;
 import org.eclipse.wst.wsi.internal.core.wsdl.WSDLDocument;
+import org.eclipse.wst.wsi.internal.core.wsdl.WSDLUtils;
 import org.eclipse.wst.wsi.internal.core.xml.XMLDocumentCache;
 import org.uddi4j.client.UDDIProxy;
 import org.uddi4j.datatype.binding.BindingTemplate;
@@ -252,7 +253,15 @@ public class BasicProfileAnalyzer extends Analyzer
                       "WSDL document was either not found or could not be " + 
                       "processed."));
       }
-      analyzerContext.setWsdlDocument(wsdlDocument);
+      
+      /*
+       * Only validate messages against a wsdl document if the wsdl document
+       * does not contain soap 1.2 bindings. 
+       */
+	  if (WSDLUtils.isSOAP12WSDL(wsdlDocument) && getAnalyzerConfig().getLogLocation() != null)
+		  getAnalyzerConfig().setWSDLReference(null);
+	  else
+		  analyzerContext.setWsdlDocument(wsdlDocument);  
 
       // Start writing report
       this.reporter.startReport();

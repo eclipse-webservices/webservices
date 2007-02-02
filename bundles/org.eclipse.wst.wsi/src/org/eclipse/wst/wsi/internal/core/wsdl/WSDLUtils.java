@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal.core.wsdl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -380,5 +381,31 @@ public final class WSDLUtils
     }
 
     return returnSet;
+  }
+  
+  public static boolean isSOAP12WSDL(WSDLDocument wsdlDocument)
+  {
+	boolean result = false;
+	if (wsdlDocument != null)
+	{
+	  Binding[] bindings = wsdlDocument.getBindings();
+	  List extensibilityElementList = new ArrayList();
+	  if (bindings != null)
+	  {
+		for (int i = 0; i < bindings.length; i++)
+			extensibilityElementList.addAll(bindings[i].getExtensibilityElements());
+		Iterator iterator = extensibilityElementList.iterator();
+		while (iterator.hasNext()) 
+		{
+		  ExtensibilityElement e = (ExtensibilityElement) iterator.next();
+			if (WSIConstants.NS_URI_WSDL_SOAP12.equals(e.getElementType().getNamespaceURI()))
+			{
+			  result = true;
+			  break;
+			}
+		}
+	  }
+	}
+    return result;
   }
 }
