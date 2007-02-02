@@ -169,6 +169,14 @@ public class BugFixesTest extends TestCase
       }
     });
 
+    suite.addTest(new BugFixesTest("BindingOperationReconciliation") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testBindingOperationReconciliation();
+      }
+    });
+
     return suite;
   }
 
@@ -680,5 +688,69 @@ public class BugFixesTest extends TestCase
     int expectedSize = 1;
     int actualSize = errors.size();
     assertEquals(expectedSize, actualSize);
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=172576
+   */
+  public void testBindingOperationReconciliation()
+  {
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/BindingOperationReconciliation/BindingOperationReconciliation.wsdl", true); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    String targetNamespace = "http://www.example.org/BindingOperationReconciliation/"; //$NON-NLS-1$
+    QName portTypeQName = new QName(targetNamespace, "BindingOperationReconciliation"); //$NON-NLS-1$
+    javax.wsdl.PortType portType = definition.getPortType(portTypeQName);
+
+    String input3Name = "Input3"; //$NON-NLS-1$
+    String output3Name = "Output3"; //$NON-NLS-1$
+
+    // Check that the first operation - which has no named input/output is being
+    // found.
+
+    String operationName = "NewOperation"; //$NON-NLS-1$
+    javax.wsdl.Operation operation1 = portType.getOperation(operationName, null, null);
+
+    QName bindingQName = new QName(targetNamespace, "BindingOperationReconciliationSOAP"); //$NON-NLS-1$
+    javax.wsdl.Binding binding = definition.getBinding(bindingQName);
+
+    javax.wsdl.BindingOperation bindingOperation1 = binding.getBindingOperation(operationName, null, null);
+    javax.wsdl.Operation actualOperation1 = bindingOperation1.getOperation();
+
+    assertEquals(operation1, actualOperation1);
+
+    // The second operation - which has no named input/output is being found
+    // should not be reconciled because the binding specifies the input and
+    // output.
+
+    String input2Name = "Input2"; //$NON-NLS-1$
+    String output2Name = "Output2"; //$NON-NLS-1$
+
+    String operation2Name = "NewOperation2"; //$NON-NLS-1$
+
+    javax.wsdl.BindingOperation bindingOperation2 = binding.getBindingOperation(operation2Name, input2Name, output2Name);
+    javax.wsdl.Operation actualOperation2 = bindingOperation2.getOperation();
+
+    assertEquals(null, actualOperation2);
+
+    // The third operation specifies an input and output name, and the binding
+    // operation will reconcile fine because the it also specifies the proper
+    // input and output name.
+
+    String operation3Name = "NewOperation3"; //$NON-NLS-1$
+    javax.wsdl.Operation operation3 = portType.getOperation(operation3Name, input3Name, output3Name);
+
+    javax.wsdl.BindingOperation bindingOperation3 = binding.getBindingOperation(operation3Name, input3Name, output3Name);
+    javax.wsdl.Operation actualOperation3 = bindingOperation3.getOperation();
+
+    assertEquals(operation3, actualOperation3);
   }
 }

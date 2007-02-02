@@ -787,7 +787,13 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
       PortType portType = binding.getEPortType();
       if (portType != null)
       {
-        setOperation(portType.getOperation(getName(),null,null));
+        BindingInput input = getEBindingInput();
+        BindingOutput output = getEBindingOutput();
+        
+        String inputName = input != null ? input.getName() : null;
+        String outputName = output != null ? output.getName() : null;
+
+        setOperation(portType.getOperation(getName(), inputName, outputName));
       }
     }
     super.reconcileReferences(deep);
