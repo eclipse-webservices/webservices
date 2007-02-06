@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060204 124408   rsinha@ca.ibm.com - Rupam Kuehner      *     
  * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20070201   172244 makandre@ca.ibm.com - Andrew Mak, Remove usage of deprecated (and now removed) classes
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -26,12 +27,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.application.internal.operations.FlexibleJavaProjectCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.project.datamodel.properties.IFlexibleJavaProjectCreationDataModelProperties;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -40,11 +38,7 @@ import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
@@ -77,8 +71,6 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 	private String   j2eeLevel;
 	private String   serverFactoryId;
 	private String   serverInstanceId_;
-	private IEnvironment env;
-    private IProgressMonitor monitor_;
 	
     private org.eclipse.wst.common.project.facet.core.runtime.IRuntime facetRuntime;
     
@@ -87,8 +79,6 @@ public class CreateModuleCommand extends AbstractDataModelOperation
 	
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
-    monitor_ = monitor;
-		this.env = getEnvironment();
 		IStatus status = Status.OK_STATUS;
 		
 		// check if data ready
@@ -473,50 +463,6 @@ public class CreateModuleCommand extends AbstractDataModelOperation
       return status;      
 	}
 	
-	/**
-	 * Creates Flexible Java Project structure
-	 * This project is required if it doesn't already exist in order to create the component 
-	 * @return
-	 * 
-	 * Note: This call may not be necessary once J2EE implements creating a flex project automatically
-	 * 		with the creation of components.
-	 */
-	public IStatus createFlexibleJavaProject(){
-		IStatus status = Status.OK_STATUS;
-		try
-		{
-		  IDataModel projectInfo = DataModelFactory.createDataModel(new FlexibleJavaProjectCreationDataModelProvider());
-		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.PROJECT_NAME,projectName);
-  
-		  String runtimeTargetId = null;
-		  if( serverInstanceId_ == null )
-		  {
-			// We don't have a server instance so we will get the first runtimeTarget from the factory ID.
-			runtimeTargetId = ServerUtils.getServerTargetIdFromFactoryId(serverFactoryId, ServerUtils.getServerTargetModuleType(moduleType), j2eeLevel);		
-		  }
-		  else
-		  {
-			// We have a server instance so we will just get it's runtimeTargetId.
-			IServer server = ServerCore.findServer( serverInstanceId_ );
-			runtimeTargetId = server.getRuntime().getId();  
-		  }
-		  
-		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.RUNTIME_TARGET_ID,runtimeTargetId);
-		  projectInfo.setProperty(IFlexibleJavaProjectCreationDataModelProperties.ADD_SERVER_TARGET,Boolean.TRUE);
-		  IDataModelOperation op = projectInfo.getDefaultOperation();
-		  if (env!=null)
-			  op.execute( monitor_, null);
-		  else 
-			  op.execute(new NullProgressMonitor(), null);
-
-		}
-		catch (Exception e)
-		{
-			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_CREATE_FLEX_PROJET, new String[]{projectName}), e);
-		}
-		return status;		
-	}
-    
       /*
        * @return Set Returns the Set of facets to add to the new project, 
        * choosing the highest level of each facet that works on the selected server.
