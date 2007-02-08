@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/BindingOperationReconciliation/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="BindingOperationReconciliation"
+	targetNamespace="http://www.example.org/BindingOperationReconciliation/">
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="http://www.example.org/BindingOperationReconciliation/"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="NewOperation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part element="tns:NewOperation" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="NewOperationRequest2">
+		<wsdl:part element="tns:NewOperation" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="NewOperationResponse2">
+		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="NewOperationRequest3">
+		<wsdl:part element="tns:NewOperation" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="NewOperationResponse3">
+		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:portType name="BindingOperationReconciliation">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest" />
+			<wsdl:output message="tns:NewOperationResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="NewOperation2">
+			<wsdl:input message="tns:NewOperationRequest2" />
+			<wsdl:output message="tns:NewOperationResponse2" />
+		</wsdl:operation>
+		<wsdl:operation name="NewOperation3">
+			<wsdl:input name="Input3" message="tns:NewOperationRequest3" />
+			<wsdl:output name="Output3" message="tns:NewOperationResponse3" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="BindingOperationReconciliationSOAP"
+		type="tns:BindingOperationReconciliation">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="NewOperation">
+			<soap:operation
+				soapAction="http://www.example.org/BindingOperationReconciliation/NewOperation" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="NewOperation2">
+			<soap:operation
+				soapAction="http://www.example.org/BindingOperationReconciliation/NewOperation2" />
+			<wsdl:input name="Input2">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="Output2">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="NewOperation3">
+			<soap:operation
+				soapAction="http://www.example.org/BindingOperationReconciliation/NewOperation3" />
+			<wsdl:input name="Input3">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="Output3">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="BindingOperationReconciliation">
+		<wsdl:port binding="tns:BindingOperationReconciliationSOAP"
+			name="BindingOperationReconciliationSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
