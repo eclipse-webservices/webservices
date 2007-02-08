@@ -55,7 +55,7 @@ public class W11ParameterForElement extends WSDLBaseAdapter implements IParamete
         compName = "**anonymous**"; 
     }
 
-    return td.getName() != null ? td.getName() : compName;
+    return (td != null && td.getName() != null) ? td.getName() : compName;
   }
   
   public String getPreview() {

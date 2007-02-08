@@ -21,7 +21,6 @@
  * 20060803   152486 makandre@ca.ibm.com - Andrew Mak, Typing WSDL in Service definition field is very slow
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060831   155883 makandre@ca.ibm.com - Andrew Mak, service impl field doesn't work after switching from BU to TD
- * 20061106   142500 david.schneider@unisys.com - David Schneider, WTP properties pages fonts don't follow Eclipse preferences
  * 20061211   161589 makandre@ca.ibm.com - Andrew Mak, NPE in service generation after opening and cancelling from browse dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
@@ -41,7 +40,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
@@ -237,7 +235,6 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
     		});
     
     setMessageSummary();
-    Dialog.applyDialogFont(parent);    
     return this;
   }
   

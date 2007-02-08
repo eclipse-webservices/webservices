@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070202   172615 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -351,4 +352,24 @@ public class JUnitUtils {
 	  
 	}
 	
+	public static void setBUScenarioDefaults(){
+		ScenarioContext context = WebServicePlugin.getInstance().getScenarioContext();
+		context.setGenerateWebService(ScenarioContext.WS_ASSEMBLE);
+		
+		context.setGenerateProxy(false);
+		context.setInstallWebService(false);
+		context.setStartWebService(false);
+		context.setTestWebService(false);
+		
+	}
+	
+	public static void setTDScenarioDefaults(){
+		ScenarioContext context = WebServicePlugin.getInstance().getScenarioContext();
+		context.setGenerateWebService(ScenarioContext.WS_ASSEMBLE);
+		
+		context.setGenerateProxy(false);
+		context.setInstallWebService(false);
+		context.setStartWebService(false);
+		context.setTestWebService(false);
+	}
 }

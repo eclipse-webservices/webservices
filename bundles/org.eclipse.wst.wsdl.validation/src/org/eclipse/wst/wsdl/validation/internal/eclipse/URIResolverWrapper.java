@@ -63,7 +63,7 @@ public class URIResolverWrapper implements IExtensibleURIResolver
   /**
    * Resolve platform URLs to standard URLs. This method has the
    * practical effect of transforming a URL such as
-   * platform:/resource/test/test.wsdl
+   * platform:/test/test.wsdl
    * into
    * file:/c:/wtp/workspace/test/test.wsdl
    * 

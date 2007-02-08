@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="org.eclipse.wst.ws.explorer" default="build.wars" basedir=".">
     
-    <!-- The env.JAVA_5_HOME values set on the
-    java/jvm and javac/executable attributes insure
-    the WSE servlets are compiled to the Java 5 level -->
+    <!-- the environment variables are important to set here, and 
+    to have JAVA_4_HOME set to some Java 1.4 SDK home, 
+    since we want this compiled with a 1.4 version, but 
+    this overall build itself might be being ran in Java 1.5 -->
     <property environment="env" />
     
 	<property name="wsexplorerDir" value="${buildDirectory}/plugins/org.eclipse.wst.ws.explorer/wsexplorer"/>
 
 	<target name="jspcompile" unless="wsexplorer.war" description="Pre-compile the JSPs in the org.eclipse.wst.ws.explorer plugin">
-		<java classname="org.apache.jasper.JspC" fork="true" jvm="${env.JAVA_5_HOME}/bin/java">
+		<java classname="org.apache.jasper.JspC" fork="true" jvm="${env.JAVA_4_HOME}/bin/java">
 			<arg line="-webxml ${wsexplorerDir}/WEB-INF/web.xml -d ${wsexplorerDir} -webapp ${wsexplorerDir}"/>
 			<classpath>
 				<fileset dir="${baseLocation}/plugins">
@@ -20,7 +21,7 @@
 				</fileset>
 			</classpath>
 		</java>
-		<javac destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false" failonerror="false" executable="${env.JAVA_5_HOME}/bin/javac" fork="true">
+		<javac destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false" failonerror="false" executable="${env.JAVA_4_HOME}/bin/javac" fork="true">
 			<src path="${wsexplorerDir}"/>
 			<classpath>
 				<fileset dir="${buildDirectory}/plugins">
