@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: WSI JUnit Test
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.wst.wsi.tests
 Bundle-Version: 1.0.0
 Bundle-ClassPath: wsi.tests.jar
 Bundle-Activator: org.eclipse.wst.wsi.tests.internal.WSITestsPlugin
-Bundle-Vendor: Eclipse
+Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.wst.wsi,
  org.eclipse.core.resources,
@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.wst.wsi,
  org.eclipse.core.runtime,
  org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.core
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Export-Package: org.eclipse.wst.wsi.tests.internal
