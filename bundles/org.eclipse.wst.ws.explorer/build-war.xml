@@ -20,7 +20,7 @@
 				</fileset>
 			</classpath>
 		</java>
-		<javac destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false" failonerror="false" executable="${env.JAVA_5_HOME}/bin/javac" fork="true">
+		<javac verbose="true" destdir="${wsexplorerDir}/WEB-INF/classes" includeAntRuntime="false" failonerror="false" executable="${env.JAVA_5_HOME}/bin/javac" fork="true">
 			<src path="${wsexplorerDir}"/>
 			<classpath>
 				<fileset dir="${buildDirectory}/plugins">
