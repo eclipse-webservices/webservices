@@ -410,6 +410,13 @@
 				menubarPath="WSDLEditor/group1"
 				class="org.eclipse.wst.wsdl.ui.internal.ReloadDependenciesActionDelegate">
 			</action>
+   <action
+         class="org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDCaptureScreenAction"
+         icon="icons/etool16/capturescreen.gif"
+         id="org.eclipse.wst.wsdl.ui.actions.CaptureScreen"
+         label="%_UI_CAPTURE_SCREEN"
+         menubarPath="WSDLEditor/group1"
+         toolbarPath="WSDLEditor"/>
 
 			<!--
 				<action
@@ -488,5 +495,5 @@
 			nodeEditorProviderClass="org.eclipse.wst.wsdl.ui.internal.soap.customizations.SOAPNodeEditorProvider"
 			labelProviderClass="org.eclipse.wst.wsdl.ui.internal.label.providers.HTTPLabelProvider">
 		</nodeCustomization>					
-	</extension>	
+	</extension>
 </plugin>
