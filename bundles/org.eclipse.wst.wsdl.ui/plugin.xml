@@ -413,6 +413,7 @@
    <action
          class="org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDCaptureScreenAction"
          icon="icons/etool16/capturescreen.gif"
+         disabledIcon="icons/dtool16/capturescreen.gif"
          id="org.eclipse.wst.wsdl.ui.actions.CaptureScreen"
          label="%_UI_CAPTURE_SCREEN"
          menubarPath="WSDLEditor/group1"
