@@ -6,8 +6,7 @@ Bundle-Version: 1.0.103.qualifier
 Bundle-Activator: org.eclipse.wst.wsdl.WSDLPluginImplementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: model,
- org.eclipse.wst.wsdl,
+Export-Package: org.eclipse.wst.wsdl,
  org.eclipse.wst.wsdl.binding.http,
  org.eclipse.wst.wsdl.binding.http.internal.generator;x-internal:=true,
  org.eclipse.wst.wsdl.binding.http.internal.impl;x-internal:=true,
