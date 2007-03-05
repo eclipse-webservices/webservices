@@ -47,11 +47,11 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.ServiceImpl#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ServiceImpl#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ServiceImpl#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ServiceImpl#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ServiceImpl#getEPorts <em>EPorts</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#isProxy <em>Proxy</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#getResourceURI <em>Resource URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#getEPorts <em>EPorts</em>}</li>
  * </ul>
  * </p>
  *

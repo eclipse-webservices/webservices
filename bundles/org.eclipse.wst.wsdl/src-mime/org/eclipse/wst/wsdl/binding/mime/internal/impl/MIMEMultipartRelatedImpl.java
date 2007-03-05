@@ -40,7 +40,7 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wst.wsdl.binding.mime.impl.MIMEMultipartRelatedImpl#getEMIMEPart <em>EMIME Part</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMultipartRelatedImpl#getEMIMEPart <em>EMIME Part</em>}</li>
  * </ul>
  * </p>
  *

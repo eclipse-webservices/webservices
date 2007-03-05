@@ -39,7 +39,7 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wst.wsdl.impl.UnknownExtensibilityElementImpl#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl#getChildren <em>Children</em>}</li>
  * </ul>
  * </p>
  *

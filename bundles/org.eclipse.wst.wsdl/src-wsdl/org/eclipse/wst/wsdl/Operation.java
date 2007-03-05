@@ -30,19 +30,19 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.Operation#getStyle <em>Style</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#getEInput <em>EInput</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#getEOutput <em>EOutput</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#getEFaults <em>EFaults</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Operation#getEParameterOrdering <em>EParameter Ordering</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#isProxy <em>Proxy</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#getResourceURI <em>Resource URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#getEInput <em>EInput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#getEOutput <em>EOutput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#getEFaults <em>EFaults</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Operation#getEParameterOrdering <em>EParameter Ordering</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getOperation()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation()
  * @model 
  * @generated
  */
@@ -58,14 +58,14 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * <!-- end-user-doc -->
    * @return the value of the '<em>Style</em>' attribute.
    * @see #setStyle(OperationType)
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_Style()
-   * @model dataType="org.eclipse.wsdl.OperationType"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_Style()
+   * @model dataType="org.eclipse.wst.wsdl.OperationType"
    * @generated
    */
   OperationType getStyle();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Operation#getStyle <em>Style</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Operation#getStyle <em>Style</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Style</em>' attribute.
@@ -84,14 +84,14 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_Name()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_Name()
    * @model 
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Operation#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Operation#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -110,14 +110,14 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * <!-- end-user-doc -->
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_Undefined()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_Undefined()
    * @model 
    * @generated
    */
   boolean isUndefined();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Operation#isUndefined <em>Undefined</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Operation#isUndefined <em>Undefined</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Undefined</em>' attribute.
@@ -136,14 +136,14 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * <!-- end-user-doc -->
    * @return the value of the '<em>EInput</em>' containment reference.
    * @see #setEInput(Input)
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_EInput()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_EInput()
    * @model containment="true"
    * @generated
    */
   Input getEInput();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Operation#getEInput <em>EInput</em>}' containment reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Operation#getEInput <em>EInput</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EInput</em>' containment reference.
@@ -162,14 +162,14 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * <!-- end-user-doc -->
    * @return the value of the '<em>EOutput</em>' containment reference.
    * @see #setEOutput(Output)
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_EOutput()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_EOutput()
    * @model containment="true"
    * @generated
    */
   Output getEOutput();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Operation#getEOutput <em>EOutput</em>}' containment reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Operation#getEOutput <em>EOutput</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EOutput</em>' containment reference.
@@ -180,7 +180,7 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
 
   /**
    * Returns the value of the '<em><b>EFaults</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.Fault}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.Fault}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>EFaults</em>' containment reference list isn't clear,
@@ -188,15 +188,15 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>EFaults</em>' containment reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_EFaults()
-   * @model type="org.eclipse.wsdl.Fault" containment="true"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_EFaults()
+   * @model type="org.eclipse.wst.wsdl.Fault" containment="true"
    * @generated
    */
   EList getEFaults();
 
   /**
    * Returns the value of the '<em><b>EParameter Ordering</b></em>' reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.Part}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.Part}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>EParameter Ordering</em>' reference list isn't clear,
@@ -204,8 +204,8 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>EParameter Ordering</em>' reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getOperation_EParameterOrdering()
-   * @model type="org.eclipse.wsdl.Part"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_EParameterOrdering()
+   * @model type="org.eclipse.wst.wsdl.Part"
    * @generated
    */
   EList getEParameterOrdering();

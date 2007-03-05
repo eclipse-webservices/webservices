@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EFactory;
  * @since 1.0
  * @ignore
  * <!-- end-user-doc -->
- * @see org.eclipse.wsdl.WSDLPackage
+ * @see org.eclipse.wst.wsdl.WSDLPackage
  * @generated
  */
 public interface WSDLFactory extends EFactory

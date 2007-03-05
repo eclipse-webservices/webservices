@@ -41,8 +41,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOutputImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOutputImpl#getEOutput <em>EOutput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl#getEOutput <em>EOutput</em>}</li>
  * </ul>
  * </p>
  *

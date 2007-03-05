@@ -93,17 +93,17 @@ import org.w3c.dom.events.MutationEvent;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getTargetNamespace <em>Target Namespace</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getLocation <em>Location</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEncoding <em>Encoding</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEMessages <em>EMessages</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEPortTypes <em>EPort Types</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEBindings <em>EBindings</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEServices <em>EServices</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getENamespaces <em>ENamespaces</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getETypes <em>ETypes</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEImports <em>EImports</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getTargetNamespace <em>Target Namespace</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getLocation <em>Location</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEncoding <em>Encoding</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEMessages <em>EMessages</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEPortTypes <em>EPort Types</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEBindings <em>EBindings</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEServices <em>EServices</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getENamespaces <em>ENamespaces</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getETypes <em>ETypes</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEImports <em>EImports</em>}</li>
  * </ul>
  * </p>
  *

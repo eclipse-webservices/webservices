@@ -24,11 +24,11 @@ import org.eclipse.xsd.XSDSchema;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement()
  * @model 
  * @generated
  */
@@ -44,14 +44,14 @@ public interface XSDSchemaExtensibilityElement extends ExtensibilityElement
    * <!-- end-user-doc -->
    * @return the value of the '<em>Schema</em>' containment reference.
    * @see #setSchema(XSDSchema)
-   * @see org.eclipse.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement_Schema()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement_Schema()
    * @model containment="true"
    * @generated
    */
   XSDSchema getSchema();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}' containment reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Schema</em>' containment reference.

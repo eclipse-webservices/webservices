@@ -52,8 +52,8 @@ import org.w3c.dom.Text;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.WSDLElementImpl#getDocumentationElement <em>Documentation Element</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.WSDLElementImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl#getDocumentationElement <em>Documentation Element</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl#getElement <em>Element</em>}</li>
  * </ul>
  * </p>
  *

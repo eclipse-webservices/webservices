@@ -32,11 +32,11 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.ExtensibleElement#getEExtensibilityElements <em>EExtensibility Elements</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.ExtensibleElement#getEExtensibilityElements <em>EExtensibility Elements</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getExtensibleElement()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibleElement()
  * @model abstract="true"
  * @generated
  */
@@ -44,7 +44,7 @@ public interface ExtensibleElement extends WSDLElement
 {
   /**
    * Returns the value of the '<em><b>EExtensibility Elements</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.ExtensibilityElement}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.ExtensibilityElement}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>EExtensibility Elements</em>' containment reference list isn't clear,
@@ -52,8 +52,8 @@ public interface ExtensibleElement extends WSDLElement
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>EExtensibility Elements</em>' containment reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getExtensibleElement_EExtensibilityElements()
-   * @model type="org.eclipse.wsdl.ExtensibilityElement" containment="true"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibleElement_EExtensibilityElements()
+   * @model type="org.eclipse.wst.wsdl.ExtensibilityElement" containment="true"
    * @generated
    */
   EList getEExtensibilityElements();

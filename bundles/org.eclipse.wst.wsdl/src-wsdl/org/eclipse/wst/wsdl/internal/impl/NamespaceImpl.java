@@ -27,8 +27,8 @@ import org.eclipse.wst.wsdl.WSDLPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.NamespaceImpl#getURI <em>URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.NamespaceImpl#getPrefix <em>Prefix</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.NamespaceImpl#getURI <em>URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.NamespaceImpl#getPrefix <em>Prefix</em>}</li>
  * </ul>
  * </p>
  *

@@ -66,11 +66,11 @@ public interface HTTPPackage extends EPackage
   HTTPPackage eINSTANCE = org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl.init();
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.impl.HTTPBindingImpl <em>Binding</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPBindingImpl <em>Binding</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPBindingImpl
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getHTTPBinding()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPBindingImpl
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPBinding()
    * @generated
    */
   int HTTP_BINDING = 0;
@@ -130,11 +130,11 @@ public interface HTTPPackage extends EPackage
   int HTTP_BINDING_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.impl.HTTPOperationImpl <em>Operation</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPOperationImpl <em>Operation</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPOperationImpl
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getHTTPOperation()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPOperationImpl
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPOperation()
    * @generated
    */
   int HTTP_OPERATION = 1;
@@ -194,11 +194,11 @@ public interface HTTPPackage extends EPackage
   int HTTP_OPERATION_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.impl.HTTPUrlReplacementImpl <em>Url Replacement</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlReplacementImpl <em>Url Replacement</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPUrlReplacementImpl
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getHTTPUrlReplacement()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlReplacementImpl
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPUrlReplacement()
    * @generated
    */
   int HTTP_URL_REPLACEMENT = 2;
@@ -249,11 +249,11 @@ public interface HTTPPackage extends EPackage
   int HTTP_URL_REPLACEMENT_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.impl.HTTPUrlEncodedImpl <em>Url Encoded</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlEncodedImpl <em>Url Encoded</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPUrlEncodedImpl
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getHTTPUrlEncoded()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlEncodedImpl
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPUrlEncoded()
    * @generated
    */
   int HTTP_URL_ENCODED = 3;
@@ -304,11 +304,11 @@ public interface HTTPPackage extends EPackage
   int HTTP_URL_ENCODED_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.impl.HTTPAddressImpl <em>Address</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPAddressImpl <em>Address</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPAddressImpl
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getHTTPAddress()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPAddressImpl
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPAddress()
    * @generated
    */
   int HTTP_ADDRESS = 4;
@@ -372,7 +372,7 @@ public interface HTTPPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.http.HTTPAddress
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getIHTTPAddress()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPAddress()
    * @generated
    */
   int IHTTP_ADDRESS = 5;
@@ -391,7 +391,7 @@ public interface HTTPPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.http.HTTPBinding
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getIHTTPBinding()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPBinding()
    * @generated
    */
   int IHTTP_BINDING = 6;
@@ -410,7 +410,7 @@ public interface HTTPPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.http.HTTPOperation
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getIHTTPOperation()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPOperation()
    * @generated
    */
   int IHTTP_OPERATION = 7;
@@ -429,7 +429,7 @@ public interface HTTPPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.http.HTTPUrlEncoded
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getIHTTPUrlEncoded()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPUrlEncoded()
    * @generated
    */
   int IHTTP_URL_ENCODED = 8;
@@ -448,7 +448,7 @@ public interface HTTPPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.http.HTTPUrlReplacement
-   * @see org.eclipse.wst.wsdl.binding.http.impl.HTTPPackageImpl#getIHTTPUrlReplacement()
+   * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPUrlReplacement()
    * @generated
    */
   int IHTTP_URL_REPLACEMENT = 9;

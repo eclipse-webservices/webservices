@@ -28,14 +28,14 @@ import org.eclipse.xsd.XSDSchema;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.Import#getNamespaceURI <em>Namespace URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Import#getLocationURI <em>Location URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Import#getEDefinition <em>EDefinition</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Import#getESchema <em>ESchema</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Import#getNamespaceURI <em>Namespace URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Import#getLocationURI <em>Location URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Import#getEDefinition <em>EDefinition</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Import#getESchema <em>ESchema</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getImport()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getImport()
  * @model 
  * @generated
  */
@@ -51,14 +51,14 @@ public interface Import extends WSDLElement, javax.wsdl.Import
    * <!-- end-user-doc -->
    * @return the value of the '<em>Namespace URI</em>' attribute.
    * @see #setNamespaceURI(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getImport_NamespaceURI()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getImport_NamespaceURI()
    * @model 
    * @generated
    */
   String getNamespaceURI();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Import#getNamespaceURI <em>Namespace URI</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Import#getNamespaceURI <em>Namespace URI</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Namespace URI</em>' attribute.
@@ -77,14 +77,14 @@ public interface Import extends WSDLElement, javax.wsdl.Import
    * <!-- end-user-doc -->
    * @return the value of the '<em>Location URI</em>' attribute.
    * @see #setLocationURI(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getImport_LocationURI()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getImport_LocationURI()
    * @model 
    * @generated
    */
   String getLocationURI();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Import#getLocationURI <em>Location URI</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Import#getLocationURI <em>Location URI</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Location URI</em>' attribute.
@@ -103,14 +103,14 @@ public interface Import extends WSDLElement, javax.wsdl.Import
    * <!-- end-user-doc -->
    * @return the value of the '<em>EDefinition</em>' reference.
    * @see #setEDefinition(Definition)
-   * @see org.eclipse.wsdl.WSDLPackage#getImport_EDefinition()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getImport_EDefinition()
    * @model 
    * @generated
    */
   Definition getEDefinition();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Import#getEDefinition <em>EDefinition</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Import#getEDefinition <em>EDefinition</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EDefinition</em>' reference.
@@ -129,14 +129,14 @@ public interface Import extends WSDLElement, javax.wsdl.Import
    * <!-- end-user-doc -->
    * @return the value of the '<em>ESchema</em>' reference.
    * @see #setESchema(XSDSchema)
-   * @see org.eclipse.wsdl.WSDLPackage#getImport_ESchema()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getImport_ESchema()
    * @model 
    * @generated
    */
   XSDSchema getESchema();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Import#getESchema <em>ESchema</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Import#getESchema <em>ESchema</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>ESchema</em>' reference.

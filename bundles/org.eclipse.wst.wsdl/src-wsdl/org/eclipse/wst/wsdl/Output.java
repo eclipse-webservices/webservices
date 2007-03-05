@@ -23,7 +23,7 @@ package org.eclipse.wst.wsdl;
  * <!-- end-model-doc -->
  *
  *
- * @see org.eclipse.wsdl.WSDLPackage#getOutput()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getOutput()
  * @model 
  * @generated
  */

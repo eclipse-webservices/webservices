@@ -31,16 +31,16 @@ import org.eclipse.xsd.XSDTypeDefinition;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.Part#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Part#getElementName <em>Element Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Part#getTypeName <em>Type Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Part#getTypeDefinition <em>Type Definition</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Part#getElementDeclaration <em>Element Declaration</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Part#getEMessage <em>EMessage</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Part#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Part#getElementName <em>Element Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Part#getTypeName <em>Type Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Part#getTypeDefinition <em>Type Definition</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Part#getElementDeclaration <em>Element Declaration</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Part#getEMessage <em>EMessage</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getPart()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getPart()
  * @model 
  * @generated
  */
@@ -56,14 +56,14 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getPart_Name()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_Name()
    * @model 
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Part#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Part#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -82,14 +82,14 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element Name</em>' attribute.
    * @see #setElementName(QName)
-   * @see org.eclipse.wsdl.WSDLPackage#getPart_ElementName()
-   * @model dataType="org.eclipse.wsdl.QName"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_ElementName()
+   * @model dataType="org.eclipse.wst.wsdl.QName"
    * @generated
    */
   QName getElementName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Part#getElementName <em>Element Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Part#getElementName <em>Element Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element Name</em>' attribute.
@@ -108,14 +108,14 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * <!-- end-user-doc -->
    * @return the value of the '<em>Type Name</em>' attribute.
    * @see #setTypeName(QName)
-   * @see org.eclipse.wsdl.WSDLPackage#getPart_TypeName()
-   * @model dataType="org.eclipse.wsdl.QName"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_TypeName()
+   * @model dataType="org.eclipse.wst.wsdl.QName"
    * @generated
    */
   QName getTypeName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Part#getTypeName <em>Type Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Part#getTypeName <em>Type Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Type Name</em>' attribute.
@@ -134,14 +134,14 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * <!-- end-user-doc -->
    * @return the value of the '<em>Type Definition</em>' reference.
    * @see #setTypeDefinition(XSDTypeDefinition)
-   * @see org.eclipse.wsdl.WSDLPackage#getPart_TypeDefinition()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_TypeDefinition()
    * @model 
    * @generated
    */
   XSDTypeDefinition getTypeDefinition();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Part#getTypeDefinition <em>Type Definition</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Part#getTypeDefinition <em>Type Definition</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Type Definition</em>' reference.
@@ -160,14 +160,14 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element Declaration</em>' reference.
    * @see #setElementDeclaration(XSDElementDeclaration)
-   * @see org.eclipse.wsdl.WSDLPackage#getPart_ElementDeclaration()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_ElementDeclaration()
    * @model 
    * @generated
    */
   XSDElementDeclaration getElementDeclaration();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Part#getElementDeclaration <em>Element Declaration</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Part#getElementDeclaration <em>Element Declaration</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element Declaration</em>' reference.
@@ -186,14 +186,14 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * <!-- end-user-doc -->
    * @return the value of the '<em>EMessage</em>' reference.
    * @see #setEMessage(Message)
-   * @see org.eclipse.wsdl.WSDLPackage#getPart_EMessage()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_EMessage()
    * @model 
    * @generated
    */
   Message getEMessage();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Part#getEMessage <em>EMessage</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Part#getEMessage <em>EMessage</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EMessage</em>' reference.

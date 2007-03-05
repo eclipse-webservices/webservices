@@ -42,8 +42,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.ExtensibilityElementImpl#isRequired <em>Required</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ExtensibilityElementImpl#getElementType <em>Element Type</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl#isRequired <em>Required</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl#getElementType <em>Element Type</em>}</li>
  * </ul>
  * </p>
  *

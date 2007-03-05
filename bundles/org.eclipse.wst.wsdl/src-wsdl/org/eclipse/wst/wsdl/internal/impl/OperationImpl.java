@@ -55,15 +55,15 @@ import org.w3c.dom.NodeList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#getStyle <em>Style</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#getEInput <em>EInput</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#getEOutput <em>EOutput</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#getEFaults <em>EFaults</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.OperationImpl#getEParameterOrdering <em>EParameter Ordering</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#isProxy <em>Proxy</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#getResourceURI <em>Resource URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#getEInput <em>EInput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#getEOutput <em>EOutput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#getEFaults <em>EFaults</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl#getEParameterOrdering <em>EParameter Ordering</em>}</li>
  * </ul>
  * </p>
  *

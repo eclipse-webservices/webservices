@@ -41,8 +41,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.BindingFaultImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingFaultImpl#getEFault <em>EFault</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl#getEFault <em>EFault</em>}</li>
  * </ul>
  * </p>
  *

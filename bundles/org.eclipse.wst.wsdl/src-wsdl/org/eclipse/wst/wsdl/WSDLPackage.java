@@ -53,7 +53,7 @@ import org.eclipse.emf.ecore.EReference;
  * 
  * The WSDL classes extend the javax.wsdl interfaces defined by JSR 110. Classes with interface and datatype stereotypes are used to represent these non-MOF interfaces.
  * <!-- end-model-doc -->
- * @see org.eclipse.wsdl.WSDLFactory
+ * @see org.eclipse.wst.wsdl.WSDLFactory
  * @generated
  */
 public interface WSDLPackage extends EPackage
@@ -91,11 +91,11 @@ public interface WSDLPackage extends EPackage
   WSDLPackage eINSTANCE = org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl.init();
 
   /**
-   * The meta object id for the '{@link org.eclipse.wsdl.impl.WSDLElementImpl <em>Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl <em>Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.WSDLElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getWSDLElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getWSDLElement()
    * @generated
    */
   int WSDL_ELEMENT = 0;
@@ -128,11 +128,11 @@ public interface WSDLPackage extends EPackage
   int WSDL_ELEMENT_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.PortTypeImpl <em>Port Type</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl <em>Port Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.PortTypeImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getPortType()
+   * @see org.eclipse.wst.wsdl.internal.impl.PortTypeImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPortType()
    * @generated
    */
   int PORT_TYPE = 1;
@@ -210,11 +210,11 @@ public interface WSDLPackage extends EPackage
   int PORT_TYPE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 5;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.OperationImpl <em>Operation</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl <em>Operation</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.OperationImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.OperationImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperation()
    * @generated
    */
   int OPERATION = 2;
@@ -328,11 +328,11 @@ public interface WSDLPackage extends EPackage
   int OPERATION_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 9;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.MessageImpl <em>Message</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl <em>Message</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.MessageImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getMessage()
+   * @see org.eclipse.wst.wsdl.internal.impl.MessageImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessage()
    * @generated
    */
   int MESSAGE = 3;
@@ -410,11 +410,11 @@ public interface WSDLPackage extends EPackage
   int MESSAGE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 5;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.PartImpl <em>Part</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PartImpl <em>Part</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.PartImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getPart()
+   * @see org.eclipse.wst.wsdl.internal.impl.PartImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPart()
    * @generated
    */
   int PART = 4;
@@ -501,11 +501,11 @@ public interface WSDLPackage extends EPackage
   int PART_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 6;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ExtensibleElementImpl <em>Extensible Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl <em>Extensible Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ExtensibleElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getExtensibleElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getExtensibleElement()
    * @generated
    */
   int EXTENSIBLE_ELEMENT = 12;
@@ -547,11 +547,11 @@ public interface WSDLPackage extends EPackage
   int EXTENSIBLE_ELEMENT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingImpl <em>Binding</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl <em>Binding</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBinding()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBinding()
    * @generated
    */
   int BINDING = 5;
@@ -647,11 +647,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 6;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingOperationImpl <em>Binding Operation</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl <em>Binding Operation</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingOperationImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingOperation()
    * @generated
    */
   int BINDING_OPERATION = 6;
@@ -738,11 +738,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_OPERATION_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ServiceImpl <em>Service</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl <em>Service</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ServiceImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getService()
+   * @see org.eclipse.wst.wsdl.internal.impl.ServiceImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getService()
    * @generated
    */
   int SERVICE = 7;
@@ -829,11 +829,11 @@ public interface WSDLPackage extends EPackage
   int SERVICE_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.PortImpl <em>Port</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PortImpl <em>Port</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.PortImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getPort()
+   * @see org.eclipse.wst.wsdl.internal.impl.PortImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPort()
    * @generated
    */
   int PORT = 8;
@@ -893,11 +893,11 @@ public interface WSDLPackage extends EPackage
   int PORT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ExtensibilityElementImpl <em>Extensibility Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl <em>Extensibility Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ExtensibilityElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getExtensibilityElement()
    * @generated
    */
   int EXTENSIBILITY_ELEMENT = 9;
@@ -948,11 +948,11 @@ public interface WSDLPackage extends EPackage
   int EXTENSIBILITY_ELEMENT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.DefinitionImpl <em>Definition</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl <em>Definition</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.DefinitionImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getDefinition()
+   * @see org.eclipse.wst.wsdl.internal.impl.DefinitionImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDefinition()
    * @generated
    */
   int DEFINITION = 10;
@@ -1093,11 +1093,11 @@ public interface WSDLPackage extends EPackage
   int DEFINITION_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 11;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ImportImpl <em>Import</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ImportImpl <em>Import</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ImportImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getImport()
+   * @see org.eclipse.wst.wsdl.internal.impl.ImportImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getImport()
    * @generated
    */
   int IMPORT = 11;
@@ -1166,11 +1166,11 @@ public interface WSDLPackage extends EPackage
   int IMPORT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 4;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.MessageReferenceImpl <em>Message Reference</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl <em>Message Reference</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.MessageReferenceImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getMessageReference()
+   * @see org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessageReference()
    * @generated
    */
   int MESSAGE_REFERENCE = 46;
@@ -1221,11 +1221,11 @@ public interface WSDLPackage extends EPackage
   int MESSAGE_REFERENCE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.InputImpl <em>Input</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.InputImpl <em>Input</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.InputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.InputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getInput()
    * @generated
    */
   int INPUT = 13;
@@ -1276,11 +1276,11 @@ public interface WSDLPackage extends EPackage
   int INPUT_FEATURE_COUNT = MESSAGE_REFERENCE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.OutputImpl <em>Output</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.OutputImpl <em>Output</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.OutputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.OutputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOutput()
    * @generated
    */
   int OUTPUT = 14;
@@ -1331,11 +1331,11 @@ public interface WSDLPackage extends EPackage
   int OUTPUT_FEATURE_COUNT = MESSAGE_REFERENCE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.FaultImpl <em>Fault</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.FaultImpl <em>Fault</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.FaultImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.FaultImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getFault()
    * @generated
    */
   int FAULT = 15;
@@ -1386,11 +1386,11 @@ public interface WSDLPackage extends EPackage
   int FAULT_FEATURE_COUNT = MESSAGE_REFERENCE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingInputImpl <em>Binding Input</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingInputImpl <em>Binding Input</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingInputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingInputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingInput()
    * @generated
    */
   int BINDING_INPUT = 16;
@@ -1450,11 +1450,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_INPUT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingOutputImpl <em>Binding Output</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl <em>Binding Output</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingOutputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingOutput()
    * @generated
    */
   int BINDING_OUTPUT = 17;
@@ -1514,11 +1514,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_OUTPUT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingFaultImpl <em>Binding Fault</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl <em>Binding Fault</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingFaultImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingFault()
    * @generated
    */
   int BINDING_FAULT = 18;
@@ -1578,11 +1578,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_FAULT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.NamespaceImpl <em>Namespace</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.NamespaceImpl <em>Namespace</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.NamespaceImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getNamespace()
+   * @see org.eclipse.wst.wsdl.internal.impl.NamespaceImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getNamespace()
    * @generated
    */
   int NAMESPACE = 19;
@@ -1619,7 +1619,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.PortType
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIPortType()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPortType()
    * @generated
    */
   int IPORT_TYPE = 20;
@@ -1638,7 +1638,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Operation
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIOperation()
    * @generated
    */
   int IOPERATION = 21;
@@ -1657,7 +1657,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Input
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIInput()
    * @generated
    */
   int IINPUT = 22;
@@ -1676,7 +1676,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Output
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIOutput()
    * @generated
    */
   int IOUTPUT = 23;
@@ -1695,7 +1695,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Fault
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIFault()
    * @generated
    */
   int IFAULT = 24;
@@ -1714,7 +1714,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Message
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIMessage()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIMessage()
    * @generated
    */
   int IMESSAGE = 25;
@@ -1733,7 +1733,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Part
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIPart()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPart()
    * @generated
    */
   int IPART = 26;
@@ -1752,7 +1752,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Service
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIService()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIService()
    * @generated
    */
   int ISERVICE = 27;
@@ -1771,7 +1771,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Port
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIPort()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPort()
    * @generated
    */
   int IPORT = 28;
@@ -1790,7 +1790,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Binding
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBinding()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBinding()
    * @generated
    */
   int IBINDING = 29;
@@ -1809,7 +1809,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingOperation
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingOperation()
    * @generated
    */
   int IBINDING_OPERATION = 30;
@@ -1828,7 +1828,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingInput
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingInput()
    * @generated
    */
   int IBINDING_INPUT = 31;
@@ -1847,7 +1847,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingOutput
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingOutput()
    * @generated
    */
   int IBINDING_OUTPUT = 32;
@@ -1866,7 +1866,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingFault
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingFault()
    * @generated
    */
   int IBINDING_FAULT = 33;
@@ -1885,7 +1885,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.ExtensibilityElement
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIExtensibilityElement()
    * @generated
    */
   int IEXTENSIBILITY_ELEMENT = 34;
@@ -1904,7 +1904,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Definition
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIDefinition()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIDefinition()
    * @generated
    */
   int IDEFINITION = 35;
@@ -1923,7 +1923,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Import
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIImport()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIImport()
    * @generated
    */
   int IIMPORT = 36;
@@ -1942,7 +1942,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.util.List
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIList()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIList()
    * @generated
    */
   int ILIST = 37;
@@ -1961,7 +1961,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.util.Map
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIMap()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIMap()
    * @generated
    */
   int IMAP = 38;
@@ -1980,7 +1980,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.net.URL
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIURL()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIURL()
    * @generated
    */
   int IURL = 39;
@@ -1999,7 +1999,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.ExtensionRegistry
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIExtensionRegistry()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIExtensionRegistry()
    * @generated
    */
   int IEXTENSION_REGISTRY = 40;
@@ -2014,11 +2014,11 @@ public interface WSDLPackage extends EPackage
   int IEXTENSION_REGISTRY_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.TypesImpl <em>Types</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.TypesImpl <em>Types</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.TypesImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getTypes()
+   * @see org.eclipse.wst.wsdl.internal.impl.TypesImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getTypes()
    * @generated
    */
   int TYPES = 41;
@@ -2064,7 +2064,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.util.Iterator
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIIterator()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIIterator()
    * @generated
    */
   int IITERATOR = 42;
@@ -2083,7 +2083,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Types
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getITypes()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getITypes()
    * @generated
    */
   int ITYPES = 43;
@@ -2098,11 +2098,11 @@ public interface WSDLPackage extends EPackage
   int ITYPES_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.UnknownExtensibilityElementImpl <em>Unknown Extensibility Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl <em>Unknown Extensibility Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.UnknownExtensibilityElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getUnknownExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getUnknownExtensibilityElement()
    * @generated
    */
   int UNKNOWN_EXTENSIBILITY_ELEMENT = 44;
@@ -2162,11 +2162,11 @@ public interface WSDLPackage extends EPackage
   int UNKNOWN_EXTENSIBILITY_ELEMENT_FEATURE_COUNT = EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.XSDSchemaExtensibilityElementImpl <em>XSD Schema Extensibility Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl <em>XSD Schema Extensibility Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.XSDSchemaExtensibilityElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getXSDSchemaExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getXSDSchemaExtensibilityElement()
    * @generated
    */
   int XSD_SCHEMA_EXTENSIBILITY_ELEMENT = 45;
@@ -2230,7 +2230,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.xml.namespace.QName
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getQName()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getQName()
    * @generated
    */
   int QNAME = 47;
@@ -2240,7 +2240,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.OperationType
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getOperationType()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperationType()
    * @generated
    */
   int OPERATION_TYPE = 48;
@@ -2250,7 +2250,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see org.w3c.dom.Element
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getDOMElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDOMElement()
    * @generated
    */
   int DOM_ELEMENT = 49;
@@ -2260,7 +2260,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.WSDLException
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getWSDLException()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getWSDLException()
    * @generated
    */
   int WSDL_EXCEPTION = 50;
@@ -2270,7 +2270,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see org.w3c.dom.Document
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getDOMDocument()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDOMDocument()
    * @generated
    */
   int DOM_DOCUMENT = 51;

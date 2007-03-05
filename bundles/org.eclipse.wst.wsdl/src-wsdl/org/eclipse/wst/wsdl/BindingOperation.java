@@ -27,15 +27,15 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.BindingOperation#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.BindingOperation#getEOperation <em>EOperation</em>}</li>
- *   <li>{@link org.eclipse.wsdl.BindingOperation#getEBindingInput <em>EBinding Input</em>}</li>
- *   <li>{@link org.eclipse.wsdl.BindingOperation#getEBindingOutput <em>EBinding Output</em>}</li>
- *   <li>{@link org.eclipse.wsdl.BindingOperation#getEBindingFaults <em>EBinding Faults</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingOperation#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingOperation#getEOperation <em>EOperation</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingOperation#getEBindingInput <em>EBinding Input</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingOperation#getEBindingOutput <em>EBinding Output</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingOperation#getEBindingFaults <em>EBinding Faults</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getBindingOperation()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation()
  * @model 
  * @generated
  */
@@ -51,14 +51,14 @@ public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingO
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingOperation_Name()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation_Name()
    * @model 
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingOperation#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingOperation#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -77,14 +77,14 @@ public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingO
    * <!-- end-user-doc -->
    * @return the value of the '<em>EOperation</em>' reference.
    * @see #setEOperation(Operation)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingOperation_EOperation()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation_EOperation()
    * @model required="true"
    * @generated
    */
   Operation getEOperation();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingOperation#getEOperation <em>EOperation</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingOperation#getEOperation <em>EOperation</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EOperation</em>' reference.
@@ -103,14 +103,14 @@ public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingO
    * <!-- end-user-doc -->
    * @return the value of the '<em>EBinding Input</em>' containment reference.
    * @see #setEBindingInput(BindingInput)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingOperation_EBindingInput()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation_EBindingInput()
    * @model containment="true"
    * @generated
    */
   BindingInput getEBindingInput();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingOperation#getEBindingInput <em>EBinding Input</em>}' containment reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingOperation#getEBindingInput <em>EBinding Input</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EBinding Input</em>' containment reference.
@@ -129,14 +129,14 @@ public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingO
    * <!-- end-user-doc -->
    * @return the value of the '<em>EBinding Output</em>' containment reference.
    * @see #setEBindingOutput(BindingOutput)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingOperation_EBindingOutput()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation_EBindingOutput()
    * @model containment="true"
    * @generated
    */
   BindingOutput getEBindingOutput();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingOperation#getEBindingOutput <em>EBinding Output</em>}' containment reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingOperation#getEBindingOutput <em>EBinding Output</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EBinding Output</em>' containment reference.
@@ -147,7 +147,7 @@ public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingO
 
   /**
    * Returns the value of the '<em><b>EBinding Faults</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.BindingFault}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.BindingFault}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>EBinding Faults</em>' containment reference list isn't clear,
@@ -155,8 +155,8 @@ public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingO
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>EBinding Faults</em>' containment reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingOperation_EBindingFaults()
-   * @model type="org.eclipse.wsdl.BindingFault" containment="true"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation_EBindingFaults()
+   * @model type="org.eclipse.wst.wsdl.BindingFault" containment="true"
    * @generated
    */
   EList getEBindingFaults();

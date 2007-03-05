@@ -28,12 +28,12 @@ import javax.xml.namespace.QName;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.ExtensibilityElement#isRequired <em>Required</em>}</li>
- *   <li>{@link org.eclipse.wsdl.ExtensibilityElement#getElementType <em>Element Type</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.ExtensibilityElement#isRequired <em>Required</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.ExtensibilityElement#getElementType <em>Element Type</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getExtensibilityElement()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibilityElement()
  * @model 
  * @generated
  */
@@ -49,14 +49,14 @@ public interface ExtensibilityElement extends WSDLElement, javax.wsdl.extensions
    * <!-- end-user-doc -->
    * @return the value of the '<em>Required</em>' attribute.
    * @see #setRequired(boolean)
-   * @see org.eclipse.wsdl.WSDLPackage#getExtensibilityElement_Required()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibilityElement_Required()
    * @model 
    * @generated
    */
   boolean isRequired();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.ExtensibilityElement#isRequired <em>Required</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.ExtensibilityElement#isRequired <em>Required</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Required</em>' attribute.
@@ -75,14 +75,14 @@ public interface ExtensibilityElement extends WSDLElement, javax.wsdl.extensions
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element Type</em>' attribute.
    * @see #setElementType(QName)
-   * @see org.eclipse.wsdl.WSDLPackage#getExtensibilityElement_ElementType()
-   * @model dataType="org.eclipse.wsdl.QName" transient="true"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibilityElement_ElementType()
+   * @model dataType="org.eclipse.wst.wsdl.QName" transient="true"
    * @generated
    */
   QName getElementType();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.ExtensibilityElement#getElementType <em>Element Type</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.ExtensibilityElement#getElementType <em>Element Type</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element Type</em>' attribute.

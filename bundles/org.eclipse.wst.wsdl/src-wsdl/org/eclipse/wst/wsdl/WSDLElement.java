@@ -29,12 +29,12 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.WSDLElement#getDocumentationElement <em>Documentation Element</em>}</li>
- *   <li>{@link org.eclipse.wsdl.WSDLElement#getElement <em>Element</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.WSDLElement#getDocumentationElement <em>Documentation Element</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.WSDLElement#getElement <em>Element</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getWSDLElement()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getWSDLElement()
  * @model abstract="true"
  * @generated
  */
@@ -50,14 +50,14 @@ public interface WSDLElement extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Documentation Element</em>' attribute.
    * @see #setDocumentationElement(Element)
-   * @see org.eclipse.wsdl.WSDLPackage#getWSDLElement_DocumentationElement()
-   * @model dataType="org.eclipse.wsdl.DOMElement"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getWSDLElement_DocumentationElement()
+   * @model dataType="org.eclipse.wst.wsdl.DOMElement"
    * @generated
    */
   Element getDocumentationElement();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.WSDLElement#getDocumentationElement <em>Documentation Element</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.WSDLElement#getDocumentationElement <em>Documentation Element</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Documentation Element</em>' attribute.
@@ -76,14 +76,14 @@ public interface WSDLElement extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element</em>' attribute.
    * @see #setElement(Element)
-   * @see org.eclipse.wsdl.WSDLPackage#getWSDLElement_Element()
-   * @model dataType="org.eclipse.wsdl.DOMElement"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getWSDLElement_Element()
+   * @model dataType="org.eclipse.wst.wsdl.DOMElement"
    * @generated
    */
   Element getElement();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.WSDLElement#getElement <em>Element</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.WSDLElement#getElement <em>Element</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element</em>' attribute.

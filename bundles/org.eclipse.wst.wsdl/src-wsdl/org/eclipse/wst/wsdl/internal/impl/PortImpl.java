@@ -43,8 +43,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.PortImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.PortImpl#getEBinding <em>EBinding</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.PortImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.PortImpl#getEBinding <em>EBinding</em>}</li>
  * </ul>
  * </p>
  *

@@ -37,8 +37,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.MessageReferenceImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.MessageReferenceImpl#getEMessage <em>EMessage</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl#getEMessage <em>EMessage</em>}</li>
  * </ul>
  * </p>
  *

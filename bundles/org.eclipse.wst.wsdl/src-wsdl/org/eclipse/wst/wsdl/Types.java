@@ -26,7 +26,7 @@ import java.util.List;
  * <!-- end-model-doc -->
  *
  *
- * @see org.eclipse.wsdl.WSDLPackage#getTypes()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getTypes()
  * @model 
  * @generated
  */

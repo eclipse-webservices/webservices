@@ -25,12 +25,12 @@ package org.eclipse.wst.wsdl;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.BindingOutput#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.BindingOutput#getEOutput <em>EOutput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingOutput#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingOutput#getEOutput <em>EOutput</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getBindingOutput()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOutput()
  * @model 
  * @generated
  */
@@ -46,14 +46,14 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingOutput_Name()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOutput_Name()
    * @model 
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingOutput#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingOutput#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -72,14 +72,14 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * <!-- end-user-doc -->
    * @return the value of the '<em>EOutput</em>' reference.
    * @see #setEOutput(Output)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingOutput_EOutput()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOutput_EOutput()
    * @model required="true"
    * @generated
    */
   Output getEOutput();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingOutput#getEOutput <em>EOutput</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingOutput#getEOutput <em>EOutput</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EOutput</em>' reference.

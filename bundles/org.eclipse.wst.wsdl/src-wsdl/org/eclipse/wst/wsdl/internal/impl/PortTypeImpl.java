@@ -45,11 +45,11 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.PortTypeImpl#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.PortTypeImpl#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.PortTypeImpl#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.PortTypeImpl#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.PortTypeImpl#getEOperations <em>EOperations</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl#isProxy <em>Proxy</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl#getResourceURI <em>Resource URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl#getEOperations <em>EOperations</em>}</li>
  * </ul>
  * </p>
  *

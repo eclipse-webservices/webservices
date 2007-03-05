@@ -57,7 +57,7 @@ import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see org.eclipse.wsdl.WSDLPackage
+ * @see org.eclipse.wst.wsdl.WSDLPackage
  * @generated
  */
 public class WSDLSwitch

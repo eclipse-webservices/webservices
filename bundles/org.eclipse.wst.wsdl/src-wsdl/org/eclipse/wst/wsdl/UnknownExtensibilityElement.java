@@ -24,12 +24,12 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.UnknownExtensibilityElement#getParent <em>Parent</em>}</li>
- *   <li>{@link org.eclipse.wsdl.UnknownExtensibilityElement#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.UnknownExtensibilityElement#getParent <em>Parent</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.UnknownExtensibilityElement#getChildren <em>Children</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getUnknownExtensibilityElement()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getUnknownExtensibilityElement()
  * @model 
  * @generated
  */
@@ -37,8 +37,8 @@ public interface UnknownExtensibilityElement extends ExtensibilityElement
 {
   /**
    * Returns the value of the '<em><b>Children</b></em>' reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.UnknownExtensibilityElement}.
-   * It is bidirectional and its opposite is '{@link org.eclipse.wsdl.UnknownExtensibilityElement#getParent <em>Parent</em>}'.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.UnknownExtensibilityElement}.
+   * It is bidirectional and its opposite is '{@link org.eclipse.wst.wsdl.UnknownExtensibilityElement#getParent <em>Parent</em>}'.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Children</em>' reference list isn't clear,
@@ -46,9 +46,9 @@ public interface UnknownExtensibilityElement extends ExtensibilityElement
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Children</em>' reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getUnknownExtensibilityElement_Children()
-   * @see org.eclipse.wsdl.UnknownExtensibilityElement#getParent
-   * @model type="org.eclipse.wsdl.UnknownExtensibilityElement" opposite="parent"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getUnknownExtensibilityElement_Children()
+   * @see org.eclipse.wst.wsdl.UnknownExtensibilityElement#getParent
+   * @model type="org.eclipse.wst.wsdl.UnknownExtensibilityElement" opposite="parent"
    * @generated
    */
   EList getChildren();

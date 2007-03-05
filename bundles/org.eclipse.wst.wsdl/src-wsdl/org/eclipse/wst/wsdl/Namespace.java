@@ -28,12 +28,12 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.Namespace#getURI <em>URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Namespace#getPrefix <em>Prefix</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Namespace#getURI <em>URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Namespace#getPrefix <em>Prefix</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getNamespace()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getNamespace()
  * @model 
  * @generated
  */
@@ -49,14 +49,14 @@ public interface Namespace extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>URI</em>' attribute.
    * @see #setURI(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getNamespace_URI()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getNamespace_URI()
    * @model 
    * @generated
    */
   String getURI();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Namespace#getURI <em>URI</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Namespace#getURI <em>URI</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>URI</em>' attribute.
@@ -75,14 +75,14 @@ public interface Namespace extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Prefix</em>' attribute.
    * @see #setPrefix(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getNamespace_Prefix()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getNamespace_Prefix()
    * @model 
    * @generated
    */
   String getPrefix();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Namespace#getPrefix <em>Prefix</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Namespace#getPrefix <em>Prefix</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Prefix</em>' attribute.

@@ -24,12 +24,12 @@ package org.eclipse.wst.wsdl;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.BindingInput#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.BindingInput#getEInput <em>EInput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingInput#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingInput#getEInput <em>EInput</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getBindingInput()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingInput()
  * @model 
  * @generated
  */
@@ -45,14 +45,14 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingInput_Name()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingInput_Name()
    * @model 
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingInput#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingInput#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -71,14 +71,14 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
    * <!-- end-user-doc -->
    * @return the value of the '<em>EInput</em>' reference.
    * @see #setEInput(Input)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingInput_EInput()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingInput_EInput()
    * @model required="true"
    * @generated
    */
   Input getEInput();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingInput#getEInput <em>EInput</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingInput#getEInput <em>EInput</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EInput</em>' reference.

@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wst.wsdl.binding.http.impl.HTTPOperationImpl#getLocationURI <em>Location URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPOperationImpl#getLocationURI <em>Location URI</em>}</li>
  * </ul>
  * </p>
  *

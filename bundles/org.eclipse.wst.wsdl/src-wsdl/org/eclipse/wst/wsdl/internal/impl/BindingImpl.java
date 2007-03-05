@@ -48,12 +48,12 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.BindingImpl#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingImpl#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingImpl#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingImpl#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingImpl#getEPortType <em>EPort Type</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingImpl#getEBindingOperations <em>EBinding Operations</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl#isProxy <em>Proxy</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl#getResourceURI <em>Resource URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl#getEPortType <em>EPort Type</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl#getEBindingOperations <em>EBinding Operations</em>}</li>
  * </ul>
  * </p>
  *

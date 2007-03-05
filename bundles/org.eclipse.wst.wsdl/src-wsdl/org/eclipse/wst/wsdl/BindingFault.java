@@ -24,12 +24,12 @@ package org.eclipse.wst.wsdl;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.BindingFault#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.BindingFault#getEFault <em>EFault</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingFault#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.BindingFault#getEFault <em>EFault</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getBindingFault()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingFault()
  * @model 
  * @generated
  */
@@ -45,14 +45,14 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingFault_Name()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingFault_Name()
    * @model 
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingFault#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingFault#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -71,14 +71,14 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
    * <!-- end-user-doc -->
    * @return the value of the '<em>EFault</em>' reference.
    * @see #setEFault(Fault)
-   * @see org.eclipse.wsdl.WSDLPackage#getBindingFault_EFault()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingFault_EFault()
    * @model required="true"
    * @generated
    */
   Fault getEFault();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.BindingFault#getEFault <em>EFault</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.BindingFault#getEFault <em>EFault</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EFault</em>' reference.

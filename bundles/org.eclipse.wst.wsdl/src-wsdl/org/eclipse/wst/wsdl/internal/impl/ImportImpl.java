@@ -43,10 +43,10 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.ImportImpl#getNamespaceURI <em>Namespace URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ImportImpl#getLocationURI <em>Location URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ImportImpl#getEDefinition <em>EDefinition</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ImportImpl#getESchema <em>ESchema</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ImportImpl#getNamespaceURI <em>Namespace URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ImportImpl#getLocationURI <em>Location URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ImportImpl#getEDefinition <em>EDefinition</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ImportImpl#getESchema <em>ESchema</em>}</li>
  * </ul>
  * </p>
  *

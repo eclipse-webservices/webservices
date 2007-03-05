@@ -38,7 +38,7 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.XSDSchemaExtensibilityElementImpl#getSchema <em>Schema</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl#getSchema <em>Schema</em>}</li>
  * </ul>
  * </p>
  *
@@ -265,7 +265,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   }
 
   /* (non-Javadoc)
-   * @see org.eclipse.wsdl.impl.WSDLElementImpl#reconcile(org.w3c.dom.Element)
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl#reconcile(org.w3c.dom.Element)
    */
   protected void reconcile(Element changedElement)
   {

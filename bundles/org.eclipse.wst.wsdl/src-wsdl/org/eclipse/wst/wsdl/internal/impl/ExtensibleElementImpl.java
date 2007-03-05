@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.ExtensibleElementImpl#getEExtensibilityElements <em>EExtensibility Elements</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl#getEExtensibilityElements <em>EExtensibility Elements</em>}</li>
  * </ul>
  * </p>
  *

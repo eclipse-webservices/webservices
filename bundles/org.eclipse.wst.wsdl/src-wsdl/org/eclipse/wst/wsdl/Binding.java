@@ -29,16 +29,16 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.Binding#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Binding#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Binding#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Binding#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Binding#getEPortType <em>EPort Type</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Binding#getEBindingOperations <em>EBinding Operations</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Binding#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Binding#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Binding#isProxy <em>Proxy</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Binding#getResourceURI <em>Resource URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Binding#getEPortType <em>EPort Type</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Binding#getEBindingOperations <em>EBinding Operations</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getBinding()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getBinding()
  * @model 
  * @generated
  */
@@ -54,14 +54,14 @@ public interface Binding extends ExtensibleElement, javax.wsdl.Binding
    * <!-- end-user-doc -->
    * @return the value of the '<em>QName</em>' attribute.
    * @see #setQName(QName)
-   * @see org.eclipse.wsdl.WSDLPackage#getBinding_QName()
-   * @model dataType="org.eclipse.wsdl.QName"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBinding_QName()
+   * @model dataType="org.eclipse.wst.wsdl.QName"
    * @generated
    */
   QName getQName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Binding#getQName <em>QName</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Binding#getQName <em>QName</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>QName</em>' attribute.
@@ -80,14 +80,14 @@ public interface Binding extends ExtensibleElement, javax.wsdl.Binding
    * <!-- end-user-doc -->
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
-   * @see org.eclipse.wsdl.WSDLPackage#getBinding_Undefined()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBinding_Undefined()
    * @model 
    * @generated
    */
   boolean isUndefined();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Binding#isUndefined <em>Undefined</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Binding#isUndefined <em>Undefined</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Undefined</em>' attribute.
@@ -106,14 +106,14 @@ public interface Binding extends ExtensibleElement, javax.wsdl.Binding
    * <!-- end-user-doc -->
    * @return the value of the '<em>EPort Type</em>' reference.
    * @see #setEPortType(PortType)
-   * @see org.eclipse.wsdl.WSDLPackage#getBinding_EPortType()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBinding_EPortType()
    * @model required="true"
    * @generated
    */
   PortType getEPortType();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Binding#getEPortType <em>EPort Type</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Binding#getEPortType <em>EPort Type</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>EPort Type</em>' reference.
@@ -124,7 +124,7 @@ public interface Binding extends ExtensibleElement, javax.wsdl.Binding
 
   /**
    * Returns the value of the '<em><b>EBinding Operations</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.BindingOperation}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.BindingOperation}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>EBinding Operations</em>' containment reference list isn't clear,
@@ -132,8 +132,8 @@ public interface Binding extends ExtensibleElement, javax.wsdl.Binding
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>EBinding Operations</em>' containment reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getBinding_EBindingOperations()
-   * @model type="org.eclipse.wsdl.BindingOperation" containment="true"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getBinding_EBindingOperations()
+   * @model type="org.eclipse.wst.wsdl.BindingOperation" containment="true"
    * @generated
    */
   EList getEBindingOperations();

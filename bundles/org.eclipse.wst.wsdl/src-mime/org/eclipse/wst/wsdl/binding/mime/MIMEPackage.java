@@ -68,11 +68,11 @@ public interface MIMEPackage extends EPackage
   MIMEPackage eINSTANCE = org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl.init();
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.impl.MIMEContentImpl <em>Content</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEContentImpl <em>Content</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEContentImpl
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getMIMEContent()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEContentImpl
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEContent()
    * @generated
    */
   int MIME_CONTENT = 0;
@@ -141,11 +141,11 @@ public interface MIMEPackage extends EPackage
   int MIME_CONTENT_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.impl.MIMEPartImpl <em>Part</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPartImpl <em>Part</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPartImpl
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getMIMEPart()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPartImpl
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEPart()
    * @generated
    */
   int MIME_PART = 1;
@@ -196,11 +196,11 @@ public interface MIMEPackage extends EPackage
   int MIME_PART_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.impl.MIMEMultipartRelatedImpl <em>Multipart Related</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMultipartRelatedImpl <em>Multipart Related</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEMultipartRelatedImpl
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getMIMEMultipartRelated()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMultipartRelatedImpl
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEMultipartRelated()
    * @generated
    */
   int MIME_MULTIPART_RELATED = 2;
@@ -260,11 +260,11 @@ public interface MIMEPackage extends EPackage
   int MIME_MULTIPART_RELATED_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.impl.MIMEMimeXmlImpl <em>Mime Xml</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMimeXmlImpl <em>Mime Xml</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEMimeXmlImpl
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getMIMEMimeXml()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMimeXmlImpl
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEMimeXml()
    * @generated
    */
   int MIME_MIME_XML = 3;
@@ -328,7 +328,7 @@ public interface MIMEPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.mime.MIMEPart
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getIMIMEPart()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEPart()
    * @generated
    */
   int IMIME_PART = 4;
@@ -347,7 +347,7 @@ public interface MIMEPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.mime.MIMEMultipartRelated
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getIMIMEMultipartRelated()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEMultipartRelated()
    * @generated
    */
   int IMIME_MULTIPART_RELATED = 5;
@@ -366,7 +366,7 @@ public interface MIMEPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.mime.MIMEContent
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getIMIMEContent()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEContent()
    * @generated
    */
   int IMIME_CONTENT = 6;
@@ -385,7 +385,7 @@ public interface MIMEPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.mime.MIMEMimeXml
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getIMIMEMimeXml()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEMimeXml()
    * @generated
    */
   int IMIME_MIME_XML = 7;
@@ -404,7 +404,7 @@ public interface MIMEPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.util.List
-   * @see org.eclipse.wst.wsdl.binding.mime.impl.MIMEPackageImpl#getList()
+   * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getList()
    * @generated
    */
   int LIST = 8;

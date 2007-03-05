@@ -51,11 +51,11 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEOperation <em>EOperation</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEBindingInput <em>EBinding Input</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEBindingOutput <em>EBinding Output</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEBindingFaults <em>EBinding Faults</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEOperation <em>EOperation</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEBindingInput <em>EBinding Input</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEBindingOutput <em>EBinding Output</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEBindingFaults <em>EBinding Faults</em>}</li>
  * </ul>
  * </p>
  *

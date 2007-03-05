@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wst.wsdl.binding.mime.impl.MIMEMimeXmlImpl#getEPart <em>EPart</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMimeXmlImpl#getEPart <em>EPart</em>}</li>
  * </ul>
  * </p>
  *
