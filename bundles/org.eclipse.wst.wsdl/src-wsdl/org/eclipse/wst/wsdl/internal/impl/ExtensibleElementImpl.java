@@ -82,7 +82,10 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
   {
     if (eExtensibilityElements == null)
     {
-      eExtensibilityElements = new EObjectContainmentEList(ExtensibilityElement.class, this, WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS);
+      eExtensibilityElements = new EObjectContainmentEList(
+        ExtensibilityElement.class,
+        this,
+        WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS);
     }
     return eExtensibilityElements;
   }
@@ -117,7 +120,7 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -132,7 +135,7 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
+      return getEExtensibilityElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -147,9 +150,9 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
+      getEExtensibilityElements().clear();
+      getEExtensibilityElements().addAll((Collection)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -164,8 +167,8 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
+      getEExtensibilityElements().clear();
+      return;
     }
     super.eUnset(featureID);
   }
@@ -180,7 +183,7 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
+      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
     }
     return super.eIsSet(featureID);
   }

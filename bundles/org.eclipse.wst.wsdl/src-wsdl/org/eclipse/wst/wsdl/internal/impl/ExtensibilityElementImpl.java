@@ -171,9 +171,9 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        return isRequired() ? Boolean.TRUE : Boolean.FALSE;
+      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        return getElementType();
+      return getElementType();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -188,11 +188,11 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        setRequired(((Boolean)newValue).booleanValue());
-        return;
+      setRequired(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        setElementType((QName)newValue);
-        return;
+      setElementType((QName)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -207,11 +207,11 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        setRequired(REQUIRED_EDEFAULT);
-        return;
+      setRequired(REQUIRED_EDEFAULT);
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        setElementType(ELEMENT_TYPE_EDEFAULT);
-        return;
+      setElementType(ELEMENT_TYPE_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -226,9 +226,9 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (featureID)
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        return required != REQUIRED_EDEFAULT;
+      return required != REQUIRED_EDEFAULT;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
+      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
     }
     return super.eIsSet(featureID);
   }
@@ -240,7 +240,8 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (required: ");

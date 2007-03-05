@@ -98,7 +98,7 @@ public class UnknownExtensibilityElementImpl extends ExtensibilityElementImpl im
     switch (featureID)
     {
       case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-        return ((InternalEList)getChildren()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getChildren()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -113,7 +113,7 @@ public class UnknownExtensibilityElementImpl extends ExtensibilityElementImpl im
     switch (featureID)
     {
       case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-        return getChildren();
+      return getChildren();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -128,9 +128,9 @@ public class UnknownExtensibilityElementImpl extends ExtensibilityElementImpl im
     switch (featureID)
     {
       case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-        getChildren().clear();
-        getChildren().addAll((Collection)newValue);
-        return;
+      getChildren().clear();
+      getChildren().addAll((Collection)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -145,8 +145,8 @@ public class UnknownExtensibilityElementImpl extends ExtensibilityElementImpl im
     switch (featureID)
     {
       case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-        getChildren().clear();
-        return;
+      getChildren().clear();
+      return;
     }
     super.eUnset(featureID);
   }
@@ -161,7 +161,7 @@ public class UnknownExtensibilityElementImpl extends ExtensibilityElementImpl im
     switch (featureID)
     {
       case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-        return children != null && !children.isEmpty();
+      return children != null && !children.isEmpty();
     }
     return super.eIsSet(featureID);
   }

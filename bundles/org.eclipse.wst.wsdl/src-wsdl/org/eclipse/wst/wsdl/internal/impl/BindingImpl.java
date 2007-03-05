@@ -368,7 +368,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (featureID)
     {
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        return ((InternalEList)getEBindingOperations()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEBindingOperations()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -383,14 +383,15 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (featureID)
     {
       case WSDLPackage.BINDING__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.BINDING__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.BINDING__EPORT_TYPE:
-        if (resolve) return getEPortType();
-        return basicGetEPortType();
+      if (resolve)
+        return getEPortType();
+      return basicGetEPortType();
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        return getEBindingOperations();
+      return getEBindingOperations();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -405,18 +406,18 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (featureID)
     {
       case WSDLPackage.BINDING__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.BINDING__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.BINDING__EPORT_TYPE:
-        setEPortType((PortType)newValue);
-        return;
+      setEPortType((PortType)newValue);
+      return;
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        getEBindingOperations().clear();
-        getEBindingOperations().addAll((Collection)newValue);
-        return;
+      getEBindingOperations().clear();
+      getEBindingOperations().addAll((Collection)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -431,17 +432,17 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (featureID)
     {
       case WSDLPackage.BINDING__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__EPORT_TYPE:
-        setEPortType((PortType)null);
-        return;
+      setEPortType((PortType)null);
+      return;
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        getEBindingOperations().clear();
-        return;
+      getEBindingOperations().clear();
+      return;
     }
     super.eUnset(featureID);
   }
@@ -456,13 +457,13 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (featureID)
     {
       case WSDLPackage.BINDING__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.BINDING__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.BINDING__EPORT_TYPE:
-        return ePortType != null;
+      return ePortType != null;
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        return eBindingOperations != null && !eBindingOperations.isEmpty();
+      return eBindingOperations != null && !eBindingOperations.isEmpty();
     }
     return super.eIsSet(featureID);
   }
@@ -474,7 +475,8 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (qName: ");

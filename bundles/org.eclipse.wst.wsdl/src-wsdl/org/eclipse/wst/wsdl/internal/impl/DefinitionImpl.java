@@ -198,16 +198,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected String encoding = ENCODING_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getEBindings() <em>EBindings</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getEBindings()
-   * @generated
-   * @ordered
-   */
-  protected EList eBindings = null;
-
-  /**
    * The cached value of the '{@link #getEServices() <em>EServices</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -266,6 +256,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @ordered
    */
   protected EList ePortTypes = null;
+
+  /**
+   * The cached value of the '{@link #getEBindings() <em>EBindings</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEBindings()
+   * @generated
+   * @ordered
+   */
+  protected EList eBindings = null;
 
   private ExtensionRegistry extensionRegistry;
 
@@ -478,7 +478,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.DEFINITION__ETYPES, oldETypes, newETypes);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -498,7 +501,8 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       if (newETypes != null)
         msgs = ((InternalEObject)newETypes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.DEFINITION__ETYPES, null, msgs);
       msgs = basicSetETypes(newETypes, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.DEFINITION__ETYPES, newETypes, newETypes));
@@ -1210,19 +1214,19 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     switch (featureID)
     {
       case WSDLPackage.DEFINITION__EIMPORTS:
-        return ((InternalEList)getEImports()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEImports()).basicRemove(otherEnd, msgs);
       case WSDLPackage.DEFINITION__ETYPES:
-        return basicSetETypes(null, msgs);
+      return basicSetETypes(null, msgs);
       case WSDLPackage.DEFINITION__EMESSAGES:
-        return ((InternalEList)getEMessages()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEMessages()).basicRemove(otherEnd, msgs);
       case WSDLPackage.DEFINITION__EPORT_TYPES:
-        return ((InternalEList)getEPortTypes()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEPortTypes()).basicRemove(otherEnd, msgs);
       case WSDLPackage.DEFINITION__EBINDINGS:
-        return ((InternalEList)getEBindings()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEBindings()).basicRemove(otherEnd, msgs);
       case WSDLPackage.DEFINITION__ESERVICES:
-        return ((InternalEList)getEServices()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEServices()).basicRemove(otherEnd, msgs);
       case WSDLPackage.DEFINITION__ENAMESPACES:
-        return ((InternalEList)getENamespaces()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getENamespaces()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -1237,27 +1241,27 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     switch (featureID)
     {
       case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        return getTargetNamespace();
+      return getTargetNamespace();
       case WSDLPackage.DEFINITION__LOCATION:
-        return getLocation();
+      return getLocation();
       case WSDLPackage.DEFINITION__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.DEFINITION__ENCODING:
-        return getEncoding();
+      return getEncoding();
       case WSDLPackage.DEFINITION__EIMPORTS:
-        return getEImports();
+      return getEImports();
       case WSDLPackage.DEFINITION__ETYPES:
-        return getETypes();
+      return getETypes();
       case WSDLPackage.DEFINITION__EMESSAGES:
-        return getEMessages();
+      return getEMessages();
       case WSDLPackage.DEFINITION__EPORT_TYPES:
-        return getEPortTypes();
+      return getEPortTypes();
       case WSDLPackage.DEFINITION__EBINDINGS:
-        return getEBindings();
+      return getEBindings();
       case WSDLPackage.DEFINITION__ESERVICES:
-        return getEServices();
+      return getEServices();
       case WSDLPackage.DEFINITION__ENAMESPACES:
-        return getENamespaces();
+      return getENamespaces();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -1272,44 +1276,44 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     switch (featureID)
     {
       case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        setTargetNamespace((String)newValue);
-        return;
+      setTargetNamespace((String)newValue);
+      return;
       case WSDLPackage.DEFINITION__LOCATION:
-        setLocation((String)newValue);
-        return;
+      setLocation((String)newValue);
+      return;
       case WSDLPackage.DEFINITION__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.DEFINITION__ENCODING:
-        setEncoding((String)newValue);
-        return;
+      setEncoding((String)newValue);
+      return;
       case WSDLPackage.DEFINITION__EIMPORTS:
-        getEImports().clear();
-        getEImports().addAll((Collection)newValue);
-        return;
+      getEImports().clear();
+      getEImports().addAll((Collection)newValue);
+      return;
       case WSDLPackage.DEFINITION__ETYPES:
-        setETypes((Types)newValue);
-        return;
+      setETypes((Types)newValue);
+      return;
       case WSDLPackage.DEFINITION__EMESSAGES:
-        getEMessages().clear();
-        getEMessages().addAll((Collection)newValue);
-        return;
+      getEMessages().clear();
+      getEMessages().addAll((Collection)newValue);
+      return;
       case WSDLPackage.DEFINITION__EPORT_TYPES:
-        getEPortTypes().clear();
-        getEPortTypes().addAll((Collection)newValue);
-        return;
+      getEPortTypes().clear();
+      getEPortTypes().addAll((Collection)newValue);
+      return;
       case WSDLPackage.DEFINITION__EBINDINGS:
-        getEBindings().clear();
-        getEBindings().addAll((Collection)newValue);
-        return;
+      getEBindings().clear();
+      getEBindings().addAll((Collection)newValue);
+      return;
       case WSDLPackage.DEFINITION__ESERVICES:
-        getEServices().clear();
-        getEServices().addAll((Collection)newValue);
-        return;
+      getEServices().clear();
+      getEServices().addAll((Collection)newValue);
+      return;
       case WSDLPackage.DEFINITION__ENAMESPACES:
-        getENamespaces().clear();
-        getENamespaces().addAll((Collection)newValue);
-        return;
+      getENamespaces().clear();
+      getENamespaces().addAll((Collection)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -1324,38 +1328,38 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     switch (featureID)
     {
       case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        setTargetNamespace(TARGET_NAMESPACE_EDEFAULT);
-        return;
+      setTargetNamespace(TARGET_NAMESPACE_EDEFAULT);
+      return;
       case WSDLPackage.DEFINITION__LOCATION:
-        setLocation(LOCATION_EDEFAULT);
-        return;
+      setLocation(LOCATION_EDEFAULT);
+      return;
       case WSDLPackage.DEFINITION__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.DEFINITION__ENCODING:
-        setEncoding(ENCODING_EDEFAULT);
-        return;
+      setEncoding(ENCODING_EDEFAULT);
+      return;
       case WSDLPackage.DEFINITION__EIMPORTS:
-        getEImports().clear();
-        return;
+      getEImports().clear();
+      return;
       case WSDLPackage.DEFINITION__ETYPES:
-        setETypes((Types)null);
-        return;
+      setETypes((Types)null);
+      return;
       case WSDLPackage.DEFINITION__EMESSAGES:
-        getEMessages().clear();
-        return;
+      getEMessages().clear();
+      return;
       case WSDLPackage.DEFINITION__EPORT_TYPES:
-        getEPortTypes().clear();
-        return;
+      getEPortTypes().clear();
+      return;
       case WSDLPackage.DEFINITION__EBINDINGS:
-        getEBindings().clear();
-        return;
+      getEBindings().clear();
+      return;
       case WSDLPackage.DEFINITION__ESERVICES:
-        getEServices().clear();
-        return;
+      getEServices().clear();
+      return;
       case WSDLPackage.DEFINITION__ENAMESPACES:
-        getENamespaces().clear();
-        return;
+      getENamespaces().clear();
+      return;
     }
     super.eUnset(featureID);
   }
@@ -1370,27 +1374,27 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     switch (featureID)
     {
       case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        return TARGET_NAMESPACE_EDEFAULT == null ? targetNamespace != null : !TARGET_NAMESPACE_EDEFAULT.equals(targetNamespace);
+      return TARGET_NAMESPACE_EDEFAULT == null ? targetNamespace != null : !TARGET_NAMESPACE_EDEFAULT.equals(targetNamespace);
       case WSDLPackage.DEFINITION__LOCATION:
-        return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
+      return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
       case WSDLPackage.DEFINITION__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.DEFINITION__ENCODING:
-        return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
+      return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
       case WSDLPackage.DEFINITION__EIMPORTS:
-        return eImports != null && !eImports.isEmpty();
+      return eImports != null && !eImports.isEmpty();
       case WSDLPackage.DEFINITION__ETYPES:
-        return eTypes != null;
+      return eTypes != null;
       case WSDLPackage.DEFINITION__EMESSAGES:
-        return eMessages != null && !eMessages.isEmpty();
+      return eMessages != null && !eMessages.isEmpty();
       case WSDLPackage.DEFINITION__EPORT_TYPES:
-        return ePortTypes != null && !ePortTypes.isEmpty();
+      return ePortTypes != null && !ePortTypes.isEmpty();
       case WSDLPackage.DEFINITION__EBINDINGS:
-        return eBindings != null && !eBindings.isEmpty();
+      return eBindings != null && !eBindings.isEmpty();
       case WSDLPackage.DEFINITION__ESERVICES:
-        return eServices != null && !eServices.isEmpty();
+      return eServices != null && !eServices.isEmpty();
       case WSDLPackage.DEFINITION__ENAMESPACES:
-        return eNamespaces != null && !eNamespaces.isEmpty();
+      return eNamespaces != null && !eNamespaces.isEmpty();
     }
     return super.eIsSet(featureID);
   }
@@ -1423,7 +1427,8 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (targetNamespace: ");

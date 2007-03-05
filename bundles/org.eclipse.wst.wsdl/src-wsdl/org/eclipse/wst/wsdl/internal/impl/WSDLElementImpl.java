@@ -150,7 +150,12 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     Element oldDocumentationElement = documentationElement;
     documentationElement = newDocumentationElement;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT, oldDocumentationElement, documentationElement));
+      eNotify(new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT,
+        oldDocumentationElement,
+        documentationElement));
   }
 
   /**
@@ -196,9 +201,9 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        return getElement();
+      return getElement();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -213,11 +218,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -232,11 +237,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -251,9 +256,10 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
     }
     return super.eIsSet(featureID);
   }
@@ -265,7 +271,8 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (documentationElement: ");

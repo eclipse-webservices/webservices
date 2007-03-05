@@ -171,10 +171,11 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
     switch (featureID)
     {
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        if (resolve) return getEMessage();
-        return basicGetEMessage();
+      if (resolve)
+        return getEMessage();
+      return basicGetEMessage();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -189,11 +190,11 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
     switch (featureID)
     {
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        setEMessage((Message)newValue);
-        return;
+      setEMessage((Message)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -208,11 +209,11 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
     switch (featureID)
     {
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        setEMessage((Message)null);
-        return;
+      setEMessage((Message)null);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -227,9 +228,9 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
     switch (featureID)
     {
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        return eMessage != null;
+      return eMessage != null;
     }
     return super.eIsSet(featureID);
   }
@@ -241,7 +242,8 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");

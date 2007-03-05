@@ -200,10 +200,11 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
     switch (featureID)
     {
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        if (resolve) return getEOutput();
-        return basicGetEOutput();
+      if (resolve)
+        return getEOutput();
+      return basicGetEOutput();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -218,11 +219,11 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
     switch (featureID)
     {
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        setEOutput((Output)newValue);
-        return;
+      setEOutput((Output)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -237,11 +238,11 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
     switch (featureID)
     {
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        setEOutput((Output)null);
-        return;
+      setEOutput((Output)null);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -256,9 +257,9 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
     switch (featureID)
     {
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        return eOutput != null;
+      return eOutput != null;
     }
     return super.eIsSet(featureID);
   }
@@ -270,7 +271,8 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");

@@ -304,15 +304,17 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (featureID)
     {
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        return getNamespaceURI();
+      return getNamespaceURI();
       case WSDLPackage.IMPORT__LOCATION_URI:
-        return getLocationURI();
+      return getLocationURI();
       case WSDLPackage.IMPORT__EDEFINITION:
-        if (resolve) return getEDefinition();
-        return basicGetEDefinition();
+      if (resolve)
+        return getEDefinition();
+      return basicGetEDefinition();
       case WSDLPackage.IMPORT__ESCHEMA:
-        if (resolve) return getESchema();
-        return basicGetESchema();
+      if (resolve)
+        return getESchema();
+      return basicGetESchema();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -327,17 +329,17 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (featureID)
     {
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        setNamespaceURI((String)newValue);
-        return;
+      setNamespaceURI((String)newValue);
+      return;
       case WSDLPackage.IMPORT__LOCATION_URI:
-        setLocationURI((String)newValue);
-        return;
+      setLocationURI((String)newValue);
+      return;
       case WSDLPackage.IMPORT__EDEFINITION:
-        setEDefinition((Definition)newValue);
-        return;
+      setEDefinition((Definition)newValue);
+      return;
       case WSDLPackage.IMPORT__ESCHEMA:
-        setESchema((XSDSchema)newValue);
-        return;
+      setESchema((XSDSchema)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -352,17 +354,17 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (featureID)
     {
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        setNamespaceURI(NAMESPACE_URI_EDEFAULT);
-        return;
+      setNamespaceURI(NAMESPACE_URI_EDEFAULT);
+      return;
       case WSDLPackage.IMPORT__LOCATION_URI:
-        setLocationURI(LOCATION_URI_EDEFAULT);
-        return;
+      setLocationURI(LOCATION_URI_EDEFAULT);
+      return;
       case WSDLPackage.IMPORT__EDEFINITION:
-        setEDefinition((Definition)null);
-        return;
+      setEDefinition((Definition)null);
+      return;
       case WSDLPackage.IMPORT__ESCHEMA:
-        setESchema((XSDSchema)null);
-        return;
+      setESchema((XSDSchema)null);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -377,13 +379,13 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (featureID)
     {
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+      return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
       case WSDLPackage.IMPORT__LOCATION_URI:
-        return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
+      return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
       case WSDLPackage.IMPORT__EDEFINITION:
-        return eDefinition != null;
+      return eDefinition != null;
       case WSDLPackage.IMPORT__ESCHEMA:
-        return eSchema != null;
+      return eSchema != null;
     }
     return super.eIsSet(featureID);
   }
@@ -395,7 +397,8 @@ public class ImportImpl extends WSDLElementImpl implements Import
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (namespaceURI: ");

@@ -151,9 +151,9 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        return getURI();
+      return getURI();
       case WSDLPackage.NAMESPACE__PREFIX:
-        return getPrefix();
+      return getPrefix();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -168,11 +168,11 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        setURI((String)newValue);
-        return;
+      setURI((String)newValue);
+      return;
       case WSDLPackage.NAMESPACE__PREFIX:
-        setPrefix((String)newValue);
-        return;
+      setPrefix((String)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -187,11 +187,11 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        setURI(URI_EDEFAULT);
-        return;
+      setURI(URI_EDEFAULT);
+      return;
       case WSDLPackage.NAMESPACE__PREFIX:
-        setPrefix(PREFIX_EDEFAULT);
-        return;
+      setPrefix(PREFIX_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -206,9 +206,9 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
+      return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
       case WSDLPackage.NAMESPACE__PREFIX:
-        return PREFIX_EDEFAULT == null ? prefix != null : !PREFIX_EDEFAULT.equals(prefix);
+      return PREFIX_EDEFAULT == null ? prefix != null : !PREFIX_EDEFAULT.equals(prefix);
     }
     return super.eIsSet(featureID);
   }
@@ -220,7 +220,8 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (URI: ");

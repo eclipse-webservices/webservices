@@ -482,10 +482,12 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
    */
   public static WSDLPackage init()
   {
-    if (isInited) return (WSDLPackage)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI);
+    if (isInited)
+      return (WSDLPackage)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI);
 
     // Obtain or create and register package
-    WSDLPackageImpl theWSDLPackage = (WSDLPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof WSDLPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new WSDLPackageImpl());
+    WSDLPackageImpl theWSDLPackage = (WSDLPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof WSDLPackageImpl
+      ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new WSDLPackageImpl());
 
     isInited = true;
 
@@ -1700,7 +1702,8 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
    */
   public void createPackageContents()
   {
-    if (isCreated) return;
+    if (isCreated)
+      return;
     isCreated = true;
 
     // Create classes and their features
@@ -1887,7 +1890,8 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
    */
   public void initializePackageContents()
   {
-    if (isInitialized) return;
+    if (isInitialized)
+      return;
     isInitialized = true;
 
     // Initialize package
@@ -1945,8 +1949,38 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
 
     // Initialize classes and features; add operations and parameters
     initEClass(wsdlElementEClass, WSDLElement.class, "WSDLElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getWSDLElement_DocumentationElement(), this.getDOMElement(), "documentationElement", null, 0, 1, WSDLElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getWSDLElement_Element(), this.getDOMElement(), "element", null, 0, 1, WSDLElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getWSDLElement_DocumentationElement(),
+      this.getDOMElement(),
+      "documentationElement",
+      null,
+      0,
+      1,
+      WSDLElement.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getWSDLElement_Element(),
+      this.getDOMElement(),
+      "element",
+      null,
+      0,
+      1,
+      WSDLElement.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     EOperation op = addEOperation(wsdlElementEClass, this.getDefinition(), "getEnclosingDefinition", 0, 1);
 
@@ -1954,70 +1988,814 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, this.getDefinition(), "definition", 0, 1);
 
     initEClass(portTypeEClass, PortType.class, "PortType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getPortType_QName(), this.getQName(), "qName", null, 0, 1, PortType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getPortType_Undefined(), ecorePackage.getEBoolean(), "undefined", null, 0, 1, PortType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPortType_EOperations(), this.getOperation(), null, "eOperations", null, 0, -1, PortType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getPortType_QName(),
+      this.getQName(),
+      "qName",
+      null,
+      0,
+      1,
+      PortType.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getPortType_Undefined(),
+      ecorePackage.getEBoolean(),
+      "undefined",
+      null,
+      0,
+      1,
+      PortType.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getPortType_EOperations(),
+      this.getOperation(),
+      null,
+      "eOperations",
+      null,
+      0,
+      -1,
+      PortType.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(operationEClass, Operation.class, "Operation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getOperation_Style(), this.getOperationType(), "style", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getOperation_Name(), ecorePackage.getEString(), "name", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getOperation_Undefined(), ecorePackage.getEBoolean(), "undefined", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getOperation_EInput(), this.getInput(), null, "eInput", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getOperation_EOutput(), this.getOutput(), null, "eOutput", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getOperation_EFaults(), this.getFault(), null, "eFaults", null, 0, -1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getOperation_EParameterOrdering(), this.getPart(), null, "eParameterOrdering", null, 0, -1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getOperation_Style(),
+      this.getOperationType(),
+      "style",
+      null,
+      0,
+      1,
+      Operation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getOperation_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      Operation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getOperation_Undefined(),
+      ecorePackage.getEBoolean(),
+      "undefined",
+      null,
+      0,
+      1,
+      Operation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getOperation_EInput(),
+      this.getInput(),
+      null,
+      "eInput",
+      null,
+      0,
+      1,
+      Operation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getOperation_EOutput(),
+      this.getOutput(),
+      null,
+      "eOutput",
+      null,
+      0,
+      1,
+      Operation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getOperation_EFaults(),
+      this.getFault(),
+      null,
+      "eFaults",
+      null,
+      0,
+      -1,
+      Operation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getOperation_EParameterOrdering(),
+      this.getPart(),
+      null,
+      "eParameterOrdering",
+      null,
+      0,
+      -1,
+      Operation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(messageEClass, Message.class, "Message", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getMessage_QName(), this.getQName(), "qName", null, 0, 1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getMessage_Undefined(), ecorePackage.getEBoolean(), "undefined", null, 0, 1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMessage_EParts(), this.getPart(), null, "eParts", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getMessage_QName(),
+      this.getQName(),
+      "qName",
+      null,
+      0,
+      1,
+      Message.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getMessage_Undefined(),
+      ecorePackage.getEBoolean(),
+      "undefined",
+      null,
+      0,
+      1,
+      Message.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getMessage_EParts(),
+      this.getPart(),
+      null,
+      "eParts",
+      null,
+      0,
+      -1,
+      Message.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(partEClass, Part.class, "Part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getPart_Name(), ecorePackage.getEString(), "name", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getPart_ElementName(), this.getQName(), "elementName", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getPart_TypeName(), this.getQName(), "typeName", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPart_TypeDefinition(), theXSDPackage.getXSDTypeDefinition(), null, "typeDefinition", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPart_ElementDeclaration(), theXSDPackage.getXSDElementDeclaration(), null, "elementDeclaration", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPart_EMessage(), this.getMessage(), null, "eMessage", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getPart_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      Part.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getPart_ElementName(),
+      this.getQName(),
+      "elementName",
+      null,
+      0,
+      1,
+      Part.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getPart_TypeName(),
+      this.getQName(),
+      "typeName",
+      null,
+      0,
+      1,
+      Part.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getPart_TypeDefinition(),
+      theXSDPackage.getXSDTypeDefinition(),
+      null,
+      "typeDefinition",
+      null,
+      0,
+      1,
+      Part.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getPart_ElementDeclaration(),
+      theXSDPackage.getXSDElementDeclaration(),
+      null,
+      "elementDeclaration",
+      null,
+      0,
+      1,
+      Part.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getPart_EMessage(),
+      this.getMessage(),
+      null,
+      "eMessage",
+      null,
+      0,
+      1,
+      Part.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(bindingEClass, Binding.class, "Binding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBinding_QName(), this.getQName(), "qName", null, 0, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getBinding_Undefined(), ecorePackage.getEBoolean(), "undefined", null, 0, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBinding_EPortType(), this.getPortType(), null, "ePortType", null, 1, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBinding_EBindingOperations(), this.getBindingOperation(), null, "eBindingOperations", null, 0, -1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getBinding_QName(),
+      this.getQName(),
+      "qName",
+      null,
+      0,
+      1,
+      Binding.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getBinding_Undefined(),
+      ecorePackage.getEBoolean(),
+      "undefined",
+      null,
+      0,
+      1,
+      Binding.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBinding_EPortType(),
+      this.getPortType(),
+      null,
+      "ePortType",
+      null,
+      1,
+      1,
+      Binding.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBinding_EBindingOperations(),
+      this.getBindingOperation(),
+      null,
+      "eBindingOperations",
+      null,
+      0,
+      -1,
+      Binding.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(bindingOperationEClass, BindingOperation.class, "BindingOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBindingOperation_Name(), ecorePackage.getEString(), "name", null, 0, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBindingOperation_EOperation(), this.getOperation(), null, "eOperation", null, 1, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBindingOperation_EBindingInput(), this.getBindingInput(), null, "eBindingInput", null, 0, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBindingOperation_EBindingOutput(), this.getBindingOutput(), null, "eBindingOutput", null, 0, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBindingOperation_EBindingFaults(), this.getBindingFault(), null, "eBindingFaults", null, 0, -1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getBindingOperation_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      BindingOperation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBindingOperation_EOperation(),
+      this.getOperation(),
+      null,
+      "eOperation",
+      null,
+      1,
+      1,
+      BindingOperation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBindingOperation_EBindingInput(),
+      this.getBindingInput(),
+      null,
+      "eBindingInput",
+      null,
+      0,
+      1,
+      BindingOperation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBindingOperation_EBindingOutput(),
+      this.getBindingOutput(),
+      null,
+      "eBindingOutput",
+      null,
+      0,
+      1,
+      BindingOperation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBindingOperation_EBindingFaults(),
+      this.getBindingFault(),
+      null,
+      "eBindingFaults",
+      null,
+      0,
+      -1,
+      BindingOperation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(serviceEClass, Service.class, "Service", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getService_QName(), this.getQName(), "qName", null, 0, 1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getService_Undefined(), ecorePackage.getEBoolean(), "undefined", null, 0, 1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getService_EPorts(), this.getPort(), null, "ePorts", null, 0, -1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getService_QName(),
+      this.getQName(),
+      "qName",
+      null,
+      0,
+      1,
+      Service.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getService_Undefined(),
+      ecorePackage.getEBoolean(),
+      "undefined",
+      null,
+      0,
+      1,
+      Service.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getService_EPorts(),
+      this.getPort(),
+      null,
+      "ePorts",
+      null,
+      0,
+      -1,
+      Service.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(portEClass, Port.class, "Port", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getPort_Name(), ecorePackage.getEString(), "name", null, 0, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPort_EBinding(), this.getBinding(), null, "eBinding", null, 1, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getPort_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      Port.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getPort_EBinding(),
+      this.getBinding(),
+      null,
+      "eBinding",
+      null,
+      1,
+      1,
+      Port.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(extensibilityElementEClass, ExtensibilityElement.class, "ExtensibilityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getExtensibilityElement_Required(), ecorePackage.getEBoolean(), "required", null, 0, 1, ExtensibilityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getExtensibilityElement_ElementType(), this.getQName(), "elementType", null, 0, 1, ExtensibilityElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(
+      extensibilityElementEClass,
+      ExtensibilityElement.class,
+      "ExtensibilityElement",
+      !IS_ABSTRACT,
+      !IS_INTERFACE,
+      IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(
+      getExtensibilityElement_Required(),
+      ecorePackage.getEBoolean(),
+      "required",
+      null,
+      0,
+      1,
+      ExtensibilityElement.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getExtensibilityElement_ElementType(),
+      this.getQName(),
+      "elementType",
+      null,
+      0,
+      1,
+      ExtensibilityElement.class,
+      IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(definitionEClass, Definition.class, "Definition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getDefinition_TargetNamespace(), ecorePackage.getEString(), "targetNamespace", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getDefinition_Location(), ecorePackage.getEString(), "location", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getDefinition_QName(), this.getQName(), "qName", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getDefinition_Encoding(), ecorePackage.getEString(), "encoding", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDefinition_EImports(), this.getImport(), null, "eImports", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDefinition_ETypes(), this.getTypes(), null, "eTypes", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDefinition_EMessages(), this.getMessage(), null, "eMessages", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDefinition_EPortTypes(), this.getPortType(), null, "ePortTypes", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDefinition_EBindings(), this.getBinding(), null, "eBindings", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDefinition_EServices(), this.getService(), null, "eServices", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDefinition_ENamespaces(), this.getNamespace(), null, "eNamespaces", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getDefinition_TargetNamespace(),
+      ecorePackage.getEString(),
+      "targetNamespace",
+      null,
+      0,
+      1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getDefinition_Location(),
+      ecorePackage.getEString(),
+      "location",
+      null,
+      0,
+      1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getDefinition_QName(),
+      this.getQName(),
+      "qName",
+      null,
+      0,
+      1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getDefinition_Encoding(),
+      ecorePackage.getEString(),
+      "encoding",
+      null,
+      0,
+      1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getDefinition_EImports(),
+      this.getImport(),
+      null,
+      "eImports",
+      null,
+      0,
+      -1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getDefinition_ETypes(),
+      this.getTypes(),
+      null,
+      "eTypes",
+      null,
+      0,
+      1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getDefinition_EMessages(),
+      this.getMessage(),
+      null,
+      "eMessages",
+      null,
+      0,
+      -1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getDefinition_EPortTypes(),
+      this.getPortType(),
+      null,
+      "ePortTypes",
+      null,
+      0,
+      -1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getDefinition_EBindings(),
+      this.getBinding(),
+      null,
+      "eBindings",
+      null,
+      0,
+      -1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getDefinition_EServices(),
+      this.getService(),
+      null,
+      "eServices",
+      null,
+      0,
+      -1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getDefinition_ENamespaces(),
+      this.getNamespace(),
+      null,
+      "eNamespaces",
+      null,
+      0,
+      -1,
+      Definition.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(definitionEClass, this.getDOMDocument(), "getDocument", 0, 1);
 
@@ -2025,18 +2803,105 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, this.getDOMDocument(), "document", 0, 1);
 
     initEClass(importEClass, Import.class, "Import", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getImport_NamespaceURI(), ecorePackage.getEString(), "namespaceURI", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getImport_LocationURI(), ecorePackage.getEString(), "locationURI", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getImport_EDefinition(), this.getDefinition(), null, "eDefinition", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getImport_ESchema(), theXSDPackage.getXSDSchema(), null, "eSchema", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getImport_NamespaceURI(),
+      ecorePackage.getEString(),
+      "namespaceURI",
+      null,
+      0,
+      1,
+      Import.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getImport_LocationURI(),
+      ecorePackage.getEString(),
+      "locationURI",
+      null,
+      0,
+      1,
+      Import.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getImport_EDefinition(),
+      this.getDefinition(),
+      null,
+      "eDefinition",
+      null,
+      0,
+      1,
+      Import.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getImport_ESchema(),
+      theXSDPackage.getXSDSchema(),
+      null,
+      "eSchema",
+      null,
+      0,
+      1,
+      Import.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(importEClass, theXSDPackage.getXSDSchema(), "getSchema", 0, 1);
 
     op = addEOperation(importEClass, null, "setSchema");
     addEParameter(op, theXSDPackage.getXSDSchema(), "schema", 0, 1);
 
-    initEClass(extensibleElementEClass, ExtensibleElement.class, "ExtensibleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getExtensibleElement_EExtensibilityElements(), this.getExtensibilityElement(), null, "eExtensibilityElements", null, 0, -1, ExtensibleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(
+      extensibleElementEClass,
+      ExtensibleElement.class,
+      "ExtensibleElement",
+      IS_ABSTRACT,
+      !IS_INTERFACE,
+      IS_GENERATED_INSTANCE_CLASS);
+    initEReference(
+      getExtensibleElement_EExtensibilityElements(),
+      this.getExtensibilityElement(),
+      null,
+      "eExtensibilityElements",
+      null,
+      0,
+      -1,
+      ExtensibleElement.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(extensibleElementEClass, this.getIList(), "getExtensibilityElements", 0, 1);
 
@@ -2050,8 +2915,40 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     initEClass(faultEClass, Fault.class, "Fault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(bindingInputEClass, BindingInput.class, "BindingInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBindingInput_Name(), ecorePackage.getEString(), "name", null, 0, 1, BindingInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBindingInput_EInput(), this.getInput(), null, "eInput", null, 1, 1, BindingInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getBindingInput_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      BindingInput.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBindingInput_EInput(),
+      this.getInput(),
+      null,
+      "eInput",
+      null,
+      1,
+      1,
+      BindingInput.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(bindingInputEClass, this.getIInput(), "getInput", 0, 1);
 
@@ -2059,8 +2956,40 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, this.getIInput(), "input", 0, 1);
 
     initEClass(bindingOutputEClass, BindingOutput.class, "BindingOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBindingOutput_Name(), ecorePackage.getEString(), "name", null, 0, 1, BindingOutput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBindingOutput_EOutput(), this.getOutput(), null, "eOutput", null, 1, 1, BindingOutput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getBindingOutput_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      BindingOutput.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBindingOutput_EOutput(),
+      this.getOutput(),
+      null,
+      "eOutput",
+      null,
+      1,
+      1,
+      BindingOutput.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(bindingOutputEClass, this.getIOutput(), "getOutput", 0, 1);
 
@@ -2068,8 +2997,40 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, this.getIOutput(), "output", 0, 1);
 
     initEClass(bindingFaultEClass, BindingFault.class, "BindingFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBindingFault_Name(), ecorePackage.getEString(), "name", null, 0, 1, BindingFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBindingFault_EFault(), this.getFault(), null, "eFault", null, 1, 1, BindingFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getBindingFault_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      BindingFault.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getBindingFault_EFault(),
+      this.getFault(),
+      null,
+      "eFault",
+      null,
+      1,
+      1,
+      BindingFault.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(bindingFaultEClass, this.getIFault(), "getFault", 0, 1);
 
@@ -2077,8 +3038,38 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, this.getIFault(), "fault", 0, 1);
 
     initEClass(namespaceEClass, Namespace.class, "Namespace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getNamespace_URI(), ecorePackage.getEString(), "URI", null, 0, 1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getNamespace_Prefix(), ecorePackage.getEString(), "prefix", null, 0, 1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getNamespace_URI(),
+      ecorePackage.getEString(),
+      "URI",
+      null,
+      0,
+      1,
+      Namespace.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEAttribute(
+      getNamespace_Prefix(),
+      ecorePackage.getEString(),
+      "prefix",
+      null,
+      0,
+      1,
+      Namespace.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(iPortTypeEClass, javax.wsdl.PortType.class, "IPortType", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
@@ -2197,7 +3188,13 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iBindingEClass, null, "setPortType");
     addEParameter(op, this.getIPortType(), "portType", 0, 1);
 
-    initEClass(iBindingOperationEClass, javax.wsdl.BindingOperation.class, "IBindingOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      iBindingOperationEClass,
+      javax.wsdl.BindingOperation.class,
+      "IBindingOperation",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
     op = addEOperation(iBindingOperationEClass, null, "addBindingFault");
     addEParameter(op, this.getIBindingFault(), "bindingFault", 0, 1);
@@ -2224,11 +3221,23 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
 
     initEClass(iBindingInputEClass, javax.wsdl.BindingInput.class, "IBindingInput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(iBindingOutputEClass, javax.wsdl.BindingOutput.class, "IBindingOutput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      iBindingOutputEClass,
+      javax.wsdl.BindingOutput.class,
+      "IBindingOutput",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(iBindingFaultEClass, javax.wsdl.BindingFault.class, "IBindingFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(iExtensibilityElementEClass, javax.wsdl.extensions.ExtensibilityElement.class, "IExtensibilityElement", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      iExtensibilityElementEClass,
+      javax.wsdl.extensions.ExtensibilityElement.class,
+      "IExtensibilityElement",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(iDefinitionEClass, javax.wsdl.Definition.class, "IDefinition", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
@@ -2351,7 +3360,13 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
 
     initEClass(iurlEClass, URL.class, "IURL", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(iExtensionRegistryEClass, ExtensionRegistry.class, "IExtensionRegistry", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      iExtensionRegistryEClass,
+      ExtensionRegistry.class,
+      "IExtensionRegistry",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(typesEClass, Types.class, "Types", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2364,15 +3379,93 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
 
     initEClass(iTypesEClass, javax.wsdl.Types.class, "ITypes", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(unknownExtensibilityElementEClass, UnknownExtensibilityElement.class, "UnknownExtensibilityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getUnknownExtensibilityElement_Children(), this.getUnknownExtensibilityElement(), null, "children", null, 0, -1, UnknownExtensibilityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(
+      unknownExtensibilityElementEClass,
+      UnknownExtensibilityElement.class,
+      "UnknownExtensibilityElement",
+      !IS_ABSTRACT,
+      !IS_INTERFACE,
+      IS_GENERATED_INSTANCE_CLASS);
+    initEReference(
+      getUnknownExtensibilityElement_Children(),
+      this.getUnknownExtensibilityElement(),
+      null,
+      "children",
+      null,
+      0,
+      -1,
+      UnknownExtensibilityElement.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(xsdSchemaExtensibilityElementEClass, XSDSchemaExtensibilityElement.class, "XSDSchemaExtensibilityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXSDSchemaExtensibilityElement_Schema(), theXSDPackage.getXSDSchema(), null, "schema", null, 0, 1, XSDSchemaExtensibilityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(
+      xsdSchemaExtensibilityElementEClass,
+      XSDSchemaExtensibilityElement.class,
+      "XSDSchemaExtensibilityElement",
+      !IS_ABSTRACT,
+      !IS_INTERFACE,
+      IS_GENERATED_INSTANCE_CLASS);
+    initEReference(
+      getXSDSchemaExtensibilityElement_Schema(),
+      theXSDPackage.getXSDSchema(),
+      null,
+      "schema",
+      null,
+      0,
+      1,
+      XSDSchemaExtensibilityElement.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(messageReferenceEClass, MessageReference.class, "MessageReference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getMessageReference_Name(), ecorePackage.getEString(), "name", null, 0, 1, MessageReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMessageReference_EMessage(), this.getMessage(), null, "eMessage", null, 1, 1, MessageReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getMessageReference_Name(),
+      ecorePackage.getEString(),
+      "name",
+      null,
+      0,
+      1,
+      MessageReference.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
+    initEReference(
+      getMessageReference_EMessage(),
+      this.getMessage(),
+      null,
+      "eMessage",
+      null,
+      1,
+      1,
+      MessageReference.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     // Initialize data types
     initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

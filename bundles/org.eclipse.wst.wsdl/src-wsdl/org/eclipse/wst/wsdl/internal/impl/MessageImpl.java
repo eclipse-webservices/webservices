@@ -282,7 +282,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (featureID)
     {
       case WSDLPackage.MESSAGE__EPARTS:
-        return ((InternalEList)getEParts()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEParts()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -297,11 +297,11 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (featureID)
     {
       case WSDLPackage.MESSAGE__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.MESSAGE__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.MESSAGE__EPARTS:
-        return getEParts();
+      return getEParts();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -316,15 +316,15 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (featureID)
     {
       case WSDLPackage.MESSAGE__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.MESSAGE__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.MESSAGE__EPARTS:
-        getEParts().clear();
-        getEParts().addAll((Collection)newValue);
-        return;
+      getEParts().clear();
+      getEParts().addAll((Collection)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -339,14 +339,14 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (featureID)
     {
       case WSDLPackage.MESSAGE__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__EPARTS:
-        getEParts().clear();
-        return;
+      getEParts().clear();
+      return;
     }
     super.eUnset(featureID);
   }
@@ -361,11 +361,11 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (featureID)
     {
       case WSDLPackage.MESSAGE__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.MESSAGE__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.MESSAGE__EPARTS:
-        return eParts != null && !eParts.isEmpty();
+      return eParts != null && !eParts.isEmpty();
     }
     return super.eIsSet(featureID);
   }
@@ -377,7 +377,8 @@ public class MessageImpl extends WSDLElementImpl implements Message
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (qName: ");

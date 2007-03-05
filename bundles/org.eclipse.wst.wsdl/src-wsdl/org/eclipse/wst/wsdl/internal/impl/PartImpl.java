@@ -302,7 +302,12 @@ public class PartImpl extends WSDLElementImpl implements Part
       if (elementDeclaration != oldElementDeclaration)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, WSDLPackage.PART__ELEMENT_DECLARATION, oldElementDeclaration, elementDeclaration));
+          eNotify(new ENotificationImpl(
+            this,
+            Notification.RESOLVE,
+            WSDLPackage.PART__ELEMENT_DECLARATION,
+            oldElementDeclaration,
+            elementDeclaration));
       }
     }
     return elementDeclaration;
@@ -328,7 +333,12 @@ public class PartImpl extends WSDLElementImpl implements Part
     XSDElementDeclaration oldElementDeclaration = elementDeclaration;
     elementDeclaration = newElementDeclaration;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.PART__ELEMENT_DECLARATION, oldElementDeclaration, elementDeclaration));
+      eNotify(new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.PART__ELEMENT_DECLARATION,
+        oldElementDeclaration,
+        elementDeclaration));
   }
 
   /**
@@ -433,20 +443,23 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (featureID)
     {
       case WSDLPackage.PART__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.PART__ELEMENT_NAME:
-        return getElementName();
+      return getElementName();
       case WSDLPackage.PART__TYPE_NAME:
-        return getTypeName();
+      return getTypeName();
       case WSDLPackage.PART__TYPE_DEFINITION:
-        if (resolve) return getTypeDefinition();
-        return basicGetTypeDefinition();
+      if (resolve)
+        return getTypeDefinition();
+      return basicGetTypeDefinition();
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        if (resolve) return getElementDeclaration();
-        return basicGetElementDeclaration();
+      if (resolve)
+        return getElementDeclaration();
+      return basicGetElementDeclaration();
       case WSDLPackage.PART__EMESSAGE:
-        if (resolve) return getEMessage();
-        return basicGetEMessage();
+      if (resolve)
+        return getEMessage();
+      return basicGetEMessage();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -461,23 +474,23 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (featureID)
     {
       case WSDLPackage.PART__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.PART__ELEMENT_NAME:
-        setElementName((QName)newValue);
-        return;
+      setElementName((QName)newValue);
+      return;
       case WSDLPackage.PART__TYPE_NAME:
-        setTypeName((QName)newValue);
-        return;
+      setTypeName((QName)newValue);
+      return;
       case WSDLPackage.PART__TYPE_DEFINITION:
-        setTypeDefinition((XSDTypeDefinition)newValue);
-        return;
+      setTypeDefinition((XSDTypeDefinition)newValue);
+      return;
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        setElementDeclaration((XSDElementDeclaration)newValue);
-        return;
+      setElementDeclaration((XSDElementDeclaration)newValue);
+      return;
       case WSDLPackage.PART__EMESSAGE:
-        setEMessage((Message)newValue);
-        return;
+      setEMessage((Message)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -492,23 +505,23 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (featureID)
     {
       case WSDLPackage.PART__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.PART__ELEMENT_NAME:
-        setElementName(ELEMENT_NAME_EDEFAULT);
-        return;
+      setElementName(ELEMENT_NAME_EDEFAULT);
+      return;
       case WSDLPackage.PART__TYPE_NAME:
-        setTypeName(TYPE_NAME_EDEFAULT);
-        return;
+      setTypeName(TYPE_NAME_EDEFAULT);
+      return;
       case WSDLPackage.PART__TYPE_DEFINITION:
-        setTypeDefinition((XSDTypeDefinition)null);
-        return;
+      setTypeDefinition((XSDTypeDefinition)null);
+      return;
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        setElementDeclaration((XSDElementDeclaration)null);
-        return;
+      setElementDeclaration((XSDElementDeclaration)null);
+      return;
       case WSDLPackage.PART__EMESSAGE:
-        setEMessage((Message)null);
-        return;
+      setEMessage((Message)null);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -523,17 +536,17 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (featureID)
     {
       case WSDLPackage.PART__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.PART__ELEMENT_NAME:
-        return ELEMENT_NAME_EDEFAULT == null ? elementName != null : !ELEMENT_NAME_EDEFAULT.equals(elementName);
+      return ELEMENT_NAME_EDEFAULT == null ? elementName != null : !ELEMENT_NAME_EDEFAULT.equals(elementName);
       case WSDLPackage.PART__TYPE_NAME:
-        return TYPE_NAME_EDEFAULT == null ? typeName != null : !TYPE_NAME_EDEFAULT.equals(typeName);
+      return TYPE_NAME_EDEFAULT == null ? typeName != null : !TYPE_NAME_EDEFAULT.equals(typeName);
       case WSDLPackage.PART__TYPE_DEFINITION:
-        return typeDefinition != null;
+      return typeDefinition != null;
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        return elementDeclaration != null;
+      return elementDeclaration != null;
       case WSDLPackage.PART__EMESSAGE:
-        return eMessage != null;
+      return eMessage != null;
     }
     return super.eIsSet(featureID);
   }
@@ -565,7 +578,8 @@ public class PartImpl extends WSDLElementImpl implements Part
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");

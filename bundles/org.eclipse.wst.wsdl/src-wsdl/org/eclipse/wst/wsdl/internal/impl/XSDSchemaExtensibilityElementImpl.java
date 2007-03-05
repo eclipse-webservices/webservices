@@ -96,8 +96,16 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     schema = newSchema;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, oldSchema, newSchema);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      ENotificationImpl notification = new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA,
+        oldSchema,
+        newSchema);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -113,11 +121,20 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     {
       NotificationChain msgs = null;
       if (schema != null)
-        msgs = ((InternalEObject)schema).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, null, msgs);
+        msgs = ((InternalEObject)schema).eInverseRemove(
+          this,
+          EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA,
+          null,
+          msgs);
       if (newSchema != null)
-        msgs = ((InternalEObject)newSchema).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, null, msgs);
+        msgs = ((InternalEObject)newSchema).eInverseAdd(
+          this,
+          EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA,
+          null,
+          msgs);
       msgs = basicSetSchema(newSchema, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, newSchema, newSchema));
@@ -133,7 +150,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     switch (featureID)
     {
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-        return basicSetSchema(null, msgs);
+      return basicSetSchema(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -148,7 +165,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     switch (featureID)
     {
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-        return getSchema();
+      return getSchema();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -163,8 +180,8 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     switch (featureID)
     {
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-        setSchema((XSDSchema)newValue);
-        return;
+      setSchema((XSDSchema)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -179,8 +196,8 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     switch (featureID)
     {
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-        setSchema((XSDSchema)null);
-        return;
+      setSchema((XSDSchema)null);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -195,7 +212,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     switch (featureID)
     {
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-        return schema != null;
+      return schema != null;
     }
     return super.eIsSet(featureID);
   }

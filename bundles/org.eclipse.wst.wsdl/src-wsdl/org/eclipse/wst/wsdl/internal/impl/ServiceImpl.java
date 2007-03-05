@@ -257,7 +257,7 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
     switch (featureID)
     {
       case WSDLPackage.SERVICE__EPORTS:
-        return ((InternalEList)getEPorts()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEPorts()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -272,11 +272,11 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
     switch (featureID)
     {
       case WSDLPackage.SERVICE__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.SERVICE__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.SERVICE__EPORTS:
-        return getEPorts();
+      return getEPorts();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -291,15 +291,15 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
     switch (featureID)
     {
       case WSDLPackage.SERVICE__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.SERVICE__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.SERVICE__EPORTS:
-        getEPorts().clear();
-        getEPorts().addAll((Collection)newValue);
-        return;
+      getEPorts().clear();
+      getEPorts().addAll((Collection)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -314,14 +314,14 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
     switch (featureID)
     {
       case WSDLPackage.SERVICE__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.SERVICE__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.SERVICE__EPORTS:
-        getEPorts().clear();
-        return;
+      getEPorts().clear();
+      return;
     }
     super.eUnset(featureID);
   }
@@ -336,11 +336,11 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
     switch (featureID)
     {
       case WSDLPackage.SERVICE__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.SERVICE__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.SERVICE__EPORTS:
-        return ePorts != null && !ePorts.isEmpty();
+      return ePorts != null && !ePorts.isEmpty();
     }
     return super.eIsSet(featureID);
   }
@@ -352,7 +352,8 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (qName: ");

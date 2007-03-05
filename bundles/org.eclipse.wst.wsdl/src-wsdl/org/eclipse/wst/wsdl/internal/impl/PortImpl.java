@@ -202,10 +202,11 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (featureID)
     {
       case WSDLPackage.PORT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.PORT__EBINDING:
-        if (resolve) return getEBinding();
-        return basicGetEBinding();
+      if (resolve)
+        return getEBinding();
+      return basicGetEBinding();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -220,11 +221,11 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (featureID)
     {
       case WSDLPackage.PORT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.PORT__EBINDING:
-        setEBinding((Binding)newValue);
-        return;
+      setEBinding((Binding)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -239,11 +240,11 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (featureID)
     {
       case WSDLPackage.PORT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.PORT__EBINDING:
-        setEBinding((Binding)null);
-        return;
+      setEBinding((Binding)null);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -258,9 +259,9 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (featureID)
     {
       case WSDLPackage.PORT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.PORT__EBINDING:
-        return eBinding != null;
+      return eBinding != null;
     }
     return super.eIsSet(featureID);
   }
@@ -272,7 +273,8 @@ public class PortImpl extends ExtensibleElementImpl implements Port
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");

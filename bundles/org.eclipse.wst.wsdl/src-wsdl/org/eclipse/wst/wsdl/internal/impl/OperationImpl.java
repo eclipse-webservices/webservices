@@ -403,7 +403,10 @@ return opType;
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EINPUT, oldEInput, newEInput);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -423,7 +426,8 @@ return opType;
       if (newEInput != null)
         msgs = ((InternalEObject)newEInput).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.OPERATION__EINPUT, null, msgs);
       msgs = basicSetEInput(newEInput, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EINPUT, newEInput, newEInput));
@@ -451,7 +455,10 @@ return opType;
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EOUTPUT, oldEOutput, newEOutput);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -471,7 +478,8 @@ return opType;
       if (newEOutput != null)
         msgs = ((InternalEObject)newEOutput).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.OPERATION__EOUTPUT, null, msgs);
       msgs = basicSetEOutput(newEOutput, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EOUTPUT, newEOutput, newEOutput));
@@ -656,11 +664,11 @@ return opType;
     switch (featureID)
     {
       case WSDLPackage.OPERATION__EINPUT:
-        return basicSetEInput(null, msgs);
+      return basicSetEInput(null, msgs);
       case WSDLPackage.OPERATION__EOUTPUT:
-        return basicSetEOutput(null, msgs);
+      return basicSetEOutput(null, msgs);
       case WSDLPackage.OPERATION__EFAULTS:
-        return ((InternalEList)getEFaults()).basicRemove(otherEnd, msgs);
+      return ((InternalEList)getEFaults()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -675,19 +683,19 @@ return opType;
     switch (featureID)
     {
       case WSDLPackage.OPERATION__STYLE:
-        return getStyle();
+      return getStyle();
       case WSDLPackage.OPERATION__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.OPERATION__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.OPERATION__EINPUT:
-        return getEInput();
+      return getEInput();
       case WSDLPackage.OPERATION__EOUTPUT:
-        return getEOutput();
+      return getEOutput();
       case WSDLPackage.OPERATION__EFAULTS:
-        return getEFaults();
+      return getEFaults();
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        return getEParameterOrdering();
+      return getEParameterOrdering();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -702,28 +710,28 @@ return opType;
     switch (featureID)
     {
       case WSDLPackage.OPERATION__STYLE:
-        setStyle((OperationType)newValue);
-        return;
+      setStyle((OperationType)newValue);
+      return;
       case WSDLPackage.OPERATION__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.OPERATION__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.OPERATION__EINPUT:
-        setEInput((Input)newValue);
-        return;
+      setEInput((Input)newValue);
+      return;
       case WSDLPackage.OPERATION__EOUTPUT:
-        setEOutput((Output)newValue);
-        return;
+      setEOutput((Output)newValue);
+      return;
       case WSDLPackage.OPERATION__EFAULTS:
-        getEFaults().clear();
-        getEFaults().addAll((Collection)newValue);
-        return;
+      getEFaults().clear();
+      getEFaults().addAll((Collection)newValue);
+      return;
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        getEParameterOrdering().clear();
-        getEParameterOrdering().addAll((Collection)newValue);
-        return;
+      getEParameterOrdering().clear();
+      getEParameterOrdering().addAll((Collection)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -738,26 +746,26 @@ return opType;
     switch (featureID)
     {
       case WSDLPackage.OPERATION__STYLE:
-        setStyle(STYLE_EDEFAULT);
-        return;
+      setStyle(STYLE_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__EINPUT:
-        setEInput((Input)null);
-        return;
+      setEInput((Input)null);
+      return;
       case WSDLPackage.OPERATION__EOUTPUT:
-        setEOutput((Output)null);
-        return;
+      setEOutput((Output)null);
+      return;
       case WSDLPackage.OPERATION__EFAULTS:
-        getEFaults().clear();
-        return;
+      getEFaults().clear();
+      return;
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        getEParameterOrdering().clear();
-        return;
+      getEParameterOrdering().clear();
+      return;
     }
     super.eUnset(featureID);
   }
@@ -772,19 +780,19 @@ return opType;
     switch (featureID)
     {
       case WSDLPackage.OPERATION__STYLE:
-        return STYLE_EDEFAULT == null ? style != null : !STYLE_EDEFAULT.equals(style);
+      return STYLE_EDEFAULT == null ? style != null : !STYLE_EDEFAULT.equals(style);
       case WSDLPackage.OPERATION__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.OPERATION__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.OPERATION__EINPUT:
-        return eInput != null;
+      return eInput != null;
       case WSDLPackage.OPERATION__EOUTPUT:
-        return eOutput != null;
+      return eOutput != null;
       case WSDLPackage.OPERATION__EFAULTS:
-        return eFaults != null && !eFaults.isEmpty();
+      return eFaults != null && !eFaults.isEmpty();
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        return eParameterOrdering != null && !eParameterOrdering.isEmpty();
+      return eParameterOrdering != null && !eParameterOrdering.isEmpty();
     }
     return super.eIsSet(featureID);
   }
@@ -796,7 +804,8 @@ return opType;
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (style: ");

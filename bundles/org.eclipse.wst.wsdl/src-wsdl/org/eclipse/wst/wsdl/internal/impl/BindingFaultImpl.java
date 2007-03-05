@@ -200,10 +200,11 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
     switch (featureID)
     {
       case WSDLPackage.BINDING_FAULT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        if (resolve) return getEFault();
-        return basicGetEFault();
+      if (resolve)
+        return getEFault();
+      return basicGetEFault();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -218,11 +219,11 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
     switch (featureID)
     {
       case WSDLPackage.BINDING_FAULT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        setEFault((Fault)newValue);
-        return;
+      setEFault((Fault)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -237,11 +238,11 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
     switch (featureID)
     {
       case WSDLPackage.BINDING_FAULT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        setEFault((Fault)null);
-        return;
+      setEFault((Fault)null);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -256,9 +257,9 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
     switch (featureID)
     {
       case WSDLPackage.BINDING_FAULT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        return eFault != null;
+      return eFault != null;
     }
     return super.eIsSet(featureID);
   }
@@ -270,7 +271,8 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
