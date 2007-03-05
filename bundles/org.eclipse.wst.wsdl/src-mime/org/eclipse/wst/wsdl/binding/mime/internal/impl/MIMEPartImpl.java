@@ -11,24 +11,21 @@
 package org.eclipse.wst.wsdl.binding.mime.internal.impl;
 
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
-
+import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
 import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
+import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
-import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
-import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-
 import org.w3c.dom.Element;
 
 
@@ -70,7 +67,7 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart
    */
   protected EClass eStaticClass()
   {
-    return MIMEPackage.eINSTANCE.getMIMEPart();
+    return MIMEPackage.Literals.MIME_PART;
   }
 
   /**
@@ -91,99 +88,6 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart
   public List getExtensibilityElements()
   {
     return extensibilityElements;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case MIMEPackage.MIME_PART__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case MIMEPackage.MIME_PART__ELEMENT:
-      return getElement();
-      case MIMEPackage.MIME_PART__REQUIRED:
-      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
-      case MIMEPackage.MIME_PART__ELEMENT_TYPE:
-      return getElementType();
-    }
-    return eDynamicGet(eFeature, resolve);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case MIMEPackage.MIME_PART__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case MIMEPackage.MIME_PART__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case MIMEPackage.MIME_PART__REQUIRED:
-      setRequired(((Boolean)newValue).booleanValue());
-      return;
-      case MIMEPackage.MIME_PART__ELEMENT_TYPE:
-      setElementType((QName)newValue);
-      return;
-    }
-    eDynamicSet(eFeature, newValue);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eUnset(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case MIMEPackage.MIME_PART__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case MIMEPackage.MIME_PART__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case MIMEPackage.MIME_PART__REQUIRED:
-      setRequired(REQUIRED_EDEFAULT);
-      return;
-      case MIMEPackage.MIME_PART__ELEMENT_TYPE:
-      setElementType(ELEMENT_TYPE_EDEFAULT);
-      return;
-    }
-    eDynamicUnset(eFeature);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean eIsSet(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case MIMEPackage.MIME_PART__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case MIMEPackage.MIME_PART__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case MIMEPackage.MIME_PART__REQUIRED:
-      return required != REQUIRED_EDEFAULT;
-      case MIMEPackage.MIME_PART__ELEMENT_TYPE:
-      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
-    }
-    return eDynamicIsSet(eFeature);
   }
 
   //

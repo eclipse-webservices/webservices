@@ -11,6 +11,8 @@
 package org.eclipse.wst.wsdl.binding.mime.internal.util;
 
 
+import java.util.List;
+
 import javax.wsdl.extensions.ExtensibilityElement;
 
 import org.eclipse.emf.ecore.EClass;
@@ -69,80 +71,107 @@ public class MIMESwitch
    */
   public Object doSwitch(EObject theEObject)
   {
-    EClass theEClass = theEObject.eClass();
+    return doSwitch(theEObject.eClass(), theEObject);
+  }
+
+  /**
+   * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the first non-null result returned by a <code>caseXXX</code> call.
+   * @generated
+   */
+  protected Object doSwitch(EClass theEClass, EObject theEObject)
+  {
     if (theEClass.eContainer() == modelPackage)
     {
-      switch (theEClass.getClassifierID())
-      {
-        case MIMEPackage.MIME_CONTENT:
-        {
-          MIMEContent mimeContent = (MIMEContent)theEObject;
-          Object result = caseMIMEContent(mimeContent);
-          if (result == null)
-            result = caseExtensibilityElement(mimeContent);
-          if (result == null)
-            result = caseIMIMEContent(mimeContent);
-          if (result == null)
-            result = caseWSDLElement(mimeContent);
-          if (result == null)
-            result = caseIExtensibilityElement(mimeContent);
-          if (result == null)
-            result = defaultCase(theEObject);
-          return result;
-        }
-        case MIMEPackage.MIME_PART:
-        {
-          MIMEPart mimePart = (MIMEPart)theEObject;
-          Object result = caseMIMEPart(mimePart);
-          if (result == null)
-            result = caseExtensibilityElement(mimePart);
-          if (result == null)
-            result = caseIMIMEPart(mimePart);
-          if (result == null)
-            result = caseWSDLElement(mimePart);
-          if (result == null)
-            result = caseIExtensibilityElement(mimePart);
-          if (result == null)
-            result = defaultCase(theEObject);
-          return result;
-        }
-        case MIMEPackage.MIME_MULTIPART_RELATED:
-        {
-          MIMEMultipartRelated mimeMultipartRelated = (MIMEMultipartRelated)theEObject;
-          Object result = caseMIMEMultipartRelated(mimeMultipartRelated);
-          if (result == null)
-            result = caseExtensibilityElement(mimeMultipartRelated);
-          if (result == null)
-            result = caseIMIMEMultipartRelated(mimeMultipartRelated);
-          if (result == null)
-            result = caseWSDLElement(mimeMultipartRelated);
-          if (result == null)
-            result = caseIExtensibilityElement(mimeMultipartRelated);
-          if (result == null)
-            result = defaultCase(theEObject);
-          return result;
-        }
-        case MIMEPackage.MIME_MIME_XML:
-        {
-          MIMEMimeXml mimeMimeXml = (MIMEMimeXml)theEObject;
-          Object result = caseMIMEMimeXml(mimeMimeXml);
-          if (result == null)
-            result = caseExtensibilityElement(mimeMimeXml);
-          if (result == null)
-            result = caseIMIMEMimeXml(mimeMimeXml);
-          if (result == null)
-            result = caseWSDLElement(mimeMimeXml);
-          if (result == null)
-            result = caseIExtensibilityElement(mimeMimeXml);
-          if (result == null)
-            result = defaultCase(theEObject);
-          return result;
-        }
-        default:
-        return defaultCase(theEObject);
-      }
+      return doSwitch(theEClass.getClassifierID(), theEObject);
     }
-    return defaultCase(theEObject);
+    else
+    {
+      List eSuperTypes = theEClass.getESuperTypes();
+      return eSuperTypes.isEmpty() ? defaultCase(theEObject) : doSwitch((EClass)eSuperTypes.get(0), theEObject);
+    }
+  }
+
+  /**
+   * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the first non-null result returned by a <code>caseXXX</code> call.
+   * @generated
+   */
+  protected Object doSwitch(int classifierID, EObject theEObject)
+  {
+    switch (classifierID)
+    {
+      case MIMEPackage.MIME_CONTENT:
+      {
+        MIMEContent mimeContent = (MIMEContent)theEObject;
+        Object result = caseMIMEContent(mimeContent);
+        if (result == null)
+          result = caseExtensibilityElement(mimeContent);
+        if (result == null)
+          result = caseIMIMEContent(mimeContent);
+        if (result == null)
+          result = caseWSDLElement(mimeContent);
+        if (result == null)
+          result = caseIExtensibilityElement(mimeContent);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case MIMEPackage.MIME_PART:
+      {
+        MIMEPart mimePart = (MIMEPart)theEObject;
+        Object result = caseMIMEPart(mimePart);
+        if (result == null)
+          result = caseExtensibilityElement(mimePart);
+        if (result == null)
+          result = caseIMIMEPart(mimePart);
+        if (result == null)
+          result = caseWSDLElement(mimePart);
+        if (result == null)
+          result = caseIExtensibilityElement(mimePart);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case MIMEPackage.MIME_MULTIPART_RELATED:
+      {
+        MIMEMultipartRelated mimeMultipartRelated = (MIMEMultipartRelated)theEObject;
+        Object result = caseMIMEMultipartRelated(mimeMultipartRelated);
+        if (result == null)
+          result = caseExtensibilityElement(mimeMultipartRelated);
+        if (result == null)
+          result = caseIMIMEMultipartRelated(mimeMultipartRelated);
+        if (result == null)
+          result = caseWSDLElement(mimeMultipartRelated);
+        if (result == null)
+          result = caseIExtensibilityElement(mimeMultipartRelated);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case MIMEPackage.MIME_MIME_XML:
+      {
+        MIMEMimeXml mimeMimeXml = (MIMEMimeXml)theEObject;
+        Object result = caseMIMEMimeXml(mimeMimeXml);
+        if (result == null)
+          result = caseExtensibilityElement(mimeMimeXml);
+        if (result == null)
+          result = caseIMIMEMimeXml(mimeMimeXml);
+        if (result == null)
+          result = caseWSDLElement(mimeMimeXml);
+        if (result == null)
+          result = caseIExtensibilityElement(mimeMimeXml);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      default:
+      return defaultCase(theEObject);
+    }
   }
 
   /**

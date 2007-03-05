@@ -64,7 +64,7 @@ public interface MIMEMultipartRelated extends ExtensibilityElement, javax.wsdl.e
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model dataType="org.eclipse.wst.wsdl.binding.mime.List" parameters=""
+   * @model kind="operation" dataType="org.eclipse.wst.wsdl.binding.mime.List" many="false"
    * @generated
    */
   List getMIMEParts();

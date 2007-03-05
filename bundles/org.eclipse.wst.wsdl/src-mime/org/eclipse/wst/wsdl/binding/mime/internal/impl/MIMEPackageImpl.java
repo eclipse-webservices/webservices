@@ -27,8 +27,7 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
-import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
-import org.eclipse.xsd.impl.XSDPackageImpl;
+import org.eclipse.xsd.XSDPackage;
 
 
 /**
@@ -154,28 +153,26 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
   public static MIMEPackage init()
   {
     if (isInited)
-      return (MIMEPackage)EPackage.Registry.INSTANCE.get(MIMEPackage.eNS_URI);
+      return (MIMEPackage)EPackage.Registry.INSTANCE.getEPackage(MIMEPackage.eNS_URI);
 
-    // Obtain or create and register package.
-    MIMEPackageImpl theMIMEPackage = (MIMEPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof EPackage
-      ? EPackage.Registry.INSTANCE.get(eNS_URI) : new MIMEPackageImpl());
+    // Obtain or create and register package
+    MIMEPackageImpl theMIMEPackage = (MIMEPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof MIMEPackageImpl
+      ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new MIMEPackageImpl());
 
     isInited = true;
 
     // Initialize simple dependencies
-    XSDPackageImpl.init();
+    WSDLPackage.eINSTANCE.eClass();
+    XSDPackage.eINSTANCE.eClass();
 
-    // Obtain or create and register interdependencies
-    WSDLPackageImpl theWSDLPackage = (WSDLPackageImpl)(EPackage.Registry.INSTANCE.get(WSDLPackage.eNS_URI) instanceof EPackage
-      ? EPackage.Registry.INSTANCE.get(WSDLPackage.eNS_URI) : WSDLPackageImpl.eINSTANCE);
-
-    // Step 1: create meta-model objects
+    // Create package meta-data objects
     theMIMEPackage.createPackageContents();
-    theWSDLPackage.createPackageContents();
 
-    // Step 2: complete initialization
+    // Initialize created meta-data
     theMIMEPackage.initializePackageContents();
-    theWSDLPackage.initializePackageContents();
+
+    // Mark meta-data to indicate it can't be changed
+    theMIMEPackage.freeze();
 
     return theMIMEPackage;
   }
@@ -391,7 +388,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
     setNsURI(eNS_URI);
 
     // Obtain other dependent packages
-    WSDLPackageImpl theWSDLPackage = (WSDLPackageImpl)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI);
+    WSDLPackage theWSDLPackage = (WSDLPackage)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI);
 
     // Add supertypes to classes
     mimeContentEClass.getESuperTypes().add(theWSDLPackage.getExtensibilityElement());
@@ -404,7 +401,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
     mimeMimeXmlEClass.getESuperTypes().add(this.getIMIMEMimeXml());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(mimeContentEClass, MIMEContent.class, "MIMEContent", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(mimeContentEClass, MIMEContent.class, "MIMEContent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(
       getMIMEContent_Type(),
       ecorePackage.getEString(),
@@ -412,13 +409,15 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
       null,
       0,
       1,
+      MIMEContent.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEReference(
       getMIMEContent_EPart(),
       theWSDLPackage.getPart(),
@@ -427,6 +426,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
       null,
       0,
       1,
+      MIMEContent.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
@@ -434,21 +434,28 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
       IS_RESOLVE_PROXIES,
       !IS_UNSETTABLE,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
     EOperation op = addEOperation(mimeContentEClass, null, "setPart");
-    addEParameter(op, ecorePackage.getEString(), "part");
+    addEParameter(op, ecorePackage.getEString(), "part", 0, 1);
 
-    addEOperation(mimeContentEClass, ecorePackage.getEString(), "getPart");
+    op = addEOperation(mimeContentEClass, ecorePackage.getEString(), "getPart", 0, 1);
 
-    initEClass(mimePartEClass, MIMEPart.class, "MIMEPart", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(mimePartEClass, MIMEPart.class, "MIMEPart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     op = addEOperation(mimePartEClass, null, "addExtensibilityElement");
-    addEParameter(op, theWSDLPackage.getIExtensibilityElement(), "extensibilityElement");
+    addEParameter(op, theWSDLPackage.getIExtensibilityElement(), "extensibilityElement", 0, 1);
 
-    addEOperation(mimePartEClass, this.getList(), "getExtensibilityElements");
+    op = addEOperation(mimePartEClass, this.getList(), "getExtensibilityElements", 0, 1);
 
-    initEClass(mimeMultipartRelatedEClass, MIMEMultipartRelated.class, "MIMEMultipartRelated", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(
+      mimeMultipartRelatedEClass,
+      MIMEMultipartRelated.class,
+      "MIMEMultipartRelated",
+      !IS_ABSTRACT,
+      !IS_INTERFACE,
+      IS_GENERATED_INSTANCE_CLASS);
     initEReference(
       getMIMEMultipartRelated_EMIMEPart(),
       this.getMIMEPart(),
@@ -457,6 +464,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
       null,
       0,
       -1,
+      MIMEMultipartRelated.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
@@ -464,14 +472,15 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
       !IS_RESOLVE_PROXIES,
       !IS_UNSETTABLE,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(mimeMultipartRelatedEClass, null, "addMIMEPart");
-    addEParameter(op, this.getIMIMEPart(), "mimePart");
+    addEParameter(op, this.getIMIMEPart(), "mimePart", 0, 1);
 
-    addEOperation(mimeMultipartRelatedEClass, this.getList(), "getMIMEParts");
+    op = addEOperation(mimeMultipartRelatedEClass, this.getList(), "getMIMEParts", 0, 1);
 
-    initEClass(mimeMimeXmlEClass, MIMEMimeXml.class, "MIMEMimeXml", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(mimeMimeXmlEClass, MIMEMimeXml.class, "MIMEMimeXml", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(
       getMIMEMimeXml_EPart(),
       theWSDLPackage.getPart(),
@@ -480,6 +489,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
       null,
       0,
       1,
+      MIMEMimeXml.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
@@ -487,28 +497,48 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
       IS_RESOLVE_PROXIES,
       !IS_UNSETTABLE,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
     op = addEOperation(mimeMimeXmlEClass, null, "setPart");
-    addEParameter(op, ecorePackage.getEString(), "part");
+    addEParameter(op, ecorePackage.getEString(), "part", 0, 1);
 
-    addEOperation(mimeMimeXmlEClass, ecorePackage.getEString(), "getPart");
+    op = addEOperation(mimeMimeXmlEClass, ecorePackage.getEString(), "getPart", 0, 1);
 
-    initEClass(imimePartEClass, javax.wsdl.extensions.mime.MIMEPart.class, "IMIMEPart", IS_ABSTRACT, IS_INTERFACE);
+    initEClass(
+      imimePartEClass,
+      javax.wsdl.extensions.mime.MIMEPart.class,
+      "IMIMEPart",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(
       imimeMultipartRelatedEClass,
       javax.wsdl.extensions.mime.MIMEMultipartRelated.class,
       "IMIMEMultipartRelated",
       IS_ABSTRACT,
-      IS_INTERFACE);
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(imimeContentEClass, javax.wsdl.extensions.mime.MIMEContent.class, "IMIMEContent", IS_ABSTRACT, IS_INTERFACE);
+    initEClass(
+      imimeContentEClass,
+      javax.wsdl.extensions.mime.MIMEContent.class,
+      "IMIMEContent",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(imimeMimeXmlEClass, javax.wsdl.extensions.mime.MIMEMimeXml.class, "IMIMEMimeXml", IS_ABSTRACT, IS_INTERFACE);
+    initEClass(
+      imimeMimeXmlEClass,
+      javax.wsdl.extensions.mime.MIMEMimeXml.class,
+      "IMIMEMimeXml",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
     // Initialize data types
-    initEDataType(listEDataType, List.class, "List", IS_SERIALIZABLE);
+    initEDataType(listEDataType, List.class, "List", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

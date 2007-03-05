@@ -74,7 +74,7 @@ public interface MIMEMimeXml extends ExtensibilityElement, javax.wsdl.extensions
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation"
    * @generated
    */
   String getPart();

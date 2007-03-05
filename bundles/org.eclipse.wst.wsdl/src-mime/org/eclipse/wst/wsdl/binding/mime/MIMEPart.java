@@ -39,7 +39,7 @@ public interface MIMEPart extends ExtensibilityElement, javax.wsdl.extensions.mi
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model dataType="org.eclipse.wst.wsdl.binding.mime.List" parameters=""
+   * @model kind="operation" dataType="org.eclipse.wst.wsdl.binding.mime.List" many="false"
    * @generated
    */
   List getExtensibilityElements();

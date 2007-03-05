@@ -31,6 +31,7 @@ import org.eclipse.wst.wsdl.WSDLPackage;
  * </ul>
  * <!-- end-user-doc -->
  * @see org.eclipse.wst.wsdl.binding.mime.MIMEFactory
+ * @model kind="package"
  * @generated
  */
 public interface MIMEPackage extends EPackage
@@ -132,7 +133,7 @@ public interface MIMEPackage extends EPackage
   int MIME_CONTENT__EPART = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the the '<em>Content</em>' class.
+   * The number of structural features of the '<em>Content</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -187,7 +188,7 @@ public interface MIMEPackage extends EPackage
   int MIME_PART__ELEMENT_TYPE = WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE;
 
   /**
-   * The number of structural features of the the '<em>Part</em>' class.
+   * The number of structural features of the '<em>Part</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -251,7 +252,7 @@ public interface MIMEPackage extends EPackage
   int MIME_MULTIPART_RELATED__EMIME_PART = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>Multipart Related</em>' class.
+   * The number of structural features of the '<em>Multipart Related</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -315,7 +316,7 @@ public interface MIMEPackage extends EPackage
   int MIME_MIME_XML__EPART = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>Mime Xml</em>' class.
+   * The number of structural features of the '<em>Mime Xml</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -334,7 +335,7 @@ public interface MIMEPackage extends EPackage
   int IMIME_PART = 4;
 
   /**
-   * The number of structural features of the the '<em>IMIME Part</em>' class.
+   * The number of structural features of the '<em>IMIME Part</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -353,7 +354,7 @@ public interface MIMEPackage extends EPackage
   int IMIME_MULTIPART_RELATED = 5;
 
   /**
-   * The number of structural features of the the '<em>IMIME Multipart Related</em>' class.
+   * The number of structural features of the '<em>IMIME Multipart Related</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -372,7 +373,7 @@ public interface MIMEPackage extends EPackage
   int IMIME_CONTENT = 6;
 
   /**
-   * The number of structural features of the the '<em>IMIME Content</em>' class.
+   * The number of structural features of the '<em>IMIME Content</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -391,7 +392,7 @@ public interface MIMEPackage extends EPackage
   int IMIME_MIME_XML = 7;
 
   /**
-   * The number of structural features of the the '<em>IMIME Mime Xml</em>' class.
+   * The number of structural features of the '<em>IMIME Mime Xml</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -499,7 +500,7 @@ public interface MIMEPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IMIME Part</em>'.
    * @see javax.wsdl.extensions.mime.MIMEPart
-   * @model instanceClass="javax.wsdl.extensions.mime.MIMEPart" 
+   * @model instanceClass="javax.wsdl.extensions.mime.MIMEPart"
    * @generated
    */
   EClass getIMIMEPart();
@@ -510,7 +511,7 @@ public interface MIMEPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IMIME Multipart Related</em>'.
    * @see javax.wsdl.extensions.mime.MIMEMultipartRelated
-   * @model instanceClass="javax.wsdl.extensions.mime.MIMEMultipartRelated" 
+   * @model instanceClass="javax.wsdl.extensions.mime.MIMEMultipartRelated"
    * @generated
    */
   EClass getIMIMEMultipartRelated();
@@ -521,7 +522,7 @@ public interface MIMEPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IMIME Content</em>'.
    * @see javax.wsdl.extensions.mime.MIMEContent
-   * @model instanceClass="javax.wsdl.extensions.mime.MIMEContent" 
+   * @model instanceClass="javax.wsdl.extensions.mime.MIMEContent"
    * @generated
    */
   EClass getIMIMEContent();
@@ -532,7 +533,7 @@ public interface MIMEPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IMIME Mime Xml</em>'.
    * @see javax.wsdl.extensions.mime.MIMEMimeXml
-   * @model instanceClass="javax.wsdl.extensions.mime.MIMEMimeXml" 
+   * @model instanceClass="javax.wsdl.extensions.mime.MIMEMimeXml"
    * @generated
    */
   EClass getIMIMEMimeXml();
@@ -556,5 +557,143 @@ public interface MIMEPackage extends EPackage
    * @generated
    */
   MIMEFactory getMIMEFactory();
+
+  /**
+   * <!-- begin-user-doc -->
+   * Defines literals for the meta objects that represent
+   * <ul>
+   *   <li>each class,</li>
+   *   <li>each feature of each class,</li>
+   *   <li>each enum,</li>
+   *   <li>and each data type</li>
+   * </ul>
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  interface Literals
+  {
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEContentImpl <em>Content</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEContentImpl
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEContent()
+     * @generated
+     */
+    EClass MIME_CONTENT = eINSTANCE.getMIMEContent();
+
+    /**
+     * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MIME_CONTENT__TYPE = eINSTANCE.getMIMEContent_Type();
+
+    /**
+     * The meta object literal for the '<em><b>EPart</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MIME_CONTENT__EPART = eINSTANCE.getMIMEContent_EPart();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPartImpl <em>Part</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPartImpl
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEPart()
+     * @generated
+     */
+    EClass MIME_PART = eINSTANCE.getMIMEPart();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMultipartRelatedImpl <em>Multipart Related</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMultipartRelatedImpl
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEMultipartRelated()
+     * @generated
+     */
+    EClass MIME_MULTIPART_RELATED = eINSTANCE.getMIMEMultipartRelated();
+
+    /**
+     * The meta object literal for the '<em><b>EMIME Part</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MIME_MULTIPART_RELATED__EMIME_PART = eINSTANCE.getMIMEMultipartRelated_EMIMEPart();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMimeXmlImpl <em>Mime Xml</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMimeXmlImpl
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getMIMEMimeXml()
+     * @generated
+     */
+    EClass MIME_MIME_XML = eINSTANCE.getMIMEMimeXml();
+
+    /**
+     * The meta object literal for the '<em><b>EPart</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MIME_MIME_XML__EPART = eINSTANCE.getMIMEMimeXml_EPart();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.mime.MIMEPart <em>IMIME Part</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.mime.MIMEPart
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEPart()
+     * @generated
+     */
+    EClass IMIME_PART = eINSTANCE.getIMIMEPart();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.mime.MIMEMultipartRelated <em>IMIME Multipart Related</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.mime.MIMEMultipartRelated
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEMultipartRelated()
+     * @generated
+     */
+    EClass IMIME_MULTIPART_RELATED = eINSTANCE.getIMIMEMultipartRelated();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.mime.MIMEContent <em>IMIME Content</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.mime.MIMEContent
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEContent()
+     * @generated
+     */
+    EClass IMIME_CONTENT = eINSTANCE.getIMIMEContent();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.mime.MIMEMimeXml <em>IMIME Mime Xml</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.mime.MIMEMimeXml
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getIMIMEMimeXml()
+     * @generated
+     */
+    EClass IMIME_MIME_XML = eINSTANCE.getIMIMEMimeXml();
+
+    /**
+     * The meta object literal for the '<em>List</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.List
+     * @see org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEPackageImpl#getList()
+     * @generated
+     */
+    EDataType LIST = eINSTANCE.getList();
+
+  }
 
 } //MIMEPackage

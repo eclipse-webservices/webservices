@@ -30,7 +30,7 @@ public interface MIMEFactory extends EFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  MIMEFactory eINSTANCE = new org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEFactoryImpl();
+  MIMEFactory eINSTANCE = org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEFactoryImpl.init();
 
   /**
    * Returns a new object of class '<em>Content</em>'.

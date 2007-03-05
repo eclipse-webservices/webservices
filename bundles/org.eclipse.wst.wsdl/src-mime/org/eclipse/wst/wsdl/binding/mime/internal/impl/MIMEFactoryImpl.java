@@ -16,7 +16,9 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
@@ -34,7 +36,30 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
 public class MIMEFactoryImpl extends EFactoryImpl implements MIMEFactory
 {
   /**
-   * Creates and instance of the factory.
+   * Creates the default factory implementation.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public static MIMEFactory init()
+  {
+    try
+    {
+      MIMEFactory theMIMEFactory = (MIMEFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/MIME");
+      if (theMIMEFactory != null)
+      {
+        return theMIMEFactory;
+      }
+    }
+    catch (Exception exception)
+    {
+      EcorePlugin.INSTANCE.log(exception);
+    }
+    return new MIMEFactoryImpl();
+  }
+
+  /**
+   * Creates an instance of the factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
