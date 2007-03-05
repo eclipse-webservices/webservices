@@ -39,7 +39,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getBinding()
- * @model 
+ * @model
  * @generated
  */
 public interface Binding extends ExtensibleElement, javax.wsdl.Binding
@@ -81,7 +81,7 @@ public interface Binding extends ExtensibleElement, javax.wsdl.Binding
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getBinding_Undefined()
-   * @model 
+   * @model
    * @generated
    */
   boolean isUndefined();

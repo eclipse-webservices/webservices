@@ -76,7 +76,7 @@ public interface ExtensibleElement extends WSDLElement
    * @param extElement An ExtensibilityElement to be added.
    * @ignore
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void addExtensibilityElement(ExtensibilityElement extElement);

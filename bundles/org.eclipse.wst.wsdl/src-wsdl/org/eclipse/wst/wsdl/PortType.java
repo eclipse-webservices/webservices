@@ -39,7 +39,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getPortType()
- * @model 
+ * @model
  * @generated
  */
 public interface PortType extends WSDLElement, javax.wsdl.PortType
@@ -81,7 +81,7 @@ public interface PortType extends WSDLElement, javax.wsdl.PortType
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getPortType_Undefined()
-   * @model 
+   * @model
    * @generated
    */
   boolean isUndefined();

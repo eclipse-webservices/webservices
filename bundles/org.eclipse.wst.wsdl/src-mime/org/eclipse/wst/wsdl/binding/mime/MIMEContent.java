@@ -29,7 +29,7 @@ import org.eclipse.wst.wsdl.Part;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEContent()
- * @model 
+ * @model
  * @generated
  */
 public interface MIMEContent extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEContent
@@ -45,7 +45,7 @@ public interface MIMEContent extends ExtensibilityElement, javax.wsdl.extensions
    * @return the value of the '<em>Type</em>' attribute.
    * @see #setType(String)
    * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEContent_Type()
-   * @model 
+   * @model
    * @generated
    */
   String getType();
@@ -71,7 +71,7 @@ public interface MIMEContent extends ExtensibilityElement, javax.wsdl.extensions
    * @return the value of the '<em>EPart</em>' reference.
    * @see #setEPart(Part)
    * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEContent_EPart()
-   * @model 
+   * @model
    * @generated
    */
   Part getEPart();
@@ -89,7 +89,7 @@ public interface MIMEContent extends ExtensibilityElement, javax.wsdl.extensions
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void setPart(String part);

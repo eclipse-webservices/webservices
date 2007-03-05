@@ -27,7 +27,7 @@ import java.util.List;
  *
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getTypes()
- * @model 
+ * @model
  * @generated
  */
 public interface Types extends ExtensibleElement, javax.wsdl.Types
@@ -53,7 +53,7 @@ public interface Types extends ExtensibleElement, javax.wsdl.Types
    * @see org.eclipse.xsd.XSDSchema
    * @ignore
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   List getSchemas(String namespaceURI);

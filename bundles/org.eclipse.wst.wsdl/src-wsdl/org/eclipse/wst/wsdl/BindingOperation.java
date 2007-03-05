@@ -36,7 +36,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation()
- * @model 
+ * @model
  * @generated
  */
 public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingOperation
@@ -52,7 +52,7 @@ public interface BindingOperation extends ExtensibleElement, javax.wsdl.BindingO
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOperation_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();

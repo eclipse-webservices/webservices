@@ -29,7 +29,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPFault()
- * @model 
+ * @model
  * @generated
  */
 public interface SOAPFault extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPFault

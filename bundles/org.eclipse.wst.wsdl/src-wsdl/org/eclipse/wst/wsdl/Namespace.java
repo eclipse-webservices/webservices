@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getNamespace()
- * @model 
+ * @model
  * @generated
  */
 public interface Namespace extends EObject
@@ -50,7 +50,7 @@ public interface Namespace extends EObject
    * @return the value of the '<em>URI</em>' attribute.
    * @see #setURI(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getNamespace_URI()
-   * @model 
+   * @model
    * @generated
    */
   String getURI();
@@ -76,7 +76,7 @@ public interface Namespace extends EObject
    * @return the value of the '<em>Prefix</em>' attribute.
    * @see #setPrefix(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getNamespace_Prefix()
-   * @model 
+   * @model
    * @generated
    */
   String getPrefix();

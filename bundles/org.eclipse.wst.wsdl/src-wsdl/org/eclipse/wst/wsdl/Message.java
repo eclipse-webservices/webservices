@@ -39,7 +39,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getMessage()
- * @model 
+ * @model
  * @generated
  */
 public interface Message extends WSDLElement, javax.wsdl.Message
@@ -81,7 +81,7 @@ public interface Message extends WSDLElement, javax.wsdl.Message
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getMessage_Undefined()
-   * @model 
+   * @model
    * @generated
    */
   boolean isUndefined();

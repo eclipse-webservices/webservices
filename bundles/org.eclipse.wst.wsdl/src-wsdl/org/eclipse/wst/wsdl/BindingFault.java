@@ -30,7 +30,7 @@ package org.eclipse.wst.wsdl;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingFault()
- * @model 
+ * @model
  * @generated
  */
 public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
@@ -46,7 +46,7 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingFault_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();
@@ -106,7 +106,7 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
    * @param fault the new value of the '<em>EFault</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void setFault(javax.wsdl.Fault fault);

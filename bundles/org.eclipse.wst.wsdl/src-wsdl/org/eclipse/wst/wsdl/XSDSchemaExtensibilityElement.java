@@ -29,7 +29,7 @@ import org.eclipse.xsd.XSDSchema;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement()
- * @model 
+ * @model
  * @generated
  */
 public interface XSDSchemaExtensibilityElement extends ExtensibilityElement

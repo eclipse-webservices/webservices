@@ -24,7 +24,7 @@ package org.eclipse.wst.wsdl;
  *
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getOutput()
- * @model 
+ * @model
  * @generated
  */
 public interface Output extends MessageReference, WSDLElement, javax.wsdl.Output

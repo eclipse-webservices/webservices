@@ -107,7 +107,7 @@ public interface WSDLElement extends EObject
    * Sets the enclosing definition of this WSDL element.
    * @param definition the Definition that contains this WSDL element.
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void setEnclosingDefinition(Definition definition);

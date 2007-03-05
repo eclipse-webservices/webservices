@@ -43,7 +43,7 @@ public interface MessageReference extends WSDLElement
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getMessageReference_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();

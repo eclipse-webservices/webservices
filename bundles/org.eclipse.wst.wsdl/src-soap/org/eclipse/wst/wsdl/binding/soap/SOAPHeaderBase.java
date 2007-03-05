@@ -34,7 +34,7 @@ import org.eclipse.wst.wsdl.Part;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase()
- * @model 
+ * @model
  * @generated
  */
 public interface SOAPHeaderBase extends ExtensibilityElement
@@ -50,7 +50,7 @@ public interface SOAPHeaderBase extends ExtensibilityElement
    * @return the value of the '<em>Use</em>' attribute.
    * @see #setUse(String)
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_Use()
-   * @model 
+   * @model
    * @generated
    */
   String getUse();
@@ -76,7 +76,7 @@ public interface SOAPHeaderBase extends ExtensibilityElement
    * @return the value of the '<em>Namespace URI</em>' attribute.
    * @see #setNamespaceURI(String)
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_NamespaceURI()
-   * @model 
+   * @model
    * @generated
    */
   String getNamespaceURI();

@@ -27,7 +27,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPBinding()
- * @model 
+ * @model
  * @generated
  */
 public interface HTTPBinding extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPBinding
@@ -43,7 +43,7 @@ public interface HTTPBinding extends ExtensibilityElement, javax.wsdl.extensions
    * @return the value of the '<em>Verb</em>' attribute.
    * @see #setVerb(String)
    * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPBinding_Verb()
-   * @model 
+   * @model
    * @generated
    */
   String getVerb();

@@ -30,7 +30,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getUnknownExtensibilityElement()
- * @model 
+ * @model
  * @generated
  */
 public interface UnknownExtensibilityElement extends ExtensibilityElement

@@ -28,7 +28,7 @@ import org.eclipse.wst.wsdl.Part;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEMimeXml()
- * @model 
+ * @model
  * @generated
  */
 public interface MIMEMimeXml extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEMimeXml
@@ -44,7 +44,7 @@ public interface MIMEMimeXml extends ExtensibilityElement, javax.wsdl.extensions
    * @return the value of the '<em>EPart</em>' reference.
    * @see #setEPart(Part)
    * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEMimeXml_EPart()
-   * @model 
+   * @model
    * @generated
    */
   Part getEPart();
@@ -62,7 +62,7 @@ public interface MIMEMimeXml extends ExtensibilityElement, javax.wsdl.extensions
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void setPart(String part);

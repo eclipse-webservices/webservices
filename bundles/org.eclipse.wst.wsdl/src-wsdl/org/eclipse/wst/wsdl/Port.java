@@ -31,7 +31,7 @@ package org.eclipse.wst.wsdl;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getPort()
- * @model 
+ * @model
  * @generated
  */
 public interface Port extends ExtensibleElement, javax.wsdl.Port
@@ -47,7 +47,7 @@ public interface Port extends ExtensibleElement, javax.wsdl.Port
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getPort_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();

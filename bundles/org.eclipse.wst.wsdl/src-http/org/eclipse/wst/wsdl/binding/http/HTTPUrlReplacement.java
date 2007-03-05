@@ -21,7 +21,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  *
  *
  * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPUrlReplacement()
- * @model 
+ * @model
  * @generated
  */
 public interface HTTPUrlReplacement extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPUrlReplacement

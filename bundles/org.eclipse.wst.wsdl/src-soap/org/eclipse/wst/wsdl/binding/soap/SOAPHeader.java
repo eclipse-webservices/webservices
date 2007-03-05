@@ -27,7 +27,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeader()
- * @model 
+ * @model
  * @generated
  */
 public interface SOAPHeader extends SOAPHeaderBase

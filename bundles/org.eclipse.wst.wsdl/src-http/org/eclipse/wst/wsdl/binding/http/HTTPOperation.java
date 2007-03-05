@@ -27,7 +27,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPOperation()
- * @model 
+ * @model
  * @generated
  */
 public interface HTTPOperation extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPOperation
@@ -43,7 +43,7 @@ public interface HTTPOperation extends ExtensibilityElement, javax.wsdl.extensio
    * @return the value of the '<em>Location URI</em>' attribute.
    * @see #setLocationURI(String)
    * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPOperation_LocationURI()
-   * @model 
+   * @model
    * @generated
    */
   String getLocationURI();

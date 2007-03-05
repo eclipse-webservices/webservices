@@ -39,7 +39,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getService()
- * @model 
+ * @model
  * @generated
  */
 public interface Service extends ExtensibleElement, javax.wsdl.Service
@@ -81,7 +81,7 @@ public interface Service extends ExtensibleElement, javax.wsdl.Service
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getService_Undefined()
-   * @model 
+   * @model
    * @generated
    */
   boolean isUndefined();

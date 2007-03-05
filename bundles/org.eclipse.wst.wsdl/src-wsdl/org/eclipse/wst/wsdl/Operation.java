@@ -43,7 +43,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation()
- * @model 
+ * @model
  * @generated
  */
 public interface Operation extends WSDLElement, javax.wsdl.Operation
@@ -85,7 +85,7 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();
@@ -111,7 +111,7 @@ public interface Operation extends WSDLElement, javax.wsdl.Operation
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getOperation_Undefined()
-   * @model 
+   * @model
    * @generated
    */
   boolean isUndefined();

@@ -46,7 +46,7 @@ import org.w3c.dom.Document;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getDefinition()
- * @model 
+ * @model
  * @generated
  */
 public interface Definition extends ExtensibleElement, javax.wsdl.Definition
@@ -62,7 +62,7 @@ public interface Definition extends ExtensibleElement, javax.wsdl.Definition
    * @return the value of the '<em>Target Namespace</em>' attribute.
    * @see #setTargetNamespace(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getDefinition_TargetNamespace()
-   * @model 
+   * @model
    * @generated
    */
   String getTargetNamespace();
@@ -88,7 +88,7 @@ public interface Definition extends ExtensibleElement, javax.wsdl.Definition
    * @return the value of the '<em>Location</em>' attribute.
    * @see #setLocation(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getDefinition_Location()
-   * @model 
+   * @model
    * @generated
    */
   String getLocation();
@@ -140,7 +140,7 @@ public interface Definition extends ExtensibleElement, javax.wsdl.Definition
    * @return the value of the '<em>Encoding</em>' attribute.
    * @see #setEncoding(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getDefinition_Encoding()
-   * @model 
+   * @model
    * @generated
    */
   String getEncoding();

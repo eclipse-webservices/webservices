@@ -28,7 +28,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBinding()
- * @model 
+ * @model
  * @generated
  */
 public interface SOAPBinding extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPBinding

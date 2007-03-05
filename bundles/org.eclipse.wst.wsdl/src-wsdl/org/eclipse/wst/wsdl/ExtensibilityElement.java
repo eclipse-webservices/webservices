@@ -34,7 +34,7 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibilityElement()
- * @model 
+ * @model
  * @generated
  */
 public interface ExtensibilityElement extends WSDLElement, javax.wsdl.extensions.ExtensibilityElement
@@ -50,7 +50,7 @@ public interface ExtensibilityElement extends WSDLElement, javax.wsdl.extensions
    * @return the value of the '<em>Required</em>' attribute.
    * @see #setRequired(boolean)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibilityElement_Required()
-   * @model 
+   * @model
    * @generated
    */
   boolean isRequired();

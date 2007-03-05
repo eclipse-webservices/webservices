@@ -30,7 +30,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody()
- * @model 
+ * @model
  * @generated
  */
 public interface SOAPBody extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPBody

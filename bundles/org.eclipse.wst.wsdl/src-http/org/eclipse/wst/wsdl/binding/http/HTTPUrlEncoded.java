@@ -21,7 +21,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  *
  *
  * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPUrlEncoded()
- * @model 
+ * @model
  * @generated
  */
 public interface HTTPUrlEncoded extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPUrlEncoded

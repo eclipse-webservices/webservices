@@ -30,7 +30,7 @@ package org.eclipse.wst.wsdl;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingInput()
- * @model 
+ * @model
  * @generated
  */
 public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
@@ -46,7 +46,7 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingInput_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();
@@ -106,7 +106,7 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
    * @param input the new value of the '<em>EInput</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void setInput(javax.wsdl.Input input);

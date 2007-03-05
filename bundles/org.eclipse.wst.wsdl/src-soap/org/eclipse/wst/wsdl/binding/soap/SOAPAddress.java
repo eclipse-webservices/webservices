@@ -27,7 +27,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPAddress()
- * @model 
+ * @model
  * @generated
  */
 public interface SOAPAddress extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPAddress

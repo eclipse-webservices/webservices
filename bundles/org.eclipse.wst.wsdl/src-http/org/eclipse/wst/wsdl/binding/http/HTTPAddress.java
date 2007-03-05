@@ -27,7 +27,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPAddress()
- * @model 
+ * @model
  * @generated
  */
 public interface HTTPAddress extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPAddress
@@ -43,7 +43,7 @@ public interface HTTPAddress extends ExtensibilityElement, javax.wsdl.extensions
    * @return the value of the '<em>Location URI</em>' attribute.
    * @see #setLocationURI(String)
    * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPAddress_LocationURI()
-   * @model 
+   * @model
    * @generated
    */
   String getLocationURI();

@@ -32,7 +32,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEMultipartRelated()
- * @model 
+ * @model
  * @generated
  */
 public interface MIMEMultipartRelated extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEMultipartRelated
@@ -56,7 +56,7 @@ public interface MIMEMultipartRelated extends ExtensibilityElement, javax.wsdl.e
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void addMIMEPart(MIMEPart mimePart);

@@ -31,7 +31,7 @@ package org.eclipse.wst.wsdl;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOutput()
- * @model 
+ * @model
  * @generated
  */
 public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutput
@@ -47,7 +47,7 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOutput_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();
@@ -107,7 +107,7 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * @param output the new value of the '<em>EOutput</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void setOutput(javax.wsdl.Output output);

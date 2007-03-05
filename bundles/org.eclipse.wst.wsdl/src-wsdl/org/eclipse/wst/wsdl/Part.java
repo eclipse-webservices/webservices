@@ -41,7 +41,7 @@ import org.eclipse.xsd.XSDTypeDefinition;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getPart()
- * @model 
+ * @model
  * @generated
  */
 public interface Part extends WSDLElement, javax.wsdl.Part
@@ -57,7 +57,7 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_Name()
-   * @model 
+   * @model
    * @generated
    */
   String getName();
@@ -135,7 +135,7 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * @return the value of the '<em>Type Definition</em>' reference.
    * @see #setTypeDefinition(XSDTypeDefinition)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_TypeDefinition()
-   * @model 
+   * @model
    * @generated
    */
   XSDTypeDefinition getTypeDefinition();
@@ -161,7 +161,7 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * @return the value of the '<em>Element Declaration</em>' reference.
    * @see #setElementDeclaration(XSDElementDeclaration)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_ElementDeclaration()
-   * @model 
+   * @model
    * @generated
    */
   XSDElementDeclaration getElementDeclaration();
@@ -187,7 +187,7 @@ public interface Part extends WSDLElement, javax.wsdl.Part
    * @return the value of the '<em>EMessage</em>' reference.
    * @see #setEMessage(Message)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getPart_EMessage()
-   * @model 
+   * @model
    * @generated
    */
   Message getEMessage();
