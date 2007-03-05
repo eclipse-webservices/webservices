@@ -119,7 +119,7 @@ public class HTTPOperationImpl extends ExtensibilityElementImpl implements HTTPO
     switch (featureID)
     {
       case HTTPPackage.HTTP_OPERATION__LOCATION_URI:
-        return getLocationURI();
+      return getLocationURI();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -134,8 +134,8 @@ public class HTTPOperationImpl extends ExtensibilityElementImpl implements HTTPO
     switch (featureID)
     {
       case HTTPPackage.HTTP_OPERATION__LOCATION_URI:
-        setLocationURI((String)newValue);
-        return;
+      setLocationURI((String)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -150,8 +150,8 @@ public class HTTPOperationImpl extends ExtensibilityElementImpl implements HTTPO
     switch (featureID)
     {
       case HTTPPackage.HTTP_OPERATION__LOCATION_URI:
-        setLocationURI(LOCATION_URI_EDEFAULT);
-        return;
+      setLocationURI(LOCATION_URI_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -166,7 +166,7 @@ public class HTTPOperationImpl extends ExtensibilityElementImpl implements HTTPO
     switch (featureID)
     {
       case HTTPPackage.HTTP_OPERATION__LOCATION_URI:
-        return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
+      return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
     }
     return super.eIsSet(featureID);
   }
@@ -178,7 +178,8 @@ public class HTTPOperationImpl extends ExtensibilityElementImpl implements HTTPO
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (locationURI: ");

@@ -91,10 +91,7 @@ public class HTTPSwitch
     else
     {
       List eSuperTypes = theEClass.getESuperTypes();
-      return
-        eSuperTypes.isEmpty() ?
-          defaultCase(theEObject) :
-          doSwitch((EClass)eSuperTypes.get(0), theEObject);
+      return eSuperTypes.isEmpty() ? defaultCase(theEObject) : doSwitch((EClass)eSuperTypes.get(0), theEObject);
     }
   }
 
@@ -113,58 +110,84 @@ public class HTTPSwitch
       {
         HTTPBinding httpBinding = (HTTPBinding)theEObject;
         Object result = caseHTTPBinding(httpBinding);
-        if (result == null) result = caseExtensibilityElement(httpBinding);
-        if (result == null) result = caseIHTTPBinding(httpBinding);
-        if (result == null) result = caseWSDLElement(httpBinding);
-        if (result == null) result = caseIExtensibilityElement(httpBinding);
-        if (result == null) result = defaultCase(theEObject);
+        if (result == null)
+          result = caseExtensibilityElement(httpBinding);
+        if (result == null)
+          result = caseIHTTPBinding(httpBinding);
+        if (result == null)
+          result = caseWSDLElement(httpBinding);
+        if (result == null)
+          result = caseIExtensibilityElement(httpBinding);
+        if (result == null)
+          result = defaultCase(theEObject);
         return result;
       }
       case HTTPPackage.HTTP_OPERATION:
       {
         HTTPOperation httpOperation = (HTTPOperation)theEObject;
         Object result = caseHTTPOperation(httpOperation);
-        if (result == null) result = caseExtensibilityElement(httpOperation);
-        if (result == null) result = caseIHTTPOperation(httpOperation);
-        if (result == null) result = caseWSDLElement(httpOperation);
-        if (result == null) result = caseIExtensibilityElement(httpOperation);
-        if (result == null) result = defaultCase(theEObject);
+        if (result == null)
+          result = caseExtensibilityElement(httpOperation);
+        if (result == null)
+          result = caseIHTTPOperation(httpOperation);
+        if (result == null)
+          result = caseWSDLElement(httpOperation);
+        if (result == null)
+          result = caseIExtensibilityElement(httpOperation);
+        if (result == null)
+          result = defaultCase(theEObject);
         return result;
       }
       case HTTPPackage.HTTP_URL_REPLACEMENT:
       {
         HTTPUrlReplacement httpUrlReplacement = (HTTPUrlReplacement)theEObject;
         Object result = caseHTTPUrlReplacement(httpUrlReplacement);
-        if (result == null) result = caseExtensibilityElement(httpUrlReplacement);
-        if (result == null) result = caseIHTTPUrlReplacement(httpUrlReplacement);
-        if (result == null) result = caseWSDLElement(httpUrlReplacement);
-        if (result == null) result = caseIExtensibilityElement(httpUrlReplacement);
-        if (result == null) result = defaultCase(theEObject);
+        if (result == null)
+          result = caseExtensibilityElement(httpUrlReplacement);
+        if (result == null)
+          result = caseIHTTPUrlReplacement(httpUrlReplacement);
+        if (result == null)
+          result = caseWSDLElement(httpUrlReplacement);
+        if (result == null)
+          result = caseIExtensibilityElement(httpUrlReplacement);
+        if (result == null)
+          result = defaultCase(theEObject);
         return result;
       }
       case HTTPPackage.HTTP_URL_ENCODED:
       {
         HTTPUrlEncoded httpUrlEncoded = (HTTPUrlEncoded)theEObject;
         Object result = caseHTTPUrlEncoded(httpUrlEncoded);
-        if (result == null) result = caseExtensibilityElement(httpUrlEncoded);
-        if (result == null) result = caseIHTTPUrlEncoded(httpUrlEncoded);
-        if (result == null) result = caseWSDLElement(httpUrlEncoded);
-        if (result == null) result = caseIExtensibilityElement(httpUrlEncoded);
-        if (result == null) result = defaultCase(theEObject);
+        if (result == null)
+          result = caseExtensibilityElement(httpUrlEncoded);
+        if (result == null)
+          result = caseIHTTPUrlEncoded(httpUrlEncoded);
+        if (result == null)
+          result = caseWSDLElement(httpUrlEncoded);
+        if (result == null)
+          result = caseIExtensibilityElement(httpUrlEncoded);
+        if (result == null)
+          result = defaultCase(theEObject);
         return result;
       }
       case HTTPPackage.HTTP_ADDRESS:
       {
         HTTPAddress httpAddress = (HTTPAddress)theEObject;
         Object result = caseHTTPAddress(httpAddress);
-        if (result == null) result = caseExtensibilityElement(httpAddress);
-        if (result == null) result = caseIHTTPAddress(httpAddress);
-        if (result == null) result = caseWSDLElement(httpAddress);
-        if (result == null) result = caseIExtensibilityElement(httpAddress);
-        if (result == null) result = defaultCase(theEObject);
+        if (result == null)
+          result = caseExtensibilityElement(httpAddress);
+        if (result == null)
+          result = caseIHTTPAddress(httpAddress);
+        if (result == null)
+          result = caseWSDLElement(httpAddress);
+        if (result == null)
+          result = caseIExtensibilityElement(httpAddress);
+        if (result == null)
+          result = defaultCase(theEObject);
         return result;
       }
-      default: return defaultCase(theEObject);
+      default:
+      return defaultCase(theEObject);
     }
   }
 

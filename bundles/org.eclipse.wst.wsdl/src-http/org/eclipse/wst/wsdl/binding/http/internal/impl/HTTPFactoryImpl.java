@@ -43,7 +43,7 @@ public class HTTPFactoryImpl extends EFactoryImpl implements HTTPFactory
   {
     try
     {
-      HTTPFactory theHTTPFactory = (HTTPFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/HTTP"); 
+      HTTPFactory theHTTPFactory = (HTTPFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/HTTP");
       if (theHTTPFactory != null)
       {
         return theHTTPFactory;
@@ -76,13 +76,18 @@ public class HTTPFactoryImpl extends EFactoryImpl implements HTTPFactory
   {
     switch (eClass.getClassifierID())
     {
-      case HTTPPackage.HTTP_BINDING: return createHTTPBinding();
-      case HTTPPackage.HTTP_OPERATION: return createHTTPOperation();
-      case HTTPPackage.HTTP_URL_REPLACEMENT: return createHTTPUrlReplacement();
-      case HTTPPackage.HTTP_URL_ENCODED: return createHTTPUrlEncoded();
-      case HTTPPackage.HTTP_ADDRESS: return createHTTPAddress();
+      case HTTPPackage.HTTP_BINDING:
+      return createHTTPBinding();
+      case HTTPPackage.HTTP_OPERATION:
+      return createHTTPOperation();
+      case HTTPPackage.HTTP_URL_REPLACEMENT:
+      return createHTTPUrlReplacement();
+      case HTTPPackage.HTTP_URL_ENCODED:
+      return createHTTPUrlEncoded();
+      case HTTPPackage.HTTP_ADDRESS:
+      return createHTTPAddress();
       default:
-        throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
   }
 

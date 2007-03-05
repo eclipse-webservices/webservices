@@ -155,10 +155,12 @@ public class HTTPPackageImpl extends EPackageImpl implements HTTPPackage
    */
   public static HTTPPackage init()
   {
-    if (isInited) return (HTTPPackage)EPackage.Registry.INSTANCE.getEPackage(HTTPPackage.eNS_URI);
+    if (isInited)
+      return (HTTPPackage)EPackage.Registry.INSTANCE.getEPackage(HTTPPackage.eNS_URI);
 
     // Obtain or create and register package
-    HTTPPackageImpl theHTTPPackage = (HTTPPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof HTTPPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new HTTPPackageImpl());
+    HTTPPackageImpl theHTTPPackage = (HTTPPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof HTTPPackageImpl
+      ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new HTTPPackageImpl());
 
     isInited = true;
 
@@ -334,7 +336,8 @@ public class HTTPPackageImpl extends EPackageImpl implements HTTPPackage
    */
   public void createPackageContents()
   {
-    if (isCreated) return;
+    if (isCreated)
+      return;
     isCreated = true;
 
     // Create classes and their features
@@ -378,7 +381,8 @@ public class HTTPPackageImpl extends EPackageImpl implements HTTPPackage
    */
   public void initializePackageContents()
   {
-    if (isInitialized) return;
+    if (isInitialized)
+      return;
     isInitialized = true;
 
     // Initialize package
@@ -403,27 +407,108 @@ public class HTTPPackageImpl extends EPackageImpl implements HTTPPackage
 
     // Initialize classes and features; add operations and parameters
     initEClass(httpBindingEClass, HTTPBinding.class, "HTTPBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getHTTPBinding_Verb(), ecorePackage.getEString(), "verb", null, 0, 1, HTTPBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getHTTPBinding_Verb(),
+      ecorePackage.getEString(),
+      "verb",
+      null,
+      0,
+      1,
+      HTTPBinding.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
     initEClass(httpOperationEClass, HTTPOperation.class, "HTTPOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getHTTPOperation_LocationURI(), ecorePackage.getEString(), "locationURI", null, 0, 1, HTTPOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getHTTPOperation_LocationURI(),
+      ecorePackage.getEString(),
+      "locationURI",
+      null,
+      0,
+      1,
+      HTTPOperation.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(httpUrlReplacementEClass, HTTPUrlReplacement.class, "HTTPUrlReplacement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      httpUrlReplacementEClass,
+      HTTPUrlReplacement.class,
+      "HTTPUrlReplacement",
+      !IS_ABSTRACT,
+      !IS_INTERFACE,
+      IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(httpUrlEncodedEClass, HTTPUrlEncoded.class, "HTTPUrlEncoded", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(httpAddressEClass, HTTPAddress.class, "HTTPAddress", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getHTTPAddress_LocationURI(), ecorePackage.getEString(), "locationURI", null, 0, 1, HTTPAddress.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(
+      getHTTPAddress_LocationURI(),
+      ecorePackage.getEString(),
+      "locationURI",
+      null,
+      0,
+      1,
+      HTTPAddress.class,
+      !IS_TRANSIENT,
+      !IS_VOLATILE,
+      IS_CHANGEABLE,
+      !IS_UNSETTABLE,
+      !IS_ID,
+      IS_UNIQUE,
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(ihttpAddressEClass, javax.wsdl.extensions.http.HTTPAddress.class, "IHTTPAddress", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      ihttpAddressEClass,
+      javax.wsdl.extensions.http.HTTPAddress.class,
+      "IHTTPAddress",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(ihttpBindingEClass, javax.wsdl.extensions.http.HTTPBinding.class, "IHTTPBinding", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      ihttpBindingEClass,
+      javax.wsdl.extensions.http.HTTPBinding.class,
+      "IHTTPBinding",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(ihttpOperationEClass, javax.wsdl.extensions.http.HTTPOperation.class, "IHTTPOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      ihttpOperationEClass,
+      javax.wsdl.extensions.http.HTTPOperation.class,
+      "IHTTPOperation",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(ihttpUrlEncodedEClass, javax.wsdl.extensions.http.HTTPUrlEncoded.class, "IHTTPUrlEncoded", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      ihttpUrlEncodedEClass,
+      javax.wsdl.extensions.http.HTTPUrlEncoded.class,
+      "IHTTPUrlEncoded",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(ihttpUrlReplacementEClass, javax.wsdl.extensions.http.HTTPUrlReplacement.class, "IHTTPUrlReplacement", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(
+      ihttpUrlReplacementEClass,
+      javax.wsdl.extensions.http.HTTPUrlReplacement.class,
+      "IHTTPUrlReplacement",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

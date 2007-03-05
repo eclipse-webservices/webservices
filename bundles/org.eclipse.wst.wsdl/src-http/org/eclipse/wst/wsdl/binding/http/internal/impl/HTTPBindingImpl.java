@@ -119,7 +119,7 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
     switch (featureID)
     {
       case HTTPPackage.HTTP_BINDING__VERB:
-        return getVerb();
+      return getVerb();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -134,8 +134,8 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
     switch (featureID)
     {
       case HTTPPackage.HTTP_BINDING__VERB:
-        setVerb((String)newValue);
-        return;
+      setVerb((String)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -150,8 +150,8 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
     switch (featureID)
     {
       case HTTPPackage.HTTP_BINDING__VERB:
-        setVerb(VERB_EDEFAULT);
-        return;
+      setVerb(VERB_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -166,7 +166,7 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
     switch (featureID)
     {
       case HTTPPackage.HTTP_BINDING__VERB:
-        return VERB_EDEFAULT == null ? verb != null : !VERB_EDEFAULT.equals(verb);
+      return VERB_EDEFAULT == null ? verb != null : !VERB_EDEFAULT.equals(verb);
     }
     return super.eIsSet(featureID);
   }
@@ -178,7 +178,8 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (verb: ");
