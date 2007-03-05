@@ -91,67 +91,54 @@ public class HTTPAdapterFactory extends AdapterFactoryImpl
       {
         return createHTTPBindingAdapter();
       }
-
       public Object caseHTTPOperation(HTTPOperation object)
       {
         return createHTTPOperationAdapter();
       }
-
       public Object caseHTTPUrlReplacement(HTTPUrlReplacement object)
       {
         return createHTTPUrlReplacementAdapter();
       }
-
       public Object caseHTTPUrlEncoded(HTTPUrlEncoded object)
       {
         return createHTTPUrlEncodedAdapter();
       }
-
       public Object caseHTTPAddress(HTTPAddress object)
       {
         return createHTTPAddressAdapter();
       }
-
       public Object caseIHTTPAddress(javax.wsdl.extensions.http.HTTPAddress object)
       {
         return createIHTTPAddressAdapter();
       }
-
       public Object caseIHTTPBinding(javax.wsdl.extensions.http.HTTPBinding object)
       {
         return createIHTTPBindingAdapter();
       }
-
       public Object caseIHTTPOperation(javax.wsdl.extensions.http.HTTPOperation object)
       {
         return createIHTTPOperationAdapter();
       }
-
       public Object caseIHTTPUrlEncoded(javax.wsdl.extensions.http.HTTPUrlEncoded object)
       {
         return createIHTTPUrlEncodedAdapter();
       }
-
       public Object caseIHTTPUrlReplacement(javax.wsdl.extensions.http.HTTPUrlReplacement object)
       {
         return createIHTTPUrlReplacementAdapter();
       }
-
       public Object caseWSDLElement(WSDLElement object)
       {
         return createWSDLElementAdapter();
       }
-
       public Object caseIExtensibilityElement(ExtensibilityElement object)
       {
         return createIExtensibilityElementAdapter();
       }
-
       public Object caseExtensibilityElement(org.eclipse.wst.wsdl.ExtensibilityElement object)
       {
         return createExtensibilityElementAdapter();
       }
-
       public Object defaultCase(EObject object)
       {
         return createEObjectAdapter();

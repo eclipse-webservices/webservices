@@ -30,7 +30,7 @@ public interface HTTPFactory extends EFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  HTTPFactory eINSTANCE = new org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPFactoryImpl();
+  HTTPFactory eINSTANCE = org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPFactoryImpl.init();
 
   /**
    * Returns a new object of class '<em>Binding</em>'.

@@ -29,6 +29,7 @@ import org.eclipse.wst.wsdl.WSDLPackage;
  * </ul>
  * <!-- end-user-doc -->
  * @see org.eclipse.wst.wsdl.binding.http.HTTPFactory
+ * @model kind="package"
  * @generated
  */
 public interface HTTPPackage extends EPackage
@@ -121,7 +122,7 @@ public interface HTTPPackage extends EPackage
   int HTTP_BINDING__VERB = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>Binding</em>' class.
+   * The number of structural features of the '<em>Binding</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -185,7 +186,7 @@ public interface HTTPPackage extends EPackage
   int HTTP_OPERATION__LOCATION_URI = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>Operation</em>' class.
+   * The number of structural features of the '<em>Operation</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -240,7 +241,7 @@ public interface HTTPPackage extends EPackage
   int HTTP_URL_REPLACEMENT__ELEMENT_TYPE = WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE;
 
   /**
-   * The number of structural features of the the '<em>Url Replacement</em>' class.
+   * The number of structural features of the '<em>Url Replacement</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -295,7 +296,7 @@ public interface HTTPPackage extends EPackage
   int HTTP_URL_ENCODED__ELEMENT_TYPE = WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE;
 
   /**
-   * The number of structural features of the the '<em>Url Encoded</em>' class.
+   * The number of structural features of the '<em>Url Encoded</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -359,7 +360,7 @@ public interface HTTPPackage extends EPackage
   int HTTP_ADDRESS__LOCATION_URI = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>Address</em>' class.
+   * The number of structural features of the '<em>Address</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -378,7 +379,7 @@ public interface HTTPPackage extends EPackage
   int IHTTP_ADDRESS = 5;
 
   /**
-   * The number of structural features of the the '<em>IHTTP Address</em>' class.
+   * The number of structural features of the '<em>IHTTP Address</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -397,7 +398,7 @@ public interface HTTPPackage extends EPackage
   int IHTTP_BINDING = 6;
 
   /**
-   * The number of structural features of the the '<em>IHTTP Binding</em>' class.
+   * The number of structural features of the '<em>IHTTP Binding</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -416,7 +417,7 @@ public interface HTTPPackage extends EPackage
   int IHTTP_OPERATION = 7;
 
   /**
-   * The number of structural features of the the '<em>IHTTP Operation</em>' class.
+   * The number of structural features of the '<em>IHTTP Operation</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -435,7 +436,7 @@ public interface HTTPPackage extends EPackage
   int IHTTP_URL_ENCODED = 8;
 
   /**
-   * The number of structural features of the the '<em>IHTTP Url Encoded</em>' class.
+   * The number of structural features of the '<em>IHTTP Url Encoded</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -454,7 +455,7 @@ public interface HTTPPackage extends EPackage
   int IHTTP_URL_REPLACEMENT = 9;
 
   /**
-   * The number of structural features of the the '<em>IHTTP Url Replacement</em>' class.
+   * The number of structural features of the '<em>IHTTP Url Replacement</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -551,7 +552,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IHTTP Address</em>'.
    * @see javax.wsdl.extensions.http.HTTPAddress
-   * @model instanceClass="javax.wsdl.extensions.http.HTTPAddress" 
+   * @model instanceClass="javax.wsdl.extensions.http.HTTPAddress"
    * @generated
    */
   EClass getIHTTPAddress();
@@ -562,7 +563,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IHTTP Binding</em>'.
    * @see javax.wsdl.extensions.http.HTTPBinding
-   * @model instanceClass="javax.wsdl.extensions.http.HTTPBinding" 
+   * @model instanceClass="javax.wsdl.extensions.http.HTTPBinding"
    * @generated
    */
   EClass getIHTTPBinding();
@@ -573,7 +574,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IHTTP Operation</em>'.
    * @see javax.wsdl.extensions.http.HTTPOperation
-   * @model instanceClass="javax.wsdl.extensions.http.HTTPOperation" 
+   * @model instanceClass="javax.wsdl.extensions.http.HTTPOperation"
    * @generated
    */
   EClass getIHTTPOperation();
@@ -584,7 +585,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IHTTP Url Encoded</em>'.
    * @see javax.wsdl.extensions.http.HTTPUrlEncoded
-   * @model instanceClass="javax.wsdl.extensions.http.HTTPUrlEncoded" 
+   * @model instanceClass="javax.wsdl.extensions.http.HTTPUrlEncoded"
    * @generated
    */
   EClass getIHTTPUrlEncoded();
@@ -595,7 +596,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IHTTP Url Replacement</em>'.
    * @see javax.wsdl.extensions.http.HTTPUrlReplacement
-   * @model instanceClass="javax.wsdl.extensions.http.HTTPUrlReplacement" 
+   * @model instanceClass="javax.wsdl.extensions.http.HTTPUrlReplacement"
    * @generated
    */
   EClass getIHTTPUrlReplacement();
@@ -608,5 +609,145 @@ public interface HTTPPackage extends EPackage
    * @generated
    */
   HTTPFactory getHTTPFactory();
+
+  /**
+   * <!-- begin-user-doc -->
+   * Defines literals for the meta objects that represent
+   * <ul>
+   *   <li>each class,</li>
+   *   <li>each feature of each class,</li>
+   *   <li>each enum,</li>
+   *   <li>and each data type</li>
+   * </ul>
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  interface Literals
+  {
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPBindingImpl <em>Binding</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPBindingImpl
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPBinding()
+     * @generated
+     */
+    EClass HTTP_BINDING = eINSTANCE.getHTTPBinding();
+
+    /**
+     * The meta object literal for the '<em><b>Verb</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute HTTP_BINDING__VERB = eINSTANCE.getHTTPBinding_Verb();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPOperationImpl <em>Operation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPOperationImpl
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPOperation()
+     * @generated
+     */
+    EClass HTTP_OPERATION = eINSTANCE.getHTTPOperation();
+
+    /**
+     * The meta object literal for the '<em><b>Location URI</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute HTTP_OPERATION__LOCATION_URI = eINSTANCE.getHTTPOperation_LocationURI();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlReplacementImpl <em>Url Replacement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlReplacementImpl
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPUrlReplacement()
+     * @generated
+     */
+    EClass HTTP_URL_REPLACEMENT = eINSTANCE.getHTTPUrlReplacement();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlEncodedImpl <em>Url Encoded</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPUrlEncodedImpl
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPUrlEncoded()
+     * @generated
+     */
+    EClass HTTP_URL_ENCODED = eINSTANCE.getHTTPUrlEncoded();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPAddressImpl <em>Address</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPAddressImpl
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getHTTPAddress()
+     * @generated
+     */
+    EClass HTTP_ADDRESS = eINSTANCE.getHTTPAddress();
+
+    /**
+     * The meta object literal for the '<em><b>Location URI</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute HTTP_ADDRESS__LOCATION_URI = eINSTANCE.getHTTPAddress_LocationURI();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.http.HTTPAddress <em>IHTTP Address</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.http.HTTPAddress
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPAddress()
+     * @generated
+     */
+    EClass IHTTP_ADDRESS = eINSTANCE.getIHTTPAddress();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.http.HTTPBinding <em>IHTTP Binding</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.http.HTTPBinding
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPBinding()
+     * @generated
+     */
+    EClass IHTTP_BINDING = eINSTANCE.getIHTTPBinding();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.http.HTTPOperation <em>IHTTP Operation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.http.HTTPOperation
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPOperation()
+     * @generated
+     */
+    EClass IHTTP_OPERATION = eINSTANCE.getIHTTPOperation();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.http.HTTPUrlEncoded <em>IHTTP Url Encoded</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.http.HTTPUrlEncoded
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPUrlEncoded()
+     * @generated
+     */
+    EClass IHTTP_URL_ENCODED = eINSTANCE.getIHTTPUrlEncoded();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.http.HTTPUrlReplacement <em>IHTTP Url Replacement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.http.HTTPUrlReplacement
+     * @see org.eclipse.wst.wsdl.binding.http.internal.impl.HTTPPackageImpl#getIHTTPUrlReplacement()
+     * @generated
+     */
+    EClass IHTTP_URL_REPLACEMENT = eINSTANCE.getIHTTPUrlReplacement();
+
+  }
 
 } //HTTPPackage

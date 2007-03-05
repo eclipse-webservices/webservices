@@ -16,7 +16,6 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
@@ -84,7 +83,7 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
    */
   protected EClass eStaticClass()
   {
-    return HTTPPackage.eINSTANCE.getHTTPBinding();
+    return HTTPPackage.Literals.HTTP_BINDING;
   }
 
   /**
@@ -115,22 +114,14 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case HTTPPackage.HTTP_BINDING__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case HTTPPackage.HTTP_BINDING__ELEMENT:
-      return getElement();
-      case HTTPPackage.HTTP_BINDING__REQUIRED:
-      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
-      case HTTPPackage.HTTP_BINDING__ELEMENT_TYPE:
-      return getElementType();
       case HTTPPackage.HTTP_BINDING__VERB:
-      return getVerb();
+        return getVerb();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -138,27 +129,15 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case HTTPPackage.HTTP_BINDING__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case HTTPPackage.HTTP_BINDING__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case HTTPPackage.HTTP_BINDING__REQUIRED:
-      setRequired(((Boolean)newValue).booleanValue());
-      return;
-      case HTTPPackage.HTTP_BINDING__ELEMENT_TYPE:
-      setElementType((QName)newValue);
-      return;
       case HTTPPackage.HTTP_BINDING__VERB:
-      setVerb((String)newValue);
-      return;
+        setVerb((String)newValue);
+        return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -166,27 +145,15 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case HTTPPackage.HTTP_BINDING__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case HTTPPackage.HTTP_BINDING__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case HTTPPackage.HTTP_BINDING__REQUIRED:
-      setRequired(REQUIRED_EDEFAULT);
-      return;
-      case HTTPPackage.HTTP_BINDING__ELEMENT_TYPE:
-      setElementType(ELEMENT_TYPE_EDEFAULT);
-      return;
       case HTTPPackage.HTTP_BINDING__VERB:
-      setVerb(VERB_EDEFAULT);
-      return;
+        setVerb(VERB_EDEFAULT);
+        return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -194,23 +161,14 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case HTTPPackage.HTTP_BINDING__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case HTTPPackage.HTTP_BINDING__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case HTTPPackage.HTTP_BINDING__REQUIRED:
-      return required != REQUIRED_EDEFAULT;
-      case HTTPPackage.HTTP_BINDING__ELEMENT_TYPE:
-      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
       case HTTPPackage.HTTP_BINDING__VERB:
-      return VERB_EDEFAULT == null ? verb != null : !VERB_EDEFAULT.equals(verb);
+        return VERB_EDEFAULT == null ? verb != null : !VERB_EDEFAULT.equals(verb);
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -220,8 +178,7 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
    */
   public String toString()
   {
-    if (eIsProxy())
-      return super.toString();
+    if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (verb: ");
