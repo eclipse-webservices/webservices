@@ -25,7 +25,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -49,8 +48,6 @@ import org.w3c.dom.Element;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#getQName <em>QName</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#getResourceURI <em>Resource URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl#getEPorts <em>EPorts</em>}</li>
  * </ul>
  * </p>
@@ -107,46 +104,6 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
   protected boolean undefined = UNDEFINED_EDEFAULT;
 
   /**
-   * The default value of the '{@link #isProxy() <em>Proxy</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isProxy()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean PROXY_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isProxy() <em>Proxy</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isProxy()
-   * @generated
-   * @ordered
-   */
-  protected boolean proxy = PROXY_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getResourceURI() <em>Resource URI</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getResourceURI()
-   * @generated
-   * @ordered
-   */
-  protected static final String RESOURCE_URI_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getResourceURI() <em>Resource URI</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getResourceURI()
-   * @generated
-   * @ordered
-   */
-  protected String resourceURI = RESOURCE_URI_EDEFAULT;
-
-  /**
    * The cached value of the '{@link #getEPorts() <em>EPorts</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -173,7 +130,7 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getService();
+    return WSDLPackage.Literals.SERVICE;
   }
 
   /**
@@ -220,52 +177,6 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
     undefined = newUndefined;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.SERVICE__UNDEFINED, oldUndefined, undefined));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean isProxy()
-  {
-    return proxy;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setProxy(boolean newProxy)
-  {
-    boolean oldProxy = proxy;
-    proxy = newProxy;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.SERVICE__PROXY, oldProxy, proxy));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getResourceURI()
-  {
-    return resourceURI;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setResourceURI(String newResourceURI)
-  {
-    String oldResourceURI = resourceURI;
-    resourceURI = newResourceURI;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.SERVICE__RESOURCE_URI, oldResourceURI, resourceURI));
   }
 
   /**
@@ -341,21 +252,14 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    if (featureID >= 0)
+    switch (featureID)
     {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.SERVICE__EEXTENSIBILITY_ELEMENTS:
-        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.SERVICE__EPORTS:
+      case WSDLPackage.SERVICE__EPORTS:
         return ((InternalEList)getEPorts()).basicRemove(otherEnd, msgs);
-        default:
-        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
     }
-    return eBasicSetContainer(null, featureID, msgs);
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -363,28 +267,18 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.SERVICE__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case WSDLPackage.SERVICE__ELEMENT:
-      return getElement();
-      case WSDLPackage.SERVICE__EEXTENSIBILITY_ELEMENTS:
-      return getEExtensibilityElements();
       case WSDLPackage.SERVICE__QNAME:
-      return getQName();
+        return getQName();
       case WSDLPackage.SERVICE__UNDEFINED:
-      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
-      case WSDLPackage.SERVICE__PROXY:
-      return isProxy() ? Boolean.TRUE : Boolean.FALSE;
-      case WSDLPackage.SERVICE__RESOURCE_URI:
-      return getResourceURI();
+        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.SERVICE__EPORTS:
-      return getEPorts();
+        return getEPorts();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -392,38 +286,22 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.SERVICE__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case WSDLPackage.SERVICE__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case WSDLPackage.SERVICE__EEXTENSIBILITY_ELEMENTS:
-      getEExtensibilityElements().clear();
-      getEExtensibilityElements().addAll((Collection)newValue);
-      return;
       case WSDLPackage.SERVICE__QNAME:
-      setQName((QName)newValue);
-      return;
+        setQName((QName)newValue);
+        return;
       case WSDLPackage.SERVICE__UNDEFINED:
-      setUndefined(((Boolean)newValue).booleanValue());
-      return;
-      case WSDLPackage.SERVICE__PROXY:
-      setProxy(((Boolean)newValue).booleanValue());
-      return;
-      case WSDLPackage.SERVICE__RESOURCE_URI:
-      setResourceURI((String)newValue);
-      return;
+        setUndefined(((Boolean)newValue).booleanValue());
+        return;
       case WSDLPackage.SERVICE__EPORTS:
-      getEPorts().clear();
-      getEPorts().addAll((Collection)newValue);
-      return;
+        getEPorts().clear();
+        getEPorts().addAll((Collection)newValue);
+        return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -431,36 +309,21 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.SERVICE__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.SERVICE__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.SERVICE__EEXTENSIBILITY_ELEMENTS:
-      getEExtensibilityElements().clear();
-      return;
       case WSDLPackage.SERVICE__QNAME:
-      setQName(QNAME_EDEFAULT);
-      return;
+        setQName(QNAME_EDEFAULT);
+        return;
       case WSDLPackage.SERVICE__UNDEFINED:
-      setUndefined(UNDEFINED_EDEFAULT);
-      return;
-      case WSDLPackage.SERVICE__PROXY:
-      setProxy(PROXY_EDEFAULT);
-      return;
-      case WSDLPackage.SERVICE__RESOURCE_URI:
-      setResourceURI(RESOURCE_URI_EDEFAULT);
-      return;
+        setUndefined(UNDEFINED_EDEFAULT);
+        return;
       case WSDLPackage.SERVICE__EPORTS:
-      getEPorts().clear();
-      return;
+        getEPorts().clear();
+        return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -468,29 +331,18 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.SERVICE__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.SERVICE__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.SERVICE__EEXTENSIBILITY_ELEMENTS:
-      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
       case WSDLPackage.SERVICE__QNAME:
-      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.SERVICE__UNDEFINED:
-      return undefined != UNDEFINED_EDEFAULT;
-      case WSDLPackage.SERVICE__PROXY:
-      return proxy != PROXY_EDEFAULT;
-      case WSDLPackage.SERVICE__RESOURCE_URI:
-      return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
+        return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.SERVICE__EPORTS:
-      return ePorts != null && !ePorts.isEmpty();
+        return ePorts != null && !ePorts.isEmpty();
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -500,18 +352,13 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
    */
   public String toString()
   {
-    if (eIsProxy())
-      return super.toString();
+    if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (qName: ");
     result.append(qName);
     result.append(", undefined: ");
     result.append(undefined);
-    result.append(", proxy: ");
-    result.append(proxy);
-    result.append(", resourceURI: ");
-    result.append(resourceURI);
     result.append(')');
     return result.toString();
   }

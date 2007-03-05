@@ -18,7 +18,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -140,7 +139,7 @@ public class ImportImpl extends WSDLElementImpl implements Import
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getImport();
+    return WSDLPackage.Literals.IMPORT;
   }
 
   /**
@@ -198,8 +197,8 @@ public class ImportImpl extends WSDLElementImpl implements Import
   {
     if (eDefinition != null && eDefinition.eIsProxy())
     {
-      Definition oldEDefinition = eDefinition;
-      eDefinition = (Definition)eResolveProxy((InternalEObject)eDefinition);
+      InternalEObject oldEDefinition = (InternalEObject)eDefinition;
+      eDefinition = (Definition)eResolveProxy(oldEDefinition);
       if (eDefinition != oldEDefinition)
       {
         if (eNotificationRequired())
@@ -241,8 +240,8 @@ public class ImportImpl extends WSDLElementImpl implements Import
   {
     if (eSchema != null && eSchema.eIsProxy())
     {
-      XSDSchema oldESchema = eSchema;
-      eSchema = (XSDSchema)eResolveProxy((InternalEObject)eSchema);
+      InternalEObject oldESchema = (InternalEObject)eSchema;
+      eSchema = (XSDSchema)eResolveProxy(oldESchema);
       if (eSchema != oldESchema)
       {
         if (eNotificationRequired())
@@ -300,28 +299,22 @@ public class ImportImpl extends WSDLElementImpl implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case WSDLPackage.IMPORT__ELEMENT:
-      return getElement();
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-      return getNamespaceURI();
+        return getNamespaceURI();
       case WSDLPackage.IMPORT__LOCATION_URI:
-      return getLocationURI();
+        return getLocationURI();
       case WSDLPackage.IMPORT__EDEFINITION:
-      if (resolve)
-        return getEDefinition();
-      return basicGetEDefinition();
+        if (resolve) return getEDefinition();
+        return basicGetEDefinition();
       case WSDLPackage.IMPORT__ESCHEMA:
-      if (resolve)
-        return getESchema();
-      return basicGetESchema();
+        if (resolve) return getESchema();
+        return basicGetESchema();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -329,30 +322,24 @@ public class ImportImpl extends WSDLElementImpl implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case WSDLPackage.IMPORT__ELEMENT:
-      setElement((Element)newValue);
-      return;
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-      setNamespaceURI((String)newValue);
-      return;
+        setNamespaceURI((String)newValue);
+        return;
       case WSDLPackage.IMPORT__LOCATION_URI:
-      setLocationURI((String)newValue);
-      return;
+        setLocationURI((String)newValue);
+        return;
       case WSDLPackage.IMPORT__EDEFINITION:
-      setEDefinition((Definition)newValue);
-      return;
+        setEDefinition((Definition)newValue);
+        return;
       case WSDLPackage.IMPORT__ESCHEMA:
-      setESchema((XSDSchema)newValue);
-      return;
+        setESchema((XSDSchema)newValue);
+        return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -360,30 +347,24 @@ public class ImportImpl extends WSDLElementImpl implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.IMPORT__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-      setNamespaceURI(NAMESPACE_URI_EDEFAULT);
-      return;
+        setNamespaceURI(NAMESPACE_URI_EDEFAULT);
+        return;
       case WSDLPackage.IMPORT__LOCATION_URI:
-      setLocationURI(LOCATION_URI_EDEFAULT);
-      return;
+        setLocationURI(LOCATION_URI_EDEFAULT);
+        return;
       case WSDLPackage.IMPORT__EDEFINITION:
-      setEDefinition((Definition)null);
-      return;
+        setEDefinition((Definition)null);
+        return;
       case WSDLPackage.IMPORT__ESCHEMA:
-      setESchema((XSDSchema)null);
-      return;
+        setESchema((XSDSchema)null);
+        return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -391,25 +372,20 @@ public class ImportImpl extends WSDLElementImpl implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.IMPORT__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-      return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+        return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
       case WSDLPackage.IMPORT__LOCATION_URI:
-      return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
+        return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
       case WSDLPackage.IMPORT__EDEFINITION:
-      return eDefinition != null;
+        return eDefinition != null;
       case WSDLPackage.IMPORT__ESCHEMA:
-      return eSchema != null;
+        return eSchema != null;
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -419,8 +395,7 @@ public class ImportImpl extends WSDLElementImpl implements Import
    */
   public String toString()
   {
-    if (eIsProxy())
-      return super.toString();
+    if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (namespaceURI: ");

@@ -33,8 +33,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.wst.wsdl.Operation#getStyle <em>Style</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Operation#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Operation#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Operation#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Operation#getResourceURI <em>Resource URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Operation#getEInput <em>EInput</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Operation#getEOutput <em>EOutput</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Operation#getEFaults <em>EFaults</em>}</li>

@@ -95,7 +95,7 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * @return the value of the '<em>EOutput</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation"
    * @generated
    */
   javax.wsdl.Output getOutput();

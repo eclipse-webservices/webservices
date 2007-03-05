@@ -26,7 +26,6 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
@@ -110,7 +109,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getExtensibilityElement();
+    return WSDLPackage.Literals.EXTENSIBILITY_ELEMENT;
   }
 
   /**
@@ -167,20 +166,16 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-      return getElement();
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
+        return isRequired() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      return getElementType();
+        return getElementType();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -188,24 +183,18 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-      setElement((Element)newValue);
-      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-      setRequired(((Boolean)newValue).booleanValue());
-      return;
+        setRequired(((Boolean)newValue).booleanValue());
+        return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      setElementType((QName)newValue);
-      return;
+        setElementType((QName)newValue);
+        return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -213,24 +202,18 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-      setRequired(REQUIRED_EDEFAULT);
-      return;
+        setRequired(REQUIRED_EDEFAULT);
+        return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      setElementType(ELEMENT_TYPE_EDEFAULT);
-      return;
+        setElementType(ELEMENT_TYPE_EDEFAULT);
+        return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -238,21 +221,16 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-      return required != REQUIRED_EDEFAULT;
+        return required != REQUIRED_EDEFAULT;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
+        return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -262,8 +240,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    */
   public String toString()
   {
-    if (eIsProxy())
-      return super.toString();
+    if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (required: ");

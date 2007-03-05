@@ -35,13 +35,13 @@ import org.w3c.dom.Document;
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getLocation <em>Location</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getQName <em>QName</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getEncoding <em>Encoding</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Definition#getEImports <em>EImports</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Definition#getETypes <em>ETypes</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getEMessages <em>EMessages</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getEPortTypes <em>EPort Types</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getEBindings <em>EBindings</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getEServices <em>EServices</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Definition#getENamespaces <em>ENamespaces</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Definition#getETypes <em>ETypes</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Definition#getEImports <em>EImports</em>}</li>
  * </ul>
  * </p>
  *
@@ -283,7 +283,7 @@ public interface Definition extends ExtensibleElement, javax.wsdl.Definition
    * @return W3C DOM Document.
    * @ignore
    * <!-- end-user-doc -->
-   * @model dataType="org.eclipse.wst.wsdl.DOMDocument" parameters=""
+   * @model kind="operation" dataType="org.eclipse.wst.wsdl.DOMDocument"
    * @generated
    */
   Document getDocument();
@@ -294,7 +294,7 @@ public interface Definition extends ExtensibleElement, javax.wsdl.Definition
    * @param document W3C DOM Document.
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters="org.eclipse.wst.wsdl.DOMDocument"
+   * @model documentDataType="org.eclipse.wst.wsdl.DOMDocument"
    * @generated
    */
   void setDocument(Document document);

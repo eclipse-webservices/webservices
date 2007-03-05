@@ -24,7 +24,6 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wst.wsdl.UnknownExtensibilityElement#getParent <em>Parent</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.UnknownExtensibilityElement#getChildren <em>Children</em>}</li>
  * </ul>
  * </p>
@@ -36,19 +35,17 @@ import org.eclipse.emf.common.util.EList;
 public interface UnknownExtensibilityElement extends ExtensibilityElement
 {
   /**
-   * Returns the value of the '<em><b>Children</b></em>' reference list.
+   * Returns the value of the '<em><b>Children</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.wst.wsdl.UnknownExtensibilityElement}.
-   * It is bidirectional and its opposite is '{@link org.eclipse.wst.wsdl.UnknownExtensibilityElement#getParent <em>Parent</em>}'.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Children</em>' reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Children</em>' reference list.
+   * @return the value of the '<em>Children</em>' containment reference list.
    * @see org.eclipse.wst.wsdl.WSDLPackage#getUnknownExtensibilityElement_Children()
-   * @see org.eclipse.wst.wsdl.UnknownExtensibilityElement#getParent
-   * @model type="org.eclipse.wst.wsdl.UnknownExtensibilityElement" opposite="parent"
+   * @model type="org.eclipse.wst.wsdl.UnknownExtensibilityElement" containment="true"
    * @generated
    */
   EList getChildren();

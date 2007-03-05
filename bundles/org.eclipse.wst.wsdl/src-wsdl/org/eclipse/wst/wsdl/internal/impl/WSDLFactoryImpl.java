@@ -18,7 +18,9 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
@@ -57,7 +59,30 @@ import org.w3c.dom.Element;
 public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
 {
   /**
-   * Creates and instance of the factory.
+   * Creates the default factory implementation.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public static WSDLFactory init()
+  {
+    try
+    {
+      WSDLFactory theWSDLFactory = (WSDLFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/wsdl/2003/WSDL"); 
+      if (theWSDLFactory != null)
+      {
+        return theWSDLFactory;
+      }
+    }
+    catch (Exception exception)
+    {
+      EcorePlugin.INSTANCE.log(exception);
+    }
+    return new WSDLFactoryImpl();
+  }
+
+  /**
+   * Creates an instance of the factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -76,50 +101,29 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
   {
     switch (eClass.getClassifierID())
     {
-      case WSDLPackage.PORT_TYPE:
-      return createPortType();
-      case WSDLPackage.OPERATION:
-      return createOperation();
-      case WSDLPackage.MESSAGE:
-      return createMessage();
-      case WSDLPackage.PART:
-      return createPart();
-      case WSDLPackage.BINDING:
-      return createBinding();
-      case WSDLPackage.BINDING_OPERATION:
-      return createBindingOperation();
-      case WSDLPackage.SERVICE:
-      return createService();
-      case WSDLPackage.PORT:
-      return createPort();
-      case WSDLPackage.EXTENSIBILITY_ELEMENT:
-      return createExtensibilityElement();
-      case WSDLPackage.DEFINITION:
-      return createDefinition();
-      case WSDLPackage.IMPORT:
-      return createImport();
-      case WSDLPackage.INPUT:
-      return createInput();
-      case WSDLPackage.OUTPUT:
-      return createOutput();
-      case WSDLPackage.FAULT:
-      return createFault();
-      case WSDLPackage.BINDING_INPUT:
-      return createBindingInput();
-      case WSDLPackage.BINDING_OUTPUT:
-      return createBindingOutput();
-      case WSDLPackage.BINDING_FAULT:
-      return createBindingFault();
-      case WSDLPackage.NAMESPACE:
-      return createNamespace();
-      case WSDLPackage.TYPES:
-      return createTypes();
-      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT:
-      return createUnknownExtensibilityElement();
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT:
-      return createXSDSchemaExtensibilityElement();
+      case WSDLPackage.PORT_TYPE: return createPortType();
+      case WSDLPackage.OPERATION: return createOperation();
+      case WSDLPackage.MESSAGE: return createMessage();
+      case WSDLPackage.PART: return createPart();
+      case WSDLPackage.BINDING: return createBinding();
+      case WSDLPackage.BINDING_OPERATION: return createBindingOperation();
+      case WSDLPackage.SERVICE: return createService();
+      case WSDLPackage.PORT: return createPort();
+      case WSDLPackage.EXTENSIBILITY_ELEMENT: return createExtensibilityElement();
+      case WSDLPackage.DEFINITION: return createDefinition();
+      case WSDLPackage.IMPORT: return createImport();
+      case WSDLPackage.INPUT: return createInput();
+      case WSDLPackage.OUTPUT: return createOutput();
+      case WSDLPackage.FAULT: return createFault();
+      case WSDLPackage.BINDING_INPUT: return createBindingInput();
+      case WSDLPackage.BINDING_OUTPUT: return createBindingOutput();
+      case WSDLPackage.BINDING_FAULT: return createBindingFault();
+      case WSDLPackage.NAMESPACE: return createNamespace();
+      case WSDLPackage.TYPES: return createTypes();
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT: return createUnknownExtensibilityElement();
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT: return createXSDSchemaExtensibilityElement();
       default:
-      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+        throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
   }
 
@@ -133,17 +137,17 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
     switch (eDataType.getClassifierID())
     {
       case WSDLPackage.QNAME:
-      return createQNameFromString(eDataType, initialValue);
+        return createQNameFromString(eDataType, initialValue);
       case WSDLPackage.OPERATION_TYPE:
-      return createOperationTypeFromString(eDataType, initialValue);
+        return createOperationTypeFromString(eDataType, initialValue);
       case WSDLPackage.DOM_ELEMENT:
-      return createDOMElementFromString(eDataType, initialValue);
+        return createDOMElementFromString(eDataType, initialValue);
       case WSDLPackage.WSDL_EXCEPTION:
-      return createWSDLExceptionFromString(eDataType, initialValue);
+        return createWSDLExceptionFromString(eDataType, initialValue);
       case WSDLPackage.DOM_DOCUMENT:
-      return createDOMDocumentFromString(eDataType, initialValue);
+        return createDOMDocumentFromString(eDataType, initialValue);
       default:
-      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
   }
 
@@ -157,17 +161,17 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
     switch (eDataType.getClassifierID())
     {
       case WSDLPackage.QNAME:
-      return convertQNameToString(eDataType, instanceValue);
+        return convertQNameToString(eDataType, instanceValue);
       case WSDLPackage.OPERATION_TYPE:
-      return convertOperationTypeToString(eDataType, instanceValue);
+        return convertOperationTypeToString(eDataType, instanceValue);
       case WSDLPackage.DOM_ELEMENT:
-      return convertDOMElementToString(eDataType, instanceValue);
+        return convertDOMElementToString(eDataType, instanceValue);
       case WSDLPackage.WSDL_EXCEPTION:
-      return convertWSDLExceptionToString(eDataType, instanceValue);
+        return convertWSDLExceptionToString(eDataType, instanceValue);
       case WSDLPackage.DOM_DOCUMENT:
-      return convertDOMDocumentToString(eDataType, instanceValue);
+        return convertDOMDocumentToString(eDataType, instanceValue);
       default:
-      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
   }
 

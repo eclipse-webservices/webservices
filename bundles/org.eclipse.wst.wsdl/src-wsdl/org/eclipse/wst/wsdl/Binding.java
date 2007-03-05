@@ -31,8 +31,6 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.Binding#getQName <em>QName</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Binding#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Binding#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Binding#getResourceURI <em>Resource URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Binding#getEPortType <em>EPort Type</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Binding#getEBindingOperations <em>EBinding Operations</em>}</li>
  * </ul>

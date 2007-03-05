@@ -94,7 +94,7 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
    * @return the value of the '<em>EFault</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation"
    * @generated
    */
   javax.wsdl.Fault getFault();

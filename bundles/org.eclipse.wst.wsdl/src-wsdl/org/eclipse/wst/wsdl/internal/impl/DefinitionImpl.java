@@ -41,7 +41,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -97,13 +96,13 @@ import org.w3c.dom.events.MutationEvent;
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getQName <em>QName</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEncoding <em>Encoding</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEImports <em>EImports</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getETypes <em>ETypes</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEMessages <em>EMessages</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEPortTypes <em>EPort Types</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEBindings <em>EBindings</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEServices <em>EServices</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getENamespaces <em>ENamespaces</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getETypes <em>ETypes</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEImports <em>EImports</em>}</li>
  * </ul>
  * </p>
  *
@@ -199,16 +198,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected String encoding = ENCODING_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getEMessages() <em>EMessages</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getEMessages()
-   * @generated
-   * @ordered
-   */
-  protected EList eMessages = null;
-
-  /**
    * The cached value of the '{@link #getEPortTypes() <em>EPort Types</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -249,6 +238,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected EList eNamespaces = null;
 
   /**
+   * The cached value of the '{@link #getEImports() <em>EImports</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEImports()
+   * @generated
+   * @ordered
+   */
+  protected EList eImports = null;
+
+  /**
    * The cached value of the '{@link #getETypes() <em>ETypes</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -259,14 +258,14 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected Types eTypes = null;
 
   /**
-   * The cached value of the '{@link #getEImports() <em>EImports</em>}' containment reference list.
+   * The cached value of the '{@link #getEMessages() <em>EMessages</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEImports()
+   * @see #getEMessages()
    * @generated
    * @ordered
    */
-  protected EList eImports = null;
+  protected EList eMessages = null;
 
   private ExtensionRegistry extensionRegistry;
 
@@ -291,7 +290,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getDefinition();
+    return WSDLPackage.Literals.DEFINITION;
   }
 
   /**
@@ -479,10 +478,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.DEFINITION__ETYPES, oldETypes, newETypes);
-      if (msgs == null)
-        msgs = notification;
-      else
-        msgs.add(notification);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
   }
@@ -502,8 +498,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       if (newETypes != null)
         msgs = ((InternalEObject)newETypes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.DEFINITION__ETYPES, null, msgs);
       msgs = basicSetETypes(newETypes, msgs);
-      if (msgs != null)
-        msgs.dispatch();
+      if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.DEFINITION__ETYPES, newETypes, newETypes));
@@ -1208,6 +1203,201 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__EIMPORTS:
+        return ((InternalEList)getEImports()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__ETYPES:
+        return basicSetETypes(null, msgs);
+      case WSDLPackage.DEFINITION__EMESSAGES:
+        return ((InternalEList)getEMessages()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+        return ((InternalEList)getEPortTypes()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__EBINDINGS:
+        return ((InternalEList)getEBindings()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__ESERVICES:
+        return ((InternalEList)getEServices()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+        return ((InternalEList)getENamespaces()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+        return getTargetNamespace();
+      case WSDLPackage.DEFINITION__LOCATION:
+        return getLocation();
+      case WSDLPackage.DEFINITION__QNAME:
+        return getQName();
+      case WSDLPackage.DEFINITION__ENCODING:
+        return getEncoding();
+      case WSDLPackage.DEFINITION__EIMPORTS:
+        return getEImports();
+      case WSDLPackage.DEFINITION__ETYPES:
+        return getETypes();
+      case WSDLPackage.DEFINITION__EMESSAGES:
+        return getEMessages();
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+        return getEPortTypes();
+      case WSDLPackage.DEFINITION__EBINDINGS:
+        return getEBindings();
+      case WSDLPackage.DEFINITION__ESERVICES:
+        return getEServices();
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+        return getENamespaces();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+        setTargetNamespace((String)newValue);
+        return;
+      case WSDLPackage.DEFINITION__LOCATION:
+        setLocation((String)newValue);
+        return;
+      case WSDLPackage.DEFINITION__QNAME:
+        setQName((QName)newValue);
+        return;
+      case WSDLPackage.DEFINITION__ENCODING:
+        setEncoding((String)newValue);
+        return;
+      case WSDLPackage.DEFINITION__EIMPORTS:
+        getEImports().clear();
+        getEImports().addAll((Collection)newValue);
+        return;
+      case WSDLPackage.DEFINITION__ETYPES:
+        setETypes((Types)newValue);
+        return;
+      case WSDLPackage.DEFINITION__EMESSAGES:
+        getEMessages().clear();
+        getEMessages().addAll((Collection)newValue);
+        return;
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+        getEPortTypes().clear();
+        getEPortTypes().addAll((Collection)newValue);
+        return;
+      case WSDLPackage.DEFINITION__EBINDINGS:
+        getEBindings().clear();
+        getEBindings().addAll((Collection)newValue);
+        return;
+      case WSDLPackage.DEFINITION__ESERVICES:
+        getEServices().clear();
+        getEServices().addAll((Collection)newValue);
+        return;
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+        getENamespaces().clear();
+        getENamespaces().addAll((Collection)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+        setTargetNamespace(TARGET_NAMESPACE_EDEFAULT);
+        return;
+      case WSDLPackage.DEFINITION__LOCATION:
+        setLocation(LOCATION_EDEFAULT);
+        return;
+      case WSDLPackage.DEFINITION__QNAME:
+        setQName(QNAME_EDEFAULT);
+        return;
+      case WSDLPackage.DEFINITION__ENCODING:
+        setEncoding(ENCODING_EDEFAULT);
+        return;
+      case WSDLPackage.DEFINITION__EIMPORTS:
+        getEImports().clear();
+        return;
+      case WSDLPackage.DEFINITION__ETYPES:
+        setETypes((Types)null);
+        return;
+      case WSDLPackage.DEFINITION__EMESSAGES:
+        getEMessages().clear();
+        return;
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+        getEPortTypes().clear();
+        return;
+      case WSDLPackage.DEFINITION__EBINDINGS:
+        getEBindings().clear();
+        return;
+      case WSDLPackage.DEFINITION__ESERVICES:
+        getEServices().clear();
+        return;
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+        getENamespaces().clear();
+        return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+        return TARGET_NAMESPACE_EDEFAULT == null ? targetNamespace != null : !TARGET_NAMESPACE_EDEFAULT.equals(targetNamespace);
+      case WSDLPackage.DEFINITION__LOCATION:
+        return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
+      case WSDLPackage.DEFINITION__QNAME:
+        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      case WSDLPackage.DEFINITION__ENCODING:
+        return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
+      case WSDLPackage.DEFINITION__EIMPORTS:
+        return eImports != null && !eImports.isEmpty();
+      case WSDLPackage.DEFINITION__ETYPES:
+        return eTypes != null;
+      case WSDLPackage.DEFINITION__EMESSAGES:
+        return eMessages != null && !eMessages.isEmpty();
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+        return ePortTypes != null && !ePortTypes.isEmpty();
+      case WSDLPackage.DEFINITION__EBINDINGS:
+        return eBindings != null && !eBindings.isEmpty();
+      case WSDLPackage.DEFINITION__ESERVICES:
+        return eServices != null && !eServices.isEmpty();
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+        return eNamespaces != null && !eNamespaces.isEmpty();
+    }
+    return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated NOT
    */
   public Document getDocument()
@@ -1231,244 +1421,9 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
-  {
-    if (featureID >= 0)
-    {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__EMESSAGES:
-        return ((InternalEList)getEMessages()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__EPORT_TYPES:
-        return ((InternalEList)getEPortTypes()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__EBINDINGS:
-        return ((InternalEList)getEBindings()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__ESERVICES:
-        return ((InternalEList)getEServices()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__ENAMESPACES:
-        return ((InternalEList)getENamespaces()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__ETYPES:
-        return basicSetETypes(null, msgs);
-        case WSDLPackage.DEFINITION__EIMPORTS:
-        return ((InternalEList)getEImports()).basicRemove(otherEnd, msgs);
-        default:
-        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
-    }
-    return eBasicSetContainer(null, featureID, msgs);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case WSDLPackage.DEFINITION__ELEMENT:
-      return getElement();
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-      return getEExtensibilityElements();
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-      return getTargetNamespace();
-      case WSDLPackage.DEFINITION__LOCATION:
-      return getLocation();
-      case WSDLPackage.DEFINITION__QNAME:
-      return getQName();
-      case WSDLPackage.DEFINITION__ENCODING:
-      return getEncoding();
-      case WSDLPackage.DEFINITION__EMESSAGES:
-      return getEMessages();
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-      return getEPortTypes();
-      case WSDLPackage.DEFINITION__EBINDINGS:
-      return getEBindings();
-      case WSDLPackage.DEFINITION__ESERVICES:
-      return getEServices();
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-      return getENamespaces();
-      case WSDLPackage.DEFINITION__ETYPES:
-      return getETypes();
-      case WSDLPackage.DEFINITION__EIMPORTS:
-      return getEImports();
-    }
-    return eDynamicGet(eFeature, resolve);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case WSDLPackage.DEFINITION__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-      getEExtensibilityElements().clear();
-      getEExtensibilityElements().addAll((Collection)newValue);
-      return;
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-      setTargetNamespace((String)newValue);
-      return;
-      case WSDLPackage.DEFINITION__LOCATION:
-      setLocation((String)newValue);
-      return;
-      case WSDLPackage.DEFINITION__QNAME:
-      setQName((QName)newValue);
-      return;
-      case WSDLPackage.DEFINITION__ENCODING:
-      setEncoding((String)newValue);
-      return;
-      case WSDLPackage.DEFINITION__EMESSAGES:
-      getEMessages().clear();
-      getEMessages().addAll((Collection)newValue);
-      return;
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-      getEPortTypes().clear();
-      getEPortTypes().addAll((Collection)newValue);
-      return;
-      case WSDLPackage.DEFINITION__EBINDINGS:
-      getEBindings().clear();
-      getEBindings().addAll((Collection)newValue);
-      return;
-      case WSDLPackage.DEFINITION__ESERVICES:
-      getEServices().clear();
-      getEServices().addAll((Collection)newValue);
-      return;
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-      getENamespaces().clear();
-      getENamespaces().addAll((Collection)newValue);
-      return;
-      case WSDLPackage.DEFINITION__ETYPES:
-      setETypes((Types)newValue);
-      return;
-      case WSDLPackage.DEFINITION__EIMPORTS:
-      getEImports().clear();
-      getEImports().addAll((Collection)newValue);
-      return;
-    }
-    eDynamicSet(eFeature, newValue);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eUnset(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.DEFINITION__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-      getEExtensibilityElements().clear();
-      return;
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-      setTargetNamespace(TARGET_NAMESPACE_EDEFAULT);
-      return;
-      case WSDLPackage.DEFINITION__LOCATION:
-      setLocation(LOCATION_EDEFAULT);
-      return;
-      case WSDLPackage.DEFINITION__QNAME:
-      setQName(QNAME_EDEFAULT);
-      return;
-      case WSDLPackage.DEFINITION__ENCODING:
-      setEncoding(ENCODING_EDEFAULT);
-      return;
-      case WSDLPackage.DEFINITION__EMESSAGES:
-      getEMessages().clear();
-      return;
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-      getEPortTypes().clear();
-      return;
-      case WSDLPackage.DEFINITION__EBINDINGS:
-      getEBindings().clear();
-      return;
-      case WSDLPackage.DEFINITION__ESERVICES:
-      getEServices().clear();
-      return;
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-      getENamespaces().clear();
-      return;
-      case WSDLPackage.DEFINITION__ETYPES:
-      setETypes((Types)null);
-      return;
-      case WSDLPackage.DEFINITION__EIMPORTS:
-      getEImports().clear();
-      return;
-    }
-    eDynamicUnset(eFeature);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean eIsSet(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.DEFINITION__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-      return TARGET_NAMESPACE_EDEFAULT == null ? targetNamespace != null : !TARGET_NAMESPACE_EDEFAULT.equals(targetNamespace);
-      case WSDLPackage.DEFINITION__LOCATION:
-      return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
-      case WSDLPackage.DEFINITION__QNAME:
-      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
-      case WSDLPackage.DEFINITION__ENCODING:
-      return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
-      case WSDLPackage.DEFINITION__EMESSAGES:
-      return eMessages != null && !eMessages.isEmpty();
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-      return ePortTypes != null && !ePortTypes.isEmpty();
-      case WSDLPackage.DEFINITION__EBINDINGS:
-      return eBindings != null && !eBindings.isEmpty();
-      case WSDLPackage.DEFINITION__ESERVICES:
-      return eServices != null && !eServices.isEmpty();
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-      return eNamespaces != null && !eNamespaces.isEmpty();
-      case WSDLPackage.DEFINITION__ETYPES:
-      return eTypes != null;
-      case WSDLPackage.DEFINITION__EIMPORTS:
-      return eImports != null && !eImports.isEmpty();
-    }
-    return eDynamicIsSet(eFeature);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public String toString()
   {
-    if (eIsProxy())
-      return super.toString();
+    if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (targetNamespace: ");

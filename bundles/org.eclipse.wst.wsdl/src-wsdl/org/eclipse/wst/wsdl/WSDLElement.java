@@ -97,7 +97,7 @@ public interface WSDLElement extends EObject
    * Returns the Definition that contains this WSDL element.
    * @return the Definition that contains this WSDL element.
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation"
    * @generated
    */
   Definition getEnclosingDefinition();

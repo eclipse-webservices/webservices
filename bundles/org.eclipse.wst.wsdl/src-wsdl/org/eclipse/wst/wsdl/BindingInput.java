@@ -94,7 +94,7 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
    * @return the value of the '<em>EInput</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation"
    * @generated
    */
   javax.wsdl.Input getInput();

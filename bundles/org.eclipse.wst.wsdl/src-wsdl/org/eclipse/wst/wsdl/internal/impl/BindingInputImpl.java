@@ -17,13 +17,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
@@ -104,7 +101,7 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getBindingInput();
+    return WSDLPackage.Literals.BINDING_INPUT;
   }
 
   /**
@@ -139,8 +136,8 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
   {
     if (eInput != null && eInput.eIsProxy())
     {
-      Input oldEInput = eInput;
-      eInput = (Input)eResolveProxy((InternalEObject)eInput);
+      InternalEObject oldEInput = (InternalEObject)eInput;
+      eInput = (Input)eResolveProxy(oldEInput);
       if (eInput != oldEInput)
       {
         if (eNotificationRequired())
@@ -198,19 +195,17 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    if (featureID >= 0)
+    switch (featureID)
     {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
-        default:
-        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
+      case WSDLPackage.BINDING_INPUT__NAME:
+        return getName();
+      case WSDLPackage.BINDING_INPUT__EINPUT:
+        if (resolve) return getEInput();
+        return basicGetEInput();
     }
-    return eBasicSetContainer(null, featureID, msgs);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -218,24 +213,18 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case WSDLPackage.BINDING_INPUT__ELEMENT:
-      return getElement();
-      case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-      return getEExtensibilityElements();
       case WSDLPackage.BINDING_INPUT__NAME:
-      return getName();
+        setName((String)newValue);
+        return;
       case WSDLPackage.BINDING_INPUT__EINPUT:
-      if (resolve)
-        return getEInput();
-      return basicGetEInput();
+        setEInput((Input)newValue);
+        return;
     }
-    return eDynamicGet(eFeature, resolve);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -243,28 +232,18 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case WSDLPackage.BINDING_INPUT__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-      getEExtensibilityElements().clear();
-      getEExtensibilityElements().addAll((Collection)newValue);
-      return;
       case WSDLPackage.BINDING_INPUT__NAME:
-      setName((String)newValue);
-      return;
+        setName(NAME_EDEFAULT);
+        return;
       case WSDLPackage.BINDING_INPUT__EINPUT:
-      setEInput((Input)newValue);
-      return;
+        setEInput((Input)null);
+        return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eUnset(featureID);
   }
 
   /**
@@ -272,51 +251,16 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.BINDING_INPUT__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-      getEExtensibilityElements().clear();
-      return;
       case WSDLPackage.BINDING_INPUT__NAME:
-      setName(NAME_EDEFAULT);
-      return;
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.BINDING_INPUT__EINPUT:
-      setEInput((Input)null);
-      return;
+        return eInput != null;
     }
-    eDynamicUnset(eFeature);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean eIsSet(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.BINDING_INPUT__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
-      case WSDLPackage.BINDING_INPUT__NAME:
-      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case WSDLPackage.BINDING_INPUT__EINPUT:
-      return eInput != null;
-    }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -326,8 +270,7 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    */
   public String toString()
   {
-    if (eIsProxy())
-      return super.toString();
+    if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");

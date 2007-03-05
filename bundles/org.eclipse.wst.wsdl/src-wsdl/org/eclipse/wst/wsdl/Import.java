@@ -152,7 +152,7 @@ public interface Import extends WSDLElement, javax.wsdl.Import
    * @return the value of the '<em>ESchema</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation"
    * @generated
    */
   XSDSchema getSchema();

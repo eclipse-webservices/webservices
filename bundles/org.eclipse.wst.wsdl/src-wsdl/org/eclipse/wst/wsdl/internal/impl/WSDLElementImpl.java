@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import com.ibm.icu.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
@@ -43,6 +42,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+
+import com.ibm.icu.util.StringTokenizer;
 
 
 /**
@@ -126,7 +127,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getWSDLElement();
+    return WSDLPackage.Literals.WSDL_ELEMENT;
   }
 
   /**
@@ -149,12 +150,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     Element oldDocumentationElement = documentationElement;
     documentationElement = newDocumentationElement;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(
-        this,
-        Notification.SET,
-        WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT,
-        oldDocumentationElement,
-        documentationElement));
+      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT, oldDocumentationElement, documentationElement));
   }
 
   /**
@@ -195,16 +191,16 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
+        return getDocumentationElement();
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-      return getElement();
+        return getElement();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -212,18 +208,18 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
+        setDocumentationElement((Element)newValue);
+        return;
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-      setElement((Element)newValue);
-      return;
+        setElement((Element)newValue);
+        return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -231,18 +227,18 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
+        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+        return;
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
+        setElement(ELEMENT_EDEFAULT);
+        return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -250,17 +246,16 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -270,8 +265,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    */
   public String toString()
   {
-    if (eIsProxy())
-      return super.toString();
+    if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (documentationElement: ");

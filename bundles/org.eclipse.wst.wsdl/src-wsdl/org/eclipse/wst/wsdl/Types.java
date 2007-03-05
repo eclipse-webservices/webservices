@@ -39,7 +39,7 @@ public interface Types extends ExtensibleElement, javax.wsdl.Types
    * @see org.eclipse.xsd.XSDSchema
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation" many="false"
    * @generated
    */
   List getSchemas();
@@ -53,7 +53,7 @@ public interface Types extends ExtensibleElement, javax.wsdl.Types
    * @see org.eclipse.xsd.XSDSchema
    * @ignore
    * <!-- end-user-doc -->
-   * @model
+   * @model many="false"
    * @generated
    */
   List getSchemas(String namespaceURI);

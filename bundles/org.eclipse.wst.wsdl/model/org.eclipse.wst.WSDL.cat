@@ -1,12 +1,29 @@
 
 (object Petal
     version    	42
-    _written   	"Rose 4.5.8054a"
+    _written   	"Rose 4.5.8163.3"
     charSet    	0)
 
 (object Class_Category "wsdl"
     is_unit    	TRUE
     is_loaded  	TRUE
+    attributes 	(list Attribute_Set
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"nsPrefix"
+	    value      	"wsdl")
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"nsURI"
+	    value      	"http://www.eclipse.org/wsdl/2003/WSDL")
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"basePackage"
+	    value      	"org.eclipse.wst")
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"prefix"
+	    value      	"WSDL"))
     quid       	"3ADFB8E5021E"
     documentation 	
 |The WSDL model contains classes for the Web Services Description Language (WSDL).
@@ -71,13 +88,7 @@
 		    type       	"QName")
 		(object ClassAttribute "undefined"
 		    quid       	"3BDDF1E301E5"
-		    type       	"boolean")
-		(object ClassAttribute "proxy"
-		    quid       	"3D18CDEB0316"
-		    type       	"boolean")
-		(object ClassAttribute "resourceURI"
-		    quid       	"3D18D4FD01BA"
-		    type       	"String"))
+		    type       	"boolean"))
 	    language   	"Java")
 	(object Class "Operation"
 	    quid       	"3AD5C80D03CE"
@@ -100,13 +111,7 @@
 		    type       	"String")
 		(object ClassAttribute "undefined"
 		    quid       	"3BDDF235003E"
-		    type       	"boolean")
-		(object ClassAttribute "proxy"
-		    quid       	"3D18CE2201AD"
-		    type       	"boolean")
-		(object ClassAttribute "resourceURI"
-		    quid       	"3D18D520011B"
-		    type       	"String"))
+		    type       	"boolean"))
 	    language   	"Java")
 	(object Class "Message"
 	    quid       	"3AD5C9590078"
@@ -126,13 +131,7 @@
 		    type       	"QName")
 		(object ClassAttribute "undefined"
 		    quid       	"3BDDF1D20226"
-		    type       	"boolean")
-		(object ClassAttribute "proxy"
-		    quid       	"3D18CE4B02B0"
-		    type       	"boolean")
-		(object ClassAttribute "resourceURI"
-		    quid       	"3D18D54200F1"
-		    type       	"String"))
+		    type       	"boolean"))
 	    language   	"Java")
 	(object Class "Part"
 	    quid       	"3AD5CE1C032E"
@@ -175,13 +174,7 @@
 		    type       	"QName")
 		(object ClassAttribute "undefined"
 		    quid       	"3BDDF1F401A3"
-		    type       	"boolean")
-		(object ClassAttribute "proxy"
-		    quid       	"3D18CE6D0151"
-		    type       	"boolean")
-		(object ClassAttribute "resourceURI"
-		    quid       	"3D18D4DF035C"
-		    type       	"String"))
+		    type       	"boolean"))
 	    language   	"Java")
 	(object Class "BindingOperation"
 	    quid       	"3AD5D3CB0145"
@@ -218,13 +211,7 @@
 		    type       	"QName")
 		(object ClassAttribute "undefined"
 		    quid       	"3BDDF20D0203"
-		    type       	"boolean")
-		(object ClassAttribute "proxy"
-		    quid       	"3D18D4810220"
-		    type       	"boolean")
-		(object ClassAttribute "resourceURI"
-		    quid       	"3D18D4C501E2"
-		    type       	"String"))
+		    type       	"boolean"))
 	    language   	"Java")
 	(object Class "Port"
 	    quid       	"3AD5D9170286"
@@ -1601,9 +1588,44 @@
 		    supplier   	"Logical View::wsdl::Port"
 		    quidu      	"3AD5D9170286")))
 	(object Association "$UNNAMED$13"
+	    quid       	"3C864DFF02EC"
+	    roles      	(list role_list
+		(object Role "eImports"
+		    quid       	"3C864DFF02ED"
+		    label      	"eImports"
+		    supplier   	"Logical View::wsdl::Import"
+		    quidu      	"3AD5E4F903DE"
+		    client_cardinality 	(value cardinality "0..n")
+		    Constraints 	"ordered"
+		    Containment 	"By Value"
+		    is_navigable 	TRUE)
+		(object Role "$UNNAMED$14"
+		    quid       	"3C864DFF02EE"
+		    supplier   	"Logical View::wsdl::Definition"
+		    quidu      	"3AD5E43F008E"
+		    client_cardinality 	(value cardinality "1..1")
+		    is_aggregate 	TRUE)))
+	(object Association "$UNNAMED$15"
+	    quid       	"3B8BEA27029F"
+	    roles      	(list role_list
+		(object Role "$UNNAMED$16"
+		    quid       	"3B8BEA290356"
+		    supplier   	"Logical View::wsdl::Definition"
+		    quidu      	"3AD5E43F008E"
+		    client_cardinality 	(value cardinality "1..1")
+		    is_aggregate 	TRUE)
+		(object Role "eTypes"
+		    quid       	"3B8BEA29036A"
+		    label      	"eTypes"
+		    supplier   	"Logical View::wsdl::Types"
+		    quidu      	"3B8BE9A603A8"
+		    client_cardinality 	(value cardinality "0..1")
+		    Containment 	"By Value"
+		    is_navigable 	TRUE)))
+	(object Association "$UNNAMED$17"
 	    quid       	"3AD5E60301E2"
 	    roles      	(list role_list
-		(object Role "$UNNAMED$14"
+		(object Role "$UNNAMED$18"
 		    quid       	"3AD5E60400B7"
 		    supplier   	"Logical View::wsdl::Definition"
 		    quidu      	"3AD5E43F008E"
@@ -1618,10 +1640,10 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)))
-	(object Association "$UNNAMED$15"
+	(object Association "$UNNAMED$19"
 	    quid       	"3AD5E6710104"
 	    roles      	(list role_list
-		(object Role "$UNNAMED$16"
+		(object Role "$UNNAMED$20"
 		    quid       	"3AD5E672034A"
 		    supplier   	"Logical View::wsdl::Definition"
 		    quidu      	"3AD5E43F008E"
@@ -1636,10 +1658,10 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)))
-	(object Association "$UNNAMED$17"
+	(object Association "$UNNAMED$21"
 	    quid       	"3AD5E6770095"
 	    roles      	(list role_list
-		(object Role "$UNNAMED$18"
+		(object Role "$UNNAMED$22"
 		    quid       	"3AD5E6780371"
 		    supplier   	"Logical View::wsdl::Definition"
 		    quidu      	"3AD5E43F008E"
@@ -1654,10 +1676,10 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)))
-	(object Association "$UNNAMED$19"
+	(object Association "$UNNAMED$23"
 	    quid       	"3AD5E67B0311"
 	    roles      	(list role_list
-		(object Role "$UNNAMED$20"
+		(object Role "$UNNAMED$24"
 		    quid       	"3AD5E67D007F"
 		    supplier   	"Logical View::wsdl::Definition"
 		    quidu      	"3AD5E43F008E"
@@ -1672,7 +1694,7 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)))
-	(object Association "$UNNAMED$21"
+	(object Association "$UNNAMED$25"
 	    quid       	"3AD5FD130079"
 	    roles      	(list role_list
 		(object Role "eExtensibilityElements"
@@ -1684,13 +1706,13 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$22"
+		(object Role "$UNNAMED$26"
 		    quid       	"3AD5FD14019E"
 		    supplier   	"Logical View::wsdl::ExtensibleElement"
 		    quidu      	"3AD5FCFA033A"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_aggregate 	TRUE)))
-	(object Association "$UNNAMED$23"
+	(object Association "$UNNAMED$27"
 	    quid       	"3ADF2E6401F5"
 	    roles      	(list role_list
 		(object Role "eBindingInput"
@@ -1701,13 +1723,13 @@
 		    client_cardinality 	(value cardinality "0..1")
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$24"
+		(object Role "$UNNAMED$28"
 		    quid       	"3ADF2E650252"
 		    supplier   	"Logical View::wsdl::BindingOperation"
 		    quidu      	"3AD5D3CB0145"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_aggregate 	TRUE)))
-	(object Association "$UNNAMED$25"
+	(object Association "$UNNAMED$29"
 	    quid       	"3ADF2EB30163"
 	    roles      	(list role_list
 		(object Role "eBindingOutput"
@@ -1718,13 +1740,13 @@
 		    client_cardinality 	(value cardinality "0..1")
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$26"
+		(object Role "$UNNAMED$30"
 		    quid       	"3ADF2EB4013D"
 		    supplier   	"Logical View::wsdl::BindingOperation"
 		    quidu      	"3AD5D3CB0145"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_aggregate 	TRUE)))
-	(object Association "$UNNAMED$27"
+	(object Association "$UNNAMED$31"
 	    quid       	"3ADF2F94024D"
 	    roles      	(list role_list
 		(object Role "eInput"
@@ -1735,13 +1757,13 @@
 		    client_cardinality 	(value cardinality "0..1")
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$28"
+		(object Role "$UNNAMED$32"
 		    quid       	"3ADF2F95019A"
 		    supplier   	"Logical View::wsdl::Operation"
 		    quidu      	"3AD5C80D03CE"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_aggregate 	TRUE)))
-	(object Association "$UNNAMED$29"
+	(object Association "$UNNAMED$33"
 	    quid       	"3ADF2FB802F9"
 	    roles      	(list role_list
 		(object Role "eOutput"
@@ -1752,13 +1774,13 @@
 		    client_cardinality 	(value cardinality "0..1")
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$30"
+		(object Role "$UNNAMED$34"
 		    quid       	"3ADF2FB9020B"
 		    supplier   	"Logical View::wsdl::Operation"
 		    quidu      	"3AD5C80D03CE"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_aggregate 	TRUE)))
-	(object Association "$UNNAMED$31"
+	(object Association "$UNNAMED$35"
 	    quid       	"3ADF331601A4"
 	    roles      	(list role_list
 		(object Role "eFaults"
@@ -1770,13 +1792,13 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$32"
+		(object Role "$UNNAMED$36"
 		    quid       	"3ADF33180388"
 		    supplier   	"Logical View::wsdl::Operation"
 		    quidu      	"3AD5C80D03CE"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_aggregate 	TRUE)))
-	(object Association "$UNNAMED$33"
+	(object Association "$UNNAMED$37"
 	    quid       	"3ADF340003E5"
 	    roles      	(list role_list
 		(object Role "eBindingFaults"
@@ -1788,13 +1810,13 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$34"
+		(object Role "$UNNAMED$38"
 		    quid       	"3ADF340103AB"
 		    supplier   	"Logical View::wsdl::BindingOperation"
 		    quidu      	"3AD5D3CB0145"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_aggregate 	TRUE)))
-	(object Association "$UNNAMED$35"
+	(object Association "$UNNAMED$39"
 	    quid       	"3AE091F402F3"
 	    roles      	(list role_list
 		(object Role "eFault"
@@ -1804,14 +1826,14 @@
 		    quidu      	"3AE078BE0108"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$36"
+		(object Role "$UNNAMED$40"
 		    quid       	"3AE091F801FF"
 		    supplier   	"Logical View::wsdl::BindingFault"
 		    quidu      	"3AE08A9E03A6")))
-	(object Association "$UNNAMED$37"
+	(object Association "$UNNAMED$41"
 	    quid       	"3AEA3D55002D"
 	    roles      	(list role_list
-		(object Role "$UNNAMED$38"
+		(object Role "$UNNAMED$42"
 		    quid       	"3AEA3D560328"
 		    supplier   	"Logical View::wsdl::Definition"
 		    quidu      	"3AD5E43F008E"
@@ -1826,7 +1848,7 @@
 		    Constraints 	"ordered"
 		    Containment 	"By Value"
 		    is_navigable 	TRUE)))
-	(object Association "$UNNAMED$39"
+	(object Association "$UNNAMED$43"
 	    quid       	"3AEA3E3A002D"
 	    roles      	(list role_list
 		(object Role "eDefinition"
@@ -1836,11 +1858,11 @@
 		    quidu      	"3AD5E43F008E"
 		    client_cardinality 	(value cardinality "0..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$40"
+		(object Role "$UNNAMED$44"
 		    quid       	"3AEA3E3C01F2"
 		    supplier   	"Logical View::wsdl::Import"
 		    quidu      	"3AD5E4F903DE")))
-	(object Association "$UNNAMED$41"
+	(object Association "$UNNAMED$45"
 	    quid       	"3AEA412F0035"
 	    roles      	(list role_list
 		(object Role "eParameterOrdering"
@@ -1851,11 +1873,11 @@
 		    client_cardinality 	(value cardinality "0..n")
 		    Constraints 	"ordered"
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$42"
+		(object Role "$UNNAMED$46"
 		    quid       	"3AEA4131025F"
 		    supplier   	"Logical View::wsdl::Operation"
 		    quidu      	"3AD5C80D03CE")))
-	(object Association "$UNNAMED$43"
+	(object Association "$UNNAMED$47"
 	    quid       	"3B84AD2400BD"
 	    roles      	(list role_list
 		(object Role "eInput"
@@ -1865,11 +1887,11 @@
 		    quidu      	"3AE0789F0059"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$44"
+		(object Role "$UNNAMED$48"
 		    quid       	"3B84AD250084"
 		    supplier   	"Logical View::wsdl::BindingInput"
 		    quidu      	"3AE08A8202D4")))
-	(object Association "$UNNAMED$45"
+	(object Association "$UNNAMED$49"
 	    quid       	"3B84AD7900F2"
 	    roles      	(list role_list
 		(object Role "eOutput"
@@ -1879,11 +1901,11 @@
 		    quidu      	"3AE078B60232"
 		    client_cardinality 	(value cardinality "1..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$46"
+		(object Role "$UNNAMED$50"
 		    quid       	"3B84AD7A014E"
 		    supplier   	"Logical View::wsdl::BindingOutput"
 		    quidu      	"3AE08A8F028C")))
-	(object Association "$UNNAMED$47"
+	(object Association "$UNNAMED$51"
 	    quid       	"3B8B1BE900C4"
 	    roles      	(list role_list
 		(object Role "typeDefinition"
@@ -1893,11 +1915,11 @@
 		    quidu      	"3B66ECD302A9"
 		    client_cardinality 	(value cardinality "0..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$48"
+		(object Role "$UNNAMED$52"
 		    quid       	"3B8B1BE90331"
 		    supplier   	"Logical View::wsdl::Part"
 		    quidu      	"3AD5CE1C032E")))
-	(object Association "$UNNAMED$49"
+	(object Association "$UNNAMED$53"
 	    quid       	"3B8B1C1203B2"
 	    roles      	(list role_list
 		(object Role "elementDeclaration"
@@ -1907,11 +1929,11 @@
 		    quidu      	"3B66ED580214"
 		    client_cardinality 	(value cardinality "0..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$50"
+		(object Role "$UNNAMED$54"
 		    quid       	"3B8B1C140026"
 		    supplier   	"Logical View::wsdl::Part"
 		    quidu      	"3AD5CE1C032E")))
-	(object Association "$UNNAMED$51"
+	(object Association "$UNNAMED$55"
 	    quid       	"3B8B1DCC02E5"
 	    roles      	(list role_list
 		(object Role "eSchema"
@@ -1921,28 +1943,11 @@
 		    quidu      	"374B182500BB"
 		    client_cardinality 	(value cardinality "0..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$52"
+		(object Role "$UNNAMED$56"
 		    quid       	"3B8B1DCE027A"
 		    supplier   	"Logical View::wsdl::Import"
 		    quidu      	"3AD5E4F903DE")))
-	(object Association "$UNNAMED$53"
-	    quid       	"3B8BEA27029F"
-	    roles      	(list role_list
-		(object Role "$UNNAMED$54"
-		    quid       	"3B8BEA290356"
-		    supplier   	"Logical View::wsdl::Definition"
-		    quidu      	"3AD5E43F008E"
-		    client_cardinality 	(value cardinality "1..1")
-		    is_aggregate 	TRUE)
-		(object Role "eTypes"
-		    quid       	"3B8BEA29036A"
-		    label      	"eTypes"
-		    supplier   	"Logical View::wsdl::Types"
-		    quidu      	"3B8BE9A603A8"
-		    client_cardinality 	(value cardinality "0..1")
-		    Containment 	"By Value"
-		    is_navigable 	TRUE)))
-	(object Association "$UNNAMED$55"
+	(object Association "$UNNAMED$57"
 	    quid       	"3C46829303E5"
 	    roles      	(list role_list
 		(object Role "eMessage"
@@ -1952,28 +1957,10 @@
 		    quidu      	"3AD5C9590078"
 		    client_cardinality 	(value cardinality "0..1")
 		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$56"
+		(object Role "$UNNAMED$58"
 		    quid       	"3C4682960118"
 		    supplier   	"Logical View::wsdl::Part"
 		    quidu      	"3AD5CE1C032E")))
-	(object Association "$UNNAMED$57"
-	    quid       	"3C864DFF02EC"
-	    roles      	(list role_list
-		(object Role "eImports"
-		    quid       	"3C864DFF02ED"
-		    label      	"eImports"
-		    supplier   	"Logical View::wsdl::Import"
-		    quidu      	"3AD5E4F903DE"
-		    client_cardinality 	(value cardinality "0..n")
-		    Constraints 	"ordered"
-		    Containment 	"By Value"
-		    is_navigable 	TRUE)
-		(object Role "$UNNAMED$58"
-		    quid       	"3C864DFF02EE"
-		    supplier   	"Logical View::wsdl::Definition"
-		    quidu      	"3AD5E43F008E"
-		    client_cardinality 	(value cardinality "1..1")
-		    is_aggregate 	TRUE)))
 	(object Association "$UNNAMED$59"
 	    quid       	"3CC3614500F2"
 	    roles      	(list role_list
@@ -2008,19 +1995,19 @@
 	(object Association "$UNNAMED$63"
 	    quid       	"3F7896A2026E"
 	    roles      	(list role_list
-		(object Role "parent"
+		(object Role "$UNNAMED$64"
 		    quid       	"3F7896A7012B"
-		    label      	"parent"
 		    supplier   	"Logical View::wsdl::UnknownExtensibilityElement"
 		    quidu      	"3CB24AC002AE"
-		    client_cardinality 	(value cardinality "0..1")
-		    is_navigable 	TRUE)
+		    client_cardinality 	(value cardinality "1")
+		    is_aggregate 	TRUE)
 		(object Role "children"
 		    quid       	"3F7896A7012C"
 		    label      	"children"
 		    supplier   	"Logical View::wsdl::UnknownExtensibilityElement"
 		    quidu      	"3CB24AC002AE"
 		    client_cardinality 	(value cardinality "0..n")
+		    Containment 	"By Value"
 		    is_navigable 	TRUE))))
     logical_presentations 	(list unit_reference_list
 	(object ClassDiagram "2.7 Services"
@@ -2133,7 +2120,7 @@
 		    location   	(240, 528)
 		    label      	(object ItemLabel
 			Parent_View 	@4
-			location   	(44, 389)
+			location   	(44, 433)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	392
@@ -2144,7 +2131,7 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5D8F002F8"
 		    width      	410
-		    height     	302
+		    height     	214
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object InheritView "" @5
@@ -2154,7 +2141,7 @@
 		    client     	@4
 		    supplier   	@3
 		    line_style 	3
-		    origin_attachment 	(240, 377)
+		    origin_attachment 	(240, 421)
 		    terminal_attachment 	(240, 292))
 		(object ClassView "Class" "Logical View::wsdl::Binding" @6
 		    ShowCompartmentStereotypes 	TRUE
@@ -2163,7 +2150,7 @@
 		    location   	(1440, 1264)
 		    label      	(object ItemLabel
 			Parent_View 	@6
-			location   	(1244, 1125)
+			location   	(1244, 1169)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	392
@@ -2174,7 +2161,7 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5D2860261"
 		    width      	410
-		    height     	302
+		    height     	214
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object InheritView "" @7
@@ -2184,7 +2171,7 @@
 		    client     	@6
 		    supplier   	@1
 		    line_style 	3
-		    origin_attachment 	(1430, 1113)
+		    origin_attachment 	(1430, 1157)
 		    terminal_attachment 	(1430, 1002))
 		(object ClassView "Class" "Logical View::wsdl::Port" @8
 		    ShowCompartmentStereotypes 	TRUE
@@ -2217,17 +2204,17 @@
 		    origin_attachment 	(809, 828)
 		    terminal_attachment 	(809, 637))
 		(object AssociationViewNew "$UNNAMED$9" @10
-		    location   	(343, 916)
+		    location   	(321, 916)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5D9400393"
 		    roleview_list 	(list RoleViews
 			(object RoleView "ePorts" @11
 			    Parent_View 	@10
-			    location   	(-121, 644)
+			    location   	(-143, 644)
 			    label      	(object SegLabel @12
 				Parent_View 	@11
-				location   	(413, 945)
+				location   	(397, 945)
 				anchor     	1
 				anchor_loc 	1
 				nlines     	1
@@ -2243,11 +2230,11 @@
 			    client     	@10
 			    supplier   	@8
 			    line_style 	3
-			    origin_attachment 	(343, 916)
+			    origin_attachment 	(321, 916)
 			    terminal_attachment 	(666, 916)
 			    label      	(object SegLabel @13
 				Parent_View 	@11
-				location   	(539, 880)
+				location   	(530, 880)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -2259,7 +2246,7 @@
 				orientation 	0)
 			    label      	(object SegLabel @14
 				Parent_View 	@11
-				location   	(448, 990)
+				location   	(433, 990)
 				anchor     	3
 				anchor_loc 	1
 				nlines     	1
@@ -2271,10 +2258,10 @@
 				orientation 	1))
 			(object RoleView "$UNNAMED$10" @15
 			    Parent_View 	@10
-			    location   	(-121, 644)
+			    location   	(-143, 644)
 			    label      	(object SegLabel @16
 				Parent_View 	@15
-				location   	(216, 744)
+				location   	(216, 704)
 				hidden     	TRUE
 				anchor     	1
 				anchor_loc 	1
@@ -2291,15 +2278,15 @@
 			    client     	@10
 			    supplier   	@4
 			    vertices   	(list Points
-				(343, 916)
+				(321, 916)
 				(257, 916)
-				(257, 679))
+				(257, 635))
 			    line_style 	3
-			    origin_attachment 	(343, 916)
-			    terminal_attachment 	(257, 679)
+			    origin_attachment 	(321, 916)
+			    terminal_attachment 	(257, 635)
 			    label      	(object SegLabel @17
 				Parent_View 	@15
-				location   	(301, 796)
+				location   	(301, 760)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -2552,18 +2539,18 @@
 		    location   	(1904, 624)
 		    label      	(object ItemLabel
 			Parent_View 	@29
-			location   	(1568, 486)
+			location   	(1697, 522)
 			fill_color 	13434879
 			nlines     	1
-			max_width  	673
+			max_width  	414
 			justify    	0
 			label      	"PortType")
 		    icon_style 	"Icon"
 		    line_color 	3342489
 		    fill_color 	13434879
 		    quidu      	"3AD5C7F001A5"
-		    width      	691
-		    height     	301
+		    width      	432
+		    height     	228
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object ClassView "Class" "Logical View::wsdl::Input" @30
@@ -2615,7 +2602,7 @@
 		    location   	(304, 688)
 		    label      	(object ItemLabel
 			Parent_View 	@32
-			location   	(97, 539)
+			location   	(97, 586)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	414
@@ -2626,7 +2613,7 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5D2860261"
 		    width      	432
-		    height     	322
+		    height     	228
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object InheritView "" @33
@@ -2636,20 +2623,20 @@
 		    client     	@32
 		    supplier   	@24
 		    line_style 	3
-		    origin_attachment 	(279, 527)
+		    origin_attachment 	(279, 574)
 		    terminal_attachment 	(279, 428))
 		(object AssociationViewNew "$UNNAMED$3" @34
-		    location   	(1039, 742)
+		    location   	(1104, 742)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5D352010F"
 		    roleview_list 	(list RoleViews
 			(object RoleView "ePortType" @35
 			    Parent_View 	@34
-			    location   	(575, 598)
+			    location   	(640, 598)
 			    label      	(object SegLabel @36
 				Parent_View 	@35
-				location   	(1449, 781)
+				location   	(1565, 781)
 				anchor     	1
 				anchor_loc 	1
 				nlines     	1
@@ -2665,11 +2652,11 @@
 			    client     	@34
 			    supplier   	@29
 			    line_style 	3
-			    origin_attachment 	(1039, 742)
-			    terminal_attachment 	(1559, 742)
+			    origin_attachment 	(1104, 742)
+			    terminal_attachment 	(1688, 742)
 			    label      	(object SegLabel @37
 				Parent_View 	@35
-				location   	(1492, 716)
+				location   	(1613, 716)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -2681,10 +2668,10 @@
 				orientation 	0))
 			(object RoleView "$UNNAMED$4" @38
 			    Parent_View 	@34
-			    location   	(575, 598)
+			    location   	(640, 598)
 			    label      	(object SegLabel @39
 				Parent_View 	@38
-				location   	(776, 697)
+				location   	(806, 697)
 				hidden     	TRUE
 				anchor     	1
 				anchor_loc 	1
@@ -2701,7 +2688,7 @@
 			    client     	@34
 			    supplier   	@32
 			    line_style 	3
-			    origin_attachment 	(1039, 742)
+			    origin_attachment 	(1104, 742)
 			    terminal_attachment 	(520, 742))))
 		(object ClassView "Class" "Logical View::wsdl::Operation" @40
 		    ShowCompartmentStereotypes 	TRUE
@@ -2710,7 +2697,7 @@
 		    location   	(1888, 1024)
 		    label      	(object ItemLabel
 			Parent_View 	@40
-			location   	(1672, 851)
+			location   	(1672, 898)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	432
@@ -2721,7 +2708,7 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5C80D03CE"
 		    width      	450
-		    height     	370
+		    height     	276
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object ClassView "Class" "Logical View::wsdl::BindingInput" @41
@@ -2745,7 +2732,7 @@
 		    height     	274
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$43" @42
+		(object AssociationViewNew "$UNNAMED$47" @42
 		    location   	(1264, 1359)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -2786,7 +2773,7 @@
 				pctDist    	0.889546
 				height     	39
 				orientation 	1))
-			(object RoleView "$UNNAMED$44" @46
+			(object RoleView "$UNNAMED$48" @46
 			    Parent_View 	@42
 			    location   	(96, 287)
 			    stereotype 	TRUE
@@ -2818,7 +2805,7 @@
 		    height     	274
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$45" @48
+		(object AssociationViewNew "$UNNAMED$49" @48
 		    location   	(1432, 1654)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -2859,7 +2846,7 @@
 				pctDist    	0.790274
 				height     	43
 				orientation 	1))
-			(object RoleView "$UNNAMED$46" @52
+			(object RoleView "$UNNAMED$50" @52
 			    Parent_View 	@48
 			    location   	(-120, 374)
 			    stereotype 	TRUE
@@ -2901,17 +2888,17 @@
 		    origin_attachment 	(966, 919)
 		    terminal_attachment 	(966, 636))
 		(object AssociationViewNew "$UNNAMED$5" @55
-		    location   	(457, 1022)
+		    location   	(433, 1022)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5D3E10179"
 		    roleview_list 	(list RoleViews
 			(object RoleView "$UNNAMED$6" @56
 			    Parent_View 	@55
-			    location   	(-1319, 494)
+			    location   	(-1343, 494)
 			    label      	(object SegLabel @57
 				Parent_View 	@56
-				location   	(235, 920)
+				location   	(235, 877)
 				hidden     	TRUE
 				anchor     	1
 				anchor_loc 	1
@@ -2928,15 +2915,15 @@
 			    client     	@55
 			    supplier   	@32
 			    vertices   	(list Points
-				(457, 1022)
+				(433, 1022)
 				(276, 1022)
-				(276, 849))
+				(276, 802))
 			    line_style 	3
-			    origin_attachment 	(457, 1022)
-			    terminal_attachment 	(276, 849)
+			    origin_attachment 	(433, 1022)
+			    terminal_attachment 	(276, 802)
 			    label      	(object SegLabel @58
 				Parent_View 	@56
-				location   	(330, 884)
+				location   	(330, 841)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -2948,10 +2935,10 @@
 				orientation 	1))
 			(object RoleView "eBindingOperations" @59
 			    Parent_View 	@55
-			    location   	(-1319, 494)
+			    location   	(-1343, 494)
 			    label      	(object SegLabel @60
 				Parent_View 	@59
-				location   	(531, 977)
+				location   	(513, 977)
 				anchor     	1
 				anchor_loc 	1
 				nlines     	1
@@ -2967,11 +2954,11 @@
 			    client     	@55
 			    supplier   	@53
 			    line_style 	3
-			    origin_attachment 	(457, 1022)
+			    origin_attachment 	(433, 1022)
 			    terminal_attachment 	(810, 1022)
 			    label      	(object SegLabel @61
 				Parent_View 	@59
-				location   	(769, 980)
+				location   	(766, 980)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -2983,7 +2970,7 @@
 				orientation 	0)
 			    label      	(object SegLabel @62
 				Parent_View 	@59
-				location   	(714, 1067)
+				location   	(706, 1067)
 				anchor     	3
 				anchor_loc 	1
 				nlines     	1
@@ -3058,7 +3045,7 @@
 			    line_style 	3
 			    origin_attachment 	(1418, 1040)
 			    terminal_attachment 	(1174, 1040))))
-		(object AssociationViewNew "$UNNAMED$23" @69
+		(object AssociationViewNew "$UNNAMED$27" @69
 		    location   	(787, 1190)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -3103,7 +3090,7 @@
 				pctDist    	0.440476
 				height     	32
 				orientation 	0))
-			(object RoleView "$UNNAMED$24" @73
+			(object RoleView "$UNNAMED$28" @73
 			    Parent_View 	@69
 			    location   	(-381, 454)
 			    label      	(object SegLabel @74
@@ -3143,7 +3130,7 @@
 				pctDist    	0.837758
 				height     	56
 				orientation 	0))))
-		(object AssociationViewNew "$UNNAMED$25" @76
+		(object AssociationViewNew "$UNNAMED$29" @76
 		    location   	(1024, 1312)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -3184,7 +3171,7 @@
 				pctDist    	0.774590
 				height     	58
 				orientation 	1))
-			(object RoleView "$UNNAMED$26" @80
+			(object RoleView "$UNNAMED$30" @80
 			    Parent_View 	@76
 			    location   	(-150, 578)
 			    label      	(object SegLabel @81
@@ -3271,7 +3258,7 @@
 		    line_style 	3
 		    origin_attachment 	(1203, 2007)
 		    terminal_attachment 	(353, 2007))
-		(object AssociationViewNew "$UNNAMED$33" @86
+		(object AssociationViewNew "$UNNAMED$37" @86
 		    location   	(1356, 1352)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -3324,7 +3311,7 @@
 				pctDist    	0.919291
 				height     	101
 				orientation 	1))
-			(object RoleView "$UNNAMED$34" @91
+			(object RoleView "$UNNAMED$38" @91
 			    Parent_View 	@86
 			    location   	(188, 616)
 			    label      	(object SegLabel @92
@@ -3365,7 +3352,7 @@
 				pctDist    	0.687008
 				height     	54
 				orientation 	1))))
-		(object AssociationViewNew "$UNNAMED$35" @94
+		(object AssociationViewNew "$UNNAMED$39" @94
 		    location   	(1640, 1970)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -3406,7 +3393,7 @@
 				pctDist    	0.642276
 				height     	42
 				orientation 	1))
-			(object RoleView "$UNNAMED$36" @98
+			(object RoleView "$UNNAMED$40" @98
 			    Parent_View 	@94
 			    location   	(-344, 818)
 			    stereotype 	TRUE
@@ -3808,7 +3795,7 @@
 				pctDist    	0.753488
 				height     	41
 				orientation 	1))))
-		(object AssociationViewNew "$UNNAMED$41" @119
+		(object AssociationViewNew "$UNNAMED$45" @119
 		    location   	(2107, 773)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -3861,7 +3848,7 @@
 				pctDist    	0.306220
 				height     	115
 				orientation 	1))
-			(object RoleView "$UNNAMED$42" @124
+			(object RoleView "$UNNAMED$46" @124
 			    Parent_View 	@119
 			    location   	(1819, 101)
 			    stereotype 	TRUE
@@ -3872,7 +3859,7 @@
 			    line_style 	3
 			    origin_attachment 	(2107, 773)
 			    terminal_attachment 	(1899, 773))))
-		(object AssociationViewNew "$UNNAMED$31" @125
+		(object AssociationViewNew "$UNNAMED$35" @125
 		    location   	(1702, 1504)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -3925,7 +3912,7 @@
 				pctDist    	0.845378
 				height     	110
 				orientation 	1))
-			(object RoleView "$UNNAMED$32" @130
+			(object RoleView "$UNNAMED$36" @130
 			    Parent_View 	@125
 			    location   	(1414, 832)
 			    label      	(object SegLabel @131
@@ -3961,7 +3948,7 @@
 				pctDist    	0.857362
 				height     	119
 				orientation 	1))))
-		(object AssociationViewNew "$UNNAMED$27" @133
+		(object AssociationViewNew "$UNNAMED$31" @133
 		    location   	(1178, 1234)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -4006,7 +3993,7 @@
 				pctDist    	0.877660
 				height     	66
 				orientation 	0))
-			(object RoleView "$UNNAMED$28" @137
+			(object RoleView "$UNNAMED$32" @137
 			    Parent_View 	@133
 			    location   	(890, 562)
 			    label      	(object SegLabel @138
@@ -4046,7 +4033,7 @@
 				pctDist    	0.736413
 				height     	81
 				orientation 	0))))
-		(object AssociationViewNew "$UNNAMED$29" @140
+		(object AssociationViewNew "$UNNAMED$33" @140
 		    location   	(1468, 1345)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -4087,7 +4074,7 @@
 				pctDist    	0.863636
 				height     	78
 				orientation 	0))
-			(object RoleView "$UNNAMED$30" @144
+			(object RoleView "$UNNAMED$34" @144
 			    Parent_View 	@140
 			    location   	(1180, 673)
 			    label      	(object SegLabel @145
@@ -4388,7 +4375,7 @@
 		    location   	(2112, 1184)
 		    label      	(object ItemLabel
 			Parent_View 	@166
-			location   	(1900, 1056)
+			location   	(1900, 1105)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	424
@@ -4399,7 +4386,7 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5C9590078"
 		    width      	442
-		    height     	280
+		    height     	182
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object ClassView "Class" "Logical View::wsdl::PortType" @167
@@ -4409,7 +4396,7 @@
 		    location   	(1808, 1488)
 		    label      	(object ItemLabel
 			Parent_View 	@167
-			location   	(1596, 1360)
+			location   	(1596, 1409)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	424
@@ -4420,7 +4407,7 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5C7F001A5"
 		    width      	442
-		    height     	280
+		    height     	182
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object ClassView "Class" "Logical View::wsdl::Binding" @168
@@ -4430,7 +4417,7 @@
 		    location   	(2336, 1728)
 		    label      	(object ItemLabel
 			Parent_View 	@168
-			location   	(2124, 1600)
+			location   	(2124, 1649)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	424
@@ -4441,7 +4428,7 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5D2860261"
 		    width      	442
-		    height     	280
+		    height     	182
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object ClassView "Class" "Logical View::wsdl::Definition" @169
@@ -4465,13 +4452,13 @@
 		    height     	426
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$53" @170
+		(object AssociationViewNew "$UNNAMED$15" @170
 		    location   	(1358, 860)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B8BEA27029F"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$54" @171
+			(object RoleView "$UNNAMED$16" @171
 			    Parent_View 	@170
 			    location   	(62, -36)
 			    label      	(object SegLabel @172
@@ -4546,13 +4533,13 @@
 				pctDist    	0.892655
 				height     	39
 				orientation 	1))))
-		(object AssociationViewNew "$UNNAMED$57" @177
+		(object AssociationViewNew "$UNNAMED$13" @177
 		    location   	(1612, 595)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3C864DFF02EC"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$58" @178
+			(object RoleView "$UNNAMED$14" @178
 			    Parent_View 	@177
 			    location   	(12, 227)
 			    label      	(object SegLabel @179
@@ -4639,15 +4626,15 @@
 				pctDist    	0.225941
 				height     	51
 				orientation 	1))))
-		(object AssociationViewNew "$UNNAMED$13" @185
-		    location   	(1279, 1137)
+		(object AssociationViewNew "$UNNAMED$17" @185
+		    location   	(1279, 1136)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5E60301E2"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$14" @186
+			(object RoleView "$UNNAMED$18" @186
 			    Parent_View 	@185
-			    location   	(271, 273)
+			    location   	(271, 272)
 			    label      	(object SegLabel @187
 				Parent_View 	@186
 				location   	(1238, 591)
@@ -4667,11 +4654,11 @@
 			    client     	@185
 			    supplier   	@169
 			    line_style 	3
-			    origin_attachment 	(1279, 1137)
+			    origin_attachment 	(1279, 1136)
 			    terminal_attachment 	(1279, 453)
 			    label      	(object SegLabel @188
 				Parent_View 	@186
-				location   	(1320, 586)
+				location   	(1320, 587)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -4683,7 +4670,7 @@
 				orientation 	1))
 			(object RoleView "eMessages" @189
 			    Parent_View 	@185
-			    location   	(271, 273)
+			    location   	(271, 272)
 			    label      	(object SegLabel @190
 				Parent_View 	@189
 				location   	(1647, 1171)
@@ -4702,11 +4689,11 @@
 			    client     	@185
 			    supplier   	@166
 			    vertices   	(list Points
-				(1279, 1137)
+				(1279, 1136)
 				(1279, 1208)
 				(1891, 1208))
 			    line_style 	3
-			    origin_attachment 	(1279, 1137)
+			    origin_attachment 	(1279, 1136)
 			    terminal_attachment 	(1891, 1208)
 			    label      	(object SegLabel @191
 				Parent_View 	@189
@@ -4732,13 +4719,13 @@
 				pctDist    	0.864407
 				height     	36
 				orientation 	1))))
-		(object AssociationViewNew "$UNNAMED$15" @193
+		(object AssociationViewNew "$UNNAMED$19" @193
 		    location   	(1212, 1159)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5E6710104"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$16" @194
+			(object RoleView "$UNNAMED$20" @194
 			    Parent_View 	@193
 			    location   	(-324, 215)
 			    label      	(object SegLabel @195
@@ -4825,13 +4812,13 @@
 				pctDist    	0.895855
 				height     	50
 				orientation 	1))))
-		(object AssociationViewNew "$UNNAMED$17" @201
+		(object AssociationViewNew "$UNNAMED$21" @201
 		    location   	(1114, 1585)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5E6770095"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$18" @202
+			(object RoleView "$UNNAMED$22" @202
 			    Parent_View 	@201
 			    location   	(-406, 241)
 			    label      	(object SegLabel @203
@@ -4925,7 +4912,7 @@
 		    location   	(1840, 2048)
 		    label      	(object ItemLabel
 			Parent_View 	@209
-			location   	(1628, 1920)
+			location   	(1628, 1969)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	424
@@ -4936,21 +4923,21 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5D8F002F8"
 		    width      	442
-		    height     	280
+		    height     	182
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$19" @210
-		    location   	(1066, 1533)
+		(object AssociationViewNew "$UNNAMED$23" @210
+		    location   	(1066, 1532)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5E67B0311"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$20" @211
+			(object RoleView "$UNNAMED$24" @211
 			    Parent_View 	@210
-			    location   	(-521, -111)
+			    location   	(-521, -112)
 			    label      	(object SegLabel @212
 				Parent_View 	@211
-				location   	(1025, 669)
+				location   	(1025, 670)
 				hidden     	TRUE
 				anchor     	1
 				anchor_loc 	1
@@ -4967,7 +4954,7 @@
 			    client     	@210
 			    supplier   	@169
 			    line_style 	3
-			    origin_attachment 	(1066, 1533)
+			    origin_attachment 	(1066, 1532)
 			    terminal_attachment 	(1066, 453)
 			    label      	(object SegLabel @213
 				Parent_View 	@211
@@ -4983,7 +4970,7 @@
 				orientation 	1))
 			(object RoleView "eServices" @214
 			    Parent_View 	@210
-			    location   	(-521, -111)
+			    location   	(-521, -112)
 			    label      	(object SegLabel @215
 				Parent_View 	@214
 				location   	(1393, 2028)
@@ -5002,11 +4989,11 @@
 			    client     	@210
 			    supplier   	@209
 			    vertices   	(list Points
-				(1066, 1533)
+				(1066, 1532)
 				(1066, 2059)
 				(1619, 2059))
 			    line_style 	3
-			    origin_attachment 	(1066, 1533)
+			    origin_attachment 	(1066, 1532)
 			    terminal_attachment 	(1619, 2059)
 			    label      	(object SegLabel @216
 				Parent_View 	@214
@@ -5092,17 +5079,16 @@
 		    location   	(1424, 1728)
 		    label      	(object ItemLabel
 			Parent_View 	@221
-			location   	(1342, 1675)
+			location   	(1343, 1675)
 			fill_color 	13434879
 			nlines     	1
-			max_width  	164
+			max_width  	162
 			justify    	0
 			label      	"Service")
 		    icon_style 	"Icon"
 		    line_color 	3342489
 		    fill_color 	13434879
 		    quidu      	"3AD5D8F002F8"
-		    width      	182
 		    height     	130
 		    annotation 	8
 		    autoResize 	TRUE)
@@ -5393,13 +5379,13 @@
 		    height     	234
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$21" @241
+		(object AssociationViewNew "$UNNAMED$25" @241
 		    location   	(1191, 672)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5FD130079"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$22" @242
+			(object RoleView "$UNNAMED$26" @242
 			    Parent_View 	@241
 			    location   	(23, 560)
 			    label      	(object SegLabel @243
@@ -5545,21 +5531,21 @@
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
-		    location   	(2016, 1360)
+		    location   	(2192, 1408)
 		    label      	(object ItemLabel
 			Parent_View 	@254
-			location   	(1731, 1307)
+			location   	(1729, 1303)
 			fill_color 	13434879
 			nlines     	1
-			max_width  	570
+			max_width  	927
 			justify    	0
 			label      	"UnknownExtensibilityElement")
 		    icon_style 	"Icon"
 		    line_color 	3342489
 		    fill_color 	13434879
 		    quidu      	"3CB24AC002AE"
-		    width      	588
-		    height     	130
+		    width      	945
+		    height     	235
 		    annotation 	8
 		    autoResize 	TRUE)
 		(object InheritView "" @255
@@ -5569,26 +5555,27 @@
 		    client     	@254
 		    supplier   	@240
 		    line_style 	3
-		    origin_attachment 	(1796, 1295)
+		    origin_attachment 	(1796, 1291)
 		    terminal_attachment 	(1796, 805))
 		(object AssociationViewNew "$UNNAMED$63" @256
-		    location   	(2311, 1686)
+		    location   	(2639, 1734)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3F7896A2026E"
 		    roleview_list 	(list RoleViews
-			(object RoleView "parent" @257
+			(object RoleView "$UNNAMED$64" @257
 			    Parent_View 	@256
-			    location   	(279, 294)
+			    location   	(607, 342)
 			    label      	(object SegLabel @258
 				Parent_View 	@257
-				location   	(2422, 1333)
+				location   	(2797, 1380)
+				hidden     	TRUE
 				anchor     	1
 				anchor_loc 	1
 				nlines     	1
-				max_width  	144
+				max_width  	60
 				justify    	0
-				label      	"+parent"
+				label      	""
 				pctDist    	0.800000
 				height     	42
 				orientation 	1)
@@ -5598,31 +5585,31 @@
 			    client     	@256
 			    supplier   	@254
 			    vertices   	(list Points
-				(2311, 1686)
-				(2432, 1686)
-				(2432, 1374)
-				(2310, 1374))
+				(2639, 1734)
+				(2824, 1734)
+				(2824, 1421)
+				(2664, 1421))
 			    line_style 	3
-			    origin_attachment 	(2311, 1686)
-			    terminal_attachment 	(2310, 1374)
+			    origin_attachment 	(2639, 1734)
+			    terminal_attachment 	(2664, 1421)
 			    label      	(object SegLabel @259
 				Parent_View 	@257
-				location   	(2366, 1428)
+				location   	(2731, 1475)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
 				max_width  	15
 				justify    	0
-				label      	"0..1"
+				label      	"1"
 				pctDist    	0.900000
 				height     	54
 				orientation 	0))
 			(object RoleView "children" @260
 			    Parent_View 	@256
-			    location   	(279, 294)
+			    location   	(607, 342)
 			    label      	(object SegLabel @261
 				Parent_View 	@260
-				location   	(1899, 1537)
+				location   	(2074, 1658)
 				anchor     	1
 				anchor_loc 	1
 				nlines     	1
@@ -5638,15 +5625,15 @@
 			    client     	@256
 			    supplier   	@254
 			    vertices   	(list Points
-				(2311, 1686)
-				(2016, 1686)
-				(2016, 1425))
+				(2639, 1734)
+				(2191, 1734)
+				(2191, 1525))
 			    line_style 	3
-			    origin_attachment 	(2311, 1686)
-			    terminal_attachment 	(2016, 1425)
+			    origin_attachment 	(2639, 1734)
+			    terminal_attachment 	(2191, 1525)
 			    label      	(object SegLabel @262
 				Parent_View 	@260
-				location   	(2070, 1481)
+				location   	(2245, 1591)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -5757,7 +5744,7 @@
 		    height     	320
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$37" @267
+		(object AssociationViewNew "$UNNAMED$41" @267
 		    location   	(309, 786)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -5810,7 +5797,7 @@
 				pctDist    	0.525097
 				height     	82
 				orientation 	1))
-			(object RoleView "$UNNAMED$38" @272
+			(object RoleView "$UNNAMED$42" @272
 			    Parent_View 	@267
 			    location   	(-91, 258)
 			    label      	(object SegLabel @273
@@ -5867,7 +5854,7 @@
 		    height     	304
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$51" @276
+		(object AssociationViewNew "$UNNAMED$55" @276
 		    location   	(1486, 1001)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -5912,7 +5899,7 @@
 				pctDist    	0.592593
 				height     	70
 				orientation 	1))
-			(object RoleView "$UNNAMED$52" @280
+			(object RoleView "$UNNAMED$56" @280
 			    Parent_View 	@276
 			    location   	(510, -103)
 			    stereotype 	TRUE
@@ -5921,15 +5908,15 @@
 			    client     	@276
 			    supplier   	@275
 			    line_style 	3
-			    origin_attachment 	(1486, 872)
+			    origin_attachment 	(1486, 1000)
 			    terminal_attachment 	(1486, 872))))
-		(object AssociationViewNew "$UNNAMED$39" @281
+		(object AssociationViewNew "$UNNAMED$43" @281
 		    location   	(1087, 403)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AEA3E3A002D"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$40" @282
+			(object RoleView "$UNNAMED$44" @282
 			    Parent_View 	@281
 			    location   	(687, -125)
 			    label      	(object SegLabel @283
@@ -5992,13 +5979,13 @@
 				pctDist    	0.814910
 				height     	53
 				orientation 	0))))
-		(object AssociationViewNew "$UNNAMED$57" @287
+		(object AssociationViewNew "$UNNAMED$13" @287
 		    location   	(737, 826)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3C864DFF02EC"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$58" @288
+			(object RoleView "$UNNAMED$14" @288
 			    Parent_View 	@287
 			    location   	(-671, 106)
 			    label      	(object SegLabel @289
@@ -6188,7 +6175,7 @@
 		    height     	258
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$47" @300
+		(object AssociationViewNew "$UNNAMED$51" @300
 		    location   	(735, 1172)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -6229,7 +6216,7 @@
 				pctDist    	0.688705
 				height     	35
 				orientation 	1))
-			(object RoleView "$UNNAMED$48" @304
+			(object RoleView "$UNNAMED$52" @304
 			    Parent_View 	@300
 			    location   	(143, 676)
 			    stereotype 	TRUE
@@ -6240,7 +6227,7 @@
 			    line_style 	3
 			    origin_attachment 	(735, 1172)
 			    terminal_attachment 	(585, 1172))))
-		(object AssociationViewNew "$UNNAMED$49" @305
+		(object AssociationViewNew "$UNNAMED$53" @305
 		    location   	(527, 1592)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -6281,7 +6268,7 @@
 				pctDist    	0.755877
 				height     	53
 				orientation 	1))
-			(object RoleView "$UNNAMED$50" @309
+			(object RoleView "$UNNAMED$54" @309
 			    Parent_View 	@305
 			    location   	(-65, 1096)
 			    stereotype 	TRUE
@@ -6296,7 +6283,7 @@
 			    line_style 	3
 			    origin_attachment 	(527, 1592)
 			    terminal_attachment 	(437, 1313))))
-		(object AssociationViewNew "$UNNAMED$55" @310
+		(object AssociationViewNew "$UNNAMED$57" @310
 		    location   	(322, 1911)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -6337,7 +6324,7 @@
 				pctDist    	0.900000
 				height     	54
 				orientation 	1))
-			(object RoleView "$UNNAMED$56" @314
+			(object RoleView "$UNNAMED$58" @314
 			    Parent_View 	@310
 			    location   	(-14, 1191)
 			    stereotype 	TRUE
@@ -6392,7 +6379,7 @@
 		    height     	130
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$53" @317
+		(object AssociationViewNew "$UNNAMED$15" @317
 		    location   	(234, 604)
 		    stereotype 	TRUE
 		    line_color 	3342489
@@ -6433,7 +6420,7 @@
 				pctDist    	0.783883
 				height     	36
 				orientation 	0))
-			(object RoleView "$UNNAMED$54" @321
+			(object RoleView "$UNNAMED$16" @321
 			    Parent_View 	@317
 			    location   	(-150, 396)
 			    label      	(object SegLabel @322
@@ -6669,13 +6656,13 @@
 		    height     	216
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$21" @337
+		(object AssociationViewNew "$UNNAMED$25" @337
 		    location   	(1206, 493)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5FD130079"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$22" @338
+			(object RoleView "$UNNAMED$26" @338
 			    Parent_View 	@337
 			    location   	(-586, 237)
 			    label      	(object SegLabel @339

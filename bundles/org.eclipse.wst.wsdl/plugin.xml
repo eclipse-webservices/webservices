@@ -13,8 +13,9 @@
 
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
-			uri="http://www.ibm.com/wsdl/2003/WSDL"
-			class="org.eclipse.wst.wsdl.WSDLPackage">
+        class="org.eclipse.wst.wsdl.WSDLPackage"
+        genModel="model/WSDL.genmodel"
+        uri="http://www.ibm.com/wsdl/2003/WSDL">
 		</package>
 	</extension>
 	<extension point="org.eclipse.emf.ecore.extension_parser">

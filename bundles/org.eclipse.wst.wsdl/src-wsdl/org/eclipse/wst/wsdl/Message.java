@@ -32,8 +32,6 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.Message#getQName <em>QName</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Message#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Message#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.Message#getResourceURI <em>Resource URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.Message#getEParts <em>EParts</em>}</li>
  * </ul>
  * </p>

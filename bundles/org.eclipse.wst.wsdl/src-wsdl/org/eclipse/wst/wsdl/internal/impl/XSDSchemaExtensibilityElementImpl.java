@@ -17,7 +17,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.Definition;
@@ -73,7 +72,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getXSDSchemaExtensibilityElement();
+    return WSDLPackage.Literals.XSD_SCHEMA_EXTENSIBILITY_ELEMENT;
   }
 
   /**
@@ -97,16 +96,8 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     schema = newSchema;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(
-        this,
-        Notification.SET,
-        WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA,
-        oldSchema,
-        newSchema);
-      if (msgs == null)
-        msgs = notification;
-      else
-        msgs.add(notification);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, oldSchema, newSchema);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
   }
@@ -122,20 +113,11 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
     {
       NotificationChain msgs = null;
       if (schema != null)
-        msgs = ((InternalEObject)schema).eInverseRemove(
-          this,
-          EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA,
-          null,
-          msgs);
+        msgs = ((InternalEObject)schema).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, null, msgs);
       if (newSchema != null)
-        msgs = ((InternalEObject)newSchema).eInverseAdd(
-          this,
-          EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA,
-          null,
-          msgs);
+        msgs = ((InternalEObject)newSchema).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, null, msgs);
       msgs = basicSetSchema(newSchema, msgs);
-      if (msgs != null)
-        msgs.dispatch();
+      if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA, newSchema, newSchema));
@@ -146,19 +128,14 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    if (featureID >= 0)
+    switch (featureID)
     {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
         return basicSetSchema(null, msgs);
-        default:
-        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
     }
-    return eBasicSetContainer(null, featureID, msgs);
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -166,22 +143,14 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT:
-      return getElement();
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__REQUIRED:
-      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      return getElementType();
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-      return getSchema();
+        return getSchema();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -189,27 +158,15 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__REQUIRED:
-      setRequired(((Boolean)newValue).booleanValue());
-      return;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      setElementType((QName)newValue);
-      return;
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-      setSchema((XSDSchema)newValue);
-      return;
+        setSchema((XSDSchema)newValue);
+        return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -217,27 +174,15 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__REQUIRED:
-      setRequired(REQUIRED_EDEFAULT);
-      return;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      setElementType(ELEMENT_TYPE_EDEFAULT);
-      return;
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-      setSchema((XSDSchema)null);
-      return;
+        setSchema((XSDSchema)null);
+        return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -245,23 +190,14 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__REQUIRED:
-      return required != REQUIRED_EDEFAULT;
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
-      return schema != null;
+        return schema != null;
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /* (non-Javadoc)

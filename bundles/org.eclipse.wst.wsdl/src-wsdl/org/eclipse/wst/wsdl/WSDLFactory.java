@@ -32,7 +32,7 @@ public interface WSDLFactory extends EFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  WSDLFactory eINSTANCE = new org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl();
+  WSDLFactory eINSTANCE = org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl.init();
 
   /**
    * Returns a new object of class '<em>Port Type</em>'.
@@ -222,6 +222,15 @@ public interface WSDLFactory extends EFactory
    * @generated
    */
   XSDSchemaExtensibilityElement createXSDSchemaExtensibilityElement();
+
+  /**
+   * Returns the package supported by this factory.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the package supported by this factory.
+   * @generated
+   */
+  WSDLPackage getWSDLPackage();
 
   /*
    * Returns the package supported by this factory.
