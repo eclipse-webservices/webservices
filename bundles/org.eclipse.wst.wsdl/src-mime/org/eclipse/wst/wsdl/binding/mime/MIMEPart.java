@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime;
 
+
 import java.util.List;
 
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -24,21 +26,22 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * @model 
  * @generated
  */
-public interface MIMEPart extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEPart {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model 
-	 * @generated
-	 */
-	void addExtensibilityElement(javax.wsdl.extensions.ExtensibilityElement extensibilityElement);
+public interface MIMEPart extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEPart
+{
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model 
+   * @generated
+   */
+  void addExtensibilityElement(javax.wsdl.extensions.ExtensibilityElement extensibilityElement);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.wst.wsdl.binding.mime.List" parameters=""
-	 * @generated
-	 */
-	List getExtensibilityElements();
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model dataType="org.eclipse.wst.wsdl.binding.mime.List" parameters=""
+   * @generated
+   */
+  List getExtensibilityElements();
 
 } // MIMEPart

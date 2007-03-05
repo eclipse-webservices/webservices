@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap;
 
+
 import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -28,21 +30,22 @@ import org.eclipse.emf.common.util.EList;
  * @model 
  * @generated
  */
-public interface SOAPHeader extends SOAPHeaderBase {
+public interface SOAPHeader extends SOAPHeaderBase
+{
   /**
    * Returns the value of the '<em><b>Header Faults</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault}.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Header Faults</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Header Faults</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Header Faults</em>' containment reference list.
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeader_HeaderFaults()
    * @model type="org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault" containment="true"
    * @generated
    */
-	EList getHeaderFaults();
+  EList getHeaderFaults();
 
 } // SOAPHeader

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -313,7 +314,7 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
     Iterator opIterator = getOperations().iterator();
     while (opIterator.hasNext())
     {
-      javax.wsdl.Operation op = (javax.wsdl.Operation) opIterator.next();
+      javax.wsdl.Operation op = (javax.wsdl.Operation)opIterator.next();
       if (op == null)
         continue;
 
@@ -384,9 +385,9 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.PORT_TYPE__EOPERATIONS:
-          return ((InternalEList)getEOperations()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEOperations()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -402,19 +403,19 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT_TYPE__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.PORT_TYPE__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.PORT_TYPE__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.PORT_TYPE__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.PORT_TYPE__PROXY:
-        return isProxy() ? Boolean.TRUE : Boolean.FALSE;
+      return isProxy() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.PORT_TYPE__RESOURCE_URI:
-        return getResourceURI();
+      return getResourceURI();
       case WSDLPackage.PORT_TYPE__EOPERATIONS:
-        return getEOperations();
+      return getEOperations();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -429,27 +430,27 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT_TYPE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.PORT_TYPE__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.PORT_TYPE__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.PORT_TYPE__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.PORT_TYPE__PROXY:
-        setProxy(((Boolean)newValue).booleanValue());
-        return;
+      setProxy(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.PORT_TYPE__RESOURCE_URI:
-        setResourceURI((String)newValue);
-        return;
+      setResourceURI((String)newValue);
+      return;
       case WSDLPackage.PORT_TYPE__EOPERATIONS:
-        getEOperations().clear();
-        getEOperations().addAll((Collection)newValue);
-        return;
+      getEOperations().clear();
+      getEOperations().addAll((Collection)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -464,26 +465,26 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT_TYPE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.PORT_TYPE__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.PORT_TYPE__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.PORT_TYPE__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.PORT_TYPE__PROXY:
-        setProxy(PROXY_EDEFAULT);
-        return;
+      setProxy(PROXY_EDEFAULT);
+      return;
       case WSDLPackage.PORT_TYPE__RESOURCE_URI:
-        setResourceURI(RESOURCE_URI_EDEFAULT);
-        return;
+      setResourceURI(RESOURCE_URI_EDEFAULT);
+      return;
       case WSDLPackage.PORT_TYPE__EOPERATIONS:
-        getEOperations().clear();
-        return;
+      getEOperations().clear();
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -498,19 +499,20 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT_TYPE__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.PORT_TYPE__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.PORT_TYPE__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.PORT_TYPE__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.PORT_TYPE__PROXY:
-        return proxy != PROXY_EDEFAULT;
+      return proxy != PROXY_EDEFAULT;
       case WSDLPackage.PORT_TYPE__RESOURCE_URI:
-        return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
+      return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
       case WSDLPackage.PORT_TYPE__EOPERATIONS:
-        return eOperations != null && !eOperations.isEmpty();
+      return eOperations != null && !eOperations.isEmpty();
     }
     return eDynamicIsSet(eFeature);
   }
@@ -522,7 +524,8 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (qName: ");
@@ -553,14 +556,14 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
   {
     switch (WSDLUtil.getInstance().getWSDLType(child))
     {
-      case WSDLConstants.OPERATION :
-        {
-          Operation operation = WSDLFactory.eINSTANCE.createOperation();
-          operation.setEnclosingDefinition(getEnclosingDefinition());
-          operation.setElement(child);
-          getEOperations().add(operation);
-          break;
-        }
+      case WSDLConstants.OPERATION:
+      {
+        Operation operation = WSDLFactory.eINSTANCE.createOperation();
+        operation.setEnclosingDefinition(getEnclosingDefinition());
+        operation.setElement(child);
+        getEOperations().add(operation);
+        break;
+      }
     }
   }
 
@@ -584,7 +587,7 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
   private List getList(Object component, Object modelObject)
   {
     List result = null;
-    PortType portType = (PortType) component;
+    PortType portType = (PortType)component;
     if (modelObject instanceof Operation)
     {
       result = portType.getEOperations();
@@ -594,7 +597,7 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
 
   public Collection getModelObjects(Object component)
   {
-    PortType portType = (PortType) component;
+    PortType portType = (PortType)component;
 
     List list = portType.getEOperations();
     return list;
@@ -626,8 +629,8 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
     Iterator iterator = getEOperations().iterator();
     while (iterator.hasNext())
     {
-      Operation operation = (Operation) iterator.next();
-      Element child = ((OperationImpl) operation).createElement();
+      Operation operation = (Operation)iterator.next();
+      Element child = ((OperationImpl)operation).createElement();
       newElement.appendChild(child);
     }
 

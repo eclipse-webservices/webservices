@@ -34,57 +34,58 @@ package org.eclipse.wst.wsdl;
  * @model 
  * @generated
  */
-public interface Port extends ExtensibleElement, javax.wsdl.Port{
+public interface Port extends ExtensibleElement, javax.wsdl.Port
+{
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wsdl.WSDLPackage#getPort_Name()
    * @model 
    * @generated
    */
-	String getName();
+  String getName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Port#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
    * @see #getName()
    * @generated
    */
-	void setName(String value);
+  void setName(String value);
 
   /**
    * Returns the value of the '<em><b>EBinding</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EBinding</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EBinding</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EBinding</em>' reference.
    * @see #setEBinding(Binding)
    * @see org.eclipse.wsdl.WSDLPackage#getPort_EBinding()
    * @model required="true"
    * @generated
    */
-	Binding getEBinding();
+  Binding getEBinding();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Port#getEBinding <em>EBinding</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>EBinding</em>' reference.
    * @see #getEBinding()
    * @generated
    */
-	void setEBinding(Binding value);
+  void setEBinding(Binding value);
 
 } // Port

@@ -27,5 +27,6 @@ package org.eclipse.wst.wsdl;
  * @model 
  * @generated
  */
-public interface Fault extends MessageReference, WSDLElement, javax.wsdl.Fault{
+public interface Fault extends MessageReference, WSDLElement, javax.wsdl.Fault
+{
 } // Fault

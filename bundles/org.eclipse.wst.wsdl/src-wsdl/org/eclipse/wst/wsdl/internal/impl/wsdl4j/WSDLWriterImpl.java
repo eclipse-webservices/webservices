@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl.wsdl4j;
 
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
@@ -88,7 +89,7 @@ public final class WSDLWriterImpl implements WSDLWriter
 
       transformer.setOutputProperty(OutputKeys.INDENT, "yes");
       transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-      
+
       // Unless a width is set, there will be only line breaks but no indentation.
       // The IBM JDK and the Sun JDK don't agree on the property name,
       // so we set them both.
@@ -99,19 +100,19 @@ public final class WSDLWriterImpl implements WSDLWriter
       {
         transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
       }
-      
+
       Document document = ((DefinitionImpl)wsdlDef).getDocument();
       if (document == null)
       {
         ((DefinitionImpl)wsdlDef).updateElement(true);
         document = ((DefinitionImpl)wsdlDef).getDocument();
       }
-      
+
       transformer.transform(new DOMSource(document), new StreamResult(sink));
     }
     catch (TransformerException exception)
     {
-      throw new WSDLException(WSDLException.OTHER_ERROR,"Failed to save Definitions.",exception);
+      throw new WSDLException(WSDLException.OTHER_ERROR, "Failed to save Definitions.", exception);
     }
 
   }
@@ -128,11 +129,11 @@ public final class WSDLWriterImpl implements WSDLWriter
     Resource resource = ((DefinitionImpl)wsdlDef).eResource();
     try
     {
-      resource.save(sink,null);
+      resource.save(sink, null);
     }
     catch (IOException e)
     {
-      throw new WSDLException(WSDLException.OTHER_ERROR,"Failed to save Definitions.",e);
+      throw new WSDLException(WSDLException.OTHER_ERROR, "Failed to save Definitions.", e);
     }
   }
 }

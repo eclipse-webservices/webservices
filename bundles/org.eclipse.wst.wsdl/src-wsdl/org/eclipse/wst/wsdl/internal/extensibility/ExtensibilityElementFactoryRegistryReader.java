@@ -9,6 +9,8 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.extensibility;
+
+
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -23,10 +25,15 @@ import org.osgi.framework.Bundle;
 public class ExtensibilityElementFactoryRegistryReader
 {
   protected static final String PLUGIN_ID = WSDLPlugin.getPlugin().getSymbolicName();
+
   protected static final String EXTENSION_POINT_ID = "extensibilityElementFactories";
+
   protected static final String ELEMENT_NAME = "extensibilityElementFactory";
+
   protected static final String ATT_NAMESPACE = "namespace";
+
   protected static final String ATT_CLASS = "class";
+
   protected ExtensibilityElementFactoryRegistryImpl extensibilityElementFactoryRegistry;
 
   public ExtensibilityElementFactoryRegistryReader(ExtensibilityElementFactoryRegistryImpl extensibilityElementFactoryRegistry)
@@ -39,8 +46,8 @@ public class ExtensibilityElementFactoryRegistryReader
    */
   public void readRegistry()
   {
-	IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
-	IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, EXTENSION_POINT_ID);
+    IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+    IExtensionPoint point = pluginRegistry.getExtensionPoint(PLUGIN_ID, EXTENSION_POINT_ID);
     if (point != null)
     {
       IConfigurationElement[] elements = point.getConfigurationElements();
@@ -63,13 +70,13 @@ public class ExtensibilityElementFactoryRegistryReader
     {
       try
       {
-        IConfigurationElement childElement = (IConfigurationElement) element;
+        IConfigurationElement childElement = (IConfigurationElement)element;
         String namespace = childElement.getAttribute(ATT_NAMESPACE);
         if (namespace != null)
         {
           Bundle pluginBundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
           String className = childElement.getAttribute(ATT_CLASS);
-          ExtensibilityElementFactoryDescriptor descriptor = new ExtensibilityElementFactoryDescriptor(className,namespace,pluginBundle);
+          ExtensibilityElementFactoryDescriptor descriptor = new ExtensibilityElementFactoryDescriptor(className, namespace, pluginBundle);
           extensibilityElementFactoryRegistry.put(namespace, descriptor);
         }
       }

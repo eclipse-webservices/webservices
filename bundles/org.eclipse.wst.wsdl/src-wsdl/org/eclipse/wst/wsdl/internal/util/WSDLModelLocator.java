@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.util;
 
+
 /**
  * An adapter interface used by {@link org.eclipse.wst.wsdl.ImportImpl to find referenced resources.
  * When the resource referenced by a wsdl import needs to be determined, 
@@ -52,5 +53,5 @@ package org.eclipse.wst.wsdl.internal.util;
  */
 public interface WSDLModelLocator
 {
-	public String resolveURI(String baseLocation, String namespace, String location);
+  public String resolveURI(String baseLocation, String namespace, String location);
 }

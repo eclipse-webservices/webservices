@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +33,8 @@ import org.eclipse.emf.common.util.EList;
  * @model 
  * @generated
  */
-public interface UnknownExtensibilityElement extends ExtensibilityElement{
+public interface UnknownExtensibilityElement extends ExtensibilityElement
+{
   /**
    * Returns the value of the '<em><b>Children</b></em>' reference list.
    * The list contents are of type {@link org.eclipse.wsdl.UnknownExtensibilityElement}.

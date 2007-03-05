@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime;
 
+
 import java.util.List;
 
 import javax.wsdl.extensions.mime.MIMEPart;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -33,37 +35,38 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * @model 
  * @generated
  */
-public interface MIMEMultipartRelated extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEMultipartRelated {
-	/**
-	 * Returns the value of the '<em><b>EMIME Part</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.wst.wsdl.binding.mime.MIMEPart}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EMIME Part</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>EMIME Part</em>' containment reference list.
-	 * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEMultipartRelated_EMIMEPart()
-	 * @model type="org.eclipse.wst.wsdl.binding.mime.MIMEPart" containment="true"
-	 * @generated
-	 */
-	EList getEMIMEPart();
+public interface MIMEMultipartRelated extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEMultipartRelated
+{
+  /**
+   * Returns the value of the '<em><b>EMIME Part</b></em>' containment reference list.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.binding.mime.MIMEPart}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EMIME Part</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EMIME Part</em>' containment reference list.
+   * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEMultipartRelated_EMIMEPart()
+   * @model type="org.eclipse.wst.wsdl.binding.mime.MIMEPart" containment="true"
+   * @generated
+   */
+  EList getEMIMEPart();
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model 
-	 * @generated
-	 */
-	void addMIMEPart(MIMEPart mimePart);
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model 
+   * @generated
+   */
+  void addMIMEPart(MIMEPart mimePart);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.wst.wsdl.binding.mime.List" parameters=""
-	 * @generated
-	 */
-	List getMIMEParts();
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model dataType="org.eclipse.wst.wsdl.binding.mime.List" parameters=""
+   * @generated
+   */
+  List getMIMEParts();
 
 } // MIMEMultipartRelated

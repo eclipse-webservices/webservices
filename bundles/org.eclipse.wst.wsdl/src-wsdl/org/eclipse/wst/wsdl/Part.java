@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -42,84 +44,85 @@ import org.eclipse.xsd.XSDTypeDefinition;
  * @model 
  * @generated
  */
-public interface Part extends WSDLElement, javax.wsdl.Part{
+public interface Part extends WSDLElement, javax.wsdl.Part
+{
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wsdl.WSDLPackage#getPart_Name()
    * @model 
    * @generated
    */
-	String getName();
+  String getName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Part#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
    * @see #getName()
    * @generated
    */
-	void setName(String value);
+  void setName(String value);
 
   /**
    * Returns the value of the '<em><b>Element Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Element Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Element Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Element Name</em>' attribute.
    * @see #setElementName(QName)
    * @see org.eclipse.wsdl.WSDLPackage#getPart_ElementName()
    * @model dataType="org.eclipse.wsdl.QName"
    * @generated
    */
-	QName getElementName();
+  QName getElementName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Part#getElementName <em>Element Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element Name</em>' attribute.
    * @see #getElementName()
    * @generated
    */
-	void setElementName(QName value);
+  void setElementName(QName value);
 
   /**
    * Returns the value of the '<em><b>Type Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Type Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Type Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Type Name</em>' attribute.
    * @see #setTypeName(QName)
    * @see org.eclipse.wsdl.WSDLPackage#getPart_TypeName()
    * @model dataType="org.eclipse.wsdl.QName"
    * @generated
    */
-	QName getTypeName();
+  QName getTypeName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Part#getTypeName <em>Type Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Type Name</em>' attribute.
    * @see #getTypeName()
    * @generated
    */
-	void setTypeName(QName value);
+  void setTypeName(QName value);
 
   /**
    * Returns the value of the '<em><b>Type Definition</b></em>' reference.
@@ -176,27 +179,27 @@ public interface Part extends WSDLElement, javax.wsdl.Part{
   /**
    * Returns the value of the '<em><b>EMessage</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EMessage</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EMessage</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EMessage</em>' reference.
    * @see #setEMessage(Message)
    * @see org.eclipse.wsdl.WSDLPackage#getPart_EMessage()
    * @model 
    * @generated
    */
-	Message getEMessage();
+  Message getEMessage();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Part#getEMessage <em>EMessage</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>EMessage</em>' reference.
    * @see #getEMessage()
    * @generated
    */
-	void setEMessage(Message value);
+  void setEMessage(Message value);
 
 } // Part

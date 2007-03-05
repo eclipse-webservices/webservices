@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -216,7 +217,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
    * @ordered
    */
   protected EList eParameterOrdering = null; // a list of parts (EMF)
-  
+
   private List parameterOrdering = null; // a list of part names (WSDL4J)
 
   /**
@@ -248,7 +249,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
   {
     if (style == null)
       style = deduceOperationType(getElement());
-    
+
     // The value of style is updated when
     // 1) the WSDL is loaded for the first time,
     // 2) the setStyle() method is called, and
@@ -260,109 +261,110 @@ public class OperationImpl extends WSDLElementImpl implements Operation
   {
     if (operation == null)
       return null;
-       
-  	int state = 0;
-  	int messageRefType = -1;
-  	Node child = null;
-  	NodeList children = operation.getChildNodes();
-  	
-    for (int i=0; i<children.getLength(); i++)
+
+    int state = 0;
+    int messageRefType = -1;
+    Node child = null;
+    NodeList children = operation.getChildNodes();
+
+    for (int i = 0; i < children.getLength(); i++)
     {
       child = children.item(i);
       if (child.getNodeType() != Node.ELEMENT_NODE)
         continue;
-      
+
       String nsURI = child.getNamespaceURI();
-      
-      if (!WSDLConstants.WSDL_NAMESPACE_URI.equals(nsURI) )
+
+      if (!WSDLConstants.WSDL_NAMESPACE_URI.equals(nsURI))
       {
         // Skip over any non-WSDL elements. For example, to support new WSDL 
         // use cases we have to tolerate extensibility elements at the operation level.
-        
+
         continue;
       }
 
       messageRefType = WSDLUtil.getInstance().getWSDLType((Element)child);
-      
+
       switch (state)
       {
         case 0: // initial state     
-          if (WSDLConstants.INPUT == messageRefType)
-            state = 1; 
-          else if (WSDLConstants.OUTPUT == messageRefType)
-            state = 2; 
-          else if (WSDLConstants.DOCUMENTATION == messageRefType)
-          	state = 0;
-          else
-            state = -1; // cannot happen
+        if (WSDLConstants.INPUT == messageRefType)
+          state = 1;
+        else if (WSDLConstants.OUTPUT == messageRefType)
+          state = 2;
+        else if (WSDLConstants.DOCUMENTATION == messageRefType)
+          state = 0;
+        else
+          state = -1; // cannot happen
           break;
         case 1: // one-way or request-response
-          if (WSDLConstants.FAULT == messageRefType)
-            state = 11; // one-way
-          else if (WSDLConstants.OUTPUT == messageRefType)
-            state = 3; // request-response
-          else
-            state = -1; // cannot happen
+        if (WSDLConstants.FAULT == messageRefType)
+          state = 11; // one-way
+        else if (WSDLConstants.OUTPUT == messageRefType)
+          state = 3; // request-response
+        else
+          state = -1; // cannot happen
           break;
         case 11: // one-way
-          if (WSDLConstants.FAULT == messageRefType)
-            state = 11; // one-way
-          else
-            state = -1; // cannot happen
+        if (WSDLConstants.FAULT == messageRefType)
+          state = 11; // one-way
+        else
+          state = -1; // cannot happen
           break;
         case 2: // solicit-response or notification
-          if (WSDLConstants.INPUT == messageRefType)
-            state = 4; // solicit-response
-          else if (WSDLConstants.FAULT == messageRefType)
-            state = 21; // notification
-          else
-            state = -1; // cannot happen
+        if (WSDLConstants.INPUT == messageRefType)
+          state = 4; // solicit-response
+        else if (WSDLConstants.FAULT == messageRefType)
+          state = 21; // notification
+        else
+          state = -1; // cannot happen
           break;
         case 21: // notification
-          if (WSDLConstants.FAULT == messageRefType)
-            state = 21; // notification
-          else
-            state = -1; // cannot happen
+        if (WSDLConstants.FAULT == messageRefType)
+          state = 21; // notification
+        else
+          state = -1; // cannot happen
           break;
         case 3: // request-response 
-          if (WSDLConstants.FAULT == messageRefType)
-            state = 3;
-          else
-            state = -1; // cannot happen
+        if (WSDLConstants.FAULT == messageRefType)
+          state = 3;
+        else
+          state = -1; // cannot happen
           break;
         case 4: // solicit-response
-          if (WSDLConstants.FAULT == messageRefType)
-            state = 4;
-          else
-            state = -1; // cannot happen
+        if (WSDLConstants.FAULT == messageRefType)
+          state = 4;
+        else
+          state = -1; // cannot happen
           break;
         default: // cannot happen (-1)
-          break;
-      }
-    }
-    
-    OperationType opType = null;
-    switch (state)
-    {
-      case 1:
-      case 11:
-      	opType = OperationType.ONE_WAY;
-        break;
-      case 2:
-      case 21:
-      	opType = OperationType.NOTIFICATION;
-        break;
-      case 3:
-      	opType = OperationType.REQUEST_RESPONSE;
-        break;
-      case 4:
-      	opType = OperationType.SOLICIT_RESPONSE;
-        break;
-      default: // invalid
         break;
     }
-    return opType;    
   }
+
+  OperationType opType = null;
+  switch (state)
+  {
+    case 1:
+    case 11:
+    opType = OperationType.ONE_WAY;
+      break;
+    case 2:
+    case 21:
+    opType = OperationType.NOTIFICATION;
+      break;
+    case 3:
+    opType = OperationType.REQUEST_RESPONSE;
+      break;
+    case 4:
+    opType = OperationType.SOLICIT_RESPONSE;
+      break;
+    default: // invalid
+    break;
+}
+return opType;
+}
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -490,7 +492,10 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EINPUT, oldEInput, newEInput);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -510,7 +515,8 @@ public class OperationImpl extends WSDLElementImpl implements Operation
       if (newEInput != null)
         msgs = ((InternalEObject)newEInput).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.OPERATION__EINPUT, null, msgs);
       msgs = basicSetEInput(newEInput, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EINPUT, newEInput, newEInput));
@@ -538,7 +544,10 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EOUTPUT, oldEOutput, newEOutput);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -558,7 +567,8 @@ public class OperationImpl extends WSDLElementImpl implements Operation
       if (newEOutput != null)
         msgs = ((InternalEObject)newEOutput).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.OPERATION__EOUTPUT, null, msgs);
       msgs = basicSetEOutput(newEOutput, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.OPERATION__EOUTPUT, newEOutput, newEOutput));
@@ -619,7 +629,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     Fault result = null;
     for (Iterator i = getEFaults().iterator(); i.hasNext();)
     {
-      Fault fault = (Fault) i.next();
+      Fault fault = (Fault)i.next();
       if (name.equals(fault.getName()))
       {
         result = fault;
@@ -641,7 +651,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     HashMap hashMap = new HashMap();
     for (Iterator i = getEFaults().iterator(); i.hasNext();)
     {
-      Fault fault = (Fault) i.next();
+      Fault fault = (Fault)i.next();
       hashMap.put(fault.getName(), fault);
     }
     return hashMap;
@@ -661,8 +671,8 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     {
       try
       {
-        Part part = (Part) i.next();
-		parameterOrdering.add(part.getName());
+        Part part = (Part)i.next();
+        parameterOrdering.add(part.getName());
       }
       catch (Exception e)
       {
@@ -687,7 +697,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
       {
         // KB: We should be resolving parts based on the part names in parameterOrder.
         Part part = WSDLFactory.eINSTANCE.createPart();
-        part.setName((String) i.next());
+        part.setName((String)i.next());
         getEParameterOrdering().add(part);
       }
     }
@@ -710,7 +720,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
    */
   public void setInput(javax.wsdl.Input input)
   {
-    setEInput((Input) input);
+    setEInput((Input)input);
   }
 
   /**
@@ -730,7 +740,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
    */
   public void setOutput(javax.wsdl.Output output)
   {
-    setEOutput((Output) output);
+    setEOutput((Output)output);
   }
 
   /**
@@ -745,13 +755,13 @@ public class OperationImpl extends WSDLElementImpl implements Operation
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.OPERATION__EINPUT:
-          return basicSetEInput(null, msgs);
+        return basicSetEInput(null, msgs);
         case WSDLPackage.OPERATION__EOUTPUT:
-          return basicSetEOutput(null, msgs);
+        return basicSetEOutput(null, msgs);
         case WSDLPackage.OPERATION__EFAULTS:
-          return ((InternalEList)getEFaults()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEFaults()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -767,27 +777,27 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OPERATION__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.OPERATION__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.OPERATION__STYLE:
-        return getStyle();
+      return getStyle();
       case WSDLPackage.OPERATION__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.OPERATION__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.OPERATION__PROXY:
-        return isProxy() ? Boolean.TRUE : Boolean.FALSE;
+      return isProxy() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.OPERATION__RESOURCE_URI:
-        return getResourceURI();
+      return getResourceURI();
       case WSDLPackage.OPERATION__EINPUT:
-        return getEInput();
+      return getEInput();
       case WSDLPackage.OPERATION__EOUTPUT:
-        return getEOutput();
+      return getEOutput();
       case WSDLPackage.OPERATION__EFAULTS:
-        return getEFaults();
+      return getEFaults();
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        return getEParameterOrdering();
+      return getEParameterOrdering();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -802,40 +812,40 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OPERATION__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.OPERATION__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.OPERATION__STYLE:
-        setStyle((OperationType)newValue);
-        return;
+      setStyle((OperationType)newValue);
+      return;
       case WSDLPackage.OPERATION__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.OPERATION__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.OPERATION__PROXY:
-        setProxy(((Boolean)newValue).booleanValue());
-        return;
+      setProxy(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.OPERATION__RESOURCE_URI:
-        setResourceURI((String)newValue);
-        return;
+      setResourceURI((String)newValue);
+      return;
       case WSDLPackage.OPERATION__EINPUT:
-        setEInput((Input)newValue);
-        return;
+      setEInput((Input)newValue);
+      return;
       case WSDLPackage.OPERATION__EOUTPUT:
-        setEOutput((Output)newValue);
-        return;
+      setEOutput((Output)newValue);
+      return;
       case WSDLPackage.OPERATION__EFAULTS:
-        getEFaults().clear();
-        getEFaults().addAll((Collection)newValue);
-        return;
+      getEFaults().clear();
+      getEFaults().addAll((Collection)newValue);
+      return;
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        getEParameterOrdering().clear();
-        getEParameterOrdering().addAll((Collection)newValue);
-        return;
+      getEParameterOrdering().clear();
+      getEParameterOrdering().addAll((Collection)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -850,38 +860,38 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OPERATION__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__STYLE:
-        setStyle(STYLE_EDEFAULT);
-        return;
+      setStyle(STYLE_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__PROXY:
-        setProxy(PROXY_EDEFAULT);
-        return;
+      setProxy(PROXY_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__RESOURCE_URI:
-        setResourceURI(RESOURCE_URI_EDEFAULT);
-        return;
+      setResourceURI(RESOURCE_URI_EDEFAULT);
+      return;
       case WSDLPackage.OPERATION__EINPUT:
-        setEInput((Input)null);
-        return;
+      setEInput((Input)null);
+      return;
       case WSDLPackage.OPERATION__EOUTPUT:
-        setEOutput((Output)null);
-        return;
+      setEOutput((Output)null);
+      return;
       case WSDLPackage.OPERATION__EFAULTS:
-        getEFaults().clear();
-        return;
+      getEFaults().clear();
+      return;
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        getEParameterOrdering().clear();
-        return;
+      getEParameterOrdering().clear();
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -896,27 +906,28 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OPERATION__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.OPERATION__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.OPERATION__STYLE:
-        return STYLE_EDEFAULT == null ? style != null : !STYLE_EDEFAULT.equals(style);
+      return STYLE_EDEFAULT == null ? style != null : !STYLE_EDEFAULT.equals(style);
       case WSDLPackage.OPERATION__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.OPERATION__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.OPERATION__PROXY:
-        return proxy != PROXY_EDEFAULT;
+      return proxy != PROXY_EDEFAULT;
       case WSDLPackage.OPERATION__RESOURCE_URI:
-        return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
+      return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
       case WSDLPackage.OPERATION__EINPUT:
-        return eInput != null;
+      return eInput != null;
       case WSDLPackage.OPERATION__EOUTPUT:
-        return eOutput != null;
+      return eOutput != null;
       case WSDLPackage.OPERATION__EFAULTS:
-        return eFaults != null && !eFaults.isEmpty();
+      return eFaults != null && !eFaults.isEmpty();
       case WSDLPackage.OPERATION__EPARAMETER_ORDERING:
-        return eParameterOrdering != null && !eParameterOrdering.isEmpty();
+      return eParameterOrdering != null && !eParameterOrdering.isEmpty();
     }
     return eDynamicIsSet(eFeature);
   }
@@ -928,7 +939,8 @@ public class OperationImpl extends WSDLElementImpl implements Operation
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (style: ");
@@ -951,15 +963,15 @@ public class OperationImpl extends WSDLElementImpl implements Operation
 
   public void reconcileAttributes(Element changedElement)
   {
-	if (changedElement.hasAttribute("name"))
-	{
+    if (changedElement.hasAttribute("name"))
+    {
       String name = changedElement.getAttribute("name");
       if (name != null)
       {
         setName(name);
       }
-    }  
-    
+    }
+
     if (changedElement.hasAttribute("parameterOrder"))
     {
       String parameterOrder = changedElement.getAttribute("parameterOrder");
@@ -978,37 +990,37 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     style = deduceOperationType(changedElement);
     super.elementChanged(changedElement);
   }
-  
+
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
     Definition definition = getEnclosingDefinition();
 
     switch (WSDLUtil.getInstance().getWSDLType(child))
     {
-      case WSDLConstants.INPUT :
-        {
-          Input input = WSDLFactory.eINSTANCE.createInput();
-          input.setEnclosingDefinition(definition);
-          input.setElement(child);
-          setInput(input);
-          break;
-        }
-      case WSDLConstants.OUTPUT :
-        {
-          Output output = WSDLFactory.eINSTANCE.createOutput();
-          output.setEnclosingDefinition(definition);
-          output.setElement(child);
-          setOutput(output);
-          break;
-        }
-      case WSDLConstants.FAULT :
-        {
-          Fault fault = WSDLFactory.eINSTANCE.createFault();
-          fault.setEnclosingDefinition(definition);
-          fault.setElement(child);
-          addFault(fault);
-          break;
-        }
+      case WSDLConstants.INPUT:
+      {
+        Input input = WSDLFactory.eINSTANCE.createInput();
+        input.setEnclosingDefinition(definition);
+        input.setElement(child);
+        setInput(input);
+        break;
+      }
+      case WSDLConstants.OUTPUT:
+      {
+        Output output = WSDLFactory.eINSTANCE.createOutput();
+        output.setEnclosingDefinition(definition);
+        output.setElement(child);
+        setOutput(output);
+        break;
+      }
+      case WSDLConstants.FAULT:
+      {
+        Fault fault = WSDLFactory.eINSTANCE.createFault();
+        fault.setEnclosingDefinition(definition);
+        fault.setElement(child);
+        addFault(fault);
+        break;
+      }
     }
   }
 
@@ -1022,7 +1034,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
 
   protected void remove(Object component, Object modelObject)
   {
-    Operation operation = (Operation) component;
+    Operation operation = (Operation)component;
     if (modelObject instanceof Input)
     {
       operation.setEInput(null);
@@ -1039,7 +1051,7 @@ public class OperationImpl extends WSDLElementImpl implements Operation
 
   public Collection getModelObjects(Object component)
   {
-    Operation operation = (Operation) component;
+    Operation operation = (Operation)component;
 
     List list = new ArrayList();
 
@@ -1080,14 +1092,14 @@ public class OperationImpl extends WSDLElementImpl implements Operation
         if (targetType.equals(currentType))
           return;
         else if ((targetType.equals(OperationType.REQUEST_RESPONSE) || targetType.equals(OperationType.SOLICIT_RESPONSE))
-                  && (currentType.equals(OperationType.REQUEST_RESPONSE) || currentType.equals(OperationType.SOLICIT_RESPONSE)))
-        	reorderChildren();
+          && (currentType.equals(OperationType.REQUEST_RESPONSE) || currentType.equals(OperationType.SOLICIT_RESPONSE)))
+          reorderChildren();
         else
           style = deduceOperationType(theElement); // switch back. no support for the other types
       }
     }
   }
-  
+
   protected void changeReference(EReference eReference)
   {
     if (isReconciling)
@@ -1100,24 +1112,24 @@ public class OperationImpl extends WSDLElementImpl implements Operation
       if (eReference == null || eReference == WSDLPackage.eINSTANCE.getOperation_EParameterOrdering())
       {
         // Build up a string of concatenated part names (parameterOrder) from eParameterOrdering.
-		  
+
         Iterator parts = getEParameterOrdering().iterator();
-		Part part = null;
-		String partNames = "";
+        Part part = null;
+        String partNames = "";
         while (parts.hasNext())
-		{
+        {
           part = (Part)parts.next();
-		  partNames = partNames + part.getName() + " ";
-		}
-		
-		if ((partNames = partNames.trim()).length() != 0)		
-		  // Update the element's attrubute
-		  niceSetAttribute(theElement, "parameterOrder", partNames);
+          partNames = partNames + part.getName() + " ";
+        }
+
+        if ((partNames = partNames.trim()).length() != 0)
+          // Update the element's attrubute
+          niceSetAttribute(theElement, "parameterOrder", partNames);
       }
     }
     //
   }
-  
+
   // Switch <input> and <output>
   private void reorderChildren()
   {
@@ -1125,18 +1137,18 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     Node input = null;
     Node output = null;
     Node reference = null;
-    for (Node current=getElement().getFirstChild(); current!= null;current=current.getNextSibling())
+    for (Node current = getElement().getFirstChild(); current != null; current = current.getNextSibling())
     {
       if (current.getNodeType() == Node.ELEMENT_NODE)
       {
-      	if (WSDLConstants.INPUT == WSDLUtil.getInstance().getWSDLType((Element)current))
+        if (WSDLConstants.INPUT == WSDLUtil.getInstance().getWSDLType((Element)current))
         {
           input = current;
           if (output != null)
-          { 
+          {
             // cs.. for safety use current.getNextSibling() instead of nodeList.item(i+1)            
             reference = current.getNextSibling();
-          }  
+          }
         }
         else if (WSDLConstants.OUTPUT == WSDLUtil.getInstance().getWSDLType((Element)current))
         {
@@ -1145,34 +1157,34 @@ public class OperationImpl extends WSDLElementImpl implements Operation
           {
             // cs.. for safety use current.getNextSibling() instead of nodeList.item(i+1)            
             reference = current.getNextSibling();
-          }  
+          }
         }
       }
     } // end for
-    
+
     if (input != null && output != null)
     {
       Element parent = getElement();
       if (getStyle().equals(OperationType.REQUEST_RESPONSE))
       {
-      	// current order: <output> <input>
-        switchChildren(parent,output,input,reference);
+        // current order: <output> <input>
+        switchChildren(parent, output, input, reference);
       }
       else if (getStyle().equals(OperationType.SOLICIT_RESPONSE))
       {
         // current order: <input> <output>
-        switchChildren(parent,input,output,reference);
+        switchChildren(parent, input, output, reference);
       }
     }
   }
-  
+
   private void switchChildren(Node parent, Node child1, Node child2, Node nextOfChild2)
   {
     // current node sequence: <child1> <child2> <nextOfChild2>
-    niceRemoveChild(parent,child2);
-    niceInsertBefore(parent,child2,child1);
-    niceRemoveChild(parent,child1);
-    niceInsertBefore(parent,child1,nextOfChild2);
+    niceRemoveChild(parent, child2);
+    niceInsertBefore(parent, child2, child1);
+    niceRemoveChild(parent, child1);
+    niceInsertBefore(parent, child1, nextOfChild2);
   }
 
   public Element createElement()
@@ -1183,26 +1195,26 @@ public class OperationImpl extends WSDLElementImpl implements Operation
     Input input = getEInput();
     if (input != null)
     {
-      Element child = ((InputImpl) input).createElement();
+      Element child = ((InputImpl)input).createElement();
       newElement.appendChild(child);
     }
 
     Output output = getEOutput();
     if (output != null)
     {
-      Element child = ((OutputImpl) output).createElement();
+      Element child = ((OutputImpl)output).createElement();
       newElement.appendChild(child);
     }
 
     Iterator iterator = getEFaults().iterator();
     while (iterator.hasNext())
     {
-      Fault fault = (Fault) iterator.next();
-      Element child = ((FaultImpl) fault).createElement();
+      Fault fault = (Fault)iterator.next();
+      Element child = ((FaultImpl)fault).createElement();
       newElement.appendChild(child);
     }
 
     return newElement;
-  } 
-  
+  }
+
 } //OperationImpl

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -151,7 +152,9 @@ public class PartImpl extends WSDLElementImpl implements Part
   protected Message eMessage = null;
 
   public static final String NS_URI_PART_EXTENSIONS = "http://schemas.xmlsoap.org/wsdl/part-extensions/";
+
   public static final String ATTR_MESSAGE = "message";
+
   private Map extensionAttributes = new ExtensionAttributeMap();
 
   /**
@@ -300,7 +303,12 @@ public class PartImpl extends WSDLElementImpl implements Part
       if (elementDeclaration != oldElementDeclaration)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, WSDLPackage.PART__ELEMENT_DECLARATION, oldElementDeclaration, elementDeclaration));
+          eNotify(new ENotificationImpl(
+            this,
+            Notification.RESOLVE,
+            WSDLPackage.PART__ELEMENT_DECLARATION,
+            oldElementDeclaration,
+            elementDeclaration));
       }
     }
     return elementDeclaration;
@@ -326,7 +334,12 @@ public class PartImpl extends WSDLElementImpl implements Part
     XSDElementDeclaration oldElementDeclaration = elementDeclaration;
     elementDeclaration = newElementDeclaration;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.PART__ELEMENT_DECLARATION, oldElementDeclaration, elementDeclaration));
+      eNotify(new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.PART__ELEMENT_DECLARATION,
+        oldElementDeclaration,
+        elementDeclaration));
   }
 
   /**
@@ -418,7 +431,7 @@ public class PartImpl extends WSDLElementImpl implements Part
     if (name.equals(new QName(NS_URI_PART_EXTENSIONS, ATTR_MESSAGE)))
       return getMessage() != null ? getMessage().getQName() : null;
     else
-      return (QName) extensionAttributes.get(name);
+      return (QName)extensionAttributes.get(name);
   }
 
   /**
@@ -428,7 +441,7 @@ public class PartImpl extends WSDLElementImpl implements Part
    */
   public void setMessage(javax.wsdl.Message message)
   {
-    setEMessage((Message) message);
+    setEMessage((Message)message);
   }
 
   /**
@@ -451,24 +464,27 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PART__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.PART__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.PART__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.PART__ELEMENT_NAME:
-        return getElementName();
+      return getElementName();
       case WSDLPackage.PART__TYPE_NAME:
-        return getTypeName();
+      return getTypeName();
       case WSDLPackage.PART__TYPE_DEFINITION:
-        if (resolve) return getTypeDefinition();
-        return basicGetTypeDefinition();
+      if (resolve)
+        return getTypeDefinition();
+      return basicGetTypeDefinition();
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        if (resolve) return getElementDeclaration();
-        return basicGetElementDeclaration();
+      if (resolve)
+        return getElementDeclaration();
+      return basicGetElementDeclaration();
       case WSDLPackage.PART__EMESSAGE:
-        if (resolve) return getEMessage();
-        return basicGetEMessage();
+      if (resolve)
+        return getEMessage();
+      return basicGetEMessage();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -483,29 +499,29 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PART__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.PART__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.PART__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.PART__ELEMENT_NAME:
-        setElementName((QName)newValue);
-        return;
+      setElementName((QName)newValue);
+      return;
       case WSDLPackage.PART__TYPE_NAME:
-        setTypeName((QName)newValue);
-        return;
+      setTypeName((QName)newValue);
+      return;
       case WSDLPackage.PART__TYPE_DEFINITION:
-        setTypeDefinition((XSDTypeDefinition)newValue);
-        return;
+      setTypeDefinition((XSDTypeDefinition)newValue);
+      return;
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        setElementDeclaration((XSDElementDeclaration)newValue);
-        return;
+      setElementDeclaration((XSDElementDeclaration)newValue);
+      return;
       case WSDLPackage.PART__EMESSAGE:
-        setEMessage((Message)newValue);
-        return;
+      setEMessage((Message)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -520,29 +536,29 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PART__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.PART__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.PART__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.PART__ELEMENT_NAME:
-        setElementName(ELEMENT_NAME_EDEFAULT);
-        return;
+      setElementName(ELEMENT_NAME_EDEFAULT);
+      return;
       case WSDLPackage.PART__TYPE_NAME:
-        setTypeName(TYPE_NAME_EDEFAULT);
-        return;
+      setTypeName(TYPE_NAME_EDEFAULT);
+      return;
       case WSDLPackage.PART__TYPE_DEFINITION:
-        setTypeDefinition((XSDTypeDefinition)null);
-        return;
+      setTypeDefinition((XSDTypeDefinition)null);
+      return;
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        setElementDeclaration((XSDElementDeclaration)null);
-        return;
+      setElementDeclaration((XSDElementDeclaration)null);
+      return;
       case WSDLPackage.PART__EMESSAGE:
-        setEMessage((Message)null);
-        return;
+      setEMessage((Message)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -557,21 +573,22 @@ public class PartImpl extends WSDLElementImpl implements Part
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PART__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.PART__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.PART__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.PART__ELEMENT_NAME:
-        return ELEMENT_NAME_EDEFAULT == null ? elementName != null : !ELEMENT_NAME_EDEFAULT.equals(elementName);
+      return ELEMENT_NAME_EDEFAULT == null ? elementName != null : !ELEMENT_NAME_EDEFAULT.equals(elementName);
       case WSDLPackage.PART__TYPE_NAME:
-        return TYPE_NAME_EDEFAULT == null ? typeName != null : !TYPE_NAME_EDEFAULT.equals(typeName);
+      return TYPE_NAME_EDEFAULT == null ? typeName != null : !TYPE_NAME_EDEFAULT.equals(typeName);
       case WSDLPackage.PART__TYPE_DEFINITION:
-        return typeDefinition != null;
+      return typeDefinition != null;
       case WSDLPackage.PART__ELEMENT_DECLARATION:
-        return elementDeclaration != null;
+      return elementDeclaration != null;
       case WSDLPackage.PART__EMESSAGE:
-        return eMessage != null;
+      return eMessage != null;
     }
     return eDynamicIsSet(eFeature);
   }
@@ -583,7 +600,8 @@ public class PartImpl extends WSDLElementImpl implements Part
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
@@ -617,8 +635,8 @@ public class PartImpl extends WSDLElementImpl implements Part
 
     public Object put(Object key, Object val)
     {
-      QName name = (QName) key;
-      QName value = (QName) val;
+      QName name = (QName)key;
+      QName value = (QName)val;
       String lName = name.getLocalPart();
       String nSpace = name.getNamespaceURI();
 
@@ -626,7 +644,7 @@ public class PartImpl extends WSDLElementImpl implements Part
       {
         javax.wsdl.Message messageProxy = new MessageImpl();
         messageProxy.setQName(value);
-        setEMessage((Message) messageProxy);
+        setEMessage((Message)messageProxy);
       }
       return super.put(key, value);
     }
@@ -647,13 +665,12 @@ public class PartImpl extends WSDLElementImpl implements Part
 
     String elementAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.ELEMENT_ATTRIBUTE);
     setElementName(elementAttr != null ? createQName(definition, elementAttr, element) : null);
-		    
+
     String typeAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.TYPE_ATTRIBUTE);
     setTypeName(typeAttr != null ? createQName(definition, typeAttr, element) : null);
 
     reconcileReferences(false);
   }
-
 
   //
   // For reconciliation: Model -> DOM
@@ -673,12 +690,14 @@ public class PartImpl extends WSDLElementImpl implements Part
 
       if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getPart_TypeName())
         if (getTypeName() != null)
-          niceSetAttributeURIValue(theElement, WSDLConstants.TYPE_ATTRIBUTE, getTypeName().getNamespaceURI() + "#" + getTypeName().getLocalPart());
-        
+          niceSetAttributeURIValue(theElement, WSDLConstants.TYPE_ATTRIBUTE, getTypeName().getNamespaceURI() + "#"
+            + getTypeName().getLocalPart());
+
       if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getPart_ElementName())
         if (getElementName() != null)
-          niceSetAttributeURIValue(theElement, WSDLConstants.ELEMENT_ATTRIBUTE, getElementName().getNamespaceURI() + "#" + getElementName().getLocalPart());
-        
+          niceSetAttributeURIValue(theElement, WSDLConstants.ELEMENT_ATTRIBUTE, getElementName().getNamespaceURI() + "#"
+            + getElementName().getLocalPart());
+
     }
   }
 
@@ -706,7 +725,7 @@ public class PartImpl extends WSDLElementImpl implements Part
         {
           niceSetAttributeURIValue(theElement, WSDLConstants.ELEMENT_ATTRIBUTE, elementDecl.getURI());
         }
-      }      
+      }
     }
   }
 
@@ -739,7 +758,7 @@ public class PartImpl extends WSDLElementImpl implements Part
     XSDElementDeclaration result = null;
     if (qname != null)
     {
-      DefinitionImpl definition = (DefinitionImpl) getEnclosingDefinition();
+      DefinitionImpl definition = (DefinitionImpl)getEnclosingDefinition();
       if (definition != null)
       {
         result = definition.resolveElementDeclaration(qname.getNamespaceURI(), qname.getLocalPart());
@@ -753,7 +772,7 @@ public class PartImpl extends WSDLElementImpl implements Part
     XSDTypeDefinition result = null;
     if (qname != null)
     {
-      DefinitionImpl definition = (DefinitionImpl) getEnclosingDefinition();
+      DefinitionImpl definition = (DefinitionImpl)getEnclosingDefinition();
       if (definition != null)
       {
         result = definition.resolveTypeDefinition(qname.getNamespaceURI(), qname.getLocalPart());

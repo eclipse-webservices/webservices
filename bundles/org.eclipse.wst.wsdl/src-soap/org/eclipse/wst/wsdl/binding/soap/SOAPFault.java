@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -30,6 +32,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * @model 
  * @generated
  */
-public interface SOAPFault extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPFault {
+public interface SOAPFault extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPFault
+{
 
 } // SOAPFault

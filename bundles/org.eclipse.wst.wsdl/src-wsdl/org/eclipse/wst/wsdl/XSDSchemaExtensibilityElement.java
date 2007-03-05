@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import org.eclipse.xsd.XSDSchema;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +32,8 @@ import org.eclipse.xsd.XSDSchema;
  * @model 
  * @generated
  */
-public interface XSDSchemaExtensibilityElement extends ExtensibilityElement{
+public interface XSDSchemaExtensibilityElement extends ExtensibilityElement
+{
   /**
    * Returns the value of the '<em><b>Schema</b></em>' containment reference.
    * <!-- begin-user-doc -->

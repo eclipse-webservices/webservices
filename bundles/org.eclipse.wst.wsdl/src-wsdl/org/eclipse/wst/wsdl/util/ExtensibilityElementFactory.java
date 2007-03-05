@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.util;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+
+
 /**
  * <p>
  * <b>Note:</b> This class/interface is part of an interim API that is still under development and expected to
@@ -19,7 +22,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * (repeatedly) as the API evolves.
  * </p>
  * @since 1.0
-*/
+ */
 public interface ExtensibilityElementFactory
 {
   ExtensibilityElement createExtensibilityElement(String namespace, String localName);

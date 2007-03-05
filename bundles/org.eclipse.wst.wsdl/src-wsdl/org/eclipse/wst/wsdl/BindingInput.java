@@ -33,58 +33,59 @@ package org.eclipse.wst.wsdl;
  * @model 
  * @generated
  */
-public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput{
+public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
+{
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wsdl.WSDLPackage#getBindingInput_Name()
    * @model 
    * @generated
    */
-	String getName();
+  String getName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.BindingInput#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
    * @see #getName()
    * @generated
    */
-	void setName(String value);
+  void setName(String value);
 
   /**
    * Returns the value of the '<em><b>EInput</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EInput</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EInput</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EInput</em>' reference.
    * @see #setEInput(Input)
    * @see org.eclipse.wsdl.WSDLPackage#getBindingInput_EInput()
    * @model required="true"
    * @generated
    */
-	Input getEInput();
+  Input getEInput();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.BindingInput#getEInput <em>EInput</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>EInput</em>' reference.
    * @see #getEInput()
    * @generated
    */
-	void setEInput(Input value);
+  void setEInput(Input value);
 
   /**
    * <!-- begin-user-doc -->
@@ -96,7 +97,7 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
    * @model parameters=""
    * @generated
    */
-	javax.wsdl.Input getInput();
+  javax.wsdl.Input getInput();
 
   /**
    * <!-- begin-user-doc -->
@@ -108,6 +109,6 @@ public interface BindingInput extends ExtensibleElement, javax.wsdl.BindingInput
    * @model 
    * @generated
    */
-	void setInput(javax.wsdl.Input input);
+  void setInput(javax.wsdl.Input input);
 
 } // BindingInput

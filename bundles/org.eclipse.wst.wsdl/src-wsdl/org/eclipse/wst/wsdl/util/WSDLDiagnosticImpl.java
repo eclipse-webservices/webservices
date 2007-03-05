@@ -11,12 +11,14 @@
 
 package org.eclipse.wst.wsdl.util;
 
+
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.xsd.XSDDiagnostic;
 import org.eclipse.xsd.XSDDiagnosticSeverity;
 import org.w3c.dom.Node;
+
 
 /**
  * Default implementation of the WSDLDiagnostic interface. This class is based
@@ -127,7 +129,7 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
    * The Node where the error occurs
    */
   protected Node node;
-  
+
   /**
    * The WSDLElement or XSDConcreteComponent object where the error occurs
    */
@@ -224,19 +226,19 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
   {
     switch (xsdDiagnosticSeverity.getValue())
     {
-    case XSDDiagnosticSeverity.FATAL:
+      case XSDDiagnosticSeverity.FATAL:
       return WSDLDiagnosticSeverity.FATAL_LITERAL;
-    case XSDDiagnosticSeverity.ERROR:
+      case XSDDiagnosticSeverity.ERROR:
       return WSDLDiagnosticSeverity.ERROR_LITERAL;
-    case XSDDiagnosticSeverity.WARNING:
+      case XSDDiagnosticSeverity.WARNING:
       return WSDLDiagnosticSeverity.WARNING_LITERAL;
-    case XSDDiagnosticSeverity.INFORMATION:
+      case XSDDiagnosticSeverity.INFORMATION:
       return WSDLDiagnosticSeverity.INFORMATION_LITERAL;
-    default:
+      default:
       break;
-    }
-    return SEVERITY_EDEFAULT;
   }
+  return SEVERITY_EDEFAULT;
+}
 
   /**
    * Sets the new value of the column attribute.
@@ -304,7 +306,7 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
   {
     key = value;
   }
-  
+
   /*
    * (non-Javadoc)
    * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getSubstitutions()
@@ -317,34 +319,36 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
     }
     return substitutions;
   }
-  
+
   /* (non-Javadoc)
    * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getNode()
    */
-  public Node getNode() 
+  public Node getNode()
   {
-	return node;
+    return node;
   }
-  
+
   /* (non-Javadoc)
    * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#setNode(org.w3c.dom.Node)
    */
-  public void setNode(Node node) 
+  public void setNode(Node node)
   {
-	this.node = node;  
+    this.node = node;
   }
-  
+
   /* (non-Javadoc)
    * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getContainer()
    */
-  public Object getContainer() {
-	return container;
+  public Object getContainer()
+  {
+    return container;
   }
-  
+
   /* (non-Javadoc)
    * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#setContainer(java.lang.Object)
    */
-  public void setContainer(Object container) {
-	this.container = container;
+  public void setContainer(Object container)
+  {
+    this.container = container;
   }
 }

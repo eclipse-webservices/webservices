@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.util;
 
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
 
 /**
  * This class defines constants for WSDL element tags and relevant namespaces.
@@ -24,163 +26,163 @@ public class WSDLConstants
    * @see #getElementTag(int).
    */
   public static final int BINDING = 0;
-  
+
   /**
    * The element tag is <code>"definitions"</code>.
    * @see #getElementTag(int).
-   */  
+   */
   public static final int DEFINITION = 1;
-  
+
   /**
    * The element tag is <code>"documentation"</code>.
    * @see #getElementTag(int).
    */
   public static final int DOCUMENTATION = 2;
-  
+
   /**
    * The element tag is <code>"fault"</code>.
    * @see #getElementTag(int).
    */
   public static final int FAULT = 3;
-  
+
   /**
    * The element tag is <code>"import"</code>.
    * @see #getElementTag(int).
    */
   public static final int IMPORT = 4;
-  
+
   /**
    * The element tag is <code>"input"</code>.
    * @see #getElementTag(int).
    */
   public static final int INPUT = 5;
-  
+
   /**
    * The element tag is <code>"message"</code>.
    * @see #getElementTag(int).
    */
   public static final int MESSAGE = 6;
-  
+
   /**
    * The element tag is <code>"operation"</code>.
    * @see #getElementTag(int).
    */
   public static final int OPERATION = 7;
-  
+
   /**
    * The element tag is <code>"output"</code>.
    * @see #getElementTag(int).
    */
   public static final int OUTPUT = 8;
-  
+
   /**
    * The element tag is <code>"part"</code>.
    * @see #getElementTag(int).
    */
   public static final int PART = 9;
-  
+
   /**
    * The element tag is <code>"port"</code>.
    * @see #getElementTag(int).
    */
   public static final int PORT = 10;
-  
+
   /**
    * The element tag is <code>"portType"</code>.
    * @see #getElementTag(int).
    */
   public static final int PORT_TYPE = 11;
-  
+
   /**
    * The element tag is <code>"service"</code>.
    * @see #getElementTag(int).
    */
   public static final int SERVICE = 12;
-  
+
   /**
    * The element tag is <code>"types"</code>.
    * @see #getElementTag(int).
    */
   public static final int TYPES = 13;
-  
+
   /**
    * The element tag is <code>"binding"</code>.
    * @see #nodeType(String localName).
    */
   public static final String BINDING_ELEMENT_TAG = "binding";
-  
+
   /**
    * The element tag is <code>"definitions"</code>.
    * @see #nodeType(String localName).
    */
   public static final String DEFINITION_ELEMENT_TAG = "definitions";
-  
+
   /**
    * The element tag is <code>"documentation"</code>.
    * @see #nodeType(String localName).
    */
   public static final String DOCUMENTATION_ELEMENT_TAG = "documentation";
-  
+
   /**
    * The element tag is <code>"fault"</code>.
    * @see #nodeType(String localName).
    */
   public static final String FAULT_ELEMENT_TAG = "fault";
-  
+
   /**
    * The element tag is <code>"import"</code>.
    * @see #nodeType(String localName).
    */
   public static final String IMPORT_ELEMENT_TAG = "import";
-  
+
   /**
    * The element tag is <code>"input"</code>.
    * @see #nodeType(String localName).
    */
   public static final String INPUT_ELEMENT_TAG = "input";
-  
+
   /**
    * The element tag is <code>"message"</code>.
    * @see #nodeType(String localName).
    */
   public static final String MESSAGE_ELEMENT_TAG = "message";
-  
+
   /**
    * The element tag is <code>"operation"</code>.
    * @see #nodeType(String localName).
    */
   public static final String OPERATION_ELEMENT_TAG = "operation";
-  
+
   /**
    * The element tag is <code>"output"</code>.
    * @see #nodeType(String localName).
    */
   public static final String OUTPUT_ELEMENT_TAG = "output";
-  
+
   /**
    * The element tag is <code>"part"</code>.
    * @see #nodeType(String localName).
    */
   public static final String PART_ELEMENT_TAG = "part";
-  
+
   /**
    * The element tag is <code>"port"</code>.
    * @see #nodeType(String localName).
    */
   public static final String PORT_ELEMENT_TAG = "port";
-  
+
   /**
    * The element tag is <code>"portType"</code>.
    * @see #nodeType(String localName).
    */
   public static final String PORT_TYPE_ELEMENT_TAG = "portType";
-  
+
   /**
    * The element tag is <code>"service"</code>.
    * @see #nodeType(String localName).
    */
   public static final String SERVICE_ELEMENT_TAG = "service";
-  
+
   /**
    * The element tag is <code>"types"</code>.
    * @see #nodeType(String localName).
@@ -188,25 +190,25 @@ public class WSDLConstants
   public static final String TYPES_ELEMENT_TAG = "types";
 
   // common
-  
+
   /**
    * The attribute is <code>"name"</code>.
    * @see #getAttribute(Element,String).
    */
   public static final String NAME_ATTRIBUTE = "name";
-  
+
   /**
    * The attribute is <code>"message"</code>.
    * @see #getAttribute(Element,String).
    */
   public static final String MESSAGE_ATTRIBUTE = "message";
-  
+
   /**
    * The attribute is <code>"binding"</code>.
    * @see #getAttribute(Element,String).
    */
   public static final String BINDING_ATTRIBUTE = "binding";
-  
+
   /**
    * The attribute is <code>"type"</code>.
    * @see #getAttribute(Element,String).
@@ -214,13 +216,13 @@ public class WSDLConstants
   public static final String TYPE_ATTRIBUTE = "type";
 
   // definitions
-  
+
   /**
    * The attribute is <code>"encoding"</code>.
    * @see #getAttribute(Element,String).
    */
   public final static String ENCODING_ATTRIBUTE = "encoding";
-  
+
   /**
    * The attribute is <code>"targetNamespace"</code>.
    * @see #getAttribute(Element,String).
@@ -228,7 +230,7 @@ public class WSDLConstants
   public final static String TARGETNAMESPACE_ATTRIBUTE = "targetNamespace";
 
   // binding
-  
+
   /**
    * The attribute is <code>"resourceURI"</code>.
    * @see #getAttribute(Element,String).
@@ -236,35 +238,35 @@ public class WSDLConstants
   public final static String RESOURCE_URI_ATTRIBUTE = "resourceURI";
 
   // part
-  
+
   /**
    * The attribute is <code>"element"</code>.
    * @see #getAttribute(Element,String).
    */
   public final static String ELEMENT_ATTRIBUTE = "element";
-  
+
   // import
-  
+
   /**
    * The attribute is <code>"location"</code>.
    * @see #getAttribute(Element,String).
    */
-  public final static String LOCATION_ATTRIBUTE = "location"; 
-  
+  public final static String LOCATION_ATTRIBUTE = "location";
+
   /**
    * The attribute is <code>"namespace"</code>.
    * @see #getAttribute(Element,String).
    */
-  public static final String NAMESPACE_ATTRIBUTE = "namespace";  
+  public static final String NAMESPACE_ATTRIBUTE = "namespace";
 
   /**
    * The value <code>"http://schemas.xmlsoap.org/wsdl/"</code>.
    */
   public static final String WSDL_NAMESPACE_URI = "http://schemas.xmlsoap.org/wsdl/";
-  
+
   /**
    * The value <code>"http://www.w3.org/2001/XMLSchema"</code>.
-   */  
+   */
   public static final String XSD_NAMESPACE_URI = "http://www.w3.org/2001/XMLSchema";
 
   /**
@@ -282,22 +284,21 @@ public class WSDLConstants
    */
   public static final String SCHEMA_FOR_SCHEMA_URI_2001 = "http://www.w3.org/2001/XMLSchema";
 
-  private static final String[] ELEMENT_TAGS =
-    new String[] {
-      BINDING_ELEMENT_TAG,
-      DEFINITION_ELEMENT_TAG,
-      DOCUMENTATION_ELEMENT_TAG,
-      FAULT_ELEMENT_TAG,
-      IMPORT_ELEMENT_TAG,
-      INPUT_ELEMENT_TAG,
-      MESSAGE_ELEMENT_TAG,
-      OPERATION_ELEMENT_TAG,
-      OUTPUT_ELEMENT_TAG,
-      PART_ELEMENT_TAG,
-      PORT_ELEMENT_TAG,
-      PORT_TYPE_ELEMENT_TAG,
-      SERVICE_ELEMENT_TAG,
-      TYPES_ELEMENT_TAG };
+  private static final String[] ELEMENT_TAGS = new String []{
+    BINDING_ELEMENT_TAG,
+    DEFINITION_ELEMENT_TAG,
+    DOCUMENTATION_ELEMENT_TAG,
+    FAULT_ELEMENT_TAG,
+    IMPORT_ELEMENT_TAG,
+    INPUT_ELEMENT_TAG,
+    MESSAGE_ELEMENT_TAG,
+    OPERATION_ELEMENT_TAG,
+    OUTPUT_ELEMENT_TAG,
+    PART_ELEMENT_TAG,
+    PORT_ELEMENT_TAG,
+    PORT_TYPE_ELEMENT_TAG,
+    SERVICE_ELEMENT_TAG,
+    TYPES_ELEMENT_TAG };
 
   /**
    * Returns a String name of element tag given the nodeType.
@@ -325,7 +326,7 @@ public class WSDLConstants
     }
     return -1;
   }
-  
+
   /**
    * Returns a node type defined in WSDLConstants given the DOM node.
    * @param node a DOM node.

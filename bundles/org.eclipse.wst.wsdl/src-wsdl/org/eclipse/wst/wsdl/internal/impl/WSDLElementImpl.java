@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -101,7 +102,9 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   protected Element element = ELEMENT_EDEFAULT;
 
   protected boolean isReconciling = false;
+
   protected boolean updatingDOM = false;
+
   protected EList wsdlContents;
 
   private Definition enclosingDefinition;
@@ -146,7 +149,12 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     Element oldDocumentationElement = documentationElement;
     documentationElement = newDocumentationElement;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT, oldDocumentationElement, documentationElement));
+      eNotify(new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT,
+        oldDocumentationElement,
+        documentationElement));
   }
 
   /**
@@ -192,9 +200,9 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        return getElement();
+      return getElement();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -209,11 +217,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -228,11 +236,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -247,9 +255,10 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.WSDL_ELEMENT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.WSDL_ELEMENT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
     }
     return eDynamicIsSet(eFeature);
   }
@@ -261,7 +270,8 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (documentationElement: ");
@@ -290,7 +300,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
     protected boolean isIncluded(EStructuralFeature eStructuralFeature)
     {
-      EReference eReference = (EReference) eStructuralFeature;
+      EReference eReference = (EReference)eStructuralFeature;
       return !eReference.isTransient();
     }
 
@@ -308,7 +318,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     {
       public FeatureIteratorImpl(EObject eObject)
       {
-        super(eObject, (EStructuralFeature[]) ((BasicEList) eObject.eClass().getEAllReferences()).data());
+        super(eObject, (EStructuralFeature[])((BasicEList)eObject.eClass().getEAllReferences()).data());
       }
 
       public FeatureIteratorImpl(EObject eObject, EStructuralFeature[] eStructuralFeatures)
@@ -318,7 +328,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
       protected boolean isIncluded(EStructuralFeature eStructuralFeature)
       {
-        EReference eReference = (EReference) eStructuralFeature;
+        EReference eReference = (EReference)eStructuralFeature;
         return !eReference.isTransient();
       }
     }
@@ -328,7 +338,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     if (wsdlContents == null)
     {
-      wsdlContents = new WSDLContentsEList(this, (EStructuralFeature[]) ((BasicEList) eClass().getEAllContainments()).data());
+      wsdlContents = new WSDLContentsEList(this, (EStructuralFeature[])((BasicEList)eClass().getEAllContainments()).data());
     }
 
     return wsdlContents;
@@ -345,7 +355,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         Object obj = contents.next();
         if (obj instanceof WSDLElementImpl)
         {
-          WSDLElementImpl content = (WSDLElementImpl) obj;
+          WSDLElementImpl content = (WSDLElementImpl)obj;
           content.setElement(null);
         }
       }
@@ -371,49 +381,49 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
     if (eClass().getEAllReferences().contains(feature))
     {
-      EReference eReference = (EReference) feature;
+      EReference eReference = (EReference)feature;
       if (eReference.isContainment() && !eReference.isTransient())
       {
         switch (eventType)
         {
-          case Notification.ADD :
+          case Notification.ADD:
           {
-              adoptContent(eReference,newValue);
+            adoptContent(eReference, newValue);
             break;
           }
-          case Notification.ADD_MANY :
+          case Notification.ADD_MANY:
           {
-            for (Iterator newValues = ((Collection) newValue).iterator(); newValues.hasNext();)
+            for (Iterator newValues = ((Collection)newValue).iterator(); newValues.hasNext();)
             {
-              WSDLElement wsdlElement = (WSDLElement) newValues.next();
+              WSDLElement wsdlElement = (WSDLElement)newValues.next();
               adoptContent(eReference, wsdlElement);
             }
             break;
           }
-          case Notification.REMOVE :
+          case Notification.REMOVE:
           {
             if (oldValue != null)
             {
-              orphanContent(eReference, /*(WSDLElement)*/ oldValue);
+              orphanContent(eReference, /*(WSDLElement)*/oldValue);
             }
             break;
           }
-          case Notification.REMOVE_MANY :
+          case Notification.REMOVE_MANY:
           {
-            for (Iterator oldValues = ((Collection) oldValue).iterator(); oldValues.hasNext();)
+            for (Iterator oldValues = ((Collection)oldValue).iterator(); oldValues.hasNext();)
             {
-              EObject object = (EObject) oldValues.next();
+              EObject object = (EObject)oldValues.next();
               orphanContent(eReference, object);
             }
             break;
           }
-          case Notification.MOVE :
+          case Notification.MOVE:
           {
-            moveContent(eReference, (WSDLElement) newValue);
+            moveContent(eReference, (WSDLElement)newValue);
             break;
           }
-          case Notification.SET :
-          case Notification.UNSET :
+          case Notification.SET:
+          case Notification.UNSET:
           {
             if (oldValue != null)
             {
@@ -431,13 +441,13 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       {
         switch (eventType)
         {
-          case Notification.ADD :
-          case Notification.ADD_MANY :
-          case Notification.REMOVE :
-          case Notification.REMOVE_MANY :
-          case Notification.MOVE :
-          case Notification.SET :
-          case Notification.UNSET :
+          case Notification.ADD:
+          case Notification.ADD_MANY:
+          case Notification.REMOVE:
+          case Notification.REMOVE_MANY:
+          case Notification.MOVE:
+          case Notification.SET:
+          case Notification.UNSET:
           {
             changeReference(eReference);
             break;
@@ -447,16 +457,16 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     }
     else if (eClass().getEAllAttributes().contains(feature))
     {
-      EAttribute eAttribute = (EAttribute) feature;
+      EAttribute eAttribute = (EAttribute)feature;
       switch (eventType)
       {
-        case Notification.ADD :
-        case Notification.ADD_MANY :
-        case Notification.REMOVE :
-        case Notification.REMOVE_MANY :
-        case Notification.MOVE :
-        case Notification.SET :
-        case Notification.UNSET :
+        case Notification.ADD:
+        case Notification.ADD_MANY:
+        case Notification.REMOVE:
+        case Notification.REMOVE_MANY:
+        case Notification.MOVE:
+        case Notification.SET:
+        case Notification.UNSET:
         {
           changeAttribute(eAttribute);
           break;
@@ -473,16 +483,16 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       Element parent = getElement();
       if (parent != null && obj != null && obj instanceof WSDLElement)
       {
-      	WSDLElement wsdlElement = (WSDLElement)obj;
+        WSDLElement wsdlElement = (WSDLElement)obj;
         Element contentElement = wsdlElement.getElement();
         if (contentElement != null)
           niceRemoveChild(contentElement.getParentNode(), contentElement);
       }
       else
-      	;//System.out.println("WSDLElement.orphanContent(), Object is: " + obj);
+        ;//System.out.println("WSDLElement.orphanContent(), Object is: " + obj);
     }
   }
-  
+
   protected void niceRemoveChild(Node parent, Node child)
   {
     if (isReconciling)
@@ -492,14 +502,14 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     }
     forceNiceRemoveChild(parent, child);
   }
-  
+
   public void forceNiceRemoveChild(Node parent, Node child)
   {
     updatingDOM = true;
 
     boolean done = false;
 
-// System.out.println("?*");
+    // System.out.println("?*");
     Node previous = child.getPreviousSibling();
     if (previous != null && previous.getNodeType() == Node.TEXT_NODE)
     {
@@ -510,12 +520,12 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       {
         if (index - 1 > 0 && data.charAt(index - 1) == '\r')
         {
-//System.out.println("1*");
+          //System.out.println("1*");
           text.deleteData(index - 1, data.length() - index + 1);
         }
         else
         {
-//System.out.println("2*");
+          //System.out.println("2*");
           text.deleteData(index, data.length() - index);
         }
         done = true;
@@ -530,7 +540,6 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       // System.out.println("No text node before!");
     }
 
-
     if (!done)
     {
       for (Node next = child.getNextSibling(); next != null; next = next.getNextSibling())
@@ -539,26 +548,26 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         {
           Text text = (Text)next;
           String data = text.getData();
-/*
+          /*
            System.out.print("xx " + data.length() + ":: ");
-          for (int i = 0; i < data.length(); ++i)
-          {
-             System.out.print(" " + Integer.toHexString((int)data.charAt(i)));
-          }
-          System.out.println();
-*/
+           for (int i = 0; i < data.length(); ++i)
+           {
+           System.out.print(" " + Integer.toHexString((int)data.charAt(i)));
+           }
+           System.out.println();
+           */
 
           int index = data.indexOf('\n');
           if (index != -1)
           {
             if (index + 1 < data.length() && data.charAt(index + 1) == '\r')
             {
-    // System.out.println("3*");
+              // System.out.println("3*");
               text.deleteData(0, index + 2);
             }
             else
             {
-    //System.out.println("4*");
+              //System.out.println("4*");
               text.deleteData(0, index + 1);
             }
             break;
@@ -575,14 +584,14 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       }
     }
 
-// System.out.println("Removing from--------\n     " + parent);
-// System.out.println("Removing--------\n     " + child);
+    // System.out.println("Removing from--------\n     " + parent);
+    // System.out.println("Removing--------\n     " + child);
     if (parent != null)
-    	parent.removeChild(child);
+      parent.removeChild(child);
 
-    updatingDOM=false;
+    updatingDOM = false;
   }
- 
+
   protected void moveContent(EReference eReference, WSDLElement wsdlElement)
   {
     if (isReconciling)
@@ -600,12 +609,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         List contents = getWSDLContents();
         int index = contents.indexOf(wsdlElement);
         niceRemoveChild(parent, child);
-        niceInsertBefore
-          (parent, 
-            child, 
-            ++index == contents.size() ?  
-              null : 
-              ((WSDLElement)contents.get(index)).getElement());
+        niceInsertBefore(parent, child, ++index == contents.size() ? null : ((WSDLElement)contents.get(index)).getElement());
       }
     }
     //System.out.println("moved " + xsdConcreteComponent);
@@ -616,12 +620,12 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     if (object instanceof WSDLElement)
     {
-      WSDLElement wsdlElement = (WSDLElement) object;
+      WSDLElement wsdlElement = (WSDLElement)object;
       if (isReconciling)
       {
         if (wsdlElement.getElement() != null)
         {
-          ((WSDLElementImpl) wsdlElement).elementChanged(wsdlElement.getElement());
+          ((WSDLElementImpl)wsdlElement).elementChanged(wsdlElement.getElement());
         }
       }
       else
@@ -636,14 +640,14 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
           }
 
           handleElementForAdopt(eReference, wsdlElement);
-          ((WSDLElementImpl) wsdlElement).updateElement();
+          ((WSDLElementImpl)wsdlElement).updateElement();
         }
       }
 
       Definition definition = getEnclosingDefinition();
       if (definition != null)
       {
-        ((WSDLElementImpl) wsdlElement).adoptBy(definition);
+        ((WSDLElementImpl)wsdlElement).adoptBy(definition);
       }
     }
     else if (object instanceof Namespace)
@@ -652,9 +656,10 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       Namespace ns = (Namespace)object;
       Node adoptionParent = getAdoptionParentNode(eReference); // Definitions node
       // KB: Assumption - The prefix is unique if we are here (by the Definitions model). 
-	  if (adoptionParent != null) {
-		  ((Element)adoptionParent).setAttribute("xmlns:"+ns.getPrefix(),ns.getURI());
-	  }
+      if (adoptionParent != null)
+      {
+        ((Element)adoptionParent).setAttribute("xmlns:" + ns.getPrefix(), ns.getURI());
+      }
     }
   }
 
@@ -662,16 +667,16 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     return getElement();
   }
-  
+
   protected void handleElementForAdopt(EReference eReference, WSDLElement wsdlElement)
-  { 
+  {
     // Establish DOM parent-child relationship
-    
+
     Node adoptionParent = getAdoptionParentNode(eReference);
     Element childElement = wsdlElement.getElement();
     Element referencedElement = null;
-    
-    for (Iterator contents = getWSDLContents().iterator(); contents.hasNext(); )
+
+    for (Iterator contents = getWSDLContents().iterator(); contents.hasNext();)
     {
       if (contents.next() == wsdlElement)
       {
@@ -683,8 +688,8 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
             referencedElement = ((WSDLElement)next).getElement();
             while (referencedElement != null)
             {
-              Node parent = referencedElement.getParentNode(); 
-              if (parent == null )
+              Node parent = referencedElement.getParentNode();
+              if (parent == null)
               {
                 referencedElement = null;
                 break;
@@ -707,7 +712,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         break;
       }
     }
-   
+
     if (childElement == null)
     {
       ((WSDLElementImpl)wsdlElement).isReconciling = true;
@@ -715,8 +720,8 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       ((WSDLElementImpl)wsdlElement).isReconciling = false;
       if (childElement == null)
       {
-         //System.out.println("not created! " + wsdlElement);
-         return;
+        //System.out.println("not created! " + wsdlElement);
+        return;
       }
     }
 
@@ -729,21 +734,20 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         break;
       }
     }
-    
+
     if (!isAttached)
     {
-      if (referencedElement == null && 
-          !eReference.isMany())
-    {
-      for (Node child = adoptionParent.getFirstChild(); child != null; child = child.getNextSibling())
+      if (referencedElement == null && !eReference.isMany())
       {
-        if (child.getNodeType() == Node.ELEMENT_NODE)
+        for (Node child = adoptionParent.getFirstChild(); child != null; child = child.getNextSibling())
         {
-          referencedElement = (Element)child;
-          break;
+          if (child.getNodeType() == Node.ELEMENT_NODE)
+          {
+            referencedElement = (Element)child;
+            break;
+          }
         }
       }
-    }
       //referencedElement = computeTopLevelRefChild(adoptionParent,childElement);     
       niceInsertBefore(adoptionParent, childElement, referencedElement);
     }
@@ -764,10 +768,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     updatingDOM = true;
 
-    LOOP:
-    for (Node child = referenceChild == null ? parent.getLastChild() : referenceChild.getPreviousSibling(); 
-         child != null; 
-         child = child.getPreviousSibling())
+    LOOP: for (Node child = referenceChild == null ? parent.getLastChild() : referenceChild.getPreviousSibling(); child != null; child = child.getPreviousSibling())
     {
       switch (child.getNodeType())
       {
@@ -776,24 +777,22 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
           Text text = (Text)child;
           String data = text.getData();
 
-/*
-          System.out.print("xx " + data.length() + ":: ");
-          for (int i = 0; i < data.length(); ++i)
-          {
-            System.out.print(" " + Integer.toHexString((int)data.charAt(i)));
-          }
-          System.out.println();
-*/
+          /*
+           System.out.print("xx " + data.length() + ":: ");
+           for (int i = 0; i < data.length(); ++i)
+           {
+           System.out.print(" " + Integer.toHexString((int)data.charAt(i)));
+           }
+           System.out.println();
+           */
 
           int index = data.lastIndexOf('\n');
           if (index != -1)
           {
-// System.out.println("In here");
+            // System.out.println("In here");
 
             StringBuffer indent = new StringBuffer();
-            for (Node ancestor = parent.getParentNode(); 
-                 ancestor != null && ancestor.getNodeType() != Node.DOCUMENT_NODE; 
-                 ancestor = ancestor.getParentNode())
+            for (Node ancestor = parent.getParentNode(); ancestor != null && ancestor.getNodeType() != Node.DOCUMENT_NODE; ancestor = ancestor.getParentNode())
             {
               indent.append("    ");
             }
@@ -810,14 +809,14 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
               indent.append("    ");
             }
             Text newText = parent.getOwnerDocument().createTextNode("\n" + indent);
-// System.out.println("Inserted..." + newText);
+            // System.out.println("Inserted..." + newText);
             parent.insertBefore(newText, referenceChild);
             referenceChild = newText;
             break LOOP;
           }
 
           break;
-        } 
+        }
         case Node.ELEMENT_NODE:
         {
           break LOOP;
@@ -825,7 +824,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       }
     }
 
-// System.out.println("Inserted..." + newChild);
+    // System.out.println("Inserted..." + newChild);
     parent.insertBefore(newChild, referenceChild);
 
     updatingDOM = false;
@@ -833,53 +832,53 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
   protected Element computeTopLevelRefChild(Node parentNode, Node nodeToAdd)
   {
-  	Element result = null;
+    Element result = null;
     int a = getPrecedence(nodeToAdd);
-      	
+
     for (Node node = parentNode.getFirstChild(); node != null; node = node.getNextSibling())
     {
       if (node.getNodeType() == Node.ELEMENT_NODE)
       {
-		    int b = getPrecedence(node);
-		    if (b >= a)
-		    {
-		      result = (Element)node;	
-	        break;	    
-		    }        
-      } 
+        int b = getPrecedence(node);
+        if (b >= a)
+        {
+          result = (Element)node;
+          break;
+        }
+      }
     }
     return result;
   }
-  
+
   private HashMap precedenceMap = createPrecedenceMap();
 
   private int getPrecedence(Node node)
   {
-  	int result = 2;
-  	String localName = node.getLocalName();
-  	if (localName != null)
-  	{  	
+    int result = 2;
+    String localName = node.getLocalName();
+    if (localName != null)
+    {
       Integer integer = (Integer)precedenceMap.get(localName);
       if (integer != null)
-      {      
+      {
         result = integer.intValue();
       }
-  	}
-  	return result;
+    }
+    return result;
   }
-    
+
   private HashMap createPrecedenceMap()
-	{
-		HashMap hashMap = new HashMap();
-		hashMap.put(WSDLConstants.DOCUMENTATION_ELEMENT_TAG, new Integer(1));
-		hashMap.put(WSDLConstants.IMPORT_ELEMENT_TAG, new Integer(3));
-		hashMap.put(WSDLConstants.TYPES_ELEMENT_TAG, new Integer(4));
-		hashMap.put(WSDLConstants.MESSAGE_ELEMENT_TAG, new Integer(5));
-		hashMap.put(WSDLConstants.PORT_TYPE_ELEMENT_TAG, new Integer(6));
-		hashMap.put(WSDLConstants.BINDING_ELEMENT_TAG, new Integer(7));
-		hashMap.put(WSDLConstants.SERVICE_ELEMENT_TAG, new Integer(8));
-		return hashMap;
-	}
+  {
+    HashMap hashMap = new HashMap();
+    hashMap.put(WSDLConstants.DOCUMENTATION_ELEMENT_TAG, new Integer(1));
+    hashMap.put(WSDLConstants.IMPORT_ELEMENT_TAG, new Integer(3));
+    hashMap.put(WSDLConstants.TYPES_ELEMENT_TAG, new Integer(4));
+    hashMap.put(WSDLConstants.MESSAGE_ELEMENT_TAG, new Integer(5));
+    hashMap.put(WSDLConstants.PORT_TYPE_ELEMENT_TAG, new Integer(6));
+    hashMap.put(WSDLConstants.BINDING_ELEMENT_TAG, new Integer(7));
+    hashMap.put(WSDLConstants.SERVICE_ELEMENT_TAG, new Integer(8));
+    return hashMap;
+  }
 
   protected void adoptBy(Definition definition)
   {
@@ -888,7 +887,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       Object child = components.next();
       if (child instanceof WSDLElementImpl)
       {
-        ((WSDLElementImpl) child).adoptBy(definition);
+        ((WSDLElementImpl)child).adoptBy(definition);
       }
     }
   }
@@ -911,7 +910,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         WSDLElement theContainer = getContainer();
         if (theContainer != null && theContainer.getElement() == changedElement)
         {
-          ((WSDLElementImpl) theContainer).elementChanged(changedElement);
+          ((WSDLElementImpl)theContainer).elementChanged(changedElement);
         }
 
         isReconciling = false;
@@ -946,20 +945,20 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   }
 
   /*
-  protected Element getElementForModelObject(Object modelObject)
-  {
-    Element result = null;
-    if (modelObject instanceof Element)
-    {
-      result = (Element) modelObject;
-    }
-    else if (modelObject instanceof WSDLElement)
-    {
-      result = ((WSDLElement) modelObject).getElement();
-    }
-    return result;
-  }
-  */
+   protected Element getElementForModelObject(Object modelObject)
+   {
+   Element result = null;
+   if (modelObject instanceof Element)
+   {
+   result = (Element) modelObject;
+   }
+   else if (modelObject instanceof WSDLElement)
+   {
+   result = ((WSDLElement) modelObject).getElement();
+   }
+   return result;
+   }
+   */
 
   private Collection getContentNodes(Element changedElement)
   {
@@ -979,7 +978,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     // Delegate to the new form to preserve backward compatibility in case someone
     // else calls this method.
-    
+
     return createQName(definition, prefixedName, null);
   }
 
@@ -1006,18 +1005,18 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       int index = prefixedName.indexOf(":"); ////$NON-NLS-1$
       String prefix = (index == -1) ? "" : prefixedName.substring(0, index); //$NON-NLS-1$
       String namespace = definition.getNamespace(prefix);
-      
+
       if (namespace == null && element != null)
       {
         // Try to find a locally defined namespace prefix.
-        
+
         namespace = getNamespaceURIFromPrefix(element, prefix);
       }
-      
+
       if (namespace != null)
       {
         String localPart = prefixedName.substring(index + 1);
-        qname = new QName(namespace, localPart);       
+        qname = new QName(namespace, localPart);
       }
     }
     return qname;
@@ -1046,7 +1045,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
     while (currentNode != null && currentNode.getNodeType() == Node.ELEMENT_NODE)
     {
-      String namespaceURI = getAttributeNS((Element) currentNode, XSDConstants.XMLNS_URI_2000, prefix);
+      String namespaceURI = getAttributeNS((Element)currentNode, XSDConstants.XMLNS_URI_2000, prefix);
 
       if (namespaceURI != null)
       {
@@ -1060,7 +1059,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
     return null;
   }
-  
+
   /**
    * Retrieves an attribute's value.
    * @param element the containing element.
@@ -1079,7 +1078,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     }
 
     return attributeValue;
-  }  
+  }
 
   //
   // For reconciliation: Model -> DOM
@@ -1113,7 +1112,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     Object obj = null;
     for (Iterator containments = eClass().getEAllContainments().iterator(); containments.hasNext();)
     {
-      EReference eReference = (EReference) containments.next();
+      EReference eReference = (EReference)containments.next();
       if (eReference == WSDLPackage.eINSTANCE.getXSDSchemaExtensibilityElement_Schema())
       {
         // TBD - This is an instance of XSDSchemaExtensibilityElement and
@@ -1123,7 +1122,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       {
         if (eReference.isMany())
         {
-          for (Iterator objects = ((Collection) eGet(eReference)).iterator(); objects.hasNext();)
+          for (Iterator objects = ((Collection)eGet(eReference)).iterator(); objects.hasNext();)
           {
             obj = objects.next();
             if (!(obj instanceof WSDLElement) || obj == null)
@@ -1132,19 +1131,19 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
             }
             else
             {
-              WSDLElement wsdlElement = (WSDLElement) obj;
+              WSDLElement wsdlElement = (WSDLElement)obj;
               //handleElementForAdopt(eReference, wsdlElement);
-               ((WSDLElementImpl) wsdlElement).updateElement();
+              ((WSDLElementImpl)wsdlElement).updateElement();
             }
           }
         }
         else
         {
-          WSDLElement wsdlElement = (WSDLElement) eGet(eReference);
+          WSDLElement wsdlElement = (WSDLElement)eGet(eReference);
           if (wsdlElement != null)
           {
             //handleElementForAdopt(eReference,  wsdlElement);
-             ((WSDLElementImpl) wsdlElement).updateElement();
+            ((WSDLElementImpl)wsdlElement).updateElement();
           }
         }
       } // end else if
@@ -1211,27 +1210,27 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     Collection contentNodes = getContentNodes(changedElement);
 
     Element theDocumentationElement = null;
-    
+
     // for each applicable child node of changedElement
-    LOOP : for (Iterator i = contentNodes.iterator(); i.hasNext();)
+    LOOP: for (Iterator i = contentNodes.iterator(); i.hasNext();)
     {
-      Element child = (Element) i.next();
+      Element child = (Element)i.next();
       // Set Documentation element if exists
-      if (WSDLConstants.DOCUMENTATION_ELEMENT_TAG.equals(child.getLocalName()) &&
-          WSDLConstants.isMatchingNamespace(child.getNamespaceURI(), WSDLConstants.WSDL_NAMESPACE_URI))
+      if (WSDLConstants.DOCUMENTATION_ELEMENT_TAG.equals(child.getLocalName())
+        && WSDLConstants.isMatchingNamespace(child.getNamespaceURI(), WSDLConstants.WSDL_NAMESPACE_URI))
       {
         // assume the first 'documentation' element is 'the' documentation element
         // 'there can be only one!'
         if (theDocumentationElement == null)
-        {  
+        {
           theDocumentationElement = child;
-        }   
-      } 
+        }
+      }
       // go thru the model objects to collect matching object for reuse
       for (Iterator contents = remainingModelObjects.iterator(); contents.hasNext();)
       {
-        Object modelObject = (Object) contents.next();
-        if (((WSDLElement) modelObject).getElement() == child)
+        Object modelObject = (Object)contents.next();
+        if (((WSDLElement)modelObject).getElement() == child)
         {
           contents.remove(); // removes the 'child' Node from the remainingModelObjects list
           continue LOOP;
@@ -1242,9 +1241,9 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       //
       if (theDocumentationElement != getDocumentationElement())
       {
-        setDocumentationElement(theDocumentationElement);  
-      }  
-      
+        setDocumentationElement(theDocumentationElement);
+      }
+
       // we haven't found a matching model object for the Node, se we may need to
       // create a new model object
       handleUnreconciledElement(child, remainingModelObjects);
@@ -1269,11 +1268,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     //EObject c = eContaier(); c != null; c = c.eContainter())
     //{
 
-    for (WSDLElement container = this; container != null; container = ((WSDLElementImpl) container).getContainer())
+    for (WSDLElement container = this; container != null; container = ((WSDLElementImpl)container).getContainer())
     {
       if (container instanceof Definition)
       {
-        enclosingDefinition = (Definition) container;
+        enclosingDefinition = (Definition)container;
         return enclosingDefinition;
       }
     }
@@ -1282,23 +1281,23 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   }
 
   /*
-  public Definition getRootEnclosingDefinition()
-  {
-    if (enclosingDefinition == null)
-     {
-      Resource resource = eResource();
-      List contents = resource.getContents();
-      if (contents.size() == 1 
-          && contents.get(0) instanceof Definition)
-        enclosingDefinition = (Definition)contents.get(0);
-    } 
-    return enclosingDefinition;
-  }
-  */
+   public Definition getRootEnclosingDefinition()
+   {
+   if (enclosingDefinition == null)
+   {
+   Resource resource = eResource();
+   List contents = resource.getContents();
+   if (contents.size() == 1 
+   && contents.get(0) instanceof Definition)
+   enclosingDefinition = (Definition)contents.get(0);
+   } 
+   return enclosingDefinition;
+   }
+   */
 
   public WSDLElement getContainer()
   {
-    return eContainer() instanceof WSDLElement ? (WSDLElement) eContainer() : null;
+    return eContainer() instanceof WSDLElement ? (WSDLElement)eContainer() : null;
   }
 
   protected void niceSetAttribute(Element element, String attribute, String value)
@@ -1400,7 +1399,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     Definition definition = null;
     if (this instanceof Definition)
-      definition = (Definition) this;
+      definition = (Definition)this;
     else
       definition = getEnclosingDefinition();
 
@@ -1409,13 +1408,14 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
     Document document = definition.getDocument();
     if (document == null)
-      document = ((DefinitionImpl) definition).updateDocument();
+      document = ((DefinitionImpl)definition).updateDocument();
 
     // Retrieve the namespace prefix for the WSDL namespace
     String wsdlNamespace = WSDLConstants.WSDL_NAMESPACE_URI;
     String qualifier = definition.getPrefix(wsdlNamespace);
 
-    Element newElement = document.createElementNS(wsdlNamespace, (qualifier == null ? "" : qualifier + ":") + WSDLConstants.getElementTag(nodeType));
+    Element newElement = document.createElementNS(wsdlNamespace, (qualifier == null ? "" : qualifier + ":")
+      + WSDLConstants.getElementTag(nodeType));
 
     if (document.getDocumentElement() == null)
       document.appendChild(newElement);
@@ -1435,7 +1435,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         Object content = contents.next();
         if (content instanceof WSDLElementImpl)
         {
-          WSDLElementImpl element = (WSDLElementImpl) content;
+          WSDLElementImpl element = (WSDLElementImpl)content;
           element.isReconciling = true;
           element.reconcileReferences(true);
           element.isReconciling = false;
@@ -1443,49 +1443,50 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       }
     }
   }
-  
+
   public WSDLElement getBestWSDLElement(List elementPath)
   {
-	  WSDLElement result = this;
-	  for (Iterator components = getWSDLContents().iterator(); components.hasNext(); )
-	  {
-		  Object object = components.next();
-		  if (object instanceof WSDLElementImpl) {
-			  WSDLElementImpl childWSDLElement = (WSDLElementImpl) object;
+    WSDLElement result = this;
+    for (Iterator components = getWSDLContents().iterator(); components.hasNext();)
+    {
+      Object object = components.next();
+      if (object instanceof WSDLElementImpl)
+      {
+        WSDLElementImpl childWSDLElement = (WSDLElementImpl)object;
 
-			  if (elementPath.contains(childWSDLElement.getElement()))
-			  {
-				  result = childWSDLElement;
-				  WSDLElement betterWSDLElement = childWSDLElement.getBestWSDLElement(elementPath);
-				  if (betterWSDLElement != null)
-				  {
-					  result = betterWSDLElement;
-				  }
+        if (elementPath.contains(childWSDLElement.getElement()))
+        {
+          result = childWSDLElement;
+          WSDLElement betterWSDLElement = childWSDLElement.getBestWSDLElement(elementPath);
+          if (betterWSDLElement != null)
+          {
+            result = betterWSDLElement;
+          }
 
-				  if (!considerAllContainsForBestWSDLElement())
-				  {
-					  break;
-				  }
-			  }
-		  }
-	  }
+          if (!considerAllContainsForBestWSDLElement())
+          {
+            break;
+          }
+        }
+      }
+    }
 
-	  return result;
+    return result;
   }
 
   protected boolean considerAllContainsForBestWSDLElement()
   {
     return false;
   }
-  
-    public void elementAttributesChanged(Element changedElement)
+
+  public void elementAttributesChanged(Element changedElement)
   {
     if (!isUpdatingDOM())
     {
       if (!isReconciling)
       {
         // System.out.println("**** changeFor " + eClass().getName());
-    
+
         isReconciling = true;
         reconcileAttributes(changedElement);
 
@@ -1516,7 +1517,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       if (!isReconciling)
       {
         // System.out.println("**** changeFor " + eClass().getName());
-    
+
         isReconciling = true;
         reconcileContents(changedElement);
 
@@ -1539,11 +1540,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       // System.out.println("**** cyclic DOM reconcile avoided " + eClass().getName());
     }
   }
-  
+
   protected void updatePrefix(Node node, String namespace, String oldPrefix, String newPrefix)
   {
-    if ((namespace == null ? node.getNamespaceURI() == null : namespace.equals(node.getNamespaceURI())) &&
-          (oldPrefix == null ? node.getPrefix() == null : oldPrefix.equals(node.getPrefix())))
+    if ((namespace == null ? node.getNamespaceURI() == null : namespace.equals(node.getNamespaceURI()))
+      && (oldPrefix == null ? node.getPrefix() == null : oldPrefix.equals(node.getPrefix())))
     {
       node.setPrefix(newPrefix);
     }
@@ -1552,7 +1553,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     {
       updatePrefix(child, namespace, oldPrefix, newPrefix);
     }
-  } 
+  }
 
   protected String getNamespace(Element element)
   {
@@ -1561,19 +1562,19 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     if (index == -1)
       return null;
     else if (getEnclosingDefinition() != null)
-      return getEnclosingDefinition().getNamespace(name.substring(0,index));
+      return getEnclosingDefinition().getNamespace(name.substring(0, index));
     else
       return null;
   }
-  
+
   protected String getLocalName(Element element)
   {
     String name = element.getTagName();
     int index = name.indexOf(":");
-    if ( index == -1)
+    if (index == -1)
       return name;
     else
-      return name.substring(index+1);
+      return name.substring(index + 1);
   }
 
 } //WSDLElementImpl

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +30,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * @model 
  * @generated
  */
-public interface SOAPAddress extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPAddress {
-
+public interface SOAPAddress extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPAddress
+{
 
 } // SOAPAddress

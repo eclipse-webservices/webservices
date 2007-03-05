@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import org.eclipse.emf.ecore.EObject;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -35,57 +37,58 @@ import org.eclipse.emf.ecore.EObject;
  * @model 
  * @generated
  */
-public interface Namespace extends EObject{
+public interface Namespace extends EObject
+{
   /**
    * Returns the value of the '<em><b>URI</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>URI</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>URI</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>URI</em>' attribute.
    * @see #setURI(String)
    * @see org.eclipse.wsdl.WSDLPackage#getNamespace_URI()
    * @model 
    * @generated
    */
-	String getURI();
+  String getURI();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Namespace#getURI <em>URI</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>URI</em>' attribute.
    * @see #getURI()
    * @generated
    */
-	void setURI(String value);
+  void setURI(String value);
 
   /**
    * Returns the value of the '<em><b>Prefix</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Prefix</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Prefix</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Prefix</em>' attribute.
    * @see #setPrefix(String)
    * @see org.eclipse.wsdl.WSDLPackage#getNamespace_Prefix()
    * @model 
    * @generated
    */
-	String getPrefix();
+  String getPrefix();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Namespace#getPrefix <em>Prefix</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Prefix</em>' attribute.
    * @see #getPrefix()
    * @generated
    */
-	void setPrefix(String value);
+  void setPrefix(String value);
 
 } // Namespace

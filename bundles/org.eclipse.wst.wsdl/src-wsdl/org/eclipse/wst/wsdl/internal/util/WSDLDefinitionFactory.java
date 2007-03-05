@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.util;
 
+
 import javax.wsdl.WSDLException;
 import javax.wsdl.xml.WSDLReader;
 
@@ -17,6 +18,7 @@ import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
 
 import com.ibm.wsdl.xml.WSDLReaderImpl;
+
 
 public class WSDLDefinitionFactory extends com.ibm.wsdl.factory.WSDLFactoryImpl
 {

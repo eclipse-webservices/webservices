@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap.internal.util;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+
 
 public class SOAPExtensibilityElementFactory implements ExtensibilityElementFactory
 {
@@ -35,19 +37,19 @@ public class SOAPExtensibilityElementFactory implements ExtensibilityElementFact
       }
       else if (SOAPConstants.FAULT_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPFault();
+        return SOAPFactory.eINSTANCE.createSOAPFault();
       }
       else if (SOAPConstants.OPERATION_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPOperation();
+        return SOAPFactory.eINSTANCE.createSOAPOperation();
       }
       else if (SOAPConstants.HEADER_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPHeader();
+        return SOAPFactory.eINSTANCE.createSOAPHeader();
       }
       else if (SOAPConstants.HEADER_FAULT_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPHeaderFault();
+        return SOAPFactory.eINSTANCE.createSOAPHeaderFault();
       }
       else
       {

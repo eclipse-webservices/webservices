@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.wst.wsdl.Message;
@@ -74,7 +75,7 @@ public class OutputImpl extends MessageReferenceImpl implements Output
    */
   public void setMessage(javax.wsdl.Message message)
   {
-    setEMessage((Message) message);
+    setEMessage((Message)message);
   }
 
   /**
@@ -87,14 +88,15 @@ public class OutputImpl extends MessageReferenceImpl implements Output
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OUTPUT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.OUTPUT__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.OUTPUT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.OUTPUT__EMESSAGE:
-        if (resolve) return getEMessage();
-        return basicGetEMessage();
+      if (resolve)
+        return getEMessage();
+      return basicGetEMessage();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -109,17 +111,17 @@ public class OutputImpl extends MessageReferenceImpl implements Output
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OUTPUT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.OUTPUT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.OUTPUT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.OUTPUT__EMESSAGE:
-        setEMessage((org.eclipse.wst.wsdl.Message)newValue);
-        return;
+      setEMessage((org.eclipse.wst.wsdl.Message)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -134,17 +136,17 @@ public class OutputImpl extends MessageReferenceImpl implements Output
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OUTPUT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.OUTPUT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.OUTPUT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.OUTPUT__EMESSAGE:
-        setEMessage((org.eclipse.wst.wsdl.Message)null);
-        return;
+      setEMessage((org.eclipse.wst.wsdl.Message)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -159,13 +161,14 @@ public class OutputImpl extends MessageReferenceImpl implements Output
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.OUTPUT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.OUTPUT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.OUTPUT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.OUTPUT__EMESSAGE:
-        return eMessage != null;
+      return eMessage != null;
     }
     return eDynamicIsSet(eFeature);
   }

@@ -24,141 +24,162 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
 
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Factory</b>.
  * <!-- end-user-doc -->
  * @generated
  */
-public class MIMEFactoryImpl extends EFactoryImpl implements MIMEFactory {
-	/**
-	 * Creates and instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public MIMEFactoryImpl() {
-		super();
-	}
+public class MIMEFactoryImpl extends EFactoryImpl implements MIMEFactory
+{
+  /**
+   * Creates and instance of the factory.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MIMEFactoryImpl()
+  {
+    super();
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EObject create(EClass eClass) {
-		switch (eClass.getClassifierID()) {
-			case MIMEPackage.MIME_CONTENT: return createMIMEContent();
-			case MIMEPackage.MIME_PART: return createMIMEPart();
-			case MIMEPackage.MIME_MULTIPART_RELATED: return createMIMEMultipartRelated();
-			case MIMEPackage.MIME_MIME_XML: return createMIMEMimeXml();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-		}
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EObject create(EClass eClass)
+  {
+    switch (eClass.getClassifierID())
+    {
+      case MIMEPackage.MIME_CONTENT:
+      return createMIMEContent();
+      case MIMEPackage.MIME_PART:
+      return createMIMEPart();
+      case MIMEPackage.MIME_MULTIPART_RELATED:
+      return createMIMEMultipartRelated();
+      case MIMEPackage.MIME_MIME_XML:
+      return createMIMEMimeXml();
+      default:
+      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+    }
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Object createFromString(EDataType eDataType, String initialValue) {
-		switch (eDataType.getClassifierID()) {
-			case MIMEPackage.LIST:
-				return createListFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Object createFromString(EDataType eDataType, String initialValue)
+  {
+    switch (eDataType.getClassifierID())
+    {
+      case MIMEPackage.LIST:
+      return createListFromString(eDataType, initialValue);
+      default:
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+    }
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertToString(EDataType eDataType, Object instanceValue) {
-		switch (eDataType.getClassifierID()) {
-			case MIMEPackage.LIST:
-				return convertListToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertToString(EDataType eDataType, Object instanceValue)
+  {
+    switch (eDataType.getClassifierID())
+    {
+      case MIMEPackage.LIST:
+      return convertListToString(eDataType, instanceValue);
+      default:
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+    }
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public MIMEContent createMIMEContent() {
-		MIMEContentImpl mimeContent = new MIMEContentImpl();
-		return mimeContent;
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MIMEContent createMIMEContent()
+  {
+    MIMEContentImpl mimeContent = new MIMEContentImpl();
+    return mimeContent;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public MIMEPart createMIMEPart() {
-		MIMEPartImpl mimePart = new MIMEPartImpl();
-		return mimePart;
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MIMEPart createMIMEPart()
+  {
+    MIMEPartImpl mimePart = new MIMEPartImpl();
+    return mimePart;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public MIMEMultipartRelated createMIMEMultipartRelated() {
-		MIMEMultipartRelatedImpl mimeMultipartRelated = new MIMEMultipartRelatedImpl();
-		return mimeMultipartRelated;
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MIMEMultipartRelated createMIMEMultipartRelated()
+  {
+    MIMEMultipartRelatedImpl mimeMultipartRelated = new MIMEMultipartRelatedImpl();
+    return mimeMultipartRelated;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public MIMEMimeXml createMIMEMimeXml() {
-		MIMEMimeXmlImpl mimeMimeXml = new MIMEMimeXmlImpl();
-		return mimeMimeXml;
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MIMEMimeXml createMIMEMimeXml()
+  {
+    MIMEMimeXmlImpl mimeMimeXml = new MIMEMimeXmlImpl();
+    return mimeMimeXml;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public List createListFromString(EDataType eDataType, String initialValue) {
-		return (List)super.createFromString(eDataType, initialValue);
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public List createListFromString(EDataType eDataType, String initialValue)
+  {
+    return (List)super.createFromString(eDataType, initialValue);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertListToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertListToString(EDataType eDataType, Object instanceValue)
+  {
+    return super.convertToString(eDataType, instanceValue);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public MIMEPackage getMIMEPackage() {
-		return (MIMEPackage)getEPackage();
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MIMEPackage getMIMEPackage()
+  {
+    return (MIMEPackage)getEPackage();
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @deprecated
-	 * @generated
-	 */
-	public static MIMEPackage getPackage() {
-		return MIMEPackage.eINSTANCE;
-	}
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @deprecated
+   * @generated
+   */
+  public static MIMEPackage getPackage()
+  {
+    return MIMEPackage.eINSTANCE;
+  }
 } //MIMEFactoryImpl

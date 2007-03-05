@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Part;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -29,51 +31,52 @@ import org.eclipse.wst.wsdl.Part;
  * @model 
  * @generated
  */
-public interface MIMEMimeXml extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEMimeXml {
-	/**
-	 * Returns the value of the '<em><b>EPart</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EPart</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>EPart</em>' reference.
-	 * @see #setEPart(Part)
-	 * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEMimeXml_EPart()
-	 * @model 
-	 * @generated
-	 */
-	Part getEPart();
+public interface MIMEMimeXml extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEMimeXml
+{
+  /**
+   * Returns the value of the '<em><b>EPart</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EPart</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EPart</em>' reference.
+   * @see #setEPart(Part)
+   * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEMimeXml_EPart()
+   * @model 
+   * @generated
+   */
+  Part getEPart();
 
-	/**
-	 * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml#getEPart <em>EPart</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>EPart</em>' reference.
-	 * @see #getEPart()
-	 * @generated
-	 */
-	void setEPart(Part value);
+  /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml#getEPart <em>EPart</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>EPart</em>' reference.
+   * @see #getEPart()
+   * @generated
+   */
+  void setEPart(Part value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model 
-	 * @generated
-	 */
-	void setPart(String part);
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model 
+   * @generated
+   */
+  void setPart(String part);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Part</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @model parameters=""
-	 * @generated
-	 */
-	String getPart();
+  /**
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Part</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @model parameters=""
+   * @generated
+   */
+  String getPart();
 
 } // MIMEMimeXml

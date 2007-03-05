@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -40,99 +42,100 @@ import org.eclipse.emf.common.util.EList;
  * @model 
  * @generated
  */
-public interface Binding extends ExtensibleElement, javax.wsdl.Binding{
+public interface Binding extends ExtensibleElement, javax.wsdl.Binding
+{
   /**
    * Returns the value of the '<em><b>QName</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>QName</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>QName</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>QName</em>' attribute.
    * @see #setQName(QName)
    * @see org.eclipse.wsdl.WSDLPackage#getBinding_QName()
    * @model dataType="org.eclipse.wsdl.QName"
    * @generated
    */
-	QName getQName();
+  QName getQName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Binding#getQName <em>QName</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>QName</em>' attribute.
    * @see #getQName()
    * @generated
    */
-	void setQName(QName value);
+  void setQName(QName value);
 
   /**
    * Returns the value of the '<em><b>Undefined</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Undefined</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Undefined</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
    * @see org.eclipse.wsdl.WSDLPackage#getBinding_Undefined()
    * @model 
    * @generated
    */
-	boolean isUndefined();
+  boolean isUndefined();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Binding#isUndefined <em>Undefined</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Undefined</em>' attribute.
    * @see #isUndefined()
    * @generated
    */
-	void setUndefined(boolean value);
+  void setUndefined(boolean value);
 
   /**
    * Returns the value of the '<em><b>EPort Type</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EPort Type</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EPort Type</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EPort Type</em>' reference.
    * @see #setEPortType(PortType)
    * @see org.eclipse.wsdl.WSDLPackage#getBinding_EPortType()
    * @model required="true"
    * @generated
    */
-	PortType getEPortType();
+  PortType getEPortType();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Binding#getEPortType <em>EPort Type</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>EPort Type</em>' reference.
    * @see #getEPortType()
    * @generated
    */
-	void setEPortType(PortType value);
+  void setEPortType(PortType value);
 
   /**
    * Returns the value of the '<em><b>EBinding Operations</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.wsdl.BindingOperation}.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EBinding Operations</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EBinding Operations</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EBinding Operations</em>' containment reference list.
    * @see org.eclipse.wsdl.WSDLPackage#getBinding_EBindingOperations()
    * @model type="org.eclipse.wsdl.BindingOperation" containment="true"
    * @generated
    */
-	EList getEBindingOperations();
+  EList getEBindingOperations();
 
 } // Binding

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Message Reference</b></em>'.
@@ -29,32 +30,33 @@ package org.eclipse.wst.wsdl;
  * @model abstract="true"
  * @generated
  */
-public interface MessageReference extends WSDLElement{
+public interface MessageReference extends WSDLElement
+{
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wsdl.WSDLPackage#getMessageReference_Name()
    * @model 
    * @generated
    */
-	String getName();
+  String getName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.MessageReference#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
    * @see #getName()
    * @generated
    */
-	void setName(String value);
+  void setName(String value);
 
   /**
    * Returns the value of the '<em><b>EMessage</b></em>' reference.

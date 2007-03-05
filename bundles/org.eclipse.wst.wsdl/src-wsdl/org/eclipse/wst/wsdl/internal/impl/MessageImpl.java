@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -307,7 +308,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
     Part result = null;
     for (Iterator i = getEParts().iterator(); i.hasNext();)
     {
-      Part part = (Part) i.next();
+      Part part = (Part)i.next();
       if (name.equals(part.getName()))
       {
         result = part;
@@ -328,7 +329,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
     HashMap hashMap = new HashMap();
     for (Iterator i = getEParts().iterator(); i.hasNext();)
     {
-      Part part = (Part) i.next();
+      Part part = (Part)i.next();
       hashMap.put(part.getName(), part);
     }
     return hashMap;
@@ -351,7 +352,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
     Iterator partNameIterator = partOrder.iterator();
     while (partNameIterator.hasNext())
     {
-      String partName = (String) partNameIterator.next();
+      String partName = (String)partNameIterator.next();
       javax.wsdl.Part part = getPart(partName);
       if (part != null)
         orderedParts.add(part);
@@ -372,9 +373,9 @@ public class MessageImpl extends WSDLElementImpl implements Message
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.MESSAGE__EPARTS:
-          return ((InternalEList)getEParts()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEParts()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -390,19 +391,19 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.MESSAGE__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.MESSAGE__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.MESSAGE__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.MESSAGE__PROXY:
-        return isProxy() ? Boolean.TRUE : Boolean.FALSE;
+      return isProxy() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.MESSAGE__RESOURCE_URI:
-        return getResourceURI();
+      return getResourceURI();
       case WSDLPackage.MESSAGE__EPARTS:
-        return getEParts();
+      return getEParts();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -417,27 +418,27 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.MESSAGE__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.MESSAGE__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.MESSAGE__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.MESSAGE__PROXY:
-        setProxy(((Boolean)newValue).booleanValue());
-        return;
+      setProxy(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.MESSAGE__RESOURCE_URI:
-        setResourceURI((String)newValue);
-        return;
+      setResourceURI((String)newValue);
+      return;
       case WSDLPackage.MESSAGE__EPARTS:
-        getEParts().clear();
-        getEParts().addAll((Collection)newValue);
-        return;
+      getEParts().clear();
+      getEParts().addAll((Collection)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -452,26 +453,26 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__PROXY:
-        setProxy(PROXY_EDEFAULT);
-        return;
+      setProxy(PROXY_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__RESOURCE_URI:
-        setResourceURI(RESOURCE_URI_EDEFAULT);
-        return;
+      setResourceURI(RESOURCE_URI_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__EPARTS:
-        getEParts().clear();
-        return;
+      getEParts().clear();
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -486,19 +487,20 @@ public class MessageImpl extends WSDLElementImpl implements Message
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.MESSAGE__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.MESSAGE__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.MESSAGE__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.MESSAGE__PROXY:
-        return proxy != PROXY_EDEFAULT;
+      return proxy != PROXY_EDEFAULT;
       case WSDLPackage.MESSAGE__RESOURCE_URI:
-        return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
+      return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
       case WSDLPackage.MESSAGE__EPARTS:
-        return eParts != null && !eParts.isEmpty();
+      return eParts != null && !eParts.isEmpty();
     }
     return eDynamicIsSet(eFeature);
   }
@@ -510,7 +512,8 @@ public class MessageImpl extends WSDLElementImpl implements Message
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (qName: ");
@@ -541,14 +544,14 @@ public class MessageImpl extends WSDLElementImpl implements Message
   {
     switch (WSDLUtil.getInstance().getWSDLType(child))
     {
-      case WSDLConstants.PART :
-        {
-          Part part = ((WSDLPackage) EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI)).getWSDLFactory().createPart();
-          part.setEnclosingDefinition(getEnclosingDefinition());
-          part.setElement(child);
-          getEParts().add(part);
-          break;
-        }
+      case WSDLConstants.PART:
+      {
+        Part part = ((WSDLPackage)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI)).getWSDLFactory().createPart();
+        part.setEnclosingDefinition(getEnclosingDefinition());
+        part.setElement(child);
+        getEParts().add(part);
+        break;
+      }
     }
   }
 
@@ -559,14 +562,14 @@ public class MessageImpl extends WSDLElementImpl implements Message
       remove(this, i.next());
     }
   }
-  
+
   protected void remove(Object component, Object modelObject)
   {
-    Message message = (Message) component;
+    Message message = (Message)component;
     if (modelObject instanceof Part)
     {
       message.getEParts().remove(modelObject);
-//      message.getEParts().clear();
+      //      message.getEParts().clear();
     }
   }
 
@@ -599,8 +602,8 @@ public class MessageImpl extends WSDLElementImpl implements Message
       Object obj = iterator.next();
       if (obj instanceof Part)
       {
-        Part part = (Part) obj;
-        Element child = ((PartImpl) part).createElement();
+        Part part = (Part)obj;
+        Element child = ((PartImpl)part).createElement();
         newElement.appendChild(child);
       }
     }

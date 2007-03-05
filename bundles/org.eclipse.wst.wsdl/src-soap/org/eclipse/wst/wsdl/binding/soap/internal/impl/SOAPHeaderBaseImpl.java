@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
 import org.w3c.dom.Element;
 
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Header Base</b></em>'.
@@ -52,113 +54,114 @@ import org.w3c.dom.Element;
  *
  * @generated
  */
-public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAPHeaderBase {
+public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAPHeaderBase
+{
   /**
    * The default value of the '{@link #getUse() <em>Use</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getUse()
    * @generated
    * @ordered
    */
-	protected static final String USE_EDEFAULT = null;
+  protected static final String USE_EDEFAULT = null;
 
   /**
    * The cached value of the '{@link #getUse() <em>Use</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getUse()
    * @generated
    * @ordered
    */
-	protected String use = USE_EDEFAULT;
+  protected String use = USE_EDEFAULT;
 
   /**
    * The default value of the '{@link #getNamespaceURI() <em>Namespace URI</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getNamespaceURI()
    * @generated
    * @ordered
    */
-	protected static final String NAMESPACE_URI_EDEFAULT = null;
+  protected static final String NAMESPACE_URI_EDEFAULT = null;
 
   /**
    * The cached value of the '{@link #getNamespaceURI() <em>Namespace URI</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getNamespaceURI()
    * @generated
    * @ordered
    */
-	protected String namespaceURI = NAMESPACE_URI_EDEFAULT;
+  protected String namespaceURI = NAMESPACE_URI_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getEncodingStyles() <em>Encoding Styles</em>}' attribute list.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getEncodingStyles()
    * @generated
    * @ordered
    */
-	protected EList encodingStyles = null;
+  protected EList encodingStyles = null;
 
   /**
    * The cached value of the '{@link #getMessage() <em>Message</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getMessage()
    * @generated
    * @ordered
    */
-	protected Message message = null;
+  protected Message message = null;
 
   /**
    * The cached value of the '{@link #getPart() <em>Part</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getPart()
    * @generated
    * @ordered
    */
-	protected Part part = null;
+  protected Part part = null;
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected SOAPHeaderBaseImpl()
+  protected SOAPHeaderBaseImpl()
   {
     super();
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass()
+  protected EClass eStaticClass()
   {
     return SOAPPackage.eINSTANCE.getSOAPHeaderBase();
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public String getUse()
+  public String getUse()
   {
     return use;
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void setUse(String newUse)
+  public void setUse(String newUse)
   {
     String oldUse = use;
     use = newUse;
@@ -168,20 +171,20 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public String getNamespaceURI()
+  public String getNamespaceURI()
   {
     return namespaceURI;
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void setNamespaceURI(String newNamespaceURI)
+  public void setNamespaceURI(String newNamespaceURI)
   {
     String oldNamespaceURI = namespaceURI;
     namespaceURI = newNamespaceURI;
@@ -191,10 +194,10 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public EList getEncodingStyles()
+  public EList getEncodingStyles()
   {
     if (encodingStyles == null)
     {
@@ -205,10 +208,10 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public Message getMessage()
+  public Message getMessage()
   {
     if (message != null && message.eIsProxy())
     {
@@ -225,20 +228,20 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public Message basicGetMessage()
+  public Message basicGetMessage()
   {
     return message;
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void setMessage(Message newMessage)
+  public void setMessage(Message newMessage)
   {
     Message oldMessage = message;
     message = newMessage;
@@ -248,10 +251,10 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public Part getPart()
+  public Part getPart()
   {
     if (part != null && part.eIsProxy())
     {
@@ -268,20 +271,20 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public Part basicGetPart()
+  public Part basicGetPart()
   {
     return part;
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void setPart(Part newPart)
+  public void setPart(Part newPart)
   {
     Part oldPart = part;
     part = newPart;
@@ -291,157 +294,161 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(EStructuralFeature eFeature, boolean resolve)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_BASE__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT:
-        return getElement();
+      return getElement();
       case SOAPPackage.SOAP_HEADER_BASE__REQUIRED:
-        return isRequired() ? Boolean.TRUE : Boolean.FALSE;
+      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT_TYPE:
-        return getElementType();
+      return getElementType();
       case SOAPPackage.SOAP_HEADER_BASE__USE:
-        return getUse();
+      return getUse();
       case SOAPPackage.SOAP_HEADER_BASE__NAMESPACE_URI:
-        return getNamespaceURI();
+      return getNamespaceURI();
       case SOAPPackage.SOAP_HEADER_BASE__ENCODING_STYLES:
-        return getEncodingStyles();
+      return getEncodingStyles();
       case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
-        if (resolve) return getMessage();
-        return basicGetMessage();
+      if (resolve)
+        return getMessage();
+      return basicGetMessage();
       case SOAPPackage.SOAP_HEADER_BASE__PART:
-        if (resolve) return getPart();
-        return basicGetPart();
+      if (resolve)
+        return getPart();
+      return basicGetPart();
     }
     return eDynamicGet(eFeature, resolve);
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(EStructuralFeature eFeature, Object newValue)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_BASE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__REQUIRED:
-        setRequired(((Boolean)newValue).booleanValue());
-        return;
+      setRequired(((Boolean)newValue).booleanValue());
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT_TYPE:
-        setElementType((QName)newValue);
-        return;
+      setElementType((QName)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__USE:
-        setUse((String)newValue);
-        return;
+      setUse((String)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__NAMESPACE_URI:
-        setNamespaceURI((String)newValue);
-        return;
+      setNamespaceURI((String)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__ENCODING_STYLES:
-        getEncodingStyles().clear();
-        getEncodingStyles().addAll((Collection)newValue);
-        return;
+      getEncodingStyles().clear();
+      getEncodingStyles().addAll((Collection)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
-        setMessage((Message)newValue);
-        return;
+      setMessage((Message)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__PART:
-        setPart((Part)newValue);
-        return;
+      setPart((Part)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(EStructuralFeature eFeature)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_BASE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__REQUIRED:
-        setRequired(REQUIRED_EDEFAULT);
-        return;
+      setRequired(REQUIRED_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT_TYPE:
-        setElementType(ELEMENT_TYPE_EDEFAULT);
-        return;
+      setElementType(ELEMENT_TYPE_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__USE:
-        setUse(USE_EDEFAULT);
-        return;
+      setUse(USE_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__NAMESPACE_URI:
-        setNamespaceURI(NAMESPACE_URI_EDEFAULT);
-        return;
+      setNamespaceURI(NAMESPACE_URI_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__ENCODING_STYLES:
-        getEncodingStyles().clear();
-        return;
+      getEncodingStyles().clear();
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
-        setMessage((Message)null);
-        return;
+      setMessage((Message)null);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__PART:
-        setPart((Part)null);
-        return;
+      setPart((Part)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(EStructuralFeature eFeature)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_BASE__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case SOAPPackage.SOAP_HEADER_BASE__REQUIRED:
-        return required != REQUIRED_EDEFAULT;
+      return required != REQUIRED_EDEFAULT;
       case SOAPPackage.SOAP_HEADER_BASE__ELEMENT_TYPE:
-        return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
+      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
       case SOAPPackage.SOAP_HEADER_BASE__USE:
-        return USE_EDEFAULT == null ? use != null : !USE_EDEFAULT.equals(use);
+      return USE_EDEFAULT == null ? use != null : !USE_EDEFAULT.equals(use);
       case SOAPPackage.SOAP_HEADER_BASE__NAMESPACE_URI:
-        return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+      return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
       case SOAPPackage.SOAP_HEADER_BASE__ENCODING_STYLES:
-        return encodingStyles != null && !encodingStyles.isEmpty();
+      return encodingStyles != null && !encodingStyles.isEmpty();
       case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
-        return message != null;
+      return message != null;
       case SOAPPackage.SOAP_HEADER_BASE__PART:
-        return part != null;
+      return part != null;
     }
     return eDynamicIsSet(eFeature);
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public String toString()
+  public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (use: ");
@@ -464,38 +471,38 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       setUse(changedElement.getAttribute(SOAPConstants.USE_ATTRIBUTE));
     if (changedElement.hasAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE))
       setNamespaceURI(changedElement.getAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE));
-    if (changedElement.hasAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE)) 
+    if (changedElement.hasAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE))
     {
       String encodingStyles = changedElement.getAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE);
       StringTokenizer tokenizer = new StringTokenizer(encodingStyles);
       while (tokenizer.hasMoreTokens())
-      	getEncodingStyles().add(tokenizer.nextToken());
-    } 
-    
+        getEncodingStyles().add(tokenizer.nextToken());
+    }
+
     reconcileReferences(false);
   }
-  
+
   public void reconcileReferences(boolean deep)
   {
     if (element != null && element.hasAttribute(SOAPConstants.MESSAGE_ATTRIBUTE))
     {
       Definition definition = getEnclosingDefinition();
       QName messageQName = createQName(definition, element.getAttribute(SOAPConstants.MESSAGE_ATTRIBUTE), element);
-      Message newMessage = (messageQName != null) ? (Message) definition.getMessage(messageQName) : null;
+      Message newMessage = (messageQName != null) ? (Message)definition.getMessage(messageQName) : null;
       if (newMessage != null && newMessage != getMessage())
         setMessage(newMessage);
-      
+
       if (element.hasAttribute(SOAPConstants.PART_ATTRIBUTE))
       {
         String partName = element.getAttribute(SOAPConstants.PART_ATTRIBUTE);
-        Part newPart = (newMessage != null) ? (Part) newMessage.getPart(partName) : null;
+        Part newPart = (newMessage != null) ? (Part)newMessage.getPart(partName) : null;
         if (newPart != null && newPart != getPart())
           setPart(newPart);
-      }   
+      }
     }
     super.reconcileReferences(deep);
-  }	  
- 
+  }
+
   //
   // For reconciliation: Model -> DOM
   //
@@ -510,9 +517,9 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
     if (theElement != null)
     {
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_Use())
-        niceSetAttribute(theElement,SOAPConstants.USE_ATTRIBUTE,getUse());
-      if(eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_NamespaceURI())
-        niceSetAttribute(theElement,SOAPConstants.NAMESPACE_ATTRIBUTE,getNamespaceURI());
+        niceSetAttribute(theElement, SOAPConstants.USE_ATTRIBUTE, getUse());
+      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_NamespaceURI())
+        niceSetAttribute(theElement, SOAPConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_EncodingStyles())
       {
         List encodingStyleList = getEncodingStyles();
@@ -523,14 +530,14 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
           if (encodingStyles.equals("")) // first iteration
             encodingStyles += (String)iterator.next();
           else
-  	        encodingStyles += " " + (String)iterator.next();
+            encodingStyles += " " + (String)iterator.next();
         }
         if (!encodingStyles.equals(""))
-          niceSetAttribute(theElement,SOAPConstants.ENCODING_STYLE_ATTRIBUTE,encodingStyles);
+          niceSetAttribute(theElement, SOAPConstants.ENCODING_STYLE_ATTRIBUTE, encodingStyles);
       }
     }
   }
-  
+
   protected void changeReference(EReference eReference)
   {
     if (isReconciling)
@@ -549,14 +556,14 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
           niceSetAttributeURIValue(theElement, SOAPConstants.MESSAGE_ATTRIBUTE, qName.getNamespaceURI() + "#" + qName.getLocalPart());
         }
       }
-      
+
       if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPHeaderBase_Part())
       {
         Part part = getPart();
         if (part != null)
         {
           String partName = part.getName();
-          niceSetAttribute(theElement, SOAPConstants.PART_ATTRIBUTE,partName);
+          niceSetAttribute(theElement, SOAPConstants.PART_ATTRIBUTE, partName);
         }
       }
     }

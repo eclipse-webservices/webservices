@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import java.util.List;
 
 import javax.wsdl.extensions.ExtensibilityElement;
 
 import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -38,22 +40,23 @@ import org.eclipse.emf.common.util.EList;
  * @model abstract="true"
  * @generated
  */
-public interface ExtensibleElement extends WSDLElement{
+public interface ExtensibleElement extends WSDLElement
+{
   /**
    * Returns the value of the '<em><b>EExtensibility Elements</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.wsdl.ExtensibilityElement}.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EExtensibility Elements</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EExtensibility Elements</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EExtensibility Elements</em>' containment reference list.
    * @see org.eclipse.wsdl.WSDLPackage#getExtensibleElement_EExtensibilityElements()
    * @model type="org.eclipse.wsdl.ExtensibilityElement" containment="true"
    * @generated
    */
-	EList getEExtensibilityElements();
+  EList getEExtensibilityElements();
 
   /**
    * <!-- begin-user-doc -->

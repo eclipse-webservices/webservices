@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 
+
 import java.util.Collection;
 
 import javax.xml.namespace.QName;
@@ -23,6 +24,7 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.w3c.dom.Element;
 
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Header Fault</b></em>'.
@@ -32,177 +34,181 @@ import org.w3c.dom.Element;
  *
  * @generated
  */
-public class SOAPHeaderFaultImpl extends SOAPHeaderBaseImpl implements SOAPHeaderFault {
+public class SOAPHeaderFaultImpl extends SOAPHeaderBaseImpl implements SOAPHeaderFault
+{
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected SOAPHeaderFaultImpl()
+  protected SOAPHeaderFaultImpl()
   {
     super();
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass()
+  protected EClass eStaticClass()
   {
     return SOAPPackage.eINSTANCE.getSOAPHeaderFault();
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(EStructuralFeature eFeature, boolean resolve)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_FAULT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT:
-        return getElement();
+      return getElement();
       case SOAPPackage.SOAP_HEADER_FAULT__REQUIRED:
-        return isRequired() ? Boolean.TRUE : Boolean.FALSE;
+      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT_TYPE:
-        return getElementType();
+      return getElementType();
       case SOAPPackage.SOAP_HEADER_FAULT__USE:
-        return getUse();
+      return getUse();
       case SOAPPackage.SOAP_HEADER_FAULT__NAMESPACE_URI:
-        return getNamespaceURI();
+      return getNamespaceURI();
       case SOAPPackage.SOAP_HEADER_FAULT__ENCODING_STYLES:
-        return getEncodingStyles();
+      return getEncodingStyles();
       case SOAPPackage.SOAP_HEADER_FAULT__MESSAGE:
-        if (resolve) return getMessage();
-        return basicGetMessage();
+      if (resolve)
+        return getMessage();
+      return basicGetMessage();
       case SOAPPackage.SOAP_HEADER_FAULT__PART:
-        if (resolve) return getPart();
-        return basicGetPart();
+      if (resolve)
+        return getPart();
+      return basicGetPart();
     }
     return eDynamicGet(eFeature, resolve);
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(EStructuralFeature eFeature, Object newValue)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_FAULT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__REQUIRED:
-        setRequired(((Boolean)newValue).booleanValue());
-        return;
+      setRequired(((Boolean)newValue).booleanValue());
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT_TYPE:
-        setElementType((QName)newValue);
-        return;
+      setElementType((QName)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__USE:
-        setUse((String)newValue);
-        return;
+      setUse((String)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__NAMESPACE_URI:
-        setNamespaceURI((String)newValue);
-        return;
+      setNamespaceURI((String)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__ENCODING_STYLES:
-        getEncodingStyles().clear();
-        getEncodingStyles().addAll((Collection)newValue);
-        return;
+      getEncodingStyles().clear();
+      getEncodingStyles().addAll((Collection)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__MESSAGE:
-        setMessage((Message)newValue);
-        return;
+      setMessage((Message)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__PART:
-        setPart((Part)newValue);
-        return;
+      setPart((Part)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(EStructuralFeature eFeature)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_FAULT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__REQUIRED:
-        setRequired(REQUIRED_EDEFAULT);
-        return;
+      setRequired(REQUIRED_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT_TYPE:
-        setElementType(ELEMENT_TYPE_EDEFAULT);
-        return;
+      setElementType(ELEMENT_TYPE_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__USE:
-        setUse(USE_EDEFAULT);
-        return;
+      setUse(USE_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__NAMESPACE_URI:
-        setNamespaceURI(NAMESPACE_URI_EDEFAULT);
-        return;
+      setNamespaceURI(NAMESPACE_URI_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__ENCODING_STYLES:
-        getEncodingStyles().clear();
-        return;
+      getEncodingStyles().clear();
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__MESSAGE:
-        setMessage((Message)null);
-        return;
+      setMessage((Message)null);
+      return;
       case SOAPPackage.SOAP_HEADER_FAULT__PART:
-        setPart((Part)null);
-        return;
+      setPart((Part)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
 
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(EStructuralFeature eFeature)
   {
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case SOAPPackage.SOAP_HEADER_FAULT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case SOAPPackage.SOAP_HEADER_FAULT__REQUIRED:
-        return required != REQUIRED_EDEFAULT;
+      return required != REQUIRED_EDEFAULT;
       case SOAPPackage.SOAP_HEADER_FAULT__ELEMENT_TYPE:
-        return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
+      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
       case SOAPPackage.SOAP_HEADER_FAULT__USE:
-        return USE_EDEFAULT == null ? use != null : !USE_EDEFAULT.equals(use);
+      return USE_EDEFAULT == null ? use != null : !USE_EDEFAULT.equals(use);
       case SOAPPackage.SOAP_HEADER_FAULT__NAMESPACE_URI:
-        return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+      return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
       case SOAPPackage.SOAP_HEADER_FAULT__ENCODING_STYLES:
-        return encodingStyles != null && !encodingStyles.isEmpty();
+      return encodingStyles != null && !encodingStyles.isEmpty();
       case SOAPPackage.SOAP_HEADER_FAULT__MESSAGE:
-        return message != null;
+      return message != null;
       case SOAPPackage.SOAP_HEADER_FAULT__PART:
-        return part != null;
+      return part != null;
     }
     return eDynamicIsSet(eFeature);
   }
-  
+
   public QName getElementType()
   {
     if (elementType == null)
       elementType = new QName(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.HEADER_FAULT_ELEMENT_TAG);
     return elementType;
-  } 
+  }
 
 } //SOAPHeaderFaultImpl

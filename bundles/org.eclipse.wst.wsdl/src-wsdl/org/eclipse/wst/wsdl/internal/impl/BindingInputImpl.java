@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -189,7 +190,7 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    */
   public void setInput(javax.wsdl.Input input)
   {
-    setEInput((Input) input);
+    setEInput((Input)input);
   }
 
   /**
@@ -204,9 +205,9 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -222,16 +223,17 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.BINDING_INPUT__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
+      return getEExtensibilityElements();
       case WSDLPackage.BINDING_INPUT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.BINDING_INPUT__EINPUT:
-        if (resolve) return getEInput();
-        return basicGetEInput();
+      if (resolve)
+        return getEInput();
+      return basicGetEInput();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -246,21 +248,21 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.BINDING_INPUT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
+      getEExtensibilityElements().clear();
+      getEExtensibilityElements().addAll((Collection)newValue);
+      return;
       case WSDLPackage.BINDING_INPUT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.BINDING_INPUT__EINPUT:
-        setEInput((Input)newValue);
-        return;
+      setEInput((Input)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -275,20 +277,20 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_INPUT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
+      getEExtensibilityElements().clear();
+      return;
       case WSDLPackage.BINDING_INPUT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_INPUT__EINPUT:
-        setEInput((Input)null);
-        return;
+      setEInput((Input)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -303,15 +305,16 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING_INPUT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.BINDING_INPUT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.BINDING_INPUT__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
+      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
       case WSDLPackage.BINDING_INPUT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.BINDING_INPUT__EINPUT:
-        return eInput != null;
+      return eInput != null;
     }
     return eDynamicIsSet(eFeature);
   }
@@ -323,7 +326,8 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
@@ -338,19 +342,19 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
 
   public void reconcileAttributes(Element changedElement)
   {
-	if (changedElement.hasAttribute("name"))
-	{
+    if (changedElement.hasAttribute("name"))
+    {
       String name = changedElement.getAttribute("name");
       if (name != null)
       {
         setName(name);
       }
-	}
+    }
   }
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    super.handleUnreconciledElement(child,remainingModelObjects);
+    super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
   protected void handleReconciliation(Collection remainingModelObjects)
@@ -363,7 +367,7 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
 
   public Collection getModelObjects(Object component)
   {
-    BindingInput bindingInput = (BindingInput) component;
+    BindingInput bindingInput = (BindingInput)component;
     List list = new ArrayList();
     list.addAll(bindingInput.getEExtensibilityElements());
     return list;
@@ -395,14 +399,14 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
     Iterator iterator = getExtensibilityElements().iterator();
     while (iterator.hasNext())
     {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+      Element child = ((ExtensibilityElementImpl)extensibilityElement).createElement();
       newElement.appendChild(child);
     }
 
     return newElement;
   }
-  
+
   // Resolve the reference to Input
   public void reconcileReferences(boolean deep)
   {

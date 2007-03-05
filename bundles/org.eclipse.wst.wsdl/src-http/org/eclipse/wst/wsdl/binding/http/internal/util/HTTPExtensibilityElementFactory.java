@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.http.internal.util;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+
 
 public class HTTPExtensibilityElementFactory implements ExtensibilityElementFactory
 {
@@ -35,11 +37,11 @@ public class HTTPExtensibilityElementFactory implements ExtensibilityElementFact
       }
       else if (HTTPConstants.URL_ENCODED_ELEMENT_TAG.equals(localName))
       {
-      	return HTTPFactory.eINSTANCE.createHTTPUrlEncoded();
+        return HTTPFactory.eINSTANCE.createHTTPUrlEncoded();
       }
       else if (HTTPConstants.URL_REPLACEMENT_ELEMENT_TAG.equals(localName))
       {
-      	return HTTPFactory.eINSTANCE.createHTTPUrlReplacement();
+        return HTTPFactory.eINSTANCE.createHTTPUrlReplacement();
       }
       else
       {

@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.util;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+
 
 public class MIMEExtensibilityElementFactory implements ExtensibilityElementFactory
 {
@@ -34,15 +36,15 @@ public class MIMEExtensibilityElementFactory implements ExtensibilityElementFact
         return MIMEFactory.eINSTANCE.createMIMEMultipartRelated();
       }
       /* TODO - fix the rose model
-      else if ("part".equals(localName))
+       else if ("part".equals(localName))
+       {
+       return MIMEFactory.eINSTANCE.createMIMEPart();
+       }
+       */
+      else
       {
-        return MIMEFactory.eINSTANCE.createMIMEPart();
-      }
-      */
-	  else
-	  {
-	    //System.out.println("Unhandled localName: " + localName);
-	    return WSDLFactory.eINSTANCE.createUnknownExtensibilityElement();
+        //System.out.println("Unhandled localName: " + localName);
+        return WSDLFactory.eINSTANCE.createUnknownExtensibilityElement();
       }
     }
     else

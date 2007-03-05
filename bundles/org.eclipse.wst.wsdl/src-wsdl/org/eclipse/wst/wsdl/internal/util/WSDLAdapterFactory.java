@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.util;
 
+
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -107,197 +108,243 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
    * <!-- end-user-doc -->
    * @generated
    */
-  protected WSDLSwitch modelSwitch =
-    new WSDLSwitch()
+  protected WSDLSwitch modelSwitch = new WSDLSwitch()
     {
       public Object caseWSDLElement(WSDLElement object)
       {
         return createWSDLElementAdapter();
       }
+
       public Object casePortType(PortType object)
       {
         return createPortTypeAdapter();
       }
+
       public Object caseOperation(Operation object)
       {
         return createOperationAdapter();
       }
+
       public Object caseMessage(Message object)
       {
         return createMessageAdapter();
       }
+
       public Object casePart(Part object)
       {
         return createPartAdapter();
       }
+
       public Object caseBinding(Binding object)
       {
         return createBindingAdapter();
       }
+
       public Object caseBindingOperation(BindingOperation object)
       {
         return createBindingOperationAdapter();
       }
+
       public Object caseService(Service object)
       {
         return createServiceAdapter();
       }
+
       public Object casePort(Port object)
       {
         return createPortAdapter();
       }
+
       public Object caseExtensibilityElement(ExtensibilityElement object)
       {
         return createExtensibilityElementAdapter();
       }
+
       public Object caseDefinition(Definition object)
       {
         return createDefinitionAdapter();
       }
+
       public Object caseImport(Import object)
       {
         return createImportAdapter();
       }
+
       public Object caseExtensibleElement(ExtensibleElement object)
       {
         return createExtensibleElementAdapter();
       }
+
       public Object caseInput(Input object)
       {
         return createInputAdapter();
       }
+
       public Object caseOutput(Output object)
       {
         return createOutputAdapter();
       }
+
       public Object caseFault(Fault object)
       {
         return createFaultAdapter();
       }
+
       public Object caseBindingInput(BindingInput object)
       {
         return createBindingInputAdapter();
       }
+
       public Object caseBindingOutput(BindingOutput object)
       {
         return createBindingOutputAdapter();
       }
+
       public Object caseBindingFault(BindingFault object)
       {
         return createBindingFaultAdapter();
       }
+
       public Object caseNamespace(Namespace object)
       {
         return createNamespaceAdapter();
       }
+
       public Object caseIPortType(javax.wsdl.PortType object)
       {
         return createIPortTypeAdapter();
       }
+
       public Object caseIOperation(javax.wsdl.Operation object)
       {
         return createIOperationAdapter();
       }
+
       public Object caseIInput(javax.wsdl.Input object)
       {
         return createIInputAdapter();
       }
+
       public Object caseIOutput(javax.wsdl.Output object)
       {
         return createIOutputAdapter();
       }
+
       public Object caseIFault(javax.wsdl.Fault object)
       {
         return createIFaultAdapter();
       }
+
       public Object caseIMessage(javax.wsdl.Message object)
       {
         return createIMessageAdapter();
       }
+
       public Object caseIPart(javax.wsdl.Part object)
       {
         return createIPartAdapter();
       }
+
       public Object caseIService(javax.wsdl.Service object)
       {
         return createIServiceAdapter();
       }
+
       public Object caseIPort(javax.wsdl.Port object)
       {
         return createIPortAdapter();
       }
+
       public Object caseIBinding(javax.wsdl.Binding object)
       {
         return createIBindingAdapter();
       }
+
       public Object caseIBindingOperation(javax.wsdl.BindingOperation object)
       {
         return createIBindingOperationAdapter();
       }
+
       public Object caseIBindingInput(javax.wsdl.BindingInput object)
       {
         return createIBindingInputAdapter();
       }
+
       public Object caseIBindingOutput(javax.wsdl.BindingOutput object)
       {
         return createIBindingOutputAdapter();
       }
+
       public Object caseIBindingFault(javax.wsdl.BindingFault object)
       {
         return createIBindingFaultAdapter();
       }
+
       public Object caseIExtensibilityElement(javax.wsdl.extensions.ExtensibilityElement object)
       {
         return createIExtensibilityElementAdapter();
       }
+
       public Object caseIDefinition(javax.wsdl.Definition object)
       {
         return createIDefinitionAdapter();
       }
+
       public Object caseIImport(javax.wsdl.Import object)
       {
         return createIImportAdapter();
       }
+
       public Object caseIList(List object)
       {
         return createIListAdapter();
       }
+
       public Object caseIMap(Map object)
       {
         return createIMapAdapter();
       }
+
       public Object caseIURL(URL object)
       {
         return createIURLAdapter();
       }
+
       public Object caseIExtensionRegistry(ExtensionRegistry object)
       {
         return createIExtensionRegistryAdapter();
       }
+
       public Object caseTypes(Types object)
       {
         return createTypesAdapter();
       }
+
       public Object caseIIterator(Iterator object)
       {
         return createIIteratorAdapter();
       }
+
       public Object caseITypes(javax.wsdl.Types object)
       {
         return createITypesAdapter();
       }
+
       public Object caseUnknownExtensibilityElement(UnknownExtensibilityElement object)
       {
         return createUnknownExtensibilityElementAdapter();
       }
+
       public Object caseXSDSchemaExtensibilityElement(XSDSchemaExtensibilityElement object)
       {
         return createXSDSchemaExtensibilityElementAdapter();
       }
+
       public Object caseMessageReference(MessageReference object)
       {
         return createMessageReferenceAdapter();
       }
+
       public Object defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -316,7 +363,6 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   {
     return (Adapter)modelSwitch.doSwitch((EObject)target);
   }
-
 
   /**
    * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.WSDLElement <em>Element</em>}'.

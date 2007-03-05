@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.http;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -22,5 +24,6 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * @model 
  * @generated
  */
-public interface HTTPUrlReplacement extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPUrlReplacement {
+public interface HTTPUrlReplacement extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPUrlReplacement
+{
 } // HTTPUrlReplacement

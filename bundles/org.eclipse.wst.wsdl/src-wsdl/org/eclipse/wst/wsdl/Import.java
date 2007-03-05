@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import org.eclipse.xsd.XSDSchema;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -37,110 +39,111 @@ import org.eclipse.xsd.XSDSchema;
  * @model 
  * @generated
  */
-public interface Import extends WSDLElement, javax.wsdl.Import{
+public interface Import extends WSDLElement, javax.wsdl.Import
+{
   /**
    * Returns the value of the '<em><b>Namespace URI</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Namespace URI</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Namespace URI</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Namespace URI</em>' attribute.
    * @see #setNamespaceURI(String)
    * @see org.eclipse.wsdl.WSDLPackage#getImport_NamespaceURI()
    * @model 
    * @generated
    */
-	String getNamespaceURI();
+  String getNamespaceURI();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Import#getNamespaceURI <em>Namespace URI</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Namespace URI</em>' attribute.
    * @see #getNamespaceURI()
    * @generated
    */
-	void setNamespaceURI(String value);
+  void setNamespaceURI(String value);
 
   /**
    * Returns the value of the '<em><b>Location URI</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Location URI</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Location URI</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Location URI</em>' attribute.
    * @see #setLocationURI(String)
    * @see org.eclipse.wsdl.WSDLPackage#getImport_LocationURI()
    * @model 
    * @generated
    */
-	String getLocationURI();
+  String getLocationURI();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Import#getLocationURI <em>Location URI</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Location URI</em>' attribute.
    * @see #getLocationURI()
    * @generated
    */
-	void setLocationURI(String value);
+  void setLocationURI(String value);
 
   /**
    * Returns the value of the '<em><b>EDefinition</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EDefinition</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EDefinition</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EDefinition</em>' reference.
    * @see #setEDefinition(Definition)
    * @see org.eclipse.wsdl.WSDLPackage#getImport_EDefinition()
    * @model 
    * @generated
    */
-	Definition getEDefinition();
+  Definition getEDefinition();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Import#getEDefinition <em>EDefinition</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>EDefinition</em>' reference.
    * @see #getEDefinition()
    * @generated
    */
-	void setEDefinition(Definition value);
+  void setEDefinition(Definition value);
 
   /**
    * Returns the value of the '<em><b>ESchema</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>ESchema</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>ESchema</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>ESchema</em>' reference.
    * @see #setESchema(XSDSchema)
    * @see org.eclipse.wsdl.WSDLPackage#getImport_ESchema()
    * @model 
    * @generated
    */
-	XSDSchema getESchema();
+  XSDSchema getESchema();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.Import#getESchema <em>ESchema</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>ESchema</em>' reference.
    * @see #getESchema()
    * @generated
    */
-	void setESchema(XSDSchema value);
+  void setESchema(XSDSchema value);
 
   /**
    * <!-- begin-user-doc -->

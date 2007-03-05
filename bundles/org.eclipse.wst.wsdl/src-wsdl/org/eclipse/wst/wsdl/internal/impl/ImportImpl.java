@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -33,6 +34,7 @@ import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
 import org.w3c.dom.Element;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -303,19 +305,21 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.IMPORT__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        return getNamespaceURI();
+      return getNamespaceURI();
       case WSDLPackage.IMPORT__LOCATION_URI:
-        return getLocationURI();
+      return getLocationURI();
       case WSDLPackage.IMPORT__EDEFINITION:
-        if (resolve) return getEDefinition();
-        return basicGetEDefinition();
+      if (resolve)
+        return getEDefinition();
+      return basicGetEDefinition();
       case WSDLPackage.IMPORT__ESCHEMA:
-        if (resolve) return getESchema();
-        return basicGetESchema();
+      if (resolve)
+        return getESchema();
+      return basicGetESchema();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -330,23 +334,23 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.IMPORT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        setNamespaceURI((String)newValue);
-        return;
+      setNamespaceURI((String)newValue);
+      return;
       case WSDLPackage.IMPORT__LOCATION_URI:
-        setLocationURI((String)newValue);
-        return;
+      setLocationURI((String)newValue);
+      return;
       case WSDLPackage.IMPORT__EDEFINITION:
-        setEDefinition((Definition)newValue);
-        return;
+      setEDefinition((Definition)newValue);
+      return;
       case WSDLPackage.IMPORT__ESCHEMA:
-        setESchema((XSDSchema)newValue);
-        return;
+      setESchema((XSDSchema)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -361,23 +365,23 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.IMPORT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        setNamespaceURI(NAMESPACE_URI_EDEFAULT);
-        return;
+      setNamespaceURI(NAMESPACE_URI_EDEFAULT);
+      return;
       case WSDLPackage.IMPORT__LOCATION_URI:
-        setLocationURI(LOCATION_URI_EDEFAULT);
-        return;
+      setLocationURI(LOCATION_URI_EDEFAULT);
+      return;
       case WSDLPackage.IMPORT__EDEFINITION:
-        setEDefinition((Definition)null);
-        return;
+      setEDefinition((Definition)null);
+      return;
       case WSDLPackage.IMPORT__ESCHEMA:
-        setESchema((XSDSchema)null);
-        return;
+      setESchema((XSDSchema)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -392,17 +396,18 @@ public class ImportImpl extends WSDLElementImpl implements Import
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.IMPORT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.IMPORT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.IMPORT__NAMESPACE_URI:
-        return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+      return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
       case WSDLPackage.IMPORT__LOCATION_URI:
-        return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
+      return LOCATION_URI_EDEFAULT == null ? locationURI != null : !LOCATION_URI_EDEFAULT.equals(locationURI);
       case WSDLPackage.IMPORT__EDEFINITION:
-        return eDefinition != null;
+      return eDefinition != null;
       case WSDLPackage.IMPORT__ESCHEMA:
-        return eSchema != null;
+      return eSchema != null;
     }
     return eDynamicIsSet(eFeature);
   }
@@ -414,7 +419,8 @@ public class ImportImpl extends WSDLElementImpl implements Import
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (namespaceURI: ");
@@ -438,7 +444,7 @@ public class ImportImpl extends WSDLElementImpl implements Import
    */
   public void setDefinition(javax.wsdl.Definition definition)
   {
-    setEDefinition((org.eclipse.wst.wsdl.Definition) definition);
+    setEDefinition((org.eclipse.wst.wsdl.Definition)definition);
   }
 
   //
@@ -458,7 +464,7 @@ public class ImportImpl extends WSDLElementImpl implements Import
     // We need to set this boolean to false because the Import may point to a different location.
     // So we need we should view this import as unresolved.
     resolved = false;
-    
+
     if (isReconciling)
       return;
 
@@ -497,7 +503,7 @@ public class ImportImpl extends WSDLElementImpl implements Import
       // which will have the same effect.
       eDefinition = null;
       eSchema = null;
-        
+
       Definition definition = getEnclosingDefinition();
       if (definition != null && definition.getDocumentBaseURI() != null)
       {
@@ -537,11 +543,11 @@ public class ImportImpl extends WSDLElementImpl implements Import
             {
               if (resolvedResource instanceof WSDLResourceImpl)
               {
-                eDefinition = ((WSDLResourceImpl) resolvedResource).getDefinition();
+                eDefinition = ((WSDLResourceImpl)resolvedResource).getDefinition();
               }
               else if (resolvedResource instanceof XSDResourceImpl)
               {
-                eSchema = ((XSDResourceImpl) resolvedResource).getSchema();
+                eSchema = ((XSDResourceImpl)resolvedResource).getSchema();
               }
               else
               {
@@ -570,23 +576,23 @@ public class ImportImpl extends WSDLElementImpl implements Import
       URI baseLocationURI = createURI(definition.getDocumentBaseURI());
       URI locationURI = URI.createURI(schemaLocation);
       return locationURI.resolve(baseLocationURI).toString();
-    }  
+    }
     return result;
   }
-  
+
   //TODO... push down to EMF
   private static URI createURI(String uriString)
   {
     if (hasProtocol(uriString))
-       return URI.createURI(uriString);
+      return URI.createURI(uriString);
     else
-       return URI.createFileURI(uriString);
+      return URI.createFileURI(uriString);
   }
 
   //TODO... push down to EMF  
   private static boolean hasProtocol(String uri)
   {
-    boolean result = false;     
+    boolean result = false;
     if (uri != null)
     {
       int index = uri.indexOf(":");
@@ -596,5 +602,5 @@ public class ImportImpl extends WSDLElementImpl implements Import
       }
     }
     return result;
-  }    
+  }
 } //ImportImpl

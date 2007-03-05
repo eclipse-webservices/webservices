@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.util;
 
+
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
@@ -20,6 +21,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
+
 
 /**
  * This class provides support for the loading of WSDL or XSD resource from
@@ -64,7 +66,7 @@ public class WSDLResourceFactoryRegistry implements Resource.Factory.Registry
     String uriString = uri.toString();
 
     Factory factory = parent.getFactory(uri);
-    Factory defaultFactory = (Factory) INSTANCE.getFactory(URI.createURI(DEFAULT_EXTENSION));
+    Factory defaultFactory = (Factory)INSTANCE.getFactory(URI.createURI(DEFAULT_EXTENSION));
 
     // give the parent the first crack at getting the factory
     // if the factory is null or the known 'default' factory then we'll
@@ -83,8 +85,9 @@ public class WSDLResourceFactoryRegistry implements Resource.Factory.Registry
         //        	
         factory = parent.getFactory(URI.createURI("*.xsd"));
       }
-      else //if (uri.fileExtension() == null)
-        {
+      else
+      //if (uri.fileExtension() == null)
+      {
         // handle cases like "http://xxx/example?getQuote"
         //              	
         // finally we must resort to opening the uri's stream and

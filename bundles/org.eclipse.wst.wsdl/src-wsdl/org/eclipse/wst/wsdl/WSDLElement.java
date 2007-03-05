@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import org.eclipse.emf.ecore.EObject;
 import org.w3c.dom.Element;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -36,32 +38,33 @@ import org.w3c.dom.Element;
  * @model abstract="true"
  * @generated
  */
-public interface WSDLElement extends EObject{
+public interface WSDLElement extends EObject
+{
   /**
    * Returns the value of the '<em><b>Documentation Element</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Documentation Element</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Documentation Element</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Documentation Element</em>' attribute.
    * @see #setDocumentationElement(Element)
    * @see org.eclipse.wsdl.WSDLPackage#getWSDLElement_DocumentationElement()
    * @model dataType="org.eclipse.wsdl.DOMElement"
    * @generated
    */
-	Element getDocumentationElement();
+  Element getDocumentationElement();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.WSDLElement#getDocumentationElement <em>Documentation Element</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Documentation Element</em>' attribute.
    * @see #getDocumentationElement()
    * @generated
    */
-	void setDocumentationElement(Element value);
+  void setDocumentationElement(Element value);
 
   /**
    * Returns the value of the '<em><b>Element</b></em>' attribute.
@@ -128,7 +131,7 @@ public interface WSDLElement extends EObject{
    * @see #getElement
    */
   void updateElement(boolean deep);
-  
+
   /**
    * Returns the value of the '<em><b>Container</b></em>' reference.
    * This represents the concrete container of this component, 
@@ -136,7 +139,7 @@ public interface WSDLElement extends EObject{
    * @return the value of the '<em>Container</em>' reference.
    */
   WSDLElement getContainer();
-  
+
   /**
    * Called to indicate that the given element has changed;
    * the element should typically be the same as the one returned {@link #getElement}.

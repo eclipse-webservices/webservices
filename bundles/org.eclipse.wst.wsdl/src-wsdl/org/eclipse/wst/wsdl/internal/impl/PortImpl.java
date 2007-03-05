@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -191,7 +192,7 @@ public class PortImpl extends ExtensibleElementImpl implements Port
    */
   public void setBinding(javax.wsdl.Binding binding)
   {
-    setEBinding((Binding) binding);
+    setEBinding((Binding)binding);
   }
 
   /**
@@ -206,9 +207,9 @@ public class PortImpl extends ExtensibleElementImpl implements Port
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.PORT__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -224,16 +225,17 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.PORT__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.PORT__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
+      return getEExtensibilityElements();
       case WSDLPackage.PORT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.PORT__EBINDING:
-        if (resolve) return getEBinding();
-        return basicGetEBinding();
+      if (resolve)
+        return getEBinding();
+      return basicGetEBinding();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -248,21 +250,21 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.PORT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.PORT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
+      getEExtensibilityElements().clear();
+      getEExtensibilityElements().addAll((Collection)newValue);
+      return;
       case WSDLPackage.PORT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.PORT__EBINDING:
-        setEBinding((Binding)newValue);
-        return;
+      setEBinding((Binding)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -277,20 +279,20 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.PORT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.PORT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
+      getEExtensibilityElements().clear();
+      return;
       case WSDLPackage.PORT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.PORT__EBINDING:
-        setEBinding((Binding)null);
-        return;
+      setEBinding((Binding)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -305,15 +307,16 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.PORT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.PORT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.PORT__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
+      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
       case WSDLPackage.PORT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.PORT__EBINDING:
-        return eBinding != null;
+      return eBinding != null;
     }
     return eDynamicIsSet(eFeature);
   }
@@ -325,7 +328,8 @@ public class PortImpl extends ExtensibleElementImpl implements Port
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
@@ -343,10 +347,10 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     setName(changedElement.getAttribute("name"));
     reconcileReferences(false);
   }
-  
+
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    super.handleUnreconciledElement(child,remainingModelObjects);
+    super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
   protected void handleReconciliation(Collection remainingModelObjects)
@@ -359,7 +363,7 @@ public class PortImpl extends ExtensibleElementImpl implements Port
 
   public Collection getModelObjects(Object component)
   {
-    Port port = (Port) component;
+    Port port = (Port)component;
     List list = new ArrayList();
     list.addAll(port.getEExtensibilityElements());
     return list;
@@ -412,8 +416,8 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     Iterator iterator = getExtensibilityElements().iterator();
     while (iterator.hasNext())
     {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+      Element child = ((ExtensibilityElementImpl)extensibilityElement).createElement();
       newElement.appendChild(child);
     }
     return newElement;
@@ -425,7 +429,7 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     {
       Definition definition = getEnclosingDefinition();
       QName bindingQName = createQName(definition, element.getAttribute(WSDLConstants.BINDING_ATTRIBUTE), element);
-      Binding newBinding = (bindingQName != null) ? (Binding) definition.getBinding(bindingQName) : null;
+      Binding newBinding = (bindingQName != null) ? (Binding)definition.getBinding(bindingQName) : null;
       if (newBinding != getEBinding())
       {
         setEBinding(newBinding);

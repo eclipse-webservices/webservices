@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -151,9 +152,9 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.NAMESPACE__URI:
-        return getURI();
+      return getURI();
       case WSDLPackage.NAMESPACE__PREFIX:
-        return getPrefix();
+      return getPrefix();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -168,11 +169,11 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.NAMESPACE__URI:
-        setURI((String)newValue);
-        return;
+      setURI((String)newValue);
+      return;
       case WSDLPackage.NAMESPACE__PREFIX:
-        setPrefix((String)newValue);
-        return;
+      setPrefix((String)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -187,11 +188,11 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.NAMESPACE__URI:
-        setURI(URI_EDEFAULT);
-        return;
+      setURI(URI_EDEFAULT);
+      return;
       case WSDLPackage.NAMESPACE__PREFIX:
-        setPrefix(PREFIX_EDEFAULT);
-        return;
+      setPrefix(PREFIX_EDEFAULT);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -206,9 +207,9 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.NAMESPACE__URI:
-        return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
+      return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
       case WSDLPackage.NAMESPACE__PREFIX:
-        return PREFIX_EDEFAULT == null ? prefix != null : !PREFIX_EDEFAULT.equals(prefix);
+      return PREFIX_EDEFAULT == null ? prefix != null : !PREFIX_EDEFAULT.equals(prefix);
     }
     return eDynamicIsSet(eFeature);
   }
@@ -220,7 +221,8 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (URI: ");

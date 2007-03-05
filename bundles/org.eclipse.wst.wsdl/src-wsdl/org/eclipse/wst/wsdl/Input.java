@@ -27,5 +27,6 @@ package org.eclipse.wst.wsdl;
  * @model 
  * @generated
  */
-public interface Input extends MessageReference, WSDLElement, javax.wsdl.Input{
+public interface Input extends MessageReference, WSDLElement, javax.wsdl.Input
+{
 } // Input

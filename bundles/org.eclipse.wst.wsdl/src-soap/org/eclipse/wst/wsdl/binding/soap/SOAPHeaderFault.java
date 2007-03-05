@@ -21,5 +21,6 @@ package org.eclipse.wst.wsdl.binding.soap;
  * @model 
  * @generated
  */
-public interface SOAPHeaderFault extends SOAPHeaderBase {
+public interface SOAPHeaderFault extends SOAPHeaderBase
+{
 } // SOAPHeaderFault

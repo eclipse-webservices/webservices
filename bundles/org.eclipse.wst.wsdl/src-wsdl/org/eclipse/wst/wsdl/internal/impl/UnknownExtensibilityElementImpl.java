@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -30,6 +31,7 @@ import org.eclipse.wst.wsdl.WSDLPackage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Unknown Extensibility Element</b></em>'.
@@ -45,276 +47,277 @@ import org.w3c.dom.Element;
  */
 public class UnknownExtensibilityElementImpl extends ExtensibilityElementImpl implements UnknownExtensibilityElement
 {
-    /**
-     * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getChildren()
-     * @generated
-     * @ordered
-     */
-    protected EList children = null;
+  /**
+   * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getChildren()
+   * @generated
+   * @ordered
+   */
+  protected EList children = null;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected UnknownExtensibilityElementImpl()
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected UnknownExtensibilityElementImpl()
+  {
+    super();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected EClass eStaticClass()
+  {
+    return WSDLPackage.eINSTANCE.getUnknownExtensibilityElement();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList getChildren()
+  {
+    if (children == null)
     {
-        super();
+      children = new EObjectContainmentEList(UnknownExtensibilityElement.class, this, WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN);
     }
+    return children;
+  }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected EClass eStaticClass()
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  {
+    if (featureID >= 0)
     {
-        return WSDLPackage.eINSTANCE.getUnknownExtensibilityElement();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EList getChildren()
-    {
-        if (children == null)
-        {
-            children = new EObjectContainmentEList(UnknownExtensibilityElement.class, this, WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN);
-        }
-        return children;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
-    {
-        if (featureID >= 0)
-        {
-            switch (eDerivedStructuralFeatureID(featureID, baseClass))
-            {
-            case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-                return ((InternalEList) getChildren()).basicRemove(otherEnd, msgs);
-            default:
-                return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-            }
-        }
-        return eBasicSetContainer(null, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public Object eGet(EStructuralFeature eFeature, boolean resolve)
-    {
-        switch (eDerivedStructuralFeatureID(eFeature))
-        {
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-            return getDocumentationElement();
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
-            return getElement();
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
-            return isRequired() ? Boolean.TRUE : Boolean.FALSE;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-            return getElementType();
+      switch (eDerivedStructuralFeatureID(featureID, baseClass))
+      {
         case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-            return getChildren();
-        }
-        return eDynamicGet(eFeature, resolve);
+        return ((InternalEList)getChildren()).basicRemove(otherEnd, msgs);
+        default:
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+      }
     }
+    return eBasicSetContainer(null, featureID, msgs);
+  }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void eSet(EStructuralFeature eFeature, Object newValue)
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  {
+    switch (eDerivedStructuralFeatureID(eFeature))
     {
-        switch (eDerivedStructuralFeatureID(eFeature))
-        {
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-            setDocumentationElement((Element) newValue);
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
-            setElement((Element) newValue);
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
-            setRequired(((Boolean) newValue).booleanValue());
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-            setElementType((QName) newValue);
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-            getChildren().clear();
-            getChildren().addAll((Collection) newValue);
-            return;
-        }
-        eDynamicSet(eFeature, newValue);
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
+      return getDocumentationElement();
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
+      return getElement();
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
+      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
+      return getElementType();
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
+      return getChildren();
     }
+    return eDynamicGet(eFeature, resolve);
+  }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void eUnset(EStructuralFeature eFeature)
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eSet(EStructuralFeature eFeature, Object newValue)
+  {
+    switch (eDerivedStructuralFeatureID(eFeature))
     {
-        switch (eDerivedStructuralFeatureID(eFeature))
-        {
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-            setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
-            setElement(ELEMENT_EDEFAULT);
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
-            setRequired(REQUIRED_EDEFAULT);
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-            setElementType(ELEMENT_TYPE_EDEFAULT);
-            return;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-            getChildren().clear();
-            return;
-        }
-        eDynamicUnset(eFeature);
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
+      setDocumentationElement((Element)newValue);
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
+      setElement((Element)newValue);
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
+      setRequired(((Boolean)newValue).booleanValue());
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
+      setElementType((QName)newValue);
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
+      getChildren().clear();
+      getChildren().addAll((Collection)newValue);
+      return;
     }
+    eDynamicSet(eFeature, newValue);
+  }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public boolean eIsSet(EStructuralFeature eFeature)
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eUnset(EStructuralFeature eFeature)
+  {
+    switch (eDerivedStructuralFeatureID(eFeature))
     {
-        switch (eDerivedStructuralFeatureID(eFeature))
-        {
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-            return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
-            return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
-            return required != REQUIRED_EDEFAULT;
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-            return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
-            return children != null && !children.isEmpty();
-        }
-        return eDynamicIsSet(eFeature);
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
+      setElement(ELEMENT_EDEFAULT);
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
+      setRequired(REQUIRED_EDEFAULT);
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
+      setElementType(ELEMENT_TYPE_EDEFAULT);
+      return;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
+      getChildren().clear();
+      return;
     }
+    eDynamicUnset(eFeature);
+  }
 
-    // 
-    // Reconcile methods
-    //
-
-    public void setElement(Element element)
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean eIsSet(EStructuralFeature eFeature)
+  {
+    switch (eDerivedStructuralFeatureID(eFeature))
     {
-        if (element == null && !isReconciling)
-        {
-            //System.out.println("ExtensibilityElement.setElement(): Preserving old element");
-        } 
-        else
-        {
-            setElementGen(element);
-        }
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT:
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__REQUIRED:
+      return required != REQUIRED_EDEFAULT;
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
+      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN:
+      return children != null && !children.isEmpty();
     }
+    return eDynamicIsSet(eFeature);
+  }
 
-    public void reconcileAttributes(Element changedElement)
+  // 
+  // Reconcile methods
+  //
+
+  public void setElement(Element element)
+  {
+    if (element == null && !isReconciling)
     {
-        //System.out.println("UnknownExtensibilityElementImpl.reconcileAttributes()");
+      //System.out.println("ExtensibilityElement.setElement(): Preserving old element");
     }
-
-    public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
+    else
     {
-        //System.out.println("UnknownExtensibilityElementImpl.handleUnreconciledElement()");
-        UnknownExtensibilityElement extensibilityElement = WSDLFactory.eINSTANCE.createUnknownExtensibilityElement();
-        extensibilityElement.setEnclosingDefinition(getEnclosingDefinition());
-        extensibilityElement.setElement(child);
-        
-        // TODO..  we need to figure out where the child should go in the in current list
-        // so that it doesn't always end up going to the end of the list 
-        // (since a new element might be added at the start)
-        getChildren().add(extensibilityElement);         
+      setElementGen(element);
     }
+  }
 
-    protected void handleReconciliation(Collection remainingModelObjects)
+  public void reconcileAttributes(Element changedElement)
+  {
+    //System.out.println("UnknownExtensibilityElementImpl.reconcileAttributes()");
+  }
+
+  public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
+  {
+    //System.out.println("UnknownExtensibilityElementImpl.handleUnreconciledElement()");
+    UnknownExtensibilityElement extensibilityElement = WSDLFactory.eINSTANCE.createUnknownExtensibilityElement();
+    extensibilityElement.setEnclosingDefinition(getEnclosingDefinition());
+    extensibilityElement.setElement(child);
+
+    // TODO..  we need to figure out where the child should go in the in current list
+    // so that it doesn't always end up going to the end of the list 
+    // (since a new element might be added at the start)
+    getChildren().add(extensibilityElement);
+  }
+
+  protected void handleReconciliation(Collection remainingModelObjects)
+  {
+    for (Iterator i = remainingModelObjects.iterator(); i.hasNext();)
     {
-        for (Iterator i = remainingModelObjects.iterator(); i.hasNext();)
-        {
-            remove(this, i.next());
-        }
+      remove(this, i.next());
     }
+  }
 
-    protected void remove(Object component, Object modelObject)
+  protected void remove(Object component, Object modelObject)
+  {
+    UnknownExtensibilityElement uee = (UnknownExtensibilityElement)component;
+    if (modelObject instanceof UnknownExtensibilityElement)
     {
-        UnknownExtensibilityElement uee = (UnknownExtensibilityElement) component;
-        if (modelObject instanceof UnknownExtensibilityElement)
-        {
-            uee.getChildren().remove(modelObject);
-        }
+      uee.getChildren().remove(modelObject);
     }
+  }
 
-    public Element createElement()
+  public Element createElement()
+  {
+    Definition definition = getEnclosingDefinition();
+    if (definition == null)
+      return null;
+
+    Document document = definition.getDocument();
+    if (document == null)
+      document = ((DefinitionImpl)definition).updateDocument();
+
+    Element newElement = null;
+    if (element != null) // This is an old element.
     {
-        Definition definition = getEnclosingDefinition();
-        if (definition == null)
-            return null;
-
-        Document document = definition.getDocument();
-        if (document == null)
-            document = ((DefinitionImpl) definition).updateDocument();
-
-        Element newElement = null;
-        if (element != null) // This is an old element.
-        {
-            newElement = (Element) document.importNode(element, true);
-            element = newElement;
-        } 
-        else
-        {
-            String namespace = getElementType().getNamespaceURI();
-            String qualifier = definition.getPrefix(namespace);
-            newElement = document.createElementNS(namespace, (qualifier == null ? "" : qualifier + ":") + getElementType().getLocalPart());
-            element = newElement;
-        }
-
-        return newElement;
+      newElement = (Element)document.importNode(element, true);
+      element = newElement;
     }
-
-    private java.util.Map properties = new java.util.HashMap();
-
-    public void setAttribute(String key, String value)
+    else
     {
-        properties.put(key, value);
+      String namespace = getElementType().getNamespaceURI();
+      String qualifier = definition.getPrefix(namespace);
+      newElement = document.createElementNS(namespace, (qualifier == null ? "" : qualifier + ":") + getElementType().getLocalPart());
+      element = newElement;
     }
 
-    protected void changeAttribute(EAttribute eAttribute)
+    return newElement;
+  }
+
+  private java.util.Map properties = new java.util.HashMap();
+
+  public void setAttribute(String key, String value)
+  {
+    properties.put(key, value);
+  }
+
+  protected void changeAttribute(EAttribute eAttribute)
+  {
+    if (isReconciling)
+      return;
+
+    super.changeAttribute(eAttribute);
+    Element theElement = getElement();
+    if (theElement != null)
     {
-        if (isReconciling)
-            return;
-
-        super.changeAttribute(eAttribute);
-        Element theElement = getElement();
-        if (theElement != null)
-        {
-            Iterator iterator = properties.entrySet().iterator();
-            java.util.Map.Entry entry = null;
-            while (iterator.hasNext())
-            {
-                entry = (java.util.Map.Entry) iterator.next();
-                String attribute = (String) entry.getKey();
-                String value = (String) entry.getValue();
-                niceSetAttribute(theElement, attribute, value);
-            }
-        }
+      Iterator iterator = properties.entrySet().iterator();
+      java.util.Map.Entry entry = null;
+      while (iterator.hasNext())
+      {
+        entry = (java.util.Map.Entry)iterator.next();
+        String attribute = (String)entry.getKey();
+        String value = (String)entry.getValue();
+        niceSetAttribute(theElement, attribute, value);
+      }
     }
+  }
 } //UnknownExtensibilityElementImpl

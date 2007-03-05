@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.wst.wsdl.Fault;
@@ -74,7 +75,7 @@ public class FaultImpl extends MessageReferenceImpl implements Fault
    */
   public void setMessage(javax.wsdl.Message message)
   {
-    setEMessage((Message) message);
+    setEMessage((Message)message);
   }
 
   /**
@@ -87,14 +88,15 @@ public class FaultImpl extends MessageReferenceImpl implements Fault
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.FAULT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.FAULT__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.FAULT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.FAULT__EMESSAGE:
-        if (resolve) return getEMessage();
-        return basicGetEMessage();
+      if (resolve)
+        return getEMessage();
+      return basicGetEMessage();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -109,17 +111,17 @@ public class FaultImpl extends MessageReferenceImpl implements Fault
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.FAULT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.FAULT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.FAULT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.FAULT__EMESSAGE:
-        setEMessage((org.eclipse.wst.wsdl.Message)newValue);
-        return;
+      setEMessage((org.eclipse.wst.wsdl.Message)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -134,17 +136,17 @@ public class FaultImpl extends MessageReferenceImpl implements Fault
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.FAULT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.FAULT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.FAULT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.FAULT__EMESSAGE:
-        setEMessage((org.eclipse.wst.wsdl.Message)null);
-        return;
+      setEMessage((org.eclipse.wst.wsdl.Message)null);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -159,13 +161,14 @@ public class FaultImpl extends MessageReferenceImpl implements Fault
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.FAULT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.FAULT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.FAULT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.FAULT__EMESSAGE:
-        return eMessage != null;
+      return eMessage != null;
     }
     return eDynamicIsSet(eFeature);
   }

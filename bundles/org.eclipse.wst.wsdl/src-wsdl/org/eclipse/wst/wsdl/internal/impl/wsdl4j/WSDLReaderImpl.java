@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl.wsdl4j;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -32,39 +33,39 @@ import org.xml.sax.InputSource;
 public final class WSDLReaderImpl implements WSDLReader
 {
   private String factoryImplName;
+
   private ExtensionRegistry extReg;
-  
+
   public ExtensionRegistry getExtensionRegistry()
   {
     return extReg;
   }
-  
+
   public void setExtensionRegistry(ExtensionRegistry extReg)
   {
     this.extReg = extReg;
   }
-  
+
   public String getFactoryImplName()
   {
     return factoryImplName;
   }
-  
+
   public void setFactoryImplName(String factoryImplName) throws UnsupportedOperationException
   {
     this.factoryImplName = factoryImplName;
   }
 
-  
   public boolean getFeature(String name) throws IllegalArgumentException
-  { 
+  {
     return false;
   }
-  
+
   public void setFeature(String name, boolean value) throws IllegalArgumentException
   {
     throw new IllegalArgumentException("Not Implemented");
   }
-  
+
   /**
    * Read the WSDL document accessible via the specified
    * URI into a WSDL definition.
@@ -75,20 +76,20 @@ public final class WSDLReaderImpl implements WSDLReader
    */
   public Definition readWSDL(String wsdlURI) throws WSDLException
   {
-    URI uri;    
+    URI uri;
     if (hasProtocol(wsdlURI))
-       uri = URI.createURI(wsdlURI);
+      uri = URI.createURI(wsdlURI);
     else
-       uri = URI.createFileURI(wsdlURI);
-  
-    // Create a resource set, create a wsdl resource, and load the main wsdl file into it.
-    
-  	ResourceSet resourceSet = new ResourceSetImpl();  	
-  	resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
+      uri = URI.createFileURI(wsdlURI);
 
-  	WSDLResourceImpl wsdlMainResource = (WSDLResourceImpl)resourceSet.createResource(URI.createURI("*.wsdl"));
-  	wsdlMainResource.setURI(uri);
-  	
+    // Create a resource set, create a wsdl resource, and load the main wsdl file into it.
+
+    ResourceSet resourceSet = new ResourceSetImpl();
+    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
+
+    WSDLResourceImpl wsdlMainResource = (WSDLResourceImpl)resourceSet.createResource(URI.createURI("*.wsdl"));
+    wsdlMainResource.setURI(uri);
+
     try
     {
       InputStream inputStream = resourceSet.getURIConverter().createInputStream(uri);
@@ -97,27 +98,27 @@ public final class WSDLReaderImpl implements WSDLReader
     }
     catch (IOException e)
     {
-      throw new WSDLException(WSDLException.INVALID_WSDL,"WSDL URI: "+wsdlURI,e);
+      throw new WSDLException(WSDLException.INVALID_WSDL, "WSDL URI: " + wsdlURI, e);
     }
-    
+
     // Return the definitions of the main resource.
     return wsdlMainResource.getDefinition();
   }
 
   private boolean hasProtocol(String uri)
   {
-		boolean result = false;     
-		if (uri != null)
-		{
-		  int index = uri.indexOf(":");
-		  if (index != -1 && index > 2) // assume protocol with be length 3 so that the'C' in 'C:/' is not interpreted as a protocol
-		  {
-				result = true;
-		  }
-		}
-		return result;
-  } 
-  
+    boolean result = false;
+    if (uri != null)
+    {
+      int index = uri.indexOf(":");
+      if (index != -1 && index > 2) // assume protocol with be length 3 so that the'C' in 'C:/' is not interpreted as a protocol
+      {
+        result = true;
+      }
+    }
+    return result;
+  }
+
   /**
    * Read the WSDL document accessible via the specified
    * URI into a WSDL definition.
@@ -131,7 +132,7 @@ public final class WSDLReaderImpl implements WSDLReader
    */
   public Definition readWSDL(String contextURI, String wsdlURI) throws WSDLException
   {
-    throw new WSDLException(WSDLException.OTHER_ERROR,"Not Implemented");
+    throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
   }
 
   /**
@@ -145,10 +146,9 @@ public final class WSDLReaderImpl implements WSDLReader
    * @param definitionsElement the &lt;wsdl:definitions&gt; element
    * @return the definition described by the element.
    */
-  public Definition readWSDL(String documentBaseURI, Element definitionsElement)
-    throws WSDLException
+  public Definition readWSDL(String documentBaseURI, Element definitionsElement) throws WSDLException
   {
-    throw new WSDLException(WSDLException.OTHER_ERROR,"Not Implemented");
+    throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
   }
 
   /**
@@ -162,10 +162,9 @@ public final class WSDLReaderImpl implements WSDLReader
    * document obeying the WSDL schema.
    * @return the definition described in the document.
    */
-  public Definition readWSDL(String documentBaseURI, Document wsdlDocument)
-    throws WSDLException
+  public Definition readWSDL(String documentBaseURI, Document wsdlDocument) throws WSDLException
   {
-    throw new WSDLException(WSDLException.OTHER_ERROR,"Not Implemented");
+    throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
   }
 
   /**
@@ -180,29 +179,28 @@ public final class WSDLReaderImpl implements WSDLReader
    * @return the definition described in the document pointed to
    * by the InputSource.
    */
-  public Definition readWSDL(String documentBaseURI, InputSource inputSource)
-    throws WSDLException
+  public Definition readWSDL(String documentBaseURI, InputSource inputSource) throws WSDLException
   {
-  	ResourceSet resourceSet = new ResourceSetImpl();
-  	resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
+    ResourceSet resourceSet = new ResourceSetImpl();
+    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
     WSDLResourceImpl wsdlMainResource = (WSDLResourceImpl)resourceSet.createResource(URI.createURI("*.wsdl"));
 
-  	try
+    try
     {
       if (documentBaseURI != null)
         wsdlMainResource.setURI(createURI(documentBaseURI));
-      resourceSet.getLoadOptions().put(WSDLResourceImpl.CONTINUE_ON_LOAD_ERROR,new Boolean(false));
+      resourceSet.getLoadOptions().put(WSDLResourceImpl.CONTINUE_ON_LOAD_ERROR, new Boolean(false));
       wsdlMainResource.load(inputSource.getByteStream(), resourceSet.getLoadOptions());
     }
     catch (IOException ioe)
     {
       throw new WSDLException(WSDLException.INVALID_WSDL, "", ioe);
     }
-    
+
     Definition definition = wsdlMainResource.getDefinition();
     if (definition != null)
       definition.setDocumentBaseURI(documentBaseURI);
-    
+
     return definition;
   }
 
@@ -215,15 +213,15 @@ public final class WSDLReaderImpl implements WSDLReader
    */
   public Definition readWSDL(WSDLLocator locator) throws WSDLException
   {
-    throw new WSDLException(WSDLException.OTHER_ERROR,"Not Implemented");
+    throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
   }
 
   private URI createURI(String uriString)
   {
     if (hasProtocol(uriString))
-       return URI.createURI(uriString);
+      return URI.createURI(uriString);
     else
-       return URI.createFileURI(uriString);
-  } 
+      return URI.createFileURI(uriString);
+  }
 
 }

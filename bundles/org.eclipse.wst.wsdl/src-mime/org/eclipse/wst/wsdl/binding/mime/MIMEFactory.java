@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime;
 
+
 import org.eclipse.emf.ecore.EFactory;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -20,58 +22,59 @@ import org.eclipse.emf.ecore.EFactory;
  * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage
  * @generated
  */
-public interface MIMEFactory extends EFactory {
-	/**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	MIMEFactory eINSTANCE = new org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEFactoryImpl();
+public interface MIMEFactory extends EFactory
+{
+  /**
+   * The singleton instance of the factory.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  MIMEFactory eINSTANCE = new org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEFactoryImpl();
 
-	/**
-	 * Returns a new object of class '<em>Content</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Content</em>'.
-	 * @generated
-	 */
-	MIMEContent createMIMEContent();
+  /**
+   * Returns a new object of class '<em>Content</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Content</em>'.
+   * @generated
+   */
+  MIMEContent createMIMEContent();
 
-	/**
-	 * Returns a new object of class '<em>Part</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Part</em>'.
-	 * @generated
-	 */
-	MIMEPart createMIMEPart();
+  /**
+   * Returns a new object of class '<em>Part</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Part</em>'.
+   * @generated
+   */
+  MIMEPart createMIMEPart();
 
-	/**
-	 * Returns a new object of class '<em>Multipart Related</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Multipart Related</em>'.
-	 * @generated
-	 */
-	MIMEMultipartRelated createMIMEMultipartRelated();
+  /**
+   * Returns a new object of class '<em>Multipart Related</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Multipart Related</em>'.
+   * @generated
+   */
+  MIMEMultipartRelated createMIMEMultipartRelated();
 
-	/**
-	 * Returns a new object of class '<em>Mime Xml</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Mime Xml</em>'.
-	 * @generated
-	 */
-	MIMEMimeXml createMIMEMimeXml();
+  /**
+   * Returns a new object of class '<em>Mime Xml</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Mime Xml</em>'.
+   * @generated
+   */
+  MIMEMimeXml createMIMEMimeXml();
 
-	/**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
-	MIMEPackage getMIMEPackage();
+  /**
+   * Returns the package supported by this factory.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the package supported by this factory.
+   * @generated
+   */
+  MIMEPackage getMIMEPackage();
 
 } //MIMEFactory

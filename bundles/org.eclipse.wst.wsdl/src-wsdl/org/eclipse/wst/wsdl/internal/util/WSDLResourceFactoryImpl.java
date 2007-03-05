@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.util;
 
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
+
 
 /**
  * <!-- begin-user-doc -->

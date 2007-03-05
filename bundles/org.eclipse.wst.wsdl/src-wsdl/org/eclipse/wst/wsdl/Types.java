@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import java.util.List;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +30,8 @@ import java.util.List;
  * @model 
  * @generated
  */
-public interface Types extends ExtensibleElement, javax.wsdl.Types{
+public interface Types extends ExtensibleElement, javax.wsdl.Types
+{
   /**
    * <!-- begin-user-doc -->
    * Returns a List of inline XSDSchema instances in this Types. 

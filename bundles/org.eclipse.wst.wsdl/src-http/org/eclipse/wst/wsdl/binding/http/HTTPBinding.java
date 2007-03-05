@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.http;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -28,31 +30,32 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * @model 
  * @generated
  */
-public interface HTTPBinding extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPBinding {
-	/**
-	 * Returns the value of the '<em><b>Verb</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Verb</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Verb</em>' attribute.
-	 * @see #setVerb(String)
-	 * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPBinding_Verb()
-	 * @model 
-	 * @generated
-	 */
-	String getVerb();
+public interface HTTPBinding extends ExtensibilityElement, javax.wsdl.extensions.http.HTTPBinding
+{
+  /**
+   * Returns the value of the '<em><b>Verb</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Verb</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Verb</em>' attribute.
+   * @see #setVerb(String)
+   * @see org.eclipse.wst.wsdl.binding.http.HTTPPackage#getHTTPBinding_Verb()
+   * @model 
+   * @generated
+   */
+  String getVerb();
 
-	/**
-	 * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.http.HTTPBinding#getVerb <em>Verb</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Verb</em>' attribute.
-	 * @see #getVerb()
-	 * @generated
-	 */
-	void setVerb(String value);
+  /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.http.HTTPBinding#getVerb <em>Verb</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Verb</em>' attribute.
+   * @see #getVerb()
+   * @generated
+   */
+  void setVerb(String value);
 
 } // HTTPBinding

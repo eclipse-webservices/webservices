@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -368,7 +369,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     Iterator opBindingIterator = getBindingOperations().iterator();
     while (opBindingIterator.hasNext())
     {
-      javax.wsdl.BindingOperation op = (javax.wsdl.BindingOperation) opBindingIterator.next();
+      javax.wsdl.BindingOperation op = (javax.wsdl.BindingOperation)opBindingIterator.next();
       if (op == null)
         continue;
 
@@ -443,7 +444,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
    */
   public void setPortType(javax.wsdl.PortType portType)
   {
-    setEPortType((PortType) portType);
+    setEPortType((PortType)portType);
   }
 
   /**
@@ -458,11 +459,11 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.BINDING__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
         case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-          return ((InternalEList)getEBindingOperations()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEBindingOperations()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -478,24 +479,25 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.BINDING__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.BINDING__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
+      return getEExtensibilityElements();
       case WSDLPackage.BINDING__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.BINDING__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.BINDING__PROXY:
-        return isProxy() ? Boolean.TRUE : Boolean.FALSE;
+      return isProxy() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.BINDING__RESOURCE_URI:
-        return getResourceURI();
+      return getResourceURI();
       case WSDLPackage.BINDING__EPORT_TYPE:
-        if (resolve) return getEPortType();
-        return basicGetEPortType();
+      if (resolve)
+        return getEPortType();
+      return basicGetEPortType();
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        return getEBindingOperations();
+      return getEBindingOperations();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -510,34 +512,34 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.BINDING__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.BINDING__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
+      getEExtensibilityElements().clear();
+      getEExtensibilityElements().addAll((Collection)newValue);
+      return;
       case WSDLPackage.BINDING__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.BINDING__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.BINDING__PROXY:
-        setProxy(((Boolean)newValue).booleanValue());
-        return;
+      setProxy(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.BINDING__RESOURCE_URI:
-        setResourceURI((String)newValue);
-        return;
+      setResourceURI((String)newValue);
+      return;
       case WSDLPackage.BINDING__EPORT_TYPE:
-        setEPortType((PortType)newValue);
-        return;
+      setEPortType((PortType)newValue);
+      return;
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        getEBindingOperations().clear();
-        getEBindingOperations().addAll((Collection)newValue);
-        return;
+      getEBindingOperations().clear();
+      getEBindingOperations().addAll((Collection)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -552,32 +554,32 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
+      getEExtensibilityElements().clear();
+      return;
       case WSDLPackage.BINDING__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__PROXY:
-        setProxy(PROXY_EDEFAULT);
-        return;
+      setProxy(PROXY_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__RESOURCE_URI:
-        setResourceURI(RESOURCE_URI_EDEFAULT);
-        return;
+      setResourceURI(RESOURCE_URI_EDEFAULT);
+      return;
       case WSDLPackage.BINDING__EPORT_TYPE:
-        setEPortType((PortType)null);
-        return;
+      setEPortType((PortType)null);
+      return;
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        getEBindingOperations().clear();
-        return;
+      getEBindingOperations().clear();
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -592,23 +594,24 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.BINDING__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.BINDING__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.BINDING__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
+      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
       case WSDLPackage.BINDING__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.BINDING__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.BINDING__PROXY:
-        return proxy != PROXY_EDEFAULT;
+      return proxy != PROXY_EDEFAULT;
       case WSDLPackage.BINDING__RESOURCE_URI:
-        return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
+      return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
       case WSDLPackage.BINDING__EPORT_TYPE:
-        return ePortType != null;
+      return ePortType != null;
       case WSDLPackage.BINDING__EBINDING_OPERATIONS:
-        return eBindingOperations != null && !eBindingOperations.isEmpty();
+      return eBindingOperations != null && !eBindingOperations.isEmpty();
     }
     return eDynamicIsSet(eFeature);
   }
@@ -620,7 +623,8 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (qName: ");
@@ -650,7 +654,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
 
   public Collection getModelObjects(Object component)
   {
-    Binding binding = (Binding) component;
+    Binding binding = (Binding)component;
 
     List list = new ArrayList();
     list.addAll(binding.getEBindingOperations());
@@ -662,14 +666,14 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
   {
     switch (WSDLUtil.getInstance().getWSDLType(child))
     {
-      case WSDLConstants.OPERATION :
-        BindingOperation operation = WSDLFactory.eINSTANCE.createBindingOperation();
-        operation.setEnclosingDefinition(getEnclosingDefinition());
-        operation.setElement(child);
-        addBindingOperation(operation);
+      case WSDLConstants.OPERATION:
+      BindingOperation operation = WSDLFactory.eINSTANCE.createBindingOperation();
+      operation.setEnclosingDefinition(getEnclosingDefinition());
+      operation.setElement(child);
+      addBindingOperation(operation);
         break;
-      default :
-        super.handleUnreconciledElement(child,remainingModelObjects);
+      default:
+      super.handleUnreconciledElement(child, remainingModelObjects);
         break;
     }
   }
@@ -694,7 +698,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
   private List getList(Object component, Object modelObject)
   {
     List result = null;
-    Binding binding = (Binding) component;
+    Binding binding = (Binding)component;
     if (modelObject instanceof BindingOperation)
     {
       result = binding.getEBindingOperations();
@@ -749,20 +753,20 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
   {
     Element newElement = createElement(WSDLConstants.BINDING);
     setElement(newElement);
-	
-	Iterator iterator = getExtensibilityElements().iterator();
+
+    Iterator iterator = getExtensibilityElements().iterator();
     while (iterator.hasNext())
     {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+      Element child = ((ExtensibilityElementImpl)extensibilityElement).createElement();
       newElement.appendChild(child);
     }
-	
+
     iterator = getEBindingOperations().iterator();
     while (iterator.hasNext())
     {
-      BindingOperation operation = (BindingOperation) iterator.next();
-      Element child = ((BindingOperationImpl) operation).createElement();
+      BindingOperation operation = (BindingOperation)iterator.next();
+      Element child = ((BindingOperationImpl)operation).createElement();
       newElement.appendChild(child);
     }
 
@@ -773,9 +777,9 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
   {
     if (element != null)
     {
-      Definition definition = (Definition) getEnclosingDefinition();
+      Definition definition = (Definition)getEnclosingDefinition();
       QName portTypeQName = createQName(definition, element.getAttribute(WSDLConstants.TYPE_ATTRIBUTE), element);
-      PortType newPortType = portTypeQName != null ? (PortType) definition.getPortType(portTypeQName) : null;
+      PortType newPortType = portTypeQName != null ? (PortType)definition.getPortType(portTypeQName) : null;
       if (newPortType != getEPortType())
       {
         setEPortType(newPortType);

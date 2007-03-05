@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 
 //import com.ibm.wsdl.factory.WSDLFactoryImpl;
 
@@ -83,7 +85,7 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     List arrayList = new ArrayList();
     for (Iterator i = getEExtensibilityElements().iterator(); i.hasNext();)
     {
-      XSDSchemaExtensibilityElement xsdee = (XSDSchemaExtensibilityElement) i.next();
+      XSDSchemaExtensibilityElement xsdee = (XSDSchemaExtensibilityElement)i.next();
       if (xsdee.getSchema() != null)
       {
         arrayList.add(xsdee.getSchema());
@@ -102,11 +104,13 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     List schemas = new ArrayList();
     for (Iterator i = getSchemas().iterator(); i.hasNext();)
     {
-      XSDSchema schema = (XSDSchema) i.next();
-      if (namespaceURI == null && schema.getTargetNamespace() == null) {
-    	  schemas.add(schema);
+      XSDSchema schema = (XSDSchema)i.next();
+      if (namespaceURI == null && schema.getTargetNamespace() == null)
+      {
+        schemas.add(schema);
       }
-      else if (namespaceURI != null && namespaceURI.equals(schema.getTargetNamespace())) {
+      else if (namespaceURI != null && namespaceURI.equals(schema.getTargetNamespace()))
+      {
         schemas.add(schema);
       }
     }
@@ -125,9 +129,9 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.TYPES__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -143,11 +147,11 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.TYPES__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.TYPES__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.TYPES__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
+      return getEExtensibilityElements();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -162,15 +166,15 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.TYPES__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.TYPES__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.TYPES__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
+      getEExtensibilityElements().clear();
+      getEExtensibilityElements().addAll((Collection)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -185,14 +189,14 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.TYPES__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.TYPES__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.TYPES__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
+      getEExtensibilityElements().clear();
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -207,35 +211,35 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.TYPES__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.TYPES__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.TYPES__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
+      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
     }
     return eDynamicIsSet(eFeature);
   }
-  
+
   public void eNotify(Notification msg)
   {
     super.eNotify(msg);
-    
+
     // cs.. if we've added an XSDSchemaExtensibilityElementImpl and the Types object is already attached 
     // to a resource we need to set the schemaLocation for the inline schema.
     // If not yet attached to a resource, the schemaLocation's will be set via WSDLResourceImpl.attached(EObject o)
     //     
-    if (msg.getFeature() == WSDLPackage.eINSTANCE.getExtensibleElement_EExtensibilityElements() &&
-        msg.getEventType() == Notification.ADD)
+    if (msg.getFeature() == WSDLPackage.eINSTANCE.getExtensibleElement_EExtensibilityElements() && msg.getEventType() == Notification.ADD)
     {
       if (msg.getNewValue() instanceof XSDSchemaExtensibilityElementImpl)
       {
         XSDSchemaExtensibilityElementImpl ee = (XSDSchemaExtensibilityElementImpl)msg.getNewValue();
         if (ee.getSchema() != null && ee.getSchema().eResource() != null)
         {
-           ee.getSchema().setSchemaLocation(ee.getSchema().eResource().getURI().toString());
-        }  
-      }  
-    }  
+          ee.getSchema().setSchemaLocation(ee.getSchema().eResource().getURI().toString());
+        }
+      }
+    }
   }
 
   //
@@ -255,7 +259,7 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
         XSDSchemaExtensibilityElement xsdee = WSDLFactory.eINSTANCE.createXSDSchemaExtensibilityElement();
         xsdee.setEnclosingDefinition(getEnclosingDefinition());
         xsdee.setElement(child); // cs : this has the side effect of creating the inline schema               
-        addExtensibilityElement(xsdee);       
+        addExtensibilityElement(xsdee);
       }
       catch (Exception e)
       {
@@ -275,14 +279,14 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
 
   protected void remove(Object component, Object modelObject)
   {
-    Types types = (Types) component;
+    Types types = (Types)component;
     List list = types.getEExtensibilityElements();
     list.remove(modelObject);
   }
 
   public Collection getModelObjects(Object component)
   {
-    Types types = (Types) component;
+    Types types = (Types)component;
     List list = new ArrayList();
     list.addAll(types.getEExtensibilityElements());
     return list;
@@ -300,19 +304,19 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
 
     Document document = definition.getDocument();
     if (document == null)
-      document = ((DefinitionImpl) definition).updateDocument();
+      document = ((DefinitionImpl)definition).updateDocument();
 
     Iterator iter = getEExtensibilityElements().iterator();
     Element el = null;
     while (iter.hasNext())
     {
-      ExtensibilityElement extensibility = (ExtensibilityElement) iter.next();
+      ExtensibilityElement extensibility = (ExtensibilityElement)iter.next();
       el = extensibility.getElement();
       if (el != null)
       {
         try
         {
-          Element reParented = (Element) document.importNode(el, true);
+          Element reParented = (Element)document.importNode(el, true);
           extensibility.setElement(reParented); // replace with the new one
           newElement.appendChild(reParented);
         }
@@ -324,8 +328,8 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
       }
       else
       {
-      	Element child = ((ExtensibilityElementImpl)extensibility).createElement();
-      	newElement.appendChild(child);
+        Element child = ((ExtensibilityElementImpl)extensibility).createElement();
+        newElement.appendChild(child);
       }
     }
 

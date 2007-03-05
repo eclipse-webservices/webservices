@@ -34,58 +34,59 @@ package org.eclipse.wst.wsdl;
  * @model 
  * @generated
  */
-public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutput{
+public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutput
+{
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see org.eclipse.wsdl.WSDLPackage#getBindingOutput_Name()
    * @model 
    * @generated
    */
-	String getName();
+  String getName();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.BindingOutput#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
    * @see #getName()
    * @generated
    */
-	void setName(String value);
+  void setName(String value);
 
   /**
    * Returns the value of the '<em><b>EOutput</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EOutput</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EOutput</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EOutput</em>' reference.
    * @see #setEOutput(Output)
    * @see org.eclipse.wsdl.WSDLPackage#getBindingOutput_EOutput()
    * @model required="true"
    * @generated
    */
-	Output getEOutput();
+  Output getEOutput();
 
   /**
    * Sets the value of the '{@link org.eclipse.wsdl.BindingOutput#getEOutput <em>EOutput</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>EOutput</em>' reference.
    * @see #getEOutput()
    * @generated
    */
-	void setEOutput(Output value);
+  void setEOutput(Output value);
 
   /**
    * <!-- begin-user-doc -->
@@ -97,7 +98,7 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * @model parameters=""
    * @generated
    */
-	javax.wsdl.Output getOutput();
+  javax.wsdl.Output getOutput();
 
   /**
    * <!-- begin-user-doc -->
@@ -109,6 +110,6 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * @model 
    * @generated
    */
-	void setOutput(javax.wsdl.Output output);
+  void setOutput(javax.wsdl.Output output);
 
 } // BindingOutput

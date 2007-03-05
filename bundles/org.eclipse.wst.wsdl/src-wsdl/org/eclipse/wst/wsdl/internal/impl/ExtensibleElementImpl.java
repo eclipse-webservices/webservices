@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.util.Collection;
 import java.util.List;
 
@@ -82,7 +83,10 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
   {
     if (eExtensibilityElements == null)
     {
-      eExtensibilityElements = new EObjectContainmentEList(ExtensibilityElement.class, this, WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS);
+      eExtensibilityElements = new EObjectContainmentEList(
+        ExtensibilityElement.class,
+        this,
+        WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS);
     }
     return eExtensibilityElements;
   }
@@ -119,9 +123,9 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
       switch (eDerivedStructuralFeatureID(featureID, baseClass))
       {
         case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
+        return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
         default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
+        return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
       }
     }
     return eBasicSetContainer(null, featureID, msgs);
@@ -137,11 +141,11 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.EXTENSIBLE_ELEMENT__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
+      return getEExtensibilityElements();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -156,15 +160,15 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.EXTENSIBLE_ELEMENT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
+      getEExtensibilityElements().clear();
+      getEExtensibilityElements().addAll((Collection)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -179,14 +183,14 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.EXTENSIBLE_ELEMENT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
+      getEExtensibilityElements().clear();
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -201,11 +205,12 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.EXTENSIBLE_ELEMENT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
+      return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
     }
     return eDynamicIsSet(eFeature);
   }
@@ -216,23 +221,21 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
     if (!WSDLConstants.isMatchingNamespace(child.getNamespaceURI(), WSDLConstants.WSDL_NAMESPACE_URI))
-    {  
-      ExtensibilityElement extensibilityElement = useExtensionFactories() ? 
-          ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createExtensibilityElement(getNamespace(child),getLocalName(child)) :
-            ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createUnknownExtensibilityElement();
-          
-          extensibilityElement.setEnclosingDefinition(getEnclosingDefinition());
-          extensibilityElement.setElement(child);
-          getEExtensibilityElements().add(extensibilityElement);
+    {
+      ExtensibilityElement extensibilityElement = useExtensionFactories()
+        ? ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createExtensibilityElement(getNamespace(child), getLocalName(child))
+        : ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createUnknownExtensibilityElement();
+
+      extensibilityElement.setEnclosingDefinition(getEnclosingDefinition());
+      extensibilityElement.setElement(child);
+      getEExtensibilityElements().add(extensibilityElement);
     }
   }
-  
+
   private boolean useExtensionFactories()
   {
-  	// Use extension factories by default.
-    return getEnclosingDefinition() == null ? 
-      true : 
-      ((DefinitionImpl)getEnclosingDefinition()).getUseExtensionFactories();
+    // Use extension factories by default.
+    return getEnclosingDefinition() == null ? true : ((DefinitionImpl)getEnclosingDefinition()).getUseExtensionFactories();
   }
-  
+
 } //ExtensibleElementImpl

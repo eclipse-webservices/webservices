@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -171,13 +172,13 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
+      return getDocumentationElement();
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        return getElement();
+      return getElement();
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        return isRequired() ? Boolean.TRUE : Boolean.FALSE;
+      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        return getElementType();
+      return getElementType();
     }
     return eDynamicGet(eFeature, resolve);
   }
@@ -192,17 +193,17 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
+      setDocumentationElement((Element)newValue);
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        setElement((Element)newValue);
-        return;
+      setElement((Element)newValue);
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        setRequired(((Boolean)newValue).booleanValue());
-        return;
+      setRequired(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        setElementType((QName)newValue);
-        return;
+      setElementType((QName)newValue);
+      return;
     }
     eDynamicSet(eFeature, newValue);
   }
@@ -217,17 +218,17 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
+      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
+      setElement(ELEMENT_EDEFAULT);
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        setRequired(REQUIRED_EDEFAULT);
-        return;
+      setRequired(REQUIRED_EDEFAULT);
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        setElementType(ELEMENT_TYPE_EDEFAULT);
-        return;
+      setElementType(ELEMENT_TYPE_EDEFAULT);
+      return;
     }
     eDynamicUnset(eFeature);
   }
@@ -242,13 +243,14 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     switch (eDerivedStructuralFeatureID(eFeature))
     {
       case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
+      return DOCUMENTATION_ELEMENT_EDEFAULT == null
+        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
+      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        return required != REQUIRED_EDEFAULT;
+      return required != REQUIRED_EDEFAULT;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
+      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
     }
     return eDynamicIsSet(eFeature);
   }
@@ -260,7 +262,8 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (required: ");
@@ -297,7 +300,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     if (beanPropertyDescriptors == null)
       beanPropertyDescriptors = new HashMap();
     else
-      properties = (Map) beanPropertyDescriptors.get(clazz);
+      properties = (Map)beanPropertyDescriptors.get(clazz);
 
     if (properties == null)
     {
@@ -325,7 +328,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
       properties = new HashMap();
       for (Iterator b = binfos.iterator(); b.hasNext();)
       {
-        BeanInfo binfo = (BeanInfo) b.next();
+        BeanInfo binfo = (BeanInfo)b.next();
         PropertyDescriptor[] pdesc = binfo.getPropertyDescriptors();
         if (pdesc == null)
           continue;
@@ -360,7 +363,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    super.handleUnreconciledElement(child,remainingModelObjects);
+    super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
   protected void handleReconciliation(Collection remainingModelObjects)
@@ -388,12 +391,12 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
 
     Document document = definition.getDocument();
     if (document == null)
-      document = ((DefinitionImpl) definition).updateDocument();
+      document = ((DefinitionImpl)definition).updateDocument();
 
     Element newElement = null;
     if (element != null) // This is an old element.
     {
-      newElement = (Element) document.importNode(element, true); 
+      newElement = (Element)document.importNode(element, true);
       element = newElement;
     }
     else
