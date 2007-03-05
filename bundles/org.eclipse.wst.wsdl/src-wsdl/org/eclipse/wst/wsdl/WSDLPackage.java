@@ -73,7 +73,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_URI = "http://www.eclipse.org/wsdl/2003/WSDL";
+  String eNS_URI = "http://www.ibm.com/wsdl/2003/WSDL";
 
   /**
    * The package namespace name.
@@ -932,15 +932,6 @@ public interface WSDLPackage extends EPackage
   int DEFINITION__ENCODING = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
 
   /**
-   * The feature id for the '<em><b>EPort Types</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DEFINITION__EPORT_TYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 7;
-
-  /**
    * The feature id for the '<em><b>EBindings</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -993,6 +984,15 @@ public interface WSDLPackage extends EPackage
    * @ordered
    */
   int DEFINITION__EMESSAGES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 6;
+
+  /**
+   * The feature id for the '<em><b>EPort Types</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFINITION__EPORT_TYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 7;
 
   /**
    * The number of structural features of the '<em>Definition</em>' class.

@@ -15,7 +15,7 @@
 	(object Attribute
 	    tool       	"Ecore"
 	    name       	"nsURI"
-	    value      	"http://www.eclipse.org/wsdl/2003/WSDL")
+	    value      	"http://www.ibm.com/wsdl/2003/WSDL")
 	(object Attribute
 	    tool       	"Ecore"
 	    name       	"basePackage"
@@ -5908,7 +5908,7 @@
 			    client     	@276
 			    supplier   	@275
 			    line_style 	3
-			    origin_attachment 	(1486, 1000)
+			    origin_attachment 	(1486, 872)
 			    terminal_attachment 	(1486, 872))))
 		(object AssociationViewNew "$UNNAMED$43" @281
 		    location   	(1087, 403)

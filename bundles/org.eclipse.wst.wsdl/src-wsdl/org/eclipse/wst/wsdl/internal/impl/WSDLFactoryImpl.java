@@ -68,7 +68,7 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
   {
     try
     {
-      WSDLFactory theWSDLFactory = (WSDLFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/wsdl/2003/WSDL"); 
+      WSDLFactory theWSDLFactory = (WSDLFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/WSDL"); 
       if (theWSDLFactory != null)
       {
         return theWSDLFactory;

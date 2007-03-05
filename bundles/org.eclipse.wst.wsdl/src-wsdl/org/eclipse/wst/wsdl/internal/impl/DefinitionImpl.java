@@ -198,16 +198,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected String encoding = ENCODING_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getEPortTypes() <em>EPort Types</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getEPortTypes()
-   * @generated
-   * @ordered
-   */
-  protected EList ePortTypes = null;
-
-  /**
    * The cached value of the '{@link #getEBindings() <em>EBindings</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -266,6 +256,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @ordered
    */
   protected EList eMessages = null;
+
+  /**
+   * The cached value of the '{@link #getEPortTypes() <em>EPort Types</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEPortTypes()
+   * @generated
+   * @ordered
+   */
+  protected EList ePortTypes = null;
 
   private ExtensionRegistry extensionRegistry;
 
