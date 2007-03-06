@@ -22,6 +22,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
@@ -37,11 +39,13 @@ public class XSDGraphViewerDialog extends PopupDialog
   protected Object model;
   protected ScrollingGraphicalViewer viewer;
   protected IOpenExternalEditorHelper openExternalEditorHelper;
+  private CloseDialogListener closeDialogListener;
 
   public XSDGraphViewerDialog(Shell parentShell, String titleText, String infoText, Object model)
   {
     super(parentShell, SWT.RESIZE, false, false, true, false, titleText, infoText);
     setModel(model);
+    closeDialogListener = new CloseDialogListener();
   }
 
   public void setOpenExternalEditor(IOpenExternalEditorHelper helper)
@@ -78,6 +82,13 @@ public class XSDGraphViewerDialog extends PopupDialog
     return c;
   }
 
+  public int open()
+  {
+    int value = super.open();
+    closeDialogListener.addListeners();
+    return value;
+  }
+  
   private void setModel(Object model)
   {
     Assert.isTrue(model instanceof XSDConcreteComponent);
@@ -105,6 +116,35 @@ public class XSDGraphViewerDialog extends PopupDialog
         }
       }
       close();
+    }
+  }
+  
+  public boolean close()
+  {
+    closeDialogListener.removeListeners();
+    return super.close();
+  }
+  
+  private final class CloseDialogListener implements Listener {
+
+    public void handleEvent(Event e) {
+     
+      if (e.type == SWT.Close || e.type == SWT.Deactivate) {
+        close();
+        return;
+      }
+    }
+
+    void addListeners() {
+      Shell shell = getShell();
+      shell.addListener(SWT.Deactivate, this);
+      shell.addListener(SWT.Close, this);
+    }
+
+    void removeListeners() {
+      Shell shell = getShell();
+      shell.removeListener(SWT.Deactivate, this);
+      shell.removeListener(SWT.Close, this);
     }
   }
 }

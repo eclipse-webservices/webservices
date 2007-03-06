@@ -282,6 +282,12 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 		public void mousePressed(MouseEvent me) {
 			Point pointer = me.getLocation();
+      openExternalEditor(pointer);
+		}
+    
+    public void mouseHover(MouseEvent me)
+    {
+      Point pointer = me.getLocation();
       showXSDDialog(pointer);
 		}
 	}
@@ -390,7 +396,21 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 		return false;
 	}
-  
+
+  private void openExternalEditor(Point point) {
+    Rectangle linkFigBounds = getLinkFigureBounds();
+    if (linkFigBounds == null || getExternalEditorOpener() == null) {
+      return;
+    }
+
+    Rectangle testbounds = new Rectangle(linkFigBounds.x, linkFigBounds.y, 0, linkFigBounds.height);
+
+    if (getExternalEditorOpener().linkApplicable() && pointerInRange(testbounds, point)) {
+      // Open in XSD Editor
+      getExternalEditorOpener().openExternalEditor();         
+    }
+  }
+
   private void showXSDDialog(Point point) {
     Rectangle linkFigBounds = getLinkFigureBounds();
     if (linkFigBounds == null) {
@@ -420,6 +440,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
       dialog.setOpenExternalEditor(getExternalEditorOpener());
       dialog.create();
       dialog.open();
+      dialog.getShell().setFocus();
     }
   }
 }
