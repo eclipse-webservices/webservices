@@ -16,7 +16,6 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
@@ -105,7 +104,7 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
    */
   protected EClass eStaticClass()
   {
-    return SOAPPackage.eINSTANCE.getSOAPBinding();
+    return SOAPPackage.Literals.SOAP_BINDING;
   }
 
   /**
@@ -159,24 +158,16 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BINDING__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case SOAPPackage.SOAP_BINDING__ELEMENT:
-      return getElement();
-      case SOAPPackage.SOAP_BINDING__REQUIRED:
-      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
-      case SOAPPackage.SOAP_BINDING__ELEMENT_TYPE:
-      return getElementType();
       case SOAPPackage.SOAP_BINDING__TRANSPORT_URI:
       return getTransportURI();
       case SOAPPackage.SOAP_BINDING__STYLE:
       return getStyle();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -184,22 +175,10 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BINDING__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case SOAPPackage.SOAP_BINDING__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case SOAPPackage.SOAP_BINDING__REQUIRED:
-      setRequired(((Boolean)newValue).booleanValue());
-      return;
-      case SOAPPackage.SOAP_BINDING__ELEMENT_TYPE:
-      setElementType((QName)newValue);
-      return;
       case SOAPPackage.SOAP_BINDING__TRANSPORT_URI:
       setTransportURI((String)newValue);
       return;
@@ -207,7 +186,7 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
       setStyle((String)newValue);
       return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -215,22 +194,10 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BINDING__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_BINDING__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_BINDING__REQUIRED:
-      setRequired(REQUIRED_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_BINDING__ELEMENT_TYPE:
-      setElementType(ELEMENT_TYPE_EDEFAULT);
-      return;
       case SOAPPackage.SOAP_BINDING__TRANSPORT_URI:
       setTransportURI(TRANSPORT_URI_EDEFAULT);
       return;
@@ -238,7 +205,7 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
       setStyle(STYLE_EDEFAULT);
       return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -246,25 +213,16 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BINDING__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case SOAPPackage.SOAP_BINDING__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case SOAPPackage.SOAP_BINDING__REQUIRED:
-      return required != REQUIRED_EDEFAULT;
-      case SOAPPackage.SOAP_BINDING__ELEMENT_TYPE:
-      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
       case SOAPPackage.SOAP_BINDING__TRANSPORT_URI:
       return TRANSPORT_URI_EDEFAULT == null ? transportURI != null : !TRANSPORT_URI_EDEFAULT.equals(transportURI);
       case SOAPPackage.SOAP_BINDING__STYLE:
       return STYLE_EDEFAULT == null ? style != null : !STYLE_EDEFAULT.equals(style);
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**

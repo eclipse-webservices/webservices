@@ -14,7 +14,9 @@ package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
@@ -36,7 +38,30 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 public class SOAPFactoryImpl extends EFactoryImpl implements SOAPFactory
 {
   /**
-   * Creates and instance of the factory.
+   * Creates the default factory implementation.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public static SOAPFactory init()
+  {
+    try
+    {
+      SOAPFactory theSOAPFactory = (SOAPFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/SOAP");
+      if (theSOAPFactory != null)
+      {
+        return theSOAPFactory;
+      }
+    }
+    catch (Exception exception)
+    {
+      EcorePlugin.INSTANCE.log(exception);
+    }
+    return new SOAPFactoryImpl();
+  }
+
+  /**
+   * Creates an instance of the factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated

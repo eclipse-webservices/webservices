@@ -14,7 +14,6 @@ package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import com.ibm.icu.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
@@ -23,7 +22,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
@@ -38,6 +36,8 @@ import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl;
 import org.w3c.dom.Element;
 
+import com.ibm.icu.util.StringTokenizer;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -48,8 +48,8 @@ import org.w3c.dom.Element;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl#getNamespaceURI <em>Namespace URI</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl#getEncodingStyles <em>Encoding Styles</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl#getParts <em>Parts</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl#getEEncodingStyles <em>EEncoding Styles</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl#getEParts <em>EParts</em>}</li>
  * </ul>
  * </p>
  *
@@ -105,14 +105,24 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
   protected String namespaceURI = NAMESPACE_URI_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getEncodingStyles() <em>Encoding Styles</em>}' attribute list.
+   * The cached value of the '{@link #getEEncodingStyles() <em>EEncoding Styles</em>}' attribute list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEncodingStyles()
+   * @see #getEEncodingStyles()
    * @generated
    * @ordered
    */
-  protected EList encodingStyles = null;
+  protected EList eEncodingStyles = null;
+
+  /**
+   * The cached value of the '{@link #getEParts() <em>EParts</em>}' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEParts()
+   * @generated
+   * @ordered
+   */
+  protected EList eParts = null;
 
   /**
    * The cached value of the '{@link #getParts() <em>Parts</em>}' reference list.
@@ -141,7 +151,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    */
   protected EClass eStaticClass()
   {
-    return SOAPPackage.eINSTANCE.getSOAPBody();
+    return SOAPPackage.Literals.SOAP_BODY;
   }
 
   /**
@@ -190,9 +200,18 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
       eNotify(new ENotificationImpl(this, Notification.SET, SOAPPackage.SOAP_BODY__NAMESPACE_URI, oldNamespaceURI, namespaceURI));
   }
 
-  public void setEncodingStyles(List list)
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList getEEncodingStyles()
   {
-    encodingStyles = (EList)list;
+    if (eEncodingStyles == null)
+    {
+      eEncodingStyles = new EDataTypeUniqueEList(String.class, this, SOAPPackage.SOAP_BODY__EENCODING_STYLES);
+    }
+    return eEncodingStyles;
   }
 
   /**
@@ -200,13 +219,31 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * <!-- end-user-doc -->
    * @generated
    */
+  public EList getEParts()
+  {
+    if (eParts == null)
+    {
+      eParts = new EObjectResolvingEList(Part.class, this, SOAPPackage.SOAP_BODY__EPARTS);
+    }
+    return eParts;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see javax.wsdl.extensions.soap.SOAPBody#setEncodingStyles(java.util.List)
+   */
+  public void setEncodingStyles(List list)
+  {
+    eEncodingStyles = (EList)list;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see javax.wsdl.extensions.soap.SOAPBody#getEncodingStyles()
+   */
   public List getEncodingStyles()
   {
-    if (encodingStyles == null)
-    {
-      encodingStyles = new EDataTypeUniqueEList(String.class, this, SOAPPackage.SOAP_BODY__ENCODING_STYLES);
-    }
-    return encodingStyles;
+    return getEEncodingStyles();
   }
 
   public void setParts(List list)
@@ -214,16 +251,15 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
     parts = list;
   }
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated NOT
+  /*
+   * (non-Javadoc)
+   * @see javax.wsdl.extensions.soap.SOAPBody#getParts()
    */
   public List getParts()
   {
     if (parts == null)
     {
-      parts = new EObjectResolvingEList(Part.class, this, SOAPPackage.SOAP_BODY__PARTS);
+      parts = new EObjectResolvingEList(Part.class, this, SOAPPackage.SOAP_BODY__EPARTS);
       return getImplicitParts();
     }
 
@@ -240,28 +276,20 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BODY__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case SOAPPackage.SOAP_BODY__ELEMENT:
-      return getElement();
-      case SOAPPackage.SOAP_BODY__REQUIRED:
-      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
-      case SOAPPackage.SOAP_BODY__ELEMENT_TYPE:
-      return getElementType();
       case SOAPPackage.SOAP_BODY__USE:
       return getUse();
       case SOAPPackage.SOAP_BODY__NAMESPACE_URI:
       return getNamespaceURI();
-      case SOAPPackage.SOAP_BODY__ENCODING_STYLES:
-      return getEncodingStyles();
-      case SOAPPackage.SOAP_BODY__PARTS:
-      return getParts();
+      case SOAPPackage.SOAP_BODY__EENCODING_STYLES:
+      return getEEncodingStyles();
+      case SOAPPackage.SOAP_BODY__EPARTS:
+      return getEParts();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -269,38 +297,26 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BODY__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case SOAPPackage.SOAP_BODY__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case SOAPPackage.SOAP_BODY__REQUIRED:
-      setRequired(((Boolean)newValue).booleanValue());
-      return;
-      case SOAPPackage.SOAP_BODY__ELEMENT_TYPE:
-      setElementType((QName)newValue);
-      return;
       case SOAPPackage.SOAP_BODY__USE:
       setUse((String)newValue);
       return;
       case SOAPPackage.SOAP_BODY__NAMESPACE_URI:
       setNamespaceURI((String)newValue);
       return;
-      case SOAPPackage.SOAP_BODY__ENCODING_STYLES:
-      getEncodingStyles().clear();
-      getEncodingStyles().addAll((Collection)newValue);
+      case SOAPPackage.SOAP_BODY__EENCODING_STYLES:
+      getEEncodingStyles().clear();
+      getEEncodingStyles().addAll((Collection)newValue);
       return;
-      case SOAPPackage.SOAP_BODY__PARTS:
-      getParts().clear();
-      getParts().addAll((Collection)newValue);
+      case SOAPPackage.SOAP_BODY__EPARTS:
+      getEParts().clear();
+      getEParts().addAll((Collection)newValue);
       return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -308,36 +324,24 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BODY__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_BODY__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_BODY__REQUIRED:
-      setRequired(REQUIRED_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_BODY__ELEMENT_TYPE:
-      setElementType(ELEMENT_TYPE_EDEFAULT);
-      return;
       case SOAPPackage.SOAP_BODY__USE:
       setUse(USE_EDEFAULT);
       return;
       case SOAPPackage.SOAP_BODY__NAMESPACE_URI:
       setNamespaceURI(NAMESPACE_URI_EDEFAULT);
       return;
-      case SOAPPackage.SOAP_BODY__ENCODING_STYLES:
-      getEncodingStyles().clear();
+      case SOAPPackage.SOAP_BODY__EENCODING_STYLES:
+      getEEncodingStyles().clear();
       return;
-      case SOAPPackage.SOAP_BODY__PARTS:
-      getParts().clear();
+      case SOAPPackage.SOAP_BODY__EPARTS:
+      getEParts().clear();
       return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -345,29 +349,20 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case SOAPPackage.SOAP_BODY__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case SOAPPackage.SOAP_BODY__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case SOAPPackage.SOAP_BODY__REQUIRED:
-      return required != REQUIRED_EDEFAULT;
-      case SOAPPackage.SOAP_BODY__ELEMENT_TYPE:
-      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
       case SOAPPackage.SOAP_BODY__USE:
       return USE_EDEFAULT == null ? use != null : !USE_EDEFAULT.equals(use);
       case SOAPPackage.SOAP_BODY__NAMESPACE_URI:
       return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
-      case SOAPPackage.SOAP_BODY__ENCODING_STYLES:
-      return encodingStyles != null && !encodingStyles.isEmpty();
-      case SOAPPackage.SOAP_BODY__PARTS:
-      return parts != null && !parts.isEmpty();
+      case SOAPPackage.SOAP_BODY__EENCODING_STYLES:
+      return eEncodingStyles != null && !eEncodingStyles.isEmpty();
+      case SOAPPackage.SOAP_BODY__EPARTS:
+      return eParts != null && !eParts.isEmpty();
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -385,8 +380,8 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
     result.append(use);
     result.append(", namespaceURI: ");
     result.append(namespaceURI);
-    result.append(", encodingStyles: ");
-    result.append(encodingStyles);
+    result.append(", eEncodingStyles: ");
+    result.append(eEncodingStyles);
     result.append(')');
     return result.toString();
   }
@@ -455,7 +450,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
         niceSetAttribute(theElement, SOAPConstants.USE_ATTRIBUTE, getUse());
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBody_NamespaceURI())
         niceSetAttribute(theElement, SOAPConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBody_EncodingStyles())
+      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBody_EEncodingStyles())
       {
         List encodingStyleList = getEncodingStyles();
         String encodingStyles = "";
@@ -485,7 +480,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPBody_Parts())
+      if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPBody_EParts())
       {
         // Used to be Bugzilla 108176, now it is Bugzilla 137990
 

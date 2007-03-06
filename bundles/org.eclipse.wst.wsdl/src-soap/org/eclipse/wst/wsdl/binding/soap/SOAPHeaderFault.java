@@ -17,10 +17,10 @@ package org.eclipse.wst.wsdl.binding.soap;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.wst.wsdl.bindings.soap.SOAPPackage#getSOAPHeaderFault()
+ * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderFault()
  * @model
  * @generated
  */
-public interface SOAPHeaderFault extends SOAPHeaderBase
+public interface SOAPHeaderFault extends SOAPHeaderBase, javax.wsdl.extensions.soap.SOAPHeaderFault
 {
 } // SOAPHeaderFault

@@ -21,7 +21,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
@@ -40,7 +39,7 @@ import org.w3c.dom.Element;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getNamespaceURI <em>Namespace URI</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getEncodingStyles <em>Encoding Styles</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getEEncodingStyles <em>EEncoding Styles</em>}</li>
  * </ul>
  * </p>
  *
@@ -96,14 +95,14 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
   protected String namespaceURI = NAMESPACE_URI_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getEncodingStyles() <em>Encoding Styles</em>}' attribute list.
+   * The cached value of the '{@link #getEEncodingStyles() <em>EEncoding Styles</em>}' attribute list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEncodingStyles()
+   * @see #getEEncodingStyles()
    * @generated
    * @ordered
    */
-  protected EList encodingStyles = null;
+  protected EList eEncodingStyles = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -122,7 +121,7 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
    */
   protected EClass eStaticClass()
   {
-    return SOAPPackage.eINSTANCE.getSOAPFault();
+    return SOAPPackage.Literals.SOAP_FAULT;
   }
 
   /**
@@ -171,6 +170,112 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
       eNotify(new ENotificationImpl(this, Notification.SET, SOAPPackage.SOAP_FAULT__NAMESPACE_URI, oldNamespaceURI, namespaceURI));
   }
 
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList getEEncodingStyles()
+  {
+    if (eEncodingStyles == null)
+    {
+      eEncodingStyles = new EDataTypeUniqueEList(String.class, this, SOAPPackage.SOAP_FAULT__EENCODING_STYLES);
+    }
+    return eEncodingStyles;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see javax.wsdl.extensions.soap.SOAPFault#getEncodingStyles()
+   */
+  public List getEncodingStyles()
+  {
+    return getEEncodingStyles();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case SOAPPackage.SOAP_FAULT__USE:
+      return getUse();
+      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
+      return getNamespaceURI();
+      case SOAPPackage.SOAP_FAULT__EENCODING_STYLES:
+      return getEEncodingStyles();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case SOAPPackage.SOAP_FAULT__USE:
+      setUse((String)newValue);
+      return;
+      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
+      setNamespaceURI((String)newValue);
+      return;
+      case SOAPPackage.SOAP_FAULT__EENCODING_STYLES:
+      getEEncodingStyles().clear();
+      getEEncodingStyles().addAll((Collection)newValue);
+      return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case SOAPPackage.SOAP_FAULT__USE:
+      setUse(USE_EDEFAULT);
+      return;
+      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
+      setNamespaceURI(NAMESPACE_URI_EDEFAULT);
+      return;
+      case SOAPPackage.SOAP_FAULT__EENCODING_STYLES:
+      getEEncodingStyles().clear();
+      return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case SOAPPackage.SOAP_FAULT__USE:
+      return USE_EDEFAULT == null ? use != null : !USE_EDEFAULT.equals(use);
+      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
+      return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+      case SOAPPackage.SOAP_FAULT__EENCODING_STYLES:
+      return eEncodingStyles != null && !eEncodingStyles.isEmpty();
+    }
+    return super.eIsSet(featureID);
+  }
+
   private String name;
 
   public String getName()
@@ -185,145 +290,7 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
 
   public void setEncodingStyles(List list)
   {
-    encodingStyles = (EList)list;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public List getEncodingStyles()
-  {
-    if (encodingStyles == null)
-    {
-      encodingStyles = new EDataTypeUniqueEList(String.class, this, SOAPPackage.SOAP_FAULT__ENCODING_STYLES);
-    }
-    return encodingStyles;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case SOAPPackage.SOAP_FAULT__DOCUMENTATION_ELEMENT:
-      return getDocumentationElement();
-      case SOAPPackage.SOAP_FAULT__ELEMENT:
-      return getElement();
-      case SOAPPackage.SOAP_FAULT__REQUIRED:
-      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
-      case SOAPPackage.SOAP_FAULT__ELEMENT_TYPE:
-      return getElementType();
-      case SOAPPackage.SOAP_FAULT__USE:
-      return getUse();
-      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
-      return getNamespaceURI();
-      case SOAPPackage.SOAP_FAULT__ENCODING_STYLES:
-      return getEncodingStyles();
-    }
-    return eDynamicGet(eFeature, resolve);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case SOAPPackage.SOAP_FAULT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement((Element)newValue);
-      return;
-      case SOAPPackage.SOAP_FAULT__ELEMENT:
-      setElement((Element)newValue);
-      return;
-      case SOAPPackage.SOAP_FAULT__REQUIRED:
-      setRequired(((Boolean)newValue).booleanValue());
-      return;
-      case SOAPPackage.SOAP_FAULT__ELEMENT_TYPE:
-      setElementType((QName)newValue);
-      return;
-      case SOAPPackage.SOAP_FAULT__USE:
-      setUse((String)newValue);
-      return;
-      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
-      setNamespaceURI((String)newValue);
-      return;
-      case SOAPPackage.SOAP_FAULT__ENCODING_STYLES:
-      getEncodingStyles().clear();
-      getEncodingStyles().addAll((Collection)newValue);
-      return;
-    }
-    eDynamicSet(eFeature, newValue);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eUnset(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case SOAPPackage.SOAP_FAULT__DOCUMENTATION_ELEMENT:
-      setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_FAULT__ELEMENT:
-      setElement(ELEMENT_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_FAULT__REQUIRED:
-      setRequired(REQUIRED_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_FAULT__ELEMENT_TYPE:
-      setElementType(ELEMENT_TYPE_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_FAULT__USE:
-      setUse(USE_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
-      setNamespaceURI(NAMESPACE_URI_EDEFAULT);
-      return;
-      case SOAPPackage.SOAP_FAULT__ENCODING_STYLES:
-      getEncodingStyles().clear();
-      return;
-    }
-    eDynamicUnset(eFeature);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean eIsSet(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case SOAPPackage.SOAP_FAULT__DOCUMENTATION_ELEMENT:
-      return DOCUMENTATION_ELEMENT_EDEFAULT == null
-        ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case SOAPPackage.SOAP_FAULT__ELEMENT:
-      return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case SOAPPackage.SOAP_FAULT__REQUIRED:
-      return required != REQUIRED_EDEFAULT;
-      case SOAPPackage.SOAP_FAULT__ELEMENT_TYPE:
-      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
-      case SOAPPackage.SOAP_FAULT__USE:
-      return USE_EDEFAULT == null ? use != null : !USE_EDEFAULT.equals(use);
-      case SOAPPackage.SOAP_FAULT__NAMESPACE_URI:
-      return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
-      case SOAPPackage.SOAP_FAULT__ENCODING_STYLES:
-      return encodingStyles != null && !encodingStyles.isEmpty();
-    }
-    return eDynamicIsSet(eFeature);
+    eEncodingStyles = (EList)list;
   }
 
   /**
@@ -341,8 +308,8 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
     result.append(use);
     result.append(", namespaceURI: ");
     result.append(namespaceURI);
-    result.append(", encodingStyles: ");
-    result.append(encodingStyles);
+    result.append(", eEncodingStyles: ");
+    result.append(eEncodingStyles);
     result.append(')');
     return result.toString();
   }
@@ -379,7 +346,7 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
         niceSetAttribute(theElement, SOAPConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_Use())
         niceSetAttribute(theElement, SOAPConstants.USE_ATTRIBUTE, getUse());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_EncodingStyles())
+      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_EEncodingStyles())
       {
         List encodingStyleList = getEncodingStyles();
         String encodingStyles = "";

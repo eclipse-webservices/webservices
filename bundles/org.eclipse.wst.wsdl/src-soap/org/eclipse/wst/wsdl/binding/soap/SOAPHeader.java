@@ -30,7 +30,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface SOAPHeader extends SOAPHeaderBase
+public interface SOAPHeader extends SOAPHeaderBase, javax.wsdl.extensions.soap.SOAPHeader
 {
   /**
    * Returns the value of the '<em><b>Header Faults</b></em>' containment reference list.

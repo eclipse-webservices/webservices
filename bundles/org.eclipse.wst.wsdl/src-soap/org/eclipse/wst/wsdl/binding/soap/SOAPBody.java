@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.binding.soap;
 
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 
 
@@ -24,15 +25,83 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getNamespaceURI <em>Namespace URI</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getEncodingStyles <em>Encoding Styles</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getParts <em>Parts</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getEParts <em>EParts</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody()
- * @model
+ * @model features="eEncodingStyles" 
+ *        eEncodingStylesType="java.lang.String" eEncodingStylesDataType="org.eclipse.wst.wsdl.binding.soap.IString" eEncodingStylesMany="true" eEncodingStylesSuppressedGetVisibility="true"
  * @generated
  */
 public interface SOAPBody extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPBody
 {
+
+  /**
+   * Returns the value of the '<em><b>Use</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Use</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Use</em>' attribute.
+   * @see #setUse(String)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody_Use()
+   * @model
+   * @generated
+   */
+  String getUse();
+
+  /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getUse <em>Use</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Use</em>' attribute.
+   * @see #getUse()
+   * @generated
+   */
+  void setUse(String value);
+
+  /**
+   * Returns the value of the '<em><b>Namespace URI</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Namespace URI</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Namespace URI</em>' attribute.
+   * @see #setNamespaceURI(String)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody_NamespaceURI()
+   * @model
+   * @generated
+   */
+  String getNamespaceURI();
+
+  /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getNamespaceURI <em>Namespace URI</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Namespace URI</em>' attribute.
+   * @see #getNamespaceURI()
+   * @generated
+   */
+  void setNamespaceURI(String value);
+
+  /**
+   * Returns the value of the '<em><b>EParts</b></em>' reference list.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.Part}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EParts</em>' reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EParts</em>' reference list.
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody_EParts()
+   * @model type="org.eclipse.wst.wsdl.Part"
+   * @generated
+   */
+  EList getEParts();
 } // SOAPBody

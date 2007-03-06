@@ -14,6 +14,7 @@ package org.eclipse.wst.wsdl.binding.soap.internal.impl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -28,8 +29,7 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
 import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
-import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
-import org.eclipse.xsd.impl.XSDPackageImpl;
+import org.eclipse.xsd.XSDPackage;
 
 
 /**
@@ -101,6 +101,55 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass isoapBindingEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass isoapAddressEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass isoapBodyEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass isoapFaultEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass isoapOperationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass isoapHeaderFaultEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass isoapHeaderEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EDataType iStringEDataType = null;
 
   /**
@@ -155,28 +204,26 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
   public static SOAPPackage init()
   {
     if (isInited)
-      return (SOAPPackage)EPackage.Registry.INSTANCE.get(SOAPPackage.eNS_URI);
+      return (SOAPPackage)EPackage.Registry.INSTANCE.getEPackage(SOAPPackage.eNS_URI);
 
-    // Obtain or create and register package.
-    SOAPPackageImpl theSOAPPackage = (SOAPPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof EPackage
-      ? EPackage.Registry.INSTANCE.get(eNS_URI) : new SOAPPackageImpl());
+    // Obtain or create and register package
+    SOAPPackageImpl theSOAPPackage = (SOAPPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof SOAPPackageImpl
+      ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new SOAPPackageImpl());
 
     isInited = true;
 
     // Initialize simple dependencies
-    XSDPackageImpl.init();
+    WSDLPackage.eINSTANCE.eClass();
+    XSDPackage.eINSTANCE.eClass();
 
-    // Obtain or create and register interdependencies
-    WSDLPackageImpl theWSDLPackage = (WSDLPackageImpl)(EPackage.Registry.INSTANCE.get(WSDLPackage.eNS_URI) instanceof EPackage
-      ? EPackage.Registry.INSTANCE.get(WSDLPackage.eNS_URI) : WSDLPackageImpl.eINSTANCE);
-
-    // Step 1: create meta-model objects
+    // Create package meta-data objects
     theSOAPPackage.createPackageContents();
-    theWSDLPackage.createPackageContents();
 
-    // Step 2: complete initialization
+    // Initialize created meta-data
     theSOAPPackage.initializePackageContents();
-    theWSDLPackage.initializePackageContents();
+
+    // Mark meta-data to indicate it can't be changed
+    theSOAPPackage.freeze();
 
     return theSOAPPackage;
   }
@@ -246,7 +293,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getSOAPBody_EncodingStyles()
+  public EAttribute getSOAPBody_EEncodingStyles()
   {
     return (EAttribute)soapBodyEClass.getEStructuralFeatures().get(2);
   }
@@ -256,7 +303,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getSOAPBody_Parts()
+  public EReference getSOAPBody_EParts()
   {
     return (EReference)soapBodyEClass.getEStructuralFeatures().get(3);
   }
@@ -296,7 +343,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getSOAPHeaderBase_EncodingStyles()
+  public EAttribute getSOAPHeaderBase_EEncodingStyles()
   {
     return (EAttribute)soapHeaderBaseEClass.getEStructuralFeatures().get(2);
   }
@@ -306,7 +353,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getSOAPHeaderBase_Message()
+  public EReference getSOAPHeaderBase_EMessage()
   {
     return (EReference)soapHeaderBaseEClass.getEStructuralFeatures().get(3);
   }
@@ -316,7 +363,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getSOAPHeaderBase_Part()
+  public EReference getSOAPHeaderBase_EPart()
   {
     return (EReference)soapHeaderBaseEClass.getEStructuralFeatures().get(4);
   }
@@ -356,7 +403,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getSOAPFault_EncodingStyles()
+  public EAttribute getSOAPFault_EEncodingStyles()
   {
     return (EAttribute)soapFaultEClass.getEStructuralFeatures().get(2);
   }
@@ -446,6 +493,76 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getISOAPBinding()
+  {
+    return isoapBindingEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getISOAPAddress()
+  {
+    return isoapAddressEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getISOAPBody()
+  {
+    return isoapBodyEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getISOAPFault()
+  {
+    return isoapFaultEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getISOAPOperation()
+  {
+    return isoapOperationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getISOAPHeaderFault()
+  {
+    return isoapHeaderFaultEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getISOAPHeader()
+  {
+    return isoapHeaderEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EDataType getIString()
   {
     return iStringEDataType;
@@ -489,20 +606,20 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
     soapBodyEClass = createEClass(SOAP_BODY);
     createEAttribute(soapBodyEClass, SOAP_BODY__USE);
     createEAttribute(soapBodyEClass, SOAP_BODY__NAMESPACE_URI);
-    createEAttribute(soapBodyEClass, SOAP_BODY__ENCODING_STYLES);
-    createEReference(soapBodyEClass, SOAP_BODY__PARTS);
+    createEAttribute(soapBodyEClass, SOAP_BODY__EENCODING_STYLES);
+    createEReference(soapBodyEClass, SOAP_BODY__EPARTS);
 
     soapHeaderBaseEClass = createEClass(SOAP_HEADER_BASE);
     createEAttribute(soapHeaderBaseEClass, SOAP_HEADER_BASE__USE);
     createEAttribute(soapHeaderBaseEClass, SOAP_HEADER_BASE__NAMESPACE_URI);
-    createEAttribute(soapHeaderBaseEClass, SOAP_HEADER_BASE__ENCODING_STYLES);
-    createEReference(soapHeaderBaseEClass, SOAP_HEADER_BASE__MESSAGE);
-    createEReference(soapHeaderBaseEClass, SOAP_HEADER_BASE__PART);
+    createEAttribute(soapHeaderBaseEClass, SOAP_HEADER_BASE__EENCODING_STYLES);
+    createEReference(soapHeaderBaseEClass, SOAP_HEADER_BASE__EMESSAGE);
+    createEReference(soapHeaderBaseEClass, SOAP_HEADER_BASE__EPART);
 
     soapFaultEClass = createEClass(SOAP_FAULT);
     createEAttribute(soapFaultEClass, SOAP_FAULT__USE);
     createEAttribute(soapFaultEClass, SOAP_FAULT__NAMESPACE_URI);
-    createEAttribute(soapFaultEClass, SOAP_FAULT__ENCODING_STYLES);
+    createEAttribute(soapFaultEClass, SOAP_FAULT__EENCODING_STYLES);
 
     soapOperationEClass = createEClass(SOAP_OPERATION);
     createEAttribute(soapOperationEClass, SOAP_OPERATION__SOAP_ACTION_URI);
@@ -515,6 +632,20 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
 
     soapHeaderEClass = createEClass(SOAP_HEADER);
     createEReference(soapHeaderEClass, SOAP_HEADER__HEADER_FAULTS);
+
+    isoapBindingEClass = createEClass(ISOAP_BINDING);
+
+    isoapAddressEClass = createEClass(ISOAP_ADDRESS);
+
+    isoapBodyEClass = createEClass(ISOAP_BODY);
+
+    isoapFaultEClass = createEClass(ISOAP_FAULT);
+
+    isoapOperationEClass = createEClass(ISOAP_OPERATION);
+
+    isoapHeaderFaultEClass = createEClass(ISOAP_HEADER_FAULT);
+
+    isoapHeaderEClass = createEClass(ISOAP_HEADER);
 
     // Create data types
     iStringEDataType = createEDataType(ISTRING);
@@ -546,20 +677,27 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
     setNsURI(eNS_URI);
 
     // Obtain other dependent packages
-    WSDLPackageImpl theWSDLPackage = (WSDLPackageImpl)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI);
+    WSDLPackage theWSDLPackage = (WSDLPackage)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI);
 
     // Add supertypes to classes
     soapBindingEClass.getESuperTypes().add(theWSDLPackage.getExtensibilityElement());
+    soapBindingEClass.getESuperTypes().add(this.getISOAPBinding());
     soapBodyEClass.getESuperTypes().add(theWSDLPackage.getExtensibilityElement());
+    soapBodyEClass.getESuperTypes().add(this.getISOAPBody());
     soapHeaderBaseEClass.getESuperTypes().add(theWSDLPackage.getExtensibilityElement());
     soapFaultEClass.getESuperTypes().add(theWSDLPackage.getExtensibilityElement());
+    soapFaultEClass.getESuperTypes().add(this.getISOAPFault());
     soapOperationEClass.getESuperTypes().add(theWSDLPackage.getExtensibilityElement());
+    soapOperationEClass.getESuperTypes().add(this.getISOAPOperation());
     soapAddressEClass.getESuperTypes().add(theWSDLPackage.getExtensibilityElement());
+    soapAddressEClass.getESuperTypes().add(this.getISOAPAddress());
     soapHeaderFaultEClass.getESuperTypes().add(this.getSOAPHeaderBase());
+    soapHeaderFaultEClass.getESuperTypes().add(this.getISOAPHeaderFault());
     soapHeaderEClass.getESuperTypes().add(this.getSOAPHeaderBase());
+    soapHeaderEClass.getESuperTypes().add(this.getISOAPHeader());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(soapBindingEClass, SOAPBinding.class, "SOAPBinding", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(soapBindingEClass, SOAPBinding.class, "SOAPBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(
       getSOAPBinding_TransportURI(),
       ecorePackage.getEString(),
@@ -567,13 +705,15 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPBinding.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
       getSOAPBinding_Style(),
       ecorePackage.getEString(),
@@ -581,15 +721,17 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPBinding.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(soapBodyEClass, SOAPBody.class, "SOAPBody", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(soapBodyEClass, SOAPBody.class, "SOAPBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(
       getSOAPBody_Use(),
       ecorePackage.getEString(),
@@ -597,13 +739,15 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPBody.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
       getSOAPBody_NamespaceURI(),
       ecorePackage.getEString(),
@@ -611,35 +755,40 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPBody.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
-      getSOAPBody_EncodingStyles(),
+      getSOAPBody_EEncodingStyles(),
       this.getIString(),
-      "encodingStyles",
+      "eEncodingStyles",
       null,
       0,
       -1,
+      SOAPBody.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEReference(
-      getSOAPBody_Parts(),
+      getSOAPBody_EParts(),
       theWSDLPackage.getPart(),
       null,
-      "parts",
+      "eParts",
       null,
       0,
       -1,
+      SOAPBody.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
@@ -647,9 +796,10 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       IS_RESOLVE_PROXIES,
       !IS_UNSETTABLE,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(soapHeaderBaseEClass, SOAPHeaderBase.class, "SOAPHeaderBase", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(soapHeaderBaseEClass, SOAPHeaderBase.class, "SOAPHeaderBase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(
       getSOAPHeaderBase_Use(),
       ecorePackage.getEString(),
@@ -657,13 +807,15 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPHeaderBase.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
       getSOAPHeaderBase_NamespaceURI(),
       ecorePackage.getEString(),
@@ -671,35 +823,40 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPHeaderBase.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
-      getSOAPHeaderBase_EncodingStyles(),
+      getSOAPHeaderBase_EEncodingStyles(),
       this.getIString(),
-      "encodingStyles",
+      "eEncodingStyles",
       null,
       0,
       -1,
+      SOAPHeaderBase.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEReference(
-      getSOAPHeaderBase_Message(),
+      getSOAPHeaderBase_EMessage(),
       theWSDLPackage.getMessage(),
       null,
-      "message",
+      "eMessage",
       null,
       1,
       1,
+      SOAPHeaderBase.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
@@ -707,15 +864,17 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       IS_RESOLVE_PROXIES,
       !IS_UNSETTABLE,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEReference(
-      getSOAPHeaderBase_Part(),
+      getSOAPHeaderBase_EPart(),
       theWSDLPackage.getPart(),
       null,
-      "part",
+      "ePart",
       null,
       1,
       1,
+      SOAPHeaderBase.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
@@ -723,9 +882,25 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       IS_RESOLVE_PROXIES,
       !IS_UNSETTABLE,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(soapFaultEClass, SOAPFault.class, "SOAPFault", !IS_ABSTRACT, !IS_INTERFACE);
+    EOperation op = addEOperation(soapHeaderBaseEClass, theWSDLPackage.getQName(), "getMessage", 0, 1);
+
+    op = addEOperation(soapHeaderBaseEClass, null, "setMessage");
+    addEParameter(op, theWSDLPackage.getQName(), "message", 0, 1);
+
+    op = addEOperation(soapHeaderBaseEClass, this.getIString(), "getPart", 0, 1);
+
+    op = addEOperation(soapHeaderBaseEClass, null, "setPart");
+    addEParameter(op, this.getIString(), "part", 0, 1);
+
+    op = addEOperation(soapHeaderBaseEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1);
+
+    op = addEOperation(soapHeaderBaseEClass, null, "setEncodingStyles");
+    addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1);
+
+    initEClass(soapFaultEClass, SOAPFault.class, "SOAPFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(
       getSOAPFault_Use(),
       ecorePackage.getEString(),
@@ -733,13 +908,15 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPFault.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
       getSOAPFault_NamespaceURI(),
       ecorePackage.getEString(),
@@ -747,29 +924,33 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPFault.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
-      getSOAPFault_EncodingStyles(),
+      getSOAPFault_EEncodingStyles(),
       this.getIString(),
-      "encodingStyles",
+      "eEncodingStyles",
       null,
       0,
       -1,
+      SOAPFault.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(soapOperationEClass, SOAPOperation.class, "SOAPOperation", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(soapOperationEClass, SOAPOperation.class, "SOAPOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(
       getSOAPOperation_SoapActionURI(),
       ecorePackage.getEString(),
@@ -777,13 +958,15 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPOperation.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(
       getSOAPOperation_Style(),
       ecorePackage.getEString(),
@@ -791,15 +974,17 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPOperation.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(soapAddressEClass, SOAPAddress.class, "SOAPAddress", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(soapAddressEClass, SOAPAddress.class, "SOAPAddress", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(
       getSOAPAddress_LocationURI(),
       ecorePackage.getEString(),
@@ -807,17 +992,19 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       1,
+      SOAPAddress.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
       !IS_ID,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
 
-    initEClass(soapHeaderFaultEClass, SOAPHeaderFault.class, "SOAPHeaderFault", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(soapHeaderFaultEClass, SOAPHeaderFault.class, "SOAPHeaderFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(soapHeaderEClass, SOAPHeader.class, "SOAPHeader", !IS_ABSTRACT, !IS_INTERFACE);
+    initEClass(soapHeaderEClass, SOAPHeader.class, "SOAPHeader", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(
       getSOAPHeader_HeaderFaults(),
       this.getSOAPHeaderFault(),
@@ -826,6 +1013,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       0,
       -1,
+      SOAPHeader.class,
       !IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
@@ -833,10 +1021,76 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       !IS_RESOLVE_PROXIES,
       !IS_UNSETTABLE,
       IS_UNIQUE,
-      !IS_DERIVED);
+      !IS_DERIVED,
+      IS_ORDERED);
+
+    initEClass(
+      isoapBindingEClass,
+      javax.wsdl.extensions.soap.SOAPBinding.class,
+      "ISOAPBinding",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(
+      isoapAddressEClass,
+      javax.wsdl.extensions.soap.SOAPAddress.class,
+      "ISOAPAddress",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(
+      isoapBodyEClass,
+      javax.wsdl.extensions.soap.SOAPBody.class,
+      "ISOAPBody",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
+
+    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1);
+
+    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getParts", 0, 1);
+
+    initEClass(
+      isoapFaultEClass,
+      javax.wsdl.extensions.soap.SOAPFault.class,
+      "ISOAPFault",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(
+      isoapOperationEClass,
+      javax.wsdl.extensions.soap.SOAPOperation.class,
+      "ISOAPOperation",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(
+      isoapHeaderFaultEClass,
+      javax.wsdl.extensions.soap.SOAPHeaderFault.class,
+      "ISOAPHeaderFault",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(
+      isoapHeaderEClass,
+      javax.wsdl.extensions.soap.SOAPHeader.class,
+      "ISOAPHeader",
+      IS_ABSTRACT,
+      IS_INTERFACE,
+      !IS_GENERATED_INSTANCE_CLASS);
+
+    op = addEOperation(isoapHeaderEClass, theWSDLPackage.getIList(), "getSOAPHeaderFaults", 0, 1);
+
+    op = addEOperation(isoapHeaderEClass, null, "addSOAPHeaderFault");
+    addEParameter(op, this.getISOAPHeaderFault(), "soapHeaderFault", 0, 1);
 
     // Initialize data types
-    initEDataType(iStringEDataType, String.class, "IString", IS_SERIALIZABLE);
+    initEDataType(iStringEDataType, String.class, "IString", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

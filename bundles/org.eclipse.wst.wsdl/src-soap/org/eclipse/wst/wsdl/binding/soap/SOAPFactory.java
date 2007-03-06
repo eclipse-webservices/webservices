@@ -30,7 +30,7 @@ public interface SOAPFactory extends EFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  SOAPFactory eINSTANCE = new org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFactoryImpl();
+  SOAPFactory eINSTANCE = org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFactoryImpl.init();
 
   /**
    * Returns a new object of class '<em>Binding</em>'.
@@ -104,12 +104,12 @@ public interface SOAPFactory extends EFactory
    */
   SOAPHeader createSOAPHeader();
 
-  /*
+  /**
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the package supported by this factory.
-   * @generated NOT
+   * @generated
    */
-  //SOAPPackage getSOAPPackage();
+  SOAPPackage getSOAPPackage();
 } //SOAPFactory

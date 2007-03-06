@@ -130,6 +130,41 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl
         return createSOAPHeaderAdapter();
       }
 
+      public Object caseISOAPBinding(javax.wsdl.extensions.soap.SOAPBinding object)
+      {
+        return createISOAPBindingAdapter();
+      }
+
+      public Object caseISOAPAddress(javax.wsdl.extensions.soap.SOAPAddress object)
+      {
+        return createISOAPAddressAdapter();
+      }
+
+      public Object caseISOAPBody(javax.wsdl.extensions.soap.SOAPBody object)
+      {
+        return createISOAPBodyAdapter();
+      }
+
+      public Object caseISOAPFault(javax.wsdl.extensions.soap.SOAPFault object)
+      {
+        return createISOAPFaultAdapter();
+      }
+
+      public Object caseISOAPOperation(javax.wsdl.extensions.soap.SOAPOperation object)
+      {
+        return createISOAPOperationAdapter();
+      }
+
+      public Object caseISOAPHeaderFault(javax.wsdl.extensions.soap.SOAPHeaderFault object)
+      {
+        return createISOAPHeaderFaultAdapter();
+      }
+
+      public Object caseISOAPHeader(javax.wsdl.extensions.soap.SOAPHeader object)
+      {
+        return createISOAPHeaderAdapter();
+      }
+
       public Object caseWSDLElement(WSDLElement object)
       {
         return createWSDLElementAdapter();
@@ -280,6 +315,111 @@ public class SOAPAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSOAPHeaderAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.soap.SOAPBinding <em>ISOAP Binding</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.soap.SOAPBinding
+   * @generated
+   */
+  public Adapter createISOAPBindingAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.soap.SOAPAddress <em>ISOAP Address</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.soap.SOAPAddress
+   * @generated
+   */
+  public Adapter createISOAPAddressAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.soap.SOAPBody <em>ISOAP Body</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.soap.SOAPBody
+   * @generated
+   */
+  public Adapter createISOAPBodyAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.soap.SOAPFault <em>ISOAP Fault</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.soap.SOAPFault
+   * @generated
+   */
+  public Adapter createISOAPFaultAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.soap.SOAPOperation <em>ISOAP Operation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.soap.SOAPOperation
+   * @generated
+   */
+  public Adapter createISOAPOperationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.soap.SOAPHeaderFault <em>ISOAP Header Fault</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.soap.SOAPHeaderFault
+   * @generated
+   */
+  public Adapter createISOAPHeaderFaultAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.soap.SOAPHeader <em>ISOAP Header</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.soap.SOAPHeader
+   * @generated
+   */
+  public Adapter createISOAPHeaderAdapter()
   {
     return null;
   }
