@@ -58,9 +58,8 @@ public class XSDGraphViewerDialog extends PopupDialog
 
   protected Control createDialogArea(Composite parent)
   {
-    Composite comp = (Composite)super.createDialogArea(parent);
     viewer = new ScrollingGraphicalViewer();
-    Composite c = new Composite(comp, SWT.NONE);
+    Composite c = new Composite(parent, SWT.NONE);
     c.setBackground(ColorConstants.white);
     c.setLayout(new FillLayout());
 
@@ -76,7 +75,7 @@ public class XSDGraphViewerDialog extends PopupDialog
     rootContentEditPart.setModel(model);
     viewer.setContents(rootContentEditPart);
 
-    return comp;
+    return c;
   }
 
   private void setModel(Object model)
