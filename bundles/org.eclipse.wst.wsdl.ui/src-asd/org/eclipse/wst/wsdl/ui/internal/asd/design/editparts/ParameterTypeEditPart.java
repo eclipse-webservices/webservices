@@ -23,6 +23,7 @@ import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.MouseMotionListener.Stub;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -36,6 +37,7 @@ import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.TypeReferenceDirectEditManager;
@@ -46,8 +48,9 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.W11OpenExternalEditorHelper;
-
-import org.eclipse.draw2d.MouseMotionListener.Stub;
+import org.eclipse.wst.wsdl.ui.internal.util.XSDGraphViewerDialog;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDTypeDefinition;
 
 public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHandler, INamedEditPart
 {   
@@ -279,7 +282,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 		public void mousePressed(MouseEvent me) {
 			Point pointer = me.getLocation();
-			openExternalEditor(pointer);
+      showXSDDialog(pointer);
 		}
 	}
 
@@ -387,18 +390,36 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 		return false;
 	}
+  
+  private void showXSDDialog(Point point) {
+    Rectangle linkFigBounds = getLinkFigureBounds();
+    if (linkFigBounds == null) {
+      return;
+    }
 
-	private void openExternalEditor(Point point) {
-		Rectangle linkFigBounds = getLinkFigureBounds();
-		if (linkFigBounds == null || getExternalEditorOpener() == null) {
-			return;
-		}
+    Rectangle testbounds = new Rectangle(linkFigBounds.x, linkFigBounds.y, 0, linkFigBounds.height);
 
-		Rectangle testbounds = new Rectangle(linkFigBounds.x, linkFigBounds.y, 0, linkFigBounds.height);
-
-		if (getExternalEditorOpener().linkApplicable() && pointerInRange(testbounds, point)) {
-			// Open in XSD Editor
-			getExternalEditorOpener().openExternalEditor();				  
-		}
-	}
+    if (pointerInRange(testbounds, point)) {
+      W11ParameterForPart param = (W11ParameterForPart)getModel();
+      Object xsdModel = null;
+      String title = null;
+      String info = null;
+      if (param.isType()) {
+        XSDTypeDefinition type = ((Part)param.getTarget()).getTypeDefinition();
+        xsdModel = type;
+        title = type.getName();
+        info = type.getTargetNamespace(); 
+      }
+      else {
+        XSDElementDeclaration elem = ((Part)param.getTarget()).getElementDeclaration();
+        xsdModel = elem;
+        title = elem.getName();
+        info = elem.getTargetNamespace(); 
+      }
+      XSDGraphViewerDialog dialog = new XSDGraphViewerDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title, info, xsdModel);
+      dialog.setOpenExternalEditor(getExternalEditorOpener());
+      dialog.create();
+      dialog.open();
+    }
+  }
 }
