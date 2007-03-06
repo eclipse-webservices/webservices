@@ -10,8 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.asd.util.EndPointComparator;
 
 public class ServiceColumn extends AbstractModelCollection {
 	public ServiceColumn(IDescription description) {
@@ -19,7 +27,10 @@ public class ServiceColumn extends AbstractModelCollection {
 	}
 	
 	public ITreeElement[] getChildren() {
-		Object array[] = ((IDescription)model).getServices().toArray();
+		List services = ((IDescription)model).getServices();
+		Collections.sort(services, new ServiceComparator());
+		Object array[] = services.toArray();
+		
 		ITreeElement treeElement[] = new ITreeElement[array.length];
 		for (int index = 0; index < array.length; index++) {
 			treeElement[index] = (ITreeElement) array[index];
@@ -40,4 +51,31 @@ public class ServiceColumn extends AbstractModelCollection {
 	public String getText() {
 		return "definition"; //$NON-NLS-1$
 	}
+	
+	private class ServiceComparator implements Comparator {
+		public int compare(Object o1, Object o2) {
+			if (o1 instanceof IService && o2 instanceof IService) {
+				IEndPoint endPoint1 = getFirstAssociatedEndPoint((IService) o1);
+				IEndPoint endPoint2 = getFirstAssociatedEndPoint((IService) o2);
+				
+				EndPointComparator comparator = new EndPointComparator();
+				return comparator.compare(endPoint1, endPoint2);
+			}
+			
+			return 0;
+		}
+		
+		private IEndPoint getFirstAssociatedEndPoint(IService service) {
+			Iterator endPoints= service.getEndPoints().iterator();
+			
+			while (endPoints.hasNext()) {
+				IEndPoint tempEndPoint = (IEndPoint) endPoints.next();
+				if (tempEndPoint.getBinding() != null) {
+					return tempEndPoint;
+				}
+			}
+			
+			return null;
+		}
+  }
 }

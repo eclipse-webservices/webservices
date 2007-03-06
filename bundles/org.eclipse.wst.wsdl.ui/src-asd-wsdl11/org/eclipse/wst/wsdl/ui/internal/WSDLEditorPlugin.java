@@ -71,7 +71,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
 	public ExtensionsSchemasRegistry getExtensionsSchemasRegistry() {
 		if (registry == null) {
 			registry = new ExtensionsSchemasRegistry("org.eclipse.wst.wsdl.ui.extensionCategories"); //$NON-NLS-1$
-            registry.__internalSetDeprecatedExtensionId("org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription");
+            registry.__internalSetDeprecatedExtensionId("org.eclipse.wst.wsdl.ui.ExtensionsSchemasDescription"); //$NON-NLS-1$
             registry.setPrefStore(WSDLEditorPlugin.getInstance().getPreferenceStore() );
 		}
 		
@@ -280,7 +280,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     // WSDLPreferencePage prefs
     store.setDefault(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE, DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
     store.setDefault(Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING, false); //$NON-NLS-1$
-    store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false);	// TODO: Externalize //$NON-NLS-1$
+    store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false); //$NON-NLS-1$
     // Do we need this preference below?  Look at WSDLPreferencePage.java
 //    store.setDefault("Defualt Location:", "http://www.example.com");
   }

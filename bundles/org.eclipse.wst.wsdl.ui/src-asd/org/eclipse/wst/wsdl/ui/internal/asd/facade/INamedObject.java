@@ -11,9 +11,8 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.facade;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
-public interface INamedObject extends IASDObject, ITreeElement
+public interface INamedObject extends IASDObject
 {  
 	public String getName();
   

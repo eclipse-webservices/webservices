@@ -59,7 +59,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ASDEditPartFactory;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ASDContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.asd.properties.sections.ASDTabbedPropertySheetPage;
-import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.CommonMultiPageEditor;
 
 public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
@@ -319,6 +318,4 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
 
 	  super.dispose();
   }
-  
-  public abstract IOpenExternalEditorHelper getOpenExternalEditorHelper();
 }

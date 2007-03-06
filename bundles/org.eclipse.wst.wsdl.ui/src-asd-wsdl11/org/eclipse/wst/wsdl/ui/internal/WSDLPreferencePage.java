@@ -65,7 +65,7 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     composite.setLayoutData(data1);
 	
 	String namespaceLabel = Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE;  //$NON-NLS-1$
-    StringFieldEditor targetNamespace = new StringFieldEditor(namespaceLabel, namespaceLabel, composite); // Externalize
+    StringFieldEditor targetNamespace = new StringFieldEditor(namespaceLabel, namespaceLabel, composite);
     GridLayout compositeLayout = (GridLayout)composite.getLayout();
     compositeLayout.marginWidth = 5;   // Default value
     compositeLayout.numColumns = 2;
@@ -77,7 +77,7 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
 	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(generateLabel, generateLabel, parent);
 	addField(generateBindingOnSave);
     
-	String showGenerateDialogLabel = Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE;   // TODO: Externalize //$NON-NLS-1$
+	String showGenerateDialogLabel = Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE; //$NON-NLS-1$
 	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(showGenerateDialogLabel, showGenerateDialogLabel, parent);
 	addField(showGenerateDialog);
 

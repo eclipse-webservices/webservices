@@ -27,6 +27,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BoxComponentFigure;
 //import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BaseLinkIconFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedbackHandler
 {
@@ -54,7 +55,11 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
 		
 		outer.setLayoutManager(new ToolbarLayout(true));
 	    boxFigure = (BoxComponentFigure) super.createFigure();
-	    boxFigure.getLabel().setIcon(((IInterface) getModel()).getImage());
+	    
+	    if (getModel() instanceof ITreeElement) {
+	    	boxFigure.getLabel().setIcon(((ITreeElement) getModel()).getImage());	
+	    }
+	    
 	    boxFigure.setBackgroundColor(ColorConstants.orange);
 	    boxFigure.setBorder(new LineBorder(1));
 	    ToolbarLayout toolbarLayout = new ToolbarLayout(false);

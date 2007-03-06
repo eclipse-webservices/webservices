@@ -26,6 +26,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingConten
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 // This class is used to represent a BindingOperation, BindingInput, BindingOutput and BindingFault
 //
@@ -59,18 +60,21 @@ public class BindingContentEditPart extends BaseEditPart
 	  if (getModel() instanceof IBindingOperation)
 	  {  
 		  IBindingOperation bindingOperation = (IBindingOperation) getModel();
-		  label.setIcon(bindingOperation.getImage());
+
+		  if (bindingOperation instanceof ITreeElement) {
+			  label.setIcon(((ITreeElement) bindingOperation).getImage());
+		  }
 //		  label.setText(bindingOperation.getName());
 	  }
 	  else if (getModel() instanceof IBindingMessageReference)
 	  {
 		  IBindingMessageReference messageRef = (IBindingMessageReference) getModel();
-		  label.setIcon(WSDLEditorPlugin.getInstance().getImage("icons/bind_asct_val_obj.gif"));
+		  label.setIcon(WSDLEditorPlugin.getInstance().getImage("icons/bind_asct_val_obj.gif")); //$NON-NLS-1$
 //		  label.setIcon(messageRef.getImage());
 //		  label.setText(messageRef.getName());
 	  }
 	  else if (getModel() instanceof BindingContentPlaceHolder) {
-		  label.setIcon(WSDLEditorPlugin.getInstance().getImage("icons/bind_asct_val_not_obj.gif"));
+		  label.setIcon(WSDLEditorPlugin.getInstance().getImage("icons/bind_asct_val_not_obj.gif")); //$NON-NLS-1$
 	  }
 
 	  super.refreshVisuals();    

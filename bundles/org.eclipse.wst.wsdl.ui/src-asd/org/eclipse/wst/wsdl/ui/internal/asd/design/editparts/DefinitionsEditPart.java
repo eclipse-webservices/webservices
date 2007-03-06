@@ -44,7 +44,7 @@ public class DefinitionsEditPart extends BaseEditPart {
 	    contentPane = new Figure();
 	    panel.add(contentPane);
 
-        messageLabel = new Label("");
+        messageLabel = new Label(""); //$NON-NLS-1$
         contentPane.add(messageLabel);
       
 	    ToolbarLayout layout = new ToolbarLayout(true);
@@ -122,7 +122,7 @@ public class DefinitionsEditPart extends BaseEditPart {
 
       if (hasChildren)
       {
-        messageLabel.setText("");
+        messageLabel.setText(""); //$NON-NLS-1$
         if (contentPane.getChildren().contains(messageLabel))
           contentPane.remove(messageLabel);
       }

@@ -154,11 +154,11 @@ public class W11TopLevelElementCommand extends Command
   {
     Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
     String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
-    if (charSet == null || charSet.trim().equals(""))
+    if (charSet == null || charSet.trim().equals("")) //$NON-NLS-1$
     {
-      charSet = "UTF-8";
+      charSet = "UTF-8"; //$NON-NLS-1$
     }
-    ProcessingInstruction xmlDeclaration = document.createProcessingInstruction(XML, "version=\"1.0\" encoding=\"" + charSet + "\"");
+    ProcessingInstruction xmlDeclaration = document.createProcessingInstruction(XML, "version=\"1.0\" encoding=\"" + charSet + "\""); //$NON-NLS-1$ //$NON-NLS-2$
     return xmlDeclaration;
     
   }
@@ -166,12 +166,12 @@ public class W11TopLevelElementCommand extends Command
   {
     String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE);
 
-    if (!namespace.endsWith("/"))
+    if (!namespace.endsWith("/")) //$NON-NLS-1$
     {
-      namespace = namespace.concat("/");
+      namespace = namespace.concat("/"); //$NON-NLS-1$
     }
 
-    namespace += getFileName(definition) + "/";
+    namespace += getFileName(definition) + "/"; //$NON-NLS-1$
 
     return namespace;
 

@@ -272,7 +272,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 	}
 	
 	public String getText() {
-		return "definition";
+		return "definition"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {

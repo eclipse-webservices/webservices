@@ -80,7 +80,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
   {
     if (o instanceof Node)
     {
-      return new RemoveExtensionNodeCommand("remove", (Node)o);
+      return new RemoveExtensionNodeCommand("remove", (Node)o); //$NON-NLS-1$
     }  
     return null;
   }
@@ -246,7 +246,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
       {
         String namespace = ((XSDElementDeclaration) element).getTargetNamespace();
         String name = ((XSDElementDeclaration) element).getName();
-        ExtensiblityElementFilter filter = (ExtensiblityElementFilter) WSDLEditorPlugin.getInstance().getExtensiblityElementFilterRegistry().getProperty(namespace, "");
+        ExtensiblityElementFilter filter = (ExtensiblityElementFilter) WSDLEditorPlugin.getInstance().getExtensiblityElementFilterRegistry().getProperty(namespace, ""); //$NON-NLS-1$
         if (filter != null)
         {
           return filter.isValidContext(hostElement, name);

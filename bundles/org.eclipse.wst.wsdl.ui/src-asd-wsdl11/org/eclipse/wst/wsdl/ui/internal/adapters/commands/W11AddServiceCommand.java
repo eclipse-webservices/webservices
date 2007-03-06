@@ -37,7 +37,7 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand implements I
 			
 			PortGenerator portGenerator = new PortGenerator(service);
 			portGenerator.setContentGenerator(new SOAPContentGenerator());
-			portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort"));
+			portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort")); //$NON-NLS-1$
 			portGenerator.generatePort();
 			
 			formatChild(service.getElement());

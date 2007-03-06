@@ -28,17 +28,17 @@ public class WSDLReferencesSearchGroup extends ReferencesSearchGroup  {
     	
     	fFindReferencesAction= new WSDLFindReferencesAction(fEditor);
         fFindReferencesAction.setText(SearchMessages.Search_FindDeclarationAction_label);
-        fFindReferencesAction.setActionDefinitionId("SEARCH_REFERENCES_IN_WORKSPACE");
+        fFindReferencesAction.setActionDefinitionId("SEARCH_REFERENCES_IN_WORKSPACE"); //$NON-NLS-1$
         //fEditor.setAction("SearchReferencesInWorkspace", fFindReferencesAction); //$NON-NLS-1$
 
         fFindReferencesInProjectAction= new WSDLFindReferencesInProjectAction(fEditor);
         fFindReferencesInProjectAction.setText(SearchMessages.Search_FindDeclarationsInProjectAction_label);        
-        fFindReferencesInProjectAction.setActionDefinitionId("SEARCH_REFERENCES_IN_PROJECT");
+        fFindReferencesInProjectAction.setActionDefinitionId("SEARCH_REFERENCES_IN_PROJECT"); //$NON-NLS-1$
         //fEditor.setAction("SearchReferencesInProject", fFindReferencesInProjectAction); //$NON-NLS-1$
     
         fFindReferencesInWorkingSetAction= new WSDLFindReferencesInWorkingSetAction(fEditor);
         fFindReferencesInWorkingSetAction.setText(SearchMessages.Search_FindDeclarationsInWorkingSetAction_label);         
-        fFindReferencesInWorkingSetAction.setActionDefinitionId(".SEARCH_REFERENCES_IN_WORKING_SET");
+        fFindReferencesInWorkingSetAction.setActionDefinitionId(".SEARCH_REFERENCES_IN_WORKING_SET"); //$NON-NLS-1$
         //fEditor.setAction("SearchReferencesInWorkingSet", fFindReferencesInWorkingSetAction); //$NON-NLS-1$
     }
 }

@@ -87,7 +87,7 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
               //
               // TODO (cs) how come the schema says their ok but the validator doesn't like them?
               //
-              result = !name.equals("required");
+              result = !name.equals("required"); //$NON-NLS-1$
             }  
             else
             {

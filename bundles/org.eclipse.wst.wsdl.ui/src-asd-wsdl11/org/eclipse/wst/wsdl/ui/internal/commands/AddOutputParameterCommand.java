@@ -84,11 +84,6 @@ public class AddOutputParameterCommand extends AddBaseParameterCommand {
 		return newWSDLPartName;
 	}
 	
-	// TODO: remove this method and use getMessageReference() instead
-	public Output getOutput() {
-		return output;
-	}
-	
 	public MessageReference getMessageReference() {
 		return output;
 	}

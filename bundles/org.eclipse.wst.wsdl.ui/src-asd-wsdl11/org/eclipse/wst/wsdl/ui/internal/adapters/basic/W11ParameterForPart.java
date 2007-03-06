@@ -11,13 +11,12 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.ContentOutline;
-import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -28,7 +27,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingElementAc
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetExistingTypeAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewElementAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewTypeAction;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetElementCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
@@ -40,11 +38,8 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
-import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
-import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
-import org.eclipse.xsd.XSDElementDeclaration;
 
 
 public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
@@ -76,7 +71,7 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
   }
   
   private String getNoNameSpecifiedString() {
-	  return "";
+	  return ""; //$NON-NLS-1$
   }
 
   public String getComponentNameQualifier()
@@ -91,49 +86,8 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
     }
     else
     {  
-      return "(no namespace specified)";
+      return ""; //$NON-NLS-1$
     }  
-  }
-  
-  public String getPreview() {
-	  String preview = ""; //$NON-NLS-1$
-	  
-//      parameters = new ArrayList();
-//      otherThingsToListenTo = new ArrayList();
-      WSDLVisitorForParameters visitorForParameters = new WSDLVisitorForParameters();
-      visitorForParameters.visitMessage((Message) getPart().eContainer());
-      
-      Iterator it = visitorForParameters.concreteComponents.iterator();
-      while (it.hasNext()) {
-    	  String stringItem = null;
-    	  Object item = it.next();
-    	  if (item instanceof XSDElementDeclaration) {
-    		  XSDElementDeclaration xsdElement = (XSDElementDeclaration) item;
-    		  xsdElement = xsdElement.getResolvedElementDeclaration();
-    		  if (xsdElement.getTypeDefinition() != null) {
-    			  stringItem = xsdElement.getTypeDefinition().getName();
-    		  }
-     	  }
-    	  else if (item instanceof XSDAttributeUse) {
-    		  stringItem = ((XSDAttributeUse) item).getAttributeDeclaration().getName();
-    	  }
-    	  
-    	  else if (item instanceof Part) {
-    		  if (((Part) item).getTypeDefinition() != null) {
-    			  stringItem = ((Part) item).getTypeDefinition().getName();
-    		  }
-    	  }
-    	  
-    	  if (stringItem != null) {
-    		  preview = preview + stringItem + ", "; //$NON-NLS-1$
-    	  }
-      }
-      
-      if (preview.length() -2 > 0) {
-    	  preview = preview.substring(0, preview.length() - 2);
-      }
-      
-      return "(" + preview + ")"; //$NON-NLS-1$ //$NON-NLS-2$
   }
   
   public String[] getActions(Object object) {
@@ -180,11 +134,6 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 	  return new String[0];
   }
 
-  public Command getDeleteCommand()
-  {
-	  return new W11DeleteCommand(this);
-  }
-
   public Object getOwner()
   {
 	  return owner;
@@ -198,17 +147,17 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
       
       if (getPart().getElementDeclaration() != null)
       {  
-        return WSDLEditorPlugin.getInstance().getImage("icons/element_obj.gif");
+        return WSDLEditorPlugin.getInstance().getImage("icons/element_obj.gif"); //$NON-NLS-1$
       }
       else if (getPart().getTypeDefinition() != null)
       {
         if (getPart().getTypeDefinition() instanceof XSDComplexTypeDefinition)
         {  
-          return WSDLEditorPlugin.getInstance().getImage("icons/complextype_obj.gif");
+          return WSDLEditorPlugin.getInstance().getImage("icons/complextype_obj.gif"); //$NON-NLS-1$
         }
         else
         {
-          return WSDLEditorPlugin.getInstance().getImage("icons/simpletype_obj.gif");
+          return WSDLEditorPlugin.getInstance().getImage("icons/simpletype_obj.gif"); //$NON-NLS-1$
         }  
       }
       else
@@ -218,7 +167,7 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
     }    
 	
 	public String getText() {
-		return "part";
+		return "part"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {
@@ -256,9 +205,9 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 		Part part = (Part) getTarget();
 		if (part.getElementDeclaration() == null && part.getTypeDefinition() == null) {
 			String[] args = new String[2];
-			args[0] = "element";
-			args[1] = "type";
-			String newString = getStringForKey("_UI_LABEL_OR_UNDEFINED_ARG2", args);
+			args[0] = "element"; //$NON-NLS-1$
+			args[1] = "type"; //$NON-NLS-1$
+			String newString = getStringForKey("_UI_LABEL_OR_UNDEFINED_ARG2", args); //$NON-NLS-1$
 			ModelDiagnosticInfo info = new ModelDiagnosticInfo(newString, ModelDiagnosticInfo.ERROR_TYPE, null);
 			errors.add(info);
 		}
@@ -267,13 +216,13 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 	}
 	
 	  private String getStringForKey(String key, Object[] args) {
-		  String newString = "";
+		  String newString = ""; //$NON-NLS-1$
 		  newString = Messages.getString(key, args);
 
 		  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
 		  if (object instanceof ProductCustomizationProvider) {
 			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			  String customizedString = "";
+			  String customizedString = ""; //$NON-NLS-1$
 			  if (args == null) {
 				  customizedString = productCustomizationProvider.getProductString(key);
 			  }
@@ -281,13 +230,13 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 				  customizedString = productCustomizationProvider.getProductString(key, args);
 			  }
 			  
-			  if (customizedString != null && !customizedString.equals("")) {
+			  if (customizedString != null && !customizedString.equals("")) { //$NON-NLS-1$
 				  newString = customizedString;
 			  }
 		  }
 
 		  if (newString == null) {
-			  newString = "";
+			  newString = ""; //$NON-NLS-1$
 		  }
 
 		  return newString;

@@ -39,7 +39,7 @@ public class AddExtensionElementCommand extends AddExtensionCommand
     
     Element newElement = doc.createElementNS(extensionsSchemaSpec.getNamespaceURI(), element.getName());
     
-    String prefix = addNamespaceDeclarationIfRequired(doc.getDocumentElement(), "p", extensionsSchemaSpec.getNamespaceURI());
+    String prefix = addNamespaceDeclarationIfRequired(doc.getDocumentElement(), "p", extensionsSchemaSpec.getNamespaceURI()); //$NON-NLS-1$
     newElement.setPrefix(prefix);
     parentElement.appendChild(newElement);
   }

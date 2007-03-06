@@ -224,7 +224,7 @@ public class NamespaceSection extends ASDAbstractSection {
 			IDescription description = (IDescription) obj;
 			String targetNS = description.getTargetNamespace();
 			String newPrefix = description.getTargetNamespacePrefix();            
-			prefixText.setText(newPrefix != null ? newPrefix : "");
+			prefixText.setText(newPrefix != null ? newPrefix : ""); //$NON-NLS-1$
 			
 			// set targetnamespace field and prefix field
 			if (targetNS != null)
@@ -233,7 +233,7 @@ public class NamespaceSection extends ASDAbstractSection {
 			}
       else
       {
-        targetNamespaceText.setText("");
+        targetNamespaceText.setText(""); //$NON-NLS-1$
       }
 			if (newPrefix != null)
 			{

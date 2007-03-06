@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.facade;
 
-import org.eclipse.gef.commands.Command;
-
 public interface IImport extends INamedObject {
 	public String getNamespace();
 	public String getNamespacePrefix();
 	public String getLocation();
 	
 	public IDescription getOwnerDescription();
-	public Command getDeleteCommand();
 }

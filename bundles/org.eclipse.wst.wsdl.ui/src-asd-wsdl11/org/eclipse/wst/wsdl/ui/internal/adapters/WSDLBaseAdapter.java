@@ -19,23 +19,26 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11RenameCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.w3c.dom.Element;
 
-public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionProvider {
+public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, ITreeElement, IActionProvider {
 	protected List listenerList = new ArrayList();
 	protected WSDLBaseAdapter owner;
 	
@@ -176,7 +179,39 @@ public class WSDLBaseAdapter extends AdapterImpl implements IASDObject, IActionP
 		return true;
 	}
   
-  public Object getOwner() {
-    return owner;
-  }
+	public Object getOwner() {
+		return owner;
+	}
+
+	public Command getDeleteCommand() {
+		return new W11DeleteCommand(this);
+	}
+
+	public List getDiagnosticMessages() {
+		return new ArrayList();
+	}
+
+	public ITreeElement[] getChildren() {
+		return null;
+	}
+
+	public ITreeElement getParent() {
+		return null;
+	}
+
+	public boolean hasChildren() {
+		return false;
+	}
+
+	public String getText() {
+		return ""; //$NON-NLS-1$
+	}
+
+	public Image getImage() {
+		return null;
+	}
+
+	public Image getSecondaryImage() {
+		return null;
+	}
 }

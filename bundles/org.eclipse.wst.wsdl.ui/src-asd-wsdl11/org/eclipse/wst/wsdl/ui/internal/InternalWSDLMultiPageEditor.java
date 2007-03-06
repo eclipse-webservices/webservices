@@ -103,7 +103,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	protected WSDLSelectionManagerSelectionListener fWSDLSelectionListener;
 
   private IStructuredModel structuredModel;
-  private final static String WSDL_EDITOR_MODE_EXTENSION_ID = "org.eclipse.wst.wsdl.ui.editorModes"; //$NON-NLS-N$  
+  private final static String WSDL_EDITOR_MODE_EXTENSION_ID = "org.eclipse.wst.wsdl.ui.editorModes"; //$NON-NLS-1$
   
   public IDescription buildModel(IFileEditorInput editorInput) {   
 	  try {
@@ -230,6 +230,9 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
         else if (type == IKeyboardDrag.class) {
 			return new KeyboardDragImpl();
 		}
+        else if (type == IOpenExternalEditorHelper.class) {
+        	return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
+        }
 		return super.getAdapter(type);
 	}
 	
@@ -479,14 +482,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    directEditAction.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(directEditAction);
 	  }
-	
-  /*
-   * @deprecated: rmah: remove the method below post WTP1.5.  Use getAdapter() method instead.
-   */
-  public IOpenExternalEditorHelper getOpenExternalEditorHelper() {
-    return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
-  }
-  
+
   private static final String DEFAULT_EDITOR_MODE_ID = "org.eclipse.wst.wsdl.ui.defaultEditorModeId"; //$NON-NLS-1$
   
   protected EditorModeManager createEditorModeManager()

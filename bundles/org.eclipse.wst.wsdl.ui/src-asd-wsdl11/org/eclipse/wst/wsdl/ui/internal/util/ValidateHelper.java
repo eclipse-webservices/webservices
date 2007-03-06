@@ -29,10 +29,10 @@ public class ValidateHelper
     {
       char ch0 = lang.charAt(0);
       if ((ch0 >= 'a' && ch0 <= 'z') || (ch0 >= 'A' && ch0 <= 'Z'))
-        return UIPlugin.getResourceString("_WARN_LANG_TOO_SHORT");
+        return UIPlugin.getResourceString("_WARN_LANG_TOO_SHORT"); //$NON-NLS-1$
       else
-        return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch0 + 
-        UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");          
+        return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch0 +  //$NON-NLS-1$
+        UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");           //$NON-NLS-1$
     }
     
     int offset;
@@ -43,8 +43,8 @@ public class ValidateHelper
       if (ch0 == 'i' || ch0 == 'I' || ch0 == 'x' || ch0 == 'X') 
         offset = 1;
       else
-        return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch0 + 
-        UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");
+        return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch0 +  //$NON-NLS-1$
+        UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END"); //$NON-NLS-1$
     }
     else
     {
@@ -53,18 +53,18 @@ public class ValidateHelper
         if ((ch1 >= 'a' && ch1 <= 'z') || (ch1 >= 'A' && ch1 <= 'Z'))
           offset = 2;
         else
-          return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch1 + 
-          UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");
+          return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch1 +  //$NON-NLS-1$
+          UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END"); //$NON-NLS-1$
       else
-        return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch0 + 
-        UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");
+        return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch0 +  //$NON-NLS-1$
+        UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END"); //$NON-NLS-1$
     }
 
     if (lang.length() > offset) 
     {
       char ch = lang.charAt(offset++);
       if (ch != '-') 
-        return UIPlugin.getResourceString("_WARN_HYPHEN_NEEDED") + Integer.toString(offset-1);        
+        return UIPlugin.getResourceString("_WARN_HYPHEN_NEEDED") + Integer.toString(offset-1);         //$NON-NLS-1$
       else 
       {
         while (true) 
@@ -72,19 +72,19 @@ public class ValidateHelper
           if (ch == '-') 
           {
             if (lang.length() == offset) 
-              return UIPlugin.getResourceString("_WARN_HYPHEN_ENDING");
+              return UIPlugin.getResourceString("_WARN_HYPHEN_ENDING"); //$NON-NLS-1$
             
             ch = lang.charAt(offset++);
             if ((ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z')) 
-              return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch + 
-              UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");
+              return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch +  //$NON-NLS-1$
+              UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END"); //$NON-NLS-1$
             
             if (lang.length() == offset)
               return null;
           } 
           else if ((ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z')) 
-            return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch + 
-            UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");             
+            return UIPlugin.getResourceString("_WARN_NAME_INVALID_CHAR") + ch +  //$NON-NLS-1$
+            UIPlugin.getResourceString("_UI_NAME_INVALID_CHAR_END");              //$NON-NLS-1$
           else if (lang.length() == offset)
             return null;
           ch = lang.charAt(offset++);
@@ -115,12 +115,12 @@ public class ValidateHelper
     }
     catch (NumberFormatException ex)
     {
-      return UIPlugin.getResourceString("_ERROR_MIN_NOT_POSITIVE");
+      return UIPlugin.getResourceString("_ERROR_MIN_NOT_POSITIVE"); //$NON-NLS-1$
     }
 
     if (min < 0) 
     {
-      return UIPlugin.getResourceString("_ERROR_MIN_NOT_POSITIVE");
+      return UIPlugin.getResourceString("_ERROR_MIN_NOT_POSITIVE"); //$NON-NLS-1$
     }
 
     try
@@ -128,7 +128,7 @@ public class ValidateHelper
       int max = Integer.parseInt(maxValue);
       if (min > max) 
       {
-        return UIPlugin.getResourceString("_ERROR_MIN_VALUE");
+        return UIPlugin.getResourceString("_ERROR_MIN_VALUE"); //$NON-NLS-1$
       }
     }
     catch (NumberFormatException ex)
@@ -165,12 +165,12 @@ public class ValidateHelper
     }
     catch (NumberFormatException ex)
     {
-      return UIPlugin.getResourceString("_ERROR_MAX_NOT_POSITIVE");
+      return UIPlugin.getResourceString("_ERROR_MAX_NOT_POSITIVE"); //$NON-NLS-1$
     }
 
     if (max < 0) 
     {
-      return UIPlugin.getResourceString("_ERROR_MAX_NOT_POSITIVE");
+      return UIPlugin.getResourceString("_ERROR_MAX_NOT_POSITIVE"); //$NON-NLS-1$
     }
 
     try
@@ -178,7 +178,7 @@ public class ValidateHelper
       int min = Integer.parseInt(minValue);
       if (max < min) 
       {
-        return UIPlugin.getResourceString("_ERROR_MAX_VALUE");
+        return UIPlugin.getResourceString("_ERROR_MAX_VALUE"); //$NON-NLS-1$
       }
     }
     catch (NumberFormatException ex)
@@ -198,12 +198,12 @@ public class ValidateHelper
 
     if (length == 0) 
     {
-      return Messages.getString("_WARN_NAME_MUST_CONTAIN_AT_LEAST_ONE_CHAR"); //$NON-NLS-1$
+      return Messages._WARN_NAME_MUST_CONTAIN_AT_LEAST_ONE_CHAR;
     }
     
     if (name.indexOf(" ") >= 0) //$NON-NLS-1$
     {
-      return(Messages.getString("_WARN_NAME_HAS_SPACE")); //$NON-NLS-1$
+      return Messages._WARN_NAME_HAS_SPACE;
     }
 
     int index = 0;
@@ -217,7 +217,7 @@ public class ValidateHelper
       } // end of if ()
       else
       {
-        return Messages.getString("_WARN_NAME_INVALID_FIRST"); //$NON-NLS-1$
+        return Messages._WARN_NAME_INVALID_FIRST;
       } // end of else
     }
     
@@ -229,7 +229,7 @@ public class ValidateHelper
       {
         if( !isXMLNameStart(character) )
         {
-          return Messages.getString("_WARN_NAME_INVALID_FIRST"); //$NON-NLS-1$
+          return Messages._WARN_NAME_INVALID_FIRST;
         }
       }
       else
@@ -245,8 +245,8 @@ public class ValidateHelper
           } // end of if ()
           else 
           {
-            return Messages.getString("_WARN_NAME_INVALID_CHAR") + character +  //$NON-NLS-1$
-            Messages.getString("_UI_NAME_INVALID_CHAR_END"); //$NON-NLS-1$
+            return Messages._WARN_NAME_INVALID_CHAR + character +
+            Messages._UI_NAME_INVALID_CHAR_END;
           } // end of else
         }
       }
@@ -301,7 +301,7 @@ public class ValidateHelper
   {
     if (text.indexOf('<') != -1 || text.indexOf('>') != -1)
     {
-      return UIPlugin.getResourceString("_WARN_ELEMENT_INVALID_CHAR");
+      return UIPlugin.getResourceString("_WARN_ELEMENT_INVALID_CHAR"); //$NON-NLS-1$
     }
     return null;
   }
@@ -313,7 +313,7 @@ public class ValidateHelper
   {
     if (value.indexOf('"') != -1 || value.indexOf('<') != -1 || value.indexOf('>') != -1)
     {
-      return UIPlugin.getResourceString("_WARN_ATTRIBUTE_INVALID_CHAR");
+      return UIPlugin.getResourceString("_WARN_ATTRIBUTE_INVALID_CHAR"); //$NON-NLS-1$
 
     }
     return null;
@@ -326,7 +326,7 @@ public class ValidateHelper
   {
     if (section.indexOf("]]>") != -1) //$NON-NLS-1$
     {
-      return UIPlugin.getResourceString("_WARN_CDATA_INVALID_STRING");
+      return UIPlugin.getResourceString("_WARN_CDATA_INVALID_STRING"); //$NON-NLS-1$
 
     }
     return null;
@@ -339,7 +339,7 @@ public class ValidateHelper
   {
     if (data.indexOf("?>") != -1) //$NON-NLS-1$
     {
-      return UIPlugin.getResourceString("_WARN_PROCESSING_INVALID_STRING");
+      return UIPlugin.getResourceString("_WARN_PROCESSING_INVALID_STRING"); //$NON-NLS-1$
 
     }
     return null;
@@ -354,7 +354,7 @@ public class ValidateHelper
         target.indexOf("xML") != -1 || target.indexOf("Xml") != -1 || target.indexOf("xMl") != -1 || //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         target.indexOf("xmL") != -1 || target.indexOf("xml") != -1)) //$NON-NLS-1$ //$NON-NLS-2$
     {
-      return UIPlugin.getResourceString("_WARN_PROCESSING_TARGET_INVALID_STRING");
+      return UIPlugin.getResourceString("_WARN_PROCESSING_TARGET_INVALID_STRING"); //$NON-NLS-1$
 
     }
     return checkXMLName(target);
@@ -367,7 +367,7 @@ public class ValidateHelper
   {
     if (comment.indexOf("--") != -1) //$NON-NLS-1$
     {
-      return UIPlugin.getResourceString("_WARN_COMMENT_INVALID_STRING");
+      return UIPlugin.getResourceString("_WARN_COMMENT_INVALID_STRING"); //$NON-NLS-1$
     }
     return null;
   }
@@ -386,7 +386,7 @@ public class ValidateHelper
     
     if (prefix.indexOf(" ") >= 0) //$NON-NLS-1$
     {
-      return(UIPlugin.getResourceString("_WARN_PREFIX_HAS_SPACE"));
+      return(UIPlugin.getResourceString("_WARN_PREFIX_HAS_SPACE")); //$NON-NLS-1$
     }
     
     for(int index = 0; index < length; index++)
@@ -395,7 +395,7 @@ public class ValidateHelper
 
       if(!isXMLPrefixChar(character))
       {
-        return UIPlugin.getString("_WARN_PREFIX_INVALID_CHAR", String.valueOf(character));
+        return UIPlugin.getString("_WARN_PREFIX_INVALID_CHAR", String.valueOf(character)); //$NON-NLS-1$
       }
     }
     return null;

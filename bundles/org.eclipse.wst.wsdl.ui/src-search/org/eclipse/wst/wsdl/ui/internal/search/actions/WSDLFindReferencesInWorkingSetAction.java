@@ -36,7 +36,7 @@ public class WSDLFindReferencesInWorkingSetAction extends WSDLFindReferencesActi
 		if ( workingSets == null || workingSets.length == 0)
 			// The user chooses nothing, no point to continue.
 			return;
-		String pattern = "";
+		String pattern = ""; //$NON-NLS-1$
 
 		WSDLBaseAdapter component = getWSDLNamedComponent();
 		IFile file = getCurrentFile();

@@ -57,7 +57,7 @@ public class SOAPSelectPartsDialog extends Dialog
     checkList.getControl().setLayoutData(gridData);
     checkList.setContentProvider(new InternalTreeContentProvider());
     checkList.setLabelProvider(new InternalLabelProvider());
-    checkList.setInput("");
+    checkList.setInput(""); //$NON-NLS-1$
     
     List list = body.getParts();
     checkList.setCheckedElements(list.toArray());     
@@ -86,7 +86,7 @@ public class SOAPSelectPartsDialog extends Dialog
     
     public Image getImage(Object element)
     {
-      return WSDLEditorPlugin.getInstance().getImage("icons/part_obj.gif");
+      return WSDLEditorPlugin.getInstance().getImage("icons/part_obj.gif"); //$NON-NLS-1$
     }
   }
   

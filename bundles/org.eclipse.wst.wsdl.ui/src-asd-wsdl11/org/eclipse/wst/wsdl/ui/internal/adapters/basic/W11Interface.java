@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.PortType;
@@ -19,7 +20,6 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOperationCommand;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddOperationAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
@@ -52,16 +52,12 @@ public class W11Interface extends WSDLBaseAdapter implements IInterface {
 		return new W11AddOperationCommand((PortType) target);
 	}
 	
-	public Command getDeleteCommand() {
-		return new W11DeleteCommand(this);
-	}
-	
 	public Image getImage() {
 		return WSDLEditorPlugin.getInstance().getImage("icons/porttype_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {
-		return "portType";
+		return "portType"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {

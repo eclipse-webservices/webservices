@@ -195,8 +195,8 @@ public class ImportSection extends ASDAbstractSection
 			}
 			else {
 				Element definitionElement = importObj.getEnclosingDefinition().getElement();
-				definitionElement.removeAttribute("xmlns:"+oldPrefixValue);
-				definitionElement.setAttribute("xmlns:" + prefixText.getText(), namespaceText.getText());
+				definitionElement.removeAttribute("xmlns:"+oldPrefixValue); //$NON-NLS-1$
+				definitionElement.setAttribute("xmlns:" + prefixText.getText(), namespaceText.getText()); //$NON-NLS-1$
 
 //				clearErrorMessage();
 				oldPrefixValue = prefixText.getText();
@@ -215,7 +215,7 @@ public class ImportSection extends ASDAbstractSection
 			IFile currentWSDLFile = ((IFileEditorInput) editor.getEditorInput()).getFile();
 
 			SelectSingleFileDialog dialog = new SelectSingleFileDialog(WSDLEditorPlugin.getShell(), null, true);
-			String [] filters = { "xsd", "wsdl" }; //$NON-NLS-1$
+			String [] filters = { "xsd", "wsdl" }; //$NON-NLS-1$ //$NON-NLS-2$
 			IFile [] excludedFiles = { currentWSDLFile };
 
 			dialog.addFilterExtensions(filters, excludedFiles);

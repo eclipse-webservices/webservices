@@ -110,7 +110,7 @@ public class ParameterSection extends NameSection {
 		}
 		
 		String name = ""; //$NON-NLS-1$
-		String typeName = "ParameterSection.java"; //$NON-NLS-1$
+		String typeName = ""; //$NON-NLS-1$
 		if (param != null) {
 			name = param.getName();
 			typeName = param.getComponentName();
@@ -219,7 +219,7 @@ public class ParameterSection extends NameSection {
         }
         else
         {
-          System.out.println("model" + getModel());
+          System.out.println("model" + getModel()); //$NON-NLS-1$
         }  
 		return parameterRefManager;
 	}

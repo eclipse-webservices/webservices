@@ -52,14 +52,10 @@ public class W11ParameterForElement extends WSDLBaseAdapter implements IParamete
     XSDTypeDefinition td = getXSDElementDeclaration().getTypeDefinition();
     
     if (anonymousType != null) {
-        compName = "**anonymous**"; 
+        compName = "**anonymous**";  //$NON-NLS-1$
     }
 
     return (td != null && td.getName() != null) ? td.getName() : compName;
-  }
-  
-  public String getPreview() {
-	  return ""; //$NON-NLS-1$
   }
 
   public String getComponentNameQualifier()
@@ -118,15 +114,15 @@ public class W11ParameterForElement extends WSDLBaseAdapter implements IParamete
 	}
 	
 	public String getText() {
-		return getParameterString() + " - element"; 
+		return getParameterString("element"); //$NON-NLS-1$
 	}
 	
-	  private String getParameterString() {
-		  String string = "";
+	  private String getParameterString(String txt) {
+		  String string = ""; //$NON-NLS-1$
 		  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
 		  if (object instanceof ProductCustomizationProvider) {
 			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			  String newString = productCustomizationProvider.getProductString("_UI_LABEL_PARAMETER");
+			  String newString = productCustomizationProvider.getProductString("_UI_LABEL_PARAMETER_ARG", new Object[]{txt}); //$NON-NLS-1$
 			  if (newString != null) {
 				  string = newString;
 			  }

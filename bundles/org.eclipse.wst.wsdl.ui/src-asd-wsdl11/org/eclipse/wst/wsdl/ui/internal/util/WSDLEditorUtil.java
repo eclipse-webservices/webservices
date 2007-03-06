@@ -273,12 +273,12 @@ public class WSDLEditorUtil extends WSDLConstants
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {            
-      if (localName.equals("schema") || localName.equals("definitions"))
+      if (localName.equals("schema") || localName.equals("definitions")) //$NON-NLS-1$ //$NON-NLS-2$
       {               
         int nAttributes = attributes.getLength();
         for (int i = 0; i < nAttributes; i++)
         {
-          if (attributes.getLocalName(i).equals("targetNamespace"))
+          if (attributes.getLocalName(i).equals("targetNamespace")) //$NON-NLS-1$
           {
             targetNamespaceURI = attributes.getValue(i);
             break;

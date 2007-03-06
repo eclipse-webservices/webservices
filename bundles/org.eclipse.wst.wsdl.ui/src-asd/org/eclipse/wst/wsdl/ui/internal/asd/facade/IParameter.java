@@ -26,14 +26,10 @@ public interface IParameter extends INamedObject
 //  String getKind();
 	public String getComponentName();
 	public String getComponentNameQualifier();
-	public String getPreview();
-  //? int getMinOccurs();
-  //? int getMaxOccurs();
 	
 	// TODO: rmah: Do these strings belong here???
     public static final String SET_NEW_ACTION_ID = "SetTypeAction_AddType"; //$NON-NLS-1$
 	public static final String SELECT_EXISTING_ACTION_ID = "SetTypeAction_ExistingType"; //$NON-NLS-1$
   
 	public Command getSetTypeCommand(String actionId);
-	public Command getDeleteCommand();
 }

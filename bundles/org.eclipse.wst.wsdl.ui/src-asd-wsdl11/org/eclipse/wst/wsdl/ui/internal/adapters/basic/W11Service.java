@@ -12,25 +12,22 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddEndPointCommand;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddEndPointAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.asd.util.EndPointComparator;
 
 public class W11Service extends WSDLBaseAdapter implements IService {
 
@@ -41,9 +38,9 @@ public class W11Service extends WSDLBaseAdapter implements IService {
 		while (it.hasNext()) {
 			endPoints.add(it.next());
 		}
-		
-		Collections.sort(endPoints, new EndPointComparator());
+
 		populateAdapterList(endPoints, adapterList);
+		Collections.sort(adapterList, new EndPointComparator());
 
 		return adapterList;
 	}
@@ -75,16 +72,12 @@ public class W11Service extends WSDLBaseAdapter implements IService {
       return new W11AddEndPointCommand((Service)target);
     }
     
-    public Command getDeleteCommand() {
-    	return new W11DeleteCommand(this);
-    }
-    
 	public Image getImage() {
 		return WSDLEditorPlugin.getInstance().getImage("icons/service_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {
-		return "service";
+		return "service"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {
@@ -109,40 +102,4 @@ public class W11Service extends WSDLBaseAdapter implements IService {
 	public ITreeElement getParent() {
 		return null;
 	}
-    
-	private class EndPointComparator implements Comparator {
-	  public int compare(Object o1, Object o2) {
-	    if (o1 instanceof Port && o2 instanceof Port) {
-	      Binding binding1 = ((Port) o1).getEBinding();
-	      Binding binding2 = ((Port) o2).getEBinding();
-
-	      if (binding1 != null && binding2 == null) {
-	        return -1;
-	      }
-	      else if (binding1 == null && binding2 != null) {
-	        return 1;
-	      }
-	      else if (binding1 == null && binding2 == null) {
-	    	  return 0;
-	      }
-	      
-	      PortType portType1 = binding1.getEPortType();
-	      PortType portType2 = binding2.getEPortType();
-
-	      if (portType1 != null && portType2 != null) {
-	        String name1 = portType1.getQName().getLocalPart();
-	        String name2 = portType2.getQName().getLocalPart();
-	        return name1.compareTo(name2);
-	      }
-	      else if (portType1 != null && portType2 == null) {
-	        return -1;
-	      }
-	      else if (portType1 == null && portType2 != null) {
-	        return 1;
-	      }
-	    }
-
-	    return 0;
-	  }
-	}    
 }

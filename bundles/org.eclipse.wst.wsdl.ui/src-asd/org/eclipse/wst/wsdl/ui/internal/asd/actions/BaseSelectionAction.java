@@ -30,7 +30,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.contentoutline.ContentOutline;
-import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.AbstractModelCollection;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
@@ -131,10 +130,6 @@ public abstract class BaseSelectionAction extends SelectionAction
 	}
 	
     protected void performSelection(Object object) {
-		// TODO: We shouldn't know about WSDLBaseAdapter here....
-    	if (object instanceof WSDLBaseAdapter) {
-    		object = ((WSDLBaseAdapter) object).getTarget();
-    	}
 		if (!(object instanceof Notifier)) {
 			return;
 		}

@@ -16,6 +16,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDSchemaCommand;
 import org.eclipse.wst.xsd.ui.internal.common.commands.AddXSDElementCommand;
@@ -77,7 +78,7 @@ public class XSDComponentHelper {
 			XSDParticle newParticle = XSDFactory.eINSTANCE.createXSDParticle();
 			String name = NameUtil.getXSDElementName(baseName, modelGroup);
 			
-			AddXSDElementCommand command = new AddXSDElementCommand("Add XML Schema Element", modelGroup);
+			AddXSDElementCommand command = new AddXSDElementCommand(Messages._UI_ACTION_ADD_XML_SCHEMA_ELEMENT, modelGroup);
 			command.execute();
 			xsdElement = (XSDElementDeclaration) command.getAddedComponent();
 			xsdElement.setName(name);

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.facade;
 
+import org.eclipse.gef.commands.Command;
+
 public interface IType extends INamedObject {
 	public IDescription getOwnerDescription();
+	public Command getDeleteCommand();
 }

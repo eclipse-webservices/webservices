@@ -28,14 +28,12 @@ import org.eclipse.wst.xsd.ui.internal.editor.XSDElementReferenceEditManager;
 import org.eclipse.xsd.XSDSchema;
 
 public class W11SetElementCommand extends W11TopLevelElementCommand {
-	private Object parent;
+	private Part parent;
 	private String action;
 	private boolean continueApply;
-	
-	// TODO: rmah: signature of this method should changed post WTP 1.5.  Instead of taking in
-	// an "Object parent", it should be "Part parent".
-	public W11SetElementCommand(Object parent, String action) {
-        super(Messages._UI_ACTION_SET_ELEMENT, ((Part) parent).getEnclosingDefinition());
+
+	public W11SetElementCommand(Part parent, String action) {
+        super(Messages._UI_ACTION_SET_ELEMENT, parent.getEnclosingDefinition());
 		this.parent = parent;
 		this.action = action;
 	}
@@ -47,25 +45,21 @@ public class W11SetElementCommand extends W11TopLevelElementCommand {
 
 			ComponentReferenceEditManager componentReferenceEditManager = getComponentReferenceEditManager();
 			continueApply = true; 
-			if (parent instanceof Part)
+			if (action.equals(IParameter.SET_NEW_ACTION_ID))
 			{
-				Part part = (Part) parent;
-				if (action.equals(IParameter.SET_NEW_ACTION_ID))
-				{
-					ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
+				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getNewDialog());
 
-					// Set the reference to the new type
-					if (continueApply)
-						componentReferenceEditManager.modifyComponentReference(part, newValue);
-				}
-				else
-				{
-					ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
-					if (continueApply)
-						componentReferenceEditManager.modifyComponentReference(part, newValue);
-				}
-				formatChild(part.getElement());
+				// Set the reference to the new type
+				if (continueApply)
+					componentReferenceEditManager.modifyComponentReference(parent, newValue);
 			}
+			else
+			{
+				ComponentSpecification newValue = (ComponentSpecification)invokeDialog(componentReferenceEditManager.getBrowseDialog());
+				if (continueApply)
+					componentReferenceEditManager.modifyComponentReference(parent, newValue);
+			}
+			formatChild(parent.getElement());
 		}
 		finally {
 			endRecording(definition.getElement());

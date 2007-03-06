@@ -45,7 +45,7 @@ public class W11OpenImportAction extends BaseSelectionAction {
 					if (theImport != null) {
 						String location = theImport.getLocationURI();
 					
-						if (location == null || location.trim().equals(""))
+						if (location == null || location.trim().equals("")) //$NON-NLS-1$
 							enabled = false;
 					}
 			  }

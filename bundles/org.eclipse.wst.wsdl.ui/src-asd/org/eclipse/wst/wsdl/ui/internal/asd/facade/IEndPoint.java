@@ -17,8 +17,8 @@ public interface IEndPoint extends INamedObject
 	public IService getOwnerService();
 	public String getAddress();
 	public IBinding getBinding();
+	public String getProtocol();
   
 	public Command getSetBindingCommand(IBinding binding);
 	public Command getSetAddressCommand(String newAddress);
-	public Command getDeleteCommand();
 }

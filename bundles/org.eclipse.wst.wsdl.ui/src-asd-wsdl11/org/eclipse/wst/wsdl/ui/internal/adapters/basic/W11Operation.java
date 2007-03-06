@@ -31,7 +31,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddFaultParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOutputParameterCommand;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderMessageReferencesCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddInputAction;
@@ -157,10 +156,6 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 		return new W11ReorderMessageReferencesCommand(leftSibling, rightSibling, movingMessageRef);
 	}
 	
-	public Command getDeleteCommand() {
-		return new W11DeleteCommand(this);
-	}
-	
 	public List getValidInputOutpuActions() {
 		List list = new ArrayList();
 		
@@ -179,7 +174,7 @@ public class W11Operation extends WSDLBaseAdapter implements IOperation {
 	}
 	
 	public String getText() {
-		return "operation";
+		return "operation"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {

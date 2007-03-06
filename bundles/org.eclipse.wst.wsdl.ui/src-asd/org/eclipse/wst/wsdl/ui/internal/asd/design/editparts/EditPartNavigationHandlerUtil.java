@@ -145,6 +145,21 @@ class EditPartNavigationHandlerUtil
     return result;
   }          
   
+  static EditPart getNextService(EditPart editPart)
+  {
+    EditPart result = null;
+    for (EditPart e = editPart; e != null; e = e.getParent())
+    {
+      if (e instanceof ServiceEditPart)
+      {
+        ServiceEditPart ie = (ServiceEditPart)e;
+        result = EditPartNavigationHandlerUtil.getNextSibling(ie);
+        break;
+      }  
+    }  
+    return result;
+  }
+  
   static EditPart getSourceConnectionEditPart(AbstractGraphicalEditPart editPart)
   {
     // find the first connection that targets this editPart

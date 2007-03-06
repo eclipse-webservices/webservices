@@ -20,5 +20,4 @@ public interface IMessage extends INamedObject {
 	  public IDescription getOwnerDescription();
 	  
 	  public Command getAddPartCommand();
-	  public Command getDeleteCommand();
 }

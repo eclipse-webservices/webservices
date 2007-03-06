@@ -62,10 +62,6 @@ public class W11ParameterForAttribute extends WSDLBaseAdapter implements IParame
 		return "error: could not get type name"; //$NON-NLS-1$
 	}
 	
-	public String getPreview() {
-		return ""; //$NON-NLS-1$
-	}
-
 	public String getComponentNameQualifier() {
         XSDTypeDefinition td = getXSDAtttributeDeclaration().getTypeDefinition();
         return td != null ? td.getTargetNamespace() : null;
@@ -101,15 +97,15 @@ public class W11ParameterForAttribute extends WSDLBaseAdapter implements IParame
 	}
 	
 	public String getText() {
-		return getParameterString() + " - attribute"; 
+		return getParameterString("attribute"); //$NON-NLS-1$
 	}
 	
-	private String getParameterString() {
-		String string = "";
+	private String getParameterString(String txt) {
+		String string = ""; //$NON-NLS-1$
 		Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
 		if (object instanceof ProductCustomizationProvider) {
 			ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			String newString = productCustomizationProvider.getProductString("_UI_LABEL_PARAMETER");
+			String newString = productCustomizationProvider.getProductString("_UI_LABEL_PARAMETER_ARG", new Object[]{txt}); //$NON-NLS-1$
 			if (newString != null) {
 				string = newString;
 			}

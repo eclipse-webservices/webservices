@@ -26,5 +26,4 @@ public interface IOperation extends INamedObject
   // 'new Fault'.... This also relates to what we really want to do when we delete a Fault...
 	public Command getAddFaultCommand(Object fault);
 	public Command getReorderMessageReferencesCommand(IMessageReference leftSibling, IMessageReference rightSibling, IMessageReference movingMessageRef);
-	public Command getDeleteCommand();
 }

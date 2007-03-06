@@ -13,10 +13,13 @@ package org.eclipse.wst.wsdl.ui.internal.asd.facade;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.swt.graphics.Image;
 
 public interface IInterface extends INamedObject {
   public List getOperations();
-  
+  /*
+   * @deprecated.  The method getImage() will be removed in the near future
+   */
+  public Image getImage();
   public Command getAddOperationCommand();
-  public Command getDeleteCommand();
 }

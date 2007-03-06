@@ -14,4 +14,5 @@ public interface IOpenExternalEditorHelper {
 	public void setModel(Object object);
 	public void openExternalEditor();
 	public boolean linkApplicable();
+	public boolean isValid();
 }

@@ -26,7 +26,6 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11MessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDDragAndDropEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDGraphNodeDragTracker;
@@ -35,6 +34,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ListFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ModelDiagnosticInfo;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackHandler
 {   
@@ -62,15 +62,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     label.setBorder(new MarginBorder(2, 16, 2 ,10));
     figure.add(label);  
     
-    /*
-    RectangleFigure partsList = new RectangleFigure();
-    partsList.setLayoutManager(new ToolbarLayout(false));
-    partsList.add(new Label("parts1"));
-    partsList.add(new Label("parst2"));
-    figure.add(partsList);
-    */
     contentPane = new ListFigure();
-    //contentPane.setForegroundColor(ColorConstants.lightGray);
     ((ListFigure)contentPane).setOpaque(true);
     contentPane.setBackgroundColor(ColorConstants.listBackground);
     ToolbarLayout toolbarLayout = new ToolbarLayout(false);
@@ -97,7 +89,6 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     figure.add(contentPane);
     
     rowLayout.setConstraint(label, "MessageLabel"); //$NON-NLS-1$
-    //rowLayout.setConstraint(partsList, "PartsList");
     rowLayout.setConstraint(contentPane, "MessageContentPane"); //$NON-NLS-1$
    
     // rmah: The block of code below has been moved from refreshVisuals().  We're
@@ -139,9 +130,12 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   protected void refreshVisuals()
   {   
     super.refreshVisuals();
-    IMessageReference message = (IMessageReference)getModel();    
-    label.setText(message.getText());
-    label.setIcon(message.getImage()); 
+    IMessageReference message = (IMessageReference)getModel();
+    
+    if (message instanceof ITreeElement) {
+    	label.setText(((ITreeElement) message).getText());
+    	label.setIcon(((ITreeElement) message).getImage());
+    }
     
     // Resize column widths.  Sizes may have shrunk.
     rowLayout.getColumnData().clearColumnWidths();
@@ -200,41 +194,29 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
 
 		  if (errorList.size() > 0) {
 			  ModelDiagnosticInfo info = (ModelDiagnosticInfo) errorList.get(0);
-			  messageLabel.setText("  " + info.getDescriptionText() + "  "); 
+			  messageLabel.setText("  " + info.getDescriptionText() + "  ");  //$NON-NLS-1$ //$NON-NLS-2$
 			  messageLabel.setForegroundColor(info.getDescriptionTextColor());
 		  }
 		  else if (warnList.size() > 0){
 			  ModelDiagnosticInfo info = (ModelDiagnosticInfo) warnList.get(0);
-			  messageLabel.setText("  " + info.getDescriptionText() + "  "); 
+			  messageLabel.setText("  " + info.getDescriptionText() + "  ");  //$NON-NLS-1$ //$NON-NLS-2$
 			  messageLabel.setForegroundColor(info.getDescriptionTextColor());
 		  }
 		  else {
-			  messageLabel.setText("");
+			  messageLabel.setText(""); //$NON-NLS-1$
 			  messageLabel.setForegroundColor(ColorConstants.black);
 		  }
 	  }
   }
   
   protected List getErrors() {
-	  // TODO: rmah: We should not know about W11MessageReference here.  Modify
-	  // MessageReference post WTP 1.5 to include the getDiagnosticMessages() method.
-	  if (getModel() instanceof W11MessageReference) {
-		  W11MessageReference messageRef = (W11MessageReference) getModel();
-		  return getDiagnosticMessageType(messageRef.getDiagnosticMessages(), ModelDiagnosticInfo.ERROR_TYPE);
-	  }
-	  
-	  return new ArrayList();
+	  IMessageReference messageRef = (IMessageReference) getModel();
+	  return getDiagnosticMessageType(messageRef.getDiagnosticMessages(), ModelDiagnosticInfo.ERROR_TYPE);
   }
   
   protected List getWarnings() {
-	  // TODO: rmah: We should not know about W11MessageReference here.  Modify
-	  // MessageReference post WTP 1.5 to include the getDiagnosticMessages() method.
-	  if (getModel() instanceof W11MessageReference) {
-		  W11MessageReference messageRef = (W11MessageReference) getModel();
-		  return getDiagnosticMessageType(messageRef.getDiagnosticMessages(), ModelDiagnosticInfo.WARNING_TYPE);
-	  }
-	  
-	  return new ArrayList();
+	  IMessageReference messageRef = (IMessageReference) getModel();
+	  return getDiagnosticMessageType(messageRef.getDiagnosticMessages(), ModelDiagnosticInfo.WARNING_TYPE);
   }
   
   protected List getDiagnosticMessageType(List diagnosticInfo, int type) {

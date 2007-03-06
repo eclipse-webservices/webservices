@@ -33,7 +33,6 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11SetNewMessageAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddFaultParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddInputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddOutputParameterCommand;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11ReorderParametersCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.visitor.W11FindInnerElementVisitor;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddFaultAction;
@@ -57,7 +56,6 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   protected int messageKind = -1;
   protected List parameters = null;
   protected List otherThingsToListenTo = null;
-  private String previewString = "";
   
   public W11MessageReference(int messageKind)
   {
@@ -67,23 +65,6 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   public IOperation getOwnerOperation()
   {
     return (IOperation) owner;
-  }
-  
-  public String getPreview() {
-	  return "  (" + previewString + ")  ";
-	  
-	  /*
-	  String previewString = "()";
-	  List params = getParameters();
-	  // For now, just look at the first Part for the preview
-	  if (params.size() > 0) {
-		  IParameter param = (IParameter) params.get(0);
-		  
-		  previewString = param.getPreview();
-	  }	  
-	  
-	  return previewString;
-	  */
   }
   
   private String getMessageString(String key, Object[] args) {
@@ -98,18 +79,6 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 		  }
 	  }
 
-	  return string;
-  }
-  
-  private String getInvalidElementReferenceString() {
-	  String string = null;
-	  String[] args = new String[1];
-	  args[0] = "element";
-	  string = getMessageString("_UI_LABEL_INVALID_ARG_REFERENCE", args);
-	  if (string == null) {
-		  string = "Invalid element reference";
-	  }
-	  
 	  return string;
   }
   
@@ -149,12 +118,9 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 		  return messageRef.getName();
 	  }
 	  
-	  return "";
+	  return ""; //$NON-NLS-1$
   }
 
-  /*
-   * XSD Elements or WSDL Parts...
-   */
   public List getParameters()
   {
 	  List parameters = new ArrayList();
@@ -257,10 +223,6 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   public Command getReorderParametersCommand(IParameter leftSibling, IParameter rightSibling, IParameter movingParameter) {
 	  return new W11ReorderParametersCommand(leftSibling, rightSibling, movingParameter);
   }
-
-  public Command getDeleteCommand() {
-	  return new W11DeleteCommand(this);
-  }
   
   public Command getAddParamterCommand() {
       Command command = null;
@@ -299,20 +261,29 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	public String getText() {
 	    if (getKind() == KIND_INPUT)
 	    {
-	      return "input";
+	      return "input"; //$NON-NLS-1$
 	    }
 	    else if (getKind() == KIND_OUTPUT)
 	    {
-	      return "output";
+	      return "output"; //$NON-NLS-1$
 	    }
 	    else if (getKind() == KIND_FAULT)
 	    {
 	      return getName();
 	    }
-	    return "NoName";
+	    return ""; //$NON-NLS-1$
 	}
     
-	public List getParameters2() 
+	/*
+	 * @deprecated.  This method will be removed in the near future.
+	 * Use getSimplifiedParameters().
+	 */
+	public List getParameters2()
+	{
+		return getSimplifiedDiagnosticMessages();
+	}
+	
+	public List getSimplifiedParameters()
     {
 	  if (parameters == null)
 	  {
@@ -375,12 +346,12 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 		}
 
 		if (messageRef == null || messageRef.getEMessage() == null) {
-			addErrorDiagnosticMessage(getUndefinedArg1String("message"));
+			addErrorDiagnosticMessage(getUndefinedArg1String("message")); //$NON-NLS-1$
 		}
 		else if (parts.size() <= 0) {
 			String[] args = new String[1];
-			args[0] = "part";
-			addWarningDiagnosticMessage(getStringForKey("_UI_LABEL_NO_OBJECT_SPECIFIED_ARG1", args));
+			args[0] = "part"; //$NON-NLS-1$
+			addWarningDiagnosticMessage(getStringForKey("_UI_LABEL_NO_OBJECT_SPECIFIED_ARG1", args)); //$NON-NLS-1$
 		}
 	}
 
@@ -389,7 +360,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 		
 		MessageReference messageRef = (MessageReference) getTarget();
 		  if (messageRef == null || messageRef.getEMessage() == null) {
-			  addErrorDiagnosticMessage(getUndefinedArg1String("message"));
+			  addErrorDiagnosticMessage(getUndefinedArg1String("message")); //$NON-NLS-1$
 		  }
 		  else if (messageRef.getEMessage().getEParts().size() <= 0) {
 			  addWarningDiagnosticMessage(getNoParametersSpecifiedString());
@@ -399,7 +370,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 			  XSDElementDeclaration xsdElement = part.getElementDeclaration();
 			  if (xsdElement == null || xsdElement.getSchema() == null) {
 				  // No XSD Element
-				  addErrorDiagnosticMessage(getUndefinedArg1String("element"));
+				  addErrorDiagnosticMessage(getUndefinedArg1String("element")); //$NON-NLS-1$
 			  }
 			  else {
 				  MyInnerElementVisitor visitor = new MyInnerElementVisitor();
@@ -418,15 +389,13 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	}
 	
 	protected List diagnosticMessages = new ArrayList();
-	
-	// TODO: rmah: Post WTP 1.5, we should rename this to be something like getAdvancedW11MessageReference()
+
 	public List getDiagnosticMessages() {
 		processAdvancedW11MessageReference();
 		return diagnosticMessages;
 	}
-	
-	// TODO: rmah: Post WTP 1.5, we should rename this to be something like getSimplifiedW11MessageReference()
-	public List getDiagnosticMessages2() {
+
+	public List getSimplifiedDiagnosticMessages() {
 		processSimplifiedW11MessageReference();
 		return diagnosticMessages;
 	}
@@ -437,7 +406,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 		public void findErrorsAndWarnings(XSDElementDeclaration xsdElement) {
 			if (xsdElement.getTypeDefinition() == null || xsdElement.getTypeDefinition().getSchema() == null) {
 				// No XSD type (non anonymous) defined
-				diagMessages.add(new ModelDiagnosticInfo(getUndefinedArg1String("type"), ModelDiagnosticInfo.ERROR_TYPE, null));
+				diagMessages.add(new ModelDiagnosticInfo(getUndefinedArg1String("type"), ModelDiagnosticInfo.ERROR_TYPE, null)); //$NON-NLS-1$
 			}
 
 			XSDElementDeclaration innerElement = super.getInnerXSDElement(xsdElement);
@@ -454,25 +423,25 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 	  private String getUndefinedArg1String(String arg) {
 		  String[] args = new String[1];
 		  args[0] = arg;
-		  String newString = getStringForKey("_UI_LABEL_UNDEFINED_ARG1", args);
+		  String newString = getStringForKey("_UI_LABEL_UNDEFINED_ARG1", args); //$NON-NLS-1$
 		  return newString;
 	  }
 	  
 	  private String getNoParametersSpecifiedString() {
 		  String string = null;
 		  String[] args = new String[0];
-		  string = getStringForKey("_UI_LABEL_NO_PARAMETERS_SPECIFIED", args);
+		  string = getStringForKey("_UI_LABEL_NO_PARAMETERS_SPECIFIED", args); //$NON-NLS-1$
 		  return string;
 	  }
 	  
 	  private String getStringForKey(String key, Object[] args) {
-		  String newString = "";
+		  String newString = ""; //$NON-NLS-1$
 		  newString = Messages.getString(key, args);
 		  
 		  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
 		  if (object instanceof ProductCustomizationProvider) {
 			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			  String customizedString = "";
+			  String customizedString = ""; //$NON-NLS-1$
 			  if (args == null) {
 				  customizedString = productCustomizationProvider.getProductString(key);
 			  }
@@ -480,13 +449,13 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 				  customizedString = productCustomizationProvider.getProductString(key, args);
 			  }
 			  
-			  if (customizedString != null && !customizedString.equals("")) {
+			  if (customizedString != null && !customizedString.equals("")) { //$NON-NLS-1$
 				  newString = customizedString;
 			  }
 		  }
 
 		  if (newString == null) {
-			  newString = "";
+			  newString = ""; //$NON-NLS-1$
 		  }
 
 		  return newString;

@@ -18,5 +18,4 @@ public interface IService extends INamedObject
 	public List getEndPoints();
 	public IDescription getOwnerDescription();
 	public Command getAddEndPointCommand();
-	public Command getDeleteCommand();
 }

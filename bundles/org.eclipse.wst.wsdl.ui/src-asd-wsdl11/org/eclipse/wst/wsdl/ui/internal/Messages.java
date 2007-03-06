@@ -17,15 +17,18 @@ public class Messages {
 	private Messages() {
 	}
 
+	/*
+	 * @deprecated: Use Messages._STRING_KEY to access strings.
+	 * This method will be made private in the near future.
+	 */
 	public static String getString(String key) {
-		// TODO Auto-generated method stub
 		try {
 			return RESOURCE_BUNDLE.getString(key);
 		} catch (MissingResourceException e) {
 			return '!' + key + '!';
 		}
 	}
-	
+
 	public static String getString(String key, String arg0) {
 		return MessageFormat.format(getString(key), new Object [] { arg0 });
 	}
@@ -49,6 +52,7 @@ public class Messages {
 	public static String _UI_ACTION_ADD_IMPORT;
 	public static String _UI_ACTION_ADD_BINDING;
 	public static String _UI_ACTION_ADD_PART;
+	public static String _UI_ACTION_ADD_XML_SCHEMA_ELEMENT;
 	public static String _UI_ACTION_REORDER_PART;
 	public static String _UI_ACTION_REORDER_MESSAGE_REFERENCE;
 	public static String _UI_ACTION_OPEN_IN_NEW_EDITOR;
@@ -103,6 +107,7 @@ public class Messages {
 	public static String _UI_ACTION_SET_BINDING;
 	public static String _UI_CHECKBOX_OVERWRITE;
 	public static String _UI_ACTION_SET_PORTTYPE;
+	public static String _UI_ACTION_EDIT_PORT_ADDRESS;
 	public static String _UI_ACTION_ADD;
 	public static String _UI_ACTION_OPEN_IMPORT;
 	public static String _UI_UNSPECIFIED;
@@ -130,4 +135,10 @@ public class Messages {
 	public static String _WARN_NAME_HAS_SPACE;
 	public static String _WARN_NAME_INVALID_FIRST;
 	public static String _WARN_NAME_INVALID_CHAR;
+	public static String _UI_LABEL_DEFAULT;
+	public static String _WSI_COMPLIANCE_LINK_TEXT;
+	public static String _WARN_WSI_COMPLIANCE_SOAP_PROTOCOL;
+	public static String _ERROR_WSI_COMPLIANCE_SOAP_PROTOCOL;
+	public static String _WARN_WSI_COMPLIANCE_RPC_ENCODING;
+	public static String _ERROR_WSI_COMPLIANCE_RPC_ENCODING;
 }

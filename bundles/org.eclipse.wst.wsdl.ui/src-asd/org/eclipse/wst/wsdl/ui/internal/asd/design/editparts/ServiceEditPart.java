@@ -33,6 +33,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEd
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.HeadingFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class ServiceEditPart extends BaseEditPart implements INamedEditPart
 {
@@ -65,8 +66,12 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
     toolbarLayout.setStretchMinorAxis(true);
     figure.setLayoutManager(toolbarLayout);    
     headingFigure = new HeadingFigure();
-   	headingFigure.getLabel().setIcon(((IService) getModel()).getImage());	
-    figure.add(headingFigure);
+    
+    if (getModel() instanceof ITreeElement) {
+    	headingFigure.getLabel().setIcon(((ITreeElement) getModel()).getImage());	
+    }
+   	
+   	figure.add(headingFigure);
         
     contentPane = new Figure()
     {

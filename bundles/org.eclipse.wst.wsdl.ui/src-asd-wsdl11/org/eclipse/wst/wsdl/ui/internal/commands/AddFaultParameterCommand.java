@@ -161,11 +161,6 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 		return faultName;
 	}
 	
-	// TODO: remove this method and use getMessageReference() instead
-	public Fault getFault() {
-		return fault;
-	}
-	
 	public MessageReference getMessageReference() {
 		return fault;
 	}

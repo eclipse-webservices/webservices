@@ -18,6 +18,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
+import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
@@ -40,7 +41,7 @@ public class W11SetAddressCommand extends W11TopLevelElementCommand {
 	private String newAddress;
 	
 	public W11SetAddressCommand(Port port, String newAddress) {
-        super("", port.getEnclosingDefinition());  // TODO: Need to add String here...
+        super(Messages._UI_ACTION_EDIT_PORT_ADDRESS, port.getEnclosingDefinition());
 		this.port = port;
 		this.newAddress = newAddress;
 	}

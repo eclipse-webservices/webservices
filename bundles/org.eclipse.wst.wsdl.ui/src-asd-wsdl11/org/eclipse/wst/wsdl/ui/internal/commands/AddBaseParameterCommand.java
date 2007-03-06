@@ -60,6 +60,7 @@ public abstract class AddBaseParameterCommand {
 	protected String newWSDLPartName;
 	
 	public abstract void run();
+	public abstract MessageReference getMessageReference();
 	
 	public AddBaseParameterCommand(Operation operation, int style) {
 		this.operation = operation;
@@ -248,7 +249,7 @@ public abstract class AddBaseParameterCommand {
 	}
 	
 	protected String getDocLitWrappedPartName() {
-		return "parameters";
+		return "parameters"; //$NON-NLS-1$
 	}
 
 	protected XSDElementDeclaration createXSDObjects(Part part) {
@@ -285,12 +286,7 @@ public abstract class AddBaseParameterCommand {
 		
 		return returnedXSDElement;
 	}
-	
-	// TODO: rmah: Post WTP 1.5, this method should be made abstract
-	public MessageReference getMessageReference() {
-		return null;
-	}
-	
+
     protected String getPrefixedComponentName(Definition definition, XSDNamedComponent component) {
     	String name = component.getName();
     	String tns = component.getTargetNamespace();

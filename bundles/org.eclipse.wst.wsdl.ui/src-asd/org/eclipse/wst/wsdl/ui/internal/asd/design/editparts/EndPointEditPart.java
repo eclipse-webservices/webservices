@@ -45,12 +45,13 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEd
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ComponentReferenceConnection;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, INamedEditPart
 {
   protected Label nameLabel;
   protected Label addressLabel;
-  private Label hoverHelpLabel = new Label("");
+  private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
   protected Figure addressBoxFigure;
   protected ComponentReferenceConnection connectionFigure;
   protected final static int MAX_ADDRESS_WIDTH = 150;
@@ -64,7 +65,11 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     layout.setStretchMinorAxis(true);
     figure.setLayoutManager(layout);
     nameLabel = new Label();
-    nameLabel.setIcon(((IEndPoint) getModel()).getImage());
+
+    if (getModel() instanceof ITreeElement) {
+    	nameLabel.setIcon(((ITreeElement) getModel()).getImage());
+    }
+    
     nameLabel.setLabelAlignment(Label.LEFT);
     // nameLabel.setTextPlacement(PositionConstants.WEST);
     figure.add(nameLabel);
@@ -181,7 +186,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     int boundSize = bounds.width;
 
     if (textSize > boundSize) {
-    	hoverHelpLabel.setText(" " + endPoint.getAddress()  + " ");
+    	hoverHelpLabel.setText(" " + endPoint.getAddress()  + " "); //$NON-NLS-1$ //$NON-NLS-2$
         addressLabel.setToolTip(hoverHelpLabel);
     }
     else {
@@ -368,7 +373,13 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     {      
       // navigate forward along the connection (to the right)
       return getConnectionTargetEditPart();
-    }  
+    }
+    
+    if (direction == PositionConstants.SOUTH)
+    {
+    	return EditPartNavigationHandlerUtil.getNextService(this);
+    }
+
     return super.getRelativeEditPart(direction);
   }  
 }

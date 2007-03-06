@@ -48,7 +48,7 @@ public class W11AddFaultParameterCommand extends W11TopLevelElementCommand imple
 			AddFaultParameterCommand command = new AddFaultParameterCommand(operation, fault);
 			command.setStyle(parameterPattern);
 			command.run();
-			fault = command.getFault();
+			fault = (Fault) command.getMessageReference();
 			newObject = command.getNewlyAddedComponentPart();
 			
 			if (command.getXSDElementDeclaration() != null) {

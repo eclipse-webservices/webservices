@@ -188,7 +188,7 @@ public class W11RenameCommand extends W11TopLevelElementCommand {
 			Element element = WSDLEditorUtil.getInstance().getElementForObject(bindingOperation);
 			if (element != null)
 			{ 
-				element.setAttribute("name", newName);
+				element.setAttribute("name", newName); //$NON-NLS-1$
 			}
 			//		    TODO: We should go through the model to rename.... Not the Element...
 			//			bindingOperation.setName(newName);
@@ -234,7 +234,7 @@ public class W11RenameCommand extends W11TopLevelElementCommand {
 		Element element = WSDLEditorUtil.getInstance().getElementForObject(modelObject);
 		if (element != null)
 		{ 
-			element.setAttribute("name", theNewName);
+			element.setAttribute("name", theNewName); //$NON-NLS-1$
 		}    
 
 		if (modelObject instanceof Message)

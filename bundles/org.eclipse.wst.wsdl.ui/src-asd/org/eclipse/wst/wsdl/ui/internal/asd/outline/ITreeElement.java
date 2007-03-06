@@ -19,4 +19,5 @@ public interface ITreeElement {
   boolean hasChildren();
   String getText();
   Image getImage();
+  Image getSecondaryImage();
 }

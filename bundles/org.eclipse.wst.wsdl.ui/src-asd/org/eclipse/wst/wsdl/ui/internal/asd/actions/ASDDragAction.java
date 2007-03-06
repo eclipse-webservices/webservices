@@ -38,7 +38,7 @@ public abstract class ASDDragAction extends BaseSelectionAction {
 	 * Sub-classes should override this method.
 	 */
 	public String getUndoDescription() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	/*

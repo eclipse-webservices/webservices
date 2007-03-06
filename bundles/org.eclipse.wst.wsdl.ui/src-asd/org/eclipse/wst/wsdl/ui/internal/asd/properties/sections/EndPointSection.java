@@ -107,17 +107,12 @@ public class EndPointSection extends ReferenceSection {
 				addressText.setText(endPoint.getAddress());
 			}
 		}
-		// TODO: rmah: We should not know about W11EndPoint.  We need to for
-		// now to get access to the getProtocol() method.  Eventually the
-		// getProtocol() method should be defined in the IEndPoint interface
-		// post 1.5...
-		if (endPoint instanceof W11EndPoint) {
-			String protocolValue = ((W11EndPoint) endPoint).getProtocol();
-			if (protocolValue.equals("")) { //$NON-NLS-1$
-				protocolValue = "----"; //$NON-NLS-1$
-			}
-			protocolValueLabel.setText(protocolValue);
+
+		String protocolValue = endPoint.getProtocol();
+		if (protocolValue.equals("")) { //$NON-NLS-1$
+			protocolValue = "----"; //$NON-NLS-1$
 		}
+		protocolValueLabel.setText(protocolValue);
 		
 		setControlForegroundColor(addressText);
 		setControlForegroundColor(protocolValueLabel);

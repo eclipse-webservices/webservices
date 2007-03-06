@@ -28,6 +28,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 
+/*
+ * TODO: rmah: look at removing this class.  Doesn't look like it's used.
+ */
 public class NewComponentDialog extends Dialog implements ModifyListener
 {
   protected Text nameField; 
@@ -121,7 +124,7 @@ public class NewComponentDialog extends Dialog implements ModifyListener
 
     // error message
     errorMessageLabel = new Label(dialogArea, SWT.NONE);
-    errorMessageLabel.setText("error message goes here");         
+    errorMessageLabel.setText("");          //$NON-NLS-1$
     GridData gd2 = new GridData();
     gd2.horizontalAlignment= GridData.FILL;
     gd2.grabExcessHorizontalSpace= true;

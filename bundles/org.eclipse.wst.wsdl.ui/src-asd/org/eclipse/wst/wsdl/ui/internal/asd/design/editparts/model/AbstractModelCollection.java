@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
@@ -49,6 +53,10 @@ public abstract class AbstractModelCollection implements IASDObject, ITreeElemen
   public Image getImage() {
 	  return null;
   }
+
+  public Image getSecondaryImage() {
+	  return null;
+  }
   
   public ITreeElement getParent() {
 	  return null;
@@ -66,5 +74,13 @@ public abstract class AbstractModelCollection implements IASDObject, ITreeElemen
   public void unregisterListener(IASDObjectListener listener)
   {
     model.unregisterListener(listener);
+  }
+
+  public Command getDeleteCommand() {
+    return null;
+  }
+  
+  public List getDiagnosticMessages() {
+	return new ArrayList();
   }
 }

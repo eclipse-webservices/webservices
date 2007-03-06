@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.actions;
 
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
@@ -48,11 +47,5 @@ public class ASDAddInterfaceAction extends BaseSelectionAction {
 			    }
 			}
 		}  
-	}
-	
-	/*
-	 * @deprecated.  To be removed post WTP 1.5
-	 */
-	protected void doDirectEdit(EditPart ep) {
 	}
 }

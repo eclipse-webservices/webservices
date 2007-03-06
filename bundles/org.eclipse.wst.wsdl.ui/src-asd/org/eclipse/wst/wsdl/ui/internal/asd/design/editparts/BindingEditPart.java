@@ -36,13 +36,14 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingColumnLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingContentLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class BindingEditPart extends BaseEditPart
 {
   protected ComponentReferenceConnection connectionFigure;
   protected BoxComponentFigure figure;
   protected boolean isExpanded = false;
-  private Label hoverHelpLabel = new Label("");
+  private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
 
   protected IFigure createFigure()
   {
@@ -206,11 +207,14 @@ public class BindingEditPart extends BaseEditPart
     {  
       IBinding binding = (IBinding) getModel();
       ((BoxComponentFigure) getFigure()).headingFigure.setIsReadOnly(((IBinding) getModel()).isReadOnly());
-      figure.getLabel().setIcon(binding.getImage());
+      
+      if (binding instanceof ITreeElement) {
+    	  figure.getLabel().setIcon(((ITreeElement) binding).getImage());
+      }
       
       // Show the name of the IBinding with hover help
       String prependString = Messages._UI_LABEL_BINDING;
-      hoverHelpLabel.setText(" " + prependString + " : " + binding.getName() + " ");
+      hoverHelpLabel.setText(" " + prependString + " : " + binding.getName() + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       figure.setToolTip(hoverHelpLabel);
     }
 

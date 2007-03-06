@@ -41,6 +41,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEd
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler, INamedEditPart
 {   
@@ -107,7 +108,9 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     rowLayout.setConstraint(parameterNamePane, "parameterName"); //$NON-NLS-1$
     rowLayout.setConstraint(contentPane, "parameterType"); //$NON-NLS-1$
     
-    labelImage = ((IParameter) getModel()).getImage();
+    if (getModel() instanceof ITreeElement) {
+    	labelImage = ((ITreeElement) getModel()).getImage();
+    }
     
     // rmah: The block of code below has been moved from refreshVisuals().  We're
     // assuming the read-only state of the EditPart will never change once the

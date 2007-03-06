@@ -25,7 +25,7 @@ public class ModelDiagnosticInfo {
 	public static int WARNING_TYPE = 2;
 	
 	private int type = 1;
-	private String text = "";
+	private String text = ""; //$NON-NLS-1$
 	private Color textColor;
 	
 	public ModelDiagnosticInfo(String txt, int infoType, Color color) {

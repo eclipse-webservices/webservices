@@ -25,7 +25,7 @@ import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 
 public class GenerateBindingOnSaveDialog extends MessageDialog implements SelectionListener {
-	private static String dialogTitle = Messages._UI_REGEN_BINDINDS_ON_SAVE;		// TODO: Translations needed.... //$NON-NLS-1$
+	private static String dialogTitle = Messages._UI_REGEN_BINDINDS_ON_SAVE; //$NON-NLS-1$
 	private static String dialogMessage = Messages._UI_REGEN_BINDINGS_ON_SAVE_QUESTIONMARK; //$NON-NLS-1$
 	private static String[] buttons = new String[]{Messages._UI_YES_LABEL, Messages._UI_NO_LABEL, Messages._UI_CANCEL_LABEL}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	

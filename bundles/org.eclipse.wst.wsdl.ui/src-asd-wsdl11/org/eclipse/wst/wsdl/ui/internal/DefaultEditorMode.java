@@ -24,7 +24,7 @@ public class DefaultEditorMode extends EditorMode
   
   public String getDisplayName()
   {
-    return "default";
+    return Messages._UI_LABEL_DEFAULT;
   }
 
   public EditPartFactory getEditPartFactory()

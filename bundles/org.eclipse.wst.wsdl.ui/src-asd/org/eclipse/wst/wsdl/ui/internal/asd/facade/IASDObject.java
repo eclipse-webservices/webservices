@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.facade;
 
+import java.util.List;
+
+import org.eclipse.gef.commands.Command;
+
 
 public interface IASDObject
 {
@@ -17,4 +21,6 @@ public interface IASDObject
     public void unregisterListener(IASDObjectListener listener);
     
     public boolean isReadOnly();
+    public List getDiagnosticMessages();
+	public Command getDeleteCommand();
 }

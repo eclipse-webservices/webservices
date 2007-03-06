@@ -179,11 +179,6 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 		
 		return newWSDLPartName;
 	}
-	
-	// TODO: remove this method and use getMessageReference() instead
-	public Input getInput() {
-		return input;
-	}
 
 	protected XSDElementDeclaration createPartElementSeqElementPattern(Part part, XSDElementDeclaration partElement) {
 		XSDElementDeclaration returnedXSDElement = null;
@@ -274,7 +269,7 @@ public class AddInputParameterCommand extends AddBaseParameterCommand {
 	
 	private String getIdealMessageName(MessageReference messageRef) {	    
 		String messageName = "NewMessage"; //$NON-NLS-1$
-		messageName = operation.getName() + "Request";
+		messageName = operation.getName() + "Request"; //$NON-NLS-1$
 		
 		return messageName;
 	}

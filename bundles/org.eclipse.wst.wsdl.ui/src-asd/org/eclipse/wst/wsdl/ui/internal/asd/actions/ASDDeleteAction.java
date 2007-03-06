@@ -17,18 +17,9 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
-import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
-import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 
 public class ASDDeleteAction extends BaseSelectionAction {
 	public static String ID = "ASDDeleteAction";  //$NON-NLS-1$
@@ -46,38 +37,10 @@ public class ASDDeleteAction extends BaseSelectionAction {
 			Object object = it.next();
 			Command command = null;
 			
-			if (object instanceof IService) {
-				command = ((IService) object).getDeleteCommand();
+			if (object instanceof IASDObject) {
+				command = ((IASDObject) object).getDeleteCommand();
 			}
-			else if (object instanceof IEndPoint) {
-				command = ((IEndPoint) object).getDeleteCommand();
-			}
-			else if (object instanceof IBinding) {
-				command = ((IBinding) object).getDeleteCommand();
-			}
-			else if (object instanceof IInterface) {
-				command = ((IInterface) object).getDeleteCommand();
-			}
-			else if (object instanceof IOperation) {
-				command = ((IOperation) object).getDeleteCommand();
-			}
-			else if (object instanceof IMessageReference) {
-				command = ((IMessageReference) object).getDeleteCommand();
-			}
-			else if (object instanceof IParameter) {
-				command = ((IParameter) object).getDeleteCommand();
-			}
-			else if (object instanceof IImport) {
-				command = ((IImport) object).getDeleteCommand();
-			}
-			else if (object instanceof IMessage) {
-				command = ((IMessage) object).getDeleteCommand();
-			}
-			 // TODO (cs) Provide getDeleteCommand() on ASDObject then no 'else if' tests needed at all...
-			else if (object instanceof W11Type) {
-				command = ((W11Type) object).getDeleteCommand();
-			}
-			
+
 			if (command != null) {
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);

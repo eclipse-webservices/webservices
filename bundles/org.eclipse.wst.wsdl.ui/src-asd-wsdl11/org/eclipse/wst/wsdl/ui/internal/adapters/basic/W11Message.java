@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
@@ -23,7 +24,6 @@ import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11AddPartAction;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11AddPartCommand;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
@@ -55,7 +55,7 @@ public class W11Message extends WSDLBaseAdapter implements IMessage {
 			return ((Message) target).getQName().getLocalPart();
 		}
 		
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	public String[] getActions(Object object) {
@@ -72,16 +72,12 @@ public class W11Message extends WSDLBaseAdapter implements IMessage {
 		return new W11AddPartCommand((Message) target);
 	}
 	
-	public Command getDeleteCommand() {
-		return new W11DeleteCommand(this);
-	}
-	
 	public Image getImage() {
 		return WSDLEditorPlugin.getInstance().getImage("icons/message_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {
-		return "message";
+		return "message"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {

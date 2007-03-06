@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +22,6 @@ import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.MouseMotionListener.Stub;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -37,8 +35,6 @@ import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.TypeReferenceDirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
@@ -46,11 +42,10 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BaseLinkIconFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ModelDiagnosticInfo;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.RowLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
-import org.eclipse.wst.wsdl.ui.internal.util.W11OpenExternalEditorHelper;
-import org.eclipse.wst.wsdl.ui.internal.util.XSDGraphViewerDialog;
-import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDTypeDefinition;
+
+import org.eclipse.draw2d.MouseMotionListener.Stub;
 
 public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHandler, INamedEditPart
 {   
@@ -99,42 +94,29 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 		String name = param.getComponentName();
 		parameterType.setText(name);
 
-
-		// TODO (cs) this evil bit of code needs to be fixed post WTP 1.5 when we have more freedom to 
-		// clean up our internal code structure.  We shouldn't have hardcoded adapter references here!
-		if (getModel() instanceof W11ParameterForPart)
+		Image image = ((ITreeElement)getModel()).getSecondaryImage();
+		if (image != null)
 		{
-			Image image = ((W11ParameterForPart)getModel()).getSecondaryImage();
-			if (image != null)
-			{
-				parameterType.setIcon(image);
-			}
+			parameterType.setIcon(image);
+		}
 
-			parameterType.setForegroundColor(ColorConstants.black);
+		parameterType.setForegroundColor(ColorConstants.black);
 
-			List diagnosticMessages = new ArrayList(); 
-			// TODO: rmah: We should not know about W11ParameterForPart here.  Modify
-			// IParameter post WTP 1.5 to include the getDiagnosticMessages() method.
-			if (getModel() instanceof W11ParameterForPart) {
-				W11ParameterForPart paramForPart = (W11ParameterForPart) getModel();
-				diagnosticMessages = paramForPart.getDiagnosticMessages();
+		List diagnosticMessages = param.getDiagnosticMessages();
+		Iterator it = diagnosticMessages.iterator();
+		ModelDiagnosticInfo errorInfo = null;
+		while (it.hasNext() && errorInfo == null) {
+			ModelDiagnosticInfo temp = (ModelDiagnosticInfo) it.next();
+			if (temp.getType() == ModelDiagnosticInfo.ERROR_TYPE) {
+				errorInfo = temp;
+				break;
 			}
+		}
 
-			Iterator it = diagnosticMessages.iterator();
-			ModelDiagnosticInfo errorInfo = null;
-			while (it.hasNext() && errorInfo == null) {
-				ModelDiagnosticInfo temp = (ModelDiagnosticInfo) it.next();
-				if (temp.getType() == ModelDiagnosticInfo.ERROR_TYPE) {
-					errorInfo = temp;
-					break;
-				}
-			}
-
-			if (errorInfo != null) {
-				parameterType.setText(errorInfo.getDescriptionText());
-				parameterType.setForegroundColor(errorInfo.getDescriptionTextColor());
-				parameterType.setIcon(null);
-			}
+		if (errorInfo != null) {
+			parameterType.setText(errorInfo.getDescriptionText());
+			parameterType.setForegroundColor(errorInfo.getDescriptionTextColor());
+			parameterType.setIcon(null);
 		}
 
 		// Force the LinkIconColumn to resize and relayout itself.
@@ -282,13 +264,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 		public void mousePressed(MouseEvent me) {
 			Point pointer = me.getLocation();
-      openExternalEditor(pointer);
-		}
-    
-    public void mouseHover(MouseEvent me)
-    {
-      Point pointer = me.getLocation();
-      showXSDDialog(pointer);
+			openExternalEditor(pointer);
 		}
 	}
 
@@ -352,36 +328,31 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 	private void refreshLinkFigure(Point point) {
 		Rectangle figBounds = getFigure().getParent().getParent().getBounds();
-		// TODO: rmah:  We should not know about W11OpenExternalEditorHelper here.  Post WTP 1.5, we should add the
-		// isValid() method to interface IOpenExternalEditorHelper.java
-		if (getExternalEditorOpener() instanceof W11OpenExternalEditorHelper) {
-			W11OpenExternalEditorHelper openHelper = (W11OpenExternalEditorHelper) getExternalEditorOpener();
 
-			if (openHelper.linkApplicable()) {
-				if (!figureContainsLinkFigure(getInterfaceEditPart().getLinkIconColumn())) {
-					linkIconFigure = new BaseLinkIconFigure(this);
-					getInterfaceEditPart().getLinkIconColumn().add(linkIconFigure);
-				}
-				
-				if (openHelper.isValid()) {
-					linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.VALID_SCHEMA_LINK_STYLE);
-					
-					if (pointerInRange(figBounds, point)) {
-						emphasizeLinkFigure();
-					}
-					else {
-						unemphasizeLinkFigure();
-					}
+		IOpenExternalEditorHelper openHelper = getExternalEditorOpener();
+		if (openHelper != null && openHelper.linkApplicable()) {
+			if (!figureContainsLinkFigure(getInterfaceEditPart().getLinkIconColumn())) {
+				linkIconFigure = new BaseLinkIconFigure(this);
+				getInterfaceEditPart().getLinkIconColumn().add(linkIconFigure);
+			}
+
+			if (openHelper.isValid()) {
+				linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.VALID_SCHEMA_LINK_STYLE);
+
+				if (pointerInRange(figBounds, point)) {
+					emphasizeLinkFigure();
 				}
 				else {
-					linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.INVALID_SCHEMA_LINK_STYLE);
+					unemphasizeLinkFigure();
 				}
-					
 			}
 			else {
-				if (containsLinkFigure()) {
-					getInterfaceEditPart().getLinkIconColumn().remove(linkIconFigure);
-				}
+				linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.INVALID_SCHEMA_LINK_STYLE);
+			}
+		}
+		else {
+			if (containsLinkFigure()) {
+				getInterfaceEditPart().getLinkIconColumn().remove(linkIconFigure);
 			}
 		}
 	}
@@ -397,50 +368,17 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 		return false;
 	}
 
-  private void openExternalEditor(Point point) {
-    Rectangle linkFigBounds = getLinkFigureBounds();
-    if (linkFigBounds == null || getExternalEditorOpener() == null) {
-      return;
-    }
+	private void openExternalEditor(Point point) {
+		Rectangle linkFigBounds = getLinkFigureBounds();
+		if (linkFigBounds == null || getExternalEditorOpener() == null) {
+			return;
+		}
 
-    Rectangle testbounds = new Rectangle(linkFigBounds.x, linkFigBounds.y, 0, linkFigBounds.height);
+		Rectangle testbounds = new Rectangle(linkFigBounds.x, linkFigBounds.y, 0, linkFigBounds.height);
 
-    if (getExternalEditorOpener().linkApplicable() && pointerInRange(testbounds, point)) {
-      // Open in XSD Editor
-      getExternalEditorOpener().openExternalEditor();         
-    }
-  }
-
-  private void showXSDDialog(Point point) {
-    Rectangle linkFigBounds = getLinkFigureBounds();
-    if (linkFigBounds == null) {
-      return;
-    }
-
-    Rectangle testbounds = new Rectangle(linkFigBounds.x, linkFigBounds.y, 0, linkFigBounds.height);
-
-    if (pointerInRange(testbounds, point)) {
-      W11ParameterForPart param = (W11ParameterForPart)getModel();
-      Object xsdModel = null;
-      String title = null;
-      String info = null;
-      if (param.isType()) {
-        XSDTypeDefinition type = ((Part)param.getTarget()).getTypeDefinition();
-        xsdModel = type;
-        title = type.getName();
-        info = type.getTargetNamespace(); 
-      }
-      else {
-        XSDElementDeclaration elem = ((Part)param.getTarget()).getElementDeclaration();
-        xsdModel = elem;
-        title = elem.getName();
-        info = elem.getTargetNamespace(); 
-      }
-      XSDGraphViewerDialog dialog = new XSDGraphViewerDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title, info, xsdModel);
-      dialog.setOpenExternalEditor(getExternalEditorOpener());
-      dialog.create();
-      dialog.open();
-      dialog.getShell().setFocus();
-    }
-  }
+		if (getExternalEditorOpener().linkApplicable() && pointerInRange(testbounds, point)) {
+			// Open in XSD Editor
+			getExternalEditorOpener().openExternalEditor();				  
+		}
+	}
 }

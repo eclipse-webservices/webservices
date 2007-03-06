@@ -47,16 +47,16 @@ public class W11EditNamespacesCommand extends W11TopLevelElementCommand {
 
 				// Remove the old prefix
 				String oldPrefix = definition.getPrefix(definition.getTargetNamespace());
-				element.removeAttribute("xmlns:"+oldPrefix); 
+				element.removeAttribute("xmlns:"+oldPrefix);  //$NON-NLS-1$
 
 				// Set the new prefix
-				element.setAttribute("xmlns:" + targetNamespacePrefix, definition.getTargetNamespace());
+				element.setAttribute("xmlns:" + targetNamespacePrefix, definition.getTargetNamespace()); //$NON-NLS-1$
 			}
 			if (targetNamespace != null) {
 				String newValue = targetNamespace;
 				String prefix = definition.getPrefix(definition.getTargetNamespace());
 				definition.setTargetNamespace(newValue);
-				definition.getElement().setAttribute("xmlns:" + prefix, newValue);
+				definition.getElement().setAttribute("xmlns:" + prefix, newValue); //$NON-NLS-1$
 			}
 
 			if (namespacesInfoList != null) {

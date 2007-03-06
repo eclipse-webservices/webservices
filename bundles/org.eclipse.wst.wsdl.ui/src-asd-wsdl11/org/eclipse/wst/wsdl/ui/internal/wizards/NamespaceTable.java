@@ -56,8 +56,8 @@ import org.eclipse.wst.xml.ui.internal.util.XMLCommonResources;
  
 public class NamespaceTable extends Composite
 {
-  protected static final String NAMESPACE_URI = XMLCommonResources.getInstance().getString("_UI_LABEL_NAMESPACE_NAME"); 
-  protected static final String PREFIX = XMLCommonResources.getInstance().getString("_UI_LABEL_PREFIX"); 
+  protected static final String NAMESPACE_URI = XMLCommonResources.getInstance().getString("_UI_LABEL_NAMESPACE_NAME");  //$NON-NLS-1$
+  protected static final String PREFIX = XMLCommonResources.getInstance().getString("_UI_LABEL_PREFIX");  //$NON-NLS-1$
   protected static final String INCLUDE = Messages._UI_TITLE_SELECT; //$NON-NLS-1$
     
   protected List namespaceInfoList = new Vector();
@@ -336,7 +336,7 @@ public class NamespaceTable extends Composite
   public void performNew()
   {
     NamespaceInfo info = new NamespaceInfo();
-    EditNamespaceInfoDialog dialog = invokeDialog(XMLCommonResources.getInstance().getString("_UI_LABEL_NEW_NAMESPACE_INFORMATION"), info); 
+    EditNamespaceInfoDialog dialog = invokeDialog(XMLCommonResources.getInstance().getString("_UI_LABEL_NEW_NAMESPACE_INFORMATION"), info);  //$NON-NLS-1$
     if (dialog.getReturnCode() == Dialog.OK)
     {
       namespaceInfoList.add(info);
@@ -618,7 +618,7 @@ public class NamespaceTable extends Composite
         {
           case 2: 
           { 
-            result = XMLCommonResources.getInstance().getString("_UI_NO_NAMESPACE_NAME");  
+            result = XMLCommonResources.getInstance().getString("_UI_NO_NAMESPACE_NAME");   //$NON-NLS-1$
             break; 
           }
         }

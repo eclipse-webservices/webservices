@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.asd.actions;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.wsdl.ui.internal.asd.ASDMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IType;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
@@ -31,13 +30,13 @@ public class ASDOpenSchemaAction extends BaseSelectionAction {
 	public void run() {
 		if (getSelectedObjects().size() > 0) {
 			Object o = getSelectedObjects().get(0);
-			
+
 			if (o instanceof IType) {
 				IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-				if (editor instanceof ASDMultiPageEditor) {
-					IOpenExternalEditorHelper helper = ((ASDMultiPageEditor) editor).getOpenExternalEditorHelper();
-					helper.setModel(o);
-					helper.openExternalEditor();
+				Object helper = editor.getAdapter(IOpenExternalEditorHelper.class);
+				if (helper instanceof IOpenExternalEditorHelper) {
+					((IOpenExternalEditorHelper) helper).setModel(o);
+					((IOpenExternalEditorHelper) helper).openExternalEditor();
 				}
 			}
 		}  

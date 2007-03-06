@@ -10,13 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11OpenImportAction;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
@@ -56,16 +54,12 @@ public class W11Import extends WSDLBaseAdapter implements IImport {
 		return actionIDs;
 	}
 	
-	public Command getDeleteCommand() {
-		return new W11DeleteCommand(this);
-	}
-	
 	public Image getImage() {
 		return WSDLEditorPlugin.getInstance().getImage("icons/import_obj.gif"); //$NON-NLS-1$
 	}
 	
 	public String getText() {
-		return "import";
+		return "import"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {

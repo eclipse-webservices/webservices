@@ -27,7 +27,6 @@ import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetAddressCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11AddressExtensibilityElementAdapter;
@@ -124,8 +123,8 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 			}
 		}
 		
-		if (value == null || value.equals("")) { //$NON-NLS-1$
-			value = "No Address";
+		if (value == null) {
+			value = ""; //$NON-NLS-1$
 		}
 		
 		return value;
@@ -166,9 +165,6 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	public Command getSetAddressCommand(String newAddress) {
 		return new W11SetAddressCommand((Port) this.getTarget(), newAddress);
 	}
-	public Command getDeleteCommand() {
-		return new W11DeleteCommand(this);
-	}
     
     public void propertyChanged(Object object, String property)
     {
@@ -183,7 +179,7 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	}
 	
 	public String getText() {
-		return "port";
+		return "port"; //$NON-NLS-1$
 	}
 	
 	public ITreeElement[] getChildren() {
@@ -197,11 +193,9 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	public ITreeElement getParent() {
 		return null;
 	}
-	
-	// TODO: rmah: This method should be defined in the IEndPoint Interface.
-	// Do this post 1.5....
+
 	public String getProtocol() {
-		String protocol = "";
+		String protocol = ""; //$NON-NLS-1$
 		
 		List list = getAddressExtensiblityElements();
         if (list.size() > 0) {
@@ -211,10 +205,10 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
         	// TODO: rmah: We should not using hardcoded strings as the returned Protocol.  We need to get
         	// the protocol dynamically....
         	if (target instanceof SOAPAddress) {
-        		protocol = "SOAP";
+        		protocol = "SOAP"; //$NON-NLS-1$
         	}
         	else if (target instanceof HTTPAddress) {
-        		protocol = "HTTP";
+        		protocol = "HTTP"; //$NON-NLS-1$
         	}
         }	
 

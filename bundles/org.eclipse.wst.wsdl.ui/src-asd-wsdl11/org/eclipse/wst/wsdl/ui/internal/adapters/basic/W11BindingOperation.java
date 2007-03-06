@@ -93,7 +93,7 @@ public class W11BindingOperation extends WSDLBaseAdapter implements IBindingOper
 
   public String getText()
   {
-    return "binding operation";
+    return "binding operation"; //$NON-NLS-1$
   }
   
   public String[] getActions(Object object) {    

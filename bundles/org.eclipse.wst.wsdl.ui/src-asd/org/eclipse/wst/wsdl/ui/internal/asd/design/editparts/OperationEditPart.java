@@ -33,6 +33,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEd
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ListFigure;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
+import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 
 public class OperationEditPart extends BaseEditPart implements INamedEditPart
@@ -124,10 +125,11 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
   {   
     super.refreshVisuals();
     IOperation operation = (IOperation)getModel();
-    label.setText(operation.getName());// + "---" + getModel());
-    label.setIcon(operation.getImage());
+    label.setText(operation.getName());
     
-
+    if (operation instanceof ITreeElement) {
+    	label.setIcon(((ITreeElement) operation).getImage());
+    }
   }
   
   public IFigure getContentPane()
@@ -151,18 +153,5 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
 	  if (unselectedColor != null) {
 		  labelHolder.setBackgroundColor(unselectedColor);
 	  }
-  }
-  
-  /**
-   * @deprecated to be removed post WTP 1.5
-   */
-  protected Label previewLabel;
-  
-  /**
-   * @deprecated to be removed post WTP 1.5
-   */  
-  protected String getOperationPreview() 
-  {
-    return "deprecated";
   }
 }

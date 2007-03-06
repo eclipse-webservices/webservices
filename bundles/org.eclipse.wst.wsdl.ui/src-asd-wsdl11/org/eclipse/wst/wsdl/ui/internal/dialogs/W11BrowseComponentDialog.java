@@ -43,8 +43,6 @@ public class W11BrowseComponentDialog implements IComponentDialog {
 	}
 	
 	public void setInitialSelection(ComponentSpecification componentSpecification) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public ComponentSpecification getSelectedComponent() {

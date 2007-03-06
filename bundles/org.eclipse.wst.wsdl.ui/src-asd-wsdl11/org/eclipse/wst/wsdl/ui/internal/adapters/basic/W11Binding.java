@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -30,7 +31,6 @@ import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
-import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11DeleteCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11GenerateBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetInterfaceCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
@@ -214,11 +214,6 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 	public Command getGenerateBindingCommand() {
 		return new W11GenerateBindingCommand((Binding) this.getTarget());
 	}
-	
-	public Command getDeleteCommand() {
-		return new W11DeleteCommand(this);
-	}
-
     
     private ILabelProvider getLabelProvider(Node node)
     {
@@ -250,14 +245,14 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
     }        
     if (image == null)
     {
-      image = WSDLEditorPlugin.getInstance().getImage("icons/binding_obj.gif");         
+      image = WSDLEditorPlugin.getInstance().getImage("icons/binding_obj.gif");          //$NON-NLS-1$
     }  
     return image;
    }
 
   public String getText()
   {
-    return "binding";
+    return "binding"; //$NON-NLS-1$
   }
   
   public ITreeElement[] getChildren()

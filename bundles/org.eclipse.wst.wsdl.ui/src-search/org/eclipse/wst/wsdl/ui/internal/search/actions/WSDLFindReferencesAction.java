@@ -135,7 +135,7 @@ public class WSDLFindReferencesAction extends FindAction
 
   public void run()
   {
-    String pattern = "";
+    String pattern = ""; //$NON-NLS-1$
     WSDLBaseAdapter component = getWSDLNamedComponent();
     IFile file = getCurrentFile();
     QualifiedName[] names = determineMetaAndQualifiedName(component);

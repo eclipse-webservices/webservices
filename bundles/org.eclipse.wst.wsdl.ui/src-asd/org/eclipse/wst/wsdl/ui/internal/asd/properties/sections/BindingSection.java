@@ -50,7 +50,7 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		comboLabel.setText(org.eclipse.wst.wsdl.ui.internal.asd.Messages._UI_LABEL_PORTTYPE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL);
-		protocolValue= getWidgetFactory().createCLabel(composite, "");
+		protocolValue= getWidgetFactory().createCLabel(composite, ""); //$NON-NLS-1$
 		
 		// Layout protocolLabel
 		FormData data = new FormData();
@@ -118,8 +118,8 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		super.refresh();
 		IBinding binding = getIBinding();
 		String protocol = binding.getProtocol();
-		if (protocol == null || protocol.equals("")) {
-			protocol = "----";
+		if (protocol == null || protocol.equals("")) { //$NON-NLS-1$
+			protocol = "----"; //$NON-NLS-1$
 		}
 		protocolValue.setText(protocol);
 

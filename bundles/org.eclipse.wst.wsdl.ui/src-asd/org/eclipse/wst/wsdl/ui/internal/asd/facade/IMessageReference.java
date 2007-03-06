@@ -25,8 +25,6 @@ public interface IMessageReference extends INamedObject
   public int getKind();
   public List getParameters();   
   public IOperation getOwnerOperation();
-  public String getPreview();
   
   public Command getReorderParametersCommand(IParameter leftSibling, IParameter rightSibling, IParameter movingParameter);
-  public Command getDeleteCommand();
 }

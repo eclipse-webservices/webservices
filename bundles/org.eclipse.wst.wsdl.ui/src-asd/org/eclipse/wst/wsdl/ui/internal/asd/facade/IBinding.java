@@ -25,5 +25,4 @@ public interface IBinding extends INamedObject
   
 	public Command getSetInterfaceCommand(IInterface newInterface);
 	public Command getGenerateBindingCommand();
-	public Command getDeleteCommand();
 }
