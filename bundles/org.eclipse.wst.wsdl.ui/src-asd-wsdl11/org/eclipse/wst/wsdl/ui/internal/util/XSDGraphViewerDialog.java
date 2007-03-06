@@ -19,12 +19,20 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.PopupDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.events.IHyperlinkListener;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.xsd.ui.internal.adapters.XSDAdapterFactory;
@@ -40,12 +48,19 @@ public class XSDGraphViewerDialog extends PopupDialog
   protected ScrollingGraphicalViewer viewer;
   protected IOpenExternalEditorHelper openExternalEditorHelper;
   private CloseDialogListener closeDialogListener;
+  private OpenEditorLinkListener linkListener;
+  private Label nsInfoLabel;
+  private Hyperlink link;
+  private String infoText;
+  private Font infoFont;
 
   public XSDGraphViewerDialog(Shell parentShell, String titleText, String infoText, Object model)
   {
     super(parentShell, SWT.RESIZE, false, false, true, false, titleText, infoText);
     setModel(model);
     closeDialogListener = new CloseDialogListener();
+    linkListener = new OpenEditorLinkListener();
+    this.infoText = infoText;
   }
 
   public void setOpenExternalEditor(IOpenExternalEditorHelper helper)
@@ -81,6 +96,39 @@ public class XSDGraphViewerDialog extends PopupDialog
 
     return c;
   }
+  
+  protected Control createInfoTextArea(Composite parent) {
+    Composite infoComposite = new Composite(parent, SWT.NONE);
+    GridLayout gridLayout = new GridLayout(2, false);
+    gridLayout.marginHeight = 0;
+    gridLayout.marginWidth = 0;
+    infoComposite.setLayout(gridLayout);
+    GridData gd = new GridData(GridData.FILL_BOTH);
+    infoComposite.setLayoutData(gd);
+    
+    nsInfoLabel = new Label(infoComposite, SWT.LEFT);
+    nsInfoLabel.setText(infoText);
+    
+    Font font = nsInfoLabel.getFont();
+    FontData[] fontDatas = font.getFontData();
+    for (int i = 0; i < fontDatas.length; i++) {
+      fontDatas[i].setHeight(fontDatas[i].getHeight() * 9 / 10);
+    }
+    infoFont = new Font(nsInfoLabel.getDisplay(), fontDatas);
+    nsInfoLabel.setFont(infoFont);
+    gd = new GridData(GridData.FILL_HORIZONTAL
+        | GridData.HORIZONTAL_ALIGN_BEGINNING
+        | GridData.VERTICAL_ALIGN_BEGINNING);
+    nsInfoLabel.setLayoutData(gd);
+    nsInfoLabel.setForeground(parent.getDisplay().getSystemColor(
+        SWT.COLOR_WIDGET_DARK_SHADOW));
+    
+    link = new Hyperlink(infoComposite, SWT.RIGHT);
+    link.setText(Messages._UI_ACTION_OPEN_IN_NEW_EDITOR);
+    link.setFont(infoFont);
+    link.addHyperlinkListener(linkListener);
+    return infoComposite;
+  }
 
   public int open()
   {
@@ -115,14 +163,37 @@ public class XSDGraphViewerDialog extends PopupDialog
           
         }
       }
-      close();
     }
   }
   
   public boolean close()
   {
     closeDialogListener.removeListeners();
+    link.removeHyperlinkListener(linkListener);
+    infoFont.dispose();
+    infoFont = null;
     return super.close();
+  }
+  
+  private final class OpenEditorLinkListener implements IHyperlinkListener
+  {
+
+    public void linkActivated(HyperlinkEvent e)
+    {
+      new SetOpenInEditor().run();
+      
+    }
+
+    public void linkEntered(HyperlinkEvent e)
+    {
+      link.setForeground(ColorConstants.lightBlue);
+    }
+
+    public void linkExited(HyperlinkEvent e)
+    {
+      link.setForeground(link.getParent().getForeground());
+    }
+    
   }
   
   private final class CloseDialogListener implements Listener {
