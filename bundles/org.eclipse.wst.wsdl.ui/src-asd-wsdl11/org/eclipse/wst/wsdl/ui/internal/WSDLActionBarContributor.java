@@ -14,13 +14,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.actions.ActionFactory;
@@ -31,6 +35,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.wst.sse.ui.internal.ISourceViewerActionBarContributor;
 import org.eclipse.wst.wsdl.ui.internal.actions.IWSDLToolbarAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
+import org.eclipse.wst.xsd.ui.internal.adt.actions.CaptureScreenAction;
 
 public class WSDLActionBarContributor extends MultiPageEditorActionBarContributor
 {
@@ -38,6 +43,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
   private InternalWSDLMultiPageEditor wsdlEditor;
   protected ITextEditor textEditor;
   protected IEditorActionBarContributor sourceViewerActionContributor = null;
+  Action captureScreenAction;
 
   /**
    * Constructor for WSDLActionBarContributor.
@@ -46,6 +52,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
   {
     super();
     sourceViewerActionContributor = new SourcePageActionContributor();
+    captureScreenAction = new CaptureScreenAction();
   }
 
   public void setActivePage(IEditorPart part)
@@ -60,6 +67,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
     if (activeEditorPart != null && activeEditorPart instanceof ITextEditor)
     {
       activateSourcePage(activeEditorPart, true);
+      captureScreenAction.setEnabled(false);
     }
     else
     {
@@ -87,6 +95,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
         {
           ActionRegistry registry = (ActionRegistry) adapter;
           actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(), registry.getAction(ASDDeleteAction.ID));
+          captureScreenAction.setEnabled(true);
         }
       }
     }
@@ -125,6 +134,7 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
 //    manager.add(new Separator());
 //    String[] zoomStrings = new String[] { ZoomManager.FIT_ALL, ZoomManager.FIT_HEIGHT, ZoomManager.FIT_WIDTH };
 //    manager.add(new ZoomComboContributionItem(getPage(), zoomStrings));
+    manager.add(captureScreenAction);
   }
 
   public void setActiveEditor(IEditorPart part)
@@ -182,5 +192,17 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
       sourceViewerActionContributor.dispose();
     super.dispose();
   }
+
+public void contributeToMenu(IMenuManager manager) {
+	super.contributeToMenu(manager);
+	
+	IMenuManager menu = new MenuManager(Messages._UI_EDITOR_NAME, "WSDLEditor");
+
+	manager.appendToGroup(IWorkbenchActionConstants.MB_ADDITIONS, menu);
+	menu.add(captureScreenAction);
+
+    menu.updateAll(true);
+	
+}
 
 }
