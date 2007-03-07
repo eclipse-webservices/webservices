@@ -27,16 +27,6 @@
 			<description>%_UI_LABEL_CREATE_NEW_WSDL_FILE</description>
 			<selection class="org.eclipse.core.resources.IResource" />
 		</wizard>
-
-		<wizard
-			id="org.eclipse.wst.wsdl.ui"
-			name="WSDL"
-			class="org.eclipse.wst.wsdl.ui.internal.wizards.NewWSDLWizard"
-			category="org.eclipse.wst.XMLCategory"
-			icon="icons/wsdl_file_obj.gif">
-			<description>%_UI_LABEL_CREATE_NEW_WSDL_FILE</description>
-			<selection class="org.eclipse.core.resources.IResource" />
-		</wizard>
 	</extension>
 	
 	<extension point="org.eclipse.ui.preferencePages">
