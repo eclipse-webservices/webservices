@@ -137,7 +137,8 @@ public class WSDLEditorUtil extends WSDLConstants
     if (prefixedName != null)
     {
       int index = prefixedName.indexOf(":"); //$NON-NLS-1$
-      String prefix = (index == -1) ? null : prefixedName.substring(0, index);
+//      String prefix = (index == -1) ? null : prefixedName.substring(0, index);
+      String prefix = (index == -1) ? "" : prefixedName.substring(0, index);
       if (prefix != null)
       {
         String namespace = definition.getNamespace(prefix);

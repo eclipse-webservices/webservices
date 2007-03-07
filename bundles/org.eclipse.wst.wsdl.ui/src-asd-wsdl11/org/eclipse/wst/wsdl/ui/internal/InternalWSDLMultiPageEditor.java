@@ -37,10 +37,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
@@ -349,9 +352,23 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 		}
 		
 		public void selectionChanged(SelectionChangedEvent event) {
+			// do not fire selection in source editor if the current active page is the InternalWSDLMultiPageEditor (source)
+			// We only want to make source selections if the active page is either the outline or properties (a modify
+			// has been done via the outline or properties and not the source view).  We don't want to be selecting
+			// and unselecting things in the source when editing in the source!!
+			boolean makeSelection = true;
+			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
+				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				if (page.getActivePart() instanceof InternalWSDLMultiPageEditor) {
+					if (getActiveEditor() instanceof StructuredTextEditor) {
+						makeSelection = false;
+					}
+				}
+			}
+			
 			// do not fire selection in source editor if selection event came
 			// from source editor
-			if (event.getSource() != getTextEditor().getSelectionProvider()) {
+				if (event.getSource() != getTextEditor().getSelectionProvider() && makeSelection) {
 				ISelection selection = event.getSelection();
 				if (selection instanceof IStructuredSelection) {
 					List otherModelObjectList = new ArrayList();
