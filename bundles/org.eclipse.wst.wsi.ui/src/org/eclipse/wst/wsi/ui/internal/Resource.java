@@ -17,5 +17,5 @@ package org.eclipse.wst.wsi.ui.internal;
  */
 public interface Resource
 {
-  public static final String VALIDATE_WSI_LOGFILE_WIZ = "actions/icons/wsi_logfile_wiz.gif";
+  public static final String VALIDATE_WSI_LOGFILE_WIZ = "actions/icons/wsi_logfile_wiz.png";
 }

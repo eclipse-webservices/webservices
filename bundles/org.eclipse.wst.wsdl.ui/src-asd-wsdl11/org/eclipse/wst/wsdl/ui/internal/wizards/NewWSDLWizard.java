@@ -229,7 +229,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		this.selection = selection;
 
 		// Need new icon
-		this.setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(InternalWSDLMultiPageEditor.class, "icons/new_wsdl_wiz.gif")); //$NON-NLS-1$
+		this.setDefaultPageImageDescriptor(ImageDescriptor.createFromFile(InternalWSDLMultiPageEditor.class, "icons/new_wsdl_wiz.png")); //$NON-NLS-1$
 		this.setWindowTitle(Messages._UI_TITLE_NEW_WSDL_FILE); //$NON-NLS-1$
 	}
 
