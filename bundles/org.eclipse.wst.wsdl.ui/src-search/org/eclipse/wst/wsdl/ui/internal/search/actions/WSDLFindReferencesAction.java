@@ -36,11 +36,24 @@ import org.eclipse.wst.xsd.ui.internal.search.actions.FindAction;
 
 public class WSDLFindReferencesAction extends FindAction
 {
+	private WSDLBaseAdapter component;
+	private IFile file;
+	private QualifiedName[] names;
+
   public WSDLFindReferencesAction(IEditorPart editor)
   {
     super(editor);
+    init();
   }
 
+  protected void init() {
+	component = getWSDLNamedComponent();
+	file = getCurrentFile();
+	names = determineMetaAndQualifiedName(component);
+	if (file == null || component == null || names == null)
+	  setEnabled(false);
+  }
+  
   public void setActionDefinitionId(String string)
   {
   }
@@ -136,9 +149,6 @@ public class WSDLFindReferencesAction extends FindAction
   public void run()
   {
     String pattern = ""; //$NON-NLS-1$
-    WSDLBaseAdapter component = getWSDLNamedComponent();
-    IFile file = getCurrentFile();
-    QualifiedName[] names = determineMetaAndQualifiedName(component);
     if (file != null && component != null && names != null)
     {
       SearchScope scope = new WorkspaceSearchScope();
