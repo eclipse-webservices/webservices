@@ -44,6 +44,8 @@ public class AllTestCases extends TestCase
     suite.addTest(BugFixesTest.suite());
     suite.addTest(LocationTrackingTest.suite());
     suite.addTest(RefactoringTest.suite());
+    suite.addTest(SOAPExtensionsTest.suite());
+    suite.addTest(HTTPExtensionsTest.suite());
 
     return suite;
   }

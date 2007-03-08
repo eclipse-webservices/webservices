@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/RPCLiteralSOAPExample/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="RPCLiteralSOAPExample"
+	targetNamespace="http://www.example.org/RPCLiteralSOAPExample/">
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part name="NewOperationRequest" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part name="NewOperationResponse" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:portType name="RPCLiteralSOAPExample">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest" />
+			<wsdl:output message="tns:NewOperationResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RPCLiteralSOAPExampleSOAP"
+		type="tns:RPCLiteralSOAPExample">
+		<soap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="NewOperation">
+			<soap:operation
+				soapAction="http://www.example.org/RPCLiteralSOAPExample/NewOperation" />
+			<wsdl:input>
+				<soap:body
+					namespace="http://www.example.org/RPCLiteralSOAPExample/"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body
+					namespace="http://www.example.org/RPCLiteralSOAPExample/"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RPCLiteralSOAPExample">
+		<wsdl:port binding="tns:RPCLiteralSOAPExampleSOAP"
+			name="RPCLiteralSOAPExampleSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

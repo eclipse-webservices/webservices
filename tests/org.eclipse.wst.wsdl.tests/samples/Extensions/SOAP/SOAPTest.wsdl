@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/SOAPTest/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SOAPTest"
+	targetNamespace="http://www.example.org/SOAPTest/">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/SOAPTest/"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="NewOperation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationFault">
+				<xsd:complexType>
+					<xsd:sequence>						<xsd:element name="fault"
+							type="xsd:string">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Header">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="header"
+							type="xsd:string">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="HeaderFault1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="headerFault1"
+							type="xsd:string">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="HeaderFault2">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="headerFault2"
+							type="xsd:string">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part element="tns:NewOperation" name="parameters" />
+		<wsdl:part element="tns:Header" name="header" />
+		<wsdl:part element="tns:HeaderFault1" name="headerFault1" ></wsdl:part>
+		<wsdl:part element="tns:HeaderFault2" name="headerFault2" ></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationFault">
+		<wsdl:part name="parameters" element="tns:NewOperationFault"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="SOAPTest">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest" />
+			<wsdl:output message="tns:NewOperationResponse" />
+			<wsdl:fault name="fault" message="tns:NewOperationFault" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SOAPTestSOAP" type="tns:SOAPTest">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input />
+			<wsdl:output />
+			<wsdl:fault name="fault" />
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SOAPTest">
+		<wsdl:port binding="tns:SOAPTestSOAP" name="SOAPTestSOAP">
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
