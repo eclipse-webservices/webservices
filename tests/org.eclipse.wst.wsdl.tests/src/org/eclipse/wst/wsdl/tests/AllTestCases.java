@@ -15,6 +15,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+
 /**
  * @author Kihup Boo
  */
@@ -28,11 +29,11 @@ public class AllTestCases extends TestCase
   public static void main(String[] args)
   {
   }
-  
-  public static Test suite() 
+
+  public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    
+
     // Bug 123547 - comment out this test for now.
     // suite.addTest(InlineSchemaTest.suite());  
     suite.addTest(LoadAndSerializationTest.suite());
@@ -43,7 +44,7 @@ public class AllTestCases extends TestCase
     suite.addTest(UtilTest.suite());
     suite.addTest(BugFixesTest.suite());
     suite.addTest(LocationTrackingTest.suite());
-    
+
     return suite;
   }
 

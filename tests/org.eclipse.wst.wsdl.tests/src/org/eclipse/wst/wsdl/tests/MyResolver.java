@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+
 
 public class MyResolver implements EntityResolver
 {

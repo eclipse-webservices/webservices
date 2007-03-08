@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests.util;
 
+
 import java.util.Iterator;
 
 import junit.framework.TestCase;
@@ -34,26 +35,27 @@ import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
 
+
 /**
  * @author Kihup Boo
  */
 public abstract class DefinitionVisitor extends TestCase
 {
   protected Definition definition;
-  
+
   /**
    * Use DefinitionVisitor(Definition definition)
    */
   private DefinitionVisitor()
   {
   }
-  
+
   // Added for JUnit
   public DefinitionVisitor(String name)
   {
     super(name);
   }
-  
+
   protected DefinitionVisitor(Definition definition)
   {
     this.definition = definition;
@@ -64,13 +66,13 @@ public abstract class DefinitionVisitor extends TestCase
   {
     visitDefinition(definition);
   }
-  
+
   protected void visitDefinition(Definition def)
   {
     Iterator iterator = def.getEImports().iterator();
     while (iterator.hasNext())
       visitImport((Import)iterator.next());
-    
+
     Types types = def.getETypes();
     if (types != null)
       visitTypes(types);
@@ -78,7 +80,7 @@ public abstract class DefinitionVisitor extends TestCase
     iterator = def.getEMessages().iterator();
     while (iterator.hasNext())
       visitMessage((Message)iterator.next());
-    
+
     iterator = def.getEPortTypes().iterator();
     while (iterator.hasNext())
       visitPortType((PortType)iterator.next());
@@ -86,54 +88,54 @@ public abstract class DefinitionVisitor extends TestCase
     iterator = def.getEBindings().iterator();
     while (iterator.hasNext())
       visitBinding((Binding)iterator.next());
-    
+
     iterator = def.getEServices().iterator();
     while (iterator.hasNext())
       visitService((Service)iterator.next());
 
     iterator = def.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(def,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(def, (ExtensibilityElement)iterator.next());
 
   }
-  
+
   abstract protected void visitImport(Import wsdlImport);
-  
+
   abstract protected void visitTypes(Types types);
 
   protected void visitMessage(Message message)
   {
     Iterator iterator = message.getEParts().iterator();
     while (iterator.hasNext())
-      visitPart((Part)iterator.next()); 
+      visitPart((Part)iterator.next());
   }
 
   abstract protected void visitPart(Part part);
-  
+
   protected void visitPortType(PortType portType)
   {
     Iterator iterator = portType.getEOperations().iterator();
     while (iterator.hasNext())
       visitOperation((Operation)iterator.next());
   }
-  
+
   protected void visitOperation(Operation operation)
   {
     Input input = operation.getEInput();
-    visitInput((Input)input);  
-    
+    visitInput((Input)input);
+
     Output output = operation.getEOutput();
-    visitOutput((Output)output); 
-    
+    visitOutput((Output)output);
+
     Iterator iterator = operation.getEFaults().iterator();
     while (iterator.hasNext())
       visitFault((Fault)iterator.next());
   }
-  
+
   protected abstract void visitInput(Input input);
-  
+
   protected abstract void visitOutput(Output output);
-  
+
   protected abstract void visitFault(Fault fault);
 
   protected void visitBinding(Binding binding)
@@ -144,46 +146,46 @@ public abstract class DefinitionVisitor extends TestCase
 
     iterator = binding.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(binding,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(binding, (ExtensibilityElement)iterator.next());
   }
-  
+
   protected void visitBindingOperation(BindingOperation operation)
   {
     BindingInput input = operation.getEBindingInput();
-    visitBindingInput((BindingInput)input);  
-    
+    visitBindingInput((BindingInput)input);
+
     BindingOutput output = operation.getEBindingOutput();
-    visitBindingOutput((BindingOutput)output); 
-    
+    visitBindingOutput((BindingOutput)output);
+
     Iterator iterator = operation.getEBindingFaults().iterator();
     while (iterator.hasNext())
       visitBindingFault((BindingFault)iterator.next());
-    
+
     iterator = operation.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(operation,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(operation, (ExtensibilityElement)iterator.next());
 
   }
- 
+
   protected void visitBindingInput(BindingInput input)
   {
     Iterator iterator = input.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(input,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(input, (ExtensibilityElement)iterator.next());
   }
-  
+
   protected void visitBindingOutput(BindingOutput output)
   {
     Iterator iterator = output.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(output,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(output, (ExtensibilityElement)iterator.next());
   }
-  
+
   protected void visitBindingFault(BindingFault fault)
   {
     Iterator iterator = fault.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(fault,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(fault, (ExtensibilityElement)iterator.next());
   }
 
   protected void visitService(Service service)
@@ -194,18 +196,16 @@ public abstract class DefinitionVisitor extends TestCase
 
     iterator = service.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(service,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(service, (ExtensibilityElement)iterator.next());
   }
-  
+
   protected void visitPort(Port port)
   {
     Iterator iterator = port.getEExtensibilityElements().iterator();
     while (iterator.hasNext())
-      visitExtensibilityElement(port,(ExtensibilityElement)iterator.next());
+      visitExtensibilityElement(port, (ExtensibilityElement)iterator.next());
   }
 
-  abstract protected void visitExtensibilityElement
-    (ExtensibleElement owner,
-     ExtensibilityElement extensibilityElement);
+  abstract protected void visitExtensibilityElement(ExtensibleElement owner, ExtensibilityElement extensibilityElement);
 
 }

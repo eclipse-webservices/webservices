@@ -10,22 +10,24 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests.util;
 
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 
+
 public class XSDSchemaLocationResolverAdapterFactory extends AdapterFactoryImpl
 {
-    protected XSDSchemaLocationResolverImpl schemaLocator = new XSDSchemaLocationResolverImpl();
+  protected XSDSchemaLocationResolverImpl schemaLocator = new XSDSchemaLocationResolverImpl();
 
-    public boolean isFactoryForType(Object type)
-    {
-      return type == XSDSchemaLocationResolver.class;
-    }
+  public boolean isFactoryForType(Object type)
+  {
+    return type == XSDSchemaLocationResolver.class;
+  }
 
-    public Adapter adaptNew(Notifier target, Object type)
-    {
-      return schemaLocator;
-    }
+  public Adapter adaptNew(Notifier target, Object type)
+  {
+    return schemaLocator;
+  }
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
+
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
@@ -48,36 +49,35 @@ import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl;
 
+
 public class WSDLGenerationTest extends TestCase
 {
   public WSDLGenerationTest()
   {
     init();
   }
-  
-  public WSDLGenerationTest(String name) 
+
+  public WSDLGenerationTest(String name)
   {
     super(name);
-  }  
-  
-  public static Test suite() 
+  }
+
+  public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    
-    suite.addTest
-      (new WSDLGenerationTest("SampleWSDLGeneration") 
-         {
-           protected void runTest() 
-           {
-             testSampleWSDLGeneration();
-         }
-       }
-     );
-    
+
+    suite.addTest(new WSDLGenerationTest("SampleWSDLGeneration")
+      {
+        protected void runTest()
+        {
+          testSampleWSDLGeneration();
+        }
+      });
+
     return suite;
   }
-  
-  public void testSampleWSDLGeneration() 
+
+  public void testSampleWSDLGeneration()
   {
     try
     {
@@ -88,24 +88,24 @@ public class WSDLGenerationTest extends TestCase
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
     }
   }
-  
-  protected void setUp() throws Exception 
+
+  protected void setUp() throws Exception
   {
     super.setUp();
-    
+
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
     WSDLPackage pkg = WSDLPackage.eINSTANCE;
-    
+
     // We need this for XSD <import>.
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
     XSDPackage xsdpkg = XSDPackage.eINSTANCE;
   }
 
-  protected void tearDown() throws Exception 
+  protected void tearDown() throws Exception
   {
     super.tearDown();
   }
-  
+
   public void generateTemperatureService(String outputFile) throws Exception
   {
     ResourceSet resourceSet = new ResourceSetImpl();
@@ -114,13 +114,13 @@ public class WSDLGenerationTest extends TestCase
 
     // Create a Definition - Temperature
     Definition definition = WSDLFactory.eINSTANCE.createDefinition();
-    definition.setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI,"Temparature"));
+    definition.setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, "Temparature"));
     resource.getContents().add(definition);
-    
+
     // Target namespace - http://www.temperature.com
     definition.setTargetNamespace("http://www.temperature.com");
     definition.addNamespace("tns", "http://www.temperature.com");
-    
+
     // Other namespaces - wsdl, soap, xsd
     definition.addNamespace("wsdl", WSDLConstants.WSDL_NAMESPACE_URI);
     definition.addNamespace("xsd", WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001);
@@ -129,33 +129,33 @@ public class WSDLGenerationTest extends TestCase
     //
     // Let's start building two messages
     //
-    
+
     // Create a Part - ZipCode
     Part part = WSDLFactory.eINSTANCE.createPart();
     part.setName("ZipCode");
-    part.setTypeName(new QName(WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001,"string"));
-    
+    part.setTypeName(new QName(WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001, "string"));
+
     // Create a Message - GetTemperatureInput
     Message inputMessage = WSDLFactory.eINSTANCE.createMessage();
     inputMessage.setQName(new QName(definition.getTargetNamespace(), "GetTemparatureInput"));
     inputMessage.addPart(part);
     definition.addMessage(inputMessage);
-    
+
     // Create a Part - Temperature
     part = WSDLFactory.eINSTANCE.createPart();
     part.setName("Temperature");
-    part.setTypeName(new QName(WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001,"float"));
+    part.setTypeName(new QName(WSDLConstants.SCHEMA_FOR_SCHEMA_URI_2001, "float"));
 
     // Create a Message - GetTemperatureOutput
     Message outputMessage = WSDLFactory.eINSTANCE.createMessage();
     outputMessage.setQName(new QName(definition.getTargetNamespace(), "GetTemparatureOutput"));
     outputMessage.addPart(part);
     definition.addMessage(outputMessage);
-    
+
     //
     // Next, build a PortType
     //
-    
+
     // Create an Input - GetTemperatureInput
     Input input = WSDLFactory.eINSTANCE.createInput();
     input.setMessage(inputMessage);
@@ -163,23 +163,23 @@ public class WSDLGenerationTest extends TestCase
     // Create an Output - GetTemperatureOutput
     Output output = WSDLFactory.eINSTANCE.createOutput();
     output.setMessage(outputMessage);
-   
+
     // Create an Operation - GetTemperatureForZipCode
     Operation operation = WSDLFactory.eINSTANCE.createOperation();
     operation.setName("GetTemperatureForZipCode");
     operation.setInput(input);
     operation.setOutput(output);
-    
+
     // Create a PortType
     PortType portType = WSDLFactory.eINSTANCE.createPortType();
-    portType.setQName(new QName(definition.getTargetNamespace(),"GetTemparatureInfoSOAP"));
+    portType.setQName(new QName(definition.getTargetNamespace(), "GetTemparatureInfoSOAP"));
     portType.addOperation(operation);
     definition.addPortType(portType);
-    
+
     //
     // Now, let's work on Binding
     //
-    
+
     // Create a Binding - GetTemperatureInfoSOAP
     Binding binding = WSDLFactory.eINSTANCE.createBinding();
     binding.setQName(new QName(definition.getTargetNamespace(), "GetTemparatureInfoSOAP"));
@@ -200,14 +200,14 @@ public class WSDLGenerationTest extends TestCase
     // Create a SOAP Operation
     SOAPOperation soapOperation = SOAPFactory.eINSTANCE.createSOAPOperation();
     soapOperation.setSoapActionURI("http://www.temperature.com/GetTemperatureForZipCode");
-    bindingOperation.addExtensibilityElement(soapOperation);    
+    bindingOperation.addExtensibilityElement(soapOperation);
 
     // Create a SOAP Body
     SOAPBody soapBody = SOAPFactory.eINSTANCE.createSOAPBody();
     soapBody.setUse("encoded");
     soapBody.getEncodingStyles().add("http://schemas.xmlsoap.org/soap/encoding/");
     soapBody.setNamespaceURI("http://www.temperature.com/");
-    
+
     // Add a part (Temperature) to the SOAP body (Bugzilla 108176)
     java.util.Vector v = new java.util.Vector();
     v.add(part);
@@ -218,18 +218,18 @@ public class WSDLGenerationTest extends TestCase
     BindingInput bindingInput = WSDLFactory.eINSTANCE.createBindingInput();
     bindingInput.addExtensibilityElement(soapBody);
     bindingOperation.setBindingInput(bindingInput);
-    
+
     // Create a SOAP Body
     soapBody = SOAPFactory.eINSTANCE.createSOAPBody();
     soapBody.setUse("encoded");
     soapBody.getEncodingStyles().add("http://schemas.xmlsoap.org/soap/encoding/");
     soapBody.setNamespaceURI("http://www.temperature.com/");
-    
+
     // Create a Binding Output
     BindingOutput bindingOuput = WSDLFactory.eINSTANCE.createBindingOutput();
     bindingOuput.addExtensibilityElement(soapBody);
     bindingOperation.setBindingOutput(bindingOuput);
-    
+
     //
     // Finally, we are building a Service
     //
@@ -243,25 +243,25 @@ public class WSDLGenerationTest extends TestCase
     port.setName("GetTemperatureInfoSOAP");
     port.setBinding(binding);
     port.addExtensibilityElement(soapAddress);
-    
+
     // Create a Service - TemperatureService
     Service service = WSDLFactory.eINSTANCE.createService();
-    service.setQName(new QName(definition.getTargetNamespace(),"TemperatureService"));
+    service.setQName(new QName(definition.getTargetNamespace(), "TemperatureService"));
     service.addPort(port);
     definition.addService(service);
-    
+
     //
     // Phew, we are done. Let's serialize it.
     //
-    
+
     resource.save(null);
- 
+
   }
 
   private void init()
   {
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;  
+    WSDLPackage pkg = WSDLPackage.eINSTANCE;
   }
 
 }

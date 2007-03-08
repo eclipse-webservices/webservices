@@ -10,22 +10,24 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests.util;
 
+
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 
+
 public class XSDSchemaLocationResolverImpl extends AdapterImpl implements XSDSchemaLocationResolver
 {
-    public String resolveSchemaLocation(XSDSchema xsdSchema, String namespaceURI, String schemaLocationURI)
-    {
-      String baseLocation = xsdSchema.getSchemaLocation();      
-      return URIResolverPlugin.createResolver().resolve(baseLocation, namespaceURI, schemaLocationURI);
-    }
+  public String resolveSchemaLocation(XSDSchema xsdSchema, String namespaceURI, String schemaLocationURI)
+  {
+    String baseLocation = xsdSchema.getSchemaLocation();
+    return URIResolverPlugin.createResolver().resolve(baseLocation, namespaceURI, schemaLocationURI);
+  }
 
-    public boolean isAdatperForType(Object type)
-    {
-      return type == XSDSchemaLocator.class;
-    }  
+  public boolean isAdatperForType(Object type)
+  {
+    return type == XSDSchemaLocator.class;
+  }
 }

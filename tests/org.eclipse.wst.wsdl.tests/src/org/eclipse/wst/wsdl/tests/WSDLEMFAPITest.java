@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -69,23 +70,32 @@ import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Element;
 
+
 /**
  * @author Kihup Boo
  */
 public class WSDLEMFAPITest extends DefinitionVisitor
 {
   private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
+
   private WSDLFactory factory = WSDLFactory.eINSTANCE;
-  
+
   Definition newDefinition;
+
   private Message currentMessage;
+
   private Service currentService;
+
   private PortType currentPortType;
+
   private Operation currentOperation;
+
   private Binding currentBinding;
+
   private BindingOperation currentBindingOperation;
+
   private ExtensibleElement currentExtensibleElement;
-   
+
   {
     // This is needed because we don't have the following in the plugin.xml
     //
@@ -95,18 +105,18 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     //
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
     WSDLPackage pkg = WSDLPackage.eINSTANCE;
-  
+
     // We need this for XSD <import>.
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
     XSDPackage xsdpkg = XSDPackage.eINSTANCE;
   }
-  
+
   // Added for JUnit
-  public WSDLEMFAPITest(String name) 
+  public WSDLEMFAPITest(String name)
   {
     super(name);
   }
-  
+
   /**
    * @param definition
    */
@@ -114,64 +124,65 @@ public class WSDLEMFAPITest extends DefinitionVisitor
   {
     super(definition);
   }
-/*  
-  private void serialize(String filename) throws Exception
-  {
-    Source domSource = new DOMSource(doc);
-    Transformer transformer = TransformerFactory.newInstance().newTransformer();
-    transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-    transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
-    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount","4");
-    transformer.transform(domSource,new StreamResult(new FileOutputStream(filename)));
-  }
-  
-  private void createDocument() throws ParserConfigurationException
-  {
-    doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-  }
-  
-  private Element createWSDLElement(String name)
-  {
-    Element element = doc.createElementNS("http://www.w3.org/2004/08/wsdl",name);
-    if (wsdlNamespacePrefix != null)
-      element.setPrefix(wsdlNamespacePrefix);
-    
-    return element;
-  }
- */ 
+
+  /*  
+   private void serialize(String filename) throws Exception
+   {
+   Source domSource = new DOMSource(doc);
+   Transformer transformer = TransformerFactory.newInstance().newTransformer();
+   transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+   transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
+   transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount","4");
+   transformer.transform(domSource,new StreamResult(new FileOutputStream(filename)));
+   }
+   
+   private void createDocument() throws ParserConfigurationException
+   {
+   doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+   }
+   
+   private Element createWSDLElement(String name)
+   {
+   Element element = doc.createElementNS("http://www.w3.org/2004/08/wsdl",name);
+   if (wsdlNamespacePrefix != null)
+   element.setPrefix(wsdlNamespacePrefix);
+   
+   return element;
+   }
+   */
   private void visitDocumentation(Element docElement)
   {
     if (docElement == null)
       return;
     println("documentation: " + docElement); // TBD - serialize docElement
   }
-  
+
   private void println(String s)
   {
     System.out.println(s);
   }
-  
+
   protected void visitDefinition(Definition def)
   {
     // Use WSDLElement to increase the API coverage in the reports
     WSDLElement root = factory.createDefinition();
     newDefinition = (Definition)root;
-    
-    root.setDocumentationElement(def.getDocumentationElement());   
+
+    root.setDocumentationElement(def.getDocumentationElement());
     root.getDocumentationElement();
     root.setEnclosingDefinition(newDefinition);
     root.getEnclosingDefinition();
     root.getContainer();
-    
-    newDefinition.setQName(def.getQName());    
+
+    newDefinition.setQName(def.getQName());
     newDefinition.setTargetNamespace(def.getTargetNamespace());
     newDefinition.setDocumentBaseURI(def.getDocumentBaseURI());
     newDefinition.setLocation(def.getLocation());
     newDefinition.setEncoding(def.getEncoding());
-    
+
     // getENamespaces does not work.
     Iterator iterator = def.getENamespaces().iterator();
-    Namespace ns = null;   
+    Namespace ns = null;
     String prefix = null;
     String uri = null;
     while (iterator.hasNext())
@@ -183,7 +194,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
       ns.setPrefix(prefix);
       newDefinition.getENamespaces().add(ns);
     }
-    
+
     iterator = def.getNamespaces().keySet().iterator();
     prefix = null;
     String namespace = null;
@@ -192,25 +203,25 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     {
       prefix = (String)iterator.next();
       namespace = def.getNamespace(prefix);
-      newDefinition.addNamespace(prefix,namespace);
+      newDefinition.addNamespace(prefix, namespace);
     }
     //newDefinition.updateElement();
-    
+
     currentExtensibleElement = def;
     super.visitDefinition(def);
-    
+
     root.setElement(null);
     root.updateElement(true);
     root.getElement();
     root.setElement(null);
     root.updateElement();
   }
-  
+
   protected void visitImport(Import wsdlImport)
   {
     Import myImport = factory.createImport();
     newDefinition.getEImports().add(myImport);
-    
+
     // e.g. <xs:import namespace="http://foo.com" schemaLocation= "bar.xsd"/>
     myImport.setNamespaceURI(wsdlImport.getNamespaceURI());
     myImport.setLocationURI(wsdlImport.getLocationURI());
@@ -220,23 +231,23 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     myImport.setSchema(wsdlImport.getSchema());
     myImport.setEnclosingDefinition(newDefinition);
   }
-  
+
   protected void visitTypes(Types types)
   {
     Types myTypes = factory.createTypes();
     myTypes.setDocumentationElement(types.getDocumentationElement());
-    
+
     Iterator iterator = types.getEExtensibilityElements().iterator();
     ExtensibilityElement ee = null;
     types.getSchemas("http://tempuri.org/LoadAndPrintTest/");
-    
+
     currentExtensibleElement = myTypes;
     while (iterator.hasNext())
     {
       ee = (ExtensibilityElement)iterator.next();
       visitExtensibilityElement(ee);
     }
-    
+
     myTypes.setEnclosingDefinition(newDefinition);
     newDefinition.getETypes();
     newDefinition.setETypes(myTypes);
@@ -252,7 +263,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     myPart.setEMessage(part.getEMessage());
     myPart.setElementDeclaration(part.getElementDeclaration());
     myPart.setTypeDefinition(part.getTypeDefinition());
-    
+
     Iterator iterator = part.getExtensionAttributes().keySet().iterator();
     QName key = null;
     QName value = null;
@@ -260,7 +271,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     {
       key = (QName)iterator.next();
       value = (QName)part.getExtensionAttribute(key);
-      myPart.setExtensionAttribute(key,value);
+      myPart.setExtensionAttribute(key, value);
     }
     currentMessage.setEnclosingDefinition(newDefinition);
     currentMessage.addPart(myPart);
@@ -272,13 +283,13 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     currentPortType.setDocumentationElement(portType.getDocumentationElement());
     currentPortType.setQName(portType.getQName());
     currentPortType.setUndefined(portType.isUndefined());
-    
+
     currentPortType.setEnclosingDefinition(newDefinition);
     newDefinition.getEPortTypes().add(currentPortType);
-    
+
     super.visitPortType(portType);
   }
-  
+
   protected void visitOperation(Operation operation)
   {
     currentOperation = factory.createOperation();
@@ -289,13 +300,13 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     operation.getEParameterOrdering(); // TBD
     currentOperation.setEnclosingDefinition(newDefinition);
     currentPortType.getEOperations().add(currentOperation);
-   
+
     super.visitOperation(operation);
     //System.out.println("Operation Type is: " + operation.getStyle());
     //operation.setStyle(OperationType.REQUEST_RESPONSE);
     //System.out.println("Operation Type is: " + operation.getStyle());
   }
-  
+
   protected void visitMessage(Message message)
   {
     currentMessage = factory.createMessage();
@@ -305,11 +316,11 @@ public class WSDLEMFAPITest extends DefinitionVisitor
 
     super.visitMessage(message);
   }
-  
+
   protected void visitInput(Input input)
   {
     MessageReference myInput = factory.createInput();
-    myInput.setDocumentationElement(input.getDocumentationElement());    
+    myInput.setDocumentationElement(input.getDocumentationElement());
     myInput.setName(input.getName());
     myInput.getName();
     myInput.setEMessage(input.getEMessage());
@@ -320,7 +331,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
   protected void visitOutput(Output output)
   {
     Output myOutput = factory.createOutput();
-    myOutput.setDocumentationElement(output.getDocumentationElement());   
+    myOutput.setDocumentationElement(output.getDocumentationElement());
     myOutput.setName(output.getName());
     myOutput.setEMessage(output.getEMessage());
     myOutput.setEnclosingDefinition(newDefinition);
@@ -330,7 +341,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
   protected void visitFault(Fault fault)
   {
     Fault myFault = factory.createFault();
-    myFault.setDocumentationElement(fault.getDocumentationElement());   
+    myFault.setDocumentationElement(fault.getDocumentationElement());
     myFault.setName(fault.getName());
     myFault.setEMessage(fault.getEMessage());
     myFault.setEnclosingDefinition(newDefinition);
@@ -341,8 +352,8 @@ public class WSDLEMFAPITest extends DefinitionVisitor
   {
     currentBinding = factory.createBinding();
     newDefinition.getEBindings().add(currentBinding);
-    
-    currentBinding.setDocumentationElement(binding.getDocumentationElement());    
+
+    currentBinding.setDocumentationElement(binding.getDocumentationElement());
     currentBinding.setQName(binding.getQName());
     currentBinding.setEPortType(binding.getEPortType());
     currentBinding.setUndefined(binding.isUndefined());
@@ -350,79 +361,79 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     currentExtensibleElement = currentBinding;
     super.visitBinding(binding);
   }
-  
+
   protected void visitBindingOperation(BindingOperation bindingOperation)
   {
     currentBindingOperation = factory.createBindingOperation();
-    currentBindingOperation.setDocumentationElement(bindingOperation.getDocumentationElement());   
+    currentBindingOperation.setDocumentationElement(bindingOperation.getDocumentationElement());
     currentBindingOperation.setEOperation(bindingOperation.getEOperation());
     currentBindingOperation.setName(bindingOperation.getName());
     currentBinding.getBindingOperations().add(currentBindingOperation);
-    
+
     currentExtensibleElement = currentBindingOperation;
-    super.visitBindingOperation(bindingOperation);    
+    super.visitBindingOperation(bindingOperation);
   }
- 
+
   protected void visitBindingInput(BindingInput input)
   {
     BindingInput myInput = factory.createBindingInput();
-    myInput.setDocumentationElement(input.getDocumentationElement());    
+    myInput.setDocumentationElement(input.getDocumentationElement());
     myInput.setName(input.getName());
     myInput.setInput(input.getInput());
     myInput.setEInput(input.getEInput());
     currentBindingOperation.setEBindingInput(myInput);
- 
+
     currentExtensibleElement = myInput;
     super.visitBindingInput(input);
   }
-  
+
   protected void visitBindingOutput(BindingOutput output)
   {
     BindingOutput myOutput = factory.createBindingOutput();
-    myOutput.setDocumentationElement(output.getDocumentationElement());   
+    myOutput.setDocumentationElement(output.getDocumentationElement());
     myOutput.setName(output.getName());
     myOutput.setOutput(output.getOutput());
     myOutput.setEOutput(output.getEOutput());
     currentBindingOperation.setEBindingOutput(myOutput);
-    
+
     currentExtensibleElement = myOutput;
     super.visitBindingOutput(output);
   }
-  
+
   protected void visitBindingFault(BindingFault fault)
   {
     BindingFault myFault = factory.createBindingFault();
-    myFault.setDocumentationElement(fault.getDocumentationElement());   
+    myFault.setDocumentationElement(fault.getDocumentationElement());
     myFault.setName(fault.getName());
     myFault.setEFault(fault.getEFault());
     myFault.setFault(fault.getFault());
     currentBindingOperation.getEBindingFaults().add(myFault);
-    
+
     currentExtensibleElement = myFault;
     super.visitBindingFault(fault);
   }
- 
+
   protected void visitService(Service service)
   {
     currentService = factory.createService();
-    currentService.setDocumentationElement(service.getDocumentationElement());   
+    currentService.setDocumentationElement(service.getDocumentationElement());
     currentService.setQName(service.getQName());
     currentService.setUndefined(service.isUndefined());
-    
+
     newDefinition.getEServices().add(currentService);
-    
+
     super.visitService(service);
   }
-  
+
   protected void visitPort(Port port)
   {
     Port myPort = factory.createPort();
     myPort.setDocumentationElement(port.getDocumentationElement());
     myPort.setName(port.getName());
     myPort.setEBinding(port.getEBinding());
-    
+
     currentService.getEPorts().add(myPort);
-    
+
     currentExtensibleElement = myPort;
     super.visitPort(port);
   }
@@ -435,10 +446,10 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     factory.createExtensibilityElement();
     WSDLPlugin.getPlugin();
     WSDLPlugin.INSTANCE.getPluginResourceLocator();
-    
+
     visitExtensibilityElement(extensibilityElement);
   }
-  
+
   private void visitExtensibilityElement(ExtensibilityElement extensibilityElement)
   {
     XSDSchemaExtensibilityElement xsee = null;
@@ -461,7 +472,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     myEE.setRequired(extensibilityElement.isRequired());
     if (currentExtensibleElement != null)
       currentExtensibleElement.addExtensibilityElement(myEE);
-    
+
     if (extensibilityElement instanceof SOAPBody)
       visitSOAPBody((SOAPBody)extensibilityElement);
     else if (extensibilityElement instanceof SOAPBinding)
@@ -471,14 +482,13 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     else if (extensibilityElement instanceof SOAPOperation)
       visitSOAPOperation((SOAPOperation)extensibilityElement);
     else if (extensibilityElement instanceof SOAPFault)
-      visitSOAPFault((SOAPFault)extensibilityElement);  
+      visitSOAPFault((SOAPFault)extensibilityElement);
     else if (extensibilityElement instanceof SOAPHeader)
       visitSOAPHeader((SOAPHeader)extensibilityElement);
     else if (extensibilityElement instanceof SOAPHeaderFault)
       visitSOAPHeaderFault((SOAPHeaderFault)extensibilityElement);
   }
 
- 
   private void visitSOAPFault(SOAPFault soapFault)
   {
     SOAPFault mySoapFault = SOAPFactory.eINSTANCE.createSOAPFault();
@@ -486,15 +496,15 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     mySoapFault.setName(soapFault.getName());
     mySoapFault.setNamespaceURI(soapFault.getNamespaceURI());
     mySoapFault.setUse(soapFault.getUse());
-  } 
-  
+  }
+
   private void visitSOAPHeader(SOAPHeader soapHeader)
   {
     // Use SOAPHeaderBase to increase the API coverage values in the reports
-    
+
     SOAPHeaderBase yourSoapHeader = SOAPFactory.eINSTANCE.createSOAPHeaderBase();
     yourSoapHeader.getEncodingStyles();
-    
+
     SOAPHeaderBase mySoapHeader = SOAPFactory.eINSTANCE.createSOAPHeader();
     mySoapHeader.setMessage(soapHeader.getMessage());
     mySoapHeader.getMessage();
@@ -506,7 +516,7 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     mySoapHeader.getUse();
     ((SOAPHeader)soapHeader).getHeaderFaults(); // TBD
   }
-  
+
   private void visitSOAPHeaderFault(SOAPHeaderFault soapHeaderFault)
   {
     SOAPHeaderFault mySoapHeaderFault = SOAPFactory.eINSTANCE.createSOAPHeaderFault();
@@ -515,8 +525,9 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     mySoapHeaderFault.setNamespaceURI(soapHeaderFault.getNamespaceURI());
     mySoapHeaderFault.setUse(soapHeaderFault.getUse());
   }
-  
+
   private boolean soapOperationVisited = false;
+
   private void visitSOAPOperation(SOAPOperation soapOperation)
   {
     soapOperationVisited = true;
@@ -524,9 +535,10 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     mySoapOperation.setSoapActionURI(soapOperation.getSoapActionURI());
     mySoapOperation.setStyle(soapOperation.getStyle());
   }
-  
+
   //Needs to improve this part
   private boolean soapBodyVisited = false;
+
   private void visitSOAPBody(SOAPBody soapBody)
   {
     soapBodyVisited = true;
@@ -536,58 +548,58 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     mySoapBody.setParts(soapBody.getParts());
     mySoapBody.setUse(soapBody.getUse());
   }
-  
+
   //Needs to improve this part
   private boolean soapBindingVisited = false;
+
   private void visitSOAPBinding(SOAPBinding soapBinding)
   {
     soapBindingVisited = true;
     SOAPBinding mySoapBinding = SOAPFactory.eINSTANCE.createSOAPBinding();
     mySoapBinding.setStyle(soapBinding.getStyle());
-    mySoapBinding.setTransportURI(soapBinding.getTransportURI()); 
+    mySoapBinding.setTransportURI(soapBinding.getTransportURI());
   }
- 
+
   // Needs to improve this part
   private boolean soapAddressVisited = false;
+
   private void visitSOAPAddress(SOAPAddress soapAddress)
   {
     soapAddressVisited = true;
     SOAPAddress mySoapAddress = SOAPFactory.eINSTANCE.createSOAPAddress();
-    mySoapAddress.setLocationURI(soapAddress.getLocationURI()); 
+    mySoapAddress.setLocationURI(soapAddress.getLocationURI());
   }
-  
-  public static Test suite() 
+
+  public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    
-    suite.addTest
-      (new WSDLEMFAPITest("ModelSemanticTest") 
-         {
-           protected void runTest() 
-           {
-             testModelSemantic();
-           }
-         }
-       );
+
+    suite.addTest(new WSDLEMFAPITest("ModelSemanticTest")
+      {
+        protected void runTest()
+        {
+          testModelSemantic();
+        }
+      });
     return suite;
   }
-  
+
   public void testModelSemantic()
   {
     try
     {
-      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH +"samples/LoadStoreCompare/LoadAndPrintTest.wsdl",true);
+      Definition def = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/LoadStoreCompare/LoadAndPrintTest.wsdl", true);
       WSDLEMFAPITest test = new WSDLEMFAPITest(def);
-      test.visit();      
+      test.visit();
       serialize(test.newDefinition);
     }
     catch (Exception e)
     {
       e.printStackTrace();
       Assert.fail(e.toString());
-    }     
-  } 
-  
+    }
+  }
+
   private void serialize(Definition def) throws Exception
   {
     ResourceSet resourceSet = new ResourceSetImpl();
@@ -599,12 +611,12 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     IProject myWebProject = myWorkspaceRoot.getProject("org.eclipse.wst.wsdl.tests");
     if (!myWebProject.exists())
       myWebProject.create(null);
-    
+
     String baseDir = myWebProject.getLocation().toString();
-    
-    DefinitionLoader.store(def,baseDir + "/ClonedLoadAndPrintTest.wsdl");
+
+    DefinitionLoader.store(def, baseDir + "/ClonedLoadAndPrintTest.wsdl");
   }
-  
+
   public static void main(String[] args)
   {
     junit.textui.TestRunner.run(suite());
