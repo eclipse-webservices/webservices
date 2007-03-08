@@ -52,7 +52,7 @@ public class SOAPHeaderImpl extends SOAPHeaderBaseImpl implements SOAPHeader
    * compiler warning messages.
    */
   private static final long serialVersionUID = 1L;
-  
+
   /**
    * The cached value of the '{@link #getHeaderFaults() <em>Header Faults</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -100,25 +100,22 @@ public class SOAPHeaderImpl extends SOAPHeaderBaseImpl implements SOAPHeader
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated NOT
    */
   public List getSOAPHeaderFaults()
   {
-    // TODO: implement this method
-    // Ensure that you remove @generated or mark it @generated NOT
-    throw new UnsupportedOperationException();
+    return getHeaderFaults();
   }
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated NOT
    */
   public void addSOAPHeaderFault(javax.wsdl.extensions.soap.SOAPHeaderFault soapHeaderFault)
   {
-    // TODO: implement this method
-    // Ensure that you remove @generated or mark it @generated NOT
-    throw new UnsupportedOperationException();
+    EList headerFaults = getHeaderFaults();
+    headerFaults.add(soapHeaderFault);
   }
 
   /**

@@ -25,16 +25,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/use"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/namespaceURI"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/eEncodingStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/part"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SOAP.ecore#//SOAPHeaderBase/eMessage"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SOAP.ecore#//SOAPHeaderBase/ePart"/>
-      <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/getMessage"/>
-      <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/setMessage">
-        <genParameters ecoreParameter="SOAP.ecore#//SOAPHeaderBase/setMessage/message"/>
-      </genOperations>
-      <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/getPart"/>
-      <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/setPart">
-        <genParameters ecoreParameter="SOAP.ecore#//SOAPHeaderBase/setPart/part"/>
-      </genOperations>
       <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/getEncodingStyles"/>
       <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/setEncodingStyles">
         <genParameters ecoreParameter="SOAP.ecore#//SOAPHeaderBase/setEncodingStyles/encodingStyles"/>
@@ -44,6 +38,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/use"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/namespaceURI"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/eEncodingStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/name"/>
     </genClasses>
     <genClasses ecoreClass="SOAP.ecore#//SOAPOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPOperation/soapActionURI"/>

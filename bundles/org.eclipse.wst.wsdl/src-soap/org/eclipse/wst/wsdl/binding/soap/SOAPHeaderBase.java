@@ -32,6 +32,8 @@ import org.eclipse.wst.wsdl.Part;
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getNamespaceURI <em>Namespace URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEEncodingStyles <em>EEncoding Styles</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getMessage <em>Message</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getPart <em>Part</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEMessage <em>EMessage</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEPart <em>EPart</em>}</li>
  * </ul>
@@ -164,36 +166,48 @@ public interface SOAPHeaderBase extends ExtensibilityElement
   void setEPart(Part value);
 
   /**
+   * Returns the value of the '<em><b>Message</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model kind="operation" dataType="org.eclipse.wst.wsdl.QName"
+   * @return the value of the '<em>Message</em>' attribute.
+   * @see #setMessage(QName)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_Message()
+   * @model dataType="org.eclipse.wst.wsdl.QName"
    * @generated
    */
   QName getMessage();
 
   /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getMessage <em>Message</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model messageDataType="org.eclipse.wst.wsdl.QName"
+   * @param value the new value of the '<em>Message</em>' attribute.
+   * @see #getMessage()
    * @generated
    */
-  void setMessage(QName message);
+  void setMessage(QName value);
 
   /**
+   * Returns the value of the '<em><b>Part</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model kind="operation" dataType="org.eclipse.wst.wsdl.binding.soap.IString"
+   * @return the value of the '<em>Part</em>' attribute.
+   * @see #setPart(String)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_Part()
+   * @model
    * @generated
    */
   String getPart();
 
   /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getPart <em>Part</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model partDataType="org.eclipse.wst.wsdl.binding.soap.IString"
+   * @param value the new value of the '<em>Part</em>' attribute.
+   * @see #getPart()
    * @generated
    */
-  void setPart(String part);
+  void setPart(String value);
 
   /**
    * <!-- begin-user-doc -->

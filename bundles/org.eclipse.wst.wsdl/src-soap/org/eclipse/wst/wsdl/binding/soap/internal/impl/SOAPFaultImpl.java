@@ -40,6 +40,7 @@ import org.w3c.dom.Element;
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getNamespaceURI <em>Namespace URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getEEncodingStyles <em>EEncoding Styles</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -103,6 +104,26 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
    * @ordered
    */
   protected EList eEncodingStyles = null;
+
+  /**
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -184,6 +205,29 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
     return eEncodingStyles;
   }
 
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SOAPPackage.SOAP_FAULT__NAME, oldName, name));
+  }
+
   /*
    * (non-Javadoc)
    * @see javax.wsdl.extensions.soap.SOAPFault#getEncodingStyles()
@@ -208,6 +252,8 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
       return getNamespaceURI();
       case SOAPPackage.SOAP_FAULT__EENCODING_STYLES:
       return getEEncodingStyles();
+      case SOAPPackage.SOAP_FAULT__NAME:
+      return getName();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -231,6 +277,9 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
       getEEncodingStyles().clear();
       getEEncodingStyles().addAll((Collection)newValue);
       return;
+      case SOAPPackage.SOAP_FAULT__NAME:
+      setName((String)newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
@@ -253,6 +302,9 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
       case SOAPPackage.SOAP_FAULT__EENCODING_STYLES:
       getEEncodingStyles().clear();
       return;
+      case SOAPPackage.SOAP_FAULT__NAME:
+      setName(NAME_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -272,20 +324,10 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
       return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
       case SOAPPackage.SOAP_FAULT__EENCODING_STYLES:
       return eEncodingStyles != null && !eEncodingStyles.isEmpty();
+      case SOAPPackage.SOAP_FAULT__NAME:
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
-  }
-
-  private String name;
-
-  public String getName()
-  {
-    return name;
-  }
-
-  public void setName(String name)
-  {
-    this.name = name;
   }
 
   public void setEncodingStyles(List list)
@@ -310,6 +352,8 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
     result.append(namespaceURI);
     result.append(", eEncodingStyles: ");
     result.append(eEncodingStyles);
+    result.append(", name: ");
+    result.append(name);
     result.append(')');
     return result.toString();
   }

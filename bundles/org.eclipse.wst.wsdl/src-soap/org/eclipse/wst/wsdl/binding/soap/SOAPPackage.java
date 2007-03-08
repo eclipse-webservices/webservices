@@ -306,13 +306,31 @@ public interface SOAPPackage extends EPackage
   int SOAP_HEADER_BASE__EENCODING_STYLES = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 2;
 
   /**
+   * The feature id for the '<em><b>Message</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SOAP_HEADER_BASE__MESSAGE = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 3;
+
+  /**
+   * The feature id for the '<em><b>Part</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SOAP_HEADER_BASE__PART = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 4;
+
+  /**
    * The feature id for the '<em><b>EMessage</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SOAP_HEADER_BASE__EMESSAGE = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 3;
+  int SOAP_HEADER_BASE__EMESSAGE = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 5;
 
   /**
    * The feature id for the '<em><b>EPart</b></em>' reference.
@@ -321,7 +339,7 @@ public interface SOAPPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SOAP_HEADER_BASE__EPART = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 4;
+  int SOAP_HEADER_BASE__EPART = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 6;
 
   /**
    * The number of structural features of the '<em>Header Base</em>' class.
@@ -330,7 +348,7 @@ public interface SOAPPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SOAP_HEADER_BASE_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 5;
+  int SOAP_HEADER_BASE_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 7;
 
   /**
    * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPFaultImpl <em>Fault</em>}' class.
@@ -406,13 +424,22 @@ public interface SOAPPackage extends EPackage
   int SOAP_FAULT__EENCODING_STYLES = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 2;
 
   /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SOAP_FAULT__NAME = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 3;
+
+  /**
    * The number of structural features of the '<em>Fault</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SOAP_FAULT_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 3;
+  int SOAP_FAULT_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPOperationImpl <em>Operation</em>}' class.
@@ -625,6 +652,24 @@ public interface SOAPPackage extends EPackage
   int SOAP_HEADER_FAULT__EENCODING_STYLES = SOAP_HEADER_BASE__EENCODING_STYLES;
 
   /**
+   * The feature id for the '<em><b>Message</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SOAP_HEADER_FAULT__MESSAGE = SOAP_HEADER_BASE__MESSAGE;
+
+  /**
+   * The feature id for the '<em><b>Part</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SOAP_HEADER_FAULT__PART = SOAP_HEADER_BASE__PART;
+
+  /**
    * The feature id for the '<em><b>EMessage</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -723,6 +768,24 @@ public interface SOAPPackage extends EPackage
    * @ordered
    */
   int SOAP_HEADER__EENCODING_STYLES = SOAP_HEADER_BASE__EENCODING_STYLES;
+
+  /**
+   * The feature id for the '<em><b>Message</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SOAP_HEADER__MESSAGE = SOAP_HEADER_BASE__MESSAGE;
+
+  /**
+   * The feature id for the '<em><b>Part</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SOAP_HEADER__PART = SOAP_HEADER_BASE__PART;
 
   /**
    * The feature id for the '<em><b>EMessage</b></em>' reference.
@@ -1033,6 +1096,28 @@ public interface SOAPPackage extends EPackage
   EAttribute getSOAPHeaderBase_EEncodingStyles();
 
   /**
+   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getMessage <em>Message</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Message</em>'.
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getMessage()
+   * @see #getSOAPHeaderBase()
+   * @generated
+   */
+  EAttribute getSOAPHeaderBase_Message();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getPart <em>Part</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Part</em>'.
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getPart()
+   * @see #getSOAPHeaderBase()
+   * @generated
+   */
+  EAttribute getSOAPHeaderBase_Part();
+
+  /**
    * Returns the meta object for the reference '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEMessage <em>EMessage</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1096,6 +1181,17 @@ public interface SOAPPackage extends EPackage
    * @generated
    */
   EAttribute getSOAPFault_EEncodingStyles();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.binding.soap.SOAPFault#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPFault#getName()
+   * @see #getSOAPFault()
+   * @generated
+   */
+  EAttribute getSOAPFault_Name();
 
   /**
    * Returns the meta object for class '{@link org.eclipse.wst.wsdl.binding.soap.SOAPOperation <em>Operation</em>}'.
@@ -1395,6 +1491,22 @@ public interface SOAPPackage extends EPackage
     EAttribute SOAP_HEADER_BASE__EENCODING_STYLES = eINSTANCE.getSOAPHeaderBase_EEncodingStyles();
 
     /**
+     * The meta object literal for the '<em><b>Message</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SOAP_HEADER_BASE__MESSAGE = eINSTANCE.getSOAPHeaderBase_Message();
+
+    /**
+     * The meta object literal for the '<em><b>Part</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SOAP_HEADER_BASE__PART = eINSTANCE.getSOAPHeaderBase_Part();
+
+    /**
      * The meta object literal for the '<em><b>EMessage</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1443,6 +1555,14 @@ public interface SOAPPackage extends EPackage
      * @generated
      */
     EAttribute SOAP_FAULT__EENCODING_STYLES = eINSTANCE.getSOAPFault_EEncodingStyles();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SOAP_FAULT__NAME = eINSTANCE.getSOAPFault_Name();
 
     /**
      * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPOperationImpl <em>Operation</em>}' class.

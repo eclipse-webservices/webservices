@@ -47,6 +47,8 @@ import com.ibm.icu.util.StringTokenizer;
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPHeaderBaseImpl#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPHeaderBaseImpl#getNamespaceURI <em>Namespace URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPHeaderBaseImpl#getEEncodingStyles <em>EEncoding Styles</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPHeaderBaseImpl#getMessage <em>Message</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPHeaderBaseImpl#getPart <em>Part</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPHeaderBaseImpl#getEMessage <em>EMessage</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPHeaderBaseImpl#getEPart <em>EPart</em>}</li>
  * </ul>
@@ -105,6 +107,46 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
    * @ordered
    */
   protected EList eEncodingStyles = null;
+
+  /**
+   * The default value of the '{@link #getMessage() <em>Message</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getMessage()
+   * @generated
+   * @ordered
+   */
+  protected static final QName MESSAGE_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getMessage() <em>Message</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getMessage()
+   * @generated
+   * @ordered
+   */
+  protected QName message = MESSAGE_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getPart() <em>Part</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPart()
+   * @generated
+   * @ordered
+   */
+  protected static final String PART_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getPart() <em>Part</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPart()
+   * @generated
+   * @ordered
+   */
+  protected String part = PART_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getEMessage() <em>EMessage</em>}' reference.
@@ -295,33 +337,11 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated NOT
+   * @generated
    */
   public QName getMessage()
   {
-    return eMessage != null ? eMessage.getQName() : null;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated NOT
-   */
-  public void setMessage(QName message)
-  {
-    Definition definition = getEnclosingDefinition();
-    Message newMessage = (message != null) ? (Message)definition.getMessage(message) : null;
-    setEMessage(newMessage);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated NOT
-   */
-  public String getPart()
-  {
-    return ePart != null ? ePart.getName() : null;
+    return message;
   }
 
   /**
@@ -329,10 +349,35 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setPart(String part)
+  public void setMessage(QName newMessage)
   {
-    Part newPart = (Part)(eMessage != null ? eMessage.getPart(part) : null);
-    setEPart(newPart);
+    QName oldMessage = message;
+    message = newMessage;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SOAPPackage.SOAP_HEADER_BASE__MESSAGE, oldMessage, message));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getPart()
+  {
+    return part;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setPart(String newPart)
+  {
+    String oldPart = part;
+    part = newPart;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SOAPPackage.SOAP_HEADER_BASE__PART, oldPart, part));
   }
 
   /**
@@ -370,6 +415,10 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       return getNamespaceURI();
       case SOAPPackage.SOAP_HEADER_BASE__EENCODING_STYLES:
       return getEEncodingStyles();
+      case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
+      return getMessage();
+      case SOAPPackage.SOAP_HEADER_BASE__PART:
+      return getPart();
       case SOAPPackage.SOAP_HEADER_BASE__EMESSAGE:
       if (resolve)
         return getEMessage();
@@ -401,6 +450,12 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       getEEncodingStyles().clear();
       getEEncodingStyles().addAll((Collection)newValue);
       return;
+      case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
+      setMessage((QName)newValue);
+      return;
+      case SOAPPackage.SOAP_HEADER_BASE__PART:
+      setPart((String)newValue);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__EMESSAGE:
       setEMessage((Message)newValue);
       return;
@@ -429,6 +484,12 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       case SOAPPackage.SOAP_HEADER_BASE__EENCODING_STYLES:
       getEEncodingStyles().clear();
       return;
+      case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
+      setMessage(MESSAGE_EDEFAULT);
+      return;
+      case SOAPPackage.SOAP_HEADER_BASE__PART:
+      setPart(PART_EDEFAULT);
+      return;
       case SOAPPackage.SOAP_HEADER_BASE__EMESSAGE:
       setEMessage((Message)null);
       return;
@@ -454,6 +515,10 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
       case SOAPPackage.SOAP_HEADER_BASE__EENCODING_STYLES:
       return eEncodingStyles != null && !eEncodingStyles.isEmpty();
+      case SOAPPackage.SOAP_HEADER_BASE__MESSAGE:
+      return MESSAGE_EDEFAULT == null ? message != null : !MESSAGE_EDEFAULT.equals(message);
+      case SOAPPackage.SOAP_HEADER_BASE__PART:
+      return PART_EDEFAULT == null ? part != null : !PART_EDEFAULT.equals(part);
       case SOAPPackage.SOAP_HEADER_BASE__EMESSAGE:
       return eMessage != null;
       case SOAPPackage.SOAP_HEADER_BASE__EPART:
@@ -479,6 +544,10 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
     result.append(namespaceURI);
     result.append(", eEncodingStyles: ");
     result.append(eEncodingStyles);
+    result.append(", message: ");
+    result.append(message);
+    result.append(", part: ");
+    result.append(part);
     result.append(')');
     return result.toString();
   }

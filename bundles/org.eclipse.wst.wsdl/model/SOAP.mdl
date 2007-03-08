@@ -135,34 +135,6 @@
 				supplier   	"Logical View::wsdl::ExtensibilityElement"
 				quidu      	"3AD5DBB602A9"))
 			operations 	(list Operations
-			    (object Operation "getMessage"
-				quid       	"45ECA0FE0128"
-				result     	"QName"
-				concurrency 	"Sequential"
-				opExportControl 	"Public"
-				uid        	0)
-			    (object Operation "setMessage"
-				quid       	"45ECA1D0033C"
-				parameters 	(list Parameters
-				    (object Parameter "message"
-					type       	"QName"))
-				concurrency 	"Sequential"
-				opExportControl 	"Public"
-				uid        	0)
-			    (object Operation "getPart"
-				quid       	"45ECA1FB01E4"
-				result     	"IString"
-				concurrency 	"Sequential"
-				opExportControl 	"Public"
-				uid        	0)
-			    (object Operation "setPart"
-				quid       	"45ECA21903B9"
-				parameters 	(list Parameters
-				    (object Parameter "part"
-					type       	"IString"))
-				concurrency 	"Sequential"
-				opExportControl 	"Public"
-				uid        	0)
 			    (object Operation "getEncodingStyles"
 				quid       	"45ED04C200EA"
 				result     	"IList"
@@ -187,7 +159,13 @@
 			    (object ClassAttribute "eEncodingStyles"
 				quid       	"3EE4A58F01AE"
 				stereotype 	"0..*"
-				type       	"IString"))
+				type       	"IString")
+			    (object ClassAttribute "message"
+				quid       	"45F06E360186"
+				type       	"QName")
+			    (object ClassAttribute "part"
+				quid       	"45F06E6C0196"
+				type       	"String"))
 			language   	"Java")
 		    (object Class "SOAPFault"
 			quid       	"3A06D9FA00F7"
@@ -215,7 +193,10 @@
 					value      	("VisibilityKind" 1)))
 				quid       	"3EE4A56303AF"
 				stereotype 	"0..*"
-				type       	"IString"))
+				type       	"IString")
+			    (object ClassAttribute "name"
+				quid       	"45F079D10399"
+				type       	"String"))
 			language   	"Java")
 		    (object Class "SOAPOperation"
 			quid       	"3A0AD45500E8"
@@ -456,7 +437,7 @@
 				location   	(704, 480)
 				label      	(object ItemLabel
 				    Parent_View 	@1
-				    location   	(487, 371)
+				    location   	(487, 372)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	434
@@ -466,14 +447,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3A01D3B901AD"
-				compartment 	(object Compartment
-				    Parent_View 	@1
-				    location   	(487, 428)
-				    icon_style 	"Icon"
-				    fill_color 	16777215
-				    anchor     	2
-				    nlines     	3
-				    max_width  	428)
 				width      	452
 				height     	240
 				annotation 	8
@@ -485,7 +458,7 @@
 				location   	(1472, 480)
 				label      	(object ItemLabel
 				    Parent_View 	@2
-				    location   	(1235, 371)
+				    location   	(1235, 372)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	474
@@ -495,14 +468,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3A0AD45500E8"
-				compartment 	(object Compartment
-				    Parent_View 	@2
-				    location   	(1235, 428)
-				    icon_style 	"Icon"
-				    fill_color 	16777215
-				    anchor     	2
-				    nlines     	3
-				    max_width  	471)
 				width      	492
 				height     	240
 				annotation 	8)
@@ -513,7 +478,7 @@
 				location   	(752, 1552)
 				label      	(object ItemLabel
 				    Parent_View 	@3
-				    location   	(612, 1503)
+				    location   	(612, 1504)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	280
@@ -534,7 +499,7 @@
 				location   	(1984, 1520)
 				label      	(object ItemLabel
 				    Parent_View 	@4
-				    location   	(1797, 1471)
+				    location   	(1797, 1472)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	374
@@ -617,7 +582,7 @@
 				location   	(2736, 784)
 				label      	(object ItemLabel
 				    Parent_View 	@11
-				    location   	(2613, 706)
+				    location   	(2613, 707)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	246
@@ -638,7 +603,7 @@
 				location   	(1472, 928)
 				label      	(object ItemLabel
 				    Parent_View 	@12
-				    location   	(1151, 664)
+				    location   	(1151, 665)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	642
@@ -648,14 +613,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3A01DEE7034D"
-				compartment 	(object Compartment
-				    Parent_View 	@12
-				    location   	(1151, 721)
-				    icon_style 	"Icon"
-				    fill_color 	16777215
-				    anchor     	2
-				    nlines     	10
-				    max_width  	639)
 				width      	660
 				height     	550
 				annotation 	8
@@ -732,7 +689,7 @@
 				location   	(1472, 2240)
 				label      	(object ItemLabel
 				    Parent_View 	@19
-				    location   	(1226, 2131)
+				    location   	(1226, 2132)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	492
@@ -742,14 +699,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3A01DED5031F"
-				compartment 	(object Compartment
-				    Parent_View 	@19
-				    location   	(1226, 2188)
-				    icon_style 	"Icon"
-				    fill_color 	16777215
-				    anchor     	2
-				    nlines     	4
-				    max_width  	693)
 				width      	510
 				height     	240
 				annotation 	8)
@@ -758,7 +707,7 @@
 				location   	(2352, 2080)
 				label      	(object ItemLabel
 				    Parent_View 	@20
-				    location   	(2236, 1865)
+				    location   	(2236, 1866)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	233
@@ -899,7 +848,7 @@
 				location   	(592, 2256)
 				label      	(object ItemLabel
 				    Parent_View 	@32
-				    location   	(346, 2147)
+				    location   	(346, 2148)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	492
@@ -911,12 +860,12 @@
 				quidu      	"3A06D9FA00F7"
 				compartment 	(object Compartment
 				    Parent_View 	@32
-				    location   	(346, 2204)
+				    location   	(346, 2208)
 				    icon_style 	"Icon"
 				    fill_color 	16777215
 				    anchor     	2
-				    nlines     	4
-				    max_width  	693)
+				    nlines     	5
+				    max_width  	0)
 				width      	510
 				height     	240
 				annotation 	8)
@@ -926,7 +875,7 @@
 				location   	(288, 1376)
 				label      	(object ItemLabel
 				    Parent_View 	@33
-				    location   	(114, 1344)
+				    location   	(114, 1348)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	348
@@ -934,7 +883,7 @@
 				    label      	"IString")
 				stereotype 	(object ItemLabel
 				    Parent_View 	@33
-				    location   	(114, 1297)
+				    location   	(114, 1298)
 				    fill_color 	13434879
 				    anchor     	10
 				    nlines     	1
@@ -973,7 +922,7 @@
 				location   	(704, 96)
 				label      	(object ItemLabel
 				    Parent_View 	@36
-				    location   	(557, 68)
+				    location   	(557, 72)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	294
@@ -981,7 +930,7 @@
 				    label      	"ISOAPBinding")
 				stereotype 	(object ItemLabel
 				    Parent_View 	@36
-				    location   	(557, 21)
+				    location   	(557, 22)
 				    fill_color 	13434879
 				    anchor     	10
 				    nlines     	1
@@ -1046,7 +995,7 @@
 				location   	(752, 864)
 				label      	(object ItemLabel
 				    Parent_View 	@40
-				    location   	(610, 836)
+				    location   	(610, 840)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	284
@@ -1054,7 +1003,7 @@
 				    label      	"ISOAPHeader")
 				stereotype 	(object ItemLabel
 				    Parent_View 	@40
-				    location   	(610, 789)
+				    location   	(610, 790)
 				    fill_color 	13434879
 				    anchor     	10
 				    nlines     	1
@@ -1123,7 +1072,7 @@
 				location   	(592, 1792)
 				label      	(object ItemLabel
 				    Parent_View 	@44
-				    location   	(469, 1764)
+				    location   	(469, 1768)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	246
@@ -1131,7 +1080,7 @@
 				    label      	"ISOAPFault")
 				stereotype 	(object ItemLabel
 				    Parent_View 	@44
-				    location   	(469, 1717)
+				    location   	(469, 1718)
 				    fill_color 	13434879
 				    anchor     	10
 				    nlines     	1
@@ -1162,7 +1111,7 @@
 				location   	(1472, 1776)
 				label      	(object ItemLabel
 				    Parent_View 	@46
-				    location   	(1273, 1720)
+				    location   	(1273, 1724)
 				    fill_color 	13434879
 				    nlines     	1
 				    max_width  	398
@@ -1170,7 +1119,7 @@
 				    label      	"ISOAPBody")
 				stereotype 	(object ItemLabel
 				    Parent_View 	@46
-				    location   	(1273, 1673)
+				    location   	(1273, 1674)
 				    fill_color 	13434879
 				    anchor     	10
 				    nlines     	1
@@ -1182,14 +1131,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"45E4884B0119"
-				compartment 	(object Compartment
-				    Parent_View 	@46
-				    location   	(1273, 1777)
-				    icon_style 	"Icon"
-				    fill_color 	16777215
-				    anchor     	2
-				    nlines     	2
-				    max_width  	425)
 				width      	416
 				height     	228
 				annotation 	8

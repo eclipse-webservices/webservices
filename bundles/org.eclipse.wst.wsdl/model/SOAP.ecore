@@ -20,14 +20,6 @@
         eType="ecore:EClass WSDL.ecore#//Part"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SOAPHeaderBase" eSuperTypes="WSDL.ecore#//ExtensibilityElement">
-    <eOperations name="getMessage" eType="ecore:EDataType WSDL.ecore#//QName"/>
-    <eOperations name="setMessage">
-      <eParameters name="message" eType="ecore:EDataType WSDL.ecore#//QName"/>
-    </eOperations>
-    <eOperations name="getPart" eType="#//IString"/>
-    <eOperations name="setPart">
-      <eParameters name="part" eType="#//IString"/>
-    </eOperations>
     <eOperations name="getEncodingStyles" eType="ecore:EClass WSDL.ecore#//IList"/>
     <eOperations name="setEncodingStyles">
       <eParameters name="encodingStyles" eType="ecore:EClass WSDL.ecore#//IList"/>
@@ -36,6 +28,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="eEncodingStyles" upperBound="-1"
         eType="#//IString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType WSDL.ecore#//QName"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="part" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eMessage" lowerBound="1"
         eType="ecore:EClass WSDL.ecore#//Message"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ePart" lowerBound="1" eType="ecore:EClass WSDL.ecore#//Part"/>
@@ -49,6 +43,7 @@
         <details key="suppressedGetVisibility" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SOAPOperation" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//ISOAPOperation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="soapActionURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

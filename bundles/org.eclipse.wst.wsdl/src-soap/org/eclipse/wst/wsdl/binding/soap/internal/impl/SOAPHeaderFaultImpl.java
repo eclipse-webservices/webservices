@@ -36,7 +36,7 @@ public class SOAPHeaderFaultImpl extends SOAPHeaderBaseImpl implements SOAPHeade
    * compiler warning messages.
    */
   private static final long serialVersionUID = 1L;
-  
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

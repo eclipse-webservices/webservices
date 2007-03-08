@@ -24,6 +24,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPFault#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPFault#getNamespaceURI <em>Namespace URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPFault#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -86,5 +87,31 @@ public interface SOAPFault extends ExtensibilityElement, javax.wsdl.extensions.s
    * @generated
    */
   void setNamespaceURI(String value);
+
+  /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPFault_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPFault#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
 
 } // SOAPFault
