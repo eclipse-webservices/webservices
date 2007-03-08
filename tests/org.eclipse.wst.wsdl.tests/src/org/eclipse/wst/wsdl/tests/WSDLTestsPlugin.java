@@ -12,13 +12,14 @@
 package org.eclipse.wst.wsdl.tests;
 
 
+import java.io.IOException;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-
-import java.io.IOException;
-import java.util.*;
 
 
 /**

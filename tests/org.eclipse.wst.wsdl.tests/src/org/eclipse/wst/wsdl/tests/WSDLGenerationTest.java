@@ -42,12 +42,12 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
+import org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
-import org.eclipse.wst.wsdl.binding.soap.internal.impl.SOAPBodyImpl;
 
 
 public class WSDLGenerationTest extends TestCase
