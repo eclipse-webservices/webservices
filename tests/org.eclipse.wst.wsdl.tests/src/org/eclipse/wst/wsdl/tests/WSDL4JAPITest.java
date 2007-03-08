@@ -12,7 +12,6 @@ package org.eclipse.wst.wsdl.tests;
 
 
 import java.io.FileInputStream;
-import java.net.URL;
 import java.util.Iterator;
 
 import javax.wsdl.Binding;
@@ -39,23 +38,14 @@ import javax.wsdl.extensions.soap.SOAPBody;
 import javax.wsdl.extensions.soap.SOAPOperation;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
-import javax.wsdl.xml.WSDLWriter;
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.WSDL4JDefinitionVisitor;
-import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
-import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 
@@ -64,6 +54,8 @@ import org.xml.sax.InputSource;
  */
 public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
 {
+  private static String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
+
   private WSDLFactory factory = WSDLPlugin.INSTANCE.createWSDL4JFactory();
 
   private Definition newDefinition;
@@ -80,21 +72,6 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
 
   private BindingOperation currentBindingOperation;
 
-  {
-    // This is needed because we don't have the following in the plugin.xml
-    //
-    //   <extension point = "org.eclipse.emf.extension_parser">
-    //     <parser type="wsdl" class="com.ibm.etools.wsdl.util.WSDLResourceFactoryImpl"/>
-    //   </extension>
-    //
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
-
   // Added for JUnit
   public WSDL4JAPITest(String name)
   {
@@ -107,38 +84,6 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
   public WSDL4JAPITest(Definition definition)
   {
     super(definition);
-  }
-
-  /*  
-   private void serialize(String filename) throws Exception
-   {
-   Source domSource = new DOMSource(doc);
-   Transformer transformer = TransformerFactory.newInstance().newTransformer();
-   transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-   transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
-   transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount","4");
-   transformer.transform(domSource,new StreamResult(new FileOutputStream(filename)));
-   }
-   
-   private void createDocument() throws ParserConfigurationException
-   {
-   doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-   }
-   
-   private Element createWSDLElement(String name)
-   {
-   Element element = doc.createElementNS("http://www.w3.org/2004/08/wsdl",name);
-   if (wsdlNamespacePrefix != null)
-   element.setPrefix(wsdlNamespacePrefix);
-   
-   return element;
-   }
-   */
-  private void visitDocumentation(Element docElement)
-  {
-    if (docElement == null)
-      return;
-    //println("documentation: " + docElement);
   }
 
   private void println(String s)
@@ -186,13 +131,13 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
     Types myTypes = newDefinition.createTypes();
     myTypes.setDocumentationElement(types.getDocumentationElement());
 
-    Iterator iterator = types.getExtensibilityElements().iterator();
     /*
-     ExtensibilityElement ee = null;
+     Iterator iterator = types.getExtensibilityElements().iterator();
+     ExtensibilityElement extensibilitElement = null;
      while (iterator.hasNext())
      {
-     ee = (ExtensibilityElement)iterator.next();
-     myTypes.addExtensibilityElement(ee);
+     extensibilitElement = (ExtensibilityElement)iterator.next();
+     myTypes.addExtensibilityElement(extensibilitElement);
      }*/
     newDefinition.setTypes(myTypes);
   }
@@ -361,46 +306,30 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
       visitSOAPOperation((SOAPOperation)extensibilityElement);
   }
 
-  // Need to improve this part
-  private boolean soapOperationVisited = false;
-
   private void visitSOAPOperation(SOAPOperation soapOperation)
   {
-    soapOperationVisited = true;
     println("Visiting SOAPOperation...");
     println("soapAction: " + soapOperation.getSoapActionURI());
     println("Leaving SOAPOperation...");
   }
 
-  //Needs to improve this part
-  private boolean soapBodyVisited = false;
-
   private void visitSOAPBody(SOAPBody soapBody)
   {
-    soapBodyVisited = true;
     println("Visiting SOAPBody...");
     println("use: " + soapBody.getUse());
     println("Leaving SOAPBody...");
   }
 
-  //Needs to improve this part
-  private boolean soapBindingVisited = false;
-
   private void visitSOAPBinding(SOAPBinding soapBinding)
   {
-    soapBindingVisited = true;
     println("Visiting SOAPBinding...");
     println("style: " + soapBinding.getStyle());
     println("transport: " + soapBinding.getTransportURI());
     println("Leaving SOAPBinding...");
   }
 
-  // Needs to improve this part
-  private boolean soapAddressVisited = false;
-
   private void visitSOAPAddress(SOAPAddress soapAddress)
   {
-    soapAddressVisited = true;
     println("Visiting SOAPAddress...");
     println("location: " + soapAddress.getLocationURI());
     println("Leaving SOAPAddress...");
@@ -436,29 +365,17 @@ public class WSDL4JAPITest extends WSDL4JDefinitionVisitor
     }
   }
 
-  private void serialize(Definition def, String clonedFile) throws Exception
+  private void serialize(Definition definition, String clonedFile) throws Exception
   {
-    WSDLWriter writer = factory.newWSDLWriter();
-    IPluginDescriptor pd = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.wst.wsdl.tests");
-    URL url = pd.getInstallURL();
-    //System.out.println(url.toString());
-    url = new URL(url, clonedFile);
-    //System.out.println(url.toString());
-    //String s = Platform.resolve(url).getFile();
-    //System.out.println(Platform.getInstanceLocation().getURL().toString());
-    //String s = url.toString();
-    //System.out.println(s);
-    //writer.writeWSDL(def,new FileOutputStream(s));
+    // WSDLWriter writer = factory.newWSDLWriter();
+    // String s = PLUGIN_ABSOLUTE_PATH + clonedFile;
+    // writer.writeWSDL(definition, new FileOutputStream(s));
   }
 
   private Definition loadDefinitionForWSDL4J(String wsdlFile) throws Exception
   {
     WSDLReader reader = factory.newWSDLReader();
-    IPluginDescriptor pd = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.wst.wsdl.tests");
-    URL url = pd.getInstallURL();
-    url = new URL(url, wsdlFile);
-    String s = Platform.resolve(url).getFile();
-    //System.out.println("loading " + s);
+    String s = PLUGIN_ABSOLUTE_PATH + wsdlFile;
     Definition definition = reader.readWSDL(s, new InputSource(new FileInputStream(s)));
     return definition;
   }

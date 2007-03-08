@@ -27,7 +27,6 @@ import javax.xml.transform.stream.StreamResult;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
@@ -47,11 +46,7 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
-import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
-import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -88,21 +83,6 @@ public class WSDLConverter extends DefinitionVisitor
   private String wsdlNamespacePrefix;
 
   private String xsdNamespacePrefix;
-
-  {
-    // This is needed because we don't have the following in the plugin.xml
-    //
-    //   <extension point = "org.eclipse.emf.extension_parser">
-    //     <parser type="wsdl" class="com.ibm.etools.wsdl.util.WSDLResourceFactoryImpl"/>
-    //   </extension>
-    //
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
 
   // Added for JUnit
   public WSDLConverter(String name)
@@ -428,7 +408,6 @@ public class WSDLConverter extends DefinitionVisitor
     currentBindingOperation = createWSDLElement("operation");
     processDocumentation(operation.getDocumentationElement(), currentBindingOperation);
 
-    Element operationElement = operation.getElement();
     String operationName = operation.getEOperation().getName();
 
     // Determine prefix

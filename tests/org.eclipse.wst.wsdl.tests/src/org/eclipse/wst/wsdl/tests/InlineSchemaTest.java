@@ -13,8 +13,6 @@ package org.eclipse.wst.wsdl.tests;
 
 
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Iterator;
 
 import javax.wsdl.xml.WSDLReader;
@@ -24,25 +22,18 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Types;
-import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDModelGroup;
-import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDParticleContent;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.xml.sax.InputSource;
 
 
@@ -60,7 +51,6 @@ public class InlineSchemaTest extends TestCase
 
   public static void main(String[] args)
   {
-    //junit.textui.TestRunner.run(InlineSchemaTest.class);
     junit.textui.TestRunner.run(suite());
   }
 
@@ -87,23 +77,6 @@ public class InlineSchemaTest extends TestCase
     return suite;
   }
 
-  protected void setUp() throws Exception
-  {
-    super.setUp();
-
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
-
-  protected void tearDown() throws Exception
-  {
-    super.tearDown();
-  }
-
   public void testInlineSchema()
   {
     try
@@ -121,7 +94,7 @@ public class InlineSchemaTest extends TestCase
   {
     try
     {
-      Definition definition = loadDefinitionForWSDL4J("./samples/LoadStoreCompare/LoadAndPrintTest.wsdl");
+      Definition definition = loadDefinitionForWSDL4J("samples/LoadStoreCompare/LoadAndPrintTest.wsdl");
       traverseDefinition(definition);
     }
     catch (Exception e)
@@ -138,7 +111,7 @@ public class InlineSchemaTest extends TestCase
     while (iter.hasNext())
     {
       Import myImport = (Import)iter.next();
-      //traverseImport(myImport);
+      traverseImport(myImport);
     }
 
     // Get Inline Schema
@@ -158,8 +131,8 @@ public class InlineSchemaTest extends TestCase
 
   private void traverseImport(Import myImport) throws Exception
   {
-    Definition def = myImport.getEDefinition();
-    traverseDefinition(def);
+    //    Definition definition = myImport.getEDefinition();
+    //    traverseDefinition(definition);
   }
 
   private void traverseSchema(XSDSchema schema)
@@ -205,20 +178,11 @@ public class InlineSchemaTest extends TestCase
     }
   }
 
-  private Definition loadDefinition(String wsdlFile) throws IOException
-  {
-    return DefinitionLoader.load(wsdlFile);
-  }
-
   private Definition loadDefinitionForWSDL4J(String wsdlFile) throws Exception
   {
     WSDLReader reader = (new WSDLFactoryImpl()).newWSDLReader();
-    IPluginDescriptor pd = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.wst.wsdl.tests");
-    URL url = pd.getInstallURL();
-    url = new URL(url, wsdlFile);
-    String s = Platform.resolve(url).getFile();
+    String s = PLUGIN_ABSOLUTE_PATH + wsdlFile;
     Definition definition = (org.eclipse.wst.wsdl.Definition)reader.readWSDL(s, new InputSource(new FileInputStream(s)));
     return definition;
   }
-
 }

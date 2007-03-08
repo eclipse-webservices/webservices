@@ -54,16 +54,13 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
-import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -180,27 +177,6 @@ public class BugFixesTest extends TestCase
       });
 
     return suite;
-  }
-
-  protected void setUp() throws Exception
-  {
-    super.setUp();
-
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl()); //$NON-NLS-1$
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-    // Silences unused variable warning.
-    pkg.eClass();
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl()); //$NON-NLS-1$
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-    // Silences unused variable warning.
-    xsdpkg.eClass();
-  }
-
-  protected void tearDown() throws Exception
-  {
-    super.tearDown();
   }
 
   /**

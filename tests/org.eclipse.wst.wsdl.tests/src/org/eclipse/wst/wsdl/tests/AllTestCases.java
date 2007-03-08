@@ -34,8 +34,7 @@ public class AllTestCases extends TestCase
   {
     TestSuite suite = new TestSuite();
 
-    // Bug 123547 - comment out this test for now.
-    // suite.addTest(InlineSchemaTest.suite());  
+    suite.addTest(InlineSchemaTest.suite());
     suite.addTest(LoadAndSerializationTest.suite());
     suite.addTest(SemanticTest.suite());
     suite.addTest(WSDLGenerationTest.suite());
@@ -44,8 +43,8 @@ public class AllTestCases extends TestCase
     suite.addTest(UtilTest.suite());
     suite.addTest(BugFixesTest.suite());
     suite.addTest(LocationTrackingTest.suite());
+    suite.addTest(RefactoringTest.suite());
 
     return suite;
   }
-
 }

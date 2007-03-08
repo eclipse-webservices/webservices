@@ -43,13 +43,6 @@ public abstract class DefinitionVisitor extends TestCase
 {
   protected Definition definition;
 
-  /**
-   * Use DefinitionVisitor(Definition definition)
-   */
-  private DefinitionVisitor()
-  {
-  }
-
   // Added for JUnit
   public DefinitionVisitor(String name)
   {

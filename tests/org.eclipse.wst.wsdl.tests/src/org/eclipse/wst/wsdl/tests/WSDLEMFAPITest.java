@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.wsdl.Binding;
@@ -50,7 +49,6 @@ import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
-import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
@@ -66,9 +64,6 @@ import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.DefinitionVisitor;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
-import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
-import org.w3c.dom.Element;
 
 
 /**
@@ -96,21 +91,6 @@ public class WSDLEMFAPITest extends DefinitionVisitor
 
   private ExtensibleElement currentExtensibleElement;
 
-  {
-    // This is needed because we don't have the following in the plugin.xml
-    //
-    //   <extension point = "org.eclipse.emf.extension_parser">
-    //     <parser type="wsdl" class="com.ibm.etools.wsdl.util.WSDLResourceFactoryImpl"/>
-    //   </extension>
-    //
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
-
   // Added for JUnit
   public WSDLEMFAPITest(String name)
   {
@@ -123,43 +103,6 @@ public class WSDLEMFAPITest extends DefinitionVisitor
   public WSDLEMFAPITest(Definition definition)
   {
     super(definition);
-  }
-
-  /*  
-   private void serialize(String filename) throws Exception
-   {
-   Source domSource = new DOMSource(doc);
-   Transformer transformer = TransformerFactory.newInstance().newTransformer();
-   transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-   transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
-   transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount","4");
-   transformer.transform(domSource,new StreamResult(new FileOutputStream(filename)));
-   }
-   
-   private void createDocument() throws ParserConfigurationException
-   {
-   doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-   }
-   
-   private Element createWSDLElement(String name)
-   {
-   Element element = doc.createElementNS("http://www.w3.org/2004/08/wsdl",name);
-   if (wsdlNamespacePrefix != null)
-   element.setPrefix(wsdlNamespacePrefix);
-   
-   return element;
-   }
-   */
-  private void visitDocumentation(Element docElement)
-  {
-    if (docElement == null)
-      return;
-    println("documentation: " + docElement); // TBD - serialize docElement
-  }
-
-  private void println(String s)
-  {
-    System.out.println(s);
   }
 
   protected void visitDefinition(Definition def)
@@ -526,22 +469,15 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     mySoapHeaderFault.setUse(soapHeaderFault.getUse());
   }
 
-  private boolean soapOperationVisited = false;
-
   private void visitSOAPOperation(SOAPOperation soapOperation)
   {
-    soapOperationVisited = true;
     SOAPOperation mySoapOperation = SOAPFactory.eINSTANCE.createSOAPOperation();
     mySoapOperation.setSoapActionURI(soapOperation.getSoapActionURI());
     mySoapOperation.setStyle(soapOperation.getStyle());
   }
 
-  //Needs to improve this part
-  private boolean soapBodyVisited = false;
-
   private void visitSOAPBody(SOAPBody soapBody)
   {
-    soapBodyVisited = true;
     SOAPBody mySoapBody = SOAPFactory.eINSTANCE.createSOAPBody();
     mySoapBody.setEncodingStyles(soapBody.getEncodingStyles());
     mySoapBody.setNamespaceURI(soapBody.getNamespaceURI());
@@ -549,23 +485,15 @@ public class WSDLEMFAPITest extends DefinitionVisitor
     mySoapBody.setUse(soapBody.getUse());
   }
 
-  //Needs to improve this part
-  private boolean soapBindingVisited = false;
-
   private void visitSOAPBinding(SOAPBinding soapBinding)
   {
-    soapBindingVisited = true;
     SOAPBinding mySoapBinding = SOAPFactory.eINSTANCE.createSOAPBinding();
     mySoapBinding.setStyle(soapBinding.getStyle());
     mySoapBinding.setTransportURI(soapBinding.getTransportURI());
   }
 
-  // Needs to improve this part
-  private boolean soapAddressVisited = false;
-
   private void visitSOAPAddress(SOAPAddress soapAddress)
   {
-    soapAddressVisited = true;
     SOAPAddress mySoapAddress = SOAPFactory.eINSTANCE.createSOAPAddress();
     mySoapAddress.setLocationURI(soapAddress.getLocationURI());
   }

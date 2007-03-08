@@ -30,19 +30,14 @@ import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLFactory;
-import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
-import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 
 
 public class RefactoringTest extends TestCase
 {
   public RefactoringTest()
   {
-    //init();
   }
 
   public RefactoringTest(String name)
@@ -70,29 +65,12 @@ public class RefactoringTest extends TestCase
     try
     {
       // Before running this test, modify the location of the generated WSDL file
-      generateWSDL("RefactoringTest.wsdl");
+      generateWSDL(WSDLTestsPlugin.getInstallURL() + "RefactoringTest.wsdl");
     }
     catch (Exception e)
     {
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
     }
-  }
-
-  protected void setUp() throws Exception
-  {
-    super.setUp();
-
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
-
-  protected void tearDown() throws Exception
-  {
-    super.tearDown();
   }
 
   // defect 6594
@@ -116,7 +94,7 @@ public class RefactoringTest extends TestCase
 
     // Create a Definition - Temperature
     Definition definition = WSDLFactory.eINSTANCE.createDefinition();
-    definition.setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, "Temparature"));
+    definition.setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, "Temperature"));
     resource.getContents().add(definition);
 
     // Target namespace - http://www.temperature.com
@@ -139,7 +117,7 @@ public class RefactoringTest extends TestCase
 
     // Create a Message - GetTemperatureInput
     Message inputMessage = WSDLFactory.eINSTANCE.createMessage();
-    inputMessage.setQName(new QName(definition.getTargetNamespace(), "GetTemparatureInput"));
+    inputMessage.setQName(new QName(definition.getTargetNamespace(), "GetTemperatureInput"));
     inputMessage.addPart(part);
     definition.addMessage(inputMessage);
 
@@ -150,7 +128,7 @@ public class RefactoringTest extends TestCase
 
     // Create a Message - GetTemperatureOutput
     Message outputMessage = WSDLFactory.eINSTANCE.createMessage();
-    outputMessage.setQName(new QName(definition.getTargetNamespace(), "GetTemparatureOutput"));
+    outputMessage.setQName(new QName(definition.getTargetNamespace(), "GetTemperatureOutput"));
     outputMessage.addPart(part);
     definition.addMessage(outputMessage);
 
@@ -174,7 +152,7 @@ public class RefactoringTest extends TestCase
 
     // Create a PortType
     PortType portType = WSDLFactory.eINSTANCE.createPortType();
-    portType.setQName(new QName(definition.getTargetNamespace(), "GetTemparatureInfoSOAP"));
+    portType.setQName(new QName(definition.getTargetNamespace(), "GetTemperatureInfoSOAP"));
     portType.addOperation(operation);
     definition.addPortType(portType);
 
@@ -224,7 +202,5 @@ public class RefactoringTest extends TestCase
     renameOperation(operation2);
 
     resource.save(null);
-
   }
-
 }

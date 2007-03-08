@@ -20,7 +20,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
@@ -33,7 +32,6 @@ import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
-import org.eclipse.wst.wsdl.MessageReference;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
@@ -41,17 +39,13 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
-import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.DefinitionVisitor;
-import org.eclipse.xsd.XSDPackage;
 import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Element;
 
 
@@ -61,23 +55,6 @@ import org.w3c.dom.Element;
 public class SemanticTest extends DefinitionVisitor
 {
   private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
-  //private String wsdlNamespacePrefix;
-  //private String xsdNamespacePrefix;
-
-  {
-    // This is needed because we don't have the following in the plugin.xml
-    //
-    //   <extension point = "org.eclipse.emf.extension_parser">
-    //     <parser type="wsdl" class="com.ibm.etools.wsdl.util.WSDLResourceFactoryImpl"/>
-    //   </extension>
-    //
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
 
   // Added for JUnit
   public SemanticTest(String name)
@@ -268,15 +245,6 @@ public class SemanticTest extends DefinitionVisitor
     Assert.assertNotNull("Failed to resolve the message", message);
 
     println("Leaving input...");
-  }
-
-  private Element getPartElement(MessageReference messageRef)
-  {
-    Iterator iterator = messageRef.getEMessage().getEParts().iterator();
-    // TBD - for now, take the first part.
-    Part part = (Part)iterator.next();
-    Element partElement = part.getElement();
-    return partElement;
   }
 
   /* (non-Javadoc)

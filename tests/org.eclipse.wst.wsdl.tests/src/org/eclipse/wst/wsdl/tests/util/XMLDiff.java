@@ -164,11 +164,6 @@ public class XMLDiff
     return true;
   }
 
-  private void print(String s)
-  {
-    out.print(s);
-  }
-
   private void println(String s)
   {
     out.println(s);

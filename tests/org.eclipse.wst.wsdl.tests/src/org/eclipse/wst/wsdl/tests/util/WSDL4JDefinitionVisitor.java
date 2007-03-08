@@ -42,13 +42,6 @@ public abstract class WSDL4JDefinitionVisitor extends TestCase
 {
   protected Definition definition;
 
-  /**
-   * Use DefinitionVisitor(Definition definition)
-   */
-  private WSDL4JDefinitionVisitor()
-  {
-  }
-
   // Added for JUnit
   public WSDL4JDefinitionVisitor(String name)
   {

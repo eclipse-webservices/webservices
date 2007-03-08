@@ -20,16 +20,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.tests.util.XMLDiff;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
-import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Element;
 
 
@@ -38,20 +33,8 @@ import org.w3c.dom.Element;
  */
 public class LoadAndSerializationTest extends TestCase
 {
-  {
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
-
   private String PLUGIN_ABSOLUTE_PATH = WSDLTestsPlugin.getInstallURL();
 
-  private String TEST_DATA_DIR;
-
-  //static private File[] wsdls;
   private Vector wsdlFiles = new Vector();
 
   static private Definition definition = null;

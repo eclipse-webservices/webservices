@@ -22,7 +22,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
-import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
@@ -33,8 +32,6 @@ import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
-import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -96,23 +93,6 @@ public class UtilTest extends TestCase
       });
 
     return suite;
-  }
-
-  protected void setUp() throws Exception
-  {
-    super.setUp();
-
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
-
-  protected void tearDown() throws Exception
-  {
-    super.tearDown();
   }
 
   static private Definition definition = null;

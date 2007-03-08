@@ -20,11 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
-import org.eclipse.xsd.XSDPackage;
-import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 
 
 /**
@@ -32,21 +28,6 @@ import org.eclipse.xsd.util.XSDResourceFactoryImpl;
  */
 public final class DefinitionLoader
 {
-  {
-    // This is needed because we don't have the following in the plugin.xml
-    //
-    //   <extension point = "org.eclipse.emf.extension_parser">
-    //     <parser type="wsdl" class="com.ibm.etools.wsdl.util.WSDLResourceFactoryImpl"/>
-    //   </extension>
-    //
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
-    WSDLPackage pkg = WSDLPackage.eINSTANCE;
-
-    // We need this for XSD <import>.
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xsd", new XSDResourceFactoryImpl());
-    XSDPackage xsdpkg = XSDPackage.eINSTANCE;
-  }
-
   /**
    * This class provides static methods only.
    */

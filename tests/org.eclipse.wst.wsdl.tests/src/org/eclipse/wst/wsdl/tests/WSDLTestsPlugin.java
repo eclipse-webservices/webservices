@@ -16,14 +16,14 @@ import java.io.IOException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 
 /**
- * The main plugin class to be used in the desktop.
+ * The main plug-in class to be used in the desktop.
  */
 public class WSDLTestsPlugin extends Plugin
 {
@@ -33,7 +33,7 @@ public class WSDLTestsPlugin extends Plugin
   //Resource bundle.
   private ResourceBundle resourceBundle;
 
-  private static Bundle pluginBundle = null;
+  private static Bundle pluginBundle;
 
   /**
    * The constructor.
@@ -97,7 +97,9 @@ public class WSDLTestsPlugin extends Plugin
     try
     {
       if (resourceBundle == null)
+      {
         resourceBundle = ResourceBundle.getBundle("org.eclipse.wst.wsdl.tests.WSDLTestsPluginResources");
+      }
     }
     catch (MissingResourceException x)
     {
@@ -107,20 +109,19 @@ public class WSDLTestsPlugin extends Plugin
   }
 
   /**
-   * Get the install URL of this plugin.
+   * Get the install URL of this plug-in.
    * 
-   * @return the install url of this plugin
+   * @return the install URL of this plug-in
    */
   public static String getInstallURL()
   {
     try
     {
-      return Platform.resolve(pluginBundle.getEntry("/")).getFile();
+      return FileLocator.resolve(pluginBundle.getEntry("/")).getFile();
     }
     catch (IOException e)
     {
       return null;
     }
   }
-
 }
