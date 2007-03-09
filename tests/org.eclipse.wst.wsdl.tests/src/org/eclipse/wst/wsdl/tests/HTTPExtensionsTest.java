@@ -12,6 +12,7 @@
 package org.eclipse.wst.wsdl.tests;
 
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -29,6 +30,7 @@ import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
@@ -79,7 +81,7 @@ public class HTTPExtensionsTest extends TestCase
         }
       });
 
-    suite.addTest(new SOAPExtensionsTest("EMFSerialization") //$NON-NLS-1$
+    suite.addTest(new HTTPExtensionsTest("EMFSerialization") //$NON-NLS-1$
       {
         protected void runTest()
         {
@@ -204,7 +206,7 @@ public class HTTPExtensionsTest extends TestCase
       resource.getContents().add(definition);
       resource.save(null);
       resourceSet = new ResourceSetImpl();
-      resource = resourceSet.getResource(fileURI, false);
+      resource = resourceSet.getResource(fileURI, true);
     }
     catch (Exception e)
     {
@@ -231,10 +233,26 @@ public class HTTPExtensionsTest extends TestCase
 
   private void removeBackingDOM(Definition definition)
   {
-    XSDSchemaExtensibilityElement ee = (XSDSchemaExtensibilityElement)definition.getTypes().getExtensibilityElements().get(0);
-    XSDSchema schema = ee.getSchema();
-    schema.setElement(null);
-    schema.setDocument(null);
+    javax.wsdl.Types types = definition.getTypes();
+    if (types != null)
+    {
+      List schemaExtensibilityElements = types.getExtensibilityElements();
+      Iterator iterator = schemaExtensibilityElements.iterator();
+      while (iterator.hasNext())
+      {
+        ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+        if (extensibilityElement instanceof XSDSchemaExtensibilityElement)
+        {
+          XSDSchemaExtensibilityElement schemaExtensibilityElement = (XSDSchemaExtensibilityElement)extensibilityElement;
+          XSDSchema schema = schemaExtensibilityElement.getSchema();
+          if (schema != null)
+          {
+            schema.setElement(null);
+            schema.setDocument(null);
+          }
+        }
+      }
+    }
     definition.setElement(null);
     definition.setDocument(null);
   }

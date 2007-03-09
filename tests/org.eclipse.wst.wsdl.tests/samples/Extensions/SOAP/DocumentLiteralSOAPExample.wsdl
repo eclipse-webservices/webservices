@@ -5,7 +5,9 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	name="DocumentLiteralSOAPExample"
 	targetNamespace="http://www.example.org/DocumentLiteralSOAPExample/">
+	<wsdl:documentation>Test documentation.</wsdl:documentation>
 	<wsdl:types>
+		<wsdl:documentation>Test documentation.</wsdl:documentation>
 		<xsd:schema
 			targetNamespace="http://www.example.org/DocumentLiteralSOAPExample/"
 			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -40,16 +42,22 @@
 			<xsd:element name="NewOperationHeaderFault">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="headerFault" type="xsd:string" />
+						<xsd:element name="headerFault"
+							type="xsd:string" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="NewOperationRequestMsg">
-		<wsdl:part element="tns:NewOperationRequest" name="parameters" />
+		<wsdl:documentation>Test documentation.</wsdl:documentation>
+		<wsdl:part element="tns:NewOperationRequest"
+			name="parameters">
+			<wsdl:documentation>Test documentation.</wsdl:documentation>
+		</wsdl:part>
 		<wsdl:part element="tns:NewOperationHeader" name="header" />
-		<wsdl:part element="tns:NewOperationHeaderFault" name="headerFault" />
+		<wsdl:part element="tns:NewOperationHeaderFault"
+			name="headerFault" />
 	</wsdl:message>
 	<wsdl:message name="NewOperationResponseMsg">
 		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
@@ -58,36 +66,66 @@
 		<wsdl:part element="tns:NewOperationFault" name="fault" />
 	</wsdl:message>
 	<wsdl:portType name="DocumentLiteralSOAPExample">
+		<wsdl:documentation>Test documentation.</wsdl:documentation>
 		<wsdl:operation name="NewOperation">
-			<wsdl:input message="tns:NewOperationRequestMsg" />
-			<wsdl:output message="tns:NewOperationResponseMsg" />
-			<wsdl:fault name="fault" message="tns:NewOperationFaultMsg" />
+			<wsdl:documentation>Test documentation.</wsdl:documentation>
+			<wsdl:input message="tns:NewOperationRequestMsg">
+				<wsdl:documentation>
+					Test documentation.
+				</wsdl:documentation>
+			</wsdl:input>
+			<wsdl:output message="tns:NewOperationResponseMsg">
+				<wsdl:documentation>
+					Test documentation.
+				</wsdl:documentation>
+			</wsdl:output>
+			<wsdl:fault name="fault"
+				message="tns:NewOperationFaultMsg">
+				<wsdl:documentation>
+					Test documentation.
+				</wsdl:documentation>
+			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="DocumentLiteralSOAPExampleSOAP"
 		type="tns:DocumentLiteralSOAPExample">
+		<wsdl:documentation>Test documentation.</wsdl:documentation>
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="NewOperation">
+			<wsdl:documentation>Test documentation.</wsdl:documentation>
 			<soap:operation style="document"
 				soapAction="http://www.example.org/DocumentLiteralSOAPExample/NewOperation" />
 			<wsdl:input>
+				<wsdl:documentation>
+					Test documentation.
+				</wsdl:documentation>
 				<soap:body use="literal" parts="parameters" />
-				<soap:header use="literal" part="header" message="tns:NewOperationRequestMsg">
-					<soap:headerfault use="literal" part="headerFault" message="tns:NewOperationRequestMsg"/>
+				<soap:header use="literal" part="header"
+					message="tns:NewOperationRequestMsg">
+					<soap:headerfault use="literal" part="headerFault"
+						message="tns:NewOperationRequestMsg" />
 				</soap:header>
 			</wsdl:input>
 			<wsdl:output>
+				<wsdl:documentation>
+					Test documentation.
+				</wsdl:documentation>
 				<soap:body use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="fault">
+				<wsdl:documentation>
+					Test documentation.
+				</wsdl:documentation>
 				<soap:fault name="fault" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="DocumentLiteralSOAPExample">
+		<wsdl:documentation>Test documentation.</wsdl:documentation>
 		<wsdl:port binding="tns:DocumentLiteralSOAPExampleSOAP"
 			name="DocumentLiteralSOAPExampleSOAP">
+			<wsdl:documentation>Test documentation.</wsdl:documentation>
 			<soap:address location="http://www.example.org/" />
 		</wsdl:port>
 	</wsdl:service>

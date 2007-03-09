@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.wsdl.Types;
+import javax.wsdl.extensions.ExtensibilityElement;
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
@@ -34,7 +34,6 @@ import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
@@ -171,7 +170,7 @@ public class SOAPExtensionsTest extends TestCase
       resource.getContents().add(definition);
       resource.save(null);
       resourceSet = new ResourceSetImpl();
-      resource = resourceSet.getResource(fileURI, false);
+      resource = resourceSet.getResource(fileURI, true);
 
       definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/SOAP/RPCEncodedSOAPExample.wsdl", true); //$NON-NLS-1$
       removeBackingDOM(definition);
@@ -181,17 +180,18 @@ public class SOAPExtensionsTest extends TestCase
       resource.getContents().add(definition);
       resource.save(null);
       resourceSet = new ResourceSetImpl();
-      resource = resourceSet.getResource(fileURI, false);
+      resource = resourceSet.getResource(fileURI, true);
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
     }
   }
 
   private void removeBackingDOM(Definition definition)
   {
-    Types types = definition.getTypes();
+    javax.wsdl.Types types = definition.getTypes();
     if (types != null)
     {
       List schemaExtensibilityElements = types.getExtensibilityElements();
