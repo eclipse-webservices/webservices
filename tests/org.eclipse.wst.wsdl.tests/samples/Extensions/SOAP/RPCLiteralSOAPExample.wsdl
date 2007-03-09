@@ -11,10 +11,14 @@
 	<wsdl:message name="NewOperationResponse">
 		<wsdl:part name="NewOperationResponse" type="xsd:string" />
 	</wsdl:message>
+	<wsdl:message name="NewOperationFault">
+		<wsdl:part name="NewOperationFault" type="xsd:string" />
+	</wsdl:message>
 	<wsdl:portType name="RPCLiteralSOAPExample">
 		<wsdl:operation name="NewOperation">
 			<wsdl:input message="tns:NewOperationRequest" />
 			<wsdl:output message="tns:NewOperationResponse" />
+			<wsdl:fault name="fault" message="tns:NewOperationFault" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="RPCLiteralSOAPExampleSOAP"
@@ -34,6 +38,11 @@
 					namespace="http://www.example.org/RPCLiteralSOAPExample/"
 					use="literal" />
 			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap:fault name="fault"
+					namespace="http://www.example.org/RPCLiteralSOAPExample/"
+					use="literal" />
+			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="RPCLiteralSOAPExample">

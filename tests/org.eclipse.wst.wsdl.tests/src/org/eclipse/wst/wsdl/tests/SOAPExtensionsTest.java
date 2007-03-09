@@ -13,8 +13,10 @@ package org.eclipse.wst.wsdl.tests;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.wsdl.Types;
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
@@ -22,17 +24,22 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
@@ -41,8 +48,9 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
-import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
+import org.eclipse.xsd.XSDSchema;
+
 
 /**
  * Tests the SOAP binding extensions. 
@@ -81,6 +89,15 @@ public class SOAPExtensionsTest extends TestCase
           testSOAPExtensionsCreation();
         }
       });
+
+    suite.addTest(new SOAPExtensionsTest("EMFSerialization") //$NON-NLS-1$
+      {
+        protected void runTest()
+        {
+          testEMFSerialization();
+        }
+      });
+
     return suite;
   }
 
@@ -126,14 +143,82 @@ public class SOAPExtensionsTest extends TestCase
     }
   }
 
+  /**
+   * This method loads a WSDL model then saves it using the default EMF serialization
+   * instead of the WSDL XML format, then loads it again. The intent is to exercise
+   * the EMF e* methods to aid in identifying real code coverage issues.  
+   */
+  public void testEMFSerialization()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/SOAP/DocumentLiteralSOAPExample.wsdl", true); //$NON-NLS-1$
+      removeBackingDOM(definition);
+
+      ResourceSet resourceSet = new ResourceSetImpl();
+      URI fileURI = URI.createFileURI(PLUGIN_ABSOLUTE_PATH + "samples/generated/DocumentLiteralSOAPExample.xml");
+      Resource resource = resourceSet.createResource(fileURI);
+      resource.getContents().add(definition);
+      resource.save(null);
+      resourceSet = new ResourceSetImpl();
+      resource = resourceSet.getResource(fileURI, false);
+
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/SOAP/RPCLiteralSOAPExample.wsdl", true); //$NON-NLS-1$
+      removeBackingDOM(definition);
+      fileURI = URI.createFileURI(PLUGIN_ABSOLUTE_PATH + "samples/generated/RPCLiteralSOAPExample.xml");
+      resourceSet = new ResourceSetImpl();
+      resource = resourceSet.createResource(fileURI);
+      resource.getContents().add(definition);
+      resource.save(null);
+      resourceSet = new ResourceSetImpl();
+      resource = resourceSet.getResource(fileURI, false);
+
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/SOAP/RPCEncodedSOAPExample.wsdl", true); //$NON-NLS-1$
+      removeBackingDOM(definition);
+      fileURI = URI.createFileURI(PLUGIN_ABSOLUTE_PATH + "samples/generated/RPCEncodedSOAPExample.xml");
+      resourceSet = new ResourceSetImpl();
+      resource = resourceSet.createResource(fileURI);
+      resource.getContents().add(definition);
+      resource.save(null);
+      resourceSet = new ResourceSetImpl();
+      resource = resourceSet.getResource(fileURI, false);
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
+    }
+  }
+
+  private void removeBackingDOM(Definition definition)
+  {
+    Types types = definition.getTypes();
+    if (types != null)
+    {
+      List schemaExtensibilityElements = types.getExtensibilityElements();
+      Iterator iterator = schemaExtensibilityElements.iterator();
+      while (iterator.hasNext())
+      {
+        ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+        if (extensibilityElement instanceof XSDSchemaExtensibilityElement)
+        {
+          XSDSchemaExtensibilityElement schemaExtensibilityElement = (XSDSchemaExtensibilityElement)extensibilityElement;
+          XSDSchema schema = schemaExtensibilityElement.getSchema();
+          if (schema != null)
+          {
+            schema.setElement(null);
+            schema.setDocument(null);
+          }
+        }
+      }
+    }
+    definition.setElement(null);
+    definition.setDocument(null);
+  }
+
   private void addSOAPAddress(Definition definition)
   {
     SOAPAddress soapAddress = SOAP_FACTORY.createSOAPAddress();
-    EObject soapAddressEObject = (EObject)soapAddress;
     soapAddress.setLocationURI(LOCATION_URI);
-    String locationURI = (String)soapAddressEObject.eGet(SOAPPackage.Literals.SOAP_ADDRESS__LOCATION_URI);
-    assertEquals(LOCATION_URI, locationURI);
-    assertTrue(soapAddressEObject.eIsSet(SOAPPackage.Literals.SOAP_ADDRESS__LOCATION_URI));
 
     soapAddress.toString();
 
@@ -150,17 +235,9 @@ public class SOAPExtensionsTest extends TestCase
   private void addSOAPBinding(Binding binding)
   {
     SOAPBinding soapBinding = SOAP_FACTORY.createSOAPBinding();
-    EObject soapBindingEObject = ((EObject)soapBinding);
 
     soapBinding.setStyle(STYLE_DOCUMENT);
-    String style = (String)soapBindingEObject.eGet(SOAPPackage.Literals.SOAP_BINDING__STYLE);
-    assertEquals(STYLE_DOCUMENT, style);
-    assertTrue(soapBindingEObject.eIsSet(SOAPPackage.Literals.SOAP_BINDING__STYLE));
-
     soapBinding.setTransportURI(HTTP_TRANSPORT_URI);
-    String transportURI = (String)soapBindingEObject.eGet(SOAPPackage.Literals.SOAP_BINDING__TRANSPORT_URI);
-    assertEquals(HTTP_TRANSPORT_URI, transportURI);
-    assertTrue(soapBindingEObject.eIsSet(SOAPPackage.Literals.SOAP_BINDING__TRANSPORT_URI));
 
     soapBinding.toString();
 
@@ -173,17 +250,10 @@ public class SOAPExtensionsTest extends TestCase
     String faultName = bindingFault.getName();
 
     SOAPFault soapFault = SOAP_FACTORY.createSOAPFault();
-    EObject soapFaultEObject = (EObject)soapFault;
     soapFault.setName(faultName);
     soapFault.toString();
-    String expectedFaultName = (String)soapFaultEObject.eGet(SOAPPackage.Literals.SOAP_FAULT__NAME);
-    assertEquals(faultName, expectedFaultName);
-    assertTrue(soapFaultEObject.eIsSet(SOAPPackage.Literals.SOAP_FAULT__NAME));
 
     soapFault.setUse(USE_LITERAL);
-    String use = (String)soapFaultEObject.eGet(SOAPPackage.Literals.SOAP_FAULT__USE);
-    assertEquals(USE_LITERAL, use);
-    assertTrue(soapFaultEObject.eIsSet(SOAPPackage.Literals.SOAP_FAULT__USE));
 
     bindingFault.addExtensibilityElement(soapFault);
     bindingFault.toString();
@@ -192,15 +262,11 @@ public class SOAPExtensionsTest extends TestCase
   private void addSOAPBindingInput(BindingInput bindingInput)
   {
     bindingInput.toString();
-    
+
     SOAPBody inputSOAPBody = SOAP_FACTORY.createSOAPBody();
     bindingInput.addExtensibilityElement(inputSOAPBody);
 
-    EObject inputSOAPBodyEObject = (EObject)inputSOAPBody;
     inputSOAPBody.setUse(USE_LITERAL);
-    String use = (String)inputSOAPBodyEObject.eGet(SOAPPackage.Literals.SOAP_BODY__USE);
-    assertEquals(USE_LITERAL, use);
-    assertTrue(inputSOAPBodyEObject.eIsSet(SOAPPackage.Literals.SOAP_BODY__USE));
 
     List parts = new ArrayList();
     String messageName = "NewOperationRequest"; //$NON-NLS-1$
@@ -214,24 +280,14 @@ public class SOAPExtensionsTest extends TestCase
 
     SOAPHeader soapHeader = SOAP_FACTORY.createSOAPHeader();
     bindingInput.addExtensibilityElement(soapHeader);
-    EObject soapHeaderEObject = (EObject)soapHeader;
 
     soapHeader.setMessage(messageQName);
-    QName actualMessageQName = (QName)soapHeaderEObject.eGet(SOAPPackage.Literals.SOAP_HEADER_BASE__MESSAGE);
-    assertEquals(messageQName, actualMessageQName);
-    assertTrue(soapHeaderEObject.eIsSet(SOAPPackage.Literals.SOAP_HEADER_BASE__MESSAGE));
 
     String headerPart = "header"; //$NON-NLS-1$
     soapHeader.setPart(headerPart);
-    String actualPart = (String)soapHeaderEObject.eGet(SOAPPackage.Literals.SOAP_HEADER_BASE__PART);
-    assertEquals(headerPart, actualPart);
-    assertTrue(soapHeaderEObject.eIsSet(SOAPPackage.Literals.SOAP_HEADER_BASE__PART));
 
     soapHeader.setUse(USE_LITERAL);
-    String faultUse = (String)soapHeaderEObject.eGet(SOAPPackage.Literals.SOAP_HEADER_BASE__USE);
-    assertEquals(USE_LITERAL, faultUse);
-    assertTrue(soapHeaderEObject.eIsSet(SOAPPackage.Literals.SOAP_HEADER_BASE__USE));
-    
+
     soapHeader.toString();
 
     addSOAPHeaderFault(messageQName, soapHeader);
@@ -251,38 +307,23 @@ public class SOAPExtensionsTest extends TestCase
   {
     SOAPHeaderFault soapHeaderFault = SOAP_FACTORY.createSOAPHeaderFault();
     soapHeader.addSOAPHeaderFault(soapHeaderFault);
-    
+
     List soapHeaderFaults = soapHeader.getSOAPHeaderFaults();
     assertEquals(1, soapHeaderFaults.size());
     SOAPHeaderFault expectedSoapHeaderFault = (SOAPHeaderFault)soapHeaderFaults.get(0);
     assertEquals(expectedSoapHeaderFault, soapHeaderFault);
-    
-    EObject soapHeaderFaultEObject = (EObject)soapHeaderFault;
-    
+
     soapHeaderFault.setMessage(messageQName);
-    QName actualFaultMessageQName = (QName)soapHeaderFaultEObject.eGet(SOAPPackage.Literals.SOAP_HEADER_BASE__MESSAGE);
-    assertEquals(messageQName, actualFaultMessageQName);
-    assertTrue(soapHeaderFaultEObject.eIsSet(SOAPPackage.Literals.SOAP_HEADER_BASE__MESSAGE));
 
     String headerFaultPart = "headerFault1"; //$NON-NLS-1$
     soapHeaderFault.setPart(headerFaultPart);
-    String actualHeaderFaultPart = (String)soapHeaderFaultEObject.eGet(SOAPPackage.Literals.SOAP_HEADER_BASE__PART);
-    assertEquals(headerFaultPart, actualHeaderFaultPart);
-    assertTrue(soapHeaderFaultEObject.eIsSet(SOAPPackage.Literals.SOAP_HEADER_BASE__PART));
   }
 
   private void addSOAPOperation(BindingOperation bindingOperation)
   {
     SOAPOperation soapOperation = SOAP_FACTORY.createSOAPOperation();
-    EObject soapOperationEObject = (EObject)soapOperation;
     soapOperation.setStyle(STYLE_DOCUMENT);
-    String style = (String)soapOperationEObject.eGet(SOAPPackage.Literals.SOAP_OPERATION__STYLE);
-    assertEquals(STYLE_DOCUMENT, style);
-    assertTrue(soapOperationEObject.eIsSet(SOAPPackage.Literals.SOAP_OPERATION__STYLE));
     soapOperation.setSoapActionURI(SOAP_ACTION_URI);
-    String actionURI = (String)soapOperationEObject.eGet(SOAPPackage.Literals.SOAP_OPERATION__SOAP_ACTION_URI);
-    assertEquals(SOAP_ACTION_URI, actionURI);
-    assertTrue(soapOperationEObject.eIsSet(SOAPPackage.Literals.SOAP_OPERATION__SOAP_ACTION_URI));
 
     soapOperation.toString();
 

@@ -9,7 +9,7 @@
 		<xsd:schema
 			targetNamespace="http://www.example.org/DocumentLiteralSOAPExample/"
 			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-			<xsd:element name="NewOperation">
+			<xsd:element name="NewOperationRequest">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="in" type="xsd:string" />
@@ -23,18 +23,45 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="NewOperationFault">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="fault" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationHeader">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="header" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationHeaderFault">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="headerFault" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
-	<wsdl:message name="NewOperationRequest">
-		<wsdl:part element="tns:NewOperation" name="parameters" />
+	<wsdl:message name="NewOperationRequestMsg">
+		<wsdl:part element="tns:NewOperationRequest" name="parameters" />
+		<wsdl:part element="tns:NewOperationHeader" name="header" />
+		<wsdl:part element="tns:NewOperationHeaderFault" name="headerFault" />
 	</wsdl:message>
-	<wsdl:message name="NewOperationResponse">
+	<wsdl:message name="NewOperationResponseMsg">
 		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationFaultMsg">
+		<wsdl:part element="tns:NewOperationFault" name="fault" />
 	</wsdl:message>
 	<wsdl:portType name="DocumentLiteralSOAPExample">
 		<wsdl:operation name="NewOperation">
-			<wsdl:input message="tns:NewOperationRequest" />
-			<wsdl:output message="tns:NewOperationResponse" />
+			<wsdl:input message="tns:NewOperationRequestMsg" />
+			<wsdl:output message="tns:NewOperationResponseMsg" />
+			<wsdl:fault name="fault" message="tns:NewOperationFaultMsg" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="DocumentLiteralSOAPExampleSOAP"
@@ -42,14 +69,20 @@
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="NewOperation">
-			<soap:operation
+			<soap:operation style="document"
 				soapAction="http://www.example.org/DocumentLiteralSOAPExample/NewOperation" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:body use="literal" parts="parameters" />
+				<soap:header use="literal" part="header" message="tns:NewOperationRequestMsg">
+					<soap:headerfault use="literal" part="headerFault" message="tns:NewOperationRequestMsg"/>
+				</soap:header>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
 			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap:fault name="fault" use="literal" />
+			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="DocumentLiteralSOAPExample">
