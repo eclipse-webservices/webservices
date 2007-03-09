@@ -12,7 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design.directedit;
 
 import java.text.MessageFormat;
 
-import org.eclipse.jface.util.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -52,11 +52,6 @@ public class ASDComboBoxCellEditor extends CellEditor {
      * The custom combo box control.
      */
     ASDCCombo comboBox;
-    
-    /**
-     * Used to determine if the value should be applied to the cell.
-     */
-    private boolean continueApply;    
     private Object selectedValue;
     private ComponentReferenceEditManager componentReferenceEditManager;
     private int textIndent = 5;
@@ -158,9 +153,6 @@ public class ASDComboBoxCellEditor extends CellEditor {
   	  
   	  if (dialog.createAndOpen() == Window.OK) {
   		  newValue = dialog.getSelectedComponent();
-  	  }
-  	  else {
-  		  continueApply = false;
   	  }
 
   	  return newValue;
@@ -286,7 +278,6 @@ public class ASDComboBoxCellEditor extends CellEditor {
     
     public void selectionMade() {
     	Object newValue = null;
-    	continueApply = true;
     	selection = comboBox.getSelectionIndex();
     	String stringSelection = items[selection];
     	

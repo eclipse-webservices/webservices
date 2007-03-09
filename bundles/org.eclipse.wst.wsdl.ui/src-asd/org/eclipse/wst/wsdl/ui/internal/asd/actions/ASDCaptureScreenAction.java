@@ -13,7 +13,6 @@ package org.eclipse.wst.wsdl.ui.internal.asd.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.actions.ActionDelegate;
 import org.eclipse.wst.xsd.ui.internal.adt.actions.CaptureScreenAction;
 
@@ -24,7 +23,7 @@ import org.eclipse.wst.xsd.ui.internal.adt.actions.CaptureScreenAction;
  * shown in the UI. When the user tries to use the action,
  * this delegate will be created and execution will be 
  * delegated to it.
- * @see IWorkbenchWindowActionDelegate
+ * @see org.eclipse.ui.IWorkbenchWindowActionDelegate
  */
 public class ASDCaptureScreenAction  extends ActionDelegate implements IEditorActionDelegate {
 	

@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.directedit;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
 import org.eclipse.swt.accessibility.AccessibleControlAdapter;
@@ -20,7 +19,6 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleTextAdapter;
 import org.eclipse.swt.accessibility.AccessibleTextEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -40,7 +38,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
-import org.eclipse.swt.widgets.Widget;
 
 /*
  * rmah:
@@ -97,14 +94,14 @@ public final class ASDCCombo extends Composite {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
  * </ul>
  *
  * @see SWT#BORDER
  * @see SWT#READ_ONLY
  * @see SWT#FLAT
- * @see Widget#getStyle()
+ * @see org.eclipse.swt.widgets.Widget#getStyle()
  */
 public ASDCCombo (Composite parent, int style) {
 	super (parent, style = checkStyle (style));
@@ -177,7 +174,7 @@ static int checkStyle (int style) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -205,7 +202,7 @@ public void add (String string) {
  *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
  *    <li>ERROR_INVALID_RANGE - if the index is not between 0 and the number of elements in the list (inclusive)</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -228,7 +225,7 @@ public void add (String string, int index) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -257,14 +254,14 @@ public void addModifyListener (ModifyListener listener) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
  *
  * @see SelectionListener
  * @see #removeSelectionListener
- * @see SelectionEvent
+ * @see org.eclipse.swt.events.SelectionEvent
  */
 public void addSelectionListener(SelectionListener listener) {
 	checkWidget();
@@ -295,7 +292,7 @@ void arrowEvent (Event event) {
  * use <code>deselectAll()</code>.
  * </p>
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -382,7 +379,7 @@ void createPopup(String[] items, int selectionIndex) {
  *
  * @param index the index of the item to deselect
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -398,7 +395,7 @@ public void deselect (int index) {
  * use <code>clearSelection()</code>.
  * </p>
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -495,7 +492,7 @@ public Control [] getChildren () {
  *
  * @return whether or not the receiver is editable
  * 
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -517,7 +514,7 @@ public boolean getEditable () {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_INVALID_RANGE - if the index is not between 0 and the number of elements in the list minus 1 (inclusive)</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -531,7 +528,7 @@ public String getItem (int index) {
  *
  * @return the number of items
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -546,7 +543,7 @@ public int getItemCount () {
  *
  * @return the height of one item
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -566,7 +563,7 @@ public int getItemHeight () {
  *
  * @return the items in the receiver's list
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -587,7 +584,7 @@ public Menu getMenu() {
  *
  * @return a point representing the selection start and end
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -602,7 +599,7 @@ public Point getSelection () {
  *
  * @return the index of the selected item
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -623,7 +620,7 @@ public int getStyle () {
  *
  * @return the receiver's text
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -637,7 +634,7 @@ public String getText () {
  *
  * @return the text height
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -654,7 +651,7 @@ public int getTextHeight () {
  * 
  * @return the text limit
  * 
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -669,7 +666,7 @@ public int getTextLimit () {
  *
  * @return the number of items that are visible
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -724,7 +721,7 @@ void handleFocus (int type) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -748,7 +745,7 @@ public int indexOf (String string) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1027,7 +1024,7 @@ public void redraw (int x, int y, int width, int height, boolean all) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_INVALID_RANGE - if the index is not between 0 and the number of elements in the list minus 1 (inclusive)</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1047,7 +1044,7 @@ public void remove (int index) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_INVALID_RANGE - if either the start or end are not between 0 and the number of elements in the list minus 1 (inclusive)</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1067,7 +1064,7 @@ public void remove (int start, int end) {
  *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
  *    <li>ERROR_INVALID_ARGUMENT - if the string is not found in the list</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1081,7 +1078,7 @@ public void remove (String string) {
  * Removes all of the items from the receiver's list and clear the
  * contents of receiver's text field.
  * <p>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1100,7 +1097,7 @@ public void removeAll () {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1122,7 +1119,7 @@ public void removeModifyListener (ModifyListener listener) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1143,7 +1140,7 @@ public void removeSelectionListener (SelectionListener listener) {
  *
  * @param index the index of the item to select
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1176,7 +1173,7 @@ public void setBackground (Color color) {
  *
  * @param editable the new editable state
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1224,7 +1221,7 @@ public void setForeground (Color color) {
  *    <li>ERROR_INVALID_RANGE - if the index is not between 0 and the number of elements in the list minus 1 (inclusive)</li>
  *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1242,7 +1239,7 @@ public void setItem (int index, String string) {
  *    <li>ERROR_NULL_ARGUMENT - if the items array is null</li>
  *    <li>ERROR_INVALID_ARGUMENT - if an item in the items array is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1262,7 +1259,7 @@ public void setItems (String [] items) {
  *
  * @param layout the receiver's new layout or null
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1285,7 +1282,7 @@ public void setMenu(Menu menu) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the point is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1312,7 +1309,7 @@ public void setSelection (Point selection) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1340,7 +1337,7 @@ public void setText (String string) {
  * @exception IllegalArgumentException <ul>
  *    <li>ERROR_CANNOT_BE_ZERO - if the limit is zero</li>
  * </ul>
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
@@ -1367,7 +1364,7 @@ public void setVisible (boolean visible) {
  *
  * @param count the new number of items to be visible
  *
- * @exception SWTException <ul>
+ * @exception org.eclipse.swt.SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>

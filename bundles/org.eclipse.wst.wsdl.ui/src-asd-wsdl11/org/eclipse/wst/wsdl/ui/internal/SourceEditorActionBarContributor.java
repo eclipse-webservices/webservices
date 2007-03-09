@@ -16,7 +16,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.part.MultiPageEditorActionBarContributor;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.sse.ui.internal.ExtendedEditorActionBuilder;
@@ -76,7 +75,7 @@ public class SourceEditorActionBarContributor extends MultiPageEditorActionBarCo
 	}
 
 	/**
-	 * @see EditorActionBarContributor#contributeToMenu(IMenuManager)
+	 * @see org.eclipse.ui.part.EditorActionBarContributor.EditorActionBarContributor#contributeToMenu(IMenuManager)
 	 */
 	public final void contributeToMenu(IMenuManager menu) {
 		super.contributeToMenu(menu);
@@ -105,7 +104,7 @@ public class SourceEditorActionBarContributor extends MultiPageEditorActionBarCo
 	}
 
 	/**
-	 * @see EditorActionBarContributor#contributeToToolBar(IToolBarManager)
+	 * @see org.eclipse.ui.part.EditorActionBarContributor.EditorActionBarContributor#contributeToToolBar(IToolBarManager)
 	 */
 	public final void contributeToToolBar(IToolBarManager toolBarManager) {
 		super.contributeToToolBar(toolBarManager);
@@ -120,7 +119,7 @@ public class SourceEditorActionBarContributor extends MultiPageEditorActionBarCo
 	}
 
 	/**
-	 * @see EditorActionBarContributor#contributeToStatusLine(IStatusLineManager)
+	 * @see org.eclipse.ui.part.EditorActionBarContributor.EditorActionBarContributor#contributeToStatusLine(IStatusLineManager)
 	 */
 	public final void contributeToStatusLine(IStatusLineManager manager) {
 		super.contributeToStatusLine(manager);

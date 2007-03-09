@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.WorkbenchHelp;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -87,7 +86,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   public void createControl(Composite parent)
   {
     Composite base = new Composite(parent, SWT.NONE);
-    WorkbenchHelp.setHelp(base, Messages._UI_HELP);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(base, Messages._UI_HELP); //$NON-NLS-1$
     base.setLayout(new GridLayout());
 
     //  Group wsdlGroup = ViewUtility.createGroup(base, 2, "WSDL", false);
@@ -368,7 +367,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
         }
     }
     else {
-    	this.setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, this.NONE);
+    	this.setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
     }
  
     return ready;
@@ -382,7 +381,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 			  this.setErrorMessage(Messages._ERROR_WSI_COMPLIANCE_SOAP_PROTOCOL);
 			  return false;
 		  } else if (WSICompliance.equals(PersistentWSIContext.WARN_NON_WSI)) {
-			  this.setMessage(Messages._WARN_WSI_COMPLIANCE_SOAP_PROTOCOL, this.WARNING);
+			  this.setMessage(Messages._WARN_WSI_COMPLIANCE_SOAP_PROTOCOL, WARNING);
 			  return true;
 		  }
 	  } else if (rpcEncRadio.getSelection()) {
@@ -390,11 +389,11 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 			  this.setErrorMessage(Messages._ERROR_WSI_COMPLIANCE_RPC_ENCODING);
 			  return false;
 		  } else if (WSICompliance.equals(PersistentWSIContext.WARN_NON_WSI)) {
-			  this.setMessage(Messages._WARN_WSI_COMPLIANCE_RPC_ENCODING, this.WARNING);
+			  this.setMessage(Messages._WARN_WSI_COMPLIANCE_RPC_ENCODING, WARNING);
 			  return true;
 		  }
 	  } else {
-		  this.setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE,this.NONE);
+		  this.setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
 	  }
 
 	  return true;

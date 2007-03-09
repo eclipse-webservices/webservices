@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.wsdl.Definition;
@@ -232,7 +232,7 @@ public class WSDLSetComponentHelper {
     private String getNormalizedLocation(String location) {
         try {
             URL url = new URL(location);
-            URL resolvedURL = Platform.resolve(url);
+            URL resolvedURL = FileLocator.resolve(url);
             location = resolvedURL.getPath();
         }
         catch (Exception e) {

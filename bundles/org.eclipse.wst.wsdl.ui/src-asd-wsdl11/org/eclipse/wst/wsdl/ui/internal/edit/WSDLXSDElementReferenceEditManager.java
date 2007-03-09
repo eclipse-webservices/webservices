@@ -10,15 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.edit;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
-import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentList;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
@@ -98,25 +95,5 @@ public class WSDLXSDElementReferenceEditManager extends	XSDElementReferenceEditM
 		}
 		
 		return schemas;
-	}
-	
-	private class ElementComponentList implements IComponentList {
-		private List list = new ArrayList();
-		
-		public void add(Object object) {
-			list.add(object);
-		}
-		
-		public Iterator iterator() {
-			return list.iterator();
-		}
-		
-		public int size() {
-			return list.size();
-		}
-		
-		public Object get(int index) {
-			return list.get(index);
-		}
 	}
 }

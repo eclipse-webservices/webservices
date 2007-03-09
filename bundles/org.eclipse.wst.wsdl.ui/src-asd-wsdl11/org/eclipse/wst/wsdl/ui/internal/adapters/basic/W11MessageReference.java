@@ -67,6 +67,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
     return (IOperation) owner;
   }
   
+  /*
   private String getMessageString(String key, Object[] args) {
 	  String string = null;
 
@@ -81,6 +82,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 
 	  return string;
   }
+  */
   
   // Convenience method
   public MessageReference getMessageReference()

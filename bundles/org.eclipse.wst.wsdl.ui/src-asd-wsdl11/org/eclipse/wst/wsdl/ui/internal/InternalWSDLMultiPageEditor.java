@@ -133,10 +133,10 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 			  if (modelAdapter == null) {
 				  modelAdapter = new WSDLModelAdapter();
 				  notifier.addAdapter(modelAdapter);
-				  obj = modelAdapter.createDefinition(document.getDocumentElement(), document);
+				  obj = modelAdapter.createDefinition(document);
 			  }
 			  if (obj == null) {
-				  obj = modelAdapter.createDefinition(document.getDocumentElement(), document);
+				  obj = modelAdapter.createDefinition(document);
 			  }
 		  }
 

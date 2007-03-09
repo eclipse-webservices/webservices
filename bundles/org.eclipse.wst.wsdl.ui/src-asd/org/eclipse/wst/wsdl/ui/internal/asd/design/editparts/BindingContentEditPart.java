@@ -68,7 +68,6 @@ public class BindingContentEditPart extends BaseEditPart
 	  }
 	  else if (getModel() instanceof IBindingMessageReference)
 	  {
-		  IBindingMessageReference messageRef = (IBindingMessageReference) getModel();
 		  label.setIcon(WSDLEditorPlugin.getInstance().getImage("icons/bind_asct_val_obj.gif")); //$NON-NLS-1$
 //		  label.setIcon(messageRef.getImage());
 //		  label.setText(messageRef.getName());

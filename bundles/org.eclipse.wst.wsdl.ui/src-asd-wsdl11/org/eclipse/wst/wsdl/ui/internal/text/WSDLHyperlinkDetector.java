@@ -76,7 +76,7 @@ public class WSDLHyperlinkDetector extends XSDHyperlinkDetector
             {
               modelAdapter = new WSDLModelAdapter();
               domDoc.addAdapter(modelAdapter);
-              modelAdapter.createDefinition(domDoc.getDocumentElement(), domDoc);
+              modelAdapter.createDefinition(domDoc);
             }
             definition = modelAdapter.getDefinition();
           }

@@ -14,12 +14,10 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ASDEditPartFactory;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ASDContentOutlineProvider;
-import org.eclipse.wst.wsdl.ui.internal.properties.sections.EditorModeSectionFilter;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorMode;
 
 public class DefaultEditorMode extends EditorMode
 {
-  private EditorModeSectionFilter sectionFilter = null;  
   public final static String ID =  DefaultEditorMode.class.getName();
   
   public String getDisplayName()

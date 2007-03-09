@@ -94,7 +94,7 @@ public class W11Description extends WSDLBaseAdapter implements IDescription {
 		List categories = new ArrayList();
 		
 		List importList = getImports();
-		List schemaList = getTypes();
+//		List schemaList = getTypes();
 		List serviceList = getServices();
 		List bindingList = getBindings();
 		List interfaceList = getInterfaces();

@@ -236,7 +236,7 @@ public class ImportSection extends ASDAbstractSection
 				String location = ComponentReferenceUtil.computeRelativeURI(selectedFile, currentWSDLFile, true);
 
 				Import importObj = (Import) w11Import.getTarget();
-				org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
+//				org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
 				Definition definition = importObj.getEnclosingDefinition();
 				org.w3c.dom.Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
 
