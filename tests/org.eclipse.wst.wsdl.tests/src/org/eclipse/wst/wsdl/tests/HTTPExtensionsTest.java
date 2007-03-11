@@ -32,6 +32,7 @@ import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Port;
+import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
@@ -40,7 +41,9 @@ import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
 import org.eclipse.wst.wsdl.binding.http.HTTPOperation;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlEncoded;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlReplacement;
+import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
 import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
+import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.Attr;
@@ -96,6 +99,14 @@ public class HTTPExtensionsTest extends TestCase
           testHTTPExtensionsReconciliation();
         }
       });
+
+    suite.addTest(new HTTPExtensionsTest("HTTPContentGenerator") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testHTTPContentGenerator();
+      }
+    });
 
     return suite;
   }
@@ -212,6 +223,50 @@ public class HTTPExtensionsTest extends TestCase
     {
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
     }
+  }
+
+  public void testHTTPContentGenerator()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/HTTP/HTTPTest.wsdl"); //$NON-NLS-1$
+      
+      HTTPContentGenerator contentGenerator = (HTTPContentGenerator)ContentGeneratorExtensionFactoryRegistry.getInstance().getGeneratorClassFromName("HTTP");
+      String locationURI = "http://test.org/example"; //$NON-NLS-1$
+      contentGenerator.setAddressLocation(locationURI);
+      contentGenerator.setVerb(HTTPContentGenerator.VERB_GET);
+
+      String serviceName = "HTTPTest"; //$NON-NLS-1$
+      QName serviceQName = new QName(TARGET_NAMESPACE, serviceName);
+      Service service = (Service)definition.getService(serviceQName);
+
+      Port port = (Port)service.getPort("HTTPTestHTTP"); //$NON-NLS-1$
+      List extensibilityElements = port.getExtensibilityElements();
+      assertEquals(0, extensibilityElements.size());
+      contentGenerator.generatePortContent(port);
+      
+      extensibilityElements = port.getExtensibilityElements();
+      assertEquals(1, extensibilityElements.size());
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)extensibilityElements.get(0);
+      assertTrue(extensibilityElement instanceof HTTPAddress);
+      HTTPAddress httpAddress = (HTTPAddress)extensibilityElement;
+      assertEquals(locationURI, httpAddress.getLocationURI());
+
+      QName bindingQName = new QName(TARGET_NAMESPACE, "HTTPTestHTTP"); //$NON-NLS-1$
+      Binding binding = (Binding)definition.getBinding(bindingQName);
+      
+      QName portTypeQName = new QName(TARGET_NAMESPACE, "HTTPTest"); //$NON-NLS-1$
+      PortType portType = (PortType)definition.getPortType(portTypeQName);
+      
+      contentGenerator.generateBindingContent(binding, portType);
+      
+      // TODO Complete this test.
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
+    }
+    
   }
 
   private void addHTTPAddress(Definition definition)
