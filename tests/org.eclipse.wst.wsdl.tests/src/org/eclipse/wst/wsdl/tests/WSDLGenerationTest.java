@@ -76,7 +76,7 @@ public class WSDLGenerationTest extends TestCase
   {
     try
     {
-      generateTemperatureService("./TemperatureService.wsdl");
+      generateTemperatureService(WSDLTestsPlugin.getInstallURL() +"samples/generated/TemperatureService.wsdl");
     }
     catch (Exception e)
     {

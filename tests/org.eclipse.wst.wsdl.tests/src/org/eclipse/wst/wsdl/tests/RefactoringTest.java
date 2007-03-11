@@ -65,7 +65,7 @@ public class RefactoringTest extends TestCase
     try
     {
       // Before running this test, modify the location of the generated WSDL file
-      generateWSDL(WSDLTestsPlugin.getInstallURL() + "RefactoringTest.wsdl");
+      generateWSDL(WSDLTestsPlugin.getInstallURL() +"samples/generated/RefactoringTest.wsdl");
     }
     catch (Exception e)
     {
