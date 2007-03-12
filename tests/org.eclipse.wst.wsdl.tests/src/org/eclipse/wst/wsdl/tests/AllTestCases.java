@@ -46,6 +46,7 @@ public class AllTestCases extends TestCase
     suite.addTest(RefactoringTest.suite());
     suite.addTest(SOAPExtensionsTest.suite());
     suite.addTest(HTTPExtensionsTest.suite());
+    suite.addTest(MIMEExtensionsTest.suite());
 
     return suite;
   }

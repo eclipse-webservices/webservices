@@ -110,13 +110,11 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated NOT
    */
   public List getMIMEParts()
   {
-    // TODO: implement this method
-    // Ensure that you remove @generated or mark it @generated NOT
-    throw new UnsupportedOperationException();
+    return getEMIMEPart();
   }
 
   /**

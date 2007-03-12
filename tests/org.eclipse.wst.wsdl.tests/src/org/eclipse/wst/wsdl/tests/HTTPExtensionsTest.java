@@ -48,7 +48,7 @@ import org.w3c.dom.Element;
 
 
 /**
- * Tests the SOAP binding extensions. 
+ * Tests the HTTP binding extensions. 
  */
 public class HTTPExtensionsTest extends TestCase
 {
