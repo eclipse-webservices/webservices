@@ -49,6 +49,11 @@
 			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
+	<wsdl:message name="TestMsg">
+		<wsdl:part element="tns:NewOperationHeader" name="testHeader" />
+		<wsdl:part element="tns:NewOperationHeaderFault"
+			name="testHeaderFault" />
+	</wsdl:message>
 	<wsdl:message name="NewOperationRequestMsg">
 		<wsdl:documentation>Test documentation.</wsdl:documentation>
 		<wsdl:part element="tns:NewOperationRequest"

@@ -12,7 +12,6 @@
 package org.eclipse.wst.wsdl.tests;
 
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -34,7 +33,6 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
@@ -45,7 +43,6 @@ import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator
 import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
 import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
-import org.eclipse.xsd.XSDSchema;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
@@ -209,7 +206,6 @@ public class HTTPExtensionsTest extends TestCase
     try
     {
       Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/HTTP/HTTPExample.wsdl", true); //$NON-NLS-1$
-      removeBackingDOM(definition);
       
       ResourceSet resourceSet = new ResourceSetImpl();
       URI fileURI = URI.createFileURI(PLUGIN_ABSOLUTE_PATH + "samples/generated/HTTPExample.xml");
@@ -286,32 +282,6 @@ public class HTTPExtensionsTest extends TestCase
     port.toString();
   }
 
-  private void removeBackingDOM(Definition definition)
-  {
-    javax.wsdl.Types types = definition.getTypes();
-    if (types != null)
-    {
-      List schemaExtensibilityElements = types.getExtensibilityElements();
-      Iterator iterator = schemaExtensibilityElements.iterator();
-      while (iterator.hasNext())
-      {
-        ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
-        if (extensibilityElement instanceof XSDSchemaExtensibilityElement)
-        {
-          XSDSchemaExtensibilityElement schemaExtensibilityElement = (XSDSchemaExtensibilityElement)extensibilityElement;
-          XSDSchema schema = schemaExtensibilityElement.getSchema();
-          if (schema != null)
-          {
-            schema.setElement(null);
-            schema.setDocument(null);
-          }
-        }
-      }
-    }
-    definition.setElement(null);
-    definition.setDocument(null);
-  }
-  
   private void addHTTPBinding(Binding binding)
   {
     binding.toString();

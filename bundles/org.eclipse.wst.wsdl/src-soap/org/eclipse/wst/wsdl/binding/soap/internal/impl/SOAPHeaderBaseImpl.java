@@ -562,6 +562,17 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       setUse(changedElement.getAttribute(SOAPConstants.USE_ATTRIBUTE));
     if (changedElement.hasAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE))
       setNamespaceURI(changedElement.getAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE));
+    if (changedElement.hasAttribute(SOAPConstants.MESSAGE_ATTRIBUTE))
+    {
+      Definition definition = (Definition)getEnclosingDefinition();    
+      QName messageQName = createQName(definition, changedElement.getAttribute(SOAPConstants.MESSAGE_ATTRIBUTE), changedElement);
+      setMessage(messageQName);
+    }
+    if (changedElement.hasAttribute(SOAPConstants.PART_ATTRIBUTE))
+    {
+      String partName = element.getAttribute(SOAPConstants.PART_ATTRIBUTE);
+      setPart(partName);
+    }
     if (changedElement.hasAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE))
     {
       String encodingStyles = changedElement.getAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE);
@@ -575,22 +586,21 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   public void reconcileReferences(boolean deep)
   {
-    if (element != null && element.hasAttribute(SOAPConstants.MESSAGE_ATTRIBUTE))
+    if (element != null)
     {
-      Definition definition = getEnclosingDefinition();
-      QName messageQName = createQName(definition, element.getAttribute(SOAPConstants.MESSAGE_ATTRIBUTE), element);
-      Message newMessage = (messageQName != null) ? (Message)definition.getMessage(messageQName) : null;
-      if (newMessage != null && newMessage != getEMessage())
-        setEMessage(newMessage);
-
-      if (element.hasAttribute(SOAPConstants.PART_ATTRIBUTE))
+      Definition definition = (Definition)getEnclosingDefinition();    
+    	Message message = (this.message != null) ? (Message)definition.getMessage(this.message) : null;
+      if (message != null && message != getEMessage())
       {
-        String partName = element.getAttribute(SOAPConstants.PART_ATTRIBUTE);
-        Part newPart = (newMessage != null) ? (Part)newMessage.getPart(partName) : null;
+        setEMessage(message);
+        
+        Part newPart = (Part)message.getPart(part);
         if (newPart != null && newPart != getEPart())
+        {
           setEPart(newPart);
+        }
       }
-    }
+    }    
     super.reconcileReferences(deep);
   }
 
@@ -611,6 +621,13 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
         niceSetAttribute(theElement, SOAPConstants.USE_ATTRIBUTE, getUse());
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_NamespaceURI())
         niceSetAttribute(theElement, SOAPConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
+      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_Part())
+        niceSetAttribute(theElement, SOAPConstants.PART_ATTRIBUTE, getPart());
+      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_Message())
+      {
+        String uriList = message != null ? message.getNamespaceURI() + "#" + message.getLocalPart() : null;
+        niceSetAttributeURIValue(theElement, SOAPConstants.MESSAGE_ATTRIBUTE, uriList);
+      }
       if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_EEncodingStyles())
       {
         List encodingStyleList = getEEncodingStyles();
