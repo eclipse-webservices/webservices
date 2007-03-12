@@ -266,6 +266,25 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 			Point pointer = me.getLocation();
 			openExternalEditor(pointer);
 		}
+		
+		public void mouseHover(MouseEvent me) {
+			Point pointer = me.getLocation();
+			showPreviewDialog(pointer);
+		}
+	}
+	
+	private void showPreviewDialog(Point point) {
+		Rectangle linkFigBounds = getLinkFigureBounds();
+		if (linkFigBounds == null) {
+			return;
+		}
+
+		Rectangle testbounds = new Rectangle(linkFigBounds.x, linkFigBounds.y, 0, linkFigBounds.height);
+
+		if (pointerInRange(testbounds, point)) {
+			IOpenExternalEditorHelper helper = getExternalEditorOpener();
+			helper.showPreview();
+		}
 	}
 
 	// Methods below handle the Link Figure.....

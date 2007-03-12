@@ -26,6 +26,7 @@ import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 import org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor;
@@ -33,6 +34,7 @@ import org.eclipse.wst.xsd.ui.internal.editor.XSDFileEditorInput;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 
 public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
@@ -196,5 +198,29 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 		}
 
 		return false;
+	}
+	
+	public void showPreview() {
+		W11ParameterForPart param = (W11ParameterForPart) object;
+		Object xsdModel = null;
+		String title = null;
+		String info = null;
+		if (param.isType()) {
+			XSDTypeDefinition type = ((Part)param.getTarget()).getTypeDefinition();
+			xsdModel = type;
+			title = type.getName();
+			info = type.getTargetNamespace(); 
+		}
+		else {
+			XSDElementDeclaration elem = ((Part)param.getTarget()).getElementDeclaration();
+			xsdModel = elem;
+			title = elem.getName();
+			info = elem.getTargetNamespace(); 
+		}
+		XSDGraphViewerDialog dialog = new XSDGraphViewerDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title, info, xsdModel);
+		dialog.setOpenExternalEditor(this);
+		dialog.create();
+		dialog.open();
+		dialog.getShell().setFocus();
 	}
 }

@@ -15,4 +15,5 @@ public interface IOpenExternalEditorHelper {
 	public void openExternalEditor();
 	public boolean linkApplicable();
 	public boolean isValid();
+	public void showPreview();
 }
