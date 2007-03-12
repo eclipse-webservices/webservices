@@ -450,11 +450,27 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated NOT
    */
   public OperationType createOperationTypeFromString(EDataType eDataType, String initialValue)
   {
-    return (OperationType)super.createFromString(eDataType, initialValue);
+    if ("REQUEST_RESPONSE".equals(initialValue))
+    {
+      return OperationType.REQUEST_RESPONSE;
+    }
+    else if ("ONE_WAY".equals(initialValue))
+    {
+      return OperationType.ONE_WAY;
+    }
+    else if ("NOTIFICATION".equals(initialValue))
+    {
+      return OperationType.NOTIFICATION;
+    }
+    else if ("SOLICIT_RESPONSE".equals(initialValue))
+    {
+      return OperationType.SOLICIT_RESPONSE;
+    }
+    return null;
   }
 
   /**
