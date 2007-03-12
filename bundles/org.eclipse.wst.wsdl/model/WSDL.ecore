@@ -15,7 +15,8 @@
       <eParameters name="definition" eType="#//Definition"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentationElement" eType="#//DOMElement"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//DOMElement"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//DOMElement"
+        transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PortType" eSuperTypes="#//WSDLElement #//IPortType">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

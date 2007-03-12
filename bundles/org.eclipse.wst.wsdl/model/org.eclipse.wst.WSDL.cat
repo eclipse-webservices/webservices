@@ -66,6 +66,11 @@
 		    quid       	"3CCE443602A3"
 		    type       	"DOMElement")
 		(object ClassAttribute "element"
+		    attributes 	(list Attribute_Set
+			(object Attribute
+			    tool       	"Ecore"
+			    name       	"isTransient"
+			    value      	TRUE))
 		    quid       	"3F97DBD30207"
 		    type       	"DOMElement"))
 	    language   	"Java"
@@ -5486,6 +5491,14 @@
 		    line_color 	3342489
 		    fill_color 	13434879
 		    quidu      	"3AD5C6A302DD"
+		    compartment 	(object Compartment
+			Parent_View 	@249
+			location   	(630, 144)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	3
+			max_width  	0)
 		    width      	774
 		    height     	240
 		    annotation 	8
@@ -5908,7 +5921,7 @@
 			    client     	@276
 			    supplier   	@275
 			    line_style 	3
-			    origin_attachment 	(1486, 872)
+			    origin_attachment 	(1486, 1000)
 			    terminal_attachment 	(1486, 872))))
 		(object AssociationViewNew "$UNNAMED$43" @281
 		    location   	(1087, 403)

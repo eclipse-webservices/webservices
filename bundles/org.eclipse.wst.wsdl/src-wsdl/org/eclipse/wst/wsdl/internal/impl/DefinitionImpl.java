@@ -198,16 +198,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected String encoding = ENCODING_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getEServices() <em>EServices</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getEServices()
-   * @generated
-   * @ordered
-   */
-  protected EList eServices = null;
-
-  /**
    * The cached value of the '{@link #getENamespaces() <em>ENamespaces</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -266,6 +256,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @ordered
    */
   protected EList eBindings = null;
+
+  /**
+   * The cached value of the '{@link #getEServices() <em>EServices</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEServices()
+   * @generated
+   * @ordered
+   */
+  protected EList eServices = null;
 
   private ExtensionRegistry extensionRegistry;
 

@@ -77,7 +77,7 @@ public interface WSDLElement extends EObject
    * @return the value of the '<em>Element</em>' attribute.
    * @see #setElement(Element)
    * @see org.eclipse.wst.wsdl.WSDLPackage#getWSDLElement_Element()
-   * @model dataType="org.eclipse.wst.wsdl.DOMElement"
+   * @model dataType="org.eclipse.wst.wsdl.DOMElement" transient="true"
    * @generated
    */
   Element getElement();

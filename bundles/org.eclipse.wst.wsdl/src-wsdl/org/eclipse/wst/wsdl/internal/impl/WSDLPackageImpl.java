@@ -1973,7 +1973,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       0,
       1,
       WSDLElement.class,
-      !IS_TRANSIENT,
+      IS_TRANSIENT,
       !IS_VOLATILE,
       IS_CHANGEABLE,
       !IS_UNSETTABLE,
