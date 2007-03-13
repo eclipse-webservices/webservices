@@ -1121,7 +1121,13 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
 
     op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1);
 
+    op = addEOperation(isoapBodyEClass, null, "setEncodingStyles");
+    addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1);
+
     op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getParts", 0, 1);
+
+    op = addEOperation(isoapBodyEClass, null, "setParts");
+    addEParameter(op, theWSDLPackage.getIList(), "parts", 0, 1);
 
     initEClass(
       isoapFaultEClass,

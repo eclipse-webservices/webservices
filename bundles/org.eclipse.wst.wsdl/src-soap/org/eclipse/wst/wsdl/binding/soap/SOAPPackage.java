@@ -1031,11 +1031,11 @@ public interface SOAPPackage extends EPackage
   EAttribute getSOAPBody_NamespaceURI();
 
   /**
-   * Returns the meta object for the attribute list '{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody <em>EEncoding Styles</em>}'.
+   * Returns the meta object for the attribute list '{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getEEncodingStyles <em>EEncoding Styles</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute list '<em>EEncoding Styles</em>'.
-   * @see org.eclipse.wst.wsdl.binding.soap.SOAPBody
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPBody#getEEncodingStyles()
    * @see #getSOAPBody()
    * @generated
    */

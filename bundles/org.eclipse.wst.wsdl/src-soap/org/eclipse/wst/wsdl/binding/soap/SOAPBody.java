@@ -25,13 +25,13 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getNamespaceURI <em>Namespace URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getEEncodingStyles <em>EEncoding Styles</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPBody#getEParts <em>EParts</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody()
- * @model features="eEncodingStyles" 
- *        eEncodingStylesType="java.lang.String" eEncodingStylesDataType="org.eclipse.wst.wsdl.binding.soap.IString" eEncodingStylesMany="true" eEncodingStylesSuppressedGetVisibility="true"
+ * @model
  * @generated
  */
 public interface SOAPBody extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPBody
@@ -88,6 +88,22 @@ public interface SOAPBody extends ExtensibilityElement, javax.wsdl.extensions.so
    * @generated
    */
   void setNamespaceURI(String value);
+
+  /**
+   * Returns the value of the '<em><b>EEncoding Styles</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EEncoding Styles</em>' attribute list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EEncoding Styles</em>' attribute list.
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPBody_EEncodingStyles()
+   * @model type="java.lang.String" dataType="org.eclipse.wst.wsdl.binding.soap.IString"
+   * @generated
+   */
+  EList getEEncodingStyles();
 
   /**
    * Returns the value of the '<em><b>EParts</b></em>' reference list.

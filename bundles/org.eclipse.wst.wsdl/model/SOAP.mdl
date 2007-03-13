@@ -118,11 +118,7 @@
 				quid       	"3A93477C01B2"
 				type       	"String")
 			    (object ClassAttribute "eEncodingStyles"
-				attributes 	(list Attribute_Set
-				    (object Attribute
-					tool       	"Ecore"
-					name       	"visibility"
-					value      	("VisibilityKind" 1)))
+				attributes 	(list Attribute_Set)
 				quid       	"45EC98A60271"
 				stereotype 	"0..*"
 				type       	"IString"))
@@ -292,9 +288,25 @@
 				concurrency 	"Sequential"
 				opExportControl 	"Public"
 				uid        	0)
-			    (object Operation "getParts"
+			    (object Operation "setEncodingStyles"
+				quid       	"45F6D6820203"
+				parameters 	(list Parameters
+				    (object Parameter "encodingStyles"
+					type       	"IList"))
+				concurrency 	"Sequential"
+				opExportControl 	"Public"
+				uid        	0)
+				(object Operation "getParts"
 				quid       	"45EC58A3031C"
 				result     	"IList"
+				concurrency 	"Sequential"
+				opExportControl 	"Public"
+				uid        	0)
+			    (object Operation "setParts"
+				quid       	"45F6D65A0203"
+				parameters 	(list Parameters
+				    (object Parameter "parts"
+					type       	"IList"))
 				concurrency 	"Sequential"
 				opExportControl 	"Public"
 				uid        	0))
@@ -699,6 +711,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3A01DED5031F"
+				compartment 	(object Compartment
+				    Parent_View 	@19
+				    location   	(1226, 2192)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	4
+				    max_width  	0)
 				width      	510
 				height     	240
 				annotation 	8)
@@ -858,14 +878,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3A06D9FA00F7"
-				compartment 	(object Compartment
-				    Parent_View 	@32
-				    location   	(346, 2208)
-				    icon_style 	"Icon"
-				    fill_color 	16777215
-				    anchor     	2
-				    nlines     	5
-				    max_width  	0)
 				width      	510
 				height     	240
 				annotation 	8)
@@ -1131,6 +1143,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"45E4884B0119"
+				compartment 	(object Compartment
+				    Parent_View 	@46
+				    location   	(1273, 1784)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	4
+				    max_width  	0)
 				width      	416
 				height     	228
 				annotation 	8

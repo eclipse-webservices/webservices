@@ -564,7 +564,7 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       setNamespaceURI(changedElement.getAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE));
     if (changedElement.hasAttribute(SOAPConstants.MESSAGE_ATTRIBUTE))
     {
-      Definition definition = (Definition)getEnclosingDefinition();    
+      Definition definition = (Definition)getEnclosingDefinition();
       QName messageQName = createQName(definition, changedElement.getAttribute(SOAPConstants.MESSAGE_ATTRIBUTE), changedElement);
       setMessage(messageQName);
     }
@@ -588,19 +588,19 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
   {
     if (element != null)
     {
-      Definition definition = (Definition)getEnclosingDefinition();    
-    	Message message = (this.message != null) ? (Message)definition.getMessage(this.message) : null;
+      Definition definition = (Definition)getEnclosingDefinition();
+      Message message = (this.message != null) ? (Message)definition.getMessage(this.message) : null;
       if (message != null && message != getEMessage())
       {
         setEMessage(message);
-        
+
         Part newPart = (Part)message.getPart(part);
         if (newPart != null && newPart != getEPart())
         {
           setEPart(newPart);
         }
       }
-    }    
+    }
     super.reconcileReferences(deep);
   }
 

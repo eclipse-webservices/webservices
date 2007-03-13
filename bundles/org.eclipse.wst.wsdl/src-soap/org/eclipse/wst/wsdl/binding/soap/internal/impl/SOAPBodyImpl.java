@@ -228,32 +228,40 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
     return eParts;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see javax.wsdl.extensions.soap.SOAPBody#setEncodingStyles(java.util.List)
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
    */
   public void setEncodingStyles(List list)
   {
     eEncodingStyles = (EList)list;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see javax.wsdl.extensions.soap.SOAPBody#getEncodingStyles()
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
    */
   public List getEncodingStyles()
   {
     return getEEncodingStyles();
   }
 
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
   public void setParts(List list)
   {
     parts = list;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see javax.wsdl.extensions.soap.SOAPBody#getParts()
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
    */
   public List getParts()
   {
