@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.wsdl.tests;
+package org.eclipse.wst.wsdl.tests.extensions;
 
 
 import java.util.List;
@@ -36,6 +36,7 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
+import org.eclipse.wst.wsdl.tests.WSDLTestsPlugin;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 
 

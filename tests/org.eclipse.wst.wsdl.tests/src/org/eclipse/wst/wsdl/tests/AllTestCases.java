@@ -11,6 +11,10 @@
 package org.eclipse.wst.wsdl.tests;
 
 
+import org.eclipse.wst.wsdl.tests.extensions.HTTPExtensionsTest;
+import org.eclipse.wst.wsdl.tests.extensions.MIMEExtensionsTest;
+import org.eclipse.wst.wsdl.tests.extensions.SOAPExtensionsTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

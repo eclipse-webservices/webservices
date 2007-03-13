@@ -400,10 +400,8 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
 
   public void reconcileAttributes(Element changedElement)
   {
-    if (changedElement.hasAttribute(SOAPConstants.USE_ATTRIBUTE))
-      setUse(changedElement.getAttribute(SOAPConstants.USE_ATTRIBUTE));
-    if (changedElement.hasAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE))
-      setNamespaceURI(changedElement.getAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE));
+    setUse(SOAPConstants.getAttribute(changedElement, SOAPConstants.USE_ATTRIBUTE));
+    setNamespaceURI(SOAPConstants.getAttribute(changedElement, SOAPConstants.NAMESPACE_ATTRIBUTE));
     if (changedElement.hasAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE))
     {
       String encodingStyles = changedElement.getAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE);
@@ -411,6 +409,11 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
       while (tokenizer.hasMoreTokens())
         getEncodingStyles().add(tokenizer.nextToken());
     }
+    else
+    {
+      getEncodingStyles().clear();
+    }
+   
     reconcileReferences(false);
   }
 

@@ -558,27 +558,29 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
 
   public void reconcileAttributes(Element changedElement)
   {
-    if (changedElement.hasAttribute(SOAPConstants.USE_ATTRIBUTE))
-      setUse(changedElement.getAttribute(SOAPConstants.USE_ATTRIBUTE));
-    if (changedElement.hasAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE))
-      setNamespaceURI(changedElement.getAttribute(SOAPConstants.NAMESPACE_ATTRIBUTE));
+    setUse(SOAPConstants.getAttribute(changedElement, SOAPConstants.USE_ATTRIBUTE));
+    setNamespaceURI(SOAPConstants.getAttribute(changedElement, SOAPConstants.NAMESPACE_ATTRIBUTE));
     if (changedElement.hasAttribute(SOAPConstants.MESSAGE_ATTRIBUTE))
     {
       Definition definition = (Definition)getEnclosingDefinition();
       QName messageQName = createQName(definition, changedElement.getAttribute(SOAPConstants.MESSAGE_ATTRIBUTE), changedElement);
       setMessage(messageQName);
     }
-    if (changedElement.hasAttribute(SOAPConstants.PART_ATTRIBUTE))
+    else
     {
-      String partName = element.getAttribute(SOAPConstants.PART_ATTRIBUTE);
-      setPart(partName);
+      setMessage(null);
     }
+    setPart(SOAPConstants.getAttribute(changedElement, SOAPConstants.PART_ATTRIBUTE));
     if (changedElement.hasAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE))
     {
       String encodingStyles = changedElement.getAttribute(SOAPConstants.ENCODING_STYLE_ATTRIBUTE);
       StringTokenizer tokenizer = new StringTokenizer(encodingStyles);
       while (tokenizer.hasMoreTokens())
         getEEncodingStyles().add(tokenizer.nextToken());
+    }
+    else
+    {
+      getEEncodingStyles().clear();
     }
 
     reconcileReferences(false);

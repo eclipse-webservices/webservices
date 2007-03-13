@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.wsdl.tests;
+package org.eclipse.wst.wsdl.tests.extensions;
 
 
 import java.util.List;
@@ -18,7 +18,6 @@ import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.emf.common.util.URI;
@@ -37,20 +36,20 @@ import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
 import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
 import org.eclipse.wst.wsdl.binding.http.HTTPOperation;
+import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlEncoded;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlReplacement;
 import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
 import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
 import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
+import org.eclipse.wst.wsdl.tests.WSDLTestsPlugin;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
 
 
 /**
  * Tests the HTTP binding extensions. 
  */
-public class HTTPExtensionsTest extends TestCase
+public class HTTPExtensionsTest extends WSDLExtensionsTest
 {
   private static final String ADDRESS_LOCATION_URI = "http://www.example.org/"; //$NON-NLS-1$
 
@@ -63,6 +62,8 @@ public class HTTPExtensionsTest extends TestCase
   private static final String TARGET_NAMESPACE = "http://www.example.org/HTTPTest/"; //$NON-NLS-1$
 
   private static final String VERB_GET = "GET"; //$NON-NLS-1$
+
+  private static final String VERB_PUT = "PUT"; //$NON-NLS-1$
 
   public static void main(String[] args)
   {
@@ -98,12 +99,12 @@ public class HTTPExtensionsTest extends TestCase
       });
 
     suite.addTest(new HTTPExtensionsTest("HTTPContentGenerator") //$NON-NLS-1$
-    {
-      protected void runTest()
       {
-        testHTTPContentGenerator();
-      }
-    });
+        protected void runTest()
+        {
+          testHTTPContentGenerator();
+        }
+      });
 
     return suite;
   }
@@ -161,14 +162,11 @@ public class HTTPExtensionsTest extends TestCase
       String locationURI = httpAddress.getLocationURI();
       assertEquals("http://www.example.org/", locationURI);
 
-      Element httpAddressElement = httpAddress.getElement();
-      Attr locationURIAttribute = httpAddressElement.getAttributeNode(HTTPConstants.LOCATION_URI_ATTRIBUTE);
-
-      String expectedLocationURI = "test"; //$NON-NLS-1$ 
-      locationURIAttribute.setValue(expectedLocationURI);
-
-      locationURI = httpAddress.getLocationURI();
-      assertEquals(expectedLocationURI, locationURI);
+      checkStringAttributeReconciliation(
+        httpAddress,
+        HTTPConstants.LOCATION_URI_ATTRIBUTE,
+        "test",
+        HTTPPackage.Literals.HTTP_ADDRESS__LOCATION_URI);
 
       String bindingName = "HTTPExampleHTTP"; //$NON-NLS-1$
       QName bindingQName = new QName(targetNamespace, bindingName);
@@ -181,14 +179,7 @@ public class HTTPExtensionsTest extends TestCase
       String verb = httpBinding.getVerb();
       assertEquals(VERB_GET, verb);
 
-      Element httpBindingElement = httpBinding.getElement();
-      Attr verbAttribute = httpBindingElement.getAttributeNode(HTTPConstants.VERB_ATTRIBUTE);
-
-      String expectedVerb = VERB_GET; //$NON-NLS-1$ 
-      verbAttribute.setValue(expectedVerb);
-
-      verb = httpBinding.getVerb();
-      assertEquals(expectedVerb, verb);
+      checkStringAttributeReconciliation(httpBinding, HTTPConstants.VERB_ATTRIBUTE, VERB_PUT, HTTPPackage.Literals.HTTP_BINDING__VERB);
     }
     catch (Exception e)
     {
@@ -206,7 +197,7 @@ public class HTTPExtensionsTest extends TestCase
     try
     {
       Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/HTTP/HTTPExample.wsdl", true); //$NON-NLS-1$
-      
+
       ResourceSet resourceSet = new ResourceSetImpl();
       URI fileURI = URI.createFileURI(PLUGIN_ABSOLUTE_PATH + "samples/generated/HTTPExample.xml");
       Resource resource = resourceSet.createResource(fileURI);
@@ -226,8 +217,9 @@ public class HTTPExtensionsTest extends TestCase
     try
     {
       Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/HTTP/HTTPTest.wsdl"); //$NON-NLS-1$
-      
-      HTTPContentGenerator contentGenerator = (HTTPContentGenerator)ContentGeneratorExtensionFactoryRegistry.getInstance().getGeneratorClassFromName("HTTP");
+
+      HTTPContentGenerator contentGenerator = (HTTPContentGenerator)ContentGeneratorExtensionFactoryRegistry.getInstance().getGeneratorClassFromName(
+        "HTTP");
       String locationURI = "http://test.org/example"; //$NON-NLS-1$
       contentGenerator.setAddressLocation(locationURI);
       contentGenerator.setVerb(HTTPContentGenerator.VERB_GET);
@@ -240,7 +232,7 @@ public class HTTPExtensionsTest extends TestCase
       List extensibilityElements = port.getExtensibilityElements();
       assertEquals(0, extensibilityElements.size());
       contentGenerator.generatePortContent(port);
-      
+
       extensibilityElements = port.getExtensibilityElements();
       assertEquals(1, extensibilityElements.size());
       ExtensibilityElement extensibilityElement = (ExtensibilityElement)extensibilityElements.get(0);
@@ -250,19 +242,19 @@ public class HTTPExtensionsTest extends TestCase
 
       QName bindingQName = new QName(TARGET_NAMESPACE, "HTTPTestHTTP"); //$NON-NLS-1$
       Binding binding = (Binding)definition.getBinding(bindingQName);
-      
+
       QName portTypeQName = new QName(TARGET_NAMESPACE, "HTTPTest"); //$NON-NLS-1$
       PortType portType = (PortType)definition.getPortType(portTypeQName);
-      
+
       contentGenerator.generateBindingContent(binding, portType);
-      
+
       // TODO Complete this test.
     }
     catch (Exception e)
     {
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
     }
-    
+
   }
 
   private void addHTTPAddress(Definition definition)

@@ -405,8 +405,8 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
         if (!encodingStyles.equals(""))
           niceSetAttribute(theElement, SOAPConstants.ENCODING_STYLE_ATTRIBUTE, encodingStyles);
       } // TBD - Is this the proper way to handle encodingStyles
-      if (getName() != null)
-        niceSetAttribute(theElement, SOAPConstants.NAME_ATTRIBUTE, getName()); // Revisit Rose model
+      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_Name())
+        niceSetAttribute(theElement, SOAPConstants.NAME_ATTRIBUTE, getName());
     }
   }
 

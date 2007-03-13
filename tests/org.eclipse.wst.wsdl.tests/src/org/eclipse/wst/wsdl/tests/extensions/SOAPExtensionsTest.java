@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.wst.wsdl.tests;
+package org.eclipse.wst.wsdl.tests.extensions;
 
 
 import java.util.ArrayList;
@@ -20,9 +20,10 @@ import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -46,9 +47,11 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
+import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
+import org.eclipse.wst.wsdl.tests.WSDLTestsPlugin;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -59,7 +62,7 @@ import org.w3c.dom.NodeList;
 /**
  * Tests the SOAP binding extensions. 
  */
-public class SOAPExtensionsTest extends TestCase
+public class SOAPExtensionsTest extends WSDLExtensionsTest
 {
   private static final String HTTP_TRANSPORT_URI = "http://schemas.xmlsoap.org/soap/http"; //$NON-NLS-1$
 
@@ -74,8 +77,6 @@ public class SOAPExtensionsTest extends TestCase
   private static final String STYLE_DOCUMENT = "document"; //$NON-NLS-1$
 
   private static final String STYLE_RPC = "rpc"; //$NON-NLS-1$
-
-  private static final String TARGET_NAMESPACE = "http://www.example.org/SOAPTest/"; //$NON-NLS-1$
 
   private static final String USE_LITERAL = "literal"; //$NON-NLS-1$
 
@@ -115,12 +116,12 @@ public class SOAPExtensionsTest extends TestCase
       });
 
     suite.addTest(new SOAPExtensionsTest("SOAPContentGenerator") //$NON-NLS-1$
-    {
-      protected void runTest()
       {
-        testSOAPContentGenerator();
-      }
-    });
+        protected void runTest()
+        {
+          testSOAPContentGenerator();
+        }
+      });
 
     return suite;
   }
@@ -137,7 +138,8 @@ public class SOAPExtensionsTest extends TestCase
       Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/SOAP/SOAPTest.wsdl"); //$NON-NLS-1$
 
       String bindingName = "SOAPTestSOAP"; //$NON-NLS-1$
-      QName bindingQName = new QName(TARGET_NAMESPACE, bindingName);
+      String targetNamespace = "http://www.example.org/SOAPTest/"; //$NON-NLS-1$
+      QName bindingQName = new QName(targetNamespace, bindingName);
       Binding binding = (Binding)definition.getBinding(bindingQName);
 
       addSOAPBinding(binding);
@@ -172,21 +174,23 @@ public class SOAPExtensionsTest extends TestCase
     try
     {
       Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/SOAP/SOAPTest.wsdl"); //$NON-NLS-1$
-      
-      SOAPContentGenerator contentGenerator = (SOAPContentGenerator)ContentGeneratorExtensionFactoryRegistry.getInstance().getGeneratorClassFromName("SOAP");
+
+      SOAPContentGenerator contentGenerator = (SOAPContentGenerator)ContentGeneratorExtensionFactoryRegistry.getInstance().getGeneratorClassFromName(
+        "SOAP");
       String locationURI = "http://test.org/example"; //$NON-NLS-1$
       contentGenerator.setAddressLocation(locationURI);
       contentGenerator.setStyle(SOAPContentGenerator.STYLE_DOCUMENT);
 
       String serviceName = "SOAPTest"; //$NON-NLS-1$
-      QName serviceQName = new QName(TARGET_NAMESPACE, serviceName);
+      String targetNamespace = "http://www.example.org/SOAPTest/"; //$NON-NLS-1$ 
+      QName serviceQName = new QName(targetNamespace, serviceName);
       Service service = (Service)definition.getService(serviceQName);
 
       Port port = (Port)service.getPort("SOAPTestSOAP"); //$NON-NLS-1$
       List extensibilityElements = port.getExtensibilityElements();
       assertEquals(0, extensibilityElements.size());
       contentGenerator.generatePortContent(port);
-      
+
       extensibilityElements = port.getExtensibilityElements();
       assertEquals(1, extensibilityElements.size());
       ExtensibilityElement extensibilityElement = (ExtensibilityElement)extensibilityElements.get(0);
@@ -194,14 +198,14 @@ public class SOAPExtensionsTest extends TestCase
       SOAPAddress soapAddress = (SOAPAddress)extensibilityElement;
       assertEquals(locationURI, soapAddress.getLocationURI());
 
-      QName bindingQName = new QName(TARGET_NAMESPACE, "SOAPTestSOAP"); //$NON-NLS-1$
+      QName bindingQName = new QName(targetNamespace, "SOAPTestSOAP"); //$NON-NLS-1$
       Binding binding = (Binding)definition.getBinding(bindingQName);
-      
-      QName portTypeQName = new QName(TARGET_NAMESPACE, "SOAPTest"); //$NON-NLS-1$
+
+      QName portTypeQName = new QName(targetNamespace, "SOAPTest"); //$NON-NLS-1$
       PortType portType = (PortType)definition.getPortType(portTypeQName);
-      
+
       contentGenerator.generateBindingContent(binding, portType);
-      
+
       // TODO Complete this test.
     }
     catch (Exception e)
@@ -271,17 +275,7 @@ public class SOAPExtensionsTest extends TestCase
       assertEquals(1, extensibilityElements.size());
       SOAPAddress soapAddress = (SOAPAddress)extensibilityElements.get(0);
 
-      String locationURI = soapAddress.getLocationURI();
-      assertEquals("http://www.example.org/", locationURI);
-
-      Element soapAddressElement = soapAddress.getElement();
-      Attr locationURIAttribute = soapAddressElement.getAttributeNode(SOAPConstants.LOCATION_ATTRIBUTE);
-
-      String expectedLocationURI = "test"; //$NON-NLS-1$ 
-      locationURIAttribute.setValue(expectedLocationURI);
-
-      locationURI = soapAddress.getLocationURI();
-      assertEquals(expectedLocationURI, locationURI);
+      checkStringAttributeReconciliation(soapAddress, SOAPConstants.LOCATION_ATTRIBUTE, "http://www.example.org/", SOAPPackage.Literals.SOAP_ADDRESS__LOCATION_URI);
 
       String bindingName = "DocumentLiteralSOAPExampleSOAP"; //$NON-NLS-1$
       QName bindingQName = new QName(targetNamespace, bindingName);
@@ -294,91 +288,64 @@ public class SOAPExtensionsTest extends TestCase
       String style = soapBinding.getStyle();
       assertEquals(STYLE_DOCUMENT, style);
 
-      Element soapBindingElement = soapBinding.getElement();
-      Attr styleAttribute = soapBindingElement.getAttributeNode(SOAPConstants.STYLE_ATTRIBUTE);
+      checkStringAttributeReconciliation(soapBinding, SOAPConstants.STYLE_ATTRIBUTE, STYLE_RPC, SOAPPackage.Literals.SOAP_BINDING__STYLE);
 
-      String expectedStyle = STYLE_RPC; //$NON-NLS-1$ 
-      styleAttribute.setValue(expectedStyle);
-
-      style = soapBinding.getStyle();
-      assertEquals(expectedStyle, style);
-      
       BindingOperation bindingOperation = (BindingOperation)binding.getBindingOperation("NewOperation", null, null);
       extensibilityElements = bindingOperation.getExtensibilityElements();
       assertEquals(1, extensibilityElements.size());
       SOAPOperation soapOperation = (SOAPOperation)extensibilityElements.get(0);
-      
+
       style = soapOperation.getStyle();
       assertEquals(STYLE_DOCUMENT, style);
 
-      Element soapOperationElement = soapOperation.getElement();
-      styleAttribute = soapOperationElement.getAttributeNode(SOAPConstants.STYLE_ATTRIBUTE);
+      checkStringAttributeReconciliation(soapOperation, SOAPConstants.STYLE_ATTRIBUTE, STYLE_RPC, SOAPPackage.Literals.SOAP_OPERATION__STYLE);
 
-      expectedStyle = STYLE_RPC; //$NON-NLS-1$ 
-      styleAttribute.setValue(expectedStyle);
-
-      style = soapOperation.getStyle();
-      assertEquals(expectedStyle, style);
-      
       BindingInput bindingInput = (BindingInput)bindingOperation.getBindingInput();
       extensibilityElements = bindingInput.getExtensibilityElements();
       assertEquals(2, extensibilityElements.size());
 
       SOAPBody soapBody = (SOAPBody)extensibilityElements.get(0);
-      
+
       String use = soapBody.getUse();
       assertEquals(USE_LITERAL, use);
 
-      Element soapBodyElement = soapBody.getElement();
-      Attr useAttribute = soapBodyElement.getAttributeNode(SOAPConstants.USE_ATTRIBUTE);
+      checkStringAttributeReconciliation(soapBody, SOAPConstants.USE_ATTRIBUTE, USE_ENCODED, SOAPPackage.Literals.SOAP_BODY__USE);
 
-      String expectedUse = USE_ENCODED; //$NON-NLS-1$ 
-      useAttribute.setValue(expectedUse);
-
-      use = soapBody.getUse();
-      assertEquals(expectedUse, use);
-      
       SOAPHeader soapHeader = (SOAPHeader)extensibilityElements.get(1);
 
       String part = soapHeader.getPart();
       assertEquals("header", part);
-      
-      Element soapHeaderElement = soapHeader.getElement();
-      Attr partAttribute = soapHeaderElement.getAttributeNode(SOAPConstants.PART_ATTRIBUTE);
 
-      String expectedPart = "test"; //$NON-NLS-1$ 
-      partAttribute.setValue(expectedPart);
-
-      part = soapHeader.getPart();
-      assertEquals(expectedPart, part);
+      checkStringAttributeReconciliation(soapHeader, SOAPConstants.PART_ATTRIBUTE, "test", SOAPPackage.Literals.SOAP_HEADER_BASE__PART);
 
       QName inputMessageQName = new QName(targetNamespace, "NewOperationRequestMsg");
       Message inputMessage = (Message)definition.getMessage(inputMessageQName);
       assertNotNull(inputMessage);
-      
+
       QName soapHeaderMessageQName = soapHeader.getMessage();
       assertEquals(inputMessageQName, soapHeaderMessageQName);
 
+      Element soapHeaderElement = soapHeader.getElement();
       Attr messageAttribute = soapHeaderElement.getAttributeNode(SOAPConstants.MESSAGE_ATTRIBUTE);
-      
-      QName testMessageQName = new QName(targetNamespace, "TestMsg"); 
+
+      QName testMessageQName = new QName(targetNamespace, "TestMsg");
       Message testMessage = (Message)definition.getMessage(testMessageQName);
       messageAttribute.setValue("tns:TestMsg");
       assertEquals(testMessage, soapHeader.getEMessage());
 
       QName message = soapHeader.getMessage();
       assertEquals(testMessageQName, message);
-      
+
       soapHeader.setMessage(null);
       messageAttribute = soapHeaderElement.getAttributeNode(SOAPConstants.MESSAGE_ATTRIBUTE);
       assertNull(messageAttribute);
-      
+
       List soapHeaderFaults = soapHeader.getSOAPHeaderFaults();
       assertEquals(1, soapHeaderFaults.size());
       soapHeaderFaults.clear();
       NodeList headerFaultNodes = soapHeaderElement.getElementsByTagName(SOAPConstants.HEADER_FAULT_ELEMENT_TAG);
       assertEquals(0, headerFaultNodes.getLength());
-      
+
       Document document = soapHeaderElement.getOwnerDocument();
       Element soapHeaderFaultElement = document.createElementNS(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.HEADER_FAULT_ELEMENT_TAG);
       soapHeaderElement.appendChild(soapHeaderFaultElement);
@@ -387,7 +354,7 @@ public class SOAPExtensionsTest extends TestCase
       SOAPHeaderFault soapHeaderFault = (SOAPHeaderFault)soapHeader.getSOAPHeaderFaults().get(0);
       assertEquals(testMessageQName, soapHeaderFault.getMessage());
       assertEquals(testMessage, soapHeaderFault.getEMessage());
-      
+
       BindingFault bindingFault = (BindingFault)bindingOperation.getBindingFault("fault");
       extensibilityElements = bindingFault.getExtensibilityElements();
       assertEquals(1, extensibilityElements.size());
@@ -395,22 +362,15 @@ public class SOAPExtensionsTest extends TestCase
 
       String name = soapFault.getName();
       assertEquals("fault", name);
-      
-      Element soapFaultElement = soapFault.getElement();
-      Attr nameAttribute = soapFaultElement.getAttributeNode(SOAPConstants.NAME_ATTRIBUTE);
 
-      String expectedName = "test"; //$NON-NLS-1$ 
-      nameAttribute.setValue(expectedName);
-
-      name = soapFault.getName();
-      assertEquals(expectedName, name);
+      checkStringAttributeReconciliation(soapFault, SOAPConstants.NAME_ATTRIBUTE, "test", SOAPPackage.Literals.SOAP_FAULT__NAME);
     }
     catch (Exception e)
     {
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage()); //$NON-NLS-1$
     }
   }
-
+  
   private void addSOAPAddress(Definition definition)
   {
     SOAPAddress soapAddress = SOAP_FACTORY.createSOAPAddress();
@@ -419,7 +379,7 @@ public class SOAPExtensionsTest extends TestCase
     soapAddress.toString();
 
     String serviceName = "SOAPTest"; //$NON-NLS-1$
-    QName serviceQName = new QName(TARGET_NAMESPACE, serviceName);
+    QName serviceQName = new QName(definition.getTargetNamespace(), serviceName);
     Service service = (Service)definition.getService(serviceQName);
     service.toString();
 
@@ -466,8 +426,10 @@ public class SOAPExtensionsTest extends TestCase
 
     List parts = new ArrayList();
     String messageName = "NewOperationRequest"; //$NON-NLS-1$
-    QName messageQName = new QName(TARGET_NAMESPACE, messageName);
-    Definition definition = bindingInput.getEnclosingDefinition();
+    Definition enclosingDefinition = bindingInput.getEnclosingDefinition();
+    String targetNamespace = enclosingDefinition.getTargetNamespace();
+    QName messageQName = new QName(targetNamespace, messageName);
+    Definition definition = enclosingDefinition;
     Message message = (Message)definition.getMessage(messageQName);
     Part part = (Part)message.getPart("parameters"); //$NON-NLS-1$
     parts.add(part);
@@ -491,12 +453,24 @@ public class SOAPExtensionsTest extends TestCase
 
   private void addSOAPBindingOutput(BindingOutput bindingOutput)
   {
-    SOAPBody outputSOAPBody = SOAP_FACTORY.createSOAPBody();
-    outputSOAPBody.setUse(USE_LITERAL);
-    outputSOAPBody.toString();
+    // Exercise some of the RPC / encoded stuff.
+
+    SOAPBody soapBody = SOAP_FACTORY.createSOAPBody();
+    soapBody.setUse(USE_ENCODED);
+
+    EList encodingStyles = new BasicEList();
+    encodingStyles.add("http://schemas.xmlsoap.org/soap/encoding/");
+    encodingStyles.add("test");
+    
+    soapBody.setEncodingStyles(encodingStyles);
+    
+    List eEncodingStyles = soapBody.getEEncodingStyles();
+    assertEquals(2, eEncodingStyles.size());
+    
+    soapBody.toString();
 
     bindingOutput.toString();
-    bindingOutput.addExtensibilityElement(outputSOAPBody);
+    bindingOutput.addExtensibilityElement(soapBody);
   }
 
   private void addSOAPHeaderFault(QName messageQName, SOAPHeader soapHeader)
@@ -513,9 +487,9 @@ public class SOAPExtensionsTest extends TestCase
 
     String headerFaultPart = "headerFault1"; //$NON-NLS-1$
     soapHeaderFault.setPart(headerFaultPart);
-    
+
     // Test the remove part.
-    
+
     soapHeader.getSOAPHeaderFaults().clear();
   }
 
