@@ -290,6 +290,8 @@ public class SOAPExtensionsTest extends WSDLExtensionsTest
 
       checkStringAttributeReconciliation(soapBinding, SOAPConstants.STYLE_ATTRIBUTE, STYLE_RPC, SOAPPackage.Literals.SOAP_BINDING__STYLE);
 
+      checkStringAttributeReconciliation(soapBinding, SOAPConstants.TRANSPORT_ATTRIBUTE, HTTP_TRANSPORT_URI, SOAPPackage.Literals.SOAP_BINDING__TRANSPORT_URI);
+
       BindingOperation bindingOperation = (BindingOperation)binding.getBindingOperation("NewOperation", null, null);
       extensibilityElements = bindingOperation.getExtensibilityElements();
       assertEquals(1, extensibilityElements.size());
@@ -364,6 +366,9 @@ public class SOAPExtensionsTest extends WSDLExtensionsTest
       assertEquals("fault", name);
 
       checkStringAttributeReconciliation(soapFault, SOAPConstants.NAME_ATTRIBUTE, "test", SOAPPackage.Literals.SOAP_FAULT__NAME);
+
+      soapFault.setNamespaceURI("http://www.example.com/test");
+      checkStringAttributeReconciliation(soapFault, SOAPConstants.NAMESPACE_ATTRIBUTE, "test", SOAPPackage.Literals.SOAP_FAULT__NAMESPACE_URI);
     }
     catch (Exception e)
     {

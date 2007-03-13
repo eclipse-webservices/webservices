@@ -365,7 +365,7 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
   public void reconcileAttributes(Element changedElement)
   {
     setName(SOAPConstants.getAttribute(changedElement, SOAPConstants.NAME_ATTRIBUTE));
-    setNamespaceURI(SOAPConstants.getAttribute(changedElement, SOAPConstants.NAMESPACE_URI_ATTRIBUTE));
+    setNamespaceURI(SOAPConstants.getAttribute(changedElement, SOAPConstants.NAMESPACE_ATTRIBUTE));
     setUse(SOAPConstants.getAttribute(changedElement, SOAPConstants.USE_ATTRIBUTE));
 
     // TBD - handle encodingStyles
