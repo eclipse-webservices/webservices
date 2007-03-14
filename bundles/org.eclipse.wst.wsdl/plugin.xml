@@ -28,6 +28,7 @@
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
 			uri="http://www.eclipse.org/wsdl/2003/HTTP"
+	        genModel="model/HTTP.genmodel"
 			class="org.eclipse.wst.wsdl.binding.http.HTTPPackage">
 		</package>
 	</extension>
@@ -42,6 +43,7 @@
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
 			uri="http://www.eclipse.org/wsdl/2003/MIME"
+	        genModel="model/MIME.genmodel"
 			class="org.eclipse.wst.wsdl.binding.mime.MIMEPackage">
 		</package>
 	</extension>
@@ -56,6 +58,7 @@
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
 			uri="http://www.eclipse.org/wsdl/2003/SOAP"
+	        genModel="model/SOAP.genmodel"
 			class="org.eclipse.wst.wsdl.binding.soap.SOAPPackage">
 		</package>
 	</extension>
