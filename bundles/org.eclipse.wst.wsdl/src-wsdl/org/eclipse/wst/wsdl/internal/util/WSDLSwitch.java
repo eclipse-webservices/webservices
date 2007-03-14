@@ -20,31 +20,7 @@ import javax.wsdl.extensions.ExtensionRegistry;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.BindingFault;
-import org.eclipse.wst.wsdl.BindingInput;
-import org.eclipse.wst.wsdl.BindingOperation;
-import org.eclipse.wst.wsdl.BindingOutput;
-import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
-import org.eclipse.wst.wsdl.ExtensibleElement;
-import org.eclipse.wst.wsdl.Fault;
-import org.eclipse.wst.wsdl.Import;
-import org.eclipse.wst.wsdl.Input;
-import org.eclipse.wst.wsdl.Message;
-import org.eclipse.wst.wsdl.MessageReference;
-import org.eclipse.wst.wsdl.Namespace;
-import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.Output;
-import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.Types;
-import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
-import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.*;
 
 
 /**

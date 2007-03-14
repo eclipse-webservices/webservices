@@ -11,9 +11,10 @@
 package org.eclipse.wst.wsdl.internal.impl;
 
 
+import javax.wsdl.Message;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.wst.wsdl.Input;
-import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
@@ -70,23 +71,11 @@ public class InputImpl extends MessageReferenceImpl implements Input
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated NOT
    */
   public void setMessage(Message message)
   {
-    // TODO: implement this method
-    // Ensure that you remove @generated or mark it @generated NOT
-    throw new UnsupportedOperationException();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated NOT
-   */
-  public void setMessage(javax.wsdl.Message message)
-  {
-    setEMessage((Message)message);
+    setEMessage((org.eclipse.wst.wsdl.Message)message);
   }
 
   public Element createElement()

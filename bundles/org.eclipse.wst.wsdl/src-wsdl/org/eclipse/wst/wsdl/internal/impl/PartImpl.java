@@ -12,7 +12,8 @@ package org.eclipse.wst.wsdl.internal.impl;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Iterator; 
+// import javax.wsdl.WSDLException;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
