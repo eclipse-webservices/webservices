@@ -40,7 +40,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNAME = "http";
+  String eNAME = "http"; //$NON-NLS-1$
 
   /**
    * The package namespace URI.
@@ -48,7 +48,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_URI = "http://www.eclipse.org/wsdl/2003/HTTP";
+  String eNS_URI = "http://www.eclipse.org/wsdl/2003/HTTP"; //$NON-NLS-1$
 
   /**
    * The package namespace name.
@@ -56,7 +56,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_PREFIX = "http";
+  String eNS_PREFIX = "http"; //$NON-NLS-1$
 
   /**
    * The singleton instance of the package.

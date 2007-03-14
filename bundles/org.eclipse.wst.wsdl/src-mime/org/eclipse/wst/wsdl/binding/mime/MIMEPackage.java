@@ -42,7 +42,7 @@ public interface MIMEPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNAME = "mime";
+  String eNAME = "mime"; //$NON-NLS-1$
 
   /**
    * The package namespace URI.
@@ -50,7 +50,7 @@ public interface MIMEPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_URI = "http://www.eclipse.org/wsdl/2003/MIME";
+  String eNS_URI = "http://www.eclipse.org/wsdl/2003/MIME"; //$NON-NLS-1$
 
   /**
    * The package namespace name.
@@ -58,7 +58,7 @@ public interface MIMEPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_PREFIX = "mime";
+  String eNS_PREFIX = "mime"; //$NON-NLS-1$
 
   /**
    * The singleton instance of the package.

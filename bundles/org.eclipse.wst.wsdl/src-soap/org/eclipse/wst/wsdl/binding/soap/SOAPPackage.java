@@ -42,7 +42,7 @@ public interface SOAPPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNAME = "soap";
+  String eNAME = "soap"; //$NON-NLS-1$
 
   /**
    * The package namespace URI.
@@ -50,7 +50,7 @@ public interface SOAPPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_URI = "http://www.eclipse.org/wsdl/2003/SOAP";
+  String eNS_URI = "http://www.eclipse.org/wsdl/2003/SOAP"; //$NON-NLS-1$
 
   /**
    * The package namespace name.
@@ -58,7 +58,7 @@ public interface SOAPPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_PREFIX = "soap";
+  String eNS_PREFIX = "soap"; //$NON-NLS-1$
 
   /**
    * The singleton instance of the package.

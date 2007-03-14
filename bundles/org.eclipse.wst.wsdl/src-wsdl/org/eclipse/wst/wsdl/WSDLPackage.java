@@ -65,7 +65,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNAME = "wsdl";
+  String eNAME = "wsdl"; //$NON-NLS-1$
 
   /**
    * The package namespace URI.
@@ -73,7 +73,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_URI = "http://www.eclipse.org/wsdl/2003/WSDL";
+  String eNS_URI = "http://www.eclipse.org/wsdl/2003/WSDL"; //$NON-NLS-1$
 
   /**
    * The package namespace name.
@@ -81,7 +81,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_PREFIX = "wsdl";
+  String eNS_PREFIX = "wsdl"; //$NON-NLS-1$
 
   /**
    * The singleton instance of the package.
