@@ -109,85 +109,85 @@ public class WSDLConstants
    * The element tag is <code>"binding"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String BINDING_ELEMENT_TAG = "binding";
+  public static final String BINDING_ELEMENT_TAG = "binding"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"definitions"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String DEFINITION_ELEMENT_TAG = "definitions";
+  public static final String DEFINITION_ELEMENT_TAG = "definitions"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"documentation"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String DOCUMENTATION_ELEMENT_TAG = "documentation";
+  public static final String DOCUMENTATION_ELEMENT_TAG = "documentation"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"fault"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String FAULT_ELEMENT_TAG = "fault";
+  public static final String FAULT_ELEMENT_TAG = "fault"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"import"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String IMPORT_ELEMENT_TAG = "import";
+  public static final String IMPORT_ELEMENT_TAG = "import"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"input"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String INPUT_ELEMENT_TAG = "input";
+  public static final String INPUT_ELEMENT_TAG = "input"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"message"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String MESSAGE_ELEMENT_TAG = "message";
+  public static final String MESSAGE_ELEMENT_TAG = "message"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"operation"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String OPERATION_ELEMENT_TAG = "operation";
+  public static final String OPERATION_ELEMENT_TAG = "operation"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"output"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String OUTPUT_ELEMENT_TAG = "output";
+  public static final String OUTPUT_ELEMENT_TAG = "output"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"part"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String PART_ELEMENT_TAG = "part";
+  public static final String PART_ELEMENT_TAG = "part"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"port"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String PORT_ELEMENT_TAG = "port";
+  public static final String PORT_ELEMENT_TAG = "port"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"portType"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String PORT_TYPE_ELEMENT_TAG = "portType";
+  public static final String PORT_TYPE_ELEMENT_TAG = "portType"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"service"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String SERVICE_ELEMENT_TAG = "service";
+  public static final String SERVICE_ELEMENT_TAG = "service"; //$NON-NLS-1$
 
   /**
    * The element tag is <code>"types"</code>.
    * @see #nodeType(String localName).
    */
-  public static final String TYPES_ELEMENT_TAG = "types";
+  public static final String TYPES_ELEMENT_TAG = "types"; //$NON-NLS-1$
 
   // common
 
@@ -195,25 +195,25 @@ public class WSDLConstants
    * The attribute is <code>"name"</code>.
    * @see #getAttribute(Element,String).
    */
-  public static final String NAME_ATTRIBUTE = "name";
+  public static final String NAME_ATTRIBUTE = "name"; //$NON-NLS-1$
 
   /**
    * The attribute is <code>"message"</code>.
    * @see #getAttribute(Element,String).
    */
-  public static final String MESSAGE_ATTRIBUTE = "message";
+  public static final String MESSAGE_ATTRIBUTE = "message"; //$NON-NLS-1$
 
   /**
    * The attribute is <code>"binding"</code>.
    * @see #getAttribute(Element,String).
    */
-  public static final String BINDING_ATTRIBUTE = "binding";
+  public static final String BINDING_ATTRIBUTE = "binding"; //$NON-NLS-1$
 
   /**
    * The attribute is <code>"type"</code>.
    * @see #getAttribute(Element,String).
    */
-  public static final String TYPE_ATTRIBUTE = "type";
+  public static final String TYPE_ATTRIBUTE = "type"; //$NON-NLS-1$
 
   // definitions
 
@@ -221,13 +221,13 @@ public class WSDLConstants
    * The attribute is <code>"encoding"</code>.
    * @see #getAttribute(Element,String).
    */
-  public final static String ENCODING_ATTRIBUTE = "encoding";
+  public final static String ENCODING_ATTRIBUTE = "encoding"; //$NON-NLS-1$
 
   /**
    * The attribute is <code>"targetNamespace"</code>.
    * @see #getAttribute(Element,String).
    */
-  public final static String TARGETNAMESPACE_ATTRIBUTE = "targetNamespace";
+  public final static String TARGETNAMESPACE_ATTRIBUTE = "targetNamespace"; //$NON-NLS-1$
 
   // binding
 
@@ -235,7 +235,7 @@ public class WSDLConstants
    * The attribute is <code>"resourceURI"</code>.
    * @see #getAttribute(Element,String).
    */
-  public final static String RESOURCE_URI_ATTRIBUTE = "resourceURI";
+  public final static String RESOURCE_URI_ATTRIBUTE = "resourceURI"; //$NON-NLS-1$
 
   // part
 
@@ -243,7 +243,7 @@ public class WSDLConstants
    * The attribute is <code>"element"</code>.
    * @see #getAttribute(Element,String).
    */
-  public final static String ELEMENT_ATTRIBUTE = "element";
+  public final static String ELEMENT_ATTRIBUTE = "element"; //$NON-NLS-1$
 
   // import
 
@@ -251,38 +251,38 @@ public class WSDLConstants
    * The attribute is <code>"location"</code>.
    * @see #getAttribute(Element,String).
    */
-  public final static String LOCATION_ATTRIBUTE = "location";
+  public final static String LOCATION_ATTRIBUTE = "location"; //$NON-NLS-1$
 
   /**
    * The attribute is <code>"namespace"</code>.
    * @see #getAttribute(Element,String).
    */
-  public static final String NAMESPACE_ATTRIBUTE = "namespace";
+  public static final String NAMESPACE_ATTRIBUTE = "namespace"; //$NON-NLS-1$
 
   /**
    * The value <code>"http://schemas.xmlsoap.org/wsdl/"</code>.
    */
-  public static final String WSDL_NAMESPACE_URI = "http://schemas.xmlsoap.org/wsdl/";
+  public static final String WSDL_NAMESPACE_URI = "http://schemas.xmlsoap.org/wsdl/"; //$NON-NLS-1$
 
   /**
    * The value <code>"http://www.w3.org/2001/XMLSchema"</code>.
    */
-  public static final String XSD_NAMESPACE_URI = "http://www.w3.org/2001/XMLSchema";
+  public static final String XSD_NAMESPACE_URI = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
 
   /**
    * The value <code>"http://www.w3.org/1999/XMLSchema"</code>.
    */
-  public static final String SCHEMA_FOR_SCHEMA_URI_1999 = "http://www.w3.org/1999/XMLSchema";
+  public static final String SCHEMA_FOR_SCHEMA_URI_1999 = "http://www.w3.org/1999/XMLSchema"; //$NON-NLS-1$
 
   /**
    * The value <code>"http://www.w3.org/2000/10/XMLSchema"</code>.
    */
-  public static final String SCHEMA_FOR_SCHEMA_URI_2000_10 = "http://www.w3.org/2000/10/XMLSchema";
+  public static final String SCHEMA_FOR_SCHEMA_URI_2000_10 = "http://www.w3.org/2000/10/XMLSchema"; //$NON-NLS-1$
 
   /**
    * The value <code>"http://www.w3.org/2001/XMLSchema"</code>.
    */
-  public static final String SCHEMA_FOR_SCHEMA_URI_2001 = "http://www.w3.org/2001/XMLSchema";
+  public static final String SCHEMA_FOR_SCHEMA_URI_2001 = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
 
   private static final String[] ELEMENT_TAGS = new String []{
     BINDING_ELEMENT_TAG,

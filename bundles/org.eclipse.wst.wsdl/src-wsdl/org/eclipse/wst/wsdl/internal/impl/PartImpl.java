@@ -12,8 +12,7 @@ package org.eclipse.wst.wsdl.internal.impl;
 
 
 import java.util.HashMap;
-import java.util.Iterator; 
-// import javax.wsdl.WSDLException;
+import java.util.Iterator; // import javax.wsdl.WSDLException;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -583,11 +582,11 @@ public class PartImpl extends WSDLElementImpl implements Part
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
+    result.append(" (name: "); //$NON-NLS-1$
     result.append(name);
-    result.append(", elementName: ");
+    result.append(", elementName: "); //$NON-NLS-1$
     result.append(elementName);
-    result.append(", typeName: ");
+    result.append(", typeName: "); //$NON-NLS-1$
     result.append(typeName);
     result.append(')');
     return result.toString();

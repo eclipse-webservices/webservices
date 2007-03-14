@@ -381,9 +381,9 @@ public class MessageImpl extends WSDLElementImpl implements Message
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (qName: ");
+    result.append(" (qName: "); //$NON-NLS-1$
     result.append(qName);
-    result.append(", undefined: ");
+    result.append(", undefined: "); //$NON-NLS-1$
     result.append(undefined);
     result.append(')');
     return result.toString();

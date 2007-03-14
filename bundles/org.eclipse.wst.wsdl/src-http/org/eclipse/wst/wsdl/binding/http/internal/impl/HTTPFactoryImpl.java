@@ -16,13 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
-import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
-import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
-import org.eclipse.wst.wsdl.binding.http.HTTPOperation;
-import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
-import org.eclipse.wst.wsdl.binding.http.HTTPUrlEncoded;
-import org.eclipse.wst.wsdl.binding.http.HTTPUrlReplacement;
+import org.eclipse.wst.wsdl.binding.http.*;
 
 
 /**
@@ -43,7 +37,7 @@ public class HTTPFactoryImpl extends EFactoryImpl implements HTTPFactory
   {
     try
     {
-      HTTPFactory theHTTPFactory = (HTTPFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/HTTP");
+      HTTPFactory theHTTPFactory = (HTTPFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/wsdl/2003/HTTP"); //$NON-NLS-1$ 
       if (theHTTPFactory != null)
       {
         return theHTTPFactory;
@@ -87,7 +81,7 @@ public class HTTPFactoryImpl extends EFactoryImpl implements HTTPFactory
       case HTTPPackage.HTTP_ADDRESS:
       return createHTTPAddress();
       default:
-      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 

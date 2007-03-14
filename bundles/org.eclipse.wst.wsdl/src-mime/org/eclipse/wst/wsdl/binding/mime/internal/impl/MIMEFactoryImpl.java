@@ -19,12 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
-import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
-import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
-import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
-import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
-import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
+import org.eclipse.wst.wsdl.binding.mime.*;
 
 
 /**
@@ -45,7 +40,7 @@ public class MIMEFactoryImpl extends EFactoryImpl implements MIMEFactory
   {
     try
     {
-      MIMEFactory theMIMEFactory = (MIMEFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/MIME");
+      MIMEFactory theMIMEFactory = (MIMEFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/wsdl/2003/MIME"); //$NON-NLS-1$ 
       if (theMIMEFactory != null)
       {
         return theMIMEFactory;
@@ -87,7 +82,7 @@ public class MIMEFactoryImpl extends EFactoryImpl implements MIMEFactory
       case MIMEPackage.MIME_MIME_XML:
       return createMIMEMimeXml();
       default:
-      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -103,7 +98,7 @@ public class MIMEFactoryImpl extends EFactoryImpl implements MIMEFactory
       case MIMEPackage.LIST:
       return createListFromString(eDataType, initialValue);
       default:
-      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -119,7 +114,7 @@ public class MIMEFactoryImpl extends EFactoryImpl implements MIMEFactory
       case MIMEPackage.LIST:
       return convertListToString(eDataType, instanceValue);
       default:
-      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 

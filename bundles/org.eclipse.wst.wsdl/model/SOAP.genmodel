@@ -4,7 +4,8 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.wsdl/src-soap"
     editDirectory="/org.eclipse.wst.wsdl/src" editorDirectory="/org.eclipse.wst.wsdl/src"
     modelPluginID="org.eclipse.wst.wsdl" modelName="SOAP" editPluginClass="" editorPluginClass=""
-    codeFormatting="true" importerID="org.eclipse.emf.importer.rose" usedGenPackages="WSDL.genmodel#//wsdl platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
+    nonNLSMarkers="true" codeFormatting="true" importerID="org.eclipse.emf.importer.rose"
+    usedGenPackages="WSDL.genmodel#//wsdl platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
   <foreignModel>SOAP.mdl</foreignModel>
   <foreignModel>VABASE_PLUGINS_PATH</foreignModel>
   <foreignModel>../../..</foreignModel>

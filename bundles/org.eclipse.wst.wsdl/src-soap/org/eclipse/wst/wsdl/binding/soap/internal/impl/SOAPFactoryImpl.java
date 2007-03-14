@@ -17,16 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
-import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
-import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
-import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
-import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
-import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
-import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase;
-import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
-import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
-import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
+import org.eclipse.wst.wsdl.binding.soap.*;
 
 
 /**
@@ -47,7 +38,7 @@ public class SOAPFactoryImpl extends EFactoryImpl implements SOAPFactory
   {
     try
     {
-      SOAPFactory theSOAPFactory = (SOAPFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.ibm.com/wsdl/2003/SOAP");
+      SOAPFactory theSOAPFactory = (SOAPFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/wsdl/2003/SOAP"); //$NON-NLS-1$ 
       if (theSOAPFactory != null)
       {
         return theSOAPFactory;
@@ -97,7 +88,7 @@ public class SOAPFactoryImpl extends EFactoryImpl implements SOAPFactory
       case SOAPPackage.SOAP_HEADER:
       return createSOAPHeader();
       default:
-      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -113,7 +104,7 @@ public class SOAPFactoryImpl extends EFactoryImpl implements SOAPFactory
       case SOAPPackage.ISTRING:
       return createIStringFromString(eDataType, initialValue);
       default:
-      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -129,7 +120,7 @@ public class SOAPFactoryImpl extends EFactoryImpl implements SOAPFactory
       case SOAPPackage.ISTRING:
       return convertIStringToString(eDataType, instanceValue);
       default:
-      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 

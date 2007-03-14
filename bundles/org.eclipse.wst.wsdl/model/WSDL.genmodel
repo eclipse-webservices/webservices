@@ -4,7 +4,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.wsdl/src-wsdl"
     editDirectory="/org.eclipse.wst.wsdl.edit/src" editorDirectory="org.eclipse.wst.wsdl.editor/src"
     modelPluginID="org.eclipse.wst.wsdl" modelName="WSDL" modelPluginClass="" editPluginClass=""
-    editorPluginClass="" codeFormatting="true" importerID="org.eclipse.emf.importer.rose"
+    editorPluginClass="" nonNLSMarkers="true" codeFormatting="true" importerID="org.eclipse.emf.importer.rose"
     usedGenPackages="platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
   <foreignModel>WSDL.mdl</foreignModel>
   <foreignModel>VABASE_PLUGINS_PATH</foreignModel>

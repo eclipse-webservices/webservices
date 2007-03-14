@@ -808,11 +808,11 @@ return opType;
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (style: ");
+    result.append(" (style: "); //$NON-NLS-1$
     result.append(style);
-    result.append(", name: ");
+    result.append(", name: "); //$NON-NLS-1$
     result.append(name);
-    result.append(", undefined: ");
+    result.append(", undefined: "); //$NON-NLS-1$
     result.append(undefined);
     result.append(')');
     return result.toString();

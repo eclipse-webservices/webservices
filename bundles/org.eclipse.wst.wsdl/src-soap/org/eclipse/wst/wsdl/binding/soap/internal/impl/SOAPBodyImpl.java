@@ -384,11 +384,11 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (use: ");
+    result.append(" (use: "); //$NON-NLS-1$
     result.append(use);
-    result.append(", namespaceURI: ");
+    result.append(", namespaceURI: "); //$NON-NLS-1$
     result.append(namespaceURI);
-    result.append(", eEncodingStyles: ");
+    result.append(", eEncodingStyles: "); //$NON-NLS-1$
     result.append(eEncodingStyles);
     result.append(')');
     return result.toString();
@@ -413,7 +413,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
     {
       getEncodingStyles().clear();
     }
-   
+
     reconcileReferences(false);
   }
 

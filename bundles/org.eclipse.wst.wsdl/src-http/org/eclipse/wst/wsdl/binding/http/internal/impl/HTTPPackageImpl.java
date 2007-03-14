@@ -406,109 +406,55 @@ public class HTTPPackageImpl extends EPackageImpl implements HTTPPackage
     httpAddressEClass.getESuperTypes().add(this.getIHTTPAddress());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(httpBindingEClass, HTTPBinding.class, "HTTPBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(httpBindingEClass, HTTPBinding.class, "HTTPBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getHTTPBinding_Verb(),
       ecorePackage.getEString(),
-      "verb",
-      null,
-      0,
-      1,
-      HTTPBinding.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "verb", null, 0, 1, HTTPBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(httpOperationEClass, HTTPOperation.class, "HTTPOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(httpOperationEClass, HTTPOperation.class, "HTTPOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getHTTPOperation_LocationURI(),
       ecorePackage.getEString(),
-      "locationURI",
-      null,
-      0,
-      1,
-      HTTPOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "locationURI", null, 0, 1, HTTPOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
     initEClass(
       httpUrlReplacementEClass,
       HTTPUrlReplacement.class,
-      "HTTPUrlReplacement",
-      !IS_ABSTRACT,
-      !IS_INTERFACE,
-      IS_GENERATED_INSTANCE_CLASS);
+      "HTTPUrlReplacement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(httpUrlEncodedEClass, HTTPUrlEncoded.class, "HTTPUrlEncoded", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(httpUrlEncodedEClass, HTTPUrlEncoded.class, "HTTPUrlEncoded", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(httpAddressEClass, HTTPAddress.class, "HTTPAddress", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(httpAddressEClass, HTTPAddress.class, "HTTPAddress", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getHTTPAddress_LocationURI(),
       ecorePackage.getEString(),
-      "locationURI",
-      null,
-      0,
-      1,
-      HTTPAddress.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "locationURI", null, 0, 1, HTTPAddress.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
     initEClass(
       ihttpAddressEClass,
       javax.wsdl.extensions.http.HTTPAddress.class,
-      "IHTTPAddress",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IHTTPAddress", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       ihttpBindingEClass,
       javax.wsdl.extensions.http.HTTPBinding.class,
-      "IHTTPBinding",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IHTTPBinding", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       ihttpOperationEClass,
       javax.wsdl.extensions.http.HTTPOperation.class,
-      "IHTTPOperation",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IHTTPOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       ihttpUrlEncodedEClass,
       javax.wsdl.extensions.http.HTTPUrlEncoded.class,
-      "IHTTPUrlEncoded",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IHTTPUrlEncoded", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       ihttpUrlReplacementEClass,
       javax.wsdl.extensions.http.HTTPUrlReplacement.class,
-      "IHTTPUrlReplacement",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IHTTPUrlReplacement", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     // Create resource
     createResource(eNS_URI);

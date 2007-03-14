@@ -18,11 +18,7 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
-import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
-import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
-import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
-import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
+import org.eclipse.wst.wsdl.binding.mime.*;
 
 
 /**

@@ -182,7 +182,7 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (verb: ");
+    result.append(" (verb: "); //$NON-NLS-1$
     result.append(verb);
     result.append(')');
     return result.toString();

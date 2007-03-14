@@ -236,9 +236,9 @@ public class SOAPOperationImpl extends ExtensibilityElementImpl implements SOAPO
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (soapActionURI: ");
+    result.append(" (soapActionURI: "); //$NON-NLS-1$
     result.append(soapActionURI);
-    result.append(", style: ");
+    result.append(", style: "); //$NON-NLS-1$
     result.append(style);
     result.append(')');
     return result.toString();

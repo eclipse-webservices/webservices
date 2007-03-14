@@ -182,7 +182,7 @@ public class HTTPOperationImpl extends ExtensibilityElementImpl implements HTTPO
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (locationURI: ");
+    result.append(" (locationURI: "); //$NON-NLS-1$
     result.append(locationURI);
     result.append(')');
     return result.toString();

@@ -18,15 +18,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
-import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
-import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
-import org.eclipse.wst.wsdl.binding.soap.SOAPFault;
-import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
-import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase;
-import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
-import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
-import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
+import org.eclipse.wst.wsdl.binding.soap.*;
 
 
 /**

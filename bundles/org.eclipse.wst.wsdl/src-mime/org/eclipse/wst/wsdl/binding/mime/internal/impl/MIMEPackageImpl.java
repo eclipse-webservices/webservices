@@ -401,144 +401,78 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
     mimeMimeXmlEClass.getESuperTypes().add(this.getIMIMEMimeXml());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(mimeContentEClass, MIMEContent.class, "MIMEContent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(mimeContentEClass, MIMEContent.class, "MIMEContent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getMIMEContent_Type(),
       ecorePackage.getEString(),
-      "type",
-      null,
-      0,
-      1,
-      MIMEContent.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "type", null, 0, 1, MIMEContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getMIMEContent_EPart(),
       theWSDLPackage.getPart(),
       null,
-      "ePart",
-      null,
-      0,
-      1,
-      MIMEContent.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "ePart", null, 0, 1, MIMEContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    EOperation op = addEOperation(mimeContentEClass, null, "setPart");
-    addEParameter(op, ecorePackage.getEString(), "part", 0, 1);
+    EOperation op = addEOperation(mimeContentEClass, null, "setPart"); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "part", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimeContentEClass, ecorePackage.getEString(), "getPart", 0, 1);
+    op = addEOperation(mimeContentEClass, ecorePackage.getEString(), "getPart", 0, 1); //$NON-NLS-1$
 
-    initEClass(mimePartEClass, MIMEPart.class, "MIMEPart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(mimePartEClass, MIMEPart.class, "MIMEPart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(mimePartEClass, null, "addExtensibilityElement");
-    addEParameter(op, theWSDLPackage.getIExtensibilityElement(), "extensibilityElement", 0, 1);
+    op = addEOperation(mimePartEClass, null, "addExtensibilityElement"); //$NON-NLS-1$
+    addEParameter(op, theWSDLPackage.getIExtensibilityElement(), "extensibilityElement", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimePartEClass, this.getList(), "getExtensibilityElements", 0, 1);
+    op = addEOperation(mimePartEClass, this.getList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
 
     initEClass(
       mimeMultipartRelatedEClass,
       MIMEMultipartRelated.class,
-      "MIMEMultipartRelated",
-      !IS_ABSTRACT,
-      !IS_INTERFACE,
-      IS_GENERATED_INSTANCE_CLASS);
+      "MIMEMultipartRelated", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEReference(
       getMIMEMultipartRelated_EMIMEPart(),
       this.getMIMEPart(),
       null,
-      "eMIMEPart",
-      null,
-      0,
-      -1,
-      MIMEMultipartRelated.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eMIMEPart", null, 0, -1, MIMEMultipartRelated.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(mimeMultipartRelatedEClass, null, "addMIMEPart");
-    addEParameter(op, this.getIMIMEPart(), "mimePart", 0, 1);
+    op = addEOperation(mimeMultipartRelatedEClass, null, "addMIMEPart"); //$NON-NLS-1$
+    addEParameter(op, this.getIMIMEPart(), "mimePart", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimeMultipartRelatedEClass, this.getList(), "getMIMEParts", 0, 1);
+    op = addEOperation(mimeMultipartRelatedEClass, this.getList(), "getMIMEParts", 0, 1); //$NON-NLS-1$
 
-    initEClass(mimeMimeXmlEClass, MIMEMimeXml.class, "MIMEMimeXml", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(mimeMimeXmlEClass, MIMEMimeXml.class, "MIMEMimeXml", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEReference(
       getMIMEMimeXml_EPart(),
       theWSDLPackage.getPart(),
       null,
-      "ePart",
-      null,
-      0,
-      1,
-      MIMEMimeXml.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "ePart", null, 0, 1, MIMEMimeXml.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(mimeMimeXmlEClass, null, "setPart");
-    addEParameter(op, ecorePackage.getEString(), "part", 0, 1);
+    op = addEOperation(mimeMimeXmlEClass, null, "setPart"); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "part", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimeMimeXmlEClass, ecorePackage.getEString(), "getPart", 0, 1);
+    op = addEOperation(mimeMimeXmlEClass, ecorePackage.getEString(), "getPart", 0, 1); //$NON-NLS-1$
 
     initEClass(
       imimePartEClass,
       javax.wsdl.extensions.mime.MIMEPart.class,
-      "IMIMEPart",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IMIMEPart", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       imimeMultipartRelatedEClass,
       javax.wsdl.extensions.mime.MIMEMultipartRelated.class,
-      "IMIMEMultipartRelated",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IMIMEMultipartRelated", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       imimeContentEClass,
       javax.wsdl.extensions.mime.MIMEContent.class,
-      "IMIMEContent",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IMIMEContent", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       imimeMimeXmlEClass,
       javax.wsdl.extensions.mime.MIMEMimeXml.class,
-      "IMIMEMimeXml",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IMIMEMimeXml", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     // Initialize data types
-    initEDataType(listEDataType, List.class, "List", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+    initEDataType(listEDataType, List.class, "List", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     // Create resource
     createResource(eNS_URI);

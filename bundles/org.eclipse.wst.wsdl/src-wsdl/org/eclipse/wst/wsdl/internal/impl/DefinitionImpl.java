@@ -198,16 +198,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected String encoding = ENCODING_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getENamespaces() <em>ENamespaces</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getENamespaces()
-   * @generated
-   * @ordered
-   */
-  protected EList eNamespaces = null;
-
-  /**
    * The cached value of the '{@link #getEImports() <em>EImports</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -266,6 +256,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @ordered
    */
   protected EList eServices = null;
+
+  /**
+   * The cached value of the '{@link #getENamespaces() <em>ENamespaces</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getENamespaces()
+   * @generated
+   * @ordered
+   */
+  protected EList eNamespaces = null;
 
   private ExtensionRegistry extensionRegistry;
 
@@ -1431,13 +1431,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (targetNamespace: ");
+    result.append(" (targetNamespace: "); //$NON-NLS-1$
     result.append(targetNamespace);
-    result.append(", location: ");
+    result.append(", location: "); //$NON-NLS-1$
     result.append(location);
-    result.append(", qName: ");
+    result.append(", qName: "); //$NON-NLS-1$
     result.append(qName);
-    result.append(", encoding: ");
+    result.append(", encoding: "); //$NON-NLS-1$
     result.append(encoding);
     result.append(')');
     return result.toString();

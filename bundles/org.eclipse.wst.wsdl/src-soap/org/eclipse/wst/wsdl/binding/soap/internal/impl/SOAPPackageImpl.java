@@ -730,444 +730,167 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
     soapHeaderEClass.getESuperTypes().add(this.getISOAPHeader());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(soapBindingEClass, SOAPBinding.class, "SOAPBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapBindingEClass, SOAPBinding.class, "SOAPBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getSOAPBinding_TransportURI(),
       ecorePackage.getEString(),
-      "transportURI",
-      null,
-      0,
-      1,
-      SOAPBinding.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "transportURI", null, 0, 1, SOAPBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPBinding_Style(),
       ecorePackage.getEString(),
-      "style",
-      null,
-      0,
-      1,
-      SOAPBinding.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "style", null, 0, 1, SOAPBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(soapBodyEClass, SOAPBody.class, "SOAPBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapBodyEClass, SOAPBody.class, "SOAPBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getSOAPBody_Use(),
       ecorePackage.getEString(),
-      "use",
-      null,
-      0,
-      1,
-      SOAPBody.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "use", null, 0, 1, SOAPBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPBody_NamespaceURI(),
       ecorePackage.getEString(),
-      "namespaceURI",
-      null,
-      0,
-      1,
-      SOAPBody.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "namespaceURI", null, 0, 1, SOAPBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPBody_EEncodingStyles(),
       this.getIString(),
-      "eEncodingStyles",
-      null,
-      0,
-      -1,
-      SOAPBody.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eEncodingStyles", null, 0, -1, SOAPBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getSOAPBody_EParts(),
       theWSDLPackage.getPart(),
       null,
-      "eParts",
-      null,
-      0,
-      -1,
-      SOAPBody.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eParts", null, 0, -1, SOAPBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(soapHeaderBaseEClass, SOAPHeaderBase.class, "SOAPHeaderBase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapHeaderBaseEClass, SOAPHeaderBase.class, "SOAPHeaderBase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getSOAPHeaderBase_Use(),
       ecorePackage.getEString(),
-      "use",
-      null,
-      0,
-      1,
-      SOAPHeaderBase.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "use", null, 0, 1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPHeaderBase_NamespaceURI(),
       ecorePackage.getEString(),
-      "namespaceURI",
-      null,
-      0,
-      1,
-      SOAPHeaderBase.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "namespaceURI", null, 0, 1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPHeaderBase_EEncodingStyles(),
       this.getIString(),
-      "eEncodingStyles",
-      null,
-      0,
-      -1,
-      SOAPHeaderBase.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eEncodingStyles", null, 0, -1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPHeaderBase_Message(),
       theWSDLPackage.getQName(),
-      "message",
-      null,
-      0,
-      1,
-      SOAPHeaderBase.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "message", null, 0, 1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPHeaderBase_Part(),
       ecorePackage.getEString(),
-      "part",
-      null,
-      0,
-      1,
-      SOAPHeaderBase.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "part", null, 0, 1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getSOAPHeaderBase_EMessage(),
       theWSDLPackage.getMessage(),
       null,
-      "eMessage",
-      null,
-      1,
-      1,
-      SOAPHeaderBase.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eMessage", null, 1, 1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getSOAPHeaderBase_EPart(),
       theWSDLPackage.getPart(),
       null,
-      "ePart",
-      null,
-      1,
-      1,
-      SOAPHeaderBase.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "ePart", null, 1, 1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    EOperation op = addEOperation(soapHeaderBaseEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1);
+    EOperation op = addEOperation(soapHeaderBaseEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(soapHeaderBaseEClass, null, "setEncodingStyles");
-    addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1);
+    op = addEOperation(soapHeaderBaseEClass, null, "setEncodingStyles"); //$NON-NLS-1$
+    addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1); //$NON-NLS-1$
 
-    initEClass(soapFaultEClass, SOAPFault.class, "SOAPFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapFaultEClass, SOAPFault.class, "SOAPFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getSOAPFault_Use(),
       ecorePackage.getEString(),
-      "use",
-      null,
-      0,
-      1,
-      SOAPFault.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "use", null, 0, 1, SOAPFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPFault_NamespaceURI(),
       ecorePackage.getEString(),
-      "namespaceURI",
-      null,
-      0,
-      1,
-      SOAPFault.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "namespaceURI", null, 0, 1, SOAPFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPFault_EEncodingStyles(),
       this.getIString(),
-      "eEncodingStyles",
-      null,
-      0,
-      -1,
-      SOAPFault.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eEncodingStyles", null, 0, -1, SOAPFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPFault_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      SOAPFault.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, SOAPFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(soapOperationEClass, SOAPOperation.class, "SOAPOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapOperationEClass, SOAPOperation.class, "SOAPOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getSOAPOperation_SoapActionURI(),
       ecorePackage.getEString(),
-      "soapActionURI",
-      null,
-      0,
-      1,
-      SOAPOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "soapActionURI", null, 0, 1, SOAPOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getSOAPOperation_Style(),
       ecorePackage.getEString(),
-      "style",
-      null,
-      0,
-      1,
-      SOAPOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "style", null, 0, 1, SOAPOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(soapAddressEClass, SOAPAddress.class, "SOAPAddress", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapAddressEClass, SOAPAddress.class, "SOAPAddress", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getSOAPAddress_LocationURI(),
       ecorePackage.getEString(),
-      "locationURI",
-      null,
-      0,
-      1,
-      SOAPAddress.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "locationURI", null, 0, 1, SOAPAddress.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(soapHeaderFaultEClass, SOAPHeaderFault.class, "SOAPHeaderFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapHeaderFaultEClass, SOAPHeaderFault.class, "SOAPHeaderFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(soapHeaderEClass, SOAPHeader.class, "SOAPHeader", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(soapHeaderEClass, SOAPHeader.class, "SOAPHeader", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEReference(
       getSOAPHeader_HeaderFaults(),
       this.getSOAPHeaderFault(),
       null,
-      "headerFaults",
-      null,
-      0,
-      -1,
-      SOAPHeader.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "headerFaults", null, 0, -1, SOAPHeader.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
     initEClass(
       isoapBindingEClass,
       javax.wsdl.extensions.soap.SOAPBinding.class,
-      "ISOAPBinding",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "ISOAPBinding", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       isoapAddressEClass,
       javax.wsdl.extensions.soap.SOAPAddress.class,
-      "ISOAPAddress",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "ISOAPAddress", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       isoapBodyEClass,
       javax.wsdl.extensions.soap.SOAPBody.class,
-      "ISOAPBody",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "ISOAPBody", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1);
+    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(isoapBodyEClass, null, "setEncodingStyles");
-    addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1);
+    op = addEOperation(isoapBodyEClass, null, "setEncodingStyles"); //$NON-NLS-1$
+    addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getParts", 0, 1);
+    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getParts", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(isoapBodyEClass, null, "setParts");
-    addEParameter(op, theWSDLPackage.getIList(), "parts", 0, 1);
+    op = addEOperation(isoapBodyEClass, null, "setParts"); //$NON-NLS-1$
+    addEParameter(op, theWSDLPackage.getIList(), "parts", 0, 1); //$NON-NLS-1$
 
     initEClass(
       isoapFaultEClass,
       javax.wsdl.extensions.soap.SOAPFault.class,
-      "ISOAPFault",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "ISOAPFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       isoapOperationEClass,
       javax.wsdl.extensions.soap.SOAPOperation.class,
-      "ISOAPOperation",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "ISOAPOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       isoapHeaderFaultEClass,
       javax.wsdl.extensions.soap.SOAPHeaderFault.class,
-      "ISOAPHeaderFault",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "ISOAPHeaderFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       isoapHeaderEClass,
       javax.wsdl.extensions.soap.SOAPHeader.class,
-      "ISOAPHeader",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "ISOAPHeader", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(isoapHeaderEClass, theWSDLPackage.getIList(), "getSOAPHeaderFaults", 0, 1);
+    op = addEOperation(isoapHeaderEClass, theWSDLPackage.getIList(), "getSOAPHeaderFaults", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(isoapHeaderEClass, null, "addSOAPHeaderFault");
-    addEParameter(op, this.getISOAPHeaderFault(), "soapHeaderFault", 0, 1);
+    op = addEOperation(isoapHeaderEClass, null, "addSOAPHeaderFault"); //$NON-NLS-1$
+    addEParameter(op, this.getISOAPHeaderFault(), "soapHeaderFault", 0, 1); //$NON-NLS-1$
 
     // Initialize data types
-    initEDataType(iStringEDataType, String.class, "IString", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+    initEDataType(iStringEDataType, String.class, "IString", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     // Create resource
     createResource(eNS_URI);

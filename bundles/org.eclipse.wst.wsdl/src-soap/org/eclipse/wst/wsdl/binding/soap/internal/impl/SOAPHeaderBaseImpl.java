@@ -538,15 +538,15 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (use: ");
+    result.append(" (use: "); //$NON-NLS-1$
     result.append(use);
-    result.append(", namespaceURI: ");
+    result.append(", namespaceURI: "); //$NON-NLS-1$
     result.append(namespaceURI);
-    result.append(", eEncodingStyles: ");
+    result.append(", eEncodingStyles: "); //$NON-NLS-1$
     result.append(eEncodingStyles);
-    result.append(", message: ");
+    result.append(", message: "); //$NON-NLS-1$
     result.append(message);
-    result.append(", part: ");
+    result.append(", part: "); //$NON-NLS-1$
     result.append(part);
     result.append(')');
     return result.toString();

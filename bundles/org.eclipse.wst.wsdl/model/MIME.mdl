@@ -61,7 +61,7 @@
 		    (object Attribute
 			tool       	"Ecore"
 			name       	"nsURI"
-			value      	"http://www.ibm.com/wsdl/2003/MIME")
+			value      	"http://www.eclipse.org/wsdl/2003/MIME")
 		    (object Attribute
 			tool       	"Ecore"
 			name       	"basePackage"

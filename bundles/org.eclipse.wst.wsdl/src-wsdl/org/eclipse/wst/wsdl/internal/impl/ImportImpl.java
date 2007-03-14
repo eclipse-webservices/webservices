@@ -401,9 +401,9 @@ public class ImportImpl extends WSDLElementImpl implements Import
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (namespaceURI: ");
+    result.append(" (namespaceURI: "); //$NON-NLS-1$
     result.append(namespaceURI);
-    result.append(", locationURI: ");
+    result.append(", locationURI: "); //$NON-NLS-1$
     result.append(locationURI);
     result.append(')');
     return result.toString();

@@ -224,9 +224,9 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (URI: ");
+    result.append(" (URI: "); //$NON-NLS-1$
     result.append(uri);
-    result.append(", prefix: ");
+    result.append(", prefix: "); //$NON-NLS-1$
     result.append(prefix);
     result.append(')');
     return result.toString();

@@ -244,9 +244,9 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (required: ");
+    result.append(" (required: "); //$NON-NLS-1$
     result.append(required);
-    result.append(", elementType: ");
+    result.append(", elementType: "); //$NON-NLS-1$
     result.append(elementType);
     result.append(')');
     return result.toString();

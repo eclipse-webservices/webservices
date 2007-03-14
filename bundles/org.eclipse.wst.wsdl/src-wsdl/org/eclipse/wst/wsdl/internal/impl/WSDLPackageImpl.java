@@ -1948,1531 +1948,694 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     messageReferenceEClass.getESuperTypes().add(this.getWSDLElement());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(wsdlElementEClass, WSDLElement.class, "WSDLElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(wsdlElementEClass, WSDLElement.class, "WSDLElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getWSDLElement_DocumentationElement(),
       this.getDOMElement(),
-      "documentationElement",
-      null,
-      0,
-      1,
-      WSDLElement.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "documentationElement", null, 0, 1, WSDLElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getWSDLElement_Element(),
       this.getDOMElement(),
-      "element",
-      null,
-      0,
-      1,
-      WSDLElement.class,
-      IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "element", null, 0, 1, WSDLElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    EOperation op = addEOperation(wsdlElementEClass, this.getDefinition(), "getEnclosingDefinition", 0, 1);
+    EOperation op = addEOperation(wsdlElementEClass, this.getDefinition(), "getEnclosingDefinition", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(wsdlElementEClass, null, "setEnclosingDefinition");
-    addEParameter(op, this.getDefinition(), "definition", 0, 1);
+    op = addEOperation(wsdlElementEClass, null, "setEnclosingDefinition"); //$NON-NLS-1$
+    addEParameter(op, this.getDefinition(), "definition", 0, 1); //$NON-NLS-1$
 
-    initEClass(portTypeEClass, PortType.class, "PortType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(portTypeEClass, PortType.class, "PortType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getPortType_QName(),
       this.getQName(),
-      "qName",
-      null,
-      0,
-      1,
-      PortType.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "qName", null, 0, 1, PortType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getPortType_Undefined(),
       ecorePackage.getEBoolean(),
-      "undefined",
-      null,
-      0,
-      1,
-      PortType.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "undefined", null, 0, 1, PortType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getPortType_EOperations(),
       this.getOperation(),
       null,
-      "eOperations",
-      null,
-      0,
-      -1,
-      PortType.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eOperations", null, 0, -1, PortType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(operationEClass, Operation.class, "Operation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(operationEClass, Operation.class, "Operation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getOperation_Style(),
       this.getOperationType(),
-      "style",
-      null,
-      0,
-      1,
-      Operation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "style", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getOperation_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      Operation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getOperation_Undefined(),
       ecorePackage.getEBoolean(),
-      "undefined",
-      null,
-      0,
-      1,
-      Operation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "undefined", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getOperation_EInput(),
       this.getInput(),
       null,
-      "eInput",
-      null,
-      0,
-      1,
-      Operation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eInput", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getOperation_EOutput(),
       this.getOutput(),
       null,
-      "eOutput",
-      null,
-      0,
-      1,
-      Operation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eOutput", null, 0, 1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getOperation_EFaults(),
       this.getFault(),
       null,
-      "eFaults",
-      null,
-      0,
-      -1,
-      Operation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eFaults", null, 0, -1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getOperation_EParameterOrdering(),
       this.getPart(),
       null,
-      "eParameterOrdering",
-      null,
-      0,
-      -1,
-      Operation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eParameterOrdering", null, 0, -1, Operation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(messageEClass, Message.class, "Message", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(messageEClass, Message.class, "Message", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getMessage_QName(),
       this.getQName(),
-      "qName",
-      null,
-      0,
-      1,
-      Message.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "qName", null, 0, 1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getMessage_Undefined(),
       ecorePackage.getEBoolean(),
-      "undefined",
-      null,
-      0,
-      1,
-      Message.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "undefined", null, 0, 1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getMessage_EParts(),
       this.getPart(),
       null,
-      "eParts",
-      null,
-      0,
-      -1,
-      Message.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eParts", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(partEClass, Part.class, "Part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(partEClass, Part.class, "Part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getPart_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      Part.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getPart_ElementName(),
       this.getQName(),
-      "elementName",
-      null,
-      0,
-      1,
-      Part.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "elementName", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getPart_TypeName(),
       this.getQName(),
-      "typeName",
-      null,
-      0,
-      1,
-      Part.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "typeName", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getPart_TypeDefinition(),
       theXSDPackage.getXSDTypeDefinition(),
       null,
-      "typeDefinition",
-      null,
-      0,
-      1,
-      Part.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "typeDefinition", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getPart_ElementDeclaration(),
       theXSDPackage.getXSDElementDeclaration(),
       null,
-      "elementDeclaration",
-      null,
-      0,
-      1,
-      Part.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "elementDeclaration", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getPart_EMessage(),
       this.getMessage(),
       null,
-      "eMessage",
-      null,
-      0,
-      1,
-      Part.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eMessage", null, 0, 1, Part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(bindingEClass, Binding.class, "Binding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(bindingEClass, Binding.class, "Binding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getBinding_QName(),
       this.getQName(),
-      "qName",
-      null,
-      0,
-      1,
-      Binding.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "qName", null, 0, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getBinding_Undefined(),
       ecorePackage.getEBoolean(),
-      "undefined",
-      null,
-      0,
-      1,
-      Binding.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "undefined", null, 0, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBinding_EPortType(),
       this.getPortType(),
       null,
-      "ePortType",
-      null,
-      1,
-      1,
-      Binding.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "ePortType", null, 1, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBinding_EBindingOperations(),
       this.getBindingOperation(),
       null,
-      "eBindingOperations",
-      null,
-      0,
-      -1,
-      Binding.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eBindingOperations", null, 0, -1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(bindingOperationEClass, BindingOperation.class, "BindingOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(bindingOperationEClass, BindingOperation.class, "BindingOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getBindingOperation_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      BindingOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBindingOperation_EOperation(),
       this.getOperation(),
       null,
-      "eOperation",
-      null,
-      1,
-      1,
-      BindingOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eOperation", null, 1, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBindingOperation_EBindingInput(),
       this.getBindingInput(),
       null,
-      "eBindingInput",
-      null,
-      0,
-      1,
-      BindingOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eBindingInput", null, 0, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBindingOperation_EBindingOutput(),
       this.getBindingOutput(),
       null,
-      "eBindingOutput",
-      null,
-      0,
-      1,
-      BindingOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eBindingOutput", null, 0, 1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBindingOperation_EBindingFaults(),
       this.getBindingFault(),
       null,
-      "eBindingFaults",
-      null,
-      0,
-      -1,
-      BindingOperation.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eBindingFaults", null, 0, -1, BindingOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(serviceEClass, Service.class, "Service", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(serviceEClass, Service.class, "Service", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getService_QName(),
       this.getQName(),
-      "qName",
-      null,
-      0,
-      1,
-      Service.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "qName", null, 0, 1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getService_Undefined(),
       ecorePackage.getEBoolean(),
-      "undefined",
-      null,
-      0,
-      1,
-      Service.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "undefined", null, 0, 1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getService_EPorts(),
       this.getPort(),
       null,
-      "ePorts",
-      null,
-      0,
-      -1,
-      Service.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "ePorts", null, 0, -1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(portEClass, Port.class, "Port", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(portEClass, Port.class, "Port", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getPort_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      Port.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getPort_EBinding(),
       this.getBinding(),
       null,
-      "eBinding",
-      null,
-      1,
-      1,
-      Port.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eBinding", null, 1, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
     initEClass(
       extensibilityElementEClass,
       ExtensibilityElement.class,
-      "ExtensibilityElement",
-      !IS_ABSTRACT,
-      !IS_INTERFACE,
-      IS_GENERATED_INSTANCE_CLASS);
+      "ExtensibilityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getExtensibilityElement_Required(),
       ecorePackage.getEBoolean(),
-      "required",
-      null,
-      0,
-      1,
-      ExtensibilityElement.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "required", null, 0, 1, ExtensibilityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getExtensibilityElement_ElementType(),
       this.getQName(),
-      "elementType",
-      null,
-      0,
-      1,
-      ExtensibilityElement.class,
-      IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "elementType", null, 0, 1, ExtensibilityElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(definitionEClass, Definition.class, "Definition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(definitionEClass, Definition.class, "Definition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getDefinition_TargetNamespace(),
       ecorePackage.getEString(),
-      "targetNamespace",
-      null,
-      0,
-      1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "targetNamespace", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getDefinition_Location(),
       ecorePackage.getEString(),
-      "location",
-      null,
-      0,
-      1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "location", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getDefinition_QName(),
       this.getQName(),
-      "qName",
-      null,
-      0,
-      1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "qName", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getDefinition_Encoding(),
       ecorePackage.getEString(),
-      "encoding",
-      null,
-      0,
-      1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "encoding", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getDefinition_EImports(),
       this.getImport(),
       null,
-      "eImports",
-      null,
-      0,
-      -1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eImports", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getDefinition_ETypes(),
       this.getTypes(),
       null,
-      "eTypes",
-      null,
-      0,
-      1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eTypes", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getDefinition_EMessages(),
       this.getMessage(),
       null,
-      "eMessages",
-      null,
-      0,
-      -1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eMessages", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getDefinition_EPortTypes(),
       this.getPortType(),
       null,
-      "ePortTypes",
-      null,
-      0,
-      -1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "ePortTypes", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getDefinition_EBindings(),
       this.getBinding(),
       null,
-      "eBindings",
-      null,
-      0,
-      -1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eBindings", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getDefinition_EServices(),
       this.getService(),
       null,
-      "eServices",
-      null,
-      0,
-      -1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eServices", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getDefinition_ENamespaces(),
       this.getNamespace(),
       null,
-      "eNamespaces",
-      null,
-      0,
-      -1,
-      Definition.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eNamespaces", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(definitionEClass, this.getDOMDocument(), "getDocument", 0, 1);
+    op = addEOperation(definitionEClass, this.getDOMDocument(), "getDocument", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(definitionEClass, null, "setDocument");
-    addEParameter(op, this.getDOMDocument(), "document", 0, 1);
+    op = addEOperation(definitionEClass, null, "setDocument"); //$NON-NLS-1$
+    addEParameter(op, this.getDOMDocument(), "document", 0, 1); //$NON-NLS-1$
 
-    initEClass(importEClass, Import.class, "Import", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(importEClass, Import.class, "Import", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getImport_NamespaceURI(),
       ecorePackage.getEString(),
-      "namespaceURI",
-      null,
-      0,
-      1,
-      Import.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "namespaceURI", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getImport_LocationURI(),
       ecorePackage.getEString(),
-      "locationURI",
-      null,
-      0,
-      1,
-      Import.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "locationURI", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getImport_EDefinition(),
       this.getDefinition(),
       null,
-      "eDefinition",
-      null,
-      0,
-      1,
-      Import.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eDefinition", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getImport_ESchema(),
       theXSDPackage.getXSDSchema(),
       null,
-      "eSchema",
-      null,
-      0,
-      1,
-      Import.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eSchema", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(importEClass, theXSDPackage.getXSDSchema(), "getSchema", 0, 1);
+    op = addEOperation(importEClass, theXSDPackage.getXSDSchema(), "getSchema", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(importEClass, null, "setSchema");
-    addEParameter(op, theXSDPackage.getXSDSchema(), "schema", 0, 1);
+    op = addEOperation(importEClass, null, "setSchema"); //$NON-NLS-1$
+    addEParameter(op, theXSDPackage.getXSDSchema(), "schema", 0, 1); //$NON-NLS-1$
 
     initEClass(
       extensibleElementEClass,
       ExtensibleElement.class,
-      "ExtensibleElement",
-      IS_ABSTRACT,
-      !IS_INTERFACE,
-      IS_GENERATED_INSTANCE_CLASS);
+      "ExtensibleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEReference(
       getExtensibleElement_EExtensibilityElements(),
       this.getExtensibilityElement(),
       null,
-      "eExtensibilityElements",
-      null,
-      0,
-      -1,
-      ExtensibleElement.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eExtensibilityElements", null, 0, -1, ExtensibleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(extensibleElementEClass, this.getIList(), "getExtensibilityElements", 0, 1);
+    op = addEOperation(extensibleElementEClass, this.getIList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(extensibleElementEClass, null, "addExtensibilityElement");
-    addEParameter(op, this.getIExtensibilityElement(), "extElement", 0, 1);
+    op = addEOperation(extensibleElementEClass, null, "addExtensibilityElement"); //$NON-NLS-1$
+    addEParameter(op, this.getIExtensibilityElement(), "extElement", 0, 1); //$NON-NLS-1$
 
-    initEClass(inputEClass, Input.class, "Input", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(inputEClass, Input.class, "Input", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(outputEClass, Output.class, "Output", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(outputEClass, Output.class, "Output", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(faultEClass, Fault.class, "Fault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(faultEClass, Fault.class, "Fault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(bindingInputEClass, BindingInput.class, "BindingInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(bindingInputEClass, BindingInput.class, "BindingInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getBindingInput_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      BindingInput.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, BindingInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBindingInput_EInput(),
       this.getInput(),
       null,
-      "eInput",
-      null,
-      1,
-      1,
-      BindingInput.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eInput", null, 1, 1, BindingInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(bindingInputEClass, this.getIInput(), "getInput", 0, 1);
+    op = addEOperation(bindingInputEClass, this.getIInput(), "getInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(bindingInputEClass, null, "setInput");
-    addEParameter(op, this.getIInput(), "input", 0, 1);
+    op = addEOperation(bindingInputEClass, null, "setInput"); //$NON-NLS-1$
+    addEParameter(op, this.getIInput(), "input", 0, 1); //$NON-NLS-1$
 
-    initEClass(bindingOutputEClass, BindingOutput.class, "BindingOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(bindingOutputEClass, BindingOutput.class, "BindingOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getBindingOutput_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      BindingOutput.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, BindingOutput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBindingOutput_EOutput(),
       this.getOutput(),
       null,
-      "eOutput",
-      null,
-      1,
-      1,
-      BindingOutput.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eOutput", null, 1, 1, BindingOutput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(bindingOutputEClass, this.getIOutput(), "getOutput", 0, 1);
+    op = addEOperation(bindingOutputEClass, this.getIOutput(), "getOutput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(bindingOutputEClass, null, "setOutput");
-    addEParameter(op, this.getIOutput(), "output", 0, 1);
+    op = addEOperation(bindingOutputEClass, null, "setOutput"); //$NON-NLS-1$
+    addEParameter(op, this.getIOutput(), "output", 0, 1); //$NON-NLS-1$
 
-    initEClass(bindingFaultEClass, BindingFault.class, "BindingFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(bindingFaultEClass, BindingFault.class, "BindingFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getBindingFault_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      BindingFault.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, BindingFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getBindingFault_EFault(),
       this.getFault(),
       null,
-      "eFault",
-      null,
-      1,
-      1,
-      BindingFault.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eFault", null, 1, 1, BindingFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(bindingFaultEClass, this.getIFault(), "getFault", 0, 1);
+    op = addEOperation(bindingFaultEClass, this.getIFault(), "getFault", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(bindingFaultEClass, null, "setFault");
-    addEParameter(op, this.getIFault(), "fault", 0, 1);
+    op = addEOperation(bindingFaultEClass, null, "setFault"); //$NON-NLS-1$
+    addEParameter(op, this.getIFault(), "fault", 0, 1); //$NON-NLS-1$
 
-    initEClass(namespaceEClass, Namespace.class, "Namespace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(namespaceEClass, Namespace.class, "Namespace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getNamespace_URI(),
       ecorePackage.getEString(),
-      "URI",
-      null,
-      0,
-      1,
-      Namespace.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "URI", null, 0, 1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEAttribute(
       getNamespace_Prefix(),
       ecorePackage.getEString(),
-      "prefix",
-      null,
-      0,
-      1,
-      Namespace.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "prefix", null, 0, 1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(iPortTypeEClass, javax.wsdl.PortType.class, "IPortType", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iPortTypeEClass, javax.wsdl.PortType.class, "IPortType", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iPortTypeEClass, null, "addOperation");
-    addEParameter(op, this.getIOperation(), "operation", 0, 1);
+    op = addEOperation(iPortTypeEClass, null, "addOperation"); //$NON-NLS-1$
+    addEParameter(op, this.getIOperation(), "operation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iPortTypeEClass, this.getIOperation(), "getOperation", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "inputName", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "outputName", 0, 1);
+    op = addEOperation(iPortTypeEClass, this.getIOperation(), "getOperation", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "inputName", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "outputName", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iPortTypeEClass, this.getIList(), "getOperations", 0, 1);
+    op = addEOperation(iPortTypeEClass, this.getIList(), "getOperations", 0, 1); //$NON-NLS-1$
 
-    initEClass(iOperationEClass, javax.wsdl.Operation.class, "IOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iOperationEClass, javax.wsdl.Operation.class, "IOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, null, "addFault");
-    addEParameter(op, this.getIFault(), "fault", 0, 1);
+    op = addEOperation(iOperationEClass, null, "addFault"); //$NON-NLS-1$
+    addEParameter(op, this.getIFault(), "fault", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIFault(), "getFault", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
+    op = addEOperation(iOperationEClass, this.getIFault(), "getFault", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIMap(), "getFaults", 0, 1);
+    op = addEOperation(iOperationEClass, this.getIMap(), "getFaults", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIList(), "getParameterOrdering", 0, 1);
+    op = addEOperation(iOperationEClass, this.getIList(), "getParameterOrdering", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, null, "setParameterOrdering");
-    addEParameter(op, this.getIList(), "parameterOrder", 0, 1);
+    op = addEOperation(iOperationEClass, null, "setParameterOrdering"); //$NON-NLS-1$
+    addEParameter(op, this.getIList(), "parameterOrder", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIInput(), "getInput", 0, 1);
+    op = addEOperation(iOperationEClass, this.getIInput(), "getInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, null, "setInput");
-    addEParameter(op, this.getIInput(), "input", 0, 1);
+    op = addEOperation(iOperationEClass, null, "setInput"); //$NON-NLS-1$
+    addEParameter(op, this.getIInput(), "input", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIOutput(), "getOutput", 0, 1);
+    op = addEOperation(iOperationEClass, this.getIOutput(), "getOutput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, null, "setOutput");
-    addEParameter(op, this.getIOutput(), "output", 0, 1);
+    op = addEOperation(iOperationEClass, null, "setOutput"); //$NON-NLS-1$
+    addEParameter(op, this.getIOutput(), "output", 0, 1); //$NON-NLS-1$
 
-    initEClass(iInputEClass, javax.wsdl.Input.class, "IInput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iInputEClass, javax.wsdl.Input.class, "IInput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iInputEClass, this.getIMessage(), "getMessage", 0, 1);
+    op = addEOperation(iInputEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iInputEClass, null, "setMessage");
-    addEParameter(op, this.getIMessage(), "message", 0, 1);
+    op = addEOperation(iInputEClass, null, "setMessage"); //$NON-NLS-1$
+    addEParameter(op, this.getIMessage(), "message", 0, 1); //$NON-NLS-1$
 
-    initEClass(iOutputEClass, javax.wsdl.Output.class, "IOutput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iOutputEClass, javax.wsdl.Output.class, "IOutput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iOutputEClass, this.getIMessage(), "getMessage", 0, 1);
+    op = addEOperation(iOutputEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOutputEClass, null, "setMessage");
-    addEParameter(op, this.getIMessage(), "message", 0, 1);
+    op = addEOperation(iOutputEClass, null, "setMessage"); //$NON-NLS-1$
+    addEParameter(op, this.getIMessage(), "message", 0, 1); //$NON-NLS-1$
 
-    initEClass(iFaultEClass, javax.wsdl.Fault.class, "IFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iFaultEClass, javax.wsdl.Fault.class, "IFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iFaultEClass, this.getIMessage(), "getMessage", 0, 1);
+    op = addEOperation(iFaultEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iFaultEClass, null, "setMessage");
-    addEParameter(op, this.getIMessage(), "message", 0, 1);
+    op = addEOperation(iFaultEClass, null, "setMessage"); //$NON-NLS-1$
+    addEParameter(op, this.getIMessage(), "message", 0, 1); //$NON-NLS-1$
 
-    initEClass(iMessageEClass, javax.wsdl.Message.class, "IMessage", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iMessageEClass, javax.wsdl.Message.class, "IMessage", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iMessageEClass, null, "addPart");
-    addEParameter(op, this.getIPart(), "part", 0, 1);
+    op = addEOperation(iMessageEClass, null, "addPart"); //$NON-NLS-1$
+    addEParameter(op, this.getIPart(), "part", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iMessageEClass, this.getIPart(), "getPart", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
+    op = addEOperation(iMessageEClass, this.getIPart(), "getPart", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iMessageEClass, this.getIMap(), "getParts", 0, 1);
+    op = addEOperation(iMessageEClass, this.getIMap(), "getParts", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iMessageEClass, this.getIList(), "getOrderedParts", 0, 1);
-    addEParameter(op, this.getIList(), "partOrder", 0, 1);
+    op = addEOperation(iMessageEClass, this.getIList(), "getOrderedParts", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getIList(), "partOrder", 0, 1); //$NON-NLS-1$
 
-    initEClass(iPartEClass, javax.wsdl.Part.class, "IPart", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iPartEClass, javax.wsdl.Part.class, "IPart", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iPartEClass, null, "setExtensionAttribute");
-    addEParameter(op, this.getQName(), "name", 0, 1);
-    addEParameter(op, this.getQName(), "value", 0, 1);
+    op = addEOperation(iPartEClass, null, "setExtensionAttribute"); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "value", 0, 1); //$NON-NLS-1$
     addEException(op, this.getWSDLException());
 
-    op = addEOperation(iPartEClass, this.getIIterator(), "getExtensionAttributeNames", 0, 1);
+    op = addEOperation(iPartEClass, this.getIIterator(), "getExtensionAttributeNames", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iPartEClass, this.getQName(), "getExtensionAttribute", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iPartEClass, this.getQName(), "getExtensionAttribute", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    initEClass(iServiceEClass, javax.wsdl.Service.class, "IService", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iServiceEClass, javax.wsdl.Service.class, "IService", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iServiceEClass, null, "addPort");
-    addEParameter(op, this.getIPort(), "port", 0, 1);
+    op = addEOperation(iServiceEClass, null, "addPort"); //$NON-NLS-1$
+    addEParameter(op, this.getIPort(), "port", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iServiceEClass, this.getIMap(), "getPorts", 0, 1);
+    op = addEOperation(iServiceEClass, this.getIMap(), "getPorts", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iServiceEClass, this.getIPort(), "getPort", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
+    op = addEOperation(iServiceEClass, this.getIPort(), "getPort", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
-    initEClass(iPortEClass, javax.wsdl.Port.class, "IPort", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iPortEClass, javax.wsdl.Port.class, "IPort", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iPortEClass, this.getIBinding(), "getBinding", 0, 1);
+    op = addEOperation(iPortEClass, this.getIBinding(), "getBinding", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iPortEClass, null, "setBinding");
-    addEParameter(op, this.getIBinding(), "binding", 0, 1);
+    op = addEOperation(iPortEClass, null, "setBinding"); //$NON-NLS-1$
+    addEParameter(op, this.getIBinding(), "binding", 0, 1); //$NON-NLS-1$
 
-    initEClass(iBindingEClass, javax.wsdl.Binding.class, "IBinding", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iBindingEClass, javax.wsdl.Binding.class, "IBinding", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iBindingEClass, null, "addBindingOperation");
-    addEParameter(op, this.getIBindingOperation(), "bindingOperation", 0, 1);
+    op = addEOperation(iBindingEClass, null, "addBindingOperation"); //$NON-NLS-1$
+    addEParameter(op, this.getIBindingOperation(), "bindingOperation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingEClass, this.getIBindingOperation(), "getBindingOperation", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "inputName", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "outputName", 0, 1);
+    op = addEOperation(iBindingEClass, this.getIBindingOperation(), "getBindingOperation", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "inputName", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "outputName", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingEClass, this.getIList(), "getBindingOperations", 0, 1);
+    op = addEOperation(iBindingEClass, this.getIList(), "getBindingOperations", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingEClass, this.getIPortType(), "getPortType", 0, 1);
+    op = addEOperation(iBindingEClass, this.getIPortType(), "getPortType", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingEClass, null, "setPortType");
-    addEParameter(op, this.getIPortType(), "portType", 0, 1);
+    op = addEOperation(iBindingEClass, null, "setPortType"); //$NON-NLS-1$
+    addEParameter(op, this.getIPortType(), "portType", 0, 1); //$NON-NLS-1$
 
     initEClass(
       iBindingOperationEClass,
       javax.wsdl.BindingOperation.class,
-      "IBindingOperation",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IBindingOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, null, "addBindingFault");
-    addEParameter(op, this.getIBindingFault(), "bindingFault", 0, 1);
+    op = addEOperation(iBindingOperationEClass, null, "addBindingFault"); //$NON-NLS-1$
+    addEParameter(op, this.getIBindingFault(), "bindingFault", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIBindingFault(), "getBindingFault", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
+    op = addEOperation(iBindingOperationEClass, this.getIBindingFault(), "getBindingFault", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIMap(), "getBindingFaults", 0, 1);
+    op = addEOperation(iBindingOperationEClass, this.getIMap(), "getBindingFaults", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIOperation(), "getOperation", 0, 1);
+    op = addEOperation(iBindingOperationEClass, this.getIOperation(), "getOperation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, null, "setOperation");
-    addEParameter(op, this.getIOperation(), "operation", 0, 1);
+    op = addEOperation(iBindingOperationEClass, null, "setOperation"); //$NON-NLS-1$
+    addEParameter(op, this.getIOperation(), "operation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIBindingInput(), "getBindingInput", 0, 1);
+    op = addEOperation(iBindingOperationEClass, this.getIBindingInput(), "getBindingInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, null, "setBindingInput");
-    addEParameter(op, this.getIBindingInput(), "bindingInput", 0, 1);
+    op = addEOperation(iBindingOperationEClass, null, "setBindingInput"); //$NON-NLS-1$
+    addEParameter(op, this.getIBindingInput(), "bindingInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIBindingOutput(), "getBindingOutput", 0, 1);
+    op = addEOperation(iBindingOperationEClass, this.getIBindingOutput(), "getBindingOutput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, null, "setBindingOutput");
-    addEParameter(op, this.getIBindingOutput(), "bindingOutput", 0, 1);
+    op = addEOperation(iBindingOperationEClass, null, "setBindingOutput"); //$NON-NLS-1$
+    addEParameter(op, this.getIBindingOutput(), "bindingOutput", 0, 1); //$NON-NLS-1$
 
-    initEClass(iBindingInputEClass, javax.wsdl.BindingInput.class, "IBindingInput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iBindingInputEClass, javax.wsdl.BindingInput.class, "IBindingInput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       iBindingOutputEClass,
       javax.wsdl.BindingOutput.class,
-      "IBindingOutput",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IBindingOutput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(iBindingFaultEClass, javax.wsdl.BindingFault.class, "IBindingFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iBindingFaultEClass, javax.wsdl.BindingFault.class, "IBindingFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       iExtensibilityElementEClass,
       javax.wsdl.extensions.ExtensibilityElement.class,
-      "IExtensibilityElement",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IExtensibilityElement", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(iDefinitionEClass, javax.wsdl.Definition.class, "IDefinition", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iDefinitionEClass, javax.wsdl.Definition.class, "IDefinition", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "addBinding");
-    addEParameter(op, this.getIBinding(), "binding", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "addBinding"); //$NON-NLS-1$
+    addEParameter(op, this.getIBinding(), "binding", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "addImport");
-    addEParameter(op, this.getIImport(), "importDef", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "addImport"); //$NON-NLS-1$
+    addEParameter(op, this.getIImport(), "importDef", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "addMessage");
-    addEParameter(op, this.getIMessage(), "message", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "addMessage"); //$NON-NLS-1$
+    addEParameter(op, this.getIMessage(), "message", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "addNamespace");
-    addEParameter(op, ecorePackage.getEString(), "prefix", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "addNamespace"); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "prefix", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "addPortType");
-    addEParameter(op, this.getIPortType(), "portType", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "addPortType"); //$NON-NLS-1$
+    addEParameter(op, this.getIPortType(), "portType", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "addService");
-    addEParameter(op, this.getIService(), "service", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "addService"); //$NON-NLS-1$
+    addEParameter(op, this.getIService(), "service", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingFault(), "createBindingFault", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIBindingFault(), "createBindingFault", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingInput(), "createBindingInput", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIBindingInput(), "createBindingInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingOutput(), "createBindingOutput", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIBindingOutput(), "createBindingOutput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingOperation(), "createBindingOperation", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIBindingOperation(), "createBindingOperation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBinding(), "createBinding", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIBinding(), "createBinding", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIFault(), "createFault", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIFault(), "createFault", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIImport(), "createImport", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIImport(), "createImport", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIInput(), "createInput", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIInput(), "createInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMessage(), "createMessage", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMessage(), "createMessage", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIOperation(), "createOperation", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIOperation(), "createOperation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIOutput(), "createOutput", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIOutput(), "createOutput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPart(), "createPart", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIPart(), "createPart", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPort(), "createPort", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIPort(), "createPort", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPortType(), "createPortType", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIPortType(), "createPortType", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIService(), "createService", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIService(), "createService", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBinding(), "getBinding", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIBinding(), "getBinding", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getBindings", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMap(), "getBindings", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getImports", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMap(), "getImports", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIList(), "getImports", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIList(), "getImports", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMessage(), "getMessage", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getMessages", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMap(), "getMessages", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getNamespace", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "prefix", 0, 1);
+    op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getNamespace", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "prefix", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getNamespaces", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMap(), "getNamespaces", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPortType(), "getPortType", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIPortType(), "getPortType", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getPortTypes", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMap(), "getPortTypes", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getPrefix", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1);
+    op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getPrefix", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIService(), "getService", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIService(), "getService", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getServices", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMap(), "getServices", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIExtensionRegistry(), "getExtensionRegistry", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIExtensionRegistry(), "getExtensionRegistry", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "setExtensionRegistry");
-    addEParameter(op, this.getIExtensionRegistry(), "extensionRegistry", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "setExtensionRegistry"); //$NON-NLS-1$
+    addEParameter(op, this.getIExtensionRegistry(), "extensionRegistry", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getDocumentBaseURI", 0, 1);
+    op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getDocumentBaseURI", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "setDocumentBaseURI");
-    addEParameter(op, ecorePackage.getEString(), "documentBase", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "setDocumentBaseURI"); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "documentBase", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getITypes(), "createTypes", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getITypes(), "createTypes", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIService(), "removeService", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIService(), "removeService", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBinding(), "removeBinding", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIBinding(), "removeBinding", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPortType(), "removePortType", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIPortType(), "removePortType", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMessage(), "removeMessage", 0, 1);
-    addEParameter(op, this.getQName(), "name", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getIMessage(), "removeMessage", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getITypes(), "getTypes", 0, 1);
+    op = addEOperation(iDefinitionEClass, this.getITypes(), "getTypes", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, null, "setTypes");
-    addEParameter(op, this.getITypes(), "types", 0, 1);
+    op = addEOperation(iDefinitionEClass, null, "setTypes"); //$NON-NLS-1$
+    addEParameter(op, this.getITypes(), "types", 0, 1); //$NON-NLS-1$
 
-    initEClass(iImportEClass, javax.wsdl.Import.class, "IImport", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iImportEClass, javax.wsdl.Import.class, "IImport", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(iListEClass, List.class, "IList", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iListEClass, List.class, "IList", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(iMapEClass, Map.class, "IMap", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iMapEClass, Map.class, "IMap", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(iurlEClass, URL.class, "IURL", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iurlEClass, URL.class, "IURL", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       iExtensionRegistryEClass,
       ExtensionRegistry.class,
-      "IExtensionRegistry",
-      IS_ABSTRACT,
-      IS_INTERFACE,
-      !IS_GENERATED_INSTANCE_CLASS);
+      "IExtensionRegistry", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(typesEClass, Types.class, "Types", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(typesEClass, Types.class, "Types", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(typesEClass, this.getIList(), "getSchemas", 0, 1);
+    op = addEOperation(typesEClass, this.getIList(), "getSchemas", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(typesEClass, this.getIList(), "getSchemas", 0, 1);
-    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1);
+    op = addEOperation(typesEClass, this.getIList(), "getSchemas", 0, 1); //$NON-NLS-1$
+    addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1); //$NON-NLS-1$
 
-    initEClass(iIteratorEClass, Iterator.class, "IIterator", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iIteratorEClass, Iterator.class, "IIterator", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    initEClass(iTypesEClass, javax.wsdl.Types.class, "ITypes", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+    initEClass(iTypesEClass, javax.wsdl.Types.class, "ITypes", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(
       unknownExtensibilityElementEClass,
       UnknownExtensibilityElement.class,
-      "UnknownExtensibilityElement",
-      !IS_ABSTRACT,
-      !IS_INTERFACE,
-      IS_GENERATED_INSTANCE_CLASS);
+      "UnknownExtensibilityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEReference(
       getUnknownExtensibilityElement_Children(),
       this.getUnknownExtensibilityElement(),
       null,
-      "children",
-      null,
-      0,
-      -1,
-      UnknownExtensibilityElement.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "children", null, 0, -1, UnknownExtensibilityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
     initEClass(
       xsdSchemaExtensibilityElementEClass,
       XSDSchemaExtensibilityElement.class,
-      "XSDSchemaExtensibilityElement",
-      !IS_ABSTRACT,
-      !IS_INTERFACE,
-      IS_GENERATED_INSTANCE_CLASS);
+      "XSDSchemaExtensibilityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEReference(
       getXSDSchemaExtensibilityElement_Schema(),
       theXSDPackage.getXSDSchema(),
       null,
-      "schema",
-      null,
-      0,
-      1,
-      XSDSchemaExtensibilityElement.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      IS_COMPOSITE,
-      !IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "schema", null, 0, 1, XSDSchemaExtensibilityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    initEClass(messageReferenceEClass, MessageReference.class, "MessageReference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(messageReferenceEClass, MessageReference.class, "MessageReference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEAttribute(
       getMessageReference_Name(),
       ecorePackage.getEString(),
-      "name",
-      null,
-      0,
-      1,
-      MessageReference.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_UNSETTABLE,
-      !IS_ID,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "name", null, 0, 1, MessageReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getMessageReference_EMessage(),
       this.getMessage(),
       null,
-      "eMessage",
-      null,
-      1,
-      1,
-      MessageReference.class,
-      !IS_TRANSIENT,
-      !IS_VOLATILE,
-      IS_CHANGEABLE,
-      !IS_COMPOSITE,
-      IS_RESOLVE_PROXIES,
-      !IS_UNSETTABLE,
-      IS_UNIQUE,
-      !IS_DERIVED,
-      IS_ORDERED);
+      "eMessage", null, 1, 1, MessageReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
     // Initialize data types
-    initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-    initEDataType(operationTypeEDataType, OperationType.class, "OperationType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-    initEDataType(domElementEDataType, Element.class, "DOMElement", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-    initEDataType(wsdlExceptionEDataType, WSDLException.class, "WSDLException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-    initEDataType(domDocumentEDataType, Document.class, "DOMDocument", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+    initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+    initEDataType(operationTypeEDataType, OperationType.class, "OperationType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+    initEDataType(domElementEDataType, Element.class, "DOMElement", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+    initEDataType(wsdlExceptionEDataType, WSDLException.class, "WSDLException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+    initEDataType(domDocumentEDataType, Document.class, "DOMDocument", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     // Create resource
     createResource(eNS_URI);

@@ -236,9 +236,9 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (transportURI: ");
+    result.append(" (transportURI: "); //$NON-NLS-1$
     result.append(transportURI);
-    result.append(", style: ");
+    result.append(", style: "); //$NON-NLS-1$
     result.append(style);
     result.append(')');
     return result.toString();

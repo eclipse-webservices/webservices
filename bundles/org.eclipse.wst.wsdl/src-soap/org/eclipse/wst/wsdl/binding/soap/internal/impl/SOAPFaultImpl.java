@@ -346,13 +346,13 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (use: ");
+    result.append(" (use: "); //$NON-NLS-1$
     result.append(use);
-    result.append(", namespaceURI: ");
+    result.append(", namespaceURI: "); //$NON-NLS-1$
     result.append(namespaceURI);
-    result.append(", eEncodingStyles: ");
+    result.append(", eEncodingStyles: "); //$NON-NLS-1$
     result.append(eEncodingStyles);
-    result.append(", name: ");
+    result.append(", name: "); //$NON-NLS-1$
     result.append(name);
     result.append(')');
     return result.toString();

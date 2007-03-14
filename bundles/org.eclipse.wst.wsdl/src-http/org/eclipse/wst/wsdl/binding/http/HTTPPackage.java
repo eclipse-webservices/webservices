@@ -48,7 +48,7 @@ public interface HTTPPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_URI = "http://www.ibm.com/wsdl/2003/HTTP";
+  String eNS_URI = "http://www.eclipse.org/wsdl/2003/HTTP";
 
   /**
    * The package namespace name.

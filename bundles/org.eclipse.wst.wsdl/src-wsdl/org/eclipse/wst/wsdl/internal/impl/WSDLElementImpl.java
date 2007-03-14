@@ -275,9 +275,9 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (documentationElement: ");
+    result.append(" (documentationElement: "); //$NON-NLS-1$
     result.append(documentationElement);
-    result.append(", element: ");
+    result.append(", element: "); //$NON-NLS-1$
     result.append(element);
     result.append(')');
     return result.toString();

@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="http"
-    nsURI="http://www.ibm.com/wsdl/2003/HTTP" nsPrefix="http">
+    nsURI="http://www.eclipse.org/wsdl/2003/HTTP" nsPrefix="http">
   <eClassifiers xsi:type="ecore:EClass" name="HTTPBinding" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//IHTTPBinding">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="verb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
