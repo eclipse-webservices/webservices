@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -18,21 +21,21 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.IEclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleCommandEngineManager;
 import org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard;
 import org.eclipse.wst.common.environment.ILog;
-import org.eclipse.wst.common.environment.IStatusHandler;
 
 public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
-	private IStatusHandler handler_;
+	private IEclipseStatusHandler handler_;
     private ILog log_;
-	public DynamicPopupJUnitWizard(IStatusHandler handler)
+	public DynamicPopupJUnitWizard(IEclipseStatusHandler handler)
 	{
 		handler_ = handler;
 	}
   
-    public DynamicPopupJUnitWizard(IStatusHandler handler, ILog log)
+    public DynamicPopupJUnitWizard(IEclipseStatusHandler handler, ILog log)
     {
         handler_ = handler;
         log_ = log;

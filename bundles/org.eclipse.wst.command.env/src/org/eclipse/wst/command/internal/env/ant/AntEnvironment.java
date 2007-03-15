@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  * 20060726   151614 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ant;
 
@@ -38,9 +39,9 @@ import org.eclipse.wst.command.internal.env.core.data.ClassEntry;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
+import org.eclipse.wst.command.internal.env.eclipse.IEclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.plugin.EnvPlugin;
 import org.eclipse.wst.common.environment.ILog;
-import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -84,7 +85,7 @@ public class AntEnvironment extends EclipseEnvironment{
 	
     private AntController controller_;
 	
-	public AntEnvironment(AntController controller, TransientResourceContext context, IStatusHandler handler, Hashtable properties)
+	public AntEnvironment(AntController controller, TransientResourceContext context, IEclipseStatusHandler handler, Hashtable properties)
 	{
 	   super(controller.getOperationManager(), context, handler);
 	   antProperties_ = properties;	

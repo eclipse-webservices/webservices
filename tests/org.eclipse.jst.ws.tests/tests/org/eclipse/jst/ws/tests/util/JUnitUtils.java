@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -42,11 +43,10 @@ import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseStatusHandler;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EnvironmentUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
-import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
@@ -305,7 +305,7 @@ public class JUnitUtils {
 
 	private static IStatus launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
-		IStatusHandler statusHandler = new EclipseStatusHandler();
+		BaseStatusHandler statusHandler = new BaseStatusHandler();
 
         DynamicPopupJUnitWizard wizard = new DynamicPopupJUnitWizard(statusHandler);
         wizard.setInitialData(wizardId);

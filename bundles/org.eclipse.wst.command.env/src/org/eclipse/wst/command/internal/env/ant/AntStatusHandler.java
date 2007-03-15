@@ -1,21 +1,25 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ant;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.command.internal.env.eclipse.BaseStatusHandler;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.environment.StatusException;
 
-public class AntStatusHandler implements IStatusHandler {
+public class AntStatusHandler extends BaseStatusHandler
+{
 
 	public Choice report(IStatus status, Choice[] choices) {
 		// TODO 

@@ -254,10 +254,6 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	  	// An error occured in one of the commands.
   	  	doneOk = false;
   	  }
-  	  else
-  	  {
-  	  	currentPage_ = nextPage_;
-  	  }
   	}
   	while( nextPage_ != null && doneOk);
   	
@@ -272,10 +268,15 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	  {
   	    done = engine_.undoToLastStop();
   	    page = getPage( lastUndoFragment_ );
+  	    
+  	    if( page == null && lastUndoFragment_ != null && getWidgetFactory( lastUndoFragment_.getId() ) == widgetFactory_ )
+  	    {
+  	      // The current widget factory is associated with the last fragment that was undone.
+  	      // Therefore, we are back to where we started.
+          done = true;  	       
+  	    }
   	  }
   	  while( page != startPage && !done ); 	  
-  	  
-  	  currentPage_ = page;
   	}
   	
   	return doneOk;

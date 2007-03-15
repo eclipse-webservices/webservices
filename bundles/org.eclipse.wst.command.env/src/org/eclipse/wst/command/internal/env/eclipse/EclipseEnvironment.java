@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.eclipse;
 
@@ -28,15 +31,15 @@ import org.eclipse.wst.common.environment.uri.IURIScheme;
  */
 public class EclipseEnvironment implements BaseEclipseEnvironment
 {
-  private CommandManager   commandManager_  = null;
-  private SimpleURIFactory uriFactory_      = null;
-  private ResourceContext  resourceContext_ = null;
-  private IStatusHandler    statusHandler_   = null;
-  private ILog              logger_          = null;
+  private CommandManager        commandManager_  = null;
+  private SimpleURIFactory      uriFactory_      = null;
+  private ResourceContext       resourceContext_ = null;
+  private IEclipseStatusHandler statusHandler_   = null;
+  private ILog                  logger_          = null;
   
-  public EclipseEnvironment( CommandManager  commandManager, 
- 		                         ResourceContext resourceContext,
-						                 IStatusHandler   statusHandler )
+  public EclipseEnvironment( CommandManager        commandManager, 
+ 		                     ResourceContext       resourceContext,
+						     IEclipseStatusHandler statusHandler )
   {
     IURIScheme eclipseScheme = EnvironmentService.getEclipseScheme();
     IURIScheme fileScheme    = EnvironmentService.getFileScheme();

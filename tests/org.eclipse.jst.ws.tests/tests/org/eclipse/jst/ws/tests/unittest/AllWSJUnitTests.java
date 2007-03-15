@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -74,10 +75,11 @@ public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
     testSuite.addTest( ComponentCreationTests.suite() );
     testSuite.addTest( J2EEUtilsTests.suite() );
    
+    // Tests which require a Tomcat server
     String s = System.getProperty("org.eclipse.jst.server.tomcat.50");
     if (s != null && s.length() > 0) {
       testSuite.addTest( ServerCreationTests.suite());
-     // testSuite.addTest( BUJavaAxisTC50.suite() );
+      testSuite.addTest( BUJavaAxisTC50.suite() );
       testSuite.addTest( TDJavaAxisTC50.suite() );
       testSuite.addTest( ClientAxisTC50.suite() );
 

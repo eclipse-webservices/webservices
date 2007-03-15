@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,12 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.operation.IRunnableContext;
@@ -22,8 +24,8 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentEngine;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
+import org.eclipse.wst.command.internal.env.eclipse.BaseStatusHandler;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
-import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.common.environment.ILog;
 
 
@@ -103,10 +105,10 @@ public class SimpleCommandEngineManager
 
   protected boolean afterExecuteNextFragment( CommandFragment fragment )
   {
-    boolean              continueExecute = true;
-    EclipseStatusHandler statusHandler   = (EclipseStatusHandler)environment_.getStatusHandler();
-    IStatus              commandStatus   = engine_.getLastStatus();
-    IStatus              handlerStatus   = statusHandler.getStatus();
+    boolean           continueExecute = true;
+    BaseStatusHandler statusHandler   = (BaseStatusHandler)environment_.getStatusHandler();
+    IStatus           commandStatus   = engine_.getLastStatus();
+    IStatus           handlerStatus   = statusHandler.getStatus();
     
     if( commandStatus.getSeverity() == IStatus.ERROR &&
         handlerStatus.getSeverity() != IStatus.ERROR )
@@ -244,7 +246,7 @@ public class SimpleCommandEngineManager
       {
         environment_.getLog().log(ILog.INFO, "command", 5002, this, "getTransactionOperation", "Start of transaction");
         
-        EclipseStatusHandler statusHandler = (EclipseStatusHandler)environment_.getStatusHandler();
+        BaseStatusHandler statusHandler = (BaseStatusHandler)environment_.getStatusHandler();
         
         statusHandler.resetStatus();
         engine_.moveForwardToNextStop( monitor );
@@ -265,7 +267,7 @@ public class SimpleCommandEngineManager
       {
         environment_.getLog().log(ILog.INFO, "command", 5085, this, "getNoTransactionOperation", "Start of NON transaction");
         
-        EclipseStatusHandler statusHandler = (EclipseStatusHandler)environment_.getStatusHandler();
+        BaseStatusHandler statusHandler = (BaseStatusHandler)environment_.getStatusHandler();
         
         statusHandler.resetStatus();
         engine_.moveForwardToNextStop( monitor );

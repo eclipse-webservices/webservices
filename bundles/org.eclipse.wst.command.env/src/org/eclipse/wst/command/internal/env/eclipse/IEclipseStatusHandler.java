@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,19 +13,20 @@
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.eclipse;
 
-import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.common.environment.IStatusHandler;
 
-public class EnvironmentManager
+public interface IEclipseStatusHandler extends IStatusHandler
 {
   /**
-   * Returns a new instance of an IEnvironment for the Eclipse non-GUI.
+   * 
+   * @return returns the worst status that has been reported.
+   */	
+  public IStatus getStatus();
+  
+  /**
+   * Resets the worst status reported to be OK.
+   *
    */
-  public static BaseEclipseEnvironment getNewEnvironment()
-  {
-    PersistentResourceContext context        = PersistentResourceContext.getInstance();
-    IEclipseStatusHandler     handler        = new BaseStatusHandler();
-    EclipseEnvironment        environment    = new EclipseEnvironment( null, context, handler );
-    
-    return environment;  
-  }
+  public void resetStatus();
 }

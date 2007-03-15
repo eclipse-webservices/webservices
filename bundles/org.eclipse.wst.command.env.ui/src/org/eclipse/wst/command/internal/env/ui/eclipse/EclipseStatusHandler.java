@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.eclipse;
 
@@ -15,19 +18,18 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.command.internal.env.core.EnvironmentCoreMessages;
+import org.eclipse.wst.command.internal.env.eclipse.BaseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.dialog.MessageDialog;
 import org.eclipse.wst.command.internal.env.ui.dialog.StatusDialogConstants;
 import org.eclipse.wst.common.environment.Choice;
-import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.environment.StatusException;
 
 
 /**
  * This is the Eclipse UI version of the IStatusHandler
  */
-public class EclipseStatusHandler implements IStatusHandler
+public class EclipseStatusHandler extends BaseStatusHandler
 {
-  private IStatus worstStatus = Status.OK_STATUS;
   private Shell   shell       = null;
     
   public EclipseStatusHandler()
@@ -38,17 +40,7 @@ public class EclipseStatusHandler implements IStatusHandler
   {
     shell = theShell;  
   }
-  
-  public IStatus getStatus()
-  {
-    return worstStatus;
-  }
-  
-  public void resetStatus()
-  {
-    worstStatus = Status.OK_STATUS;  
-  }
-  
+    
   /**
    * @see org.eclipse.env.common.IStatusHandler#report(org.eclipse.env.common.Status, org.eclipse.env.common.Choice[])
    */
@@ -154,15 +146,7 @@ public class EclipseStatusHandler implements IStatusHandler
     
     return false;
   }
-  
-  private void checkStatus( IStatus status )
-  {
-    if( status.getSeverity() > worstStatus.getSeverity() )
-    {
-      worstStatus = status;
-    }
-  }
-  
+    
   /**
    * @see org.eclipse.wst.command.internal.env.core.common.IStatusHandler#reportError(org.eclipse.wst.command.internal.env.core.common.Status)
    */

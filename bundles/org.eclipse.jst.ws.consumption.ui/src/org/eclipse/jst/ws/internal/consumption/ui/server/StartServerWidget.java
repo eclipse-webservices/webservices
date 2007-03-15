@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.server;
@@ -39,11 +42,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseStatusHandler;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
-import org.eclipse.wst.common.environment.NullStatusHandler;
 import org.eclipse.wst.server.core.IServer;
 
 public class StartServerWidget extends SimpleWidgetDataContributor 
@@ -292,7 +295,7 @@ public class StartServerWidget extends SimpleWidgetDataContributor
 
 	  protected IStatus run(IProgressMonitor monitor) 
 	  {
-	    NullStatusHandler        handler         = new NullStatusHandler();
+	    BaseStatusHandler        handler         = new BaseStatusHandler();
 	    TransientResourceContext resourceContext = new TransientResourceContext();
 	    EclipseEnvironment       environment     = new EclipseEnvironment( null,resourceContext, handler );
 	    StartServerCommand       serverCommand   = new StartServerCommand( false );
