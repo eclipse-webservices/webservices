@@ -11,9 +11,14 @@
 package org.eclipse.wst.wsdl.tests;
 
 
+import org.eclipse.wst.wsdl.tests.extensions.HTTPExtensionsTest;
+import org.eclipse.wst.wsdl.tests.extensions.MIMEExtensionsTest;
+import org.eclipse.wst.wsdl.tests.extensions.SOAPExtensionsTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 
 /**
  * @author Kihup Boo
@@ -28,13 +33,12 @@ public class AllTestCases extends TestCase
   public static void main(String[] args)
   {
   }
-  
-  public static Test suite() 
+
+  public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    
-    // Bug 123547 - comment out this test for now.
-    // suite.addTest(InlineSchemaTest.suite());  
+
+    suite.addTest(InlineSchemaTest.suite());
     suite.addTest(LoadAndSerializationTest.suite());
     suite.addTest(SemanticTest.suite());
     suite.addTest(WSDLGenerationTest.suite());
@@ -43,8 +47,11 @@ public class AllTestCases extends TestCase
     suite.addTest(UtilTest.suite());
     suite.addTest(BugFixesTest.suite());
     suite.addTest(LocationTrackingTest.suite());
-    
+    suite.addTest(RefactoringTest.suite());
+    suite.addTest(SOAPExtensionsTest.suite());
+    suite.addTest(HTTPExtensionsTest.suite());
+    suite.addTest(MIMEExtensionsTest.suite());
+
     return suite;
   }
-
 }

@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.wsdl.util;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.DefaultHandler;
+
 
 /**
  * The <b>SAX Parser</b> for the WSDL model. This class' main responsibility is
@@ -106,7 +108,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getEndColumn(Node node)
   {
-    Integer result = (Integer) getUserData(node).get(END_COLUMN);
+    Integer result = (Integer)getUserData(node).get(END_COLUMN);
     return result == null ? 1 : result.intValue();
   }
 
@@ -119,7 +121,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getEndLine(Node node)
   {
-    Integer result = (Integer) getUserData(node).get(END_LINE);
+    Integer result = (Integer)getUserData(node).get(END_LINE);
     return result == null ? 1 : result.intValue();
   }
 
@@ -132,7 +134,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getStartColumn(Node node)
   {
-    Integer result = (Integer) getUserData(node).get(START_COLUMN);
+    Integer result = (Integer)getUserData(node).get(START_COLUMN);
     return result == null ? 1 : result.intValue();
   }
 
@@ -145,7 +147,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getStartLine(Node node)
   {
-    Integer result = (Integer) getUserData(node).get(START_LINE);
+    Integer result = (Integer)getUserData(node).get(START_LINE);
     return result == null ? 1 : result.intValue();
   }
 
@@ -159,7 +161,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static Map getUserData(Node node)
   {
-    Map result = (Map) userDataMap.get(node);
+    Map result = (Map)userDataMap.get(node);
     if (result == null)
     {
       result = new HashMap();
@@ -169,14 +171,23 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   }
 
   protected int column;
+
   List diagnostics = new ArrayList();
+
   protected Document document;
+
   protected Element element;
+
   protected String encoding;
+
   protected boolean inSchema;
+
   protected int line;
+
   protected Locator locator;
+
   protected SAXParser saxParser;
+
   protected Stack stack = new Stack();
 
   /**
@@ -336,7 +347,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       inSchema = false;
     }
 
-    element = (Element) stack.pop();
+    element = (Element)stack.pop();
   }
 
   /*
@@ -352,7 +363,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.ERROR_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object[] { exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object []{ exception.getMessage() }));
     diagnostic.setLine(exception.getLineNumber());
     diagnostic.setColumn(exception.getColumnNumber());
     diagnostics.add(diagnostic);
@@ -362,7 +373,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object[] { exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object []{ exception.getMessage() }));
     diagnostics.add(diagnostic);
   }
 
@@ -370,7 +381,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object[] { exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() }));
     diagnostics.add(diagnostic);
   }
 
@@ -378,7 +389,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object[] { exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() }));
     diagnostics.add(diagnostic);
   }
 
@@ -386,7 +397,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object[] { exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() }));
     diagnostic.setLine(exception.getLineNumber());
     diagnostic.setColumn(exception.getColumnNumber());
     diagnostics.add(diagnostic);

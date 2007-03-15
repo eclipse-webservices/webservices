@@ -1,20 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
+
 
 import java.util.List;
 
 import javax.wsdl.extensions.ExtensibilityElement;
 
 import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -30,30 +32,31 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.ExtensibleElement#getEExtensibilityElements <em>EExtensibility Elements</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.ExtensibleElement#getEExtensibilityElements <em>EExtensibility Elements</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getExtensibleElement()
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibleElement()
  * @model abstract="true"
  * @generated
  */
-public interface ExtensibleElement extends WSDLElement{
+public interface ExtensibleElement extends WSDLElement
+{
   /**
    * Returns the value of the '<em><b>EExtensibility Elements</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.ExtensibilityElement}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.ExtensibilityElement}.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EExtensibility Elements</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EExtensibility Elements</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EExtensibility Elements</em>' containment reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getExtensibleElement_EExtensibilityElements()
-   * @model type="org.eclipse.wsdl.ExtensibilityElement" containment="true"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibleElement_EExtensibilityElements()
+   * @model type="org.eclipse.wst.wsdl.ExtensibilityElement" containment="true"
    * @generated
    */
-	EList getEExtensibilityElements();
+  EList getEExtensibilityElements();
 
   /**
    * <!-- begin-user-doc -->
@@ -62,7 +65,7 @@ public interface ExtensibleElement extends WSDLElement{
    * @return the value of the '<em>EFault</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation" many="false"
    * @generated
    */
   List getExtensibilityElements();
@@ -73,7 +76,7 @@ public interface ExtensibleElement extends WSDLElement{
    * @param extElement An ExtensibilityElement to be added.
    * @ignore
    * <!-- end-user-doc -->
-   * @model 
+   * @model
    * @generated
    */
   void addExtensibilityElement(ExtensibilityElement extElement);

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.extensibility;
 
+
 import java.util.HashMap;
 
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
@@ -19,12 +20,12 @@ import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
 public class ExtensibilityElementFactoryRegistryImpl implements ExtensibilityElementFactoryRegistry
 {
   protected HashMap map = new HashMap();
-  
+
   public void put(String namespace, ExtensibilityElementFactoryDescriptor descriptor)
   {
     map.put(namespace, descriptor);
   }
-  
+
   public ExtensibilityElementFactory getExtensibilityElementFactory(String namespace)
   {
     ExtensibilityElementFactory result = null;
@@ -35,11 +36,11 @@ public class ExtensibilityElementFactoryRegistryImpl implements ExtensibilityEle
     }
     return result;
   }
-  
+
   public void registerFactory(String namespace, ExtensibilityElementFactory factory)
   {
-    ExtensibilityElementFactoryDescriptor descriptor = new ExtensibilityElementFactoryDescriptor(null,namespace,null);
+    ExtensibilityElementFactoryDescriptor descriptor = new ExtensibilityElementFactoryDescriptor(null, namespace, null);
     descriptor.setExtensiblityElementFactory(factory);
-    map.put(namespace,descriptor);
+    map.put(namespace, descriptor);
   }
 }

@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,7 +26,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -46,11 +46,9 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.MessageImpl#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.MessageImpl#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.MessageImpl#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.MessageImpl#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.MessageImpl#getEParts <em>EParts</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl#getEParts <em>EParts</em>}</li>
  * </ul>
  * </p>
  *
@@ -106,46 +104,6 @@ public class MessageImpl extends WSDLElementImpl implements Message
   protected boolean undefined = UNDEFINED_EDEFAULT;
 
   /**
-   * The default value of the '{@link #isProxy() <em>Proxy</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isProxy()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean PROXY_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isProxy() <em>Proxy</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isProxy()
-   * @generated
-   * @ordered
-   */
-  protected boolean proxy = PROXY_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getResourceURI() <em>Resource URI</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getResourceURI()
-   * @generated
-   * @ordered
-   */
-  protected static final String RESOURCE_URI_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getResourceURI() <em>Resource URI</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getResourceURI()
-   * @generated
-   * @ordered
-   */
-  protected String resourceURI = RESOURCE_URI_EDEFAULT;
-
-  /**
    * The cached value of the '{@link #getEParts() <em>EParts</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -172,7 +130,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getMessage();
+    return WSDLPackage.Literals.MESSAGE;
   }
 
   /**
@@ -226,52 +184,6 @@ public class MessageImpl extends WSDLElementImpl implements Message
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isProxy()
-  {
-    return proxy;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setProxy(boolean newProxy)
-  {
-    boolean oldProxy = proxy;
-    proxy = newProxy;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.MESSAGE__PROXY, oldProxy, proxy));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getResourceURI()
-  {
-    return resourceURI;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setResourceURI(String newResourceURI)
-  {
-    String oldResourceURI = resourceURI;
-    resourceURI = newResourceURI;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.MESSAGE__RESOURCE_URI, oldResourceURI, resourceURI));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EList getEParts()
   {
     if (eParts == null)
@@ -307,7 +219,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
     Part result = null;
     for (Iterator i = getEParts().iterator(); i.hasNext();)
     {
-      Part part = (Part) i.next();
+      Part part = (Part)i.next();
       if (name.equals(part.getName()))
       {
         result = part;
@@ -328,7 +240,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
     HashMap hashMap = new HashMap();
     for (Iterator i = getEParts().iterator(); i.hasNext();)
     {
-      Part part = (Part) i.next();
+      Part part = (Part)i.next();
       hashMap.put(part.getName(), part);
     }
     return hashMap;
@@ -351,7 +263,7 @@ public class MessageImpl extends WSDLElementImpl implements Message
     Iterator partNameIterator = partOrder.iterator();
     while (partNameIterator.hasNext())
     {
-      String partName = (String) partNameIterator.next();
+      String partName = (String)partNameIterator.next();
       javax.wsdl.Part part = getPart(partName);
       if (part != null)
         orderedParts.add(part);
@@ -365,19 +277,14 @@ public class MessageImpl extends WSDLElementImpl implements Message
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    if (featureID >= 0)
+    switch (featureID)
     {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.MESSAGE__EPARTS:
-          return ((InternalEList)getEParts()).basicRemove(otherEnd, msgs);
-        default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
+      case WSDLPackage.MESSAGE__EPARTS:
+      return ((InternalEList)getEParts()).basicRemove(otherEnd, msgs);
     }
-    return eBasicSetContainer(null, featureID, msgs);
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -385,26 +292,18 @@ public class MessageImpl extends WSDLElementImpl implements Message
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
-      case WSDLPackage.MESSAGE__ELEMENT:
-        return getElement();
       case WSDLPackage.MESSAGE__QNAME:
-        return getQName();
+      return getQName();
       case WSDLPackage.MESSAGE__UNDEFINED:
-        return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
-      case WSDLPackage.MESSAGE__PROXY:
-        return isProxy() ? Boolean.TRUE : Boolean.FALSE;
-      case WSDLPackage.MESSAGE__RESOURCE_URI:
-        return getResourceURI();
+      return isUndefined() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.MESSAGE__EPARTS:
-        return getEParts();
+      return getEParts();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -412,34 +311,22 @@ public class MessageImpl extends WSDLElementImpl implements Message
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
-      case WSDLPackage.MESSAGE__ELEMENT:
-        setElement((Element)newValue);
-        return;
       case WSDLPackage.MESSAGE__QNAME:
-        setQName((QName)newValue);
-        return;
+      setQName((QName)newValue);
+      return;
       case WSDLPackage.MESSAGE__UNDEFINED:
-        setUndefined(((Boolean)newValue).booleanValue());
-        return;
-      case WSDLPackage.MESSAGE__PROXY:
-        setProxy(((Boolean)newValue).booleanValue());
-        return;
-      case WSDLPackage.MESSAGE__RESOURCE_URI:
-        setResourceURI((String)newValue);
-        return;
+      setUndefined(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.MESSAGE__EPARTS:
-        getEParts().clear();
-        getEParts().addAll((Collection)newValue);
-        return;
+      getEParts().clear();
+      getEParts().addAll((Collection)newValue);
+      return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -447,33 +334,21 @@ public class MessageImpl extends WSDLElementImpl implements Message
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.MESSAGE__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
       case WSDLPackage.MESSAGE__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
+      setQName(QNAME_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__UNDEFINED:
-        setUndefined(UNDEFINED_EDEFAULT);
-        return;
-      case WSDLPackage.MESSAGE__PROXY:
-        setProxy(PROXY_EDEFAULT);
-        return;
-      case WSDLPackage.MESSAGE__RESOURCE_URI:
-        setResourceURI(RESOURCE_URI_EDEFAULT);
-        return;
+      setUndefined(UNDEFINED_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE__EPARTS:
-        getEParts().clear();
-        return;
+      getEParts().clear();
+      return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -481,26 +356,18 @@ public class MessageImpl extends WSDLElementImpl implements Message
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.MESSAGE__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.MESSAGE__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
       case WSDLPackage.MESSAGE__UNDEFINED:
-        return undefined != UNDEFINED_EDEFAULT;
-      case WSDLPackage.MESSAGE__PROXY:
-        return proxy != PROXY_EDEFAULT;
-      case WSDLPackage.MESSAGE__RESOURCE_URI:
-        return RESOURCE_URI_EDEFAULT == null ? resourceURI != null : !RESOURCE_URI_EDEFAULT.equals(resourceURI);
+      return undefined != UNDEFINED_EDEFAULT;
       case WSDLPackage.MESSAGE__EPARTS:
-        return eParts != null && !eParts.isEmpty();
+      return eParts != null && !eParts.isEmpty();
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -510,17 +377,14 @@ public class MessageImpl extends WSDLElementImpl implements Message
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (qName: ");
+    result.append(" (qName: "); //$NON-NLS-1$
     result.append(qName);
-    result.append(", undefined: ");
+    result.append(", undefined: "); //$NON-NLS-1$
     result.append(undefined);
-    result.append(", proxy: ");
-    result.append(proxy);
-    result.append(", resourceURI: ");
-    result.append(resourceURI);
     result.append(')');
     return result.toString();
   }
@@ -541,14 +405,14 @@ public class MessageImpl extends WSDLElementImpl implements Message
   {
     switch (WSDLUtil.getInstance().getWSDLType(child))
     {
-      case WSDLConstants.PART :
-        {
-          Part part = ((WSDLPackage) EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI)).getWSDLFactory().createPart();
-          part.setEnclosingDefinition(getEnclosingDefinition());
-          part.setElement(child);
-          getEParts().add(part);
-          break;
-        }
+      case WSDLConstants.PART:
+      {
+        Part part = ((WSDLPackage)EPackage.Registry.INSTANCE.getEPackage(WSDLPackage.eNS_URI)).getWSDLFactory().createPart();
+        part.setEnclosingDefinition(getEnclosingDefinition());
+        part.setElement(child);
+        getEParts().add(part);
+        break;
+      }
     }
   }
 
@@ -559,14 +423,14 @@ public class MessageImpl extends WSDLElementImpl implements Message
       remove(this, i.next());
     }
   }
-  
+
   protected void remove(Object component, Object modelObject)
   {
-    Message message = (Message) component;
+    Message message = (Message)component;
     if (modelObject instanceof Part)
     {
       message.getEParts().remove(modelObject);
-//      message.getEParts().clear();
+      //      message.getEParts().clear();
     }
   }
 
@@ -599,8 +463,8 @@ public class MessageImpl extends WSDLElementImpl implements Message
       Object obj = iterator.next();
       if (obj instanceof Part)
       {
-        Part part = (Part) obj;
-        Element child = ((PartImpl) part).createElement();
+        Part part = (Part)obj;
+        Element child = ((PartImpl)part).createElement();
         newElement.appendChild(child);
       }
     }

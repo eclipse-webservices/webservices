@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,13 +17,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
@@ -33,7 +31,6 @@ import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Binding Fault</b></em>'.
@@ -41,8 +38,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.BindingFaultImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingFaultImpl#getEFault <em>EFault</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl#getEFault <em>EFault</em>}</li>
  * </ul>
  * </p>
  *
@@ -104,7 +101,7 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getBindingFault();
+    return WSDLPackage.Literals.BINDING_FAULT;
   }
 
   /**
@@ -139,8 +136,8 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
   {
     if (eFault != null && eFault.eIsProxy())
     {
-      Fault oldEFault = eFault;
-      eFault = (Fault)eResolveProxy((InternalEObject)eFault);
+      InternalEObject oldEFault = (InternalEObject)eFault;
+      eFault = (Fault)eResolveProxy(oldEFault);
       if (eFault != oldEFault)
       {
         if (eNotificationRequired())
@@ -190,7 +187,7 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    */
   public void setFault(javax.wsdl.Fault fault)
   {
-    setEFault((Fault) fault);
+    setEFault((Fault)fault);
   }
 
   /**
@@ -198,43 +195,18 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    if (featureID >= 0)
+    switch (featureID)
     {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.BINDING_FAULT__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
-        default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
-    }
-    return eBasicSetContainer(null, featureID, msgs);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.BINDING_FAULT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
-      case WSDLPackage.BINDING_FAULT__ELEMENT:
-        return getElement();
-      case WSDLPackage.BINDING_FAULT__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
       case WSDLPackage.BINDING_FAULT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        if (resolve) return getEFault();
-        return basicGetEFault();
+      if (resolve)
+        return getEFault();
+      return basicGetEFault();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -242,28 +214,18 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_FAULT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
-      case WSDLPackage.BINDING_FAULT__ELEMENT:
-        setElement((Element)newValue);
-        return;
-      case WSDLPackage.BINDING_FAULT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
       case WSDLPackage.BINDING_FAULT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        setEFault((Fault)newValue);
-        return;
+      setEFault((Fault)newValue);
+      return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -271,27 +233,18 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_FAULT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.BINDING_FAULT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.BINDING_FAULT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
       case WSDLPackage.BINDING_FAULT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        setEFault((Fault)null);
-        return;
+      setEFault((Fault)null);
+      return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -299,22 +252,16 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_FAULT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.BINDING_FAULT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.BINDING_FAULT__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
       case WSDLPackage.BINDING_FAULT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.BINDING_FAULT__EFAULT:
-        return eFault != null;
+      return eFault != null;
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -324,10 +271,11 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
+    result.append(" (name: "); //$NON-NLS-1$
     result.append(name);
     result.append(')');
     return result.toString();
@@ -348,7 +296,7 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    super.handleUnreconciledElement(child,remainingModelObjects);
+    super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
   protected void handleReconciliation(Collection remainingModelObjects)
@@ -361,7 +309,7 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
 
   public Collection getModelObjects(Object component)
   {
-    BindingFault bindingFault = (BindingFault) component;
+    BindingFault bindingFault = (BindingFault)component;
     List list = new ArrayList();
     list.addAll(bindingFault.getEExtensibilityElements());
     return list;
@@ -393,14 +341,14 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
     Iterator iterator = getExtensibilityElements().iterator();
     while (iterator.hasNext())
     {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+      Element child = ((ExtensibilityElementImpl)extensibilityElement).createElement();
       newElement.appendChild(child);
     }
 
     return newElement;
   }
-  
+
   // Resolve the reference to Fault
   public void reconcileReferences(boolean deep)
   {
@@ -409,7 +357,7 @@ public class BindingFaultImpl extends ExtensibleElementImpl implements BindingFa
       BindingOperation bindingOperation = (BindingOperation)getContainer();
       Operation operation = bindingOperation.getEOperation();
       String faultName = getName();
-      
+
       if (operation != null && faultName != null)
       {
         javax.wsdl.Fault fault = operation.getFault(faultName);

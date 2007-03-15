@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import javax.wsdl.OperationType;
 import javax.wsdl.WSDLException;
@@ -17,31 +18,10 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.BindingFault;
-import org.eclipse.wst.wsdl.BindingInput;
-import org.eclipse.wst.wsdl.BindingOperation;
-import org.eclipse.wst.wsdl.BindingOutput;
-import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
-import org.eclipse.wst.wsdl.Fault;
-import org.eclipse.wst.wsdl.Import;
-import org.eclipse.wst.wsdl.Input;
-import org.eclipse.wst.wsdl.Message;
-import org.eclipse.wst.wsdl.Namespace;
-import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.Output;
-import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.Types;
-import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
-import org.eclipse.wst.wsdl.WSDLFactory;
-import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.WSDLPlugin;
-import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.wst.wsdl.*;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -56,7 +36,30 @@ import org.w3c.dom.Element;
 public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
 {
   /**
-   * Creates and instance of the factory.
+   * Creates the default factory implementation.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public static WSDLFactory init()
+  {
+    try
+    {
+      WSDLFactory theWSDLFactory = (WSDLFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/wsdl/2003/WSDL"); //$NON-NLS-1$ 
+      if (theWSDLFactory != null)
+      {
+        return theWSDLFactory;
+      }
+    }
+    catch (Exception exception)
+    {
+      EcorePlugin.INSTANCE.log(exception);
+    }
+    return new WSDLFactoryImpl();
+  }
+
+  /**
+   * Creates an instance of the factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -75,29 +78,50 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
   {
     switch (eClass.getClassifierID())
     {
-      case WSDLPackage.PORT_TYPE: return createPortType();
-      case WSDLPackage.OPERATION: return createOperation();
-      case WSDLPackage.MESSAGE: return createMessage();
-      case WSDLPackage.PART: return createPart();
-      case WSDLPackage.BINDING: return createBinding();
-      case WSDLPackage.BINDING_OPERATION: return createBindingOperation();
-      case WSDLPackage.SERVICE: return createService();
-      case WSDLPackage.PORT: return createPort();
-      case WSDLPackage.EXTENSIBILITY_ELEMENT: return createExtensibilityElement();
-      case WSDLPackage.DEFINITION: return createDefinition();
-      case WSDLPackage.IMPORT: return createImport();
-      case WSDLPackage.INPUT: return createInput();
-      case WSDLPackage.OUTPUT: return createOutput();
-      case WSDLPackage.FAULT: return createFault();
-      case WSDLPackage.BINDING_INPUT: return createBindingInput();
-      case WSDLPackage.BINDING_OUTPUT: return createBindingOutput();
-      case WSDLPackage.BINDING_FAULT: return createBindingFault();
-      case WSDLPackage.NAMESPACE: return createNamespace();
-      case WSDLPackage.TYPES: return createTypes();
-      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT: return createUnknownExtensibilityElement();
-      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT: return createXSDSchemaExtensibilityElement();
+      case WSDLPackage.PORT_TYPE:
+      return createPortType();
+      case WSDLPackage.OPERATION:
+      return createOperation();
+      case WSDLPackage.MESSAGE:
+      return createMessage();
+      case WSDLPackage.PART:
+      return createPart();
+      case WSDLPackage.BINDING:
+      return createBinding();
+      case WSDLPackage.BINDING_OPERATION:
+      return createBindingOperation();
+      case WSDLPackage.SERVICE:
+      return createService();
+      case WSDLPackage.PORT:
+      return createPort();
+      case WSDLPackage.EXTENSIBILITY_ELEMENT:
+      return createExtensibilityElement();
+      case WSDLPackage.DEFINITION:
+      return createDefinition();
+      case WSDLPackage.IMPORT:
+      return createImport();
+      case WSDLPackage.INPUT:
+      return createInput();
+      case WSDLPackage.OUTPUT:
+      return createOutput();
+      case WSDLPackage.FAULT:
+      return createFault();
+      case WSDLPackage.BINDING_INPUT:
+      return createBindingInput();
+      case WSDLPackage.BINDING_OUTPUT:
+      return createBindingOutput();
+      case WSDLPackage.BINDING_FAULT:
+      return createBindingFault();
+      case WSDLPackage.NAMESPACE:
+      return createNamespace();
+      case WSDLPackage.TYPES:
+      return createTypes();
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT:
+      return createUnknownExtensibilityElement();
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT:
+      return createXSDSchemaExtensibilityElement();
       default:
-        throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -111,17 +135,17 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
     switch (eDataType.getClassifierID())
     {
       case WSDLPackage.QNAME:
-        return createQNameFromString(eDataType, initialValue);
+      return createQNameFromString(eDataType, initialValue);
       case WSDLPackage.OPERATION_TYPE:
-        return createOperationTypeFromString(eDataType, initialValue);
+      return createOperationTypeFromString(eDataType, initialValue);
       case WSDLPackage.DOM_ELEMENT:
-        return createDOMElementFromString(eDataType, initialValue);
+      return createDOMElementFromString(eDataType, initialValue);
       case WSDLPackage.WSDL_EXCEPTION:
-        return createWSDLExceptionFromString(eDataType, initialValue);
+      return createWSDLExceptionFromString(eDataType, initialValue);
       case WSDLPackage.DOM_DOCUMENT:
-        return createDOMDocumentFromString(eDataType, initialValue);
+      return createDOMDocumentFromString(eDataType, initialValue);
       default:
-        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -135,17 +159,17 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
     switch (eDataType.getClassifierID())
     {
       case WSDLPackage.QNAME:
-        return convertQNameToString(eDataType, instanceValue);
+      return convertQNameToString(eDataType, instanceValue);
       case WSDLPackage.OPERATION_TYPE:
-        return convertOperationTypeToString(eDataType, instanceValue);
+      return convertOperationTypeToString(eDataType, instanceValue);
       case WSDLPackage.DOM_ELEMENT:
-        return convertDOMElementToString(eDataType, instanceValue);
+      return convertDOMElementToString(eDataType, instanceValue);
       case WSDLPackage.WSDL_EXCEPTION:
-        return convertWSDLExceptionToString(eDataType, instanceValue);
+      return convertWSDLExceptionToString(eDataType, instanceValue);
       case WSDLPackage.DOM_DOCUMENT:
-        return convertDOMDocumentToString(eDataType, instanceValue);
+      return convertDOMDocumentToString(eDataType, instanceValue);
       default:
-        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
@@ -246,7 +270,7 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
   {
     ExtensibilityElementImpl extensibilityElement = new ExtensibilityElementImpl();
     return extensibilityElement;
-  }   
+  }
 
   /**
    * <!-- begin-user-doc -->
@@ -379,7 +403,6 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
     XSDSchemaExtensibilityElementImpl xsdSchemaExtensibilityElement = new XSDSchemaExtensibilityElementImpl();
     return xsdSchemaExtensibilityElement;
   }
-  
 
   /**
    * <!-- begin-user-doc -->
@@ -404,11 +427,27 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated NOT
    */
   public OperationType createOperationTypeFromString(EDataType eDataType, String initialValue)
   {
-    return (OperationType)super.createFromString(eDataType, initialValue);
+    if ("REQUEST_RESPONSE".equals(initialValue))
+    {
+      return OperationType.REQUEST_RESPONSE;
+    }
+    else if ("ONE_WAY".equals(initialValue))
+    {
+      return OperationType.ONE_WAY;
+    }
+    else if ("NOTIFICATION".equals(initialValue))
+    {
+      return OperationType.NOTIFICATION;
+    }
+    else if ("SOLICIT_RESPONSE".equals(initialValue))
+    {
+      return OperationType.SOLICIT_RESPONSE;
+    }
+    return null;
   }
 
   /**
@@ -501,7 +540,7 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
   {
     return WSDLPackage.eINSTANCE;
   }
-  
+
   //
   //
   //
@@ -513,11 +552,11 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
     else
       return createUnknownExtensibilityElement();
   }
-  
+
   /*
-  public void setAlwaysUseUnknownExtensibilityElement(boolean value)
-  {
-    System.out.println("Deprecated: WSDLFactoryImpl.setUseExtensionFactories");
-  }
-  */
+   public void setAlwaysUseUnknownExtensibilityElement(boolean value)
+   {
+   System.out.println("Deprecated: WSDLFactoryImpl.setUseExtensionFactories");
+   }
+   */
 } //WSDLFactoryImpl

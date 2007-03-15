@@ -11,6 +11,7 @@
 
 package org.eclipse.wst.wsdl.tests;
 
+
 import java.util.List;
 
 import junit.framework.Assert;
@@ -30,6 +31,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDParser;
 import org.w3c.dom.Element;
 
+
 /**
  * Test class used to validate the WSDL model source location tracking
  * mechanism.
@@ -41,12 +43,12 @@ public class LocationTrackingTest extends TestCase
   {
     TestSuite suite = new TestSuite();
     suite.addTest(new LocationTrackingTest()
-    {
-      protected void runTest()
       {
-        testTracksLocation();
-      }
-    });
+        protected void runTest()
+        {
+          testTracksLocation();
+        }
+      });
     return suite;
   }
 
@@ -77,7 +79,7 @@ public class LocationTrackingTest extends TestCase
 
       assertEquals(1, typesExtensibilityElements.size());
 
-      XSDSchemaExtensibilityElement schemaExtension = (XSDSchemaExtensibilityElement) typesExtensibilityElements.get(0);
+      XSDSchemaExtensibilityElement schemaExtension = (XSDSchemaExtensibilityElement)typesExtensibilityElements.get(0);
 
       XSDSchema schema = schemaExtension.getSchema();
 
@@ -93,7 +95,7 @@ public class LocationTrackingTest extends TestCase
 
       List services = definition.getEServices();
       assertEquals(1, services.size());
-      Service service = (Service) services.get(0);
+      Service service = (Service)services.get(0);
 
       Element serviceElement = service.getElement();
       assertEquals(42, WSDLParser.getStartLine(serviceElement));

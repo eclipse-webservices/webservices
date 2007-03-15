@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.util;
+
 
 import java.net.URL;
 import java.util.Iterator;
@@ -19,31 +20,7 @@ import javax.wsdl.extensions.ExtensionRegistry;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.BindingFault;
-import org.eclipse.wst.wsdl.BindingInput;
-import org.eclipse.wst.wsdl.BindingOperation;
-import org.eclipse.wst.wsdl.BindingOutput;
-import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
-import org.eclipse.wst.wsdl.ExtensibleElement;
-import org.eclipse.wst.wsdl.Fault;
-import org.eclipse.wst.wsdl.Import;
-import org.eclipse.wst.wsdl.Input;
-import org.eclipse.wst.wsdl.Message;
-import org.eclipse.wst.wsdl.MessageReference;
-import org.eclipse.wst.wsdl.Namespace;
-import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.Output;
-import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.Types;
-import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
-import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.*;
 
 
 /**
@@ -56,10 +33,11 @@ import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see org.eclipse.wsdl.WSDLPackage
+ * @see org.eclipse.wst.wsdl.WSDLPackage
  * @generated
  */
-public class WSDLSwitch {
+public class WSDLSwitch
+{
   /**
    * The cached model package
    * <!-- begin-user-doc -->
@@ -91,216 +69,347 @@ public class WSDLSwitch {
    */
   public Object doSwitch(EObject theEObject)
   {
-    EClass theEClass = theEObject.eClass();
+    return doSwitch(theEObject.eClass(), theEObject);
+  }
+
+  /**
+   * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the first non-null result returned by a <code>caseXXX</code> call.
+   * @generated
+   */
+  protected Object doSwitch(EClass theEClass, EObject theEObject)
+  {
     if (theEClass.eContainer() == modelPackage)
     {
-      switch (theEClass.getClassifierID())
-      {
-        case WSDLPackage.PORT_TYPE:
-        {
-          PortType portType = (PortType)theEObject;
-          Object result = casePortType(portType);
-          if (result == null) result = caseWSDLElement(portType);
-          if (result == null) result = caseIPortType(portType);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.OPERATION:
-        {
-          Operation operation = (Operation)theEObject;
-          Object result = caseOperation(operation);
-          if (result == null) result = caseWSDLElement(operation);
-          if (result == null) result = caseIOperation(operation);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.MESSAGE:
-        {
-          Message message = (Message)theEObject;
-          Object result = caseMessage(message);
-          if (result == null) result = caseWSDLElement(message);
-          if (result == null) result = caseIMessage(message);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.PART:
-        {
-          Part part = (Part)theEObject;
-          Object result = casePart(part);
-          if (result == null) result = caseWSDLElement(part);
-          if (result == null) result = caseIPart(part);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.BINDING:
-        {
-          Binding binding = (Binding)theEObject;
-          Object result = caseBinding(binding);
-          if (result == null) result = caseExtensibleElement(binding);
-          if (result == null) result = caseIBinding(binding);
-          if (result == null) result = caseWSDLElement(binding);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.BINDING_OPERATION:
-        {
-          BindingOperation bindingOperation = (BindingOperation)theEObject;
-          Object result = caseBindingOperation(bindingOperation);
-          if (result == null) result = caseExtensibleElement(bindingOperation);
-          if (result == null) result = caseIBindingOperation(bindingOperation);
-          if (result == null) result = caseWSDLElement(bindingOperation);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.SERVICE:
-        {
-          Service service = (Service)theEObject;
-          Object result = caseService(service);
-          if (result == null) result = caseExtensibleElement(service);
-          if (result == null) result = caseIService(service);
-          if (result == null) result = caseWSDLElement(service);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.PORT:
-        {
-          Port port = (Port)theEObject;
-          Object result = casePort(port);
-          if (result == null) result = caseExtensibleElement(port);
-          if (result == null) result = caseIPort(port);
-          if (result == null) result = caseWSDLElement(port);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.EXTENSIBILITY_ELEMENT:
-        {
-          ExtensibilityElement extensibilityElement = (ExtensibilityElement)theEObject;
-          Object result = caseExtensibilityElement(extensibilityElement);
-          if (result == null) result = caseWSDLElement(extensibilityElement);
-          if (result == null) result = caseIExtensibilityElement(extensibilityElement);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.DEFINITION:
-        {
-          Definition definition = (Definition)theEObject;
-          Object result = caseDefinition(definition);
-          if (result == null) result = caseExtensibleElement(definition);
-          if (result == null) result = caseIDefinition(definition);
-          if (result == null) result = caseWSDLElement(definition);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.IMPORT:
-        {
-          Import import_ = (Import)theEObject;
-          Object result = caseImport(import_);
-          if (result == null) result = caseWSDLElement(import_);
-          if (result == null) result = caseIImport(import_);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.INPUT:
-        {
-          Input input = (Input)theEObject;
-          Object result = caseInput(input);
-          if (result == null) result = caseMessageReference(input);
-          if (result == null) result = caseWSDLElement(input);
-          if (result == null) result = caseIInput(input);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.OUTPUT:
-        {
-          Output output = (Output)theEObject;
-          Object result = caseOutput(output);
-          if (result == null) result = caseMessageReference(output);
-          if (result == null) result = caseWSDLElement(output);
-          if (result == null) result = caseIOutput(output);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.FAULT:
-        {
-          Fault fault = (Fault)theEObject;
-          Object result = caseFault(fault);
-          if (result == null) result = caseMessageReference(fault);
-          if (result == null) result = caseWSDLElement(fault);
-          if (result == null) result = caseIFault(fault);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.BINDING_INPUT:
-        {
-          BindingInput bindingInput = (BindingInput)theEObject;
-          Object result = caseBindingInput(bindingInput);
-          if (result == null) result = caseExtensibleElement(bindingInput);
-          if (result == null) result = caseIBindingInput(bindingInput);
-          if (result == null) result = caseWSDLElement(bindingInput);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.BINDING_OUTPUT:
-        {
-          BindingOutput bindingOutput = (BindingOutput)theEObject;
-          Object result = caseBindingOutput(bindingOutput);
-          if (result == null) result = caseExtensibleElement(bindingOutput);
-          if (result == null) result = caseIBindingOutput(bindingOutput);
-          if (result == null) result = caseWSDLElement(bindingOutput);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.BINDING_FAULT:
-        {
-          BindingFault bindingFault = (BindingFault)theEObject;
-          Object result = caseBindingFault(bindingFault);
-          if (result == null) result = caseExtensibleElement(bindingFault);
-          if (result == null) result = caseIBindingFault(bindingFault);
-          if (result == null) result = caseWSDLElement(bindingFault);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.NAMESPACE:
-        {
-          Namespace namespace = (Namespace)theEObject;
-          Object result = caseNamespace(namespace);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.TYPES:
-        {
-          Types types = (Types)theEObject;
-          Object result = caseTypes(types);
-          if (result == null) result = caseExtensibleElement(types);
-          if (result == null) result = caseITypes(types);
-          if (result == null) result = caseWSDLElement(types);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT:
-        {
-          UnknownExtensibilityElement unknownExtensibilityElement = (UnknownExtensibilityElement)theEObject;
-          Object result = caseUnknownExtensibilityElement(unknownExtensibilityElement);
-          if (result == null) result = caseExtensibilityElement(unknownExtensibilityElement);
-          if (result == null) result = caseWSDLElement(unknownExtensibilityElement);
-          if (result == null) result = caseIExtensibilityElement(unknownExtensibilityElement);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT:
-        {
-          XSDSchemaExtensibilityElement xsdSchemaExtensibilityElement = (XSDSchemaExtensibilityElement)theEObject;
-          Object result = caseXSDSchemaExtensibilityElement(xsdSchemaExtensibilityElement);
-          if (result == null) result = caseExtensibilityElement(xsdSchemaExtensibilityElement);
-          if (result == null) result = caseWSDLElement(xsdSchemaExtensibilityElement);
-          if (result == null) result = caseIExtensibilityElement(xsdSchemaExtensibilityElement);
-          if (result == null) result = defaultCase(theEObject);
-          return result;
-        }
-        default: return defaultCase(theEObject);
-      }
+      return doSwitch(theEClass.getClassifierID(), theEObject);
     }
-    return defaultCase(theEObject);
+    else
+    {
+      List eSuperTypes = theEClass.getESuperTypes();
+      return eSuperTypes.isEmpty() ? defaultCase(theEObject) : doSwitch((EClass)eSuperTypes.get(0), theEObject);
+    }
+  }
+
+  /**
+   * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the first non-null result returned by a <code>caseXXX</code> call.
+   * @generated
+   */
+  protected Object doSwitch(int classifierID, EObject theEObject)
+  {
+    switch (classifierID)
+    {
+      case WSDLPackage.WSDL_ELEMENT:
+      {
+        WSDLElement wsdlElement = (WSDLElement)theEObject;
+        Object result = caseWSDLElement(wsdlElement);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.PORT_TYPE:
+      {
+        PortType portType = (PortType)theEObject;
+        Object result = casePortType(portType);
+        if (result == null)
+          result = caseWSDLElement(portType);
+        if (result == null)
+          result = caseIPortType(portType);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.OPERATION:
+      {
+        Operation operation = (Operation)theEObject;
+        Object result = caseOperation(operation);
+        if (result == null)
+          result = caseWSDLElement(operation);
+        if (result == null)
+          result = caseIOperation(operation);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.MESSAGE:
+      {
+        Message message = (Message)theEObject;
+        Object result = caseMessage(message);
+        if (result == null)
+          result = caseWSDLElement(message);
+        if (result == null)
+          result = caseIMessage(message);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.PART:
+      {
+        Part part = (Part)theEObject;
+        Object result = casePart(part);
+        if (result == null)
+          result = caseWSDLElement(part);
+        if (result == null)
+          result = caseIPart(part);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.BINDING:
+      {
+        Binding binding = (Binding)theEObject;
+        Object result = caseBinding(binding);
+        if (result == null)
+          result = caseExtensibleElement(binding);
+        if (result == null)
+          result = caseIBinding(binding);
+        if (result == null)
+          result = caseWSDLElement(binding);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.BINDING_OPERATION:
+      {
+        BindingOperation bindingOperation = (BindingOperation)theEObject;
+        Object result = caseBindingOperation(bindingOperation);
+        if (result == null)
+          result = caseExtensibleElement(bindingOperation);
+        if (result == null)
+          result = caseIBindingOperation(bindingOperation);
+        if (result == null)
+          result = caseWSDLElement(bindingOperation);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.SERVICE:
+      {
+        Service service = (Service)theEObject;
+        Object result = caseService(service);
+        if (result == null)
+          result = caseExtensibleElement(service);
+        if (result == null)
+          result = caseIService(service);
+        if (result == null)
+          result = caseWSDLElement(service);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.PORT:
+      {
+        Port port = (Port)theEObject;
+        Object result = casePort(port);
+        if (result == null)
+          result = caseExtensibleElement(port);
+        if (result == null)
+          result = caseIPort(port);
+        if (result == null)
+          result = caseWSDLElement(port);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.EXTENSIBILITY_ELEMENT:
+      {
+        ExtensibilityElement extensibilityElement = (ExtensibilityElement)theEObject;
+        Object result = caseExtensibilityElement(extensibilityElement);
+        if (result == null)
+          result = caseWSDLElement(extensibilityElement);
+        if (result == null)
+          result = caseIExtensibilityElement(extensibilityElement);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.DEFINITION:
+      {
+        Definition definition = (Definition)theEObject;
+        Object result = caseDefinition(definition);
+        if (result == null)
+          result = caseExtensibleElement(definition);
+        if (result == null)
+          result = caseIDefinition(definition);
+        if (result == null)
+          result = caseWSDLElement(definition);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.IMPORT:
+      {
+        Import import_ = (Import)theEObject;
+        Object result = caseImport(import_);
+        if (result == null)
+          result = caseWSDLElement(import_);
+        if (result == null)
+          result = caseIImport(import_);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.EXTENSIBLE_ELEMENT:
+      {
+        ExtensibleElement extensibleElement = (ExtensibleElement)theEObject;
+        Object result = caseExtensibleElement(extensibleElement);
+        if (result == null)
+          result = caseWSDLElement(extensibleElement);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.INPUT:
+      {
+        Input input = (Input)theEObject;
+        Object result = caseInput(input);
+        if (result == null)
+          result = caseMessageReference(input);
+        if (result == null)
+          result = caseWSDLElement(input);
+        if (result == null)
+          result = caseIInput(input);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.OUTPUT:
+      {
+        Output output = (Output)theEObject;
+        Object result = caseOutput(output);
+        if (result == null)
+          result = caseMessageReference(output);
+        if (result == null)
+          result = caseWSDLElement(output);
+        if (result == null)
+          result = caseIOutput(output);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.FAULT:
+      {
+        Fault fault = (Fault)theEObject;
+        Object result = caseFault(fault);
+        if (result == null)
+          result = caseMessageReference(fault);
+        if (result == null)
+          result = caseWSDLElement(fault);
+        if (result == null)
+          result = caseIFault(fault);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.BINDING_INPUT:
+      {
+        BindingInput bindingInput = (BindingInput)theEObject;
+        Object result = caseBindingInput(bindingInput);
+        if (result == null)
+          result = caseExtensibleElement(bindingInput);
+        if (result == null)
+          result = caseIBindingInput(bindingInput);
+        if (result == null)
+          result = caseWSDLElement(bindingInput);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.BINDING_OUTPUT:
+      {
+        BindingOutput bindingOutput = (BindingOutput)theEObject;
+        Object result = caseBindingOutput(bindingOutput);
+        if (result == null)
+          result = caseExtensibleElement(bindingOutput);
+        if (result == null)
+          result = caseIBindingOutput(bindingOutput);
+        if (result == null)
+          result = caseWSDLElement(bindingOutput);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.BINDING_FAULT:
+      {
+        BindingFault bindingFault = (BindingFault)theEObject;
+        Object result = caseBindingFault(bindingFault);
+        if (result == null)
+          result = caseExtensibleElement(bindingFault);
+        if (result == null)
+          result = caseIBindingFault(bindingFault);
+        if (result == null)
+          result = caseWSDLElement(bindingFault);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.NAMESPACE:
+      {
+        Namespace namespace = (Namespace)theEObject;
+        Object result = caseNamespace(namespace);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.TYPES:
+      {
+        Types types = (Types)theEObject;
+        Object result = caseTypes(types);
+        if (result == null)
+          result = caseExtensibleElement(types);
+        if (result == null)
+          result = caseITypes(types);
+        if (result == null)
+          result = caseWSDLElement(types);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.UNKNOWN_EXTENSIBILITY_ELEMENT:
+      {
+        UnknownExtensibilityElement unknownExtensibilityElement = (UnknownExtensibilityElement)theEObject;
+        Object result = caseUnknownExtensibilityElement(unknownExtensibilityElement);
+        if (result == null)
+          result = caseExtensibilityElement(unknownExtensibilityElement);
+        if (result == null)
+          result = caseWSDLElement(unknownExtensibilityElement);
+        if (result == null)
+          result = caseIExtensibilityElement(unknownExtensibilityElement);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT:
+      {
+        XSDSchemaExtensibilityElement xsdSchemaExtensibilityElement = (XSDSchemaExtensibilityElement)theEObject;
+        Object result = caseXSDSchemaExtensibilityElement(xsdSchemaExtensibilityElement);
+        if (result == null)
+          result = caseExtensibilityElement(xsdSchemaExtensibilityElement);
+        if (result == null)
+          result = caseWSDLElement(xsdSchemaExtensibilityElement);
+        if (result == null)
+          result = caseIExtensibilityElement(xsdSchemaExtensibilityElement);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      case WSDLPackage.MESSAGE_REFERENCE:
+      {
+        MessageReference messageReference = (MessageReference)theEObject;
+        Object result = caseMessageReference(messageReference);
+        if (result == null)
+          result = caseWSDLElement(messageReference);
+        if (result == null)
+          result = defaultCase(theEObject);
+        return result;
+      }
+      default:
+      return defaultCase(theEObject);
+    }
   }
 
   /**

@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.util;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import org.w3c.dom.Node;
 public class WSDLUtil extends WSDLConstants
 {
   protected static WSDLUtil instance;
+
   //  protected NodeAssociationManager nodeAssociationManager = new NodeAssociationManager();
 
   protected HashMap elementNameToTypeMap = new HashMap();
@@ -63,7 +65,7 @@ public class WSDLUtil extends WSDLConstants
   {
     int result = -1;
 
-    Integer integer = (Integer) elementNameToTypeMap.get(element.getLocalName());
+    Integer integer = (Integer)elementNameToTypeMap.get(element.getLocalName());
     if (integer != null)
     {
       result = integer.intValue();
@@ -78,41 +80,41 @@ public class WSDLUtil extends WSDLConstants
     {
       list.add(0, element);
       Node node = element.getParentNode();
-      element = (node != null && node.getNodeType() == Node.ELEMENT_NODE) ? (Element) node : null;
+      element = (node != null && node.getNodeType() == Node.ELEMENT_NODE) ? (Element)node : null;
     }
     return list;
   }
 
   /*
-    public Object findModelObjectForElement(Definition definition, Element targetElement)
-    {   
-      Object o = nodeAssociationManager.getModelObjectForNode(definition, targetElement);
-      return o;
-    }
-  
-              
-    public Element getElementForObject(Object o)
-    {      
-      Node node = nodeAssociationManager.getNode(o);  
-      return (node != null && node.getNodeType() == Node.ELEMENT_NODE) ? (Element)node : null;                  
-    }
-    
-    public Node getNodeForObject(Object o)
-    {      
-      return nodeAssociationManager.getNode(o);                      
-    }
-  
-    public ITypeSystemProvider getTypeSystemProvider(Definition definition)
-    {      
-      return WSDLToDOMElementUtil.getTypeSystemProvider(definition);                    
-    }
-  
-  
-    public void setTypeSystemProvider(Definition definition, ITypeSystemProvider typeSystemProvider)
-    {      
-      WSDLToDOMElementUtil.setTypeSystemProvider(definition, typeSystemProvider);                      
-    }   
-  */
+   public Object findModelObjectForElement(Definition definition, Element targetElement)
+   {   
+   Object o = nodeAssociationManager.getModelObjectForNode(definition, targetElement);
+   return o;
+   }
+   
+   
+   public Element getElementForObject(Object o)
+   {      
+   Node node = nodeAssociationManager.getNode(o);  
+   return (node != null && node.getNodeType() == Node.ELEMENT_NODE) ? (Element)node : null;                  
+   }
+   
+   public Node getNodeForObject(Object o)
+   {      
+   return nodeAssociationManager.getNode(o);                      
+   }
+   
+   public ITypeSystemProvider getTypeSystemProvider(Definition definition)
+   {      
+   return WSDLToDOMElementUtil.getTypeSystemProvider(definition);                    
+   }
+   
+   
+   public void setTypeSystemProvider(Definition definition, ITypeSystemProvider typeSystemProvider)
+   {      
+   WSDLToDOMElementUtil.setTypeSystemProvider(definition, typeSystemProvider);                      
+   }   
+   */
 
   public static QName createQName(Definition definition, String prefixedName)
   {
@@ -139,7 +141,7 @@ public class WSDLUtil extends WSDLConstants
     List childList = new ArrayList();
     for (Iterator i = extensibleElement.getEExtensibilityElements().iterator(); i.hasNext();)
     {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) i.next();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)i.next();
       if (extensibilityElement != null)
       {
         Element element = extensibilityElement.getElement();

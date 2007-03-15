@@ -1,19 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap.internal.util;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+
 
 public class SOAPExtensibilityElementFactory implements ExtensibilityElementFactory
 {
@@ -35,19 +37,19 @@ public class SOAPExtensibilityElementFactory implements ExtensibilityElementFact
       }
       else if (SOAPConstants.FAULT_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPFault();
+        return SOAPFactory.eINSTANCE.createSOAPFault();
       }
       else if (SOAPConstants.OPERATION_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPOperation();
+        return SOAPFactory.eINSTANCE.createSOAPOperation();
       }
       else if (SOAPConstants.HEADER_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPHeader();
+        return SOAPFactory.eINSTANCE.createSOAPHeader();
       }
       else if (SOAPConstants.HEADER_FAULT_ELEMENT_TAG.equals(localName))
       {
-      	return SOAPFactory.eINSTANCE.createSOAPHeaderFault();
+        return SOAPFactory.eINSTANCE.createSOAPHeaderFault();
       }
       else
       {

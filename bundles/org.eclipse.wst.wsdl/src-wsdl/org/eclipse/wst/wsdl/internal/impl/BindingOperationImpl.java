@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +23,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -43,7 +43,6 @@ import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Binding Operation</b></em>'.
@@ -51,11 +50,11 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEOperation <em>EOperation</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEBindingInput <em>EBinding Input</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEBindingOutput <em>EBinding Output</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOperationImpl#getEBindingFaults <em>EBinding Faults</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEOperation <em>EOperation</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEBindingInput <em>EBinding Input</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEBindingOutput <em>EBinding Output</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl#getEBindingFaults <em>EBinding Faults</em>}</li>
  * </ul>
  * </p>
  *
@@ -147,7 +146,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getBindingOperation();
+    return WSDLPackage.Literals.BINDING_OPERATION;
   }
 
   /**
@@ -182,8 +181,8 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
   {
     if (eOperation != null && eOperation.eIsProxy())
     {
-      Operation oldEOperation = eOperation;
-      eOperation = (Operation)eResolveProxy((InternalEObject)eOperation);
+      InternalEObject oldEOperation = (InternalEObject)eOperation;
+      eOperation = (Operation)eResolveProxy(oldEOperation);
       if (eOperation != oldEOperation)
       {
         if (eNotificationRequired())
@@ -237,8 +236,16 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     eBindingInput = newEBindingInput;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.BINDING_OPERATION__EBINDING_INPUT, oldEBindingInput, newEBindingInput);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      ENotificationImpl notification = new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.BINDING_OPERATION__EBINDING_INPUT,
+        oldEBindingInput,
+        newEBindingInput);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -254,14 +261,28 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     {
       NotificationChain msgs = null;
       if (eBindingInput != null)
-        msgs = ((InternalEObject)eBindingInput).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.BINDING_OPERATION__EBINDING_INPUT, null, msgs);
+        msgs = ((InternalEObject)eBindingInput).eInverseRemove(
+          this,
+          EOPPOSITE_FEATURE_BASE - WSDLPackage.BINDING_OPERATION__EBINDING_INPUT,
+          null,
+          msgs);
       if (newEBindingInput != null)
-        msgs = ((InternalEObject)newEBindingInput).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.BINDING_OPERATION__EBINDING_INPUT, null, msgs);
+        msgs = ((InternalEObject)newEBindingInput).eInverseAdd(
+          this,
+          EOPPOSITE_FEATURE_BASE - WSDLPackage.BINDING_OPERATION__EBINDING_INPUT,
+          null,
+          msgs);
       msgs = basicSetEBindingInput(newEBindingInput, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.BINDING_OPERATION__EBINDING_INPUT, newEBindingInput, newEBindingInput));
+      eNotify(new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.BINDING_OPERATION__EBINDING_INPUT,
+        newEBindingInput,
+        newEBindingInput));
   }
 
   /**
@@ -285,8 +306,16 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     eBindingOutput = newEBindingOutput;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT, oldEBindingOutput, newEBindingOutput);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      ENotificationImpl notification = new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT,
+        oldEBindingOutput,
+        newEBindingOutput);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -302,14 +331,22 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     {
       NotificationChain msgs = null;
       if (eBindingOutput != null)
-        msgs = ((InternalEObject)eBindingOutput).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT, null, msgs);
+        msgs = ((InternalEObject)eBindingOutput).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+          - WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT, null, msgs);
       if (newEBindingOutput != null)
-        msgs = ((InternalEObject)newEBindingOutput).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT, null, msgs);
+        msgs = ((InternalEObject)newEBindingOutput).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+          - WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT, null, msgs);
       msgs = basicSetEBindingOutput(newEBindingOutput, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT, newEBindingOutput, newEBindingOutput));
+      eNotify(new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT,
+        newEBindingOutput,
+        newEBindingOutput));
   }
 
   /**
@@ -352,7 +389,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     BindingFault result = null;
     for (Iterator i = getEBindingFaults().iterator(); i.hasNext();)
     {
-      BindingFault fault = (BindingFault) i.next();
+      BindingFault fault = (BindingFault)i.next();
       if (name.equals(fault.getName()))
       {
         result = fault;
@@ -374,7 +411,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     HashMap hashMap = new HashMap();
     for (Iterator i = getEBindingFaults().iterator(); i.hasNext();)
     {
-      BindingFault bindingFault = (BindingFault) i.next();
+      BindingFault bindingFault = (BindingFault)i.next();
       hashMap.put(bindingFault.getName(), bindingFault);
     }
     return hashMap;
@@ -397,7 +434,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    */
   public void setOperation(javax.wsdl.Operation operation)
   {
-    setEOperation((Operation) operation);
+    setEOperation((Operation)operation);
   }
 
   /**
@@ -419,7 +456,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    */
   public void setBindingInput(javax.wsdl.BindingInput bindingInput)
   {
-    setEBindingInput((BindingInput) bindingInput);
+    setEBindingInput((BindingInput)bindingInput);
   }
 
   /**
@@ -440,7 +477,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    */
   public void setBindingOutput(javax.wsdl.BindingOutput bindingOutput)
   {
-    setEBindingOutput((BindingOutput) bindingOutput);
+    setEBindingOutput((BindingOutput)bindingOutput);
   }
 
   /**
@@ -448,55 +485,18 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    if (featureID >= 0)
+    switch (featureID)
     {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.BINDING_OPERATION__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.BINDING_OPERATION__EBINDING_INPUT:
-          return basicSetEBindingInput(null, msgs);
-        case WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT:
-          return basicSetEBindingOutput(null, msgs);
-        case WSDLPackage.BINDING_OPERATION__EBINDING_FAULTS:
-          return ((InternalEList)getEBindingFaults()).basicRemove(otherEnd, msgs);
-        default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
-    }
-    return eBasicSetContainer(null, featureID, msgs);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.BINDING_OPERATION__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
-      case WSDLPackage.BINDING_OPERATION__ELEMENT:
-        return getElement();
-      case WSDLPackage.BINDING_OPERATION__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
-      case WSDLPackage.BINDING_OPERATION__NAME:
-        return getName();
-      case WSDLPackage.BINDING_OPERATION__EOPERATION:
-        if (resolve) return getEOperation();
-        return basicGetEOperation();
       case WSDLPackage.BINDING_OPERATION__EBINDING_INPUT:
-        return getEBindingInput();
+      return basicSetEBindingInput(null, msgs);
       case WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT:
-        return getEBindingOutput();
+      return basicSetEBindingOutput(null, msgs);
       case WSDLPackage.BINDING_OPERATION__EBINDING_FAULTS:
-        return getEBindingFaults();
+      return ((InternalEList)getEBindingFaults()).basicRemove(otherEnd, msgs);
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -504,38 +504,24 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_OPERATION__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
-      case WSDLPackage.BINDING_OPERATION__ELEMENT:
-        setElement((Element)newValue);
-        return;
-      case WSDLPackage.BINDING_OPERATION__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
       case WSDLPackage.BINDING_OPERATION__NAME:
-        setName((String)newValue);
-        return;
+      return getName();
       case WSDLPackage.BINDING_OPERATION__EOPERATION:
-        setEOperation((Operation)newValue);
-        return;
+      if (resolve)
+        return getEOperation();
+      return basicGetEOperation();
       case WSDLPackage.BINDING_OPERATION__EBINDING_INPUT:
-        setEBindingInput((BindingInput)newValue);
-        return;
+      return getEBindingInput();
       case WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT:
-        setEBindingOutput((BindingOutput)newValue);
-        return;
+      return getEBindingOutput();
       case WSDLPackage.BINDING_OPERATION__EBINDING_FAULTS:
-        getEBindingFaults().clear();
-        getEBindingFaults().addAll((Collection)newValue);
-        return;
+      return getEBindingFaults();
     }
-    eDynamicSet(eFeature, newValue);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -543,36 +529,28 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_OPERATION__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.BINDING_OPERATION__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.BINDING_OPERATION__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
       case WSDLPackage.BINDING_OPERATION__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.BINDING_OPERATION__EOPERATION:
-        setEOperation((Operation)null);
-        return;
+      setEOperation((Operation)newValue);
+      return;
       case WSDLPackage.BINDING_OPERATION__EBINDING_INPUT:
-        setEBindingInput((BindingInput)null);
-        return;
+      setEBindingInput((BindingInput)newValue);
+      return;
       case WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT:
-        setEBindingOutput((BindingOutput)null);
-        return;
+      setEBindingOutput((BindingOutput)newValue);
+      return;
       case WSDLPackage.BINDING_OPERATION__EBINDING_FAULTS:
-        getEBindingFaults().clear();
-        return;
+      getEBindingFaults().clear();
+      getEBindingFaults().addAll((Collection)newValue);
+      return;
     }
-    eDynamicUnset(eFeature);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -580,28 +558,50 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_OPERATION__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.BINDING_OPERATION__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.BINDING_OPERATION__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
       case WSDLPackage.BINDING_OPERATION__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_OPERATION__EOPERATION:
-        return eOperation != null;
+      setEOperation((Operation)null);
+      return;
       case WSDLPackage.BINDING_OPERATION__EBINDING_INPUT:
-        return eBindingInput != null;
+      setEBindingInput((BindingInput)null);
+      return;
       case WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT:
-        return eBindingOutput != null;
+      setEBindingOutput((BindingOutput)null);
+      return;
       case WSDLPackage.BINDING_OPERATION__EBINDING_FAULTS:
-        return eBindingFaults != null && !eBindingFaults.isEmpty();
+      getEBindingFaults().clear();
+      return;
     }
-    return eDynamicIsSet(eFeature);
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.BINDING_OPERATION__NAME:
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case WSDLPackage.BINDING_OPERATION__EOPERATION:
+      return eOperation != null;
+      case WSDLPackage.BINDING_OPERATION__EBINDING_INPUT:
+      return eBindingInput != null;
+      case WSDLPackage.BINDING_OPERATION__EBINDING_OUTPUT:
+      return eBindingOutput != null;
+      case WSDLPackage.BINDING_OPERATION__EBINDING_FAULTS:
+      return eBindingFaults != null && !eBindingFaults.isEmpty();
+    }
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -611,10 +611,11 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
+    result.append(" (name: "); //$NON-NLS-1$
     result.append(name);
     result.append(')');
     return result.toString();
@@ -639,7 +640,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
 
     switch (WSDLUtil.getInstance().getWSDLType(child))
     {
-      case WSDLConstants.INPUT :
+      case WSDLConstants.INPUT:
       {
         BindingInput input = WSDLFactory.eINSTANCE.createBindingInput();
         input.setEnclosingDefinition(definition);
@@ -647,7 +648,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
         setBindingInput(input);
         break;
       }
-      case WSDLConstants.OUTPUT :
+      case WSDLConstants.OUTPUT:
       {
         BindingOutput output = WSDLFactory.eINSTANCE.createBindingOutput();
         output.setEnclosingDefinition(definition);
@@ -655,7 +656,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
         setBindingOutput(output);
         break;
       }
-      case WSDLConstants.FAULT :
+      case WSDLConstants.FAULT:
       {
         BindingFault fault = WSDLFactory.eINSTANCE.createBindingFault();
         fault.setEnclosingDefinition(definition);
@@ -663,9 +664,9 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
         addBindingFault(fault);
         break;
       }
-      default :
+      default:
       {
-        super.handleUnreconciledElement(child,remainingModelObjects);
+        super.handleUnreconciledElement(child, remainingModelObjects);
         break;
       }
     }
@@ -681,7 +682,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
 
   protected void remove(Object component, Object modelObject)
   {
-    BindingOperation bindingOperation = (BindingOperation) component;
+    BindingOperation bindingOperation = (BindingOperation)component;
     if (modelObject instanceof BindingInput)
     {
       bindingOperation.setEBindingInput(null);
@@ -702,7 +703,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
 
   public Collection getModelObjects(Object component)
   {
-    BindingOperation bindingOperation = (BindingOperation) component;
+    BindingOperation bindingOperation = (BindingOperation)component;
 
     List list = new ArrayList();
 
@@ -745,39 +746,39 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     Element newElement = createElement(WSDLConstants.OPERATION);
     setElement(newElement);
 
-	Iterator iterator = getExtensibilityElements().iterator();
+    Iterator iterator = getExtensibilityElements().iterator();
     while (iterator.hasNext())
     {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+      Element child = ((ExtensibilityElementImpl)extensibilityElement).createElement();
       newElement.appendChild(child);
     }
-	
+
     BindingInput input = getEBindingInput();
     if (input != null)
     {
-      Element child = ((BindingInputImpl) input).createElement();
+      Element child = ((BindingInputImpl)input).createElement();
       newElement.appendChild(child);
     }
 
     BindingOutput output = getEBindingOutput();
     if (output != null)
     {
-      Element child = ((BindingOutputImpl) output).createElement();
+      Element child = ((BindingOutputImpl)output).createElement();
       newElement.appendChild(child);
     }
 
     iterator = getEBindingFaults().iterator();
     while (iterator.hasNext())
     {
-      BindingFault fault = (BindingFault) iterator.next();
-      Element child = ((BindingFaultImpl) fault).createElement();
+      BindingFault fault = (BindingFault)iterator.next();
+      Element child = ((BindingFaultImpl)fault).createElement();
       newElement.appendChild(child);
     }
 
     return newElement;
   }
-  
+
   // Resolve the reference to Operation
   public void reconcileReferences(boolean deep)
   {
@@ -789,7 +790,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
       {
         BindingInput input = getEBindingInput();
         BindingOutput output = getEBindingOutput();
-        
+
         String inputName = input != null ? input.getName() : null;
         String outputName = output != null ? output.getName() : null;
 

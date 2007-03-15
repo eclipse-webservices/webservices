@@ -10,16 +10,21 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.extensibility;
 
+
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
 import org.osgi.framework.Bundle;
+
 
 public class ExtensibilityElementFactoryDescriptor
 {
   private final static String CLASS_LOADING_ERROR = "CLASS_LOADING_ERROR";
-  
+
   protected Bundle bundle;
+
   protected String namespace;
-  protected String className;  
+
+  protected String className;
+
   protected Object factory;
 
   public ExtensibilityElementFactoryDescriptor(String className, String namespace, Bundle bundle)
@@ -46,7 +51,7 @@ public class ExtensibilityElementFactoryDescriptor
     }
     return factory != CLASS_LOADING_ERROR ? (ExtensibilityElementFactory)factory : null;
   }
-  
+
   public void setExtensiblityElementFactory(ExtensibilityElementFactory factory)
   {
     this.factory = factory;

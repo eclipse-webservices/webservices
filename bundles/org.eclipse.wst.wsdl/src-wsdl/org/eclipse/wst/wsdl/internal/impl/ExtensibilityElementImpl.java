@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -25,7 +26,6 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
@@ -41,8 +41,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.ExtensibilityElementImpl#isRequired <em>Required</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.ExtensibilityElementImpl#getElementType <em>Element Type</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl#isRequired <em>Required</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl#getElementType <em>Element Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -109,7 +109,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getExtensibilityElement();
+    return WSDLPackage.Literals.EXTENSIBILITY_ELEMENT;
   }
 
   /**
@@ -166,20 +166,16 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        return getElement();
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        return isRequired() ? Boolean.TRUE : Boolean.FALSE;
+      return isRequired() ? Boolean.TRUE : Boolean.FALSE;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        return getElementType();
+      return getElementType();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -187,24 +183,18 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        setElement((Element)newValue);
-        return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        setRequired(((Boolean)newValue).booleanValue());
-        return;
+      setRequired(((Boolean)newValue).booleanValue());
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        setElementType((QName)newValue);
-        return;
+      setElementType((QName)newValue);
+      return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -212,24 +202,18 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        setRequired(REQUIRED_EDEFAULT);
-        return;
+      setRequired(REQUIRED_EDEFAULT);
+      return;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        setElementType(ELEMENT_TYPE_EDEFAULT);
-        return;
+      setElementType(ELEMENT_TYPE_EDEFAULT);
+      return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -237,20 +221,16 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.EXTENSIBILITY_ELEMENT__REQUIRED:
-        return required != REQUIRED_EDEFAULT;
+      return required != REQUIRED_EDEFAULT;
       case WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE:
-        return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
+      return ELEMENT_TYPE_EDEFAULT == null ? elementType != null : !ELEMENT_TYPE_EDEFAULT.equals(elementType);
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -260,12 +240,13 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (required: ");
+    result.append(" (required: "); //$NON-NLS-1$
     result.append(required);
-    result.append(", elementType: ");
+    result.append(", elementType: "); //$NON-NLS-1$
     result.append(elementType);
     result.append(')');
     return result.toString();
@@ -297,7 +278,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
     if (beanPropertyDescriptors == null)
       beanPropertyDescriptors = new HashMap();
     else
-      properties = (Map) beanPropertyDescriptors.get(clazz);
+      properties = (Map)beanPropertyDescriptors.get(clazz);
 
     if (properties == null)
     {
@@ -325,7 +306,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
       properties = new HashMap();
       for (Iterator b = binfos.iterator(); b.hasNext();)
       {
-        BeanInfo binfo = (BeanInfo) b.next();
+        BeanInfo binfo = (BeanInfo)b.next();
         PropertyDescriptor[] pdesc = binfo.getPropertyDescriptors();
         if (pdesc == null)
           continue;
@@ -360,7 +341,7 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    super.handleUnreconciledElement(child,remainingModelObjects);
+    super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
   protected void handleReconciliation(Collection remainingModelObjects)
@@ -388,12 +369,12 @@ public class ExtensibilityElementImpl extends WSDLElementImpl implements Extensi
 
     Document document = definition.getDocument();
     if (document == null)
-      document = ((DefinitionImpl) definition).updateDocument();
+      document = ((DefinitionImpl)definition).updateDocument();
 
     Element newElement = null;
     if (element != null) // This is an old element.
     {
-      newElement = (Element) document.importNode(element, true); 
+      newElement = (Element)document.importNode(element, true);
       element = newElement;
     }
     else

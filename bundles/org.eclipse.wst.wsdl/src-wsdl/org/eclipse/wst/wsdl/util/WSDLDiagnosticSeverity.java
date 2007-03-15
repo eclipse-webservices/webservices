@@ -11,11 +11,13 @@
 
 package org.eclipse.wst.wsdl.util;
 
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.common.util.AbstractEnumerator;
+
 
 /**
  * WSDL diagnostic severity levels type safe enumeration. This class is similar
@@ -93,7 +95,11 @@ public final class WSDLDiagnosticSeverity extends AbstractEnumerator
   /**
    * An array of all the '<em><b>Diagnostic Severity</b></em>' enumerators.
    */
-  private static final WSDLDiagnosticSeverity[] VALUES_ARRAY = new WSDLDiagnosticSeverity[] { FATAL_LITERAL, ERROR_LITERAL, WARNING_LITERAL, INFORMATION_LITERAL, };
+  private static final WSDLDiagnosticSeverity[] VALUES_ARRAY = new WSDLDiagnosticSeverity []{
+    FATAL_LITERAL,
+    ERROR_LITERAL,
+    WARNING_LITERAL,
+    INFORMATION_LITERAL, };
 
   /**
    * A public read-only list of all the '<em><b>Diagnostic Severity</b></em>'
@@ -143,13 +149,13 @@ public final class WSDLDiagnosticSeverity extends AbstractEnumerator
   {
     switch (value)
     {
-    case FATAL:
+      case FATAL:
       return FATAL_LITERAL;
-    case ERROR:
+      case ERROR:
       return ERROR_LITERAL;
-    case WARNING:
+      case WARNING:
       return WARNING_LITERAL;
-    case INFORMATION:
+      case INFORMATION:
       return INFORMATION_LITERAL;
     }
     return null;

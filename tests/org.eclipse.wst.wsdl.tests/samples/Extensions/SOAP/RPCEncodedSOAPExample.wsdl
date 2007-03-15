@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/RPCEncodedSOAPExample/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="RPCEncodedSOAPExample"
+	targetNamespace="http://www.example.org/RPCEncodedSOAPExample/">
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part name="NewOperationRequest" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part name="NewOperationResponse" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:portType name="RPCEncodedSOAPExample">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest" />
+			<wsdl:output message="tns:NewOperationResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RPCEncodedSOAPExampleSOAP"
+		type="tns:RPCEncodedSOAPExample">
+		<soap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="NewOperation">
+			<soap:operation
+				soapAction="http://www.example.org/RPCEncodedSOAPExample/NewOperation" />
+			<wsdl:input>
+				<soap:body
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://www.example.org/RPCEncodedSOAPExample/"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://www.example.org/RPCEncodedSOAPExample/"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RPCEncodedSOAPExample">
+		<wsdl:port binding="tns:RPCEncodedSOAPExampleSOAP"
+			name="RPCEncodedSOAPExampleSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

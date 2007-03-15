@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.util;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,6 +51,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+
 /**
  * <!-- begin-user-doc -->
  * The <b>Resource</b> implementation for the model.
@@ -69,17 +71,21 @@ import org.xml.sax.SAXParseException;
  * @see org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl
  * @generated
  */
-public class WSDLResourceImpl extends ResourceImpl 
+public class WSDLResourceImpl extends ResourceImpl
 {
 
   private boolean useExtensionFactories = true;
+
   private boolean continueOnLoadError = true;
 
   public static final String USE_EXTENSION_FACTORIES = "USE_EXTENSION_FACTORIES"; //$NON-NLS-1$
+
   public static final String CONTINUE_ON_LOAD_ERROR = "CONTINUE_ON_LOAD_ERROR"; //$NON-NLS-1$
+
   public static final String WSDL_ENCODING = "WSDL_ENCODING"; //$NON-NLS-1$
+
   public static final String WSDL_PROGRESS_MONITOR = "WSDL_PROGRESS_MONITOR"; //$NON-NLS-1$
-  
+
   /**
    * Add this option with a value of Boolean.TRUE to the options map when
    * loading a resource to instruct the loader to track source code location for
@@ -114,16 +120,16 @@ public class WSDLResourceImpl extends ResourceImpl
       Document document = definition.getDocument();
       if (document == null)
       {
-        ((DefinitionImpl) definition).updateDocument();
+        ((DefinitionImpl)definition).updateDocument();
         document = definition.getDocument();
       }
 
       if (definition.getElement() == null)
       {
-        ((DefinitionImpl) definition).updateElement();
+        ((DefinitionImpl)definition).updateElement();
       }
 
-      doSerialize(os, document, options == null ? null : (String) options.get(WSDL_ENCODING));
+      doSerialize(os, document, options == null ? null : (String)options.get(WSDL_ENCODING));
     }
   }
 
@@ -132,7 +138,7 @@ public class WSDLResourceImpl extends ResourceImpl
    */
   public Definition getDefinition()
   {
-    return getContents().size() == 1 && getContents().get(0) instanceof Definition ? (Definition) getContents().get(0) : null;
+    return getContents().size() == 1 && getContents().get(0) instanceof Definition ? (Definition)getContents().get(0) : null;
   }
 
   private static void doSerialize(OutputStream outputStream, Document document, String encoding)
@@ -144,7 +150,7 @@ public class WSDLResourceImpl extends ResourceImpl
 
       transformer.setOutputProperty(OutputKeys.INDENT, "yes");
       transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-      
+
       // Unless a width is set, there will be only line breaks but no indentation.
       // The IBM JDK and the Sun JDK don't agree on the property name,
       // so we set them both.
@@ -178,25 +184,25 @@ public class WSDLResourceImpl extends ResourceImpl
     Object monitor = options == null ? null : options.get(WSDL_PROGRESS_MONITOR);
     if (monitor != null)
     {
-      progressMonitor = (IProgressMonitor) monitor;
+      progressMonitor = (IProgressMonitor)monitor;
       progressMonitor.setTaskName(WSDLPlugin.INSTANCE.getString("_UI_ResourceLoad_progress"));
       progressMonitor.subTask(getURI().toString());
     }
 
     Object bindings = options == null ? null : options.get(USE_EXTENSION_FACTORIES);
-    if (bindings != null && bindings instanceof Boolean) 
+    if (bindings != null && bindings instanceof Boolean)
       // true by default
       useExtensionFactories = ((Boolean)bindings).booleanValue();
- 
+
     Object continueOnError = options == null ? null : options.get(CONTINUE_ON_LOAD_ERROR);
-    if (continueOnError != null && continueOnError instanceof Boolean) 
+    if (continueOnError != null && continueOnError instanceof Boolean)
       // true by default
-    	continueOnLoadError = ((Boolean)continueOnError).booleanValue();
-    
+      continueOnLoadError = ((Boolean)continueOnError).booleanValue();
+
     Document doc = null;
     try
     {
-      boolean trackLocation = options != null && Boolean.TRUE.equals(options.get(TRACK_LOCATION)); 
+      boolean trackLocation = options != null && Boolean.TRUE.equals(options.get(TRACK_LOCATION));
 
       if (trackLocation)
       {
@@ -231,14 +237,14 @@ public class WSDLResourceImpl extends ResourceImpl
         handleDefinitionElement(null);
       }
       else
-      	throw exception;
+        throw exception;
     }
 
     Definition definition = null;
 
     for (Iterator i = getContents().iterator(); i.hasNext();)
     {
-      definition = (Definition) i.next();
+      definition = (Definition)i.next();
 
       // Initialize the inline schemas location 
       Types types = definition.getETypes();
@@ -247,7 +253,7 @@ public class WSDLResourceImpl extends ResourceImpl
         XSDSchemaExtensibilityElement el = null;
         for (Iterator j = types.getEExtensibilityElements().iterator(); j.hasNext();)
         {
-          el = (XSDSchemaExtensibilityElement) j.next();
+          el = (XSDSchemaExtensibilityElement)j.next();
           XSDSchema schema = el.getSchema();
           if (schema != null)
             schema.setSchemaLocation(getURI().toString());
@@ -268,10 +274,8 @@ public class WSDLResourceImpl extends ResourceImpl
    */
   protected void doLoad(InputStream inputStream, Map options) throws IOException
   {
-    InputSource inputSource = 
-      inputStream instanceof URIConverter.ReadableInputStream ? 
-      new InputSource(((URIConverter.ReadableInputStream)inputStream).asReader()) :
-      new InputSource(inputStream);
+    InputSource inputSource = inputStream instanceof URIConverter.ReadableInputStream ? new InputSource(
+      ((URIConverter.ReadableInputStream)inputStream).asReader()) : new InputSource(inputStream);
 
     if (getURI() != null)
     {
@@ -280,8 +284,8 @@ public class WSDLResourceImpl extends ResourceImpl
       inputSource.setSystemId(id);
     }
     doLoad(inputSource, options);
-  }  
-  
+  }
+
   /**
    * Use a custom SAX parser to allow us to track the source location of 
    * each node in the source XML document.
@@ -292,34 +296,34 @@ public class WSDLResourceImpl extends ResourceImpl
   {
     WSDLParser wsdlParser = new WSDLParser();
     wsdlParser.parse(inputSource);
-    
+
     Collection errors = wsdlParser.getDiagnostics();
-    
+
     if (errors != null)
     {
       Iterator iterator = errors.iterator();
-      
-      while(iterator.hasNext())
+
+      while (iterator.hasNext())
       {
-          WSDLDiagnostic wsdlDiagnostic = (WSDLDiagnostic)iterator.next();
-          switch (wsdlDiagnostic.getSeverity().getValue())
+        WSDLDiagnostic wsdlDiagnostic = (WSDLDiagnostic)iterator.next();
+        switch (wsdlDiagnostic.getSeverity().getValue())
+        {
+          case WSDLDiagnosticSeverity.FATAL:
+          case WSDLDiagnosticSeverity.ERROR:
           {
-            case WSDLDiagnosticSeverity.FATAL:
-            case WSDLDiagnosticSeverity.ERROR:
-            {
-              getErrors().add(wsdlDiagnostic);
-              break;
-            }
-            case WSDLDiagnosticSeverity.WARNING:
-            case WSDLDiagnosticSeverity.INFORMATION:
-            {
-              getWarnings().add(wsdlDiagnostic);
-              break;
+            getErrors().add(wsdlDiagnostic);
+            break;
+          }
+          case WSDLDiagnosticSeverity.WARNING:
+          case WSDLDiagnosticSeverity.INFORMATION:
+          {
+            getWarnings().add(wsdlDiagnostic);
+            break;
           }
         }
       }
-    }        
-    
+    }
+
     Document doc = wsdlParser.getDocument();
     return doc;
   }
@@ -355,7 +359,7 @@ public class WSDLResourceImpl extends ResourceImpl
       catch (IllegalArgumentException e)
       {
         // Ignore, as the code will have to run with parsers other than Xerces.
-      }      
+      }
 
       DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
@@ -393,17 +397,17 @@ public class WSDLResourceImpl extends ResourceImpl
     {
       boolean result = false;
       /*
-      for (Node child = element.getFirstChild(); child != null; child = child.getNextSibling())
-      {
-        if (child instanceof Element)
-        {
-          if (findDefinition((Element) child))
-          {
-            result = true;
-          }
-        }
-      }
-      */
+       for (Node child = element.getFirstChild(); child != null; child = child.getNextSibling())
+       {
+       if (child instanceof Element)
+       {
+       if (findDefinition((Element) child))
+       {
+       result = true;
+       }
+       }
+       }
+       */
       return result;
     }
   }
@@ -418,12 +422,11 @@ public class WSDLResourceImpl extends ResourceImpl
     }
     else
     {
-      definition = DefinitionImpl.createDefinition
-	    (element,getURI().toString(),useExtensionFactories);
+      definition = DefinitionImpl.createDefinition(element, getURI().toString(), useExtensionFactories);
     }
     getContents().add(definition);
     // Do we need the next line?
-    ((DefinitionImpl) definition).reconcileReferences(true);
+    ((DefinitionImpl)definition).reconcileReferences(true);
   }
 
   public static void serialize(OutputStream outputStream, Document document)
@@ -474,60 +477,59 @@ public class WSDLResourceImpl extends ResourceImpl
       WSDLPlugin.INSTANCE.log(exception);
     }
   }
- 
+
   private class InternalErrorHandler implements ErrorHandler
   {
     public void error(SAXParseException e)
     {
       System.out.println("WSDL PARSE ERROR: " + e);
     }
-    
+
     public void fatalError(SAXParseException e)
     {
       System.out.println("WSDL PARSE FATAL ERROR: " + e);
     }
-    
+
     public void warning(SAXParseException e)
     {
       System.out.println("WSDL PARSE WARNING: " + e);
     }
-  } 
-  
-  
+  }
+
   public void attached(EObject eObject)
   {
     super.attached(eObject);
-     
+
     // we need to attach a XSDSchemaLocator in order to resolve inline schema locations
     // if there's not already one attached
     XSDSchemaLocator xsdSchemaLocator = (XSDSchemaLocator)EcoreUtil.getRegisteredAdapter(this, XSDSchemaLocator.class);
     if (xsdSchemaLocator == null)
     {
-      getResourceSet().getAdapterFactories().add(new XSDSchemaLocatorAdapterFactory());  
-    } 
-    
+      getResourceSet().getAdapterFactories().add(new XSDSchemaLocatorAdapterFactory());
+    }
+
     if (eObject instanceof DefinitionImpl)
     {
-      DefinitionImpl definition = (DefinitionImpl) eObject;
-      definition.setInlineSchemaLocations(this);    
+      DefinitionImpl definition = (DefinitionImpl)eObject;
+      definition.setInlineSchemaLocations(this);
     }
   }
   /*
-  public void setInlineSchemaLocations(Definition definition)
-  {
-    // Initialize the inline schemas location 
-    Types types = definition.getETypes();
-    if (types != null)
-    {
-      for (Iterator j = types.getEExtensibilityElements().iterator(); j.hasNext();)
-      {
-        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement) j.next();
-        XSDSchema schema = el.getSchema();
-        if (schema != null)
-        {  
-          schema.setSchemaLocation(getURI().toString());
-        }  
-      }        
-    }      
-  }*/
+   public void setInlineSchemaLocations(Definition definition)
+   {
+   // Initialize the inline schemas location 
+   Types types = definition.getETypes();
+   if (types != null)
+   {
+   for (Iterator j = types.getEExtensibilityElements().iterator(); j.hasNext();)
+   {
+   XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement) j.next();
+   XSDSchema schema = el.getSchema();
+   if (schema != null)
+   {  
+   schema.setSchemaLocation(getURI().toString());
+   }  
+   }        
+   }      
+   }*/
 } //WSDLResourceFactoryImpl

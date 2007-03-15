@@ -1,18 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
 
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.wst.wsdl.Namespace;
@@ -26,8 +26,8 @@ import org.eclipse.wst.wsdl.WSDLPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.NamespaceImpl#getURI <em>URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.NamespaceImpl#getPrefix <em>Prefix</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.NamespaceImpl#getURI <em>URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.NamespaceImpl#getPrefix <em>Prefix</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,7 +92,7 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getNamespace();
+    return WSDLPackage.Literals.NAMESPACE;
   }
 
   /**
@@ -146,16 +146,16 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        return getURI();
+      return getURI();
       case WSDLPackage.NAMESPACE__PREFIX:
-        return getPrefix();
+      return getPrefix();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -163,18 +163,18 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        setURI((String)newValue);
-        return;
+      setURI((String)newValue);
+      return;
       case WSDLPackage.NAMESPACE__PREFIX:
-        setPrefix((String)newValue);
-        return;
+      setPrefix((String)newValue);
+      return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -182,18 +182,18 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        setURI(URI_EDEFAULT);
-        return;
+      setURI(URI_EDEFAULT);
+      return;
       case WSDLPackage.NAMESPACE__PREFIX:
-        setPrefix(PREFIX_EDEFAULT);
-        return;
+      setPrefix(PREFIX_EDEFAULT);
+      return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -201,16 +201,16 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
       case WSDLPackage.NAMESPACE__URI:
-        return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
+      return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
       case WSDLPackage.NAMESPACE__PREFIX:
-        return PREFIX_EDEFAULT == null ? prefix != null : !PREFIX_EDEFAULT.equals(prefix);
+      return PREFIX_EDEFAULT == null ? prefix != null : !PREFIX_EDEFAULT.equals(prefix);
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -220,12 +220,13 @@ public class NamespaceImpl extends EObjectImpl implements Namespace
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (URI: ");
+    result.append(" (URI: "); //$NON-NLS-1$
     result.append(uri);
-    result.append(", prefix: ");
+    result.append(", prefix: "); //$NON-NLS-1$
     result.append(prefix);
     result.append(')');
     return result.toString();

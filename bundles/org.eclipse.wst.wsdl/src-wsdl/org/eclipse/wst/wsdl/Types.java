@@ -1,16 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import java.util.List;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -24,11 +26,12 @@ import java.util.List;
  * <!-- end-model-doc -->
  *
  *
- * @see org.eclipse.wsdl.WSDLPackage#getTypes()
- * @model 
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getTypes()
+ * @model
  * @generated
  */
-public interface Types extends ExtensibleElement, javax.wsdl.Types{
+public interface Types extends ExtensibleElement, javax.wsdl.Types
+{
   /**
    * <!-- begin-user-doc -->
    * Returns a List of inline XSDSchema instances in this Types. 
@@ -36,7 +39,7 @@ public interface Types extends ExtensibleElement, javax.wsdl.Types{
    * @see org.eclipse.xsd.XSDSchema
    * @ignore
    * <!-- end-user-doc -->
-   * @model parameters=""
+   * @model kind="operation" many="false"
    * @generated
    */
   List getSchemas();
@@ -50,7 +53,7 @@ public interface Types extends ExtensibleElement, javax.wsdl.Types{
    * @see org.eclipse.xsd.XSDSchema
    * @ignore
    * <!-- end-user-doc -->
-   * @model 
+   * @model many="false"
    * @generated
    */
   List getSchemas(String namespaceURI);

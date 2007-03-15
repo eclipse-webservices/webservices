@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,13 +17,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
@@ -40,8 +38,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOutputImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.BindingOutputImpl#getEOutput <em>EOutput</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl#getEOutput <em>EOutput</em>}</li>
  * </ul>
  * </p>
  *
@@ -103,7 +101,7 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getBindingOutput();
+    return WSDLPackage.Literals.BINDING_OUTPUT;
   }
 
   /**
@@ -138,8 +136,8 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
   {
     if (eOutput != null && eOutput.eIsProxy())
     {
-      Output oldEOutput = eOutput;
-      eOutput = (Output)eResolveProxy((InternalEObject)eOutput);
+      InternalEObject oldEOutput = (InternalEObject)eOutput;
+      eOutput = (Output)eResolveProxy(oldEOutput);
       if (eOutput != oldEOutput)
       {
         if (eNotificationRequired())
@@ -189,7 +187,7 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    */
   public void setOutput(javax.wsdl.Output output)
   {
-    setEOutput((Output) output);
+    setEOutput((Output)output);
   }
 
   /**
@@ -197,43 +195,18 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    if (featureID >= 0)
+    switch (featureID)
     {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.BINDING_OUTPUT__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
-        default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
-    }
-    return eBasicSetContainer(null, featureID, msgs);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.BINDING_OUTPUT__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
-      case WSDLPackage.BINDING_OUTPUT__ELEMENT:
-        return getElement();
-      case WSDLPackage.BINDING_OUTPUT__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        if (resolve) return getEOutput();
-        return basicGetEOutput();
+      if (resolve)
+        return getEOutput();
+      return basicGetEOutput();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -241,28 +214,18 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_OUTPUT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
-      case WSDLPackage.BINDING_OUTPUT__ELEMENT:
-        setElement((Element)newValue);
-        return;
-      case WSDLPackage.BINDING_OUTPUT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        setEOutput((Output)newValue);
-        return;
+      setEOutput((Output)newValue);
+      return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -270,27 +233,18 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_OUTPUT__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.BINDING_OUTPUT__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.BINDING_OUTPUT__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        setEOutput((Output)null);
-        return;
+      setEOutput((Output)null);
+      return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -298,22 +252,16 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.BINDING_OUTPUT__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.BINDING_OUTPUT__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.BINDING_OUTPUT__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
       case WSDLPackage.BINDING_OUTPUT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.BINDING_OUTPUT__EOUTPUT:
-        return eOutput != null;
+      return eOutput != null;
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -323,10 +271,11 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
+    result.append(" (name: "); //$NON-NLS-1$
     result.append(name);
     result.append(')');
     return result.toString();
@@ -338,19 +287,19 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
 
   public void reconcileAttributes(Element changedElement)
   {
-	if (changedElement.hasAttribute("name"))
-	{
+    if (changedElement.hasAttribute("name"))
+    {
       String name = changedElement.getAttribute("name");
       if (name != null)
       {
         setName(name);
       }
-	}
+    }
   }
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    super.handleUnreconciledElement(child,remainingModelObjects);
+    super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
   protected void handleReconciliation(Collection remainingModelObjects)
@@ -363,7 +312,7 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
 
   public Collection getModelObjects(Object component)
   {
-    BindingOutput bindingOutput = (BindingOutput) component;
+    BindingOutput bindingOutput = (BindingOutput)component;
     List list = new ArrayList();
     list.addAll(bindingOutput.getEExtensibilityElements());
     return list;
@@ -395,14 +344,14 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
     Iterator iterator = getExtensibilityElements().iterator();
     while (iterator.hasNext())
     {
-      ExtensibilityElement extensibilityElement = (ExtensibilityElement) iterator.next();
-      Element child = ((ExtensibilityElementImpl) extensibilityElement).createElement();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+      Element child = ((ExtensibilityElementImpl)extensibilityElement).createElement();
       newElement.appendChild(child);
     }
 
     return newElement;
   }
-  
+
   // Resolve the reference to Output
   public void reconcileReferences(boolean deep)
   {

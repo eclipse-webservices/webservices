@@ -1,19 +1,25 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.soap;
 
+
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -25,135 +31,198 @@ import org.eclipse.wst.wsdl.Part;
  * <ul>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getUse <em>Use</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getNamespaceURI <em>Namespace URI</em>}</li>
- *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEncodingStyles <em>Encoding Styles</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEEncodingStyles <em>EEncoding Styles</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getMessage <em>Message</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getPart <em>Part</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEMessage <em>EMessage</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEPart <em>EPart</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase()
- * @model 
+ * @model
  * @generated
  */
-public interface SOAPHeaderBase extends ExtensibilityElement{
+public interface SOAPHeaderBase extends ExtensibilityElement
+{
   /**
    * Returns the value of the '<em><b>Use</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Use</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Use</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Use</em>' attribute.
    * @see #setUse(String)
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_Use()
-   * @model 
+   * @model
    * @generated
    */
-	String getUse();
+  String getUse();
 
   /**
    * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getUse <em>Use</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Use</em>' attribute.
    * @see #getUse()
    * @generated
    */
-	void setUse(String value);
+  void setUse(String value);
 
   /**
    * Returns the value of the '<em><b>Namespace URI</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Namespace URI</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Namespace URI</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Namespace URI</em>' attribute.
    * @see #setNamespaceURI(String)
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_NamespaceURI()
-   * @model 
+   * @model
    * @generated
    */
-	String getNamespaceURI();
+  String getNamespaceURI();
 
   /**
    * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getNamespaceURI <em>Namespace URI</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Namespace URI</em>' attribute.
    * @see #getNamespaceURI()
    * @generated
    */
-	void setNamespaceURI(String value);
+  void setNamespaceURI(String value);
 
   /**
-   * Returns the value of the '<em><b>Encoding Styles</b></em>' attribute list.
+   * Returns the value of the '<em><b>EEncoding Styles</b></em>' attribute list.
    * The list contents are of type {@link java.lang.String}.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Encoding Styles</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-   * @return the value of the '<em>Encoding Styles</em>' attribute list.
-   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_EncodingStyles()
+   * <p>
+   * If the meaning of the '<em>EEncoding Styles</em>' attribute list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EEncoding Styles</em>' attribute list.
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_EEncodingStyles()
    * @model type="java.lang.String" dataType="org.eclipse.wst.wsdl.binding.soap.IString"
    * @generated
    */
-	EList getEncodingStyles();
+  EList getEEncodingStyles();
 
   /**
-   * Returns the value of the '<em><b>Message</b></em>' reference.
+   * Returns the value of the '<em><b>EMessage</b></em>' reference.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Message</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-   * @return the value of the '<em>Message</em>' reference.
-   * @see #setMessage(Message)
-   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_Message()
+   * <p>
+   * If the meaning of the '<em>EMessage</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EMessage</em>' reference.
+   * @see #setEMessage(Message)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_EMessage()
    * @model required="true"
    * @generated
    */
-	Message getMessage();
+  Message getEMessage();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getMessage <em>Message</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEMessage <em>EMessage</em>}' reference.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Message</em>' reference.
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>EMessage</em>' reference.
+   * @see #getEMessage()
+   * @generated
+   */
+  void setEMessage(Message value);
+
+  /**
+   * Returns the value of the '<em><b>EPart</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EPart</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EPart</em>' reference.
+   * @see #setEPart(Part)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_EPart()
+   * @model required="true"
+   * @generated
+   */
+  Part getEPart();
+
+  /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getEPart <em>EPart</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>EPart</em>' reference.
+   * @see #getEPart()
+   * @generated
+   */
+  void setEPart(Part value);
+
+  /**
+   * Returns the value of the '<em><b>Message</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Message</em>' attribute.
+   * @see #setMessage(QName)
+   * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_Message()
+   * @model dataType="org.eclipse.wst.wsdl.QName"
+   * @generated
+   */
+  QName getMessage();
+
+  /**
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getMessage <em>Message</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Message</em>' attribute.
    * @see #getMessage()
    * @generated
    */
-	void setMessage(Message value);
+  void setMessage(QName value);
 
   /**
-   * Returns the value of the '<em><b>Part</b></em>' reference.
+   * Returns the value of the '<em><b>Part</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Part</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-   * @return the value of the '<em>Part</em>' reference.
-   * @see #setPart(Part)
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Part</em>' attribute.
+   * @see #setPart(String)
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_Part()
-   * @model required="true"
+   * @model
    * @generated
    */
-	Part getPart();
+  String getPart();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getPart <em>Part</em>}' reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase#getPart <em>Part</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Part</em>' reference.
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Part</em>' attribute.
    * @see #getPart()
    * @generated
    */
-	void setPart(Part value);
+  void setPart(String value);
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model kind="operation" many="false"
+   * @generated
+   */
+  List getEncodingStyles();
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @model encodingStylesMany="false"
+   * @generated
+   */
+  void setEncodingStyles(List encodingStyles);
 
 } // SOAPHeaderBase

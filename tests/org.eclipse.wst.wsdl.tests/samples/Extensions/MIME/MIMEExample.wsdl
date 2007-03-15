@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:tns="http://www.example.org/MIMEExample"
+	targetNamespace="http://www.example.org/MIMEExample">
+	<types>
+		<xsd:schema
+			targetNamespace="http://www.example.org/MIMEExample">
+			<xsd:element name="Request" type="xsd:string" />
+			<xsd:element name="Response" type="xsd:string" />
+			<xsd:element name="XMLData">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="element1" type="xsd:int"></xsd:element>
+						<xsd:element name="element2" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</types>
+	<message name="RequestMsg">
+		<part name="request" element="tns:Request" />
+	</message>
+	<message name="ResponseMsg">
+		<part name="response" element="tns:Response" />
+		<part name="responseData" type="xsd:base64Binary" />
+		<part name="xmlData" element="tns:XMLData" />
+	</message>
+	<portType name="MIMEExamplePortType">
+		<operation name="testOperation">
+			<input message="tns:RequestMsg" />
+			<output message="tns:ResponseMsg" />
+		</operation>
+	</portType>
+	<binding name="MIMEExampleBinding" type="tns:MIMEExamplePortType">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+			style="document" />
+		<operation name="testOperation">
+			<soap:operation
+				soapAction="http://www.example.org/MIMEExample/testOperation" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<mime:multipartRelated>
+					<mime:part name="response">
+						<soap:body use="literal" />
+					</mime:part>
+					<mime:part name="responseData">
+						<mime:content part="responseData" type="text/binary" />
+					</mime:part>
+				</mime:multipartRelated>
+				<mime:mimeXML part="xmlData" />
+			</output>
+		</operation>
+	</binding>
+	<service name="MIMEExampleService">
+		<port name="MIMEExamplePort" binding="tns:MIMEExampleBinding">
+			<soap:address location="http://localhost:8080/MIMEExample" />
+		</port>
+	</service>
+</definitions>

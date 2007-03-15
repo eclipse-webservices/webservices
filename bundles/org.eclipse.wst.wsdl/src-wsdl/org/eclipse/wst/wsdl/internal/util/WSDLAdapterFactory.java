@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.util;
+
 
 import java.net.URL;
 import java.util.Iterator;
@@ -21,31 +22,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.BindingFault;
-import org.eclipse.wst.wsdl.BindingInput;
-import org.eclipse.wst.wsdl.BindingOperation;
-import org.eclipse.wst.wsdl.BindingOutput;
-import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
-import org.eclipse.wst.wsdl.ExtensibleElement;
-import org.eclipse.wst.wsdl.Fault;
-import org.eclipse.wst.wsdl.Import;
-import org.eclipse.wst.wsdl.Input;
-import org.eclipse.wst.wsdl.Message;
-import org.eclipse.wst.wsdl.MessageReference;
-import org.eclipse.wst.wsdl.Namespace;
-import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.Output;
-import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.Types;
-import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
-import org.eclipse.wst.wsdl.WSDLElement;
-import org.eclipse.wst.wsdl.WSDLPackage;
-import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.*;
 
 
 /**
@@ -53,7 +30,7 @@ import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see org.eclipse.wsdl.WSDLPackage
+ * @see org.eclipse.wst.wsdl.WSDLPackage
  * @generated
  */
 public class WSDLAdapterFactory extends AdapterFactoryImpl
@@ -107,197 +84,243 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
    * <!-- end-user-doc -->
    * @generated
    */
-  protected WSDLSwitch modelSwitch =
-    new WSDLSwitch()
+  protected WSDLSwitch modelSwitch = new WSDLSwitch()
     {
       public Object caseWSDLElement(WSDLElement object)
       {
         return createWSDLElementAdapter();
       }
+
       public Object casePortType(PortType object)
       {
         return createPortTypeAdapter();
       }
+
       public Object caseOperation(Operation object)
       {
         return createOperationAdapter();
       }
+
       public Object caseMessage(Message object)
       {
         return createMessageAdapter();
       }
+
       public Object casePart(Part object)
       {
         return createPartAdapter();
       }
+
       public Object caseBinding(Binding object)
       {
         return createBindingAdapter();
       }
+
       public Object caseBindingOperation(BindingOperation object)
       {
         return createBindingOperationAdapter();
       }
+
       public Object caseService(Service object)
       {
         return createServiceAdapter();
       }
+
       public Object casePort(Port object)
       {
         return createPortAdapter();
       }
+
       public Object caseExtensibilityElement(ExtensibilityElement object)
       {
         return createExtensibilityElementAdapter();
       }
+
       public Object caseDefinition(Definition object)
       {
         return createDefinitionAdapter();
       }
+
       public Object caseImport(Import object)
       {
         return createImportAdapter();
       }
+
       public Object caseExtensibleElement(ExtensibleElement object)
       {
         return createExtensibleElementAdapter();
       }
+
       public Object caseInput(Input object)
       {
         return createInputAdapter();
       }
+
       public Object caseOutput(Output object)
       {
         return createOutputAdapter();
       }
+
       public Object caseFault(Fault object)
       {
         return createFaultAdapter();
       }
+
       public Object caseBindingInput(BindingInput object)
       {
         return createBindingInputAdapter();
       }
+
       public Object caseBindingOutput(BindingOutput object)
       {
         return createBindingOutputAdapter();
       }
+
       public Object caseBindingFault(BindingFault object)
       {
         return createBindingFaultAdapter();
       }
+
       public Object caseNamespace(Namespace object)
       {
         return createNamespaceAdapter();
       }
+
       public Object caseIPortType(javax.wsdl.PortType object)
       {
         return createIPortTypeAdapter();
       }
+
       public Object caseIOperation(javax.wsdl.Operation object)
       {
         return createIOperationAdapter();
       }
+
       public Object caseIInput(javax.wsdl.Input object)
       {
         return createIInputAdapter();
       }
+
       public Object caseIOutput(javax.wsdl.Output object)
       {
         return createIOutputAdapter();
       }
+
       public Object caseIFault(javax.wsdl.Fault object)
       {
         return createIFaultAdapter();
       }
+
       public Object caseIMessage(javax.wsdl.Message object)
       {
         return createIMessageAdapter();
       }
+
       public Object caseIPart(javax.wsdl.Part object)
       {
         return createIPartAdapter();
       }
+
       public Object caseIService(javax.wsdl.Service object)
       {
         return createIServiceAdapter();
       }
+
       public Object caseIPort(javax.wsdl.Port object)
       {
         return createIPortAdapter();
       }
+
       public Object caseIBinding(javax.wsdl.Binding object)
       {
         return createIBindingAdapter();
       }
+
       public Object caseIBindingOperation(javax.wsdl.BindingOperation object)
       {
         return createIBindingOperationAdapter();
       }
+
       public Object caseIBindingInput(javax.wsdl.BindingInput object)
       {
         return createIBindingInputAdapter();
       }
+
       public Object caseIBindingOutput(javax.wsdl.BindingOutput object)
       {
         return createIBindingOutputAdapter();
       }
+
       public Object caseIBindingFault(javax.wsdl.BindingFault object)
       {
         return createIBindingFaultAdapter();
       }
+
       public Object caseIExtensibilityElement(javax.wsdl.extensions.ExtensibilityElement object)
       {
         return createIExtensibilityElementAdapter();
       }
+
       public Object caseIDefinition(javax.wsdl.Definition object)
       {
         return createIDefinitionAdapter();
       }
+
       public Object caseIImport(javax.wsdl.Import object)
       {
         return createIImportAdapter();
       }
+
       public Object caseIList(List object)
       {
         return createIListAdapter();
       }
+
       public Object caseIMap(Map object)
       {
         return createIMapAdapter();
       }
+
       public Object caseIURL(URL object)
       {
         return createIURLAdapter();
       }
+
       public Object caseIExtensionRegistry(ExtensionRegistry object)
       {
         return createIExtensionRegistryAdapter();
       }
+
       public Object caseTypes(Types object)
       {
         return createTypesAdapter();
       }
+
       public Object caseIIterator(Iterator object)
       {
         return createIIteratorAdapter();
       }
+
       public Object caseITypes(javax.wsdl.Types object)
       {
         return createITypesAdapter();
       }
+
       public Object caseUnknownExtensibilityElement(UnknownExtensibilityElement object)
       {
         return createUnknownExtensibilityElementAdapter();
       }
+
       public Object caseXSDSchemaExtensibilityElement(XSDSchemaExtensibilityElement object)
       {
         return createXSDSchemaExtensibilityElementAdapter();
       }
+
       public Object caseMessageReference(MessageReference object)
       {
         return createMessageReferenceAdapter();
       }
+
       public Object defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -317,9 +340,8 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
     return (Adapter)modelSwitch.doSwitch((EObject)target);
   }
 
-
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.WSDLElement <em>Element</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.WSDLElement <em>Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -334,7 +356,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.PortType <em>Port Type</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.PortType <em>Port Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -349,7 +371,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Operation <em>Operation</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Operation <em>Operation</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -364,7 +386,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Message <em>Message</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Message <em>Message</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -379,7 +401,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Part <em>Part</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Part <em>Part</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -394,7 +416,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Binding <em>Binding</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Binding <em>Binding</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -409,7 +431,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.BindingOperation <em>Binding Operation</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.BindingOperation <em>Binding Operation</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -424,7 +446,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Service <em>Service</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Service <em>Service</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -439,7 +461,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Port <em>Port</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Port <em>Port</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -454,7 +476,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.ExtensibilityElement <em>Extensibility Element</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.ExtensibilityElement <em>Extensibility Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -469,7 +491,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Definition <em>Definition</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Definition <em>Definition</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -484,7 +506,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Import <em>Import</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Import <em>Import</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -499,7 +521,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.ExtensibleElement <em>Extensible Element</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.ExtensibleElement <em>Extensible Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -514,7 +536,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Input <em>Input</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Input <em>Input</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -529,7 +551,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Output <em>Output</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Output <em>Output</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -544,7 +566,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Fault <em>Fault</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Fault <em>Fault</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -559,7 +581,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.BindingInput <em>Binding Input</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.BindingInput <em>Binding Input</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -574,7 +596,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.BindingOutput <em>Binding Output</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.BindingOutput <em>Binding Output</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -589,7 +611,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.BindingFault <em>Binding Fault</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.BindingFault <em>Binding Fault</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -604,7 +626,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Namespace <em>Namespace</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Namespace <em>Namespace</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -934,7 +956,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.Types <em>Types</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.Types <em>Types</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -979,7 +1001,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.UnknownExtensibilityElement <em>Unknown Extensibility Element</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.UnknownExtensibilityElement <em>Unknown Extensibility Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -994,7 +1016,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.XSDSchemaExtensibilityElement <em>XSD Schema Extensibility Element</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement <em>XSD Schema Extensibility Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -1009,7 +1031,7 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.eclipse.wsdl.MessageReference <em>Message Reference</em>}'.
+   * Creates a new adapter for an object of class '{@link org.eclipse.wst.wsdl.MessageReference <em>Message Reference</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.

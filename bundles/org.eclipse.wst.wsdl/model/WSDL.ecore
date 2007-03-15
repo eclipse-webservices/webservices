@@ -15,7 +15,8 @@
       <eParameters name="definition" eType="#//Definition"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentationElement" eType="#//DOMElement"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//DOMElement"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//DOMElement"
+        transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PortType" eSuperTypes="#//WSDLElement #//IPortType">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -23,8 +24,6 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="qName" eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="undefined" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proxy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eOperations" upperBound="-1"
         eType="#//Operation" containment="true"/>
   </eClassifiers>
@@ -35,8 +34,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="style" eType="#//OperationType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="undefined" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proxy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eInput" eType="#//Input"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eOutput" eType="#//Output"
@@ -52,8 +49,6 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="qName" eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="undefined" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proxy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eParts" upperBound="-1"
         eType="#//Part" containment="true"/>
   </eClassifiers>
@@ -64,8 +59,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementName" eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" eType="#//QName"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeDefinition" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDTypeDefinition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementDeclaration" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDElementDeclaration"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeDefinition" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDTypeDefinition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementDeclaration" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDElementDeclaration"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eMessage" eType="#//Message"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Binding" eSuperTypes="#//ExtensibleElement #//IBinding">
@@ -74,8 +69,6 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="qName" eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="undefined" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proxy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ePortType" lowerBound="1"
         eType="#//PortType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eBindingOperations" upperBound="-1"
@@ -101,8 +94,6 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="qName" eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="undefined" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proxy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ePorts" upperBound="-1"
         eType="#//Port" containment="true"/>
   </eClassifiers>
@@ -153,14 +144,14 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents WSDL import element. WSDL allows associating a namespace with a document location using an import element."/>
     </eAnnotations>
-    <eOperations name="getSchema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"/>
+    <eOperations name="getSchema" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDSchema"/>
     <eOperations name="setSchema">
-      <eParameters name="schema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"/>
+      <eParameters name="schema" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDSchema"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="locationURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eDefinition" eType="#//Definition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="eSchema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eSchema" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDSchema"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExtensibleElement" abstract="true" eSuperTypes="#//WSDLElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -590,7 +581,7 @@
         eType="#//UnknownExtensibilityElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XSDSchemaExtensibilityElement" eSuperTypes="#//ExtensibilityElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="schema" eType="ecore:EClass ../../../org.eclipse.xsd/src-xsd/model/XSD.ecore#//XSDSchema"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="schema" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDSchema"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="DOMDocument" instanceClassName="org.w3c.dom.Document">

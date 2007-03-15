@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
+
 
 import javax.wsdl.factory.WSDLFactory;
 
@@ -39,7 +40,7 @@ import org.eclipse.wst.wsdl.util.ExtensibilityElementFactoryRegistry;
  * </p>
  * @since 1.0
  */
-public final class WSDLPlugin extends EMFPlugin 
+public final class WSDLPlugin extends EMFPlugin
 {
   /**
    * The singleton instance of the plugin.
@@ -50,7 +51,7 @@ public final class WSDLPlugin extends EMFPlugin
    * The one instance of this class.
    */
   static WSDLPluginImplementation plugin;
-  
+
   private ExtensibilityElementFactoryRegistryImpl extensibilityElementFactoryRegistry;
 
   /**
@@ -58,7 +59,7 @@ public final class WSDLPlugin extends EMFPlugin
    */
   private WSDLPlugin()
   {
-    super(new ResourceLocator[] {});
+    super(new ResourceLocator []{});
   }
 
   /*
@@ -84,25 +85,25 @@ public final class WSDLPlugin extends EMFPlugin
     {
       extensibilityElementFactoryRegistry = new ExtensibilityElementFactoryRegistryImpl();
       if (plugin != null)
-      {  
+      {
         new ExtensibilityElementFactoryRegistryReader(extensibilityElementFactoryRegistry).readRegistry();
-      }  
+      }
     }
     return extensibilityElementFactoryRegistry;
   }
-  
+
   public ExtensibilityElementFactory getExtensibilityElementFactory(String namespace)
   {
     return internalGetExtensibilityElementFactoryRegistry().getExtensibilityElementFactory(namespace);
   }
-  
+
   public ExtensibilityElementFactoryRegistry getExtensibilityElementFactoryRegistry()
-  {   
+  {
     return internalGetExtensibilityElementFactoryRegistry();
   }
-  
+
   public WSDLFactory createWSDL4JFactory()
   {
-    return new WSDLFactoryImpl();   	
+    return new WSDLFactoryImpl();
   }
 }

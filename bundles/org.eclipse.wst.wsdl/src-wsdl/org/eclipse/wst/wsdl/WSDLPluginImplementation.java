@@ -1,16 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import org.eclipse.emf.common.EMFPlugin.EclipsePlugin;
+
 
 /**
  * The actual implementation of the Eclipse <b>Plugin</b>.
@@ -22,17 +24,17 @@ import org.eclipse.emf.common.EMFPlugin.EclipsePlugin;
  * </p>
  * @since 1.0
  */
-  public class WSDLPluginImplementation extends EclipsePlugin
+public class WSDLPluginImplementation extends EclipsePlugin
+{
+  /**
+   * Creates an instance.
+   */
+  public WSDLPluginImplementation()
   {
-    /**
-     * Creates an instance.
-     */
-    public WSDLPluginImplementation()
-    {
-      super();
+    super();
 
-      // Remember the static instance.
-      //
-      WSDLPlugin.plugin = this;
-    }
+    // Remember the static instance.
+    //
+    WSDLPlugin.plugin = this;
   }
+}

@@ -1,16 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import org.eclipse.xsd.XSDSchema;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -22,15 +24,16 @@ import org.eclipse.xsd.XSDSchema;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement()
- * @model 
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement()
+ * @model
  * @generated
  */
-public interface XSDSchemaExtensibilityElement extends ExtensibilityElement{
+public interface XSDSchemaExtensibilityElement extends ExtensibilityElement
+{
   /**
    * Returns the value of the '<em><b>Schema</b></em>' containment reference.
    * <!-- begin-user-doc -->
@@ -41,14 +44,14 @@ public interface XSDSchemaExtensibilityElement extends ExtensibilityElement{
    * <!-- end-user-doc -->
    * @return the value of the '<em>Schema</em>' containment reference.
    * @see #setSchema(XSDSchema)
-   * @see org.eclipse.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement_Schema()
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getXSDSchemaExtensibilityElement_Schema()
    * @model containment="true"
    * @generated
    */
   XSDSchema getSchema();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}' containment reference.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement#getSchema <em>Schema</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Schema</em>' containment reference.

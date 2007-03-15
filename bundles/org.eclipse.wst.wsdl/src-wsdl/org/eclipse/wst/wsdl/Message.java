@@ -1,18 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
 
+
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -28,85 +30,84 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.Message#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Message#isUndefined <em>Undefined</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Message#isProxy <em>Proxy</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Message#getResourceURI <em>Resource URI</em>}</li>
- *   <li>{@link org.eclipse.wsdl.Message#getEParts <em>EParts</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Message#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Message#isUndefined <em>Undefined</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.Message#getEParts <em>EParts</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.wsdl.WSDLPackage#getMessage()
- * @model 
+ * @see org.eclipse.wst.wsdl.WSDLPackage#getMessage()
+ * @model
  * @generated
  */
-public interface Message extends WSDLElement, javax.wsdl.Message{
+public interface Message extends WSDLElement, javax.wsdl.Message
+{
   /**
    * Returns the value of the '<em><b>QName</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>QName</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>QName</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>QName</em>' attribute.
    * @see #setQName(QName)
-   * @see org.eclipse.wsdl.WSDLPackage#getMessage_QName()
-   * @model dataType="org.eclipse.wsdl.QName"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getMessage_QName()
+   * @model dataType="org.eclipse.wst.wsdl.QName"
    * @generated
    */
-	QName getQName();
+  QName getQName();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Message#getQName <em>QName</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Message#getQName <em>QName</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>QName</em>' attribute.
    * @see #getQName()
    * @generated
    */
-	void setQName(QName value);
+  void setQName(QName value);
 
   /**
    * Returns the value of the '<em><b>Undefined</b></em>' attribute.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Undefined</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Undefined</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>Undefined</em>' attribute.
    * @see #setUndefined(boolean)
-   * @see org.eclipse.wsdl.WSDLPackage#getMessage_Undefined()
-   * @model 
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getMessage_Undefined()
+   * @model
    * @generated
    */
-	boolean isUndefined();
+  boolean isUndefined();
 
   /**
-   * Sets the value of the '{@link org.eclipse.wsdl.Message#isUndefined <em>Undefined</em>}' attribute.
+   * Sets the value of the '{@link org.eclipse.wst.wsdl.Message#isUndefined <em>Undefined</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @param value the new value of the '<em>Undefined</em>' attribute.
    * @see #isUndefined()
    * @generated
    */
-	void setUndefined(boolean value);
+  void setUndefined(boolean value);
 
   /**
    * Returns the value of the '<em><b>EParts</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.wsdl.Part}.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.Part}.
    * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>EParts</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EParts</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
    * @return the value of the '<em>EParts</em>' containment reference list.
-   * @see org.eclipse.wsdl.WSDLPackage#getMessage_EParts()
-   * @model type="org.eclipse.wsdl.Part" containment="true"
+   * @see org.eclipse.wst.wsdl.WSDLPackage#getMessage_EParts()
+   * @model type="org.eclipse.wst.wsdl.Part" containment="true"
    * @generated
    */
-	EList getEParts();
+  EList getEParts();
 
 } // Message

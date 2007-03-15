@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.tests;
 
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 
@@ -24,32 +25,31 @@ import junit.framework.TestSuite;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
+
 public class ParserTest extends TestCase
 {
-  
-  public ParserTest(String name) 
+
+  public ParserTest(String name)
   {
     super(name);
   }
-  
-  public static Test suite() 
+
+  public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    
-    suite.addTest
-      (new ParserTest("Parser") 
-         {
-           protected void runTest() 
-           {
-             testParser();
-           }
-         }
-       );
-    
+
+    suite.addTest(new ParserTest("Parser")
+      {
+        protected void runTest()
+        {
+          testParser();
+        }
+      });
+
     return suite;
   }
-  
-  public void testParser() 
+
+  public void testParser()
   {
     EntityResolver myResolver = new MyResolver();
     try
@@ -58,14 +58,14 @@ public class ParserTest extends TestCase
       DocumentBuilder myBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       myBuilder.setEntityResolver(myResolver);
       Document doc = myBuilder.parse(is);
-      Assert.assertNotNull("Document is null",doc);
+      Assert.assertNotNull("Document is null", doc);
     }
     catch (Exception e)
     {
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
     }
   }
-  
+
   public static void main(String[] args)
   {
   }

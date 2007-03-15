@@ -1,20 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl;
+
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -51,7 +53,8 @@ import org.eclipse.emf.ecore.EReference;
  * 
  * The WSDL classes extend the javax.wsdl interfaces defined by JSR 110. Classes with interface and datatype stereotypes are used to represent these non-MOF interfaces.
  * <!-- end-model-doc -->
- * @see org.eclipse.wsdl.WSDLFactory
+ * @see org.eclipse.wst.wsdl.WSDLFactory
+ * @model kind="package"
  * @generated
  */
 public interface WSDLPackage extends EPackage
@@ -62,7 +65,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNAME = "wsdl";
+  String eNAME = "wsdl"; //$NON-NLS-1$
 
   /**
    * The package namespace URI.
@@ -70,7 +73,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_URI = "http://www.ibm.com/wsdl/2003/WSDL";
+  String eNS_URI = "http://www.eclipse.org/wsdl/2003/WSDL"; //$NON-NLS-1$
 
   /**
    * The package namespace name.
@@ -78,7 +81,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  String eNS_PREFIX = "wsdl";
+  String eNS_PREFIX = "wsdl"; //$NON-NLS-1$
 
   /**
    * The singleton instance of the package.
@@ -89,11 +92,11 @@ public interface WSDLPackage extends EPackage
   WSDLPackage eINSTANCE = org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl.init();
 
   /**
-   * The meta object id for the '{@link org.eclipse.wsdl.impl.WSDLElementImpl <em>Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl <em>Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.WSDLElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getWSDLElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getWSDLElement()
    * @generated
    */
   int WSDL_ELEMENT = 0;
@@ -117,7 +120,7 @@ public interface WSDLPackage extends EPackage
   int WSDL_ELEMENT__ELEMENT = 1;
 
   /**
-   * The number of structural features of the the '<em>Element</em>' class.
+   * The number of structural features of the '<em>Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -126,11 +129,11 @@ public interface WSDLPackage extends EPackage
   int WSDL_ELEMENT_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.PortTypeImpl <em>Port Type</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl <em>Port Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.PortTypeImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getPortType()
+   * @see org.eclipse.wst.wsdl.internal.impl.PortTypeImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPortType()
    * @generated
    */
   int PORT_TYPE = 1;
@@ -172,47 +175,29 @@ public interface WSDLPackage extends EPackage
   int PORT_TYPE__UNDEFINED = WSDL_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Proxy</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE__PROXY = WSDL_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Resource URI</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE__RESOURCE_URI = WSDL_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
    * The feature id for the '<em><b>EOperations</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PORT_TYPE__EOPERATIONS = WSDL_ELEMENT_FEATURE_COUNT + 4;
+  int PORT_TYPE__EOPERATIONS = WSDL_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The number of structural features of the the '<em>Port Type</em>' class.
+   * The number of structural features of the '<em>Port Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PORT_TYPE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 5;
+  int PORT_TYPE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 3;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.OperationImpl <em>Operation</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl <em>Operation</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.OperationImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.OperationImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperation()
    * @generated
    */
   int OPERATION = 2;
@@ -263,31 +248,13 @@ public interface WSDLPackage extends EPackage
   int OPERATION__UNDEFINED = WSDL_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The feature id for the '<em><b>Proxy</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__PROXY = WSDL_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
-   * The feature id for the '<em><b>Resource URI</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__RESOURCE_URI = WSDL_ELEMENT_FEATURE_COUNT + 4;
-
-  /**
    * The feature id for the '<em><b>EInput</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int OPERATION__EINPUT = WSDL_ELEMENT_FEATURE_COUNT + 5;
+  int OPERATION__EINPUT = WSDL_ELEMENT_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>EOutput</b></em>' containment reference.
@@ -296,7 +263,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int OPERATION__EOUTPUT = WSDL_ELEMENT_FEATURE_COUNT + 6;
+  int OPERATION__EOUTPUT = WSDL_ELEMENT_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>EFaults</b></em>' containment reference list.
@@ -305,7 +272,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int OPERATION__EFAULTS = WSDL_ELEMENT_FEATURE_COUNT + 7;
+  int OPERATION__EFAULTS = WSDL_ELEMENT_FEATURE_COUNT + 5;
 
   /**
    * The feature id for the '<em><b>EParameter Ordering</b></em>' reference list.
@@ -314,23 +281,23 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int OPERATION__EPARAMETER_ORDERING = WSDL_ELEMENT_FEATURE_COUNT + 8;
+  int OPERATION__EPARAMETER_ORDERING = WSDL_ELEMENT_FEATURE_COUNT + 6;
 
   /**
-   * The number of structural features of the the '<em>Operation</em>' class.
+   * The number of structural features of the '<em>Operation</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int OPERATION_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 9;
+  int OPERATION_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 7;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.MessageImpl <em>Message</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl <em>Message</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.MessageImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getMessage()
+   * @see org.eclipse.wst.wsdl.internal.impl.MessageImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessage()
    * @generated
    */
   int MESSAGE = 3;
@@ -372,47 +339,29 @@ public interface WSDLPackage extends EPackage
   int MESSAGE__UNDEFINED = WSDL_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Proxy</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__PROXY = WSDL_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Resource URI</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__RESOURCE_URI = WSDL_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
    * The feature id for the '<em><b>EParts</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MESSAGE__EPARTS = WSDL_ELEMENT_FEATURE_COUNT + 4;
+  int MESSAGE__EPARTS = WSDL_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The number of structural features of the the '<em>Message</em>' class.
+   * The number of structural features of the '<em>Message</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MESSAGE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 5;
+  int MESSAGE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 3;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.PartImpl <em>Part</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PartImpl <em>Part</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.PartImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getPart()
+   * @see org.eclipse.wst.wsdl.internal.impl.PartImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPart()
    * @generated
    */
   int PART = 4;
@@ -490,7 +439,7 @@ public interface WSDLPackage extends EPackage
   int PART__EMESSAGE = WSDL_ELEMENT_FEATURE_COUNT + 5;
 
   /**
-   * The number of structural features of the the '<em>Part</em>' class.
+   * The number of structural features of the '<em>Part</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -499,11 +448,11 @@ public interface WSDLPackage extends EPackage
   int PART_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 6;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ExtensibleElementImpl <em>Extensible Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl <em>Extensible Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ExtensibleElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getExtensibleElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getExtensibleElement()
    * @generated
    */
   int EXTENSIBLE_ELEMENT = 12;
@@ -536,7 +485,7 @@ public interface WSDLPackage extends EPackage
   int EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS = WSDL_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>Extensible Element</em>' class.
+   * The number of structural features of the '<em>Extensible Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -545,11 +494,11 @@ public interface WSDLPackage extends EPackage
   int EXTENSIBLE_ELEMENT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingImpl <em>Binding</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl <em>Binding</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBinding()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBinding()
    * @generated
    */
   int BINDING = 5;
@@ -600,31 +549,13 @@ public interface WSDLPackage extends EPackage
   int BINDING__UNDEFINED = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Proxy</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BINDING__PROXY = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Resource URI</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BINDING__RESOURCE_URI = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
    * The feature id for the '<em><b>EPort Type</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BINDING__EPORT_TYPE = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
+  int BINDING__EPORT_TYPE = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>EBinding Operations</b></em>' containment reference list.
@@ -633,23 +564,23 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BINDING__EBINDING_OPERATIONS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
+  int BINDING__EBINDING_OPERATIONS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
 
   /**
-   * The number of structural features of the the '<em>Binding</em>' class.
+   * The number of structural features of the '<em>Binding</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BINDING_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 6;
+  int BINDING_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingOperationImpl <em>Binding Operation</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl <em>Binding Operation</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingOperationImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingOperation()
    * @generated
    */
   int BINDING_OPERATION = 6;
@@ -727,7 +658,7 @@ public interface WSDLPackage extends EPackage
   int BINDING_OPERATION__EBINDING_FAULTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
 
   /**
-   * The number of structural features of the the '<em>Binding Operation</em>' class.
+   * The number of structural features of the '<em>Binding Operation</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -736,11 +667,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_OPERATION_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ServiceImpl <em>Service</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl <em>Service</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ServiceImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getService()
+   * @see org.eclipse.wst.wsdl.internal.impl.ServiceImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getService()
    * @generated
    */
   int SERVICE = 7;
@@ -791,47 +722,29 @@ public interface WSDLPackage extends EPackage
   int SERVICE__UNDEFINED = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Proxy</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SERVICE__PROXY = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Resource URI</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SERVICE__RESOURCE_URI = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
    * The feature id for the '<em><b>EPorts</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SERVICE__EPORTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
+  int SERVICE__EPORTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The number of structural features of the the '<em>Service</em>' class.
+   * The number of structural features of the '<em>Service</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SERVICE_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
+  int SERVICE_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.PortImpl <em>Port</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PortImpl <em>Port</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.PortImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getPort()
+   * @see org.eclipse.wst.wsdl.internal.impl.PortImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPort()
    * @generated
    */
   int PORT = 8;
@@ -882,7 +795,7 @@ public interface WSDLPackage extends EPackage
   int PORT__EBINDING = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the the '<em>Port</em>' class.
+   * The number of structural features of the '<em>Port</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -891,11 +804,11 @@ public interface WSDLPackage extends EPackage
   int PORT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ExtensibilityElementImpl <em>Extensibility Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl <em>Extensibility Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ExtensibilityElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getExtensibilityElement()
    * @generated
    */
   int EXTENSIBILITY_ELEMENT = 9;
@@ -937,7 +850,7 @@ public interface WSDLPackage extends EPackage
   int EXTENSIBILITY_ELEMENT__ELEMENT_TYPE = WSDL_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the the '<em>Extensibility Element</em>' class.
+   * The number of structural features of the '<em>Extensibility Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -946,11 +859,11 @@ public interface WSDLPackage extends EPackage
   int EXTENSIBILITY_ELEMENT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.DefinitionImpl <em>Definition</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl <em>Definition</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.DefinitionImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getDefinition()
+   * @see org.eclipse.wst.wsdl.internal.impl.DefinitionImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDefinition()
    * @generated
    */
   int DEFINITION = 10;
@@ -1019,6 +932,24 @@ public interface WSDLPackage extends EPackage
   int DEFINITION__ENCODING = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
 
   /**
+   * The feature id for the '<em><b>EImports</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFINITION__EIMPORTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
+
+  /**
+   * The feature id for the '<em><b>ETypes</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFINITION__ETYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
+
+  /**
    * The feature id for the '<em><b>EMessages</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1064,25 +995,7 @@ public interface WSDLPackage extends EPackage
   int DEFINITION__ENAMESPACES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 10;
 
   /**
-   * The feature id for the '<em><b>ETypes</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DEFINITION__ETYPES = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
-
-  /**
-   * The feature id for the '<em><b>EImports</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DEFINITION__EIMPORTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
-
-  /**
-   * The number of structural features of the the '<em>Definition</em>' class.
+   * The number of structural features of the '<em>Definition</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1091,11 +1004,11 @@ public interface WSDLPackage extends EPackage
   int DEFINITION_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 11;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.ImportImpl <em>Import</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ImportImpl <em>Import</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.ImportImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getImport()
+   * @see org.eclipse.wst.wsdl.internal.impl.ImportImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getImport()
    * @generated
    */
   int IMPORT = 11;
@@ -1155,7 +1068,7 @@ public interface WSDLPackage extends EPackage
   int IMPORT__ESCHEMA = WSDL_ELEMENT_FEATURE_COUNT + 3;
 
   /**
-   * The number of structural features of the the '<em>Import</em>' class.
+   * The number of structural features of the '<em>Import</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1164,11 +1077,11 @@ public interface WSDLPackage extends EPackage
   int IMPORT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 4;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.MessageReferenceImpl <em>Message Reference</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl <em>Message Reference</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.MessageReferenceImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getMessageReference()
+   * @see org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessageReference()
    * @generated
    */
   int MESSAGE_REFERENCE = 46;
@@ -1210,7 +1123,7 @@ public interface WSDLPackage extends EPackage
   int MESSAGE_REFERENCE__EMESSAGE = WSDL_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the the '<em>Message Reference</em>' class.
+   * The number of structural features of the '<em>Message Reference</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1219,11 +1132,11 @@ public interface WSDLPackage extends EPackage
   int MESSAGE_REFERENCE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.InputImpl <em>Input</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.InputImpl <em>Input</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.InputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.InputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getInput()
    * @generated
    */
   int INPUT = 13;
@@ -1265,7 +1178,7 @@ public interface WSDLPackage extends EPackage
   int INPUT__EMESSAGE = MESSAGE_REFERENCE__EMESSAGE;
 
   /**
-   * The number of structural features of the the '<em>Input</em>' class.
+   * The number of structural features of the '<em>Input</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1274,11 +1187,11 @@ public interface WSDLPackage extends EPackage
   int INPUT_FEATURE_COUNT = MESSAGE_REFERENCE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.OutputImpl <em>Output</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.OutputImpl <em>Output</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.OutputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.OutputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOutput()
    * @generated
    */
   int OUTPUT = 14;
@@ -1320,7 +1233,7 @@ public interface WSDLPackage extends EPackage
   int OUTPUT__EMESSAGE = MESSAGE_REFERENCE__EMESSAGE;
 
   /**
-   * The number of structural features of the the '<em>Output</em>' class.
+   * The number of structural features of the '<em>Output</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1329,11 +1242,11 @@ public interface WSDLPackage extends EPackage
   int OUTPUT_FEATURE_COUNT = MESSAGE_REFERENCE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.FaultImpl <em>Fault</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.FaultImpl <em>Fault</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.FaultImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.FaultImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getFault()
    * @generated
    */
   int FAULT = 15;
@@ -1375,7 +1288,7 @@ public interface WSDLPackage extends EPackage
   int FAULT__EMESSAGE = MESSAGE_REFERENCE__EMESSAGE;
 
   /**
-   * The number of structural features of the the '<em>Fault</em>' class.
+   * The number of structural features of the '<em>Fault</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1384,11 +1297,11 @@ public interface WSDLPackage extends EPackage
   int FAULT_FEATURE_COUNT = MESSAGE_REFERENCE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingInputImpl <em>Binding Input</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingInputImpl <em>Binding Input</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingInputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingInputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingInput()
    * @generated
    */
   int BINDING_INPUT = 16;
@@ -1439,7 +1352,7 @@ public interface WSDLPackage extends EPackage
   int BINDING_INPUT__EINPUT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the the '<em>Binding Input</em>' class.
+   * The number of structural features of the '<em>Binding Input</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1448,11 +1361,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_INPUT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingOutputImpl <em>Binding Output</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl <em>Binding Output</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingOutputImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingOutput()
    * @generated
    */
   int BINDING_OUTPUT = 17;
@@ -1503,7 +1416,7 @@ public interface WSDLPackage extends EPackage
   int BINDING_OUTPUT__EOUTPUT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the the '<em>Binding Output</em>' class.
+   * The number of structural features of the '<em>Binding Output</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1512,11 +1425,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_OUTPUT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.BindingFaultImpl <em>Binding Fault</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl <em>Binding Fault</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.BindingFaultImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getBindingFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingFault()
    * @generated
    */
   int BINDING_FAULT = 18;
@@ -1567,7 +1480,7 @@ public interface WSDLPackage extends EPackage
   int BINDING_FAULT__EFAULT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the the '<em>Binding Fault</em>' class.
+   * The number of structural features of the '<em>Binding Fault</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1576,11 +1489,11 @@ public interface WSDLPackage extends EPackage
   int BINDING_FAULT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.NamespaceImpl <em>Namespace</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.NamespaceImpl <em>Namespace</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.NamespaceImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getNamespace()
+   * @see org.eclipse.wst.wsdl.internal.impl.NamespaceImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getNamespace()
    * @generated
    */
   int NAMESPACE = 19;
@@ -1604,7 +1517,7 @@ public interface WSDLPackage extends EPackage
   int NAMESPACE__PREFIX = 1;
 
   /**
-   * The number of structural features of the the '<em>Namespace</em>' class.
+   * The number of structural features of the '<em>Namespace</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1617,13 +1530,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.PortType
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIPortType()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPortType()
    * @generated
    */
   int IPORT_TYPE = 20;
 
   /**
-   * The number of structural features of the the '<em>IPort Type</em>' class.
+   * The number of structural features of the '<em>IPort Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1636,13 +1549,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Operation
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIOperation()
    * @generated
    */
   int IOPERATION = 21;
 
   /**
-   * The number of structural features of the the '<em>IOperation</em>' class.
+   * The number of structural features of the '<em>IOperation</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1655,13 +1568,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Input
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIInput()
    * @generated
    */
   int IINPUT = 22;
 
   /**
-   * The number of structural features of the the '<em>IInput</em>' class.
+   * The number of structural features of the '<em>IInput</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1674,13 +1587,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Output
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIOutput()
    * @generated
    */
   int IOUTPUT = 23;
 
   /**
-   * The number of structural features of the the '<em>IOutput</em>' class.
+   * The number of structural features of the '<em>IOutput</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1693,13 +1606,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Fault
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIFault()
    * @generated
    */
   int IFAULT = 24;
 
   /**
-   * The number of structural features of the the '<em>IFault</em>' class.
+   * The number of structural features of the '<em>IFault</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1712,13 +1625,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Message
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIMessage()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIMessage()
    * @generated
    */
   int IMESSAGE = 25;
 
   /**
-   * The number of structural features of the the '<em>IMessage</em>' class.
+   * The number of structural features of the '<em>IMessage</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1731,13 +1644,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Part
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIPart()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPart()
    * @generated
    */
   int IPART = 26;
 
   /**
-   * The number of structural features of the the '<em>IPart</em>' class.
+   * The number of structural features of the '<em>IPart</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1750,13 +1663,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Service
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIService()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIService()
    * @generated
    */
   int ISERVICE = 27;
 
   /**
-   * The number of structural features of the the '<em>IService</em>' class.
+   * The number of structural features of the '<em>IService</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1769,13 +1682,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Port
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIPort()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPort()
    * @generated
    */
   int IPORT = 28;
 
   /**
-   * The number of structural features of the the '<em>IPort</em>' class.
+   * The number of structural features of the '<em>IPort</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1788,13 +1701,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Binding
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBinding()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBinding()
    * @generated
    */
   int IBINDING = 29;
 
   /**
-   * The number of structural features of the the '<em>IBinding</em>' class.
+   * The number of structural features of the '<em>IBinding</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1807,13 +1720,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingOperation
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingOperation()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingOperation()
    * @generated
    */
   int IBINDING_OPERATION = 30;
 
   /**
-   * The number of structural features of the the '<em>IBinding Operation</em>' class.
+   * The number of structural features of the '<em>IBinding Operation</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1826,13 +1739,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingInput
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingInput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingInput()
    * @generated
    */
   int IBINDING_INPUT = 31;
 
   /**
-   * The number of structural features of the the '<em>IBinding Input</em>' class.
+   * The number of structural features of the '<em>IBinding Input</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1845,13 +1758,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingOutput
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingOutput()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingOutput()
    * @generated
    */
   int IBINDING_OUTPUT = 32;
 
   /**
-   * The number of structural features of the the '<em>IBinding Output</em>' class.
+   * The number of structural features of the '<em>IBinding Output</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1864,13 +1777,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.BindingFault
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIBindingFault()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingFault()
    * @generated
    */
   int IBINDING_FAULT = 33;
 
   /**
-   * The number of structural features of the the '<em>IBinding Fault</em>' class.
+   * The number of structural features of the '<em>IBinding Fault</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1883,13 +1796,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.ExtensibilityElement
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIExtensibilityElement()
    * @generated
    */
   int IEXTENSIBILITY_ELEMENT = 34;
 
   /**
-   * The number of structural features of the the '<em>IExtensibility Element</em>' class.
+   * The number of structural features of the '<em>IExtensibility Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1902,13 +1815,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Definition
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIDefinition()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIDefinition()
    * @generated
    */
   int IDEFINITION = 35;
 
   /**
-   * The number of structural features of the the '<em>IDefinition</em>' class.
+   * The number of structural features of the '<em>IDefinition</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1921,13 +1834,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Import
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIImport()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIImport()
    * @generated
    */
   int IIMPORT = 36;
 
   /**
-   * The number of structural features of the the '<em>IImport</em>' class.
+   * The number of structural features of the '<em>IImport</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1940,13 +1853,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.util.List
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIList()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIList()
    * @generated
    */
   int ILIST = 37;
 
   /**
-   * The number of structural features of the the '<em>IList</em>' class.
+   * The number of structural features of the '<em>IList</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1959,13 +1872,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.util.Map
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIMap()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIMap()
    * @generated
    */
   int IMAP = 38;
 
   /**
-   * The number of structural features of the the '<em>IMap</em>' class.
+   * The number of structural features of the '<em>IMap</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1978,13 +1891,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.net.URL
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIURL()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIURL()
    * @generated
    */
   int IURL = 39;
 
   /**
-   * The number of structural features of the the '<em>IURL</em>' class.
+   * The number of structural features of the '<em>IURL</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1997,13 +1910,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.extensions.ExtensionRegistry
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIExtensionRegistry()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIExtensionRegistry()
    * @generated
    */
   int IEXTENSION_REGISTRY = 40;
 
   /**
-   * The number of structural features of the the '<em>IExtension Registry</em>' class.
+   * The number of structural features of the '<em>IExtension Registry</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2012,11 +1925,11 @@ public interface WSDLPackage extends EPackage
   int IEXTENSION_REGISTRY_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.TypesImpl <em>Types</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.TypesImpl <em>Types</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.TypesImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getTypes()
+   * @see org.eclipse.wst.wsdl.internal.impl.TypesImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getTypes()
    * @generated
    */
   int TYPES = 41;
@@ -2049,7 +1962,7 @@ public interface WSDLPackage extends EPackage
   int TYPES__EEXTENSIBILITY_ELEMENTS = EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
 
   /**
-   * The number of structural features of the the '<em>Types</em>' class.
+   * The number of structural features of the '<em>Types</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2062,13 +1975,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see java.util.Iterator
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getIIterator()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIIterator()
    * @generated
    */
   int IITERATOR = 42;
 
   /**
-   * The number of structural features of the the '<em>IIterator</em>' class.
+   * The number of structural features of the '<em>IIterator</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2081,13 +1994,13 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.Types
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getITypes()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getITypes()
    * @generated
    */
   int ITYPES = 43;
 
   /**
-   * The number of structural features of the the '<em>ITypes</em>' class.
+   * The number of structural features of the '<em>ITypes</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2096,11 +2009,11 @@ public interface WSDLPackage extends EPackage
   int ITYPES_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.UnknownExtensibilityElementImpl <em>Unknown Extensibility Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl <em>Unknown Extensibility Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.UnknownExtensibilityElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getUnknownExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getUnknownExtensibilityElement()
    * @generated
    */
   int UNKNOWN_EXTENSIBILITY_ELEMENT = 44;
@@ -2151,7 +2064,7 @@ public interface WSDLPackage extends EPackage
   int UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN = EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>Unknown Extensibility Element</em>' class.
+   * The number of structural features of the '<em>Unknown Extensibility Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2160,11 +2073,11 @@ public interface WSDLPackage extends EPackage
   int UNKNOWN_EXTENSIBILITY_ELEMENT_FEATURE_COUNT = EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.impl.XSDSchemaExtensibilityElementImpl <em>XSD Schema Extensibility Element</em>}' class.
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl <em>XSD Schema Extensibility Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.impl.XSDSchemaExtensibilityElementImpl
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getXSDSchemaExtensibilityElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getXSDSchemaExtensibilityElement()
    * @generated
    */
   int XSD_SCHEMA_EXTENSIBILITY_ELEMENT = 45;
@@ -2215,7 +2128,7 @@ public interface WSDLPackage extends EPackage
   int XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA = EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the the '<em>XSD Schema Extensibility Element</em>' class.
+   * The number of structural features of the '<em>XSD Schema Extensibility Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2228,7 +2141,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.xml.namespace.QName
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getQName()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getQName()
    * @generated
    */
   int QNAME = 47;
@@ -2238,7 +2151,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.OperationType
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getOperationType()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperationType()
    * @generated
    */
   int OPERATION_TYPE = 48;
@@ -2248,7 +2161,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see org.w3c.dom.Element
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getDOMElement()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDOMElement()
    * @generated
    */
   int DOM_ELEMENT = 49;
@@ -2258,7 +2171,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see javax.wsdl.WSDLException
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getWSDLException()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getWSDLException()
    * @generated
    */
   int WSDL_EXCEPTION = 50;
@@ -2268,7 +2181,7 @@ public interface WSDLPackage extends EPackage
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see org.w3c.dom.Document
-   * @see org.eclipse.wst.wsdl.impl.WSDLPackageImpl#getDOMDocument()
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDOMDocument()
    * @generated
    */
   int DOM_DOCUMENT = 51;
@@ -2338,28 +2251,6 @@ public interface WSDLPackage extends EPackage
   EAttribute getPortType_Undefined();
 
   /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.PortType#isProxy <em>Proxy</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Proxy</em>'.
-   * @see org.eclipse.wst.wsdl.PortType#isProxy()
-   * @see #getPortType()
-   * @generated
-   */
-  EAttribute getPortType_Proxy();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.PortType#getResourceURI <em>Resource URI</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Resource URI</em>'.
-   * @see org.eclipse.wst.wsdl.PortType#getResourceURI()
-   * @see #getPortType()
-   * @generated
-   */
-  EAttribute getPortType_ResourceURI();
-
-  /**
    * Returns the meta object for the containment reference list '{@link org.eclipse.wst.wsdl.PortType#getEOperations <em>EOperations</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2412,28 +2303,6 @@ public interface WSDLPackage extends EPackage
    * @generated
    */
   EAttribute getOperation_Undefined();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Operation#isProxy <em>Proxy</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Proxy</em>'.
-   * @see org.eclipse.wst.wsdl.Operation#isProxy()
-   * @see #getOperation()
-   * @generated
-   */
-  EAttribute getOperation_Proxy();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Operation#getResourceURI <em>Resource URI</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Resource URI</em>'.
-   * @see org.eclipse.wst.wsdl.Operation#getResourceURI()
-   * @see #getOperation()
-   * @generated
-   */
-  EAttribute getOperation_ResourceURI();
 
   /**
    * Returns the meta object for the containment reference '{@link org.eclipse.wst.wsdl.Operation#getEInput <em>EInput</em>}'.
@@ -2510,28 +2379,6 @@ public interface WSDLPackage extends EPackage
    * @generated
    */
   EAttribute getMessage_Undefined();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Message#isProxy <em>Proxy</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Proxy</em>'.
-   * @see org.eclipse.wst.wsdl.Message#isProxy()
-   * @see #getMessage()
-   * @generated
-   */
-  EAttribute getMessage_Proxy();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Message#getResourceURI <em>Resource URI</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Resource URI</em>'.
-   * @see org.eclipse.wst.wsdl.Message#getResourceURI()
-   * @see #getMessage()
-   * @generated
-   */
-  EAttribute getMessage_ResourceURI();
 
   /**
    * Returns the meta object for the containment reference list '{@link org.eclipse.wst.wsdl.Message#getEParts <em>EParts</em>}'.
@@ -2653,28 +2500,6 @@ public interface WSDLPackage extends EPackage
   EAttribute getBinding_Undefined();
 
   /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Binding#isProxy <em>Proxy</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Proxy</em>'.
-   * @see org.eclipse.wst.wsdl.Binding#isProxy()
-   * @see #getBinding()
-   * @generated
-   */
-  EAttribute getBinding_Proxy();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Binding#getResourceURI <em>Resource URI</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Resource URI</em>'.
-   * @see org.eclipse.wst.wsdl.Binding#getResourceURI()
-   * @see #getBinding()
-   * @generated
-   */
-  EAttribute getBinding_ResourceURI();
-
-  /**
    * Returns the meta object for the reference '{@link org.eclipse.wst.wsdl.Binding#getEPortType <em>EPort Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2792,28 +2617,6 @@ public interface WSDLPackage extends EPackage
    * @generated
    */
   EAttribute getService_Undefined();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Service#isProxy <em>Proxy</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Proxy</em>'.
-   * @see org.eclipse.wst.wsdl.Service#isProxy()
-   * @see #getService()
-   * @generated
-   */
-  EAttribute getService_Proxy();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.eclipse.wst.wsdl.Service#getResourceURI <em>Resource URI</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Resource URI</em>'.
-   * @see org.eclipse.wst.wsdl.Service#getResourceURI()
-   * @see #getService()
-   * @generated
-   */
-  EAttribute getService_ResourceURI();
 
   /**
    * Returns the meta object for the containment reference list '{@link org.eclipse.wst.wsdl.Service#getEPorts <em>EPorts</em>}'.
@@ -3260,7 +3063,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IPort Type</em>'.
    * @see javax.wsdl.PortType
-   * @model instanceClass="javax.wsdl.PortType" 
+   * @model instanceClass="javax.wsdl.PortType"
    * @generated
    */
   EClass getIPortType();
@@ -3271,7 +3074,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IOperation</em>'.
    * @see javax.wsdl.Operation
-   * @model instanceClass="javax.wsdl.Operation" 
+   * @model instanceClass="javax.wsdl.Operation"
    * @generated
    */
   EClass getIOperation();
@@ -3282,7 +3085,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IInput</em>'.
    * @see javax.wsdl.Input
-   * @model instanceClass="javax.wsdl.Input" 
+   * @model instanceClass="javax.wsdl.Input"
    * @generated
    */
   EClass getIInput();
@@ -3293,7 +3096,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IOutput</em>'.
    * @see javax.wsdl.Output
-   * @model instanceClass="javax.wsdl.Output" 
+   * @model instanceClass="javax.wsdl.Output"
    * @generated
    */
   EClass getIOutput();
@@ -3304,7 +3107,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IFault</em>'.
    * @see javax.wsdl.Fault
-   * @model instanceClass="javax.wsdl.Fault" 
+   * @model instanceClass="javax.wsdl.Fault"
    * @generated
    */
   EClass getIFault();
@@ -3315,7 +3118,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IMessage</em>'.
    * @see javax.wsdl.Message
-   * @model instanceClass="javax.wsdl.Message" 
+   * @model instanceClass="javax.wsdl.Message"
    * @generated
    */
   EClass getIMessage();
@@ -3326,7 +3129,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IPart</em>'.
    * @see javax.wsdl.Part
-   * @model instanceClass="javax.wsdl.Part" 
+   * @model instanceClass="javax.wsdl.Part"
    * @generated
    */
   EClass getIPart();
@@ -3337,7 +3140,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IService</em>'.
    * @see javax.wsdl.Service
-   * @model instanceClass="javax.wsdl.Service" 
+   * @model instanceClass="javax.wsdl.Service"
    * @generated
    */
   EClass getIService();
@@ -3348,7 +3151,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IPort</em>'.
    * @see javax.wsdl.Port
-   * @model instanceClass="javax.wsdl.Port" 
+   * @model instanceClass="javax.wsdl.Port"
    * @generated
    */
   EClass getIPort();
@@ -3359,7 +3162,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IBinding</em>'.
    * @see javax.wsdl.Binding
-   * @model instanceClass="javax.wsdl.Binding" 
+   * @model instanceClass="javax.wsdl.Binding"
    * @generated
    */
   EClass getIBinding();
@@ -3370,7 +3173,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IBinding Operation</em>'.
    * @see javax.wsdl.BindingOperation
-   * @model instanceClass="javax.wsdl.BindingOperation" 
+   * @model instanceClass="javax.wsdl.BindingOperation"
    * @generated
    */
   EClass getIBindingOperation();
@@ -3381,7 +3184,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IBinding Input</em>'.
    * @see javax.wsdl.BindingInput
-   * @model instanceClass="javax.wsdl.BindingInput" 
+   * @model instanceClass="javax.wsdl.BindingInput"
    * @generated
    */
   EClass getIBindingInput();
@@ -3392,7 +3195,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IBinding Output</em>'.
    * @see javax.wsdl.BindingOutput
-   * @model instanceClass="javax.wsdl.BindingOutput" 
+   * @model instanceClass="javax.wsdl.BindingOutput"
    * @generated
    */
   EClass getIBindingOutput();
@@ -3403,7 +3206,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IBinding Fault</em>'.
    * @see javax.wsdl.BindingFault
-   * @model instanceClass="javax.wsdl.BindingFault" 
+   * @model instanceClass="javax.wsdl.BindingFault"
    * @generated
    */
   EClass getIBindingFault();
@@ -3414,7 +3217,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IExtensibility Element</em>'.
    * @see javax.wsdl.extensions.ExtensibilityElement
-   * @model instanceClass="javax.wsdl.extensions.ExtensibilityElement" 
+   * @model instanceClass="javax.wsdl.extensions.ExtensibilityElement"
    * @generated
    */
   EClass getIExtensibilityElement();
@@ -3425,7 +3228,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IDefinition</em>'.
    * @see javax.wsdl.Definition
-   * @model instanceClass="javax.wsdl.Definition" 
+   * @model instanceClass="javax.wsdl.Definition"
    * @generated
    */
   EClass getIDefinition();
@@ -3436,7 +3239,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IImport</em>'.
    * @see javax.wsdl.Import
-   * @model instanceClass="javax.wsdl.Import" 
+   * @model instanceClass="javax.wsdl.Import"
    * @generated
    */
   EClass getIImport();
@@ -3447,7 +3250,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IList</em>'.
    * @see java.util.List
-   * @model instanceClass="java.util.List" 
+   * @model instanceClass="java.util.List"
    * @generated
    */
   EClass getIList();
@@ -3458,7 +3261,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IMap</em>'.
    * @see java.util.Map
-   * @model instanceClass="java.util.Map" 
+   * @model instanceClass="java.util.Map"
    * @generated
    */
   EClass getIMap();
@@ -3469,7 +3272,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IURL</em>'.
    * @see java.net.URL
-   * @model instanceClass="java.net.URL" 
+   * @model instanceClass="java.net.URL"
    * @generated
    */
   EClass getIURL();
@@ -3480,7 +3283,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IExtension Registry</em>'.
    * @see javax.wsdl.extensions.ExtensionRegistry
-   * @model instanceClass="javax.wsdl.extensions.ExtensionRegistry" 
+   * @model instanceClass="javax.wsdl.extensions.ExtensionRegistry"
    * @generated
    */
   EClass getIExtensionRegistry();
@@ -3501,7 +3304,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>IIterator</em>'.
    * @see java.util.Iterator
-   * @model instanceClass="java.util.Iterator" 
+   * @model instanceClass="java.util.Iterator"
    * @generated
    */
   EClass getIIterator();
@@ -3512,7 +3315,7 @@ public interface WSDLPackage extends EPackage
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>ITypes</em>'.
    * @see javax.wsdl.Types
-   * @model instanceClass="javax.wsdl.Types" 
+   * @model instanceClass="javax.wsdl.Types"
    * @generated
    */
   EClass getITypes();
@@ -3654,5 +3457,1061 @@ public interface WSDLPackage extends EPackage
    * @generated
    */
   WSDLFactory getWSDLFactory();
+
+  /**
+   * <!-- begin-user-doc -->
+   * Defines literals for the meta objects that represent
+   * <ul>
+   *   <li>each class,</li>
+   *   <li>each feature of each class,</li>
+   *   <li>each enum,</li>
+   *   <li>and each data type</li>
+   * </ul>
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  interface Literals
+  {
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl <em>Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getWSDLElement()
+     * @generated
+     */
+    EClass WSDL_ELEMENT = eINSTANCE.getWSDLElement();
+
+    /**
+     * The meta object literal for the '<em><b>Documentation Element</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute WSDL_ELEMENT__DOCUMENTATION_ELEMENT = eINSTANCE.getWSDLElement_DocumentationElement();
+
+    /**
+     * The meta object literal for the '<em><b>Element</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute WSDL_ELEMENT__ELEMENT = eINSTANCE.getWSDLElement_Element();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl <em>Port Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.PortTypeImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPortType()
+     * @generated
+     */
+    EClass PORT_TYPE = eINSTANCE.getPortType();
+
+    /**
+     * The meta object literal for the '<em><b>QName</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PORT_TYPE__QNAME = eINSTANCE.getPortType_QName();
+
+    /**
+     * The meta object literal for the '<em><b>Undefined</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PORT_TYPE__UNDEFINED = eINSTANCE.getPortType_Undefined();
+
+    /**
+     * The meta object literal for the '<em><b>EOperations</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PORT_TYPE__EOPERATIONS = eINSTANCE.getPortType_EOperations();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl <em>Operation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.OperationImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperation()
+     * @generated
+     */
+    EClass OPERATION = eINSTANCE.getOperation();
+
+    /**
+     * The meta object literal for the '<em><b>Style</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute OPERATION__STYLE = eINSTANCE.getOperation_Style();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute OPERATION__NAME = eINSTANCE.getOperation_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Undefined</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute OPERATION__UNDEFINED = eINSTANCE.getOperation_Undefined();
+
+    /**
+     * The meta object literal for the '<em><b>EInput</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OPERATION__EINPUT = eINSTANCE.getOperation_EInput();
+
+    /**
+     * The meta object literal for the '<em><b>EOutput</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OPERATION__EOUTPUT = eINSTANCE.getOperation_EOutput();
+
+    /**
+     * The meta object literal for the '<em><b>EFaults</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OPERATION__EFAULTS = eINSTANCE.getOperation_EFaults();
+
+    /**
+     * The meta object literal for the '<em><b>EParameter Ordering</b></em>' reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OPERATION__EPARAMETER_ORDERING = eINSTANCE.getOperation_EParameterOrdering();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl <em>Message</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.MessageImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessage()
+     * @generated
+     */
+    EClass MESSAGE = eINSTANCE.getMessage();
+
+    /**
+     * The meta object literal for the '<em><b>QName</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MESSAGE__QNAME = eINSTANCE.getMessage_QName();
+
+    /**
+     * The meta object literal for the '<em><b>Undefined</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MESSAGE__UNDEFINED = eINSTANCE.getMessage_Undefined();
+
+    /**
+     * The meta object literal for the '<em><b>EParts</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MESSAGE__EPARTS = eINSTANCE.getMessage_EParts();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.PartImpl <em>Part</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.PartImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPart()
+     * @generated
+     */
+    EClass PART = eINSTANCE.getPart();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PART__NAME = eINSTANCE.getPart_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Element Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PART__ELEMENT_NAME = eINSTANCE.getPart_ElementName();
+
+    /**
+     * The meta object literal for the '<em><b>Type Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PART__TYPE_NAME = eINSTANCE.getPart_TypeName();
+
+    /**
+     * The meta object literal for the '<em><b>Type Definition</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PART__TYPE_DEFINITION = eINSTANCE.getPart_TypeDefinition();
+
+    /**
+     * The meta object literal for the '<em><b>Element Declaration</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PART__ELEMENT_DECLARATION = eINSTANCE.getPart_ElementDeclaration();
+
+    /**
+     * The meta object literal for the '<em><b>EMessage</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PART__EMESSAGE = eINSTANCE.getPart_EMessage();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl <em>Binding</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.BindingImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBinding()
+     * @generated
+     */
+    EClass BINDING = eINSTANCE.getBinding();
+
+    /**
+     * The meta object literal for the '<em><b>QName</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BINDING__QNAME = eINSTANCE.getBinding_QName();
+
+    /**
+     * The meta object literal for the '<em><b>Undefined</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BINDING__UNDEFINED = eINSTANCE.getBinding_Undefined();
+
+    /**
+     * The meta object literal for the '<em><b>EPort Type</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING__EPORT_TYPE = eINSTANCE.getBinding_EPortType();
+
+    /**
+     * The meta object literal for the '<em><b>EBinding Operations</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING__EBINDING_OPERATIONS = eINSTANCE.getBinding_EBindingOperations();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl <em>Binding Operation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.BindingOperationImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingOperation()
+     * @generated
+     */
+    EClass BINDING_OPERATION = eINSTANCE.getBindingOperation();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BINDING_OPERATION__NAME = eINSTANCE.getBindingOperation_Name();
+
+    /**
+     * The meta object literal for the '<em><b>EOperation</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING_OPERATION__EOPERATION = eINSTANCE.getBindingOperation_EOperation();
+
+    /**
+     * The meta object literal for the '<em><b>EBinding Input</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING_OPERATION__EBINDING_INPUT = eINSTANCE.getBindingOperation_EBindingInput();
+
+    /**
+     * The meta object literal for the '<em><b>EBinding Output</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING_OPERATION__EBINDING_OUTPUT = eINSTANCE.getBindingOperation_EBindingOutput();
+
+    /**
+     * The meta object literal for the '<em><b>EBinding Faults</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING_OPERATION__EBINDING_FAULTS = eINSTANCE.getBindingOperation_EBindingFaults();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.ServiceImpl <em>Service</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.ServiceImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getService()
+     * @generated
+     */
+    EClass SERVICE = eINSTANCE.getService();
+
+    /**
+     * The meta object literal for the '<em><b>QName</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SERVICE__QNAME = eINSTANCE.getService_QName();
+
+    /**
+     * The meta object literal for the '<em><b>Undefined</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SERVICE__UNDEFINED = eINSTANCE.getService_Undefined();
+
+    /**
+     * The meta object literal for the '<em><b>EPorts</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SERVICE__EPORTS = eINSTANCE.getService_EPorts();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.PortImpl <em>Port</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.PortImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPort()
+     * @generated
+     */
+    EClass PORT = eINSTANCE.getPort();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PORT__NAME = eINSTANCE.getPort_Name();
+
+    /**
+     * The meta object literal for the '<em><b>EBinding</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PORT__EBINDING = eINSTANCE.getPort_EBinding();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl <em>Extensibility Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getExtensibilityElement()
+     * @generated
+     */
+    EClass EXTENSIBILITY_ELEMENT = eINSTANCE.getExtensibilityElement();
+
+    /**
+     * The meta object literal for the '<em><b>Required</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EXTENSIBILITY_ELEMENT__REQUIRED = eINSTANCE.getExtensibilityElement_Required();
+
+    /**
+     * The meta object literal for the '<em><b>Element Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EXTENSIBILITY_ELEMENT__ELEMENT_TYPE = eINSTANCE.getExtensibilityElement_ElementType();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl <em>Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.DefinitionImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDefinition()
+     * @generated
+     */
+    EClass DEFINITION = eINSTANCE.getDefinition();
+
+    /**
+     * The meta object literal for the '<em><b>Target Namespace</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DEFINITION__TARGET_NAMESPACE = eINSTANCE.getDefinition_TargetNamespace();
+
+    /**
+     * The meta object literal for the '<em><b>Location</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DEFINITION__LOCATION = eINSTANCE.getDefinition_Location();
+
+    /**
+     * The meta object literal for the '<em><b>QName</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DEFINITION__QNAME = eINSTANCE.getDefinition_QName();
+
+    /**
+     * The meta object literal for the '<em><b>Encoding</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DEFINITION__ENCODING = eINSTANCE.getDefinition_Encoding();
+
+    /**
+     * The meta object literal for the '<em><b>EImports</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFINITION__EIMPORTS = eINSTANCE.getDefinition_EImports();
+
+    /**
+     * The meta object literal for the '<em><b>ETypes</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFINITION__ETYPES = eINSTANCE.getDefinition_ETypes();
+
+    /**
+     * The meta object literal for the '<em><b>EMessages</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFINITION__EMESSAGES = eINSTANCE.getDefinition_EMessages();
+
+    /**
+     * The meta object literal for the '<em><b>EPort Types</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFINITION__EPORT_TYPES = eINSTANCE.getDefinition_EPortTypes();
+
+    /**
+     * The meta object literal for the '<em><b>EBindings</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFINITION__EBINDINGS = eINSTANCE.getDefinition_EBindings();
+
+    /**
+     * The meta object literal for the '<em><b>EServices</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFINITION__ESERVICES = eINSTANCE.getDefinition_EServices();
+
+    /**
+     * The meta object literal for the '<em><b>ENamespaces</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFINITION__ENAMESPACES = eINSTANCE.getDefinition_ENamespaces();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.ImportImpl <em>Import</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.ImportImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getImport()
+     * @generated
+     */
+    EClass IMPORT = eINSTANCE.getImport();
+
+    /**
+     * The meta object literal for the '<em><b>Namespace URI</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute IMPORT__NAMESPACE_URI = eINSTANCE.getImport_NamespaceURI();
+
+    /**
+     * The meta object literal for the '<em><b>Location URI</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute IMPORT__LOCATION_URI = eINSTANCE.getImport_LocationURI();
+
+    /**
+     * The meta object literal for the '<em><b>EDefinition</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference IMPORT__EDEFINITION = eINSTANCE.getImport_EDefinition();
+
+    /**
+     * The meta object literal for the '<em><b>ESchema</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference IMPORT__ESCHEMA = eINSTANCE.getImport_ESchema();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl <em>Extensible Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getExtensibleElement()
+     * @generated
+     */
+    EClass EXTENSIBLE_ELEMENT = eINSTANCE.getExtensibleElement();
+
+    /**
+     * The meta object literal for the '<em><b>EExtensibility Elements</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS = eINSTANCE.getExtensibleElement_EExtensibilityElements();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.InputImpl <em>Input</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.InputImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getInput()
+     * @generated
+     */
+    EClass INPUT = eINSTANCE.getInput();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.OutputImpl <em>Output</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.OutputImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOutput()
+     * @generated
+     */
+    EClass OUTPUT = eINSTANCE.getOutput();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.FaultImpl <em>Fault</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.FaultImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getFault()
+     * @generated
+     */
+    EClass FAULT = eINSTANCE.getFault();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingInputImpl <em>Binding Input</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.BindingInputImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingInput()
+     * @generated
+     */
+    EClass BINDING_INPUT = eINSTANCE.getBindingInput();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BINDING_INPUT__NAME = eINSTANCE.getBindingInput_Name();
+
+    /**
+     * The meta object literal for the '<em><b>EInput</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING_INPUT__EINPUT = eINSTANCE.getBindingInput_EInput();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl <em>Binding Output</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.BindingOutputImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingOutput()
+     * @generated
+     */
+    EClass BINDING_OUTPUT = eINSTANCE.getBindingOutput();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BINDING_OUTPUT__NAME = eINSTANCE.getBindingOutput_Name();
+
+    /**
+     * The meta object literal for the '<em><b>EOutput</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING_OUTPUT__EOUTPUT = eINSTANCE.getBindingOutput_EOutput();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl <em>Binding Fault</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.BindingFaultImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getBindingFault()
+     * @generated
+     */
+    EClass BINDING_FAULT = eINSTANCE.getBindingFault();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BINDING_FAULT__NAME = eINSTANCE.getBindingFault_Name();
+
+    /**
+     * The meta object literal for the '<em><b>EFault</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BINDING_FAULT__EFAULT = eINSTANCE.getBindingFault_EFault();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.NamespaceImpl <em>Namespace</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.NamespaceImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getNamespace()
+     * @generated
+     */
+    EClass NAMESPACE = eINSTANCE.getNamespace();
+
+    /**
+     * The meta object literal for the '<em><b>URI</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NAMESPACE__URI = eINSTANCE.getNamespace_URI();
+
+    /**
+     * The meta object literal for the '<em><b>Prefix</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NAMESPACE__PREFIX = eINSTANCE.getNamespace_Prefix();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.PortType <em>IPort Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.PortType
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPortType()
+     * @generated
+     */
+    EClass IPORT_TYPE = eINSTANCE.getIPortType();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Operation <em>IOperation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Operation
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIOperation()
+     * @generated
+     */
+    EClass IOPERATION = eINSTANCE.getIOperation();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Input <em>IInput</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Input
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIInput()
+     * @generated
+     */
+    EClass IINPUT = eINSTANCE.getIInput();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Output <em>IOutput</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Output
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIOutput()
+     * @generated
+     */
+    EClass IOUTPUT = eINSTANCE.getIOutput();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Fault <em>IFault</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Fault
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIFault()
+     * @generated
+     */
+    EClass IFAULT = eINSTANCE.getIFault();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Message <em>IMessage</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Message
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIMessage()
+     * @generated
+     */
+    EClass IMESSAGE = eINSTANCE.getIMessage();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Part <em>IPart</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Part
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPart()
+     * @generated
+     */
+    EClass IPART = eINSTANCE.getIPart();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Service <em>IService</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Service
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIService()
+     * @generated
+     */
+    EClass ISERVICE = eINSTANCE.getIService();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Port <em>IPort</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Port
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIPort()
+     * @generated
+     */
+    EClass IPORT = eINSTANCE.getIPort();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Binding <em>IBinding</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Binding
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBinding()
+     * @generated
+     */
+    EClass IBINDING = eINSTANCE.getIBinding();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.BindingOperation <em>IBinding Operation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.BindingOperation
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingOperation()
+     * @generated
+     */
+    EClass IBINDING_OPERATION = eINSTANCE.getIBindingOperation();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.BindingInput <em>IBinding Input</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.BindingInput
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingInput()
+     * @generated
+     */
+    EClass IBINDING_INPUT = eINSTANCE.getIBindingInput();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.BindingOutput <em>IBinding Output</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.BindingOutput
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingOutput()
+     * @generated
+     */
+    EClass IBINDING_OUTPUT = eINSTANCE.getIBindingOutput();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.BindingFault <em>IBinding Fault</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.BindingFault
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIBindingFault()
+     * @generated
+     */
+    EClass IBINDING_FAULT = eINSTANCE.getIBindingFault();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.ExtensibilityElement <em>IExtensibility Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.ExtensibilityElement
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIExtensibilityElement()
+     * @generated
+     */
+    EClass IEXTENSIBILITY_ELEMENT = eINSTANCE.getIExtensibilityElement();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Definition <em>IDefinition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Definition
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIDefinition()
+     * @generated
+     */
+    EClass IDEFINITION = eINSTANCE.getIDefinition();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Import <em>IImport</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Import
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIImport()
+     * @generated
+     */
+    EClass IIMPORT = eINSTANCE.getIImport();
+
+    /**
+     * The meta object literal for the '{@link java.util.List <em>IList</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.List
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIList()
+     * @generated
+     */
+    EClass ILIST = eINSTANCE.getIList();
+
+    /**
+     * The meta object literal for the '{@link java.util.Map <em>IMap</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.Map
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIMap()
+     * @generated
+     */
+    EClass IMAP = eINSTANCE.getIMap();
+
+    /**
+     * The meta object literal for the '{@link java.net.URL <em>IURL</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.net.URL
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIURL()
+     * @generated
+     */
+    EClass IURL = eINSTANCE.getIURL();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.extensions.ExtensionRegistry <em>IExtension Registry</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.extensions.ExtensionRegistry
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIExtensionRegistry()
+     * @generated
+     */
+    EClass IEXTENSION_REGISTRY = eINSTANCE.getIExtensionRegistry();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.TypesImpl <em>Types</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.TypesImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getTypes()
+     * @generated
+     */
+    EClass TYPES = eINSTANCE.getTypes();
+
+    /**
+     * The meta object literal for the '{@link java.util.Iterator <em>IIterator</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.Iterator
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getIIterator()
+     * @generated
+     */
+    EClass IITERATOR = eINSTANCE.getIIterator();
+
+    /**
+     * The meta object literal for the '{@link javax.wsdl.Types <em>ITypes</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.Types
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getITypes()
+     * @generated
+     */
+    EClass ITYPES = eINSTANCE.getITypes();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl <em>Unknown Extensibility Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.UnknownExtensibilityElementImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getUnknownExtensibilityElement()
+     * @generated
+     */
+    EClass UNKNOWN_EXTENSIBILITY_ELEMENT = eINSTANCE.getUnknownExtensibilityElement();
+
+    /**
+     * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN = eINSTANCE.getUnknownExtensibilityElement_Children();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl <em>XSD Schema Extensibility Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getXSDSchemaExtensibilityElement()
+     * @generated
+     */
+    EClass XSD_SCHEMA_EXTENSIBILITY_ELEMENT = eINSTANCE.getXSDSchemaExtensibilityElement();
+
+    /**
+     * The meta object literal for the '<em><b>Schema</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA = eINSTANCE.getXSDSchemaExtensibilityElement_Schema();
+
+    /**
+     * The meta object literal for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl <em>Message Reference</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessageReference()
+     * @generated
+     */
+    EClass MESSAGE_REFERENCE = eINSTANCE.getMessageReference();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MESSAGE_REFERENCE__NAME = eINSTANCE.getMessageReference_Name();
+
+    /**
+     * The meta object literal for the '<em><b>EMessage</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MESSAGE_REFERENCE__EMESSAGE = eINSTANCE.getMessageReference_EMessage();
+
+    /**
+     * The meta object literal for the '<em>QName</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.xml.namespace.QName
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getQName()
+     * @generated
+     */
+    EDataType QNAME = eINSTANCE.getQName();
+
+    /**
+     * The meta object literal for the '<em>Operation Type</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.OperationType
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperationType()
+     * @generated
+     */
+    EDataType OPERATION_TYPE = eINSTANCE.getOperationType();
+
+    /**
+     * The meta object literal for the '<em>DOM Element</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.w3c.dom.Element
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDOMElement()
+     * @generated
+     */
+    EDataType DOM_ELEMENT = eINSTANCE.getDOMElement();
+
+    /**
+     * The meta object literal for the '<em>Exception</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.wsdl.WSDLException
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getWSDLException()
+     * @generated
+     */
+    EDataType WSDL_EXCEPTION = eINSTANCE.getWSDLException();
+
+    /**
+     * The meta object literal for the '<em>DOM Document</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.w3c.dom.Document
+     * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getDOMDocument()
+     * @generated
+     */
+    EDataType DOM_DOCUMENT = eINSTANCE.getDOMDocument();
+
+  }
 
 } //WSDLPackage

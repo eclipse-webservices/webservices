@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +41,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -84,6 +84,7 @@ import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.events.MutationEvent;
 
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Definition</b></em>'.
@@ -91,17 +92,17 @@ import org.w3c.dom.events.MutationEvent;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getTargetNamespace <em>Target Namespace</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getLocation <em>Location</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getQName <em>QName</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEncoding <em>Encoding</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEMessages <em>EMessages</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEPortTypes <em>EPort Types</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEBindings <em>EBindings</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEServices <em>EServices</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getENamespaces <em>ENamespaces</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getETypes <em>ETypes</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.DefinitionImpl#getEImports <em>EImports</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getTargetNamespace <em>Target Namespace</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getLocation <em>Location</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getQName <em>QName</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEncoding <em>Encoding</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEImports <em>EImports</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getETypes <em>ETypes</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEMessages <em>EMessages</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEPortTypes <em>EPort Types</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEBindings <em>EBindings</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getEServices <em>EServices</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.DefinitionImpl#getENamespaces <em>ENamespaces</em>}</li>
  * </ul>
  * </p>
  *
@@ -197,6 +198,26 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   protected String encoding = ENCODING_EDEFAULT;
 
   /**
+   * The cached value of the '{@link #getEImports() <em>EImports</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEImports()
+   * @generated
+   * @ordered
+   */
+  protected EList eImports = null;
+
+  /**
+   * The cached value of the '{@link #getETypes() <em>ETypes</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getETypes()
+   * @generated
+   * @ordered
+   */
+  protected Types eTypes = null;
+
+  /**
    * The cached value of the '{@link #getEMessages() <em>EMessages</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -246,28 +267,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   protected EList eNamespaces = null;
 
-  /**
-   * The cached value of the '{@link #getETypes() <em>ETypes</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getETypes()
-   * @generated
-   * @ordered
-   */
-  protected Types eTypes = null;
-
-  /**
-   * The cached value of the '{@link #getEImports() <em>EImports</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getEImports()
-   * @generated
-   * @ordered
-   */
-  protected EList eImports = null;
-
   private ExtensionRegistry extensionRegistry;
+
   private Document document;
+
   private HashMap namespaces = new HashMap();
 
   /**
@@ -287,7 +290,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getDefinition();
+    return WSDLPackage.Literals.DEFINITION;
   }
 
   /**
@@ -475,7 +478,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WSDLPackage.DEFINITION__ETYPES, oldETypes, newETypes);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
@@ -495,28 +501,28 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       if (newETypes != null)
         msgs = ((InternalEObject)newETypes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WSDLPackage.DEFINITION__ETYPES, null, msgs);
       msgs = basicSetETypes(newETypes, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null)
+        msgs.dispatch();
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, WSDLPackage.DEFINITION__ETYPES, newETypes, newETypes));
   }
-  
+
   public void eNotify(Notification msg)
   {
     super.eNotify(msg);
-    
+
     // cs.. if we've added a Types element, and this definition is already attached to a resource
     // we need to set the schemaLocations for any inline schemaLocations.
     // If not yet attached to a resource, the schemaLocation's will be set via WSDLResourceImpl.attached(EObject o)
     //
-    if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_ETypes() &&
-        msg.getEventType() == Notification.SET)
+    if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_ETypes() && msg.getEventType() == Notification.SET)
     {
       if (eResource() instanceof WSDLResourceImpl && getEnclosingDefinition() != null)
       {
         setInlineSchemaLocations(eResource());
-      }    
-    }        
+      }
+    }
   }
 
   /**
@@ -542,7 +548,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public void addBinding(javax.wsdl.Binding binding)
   {
-    getEBindings().add((Binding) binding);
+    getEBindings().add((Binding)binding);
   }
 
   /**
@@ -554,7 +560,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public void addImport(javax.wsdl.Import importDef)
   {
-    getEImports().add((Import) importDef);
+    getEImports().add((Import)importDef);
   }
 
   /**
@@ -601,20 +607,20 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
       // Make sure the prefix is not already used for a different namespace
       Map namespaces = getNamespaces();
-      String existingNamespace = (String) namespaces.get(prefix);
+      String existingNamespace = (String)namespaces.get(prefix);
       if (existingNamespace == null)
       {
         namespaces.put(prefix, namespaceURI);
-        
+
         // Support for Namespace
         Namespace ens = WSDLFactory.eINSTANCE.createNamespace();
         ens.setPrefix(prefix);
         ens.setURI(namespaceURI);
         getENamespaces().add(ens);
-        
+
         return;
       }
-      
+
       // The prefix is taken already. Make a unique prefix
       if (prefix.endsWith("1"))
         prefix = prefix.substring(0, prefix.length() - 1);
@@ -625,13 +631,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         if (!namespaces.containsKey(newPrefix))
         {
           namespaces.put(newPrefix, namespaceURI);
-          
+
           // Support for Namespace
           Namespace ens = WSDLFactory.eINSTANCE.createNamespace();
           ens.setPrefix(prefix);
           ens.setURI(namespaceURI);
           getENamespaces().add(ens);
-          
+
           return;
         }
       }
@@ -639,7 +645,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     else
     {
       getNamespaces().remove(prefix);
-      
+
       // Support for Namespace
       getENamespaces().remove(prefix);
     }
@@ -879,7 +885,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Binding getBinding(QName name)
   {
-    return (javax.wsdl.Binding) resolveWSDLElement(WSDLConstants.BINDING, name, this);
+    return (javax.wsdl.Binding)resolveWSDLElement(WSDLConstants.BINDING, name, this);
   }
 
   /**
@@ -895,10 +901,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
   /**
    * <!-- begin-user-doc -->
-    * Get a map of lists containing all the imports defined here.
-    * The map's keys are the namespaceURIs, and the map's values
-    * are lists. There is one list for each namespaceURI for which
-    * imports have been defined.
+   * Get a map of lists containing all the imports defined here.
+   * The map's keys are the namespaceURIs, and the map's values
+   * are lists. There is one list for each namespaceURI for which
+   * imports have been defined.
    * <!-- end-user-doc -->
    * @generated NOT
    */
@@ -907,25 +913,25 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     HashMap map = new HashMap();
     for (Iterator i = getEImports().iterator(); i.hasNext();)
     {
-      Import theImport = (Import) i.next();
+      Import theImport = (Import)i.next();
       String key = theImport.getNamespaceURI();
       if (key == null)
       {
         key = "";
       }
-      
+
       List list = null;
       if (map.containsKey(key))
       {
         list = (List)map.get(key);
-        list.add(theImport); 
+        list.add(theImport);
       }
       else
       {
         list = new ArrayList();
-        list.add(theImport);       
+        list.add(theImport);
       }
-      map.put(key,list);      
+      map.put(key, list);
     }
     return map;
   }
@@ -944,7 +950,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     List list = new ArrayList();
     for (Iterator i = getEImports().iterator(); i.hasNext();)
     {
-      Import theImport = (Import) i.next();
+      Import theImport = (Import)i.next();
       if (WSDLConstants.isMatchingNamespace(namespaceURI, theImport.getNamespaceURI()))
       {
         list.add(theImport);
@@ -964,7 +970,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Message getMessage(QName name)
   {
-    return (javax.wsdl.Message) resolveWSDLElement(WSDLConstants.MESSAGE, name, this);
+    return (javax.wsdl.Message)resolveWSDLElement(WSDLConstants.MESSAGE, name, this);
   }
 
   /**
@@ -990,7 +996,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public String getNamespace(String prefix)
   {
-    return (String) getNamespaces().get(prefix);
+    return (String)getNamespaces().get(prefix);
   }
 
   /**
@@ -1003,7 +1009,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated NOT
    */
   public Map getNamespaces()
-  {    
+  {
     return namespaces;
   }
 
@@ -1018,7 +1024,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.PortType getPortType(QName name)
   {
-    return (javax.wsdl.PortType) resolveWSDLElement(WSDLConstants.PORT_TYPE, name, this);
+    return (javax.wsdl.PortType)resolveWSDLElement(WSDLConstants.PORT_TYPE, name, this);
   }
 
   /**
@@ -1050,9 +1056,9 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     Iterator entryIterator = getNamespaces().entrySet().iterator();
     while (entryIterator.hasNext())
     {
-      Map.Entry entry = (Map.Entry) entryIterator.next();
-      String prefix = (String) entry.getKey();
-      String assocNamespaceURI = (String) entry.getValue();
+      Map.Entry entry = (Map.Entry)entryIterator.next();
+      String prefix = (String)entry.getKey();
+      String assocNamespaceURI = (String)entry.getValue();
 
       if (namespaceURI.equals(assocNamespaceURI) && prefix != "") // default namespace
         return prefix;
@@ -1071,7 +1077,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Service getService(QName name)
   {
-    return (javax.wsdl.Service) resolveWSDLElement(WSDLConstants.SERVICE, name, this);
+    return (javax.wsdl.Service)resolveWSDLElement(WSDLConstants.SERVICE, name, this);
   }
 
   /**
@@ -1145,7 +1151,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Service removeService(QName name)
   {
-    return (javax.wsdl.Service) getServices().remove(name);
+    return (javax.wsdl.Service)getServices().remove(name);
   }
 
   /**
@@ -1155,7 +1161,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Binding removeBinding(QName name)
   {
-    return (javax.wsdl.Binding) getBindings().remove(name);
+    return (javax.wsdl.Binding)getBindings().remove(name);
   }
 
   /**
@@ -1165,7 +1171,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.PortType removePortType(QName name)
   {
-    return (javax.wsdl.PortType) getPortTypes().remove(name);
+    return (javax.wsdl.PortType)getPortTypes().remove(name);
   }
 
   /**
@@ -1175,7 +1181,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Message removeMessage(QName name)
   {
-    return (javax.wsdl.Message) getMessages().remove(name);
+    return (javax.wsdl.Message)getMessages().remove(name);
   }
 
   /**
@@ -1195,7 +1201,202 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public void setTypes(javax.wsdl.Types types)
   {
-    setETypes((Types) types);
+    setETypes((Types)types);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__EIMPORTS:
+      return ((InternalEList)getEImports()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__ETYPES:
+      return basicSetETypes(null, msgs);
+      case WSDLPackage.DEFINITION__EMESSAGES:
+      return ((InternalEList)getEMessages()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+      return ((InternalEList)getEPortTypes()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__EBINDINGS:
+      return ((InternalEList)getEBindings()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__ESERVICES:
+      return ((InternalEList)getEServices()).basicRemove(otherEnd, msgs);
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+      return ((InternalEList)getENamespaces()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+      return getTargetNamespace();
+      case WSDLPackage.DEFINITION__LOCATION:
+      return getLocation();
+      case WSDLPackage.DEFINITION__QNAME:
+      return getQName();
+      case WSDLPackage.DEFINITION__ENCODING:
+      return getEncoding();
+      case WSDLPackage.DEFINITION__EIMPORTS:
+      return getEImports();
+      case WSDLPackage.DEFINITION__ETYPES:
+      return getETypes();
+      case WSDLPackage.DEFINITION__EMESSAGES:
+      return getEMessages();
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+      return getEPortTypes();
+      case WSDLPackage.DEFINITION__EBINDINGS:
+      return getEBindings();
+      case WSDLPackage.DEFINITION__ESERVICES:
+      return getEServices();
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+      return getENamespaces();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+      setTargetNamespace((String)newValue);
+      return;
+      case WSDLPackage.DEFINITION__LOCATION:
+      setLocation((String)newValue);
+      return;
+      case WSDLPackage.DEFINITION__QNAME:
+      setQName((QName)newValue);
+      return;
+      case WSDLPackage.DEFINITION__ENCODING:
+      setEncoding((String)newValue);
+      return;
+      case WSDLPackage.DEFINITION__EIMPORTS:
+      getEImports().clear();
+      getEImports().addAll((Collection)newValue);
+      return;
+      case WSDLPackage.DEFINITION__ETYPES:
+      setETypes((Types)newValue);
+      return;
+      case WSDLPackage.DEFINITION__EMESSAGES:
+      getEMessages().clear();
+      getEMessages().addAll((Collection)newValue);
+      return;
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+      getEPortTypes().clear();
+      getEPortTypes().addAll((Collection)newValue);
+      return;
+      case WSDLPackage.DEFINITION__EBINDINGS:
+      getEBindings().clear();
+      getEBindings().addAll((Collection)newValue);
+      return;
+      case WSDLPackage.DEFINITION__ESERVICES:
+      getEServices().clear();
+      getEServices().addAll((Collection)newValue);
+      return;
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+      getENamespaces().clear();
+      getENamespaces().addAll((Collection)newValue);
+      return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+      setTargetNamespace(TARGET_NAMESPACE_EDEFAULT);
+      return;
+      case WSDLPackage.DEFINITION__LOCATION:
+      setLocation(LOCATION_EDEFAULT);
+      return;
+      case WSDLPackage.DEFINITION__QNAME:
+      setQName(QNAME_EDEFAULT);
+      return;
+      case WSDLPackage.DEFINITION__ENCODING:
+      setEncoding(ENCODING_EDEFAULT);
+      return;
+      case WSDLPackage.DEFINITION__EIMPORTS:
+      getEImports().clear();
+      return;
+      case WSDLPackage.DEFINITION__ETYPES:
+      setETypes((Types)null);
+      return;
+      case WSDLPackage.DEFINITION__EMESSAGES:
+      getEMessages().clear();
+      return;
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+      getEPortTypes().clear();
+      return;
+      case WSDLPackage.DEFINITION__EBINDINGS:
+      getEBindings().clear();
+      return;
+      case WSDLPackage.DEFINITION__ESERVICES:
+      getEServices().clear();
+      return;
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+      getENamespaces().clear();
+      return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
+      return TARGET_NAMESPACE_EDEFAULT == null ? targetNamespace != null : !TARGET_NAMESPACE_EDEFAULT.equals(targetNamespace);
+      case WSDLPackage.DEFINITION__LOCATION:
+      return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
+      case WSDLPackage.DEFINITION__QNAME:
+      return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
+      case WSDLPackage.DEFINITION__ENCODING:
+      return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
+      case WSDLPackage.DEFINITION__EIMPORTS:
+      return eImports != null && !eImports.isEmpty();
+      case WSDLPackage.DEFINITION__ETYPES:
+      return eTypes != null;
+      case WSDLPackage.DEFINITION__EMESSAGES:
+      return eMessages != null && !eMessages.isEmpty();
+      case WSDLPackage.DEFINITION__EPORT_TYPES:
+      return ePortTypes != null && !ePortTypes.isEmpty();
+      case WSDLPackage.DEFINITION__EBINDINGS:
+      return eBindings != null && !eBindings.isEmpty();
+      case WSDLPackage.DEFINITION__ESERVICES:
+      return eServices != null && !eServices.isEmpty();
+      case WSDLPackage.DEFINITION__ENAMESPACES:
+      return eNamespaces != null && !eNamespaces.isEmpty();
+    }
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -1224,251 +1425,19 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, Class baseClass, NotificationChain msgs)
-  {
-    if (featureID >= 0)
-    {
-      switch (eDerivedStructuralFeatureID(featureID, baseClass))
-      {
-        case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-          return ((InternalEList)getEExtensibilityElements()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__EMESSAGES:
-          return ((InternalEList)getEMessages()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__EPORT_TYPES:
-          return ((InternalEList)getEPortTypes()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__EBINDINGS:
-          return ((InternalEList)getEBindings()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__ESERVICES:
-          return ((InternalEList)getEServices()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__ENAMESPACES:
-          return ((InternalEList)getENamespaces()).basicRemove(otherEnd, msgs);
-        case WSDLPackage.DEFINITION__ETYPES:
-          return basicSetETypes(null, msgs);
-        case WSDLPackage.DEFINITION__EIMPORTS:
-          return ((InternalEList)getEImports()).basicRemove(otherEnd, msgs);
-        default:
-          return eDynamicInverseRemove(otherEnd, featureID, baseClass, msgs);
-      }
-    }
-    return eBasicSetContainer(null, featureID, msgs);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
-      case WSDLPackage.DEFINITION__ELEMENT:
-        return getElement();
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-        return getEExtensibilityElements();
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        return getTargetNamespace();
-      case WSDLPackage.DEFINITION__LOCATION:
-        return getLocation();
-      case WSDLPackage.DEFINITION__QNAME:
-        return getQName();
-      case WSDLPackage.DEFINITION__ENCODING:
-        return getEncoding();
-      case WSDLPackage.DEFINITION__EMESSAGES:
-        return getEMessages();
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-        return getEPortTypes();
-      case WSDLPackage.DEFINITION__EBINDINGS:
-        return getEBindings();
-      case WSDLPackage.DEFINITION__ESERVICES:
-        return getEServices();
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-        return getENamespaces();
-      case WSDLPackage.DEFINITION__ETYPES:
-        return getETypes();
-      case WSDLPackage.DEFINITION__EIMPORTS:
-        return getEImports();
-    }
-    return eDynamicGet(eFeature, resolve);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
-      case WSDLPackage.DEFINITION__ELEMENT:
-        setElement((Element)newValue);
-        return;
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        getEExtensibilityElements().addAll((Collection)newValue);
-        return;
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        setTargetNamespace((String)newValue);
-        return;
-      case WSDLPackage.DEFINITION__LOCATION:
-        setLocation((String)newValue);
-        return;
-      case WSDLPackage.DEFINITION__QNAME:
-        setQName((QName)newValue);
-        return;
-      case WSDLPackage.DEFINITION__ENCODING:
-        setEncoding((String)newValue);
-        return;
-      case WSDLPackage.DEFINITION__EMESSAGES:
-        getEMessages().clear();
-        getEMessages().addAll((Collection)newValue);
-        return;
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-        getEPortTypes().clear();
-        getEPortTypes().addAll((Collection)newValue);
-        return;
-      case WSDLPackage.DEFINITION__EBINDINGS:
-        getEBindings().clear();
-        getEBindings().addAll((Collection)newValue);
-        return;
-      case WSDLPackage.DEFINITION__ESERVICES:
-        getEServices().clear();
-        getEServices().addAll((Collection)newValue);
-        return;
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-        getENamespaces().clear();
-        getENamespaces().addAll((Collection)newValue);
-        return;
-      case WSDLPackage.DEFINITION__ETYPES:
-        setETypes((Types)newValue);
-        return;
-      case WSDLPackage.DEFINITION__EIMPORTS:
-        getEImports().clear();
-        getEImports().addAll((Collection)newValue);
-        return;
-    }
-    eDynamicSet(eFeature, newValue);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void eUnset(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.DEFINITION__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-        getEExtensibilityElements().clear();
-        return;
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        setTargetNamespace(TARGET_NAMESPACE_EDEFAULT);
-        return;
-      case WSDLPackage.DEFINITION__LOCATION:
-        setLocation(LOCATION_EDEFAULT);
-        return;
-      case WSDLPackage.DEFINITION__QNAME:
-        setQName(QNAME_EDEFAULT);
-        return;
-      case WSDLPackage.DEFINITION__ENCODING:
-        setEncoding(ENCODING_EDEFAULT);
-        return;
-      case WSDLPackage.DEFINITION__EMESSAGES:
-        getEMessages().clear();
-        return;
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-        getEPortTypes().clear();
-        return;
-      case WSDLPackage.DEFINITION__EBINDINGS:
-        getEBindings().clear();
-        return;
-      case WSDLPackage.DEFINITION__ESERVICES:
-        getEServices().clear();
-        return;
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-        getENamespaces().clear();
-        return;
-      case WSDLPackage.DEFINITION__ETYPES:
-        setETypes((Types)null);
-        return;
-      case WSDLPackage.DEFINITION__EIMPORTS:
-        getEImports().clear();
-        return;
-    }
-    eDynamicUnset(eFeature);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean eIsSet(EStructuralFeature eFeature)
-  {
-    switch (eDerivedStructuralFeatureID(eFeature))
-    {
-      case WSDLPackage.DEFINITION__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.DEFINITION__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
-      case WSDLPackage.DEFINITION__EEXTENSIBILITY_ELEMENTS:
-        return eExtensibilityElements != null && !eExtensibilityElements.isEmpty();
-      case WSDLPackage.DEFINITION__TARGET_NAMESPACE:
-        return TARGET_NAMESPACE_EDEFAULT == null ? targetNamespace != null : !TARGET_NAMESPACE_EDEFAULT.equals(targetNamespace);
-      case WSDLPackage.DEFINITION__LOCATION:
-        return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
-      case WSDLPackage.DEFINITION__QNAME:
-        return QNAME_EDEFAULT == null ? qName != null : !QNAME_EDEFAULT.equals(qName);
-      case WSDLPackage.DEFINITION__ENCODING:
-        return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
-      case WSDLPackage.DEFINITION__EMESSAGES:
-        return eMessages != null && !eMessages.isEmpty();
-      case WSDLPackage.DEFINITION__EPORT_TYPES:
-        return ePortTypes != null && !ePortTypes.isEmpty();
-      case WSDLPackage.DEFINITION__EBINDINGS:
-        return eBindings != null && !eBindings.isEmpty();
-      case WSDLPackage.DEFINITION__ESERVICES:
-        return eServices != null && !eServices.isEmpty();
-      case WSDLPackage.DEFINITION__ENAMESPACES:
-        return eNamespaces != null && !eNamespaces.isEmpty();
-      case WSDLPackage.DEFINITION__ETYPES:
-        return eTypes != null;
-      case WSDLPackage.DEFINITION__EIMPORTS:
-        return eImports != null && !eImports.isEmpty();
-    }
-    return eDynamicIsSet(eFeature);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (targetNamespace: ");
+    result.append(" (targetNamespace: "); //$NON-NLS-1$
     result.append(targetNamespace);
-    result.append(", location: ");
+    result.append(", location: "); //$NON-NLS-1$
     result.append(location);
-    result.append(", qName: ");
+    result.append(", qName: "); //$NON-NLS-1$
     result.append(qName);
-    result.append(", encoding: ");
+    result.append(", encoding: "); //$NON-NLS-1$
     result.append(encoding);
     result.append(')');
     return result.toString();
@@ -1506,18 +1475,18 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
   public static Definition createDefinition(Node node, String location)
   {
-    return createDefinition(node,location,true);
+    return createDefinition(node, location, true);
   }
-  
+
   public static Definition createDefinition(Node node, String location, boolean useExtensionFactories)
   {
     Definition definition = WSDLFactory.eINSTANCE.createDefinition();
     ((DefinitionImpl)definition).setUseExtensionFactories(useExtensionFactories);
-    definition.setElement((Element) node);
+    definition.setElement((Element)node);
     definition.setDocumentBaseURI(location);
     return definition;
   }
-  
+
   private WSDLElement resolveWSDLElement(int type, List list, QName qname)
   {
     WSDLElement result = null;
@@ -1525,7 +1494,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       for (Iterator i = list.iterator(); i.hasNext();)
       {
-        WSDLElement wsdlElement = (WSDLElement) i.next();
+        WSDLElement wsdlElement = (WSDLElement)i.next();
         QName theQName = getQNameForWSDLElement(type, wsdlElement);
         if (qname.equals(theQName))
         {
@@ -1542,7 +1511,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     HashMap map = new HashMap();
     for (Iterator i = list.iterator(); i.hasNext();)
     {
-      WSDLElement wsdlElement = (WSDLElement) i.next();
+      WSDLElement wsdlElement = (WSDLElement)i.next();
       QName theQName = getQNameForWSDLElement(type, wsdlElement);
       if (theQName != null)
       {
@@ -1557,22 +1526,22 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     QName result = null;
     switch (type)
     {
-      case WSDLConstants.MESSAGE :
-        result = ((Message) wsdlElement).getQName();
+      case WSDLConstants.MESSAGE:
+      result = ((Message)wsdlElement).getQName();
         break;
-      case WSDLConstants.PORT_TYPE :
-        result = ((PortType) wsdlElement).getQName();
+      case WSDLConstants.PORT_TYPE:
+      result = ((PortType)wsdlElement).getQName();
         break;
-      case WSDLConstants.BINDING :
-        result = ((Binding) wsdlElement).getQName();
+      case WSDLConstants.BINDING:
+      result = ((Binding)wsdlElement).getQName();
         break;
-      case WSDLConstants.SERVICE :
-        result = ((Service) wsdlElement).getQName();
+      case WSDLConstants.SERVICE:
+      result = ((Service)wsdlElement).getQName();
         break;
     }
     return result;
   }
-  
+
   /**
    * Resolves the element described by type and qname in the context of the
    * given definition. The definition's imported definitions are checked as well.
@@ -1595,7 +1564,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
     return result;
   }
-  
+
   /**
    * Resolves the element described by type and qname in the context of the
    * given definitions. The definitions imported definitions are checked as well.
@@ -1613,7 +1582,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   private static WSDLElement resolveWSDLElement(int type, QName qname, List definitions, List visitedDefinitions)
   {
     WSDLElement result = null;
-    
+
     if (definitions.isEmpty())
     {
       return result;
@@ -1622,37 +1591,37 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     // In order to preserve the old behaviour which used to check the definition
     // and all first level imports, check the entire list of definitions passed
     // in first.
-    
+
     Iterator definitionsIterator = definitions.iterator();
-    
+
     while (definitionsIterator.hasNext())
     {
-      DefinitionImpl definition = (DefinitionImpl) definitionsIterator.next();
+      DefinitionImpl definition = (DefinitionImpl)definitionsIterator.next();
 
       result = definition.resolveWSDLElement(type, qname);
-      
+
       if (result != null)
       {
         return result;
       }
     }
-    
+
     // Re-iterate over the definitions and recurse into their imports.
-    
+
     definitionsIterator = definitions.iterator();
-    
+
     while (definitionsIterator.hasNext())
     {
-      DefinitionImpl definition = (DefinitionImpl) definitionsIterator.next();
-      
+      DefinitionImpl definition = (DefinitionImpl)definitionsIterator.next();
+
       if (visitedDefinitions.contains(definition))
       {
         // This might happen if we have a case of cyclic imports. Since we
         // already looked in it, we can and should skip it.
 
         continue;
-      }      
-      
+      }
+
       visitedDefinitions.add(definition);
 
       List importedDefinitions = definition.getImportedDefinitions(qname.getNamespaceURI());
@@ -1664,7 +1633,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         break;
       }
     }
-    
+
     return result;
   }
 
@@ -1676,21 +1645,21 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       switch (type)
       {
         case WSDLConstants.MESSAGE:
-          result = resolveWSDLElement(type, getEMessages(), qname);
+        result = resolveWSDLElement(type, getEMessages(), qname);
           break;
         case WSDLConstants.PORT_TYPE:
-          result = resolveWSDLElement(type, getEPortTypes(), qname);
+        result = resolveWSDLElement(type, getEPortTypes(), qname);
           break;
         case WSDLConstants.BINDING:
-          result = resolveWSDLElement(type, getEBindings(), qname);
+        result = resolveWSDLElement(type, getEBindings(), qname);
           break;
         case WSDLConstants.SERVICE:
-          result = resolveWSDLElement(type, getEServices(), qname);
+        result = resolveWSDLElement(type, getEServices(), qname);
           break;
       }
     }
     return result;
-  }  
+  }
 
   //
   // Reconciliation methods
@@ -1725,10 +1694,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     super.reconcileAttributes(changedElement);
 
     if (changedElement == getElement())
-    { 
+    {
       if (changedElement.hasAttribute("targetNamespace"))
         setTargetNamespace(changedElement.getAttribute("targetNamespace"));
-	  if (changedElement.hasAttribute("name"))
+      if (changedElement.hasAttribute("name"))
         setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, changedElement.getAttribute("name")));
       getENamespaces().clear();
       getNamespaces().clear();
@@ -1738,7 +1707,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       int mapLength = map.getLength();
       for (int i = 0; i < mapLength; i++)
       {
-        Attr attr = (Attr) map.item(i);
+        Attr attr = (Attr)map.item(i);
         String nsPrefix = null;
         if ("xmlns".equals(attr.getPrefix()))
         {
@@ -1761,69 +1730,69 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   {
     switch (WSDLUtil.getInstance().getWSDLType(child))
     {
-      case WSDLConstants.BINDING :
-        {
-          Binding binding = WSDLFactory.eINSTANCE.createBinding();
-          binding.setEnclosingDefinition(this);
-          binding.setElement(child);
-          addBinding(binding);
-          break;
-        }
-      case WSDLConstants.DOCUMENTATION :
-        {
-          // CS: we need to figure out how to unset this element when its removed
-          //definition.setDocumentationElement(child);  
-          break;
-        }
-      case WSDLConstants.IMPORT :
-        {
-          Import i = WSDLFactory.eINSTANCE.createImport();
-          i.setEnclosingDefinition(this);
-          i.setElement(child);
-          addImport(i);
-          break;
-        }
-      case WSDLConstants.MESSAGE :
-        {
-          Message message = WSDLFactory.eINSTANCE.createMessage();
-          message.setEnclosingDefinition(this);
-          message.setElement(child);
-          addMessage(message);
-          break;
-        }
-      case WSDLConstants.PORT_TYPE :
-        {
-          PortType portType = WSDLFactory.eINSTANCE.createPortType();
-          portType.setEnclosingDefinition(this);
-          portType.setElement(child);
-          addPortType(portType);
-          break;
-        }
-      case WSDLConstants.SERVICE :
-        {
-          Service service = WSDLFactoryImpl.eINSTANCE.createService();
-          service.setEnclosingDefinition(this);
-          service.setElement(child);
-          addService(service);
-          break;
-        }
-      case WSDLConstants.TYPES :
-        {
-          if (getETypes() == null)
-          {
-            Types types = WSDLFactoryImpl.eINSTANCE.createTypes();
-            types.setEnclosingDefinition(this);
-            types.setElement(child);
-            setETypes(types);
-          }
-          break;
-        }
-      default :
+      case WSDLConstants.BINDING:
       {
-        ExtensibilityElement extensibilityElement = getUseExtensionFactories() ? 
-          ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createExtensibilityElement(getNamespace(child),getLocalName(child)) :
-          ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createUnknownExtensibilityElement();
-        	   		                                              
+        Binding binding = WSDLFactory.eINSTANCE.createBinding();
+        binding.setEnclosingDefinition(this);
+        binding.setElement(child);
+        addBinding(binding);
+        break;
+      }
+      case WSDLConstants.DOCUMENTATION:
+      {
+        // CS: we need to figure out how to unset this element when its removed
+        //definition.setDocumentationElement(child);  
+        break;
+      }
+      case WSDLConstants.IMPORT:
+      {
+        Import i = WSDLFactory.eINSTANCE.createImport();
+        i.setEnclosingDefinition(this);
+        i.setElement(child);
+        addImport(i);
+        break;
+      }
+      case WSDLConstants.MESSAGE:
+      {
+        Message message = WSDLFactory.eINSTANCE.createMessage();
+        message.setEnclosingDefinition(this);
+        message.setElement(child);
+        addMessage(message);
+        break;
+      }
+      case WSDLConstants.PORT_TYPE:
+      {
+        PortType portType = WSDLFactory.eINSTANCE.createPortType();
+        portType.setEnclosingDefinition(this);
+        portType.setElement(child);
+        addPortType(portType);
+        break;
+      }
+      case WSDLConstants.SERVICE:
+      {
+        Service service = WSDLFactoryImpl.eINSTANCE.createService();
+        service.setEnclosingDefinition(this);
+        service.setElement(child);
+        addService(service);
+        break;
+      }
+      case WSDLConstants.TYPES:
+      {
+        if (getETypes() == null)
+        {
+          Types types = WSDLFactoryImpl.eINSTANCE.createTypes();
+          types.setEnclosingDefinition(this);
+          types.setElement(child);
+          setETypes(types);
+        }
+        break;
+      }
+      default:
+      {
+        ExtensibilityElement extensibilityElement = getUseExtensionFactories()
+          ? ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createExtensibilityElement(getNamespace(child), getLocalName(child))
+          : ((WSDLFactoryImpl)WSDLFactory.eINSTANCE).createUnknownExtensibilityElement();
+
         extensibilityElement.setEnclosingDefinition(this);
         extensibilityElement.setElement(child);
         getEExtensibilityElements().add(extensibilityElement);
@@ -1845,7 +1814,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   {
     if (modelObject instanceof Types)
     {
-      Definition definition = (Definition) component;
+      Definition definition = (Definition)component;
       if (definition.getETypes() == modelObject)
       {
         definition.setETypes(null);
@@ -1864,7 +1833,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   private List getList(Object component, Object modelObject)
   {
     List result = null;
-    Definition definition = (Definition) component;
+    Definition definition = (Definition)component;
 
     // todo... use WSDLSwitch
     //
@@ -1898,7 +1867,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   public Collection getModelObjects(Object component)
   {
     List list = new ArrayList();
-    Definition definition = (Definition) component;
+    Definition definition = (Definition)component;
     list.addAll(definition.getEImports());
     list.add(definition.getETypes());
     list.addAll(definition.getEMessages());
@@ -1947,7 +1916,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     Types types = getETypes();
     if (types != null)
     {
-      Element child = ((TypesImpl) types).createElement();
+      Element child = ((TypesImpl)types).createElement();
       newElement.appendChild(child);
     }
 
@@ -1963,7 +1932,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   {
     for (Iterator iterator = c.iterator(); iterator.hasNext();)
     {
-      WSDLElementImpl wsdlElement = (WSDLElementImpl) iterator.next();
+      WSDLElementImpl wsdlElement = (WSDLElementImpl)iterator.next();
       Element child = wsdlElement.createElement();
       parent.appendChild(child);
     }
@@ -1974,7 +1943,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     // Add namespace prefix info
     // TBD - Need to revisit.
     Element theElement = getElement();
-    if (eReference == null && theElement != null) 
+    if (eReference == null && theElement != null)
     // We are updating the Definition element.
     {
       Iterator iterator = getNamespaces().entrySet().iterator();
@@ -1982,9 +1951,9 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       String uri = null;
       while (iterator.hasNext())
       {
-        Map.Entry entry = (Map.Entry) iterator.next();
-        prefix = (String) entry.getKey();
-        uri = (String) entry.getValue();
+        Map.Entry entry = (Map.Entry)iterator.next();
+        prefix = (String)entry.getKey();
+        uri = (String)entry.getValue();
         if (prefix != "")
           theElement.setAttributeNS(XSDConstants.XMLNS_URI_2000, "xmlns:" + prefix, uri);
         else if (uri != null)
@@ -1993,12 +1962,12 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       }
     }
   }
-  
+
   protected void changeAttribute(EAttribute eAttribute)
-  {    
+  {
     if (isReconciling)
-      return; 
-    
+      return;
+
     super.changeAttribute(eAttribute);
     Element theElement = getElement();
     if (theElement != null)
@@ -2020,15 +1989,15 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
     for (Iterator i = getImports(namespace).iterator(); i.hasNext();)
     {
-      Import theImport = (Import) i.next();
-      ((ImportImpl) theImport).importDefinitionOrSchema();
+      Import theImport = (Import)i.next();
+      ((ImportImpl)theImport).importDefinitionOrSchema();
       Definition importedDefinition = theImport.getEDefinition();
       if (importedDefinition != null && WSDLConstants.isMatchingNamespace(namespace, importedDefinition.getTargetNamespace()))
       {
         list.add(importedDefinition);
       }
     }
-    
+
     return list;
   }
 
@@ -2048,28 +2017,28 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     // note the getContainer() test to eliminate 'synthetic' types
     // that are created by the XMLSchema model when resolution fails   
     return component != null && component.getContainer() != null;
-  } 
-  
+  }
+
   public XSDElementDeclaration resolveElementDeclaration(String namespace, String localName)
   {
     XSDElementDeclaration result = null;
     for (Iterator i = resolveSchema(namespace).iterator(); i.hasNext();)
     {
-      XSDSchema schema = (XSDSchema) i.next();
+      XSDSchema schema = (XSDSchema)i.next();
       result = schema.resolveElementDeclaration(namespace, localName);
-      if (isComponentDefined(result))      
-        return result; 
+      if (isComponentDefined(result))
+        return result;
     }
-    
+
     // Could not resolve. Try against all <import>ed and inlined schemas.
     for (Iterator i = getImportedOrInlinedSchemas().iterator(); i.hasNext();)
     {
       XSDSchema schema = (XSDSchema)i.next();
       result = schema.resolveElementDeclaration(namespace, localName);
-      if (isComponentDefined(result))      
-        return result;  
+      if (isComponentDefined(result))
+        return result;
     }
-    
+
     return result;
   }
 
@@ -2091,25 +2060,25 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       XSDSchema schema = (XSDSchema)i.next();
       result = schema.resolveTypeDefinition(namespace, localName);
-      if (isComponentDefined(result))      
-        return result;      
+      if (isComponentDefined(result))
+        return result;
     }
-    
+
     // Could not resolve. Try against all <import>ed and inlined schemas.
     for (Iterator i = getImportedOrInlinedSchemas().iterator(); i.hasNext();)
     {
       XSDSchema schema = (XSDSchema)i.next();
       result = schema.resolveTypeDefinition(namespace, localName);
-      if (isComponentDefined(result))      
-        return result; 
+      if (isComponentDefined(result))
+        return result;
     }
-    
+
     return result; // Failed to resolve.
   }
 
   /**
-  	* This returns set of schemas with the given namespace as it's target namespace.
-  	*/
+   * This returns set of schemas with the given namespace as it's target namespace.
+   */
   public Collection resolveSchema(String namespace)
   {
     if ("".equals(namespace))
@@ -2130,7 +2099,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       return getImportedOrInlinedSchemas(namespace);
     }
   }
-  
+
   protected List getImportedOrInlinedSchemas(String namespace)
   {
     if (namespace == null)
@@ -2141,10 +2110,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     List list = new ArrayList();
     for (Iterator i = getEImports().iterator(); i.hasNext();)
     {
-      Import theImport = (Import) i.next();
+      Import theImport = (Import)i.next();
       if (WSDLConstants.isMatchingNamespace(theImport.getNamespaceURI(), namespace))
       {
-        ((ImportImpl) theImport).importDefinitionOrSchema();
+        ((ImportImpl)theImport).importDefinitionOrSchema();
         XSDSchema schema = theImport.getESchema();
         if (schema != null && WSDLConstants.isMatchingNamespace(schema.getTargetNamespace(), namespace))
         {
@@ -2156,14 +2125,14 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       for (Iterator i = getETypes().getSchemas().iterator(); i.hasNext();)
       {
-        XSDSchema schema = (XSDSchema) i.next();
+        XSDSchema schema = (XSDSchema)i.next();
         String targetNamespace = schema.getTargetNamespace();
         if (namespace.equals(targetNamespace))
-        {  
+        {
           list.add(schema);
         }
-        
-        for (Iterator j = schema.getContents().iterator(); j.hasNext(); )
+
+        for (Iterator j = schema.getContents().iterator(); j.hasNext();)
         {
           Object component = j.next();
           if (component instanceof XSDImport)
@@ -2172,40 +2141,41 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
             if (namespace.equals(theImport.getNamespace()))
             {
               ((XSDImportImpl)theImport).importSchema();
-              XSDSchema importedSchema = theImport.getResolvedSchema();             
+              XSDSchema importedSchema = theImport.getResolvedSchema();
               if (importedSchema != null)
-              {  
+              {
                 list.add(importedSchema);
-              }  
-            }  
-          }  
-        }  
-        
-      }     
+              }
+            }
+          }
+        }
+
+      }
     }
     return list;
   }
-  
+
   private List getImportedOrInlinedSchemas()
   {
     List list = new ArrayList();
     for (Iterator i = getEImports().iterator(); i.hasNext();)
     {
-      Import theImport = (Import) i.next();
-      ((ImportImpl) theImport).importDefinitionOrSchema();
+      Import theImport = (Import)i.next();
+      ((ImportImpl)theImport).importDefinitionOrSchema();
       XSDSchema schema = theImport.getESchema();
       if (schema != null)
         list.add(schema);
     }
-    
+
     if (getETypes() != null)
     {
       list.addAll(getETypes().getSchemas());
     }
     return list;
   }
-  
+
   protected EventListener eventListener;
+
   protected Node deletionNode;
 
   public Node getDeletionNode()
@@ -2217,10 +2187,9 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   {
     if (eventListener == null)
     {
-      eventListener = 
-        new EventListener()
+      eventListener = new EventListener()
         {
-          public void handleEvent(Event event) 
+          public void handleEvent(Event event)
           {
             if (event instanceof MutationEvent)
             {
@@ -2260,13 +2229,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     }
     return eventListener;
   }
-  
+
   public WSDLElement getCorrespondingComponent(Node node)
   {
     // We consider all parents so that they can handle other contained nodes that otherwise don't correspond to a component.
     //
     List parents = new ArrayList();
-  
+
     if (node.getNodeType() == Node.ATTRIBUTE_NODE)
     {
       node = ((Attr)node).getOwnerElement();
@@ -2283,7 +2252,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
           break;
         }
       }
-  
+
       // Skip back to an element.
       //
       for (Node scanNode = node; scanNode != null; scanNode = scanNode.getPreviousSibling())
@@ -2295,7 +2264,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         }
       }
     }
-  
+
     // Navigate out through the elements.
     //
     for (Node parent = node; parent != null; parent = parent.getParentNode())
@@ -2309,48 +2278,48 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     WSDLElement bestWSDLElement = getBestWSDLElement(parents);
     return bestWSDLElement;
   }
-  
+
   //
   //
   //
-  private boolean useExtensionFactories = true; 
-  
+  private boolean useExtensionFactories = true;
+
   public void setUseExtensionFactories(boolean value)
   {
-  	useExtensionFactories = value;
+    useExtensionFactories = value;
   }
-  
+
   public boolean getUseExtensionFactories()
   {
-  	return useExtensionFactories;
+    return useExtensionFactories;
   }
-  
+
   // See Bug 5366
   public void removeAll()
   {
     try
     {
-     isReconciling = true;
-     document = null;
-     element = null;
-     getEServices().clear();
-     getEBindings().clear();
-     getEPortTypes().clear();
-     getEMessages().clear();
-     setETypes(null);
-     getEImports().clear();
-     getEExtensibilityElements().clear();     
+      isReconciling = true;
+      document = null;
+      element = null;
+      getEServices().clear();
+      getEBindings().clear();
+      getEPortTypes().clear();
+      getEMessages().clear();
+      setETypes(null);
+      getEImports().clear();
+      getEExtensibilityElements().clear();
     }
     catch (Exception e)
     {
-      
+
     }
     finally
     {
-     isReconciling = false;
-    } 
+      isReconciling = false;
+    }
   }
-  
+
   public void setInlineSchemaLocations(Resource resource)
   {
     // Initialize the inline schemas location 
@@ -2359,23 +2328,24 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       for (Iterator j = types.getEExtensibilityElements().iterator(); j.hasNext();)
       {
-        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement) j.next();
+        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement)j.next();
         XSDSchema schema = el.getSchema();
         if (schema != null)
-        {  
-        	// We need this try-catch block in case we encounter an exception while attempting
-        	// to resolve the schema.  In the case of the WSDL Editor, we get a
-        	// 'cannot create part exception'......See eclipse bugzilla bug 89855
-        	try
-        	{
-        		schema.setSchemaLocation(resource.getURI().toString());
-        	}
-        	catch (Exception e) {
+        {
+          // We need this try-catch block in case we encounter an exception while attempting
+          // to resolve the schema.  In the case of the WSDL Editor, we get a
+          // 'cannot create part exception'......See eclipse bugzilla bug 89855
+          try
+          {
+            schema.setSchemaLocation(resource.getURI().toString());
+          }
+          catch (Exception e)
+          {
 
-        	}
-        }  
-      }        
-    }      
-  }  
-  
+          }
+        }
+      }
+    }
+  }
+
 } //DefinitionImpl

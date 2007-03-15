@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.internal.impl;
+
 
 import java.util.Collection;
 
@@ -18,7 +19,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.wst.wsdl.Definition;
@@ -36,8 +36,8 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.wsdl.impl.MessageReferenceImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.wsdl.impl.MessageReferenceImpl#getEMessage <em>EMessage</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl#getEMessage <em>EMessage</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,7 +92,7 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
    */
   protected EClass eStaticClass()
   {
-    return WSDLPackage.eINSTANCE.getMessageReference();
+    return WSDLPackage.Literals.MESSAGE_REFERENCE;
   }
 
   /**
@@ -127,8 +127,8 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
   {
     if (eMessage != null && eMessage.eIsProxy())
     {
-      Message oldEMessage = eMessage;
-      eMessage = (Message)eResolveProxy((InternalEObject)eMessage);
+      InternalEObject oldEMessage = (InternalEObject)eMessage;
+      eMessage = (Message)eResolveProxy(oldEMessage);
       if (eMessage != oldEMessage)
       {
         if (eNotificationRequired())
@@ -166,21 +166,18 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(EStructuralFeature eFeature, boolean resolve)
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE_REFERENCE__DOCUMENTATION_ELEMENT:
-        return getDocumentationElement();
-      case WSDLPackage.MESSAGE_REFERENCE__ELEMENT:
-        return getElement();
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        return getName();
+      return getName();
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        if (resolve) return getEMessage();
-        return basicGetEMessage();
+      if (resolve)
+        return getEMessage();
+      return basicGetEMessage();
     }
-    return eDynamicGet(eFeature, resolve);
+    return super.eGet(featureID, resolve, coreType);
   }
 
   /**
@@ -188,24 +185,18 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(EStructuralFeature eFeature, Object newValue)
+  public void eSet(int featureID, Object newValue)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE_REFERENCE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement((Element)newValue);
-        return;
-      case WSDLPackage.MESSAGE_REFERENCE__ELEMENT:
-        setElement((Element)newValue);
-        return;
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        setName((String)newValue);
-        return;
+      setName((String)newValue);
+      return;
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        setEMessage((Message)newValue);
-        return;
+      setEMessage((Message)newValue);
+      return;
     }
-    eDynamicSet(eFeature, newValue);
+    super.eSet(featureID, newValue);
   }
 
   /**
@@ -213,24 +204,18 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(EStructuralFeature eFeature)
+  public void eUnset(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE_REFERENCE__DOCUMENTATION_ELEMENT:
-        setDocumentationElement(DOCUMENTATION_ELEMENT_EDEFAULT);
-        return;
-      case WSDLPackage.MESSAGE_REFERENCE__ELEMENT:
-        setElement(ELEMENT_EDEFAULT);
-        return;
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        setName(NAME_EDEFAULT);
-        return;
+      setName(NAME_EDEFAULT);
+      return;
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        setEMessage((Message)null);
-        return;
+      setEMessage((Message)null);
+      return;
     }
-    eDynamicUnset(eFeature);
+    super.eUnset(featureID);
   }
 
   /**
@@ -238,20 +223,16 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(EStructuralFeature eFeature)
+  public boolean eIsSet(int featureID)
   {
-    switch (eDerivedStructuralFeatureID(eFeature))
+    switch (featureID)
     {
-      case WSDLPackage.MESSAGE_REFERENCE__DOCUMENTATION_ELEMENT:
-        return DOCUMENTATION_ELEMENT_EDEFAULT == null ? documentationElement != null : !DOCUMENTATION_ELEMENT_EDEFAULT.equals(documentationElement);
-      case WSDLPackage.MESSAGE_REFERENCE__ELEMENT:
-        return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
       case WSDLPackage.MESSAGE_REFERENCE__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case WSDLPackage.MESSAGE_REFERENCE__EMESSAGE:
-        return eMessage != null;
+      return eMessage != null;
     }
-    return eDynamicIsSet(eFeature);
+    return super.eIsSet(featureID);
   }
 
   /**
@@ -261,10 +242,11 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
    */
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy())
+      return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
+    result.append(" (name: "); //$NON-NLS-1$
     result.append(name);
     result.append(')');
     return result.toString();
@@ -331,9 +313,9 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
   {
     if (element != null)
     {
-      Definition definition = getEnclosingDefinition();      
+      Definition definition = getEnclosingDefinition();
       QName messageQName = createQName(definition, element.getAttribute(WSDLConstants.MESSAGE_ATTRIBUTE), element);
-      Message newMessage = messageQName != null ? (Message) definition.getMessage(messageQName) : null;
+      Message newMessage = messageQName != null ? (Message)definition.getMessage(messageQName) : null;
       if (newMessage != getEMessage())
       {
         setEMessage(newMessage);

@@ -1,19 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.wst.wsdl.binding.mime.internal.util;
 
+
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.util.ExtensibilityElementFactory;
+
 
 public class MIMEExtensibilityElementFactory implements ExtensibilityElementFactory
 {
@@ -34,15 +36,15 @@ public class MIMEExtensibilityElementFactory implements ExtensibilityElementFact
         return MIMEFactory.eINSTANCE.createMIMEMultipartRelated();
       }
       /* TODO - fix the rose model
-      else if ("part".equals(localName))
+       else if ("part".equals(localName))
+       {
+       return MIMEFactory.eINSTANCE.createMIMEPart();
+       }
+       */
+      else
       {
-        return MIMEFactory.eINSTANCE.createMIMEPart();
-      }
-      */
-	  else
-	  {
-	    //System.out.println("Unhandled localName: " + localName);
-	    return WSDLFactory.eINSTANCE.createUnknownExtensibilityElement();
+        //System.out.println("Unhandled localName: " + localName);
+        return WSDLFactory.eINSTANCE.createUnknownExtensibilityElement();
       }
     }
     else
