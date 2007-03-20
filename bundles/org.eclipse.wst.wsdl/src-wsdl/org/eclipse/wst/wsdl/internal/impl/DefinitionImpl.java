@@ -110,6 +110,8 @@ import org.w3c.dom.events.MutationEvent;
  */
 public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 {
+  private static final String XMLNS = "xmlns"; //$NON-NLS-1$
+
   /**
    * This class is not intended to be serialized.
    * serialVersionUID is assigned with 1L to avoid
@@ -1464,7 +1466,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
   public static ResourceSet createResourceSet()
   {
     ResourceSet result = new ResourceSetImpl();
-    result.getResourceFactoryRegistry().getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl());
+    result.getResourceFactoryRegistry().getExtensionToFactoryMap().put("wsdl", new WSDLResourceFactoryImpl()); //$NON-NLS-1$
     return result;
   }
 
@@ -1671,17 +1673,17 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     if (oldElement instanceof EventTarget)
     {
       EventTarget oldEventTarget = ((EventTarget)oldElement);
-      oldEventTarget.removeEventListener("DOMNodeInserted", getEventListener(), true);
-      oldEventTarget.removeEventListener("DOMNodeRemoved", getEventListener(), true);
-      oldEventTarget.removeEventListener("DOMAttrModified", getEventListener(), true);
+      oldEventTarget.removeEventListener("DOMNodeInserted", getEventListener(), true); //$NON-NLS-1$
+      oldEventTarget.removeEventListener("DOMNodeRemoved", getEventListener(), true); //$NON-NLS-1$
+      oldEventTarget.removeEventListener("DOMAttrModified", getEventListener(), true); //$NON-NLS-1$
     }
     super.setElement(element);
     if (element instanceof EventTarget)
     {
       EventTarget eventTarget = ((EventTarget)element);
-      eventTarget.addEventListener("DOMNodeInserted", getEventListener(), true);
-      eventTarget.addEventListener("DOMNodeRemoved", getEventListener(), true);
-      eventTarget.addEventListener("DOMAttrModified", getEventListener(), true);
+      eventTarget.addEventListener("DOMNodeInserted", getEventListener(), true); //$NON-NLS-1$
+      eventTarget.addEventListener("DOMNodeRemoved", getEventListener(), true); //$NON-NLS-1$
+      eventTarget.addEventListener("DOMAttrModified", getEventListener(), true); //$NON-NLS-1$
     }
     if (element != null)
     {
@@ -1695,10 +1697,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
     if (changedElement == getElement())
     {
-      if (changedElement.hasAttribute("targetNamespace"))
-        setTargetNamespace(changedElement.getAttribute("targetNamespace"));
-      if (changedElement.hasAttribute("name"))
-        setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, changedElement.getAttribute("name")));
+      if (changedElement.hasAttribute(WSDLConstants.TARGETNAMESPACE_ATTRIBUTE))
+        setTargetNamespace(changedElement.getAttribute(WSDLConstants.TARGETNAMESPACE_ATTRIBUTE));
+      if (changedElement.hasAttribute(WSDLConstants.NAME_ATTRIBUTE))
+        setQName(new QName(WSDLConstants.WSDL_NAMESPACE_URI, changedElement.getAttribute(WSDLConstants.NAME_ATTRIBUTE)));
       getENamespaces().clear();
       getNamespaces().clear();
       //getNamespaces().put("", null);
@@ -1709,11 +1711,11 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       {
         Attr attr = (Attr)map.item(i);
         String nsPrefix = null;
-        if ("xmlns".equals(attr.getPrefix()))
+        if (XMLNS.equals(attr.getPrefix()))
         {
           nsPrefix = attr.getLocalName();
         }
-        else if ("xmlns".equals(attr.getNodeName()))
+        else if (XMLNS.equals(attr.getNodeName()))
         {
           nsPrefix = "";
         }
@@ -1955,10 +1957,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         prefix = (String)entry.getKey();
         uri = (String)entry.getValue();
         if (prefix != "")
-          theElement.setAttributeNS(XSDConstants.XMLNS_URI_2000, "xmlns:" + prefix, uri);
+          theElement.setAttributeNS(XSDConstants.XMLNS_URI_2000, "xmlns:" + prefix, uri); //$NON-NLS-1$
         else if (uri != null)
           // Handle default namespace, e.g. xmlns="http://schemas.xmlsoap.org/wsdl/"
-          theElement.setAttributeNS(XSDConstants.XMLNS_URI_2000, "xmlns", uri);
+          theElement.setAttributeNS(XSDConstants.XMLNS_URI_2000, XMLNS, uri);
       }
     }
   }
@@ -2206,7 +2208,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
                   WSDLElementImpl listener = (WSDLElementImpl)getCorrespondingComponent(node.getParentNode());
                   if (listener != null)
                   {
-                    if (event.getType().equals("DOMNodeRemoved"))
+                    if (event.getType().equals("DOMNodeRemoved")) //$NON-NLS-1$
                     {
                       deletionNode = (Node)event.getTarget();
                     }
@@ -2326,9 +2328,15 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     Types types = this.getETypes();
     if (types != null)
     {
-      for (Iterator j = types.getEExtensibilityElements().iterator(); j.hasNext();)
+      Iterator iterator = types.getEExtensibilityElements().iterator();
+      while(iterator.hasNext())
       {
-        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement)j.next();
+        ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
+        if (!(extensibilityElement instanceof XSDSchemaExtensibilityElement))
+        {
+          continue;
+        }
+        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement) extensibilityElement;
         XSDSchema schema = el.getSchema();
         if (schema != null)
         {

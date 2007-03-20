@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPlugin;
@@ -148,15 +149,15 @@ public class WSDLResourceImpl extends ResourceImpl
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
 
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+      transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
 
       // Unless a width is set, there will be only line breaks but no indentation.
       // The IBM JDK and the Sun JDK don't agree on the property name,
       // so we set them both.
       //
-      transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2");
-      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2"); //$NON-NLS-1$ //$NON-NLS-2$
+      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2"); //$NON-NLS-1$ //$NON-NLS-2$
       if (encoding != null)
       {
         transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
@@ -185,7 +186,7 @@ public class WSDLResourceImpl extends ResourceImpl
     if (monitor != null)
     {
       progressMonitor = (IProgressMonitor)monitor;
-      progressMonitor.setTaskName(WSDLPlugin.INSTANCE.getString("_UI_ResourceLoad_progress"));
+      progressMonitor.setTaskName(WSDLPlugin.INSTANCE.getString("_UI_ResourceLoad_progress")); //$NON-NLS-1$
       progressMonitor.subTask(getURI().toString());
     }
 
@@ -221,7 +222,7 @@ public class WSDLResourceImpl extends ResourceImpl
           if (continueOnLoadError)
             handleDefinitionElement(doc.getDocumentElement());
           else
-            throw new IOException(WSDLPlugin.getPlugin().getString("_ERROR_INVALID_WSDL"));
+            throw new IOException(WSDLPlugin.getPlugin().getString("_ERROR_INVALID_WSDL")); //$NON-NLS-1$
         }
       }
       else
@@ -253,7 +254,13 @@ public class WSDLResourceImpl extends ResourceImpl
         XSDSchemaExtensibilityElement el = null;
         for (Iterator j = types.getEExtensibilityElements().iterator(); j.hasNext();)
         {
-          el = (XSDSchemaExtensibilityElement)j.next();
+          ExtensibilityElement extensibilityElement = (ExtensibilityElement)j.next();
+          if (!(extensibilityElement instanceof XSDSchemaExtensibilityElement))
+          {
+            continue;
+          }
+          
+          el = (XSDSchemaExtensibilityElement) extensibilityElement;
           XSDSchema schema = el.getSchema();
           if (schema != null)
             schema.setSchemaLocation(getURI().toString());
@@ -463,8 +470,8 @@ public class WSDLResourceImpl extends ResourceImpl
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
 
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+      transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
       if (encoding != null)
       {
         transformer.setOutputProperty(OutputKeys.ENCODING, encoding);

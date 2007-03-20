@@ -26,12 +26,10 @@ import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-
-//import com.ibm.wsdl.factory.WSDLFactoryImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -81,7 +79,12 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     List arrayList = new ArrayList();
     for (Iterator i = getEExtensibilityElements().iterator(); i.hasNext();)
     {
-      XSDSchemaExtensibilityElement xsdee = (XSDSchemaExtensibilityElement)i.next();
+      ExtensibilityElement extensibilityElement = (ExtensibilityElement)i.next();
+      if (!(extensibilityElement instanceof XSDSchemaExtensibilityElement))
+      {
+        continue;
+      }
+      XSDSchemaExtensibilityElement xsdee = (XSDSchemaExtensibilityElement) extensibilityElement;
       if (xsdee.getSchema() != null)
       {
         arrayList.add(xsdee.getSchema());
@@ -144,7 +147,7 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
-    if ("schema".equals(child.getLocalName()))
+    if (XSDConstants.SCHEMA_ELEMENT_TAG.equals(child.getLocalName()))
     {
       try
       {
@@ -157,6 +160,10 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
       {
         e.printStackTrace();
       }
+    }
+    else
+    {
+      super.handleUnreconciledElement(child, remainingModelObjects);
     }
   }
 

@@ -46,6 +46,7 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
@@ -186,6 +187,14 @@ public class BugFixesTest extends TestCase
           testFullElementExtensibility();
         }
       });
+
+    suite.addTest(new BugFixesTest("TypesExtensibility") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testTypesExtensibility();
+      }
+    });
 
     return suite;
   }
@@ -814,5 +823,49 @@ public class BugFixesTest extends TestCase
     String localPart = elementType.getLocalPart();
     assertEquals(extensionsNamespaceURI, nsURI);
     assertEquals(localPart, elementName);
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=174361
+   */
+  public void testTypesExtensibility()
+  {
+
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/TypesExtensibility/TypesExtensibility.wsdl", true); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+    
+    Types types = definition.getETypes();
+    List extensibilityElements = types.getExtensibilityElements();
+    assertEquals(3, extensibilityElements.size());
+    
+    String otherTypesNamespace = "http://www.example.org/OtherTypes/"; //$NON-NLS-1$
+
+    ExtensibilityElement extensibilityElement = (ExtensibilityElement)extensibilityElements.get(0);
+    QName elementType = extensibilityElement.getElementType();
+    assertEquals(otherTypesNamespace, elementType.getNamespaceURI());
+    assertEquals("typeDef", elementType.getLocalPart()); //$NON-NLS-1$
+
+    List schemas = types.getSchemas();
+    assertEquals(1, schemas.size());
+    
+    XSDSchemaExtensibilityElement schemaExtensibilityElement = (XSDSchemaExtensibilityElement)extensibilityElements.get(1);
+    XSDSchema schema = schemaExtensibilityElement.getSchema();
+    assertNotNull(schema);
+    XSDElementDeclaration elementDeclaration = schema.resolveElementDeclaration("test"); //$NON-NLS-1$
+    assertNotNull(elementDeclaration);
+    assertNotNull(elementDeclaration.getContainer());    
+    
+    extensibilityElement = (ExtensibilityElement)extensibilityElements.get(2);
+    elementType = extensibilityElement.getElementType();
+    assertEquals(otherTypesNamespace, elementType.getNamespaceURI());
+    assertEquals("typeDef", elementType.getLocalPart()); //$NON-NLS-1$    
   }
 }

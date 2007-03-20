@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://www.example.org/TypesExtensibility/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="TypesExtensibility"
+	xmlns:typeEx="http://www.example.org/OtherTypes/"
+	targetNamespace="http://www.example.org/TypesExtensibility/">
+	<wsdl:types>
+		<typeEx:typeDef />
+		<xsd:schema
+			targetNamespace="http://www.example.org/Types/">
+			<xsd:element name="test" type="xsd:string" />
+		</xsd:schema>
+		<typeEx:typeDef />
+	</wsdl:types>
+</wsdl:definitions>
