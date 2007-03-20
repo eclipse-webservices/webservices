@@ -44,7 +44,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Operation extends WSDLElement, javax.wsdl.Operation
+public interface Operation extends ExtensibleElement, javax.wsdl.Operation
 {
   /**
    * Returns the value of the '<em><b>Style</b></em>' attribute.

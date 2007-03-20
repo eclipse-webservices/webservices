@@ -81,8 +81,8 @@
 	    superclasses 	(list inheritance_relationship_list
 		(object Inheritance_Relationship
 		    quid       	"3AD5C9B70150"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD")
+		    supplier   	"Logical View::wsdl::ExtensibleElement"
+		    quidu      	"3AD5FCFA033A")
 		(object Inheritance_Relationship
 		    quid       	"3F6F1FD8019F"
 		    supplier   	"Logical View::wsdl::IPortType"
@@ -101,8 +101,8 @@
 	    superclasses 	(list inheritance_relationship_list
 		(object Inheritance_Relationship
 		    quid       	"3AE9DE98003C"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD")
+		    supplier   	"Logical View::wsdl::ExtensibleElement"
+		    quidu      	"3AD5FCFA033A")
 		(object Inheritance_Relationship
 		    quid       	"3F6F1FE20171"
 		    supplier   	"Logical View::wsdl::IOperation"
@@ -124,8 +124,8 @@
 	    superclasses 	(list inheritance_relationship_list
 		(object Inheritance_Relationship
 		    quid       	"3AD5D05501C4"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD")
+		    supplier   	"Logical View::wsdl::ExtensibleElement"
+		    quidu      	"3AD5FCFA033A")
 		(object Inheritance_Relationship
 		    quid       	"3B84A8D102BA"
 		    supplier   	"Logical View::wsdl::IMessage"
@@ -148,8 +148,8 @@
 		    quidu      	"3B84A93F01BE")
 		(object Inheritance_Relationship
 		    quid       	"3B897E230237"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD"))
+		    supplier   	"Logical View::wsdl::ExtensibleElement"
+		    quidu      	"3AD5FCFA033A"))
 	    class_attributes 	(list class_attribute_list
 		(object ClassAttribute "name"
 		    quid       	"3BCE70B703C8"
@@ -307,8 +307,8 @@
 	    superclasses 	(list inheritance_relationship_list
 		(object Inheritance_Relationship
 		    quid       	"3AD5EE58037A"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD")
+		    supplier   	"Logical View::wsdl::ExtensibleElement"
+		    quidu      	"3AD5FCFA033A")
 		(object Inheritance_Relationship
 		    quid       	"3F6F200D0340"
 		    supplier   	"Logical View::wsdl::IImport"
@@ -366,10 +366,6 @@
 	    documentation 	"This class represents a WSDL input element. An input element specifies the abstract message format for the input of the operation."
 	    superclasses 	(list inheritance_relationship_list
 		(object Inheritance_Relationship
-		    quid       	"3B85C504025F"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD")
-		(object Inheritance_Relationship
 		    quid       	"3F67722802E7"
 		    supplier   	"Logical View::wsdl::MessageReference"
 		    quidu      	"3F6771DB02DC")
@@ -383,10 +379,6 @@
 	    documentation 	"This class represents a WSDL output element. An output element specifies the abstract message format for the output of the operation."
 	    superclasses 	(list inheritance_relationship_list
 		(object Inheritance_Relationship
-		    quid       	"3B85C50C035B"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD")
-		(object Inheritance_Relationship
 		    quid       	"3F67723500DD"
 		    supplier   	"Logical View::wsdl::MessageReference"
 		    quidu      	"3F6771DB02DC")
@@ -399,10 +391,6 @@
 	    quid       	"3AE078BE0108"
 	    documentation 	"This class represents a WSDL fault element. Fault elements specify the abstract message format for any error messages that may be output as the result of the operation "
 	    superclasses 	(list inheritance_relationship_list
-		(object Inheritance_Relationship
-		    quid       	"3AE1C82002F2"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD")
 		(object Inheritance_Relationship
 		    quid       	"3F67723D0319"
 		    supplier   	"Logical View::wsdl::MessageReference"
@@ -1467,8 +1455,8 @@
 	    superclasses 	(list inheritance_relationship_list
 		(object Inheritance_Relationship
 		    quid       	"3F762A6A0308"
-		    supplier   	"Logical View::wsdl::WSDLElement"
-		    quidu      	"3AD5C6A302DD"))
+		    supplier   	"Logical View::wsdl::ExtensibleElement"
+		    quidu      	"3AD5FCFA033A"))
 	    class_attributes 	(list class_attribute_list
 		(object ClassAttribute "name"
 		    quid       	"3F6780A001AB"
@@ -4191,6 +4179,14 @@
 		    line_color 	3342489
 		    fill_color 	13434879
 		    quidu      	"3F6771DB02DC"
+		    compartment 	(object Compartment
+			Parent_View 	@153
+			location   	(1193, 2526)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	1
+			max_width  	0)
 		    width      	672
 		    height     	180
 		    annotation 	8)
@@ -5040,33 +5036,14 @@
 	    max_height 	28350
 	    max_width  	21600
 	    origin_x   	0
-	    origin_y   	0
+	    origin_y   	564
 	    items      	(list diagram_item_list
-		(object ClassView "Class" "Logical View::wsdl::Binding" @219
+		(object ClassView "Class" "Logical View::wsdl::Port" @219
 		    ShowCompartmentStereotypes 	TRUE
-		    location   	(576, 1584)
+		    location   	(3360, 2528)
 		    label      	(object ItemLabel
 			Parent_View 	@219
-			location   	(494, 1531)
-			fill_color 	13434879
-			nlines     	1
-			max_width  	164
-			justify    	0
-			label      	"Binding")
-		    icon_style 	"Icon"
-		    line_color 	3342489
-		    fill_color 	13434879
-		    quidu      	"3AD5D2860261"
-		    width      	182
-		    height     	130
-		    annotation 	8
-		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Port" @220
-		    ShowCompartmentStereotypes 	TRUE
-		    location   	(1568, 1888)
-		    label      	(object ItemLabel
-			Parent_View 	@220
-			location   	(1487, 1836)
+			location   	(3279, 2476)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	162
@@ -5079,12 +5056,12 @@
 		    height     	128
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Service" @221
+		(object ClassView "Class" "Logical View::wsdl::Service" @220
 		    ShowCompartmentStereotypes 	TRUE
-		    location   	(1424, 1728)
+		    location   	(3168, 2352)
 		    label      	(object ItemLabel
-			Parent_View 	@221
-			location   	(1343, 1675)
+			Parent_View 	@220
+			location   	(3087, 2299)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	162
@@ -5097,60 +5074,23 @@
 		    height     	130
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::BindingFault" @222
-		    ShowCompartmentStereotypes 	TRUE
-		    location   	(1216, 2336)
-		    label      	(object ItemLabel
-			Parent_View 	@222
-			location   	(1088, 2283)
-			fill_color 	13434879
-			nlines     	1
-			max_width  	256
-			justify    	0
-			label      	"BindingFault")
-		    icon_style 	"Icon"
-		    line_color 	3342489
-		    fill_color 	13434879
-		    quidu      	"3AE08A9E03A6"
-		    width      	274
-		    height     	130
-		    annotation 	8
-		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::BindingOperation" @223
-		    ShowCompartmentStereotypes 	TRUE
-		    location   	(736, 1760)
-		    label      	(object ItemLabel
-			Parent_View 	@223
-			location   	(563, 1707)
-			fill_color 	13434879
-			nlines     	1
-			max_width  	346
-			justify    	0
-			label      	"BindingOperation")
-		    icon_style 	"Icon"
-		    line_color 	3342489
-		    fill_color 	13434879
-		    quidu      	"3AD5D3CB0145"
-		    width      	364
-		    height     	130
-		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::IExtensibilityElement" @224
+		(object ClassView "Class" "Logical View::wsdl::IExtensibilityElement" @221
 		    ShowCompartmentStereotypes 	TRUE
 		    SuppressAttribute 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
-		    location   	(1888, 160)
+		    location   	(2784, 208)
 		    label      	(object ItemLabel
-			Parent_View 	@224
-			location   	(1495, 136)
+			Parent_View 	@221
+			location   	(2391, 184)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	786
 			justify    	0
 			label      	"IExtensibilityElement")
 		    stereotype 	(object ItemLabel
-			Parent_View 	@224
-			location   	(1495, 86)
+			Parent_View 	@221
+			location   	(2391, 134)
 			fill_color 	13434879
 			anchor     	10
 			nlines     	1
@@ -5166,70 +5106,13 @@
 		    height     	172
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::BindingInput" @225
-		    ShowCompartmentStereotypes 	TRUE
-		    location   	(928, 1952)
-		    label      	(object ItemLabel
-			Parent_View 	@225
-			location   	(800, 1899)
-			fill_color 	13434879
-			nlines     	1
-			max_width  	256
-			justify    	0
-			label      	"BindingInput")
-		    icon_style 	"Icon"
-		    line_color 	3342489
-		    fill_color 	13434879
-		    quidu      	"3AE08A8202D4"
-		    width      	274
-		    height     	130
-		    annotation 	8
-		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::BindingOutput" @226
-		    ShowCompartmentStereotypes 	TRUE
-		    location   	(1008, 2144)
-		    label      	(object ItemLabel
-			Parent_View 	@226
-			location   	(863, 2091)
-			fill_color 	13434879
-			nlines     	1
-			max_width  	290
-			justify    	0
-			label      	"BindingOutput")
-		    icon_style 	"Icon"
-		    line_color 	3342489
-		    fill_color 	13434879
-		    quidu      	"3AE08A8F028C"
-		    width      	308
-		    height     	130
-		    annotation 	8
-		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Definition" @227
-		    ShowCompartmentStereotypes 	TRUE
-		    location   	(176, 1296)
-		    label      	(object ItemLabel
-			Parent_View 	@227
-			location   	(74, 1235)
-			fill_color 	13434879
-			nlines     	1
-			max_width  	204
-			justify    	0
-			label      	"Definition")
-		    icon_style 	"Icon"
-		    line_color 	3342489
-		    fill_color 	13434879
-		    quidu      	"3AD5E43F008E"
-		    width      	222
-		    height     	146
-		    annotation 	8
-		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Types" @228
+		(object ClassView "Class" "Logical View::wsdl::Types" @222
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
-		    location   	(416, 1408)
+		    location   	(528, 2432)
 		    label      	(object ItemLabel
-			Parent_View 	@228
-			location   	(335, 1356)
+			Parent_View 	@222
+			location   	(447, 2380)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	162
@@ -5242,16 +5125,16 @@
 		    height     	128
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::ExtensibleElement" @229
+		(object ClassView "Class" "Logical View::wsdl::ExtensibleElement" @223
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
-		    location   	(480, 688)
+		    location   	(1072, 736)
 		    font       	(object Font
 			italics    	TRUE)
 		    label      	(object ItemLabel
-			Parent_View 	@229
-			location   	(209, 580)
+			Parent_View 	@223
+			location   	(801, 628)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	542
@@ -5261,116 +5144,44 @@
 		    line_color 	3342489
 		    fill_color 	13434879
 		    quidu      	"3AD5FCFA033A"
+		    compartment 	(object Compartment
+			Parent_View 	@223
+			location   	(801, 689)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	3
+			max_width  	534)
 		    width      	560
 		    height     	240
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object InheritTreeView "" @230
-		    location   	(480, 1039)
+		(object InheritTreeView "" @224
+		    location   	(1022, 2056)
 		    line_color 	3342489
 		    fill_color 	13434879
-		    supplier   	@229
+		    supplier   	@223
 		    vertices   	(list Points
-			(480, 1039)
-			(480, 808)))
-		(object InheritView "" @231
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3AD600CB00AA"
-		    client     	@220
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(1566, 1824)
-		    terminal_attachment 	(1566, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @232
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3B85B5A4027E"
-		    client     	@226
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(1097, 2079)
-		    terminal_attachment 	(1097, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @233
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3AE0938602C9"
-		    client     	@222
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(1219, 2271)
-		    terminal_attachment 	(1219, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @234
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3B85B59B0072"
-		    client     	@225
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(988, 1887)
-		    terminal_attachment 	(988, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @235
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3AD6009202F7"
-		    client     	@223
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(797, 1695)
-		    terminal_attachment 	(797, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @236
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3AD5FA0F02F0"
-		    client     	@219
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(601, 1519)
-		    terminal_attachment 	(601, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @237
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3AD5FDB803D4"
-		    client     	@227
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(211, 1223)
-		    terminal_attachment 	(211, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @238
+			(1022, 2056)
+			(1022, 856)))
+		(object InheritView "" @225
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B8BEB010311"
-		    client     	@228
-		    supplier   	@229
+		    client     	@222
+		    supplier   	@223
 		    line_style 	3
-		    origin_attachment 	(414, 1344)
-		    terminal_attachment 	(414, 1039)
-		    drawSupplier 	@230)
-		(object InheritView "" @239
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3AD5FA20025E"
-		    client     	@221
-		    supplier   	@229
-		    line_style 	3
-		    origin_attachment 	(1429, 1663)
-		    terminal_attachment 	(1429, 1039)
-		    drawSupplier 	@230)
-		(object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @240
+		    origin_attachment 	(472, 2368)
+		    terminal_attachment 	(472, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @226
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
-		    location   	(1904, 688)
+		    location   	(2800, 736)
 		    label      	(object ItemLabel
-			Parent_View 	@240
-			location   	(1632, 583)
+			Parent_View 	@226
+			location   	(2528, 631)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	545
@@ -5380,22 +5191,30 @@
 		    line_color 	3342489
 		    fill_color 	13434879
 		    quidu      	"3AD5DBB602A9"
+		    compartment 	(object Compartment
+			Parent_View 	@226
+			location   	(2528, 692)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	3
+			max_width  	465)
 		    width      	563
 		    height     	234
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$25" @241
-		    location   	(1191, 672)
+		(object AssociationViewNew "$UNNAMED$25" @227
+		    location   	(1935, 720)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5FD130079"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$26" @242
-			    Parent_View 	@241
-			    location   	(23, 560)
-			    label      	(object SegLabel @243
-				Parent_View 	@242
-				location   	(847, 631)
+			(object RoleView "$UNNAMED$26" @228
+			    Parent_View 	@227
+			    location   	(767, 608)
+			    label      	(object SegLabel @229
+				Parent_View 	@228
+				location   	(1469, 679)
 				hidden     	TRUE
 				anchor     	1
 				anchor_loc 	1
@@ -5409,14 +5228,14 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AD5FD14019E"
-			    client     	@241
-			    supplier   	@229
+			    client     	@227
+			    supplier   	@223
 			    line_style 	3
-			    origin_attachment 	(1191, 672)
-			    terminal_attachment 	(760, 672)
-			    label      	(object SegLabel @244
-				Parent_View 	@242
-				location   	(830, 628)
+			    origin_attachment 	(1935, 720)
+			    terminal_attachment 	(1352, 720)
+			    label      	(object SegLabel @230
+				Parent_View 	@228
+				location   	(1446, 676)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -5426,12 +5245,12 @@
 				pctDist    	0.839695
 				height     	45
 				orientation 	1))
-			(object RoleView "eExtensibilityElements" @245
-			    Parent_View 	@241
-			    location   	(23, 560)
-			    label      	(object SegLabel @246
-				Parent_View 	@245
-				location   	(1355, 522)
+			(object RoleView "eExtensibilityElements" @231
+			    Parent_View 	@227
+			    location   	(767, 608)
+			    label      	(object SegLabel @232
+				Parent_View 	@231
+				location   	(2155, 570)
 				anchor     	1
 				anchor_loc 	1
 				nlines     	1
@@ -5444,14 +5263,14 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AD5FD14019D"
-			    client     	@241
-			    supplier   	@240
+			    client     	@227
+			    supplier   	@226
 			    line_style 	3
-			    origin_attachment 	(1191, 672)
-			    terminal_attachment 	(1623, 672)
-			    label      	(object SegLabel @247
-				Parent_View 	@245
-				location   	(1496, 627)
+			    origin_attachment 	(1935, 720)
+			    terminal_attachment 	(2519, 720)
+			    label      	(object SegLabel @233
+				Parent_View 	@231
+				location   	(2348, 675)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -5461,9 +5280,9 @@
 				pctDist    	0.709402
 				height     	46
 				orientation 	0)
-			    label      	(object SegLabel @248
-				Parent_View 	@245
-				location   	(1463, 764)
+			    label      	(object SegLabel @234
+				Parent_View 	@231
+				location   	(2303, 812)
 				anchor     	3
 				anchor_loc 	1
 				nlines     	1
@@ -5473,15 +5292,15 @@
 				pctDist    	0.632479
 				height     	92
 				orientation 	1))))
-		(object ClassView "Class" "Logical View::wsdl::WSDLElement" @249
+		(object ClassView "Class" "Logical View::wsdl::WSDLElement" @235
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
-		    location   	(1008, 192)
+		    location   	(1680, 240)
 		    font       	(object Font
 			italics    	TRUE)
 		    label      	(object ItemLabel
-			Parent_View 	@249
-			location   	(630, 84)
+			Parent_View 	@235
+			location   	(1302, 132)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	756
@@ -5492,62 +5311,52 @@
 		    fill_color 	13434879
 		    quidu      	"3AD5C6A302DD"
 		    compartment 	(object Compartment
-			Parent_View 	@249
-			location   	(630, 144)
+			Parent_View 	@235
+			location   	(1302, 193)
 			icon_style 	"Icon"
 			fill_color 	16777215
 			anchor     	2
 			nlines     	3
-			max_width  	0)
+			max_width  	756)
 		    width      	774
 		    height     	240
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object InheritTreeView "" @250
-		    location   	(1008, 402)
+		(object InheritTreeView "" @236
+		    location   	(1674, 519)
 		    line_color 	3342489
 		    fill_color 	13434879
-		    supplier   	@249
+		    supplier   	@235
 		    vertices   	(list Points
-			(1008, 402)
-			(1008, 312)))
-		(object InheritView "" @251
-		    stereotype 	TRUE
-		    line_color 	3342489
-		    quidu      	"3AD5FE3C03D4"
-		    client     	@229
-		    supplier   	@249
-		    line_style 	3
-		    origin_attachment 	(492, 568)
-		    terminal_attachment 	(492, 402)
-		    drawSupplier 	@250)
-		(object InheritView "" @252
+			(1674, 519)
+			(1674, 360)))
+		(object InheritView "" @237
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B84B14903D0"
-		    client     	@240
-		    supplier   	@224
+		    client     	@226
+		    supplier   	@221
 		    line_style 	3
-		    origin_attachment 	(2015, 571)
-		    terminal_attachment 	(2015, 246))
-		(object InheritView "" @253
+		    origin_attachment 	(2911, 619)
+		    terminal_attachment 	(2911, 294))
+		(object InheritView "" @238
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3BDDF53502C3"
-		    client     	@240
-		    supplier   	@249
+		    client     	@226
+		    supplier   	@235
 		    line_style 	3
-		    origin_attachment 	(1762, 571)
-		    terminal_attachment 	(1762, 402)
-		    drawSupplier 	@250)
-		(object ClassView "Class" "Logical View::wsdl::UnknownExtensibilityElement" @254
+		    origin_attachment 	(2663, 619)
+		    terminal_attachment 	(2663, 519)
+		    drawSupplier 	@236)
+		(object ClassView "Class" "Logical View::wsdl::UnknownExtensibilityElement" @239
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
-		    location   	(2192, 1408)
+		    location   	(3088, 1456)
 		    label      	(object ItemLabel
-			Parent_View 	@254
-			location   	(1729, 1303)
+			Parent_View 	@239
+			location   	(2625, 1351)
 			fill_color 	13434879
 			nlines     	1
 			max_width  	927
@@ -5561,27 +5370,27 @@
 		    height     	235
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object InheritView "" @255
+		(object InheritView "" @240
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3CB24AEC01CB"
-		    client     	@254
-		    supplier   	@240
+		    client     	@239
+		    supplier   	@226
 		    line_style 	3
-		    origin_attachment 	(1796, 1291)
-		    terminal_attachment 	(1796, 805))
-		(object AssociationViewNew "$UNNAMED$63" @256
-		    location   	(2639, 1734)
+		    origin_attachment 	(2692, 1339)
+		    terminal_attachment 	(2692, 853))
+		(object AssociationViewNew "$UNNAMED$63" @241
+		    location   	(3536, 1782)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3F7896A2026E"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$64" @257
-			    Parent_View 	@256
-			    location   	(607, 342)
-			    label      	(object SegLabel @258
-				Parent_View 	@257
-				location   	(2797, 1380)
+			(object RoleView "$UNNAMED$64" @242
+			    Parent_View 	@241
+			    location   	(1504, 390)
+			    label      	(object SegLabel @243
+				Parent_View 	@242
+				location   	(3691, 1428)
 				hidden     	TRUE
 				anchor     	1
 				anchor_loc 	1
@@ -5595,19 +5404,19 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3F7896A7012B"
-			    client     	@256
-			    supplier   	@254
+			    client     	@241
+			    supplier   	@239
 			    vertices   	(list Points
-				(2639, 1734)
-				(2824, 1734)
-				(2824, 1421)
-				(2664, 1421))
+				(3536, 1782)
+				(3720, 1782)
+				(3720, 1469)
+				(3560, 1469))
 			    line_style 	3
-			    origin_attachment 	(2639, 1734)
-			    terminal_attachment 	(2664, 1421)
-			    label      	(object SegLabel @259
-				Parent_View 	@257
-				location   	(2731, 1475)
+			    origin_attachment 	(3536, 1782)
+			    terminal_attachment 	(3560, 1469)
+			    label      	(object SegLabel @244
+				Parent_View 	@242
+				location   	(3627, 1523)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -5617,12 +5426,12 @@
 				pctDist    	0.900000
 				height     	54
 				orientation 	0))
-			(object RoleView "children" @260
-			    Parent_View 	@256
-			    location   	(607, 342)
-			    label      	(object SegLabel @261
-				Parent_View 	@260
-				location   	(2074, 1658)
+			(object RoleView "children" @245
+			    Parent_View 	@241
+			    location   	(1504, 390)
+			    label      	(object SegLabel @246
+				Parent_View 	@245
+				location   	(2970, 1706)
 				anchor     	1
 				anchor_loc 	1
 				nlines     	1
@@ -5635,18 +5444,18 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3F7896A7012C"
-			    client     	@256
-			    supplier   	@254
+			    client     	@241
+			    supplier   	@239
 			    vertices   	(list Points
-				(2639, 1734)
-				(2191, 1734)
-				(2191, 1525))
+				(3536, 1782)
+				(3087, 1782)
+				(3087, 1573))
 			    line_style 	3
-			    origin_attachment 	(2639, 1734)
-			    terminal_attachment 	(2191, 1525)
-			    label      	(object SegLabel @262
-				Parent_View 	@260
-				location   	(2245, 1591)
+			    origin_attachment 	(3536, 1782)
+			    terminal_attachment 	(3087, 1573)
+			    label      	(object SegLabel @247
+				Parent_View 	@245
+				location   	(3141, 1639)
 				anchor     	2
 				anchor_loc 	1
 				nlines     	1
@@ -5655,7 +5464,496 @@
 				label      	"0..*"
 				pctDist    	0.900000
 				height     	54
-				orientation 	1))))))
+				orientation 	1))))
+		(object ClassView "Class" "Logical View::wsdl::Binding" @248
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(2000, 2416)
+		    label      	(object ItemLabel
+			Parent_View 	@248
+			location   	(1918, 2363)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	164
+			justify    	0
+			label      	"Binding")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5D2860261"
+		    width      	182
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @249
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD5FA0F02F0"
+		    client     	@248
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(1995, 2351)
+		    terminal_attachment 	(1995, 2056)
+		    drawSupplier 	@224)
+		(object InheritView "" @250
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD5FE3C03D4"
+		    client     	@223
+		    supplier   	@235
+		    line_style 	3
+		    origin_attachment 	(1185, 616)
+		    terminal_attachment 	(1185, 519)
+		    drawSupplier 	@236)
+		(object ClassView "Class" "Logical View::wsdl::PortType" @251
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1088, 2432)
+		    label      	(object ItemLabel
+			Parent_View 	@251
+			location   	(990, 2379)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	196
+			justify    	0
+			label      	"PortType")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5C7F001A5"
+		    width      	214
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::wsdl::BindingOperation" @252
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(2112, 2688)
+		    label      	(object ItemLabel
+			Parent_View 	@252
+			location   	(1939, 2635)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	346
+			justify    	0
+			label      	"BindingOperation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5D3CB0145"
+		    width      	364
+		    height     	130
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::wsdl::Fault" @253
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1872, 3360)
+		    label      	(object ItemLabel
+			Parent_View 	@253
+			location   	(1791, 3307)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	162
+			justify    	0
+			label      	"Fault")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AE078BE0108"
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::wsdl::BindingFault" @254
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(3008, 2864)
+		    label      	(object ItemLabel
+			Parent_View 	@254
+			location   	(2880, 2811)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	256
+			justify    	0
+			label      	"BindingFault")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AE08A9E03A6"
+		    width      	274
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @255
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE0938602C9"
+		    client     	@254
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(3008, 2799)
+		    terminal_attachment 	(3008, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::Import" @256
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(320, 2432)
+		    label      	(object ItemLabel
+			Parent_View 	@256
+			location   	(239, 2379)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	162
+			justify    	0
+			label      	"Import")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5E4F903DE"
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @257
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD5EE58037A"
+		    client     	@256
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(265, 2367)
+		    terminal_attachment 	(265, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::Definition" @258
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(144, 2224)
+		    label      	(object ItemLabel
+			Parent_View 	@258
+			location   	(42, 2163)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	204
+			justify    	0
+			label      	"Definition")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5E43F008E"
+		    width      	222
+		    height     	146
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::wsdl::Input" @259
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1456, 3360)
+		    label      	(object ItemLabel
+			Parent_View 	@259
+			location   	(1375, 3307)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	162
+			justify    	0
+			label      	"Input")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AE0789F0059"
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::wsdl::BindingInput" @260
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(2336, 2864)
+		    label      	(object ItemLabel
+			Parent_View 	@260
+			location   	(2208, 2811)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	256
+			justify    	0
+			label      	"BindingInput")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AE08A8202D4"
+		    width      	274
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @261
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3B85B59B0072"
+		    client     	@260
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(2336, 2799)
+		    terminal_attachment 	(2336, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::Output" @262
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1664, 3360)
+		    label      	(object ItemLabel
+			Parent_View 	@262
+			location   	(1583, 3307)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	162
+			justify    	0
+			label      	"Output")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AE078B60232"
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::wsdl::BindingOutput" @263
+		    ShowCompartmentStereotypes 	TRUE
+		    location   	(2672, 2864)
+		    label      	(object ItemLabel
+			Parent_View 	@263
+			location   	(2527, 2811)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	290
+			justify    	0
+			label      	"BindingOutput")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AE08A8F028C"
+		    width      	308
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @264
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3B85B5A4027E"
+		    client     	@263
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(2672, 2799)
+		    terminal_attachment 	(2672, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::Operation" @265
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1264, 2688)
+		    label      	(object ItemLabel
+			Parent_View 	@265
+			location   	(1157, 2635)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	214
+			justify    	0
+			label      	"Operation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5C80D03CE"
+		    width      	232
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @266
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AE9DE98003C"
+		    client     	@265
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(1264, 2623)
+		    terminal_attachment 	(1264, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::Part" @267
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(912, 2688)
+		    label      	(object ItemLabel
+			Parent_View 	@267
+			location   	(831, 2635)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	162
+			justify    	0
+			label      	"Part")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5CE1C032E"
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @268
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD5FDB803D4"
+		    client     	@258
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(208, 2151)
+		    terminal_attachment 	(208, 2056)
+		    drawSupplier 	@224)
+		(object InheritView "" @269
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3B897E230237"
+		    client     	@267
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(905, 2623)
+		    terminal_attachment 	(905, 2056)
+		    drawSupplier 	@224)
+		(object InheritView "" @270
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD5C9B70150"
+		    client     	@251
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(1077, 2367)
+		    terminal_attachment 	(1077, 2056)
+		    drawSupplier 	@224)
+		(object InheritView "" @271
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD6009202F7"
+		    client     	@252
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(2104, 2623)
+		    terminal_attachment 	(2104, 2056)
+		    drawSupplier 	@224)
+		(object InheritView "" @272
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD5FA20025E"
+		    client     	@220
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(3150, 2287)
+		    terminal_attachment 	(3150, 2056)
+		    drawSupplier 	@224)
+		(object InheritView "" @273
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD600CB00AA"
+		    client     	@219
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(3342, 2464)
+		    terminal_attachment 	(3342, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::Message" @274
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(768, 2432)
+		    label      	(object ItemLabel
+			Parent_View 	@274
+			location   	(669, 2379)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	198
+			justify    	0
+			label      	"Message")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3AD5C9590078"
+		    width      	216
+		    height     	130
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @275
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3AD5D05501C4"
+		    client     	@274
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(714, 2367)
+		    terminal_attachment 	(714, 2056)
+		    drawSupplier 	@224)
+		(object ClassView "Class" "Logical View::wsdl::MessageReference" @276
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1648, 2864)
+		    font       	(object Font
+			italics    	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@276
+			location   	(1456, 2781)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	384
+			justify    	0
+			label      	"MessageReference")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3F6771DB02DC"
+		    compartment 	(object Compartment
+			Parent_View 	@276
+			location   	(1456, 2842)
+			icon_style 	"Icon"
+			fill_color 	13434879
+			anchor     	2
+			nlines     	2
+			max_width  	312)
+		    width      	402
+		    height     	190
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @277
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3F762A6A0308"
+		    client     	@276
+		    supplier   	@223
+		    line_style 	3
+		    origin_attachment 	(1636, 2769)
+		    terminal_attachment 	(1636, 2056)
+		    drawSupplier 	@224)
+		(object InheritTreeView "" @278
+		    location   	(1659, 3055)
+		    line_color 	3342489
+		    fill_color 	13434879
+		    supplier   	@276
+		    vertices   	(list Points
+			(1659, 3055)
+			(1659, 2959)))
+		(object InheritView "" @279
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3F67723500DD"
+		    client     	@262
+		    supplier   	@276
+		    line_style 	3
+		    origin_attachment 	(1680, 3295)
+		    terminal_attachment 	(1680, 3055)
+		    drawSupplier 	@278)
+		(object InheritView "" @280
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3F67722802E7"
+		    client     	@259
+		    supplier   	@276
+		    line_style 	3
+		    origin_attachment 	(1472, 3295)
+		    terminal_attachment 	(1472, 3055)
+		    drawSupplier 	@278)
+		(object InheritView "" @281
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"3F67723D0319"
+		    client     	@253
+		    supplier   	@276
+		    line_style 	3
+		    origin_attachment 	(1890, 3295)
+		    terminal_attachment 	(1890, 3055)
+		    drawSupplier 	@278)))
 	(object ClassDiagram "2.1.1 Naming and Linking"
 	    quid       	"3AE8ED7201BD"
 	    title      	"2.1.1 Naming and Linking"
@@ -5665,13 +5963,13 @@
 	    origin_x   	0
 	    origin_y   	0
 	    items      	(list diagram_item_list
-		(object ClassView "Class" "Logical View::wsdl::IImport" @263
+		(object ClassView "Class" "Logical View::wsdl::IImport" @282
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1712, 224)
 		    label      	(object ItemLabel
-			Parent_View 	@263
+			Parent_View 	@282
 			location   	(1422, 177)
 			fill_color 	13434879
 			nlines     	1
@@ -5679,7 +5977,7 @@
 			justify    	0
 			label      	"IImport")
 		    stereotype 	(object ItemLabel
-			Parent_View 	@263
+			Parent_View 	@282
 			location   	(1422, 127)
 			fill_color 	13434879
 			anchor     	10
@@ -5696,13 +5994,13 @@
 		    height     	218
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Namespace" @264
+		(object ClassView "Class" "Logical View::wsdl::Namespace" @283
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(432, 1136)
 		    label      	(object ItemLabel
-			Parent_View 	@264
+			Parent_View 	@283
 			location   	(202, 1041)
 			fill_color 	13434879
 			nlines     	1
@@ -5717,12 +6015,12 @@
 		    height     	215
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::xsd::XSDSchema" @265
+		(object ClassView "Class" "Logical View::xsd::XSDSchema" @284
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1632, 1216)
 		    label      	(object ItemLabel
-			Parent_View 	@265
+			Parent_View 	@284
 			location   	(1294, 1142)
 			fill_color 	13434879
 			nlines     	1
@@ -5737,12 +6035,12 @@
 		    height     	173
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Definition" @266
+		(object ClassView "Class" "Logical View::wsdl::Definition" @285
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    location   	(400, 384)
 		    label      	(object ItemLabel
-			Parent_View 	@266
+			Parent_View 	@285
 			location   	(164, 236)
 			fill_color 	13434879
 			nlines     	1
@@ -5757,17 +6055,17 @@
 		    height     	320
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$41" @267
+		(object AssociationViewNew "$UNNAMED$41" @286
 		    location   	(309, 786)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AEA3D55002D"
 		    roleview_list 	(list RoleViews
-			(object RoleView "eNamespaces" @268
-			    Parent_View 	@267
+			(object RoleView "eNamespaces" @287
+			    Parent_View 	@286
 			    location   	(-91, 258)
-			    label      	(object SegLabel @269
-				Parent_View 	@268
+			    label      	(object SegLabel @288
+				Parent_View 	@287
 				location   	(461, 956)
 				anchor     	1
 				anchor_loc 	1
@@ -5781,13 +6079,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AEA3D560332"
-			    client     	@267
-			    supplier   	@264
+			    client     	@286
+			    supplier   	@283
 			    line_style 	3
 			    origin_attachment 	(309, 786)
 			    terminal_attachment 	(309, 1029)
-			    label      	(object SegLabel @270
-				Parent_View 	@268
+			    label      	(object SegLabel @289
+				Parent_View 	@287
 				location   	(248, 973)
 				anchor     	2
 				anchor_loc 	1
@@ -5798,8 +6096,8 @@
 				pctDist    	0.768707
 				height     	62
 				orientation 	1)
-			    label      	(object SegLabel @271
-				Parent_View 	@268
+			    label      	(object SegLabel @290
+				Parent_View 	@287
 				location   	(228, 913)
 				anchor     	3
 				anchor_loc 	1
@@ -5810,11 +6108,11 @@
 				pctDist    	0.525097
 				height     	82
 				orientation 	1))
-			(object RoleView "$UNNAMED$42" @272
-			    Parent_View 	@267
+			(object RoleView "$UNNAMED$42" @291
+			    Parent_View 	@286
 			    location   	(-91, 258)
-			    label      	(object SegLabel @273
-				Parent_View 	@272
+			    label      	(object SegLabel @292
+				Parent_View 	@291
 				location   	(268, 592)
 				hidden     	TRUE
 				anchor     	1
@@ -5829,13 +6127,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AEA3D560328"
-			    client     	@267
-			    supplier   	@266
+			    client     	@286
+			    supplier   	@285
 			    line_style 	3
 			    origin_attachment 	(309, 786)
 			    terminal_attachment 	(309, 544)
-			    label      	(object SegLabel @274
-				Parent_View 	@272
+			    label      	(object SegLabel @293
+				Parent_View 	@291
 				location   	(239, 583)
 				anchor     	2
 				anchor_loc 	1
@@ -5846,13 +6144,13 @@
 				pctDist    	0.844961
 				height     	71
 				orientation 	0))))
-		(object ClassView "Class" "Logical View::wsdl::Import" @275
+		(object ClassView "Class" "Logical View::wsdl::Import" @294
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1472, 720)
 		    label      	(object ItemLabel
-			Parent_View 	@275
+			Parent_View 	@294
 			location   	(1255, 580)
 			fill_color 	13434879
 			nlines     	1
@@ -5867,17 +6165,17 @@
 		    height     	304
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$55" @276
+		(object AssociationViewNew "$UNNAMED$55" @295
 		    location   	(1486, 1001)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B8B1DCC02E5"
 		    roleview_list 	(list RoleViews
-			(object RoleView "eSchema" @277
-			    Parent_View 	@276
+			(object RoleView "eSchema" @296
+			    Parent_View 	@295
 			    location   	(510, -103)
-			    label      	(object SegLabel @278
-				Parent_View 	@277
+			    label      	(object SegLabel @297
+				Parent_View 	@296
 				location   	(1737, 1018)
 				anchor     	1
 				anchor_loc 	1
@@ -5891,8 +6189,8 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8B1DCE0270"
-			    client     	@276
-			    supplier   	@265
+			    client     	@295
+			    supplier   	@284
 			    vertices   	(list Points
 				(1486, 1001)
 				(1632, 1001)
@@ -5900,8 +6198,8 @@
 			    line_style 	3
 			    origin_attachment 	(1486, 1001)
 			    terminal_attachment 	(1632, 1130)
-			    label      	(object SegLabel @279
-				Parent_View 	@277
+			    label      	(object SegLabel @298
+				Parent_View 	@296
 				location   	(1563, 1018)
 				anchor     	2
 				anchor_loc 	1
@@ -5912,28 +6210,28 @@
 				pctDist    	0.592593
 				height     	70
 				orientation 	1))
-			(object RoleView "$UNNAMED$56" @280
-			    Parent_View 	@276
+			(object RoleView "$UNNAMED$56" @299
+			    Parent_View 	@295
 			    location   	(510, -103)
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8B1DCE027A"
-			    client     	@276
-			    supplier   	@275
+			    client     	@295
+			    supplier   	@294
 			    line_style 	3
-			    origin_attachment 	(1486, 1000)
+			    origin_attachment 	(1486, 872)
 			    terminal_attachment 	(1486, 872))))
-		(object AssociationViewNew "$UNNAMED$43" @281
+		(object AssociationViewNew "$UNNAMED$43" @300
 		    location   	(1087, 403)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AEA3E3A002D"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$44" @282
-			    Parent_View 	@281
+			(object RoleView "$UNNAMED$44" @301
+			    Parent_View 	@300
 			    location   	(687, -125)
-			    label      	(object SegLabel @283
-				Parent_View 	@282
+			    label      	(object SegLabel @302
+				Parent_View 	@301
 				location   	(1406, 480)
 				hidden     	TRUE
 				anchor     	1
@@ -5948,8 +6246,8 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AEA3E3C01F2"
-			    client     	@281
-			    supplier   	@275
+			    client     	@300
+			    supplier   	@294
 			    vertices   	(list Points
 				(1087, 403)
 				(1364, 403)
@@ -5957,11 +6255,11 @@
 			    line_style 	3
 			    origin_attachment 	(1087, 403)
 			    terminal_attachment 	(1364, 568))
-			(object RoleView "eDefinition" @284
-			    Parent_View 	@281
+			(object RoleView "eDefinition" @303
+			    Parent_View 	@300
 			    location   	(687, -125)
-			    label      	(object SegLabel @285
-				Parent_View 	@284
+			    label      	(object SegLabel @304
+				Parent_View 	@303
 				location   	(805, 363)
 				anchor     	1
 				anchor_loc 	1
@@ -5975,13 +6273,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AEA3E3C01E8"
-			    client     	@281
-			    supplier   	@266
+			    client     	@300
+			    supplier   	@285
 			    line_style 	3
 			    origin_attachment 	(1087, 403)
 			    terminal_attachment 	(645, 403)
-			    label      	(object SegLabel @286
-				Parent_View 	@284
+			    label      	(object SegLabel @305
+				Parent_View 	@303
 				location   	(727, 456)
 				anchor     	2
 				anchor_loc 	1
@@ -5992,17 +6290,17 @@
 				pctDist    	0.814910
 				height     	53
 				orientation 	0))))
-		(object AssociationViewNew "$UNNAMED$13" @287
+		(object AssociationViewNew "$UNNAMED$13" @306
 		    location   	(737, 826)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3C864DFF02EC"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$14" @288
-			    Parent_View 	@287
+			(object RoleView "$UNNAMED$14" @307
+			    Parent_View 	@306
 			    location   	(-671, 106)
-			    label      	(object SegLabel @289
-				Parent_View 	@288
+			    label      	(object SegLabel @308
+				Parent_View 	@307
 				location   	(552, 647)
 				hidden     	TRUE
 				anchor     	1
@@ -6017,8 +6315,8 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3C864DFF02EE"
-			    client     	@287
-			    supplier   	@266
+			    client     	@306
+			    supplier   	@285
 			    vertices   	(list Points
 				(737, 826)
 				(510, 826)
@@ -6026,8 +6324,8 @@
 			    line_style 	3
 			    origin_attachment 	(737, 826)
 			    terminal_attachment 	(510, 544)
-			    label      	(object SegLabel @290
-				Parent_View 	@288
+			    label      	(object SegLabel @309
+				Parent_View 	@307
 				location   	(457, 595)
 				anchor     	2
 				anchor_loc 	1
@@ -6038,11 +6336,11 @@
 				pctDist    	0.900000
 				height     	54
 				orientation 	0))
-			(object RoleView "eImports" @291
-			    Parent_View 	@287
+			(object RoleView "eImports" @310
+			    Parent_View 	@306
 			    location   	(-671, 106)
-			    label      	(object SegLabel @292
-				Parent_View 	@291
+			    label      	(object SegLabel @311
+				Parent_View 	@310
 				location   	(1144, 773)
 				anchor     	1
 				anchor_loc 	1
@@ -6056,13 +6354,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3C864DFF02ED"
-			    client     	@287
-			    supplier   	@275
+			    client     	@306
+			    supplier   	@294
 			    line_style 	3
 			    origin_attachment 	(737, 826)
 			    terminal_attachment 	(1246, 826)
-			    label      	(object SegLabel @293
-				Parent_View 	@291
+			    label      	(object SegLabel @312
+				Parent_View 	@310
 				location   	(1180, 879)
 				anchor     	2
 				anchor_loc 	1
@@ -6073,8 +6371,8 @@
 				pctDist    	0.872211
 				height     	53
 				orientation 	1)
-			    label      	(object SegLabel @294
-				Parent_View 	@291
+			    label      	(object SegLabel @313
+				Parent_View 	@310
 				location   	(1162, 933)
 				anchor     	3
 				anchor_loc 	1
@@ -6085,12 +6383,12 @@
 				pctDist    	0.837728
 				height     	107
 				orientation 	1))))
-		(object InheritView "" @295
+		(object InheritView "" @314
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3F6F200D0340"
-		    client     	@275
-		    supplier   	@263
+		    client     	@294
+		    supplier   	@282
 		    line_style 	3
 		    origin_attachment 	(1555, 568)
 		    terminal_attachment 	(1555, 333))))
@@ -6103,7 +6401,7 @@
 	    origin_x   	0
 	    origin_y   	81
 	    items      	(list diagram_item_list
-		(object ClassView "Class" "Logical View::xsd::XSDTypeDefinition" @296
+		(object ClassView "Class" "Logical View::xsd::XSDTypeDefinition" @315
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
@@ -6111,7 +6409,7 @@
 		    font       	(object Font
 			italics    	TRUE)
 		    label      	(object ItemLabel
-			Parent_View 	@296
+			Parent_View 	@315
 			location   	(895, 1157)
 			fill_color 	13434879
 			nlines     	1
@@ -6126,12 +6424,12 @@
 		    height     	174
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::xsd::XSDElementDeclaration" @297
+		(object ClassView "Class" "Logical View::xsd::XSDElementDeclaration" @316
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1136, 1600)
 		    label      	(object ItemLabel
-			Parent_View 	@297
+			Parent_View 	@316
 			location   	(906, 1531)
 			fill_color 	13434879
 			nlines     	1
@@ -6146,13 +6444,13 @@
 		    height     	162
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Message" @298
+		(object ClassView "Class" "Logical View::wsdl::Message" @317
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1280, 1968)
 		    label      	(object ItemLabel
-			Parent_View 	@298
+			Parent_View 	@317
 			location   	(1022, 1828)
 			fill_color 	13434879
 			nlines     	1
@@ -6167,13 +6465,13 @@
 		    height     	305
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Part" @299
+		(object ClassView "Class" "Logical View::wsdl::Part" @318
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(352, 1184)
 		    label      	(object ItemLabel
-			Parent_View 	@299
+			Parent_View 	@318
 			location   	(128, 1067)
 			fill_color 	13434879
 			nlines     	1
@@ -6188,17 +6486,17 @@
 		    height     	258
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$51" @300
+		(object AssociationViewNew "$UNNAMED$51" @319
 		    location   	(735, 1172)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B8B1BE900C4"
 		    roleview_list 	(list RoleViews
-			(object RoleView "typeDefinition" @301
-			    Parent_View 	@300
+			(object RoleView "typeDefinition" @320
+			    Parent_View 	@319
 			    location   	(143, 676)
-			    label      	(object SegLabel @302
-				Parent_View 	@301
+			    label      	(object SegLabel @321
+				Parent_View 	@320
 				location   	(775, 1133)
 				anchor     	1
 				anchor_loc 	1
@@ -6212,13 +6510,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8B1BE90327"
-			    client     	@300
-			    supplier   	@296
+			    client     	@319
+			    supplier   	@315
 			    line_style 	3
 			    origin_attachment 	(735, 1172)
 			    terminal_attachment 	(886, 1172)
-			    label      	(object SegLabel @303
-				Parent_View 	@301
+			    label      	(object SegLabel @322
+				Parent_View 	@320
 				location   	(839, 1207)
 				anchor     	2
 				anchor_loc 	1
@@ -6229,28 +6527,28 @@
 				pctDist    	0.688705
 				height     	35
 				orientation 	1))
-			(object RoleView "$UNNAMED$52" @304
-			    Parent_View 	@300
+			(object RoleView "$UNNAMED$52" @323
+			    Parent_View 	@319
 			    location   	(143, 676)
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8B1BE90331"
-			    client     	@300
-			    supplier   	@299
+			    client     	@319
+			    supplier   	@318
 			    line_style 	3
 			    origin_attachment 	(735, 1172)
 			    terminal_attachment 	(585, 1172))))
-		(object AssociationViewNew "$UNNAMED$53" @305
+		(object AssociationViewNew "$UNNAMED$53" @324
 		    location   	(527, 1592)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B8B1C1203B2"
 		    roleview_list 	(list RoleViews
-			(object RoleView "elementDeclaration" @306
-			    Parent_View 	@305
+			(object RoleView "elementDeclaration" @325
+			    Parent_View 	@324
 			    location   	(-65, 1096)
-			    label      	(object SegLabel @307
-				Parent_View 	@306
+			    label      	(object SegLabel @326
+				Parent_View 	@325
 				location   	(666, 1554)
 				anchor     	1
 				anchor_loc 	1
@@ -6264,13 +6562,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8B1C14001C"
-			    client     	@305
-			    supplier   	@297
+			    client     	@324
+			    supplier   	@316
 			    line_style 	3
 			    origin_attachment 	(527, 1592)
 			    terminal_attachment 	(897, 1592)
-			    label      	(object SegLabel @308
-				Parent_View 	@306
+			    label      	(object SegLabel @327
+				Parent_View 	@325
 				location   	(807, 1645)
 				anchor     	2
 				anchor_loc 	1
@@ -6281,14 +6579,14 @@
 				pctDist    	0.755877
 				height     	53
 				orientation 	1))
-			(object RoleView "$UNNAMED$54" @309
-			    Parent_View 	@305
+			(object RoleView "$UNNAMED$54" @328
+			    Parent_View 	@324
 			    location   	(-65, 1096)
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8B1C140026"
-			    client     	@305
-			    supplier   	@299
+			    client     	@324
+			    supplier   	@318
 			    vertices   	(list Points
 				(527, 1592)
 				(437, 1592)
@@ -6296,17 +6594,17 @@
 			    line_style 	3
 			    origin_attachment 	(527, 1592)
 			    terminal_attachment 	(437, 1313))))
-		(object AssociationViewNew "$UNNAMED$57" @310
+		(object AssociationViewNew "$UNNAMED$57" @329
 		    location   	(322, 1911)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3C46829303E5"
 		    roleview_list 	(list RoleViews
-			(object RoleView "eMessage" @311
-			    Parent_View 	@310
+			(object RoleView "eMessage" @330
+			    Parent_View 	@329
 			    location   	(-14, 1191)
-			    label      	(object SegLabel @312
-				Parent_View 	@311
+			    label      	(object SegLabel @331
+				Parent_View 	@330
 				location   	(838, 1872)
 				anchor     	1
 				anchor_loc 	1
@@ -6320,13 +6618,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3C468296010E"
-			    client     	@310
-			    supplier   	@298
+			    client     	@329
+			    supplier   	@317
 			    line_style 	3
 			    origin_attachment 	(322, 1911)
 			    terminal_attachment 	(1013, 1911)
-			    label      	(object SegLabel @313
-				Parent_View 	@311
+			    label      	(object SegLabel @332
+				Parent_View 	@330
 				location   	(943, 1965)
 				anchor     	2
 				anchor_loc 	1
@@ -6337,14 +6635,14 @@
 				pctDist    	0.900000
 				height     	54
 				orientation 	1))
-			(object RoleView "$UNNAMED$58" @314
-			    Parent_View 	@310
+			(object RoleView "$UNNAMED$58" @333
+			    Parent_View 	@329
 			    location   	(-14, 1191)
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3C4682960118"
-			    client     	@310
-			    supplier   	@299
+			    client     	@329
+			    supplier   	@318
 			    vertices   	(list Points
 				(322, 1911)
 				(229, 1911)
@@ -6352,13 +6650,13 @@
 			    line_style 	3
 			    origin_attachment 	(322, 1911)
 			    terminal_attachment 	(229, 1313))))
-		(object ClassView "Class" "Logical View::wsdl::Types" @315
+		(object ClassView "Class" "Logical View::wsdl::Types" @334
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(800, 608)
 		    label      	(object ItemLabel
-			Parent_View 	@315
+			Parent_View 	@334
 			location   	(615, 512)
 			fill_color 	13434879
 			nlines     	1
@@ -6373,11 +6671,11 @@
 		    height     	216
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::Definition" @316
+		(object ClassView "Class" "Logical View::wsdl::Definition" @335
 		    ShowCompartmentStereotypes 	TRUE
 		    location   	(176, 160)
 		    label      	(object ItemLabel
-			Parent_View 	@316
+			Parent_View 	@335
 			location   	(74, 107)
 			fill_color 	13434879
 			nlines     	1
@@ -6392,17 +6690,17 @@
 		    height     	130
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$15" @317
+		(object AssociationViewNew "$UNNAMED$15" @336
 		    location   	(234, 604)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B8BEA27029F"
 		    roleview_list 	(list RoleViews
-			(object RoleView "eTypes" @318
-			    Parent_View 	@317
+			(object RoleView "eTypes" @337
+			    Parent_View 	@336
 			    location   	(-150, 396)
-			    label      	(object SegLabel @319
-				Parent_View 	@318
+			    label      	(object SegLabel @338
+				Parent_View 	@337
 				location   	(480, 640)
 				anchor     	1
 				anchor_loc 	1
@@ -6416,13 +6714,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8BEA29036A"
-			    client     	@317
-			    supplier   	@315
+			    client     	@336
+			    supplier   	@334
 			    line_style 	3
 			    origin_attachment 	(234, 604)
 			    terminal_attachment 	(606, 604)
-			    label      	(object SegLabel @320
-				Parent_View 	@318
+			    label      	(object SegLabel @339
+				Parent_View 	@337
 				location   	(526, 569)
 				anchor     	2
 				anchor_loc 	1
@@ -6433,11 +6731,11 @@
 				pctDist    	0.783883
 				height     	36
 				orientation 	0))
-			(object RoleView "$UNNAMED$16" @321
-			    Parent_View 	@317
+			(object RoleView "$UNNAMED$16" @340
+			    Parent_View 	@336
 			    location   	(-150, 396)
-			    label      	(object SegLabel @322
-				Parent_View 	@321
+			    label      	(object SegLabel @341
+				Parent_View 	@340
 				location   	(133, 313)
 				hidden     	TRUE
 				anchor     	1
@@ -6452,8 +6750,8 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3B8BEA290356"
-			    client     	@317
-			    supplier   	@316
+			    client     	@336
+			    supplier   	@335
 			    vertices   	(list Points
 				(234, 604)
 				(174, 604)
@@ -6461,8 +6759,8 @@
 			    line_style 	3
 			    origin_attachment 	(234, 604)
 			    terminal_attachment 	(174, 225)
-			    label      	(object SegLabel @323
-				Parent_View 	@321
+			    label      	(object SegLabel @342
+				Parent_View 	@340
 				location   	(228, 271)
 				anchor     	2
 				anchor_loc 	1
@@ -6473,12 +6771,12 @@
 				pctDist    	0.897729
 				height     	54
 				orientation 	1))))
-		(object ClassView "Class" "Logical View::wsdl::ITypes" @324
+		(object ClassView "Class" "Logical View::wsdl::ITypes" @343
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(640, 224)
 		    label      	(object ItemLabel
-			Parent_View 	@324
+			Parent_View 	@343
 			location   	(525, 203)
 			fill_color 	13434879
 			nlines     	1
@@ -6486,7 +6784,7 @@
 			justify    	0
 			label      	"ITypes")
 		    stereotype 	(object ItemLabel
-			Parent_View 	@324
+			Parent_View 	@343
 			location   	(525, 153)
 			fill_color 	13434879
 			anchor     	10
@@ -6503,13 +6801,13 @@
 		    height     	166
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::XSDSchemaExtensibilityElement" @325
+		(object ClassView "Class" "Logical View::wsdl::XSDSchemaExtensibilityElement" @344
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1728, 800)
 		    label      	(object ItemLabel
-			Parent_View 	@325
+			Parent_View 	@344
 			location   	(1359, 753)
 			fill_color 	13434879
 			nlines     	1
@@ -6524,12 +6822,12 @@
 		    height     	118
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::xsd::XSDSchema" @326
+		(object ClassView "Class" "Logical View::xsd::XSDSchema" @345
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1856, 1216)
 		    label      	(object ItemLabel
-			Parent_View 	@326
+			Parent_View 	@345
 			location   	(1529, 1103)
 			fill_color 	13434879
 			nlines     	1
@@ -6544,25 +6842,25 @@
 		    height     	250
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$59" @327
+		(object AssociationViewNew "$UNNAMED$59" @346
 		    location   	(1826, 975)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3CC3614500F2"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$60" @328
-			    Parent_View 	@327
+			(object RoleView "$UNNAMED$60" @347
+			    Parent_View 	@346
 			    location   	(306, 447)
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3CC36146023D"
-			    client     	@327
-			    supplier   	@325
+			    client     	@346
+			    supplier   	@344
 			    line_style 	3
 			    origin_attachment 	(1826, 975)
 			    terminal_attachment 	(1826, 859)
-			    label      	(object SegLabel @329
-				Parent_View 	@328
+			    label      	(object SegLabel @348
+				Parent_View 	@347
 				location   	(1774, 900)
 				anchor     	2
 				anchor_loc 	1
@@ -6573,11 +6871,11 @@
 				pctDist    	0.656489
 				height     	53
 				orientation 	0))
-			(object RoleView "schema" @330
-			    Parent_View 	@327
+			(object RoleView "schema" @349
+			    Parent_View 	@346
 			    location   	(306, 447)
-			    label      	(object SegLabel @331
-				Parent_View 	@330
+			    label      	(object SegLabel @350
+				Parent_View 	@349
 				location   	(2006, 1033)
 				anchor     	1
 				anchor_loc 	1
@@ -6591,13 +6889,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3CC36146023E"
-			    client     	@327
-			    supplier   	@326
+			    client     	@346
+			    supplier   	@345
 			    line_style 	3
 			    origin_attachment 	(1826, 975)
 			    terminal_attachment 	(1826, 1091)
-			    label      	(object SegLabel @332
-				Parent_View 	@330
+			    label      	(object SegLabel @351
+				Parent_View 	@349
 				location   	(1788, 1050)
 				anchor     	2
 				anchor_loc 	1
@@ -6608,16 +6906,16 @@
 				pctDist    	0.651515
 				height     	39
 				orientation 	1))))
-		(object InheritView "" @333
+		(object InheritView "" @352
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3CADCD3B0380"
-		    client     	@315
-		    supplier   	@324
+		    client     	@334
+		    supplier   	@343
 		    line_style 	3
 		    origin_attachment 	(705, 500)
 		    terminal_attachment 	(705, 307))
-		(object ClassView "Class" "Logical View::wsdl::ExtensibleElement" @334
+		(object ClassView "Class" "Logical View::wsdl::ExtensibleElement" @353
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
@@ -6625,7 +6923,7 @@
 		    font       	(object Font
 			italics    	TRUE)
 		    label      	(object ItemLabel
-			Parent_View 	@334
+			Parent_View 	@353
 			location   	(815, 130)
 			fill_color 	13434879
 			nlines     	1
@@ -6640,21 +6938,21 @@
 		    height     	212
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object InheritView "" @335
+		(object InheritView "" @354
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B8BEB010311"
-		    client     	@315
-		    supplier   	@334
+		    client     	@334
+		    supplier   	@353
 		    line_style 	3
 		    origin_attachment 	(854, 500)
 		    terminal_attachment 	(854, 330))
-		(object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @336
+		(object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @355
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    location   	(1824, 464)
 		    label      	(object ItemLabel
-			Parent_View 	@336
+			Parent_View 	@355
 			location   	(1490, 368)
 			fill_color 	13434879
 			nlines     	1
@@ -6669,17 +6967,17 @@
 		    height     	216
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object AssociationViewNew "$UNNAMED$25" @337
+		(object AssociationViewNew "$UNNAMED$25" @356
 		    location   	(1206, 493)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5FD130079"
 		    roleview_list 	(list RoleViews
-			(object RoleView "$UNNAMED$26" @338
-			    Parent_View 	@337
+			(object RoleView "$UNNAMED$26" @357
+			    Parent_View 	@356
 			    location   	(-586, 237)
-			    label      	(object SegLabel @339
-				Parent_View 	@338
+			    label      	(object SegLabel @358
+				Parent_View 	@357
 				location   	(1136, 386)
 				hidden     	TRUE
 				anchor     	1
@@ -6694,8 +6992,8 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AD5FD14019E"
-			    client     	@337
-			    supplier   	@334
+			    client     	@356
+			    supplier   	@353
 			    vertices   	(list Points
 				(1206, 493)
 				(1094, 493)
@@ -6703,8 +7001,8 @@
 			    line_style 	3
 			    origin_attachment 	(1206, 493)
 			    terminal_attachment 	(1094, 330)
-			    label      	(object SegLabel @340
-				Parent_View 	@338
+			    label      	(object SegLabel @359
+				Parent_View 	@357
 				location   	(1042, 377)
 				anchor     	2
 				anchor_loc 	1
@@ -6715,11 +7013,11 @@
 				pctDist    	0.828326
 				height     	53
 				orientation 	0))
-			(object RoleView "eExtensibilityElements" @341
-			    Parent_View 	@337
+			(object RoleView "eExtensibilityElements" @360
+			    Parent_View 	@356
 			    location   	(-586, 237)
-			    label      	(object SegLabel @342
-				Parent_View 	@341
+			    label      	(object SegLabel @361
+				Parent_View 	@360
 				location   	(1196, 454)
 				anchor     	1
 				anchor_loc 	1
@@ -6733,13 +7031,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AD5FD14019D"
-			    client     	@337
-			    supplier   	@336
+			    client     	@356
+			    supplier   	@355
 			    line_style 	3
 			    origin_attachment 	(1206, 493)
 			    terminal_attachment 	(1481, 493)
-			    label      	(object SegLabel @343
-				Parent_View 	@341
+			    label      	(object SegLabel @362
+				Parent_View 	@360
 				location   	(1415, 546)
 				anchor     	2
 				anchor_loc 	1
@@ -6750,8 +7048,8 @@
 				pctDist    	0.764957
 				height     	53
 				orientation 	1)
-			    label      	(object SegLabel @344
-				Parent_View 	@341
+			    label      	(object SegLabel @363
+				Parent_View 	@360
 				location   	(1396, 392)
 				anchor     	3
 				anchor_loc 	1
@@ -6762,12 +7060,12 @@
 				pctDist    	0.694915
 				height     	102
 				orientation 	0))))
-		(object InheritView "" @345
+		(object InheritView "" @364
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3CC3627F00B7"
-		    client     	@325
-		    supplier   	@336
+		    client     	@344
+		    supplier   	@355
 		    line_style 	3
 		    origin_attachment 	(1812, 741)
 		    terminal_attachment 	(1812, 572))))
@@ -6780,13 +7078,13 @@
 	    origin_x   	0
 	    origin_y   	0
 	    items      	(list diagram_item_list
-		(object ClassView "Class" "Logical View::wsdl::IMessage" @346
+		(object ClassView "Class" "Logical View::wsdl::IMessage" @365
 		    ShowCompartmentStereotypes 	TRUE
 		    SuppressAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(448, 224)
 		    label      	(object ItemLabel
-			Parent_View 	@346
+			Parent_View 	@365
 			location   	(267, 122)
 			fill_color 	13434879
 			nlines     	1
@@ -6794,7 +7092,7 @@
 			justify    	0
 			label      	"IMessage")
 		    stereotype 	(object ItemLabel
-			Parent_View 	@346
+			Parent_View 	@365
 			location   	(267, 72)
 			fill_color 	13434879
 			anchor     	10
@@ -6811,14 +7109,14 @@
 		    height     	328
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object ClassView "Class" "Logical View::wsdl::IPart" @347
+		(object ClassView "Class" "Logical View::wsdl::IPart" @366
 		    ShowCompartmentStereotypes 	TRUE
 		    SuppressAttribute 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1328, 224)
 		    label      	(object ItemLabel
-			Parent_View 	@347
+			Parent_View 	@366
 			location   	(1029, 124)
 			fill_color 	13434879
 			nlines     	1
@@ -6826,7 +7124,7 @@
 			justify    	0
 			label      	"IPart")
 		    stereotype 	(object ItemLabel
-			Parent_View 	@347
+			Parent_View 	@366
 			location   	(1029, 74)
 			fill_color 	13434879
 			anchor     	10
@@ -6842,13 +7140,13 @@
 		    width      	617
 		    height     	324
 		    annotation 	8)
-		(object ClassView "Class" "Logical View::wsdl::Part" @348
+		(object ClassView "Class" "Logical View::wsdl::Part" @367
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(1312, 816)
 		    label      	(object ItemLabel
-			Parent_View 	@348
+			Parent_View 	@367
 			location   	(1075, 690)
 			fill_color 	13434879
 			nlines     	1
@@ -6863,22 +7161,22 @@
 		    height     	276
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object InheritView "" @349
+		(object InheritView "" @368
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B84A96D02F1"
-		    client     	@348
-		    supplier   	@347
+		    client     	@367
+		    supplier   	@366
 		    line_style 	3
 		    origin_attachment 	(1304, 678)
 		    terminal_attachment 	(1304, 386))
-		(object ClassView "Class" "Logical View::wsdl::Message" @350
+		(object ClassView "Class" "Logical View::wsdl::Message" @369
 		    ShowCompartmentStereotypes 	TRUE
 		    IncludeAttribute 	TRUE
 		    IncludeOperation 	TRUE
 		    location   	(448, 656)
 		    label      	(object ItemLabel
-			Parent_View 	@350
+			Parent_View 	@369
 			location   	(241, 507)
 			fill_color 	13434879
 			nlines     	1
@@ -6893,26 +7191,26 @@
 		    height     	322
 		    annotation 	8
 		    autoResize 	TRUE)
-		(object InheritView "" @351
+		(object InheritView "" @370
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3B84A8D102BA"
-		    client     	@350
-		    supplier   	@346
+		    client     	@369
+		    supplier   	@365
 		    line_style 	3
 		    origin_attachment 	(445, 495)
 		    terminal_attachment 	(445, 388))
-		(object AssociationViewNew "$UNNAMED$1" @352
+		(object AssociationViewNew "$UNNAMED$1" @371
 		    location   	(688, 952)
 		    stereotype 	TRUE
 		    line_color 	3342489
 		    quidu      	"3AD5CEBE00E2"
 		    roleview_list 	(list RoleViews
-			(object RoleView "eParts" @353
-			    Parent_View 	@352
+			(object RoleView "eParts" @372
+			    Parent_View 	@371
 			    location   	(176, 328)
-			    label      	(object SegLabel @354
-				Parent_View 	@353
+			    label      	(object SegLabel @373
+				Parent_View 	@372
 				location   	(952, 897)
 				anchor     	1
 				anchor_loc 	1
@@ -6926,13 +7224,13 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AD5CEBF0061"
-			    client     	@352
-			    supplier   	@348
+			    client     	@371
+			    supplier   	@367
 			    line_style 	3
 			    origin_attachment 	(688, 952)
 			    terminal_attachment 	(1066, 952)
-			    label      	(object SegLabel @355
-				Parent_View 	@353
+			    label      	(object SegLabel @374
+				Parent_View 	@372
 				location   	(987, 1005)
 				anchor     	2
 				anchor_loc 	1
@@ -6943,8 +7241,8 @@
 				pctDist    	0.789809
 				height     	53
 				orientation 	1)
-			    label      	(object SegLabel @356
-				Parent_View 	@353
+			    label      	(object SegLabel @375
+				Parent_View 	@372
 				location   	(967, 1061)
 				anchor     	3
 				anchor_loc 	1
@@ -6955,11 +7253,11 @@
 				pctDist    	0.742038
 				height     	109
 				orientation 	1))
-			(object RoleView "$UNNAMED$2" @357
-			    Parent_View 	@352
+			(object RoleView "$UNNAMED$2" @376
+			    Parent_View 	@371
 			    location   	(176, 328)
-			    label      	(object SegLabel @358
-				Parent_View 	@357
+			    label      	(object SegLabel @377
+				Parent_View 	@376
 				location   	(404, 893)
 				hidden     	TRUE
 				anchor     	1
@@ -6974,8 +7272,8 @@
 			    stereotype 	TRUE
 			    line_color 	3342489
 			    quidu      	"3AD5CEBF0057"
-			    client     	@352
-			    supplier   	@350
+			    client     	@371
+			    supplier   	@369
 			    vertices   	(list Points
 				(688, 952)
 				(445, 952)
@@ -6983,8 +7281,8 @@
 			    line_style 	3
 			    origin_attachment 	(688, 952)
 			    terminal_attachment 	(445, 817)
-			    label      	(object SegLabel @359
-				Parent_View 	@357
+			    label      	(object SegLabel @378
+				Parent_View 	@376
 				location   	(393, 912)
 				anchor     	2
 				anchor_loc 	1

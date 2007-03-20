@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://www.example.org/ExtendedWSDL/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ExtendedWSDL"
+	xmlns:ext="http://www.example.org/Extensions/"
+	targetNamespace="http://www.example.org/ExtendedWSDL/">
+
+	<wsdl:import location="Imported.wsdl"
+		namespace="http://www.example.org/Imported/">
+		<ext:import />
+	</wsdl:import>
+
+	<wsdl:message name="extendedMessage">
+		<ext:message />
+		<wsdl:part name="extendedPart">
+			<ext:part />
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:portType name="extendedPortType">
+		<ext:portType />
+		<wsdl:operation name="extendedOperation">
+			<ext:operation />
+			<wsdl:input message="extendedMessage">
+				<ext:input />
+			</wsdl:input>
+			<wsdl:output message="extendedMessage">
+				<ext:output />
+			</wsdl:output>
+			<wsdl:fault name="extendedFault" message="extendedMessage">
+				<ext:fault />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

@@ -54,7 +54,7 @@ import org.w3c.dom.Element;
  *
  * @generated
  */
-public class MessageImpl extends WSDLElementImpl implements Message
+public class MessageImpl extends ExtensibleElementImpl implements Message
 {
   /**
    * This class is not intended to be serialized.
@@ -411,6 +411,11 @@ public class MessageImpl extends WSDLElementImpl implements Message
         part.setEnclosingDefinition(getEnclosingDefinition());
         part.setElement(child);
         getEParts().add(part);
+        break;
+      }
+      default:
+      {
+        super.handleUnreconciledElement(child, remainingModelObjects);
         break;
       }
     }

@@ -550,7 +550,14 @@ public class WSDLFactoryImpl extends EFactoryImpl implements WSDLFactory
     if (factory != null)
       return factory.createExtensibilityElement(namespace, localName);
     else
-      return createUnknownExtensibilityElement();
+    {
+      ExtensibilityElement extensibilityElement = createUnknownExtensibilityElement();
+      // Provide some information about the extensibility element.
+      
+      QName elementType = new QName(namespace, localName);
+      extensibilityElement.setElementType(elementType);
+      return extensibilityElement;
+    }
   }
 
   /*

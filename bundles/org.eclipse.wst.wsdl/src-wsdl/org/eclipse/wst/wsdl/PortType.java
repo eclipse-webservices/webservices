@@ -40,7 +40,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface PortType extends WSDLElement, javax.wsdl.PortType
+public interface PortType extends ExtensibleElement, javax.wsdl.PortType
 {
   /**
    * Returns the value of the '<em><b>QName</b></em>' attribute.

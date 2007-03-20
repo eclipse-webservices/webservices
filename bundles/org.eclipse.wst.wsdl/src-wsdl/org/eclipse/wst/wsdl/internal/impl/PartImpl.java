@@ -51,7 +51,7 @@ import org.w3c.dom.Element;
  *
  * @generated
  */
-public class PartImpl extends WSDLElementImpl implements Part
+public class PartImpl extends ExtensibleElementImpl implements Part
 {
   /**
    * This class is not intended to be serialized.
@@ -635,7 +635,7 @@ public class PartImpl extends WSDLElementImpl implements Part
   {
     Definition definition = getEnclosingDefinition();
 
-    String name = changedElement.getAttributeNS(null, "name");
+    String name = changedElement.getAttributeNS(null, WSDLConstants.NAME_ATTRIBUTE);
     if (name != null)
     {
       setName(name);

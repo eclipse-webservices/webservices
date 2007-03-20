@@ -253,6 +253,14 @@ public class WSDLConstants
    */
   public final static String LOCATION_ATTRIBUTE = "location"; //$NON-NLS-1$
 
+  // operation
+
+  /**
+   * The attribute is <code>"parameterOrder"</code>.
+   * @see #getAttribute(Element,String).
+   */
+  public final static String PARAMETER_ORDER_ATTRIBUTE = "parameterOrder"; //$NON-NLS-1$
+  
   /**
    * The attribute is <code>"namespace"</code>.
    * @see #getAttribute(Element,String).

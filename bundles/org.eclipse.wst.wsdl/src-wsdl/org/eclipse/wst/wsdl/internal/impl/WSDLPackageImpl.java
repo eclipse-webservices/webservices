@@ -1903,13 +1903,13 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     XSDPackage theXSDPackage = (XSDPackage)EPackage.Registry.INSTANCE.getEPackage(XSDPackage.eNS_URI);
 
     // Add supertypes to classes
-    portTypeEClass.getESuperTypes().add(this.getWSDLElement());
+    portTypeEClass.getESuperTypes().add(this.getExtensibleElement());
     portTypeEClass.getESuperTypes().add(this.getIPortType());
-    operationEClass.getESuperTypes().add(this.getWSDLElement());
+    operationEClass.getESuperTypes().add(this.getExtensibleElement());
     operationEClass.getESuperTypes().add(this.getIOperation());
-    messageEClass.getESuperTypes().add(this.getWSDLElement());
+    messageEClass.getESuperTypes().add(this.getExtensibleElement());
     messageEClass.getESuperTypes().add(this.getIMessage());
-    partEClass.getESuperTypes().add(this.getWSDLElement());
+    partEClass.getESuperTypes().add(this.getExtensibleElement());
     partEClass.getESuperTypes().add(this.getIPart());
     bindingEClass.getESuperTypes().add(this.getExtensibleElement());
     bindingEClass.getESuperTypes().add(this.getIBinding());
@@ -1923,17 +1923,14 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     extensibilityElementEClass.getESuperTypes().add(this.getIExtensibilityElement());
     definitionEClass.getESuperTypes().add(this.getExtensibleElement());
     definitionEClass.getESuperTypes().add(this.getIDefinition());
-    importEClass.getESuperTypes().add(this.getWSDLElement());
+    importEClass.getESuperTypes().add(this.getExtensibleElement());
     importEClass.getESuperTypes().add(this.getIImport());
     extensibleElementEClass.getESuperTypes().add(this.getWSDLElement());
     inputEClass.getESuperTypes().add(this.getMessageReference());
-    inputEClass.getESuperTypes().add(this.getWSDLElement());
     inputEClass.getESuperTypes().add(this.getIInput());
     outputEClass.getESuperTypes().add(this.getMessageReference());
-    outputEClass.getESuperTypes().add(this.getWSDLElement());
     outputEClass.getESuperTypes().add(this.getIOutput());
     faultEClass.getESuperTypes().add(this.getMessageReference());
-    faultEClass.getESuperTypes().add(this.getWSDLElement());
     faultEClass.getESuperTypes().add(this.getIFault());
     bindingInputEClass.getESuperTypes().add(this.getExtensibleElement());
     bindingInputEClass.getESuperTypes().add(this.getIBindingInput());
@@ -1945,7 +1942,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     typesEClass.getESuperTypes().add(this.getITypes());
     unknownExtensibilityElementEClass.getESuperTypes().add(this.getExtensibilityElement());
     xsdSchemaExtensibilityElementEClass.getESuperTypes().add(this.getExtensibilityElement());
-    messageReferenceEClass.getESuperTypes().add(this.getWSDLElement());
+    messageReferenceEClass.getESuperTypes().add(this.getExtensibleElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(wsdlElementEClass, WSDLElement.class, "WSDLElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$

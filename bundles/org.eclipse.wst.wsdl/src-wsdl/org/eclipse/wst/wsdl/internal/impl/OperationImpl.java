@@ -66,7 +66,7 @@ import org.w3c.dom.NodeList;
  *
  * @generated
  */
-public class OperationImpl extends WSDLElementImpl implements Operation
+public class OperationImpl extends ExtensibleElementImpl implements Operation
 {
   /**
    * This class is not intended to be serialized.
@@ -824,18 +824,18 @@ return opType;
 
   public void reconcileAttributes(Element changedElement)
   {
-    if (changedElement.hasAttribute("name"))
+    if (changedElement.hasAttribute(WSDLConstants.NAME_ATTRIBUTE))
     {
-      String name = changedElement.getAttribute("name");
+      String name = changedElement.getAttribute(WSDLConstants.NAME_ATTRIBUTE);
       if (name != null)
       {
         setName(name);
       }
     }
 
-    if (changedElement.hasAttribute("parameterOrder"))
+    if (changedElement.hasAttribute(WSDLConstants.PARAMETER_ORDER_ATTRIBUTE))
     {
-      String parameterOrder = changedElement.getAttribute("parameterOrder");
+      String parameterOrder = changedElement.getAttribute(WSDLConstants.PARAMETER_ORDER_ATTRIBUTE);
       if (parameterOrder != null)
       {
         String[] array = parameterOrder.split(" ");
@@ -880,6 +880,11 @@ return opType;
         fault.setEnclosingDefinition(definition);
         fault.setElement(child);
         addFault(fault);
+        break;
+      }
+      default:
+      {
+        super.handleUnreconciledElement(child, remainingModelObjects);
         break;
       }
     }
@@ -985,7 +990,7 @@ return opType;
 
         if ((partNames = partNames.trim()).length() != 0)
           // Update the element's attrubute
-          niceSetAttribute(theElement, "parameterOrder", partNames);
+          niceSetAttribute(theElement, WSDLConstants.PARAMETER_ORDER_ATTRIBUTE, partNames);
       }
     }
     //

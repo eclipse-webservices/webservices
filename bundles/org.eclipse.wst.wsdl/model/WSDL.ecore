@@ -18,7 +18,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//DOMElement"
         transient="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PortType" eSuperTypes="#//WSDLElement #//IPortType">
+  <eClassifiers xsi:type="ecore:EClass" name="PortType" eSuperTypes="#//ExtensibleElement #//IPortType">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents a WSDL portType element of the WSDL specification version 1.1 and an Interface component of the WSDL specification version 1.2. A port type or Interface is a named set of abstract operations and the abstract messages involved."/>
     </eAnnotations>
@@ -27,7 +27,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="eOperations" upperBound="-1"
         eType="#//Operation" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#//WSDLElement #//IOperation">
+  <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#//ExtensibleElement #//IOperation">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents a WSDL operation element. A WSDL operation is an abstract description of an action supported by a service."/>
     </eAnnotations>
@@ -43,7 +43,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="eParameterOrdering" upperBound="-1"
         eType="#//Part"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Message" eSuperTypes="#//WSDLElement #//IMessage">
+  <eClassifiers xsi:type="ecore:EClass" name="Message" eSuperTypes="#//ExtensibleElement #//IMessage">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents a WSDL message element. A WSDL message is an abstract, typed definition of the data being communicated."/>
     </eAnnotations>
@@ -52,7 +52,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="eParts" upperBound="-1"
         eType="#//Part" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Part" eSuperTypes="#//WSDLElement #//IPart">
+  <eClassifiers xsi:type="ecore:EClass" name="Part" eSuperTypes="#//ExtensibleElement #//IPart">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents a WSDL part element. Parts describe the logical abstract content of a message. Each part is associated with a type from some type system. "/>
     </eAnnotations>
@@ -140,7 +140,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="eNamespaces" upperBound="-1"
         eType="#//Namespace" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//WSDLElement #//IImport">
+  <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//ExtensibleElement #//IImport">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents WSDL import element. WSDL allows associating a namespace with a document location using an import element."/>
     </eAnnotations>
@@ -164,17 +164,17 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="eExtensibilityElements"
         upperBound="-1" eType="#//ExtensibilityElement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Input" eSuperTypes="#//MessageReference #//WSDLElement #//IInput">
+  <eClassifiers xsi:type="ecore:EClass" name="Input" eSuperTypes="#//MessageReference #//IInput">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents a WSDL input element. An input element specifies the abstract message format for the input of the operation."/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Output" eSuperTypes="#//MessageReference #//WSDLElement #//IOutput">
+  <eClassifiers xsi:type="ecore:EClass" name="Output" eSuperTypes="#//MessageReference #//IOutput">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents a WSDL output element. An output element specifies the abstract message format for the output of the operation."/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Fault" eSuperTypes="#//MessageReference #//WSDLElement #//IFault">
+  <eClassifiers xsi:type="ecore:EClass" name="Fault" eSuperTypes="#//MessageReference #//IFault">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents a WSDL fault element. Fault elements specify the abstract message format for any error messages that may be output as the result of the operation "/>
     </eAnnotations>
@@ -589,7 +589,7 @@
       <details key="documentation" value="This class represents the org.w3c.dom.Document non-MOF interface."/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MessageReference" abstract="true" eSuperTypes="#//WSDLElement">
+  <eClassifiers xsi:type="ecore:EClass" name="MessageReference" abstract="true" eSuperTypes="#//ExtensibleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eMessage" lowerBound="1"
         eType="#//Message"/>

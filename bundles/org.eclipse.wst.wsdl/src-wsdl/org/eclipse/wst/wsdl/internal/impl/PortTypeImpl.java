@@ -52,7 +52,7 @@ import org.w3c.dom.Element;
  *
  * @generated
  */
-public class PortTypeImpl extends WSDLElementImpl implements PortType
+public class PortTypeImpl extends ExtensibleElementImpl implements PortType
 {
   /**
    * This class is not intended to be serialized.
@@ -423,6 +423,11 @@ public class PortTypeImpl extends WSDLElementImpl implements PortType
         operation.setEnclosingDefinition(getEnclosingDefinition());
         operation.setElement(child);
         getEOperations().add(operation);
+        break;
+      }
+      default:
+      {
+        super.handleUnreconciledElement(child, remainingModelObjects);
         break;
       }
     }

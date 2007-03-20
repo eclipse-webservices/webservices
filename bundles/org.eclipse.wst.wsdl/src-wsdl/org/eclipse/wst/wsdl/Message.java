@@ -40,7 +40,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Message extends WSDLElement, javax.wsdl.Message
+public interface Message extends ExtensibleElement, javax.wsdl.Message
 {
   /**
    * Returns the value of the '<em><b>QName</b></em>' attribute.

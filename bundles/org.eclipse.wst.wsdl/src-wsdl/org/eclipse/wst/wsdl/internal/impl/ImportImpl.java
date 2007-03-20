@@ -51,7 +51,7 @@ import org.w3c.dom.Element;
  *
  * @generated
  */
-public class ImportImpl extends WSDLElementImpl implements Import
+public class ImportImpl extends ExtensibleElementImpl implements Import
 {
   /**
    * This class is not intended to be serialized.

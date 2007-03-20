@@ -30,7 +30,7 @@ package org.eclipse.wst.wsdl;
  * @model abstract="true"
  * @generated
  */
-public interface MessageReference extends WSDLElement
+public interface MessageReference extends ExtensibleElement
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

@@ -43,7 +43,7 @@ import org.w3c.dom.Element;
  *
  * @generated
  */
-public abstract class MessageReferenceImpl extends WSDLElementImpl implements MessageReference
+public abstract class MessageReferenceImpl extends ExtensibleElementImpl implements MessageReference
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -258,12 +258,13 @@ public abstract class MessageReferenceImpl extends WSDLElementImpl implements Me
 
   public void reconcileAttributes(Element changedElement)
   {
-    setName(WSDLConstants.getAttribute(changedElement, "name"));
+    setName(WSDLConstants.getAttribute(changedElement, WSDLConstants.NAME_ATTRIBUTE));
     reconcileReferences(false);
   }
 
   public void handleUnreconciledElement(Element child, Collection remainingModelObjects)
   {
+    super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
   protected void handleReconciliation(Collection remainingModelObjects)

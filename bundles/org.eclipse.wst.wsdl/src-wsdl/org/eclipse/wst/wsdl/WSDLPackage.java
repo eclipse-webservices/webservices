@@ -28,14 +28,6 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>each enum,</li>
  *   <li>and each data type</li>
  * </ul>
- * <p>
- * <b>Note:</b> This class/interface is part of an interim API that is still under development and expected to
- * change significantly before reaching stability. It is being made available at this early stage to solicit feedback
- * from pioneering adopters on the understanding that any code that uses this API will almost certainly be broken
- * (repeatedly) as the API evolves.
- * </p>
- * @since 1.0
- * @ignore
  * <!-- end-user-doc -->
  * <!-- begin-model-doc -->
  * The WSDL model contains classes for the Web Services Description Language (WSDL).
@@ -129,325 +121,6 @@ public interface WSDLPackage extends EPackage
   int WSDL_ELEMENT_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl <em>Port Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.internal.impl.PortTypeImpl
-   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPortType()
-   * @generated
-   */
-  int PORT_TYPE = 1;
-
-  /**
-   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE__DOCUMENTATION_ELEMENT = WSDL_ELEMENT__DOCUMENTATION_ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE__ELEMENT = WSDL_ELEMENT__ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>QName</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE__QNAME = WSDL_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Undefined</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE__UNDEFINED = WSDL_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>EOperations</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE__EOPERATIONS = WSDL_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>Port Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PORT_TYPE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl <em>Operation</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.internal.impl.OperationImpl
-   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperation()
-   * @generated
-   */
-  int OPERATION = 2;
-
-  /**
-   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__DOCUMENTATION_ELEMENT = WSDL_ELEMENT__DOCUMENTATION_ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__ELEMENT = WSDL_ELEMENT__ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>Style</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__STYLE = WSDL_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__NAME = WSDL_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Undefined</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__UNDEFINED = WSDL_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>EInput</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__EINPUT = WSDL_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
-   * The feature id for the '<em><b>EOutput</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__EOUTPUT = WSDL_ELEMENT_FEATURE_COUNT + 4;
-
-  /**
-   * The feature id for the '<em><b>EFaults</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__EFAULTS = WSDL_ELEMENT_FEATURE_COUNT + 5;
-
-  /**
-   * The feature id for the '<em><b>EParameter Ordering</b></em>' reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION__EPARAMETER_ORDERING = WSDL_ELEMENT_FEATURE_COUNT + 6;
-
-  /**
-   * The number of structural features of the '<em>Operation</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int OPERATION_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 7;
-
-  /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl <em>Message</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.internal.impl.MessageImpl
-   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessage()
-   * @generated
-   */
-  int MESSAGE = 3;
-
-  /**
-   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__DOCUMENTATION_ELEMENT = WSDL_ELEMENT__DOCUMENTATION_ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__ELEMENT = WSDL_ELEMENT__ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>QName</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__QNAME = WSDL_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Undefined</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__UNDEFINED = WSDL_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>EParts</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__EPARTS = WSDL_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>Message</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
-   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PartImpl <em>Part</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.eclipse.wst.wsdl.internal.impl.PartImpl
-   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPart()
-   * @generated
-   */
-  int PART = 4;
-
-  /**
-   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__DOCUMENTATION_ELEMENT = WSDL_ELEMENT__DOCUMENTATION_ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__ELEMENT = WSDL_ELEMENT__ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__NAME = WSDL_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Element Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__ELEMENT_NAME = WSDL_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Type Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__TYPE_NAME = WSDL_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Type Definition</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__TYPE_DEFINITION = WSDL_ELEMENT_FEATURE_COUNT + 3;
-
-  /**
-   * The feature id for the '<em><b>Element Declaration</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__ELEMENT_DECLARATION = WSDL_ELEMENT_FEATURE_COUNT + 4;
-
-  /**
-   * The feature id for the '<em><b>EMessage</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART__EMESSAGE = WSDL_ELEMENT_FEATURE_COUNT + 5;
-
-  /**
-   * The number of structural features of the '<em>Part</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PART_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 6;
-
-  /**
    * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl <em>Extensible Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -492,6 +165,361 @@ public interface WSDLPackage extends EPackage
    * @ordered
    */
   int EXTENSIBLE_ELEMENT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PortTypeImpl <em>Port Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.eclipse.wst.wsdl.internal.impl.PortTypeImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPortType()
+   * @generated
+   */
+  int PORT_TYPE = 1;
+
+  /**
+   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_TYPE__DOCUMENTATION_ELEMENT = EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_TYPE__ELEMENT = EXTENSIBLE_ELEMENT__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_TYPE__EEXTENSIBILITY_ELEMENTS = EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+  /**
+   * The feature id for the '<em><b>QName</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_TYPE__QNAME = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Undefined</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_TYPE__UNDEFINED = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>EOperations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_TYPE__EOPERATIONS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Port Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_TYPE_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.OperationImpl <em>Operation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.eclipse.wst.wsdl.internal.impl.OperationImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getOperation()
+   * @generated
+   */
+  int OPERATION = 2;
+
+  /**
+   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__DOCUMENTATION_ELEMENT = EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__ELEMENT = EXTENSIBLE_ELEMENT__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__EEXTENSIBILITY_ELEMENTS = EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+  /**
+   * The feature id for the '<em><b>Style</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__STYLE = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__NAME = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Undefined</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__UNDEFINED = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>EInput</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__EINPUT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
+
+  /**
+   * The feature id for the '<em><b>EOutput</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__EOUTPUT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
+
+  /**
+   * The feature id for the '<em><b>EFaults</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__EFAULTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
+
+  /**
+   * The feature id for the '<em><b>EParameter Ordering</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION__EPARAMETER_ORDERING = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 6;
+
+  /**
+   * The number of structural features of the '<em>Operation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATION_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 7;
+
+  /**
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageImpl <em>Message</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.eclipse.wst.wsdl.internal.impl.MessageImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getMessage()
+   * @generated
+   */
+  int MESSAGE = 3;
+
+  /**
+   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE__DOCUMENTATION_ELEMENT = EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE__ELEMENT = EXTENSIBLE_ELEMENT__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE__EEXTENSIBILITY_ELEMENTS = EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+  /**
+   * The feature id for the '<em><b>QName</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE__QNAME = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Undefined</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE__UNDEFINED = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>EParts</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE__EPARTS = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Message</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.PartImpl <em>Part</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.eclipse.wst.wsdl.internal.impl.PartImpl
+   * @see org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl#getPart()
+   * @generated
+   */
+  int PART = 4;
+
+  /**
+   * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__DOCUMENTATION_ELEMENT = EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__ELEMENT = EXTENSIBLE_ELEMENT__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__EEXTENSIBILITY_ELEMENTS = EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__NAME = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Element Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__ELEMENT_NAME = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Type Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__TYPE_NAME = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Type Definition</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__TYPE_DEFINITION = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
+
+  /**
+   * The feature id for the '<em><b>Element Declaration</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__ELEMENT_DECLARATION = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
+
+  /**
+   * The feature id for the '<em><b>EMessage</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART__EMESSAGE = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
+
+  /**
+   * The number of structural features of the '<em>Part</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PART_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 6;
 
   /**
    * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.BindingImpl <em>Binding</em>}' class.
@@ -1020,7 +1048,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int IMPORT__DOCUMENTATION_ELEMENT = WSDL_ELEMENT__DOCUMENTATION_ELEMENT;
+  int IMPORT__DOCUMENTATION_ELEMENT = EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' attribute.
@@ -1029,7 +1057,16 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int IMPORT__ELEMENT = WSDL_ELEMENT__ELEMENT;
+  int IMPORT__ELEMENT = EXTENSIBLE_ELEMENT__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int IMPORT__EEXTENSIBILITY_ELEMENTS = EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
 
   /**
    * The feature id for the '<em><b>Namespace URI</b></em>' attribute.
@@ -1038,7 +1075,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int IMPORT__NAMESPACE_URI = WSDL_ELEMENT_FEATURE_COUNT + 0;
+  int IMPORT__NAMESPACE_URI = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Location URI</b></em>' attribute.
@@ -1047,7 +1084,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int IMPORT__LOCATION_URI = WSDL_ELEMENT_FEATURE_COUNT + 1;
+  int IMPORT__LOCATION_URI = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>EDefinition</b></em>' reference.
@@ -1056,7 +1093,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int IMPORT__EDEFINITION = WSDL_ELEMENT_FEATURE_COUNT + 2;
+  int IMPORT__EDEFINITION = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>ESchema</b></em>' reference.
@@ -1065,7 +1102,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int IMPORT__ESCHEMA = WSDL_ELEMENT_FEATURE_COUNT + 3;
+  int IMPORT__ESCHEMA = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Import</em>' class.
@@ -1074,7 +1111,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int IMPORT_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 4;
+  int IMPORT_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl <em>Message Reference</em>}' class.
@@ -1093,7 +1130,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE_REFERENCE__DOCUMENTATION_ELEMENT = WSDL_ELEMENT__DOCUMENTATION_ELEMENT;
+  int MESSAGE_REFERENCE__DOCUMENTATION_ELEMENT = EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' attribute.
@@ -1102,7 +1139,16 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE_REFERENCE__ELEMENT = WSDL_ELEMENT__ELEMENT;
+  int MESSAGE_REFERENCE__ELEMENT = EXTENSIBLE_ELEMENT__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MESSAGE_REFERENCE__EEXTENSIBILITY_ELEMENTS = EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1111,7 +1157,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE_REFERENCE__NAME = WSDL_ELEMENT_FEATURE_COUNT + 0;
+  int MESSAGE_REFERENCE__NAME = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>EMessage</b></em>' reference.
@@ -1120,7 +1166,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE_REFERENCE__EMESSAGE = WSDL_ELEMENT_FEATURE_COUNT + 1;
+  int MESSAGE_REFERENCE__EMESSAGE = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Message Reference</em>' class.
@@ -1129,7 +1175,7 @@ public interface WSDLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE_REFERENCE_FEATURE_COUNT = WSDL_ELEMENT_FEATURE_COUNT + 2;
+  int MESSAGE_REFERENCE_FEATURE_COUNT = EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.eclipse.wst.wsdl.internal.impl.InputImpl <em>Input</em>}' class.
@@ -1158,6 +1204,15 @@ public interface WSDLPackage extends EPackage
    * @ordered
    */
   int INPUT__ELEMENT = MESSAGE_REFERENCE__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INPUT__EEXTENSIBILITY_ELEMENTS = MESSAGE_REFERENCE__EEXTENSIBILITY_ELEMENTS;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1215,6 +1270,15 @@ public interface WSDLPackage extends EPackage
   int OUTPUT__ELEMENT = MESSAGE_REFERENCE__ELEMENT;
 
   /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OUTPUT__EEXTENSIBILITY_ELEMENTS = MESSAGE_REFERENCE__EEXTENSIBILITY_ELEMENTS;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1268,6 +1332,15 @@ public interface WSDLPackage extends EPackage
    * @ordered
    */
   int FAULT__ELEMENT = MESSAGE_REFERENCE__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FAULT__EEXTENSIBILITY_ELEMENTS = MESSAGE_REFERENCE__EEXTENSIBILITY_ELEMENTS;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2748,6 +2821,28 @@ public interface WSDLPackage extends EPackage
   EAttribute getDefinition_Encoding();
 
   /**
+   * Returns the meta object for the containment reference list '{@link org.eclipse.wst.wsdl.Definition#getEImports <em>EImports</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>EImports</em>'.
+   * @see org.eclipse.wst.wsdl.Definition#getEImports()
+   * @see #getDefinition()
+   * @generated
+   */
+  EReference getDefinition_EImports();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.eclipse.wst.wsdl.Definition#getETypes <em>ETypes</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>ETypes</em>'.
+   * @see org.eclipse.wst.wsdl.Definition#getETypes()
+   * @see #getDefinition()
+   * @generated
+   */
+  EReference getDefinition_ETypes();
+
+  /**
    * Returns the meta object for the containment reference list '{@link org.eclipse.wst.wsdl.Definition#getEMessages <em>EMessages</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2801,28 +2896,6 @@ public interface WSDLPackage extends EPackage
    * @generated
    */
   EReference getDefinition_ENamespaces();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.eclipse.wst.wsdl.Definition#getETypes <em>ETypes</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>ETypes</em>'.
-   * @see org.eclipse.wst.wsdl.Definition#getETypes()
-   * @see #getDefinition()
-   * @generated
-   */
-  EReference getDefinition_ETypes();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.eclipse.wst.wsdl.Definition#getEImports <em>EImports</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>EImports</em>'.
-   * @see org.eclipse.wst.wsdl.Definition#getEImports()
-   * @see #getDefinition()
-   * @generated
-   */
-  EReference getDefinition_EImports();
 
   /**
    * Returns the meta object for class '{@link org.eclipse.wst.wsdl.Import <em>Import</em>}'.

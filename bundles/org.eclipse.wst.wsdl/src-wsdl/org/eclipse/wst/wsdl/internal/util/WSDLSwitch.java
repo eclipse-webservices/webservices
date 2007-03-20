@@ -116,9 +116,11 @@ public class WSDLSwitch
         PortType portType = (PortType)theEObject;
         Object result = casePortType(portType);
         if (result == null)
-          result = caseWSDLElement(portType);
+          result = caseExtensibleElement(portType);
         if (result == null)
           result = caseIPortType(portType);
+        if (result == null)
+          result = caseWSDLElement(portType);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -128,9 +130,11 @@ public class WSDLSwitch
         Operation operation = (Operation)theEObject;
         Object result = caseOperation(operation);
         if (result == null)
-          result = caseWSDLElement(operation);
+          result = caseExtensibleElement(operation);
         if (result == null)
           result = caseIOperation(operation);
+        if (result == null)
+          result = caseWSDLElement(operation);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -140,9 +144,11 @@ public class WSDLSwitch
         Message message = (Message)theEObject;
         Object result = caseMessage(message);
         if (result == null)
-          result = caseWSDLElement(message);
+          result = caseExtensibleElement(message);
         if (result == null)
           result = caseIMessage(message);
+        if (result == null)
+          result = caseWSDLElement(message);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -152,9 +158,11 @@ public class WSDLSwitch
         Part part = (Part)theEObject;
         Object result = casePart(part);
         if (result == null)
-          result = caseWSDLElement(part);
+          result = caseExtensibleElement(part);
         if (result == null)
           result = caseIPart(part);
+        if (result == null)
+          result = caseWSDLElement(part);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -246,9 +254,11 @@ public class WSDLSwitch
         Import import_ = (Import)theEObject;
         Object result = caseImport(import_);
         if (result == null)
-          result = caseWSDLElement(import_);
+          result = caseExtensibleElement(import_);
         if (result == null)
           result = caseIImport(import_);
+        if (result == null)
+          result = caseWSDLElement(import_);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -270,9 +280,11 @@ public class WSDLSwitch
         if (result == null)
           result = caseMessageReference(input);
         if (result == null)
-          result = caseWSDLElement(input);
-        if (result == null)
           result = caseIInput(input);
+        if (result == null)
+          result = caseExtensibleElement(input);
+        if (result == null)
+          result = caseWSDLElement(input);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -284,9 +296,11 @@ public class WSDLSwitch
         if (result == null)
           result = caseMessageReference(output);
         if (result == null)
-          result = caseWSDLElement(output);
-        if (result == null)
           result = caseIOutput(output);
+        if (result == null)
+          result = caseExtensibleElement(output);
+        if (result == null)
+          result = caseWSDLElement(output);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -298,9 +312,11 @@ public class WSDLSwitch
         if (result == null)
           result = caseMessageReference(fault);
         if (result == null)
-          result = caseWSDLElement(fault);
-        if (result == null)
           result = caseIFault(fault);
+        if (result == null)
+          result = caseExtensibleElement(fault);
+        if (result == null)
+          result = caseWSDLElement(fault);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -401,6 +417,8 @@ public class WSDLSwitch
       {
         MessageReference messageReference = (MessageReference)theEObject;
         Object result = caseMessageReference(messageReference);
+        if (result == null)
+          result = caseExtensibleElement(messageReference);
         if (result == null)
           result = caseWSDLElement(messageReference);
         if (result == null)

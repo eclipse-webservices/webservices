@@ -44,7 +44,7 @@ import org.eclipse.xsd.XSDTypeDefinition;
  * @model
  * @generated
  */
-public interface Part extends WSDLElement, javax.wsdl.Part
+public interface Part extends ExtensibleElement, javax.wsdl.Part
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

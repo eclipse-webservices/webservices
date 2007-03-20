@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.wsdl.OperationType;
+import javax.wsdl.extensions.ExtensibilityElement;
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
@@ -32,11 +33,13 @@ import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
@@ -173,6 +176,14 @@ public class BugFixesTest extends TestCase
         protected void runTest()
         {
           testBindingOperationReconciliation();
+        }
+      });
+
+    suite.addTest(new BugFixesTest("FullElementExtensibility") //$NON-NLS-1$
+      {
+        protected void runTest()
+        {
+          testFullElementExtensibility();
         }
       });
 
@@ -731,5 +742,77 @@ public class BugFixesTest extends TestCase
     javax.wsdl.Operation actualOperation3 = bindingOperation3.getOperation();
 
     assertEquals(operation3, actualOperation3);
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=177852
+   */
+  public void testFullElementExtensibility()
+  {
+
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/FullElementExtensibility/ExtendedWSDL.wsdl", true); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    String extensionsNamespaceURI = "http://www.example.org/Extensions/"; //$NON-NLS-1$ 
+    EList imports = definition.getEImports();
+    assertFalse(imports.isEmpty());
+    Import theImport = (Import)imports.get(0);
+    checkExtension(theImport, extensionsNamespaceURI, "import"); //$NON-NLS-1$
+
+    EList messages = definition.getEMessages();
+    assertFalse(messages.isEmpty());
+    Message message = (Message)messages.get(0);
+    checkExtension(message, extensionsNamespaceURI, "message"); //$NON-NLS-1$
+
+    Part part = (Part)message.getPart("extendedPart"); //$NON-NLS-1$
+    assertNotNull(part);
+    checkExtension(part, extensionsNamespaceURI, "part"); //$NON-NLS-1$
+
+    EList portTypes = definition.getEPortTypes();
+    assertFalse(portTypes.isEmpty());
+    PortType portType = (PortType)portTypes.get(0);
+    checkExtension(portType, extensionsNamespaceURI, "portType"); //$NON-NLS-1$
+
+    Operation operation = (Operation)portType.getOperation("extendedOperation", null, null); //$NON-NLS-1$
+    assertNotNull(operation);
+    checkExtension(operation, extensionsNamespaceURI, "operation"); //$NON-NLS-1$
+
+    Input input = operation.getEInput();
+    assertNotNull(input);
+    checkExtension(input, extensionsNamespaceURI, "input"); //$NON-NLS-1$
+
+    Output output = operation.getEOutput();
+    assertNotNull(output);
+    checkExtension(output, extensionsNamespaceURI, "output"); //$NON-NLS-1$
+
+    Fault fault = (Fault)operation.getFault("extendedFault"); //$NON-NLS-1$
+    assertNotNull(fault);
+    checkExtension(fault, extensionsNamespaceURI, "fault"); //$NON-NLS-1$
+  }
+
+  /**
+   * Checks the given extensible element to make sure that its assumed one and only extensibility element matches the given namespace and local name.
+   * @param extensibleElement the extensible element to test.
+   * @param extensionsNamespaceURI the expected namespace URI.
+   * @param elementName the expected element name.
+   */
+  private void checkExtension(ExtensibleElement extensibleElement, String extensionsNamespaceURI, String elementName)
+  {
+    List extensibilityElements = extensibleElement.getExtensibilityElements();
+    assertFalse(extensibilityElements.isEmpty());
+    ExtensibilityElement extensibilityElement = (ExtensibilityElement)extensibilityElements.get(0);
+    QName elementType = extensibilityElement.getElementType();
+    String nsURI = elementType.getNamespaceURI();
+    String localPart = elementType.getLocalPart();
+    assertEquals(extensionsNamespaceURI, nsURI);
+    assertEquals(localPart, elementName);
   }
 }

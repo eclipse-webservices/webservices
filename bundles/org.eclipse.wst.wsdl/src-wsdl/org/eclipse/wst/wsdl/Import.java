@@ -39,7 +39,7 @@ import org.eclipse.xsd.XSDSchema;
  * @model
  * @generated
  */
-public interface Import extends WSDLElement, javax.wsdl.Import
+public interface Import extends ExtensibleElement, javax.wsdl.Import
 {
   /**
    * Returns the value of the '<em><b>Namespace URI</b></em>' attribute.
