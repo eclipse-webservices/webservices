@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.tests.performance
 Bundle-Version: 1.0.100.qualifier
-Bundle-ClassPath: axisPerfmsr.jar
 Bundle-Activator: org.eclipse.jst.ws.tests.performance.plugin.PerformancePlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -24,8 +23,9 @@ Require-Bundle: org.eclipse.jst.ws,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.command.env.core,
  org.eclipse.wst.common.environment,
- org.eclipse.wst.common.modulecore, 
+ org.eclipse.wst.common.modulecore,
  org.eclipse.emf.ecore,
  org.eclipse.jst.ws.consumption,
- org.eclipse.wst.common.frameworks
+ org.eclipse.wst.common.frameworks,
+ org.eclipse.wst.command.env
 Eclipse-LazyStart: true
