@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060721   151409 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on RH
  * 20060802   150428 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20061219   168620 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on Linux
+ * 20070220   168620 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on Linux (cont.)
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer;
 
@@ -120,7 +121,6 @@ public class WSExplorer {
 			IWebBrowser browser = null;
 			
 			if (forceLaunchOutsideIDE) {
-				browser = browserSupport.getExternalBrowser();
 				
 				// external browser support uses swt Program.findProgram() to locate an appropriate browser for HTML files
 				// certain versions of swt Program class need to be run from the UI thread, otherwise findProgram() does not
@@ -130,14 +130,16 @@ public class WSExplorer {
 				if (Display.getCurrent() == null) {
 					
 					// create a runnable to open the browser, run it in the UI thread
-					OpenBrowserRunnable runnable = new OpenBrowserRunnable(browser, new URL(sb.toString()));
+					OpenBrowserRunnable runnable = new OpenBrowserRunnable(browserSupport, new URL(sb.toString()));
 					Display.getDefault().syncExec(runnable);
 					
 					if (runnable.getException() != null)
 						throw runnable.getException();
 				}
-				else
+				else {
+					browser = browserSupport.getExternalBrowser();
 					browser.openURL(new URL(sb.toString()));
+				}
 			}
 			else {
 				// browserId
@@ -258,18 +260,18 @@ public class WSExplorer {
  */
 class OpenBrowserRunnable implements Runnable {
 	
-	private IWebBrowser browser;
+	private IWorkbenchBrowserSupport browserSupport;
 	private URL url;
 	private Exception exception = null;
 	
-	public OpenBrowserRunnable(IWebBrowser browser, URL url) {
-		this.browser = browser;
+	public OpenBrowserRunnable(IWorkbenchBrowserSupport browserSupport, URL url) {
+		this.browserSupport = browserSupport;
 		this.url = url;
 	}
 	
 	public void run() {
 		try {
-			browser.openURL(url);			
+			browserSupport.getExternalBrowser().openURL(url);			
 		}
 		catch (Exception e) {
 			exception = e;
