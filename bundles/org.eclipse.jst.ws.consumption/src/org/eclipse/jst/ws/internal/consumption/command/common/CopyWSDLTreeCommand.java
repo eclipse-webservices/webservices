@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070112   165721 makandre@ca.ibm.com - Andrew Mak, WSDL import cannot use relative import with to parent directories
+ * 20070308   176649 makandre@ca.ibm.com - Andrew Mak, CopyWSDLTreeCommand does not handle "\" correctly in an absolute wsdl URL
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -443,6 +444,8 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
 	  
   public void setWsdlURI(String wsdlURI)
   {
+    if (wsdlURI != null)
+        wsdlURI = wsdlURI.replace('\\', '/');
     this.wsdlURI = wsdlURI;
   }
 
