@@ -26,6 +26,5 @@ Require-Bundle: org.eclipse.wst.ws,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.wst.ws.tests.data,
  org.eclipse.wst.ws.tests.plugin,
- org.eclipse.wst.ws.tests.unittest,
- org.eclipse.wst.ws.tests.util
+ org.eclipse.wst.ws.tests.unittest
 Bundle-ClassPath: tests.jar
