@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20060831   155883 makandre@ca.ibm.com - Andrew Mak, service impl field doesn't work after switching from BU to TD
  * 20061211   161589 makandre@ca.ibm.com - Andrew Mak, NPE in service generation after opening and cancelling from browse dialog
+ * 20070131   168786 makandre@ca.ibm.com - Andrew Mak, wsdl url on web service wizard page 1 is not reflected in browse dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -705,6 +706,8 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
 		
 	    // prime widget based on the string
 	    wsdlURI_ = wsURI;
+	    if (tree != null)
+	      tree.setWebServiceURI(wsURI);
 	    
 	    WebServiceEntity entity = webServicesParser.getWebServiceEntityByURI(wsURI);
 	    if (entity != null && entity.getType() == WebServiceEntity.TYPE_WSDL)
