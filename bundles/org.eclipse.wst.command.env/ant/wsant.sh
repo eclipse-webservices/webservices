@@ -8,15 +8,15 @@ echo "Setting environment variables"
 # The JRE java.exe to be used
 JAVAEXE=/home/tester/sunjdk/j2sdk1.4.2_06/bin/java
                                                                                 
-# The Eclipse startup.jar - the wtp workspace to launch headless
-STARTUPJAR=/opt/wtp_install/wtp_1116/eclipse/startup.jar
+# The Eclipse The Eclipse Equinox Launcher jar.  Usually in eclipse/plugins/org.eclipse.equinox.launcher*.jar
+LAUNCHER_JAR=/root/wtp/eclipse/plugins/org.eclipse.equinox.launcher_1.0.0.v20070208a.jar
 
 # The location of your workspace
 WORKSPACE=/home/tester/workspace_1116b
 
 run() {
   set -v
-  $JAVAEXE -cp $STARTUPJAR org.eclipse.core.launcher.Main -noupdate -application org.eclipse.ant.core.antRunner -data $WORKSPACE -file wsgen.xml $ls > wsgen.txt 2>&1
+  $JAVAEXE -jar $LAUNCHER_JAR -application org.eclipse.ant.core.antRunner -data $WORKSPACE -file wsgen.xml $ls > wsgen.txt 2>&1
 }
 
 if [ ! -e $JAVAEXE ]; then 
@@ -24,8 +24,8 @@ if [ ! -e $JAVAEXE ]; then
   exit 1;
 fi
                                                                            
-if [ ! -e $STARTUPJAR ]; then
-echo "ERROR: incorrect startup.jar=$STARTUPJAR, edit the script and correct the STARTUPJAR environment variable";
+if [ ! -e $LAUNCHER_JAR ]; then
+echo "ERROR: incorrect launcher=$LAUNCHER_JAR, edit the script and correct the LAUNCHER_JAR environment variable";
 exit 1;
 fi  
 
