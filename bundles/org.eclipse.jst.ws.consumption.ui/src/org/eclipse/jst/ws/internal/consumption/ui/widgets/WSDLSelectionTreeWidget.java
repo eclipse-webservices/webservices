@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060418   136712 joan@ca.ibm.com - Joan Haggarty
+ * 20070131   168786 makandre@ca.ibm.com - Andrew Mak, wsdl url on web service wizard page 1 is not reflected in browse dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -128,8 +129,10 @@ public class WSDLSelectionTreeWidget extends SimpleWidgetDataContributor
   public void setWebServiceURI(String wsURI)
   {
   	webServiceURI = wsURI;
-  	treeContentProvider.setWebServiceURI(webServiceURI);
-    refreshTreeViewer();
+  	if (!tree_.isDisposed()) {
+  		treeContentProvider.setWebServiceURI(webServiceURI);
+  		refreshTreeViewer();
+  	}
   }
 
   public void refreshTreeViewer()
