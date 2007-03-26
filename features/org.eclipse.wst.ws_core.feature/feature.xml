@@ -56,15 +56,22 @@
          version="0.0.0"
          unpack="false"/>
 
+	<!-- the following are not built by us, but come from orbit project. 
+		The orbit map URL map file is added to out maps, and the referenced
+		plugins picked up automatically via the packaging tasks -->
+
+   <plugin
+         id="org.apache.commons.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
    <!-- the following is not built, but depends on the addPreBuiltComponents.xml 
    adding it to the plugins directory at the right point. The "pre-built" plugin is 
    then added to zips and update jars. -->
 
-   <plugin
-         id="org.apache.commons_logging"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+
    <plugin
          id="org.apache.jakarta_log4j"
          download-size="0"
