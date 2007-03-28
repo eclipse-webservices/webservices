@@ -12,6 +12,7 @@
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  * 20070319   175721 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070328   173345 pmoogk@ca.ibm.com - Peter Moogk, Peek next page problem
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -107,7 +108,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
     
 	try
 	{
-  	nextPeekPage_ = getNextPageInGroup( widgetFactory_, false );
+  	nextPeekPage_ = getNextPageInGroup( widgetFactory_, widgetStack_, false );
 		
 	  if( nextPeekPage_ == null )
 	  {
@@ -136,7 +137,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
       environment_.getLog().log(ILog.INFO, "ws_dt_cmd_engine", 5010, this, "Cmd stack dump:", engine_ );
     }
     
-	  nextPage_ = getNextPageInGroup( widgetFactory_, true );
+	  nextPage_ = getNextPageInGroup( widgetFactory_, widgetStack_, true );
 	
 	  if( nextPage_ == null )
 	  {
@@ -321,7 +322,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	  
 	    if( factory != null )
 	    {
-		    nextPeekPage_ = getNextPageInGroup( factory, false );  
+		    nextPeekPage_ = getNextPageInGroup( factory, null, false );  
 	    }
 	  }
 	
@@ -348,7 +349,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	    {
 		    widgetStack_ = new Stack();
         
-        nextPage_ = getNextPageInGroup( widgetFactory_, true );
+        nextPage_ = getNextPageInGroup( widgetFactory_, widgetStack_, true );
 		
         if( nextPage_ == null )
         {
@@ -383,7 +384,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
   }
   
   
-  private PageWizardDataEvents getNextPageInGroup( INamedWidgetContributorFactory factory, boolean pushNewWidget )
+  private PageWizardDataEvents getNextPageInGroup( INamedWidgetContributorFactory factory, Stack widgetStack, boolean pushNewWidget )
   {
 	  PageWizardDataEvents page = null;
 	
@@ -391,13 +392,13 @@ public class WizardPageManager extends SimpleCommandEngineManager
 	  {	  
 	    INamedWidgetContributor newWidget = null;
 		  
-	    if( widgetStack_ == null || widgetStack_.size() == 0 )
+	    if( widgetStack == null || widgetStack.size() == 0 )
 	    {
 		    newWidget = factory.getFirstNamedWidget();   
 	    }
 	    else
 	    {
-		    INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
+		    INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack.peek();
 		    newWidget = factory.getNextNamedWidget( currentWidget ); 
 	    }
 		  
@@ -407,7 +408,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
 		
 		    if( pushNewWidget )
 		    {
-		      widgetStack_.push( newWidget );
+		      widgetStack.push( newWidget );
 		    }
 	    }
 	  }
@@ -435,19 +436,23 @@ public class WizardPageManager extends SimpleCommandEngineManager
 		      // Check to see if a group page fragment was found.
 		      INamedWidgetContributorFactory factory = getWidgetFactory( lastUndoFragment_.getId() );
 		  
-		      if( factory != null )
+		      if( factory != null && !widgetStackStack_.empty() )
 		      {
 		        StackEntry entry = (StackEntry)widgetStackStack_.peek();
 			
-		        widgetFactory_ = entry.factory_;
-		        widgetStack_   = entry.stack_;	
+            if( entry.factory_ == factory )
+            {
+              // We found the factory for the entry at the top of the stack.
+		          widgetFactory_ = entry.factory_;
+		          widgetStack_   = entry.stack_;	
 			
-		        if( widgetStack_ != null && !widgetStack_.empty() )
-		        {
-		          INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
+		          if( widgetStack_ != null && !widgetStack_.empty() )
+		          {
+		            INamedWidgetContributor currentWidget = (INamedWidgetContributor)widgetStack_.peek();
 			
-		          page = getPage( currentWidget );
-		        }
+		            page = getPage( currentWidget );
+		          }
+            }
 		      }
 	      }
 	    }
