@@ -33,9 +33,11 @@
 					<include name="**/@dot"/>
 				</dirset>
 				<fileset dir="${baseLocation}/plugins">
+					<exclude name="org.apache.jasper*.jar" />
 					<include name="**/*.jar" />
 				</fileset>
 				<fileset dir="${baseLocation}/plugins">
+					<exclude name="org.apache.jasper*.jar" />
 					<include name="*.jar" />
 				</fileset>
 			</classpath>

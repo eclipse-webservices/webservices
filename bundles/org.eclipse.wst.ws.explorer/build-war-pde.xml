@@ -73,7 +73,8 @@
 					<include name="**/*.jar" /> 
 				</fileset>
 				<fileset dir="${baseLocation}/plugins">
-					<include name="**/*.jar" /> 
+					<exclude name="org.apache.jasper*.jar" />
+					<include name="**/*.jar" />
 				</fileset>
 			</classpath>
 		</javac>
