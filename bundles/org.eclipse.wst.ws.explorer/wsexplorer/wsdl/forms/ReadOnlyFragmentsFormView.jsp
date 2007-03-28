@@ -1,13 +1,16 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -20,6 +23,7 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.perspective.Node,
                                                         org.eclipse.wst.ws.internal.explorer.platform.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
+                                                        org.eclipse.wst.wsdl.binding.soap.SOAPHeader,
                                                         org.w3c.dom.*,
                                                         javax.wsdl.*,
                                                         javax.xml.parsers.*,
@@ -31,6 +35,24 @@
 
 <%!
 private Element soapResponse_ = null;
+private boolean hasSOAPHeaders = false;
+
+private void checkSOAPHeaders() {
+	
+	NodeList nl = soapResponse_.getElementsByTagNameNS(FragmentConstants.URI_SOAP_ENV, FragmentConstants.QNAME_LOCAL_NAME_HEADER);    
+	if (nl.getLength() == 0)
+		return;
+	
+	Element soapHeader = (Element) nl.item(0);
+	NodeList nodes = soapHeader.getChildNodes();
+	
+	for (int i = 0; i < nodes.getLength(); i++) {
+	    if (nodes.item(i) instanceof Element) {
+	    	hasSOAPHeaders = true;
+	    	return;
+	    }
+	}
+}
 
 private Element[] parseSOAPResponse(SOAPMessageQueue soapMessageQueue, WSDLOperationElement operElement)
 {
@@ -38,6 +60,7 @@ private Element[] parseSOAPResponse(SOAPMessageQueue soapMessageQueue, WSDLOpera
   try
   {
     soapResponse_ = XMLUtils.stringToElement(messages, true);
+    checkSOAPHeaders();
     NodeList nl = soapResponse_.getElementsByTagNameNS(FragmentConstants.URI_SOAP_ENV, FragmentConstants.QNAME_LOCAL_NAME_BODY);
     if (nl.getLength() > 0)
     {
@@ -168,7 +191,7 @@ else
     SOAPMessageQueue soapMessageQueue = wsdlPerspective.getSOAPResponseQueue();
     instanceDocuments = parseSOAPResponse(soapMessageQueue, operElement);
   }
-  if (!cached && instanceDocuments == null)
+  if (!cached && !hasSOAPHeaders && instanceDocuments == null)
   {
   %>
     <table width="95%" border=0 cellpadding=6 cellspacing=0>
@@ -180,7 +203,7 @@ else
     </table>
   <%
   }
-  else if (!cached && instanceDocuments.length <= 0)
+  else if (!cached && !hasSOAPHeaders && instanceDocuments.length <= 0)
   {
   %>
     <table width="95%" border=0 cellpadding=6 cellspacing=0>
@@ -194,29 +217,123 @@ else
   }
   else
   {
-    Map partsMap = oper.getOutput().getMessage().getParts();
-    Iterator it = partsMap.values().iterator();
-    Hashtable uriReferences = null;
-    while (it.hasNext())
-    {
-      IXSDFragment fragment = operElement.getFragment((Part)it.next(), false);
-      if (!cached)
-      {
-        if (!operElement.isUseLiteral() && (fragment instanceof ISOAPEncodingWrapperFragment))
-        {
-          if (uriReferences == null)
-            uriReferences = SOAPEncodingWrapperFragment.parseURIReferences(soapResponse_, true);
-          ((ISOAPEncodingWrapperFragment)fragment).setURIReferences(uriReferences);
-        }
-        fragment.setParameterValuesFromInstanceDocuments(instanceDocuments);
-      }
-      fragID.delete(0, fragID.length());
-      fragID.append(fragment.getID());
-      %>
-      <jsp:include page="<%=fragment.getReadFragment()%>" flush="true"/>
-      <%
-    }
-    operElement.setPropertyAsObject(WSDLActionInputs.SOAP_RESPONSE_CACHED, new Boolean(true));
+	String headerDivId = "Header";
+	String headerImgId = "xHeader";
+	String bodyDivId = "Body";
+	String bodyImgId = "xBody";	  
+    %>
+    <table border=0 cellpadding=6 cellspacing=0>
+	  <tr>
+	    <td height=20 valign="bottom" align="left" nowrap width=11><a href="javascript:twist('<%=headerDivId%>','<%=headerImgId%>')"><img name="<%=headerImgId%>" src="<%=response.encodeURL(controller.getPathWithContext("images/twistopened.gif"))%>" alt="<%=controller.getMessage("ALT_TWIST_OPENED")%>" class="twist"></a></td>
+	    <td height=20 valign="bottom" align="left" nowrap class="labels"><strong><%=wsdlPerspective.getMessage("FORM_LABEL_HEADER")%></strong></td>
+	  </tr>
+	</table>
+	
+	<table width="95%" border=0 cellpadding=0 cellspacing=0>
+	  <tr>
+	    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" height=2 width="100%"></td>
+	  </tr>
+	</table>
+	
+	<div id="<%=headerDivId%>" class="fragarea">
+	<%
+	if (cached || hasSOAPHeaders) {
+		hasSOAPHeaders = false;
+		Iterator it = operElement.getSOAPHeaders(false).iterator();
+		while (it.hasNext()) {
+			SOAPHeader soapHeader = (SOAPHeader) it.next();			
+			String ns = soapHeader.getEPart().getElementDeclaration().getTargetNamespace();			
+			IXSDFragment frag = operElement.getHeaderFragment(soapHeader, false);
+			
+			if (!cached) {
+				NodeList nl = soapResponse_.getElementsByTagNameNS(ns, frag.getName());
+				if (nl.getLength() == 0)
+					continue;
+				
+				Element element = (Element) nl.item(0);				
+				if (!frag.setParameterValuesFromInstanceDocuments(new Element[] { element }))
+					continue;
+			}
+			else if (!frag.validateAllParameterValues())
+				continue;
+			
+			hasSOAPHeaders = true;				
+			fragID.delete(0, fragID.length());
+			fragID.append(frag.getID());
+			%>
+			<jsp:include page="<%=frag.getReadFragment()%>" flush="true"/>
+			<%  
+		}		
+	}
+	if (!hasSOAPHeaders) {
+		%>
+		<table width="95%" border=0 cellpadding=6 cellspacing=0>
+	      <tr>
+	        <td height=20 valign="bottom" align="left" class="labels">
+	          <%=wsdlPerspective.getMessage("FORM_LABEL_NOTHING_TO_DISPLAY_IN_FORM_VIEW")%>
+	        </td>
+	      </tr>
+	    </table>
+		<%
+	}
+	%>	
+	</div>	
+	
+	<table border=0 cellpadding=6 cellspacing=0>
+	  <tr>
+	    <td height=20 valign="bottom" align="left" nowrap width=11><a href="javascript:twist('<%=bodyDivId%>','<%=bodyImgId%>')"><img name="<%=bodyImgId%>" src="<%=response.encodeURL(controller.getPathWithContext("images/twistopened.gif"))%>" alt="<%=controller.getMessage("ALT_TWIST_OPENED")%>" class="twist"></a></td>
+	    <td height=20 valign="bottom" align="left" nowrap class="labels"><strong><%=wsdlPerspective.getMessage("FORM_LABEL_BODY")%></strong></td>
+	  </tr>
+	</table> 
+	
+	<table width="95%" border=0 cellpadding=0 cellspacing=0>
+	  <tr>
+	    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" height=2 width="100%"></td>
+	  </tr>
+	</table>
+	
+	<div id="<%=bodyDivId%>" class="fragarea">
+	<%	
+	if (cached || (instanceDocuments != null && instanceDocuments.length > 0)) {
+			
+	    Map partsMap = oper.getOutput().getMessage().getParts();
+	    Iterator it = partsMap.values().iterator();
+	    Hashtable uriReferences = null;
+	    while (it.hasNext())
+	    {
+	      IXSDFragment fragment = operElement.getFragment((Part)it.next(), false);
+	      if (!cached)
+	      {
+	        if (!operElement.isUseLiteral() && (fragment instanceof ISOAPEncodingWrapperFragment))
+	        {
+	          if (uriReferences == null)
+	            uriReferences = SOAPEncodingWrapperFragment.parseURIReferences(soapResponse_, true);
+	          ((ISOAPEncodingWrapperFragment)fragment).setURIReferences(uriReferences);
+	        }
+	        fragment.setParameterValuesFromInstanceDocuments(instanceDocuments);
+	      }
+	      fragID.delete(0, fragID.length());
+	      fragID.append(fragment.getID());
+	      %>
+	      <jsp:include page="<%=fragment.getReadFragment()%>" flush="true"/>
+	      <%
+	    }
+	    operElement.setPropertyAsObject(WSDLActionInputs.SOAP_RESPONSE_CACHED, new Boolean(true));
+	}
+	else {
+		%>
+		<table width="95%" border=0 cellpadding=6 cellspacing=0>
+	      <tr>
+	        <td height=20 valign="bottom" align="left" class="labels">
+	          <%=wsdlPerspective.getMessage("FORM_LABEL_NOTHING_TO_DISPLAY_IN_FORM_VIEW")%>
+	        </td>
+	      </tr>
+	    </table>
+		<%
+	} 
+    %>
+    </div>
+    <%
   }
 }
 %>

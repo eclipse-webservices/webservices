@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
@@ -46,6 +49,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport.HTTPExceptio
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport.HTTPTransport;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.util.SoapHelper;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
+import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -116,6 +120,49 @@ public abstract class InvokeWSDLSOAPOperationAction extends WSDLPropertiesFormAc
   }
 
   /**
+   * Generate a Vector of the elements inside the Soap Header.
+   * @param soapEnvelopeNamespaceTable - Hashtable containing a map of the namespace URIs to prefixes.
+   * @param operElement - WSDLOperationElement encapsulating the WSDL operation.
+   */
+  protected Vector getHeaderEntries(Hashtable soapEnvelopeNamespaceTable,WSDLOperationElement operElement) throws ParserConfigurationException,Exception
+  {
+    Vector headerEntries = new Vector();
+    
+    Iterator it = operElement.getSOAPHeaders().iterator();
+    while (it.hasNext())
+    {
+      SOAPHeader soapHeader = (SOAPHeader) it.next();
+      
+      StringBuffer encodingStyle = null;
+      boolean isUseLiteral = "literal".equals(soapHeader.getUse());      
+      
+      if (!isUseLiteral) {
+	      Iterator encodingStyles = soapHeader.getEncodingStyles().iterator();
+	      encodingStyle = new StringBuffer();
+	      while (encodingStyles.hasNext()) {
+	    	  Object next = encodingStyles.next();
+	    	  if (Constants.URI_SOAP11_ENC.equals(next))
+	    		  continue;
+	    	  encodingStyle.append(" ").append(next);
+	      }	              
+      }
+      
+      IXSDFragment frag = (IXSDFragment)operElement.getHeaderFragment(soapHeader);
+      Element[] instanceDocuments = frag.genInstanceDocumentsFromParameterValues(!isUseLiteral,soapEnvelopeNamespaceTable, XMLUtils.createNewDocument(null));
+      for (int j=0;j<instanceDocuments.length;j++)
+      {
+        if (instanceDocuments[j] == null)
+          continue;
+        if (encodingStyle != null && encodingStyle.length() > 0)
+          instanceDocuments[j].setAttribute("soapenv:encodingStyle",encodingStyle.substring(1));
+        headerEntries.addElement(instanceDocuments[j]);
+      }
+    }
+	
+    return headerEntries;
+  }
+  
+  /**
    * Generate a Vector of the elements inside the Soap Body.
    * @param soapEnvelopeNamespaceTable - Hashtable containing a map of the namespace URIs to prefixes.
    * @param operElement - WSDLOperationElement encapsulating the WSDL operation.
@@ -158,9 +205,22 @@ public abstract class InvokeWSDLSOAPOperationAction extends WSDLPropertiesFormAc
 
   protected Element getSOAPEnvelope(Hashtable soapEnvelopeNamespaceTable, Vector bodyEntries) throws ParserConfigurationException
   {
+	return getSOAPEnvelope(soapEnvelopeNamespaceTable, null, bodyEntries);
+  }
+  
+  protected Element getSOAPEnvelope(Hashtable soapEnvelopeNamespaceTable, Vector headerEntries, Vector bodyEntries) throws ParserConfigurationException
+  {
     DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     Document doc = XMLUtils.createNewDocument(docBuilder);
     Element soapEnvelopeElement = SoapHelper.createSoapEnvelopeElement(doc,soapEnvelopeNamespaceTable);
+    
+    if (headerEntries != null && !headerEntries.isEmpty()) {
+    	Element soapHeaderElement = SoapHelper.createSoapHeaderElement(doc);
+        for (int i=0;i<headerEntries.size();i++)
+          soapHeaderElement.appendChild(doc.importNode((Element)headerEntries.elementAt(i),true));
+        soapEnvelopeElement.appendChild(soapHeaderElement);        
+    }
+    
     Element soapBodyElement = SoapHelper.createSoapBodyElement(doc);
     for (int i=0;i<bodyEntries.size();i++)
       soapBodyElement.appendChild(doc.importNode((Element)bodyEntries.elementAt(i),true));
@@ -205,8 +265,9 @@ public abstract class InvokeWSDLSOAPOperationAction extends WSDLPropertiesFormAc
       // ...
       Hashtable soapEnvelopeNamespaceTable = new Hashtable();
       SoapHelper.addDefaultSoapEnvelopeNamespaces(soapEnvelopeNamespaceTable);
+      Vector headerEntries = getHeaderEntries(soapEnvelopeNamespaceTable, operElement);
       Vector bodyEntries = getBodyEntries(soapEnvelopeNamespaceTable,operElement,bindingElement,serviceElement);
-      Element soapEnvelope = getSOAPEnvelope(soapEnvelopeNamespaceTable, bodyEntries);
+      Element soapEnvelope = getSOAPEnvelope(soapEnvelopeNamespaceTable, headerEntries, bodyEntries);
       recordSoapRequest(wsdlPerspective.getSOAPRequestQueue(),soapEnvelopeNamespaceTable,soapEnvelope);
 
       // Execute the SOAP operation.

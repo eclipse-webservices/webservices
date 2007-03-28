@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.util;
@@ -63,6 +66,11 @@ public class SoapHelper
       soapEnvelopeElement.setAttribute(soapEnvelopeNamespaceAttr.toString(),soapEnvelopeNamespaceURI);      
     }    
     return soapEnvelopeElement;
+  }
+  
+  public static final Element createSoapHeaderElement(Document doc)
+  {
+    return doc.createElement("soapenv:Header");
   }
   
   public static final Element createSoapBodyElement(Document doc)

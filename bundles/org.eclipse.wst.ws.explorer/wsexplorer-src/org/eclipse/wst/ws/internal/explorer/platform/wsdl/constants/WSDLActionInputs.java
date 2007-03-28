@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants;
 
@@ -25,8 +28,11 @@ public class WSDLActionInputs
 
   public static final String SUBMISSION_ACTION = "submissionAction";
   public static final String SUBMISSION_ACTION_FORM = "submissionActionForm";
+  public static final String SUBMISSION_ACTION_BROWSE_FILE_HEADER = "submissionActionBrowseFileHeader";
   public static final String SUBMISSION_ACTION_BROWSE_FILE = "submissionActionBrowseFile";
+  public static final String SUBMISSION_ACTION_SAVE_AS_HEADER = "submissionActionSaveAsHeader";
   public static final String SUBMISSION_ACTION_SAVE_AS = "submissionActionSaveAs";
+  public static final String SELECTED_FILE_HEADER = "selectedFileHeader";
   public static final String SELECTED_FILE = "selectedFile";
   public static final String OPERATION_ELEMENT = "operationElement";
 

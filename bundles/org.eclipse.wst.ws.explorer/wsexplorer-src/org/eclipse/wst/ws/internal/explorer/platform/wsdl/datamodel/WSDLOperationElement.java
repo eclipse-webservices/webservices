@@ -1,17 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import javax.wsdl.Binding;
 import javax.wsdl.BindingInput;
@@ -29,7 +34,9 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentCons
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentConfiguration;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
+import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.SOAPHeaderWrapperFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
+import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
 import org.eclipse.xsd.XSDNamedComponent;
 
 public class WSDLOperationElement extends WSDLCommonElement
@@ -48,6 +55,8 @@ public class WSDLOperationElement extends WSDLCommonElement
   private String encodingStyle_;
   private String encodingNamespace_;
 
+  private Map headerCache = new Hashtable();
+  
   private final void gatherSoapInformation(WSDLBindingElement bindingElement,SOAPBinding soapBinding)
   {
     // Initialize defaults.
@@ -151,6 +160,40 @@ public class WSDLOperationElement extends WSDLCommonElement
     return bindingOperation;
   }
 
+  /**
+   * Return a list of input headers.
+   * 
+   * @return A List
+   */
+  public List getSOAPHeaders() {
+	  return getSOAPHeaders(true);
+  }
+	  
+  /**
+   * Return a list of headers.
+   * 
+   * @param isInput If true, returns the input headers.  If false, returns the output headers.
+   * @return A List
+   */
+  public List getSOAPHeaders(boolean isInput) {
+	  List headers = new Vector();
+	
+      BindingOperation bindingOperation = getBindingOperation();
+	  List extensibilityElements = isInput ?
+			bindingOperation.getBindingInput().getExtensibilityElements() : 
+			bindingOperation.getBindingOutput().getExtensibilityElements();	  	  
+	  
+	  for (Iterator it = extensibilityElements.iterator(); it.hasNext();) {
+	      
+		  ExtensibilityElement e = (ExtensibilityElement) it.next();
+	      
+	      if (e instanceof SOAPHeader && !headers.contains(e))	    	 
+    		  headers.add(e);
+	  }   
+	  
+	  return headers;
+  }  
+  
   public List getOrderedBodyParts()
   {
     List parts = new Vector(operation_.getInput().getMessage().getOrderedParts(operation_.getParameterOrdering()));
@@ -200,6 +243,21 @@ public class WSDLOperationElement extends WSDLCommonElement
     return wsdlPartsToXsdTypeMapper_.getXSDType(part, id);
   }
 
+  public IXSDFragment getHeaderFragment(SOAPHeader soapHeader) {
+	return getHeaderFragment(soapHeader, true);
+  }
+  
+  public IXSDFragment getHeaderFragment(SOAPHeader soapHeader, boolean isInput) {
+	StringBuffer id = new StringBuffer();
+	Part part = soapHeader.getEPart();
+	if (isInput)
+	  id.append(FragmentConstants.INPUT_ID).append(soapHeader.getMessage()).append(FragmentConstants.PART_TOKEN);
+	else
+	  id.append(FragmentConstants.OUTPUT_ID).append(soapHeader.getMessage()).append(FragmentConstants.PART_TOKEN);
+	
+	return getFragment(part, id, isInput); // only wrap input header fragments
+  }
+  
   public IXSDFragment getFragment(Part part) {
     return getFragment(part, true);
   }
@@ -210,6 +268,11 @@ public class WSDLOperationElement extends WSDLCommonElement
       id.append(FragmentConstants.INPUT_ID);
     else
       id.append(FragmentConstants.OUTPUT_ID);
+
+	return getFragment(part, id, false);
+  }
+  
+  private IXSDFragment getFragment(Part part, StringBuffer id, boolean useSOAPHeaderWrapper) {
     String partName = part.getName();
     id.append(partName);
     XSDToFragmentConfiguration config = new XSDToFragmentConfiguration();
@@ -228,6 +291,23 @@ public class WSDLOperationElement extends WSDLCommonElement
     else
       config.setPartEncoding(FragmentConstants.ENCODING_URL);
     IXSDFragment fragment = getXSDToFragmentController().getFragment(config, id.toString(), part.getName());
+     
+    // let's see if there's a corresponding wrapper for this fragment
+    if (useSOAPHeaderWrapper && !(fragment instanceof SOAPHeaderWrapperFragment)) {
+    	SOAPHeaderWrapperFragment wrapper = (SOAPHeaderWrapperFragment) headerCache.get(fragment.getID());
+    	
+    	// no wrapper, let's wrap it
+    	if (wrapper == null) {
+    		wrapper = new SOAPHeaderWrapperFragment(fragment);    		
+    		headerCache.put(fragment.getID(), wrapper);
+    		
+    		// also put this wrapper fragment in the master cache
+    		getXSDToFragmentController().addToCache(wrapper.getID(), wrapper);
+    	}
+    	
+    	return wrapper;
+    }
+    
     return fragment;
   }
 

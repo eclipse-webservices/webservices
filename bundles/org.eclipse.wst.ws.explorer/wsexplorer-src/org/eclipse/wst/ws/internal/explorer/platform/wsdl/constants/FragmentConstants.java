@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants;
 
@@ -36,10 +39,12 @@ public class FragmentConstants
   public static final String FRAGMENT_VIEW_ID = "::fragmentViewID";
   public static final String XSD_ATOMIC_ENUM_ID = "::xsdAtomicEnumID";
   public static final String XSD_ALL_GROUP_ID = "::xsdAllGroupID";
+  public static final String PART_TOKEN = "^";
 
   // Fragment view IDs
   public static final String FRAGMENT_VIEW_SWITCH_FORM_TO_SOURCE = "::fragmentViewSwitchFormToSource";
   public static final String FRAGMENT_VIEW_SWITCH_SOURCE_TO_FORM = "::fragmentViewSwitchSourceToForm";
+  public static final String SOURCE_CONTENT_HEADER = "::sourceContentHeader";
   public static final String SOURCE_CONTENT = "::sourceContent";
   public static final String SOURCE_CONTENT_NAMESPACE = "::sourceContentNS";
 
@@ -58,6 +63,7 @@ public class FragmentConstants
   public static final String QNAME_LOCAL_NAME_ARRAY_TYPE = "arrayType";
   public static final String QNAME_LOCAL_NAME_ARRAY = "Array";
   public static final String COLON = ":";
+  public static final String QNAME_LOCAL_NAME_HEADER = "Header";  
   public static final String QNAME_LOCAL_NAME_BODY = "Body";
   public static final String QNAME_LOCAL_NAME_FAULT = "Fault";
 

@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
@@ -34,6 +37,7 @@ public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperation
 {
   private boolean newFileSelected_;
   private boolean saveAsSelected_;
+  private boolean isHeader_;
   private static final String DUMMY_WRAPPER_START_TAG = "<dummyWrapper>";
   private static final String DUMMY_WRAPPER_END_TAG = "</dummyWrapper>";
   
@@ -42,6 +46,7 @@ public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperation
     super(controller);
     newFileSelected_ = false;
     saveAsSelected_ = false;
+    isHeader_ = false;
   }
 
   protected boolean processParsedResults(MultipartFormDataParser parser) throws MultipartFormDataException
@@ -50,37 +55,49 @@ public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperation
     WSDLOperationElement operElement = (WSDLOperationElement)getSelectedNavigatorNode().getTreeElement();
     newFileSelected_ = false;
     saveAsSelected_ = false;
+    isHeader_ = false;
     /*  try and catch is needed if we are doing fragmentization.
     try
     {
     */
       String submissionAction = parser.getParameter(WSDLActionInputs.SUBMISSION_ACTION);
-      String sourceContents = parser.getParameter(FragmentConstants.SOURCE_CONTENT);
+      String sourceContents = parser.getParameter(FragmentConstants.SOURCE_CONTENT_HEADER);
+      if (sourceContents != null)
+    	operElement.setPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER,sourceContents);  
+      sourceContents = parser.getParameter(FragmentConstants.SOURCE_CONTENT);
       if (sourceContents != null)
         operElement.setPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT,sourceContents);
-      if (WSDLActionInputs.SUBMISSION_ACTION_BROWSE_FILE.equals(submissionAction))
+      if (WSDLActionInputs.SUBMISSION_ACTION_BROWSE_FILE_HEADER.equals(submissionAction))
+      {
+    	newFileSelected_ = true;
+        String fileContents = parser.getParameter(WSDLActionInputs.SELECTED_FILE_HEADER);
+        if (fileContents != null)
+          operElement.setPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER,fileContents);
+      }
+      else if (WSDLActionInputs.SUBMISSION_ACTION_BROWSE_FILE.equals(submissionAction))
       {
         newFileSelected_ = true;
         String fileContents = parser.getParameter(WSDLActionInputs.SELECTED_FILE);
         if (fileContents != null)
           operElement.setPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT,fileContents);
       }
-      else
+      else if (WSDLActionInputs.SUBMISSION_ACTION_SAVE_AS_HEADER.equals(submissionAction))
       {
-        if (WSDLActionInputs.SUBMISSION_ACTION_SAVE_AS.equals(submissionAction))
-        {
-          // Save As... action
-          saveAsSelected_ = true;
-        }
-        else
-        {
-          // Fragmentize on Go action.
-          // fragmentize(new StringBuffer(sourceContents));
-          String[] nsDeclarations = parser.getParameterValues(FragmentConstants.SOURCE_CONTENT_NAMESPACE);
-          if (nsDeclarations != null)
-            operElement.setPropertyAsObject(WSDLModelConstants.PROP_SOURCE_CONTENT_NAMESPACE,nsDeclarations);
-        }
+    	saveAsSelected_ = true;
+    	isHeader_ = true;
+    	return true;
       }
+      else if (WSDLActionInputs.SUBMISSION_ACTION_SAVE_AS.equals(submissionAction))
+      {
+        // Save As... action
+        saveAsSelected_ = true;      
+    	return true;
+      }
+      
+      String[] nsDeclarations = parser.getParameterValues(FragmentConstants.SOURCE_CONTENT_NAMESPACE);
+      if (nsDeclarations != null)
+        operElement.setPropertyAsObject(WSDLModelConstants.PROP_SOURCE_CONTENT_NAMESPACE,nsDeclarations);    	
+
       return true;
     /*
     }       
@@ -102,6 +119,29 @@ public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperation
     }
     return false;
     */
+  }
+
+  protected Vector getHeaderEntries(Hashtable soapEnvelopeNamespaceTable, WSDLOperationElement operElement) throws ParserConfigurationException, Exception {
+	
+	  Vector headerEntries = new Vector();
+      String[] nsDeclarations = (String[])operElement.getPropertyAsObject(WSDLModelConstants.PROP_SOURCE_CONTENT_NAMESPACE);
+   	  for (int i = 0; i < nsDeclarations.length; i++)
+	  {
+	    String[] prefix_ns = SoapHelper.decodeNamespaceDeclaration(nsDeclarations[i]);
+	    if (!soapEnvelopeNamespaceTable.contains(prefix_ns[1]))
+	      soapEnvelopeNamespaceTable.put(prefix_ns[1], prefix_ns[0]);
+	  }
+	  StringBuffer sourceContent = new StringBuffer(operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER));
+	  sourceContent.insert(0,DUMMY_WRAPPER_START_TAG).append(DUMMY_WRAPPER_END_TAG);
+	  Element dummyWrapperElement = XMLUtils.stringToElement(sourceContent.toString());          
+	  NodeList nl = dummyWrapperElement.getChildNodes();
+	  for (int i = 0; i < nl.getLength(); i++)
+	  {
+	    if (nl.item(i) instanceof Element)
+	      headerEntries.add(nl.item(i));
+	  }
+	  
+	  return headerEntries;
   }
 
   /**
@@ -161,8 +201,11 @@ public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperation
   public final void writeSourceContent(OutputStream os)
   {
     WSDLOperationElement operElement = (WSDLOperationElement)(getSelectedNavigatorNode().getTreeElement());
-    PrintWriter pw = new PrintWriter(os); 
-    pw.println(operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT));
+    PrintWriter pw = new PrintWriter(os);
+    if (isHeader_)
+      pw.println(operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER));
+    else
+   	  pw.println(operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT));
     pw.close();
   }
 }

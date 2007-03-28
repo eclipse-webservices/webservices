@@ -1,18 +1,18 @@
 <%
-/**
-* <copyright>
-*
-* Licensed Material - Property of IBM
-* (C) Copyright IBM Corp. 2002 - All Rights Reserved.
-* US Government Users Restricted Rights - Use, duplication or disclosure
-* restricted by GSA ADP Schedule Contract with IBM Corp.
-*
-* </copyright>
-*
-* File plugins/com.ibm.etools.webservice.explorer/wsexplorer/wsdl/fragment/XSDDelegationWFragmentJSP.jsp, wsa.etools.ws.explorer, lunar-5.1.2, 20031231a 1
-* Version 1.1 03/02/28 15:34:04
-*/
-%>
+/*******************************************************************************
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ *******************************************************************************/
+ %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.*,
@@ -38,7 +38,7 @@ elementID.append(elementFragment.getID());
 
  
 
-<table  cellpadding=0 cellspacing=0 class="<%=("innerfixfragtable")%>">
+<table  cellpadding=0 cellspacing=0 class="<%=(xsdConfig.getIsWSDLPart() ? "fixfragtable" : "innerfixfragtable")%>">
   <tr>
     <td>
       <jsp:include page="<%=delegationFragment.getWriteFragment()%>" flush="true"/>

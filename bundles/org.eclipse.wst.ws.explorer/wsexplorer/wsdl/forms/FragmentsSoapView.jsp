@@ -1,6 +1,6 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060222   127443 jesper@selskabet.org - Jesper S Moller
  * 20060726   144824 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -21,6 +22,7 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.util.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
+                                                        org.eclipse.wst.wsdl.binding.soap.SOAPHeader,
                                                         org.w3c.dom.*,
                                                         javax.wsdl.*,
                                                         javax.wsdl.extensions.ExtensibilityElement,
@@ -33,11 +35,44 @@
    WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
    WSDLOperationElement operElement = (WSDLOperationElement)(wsdlPerspective.getNodeManager().getSelectedNode().getTreeElement());
    Operation oper = operElement.getOperation();
-   Iterator it = operElement.getOrderedBodyParts().iterator();
-   StringBuffer sourceContent = new StringBuffer();
-   String cachedSourceContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT);
    Hashtable soapEnvelopeNamespaceTable = new Hashtable();
    SoapHelper.addDefaultSoapEnvelopeNamespaces(soapEnvelopeNamespaceTable);
+   
+   Iterator it = operElement.getSOAPHeaders().iterator();
+   StringBuffer sourceContentHeader = new StringBuffer();
+   String cachedSourceContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER);
+   if (cachedSourceContent != null)   
+     sourceContentHeader.append(cachedSourceContent);        
+   else
+   {
+     while (it.hasNext())
+     {
+       SOAPHeader soapHeader = (SOAPHeader)it.next();
+       IXSDFragment frag = operElement.getHeaderFragment(soapHeader);
+       Element[] instanceDocuments = frag.genInstanceDocumentsFromParameterValues(!operElement.isUseLiteral(), soapEnvelopeNamespaceTable, XMLUtils.createNewDocument(null));
+       for (int i = 0; i < instanceDocuments.length; i++)
+       {
+    	 String serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
+		 if (serializedFragment == null)
+		 {
+			 // On Some JRE's (Sun java 5) elements with an attribute with the xsi
+			 // prefix do not serialize properly because the namespace can not
+			 // be found so the string returned comes back as null. To workaround
+			 // this problem try adding in the namespace declaration attribute
+			 // and retry the serialization (bug 144824)			 
+			 instanceDocuments[i].setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+			 serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
+		 }
+    	 
+    	 sourceContentHeader.append(serializedFragment);
+         sourceContentHeader.append(HTMLUtils.LINE_SEPARATOR);
+       }     
+     }
+   }
+   
+   it = operElement.getOrderedBodyParts().iterator();
+   StringBuffer sourceContent = new StringBuffer();
+   cachedSourceContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT);
    if (cachedSourceContent != null)
    {
      sourceContent.append(cachedSourceContent);
@@ -129,6 +164,87 @@
 <%
     }
 
+    Element soapHeaderElement = SoapHelper.createSoapHeaderElement(doc);
+    header.setLength(0);
+    header.append('<').append(soapHeaderElement.getTagName());
+    attributes = soapHeaderElement.getAttributes();
+    numberOfAttributes = attributes.getLength();
+    if (numberOfAttributes == 0)
+      header.append('>');
+%>
+<table width="95%" border=0 cellpadding=0 cellspacing=0>
+  <tr>
+    <td width=8>
+      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+    </td>
+    <td valign="bottom" class="labels">
+      <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
+    </td>
+  </tr>
+</table>
+<%
+    for (int i=0;i<numberOfAttributes;i++)
+    {
+      header.setLength(0);
+      Node attrNode = attributes.item(i);
+      header.append(attrNode.getNodeName()).append("=\"").append(attrNode.getNodeValue()).append('\"');
+      if (i == numberOfAttributes-1)
+        header.append('>');
+%>
+<table width="95%" border=0 cellpadding=0 cellspacing=0>
+  <tr>
+    <td width=16>
+      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+    </td>
+    <td valign="bottom" class="labels">
+      <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
+    </td>
+  </tr>
+</table>
+<%
+    }
+%>
+<table border=0 cellpadding=3 cellspacing=3>
+  <tr>
+    <td width="16">
+      <img width="16" height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+    </td>    
+    <td valign="center" align="left" nowrap>
+      <input type="file" name="<%=WSDLActionInputs.SELECTED_FILE_HEADER%>" title="<%=wsdlPerspective.getMessage("FORM_CONTROL_TITLE_SOAP_FILE")%>">
+    </td>
+    <td valign="center" align="left" class="labels" nowrap>
+      <a href="javascript:doAction('<%=WSDLActionInputs.SUBMISSION_ACTION_BROWSE_FILE_HEADER%>')"><%=wsdlPerspective.getMessage("BUTTON_LABEL_LOAD")%></a>
+    </td>
+    <td valign="center" align="left" class="labels" nowrap>
+      <a href="javascript:doAction('<%=WSDLActionInputs.SUBMISSION_ACTION_SAVE_AS_HEADER%>')"><%=wsdlPerspective.getMessage("BUTTON_LABEL_SAVE_AS")%></a>
+    </td>
+  </tr>
+</table>
+<table width="95%" border=0 cellpadding=3 cellspacing=3>
+  <tr>
+    <td width="16">
+      <img width="16" height="16" src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+    </td>
+    <td width="100%">
+      <textarea id="soap_header_content" name="<%=FragmentConstants.SOURCE_CONTENT_HEADER%>" class="textareaenter"><%=HTMLUtils.charactersToHTMLEntitiesStrict(sourceContentHeader.toString())%></textarea>
+    </td>
+  </tr>
+</table>
+<%
+    header.setLength(0);
+    header.append("</").append(soapHeaderElement.getTagName()).append('>');
+%>
+<table width="95%" cellpadding=1 cellspacing=0>
+  <tr>
+    <td width=8>
+      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+    </td>
+    <td valign="bottom" class="labels">
+      <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
+    </td>
+  </tr>
+</table>
+<%
     Element soapBodyElement = SoapHelper.createSoapBodyElement(doc);
     header.setLength(0);
     header.append('<').append(soapBodyElement.getTagName());
@@ -166,7 +282,6 @@
     </td>
   </tr>
 </table>
-<table>
 <%
     }
 
@@ -270,10 +385,10 @@
       <input type="file" name="<%=WSDLActionInputs.SELECTED_FILE%>" title="<%=wsdlPerspective.getMessage("FORM_CONTROL_TITLE_SOAP_FILE")%>">
     </td>
     <td valign="center" align="left" class="labels" nowrap>
-      <a href="javascript:showNewFileContents()"><%=wsdlPerspective.getMessage("BUTTON_LABEL_LOAD")%></a>
+      <a href="javascript:doAction('<%=WSDLActionInputs.SUBMISSION_ACTION_BROWSE_FILE%>')"><%=wsdlPerspective.getMessage("BUTTON_LABEL_LOAD")%></a>
     </td>
     <td valign="center" align="left" class="labels" nowrap>
-      <a href="javascript:saveSourceContent()"><%=wsdlPerspective.getMessage("BUTTON_LABEL_SAVE_AS")%></a>
+      <a href="javascript:doAction('<%=WSDLActionInputs.SUBMISSION_ACTION_SAVE_AS%>')"><%=wsdlPerspective.getMessage("BUTTON_LABEL_SAVE_AS")%></a>
     </td>
   </tr>
 </table>

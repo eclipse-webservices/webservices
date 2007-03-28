@@ -1,6 +1,6 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060512   121210 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers 
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -43,24 +44,12 @@
 <jsp:include page="/wsdl/scripts/fragmenttables.jsp" flush="true"/>
 <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
 <script language="javascript">
-  function showNewFileContents()
+  function doAction(action)
   {
     var form = document.forms[0];
     if (handleSubmit(form))
     {
-      form.<%=WSDLActionInputs.SUBMISSION_ACTION%>.value = "<%=WSDLActionInputs.SUBMISSION_ACTION_BROWSE_FILE%>";
-      form.submit();
-      form.<%=WSDLActionInputs.SUBMISSION_ACTION%>.value = "<%=invokeWSDLOperationURL%>";
-      resetSubmission();
-    }
-  }
-
-  function saveSourceContent()
-  {
-    var form = document.forms[0];
-    if (handleSubmit(form))
-    {
-      form.<%=WSDLActionInputs.SUBMISSION_ACTION%>.value = "<%=WSDLActionInputs.SUBMISSION_ACTION_SAVE_AS%>";
+      form.<%=WSDLActionInputs.SUBMISSION_ACTION%>.value = action;
       form.submit();
       form.<%=WSDLActionInputs.SUBMISSION_ACTION%>.value = "<%=invokeWSDLOperationURL%>";
       resetSubmission();
@@ -153,7 +142,7 @@
 				}
 			} 
       	}
-		if (hasInput)
+		if (hasInput || !operElement.getSOAPHeaders().isEmpty())
 		{
 			out.print(wsdlPerspective.getMessage("FORM_LABEL_INVOKE_WSDL_OPERATION_DESC"));
 		}
@@ -206,7 +195,9 @@
     else
     {
     %>
-<jsp:include page="/wsdl/forms/FragmentsFormView.jsp" flush="true"/>
+<jsp:include page="/wsdl/forms/FragmentsFormView.jsp" flush="true">
+	<jsp:param name="hasInput" value="<%=hasInput%>"/>
+</jsp:include>
     <%
     }
     %>
