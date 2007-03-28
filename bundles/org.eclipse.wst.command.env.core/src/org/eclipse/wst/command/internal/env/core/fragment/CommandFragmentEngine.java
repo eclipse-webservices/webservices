@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
+ * 20070323   175800 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.fragment;
 
@@ -298,22 +299,25 @@ public class CommandFragmentEngine implements CommandManager
     
 	  AbstractDataModelOperation cmd = entry.command_;
   	  
-  	if( cmd != null && cmd.canUndo() && !entry.beforeExecute_ )
-	{
     try
     {
-	    cmd.undo( null, null );
-      dataManager_.unprocess(cmd);
+      if( cmd != null )
+      {
+        if( cmd.canUndo() && !entry.beforeExecute_ )
+	      {
+	        cmd.undo( null, null );
+        }
+        
+        dataManager_.unprocess( cmd );
+      }
     }
     catch( Exception exc )
     {
       exc.printStackTrace();
     }
     
-	  entry.beforeExecute_ = true;
-	}
-  	  
-	undoFragmentListener_.notify( entry.fragment_ );  	
+	  entry.beforeExecute_ = true;  
+	  undoFragmentListener_.notify( entry.fragment_ );  	
   }
   
   private boolean navigateChildFragments( CommandFragment fragment, boolean visitCurrent )
