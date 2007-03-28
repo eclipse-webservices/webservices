@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070313   176580 makandre@ca.ibm.com - Andrew Mak, Generate a Client WS Proxy accepting URL
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
@@ -298,16 +301,11 @@ public class JavaMofBeanVisitorAction implements VisitorAction
        if (javaClass.getName().equals(method.getName())){
           //now the inputs
           JavaParameter javaParameter[] = method.listParametersWithoutReturn();
-          if (javaParameter.length > 0){
-             //then we have no default constructor
-          	 status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_JTS_PROXY_HAS_NO_DEFAULT );
-             //getStatusMonitor().reportStatus( new Status(IStatus.ERROR,WebServiceConsumptionPlugin.ID,0,
-             		//ConsumptionMessages.MSG_ERROR_JTS_PROXY_HAS_NO_DEFAULT,null));
-             return false;
-          }
+          if (javaParameter.length == 0)
+        	  return true;
        }
     }
-    return true;
+    return false;
 
   }
 

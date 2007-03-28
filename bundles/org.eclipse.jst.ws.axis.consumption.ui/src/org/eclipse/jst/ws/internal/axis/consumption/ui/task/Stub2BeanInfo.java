@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
  * 20060517   141481 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070313   176580 makandre@ca.ibm.com - Andrew Mak, Generate a Client WS Proxy accepting URL
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -274,6 +275,22 @@ public class Stub2BeanInfo
     w.write(class_);
     w.write("() {");
     incrementIndent();
+    newLine(w);
+    w.write("_init");
+    w.write(class_);
+    w.write("();");
+    decrementIndent();
+    newLine(w);
+    w.write("}");
+    newLine(w);
+    
+    newLine(w);
+    w.write("public ");
+    w.write(class_);
+    w.write("(String endpoint) {");
+    incrementIndent();
+    newLine(w);
+    w.write("_endpoint = endpoint;");
     newLine(w);
     w.write("_init");
     w.write(class_);
