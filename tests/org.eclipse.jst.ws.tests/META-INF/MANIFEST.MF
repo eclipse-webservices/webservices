@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
-Bundle-SymbolicName: org.eclipse.jst.ws.tests
+Bundle-SymbolicName: org.eclipse.jst.ws.tests;singleton:=true
 Bundle-Version: 1.0.200.qualifier
 Bundle-ClassPath: tests.jar
 Bundle-Activator: org.eclipse.jst.ws.tests.plugin.TestsPlugin
@@ -38,5 +38,6 @@ Require-Bundle: org.eclipse.jst.ws.consumption.ui,
  org.eclipse.jdt.launching,
  org.eclipse.jdt.debug.ui,
  org.eclipse.jst.server.tomcat.core,
- org.eclipse.wst.common.project.facet.core
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.wst.ws.explorer
 Eclipse-LazyStart: true

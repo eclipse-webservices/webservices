@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -27,6 +28,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefa
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefaultingCommand
 {    
@@ -56,7 +59,24 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
     if (typeIds!=null && typeIds.length>0)
     {
       typeRuntimeServer_.setTypeId(typeIds[0]);
-    }
+  } else {
+	  if (initialSelection_ != null && !initialSelection_.isEmpty())
+	    { 
+	      Object initialObject = initialSelection_.getFirstElement();
+	      if (initialObject != null)
+	      {
+	    	  Object adaptedObject = AdapterUtils.getAdaptedObject(initialObject);
+	    	  if (adaptedObject != null) {
+	    		  StringBuffer entrybuff = new StringBuffer();
+	    		  entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
+	    		  entrybuff.append("/");
+	    		  entrybuff.append("org.eclipse.jst.ws.wsImpl.java");
+	    		  String entry = entrybuff.toString();     
+	    		  typeRuntimeServer_.setTypeId(entry);
+	    	  }
+	      }
+	    }
+  }
     
     serviceGeneration_ = getScenarioContext().getGenerateWebService();
     	

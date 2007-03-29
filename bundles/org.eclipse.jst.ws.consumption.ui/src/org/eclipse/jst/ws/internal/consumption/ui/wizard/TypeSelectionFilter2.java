@@ -1,25 +1,29 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060606   105045 mahutch@ca.ibm.com - Mark Hutchinson          
+ * 20070328   172339 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.j2ee.webservice.wsdd.BeanLink;
+import org.eclipse.jst.j2ee.webservice.wsdd.ServiceImplBean;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
@@ -97,6 +101,14 @@ public class TypeSelectionFilter2
               }
               
             }
+          }
+          
+          //TODO: Bug 179751 - Need to make checking for types recognized as bottom-up to be more extensible         
+          
+          if (supportedTypes.isEmpty()) {
+        	  if (initialObject instanceof BeanLink || initialObject instanceof ServiceImplBean) {
+        		  supportedTypes.add(wst);
+        	  }
           }
         }
       }

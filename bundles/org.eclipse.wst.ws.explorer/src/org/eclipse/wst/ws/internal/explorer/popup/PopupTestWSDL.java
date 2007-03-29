@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2006 IBM Corporation and others.
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060606   105069 mahutch@ca.ibm.com - Mark Hutchinson
  * 20060803   152790 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.popup;
 
@@ -34,6 +35,7 @@ import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.ws.internal.monitor.GetMonitorCommand;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -73,29 +75,33 @@ public class PopupTestWSDL extends Action implements IActionDelegate
         Object object = it.next();
         if (object instanceof IResource)
         {
-          File wsdlFile = ((IResource)object).getLocation().toFile();
-          try
-          {
-            wsdlURL = wsdlFile.toURL().toString();
-          }
-          catch (MalformedURLException murle)
-          {
-            wsdlURL = wsdlFile.toString();
-          }
-        }
-       
-        if (object instanceof ServiceImpl)
+        	File wsdlFile = ((IResource)object).getLocation().toFile();
+        	try
+        	{
+        		wsdlURL = wsdlFile.toURL().toString();
+        	}
+        	catch (MalformedURLException murle)
+        	{
+        		wsdlURL = wsdlFile.toString();
+        	}
+        } else if (object instanceof ServiceImpl)
         {
-          ServiceImpl serviceImpl = (ServiceImpl)object;          
-          Definition definition = serviceImpl.getEnclosingDefinition();        
-          wsdlURL = definition.getLocation();
-        }        
-
-        if (object instanceof WSDLResourceImpl)
+        	ServiceImpl serviceImpl = (ServiceImpl)object;          
+        	Definition definition = serviceImpl.getEnclosingDefinition();        
+        	wsdlURL = definition.getLocation();
+        } else if (object instanceof WSDLResourceImpl)
         {
-          WSDLResourceImpl WSDLRImpl = (WSDLResourceImpl)object;
-          Definition definition = WSDLRImpl.getDefinition();
-          wsdlURL = definition.getLocation();
+        	WSDLResourceImpl WSDLRImpl = (WSDLResourceImpl)object;
+        	Definition definition = WSDLRImpl.getDefinition();
+        	wsdlURL = definition.getLocation();
+        } else if (object instanceof String) {
+        	wsdlURL = (String) object;
+        } else {
+        	// Object is not any types we recognized, wsdlURL is still null.
+          	// Try looking up an adapter for the object.
+        	// If found, update wsdlURL contains the adapted WSDL string.  
+        	// If not found, wsdlURL would still be null.
+        	wsdlURL = getAdaptedWSDL(object);
         }
         
        addLaunchOptions(launchOptions, wsdlURL, stateLocation, defaultFavoritesLocation);        
@@ -140,4 +146,13 @@ public class PopupTestWSDL extends Action implements IActionDelegate
   public void selectionChanged(IAction action, ISelection selection)
   {
   }
+  
+  /**
+   * @param object Look up an adapter mapping the object to IFile or String.
+   * @return The WSDL string returned by the adapter or null if no adapter is found.
+   */
+  public static String getAdaptedWSDL (Object object) {
+	  return AdapterUtils.getAdaptedWSDL(object);
+  }
+  
 }

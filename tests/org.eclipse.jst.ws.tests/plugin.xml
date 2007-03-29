@@ -2,5 +2,61 @@
 <?eclipse version="3.0"?>
 <plugin>
 
+	  <extension
+         point="org.eclipse.ui.popupMenus">
+        
+         <objectContribution
+            objectClass="org.eclipse.jst.j2ee.webservice.wsdd.ServletLink"
+            nameFilter="*"
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
+         <action
+               label="%ACTION_GENERATE_JAVA_SKELETON"
+               class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
+               menubarPath="additions"
+               id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
+         </action>
+      </objectContribution>
+         
+      <objectContribution
+            objectClass="org.eclipse.jst.j2ee.webservice.wsdd.ServletLink"
+            nameFilter="*"
+            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard">
+         <action
+               label="%ACTION_GENERATE_JAVA_PROXY"
+               class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
+               menubarPath="additions"
+               id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard">
+         </action>
+      </objectContribution>
+
+      <objectContribution
+            objectClass="org.eclipse.jst.j2ee.webservice.wsdd.ServletLink"
+            nameFilter="*"
+            id="org.eclipse.jst.ws.internal.consumption.ui.action.WSDLFileMenu">
+         <action
+               label="%POPUP_TEST_WSDL"
+               class="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL"
+               menubarPath="additions"
+               id="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL">
+         </action>
+      </objectContribution>
+    
+      </extension>
+
+<extension point="org.eclipse.core.runtime.adapters">
+         <factory 
+            class="org.eclipse.jst.ws.tests.util.WSCustomAdapterFactory" 
+            adaptableType="org.eclipse.jst.j2ee.webservice.wsdd.ServletLink">
+            <adapter type="org.eclipse.core.resources.IFile"/>
+         </factory>
+      </extension>
+
+      <extension point="org.eclipse.core.runtime.adapters">
+         <factory 
+            class="org.eclipse.jst.ws.tests.util.WSCustomAdapterFactory" 
+            adaptableType="org.eclipse.jst.j2ee.webservice.wsdd.ServletLink">
+            <adapter type="java.lang.String"/>
+         </factory>
+      </extension>  
     
 </plugin>
