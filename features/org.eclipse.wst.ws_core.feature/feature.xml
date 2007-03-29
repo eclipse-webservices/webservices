@@ -61,7 +61,7 @@
 		plugins picked up automatically via the packaging tasks -->
 
    <plugin
-         id="org.apache.commons.logging"
+         id="org.apache.commons_logging"
          download-size="0"
          install-size="0"
          version="1.0.4.qualifier"
