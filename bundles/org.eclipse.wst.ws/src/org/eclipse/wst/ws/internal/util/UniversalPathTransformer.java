@@ -10,8 +10,9 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
+ * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files 
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.common;
+package org.eclipse.wst.ws.internal.util;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -40,7 +41,7 @@ public class UniversalPathTransformer {
 
 	private static String PROTOCOL_MARKER = ":";
 	private static char PATH_SEPARATOR    = '/';
-	
+ 	
 	/**
 	 * Determines if a URI string starts with the given prefix.  This method is case-insensitive. 
 	 * 
@@ -49,7 +50,7 @@ public class UniversalPathTransformer {
 	 * @return true iff prefix is a strict prefix of the URI string (i.e. prefix != uri), false
 	 * is returned otherwise.
 	 */
-	private boolean isPrefix(String uri, String prefix) {
+	private static boolean isPrefix(String uri, String prefix) {
 		if (prefix.length() >= uri.length())
 			return false;
 		
@@ -63,7 +64,7 @@ public class UniversalPathTransformer {
 	 * @param str The path to transform.
 	 * @return Returns an eclipse path equivalent of the given path.
 	 */
-	public String toPath(String str) {
+	public static String toPath(String str) {
 		
 		if (str == null || str.length() == 0)
 			return str;
@@ -88,7 +89,7 @@ public class UniversalPathTransformer {
 	 * @param str The path to transform.
 	 * @return Returns a platform URI path equivalent of the given path.
 	 */
-	public String toPlatformPath(String str) {
+	public static String toPlatformPath(String str) {
 
 		if (str == null || str.length() == 0)
 			return str;		
@@ -116,7 +117,7 @@ public class UniversalPathTransformer {
 	 * @param str The path to transform.
 	 * @return Returns a filesystem URI path equivalent of the given path.
 	 */
-	public String toLocation(String str) {
+	public static String toLocation(String str) {
 		
 		if (str == null || str.length() == 0)
 			return str;

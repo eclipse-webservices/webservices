@@ -24,6 +24,7 @@
  * 20061106   142500 david.schneider@unisys.com - David Schneider, WTP properties pages fonts don't follow Eclipse preferences
  * 20061211   161589 makandre@ca.ibm.com - Andrew Mak, NPE in service generation after opening and cancelling from browse dialog
  * 20070131   168786 makandre@ca.ibm.com - Andrew Mak, wsdl url on web service wizard page 1 is not reflected in browse dialog
+ * 20070326   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -48,7 +49,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.TimedWSDLSelectionConditionCommand;
@@ -78,6 +78,7 @@ import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
+import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
@@ -95,8 +96,6 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   private WSDLSelectionTreeWidget tree;
   
   private Timer timer_ = null;
-  
-  private UniversalPathTransformer transformer_ = new UniversalPathTransformer();
   
   /*CONTEXT_ID PCON0001 for the WSDL Selection Page*/
   private final String INFOPOP_PCON_PAGE = "PCON0001";
@@ -678,11 +677,11 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   {	
     if (tree != null)
     {
-      return transformer_.toPath(tree.getWsdlURI());
+      return UniversalPathTransformer.toPath(tree.getWsdlURI());
     }
     else
     {
-	    return transformer_.toPath(wsdlURI_);
+	    return UniversalPathTransformer.toPath(wsdlURI_);
     }
 	}
   

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+	targetNamespace="http://www.example.org/start/"		
+	xmlns:test="http://www.example.org/test/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"	 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+	<wsdl:import location="../2/3/test.wsdl" namespace="http://www.example.org/test/"/>
+	
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://www.example.org/testxsd"
+				schemaLocation="../../test.xsd" />
+		</schema>
+	</wsdl:types>
+	
+	<wsdl:service name="Start">
+		<wsdl:port name="NewPort" binding="test:NewBinding">
+			<soap:address location="http://www.example.org/"></soap:address>
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -28,17 +29,16 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
+import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
 public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {
   private IStructuredSelection selection_;
-  private UniversalPathTransformer transformer_ = new UniversalPathTransformer(); 
   
   public String getWebServiceURI()
   {
@@ -74,7 +74,7 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   		  uri = AdapterUtils.getAdaptedWSDL(firstSel);
   	  }
   	  
-  	  uri = transformer_.toPath(uri);
+  	  uri = UniversalPathTransformer.toPath(uri);
   	}
     return uri;
   }

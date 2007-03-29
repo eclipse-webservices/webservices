@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060830   155114 pmoogk@ca.ibm.com - Peter Moogk, Updated patch for this defect.
  * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
+ * 20070326   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -26,7 +27,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceImpl;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -36,6 +36,7 @@ import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 
@@ -47,8 +48,6 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
   private IProject               project_;
   private String                 componentName_;
   private WebServicesParser      parser_;
-  
-  private UniversalPathTransformer transformer_ = new UniversalPathTransformer();
   
   private boolean                topDown_ = false;
 
@@ -218,7 +217,7 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     {
       Object obj = objectSelection_.getFirstElement();
       if (obj instanceof String) {
-        String str = transformer_.toPath((String) obj);
+        String str = UniversalPathTransformer.toPath((String) obj);
         if (hasProtocol(str)) return null;
         return ResourceUtils.getProjectOf(new Path(str));
       }
@@ -257,7 +256,7 @@ public class ObjectSelectionOutputCommand extends AbstractDataModelOperation
     {
       Object obj = objectSelection_.getFirstElement();
       if (obj instanceof String) { 
-        String str = transformer_.toPath((String) obj);
+        String str = UniversalPathTransformer.toPath((String) obj);
         if (hasProtocol(str)) return null;
         IVirtualComponent comp = ResourceUtils.getComponentOf(new Path(str));
         return comp == null ? null : comp.getName();

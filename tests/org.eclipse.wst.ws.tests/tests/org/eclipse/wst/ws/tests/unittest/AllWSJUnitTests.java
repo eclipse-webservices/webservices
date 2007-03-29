@@ -59,6 +59,7 @@ public class AllWSJUnitTests extends TestCase
  //add unit tests to suite here...
     testSuite.addTest( LocatorWorkspaceSetup.suite());
     testSuite.addTest( WebServiceFinderTests.suite());
+    testSuite.addTest( WSDLCopierTests.suite());
     return testSuite;
   }
 

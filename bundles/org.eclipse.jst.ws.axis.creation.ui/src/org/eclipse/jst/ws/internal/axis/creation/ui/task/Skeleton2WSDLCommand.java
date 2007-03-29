@@ -13,6 +13,7 @@
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  * 20070112   165721 makandre@ca.ibm.com - Andrew Mak, WSDL import cannot use relative import with to parent directories
+ * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -48,13 +49,13 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.util.WSDLUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CopyWSDLTreeCommand;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.util.WSDLCopier;
 
 public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 {
@@ -175,21 +176,18 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 			 
      }
 
-     // copy WSDL
-     CopyWSDLTreeCommand copyWSDLTreeCommand = new CopyWSDLTreeCommand();
-     copyWSDLTreeCommand.setWebServicesParser(webServicesParser);
-     copyWSDLTreeCommand.setWsdlURI(wsdlURL);
-     copyWSDLTreeCommand.setDestinationURI(outputFile.getLocation().toFile().toURL().toString());
-     copyWSDLTreeCommand.setDefinition(definition);
-     copyWSDLTreeCommand.setEnvironment(environment);
-     IStatus status = copyWSDLTreeCommand.execute(null, null);
-     if(status!=null && status.getSeverity()==Status.ERROR) {
-       return status;
-     }
-     
-     // update wsdl location
-     String newPath = outputFile.getParent().getLocation().append(copyWSDLTreeCommand.getWSDLRelPath()).toString();
-     javaWSDLParam.setOutputWsdlLocation(newPath);
+     IFolder folder  = ResourceUtils.getWorkspaceRoot().getFolder(outputFile.getParent().getFullPath());
+     String filename = outputFile.getName();
+	
+     WSDLCopier copier = new WSDLCopier(webServicesParser);
+     copier.setSourceURI(wsdlURL, definition);
+     copier.setTargetFolder(folder);
+     copier.setTargetFilename(filename);
+	
+     ResourceUtils.getWorkspace().run(copier, monitor);
+	
+     String newPath = outputFile.getParent().getLocation().append(copier.getRelativePath()).toString();
+     javaWSDLParam.setOutputWsdlLocation(newPath);     
     } 
     catch (Exception e) {
       IStatus status = StatusUtils.errorStatus( NLS.bind(AxisConsumptionUIMessages.MSG_ERROR_WRITE_WSDL, new String[] { wsdlLocation }), e);
