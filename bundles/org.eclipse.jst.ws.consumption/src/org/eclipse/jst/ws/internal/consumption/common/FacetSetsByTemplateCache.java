@@ -11,10 +11,12 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner (creation)
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20070402 151943   sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.common;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -85,6 +87,7 @@ public class FacetSetsByTemplateCache
     }
     else
     {
+
       //Combinations have not yet been cached for the given template. 
       //Determine the combinations and cache them.
       IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
@@ -120,6 +123,7 @@ public class FacetSetsByTemplateCache
               versions.add(itr.next());
           }            
         }         
+        
         if (versions.size() > 0)
         {
           //Create an array of IProjectFacetVersions from versions.
@@ -133,12 +137,17 @@ public class FacetSetsByTemplateCache
           
           //Add the array of versions to the list of arrays.
           projectFacetVersionArrays.add((IProjectFacetVersion[])arrayOfVersionsList.toArray(new IProjectFacetVersion[0]));
+          
+
         }
       }
-      
-      IProjectFacetVersion[][] arrayOfProjectFacetVersionArrays = (IProjectFacetVersion[][])projectFacetVersionArrays.toArray(new IProjectFacetVersion[0][0]);
-      Set[] allValidCombinationsArray = FacetUtils.getFacetCombinations(arrayOfProjectFacetVersionArrays, true);
-      facetSetsByTemplateId_.put(templateId, allValidCombinationsArray);
+      Set[] allValidCombinationsArray = new HashSet[0];
+      if (projectFacetVersionArrays.size()>0) {
+    	  IProjectFacetVersion[][] arrayOfProjectFacetVersionArrays = (IProjectFacetVersion[][])projectFacetVersionArrays.toArray(new IProjectFacetVersion[0][0]);
+    	  allValidCombinationsArray = FacetUtils.getFacetCombinations(arrayOfProjectFacetVersionArrays, true);
+    	  facetSetsByTemplateId_.put(templateId, allValidCombinationsArray);
+      }
+     
       return allValidCombinationsArray;
     }    
   }  
