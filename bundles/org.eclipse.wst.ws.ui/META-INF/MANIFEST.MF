@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.ws.ui; singleton:=true
-Bundle-Version: 1.0.102.qualifier
+Bundle-Version: 1.0.103.qualifier
 Bundle-Activator: org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -10,6 +10,7 @@ Export-Package: org.eclipse.wst.ws.internal.ui;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.command;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.plugin;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.preferences;x-internal:=true,
+ org.eclipse.wst.ws.internal.ui.utils,
  org.eclipse.wst.ws.internal.ui.wsi.preferences;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.wsi.properties;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.wsrt;x-internal:=true
