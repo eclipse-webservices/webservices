@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070404   173877 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
@@ -98,8 +101,7 @@ public abstract class XSDGroupFragment extends XSDMapFragment implements IXSDGro
           paramsAssigned = true;
         }
         else if(groupMemberFrags[j] instanceof XSDGroupFragment) {
-        	Element[] childInstances = getInstanceDocumentPartition(instanceDocuments, i, groupMemberFrags[j].getXSDToFragmentConfiguration().getMaxOccurs());
-           	groupMemberFrags[j].setParameterValuesFromInstanceDocuments(childInstances);
+        	groupMemberFrags[j].setParameterValuesFromInstanceDocuments(instanceDocuments);
         }
         
         if (j == groupMemberFrags.length - 1) {
