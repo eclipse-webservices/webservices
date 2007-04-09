@@ -115,7 +115,7 @@ public class WebServicesParser
     {
       return getWSILDocumentVerbose(wsilURI, "UTF-8" );
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
     }
     return null;
@@ -203,7 +203,7 @@ public class WebServicesParser
     {
       return getWSDLDefinitionVerbose(wsdlURI);
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
     }
     return null;
@@ -278,7 +278,7 @@ public class WebServicesParser
       InputSource is = new InputSource(isr);
       parser.parse(is, headHandler);
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
     }
     String[] wsilURIs = headHandler.getWsils();
@@ -301,7 +301,7 @@ public class WebServicesParser
           {
             parseWSIL(absoluteURI, parseOption, byteEncoding );
           }
-          catch (Throwable t)
+          catch (Exception t)
           {
           }
         }
@@ -319,7 +319,7 @@ public class WebServicesParser
           {
             parseDISCO(discoURIs[i],parseOption);
           }
-          catch (Throwable t)
+          catch (Exception t)
           {
           }
         }
@@ -335,7 +335,7 @@ public class WebServicesParser
         // no exception thrown if uri_ is a WSIL document
         wsEntity.setType(WebServiceEntity.TYPE_WSIL);
       }
-      catch (Throwable t)
+      catch (Exception t)
       {
         // exception thrown if uri_ is not a WSIL document
         // then parse uri_ as a DISCO document.
@@ -345,7 +345,7 @@ public class WebServicesParser
           // no exception thrown if uri_ is a DISCO document
           wsEntity.setType(WebServiceEntity.TYPE_DISCO);
         }
-        catch (Throwable t2)
+        catch (Exception t2)
         {
           // exception thrown if uri_ is not a DISCO document
           // then parse uri_ as a WSDL document
@@ -355,7 +355,7 @@ public class WebServicesParser
             // no exception thrown if uri_ is a WSDL document
             wsEntity.setType(WebServiceEntity.TYPE_WSDL);
           }
-          catch (Throwable t3)
+          catch (Exception t3)
           {
             // exception thrown if uri_ is not a WSDL document
             // then do nothing

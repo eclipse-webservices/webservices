@@ -59,7 +59,7 @@ public abstract class FavoritesRegistryTypeAbstract implements IFavoritesRegistr
       wsilDoc.read(new FileReader(new File(path)));
       return wsilDoc;
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
       if (force)
       {
@@ -67,7 +67,7 @@ public abstract class FavoritesRegistryTypeAbstract implements IFavoritesRegistr
         {
           return WSILDocument.newInstance();
         }
-        catch (Throwable t2)
+        catch (Exception t2)
         {
           return null;
         }
