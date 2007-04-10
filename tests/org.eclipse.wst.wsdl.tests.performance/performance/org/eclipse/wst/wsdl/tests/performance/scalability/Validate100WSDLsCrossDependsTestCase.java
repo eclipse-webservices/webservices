@@ -41,7 +41,7 @@ public class Validate100WSDLsCrossDependsTestCase extends RunWSDLValidatorTestCa
 	    {
 	      super.execute();
 	    }
-	    catch (Throwable t)
+	    catch (Exception t)
 	    {
 	      fail(t.getMessage());
 	    }
