@@ -29,7 +29,7 @@
       <dynamicWizard
             name="%PLUGIN_NEW_WIZARD_NAME_WS_UNIT_TEST_UDDI"
             class="org.eclipse.jst.ws.internal.uddiregistry.widgets.binding.PrivateUDDIWidgetBinding"
-            iconbanner="icons/uddiprivateconfig_wiz.gif"
+            iconbanner="icons/wizban/uddiprivateconfig_wiz.png"
             id="org.eclipse.jst.ws.internal.uddiregistry.widgets.binding.PrivateUDDIWidgetBinding">
       </dynamicWizard>
    </extension>

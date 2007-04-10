@@ -57,7 +57,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/export_ws_wiz.gif"
+            iconbanner="icons/full/wizban/export_ws_wiz.png"
             name="%PLUGIN_EXPORT_WIZARD_NAME_WS"
             class="org.eclipse.jst.ws.internal.creation.ui.widgets.binding.ExportWSWidgetBinding"
             id="org.eclipse.jst.ws.consumption.ui.wsexport">
@@ -67,7 +67,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/export_ws_wiz.gif"
+            iconbanner="icons/full/wizban/export_ws_wiz.png"
             name="%PLUGIN_EXPORT_WIZARD_NAME_WS"
             class="org.eclipse.jst.ws.internal.creation.ui.widgets.binding.ExportWSWidgetBinding"
             id="org.eclipse.jst.ws.creation.ui.wizard.publish">

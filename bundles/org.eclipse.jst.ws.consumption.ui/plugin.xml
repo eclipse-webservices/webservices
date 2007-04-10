@@ -110,7 +110,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/full/wizban/webservicesclient_wiz.gif"
+            iconbanner="icons/full/wizban/webservicesclient_wiz.png"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ClientWidgetBinding"
             title="%WIZARD_TITLE_WSC"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard">
@@ -120,7 +120,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/gen_sample_wiz.gif"
+            iconbanner="icons/full/wizban/gen_sample_wiz.png"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.GenSampleWidgetBinding"
             title="%WIZARD_TITLE_WSC"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.gensamplewizard">
@@ -131,7 +131,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/config_handler_wiz.gif"
+            iconbanner="icons/full/wizban/config_handler_wiz.png"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ConfigServiceHandlersWidgetBinding"
             title="%LABEL_HANDLERS_CONFIG"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.service">
@@ -141,7 +141,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/config_handler_wiz.gif"
+            iconbanner="icons/full/wizban/config_handler_wiz.png"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ConfigClientHandlersWidgetBinding"
             title="%LABEL_HANDLERS_CONFIG"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
@@ -151,7 +151,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/config_handler_wiz.gif"
+            iconbanner="icons/full/wizban/config_handler_wiz.png"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ConfigureHandlersWidgetBinding"
             title="%LABEL_HANDLERS_CONFIG"
             id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers">
@@ -182,7 +182,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/import_ws_wiz.gif"
+            iconbanner="icons/full/wizban/import_ws_wiz.png"
             name="%PLUGIN_IMPORT_WIZARD_NAME_WS"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ImportWSWidgetBinding"
             id="org.eclipse.jst.ws.consumption.ui.wsimport">
@@ -206,7 +206,7 @@
    <extension
          point="org.eclipse.wst.command.env.dynamicWizard">
       <dynamicWizard
-            iconbanner="icons/wsil/import_wiz_banner_wsil.gif"
+            iconbanner="icons/full/wizban/import-wsil_wiz.png"
             name="%IMPORT_WIZARD_NAME_WSIL"
             class="org.eclipse.jst.ws.internal.consumption.ui.widgets.binding.ImportWSILWidgetBinding"
             id="org.eclipse.jst.ws.consumption.ui.wsilimport">
