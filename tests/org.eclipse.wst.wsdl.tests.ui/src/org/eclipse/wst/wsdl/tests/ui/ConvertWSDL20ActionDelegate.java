@@ -49,7 +49,7 @@ public class ConvertWSDL20ActionDelegate implements IActionDelegate
             IContainer folder = ifile.getParent();
             folder.refreshLocal(IResource.DEPTH_ONE,null);
 		    }
-        catch (Throwable e)
+        catch (Exception e)
 		    {
           e.printStackTrace();
 		    }

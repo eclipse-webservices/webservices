@@ -64,7 +64,7 @@ public class RegistryTests extends TestCase
 			System.out.println("Saving the Taxonomy model to "+file.getCanonicalPath());
 			registryService.saveTaxonomy(file.toURL(),taxonomy);
 		}
-		catch (Throwable exc)
+		catch (Exception exc)
 		{
 			exc.printStackTrace();
 			fail("Unexpected Throwable ["+exc.getMessage()+"]");
@@ -115,7 +115,7 @@ public class RegistryTests extends TestCase
 			System.out.println("Saving the Registry model to "+file.getCanonicalPath());
 			registryService.saveRegistry(file.toURL(),uddiRegistry);
 		}
-		catch (Throwable exc)
+		catch (Exception exc)
 		{
 			exc.printStackTrace();
 			fail("Unexpected Throwable ["+exc.getMessage()+"]");
@@ -200,7 +200,7 @@ public class RegistryTests extends TestCase
 			System.out.println("Saving the hockey Registry model");
 			regManager.saveRegistry(uddiRegistry);
 		}
-		catch (Throwable exc)
+		catch (Exception exc)
 		{
 			exc.printStackTrace();
 			fail("Unexpected Throwable ["+exc.getMessage()+"]");
@@ -262,7 +262,7 @@ public class RegistryTests extends TestCase
 				}
 			}					
 		}
-		catch(Throwable t)
+		catch(Exception t)
 		{
 			t.printStackTrace();
 			fail("Unexpected Throwable ["+t.getMessage()+"]");
