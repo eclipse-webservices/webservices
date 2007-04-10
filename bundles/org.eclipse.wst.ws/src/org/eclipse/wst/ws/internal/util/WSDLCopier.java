@@ -297,7 +297,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
 				// analyze the inlined schema at the current uri
 				analyzeXSD(uri, xsdSchema);
 			}
-			catch (Throwable t) {
+			catch (Exception t) {
 				// ignore any extensibility elements that cannot be parsed into a
 				// XSDSchema instance
 			}
@@ -500,7 +500,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
   				else
   					writeXMLObj(relPath, (XSDSchema) info.content, monitor);  					
   			}  			
-  		} catch (Throwable t) {
+  		} catch (Exception t) {
   			throw new CoreException(StatusUtils.errorStatus(
   					NLS.bind(WstWSPluginMessages.MSG_ERROR_COPY_WSDL, new String[] {sourceURI, targetFolder.toString()}), t));
   		}

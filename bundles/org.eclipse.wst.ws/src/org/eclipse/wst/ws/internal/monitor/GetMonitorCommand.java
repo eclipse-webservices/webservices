@@ -40,8 +40,7 @@ import org.eclipse.wst.server.core.util.SocketUtil;
 import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
-public class GetMonitorCommand extends AbstractDataModelOperation 
-{
+public class GetMonitorCommand extends AbstractDataModelOperation {
 	private boolean monitorService;
 
 	private boolean create;
@@ -57,41 +56,33 @@ public class GetMonitorCommand extends AbstractDataModelOperation
 		create = true;
 	}
 
-	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable ) 
-  {
-    IEnvironment env = getEnvironment();
-    
+	public IStatus execute(IProgressMonitor monitor, IAdaptable adaptable) {
+		IEnvironment env = getEnvironment();
+
 		endpoints = new Vector();
-		if (monitorService && webServicesParser != null && wsdlURI != null
-				&& wsdlURI.length() > 0) {
-			Definition definition = webServicesParser
-					.getWSDLDefinition(wsdlURI);
+		if (monitorService && webServicesParser != null && wsdlURI != null && wsdlURI.length() > 0) {
+			Definition definition = webServicesParser.getWSDLDefinition(wsdlURI);
 			if (definition != null) {
 				Map services = definition.getServices();
-				for (Iterator servicesIt = services.values().iterator(); servicesIt
-						.hasNext();) {
+				for (Iterator servicesIt = services.values().iterator(); servicesIt.hasNext();) {
 					Service service = (Service) servicesIt.next();
 					Map ports = service.getPorts();
-					for (Iterator portsIt = ports.values().iterator(); portsIt
-							.hasNext();) {
+					for (Iterator portsIt = ports.values().iterator(); portsIt.hasNext();) {
 						Port wsdlPort = (Port) portsIt.next();
 						List extElements = wsdlPort.getExtensibilityElements();
-						for (Iterator extElementsIt = extElements.iterator(); extElementsIt
-								.hasNext();) {
-							ExtensibilityElement extElement = (ExtensibilityElement) extElementsIt
-									.next();
+						for (Iterator extElementsIt = extElements.iterator(); extElementsIt.hasNext();) {
+							ExtensibilityElement extElement = (ExtensibilityElement) extElementsIt.next();
 							String endpoint = null;
 							URL endpointURL = null;
 							if (extElement instanceof SOAPAddress)
-								endpoint = ((SOAPAddress) extElement)
-										.getLocationURI();
+								endpoint = ((SOAPAddress) extElement).getLocationURI();
 							else if (extElement instanceof HTTPAddress)
-								endpoint = ((HTTPAddress) extElement)
-										.getLocationURI();
+								endpoint = ((HTTPAddress) extElement).getLocationURI();
 							if (endpoint != null) {
 								try {
 									endpointURL = new URL(endpoint);
-								} catch (MalformedURLException murle) {
+								}
+								catch (MalformedURLException murle) {
 								}
 							}
 							if (endpointURL != null) {
@@ -104,46 +95,32 @@ public class GetMonitorCommand extends AbstractDataModelOperation
 									else if ("https".equalsIgnoreCase(protocol))
 										port = 443;
 								}
-								if (protocol != null
-										&& protocol.startsWith("http")
-										&& host != null && host.length() > 0
-										&& port != -1) {
+								if (protocol != null && protocol.startsWith("http") && host != null && host.length() > 0 && port != -1) {
 									IMonitor m = null;
-									IMonitor[] monitors = MonitorCore
-											.getMonitors();
+									IMonitor[] monitors = MonitorCore.getMonitors();
 									for (int i = 0; i < monitors.length; i++) {
-										if (host.equalsIgnoreCase(monitors[i]
-												.getRemoteHost())
-												&& port == monitors[i]
-														.getRemotePort()) {
+										if (host.equalsIgnoreCase(monitors[i].getRemoteHost()) && port == monitors[i].getRemotePort()) {
 											m = monitors[i];
 											break;
 										}
 									}
 									if (m == null && create) {
-										int monitoredPort = SocketUtil
-												.findUnusedPort(5000, 15000);
-										IMonitorWorkingCopy monitorWorkingCopy = MonitorCore
-												.createMonitor();
-										monitorWorkingCopy
-												.setLocalPort(monitoredPort);
+										int monitoredPort = SocketUtil.findUnusedPort(5000, 15000);
+										IMonitorWorkingCopy monitorWorkingCopy = MonitorCore.createMonitor();
+										monitorWorkingCopy.setLocalPort(monitoredPort);
 										monitorWorkingCopy.setRemoteHost(host);
 										monitorWorkingCopy.setRemotePort(port);
 										monitorWorkingCopy.setProtocol("HTTP");
-										try 
-                    {
+										try {
 											m = monitorWorkingCopy.save();
-										} 
-                    catch (Throwable t) 
-                    {
-											IStatus warning = StatusUtils.warningStatus(
-													NLS.bind(WstWSPluginMessages.MSG_ERROR_UNABLE_TO_START_MONITOR,
-													new Object[] {String.valueOf(port),	endpoint }), t );
+										}
+										catch (Exception t) {
+											IStatus warning = StatusUtils.warningStatus(NLS.bind(WstWSPluginMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[]{String.valueOf(port), endpoint}), t);
 											try {
 												if (env != null)
-													env.getStatusHandler()
-															.report(warning);
-											} catch (StatusException se) {
+													env.getStatusHandler().report(warning);
+											}
+											catch (StatusException se) {
 											}
 										}
 									}
@@ -151,24 +128,19 @@ public class GetMonitorCommand extends AbstractDataModelOperation
 										try {
 											if (!m.isRunning())
 												m.start();
-											StringBuffer sb = new StringBuffer(
-													endpointURL.getProtocol());
+											StringBuffer sb = new StringBuffer(endpointURL.getProtocol());
 											sb.append("://localhost:");
-											sb.append(String.valueOf(m
-													.getLocalPort()));
+											sb.append(String.valueOf(m.getLocalPort()));
 											sb.append(endpointURL.getFile());
 											endpoints.add(sb.toString());
-										} 
-                    catch (Throwable t) 
-                    {
-											IStatus warning = StatusUtils.warningStatus(
-													NLS.bind(WstWSPluginMessages.MSG_ERROR_UNABLE_TO_START_MONITOR,
-													new Object[] {String.valueOf(port), endpoint }), t );
+										}
+										catch (Exception t) {
+											IStatus warning = StatusUtils.warningStatus(NLS.bind(WstWSPluginMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[]{String.valueOf(port), endpoint}), t);
 											try {
 												if (env != null)
-													env.getStatusHandler()
-															.report(warning);
-											} catch (StatusException se) {
+													env.getStatusHandler().report(warning);
+											}
+											catch (StatusException se) {
 											}
 										}
 									}

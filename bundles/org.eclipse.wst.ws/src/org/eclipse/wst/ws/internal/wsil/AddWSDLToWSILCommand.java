@@ -335,7 +335,7 @@ public class AddWSDLToWSILCommand extends AbstractDataModelOperation
       environment.getStatusHandler().reportError(status);
       return status;
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
       IStatus status = StatusUtils.errorStatus( WSILMessages.MSG_ERROR_UNEXPECTED_EXCEPTION, t);
       environment.getStatusHandler().reportError(status);
@@ -465,7 +465,7 @@ public class AddWSDLToWSILCommand extends AbstractDataModelOperation
     {
       return uriFactory.newURI(uri).asFile().toURL().toString();
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
       t.printStackTrace();
     }
@@ -510,7 +510,7 @@ public class AddWSDLToWSILCommand extends AbstractDataModelOperation
         return relativeURI.toString();
       }
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
     }
     return targetURI;

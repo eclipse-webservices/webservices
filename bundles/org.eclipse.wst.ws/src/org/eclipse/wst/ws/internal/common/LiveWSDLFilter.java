@@ -60,7 +60,7 @@ public class LiveWSDLFilter extends Thread
     {
       live_ = validateWSDL();
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
     	System.out.println("Throwing exception " + t.getMessage());
       live_ = false;
