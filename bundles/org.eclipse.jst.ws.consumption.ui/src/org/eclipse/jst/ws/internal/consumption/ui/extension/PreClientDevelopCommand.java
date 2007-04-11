@@ -14,6 +14,7 @@
  * 20060516   126965 kathy@ca.ibm.com - Kathy Chan
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070123   167487 makandre@ca.ibm.com - Andrew Mak
+ * 20070403   173654 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -25,6 +26,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -111,12 +113,12 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 
 		  // Create the client module if needed.
 		  IProject project = ProjectUtilities.getProject(project_);
+		  RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
 		  if (!project.exists())
 		  {
 			  boolean matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(clientRuntimeId_, moduleType_);
 			  if (matches)
 			  {  
-				  RequiredFacetVersion[] rfv = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId_).getRequiredFacetVersions();
 				  CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
 				  command.setProjectName(project_);
 				  command.setTemplateId(moduleType_);
@@ -130,6 +132,16 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 					  return status;
 				  }        
 			  }            
+		  } else {
+				// add facets required by Web service runtime
+		        if (rfv.length != 0) {
+		        	status = FacetUtils.addRequiredFacetsToProject(project, rfv, monitor);
+		        	if (status.getSeverity() == Status.ERROR)
+		        	{
+		        		environment.getStatusHandler().reportError( status );
+		        		return status;
+		        	}      
+		        }
 		  }        
 	  }
     return status;
