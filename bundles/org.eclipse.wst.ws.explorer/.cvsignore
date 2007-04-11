@@ -1,9 +1,0 @@
-bin
-build
-webapps
-temp.folder
-build.xml
-*.jar
-*.war
-explorersrc.zip
-javaCompiler.*.args
