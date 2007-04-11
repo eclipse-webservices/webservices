@@ -61,21 +61,19 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
       typeRuntimeServer_.setTypeId(typeIds[0]);
   } else {
 	  if (initialSelection_ != null && !initialSelection_.isEmpty())
-	    { 
-	      Object initialObject = initialSelection_.getFirstElement();
-	      if (initialObject != null)
-	      {
-	    	  Object adaptedObject = AdapterUtils.getAdaptedObject(initialObject);
-	    	  if (adaptedObject != null) {
-	    		  StringBuffer entrybuff = new StringBuffer();
-	    		  entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
-	    		  entrybuff.append("/");
-	    		  entrybuff.append("org.eclipse.jst.ws.wsImpl.java");
-	    		  String entry = entrybuff.toString();     
-	    		  typeRuntimeServer_.setTypeId(entry);
-	    	  }
-	      }
-	    }
+	  { 
+		  Object initialObject = initialSelection_.getFirstElement(); 
+		  // initialObject would not be null since !initialSelection_.isEmpty()
+		  Object adaptedObject = AdapterUtils.getAdaptedObject(initialObject);
+		  if (adaptedObject != null) {
+			  StringBuffer entrybuff = new StringBuffer();
+			  entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
+			  entrybuff.append("/");
+			  entrybuff.append("org.eclipse.jst.ws.wsImpl.java");
+			  String entry = entrybuff.toString();     
+			  typeRuntimeServer_.setTypeId(entry);
+		  }
+	  }
   }
     
     serviceGeneration_ = getScenarioContext().getGenerateWebService();

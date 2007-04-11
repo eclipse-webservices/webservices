@@ -101,7 +101,7 @@ public class PopupTestWSDL extends Action implements IActionDelegate
           	// Try looking up an adapter for the object.
         	// If found, update wsdlURL contains the adapted WSDL string.  
         	// If not found, wsdlURL would still be null.
-        	wsdlURL = getAdaptedWSDL(object);
+        	wsdlURL = AdapterUtils.getAdaptedWSDL(object);
         }
         
        addLaunchOptions(launchOptions, wsdlURL, stateLocation, defaultFavoritesLocation);        
@@ -145,14 +145,6 @@ public class PopupTestWSDL extends Action implements IActionDelegate
 
   public void selectionChanged(IAction action, ISelection selection)
   {
-  }
-  
-  /**
-   * @param object Look up an adapter mapping the object to IFile or String.
-   * @return The WSDL string returned by the adapter or null if no adapter is found.
-   */
-  public static String getAdaptedWSDL (Object object) {
-	  return AdapterUtils.getAdaptedWSDL(object);
   }
   
 }

@@ -13,6 +13,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
+import java.net.URI;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
@@ -25,39 +27,60 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 
+/**
+ * The WSCustomAdapterFactory is an AdapterFactory similar to one an adopter would provide to adapt a custom object 
+ * to a WSDL uri that the Web services wizards and the Web Services Explorer would take as input.  The Servlet Link, 
+ * representing the service implementation under the JSR-109 Web services branch of the J2EE Project Explorer, is 
+ * used as the "custom object" in this test.
+ *
+ */
 public class WSCustomAdapterFactory implements IAdapterFactory {
 
 	private static final Class[] types = {
 		IFile.class, String.class
 	};
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
+	 */
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		if (adaptableObject instanceof ServletLink) {
+		if (adaptableObject instanceof ServletLink && ((adapterType == IFile.class ) || (adapterType == String.class))) {
 			System.out.println("getAdapter on "+adaptableObject.toString());
 			ServletLink beanLink = (ServletLink) adaptableObject;
-			
+
 			IFile wsdlFile = getWSDLFile(beanLink);
 			System.out.println("wsdlFile = "+wsdlFile);
 			if (adapterType == IFile.class) {
 				return wsdlFile;
 			} else 
 				if (adapterType == String.class) {
-				String wsdlFileString = wsdlFile.getLocationURI().toString();
-				System.out.println("wsdlFileString = "+wsdlFileString);
-				return wsdlFileString;
+					URI wsdlUri = wsdlFile.getLocationURI();
+					String wsdlFileString = null;
+					if (wsdlUri != null) {
+						wsdlFileString = wsdlUri.toString();
+						System.out.println("wsdlFileString = "+wsdlFileString);
+					}
+					return wsdlFileString;
 				} else {
 					return null;
 				}
-			}
+		}
 		else {
 			return null;
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
+	 */
 	public Class[] getAdapterList() {
 		return types;
 	}
 	
+	/**
+	 * @param bean The ServiceImplBean
+	 * @return The IFile representing the WSDL file for this ServiceImplBean.
+	 */
 	private IFile getWSDLFile(ServiceImplBean bean) {
 		  EObject eObject = bean.eContainer();
 		  if (eObject == null)
@@ -78,7 +101,11 @@ public class WSCustomAdapterFactory implements IAdapterFactory {
 		  return null;
 	  }
 	  
-	  private IFile getWSDLFile(ServletLink link) {
+	  /**
+	 * @param link The ServletLink
+	 * @return The IFile representing the WSDL file for this ServletLink
+	 */
+	private IFile getWSDLFile(ServletLink link) {
 		  EObject eObject = link.eContainer();
 		  if (eObject instanceof ServiceImplBean)
 			  return getWSDLFile((ServiceImplBean) eObject);

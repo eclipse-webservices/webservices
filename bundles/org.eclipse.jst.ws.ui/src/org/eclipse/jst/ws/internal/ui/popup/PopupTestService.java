@@ -24,6 +24,7 @@ import org.eclipse.wst.ws.internal.explorer.LaunchOption;
 import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL;
+import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
 
 
 public class PopupTestService extends PopupTestWSDL
@@ -59,7 +60,7 @@ public class PopupTestService extends PopupTestWSDL
           	// Try looking up an adapter for the object.
         	// If found, update wsdlURL contains the adapted WSDL string.  
         	// If not found, wsdlURL would still be null.
-        	wsdlURL = getAdaptedWSDL(object);
+        	wsdlURL = AdapterUtils.getAdaptedWSDL(object);
         }
         
         addLaunchOptions(launchOptions, wsdlURL, stateLocation, defaultFavoritesLocation);

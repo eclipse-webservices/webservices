@@ -13,22 +13,24 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.utils;
 
-import java.io.File;
-import java.net.MalformedURLException;
+import java.net.URI;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Platform;
 
+/**
+ * The AdapterUtils class provides utility methods to get objects from the Platform's adapter extension.
+ *
+ */
 public class AdapterUtils {	
 	
 	/**
-	 * @param object Object to adapte
+	 * @param object Object to adapt
 	 * @return The adapted object representing the file or String if an adapter is found. 
 	 *         Returns null if an adapter is not found.
 	 */
 	public static Object getAdaptedObject (Object object) { 
-		Object adaptedObject = null;
-		adaptedObject = Platform.getAdapterManager().loadAdapter(object, "org.eclipse.core.resources.IFile");
+		Object adaptedObject = Platform.getAdapterManager().loadAdapter(object, "org.eclipse.core.resources.IFile");
 		if (adaptedObject == null) {
 			adaptedObject = Platform.getAdapterManager().loadAdapter(object, "java.lang.String");
 		}
@@ -37,28 +39,24 @@ public class AdapterUtils {
 	
 	/**
 	   * @param object Look up an adapter mapping the object to IFile or String.
-	   * @return The WSDL string returned by the adapter or null if no adapter is found.
+	   * @return The WSDL uri returned by the adapter or null if no adapter is found.
 	   */
 	  public static String getAdaptedWSDL (Object object) {
-		  String wsdlURL = null;
+		  String wsdlURI = null;
 		  Object adaptedObject = AdapterUtils.getAdaptedObject(object);
 		  if ( adaptedObject != null) {
 			  if (adaptedObject instanceof IFile)
 			  {
-				  File wsdlFile = ((IFile)adaptedObject).getLocation().toFile();
-				  try
-				  {
-					  wsdlURL = wsdlFile.toURL().toString();
+				  URI uri = ((IFile)adaptedObject).getLocationURI();
+				  if (uri != null) {
+					  wsdlURI = uri.toString();
 				  }
-				  catch (MalformedURLException murle)
-				  {
-					  wsdlURL = wsdlFile.toString();
-				  }
+				  
 			  } else if (adaptedObject instanceof String) {
-				  wsdlURL = (String) adaptedObject;
+				  wsdlURI = (String) adaptedObject;
 			  }
 		  }
-		  return wsdlURL;
+		  return wsdlURI;
 	  }
 	
 }
