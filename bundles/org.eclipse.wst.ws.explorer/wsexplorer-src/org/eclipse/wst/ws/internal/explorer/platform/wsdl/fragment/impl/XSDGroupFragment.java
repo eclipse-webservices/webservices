@@ -98,8 +98,7 @@ public abstract class XSDGroupFragment extends XSDMapFragment implements IXSDGro
           paramsAssigned = true;
         }
         else if(groupMemberFrags[j] instanceof XSDGroupFragment) {
-        	Element[] childInstances = getInstanceDocumentPartition(instanceDocuments, i, groupMemberFrags[j].getXSDToFragmentConfiguration().getMaxOccurs());
-           	groupMemberFrags[j].setParameterValuesFromInstanceDocuments(childInstances);
+        	groupMemberFrags[j].setParameterValuesFromInstanceDocuments(instanceDocuments);
         }
         
         if (j == groupMemberFrags.length - 1) {
