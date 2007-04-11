@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -996,7 +996,7 @@ public class WSDLDocument
     catch (Exception e)
     {
       //the call above fails if there is no qualified namespace for the element name
-      elementName = new QName(null, DOMUtils.getAttribute(partEl, "element"));
+      elementName = new QName(null, DOMUtils.getAttribute(partEl, Constants.ATTR_ELEMENT));
     }
 
     QName typeName;
@@ -1009,7 +1009,7 @@ public class WSDLDocument
     catch (Exception e)
     {
       //the call above fails if there is no qualified namespace for the element attribute
-      typeName = new QName(null, DOMUtils.getAttribute(partEl, "name"));
+      typeName = new QName(null, DOMUtils.getAttribute(partEl, Constants.ATTR_TYPE));
     }
 
     if (name != null)

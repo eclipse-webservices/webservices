@@ -642,10 +642,10 @@ public class PartImpl extends ExtensibleElementImpl implements Part
     }
 
     String elementAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.ELEMENT_ATTRIBUTE);
-    setElementName(elementAttr != null ? createQName(definition, elementAttr, element) : null);
+    setElementName(elementAttr != null ? createQName(definition, elementAttr, element, true) : null);
 
     String typeAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.TYPE_ATTRIBUTE);
-    setTypeName(typeAttr != null ? createQName(definition, typeAttr, element) : null);
+    setTypeName(typeAttr != null ? createQName(definition, typeAttr, element, true) : null);
 
     reconcileReferences(false);
   }
