@@ -11,23 +11,21 @@
  * -------- -------- -----------------------------------------------------------
  * 20070112   165721 makandre@ca.ibm.com - Andrew Mak, WSDL import cannot use relative import with to parent directories
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
+ * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import javax.wsdl.Definition;
 
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
-import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
 import org.eclipse.wst.ws.internal.util.WSDLCopier;
 
 /**
@@ -40,10 +38,6 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
   private String destinationURI;
   private Definition def;
   private String wsdlRelPath;
-
-  private IFolder toFolder(String path) {	  
-	  return ResourceUtils.getWorkspaceRoot().getFolder(new Path(UniversalPathTransformer.toPath(path)));	  
-  }
   
   /**
    * Execute the command
@@ -56,7 +50,7 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
     {
       WSDLCopier copier = new WSDLCopier(webServicesParser);        
       copier.setSourceURI(wsdlURI, def);
-      copier.setTargetFolder(toFolder(getBaseURI(destinationURI)));
+      copier.setTargetFolderURI(getBaseURI(destinationURI));
       copier.setTargetFilename(getLocalname(destinationURI));
         
       ResourceUtils.getWorkspace().run(copier, monitor);

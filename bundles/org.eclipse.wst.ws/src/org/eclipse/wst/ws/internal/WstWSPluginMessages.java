@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060420   120714 kathy@ca.ibm.com - Kathy Chan
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak
+ * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
  *******************************************************************************/
 package org.eclipse.wst.ws.internal;
 
@@ -42,7 +43,6 @@ public final class WstWSPluginMessages extends NLS {
 	
 	public static String MSG_ERROR_COPY_WSDL;
 	public static String MSG_ERROR_TARGET_FOLDER_NOT_SPECIFIED;
-	public static String MSG_ERROR_TARGET_FOLDER_NOT_FOUND;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WstWSPluginMessages.class);

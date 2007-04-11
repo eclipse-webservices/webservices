@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070126   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
+ * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
  *******************************************************************************/
 
 package org.eclipse.wst.ws.tests.unittest;
@@ -40,6 +41,7 @@ public class WSDLCopierTests extends TestCase {
 	private static final String WSDL_FOLDER1 = "wsdl1";
 	private static final String WSDL_FOLDER2 = "wsdl2";
 	private static final String WSDL_FOLDER3 = "wsdl3";
+	private static final String WSDL_FOLDER4 = "wsdl4";
 	
 	private IProject project;
 
@@ -55,6 +57,7 @@ public class WSDLCopierTests extends TestCase {
 		suite.addTest(new WSDLCopierTests("testCase3"));
 		suite.addTest(new WSDLCopierTests("testCase4"));
 		suite.addTest(new WSDLCopierTests("testCase5"));
+		suite.addTest(new WSDLCopierTests("testCase6"));
 		return suite;
 	}
 		
@@ -131,15 +134,17 @@ public class WSDLCopierTests extends TestCase {
 			url = FileLocator.toFileURL(url);
 			
 			IFolder folder = createFolder(WSDL_FOLDER1);
+			String folderURI = "platform:/resource" + folder.getFullPath();
 			
 			System.out.println("Copying from: " + url);
-			System.out.println("Copying to:   " + folder.getFullPath());
+			System.out.println("Copying to:   " + folderURI);
 			
 			WSDLCopier copier = new WSDLCopier();
 			copier.setSourceURI(url.toString());
-			copier.setTargetFolder(folder);
+			copier.setTargetFolderURI(folderURI);
 			
 			ResourcesPlugin.getWorkspace().run(copier, null);
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 			
 			validate(folder, "start.wsdl");
 			assertEquals(copier.getRelativePath().toString(), "1/2a/start.wsdl");
@@ -160,20 +165,21 @@ public class WSDLCopierTests extends TestCase {
 	public void testCase2() {
 		try {
 			IResource resource = project.getFolder(WSDL_FOLDER1).findMember("1/2a/start.wsdl");
+			IFolder folder = createFolder(WSDL_FOLDER2);			
 			
-			String path = "platform:/resource" + resource.getFullPath(); 						
-			
-			IFolder folder = createFolder(WSDL_FOLDER2);
+			String path = "platform:/resource" + resource.getFullPath(); 									
+			String folderURI = folder.getLocationURI().toString();
 			
 			System.out.println("Copying from: " + path);
-			System.out.println("Copying to:   " + folder.getFullPath());
+			System.out.println("Copying to:   " + folderURI);
 			
 			WSDLCopier copier = new WSDLCopier();
 			copier.setSourceURI(path);			
-			copier.setTargetFolder(folder);
+			copier.setTargetFolderURI(folderURI);
 			copier.setTargetFilename("newname.wsdl");
 			
 			ResourcesPlugin.getWorkspace().run(copier, null);
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 			
 			validate(folder, "newname.wsdl");
 			assertEquals(copier.getRelativePath().toString(), "1/2a/newname.wsdl");
@@ -194,11 +200,13 @@ public class WSDLCopierTests extends TestCase {
 		try {			
 			IFolder folder = createFolder(WSDL_FOLDER3);
 			
+			String folderURI = folder.getLocationURI().toString();
+			
 			System.out.println("Copying from: N/A");
-			System.out.println("Copying to:   " + folder.getFullPath());
+			System.out.println("Copying to:   " + folderURI);
 			
 			WSDLCopier copier = new WSDLCopier();
-			copier.setTargetFolder(folder);			
+			copier.setTargetFolderURI(folderURI);			
 			
 			try {
 				ResourcesPlugin.getWorkspace().run(copier, null);
@@ -218,9 +226,44 @@ public class WSDLCopierTests extends TestCase {
 
 	/**
 	 * Test case #4
-	 * - runs the WSDLCopier without specifying a target folder (operation should fail)
+	 * - runs the WSDLCopier without creating a target folder
 	 */
 	public void testCase4() {
+		try {
+			IResource resource = project.getFolder(WSDL_FOLDER1).findMember("1/2a/start.wsdl");
+			IFolder folder = project.getFolder(WSDL_FOLDER4);
+						
+			String path = resource.getLocationURI().toString();
+			String folderURI = "platform:/resource" + folder.getFullPath();
+			
+			System.out.println("Copying from: " + path);
+			System.out.println("Copying to:   " + folderURI);
+			assertTrue(!folder.exists());
+			
+			WSDLCopier copier = new WSDLCopier();
+			copier.setSourceURI(path);
+			copier.setTargetFolderURI(folderURI);
+			
+			ResourcesPlugin.getWorkspace().run(copier, null);
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+			
+			assertTrue(folder.exists());
+			validate(folder, "start.wsdl");
+			assertEquals(copier.getRelativePath().toString(), "1/2a/start.wsdl");
+			
+			System.out.println("Success!");
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			assertTrue(e.getMessage(), false);			
+		}
+	}
+	
+	/**
+	 * Test case #5
+	 * - runs the WSDLCopier without specifying a target folder (operation should fail)
+	 */
+	public void testCase5() {
 		try {
 			IResource resource = project.getFolder(WSDL_FOLDER1).findMember("1/2a/start.wsdl");
 			
@@ -249,26 +292,28 @@ public class WSDLCopierTests extends TestCase {
 	}
 	
 	/**
-	 * Test case #5
+	 * Test case #6
 	 * - copies wsdl from one folder onto itself using platform:/resource URI
 	 */
-	public void testCase5() {
+	public void testCase6() {
 		try {
 			IFolder folder = project.getFolder(WSDL_FOLDER1);
 			IResource resource = folder.findMember("1/2a/start.wsdl");
 			
 			String path = "platform:/resource" + resource.getFullPath(); 						
+			String folderURI = folder.getLocationURI().toString();
 									
 			System.out.println("Copying from: " + path);
-			System.out.println("Copying to:   " + folder.getFullPath());
+			System.out.println("Copying to:   " + folderURI);
 			
 			WSDLCopier copier = new WSDLCopier();
 			copier.setSourceURI(path);			
-			copier.setTargetFolder(folder);			
+			copier.setTargetFolderURI(folderURI);			
 
 			long[] oldTimestamps = validateTimestamps(folder, null);
 			
 			ResourcesPlugin.getWorkspace().run(copier, null);
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 			
 			validate(folder, "start.wsdl");
 			validateTimestamps(folder, oldTimestamps);

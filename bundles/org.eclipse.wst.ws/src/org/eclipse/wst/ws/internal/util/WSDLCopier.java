@@ -10,14 +10,14 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
+ * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Iterator;
@@ -41,9 +41,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -51,6 +48,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.common.environment.EnvironmentService;
+import org.eclipse.wst.common.environment.uri.IURIScheme;
+import org.eclipse.wst.common.environment.uri.SimpleURIFactory;
+import org.eclipse.wst.common.environment.uri.URIException;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
@@ -66,7 +67,7 @@ import org.w3c.dom.Element;
 
 /**
  * <p>This is a utility class that can be used to copy a WSDL file and its relative imports
- * (both wsdl:import and xsd:import) to a folder in the workspace.  The code will analyze
+ * (both wsdl:import and xsd:import) to a folder in the filesystem.  The code will analyze
  * the directory structure and does the following:
  * <ol>
  *    <li>find all files that needs to be copied and tag them as such.</li>
@@ -116,13 +117,15 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	private String sourceURI			= "";					// uri of the starting wsdl
 	private Definition definition		= null;					// representation of the starting wsdl
 	
-	private IFolder targetFolder		= null;					// the folder to copy to
+	private String targetFolderURI		= null;					// uri of the folder to copy to
 	private String targetFilename		= null;					// optional new filename for the starting wsdl
 	
 	private IPath pathPrefix			= null;  				// the shortest common path of all files we need to copy
 	private IPath wsdlRelPath			= null;					// relative path of the starting wsdl to the target folder
 		
 	private Map xmlObjectInfos			= new LinkedHashMap();	// table to store info about the files we need to copy
+	
+	private SimpleURIFactory uriFactory = null;
 	
 	/**
 	 * Default constructor.  A new WebServicesParser is constructed for use.
@@ -141,6 +144,12 @@ public class WSDLCopier implements IWorkspaceRunnable {
 			this.parser = new WebServicesParser();
 		else
 			this.parser = parser;
+		
+		IURIScheme eclipseScheme = EnvironmentService.getEclipseScheme();
+	    IURIScheme fileScheme    = EnvironmentService.getFileScheme();
+	    uriFactory = new SimpleURIFactory();
+	    uriFactory.registerScheme("platform", eclipseScheme);
+	    uriFactory.registerScheme("file", fileScheme);
 	}
 
 	/**
@@ -170,15 +179,18 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	}
 	
 	/**
-	 * Specify the target folder for WSDLCopier to copy the wsdl to.  The entire
-	 * directory structure with all the files that the wsdl imports will be duplicated
-	 * under this folder.  The target folder must be specified before the copying
-	 * code runs and it the folder must exist. 
+	 * Specify the target folder URI for WSDLCopier to copy the wsdl to.  The URI must be
+	 * an absolute URI with a valid protocol.  Both file:/ and platform:/resource protocol
+	 * are acceptable.  The entire directory structure with all the files that the wsdl 
+	 * imports will be duplicated under this folder.  If the target folder does not exist, 
+	 * it will be created. 
 	 * 
-	 * @param folder The target folder where the wsdl structure is copied to.
+	 * @param uri The target folder URI where the wsdl structure is copied to.
 	 */
-	public void setTargetFolder(IFolder folder) {
-		targetFolder = folder;
+	public void setTargetFolderURI(String uri) {
+		if (uri != null)
+			uri = uri.replace('\\', '/');
+		targetFolderURI = uri;
 	}
 	
 	/**
@@ -370,56 +382,38 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	}
 		
 	/*
-	 * Creates a folder including its parent folders.
+	 * Appends a path to a URI and returns the new combined URI.
 	 */
-	private void createFolder(IContainer folder, IProgressMonitor monitor) throws CoreException {
-	
-		if (!(folder instanceof IFolder) || folder.exists())
-			return;
-		
-		createFolder(folder.getParent(), monitor);
-		
-		((IFolder) folder).create(true, true, monitor);
-	}
-	
-	/*
-	 * Write the bytes to the file.  The file is created if it does not exist.  It is replaced
-	 * if it already exist.
-	 */
-	private void writeFile(IFile file, byte[] bytes, IProgressMonitor monitor) throws CoreException {
-		
-		createFolder(file.getParent(), monitor);
-		
-		if (file.exists())
-	    	file.setContents(new ByteArrayInputStream(bytes), true, true, monitor);
-	    else
-	    	file.create(new ByteArrayInputStream(bytes), true, monitor);
+	private String appendPathToURI(String uri, IPath path) {
+		if (uri.endsWith("/"))
+			return uri + path.makeRelative();
+		else
+			return uri + path.makeAbsolute();
 	}
 	
 	/*
 	 * Writes the wsdl definition to the file at the given path, relative to the target folder.
 	 */
-	private IFile writeXMLObj(IPath path, Definition definition, IProgressMonitor monitor) throws
-		WSDLException, IOException, CoreException {				
+	private String writeXMLObj(IPath path, Definition definition, IProgressMonitor monitor) throws
+		WSDLException, URIException, IOException, CoreException {				
 			  
 	    WSDLFactory wsdlFactory = new WSDLFactoryImpl();	    
 	    WSDLWriter wsdlWriter = wsdlFactory.newWSDLWriter();
 	    
-	    ByteArrayOutputStream os = new ByteArrayOutputStream();
+	    String targetURI = appendPathToURI(targetFolderURI, path);
+	    
+	    OutputStream os = uriFactory.newURI(targetURI).getOutputStream();	    
 	    wsdlWriter.writeWSDL(definition, os);
 	    os.close();
-	    	    
-	    IFile targetFile = targetFolder.getFile(path);
-	    writeFile(targetFile, os.toByteArray(), monitor);
 	    
-	    return targetFile;
+	    return targetURI;
 	}
   
 	/*
 	 * Writes the xsd schema to the file at the given path, relative to the target folder.
 	 */
-	private IFile writeXMLObj(IPath path, XSDSchema xsdSchema, IProgressMonitor monitor) throws
-		TransformerConfigurationException, TransformerException, IOException, CoreException {			
+	private String writeXMLObj(IPath path, XSDSchema xsdSchema, IProgressMonitor monitor) throws
+		TransformerConfigurationException, TransformerException, URIException, IOException, CoreException {			
 		
 		Transformer serializer = TransformerFactory.newInstance().newTransformer();
 		serializer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -429,28 +423,29 @@ public class WSDLCopier implements IWorkspaceRunnable {
 		Element e = xsdSchema.getElement();
 		DOMSource domSource = new DOMSource(e);		
 		
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		String targetURI = appendPathToURI(targetFolderURI, path);
+		
+		OutputStream os = uriFactory.newURI(targetURI).getOutputStream();
 		serializer.transform(domSource, new StreamResult(os));
 		os.close();
 		
-		IFile targetFile = targetFolder.getFile(path);
-		writeFile(targetFile, os.toByteArray(), monitor);
-		
-		return targetFile;
+		return targetURI;
 	}  
 
 	/*
-	 * Compares the 2 uris and see if they point to the same file.  uri1 could
-	 * be a platform uri, while uri2 is always a filesystem uri.  Therefore,
-	 * we need to convert uri1 to filesystem uri in order to compare.
+	 * Compares the 2 uris and see if they point to the same file. 
+	 * We need to convert both uris to filesystem uris in order to compare.
 	 */	
-	private boolean isSameLocation(URI uri1, URI uri2) {
+	private boolean isSameLocation(String uri1, String uri2) {
 
 		// if either uri is null, we cannot make any meaningful comparison
 		if (uri1 == null || uri2 == null)
 			return false;
 		
-		return UniversalPathTransformer.toLocation(uri1.toString()).equals(uri2.toString());
+		uri1 = UniversalPathTransformer.toLocation(uri1);
+		uri2 = UniversalPathTransformer.toLocation(uri2);
+		
+		return uri1.equals(uri2);
 	}
 	
 	/**
@@ -458,20 +453,16 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	 * 
 	 * @param monitor An optional progress monitor.
 	 * @throws CoreException Thrown if the copying is unsuccessful.  Possible causes include:
-	 * target folder was not specified; target folder does not exist; source URI has incorrect
-	 * format; problem parsing wsdl or xsd documents; problem writing to filesystem.
+	 * target folder URI was not specified; source URI has incorrect format; problem parsing wsdl 
+	 * or xsd documents; problem writing to filesystem.
 	 */
 	public void run(IProgressMonitor monitor) throws CoreException {
 		
 		xmlObjectInfos.clear();
 
-		// target folder must be set and exist
-		if (targetFolder == null)
+		// target folder must be set
+		if (targetFolderURI == null)
 			throw new CoreException(StatusUtils.errorStatus(WstWSPluginMessages.MSG_ERROR_TARGET_FOLDER_NOT_SPECIFIED));		
-		else if (!targetFolder.exists()) {
-			throw new CoreException(StatusUtils.errorStatus(
-					NLS.bind(WstWSPluginMessages.MSG_ERROR_TARGET_FOLDER_NOT_FOUND, new String[] {targetFolder.toString()})));
-		}
 				
   		try {  			
   			URI uri = new URI(URIEncoder.encode(sourceURI, "UTF-8"));  			
@@ -492,9 +483,9 @@ public class WSDLCopier implements IWorkspaceRunnable {
   					if (definition == this.definition)
   						wsdlRelPath = relPath;
 
-  					IFile file = writeXMLObj(relPath, definition, monitor);
+  					String targetURI = writeXMLObj(relPath, definition, monitor);
   					
-  					if (definition == this.definition && isSameLocation(uri, file.getLocationURI()))
+  					if (definition == this.definition && isSameLocation(uri.toString(), targetURI))
   						return;
   				}
   				else
@@ -502,7 +493,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
   			}  			
   		} catch (Exception t) {
   			throw new CoreException(StatusUtils.errorStatus(
-  					NLS.bind(WstWSPluginMessages.MSG_ERROR_COPY_WSDL, new String[] {sourceURI, targetFolder.toString()}), t));
+  					NLS.bind(WstWSPluginMessages.MSG_ERROR_COPY_WSDL, new String[] {sourceURI, targetFolderURI}), t));
   		}
 	}
 	
