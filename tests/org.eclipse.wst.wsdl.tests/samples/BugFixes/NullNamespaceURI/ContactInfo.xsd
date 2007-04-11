@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.example.org/ContactInfo"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:element name="phoneNumber">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="areaCode" type="xsd:int" />
+				<xsd:element name="number" type="xsd:int" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:complexType name="addressType">
+		<xsd:sequence>
+			<xsd:element name="street" type="xsd:string" />
+			<xsd:element name="city" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>
+

@@ -996,7 +996,7 @@ public class WSDLDocument
     catch (Exception e)
     {
       //the call above fails if there is no qualified namespace for the element name
-      elementName = new QName(null, DOMUtils.getAttribute(partEl, "element"));
+      elementName = new QName(null, DOMUtils.getAttribute(partEl, Constants.ATTR_ELEMENT));
     }
 
     QName typeName;
@@ -1009,7 +1009,7 @@ public class WSDLDocument
     catch (Exception e)
     {
       //the call above fails if there is no qualified namespace for the element attribute
-      typeName = new QName(null, DOMUtils.getAttribute(partEl, "name"));
+      typeName = new QName(null, DOMUtils.getAttribute(partEl, Constants.ATTR_TYPE));
     }
 
     if (name != null)
