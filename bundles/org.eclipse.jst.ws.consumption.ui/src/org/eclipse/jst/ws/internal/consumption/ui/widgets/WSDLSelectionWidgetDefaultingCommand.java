@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20070410   181827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -71,7 +72,10 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   	  {
   	    uri = (String)firstSel;
   	  } else {
-  		  uri = AdapterUtils.getAdaptedWSDL(firstSel);
+  		String adaptedUri = AdapterUtils.getAdaptedWSDL(firstSel);
+  		if (adaptedUri != null) {
+  			uri = adaptedUri;
+  		}
   	  }
   	  
   	  uri = transformer_.toPath(uri);
