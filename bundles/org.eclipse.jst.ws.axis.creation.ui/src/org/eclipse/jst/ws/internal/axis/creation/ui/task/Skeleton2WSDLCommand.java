@@ -14,6 +14,7 @@
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  * 20070112   165721 makandre@ca.ibm.com - Andrew Mak, WSDL import cannot use relative import with to parent directories
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
+ * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -176,12 +177,12 @@ public class Skeleton2WSDLCommand extends AbstractDataModelOperation
 			 
      }
 
-     IFolder folder  = ResourceUtils.getWorkspaceRoot().getFolder(outputFile.getParent().getFullPath());
+     String folder   = outputFile.getParent().getLocation().toFile().toURL().toString();
      String filename = outputFile.getName();
 	
      WSDLCopier copier = new WSDLCopier(webServicesParser);
      copier.setSourceURI(wsdlURL, definition);
-     copier.setTargetFolder(folder);
+     copier.setTargetFolderURI(folder);
      copier.setTargetFilename(filename);
 	
      ResourceUtils.getWorkspace().run(copier, monitor);
