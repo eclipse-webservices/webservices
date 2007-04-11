@@ -19,6 +19,7 @@
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
+ * 20070319	  159458 mahutch@ca.ibm.com - Mark Hutchinson added in some null checks
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -363,24 +364,30 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
       //If a server of the preferred server type is present, check that one first
       for (int j = 0; j < servers.length; j++)
       {
-        String serverFactoryId = servers[j].getServerType().getId();
-        if (serverFactoryId == preferredServerFactoryId)
-        {
-          if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId_, serverFactoryId))
-          {
-            return servers[j];
-          }
-        }                
+    	if (servers[j] != null && servers[j].getServerType() != null)
+    	{
+	        String serverFactoryId = servers[j].getServerType().getId();
+	        if (serverFactoryId == preferredServerFactoryId)
+	        {
+	          if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId_, serverFactoryId))
+	          {
+	            return servers[j];
+	          }
+	        }  
+    	}
       }
       
       //A server of the preferred server type could not be found or did not match. Check all the existing servers.    
       for (int i = 0; i < servers.length; i++)
       {
-        String serverFactoryId = servers[i].getServerType().getId();
-        if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId_, serverFactoryId))
-        {
-          return servers[i];
-        }
+    	if (servers[i] != null && servers[i].getServerType() != null)
+    	{
+	        String serverFactoryId = servers[i].getServerType().getId();
+	        if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId_, serverFactoryId))
+	        {
+	          return servers[i];
+	        }
+    	}
       }
     }
     return null;    
