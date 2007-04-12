@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.wsdl.OperationType;
 import javax.wsdl.extensions.ExtensibilityElement;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
@@ -194,14 +193,6 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testTypesExtensibility();
-      }
-    });
-
-    suite.addTest(new BugFixesTest("AllowNullNamespaceURI") //$NON-NLS-1$
-    {
-      protected void runTest()
-      {
-        testAllowNullNamespaceURI();
       }
     });
 
@@ -876,64 +867,5 @@ public class BugFixesTest extends TestCase
     elementType = extensibilityElement.getElementType();
     assertEquals(otherTypesNamespace, elementType.getNamespaceURI());
     assertEquals("typeDef", elementType.getLocalPart()); //$NON-NLS-1$    
-  }
-
-  /**
-   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=178555
-   */
-  public void testAllowNullNamespaceURI()
-  {
-    Definition definition = null;
-
-    try
-    {
-      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/NullNamespaceURI/ContactInfoService.wsdl", true); //$NON-NLS-1$
-    }
-    catch (IOException e)
-    {
-      fail(e.getMessage());
-    }
-
-    String targetNamespace = "http://www.example.org/ContactInfoService"; //$NON-NLS-1$
-
-    // The element declaration for the output message part is specified in a
-    // schema with no target namespace. It should resolve fine and have a null
-    // namespace URI.
-
-    QName output1QName = new QName(targetNamespace, "updatePhoneNumberResponseMsg"); //$NON-NLS-1$
-    Message output1Message = (Message)definition.getMessage(output1QName);
-    assertNotNull(output1Message);
-
-    Part part1 = (Part)output1Message.getPart("output1"); //$NON-NLS-1$
-    assertNotNull(part1);
-
-    QName output2ElementName = part1.getElementName();
-    assertNotNull(output2ElementName);
-    assertEquals(XMLConstants.NULL_NS_URI, output2ElementName.getNamespaceURI());
-
-    XSDElementDeclaration output2ElementDeclaration = part1.getElementDeclaration();
-    assertNotNull(output2ElementDeclaration);
-    assertNotNull(output2ElementDeclaration.getContainer());
-    assertNull(output2ElementDeclaration.getTargetNamespace());
-
-    // The type definition for the output message part is specified in a
-    // schema with no target namespace. It should resolve fine and have a null
-    // namespace URI.
-
-    QName output2QName = new QName(targetNamespace, "updateAddressResponseMsg"); //$NON-NLS-1$
-    Message output2Message = (Message)definition.getMessage(output2QName);
-    assertNotNull(output2Message);
-
-    Part part2 = (Part)output2Message.getPart("output2"); //$NON-NLS-1$
-    assertNotNull(part1);
-
-    QName output2TypeName = part2.getTypeName();
-    assertNotNull(output2TypeName);
-    assertEquals(XMLConstants.NULL_NS_URI, output2TypeName.getNamespaceURI());
-
-    XSDTypeDefinition output2TypeDefinition = part2.getTypeDefinition();
-    assertNotNull(output2TypeDefinition);
-    assertNotNull(output2TypeDefinition.getContainer());
-    assertNull(output2TypeDefinition.getTargetNamespace());
   }
 }
