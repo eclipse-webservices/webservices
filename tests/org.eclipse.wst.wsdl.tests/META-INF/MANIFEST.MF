@@ -6,7 +6,8 @@ Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: org.eclipse.wst.wsdl.tests.WSDLTestsPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.apache.xerces,
+ org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.emf.ecore,
  org.eclipse.xsd,
