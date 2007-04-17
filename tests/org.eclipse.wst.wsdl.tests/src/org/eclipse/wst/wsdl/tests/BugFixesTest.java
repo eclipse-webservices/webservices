@@ -205,6 +205,14 @@ public class BugFixesTest extends TestCase
       }
     });
 
+    suite.addTest(new BugFixesTest("LoadsNamelessDefinition") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testLoadsNamelessDefinition();
+      }
+    });
+
     return suite;
   }
 
@@ -935,5 +943,31 @@ public class BugFixesTest extends TestCase
     assertNotNull(output2TypeDefinition);
     assertNotNull(output2TypeDefinition.getContainer());
     assertNull(output2TypeDefinition.getTargetNamespace());
+  }
+  
+  /**
+   * https://bugs.eclipse.org/bugs/show_bug.cgi?id=104453
+   */
+  public void testLoadsNamelessDefinition()
+  {
+    try
+    {
+      //Test with nameless definition
+      
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LoadsNameLessDefinition/MissingName.wsdl");
+      assertNull(definition.getQName());
+
+      //Test with named definition
+      
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LoadsNameLessDefinition/WithName.wsdl");
+      assertNotNull(definition);
+      QName name = definition.getQName(); 
+      assertNotNull(name);
+      assertEquals("WSDLFile", name.getLocalPart());
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+    }
   }
 }
