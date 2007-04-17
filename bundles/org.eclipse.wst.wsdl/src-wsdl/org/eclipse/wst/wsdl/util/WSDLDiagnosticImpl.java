@@ -206,8 +206,7 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
 
   /*
    * (non-Javadoc)
-   * 
-   * @see com.ibm.ccl.wsdl.validation.WSDLDiagnostic#getSeverity()
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#getSeverity()
    */
   public WSDLDiagnosticSeverity getSeverity()
   {
@@ -280,8 +279,7 @@ public class WSDLDiagnosticImpl extends EObjectImpl implements WSDLDiagnostic
 
   /*
    * (non-Javadoc)
-   * 
-   * @see com.ibm.ccl.wsdl.validation.WSDLDiagnostic#setSeverity(com.ibm.ccl.wsdl.validation.WSDLDiagnosticSeverity)
+   * @see org.eclipse.wst.wsdl.util.WSDLDiagnostic#setSeverity(org.eclipse.wst.wsdl.util.WSDLDiagnosticSeverity)
    */
   public void setSeverity(WSDLDiagnosticSeverity newSeverity)
   {
