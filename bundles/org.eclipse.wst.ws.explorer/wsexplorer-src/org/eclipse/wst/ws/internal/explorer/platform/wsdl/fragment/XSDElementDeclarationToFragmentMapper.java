@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070404   181065 makandre@ca.ibm.com - Andrew Mak, WSE does not handle types referenced across inline schemas
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment;
 
@@ -29,7 +32,7 @@ public class XSDElementDeclarationToFragmentMapper extends XSDToFragmentMapper {
     XSDElementDeclaration element = (XSDElementDeclaration)config.getXSDComponent();
     if (element != null) {
       XSDElementDeclaration resolvedElement = resolveXSDElementDeclaration(element);
-      XSDTypeDefinition typeDef = getXSDTypeDefinition(resolvedElement);
+      XSDTypeDefinition typeDef = resolveXSDTypeDefinition(getXSDTypeDefinition(resolvedElement));
       if (typeDef != null) {
         int minOccurs = FragmentConstants.DEFAULT_MIN_OCCURS;
         int maxOccurs = FragmentConstants.DEFAULT_MAX_OCCURS;
@@ -75,6 +78,17 @@ public class XSDElementDeclarationToFragmentMapper extends XSDToFragmentMapper {
     }
     else
       return element;
+  }
+  
+  private XSDTypeDefinition resolveXSDTypeDefinition(XSDTypeDefinition typeDef) {
+	  
+	  if (!isComponentResolvable(typeDef)) {
+		  XSDComponent resolvedComponent = getWSDLPartsToXSDTypeMapper().resolveXSDNamedComponent(typeDef);
+		  if (resolvedComponent instanceof XSDTypeDefinition)
+			  return (XSDTypeDefinition) resolvedComponent;
+	  }
+	  
+	  return typeDef;
   }
 
   private XSDTypeDefinition getXSDTypeDefinition(XSDElementDeclaration element) {
