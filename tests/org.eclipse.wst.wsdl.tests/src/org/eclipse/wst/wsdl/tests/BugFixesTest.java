@@ -954,12 +954,12 @@ public class BugFixesTest extends TestCase
     {
       //Test with nameless definition
       
-      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LoadsNameLessDefinition/MissingName.wsdl");
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LoadsNamelessDefinition/MissingName.wsdl");
       assertNull(definition.getQName());
 
       //Test with named definition
       
-      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LoadsNameLessDefinition/WithName.wsdl");
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LoadsNamelessDefinition/WithName.wsdl");
       assertNotNull(definition);
       QName name = definition.getQName(); 
       assertNotNull(name);
