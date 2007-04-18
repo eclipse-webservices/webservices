@@ -106,53 +106,53 @@
               transform="org.eclipse.jst.ws.internal.common.String2SelectionTransformer"/>
         <map
               key="JavaOutput"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
         <map
               key="Mappings"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
         <map
               key="Methods"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
         <map
               key="Style"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
         <map
               key="Use"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.Java2WSDLCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.BUCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
        
         <map
               key="JavaOutput"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
         <map
               key="Mappings"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
         <map
               key="Methods"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
 		<map
               key="Style"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
         <map
               key="Use"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
+              operation="org.eclipse.jst.ws.internal.axis.creation.ui.command.TDCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>   
   </extension> 
