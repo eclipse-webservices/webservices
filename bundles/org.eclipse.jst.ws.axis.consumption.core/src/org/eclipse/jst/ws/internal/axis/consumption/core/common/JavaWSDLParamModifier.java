@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070412   177005 pmoogk@ca.ibm.com - Peter Moogk
+ *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.common;
 
 import java.util.HashMap;
@@ -5,11 +18,13 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.wst.command.internal.env.core.data.BeanModifier;
+import org.eclipse.wst.common.internal.environment.eclipse.FileResourceUtils;
 
 public class JavaWSDLParamModifier implements BeanModifier {
 
@@ -40,7 +55,25 @@ public class JavaWSDLParamModifier implements BeanModifier {
 			}
 			if (propertyMap.containsKey("JavaOutput"))
 			{				 
-				javaWSDLParam.setJavaOutput((String)propertyMap.get("JavaOutput"));
+        String outputLocation = (String)propertyMap.get("JavaOutput");
+        int    index          = outputLocation.indexOf( ':' );
+        
+        if( index == -1 )
+        {
+          // A colon was not found in the string so we will assume that
+          // it is a workspace relative uri for now.
+          IResource resource = FileResourceUtils.findResource( new Path( outputLocation ) );
+          
+          if( resource == null || resource.getLocation() == null )
+          {
+            throw new IllegalArgumentException( AxisConsumptionCoreMessages.bind( AxisConsumptionCoreMessages.MSG_ERROR_FOLDER_NOT_FOUND,
+                                                                                  outputLocation ) ); 
+          }
+          
+          outputLocation = resource.getLocation().toString();
+        }
+        
+				javaWSDLParam.setJavaOutput( outputLocation );
 			}
 			if (propertyMap.containsKey("Methods"))
 			{
@@ -52,7 +85,14 @@ public class JavaWSDLParamModifier implements BeanModifier {
 				Hashtable methods = new Hashtable();
 				while (tok.hasMoreTokens())
 				{
-					methods.put(tok.nextToken(), new Boolean(true));
+          String method = (String)tok.nextToken();
+          
+          if( method.indexOf( '(' ) == -1 )
+          {
+            method = method + "()";
+          }
+          
+					methods.put( method, new Boolean(true));
 				}				
 				javaWSDLParam.setMethods(methods);
 			}
@@ -60,9 +100,29 @@ public class JavaWSDLParamModifier implements BeanModifier {
 			{
 				//get name of the file that has the mappings in it from the map
 				String filename = (String)propertyMap.get("Mappings");
+        
 				//get the list of mapping from the file
-				 HashMap mappings = readMappingsFromFile(filename);
-				 javaWSDLParam.setMappings(mappings);
+				HashMap mappings = readMappingsFromFile(filename);
+        
+				javaWSDLParam.setMappings(mappings);
+        
+        String beanName = javaWSDLParam.getBeanName();
+        
+        if( beanName != null && !beanName.equals("") )
+        {
+          int    lastDot     = beanName.lastIndexOf( '.' );
+          String packageName = lastDot == -1 ? null : beanName.substring( 0, lastDot );
+          
+          if( mappings != null && packageName != null )
+          {
+            String tns = (String)mappings.get( packageName );
+            
+            if( tns != null )
+            {
+              javaWSDLParam.setNamespace(tns);
+            }
+          }   
+        }
 			}
 		}
 	}
