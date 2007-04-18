@@ -1,23 +1,32 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070410   180952 makandre@ca.ibm.com - Andrew Mak, Sample JSP generator chokes on interfaces and abstract classes
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
+
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
+import org.eclipse.jem.java.JavaVisibilityKind;
+import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors.JavaMofBeanVisitor;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.BeanModelElementsFactory;
+import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeElement;
 import org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel.TypeFactory;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.Choice;
@@ -83,6 +92,13 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
       {
 	      BeanModelElementsFactory.getBeanModelElement(typeNavigator,fParentElement);
 	    }
+	    else if (javaClass != null && !getReturnParam() &&
+				// the following cases cannot be instantiated for input
+				(javaClass.isInterface() || javaClass.isAbstract() || !hasDefaultConstructor(javaClass))) {
+	    	
+	    	Element element = BeanModelElementsFactory.getBeanModelElement(typeNavigator,fParentElement);
+	    	element.setPropertyAsObject(TypeElement.NON_INSTANTIABLE, Boolean.TRUE);
+	    }
 	    else{
 	      JavaMofBeanVisitorAction beanVisitorAction = new JavaMofBeanVisitorAction(fParentElement,clientProject, env_);
 	      beanVisitorAction.setStatusMonitor(getStatusMonitor());
@@ -111,4 +127,30 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
      //
      return status;
    }
+
+  /**
+   * Determine if the given javaClass has a default constructor.
+   * @param javaClass The java class
+   * @return true if javaClass has a default constructor, false otherwise
+   */
+  private boolean hasDefaultConstructor(JavaClass javaClass) {
+	   
+	  List methods = javaClass.getMethods();
+	  Iterator iter = methods.iterator();
+	   
+	  boolean foundConstructor = false;
+	   
+	  while (iter.hasNext()) {
+		  Method method = (Method) iter.next();
+		   
+		  if (method.getName().equals(javaClass.getName())) {
+			  if (method.listParametersWithoutReturn().length == 0)
+				  return method.getJavaVisibility().getValue() == JavaVisibilityKind.PUBLIC;
+			  foundConstructor = true;
+		  }
+	  }
+	   
+	  // if no constructor is found at this point, a default one is implicitly provided
+	  return !foundConstructor;
+  }
 }
