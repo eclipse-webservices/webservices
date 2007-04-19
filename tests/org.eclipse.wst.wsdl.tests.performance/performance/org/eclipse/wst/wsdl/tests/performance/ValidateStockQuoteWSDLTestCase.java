@@ -19,7 +19,6 @@ import junit.framework.TestSuite;
 import org.eclipse.test.performance.PerformanceTestCase;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
-import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLValidator;
 
 public class ValidateStockQuoteWSDLTestCase extends PerformanceTestCase
@@ -47,14 +46,14 @@ public class ValidateStockQuoteWSDLTestCase extends PerformanceTestCase
   
   public void testValidateStockQuoteWSDL() throws Exception
   {
-	validator = WSDLValidator.getInstance();
+    validator = WSDLValidator.getInstance();
     URL wsdl = PerformancePlugin.getDefault().getBundle().getEntry("data/StockQuote/StockQuote.wsdl");
     String path = wsdl.toString();
-	
+
     startMeasuring();
-    IValidationReport valreport = validator.validate(path);
-	stopMeasuring();
-	commitMeasurements();
-	assertPerformance();
+    validator.validate(path);
+    stopMeasuring();
+    commitMeasurements();
+    assertPerformance();
   }
 }

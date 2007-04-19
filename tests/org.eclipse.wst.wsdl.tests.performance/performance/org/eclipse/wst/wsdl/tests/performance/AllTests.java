@@ -11,6 +11,8 @@
 
 package org.eclipse.wst.wsdl.tests.performance;
 
+import org.eclipse.wst.wsdl.tests.performance.scalability.WSDLScalabilityTests;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -21,11 +23,12 @@ public class AllTests
     TestSuite suite = new TestSuite("Test for org.eclipse.wst.wsdl.tests.performance");
     //$JUnit-BEGIN$
     suite.addTestSuite(ReadStockQuoteWSDLTestCase.class);
-	suite.addTestSuite(ReadStockQuoteWSDLEMFTestCase.class);
-	suite.addTestSuite(ValidateStockQuoteWSDLTestCase.class);
+    suite.addTestSuite(ReadStockQuoteWSDLEMFTestCase.class);
+    suite.addTestSuite(ValidateStockQuoteWSDLTestCase.class);
     suite.addTestSuite(ValidateStockQuoteWSITestCase.class);
     suite.addTestSuite(OpenStockQuoteWSDLSetup.class);
     suite.addTestSuite(OpenStockQuoteWSDLTestCase.class);
+    suite.addTest(WSDLScalabilityTests.suite());
     //$JUnit-END$
     return suite;
   }

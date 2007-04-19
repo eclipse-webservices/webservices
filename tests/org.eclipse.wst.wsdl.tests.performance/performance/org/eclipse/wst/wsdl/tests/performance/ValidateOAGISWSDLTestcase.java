@@ -23,7 +23,6 @@ import org.eclipse.test.performance.Dimension;
 import org.eclipse.test.performance.PerformanceTestCase;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
-import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLValidator;
 
 
@@ -79,6 +78,6 @@ public class ValidateOAGISWSDLTestcase extends PerformanceTestCase
 
   private void validateWSDL(String location) throws WSDLException
   {
-    IValidationReport valreport = validator.validate(location);
+    validator.validate(location);
   }
 }
