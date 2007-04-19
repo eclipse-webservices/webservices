@@ -19,10 +19,12 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.common.ui.internal.search.dialogs.IComponentDescriptionProvider;
+import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Description;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11SetBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11BrowseComponentDialog;
@@ -65,6 +67,9 @@ public class W11BindingReferenceEditManager implements ComponentReferenceEditMan
 			Port port = (Port) w11EndPoint.getTarget();
 			WSDLSetComponentHelper helper = new WSDLSetComponentHelper(iFile, getDefinition());
 			helper.setWSDLComponent(port, "binding", (ComponentSpecification) bindingObject); //$NON-NLS-1$
+			
+			Binding newBinding = port.getEBinding();
+			W11SetBindingCommand.updatePortProtocol(port, newBinding);
 		}		
 		else if (bindingObject instanceof IBinding){
 			IBinding binding = (IBinding) bindingObject;
