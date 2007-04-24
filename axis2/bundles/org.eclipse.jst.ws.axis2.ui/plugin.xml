@@ -1,0 +1,12 @@
+<plugin>
+  
+   <extension point="org.eclipse.ui.preferencePages">     
+      <page
+            name="%PREFERENCE_CATEGORY_AXIS2_RUNTIME"
+            category="org.eclipse.wst.ws.internal.ui.preferences.name"
+            class="org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences.Axis2RuntimePreferencePage"
+            id="org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences.Axis2RuntimePreferencePage">
+      </page>
+   </extension>
+   
+</plugin>
