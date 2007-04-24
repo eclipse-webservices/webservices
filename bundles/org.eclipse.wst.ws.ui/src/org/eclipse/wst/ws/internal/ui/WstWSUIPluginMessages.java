@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060728   151632 kathy@ca.ibm.com - Kathy Chan
+ * 20070424   182376 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui;
 
@@ -51,6 +52,7 @@ public final class WstWSUIPluginMessages extends NLS {
 	public static String TOOLTIP_PWSI_RADIO_WSDLVAL_REMOTE;
 	public static String TOOLTIP_PWSI_RADIO_WSDLVAL_ALL;
 	public static String TOOLTIP_PWSI_WSDLVAL_LABEL;
+  public static String WEBSERVICE_CATEGORY_PREF;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WstWSUIPluginMessages.class);
