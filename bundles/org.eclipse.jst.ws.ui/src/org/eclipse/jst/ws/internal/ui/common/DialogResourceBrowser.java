@@ -1,25 +1,33 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070423   183075 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.ui.common;
 
+import java.util.HashMap;
 import java.util.Iterator;
-
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -27,6 +35,7 @@ import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -48,10 +57,12 @@ public class DialogResourceBrowser extends Dialog
   private IResource[] selection_;
   private Tree resourceTree_;
   private TreeViewer fileViewer_;
+  private HashMap    visitedContainers_;
+  private boolean    foldersSelectable_;
 
   public DialogResourceBrowser(Shell shell, IResource root, IFilter filter)
   {
-    this(shell, root, new IFilter[]{filter});
+    this(shell, root, new IFilter[]{filter}, false );
   }
 
   /**
@@ -67,6 +78,11 @@ public class DialogResourceBrowser extends Dialog
   */
   public DialogResourceBrowser(Shell shell, IResource root, IFilter[] filters)
   {
+    this( shell, root, filters, false );
+  }
+  
+  public DialogResourceBrowser(Shell shell, IResource root, IFilter[] filters, boolean foldersSelectable )
+  {
     super(shell);
 
     IResource moduleRoot = root;
@@ -80,7 +96,9 @@ public class DialogResourceBrowser extends Dialog
 
     root_ = (moduleRoot == null) ? ResourcesPlugin.getWorkspace().getRoot() : moduleRoot;
     filters_ = (filters == null) ? new IFilter[0] : filters;
+    visitedContainers_ = new HashMap();
     multipleSelectionEnabled_ = false;
+    foldersSelectable_ = foldersSelectable;
     setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE | SWT.APPLICATION_MODAL);
   }
 
@@ -197,22 +215,129 @@ public class DialogResourceBrowser extends Dialog
       {
         public boolean select(Viewer viewer, Object parentObject, Object object)
         {
-          if ((object instanceof IResource) && ((IResource)object).getType() != IResource.FILE)
-            return true;
-          else
+          if( object instanceof IResource )
           {
-            for (int i = 0; i < filters_.length; i++)
-            {
-              if (filters_[i].accepts(object))
-                return true;
-            }
-            return false;
+            return isValidResource( (IResource)object );
           }
+          
+          return false;
         }
       }
     );
+    
+    if( !foldersSelectable_ )
+    {
+      fileViewer_.addSelectionChangedListener( new ISelectionChangedListener()
+                                               {
+                                                 public void selectionChanged(SelectionChangedEvent event)
+                                                 {
+                                                   handleSelectionChanged();
+                                                 }
+                                               } );
+    }
+    
     fileViewer_.setInput(root_);
     return composite;
   }
 
+  private void handleSelectionChanged()
+  {
+    ISelection selection      = fileViewer_.getSelection();
+    boolean    validSelection = true;
+    
+    if( selection instanceof IStructuredSelection )
+    {
+      IStructuredSelection strucSelection = (IStructuredSelection)selection;
+      Iterator             iter           = strucSelection.iterator();
+      
+      // Ensure that all selected items are valid.
+      while( iter.hasNext() )
+      {
+        Object object = iter.next();
+        
+        if( object instanceof IFile )
+        {
+          validSelection = acceptsFile( (IFile)object );
+        }
+        else
+        {
+          validSelection = false;
+        }
+        
+        if( !validSelection ) break;
+      }
+    }
+    else
+    {
+      validSelection = false;
+    }
+    
+    Button okButton = getButton( Dialog.OK );
+    okButton.setEnabled( validSelection );
+  }
+  
+  private boolean acceptsFile( IResource file )
+  {
+    boolean result = false;
+    
+    for (int i = 0; i < filters_.length; i++)
+    {
+      if( filters_[i].accepts( file ) )
+      {
+        result = true;
+        break;
+      }
+    }
+    
+    return result;
+  }
+  
+  private boolean isValidResource( IResource resource )
+  {
+    boolean result = false;
+    
+    if( resource instanceof IFile )
+    {
+      // Loop over all filters.  If one is acceptable then we will
+      // return true.
+      result = acceptsFile( resource );
+    }
+    else if( resource instanceof IContainer )
+    {
+      // Now see if this container contains at least one valid file.
+      Boolean validContainer = (Boolean)visitedContainers_.get( resource );
+      
+      if( validContainer == null )
+      {
+        // We haven't seen this container before.
+        try 
+        {
+          IContainer  container = (IContainer)resource;
+          IResource[] members   = container.members();
+          
+          visitedContainers_.put( container, Boolean.FALSE );
+          
+          for( int index = 0; index < members.length; index++) 
+          {
+            if( isValidResource(members[index]) ) 
+            {
+              visitedContainers_.put( container, Boolean.TRUE );
+              result = true;
+              break;
+            }
+          }
+        } 
+        catch( CoreException exc ) 
+        {
+          // Do nothing
+        }
+      }
+      else
+      {
+        result = validContainer.booleanValue();
+      }
+    }
+      
+    return result;
+  }
 }
