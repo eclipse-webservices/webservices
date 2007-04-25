@@ -24,7 +24,7 @@ public class Open1KBFileTestCase extends OpenWSDLEditorTestCase
     {
       super.execute();
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
       fail(t.getMessage());
     }

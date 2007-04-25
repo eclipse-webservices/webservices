@@ -22,7 +22,7 @@
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
- * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070326   159458 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -365,7 +365,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     IProject clientProject = ProjectUtilities.getProject(clientProjectName_);
     IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(clientProject), null);
     
-    if (configuredServers!=null && configuredServers.length>0)
+    if (configuredServers!=null && configuredServers.length>0 && configuredServers[0].getServerType() != null)
     {
       clientIds_.setServerId(configuredServers[0].getServerType().getId());
       clientIds_.setServerInstanceId(configuredServers[0].getId());
@@ -376,7 +376,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     if (clientProject.exists())
     {
       IServer server = getServerFromProject(clientProjectName_, clientFacetMatcher_);
-      if (server != null)
+      if (server != null && server.getServerType() != null)
       {
         clientIds_.setServerId(server.getServerType().getId());
         clientIds_.setServerInstanceId(server.getId());
@@ -396,7 +396,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //Haven't picked a server/server type on the basis of the project. Pick a server/server type
     //that is compatible with the clientRuntimeId.
     IServer server = getServerFromClientRuntimeId();
-    if (server!=null)
+    if (server!=null && server.getServerType() != null)
     {
       clientIds_.setServerId(server.getServerType().getId());
       clientIds_.setServerInstanceId(server.getId());
@@ -435,25 +435,31 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         //If a server of the preferred server type is present, check that one first
         for (int j = 0; j < servers.length; j++)
         {
-          String serverFactoryId = servers[j].getServerType().getId();
-          if (serverFactoryId == preferredServerFactoryId)
+          if (servers[j] != null && servers[j].getServerType() != null)
           {
-            if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId_, serverFactoryId))
-            {
-              return servers[j];
-            }
-          }                
+	          String serverFactoryId = servers[j].getServerType().getId();
+	          if (serverFactoryId == preferredServerFactoryId)
+	          {
+	            if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId_, serverFactoryId))
+	            {
+	              return servers[j];
+	            }
+	          }
+          }
         }
         
         //A server of the preferred server type could not be found or did not match. Check all the existing servers.    
     	
       for (int i = 0; i < servers.length; i++)
       {
-        String serverFactoryId = servers[i].getServerType().getId();
-        if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId_, serverFactoryId))
-        {
-          return servers[i];
-        }
+    	if (servers[i] != null && servers[i].getServerType() != null)
+    	{
+	        String serverFactoryId = servers[i].getServerType().getId();
+	        if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId_, serverFactoryId))
+	        {
+	          return servers[i];
+	        }
+	      }
       }
     }
     return null;    
@@ -520,14 +526,15 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         for (int i = 0; i < servers.length; i++)
         {
           IServer thisServer = servers[i];
-          if (thisServer.getRuntime().getId().equals(sRuntime.getId()))
+          IRuntime thisServerRuntime = thisServer.getRuntime();
+          if ( thisServerRuntime != null && sRuntime != null && thisServerRuntime.getId().equals(sRuntime.getId()))
           {
             if (firstMatchingServer==null)
             {
               firstMatchingServer = thisServer;
             }
               
-            if (thisServer.getServerType().getId().equals(preferredServerFactoryId))
+            if (thisServer != null && thisServer.getServerType() != null && thisServer.getServerType().getId().equals(preferredServerFactoryId))
             {
         	  
               server = thisServer;
@@ -587,15 +594,16 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	    for (int j=0; j<servers.length; j++)      
 	    {
 	      IServer thisServer = servers[j];
-	      if (thisServer.getServerType().getId().equals(preferredServerFactoryId))
+	      if (thisServer != null && thisServer.getServerType() != null && thisServer.getRuntime() != null && thisServer.getServerType().getId().equals(preferredServerFactoryId))
 	      {
+	    	IRuntime thisServerRuntime = thisServer.getRuntime();
 	        //Check to see if it matches any of the runtimes.
 	        Iterator runtimesItr = runtimes.iterator();
 	        while(runtimesItr.hasNext())
 	        {
 	          org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)runtimesItr.next();
 	          IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
-	          if (thisServer.getRuntime().getId().equals(sRuntime.getId()))
+	          if (sRuntime != null && thisServerRuntime.getId().equals(sRuntime.getId()))
 	          {
 	            server = thisServer;
 	          }          
@@ -613,7 +621,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        for (int i = 0; i < servers.length; i++)
 	        {
 	          IServer thisServer = servers[i];
-	          if (thisServer.getRuntime().getId().equals(sRuntime.getId()))
+	          IRuntime thisServerRuntime = thisServer.getRuntime();
+	          if (thisServerRuntime != null && sRuntime != null && thisServerRuntime.getId().equals(sRuntime.getId()))
 	          {
 	            server = thisServer;
 	            break outer;
@@ -658,30 +667,34 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	    {
 	      //Get a server type that has the same runtime type.
 	      IRuntime sRuntime = FacetUtil.getRuntime(fRuntime); 
-	      IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
-	      IServerType firstMatchingServerType = null;
-	      for (int i=0; i<serverTypes.length; i++)
+	      if (sRuntime != null)
 	      {
-	        IServerType thisServerType = serverTypes[i];
-	        if (sRuntimeType != null && thisServerType.getRuntimeType().getId().equals(sRuntimeType.getId()))
-	        {
-	          if (firstMatchingServerType == null)
-	          {
-	            firstMatchingServerType = thisServerType;
-	          }
-	          if (thisServerType.getId().equals(preferredServerFactoryId))
-	          {
-	            serverType = thisServerType;
-	            break;
-	          }
-	        }
-	      }
-	      
-	      //If the preferred server type was not found but
-	      //there was a server type that matched, return that one.        
-	      if (serverType == null && firstMatchingServerType != null)
-	      {        
-	        serverType = firstMatchingServerType;
+		      IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
+		      IServerType firstMatchingServerType = null;
+		      for (int i=0; i<serverTypes.length; i++)
+		      {
+		        IServerType thisServerType = serverTypes[i];
+		        IRuntimeType thisServerRuntimeType = thisServerType.getRuntimeType();
+		        if (sRuntimeType != null && thisServerRuntimeType != null && thisServerRuntimeType.getId().equals(sRuntimeType.getId()))
+		        {
+		          if (firstMatchingServerType == null)
+		          {
+		            firstMatchingServerType = thisServerType;
+		          }
+		          if (thisServerType.getId().equals(preferredServerFactoryId))
+		          {
+		            serverType = thisServerType;
+		            break;
+		          }
+		        }     
+		      }
+		      
+		      //If the preferred server type was not found but
+		      //there was a server type that matched, return that one.        
+		      if (serverType == null && firstMatchingServerType != null)
+		      {        
+		        serverType = firstMatchingServerType;
+		      }
 	      }
 	    }
 
@@ -727,7 +740,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	    for (int j=0; j<serverTypes.length; j++)      
 	    {
 	      IServerType thisServerType = serverTypes[j];
-	      if (thisServerType.getId().equals(preferredServerFactoryId))
+	      IRuntimeType thisServerTypeRuntimeType = thisServerType.getRuntimeType();
+	      if (thisServerTypeRuntimeType != null && thisServerType.getId().equals(preferredServerFactoryId))
 	      {
 	        //Check to see if it matches any of the runtimes.
 	        Iterator runtimesItr = runtimes.iterator();
@@ -735,11 +749,14 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        {
 	          org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)runtimesItr.next();
 	          IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
-	          IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
-	          if (sRuntimeType != null && thisServerType.getRuntimeType().getId().equals(sRuntimeType.getId()))
+	          if (sRuntime != null)
 	          {
-	            serverType = thisServerType;
-	          }          
+	        	  IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
+		          if (sRuntimeType != null && thisServerTypeRuntimeType.getId().equals(sRuntimeType.getId()))
+		          {
+		            serverType = thisServerType;
+		          }          
+	          }
 	        }
 	      }            
 	    }
@@ -752,15 +769,22 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime) itr
 	            .next();
 	        IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
-	        IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
-	        for (int i = 0; i < serverTypes.length; i++)
+	        if (sRuntime != null)
 	        {
-	          IServerType thisServerType = serverTypes[i];
-	          if (sRuntimeType != null && thisServerType.getRuntimeType().getId().equals(sRuntimeType.getId()))
-	          {
-	            serverType = thisServerType;
-	            break outer;
-	          }
+		        IRuntimeType sRuntimeType = sRuntime.getRuntimeType();
+		        for (int i = 0; i < serverTypes.length; i++)
+		        {
+		          IServerType thisServerType = serverTypes[i];
+		          if (thisServerType != null)
+		          {
+			          IRuntimeType thisServerTypeRuntimeType = thisServerType.getRuntimeType();
+			          if (sRuntimeType != null && thisServerTypeRuntimeType != null && thisServerTypeRuntimeType.getId().equals(sRuntimeType.getId()))
+			          {
+			            serverType = thisServerType;
+			            break outer;
+			          }
+		          }
+		        }
 	        }
 	      }
 	    }

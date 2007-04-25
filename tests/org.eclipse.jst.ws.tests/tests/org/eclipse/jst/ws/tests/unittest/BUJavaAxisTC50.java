@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070202   172615 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -118,6 +119,7 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
 	  	IStatus status = Status.OK_STATUS;
 	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 	    JUnitUtils.disableWSIDialog(webProject);
+	    JUnitUtils.setBUScenarioDefaults();
 
 	    status = JUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_BOTTOM_UP,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 

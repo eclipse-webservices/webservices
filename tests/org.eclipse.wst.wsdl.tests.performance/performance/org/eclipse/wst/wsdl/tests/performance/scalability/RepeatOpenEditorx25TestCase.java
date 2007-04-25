@@ -24,7 +24,7 @@ public class RepeatOpenEditorx25TestCase extends RepeatOpenWSDLEditorTestCase
     {
       super.execute();
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
       fail(t.getMessage());
     }

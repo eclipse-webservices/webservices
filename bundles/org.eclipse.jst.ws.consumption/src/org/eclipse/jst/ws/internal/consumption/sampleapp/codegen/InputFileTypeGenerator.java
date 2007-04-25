@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060612   145433 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20070410   180952 makandre@ca.ibm.com - Andrew Mak, Sample JSP generator chokes on interfaces and abstract classes 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
 
@@ -162,6 +163,9 @@ public class InputFileTypeGenerator extends InputFileHelp2Generator
   {
      TypeElement element = (TypeElement)object;
           
+     if (Boolean.TRUE.equals(element.getPropertyAsObject(TypeElement.NON_INSTANTIABLE)))
+	    return Status.OK_STATUS;
+     
      if (element instanceof SimpleElement) fIsSimple = true;
      else fIsSimple = false;
 

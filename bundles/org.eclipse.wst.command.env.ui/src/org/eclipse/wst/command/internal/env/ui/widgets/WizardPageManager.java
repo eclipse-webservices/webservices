@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070319   175721 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -238,8 +239,11 @@ public class WizardPageManager extends SimpleCommandEngineManager
   { 	
   	// We need to simulate the next button being pressed until there are no more pages.
   	// If an error occurs we will return false and reset the command stack back our original state.
-  	boolean    doneOk    = true;
-  	PageWizardDataEvents startPage = currentPage_;
+  	boolean              doneOk         = true;
+  	PageWizardDataEvents startPage      = currentPage_;
+    int                  stackStackSize = widgetStackStack_.size();
+    
+    INamedWidgetContributorFactory currentFactory = widgetFactory_;
   	
   	// Externalize the current page.
   	currentPage_.getDataEvents().externalize();
@@ -253,10 +257,6 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	  {
   	  	// An error occured in one of the commands.
   	  	doneOk = false;
-  	  }
-  	  else
-  	  {
-  	  	currentPage_ = nextPage_;
   	  }
   	}
   	while( nextPage_ != null && doneOk);
@@ -272,10 +272,32 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	  {
   	    done = engine_.undoToLastStop();
   	    page = getPage( lastUndoFragment_ );
+        
+        if( page == null && 
+            currentFactory != null && 
+            lastUndoFragment_ != null &&
+            getWidgetFactory( lastUndoFragment_.getId() ) == currentFactory )
+        {
+          // The current widget factory is associated with the last fragment that was undone.
+          // Therefore, we are back to where we started.
+          done = true;    
+          
+          // Restore the widgetStackStack back to the state it was in before
+          // running forward.
+          widgetStackStack_.setSize( stackStackSize );
+          
+          StackEntry entry = (StackEntry)widgetStackStack_.peek();
+          
+          widgetFactory_ = entry.factory_;
+          widgetStack_   = entry.stack_;
+        }
+        else if( page != null )
+        {
+          widgetFactory_ = null;
+          widgetStack_ = null;
+        }
   	  }
   	  while( page != startPage && !done ); 	  
-  	  
-  	  currentPage_ = page;
   	}
   	
   	return doneOk;

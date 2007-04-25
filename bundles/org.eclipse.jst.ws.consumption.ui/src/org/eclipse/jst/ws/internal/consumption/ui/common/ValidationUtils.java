@@ -556,11 +556,14 @@ public class ValidationUtils
     {
       org.eclipse.wst.common.project.facet.core.runtime.IRuntime fRuntime = (org.eclipse.wst.common.project.facet.core.runtime.IRuntime)itr.next();
       IRuntime sRuntime = FacetUtil.getRuntime(fRuntime);
-      IRuntimeType runtimeType = sRuntime.getRuntimeType();
-      if (runtimeType != null && runtimeTypeId.equals(runtimeType.getId()))
+      if (sRuntime != null)
       {
-        //found a match
-        return true;
+	      IRuntimeType runtimeType = sRuntime.getRuntimeType();
+	      if (runtimeType != null && runtimeTypeId.equals(runtimeType.getId()))
+	      {
+	        //found a match
+	        return true;
+	      }
       }
     }
     

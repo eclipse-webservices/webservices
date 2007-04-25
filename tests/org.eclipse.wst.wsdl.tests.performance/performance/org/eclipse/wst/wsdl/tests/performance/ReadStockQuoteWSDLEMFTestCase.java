@@ -45,6 +45,7 @@ public class ReadStockQuoteWSDLEMFTestCase extends PerformanceTestCase
     map.put(WSDLResourceImpl.USE_EXTENSION_FACTORIES,Boolean.valueOf(true));
 	resource.load(map); 
 	Definition definition = resource.getDefinition();
+	definition.getQName();
 	
 	stopMeasuring();
 	commitMeasurements();

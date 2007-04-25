@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.ws.ui; singleton:=true
-Bundle-Version: 1.0.102.qualifier
+Bundle-Version: 1.0.103.qualifier
 Bundle-Activator: org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -10,15 +10,16 @@ Export-Package: org.eclipse.wst.ws.internal.ui;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.command;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.plugin;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.preferences;x-internal:=true,
+ org.eclipse.wst.ws.internal.ui.utils,
  org.eclipse.wst.ws.internal.ui.wsi.preferences;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.wsi.properties;x-internal:=true,
  org.eclipse.wst.ws.internal.ui.wsrt;x-internal:=true
 Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
- org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
- org.eclipse.core.resources;bundle-version="[3.2.0,3.4.0)",
+ org.eclipse.core.runtime;bundle-version="[3.2.0,3.3.0)",
+ org.eclipse.core.resources;bundle-version="[3.2.0,3.3.0)",
  org.eclipse.wst.command.env.ui;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.wst.ws;bundle-version="[1.0.100,1.1.0)",
  org.eclipse.wst.common.frameworks;bundle-version="[1.1.0,1.2.0)",
- org.eclipse.emf.common;bundle-version="[2.2.0,2.4.0)",
+ org.eclipse.emf.common;bundle-version="[2.2.0,2.3.0)",
  org.eclipse.ui.ide;bundle-version="[3.2.0,4.0.0)"
 Eclipse-LazyStart: true

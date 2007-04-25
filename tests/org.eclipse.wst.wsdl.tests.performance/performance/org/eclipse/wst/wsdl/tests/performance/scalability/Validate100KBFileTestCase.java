@@ -25,7 +25,7 @@ public class Validate100KBFileTestCase extends RunWSDLValidatorTestCase
     {
       super.execute();
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
       fail(t.getMessage());
     }

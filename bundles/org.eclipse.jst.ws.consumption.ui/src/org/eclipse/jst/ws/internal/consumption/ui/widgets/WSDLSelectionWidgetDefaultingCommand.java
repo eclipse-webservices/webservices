@@ -4,12 +4,14 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
+ * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20070410   181827 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -30,13 +32,14 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
 public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {
   private IStructuredSelection selection_;
-  private UniversalPathTransformer transformer_ = new UniversalPathTransformer();  
+  private UniversalPathTransformer transformer_ = new UniversalPathTransformer(); 
   
   public String getWebServiceURI()
   {
@@ -53,24 +56,27 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   	    {
   	      uri = ifile.getFullPath().toString();
   	    }
-  	  }
-  	  if (firstSel instanceof ServiceImpl)
+  	  } else if (firstSel instanceof ServiceImpl)
       {
         ServiceImpl serviceImpl = (ServiceImpl)firstSel;
         uri = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
-      }
-  	  if (firstSel instanceof ServiceRef)
+      } else if (firstSel instanceof ServiceRef)
       {
   	    ServiceRef serviceRef = (ServiceRef)firstSel;
         uri = J2EEActionAdapterFactory.getWSDLURI(serviceRef);
-      }
-  	  if (firstSel instanceof WSDLResourceImpl)
+      } else if (firstSel instanceof WSDLResourceImpl)
   	  {
   	    WSDLResourceImpl wsdlRI = (WSDLResourceImpl)firstSel;
   	    uri = J2EEActionAdapterFactory.getWSDLURI(wsdlRI);
-  	  }
-  	  if (firstSel instanceof String)
+  	  } else if (firstSel instanceof String)
+  	  {
   	    uri = (String)firstSel;
+  	  } else {
+  		String adaptedUri = AdapterUtils.getAdaptedWSDL(firstSel);
+  		if (adaptedUri != null) {
+  			uri = adaptedUri;
+  		}
+  	  }
   	  
   	  uri = transformer_.toPath(uri);
   	}
@@ -174,6 +180,7 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
 
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
   {
-    return Status.OK_STATUS;
-  }  
+	  return Status.OK_STATUS;
+  }    
+     
 }
