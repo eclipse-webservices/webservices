@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070118   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
@@ -50,19 +51,18 @@ public class WSDLPropertyReader {
 		//		WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
 		//		wsdlDefinition = reader.readWSDL(filepath); 
 
-		Class WSDLFactoryClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.wsdl.factory.WSDLFactory");
+		Class WSDLFactoryClass = ClassLoadingUtil
+				.loadClassFromAntClassLoader("javax.wsdl.factory.WSDLFactory");
 		Method newInstanceMethod = WSDLFactoryClass.getMethod("newInstance", null);
 		Object WSDLFactoryObject = newInstanceMethod.invoke(null, null);
-		Class WSDLFactoryImplClass = ClassLoadingUtil.loadClassFromAntClassLoader(WSDLFactoryObject.getClass().getName());
+		Class WSDLFactoryImplClass = ClassLoadingUtil
+				.loadClassFromAntClassLoader(WSDLFactoryObject.getClass().getName());
 		Method newWSDLReaderMethod = WSDLFactoryImplClass.getMethod("newWSDLReader", null);
 		Object WSDLReaderObject = newWSDLReaderMethod.invoke(WSDLFactoryObject, null);
-		Class WSDLReaderClass = ClassLoadingUtil.loadClassFromAntClassLoader(WSDLReaderObject.getClass().getName());
-		Class[] parameterTypes1 = new Class[1];
-		parameterTypes1[0] = String.class;
-		Method readWSDLMethod = WSDLReaderClass.getMethod("readWSDL", parameterTypes1);
-		Object[] args = new Object[1];
-		args[0]= filepath;
-		DefinitionInstance = readWSDLMethod.invoke(WSDLReaderObject, args);
+		Class WSDLReaderClass = ClassLoadingUtil
+				.loadClassFromAntClassLoader(WSDLReaderObject.getClass().getName());
+		Method readWSDLMethod = WSDLReaderClass.getMethod("readWSDL", new Class[]{String.class});
+		DefinitionInstance = readWSDLMethod.invoke(WSDLReaderObject, new Object[]{filepath});
 
 	}
 
@@ -99,13 +99,11 @@ public class WSDLPropertyReader {
 		try{
 			Method getTargetNamespaceMethod = DefinitionClass.getMethod("getTargetNamespace", null);
 			String packageName = (String)getTargetNamespaceMethod.invoke(DefinitionInstance, null);
-			Class URLProcessorClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
-			Class[] parameterTypes1 = new Class[1];
-			parameterTypes1[0] = String.class;
-			Method makePackageNameMethod = URLProcessorClass.getMethod("makePackageName", parameterTypes1);
-			Object[] args = new Object[1];
-			args[0]= packageName;
-			returnString = (String)makePackageNameMethod.invoke(null, args);
+			Class URLProcessorClass = ClassLoadingUtil
+					.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
+			Method makePackageNameMethod = URLProcessorClass
+					.getMethod("makePackageName", new Class[]{String.class});
+			returnString = (String)makePackageNameMethod.invoke(null, new Object[]{packageName});
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
@@ -141,7 +139,8 @@ public class WSDLPropertyReader {
 			if(serviceMap!=null && !serviceMap.isEmpty()){
 				Iterator serviceIterator = serviceMap.values().iterator();
 				while(serviceIterator.hasNext()){
-					ServiceClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.wsdl.Service");
+					ServiceClass = ClassLoadingUtil
+							.loadClassFromAntClassLoader("javax.wsdl.Service");
 					Method getQNameMethod = ServiceClass.getMethod("getQName", null);
 					serviceInstance = (Object)serviceIterator.next();
 					returnList.add(getQNameMethod.invoke(serviceInstance, null));   
@@ -184,12 +183,10 @@ public class WSDLPropertyReader {
 
 		List returnList = new ArrayList();
 		try{	
-			Class[] parameterTypes = new Class[1];
-			parameterTypes[0] = serviceName.getClass();
-			Method getServiceMethod = DefinitionClass.getMethod("getService", parameterTypes);
-			Object[] args = new Object[1];
-			args[0]= serviceName;
-			Object serviceInstance = getServiceMethod.invoke(DefinitionInstance, args);
+			Method getServiceMethod = DefinitionClass
+						.getMethod("getService", new Class[]{serviceName.getClass()});
+			Object serviceInstance = getServiceMethod
+						.invoke(DefinitionInstance, new Object[]{serviceName});
 			Object portInstance = null;
 			if(serviceInstance!=null){
 				Method getPortsMethod = ServiceClass.getMethod("getPorts", null);
@@ -198,7 +195,8 @@ public class WSDLPropertyReader {
 					Iterator portIterator = portMap.values().iterator();
 					while(portIterator.hasNext()){
 						portInstance = (Object)portIterator.next();
-						Class PortClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.wsdl.Port");
+						Class PortClass = ClassLoadingUtil
+								.loadClassFromAntClassLoader("javax.wsdl.Port");
 						Method getNameMethod = PortClass.getMethod("getName", null);
 						returnList.add(getNameMethod.invoke(portInstance,null)); 
 					}

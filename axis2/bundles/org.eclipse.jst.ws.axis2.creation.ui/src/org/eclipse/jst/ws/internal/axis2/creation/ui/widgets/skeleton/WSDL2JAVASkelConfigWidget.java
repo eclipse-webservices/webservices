@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton;
 
@@ -22,6 +23,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
+import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
@@ -71,7 +73,8 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 	private Table namespace2packageTable = null;
 	//Label holding the full qualified package name for generated code
 	private Text packageText;
-	//Checkbox to enable the generation of test case classes for the generated implementation of the webservice.
+	//Checkbox to enable the generation of test case classes 
+	// for the generated implementation of the webservice.
 	Label      label, fillLabel, fillLabel1, fillLabel2, fillLabel3, fillLabel4, fillLabel5, fillLabel6;
 
 	public WSDL2JAVASkelConfigWidget( DataModel model )	{
@@ -179,10 +182,11 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		testCaseCheckBoxButton.setLayoutData(gd);
 		testCaseCheckBoxButton
 		.setText(Axis2CreationUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
-		model.setTestCaseCheck(false);
+		testCaseCheckBoxButton.setSelection(ServerModel.isServiceTestcase());
+		model.setTestCaseCheck(ServerModel.isServiceTestcase());
 		testCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				model.setTestCaseCheck(true);
+				model.setTestCaseCheck(testCaseCheckBoxButton.getSelection());
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -196,13 +200,15 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 3;
 		generateServerSideInterfaceCheckBoxButton.setLayoutData(gd);
-		generateServerSideInterfaceCheckBoxButton.setSelection(false);
+		generateServerSideInterfaceCheckBoxButton
+							.setSelection(ServerModel.isServiceInterfaceSkeleton());
 		generateServerSideInterfaceCheckBoxButton.setText(Axis2CreationUIMessages.
 														  LABEL_GENERATE_SERVERSIDE_INTERFACE);
-		model.setGenerateAllCheck(false);
+		model.setGenerateAllCheck(ServerModel.isServiceInterfaceSkeleton());
 		generateServerSideInterfaceCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				model.setGenerateServerSideInterface(true);
+				model.setGenerateServerSideInterface(
+						generateServerSideInterfaceCheckBoxButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -213,11 +219,11 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 3;
 		generateAllCheckBoxButton.setLayoutData(gd);
-		generateAllCheckBoxButton.setSelection(false);
+		generateAllCheckBoxButton.setSelection(ServerModel.isServiceGenerateAll());
 		generateAllCheckBoxButton.setText(Axis2CreationUIMessages.LABEL_GENERATE_ALL);
 		generateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				model.setGenerateAllCheck(true);
+				model.setGenerateAllCheck(generateAllCheckBoxButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -325,7 +331,8 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		model.setPackageText(packageText.getText());
 		model.setDatabindingType(databindingTypeCombo.getText());
 		model.setGenerateAllCheck(generateAllCheckBoxButton.getSelection());
-		model.setGenerateServerSideInterface(generateServerSideInterfaceCheckBoxButton.getSelection());
+		model.setGenerateServerSideInterface(
+				generateServerSideInterfaceCheckBoxButton.getSelection());
 		model.setTestCaseCheck(testCaseCheckBoxButton.getSelection());
 		model.setNamespaseToPackageMapping(getNs2PkgMapping());
 	}
@@ -362,9 +369,11 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 					for (int i = 0; i < serviceQNameList.size(); i++) {
 						// add the local part of the
 						Object serviceQnameInstance = serviceQNameList.get(0);
-						Class QNameClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.xml.namespace.QName");
+						Class QNameClass = ClassLoadingUtil
+										.loadClassFromAntClassLoader("javax.xml.namespace.QName");
 						Method GetLocalPartMethod  = QNameClass.getMethod("getLocalPart", null);
-						Object resultLocalPart = GetLocalPartMethod.invoke(serviceQnameInstance, null);
+						Object resultLocalPart = GetLocalPartMethod
+													.invoke(serviceQnameInstance, null);
 						serviceNameCombo.add(resultLocalPart.toString());
 					}
 					;
@@ -389,7 +398,9 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 			}
 		} catch (Exception e) {
 			if (e.getClass().getName().equals("javax.wsdl.WSDLException"))
-			status = StatusUtils.errorStatus(NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_WSDL_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_WSDL_FILE_READ_WRITEL,
+							 new String[]{e.getLocalizedMessage()}), e);
 		}
 	}
 
@@ -482,10 +493,12 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		Object result = null;
 		try {
 			//Class URLProcessor = Class.forName("org.apache.axis2.util.URLProcessor");
-			Class URLProcessor = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
+			Class URLProcessor = ClassLoadingUtil
+						.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
 			Class parameterTypes[] = new Class[1];
 			parameterTypes[0] = String.class;
-			Method makePackageNameMethod = URLProcessor.getMethod("makePackageName", parameterTypes);
+			Method makePackageNameMethod = URLProcessor
+									.getMethod("makePackageName", parameterTypes);
 			Object args[] = new Object[1];
 			args[0] = namespace;
 			result = makePackageNameMethod.invoke(makePackageNameMethod, args);

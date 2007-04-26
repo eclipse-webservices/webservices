@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070205   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -49,8 +50,8 @@ public class Axis2ClientDefaultingCommand extends AbstractDataModelOperation {
 						);
 		
 		model.setDatabindingType(Axis2ConsumptionUIMessages.DATA_BINDING_ADB);
-		model.setASync(true);
-		model.setSync(true);
+		model.setASync(false);
+		model.setSync(false);
 		
 		DefaultCodegenUtil defaultCodegenUtil = new DefaultCodegenUtil(model);
 		defaultCodegenUtil.populateModelParamsFromWSDL();

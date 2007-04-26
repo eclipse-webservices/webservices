@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070230   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.wsrt;
 
@@ -43,7 +44,9 @@ public class Axis2ClientConfigWidgetFactory implements INamedWidgetContributorFa
 	}
 
 	public INamedWidgetContributor getNextNamedWidget( INamedWidgetContributor widgetContributor) {
-	  return widgetContributor == proxyConfigWidget && proxyWidget.isGenProxy() ? mappingsWidget : null;
+	  return widgetContributor == proxyConfigWidget && proxyWidget.isGenProxy() 
+	  								? mappingsWidget 
+	  								: null;
 	}
 	
 	public void registerDataMappings(DataMappingRegistry dataRegistry) {
@@ -65,7 +68,8 @@ public class Axis2ClientConfigWidgetFactory implements INamedWidgetContributorFa
 		  wsClientAxis2Type = new WebServiceClientAxis2Type(model);
 		  adapter = new WidgetBindingToWidgetFactoryAdapter(wsClientAxis2Type );
 		  proxyConfigWidget = adapter.getWidget( "AxisClientStart" );
-		  proxyWidget       = (Axis2ProxyWidget)proxyConfigWidget.getWidgetContributorFactory().create();
+		  proxyWidget       = (Axis2ProxyWidget)proxyConfigWidget
+		  				.getWidgetContributorFactory().create();
 		  mappingsWidget   = adapter.getWidget( "AxisClientBeanMapping" );
 		  adapter.registerDataMappings( dataRegistry );
 

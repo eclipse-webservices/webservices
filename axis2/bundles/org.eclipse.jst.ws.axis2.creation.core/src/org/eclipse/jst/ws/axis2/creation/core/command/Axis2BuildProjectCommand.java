@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -66,7 +67,8 @@ public class Axis2BuildProjectCommand extends
 	    }
 	    
 	    try{
-	      Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, new NullProgressMonitor());   
+	      Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
+	    		  		new NullProgressMonitor());   
 	    }
 	    catch (InterruptedException ie){
 	      // continue execution

@@ -11,26 +11,34 @@
  * -------- -------- -----------------------------------------------------------
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 
 public class Axis2CoreUtils {
 	
+	private static boolean alreadyComputedTempAxis2Directory = false;
+	private static String tempAxis2Dir = null;
+	
 	public static String tempAxis2Directory() {
-		String projectDirDotMetadata = addAnotherNodeToPath(ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString(), 
-				 Axis2CoreUIMessages.DIR_DOT_METADATA);
-		String projectDirDotPlugins= addAnotherNodeToPath(projectDirDotMetadata,
-												Axis2CoreUIMessages.DIR_DOT_PLUGINS);
-		String tempAxis2Dir =addAnotherNodeToPath(projectDirDotPlugins, 
-							 Axis2CoreUIMessages.TEMP_AXIS2_FACET_DIR);
+		if (!alreadyComputedTempAxis2Directory){
+			String[] nodes = {Axis2CoreUIMessages.DIR_DOT_METADATA,
+								Axis2CoreUIMessages.DIR_DOT_PLUGINS,
+								Axis2CoreUIMessages.TEMP_AXIS2_FACET_DIR};
+			tempAxis2Dir =FileUtils.addNodesToPath(
+					ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString(), nodes); 
+			alreadyComputedTempAxis2Directory= true;
+		}
 		return tempAxis2Dir;
 	}
 	
@@ -52,7 +60,8 @@ public class Axis2CoreUtils {
 	}
 	
 	public static void  writePropertyToFile(File file,String key, String value) throws IOException {
-	       BufferedWriter out = new BufferedWriter(new FileWriter(file));
+		Writer out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file), "8859_1"));
 	       out.write(key+"="+value+"\n");
 	       out.close();
 	}

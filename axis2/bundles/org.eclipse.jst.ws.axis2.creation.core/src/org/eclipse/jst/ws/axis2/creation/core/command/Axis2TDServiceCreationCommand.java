@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2007 WSO2 Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * WSO2 Inc. - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
 import java.io.File;
@@ -37,19 +50,26 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 	try {
 		
 //		String workspaceDirectory = ResourceUtils.getWorkspaceRoot().getLocation().toOSString();
-		String workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
-		String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, model.getWebProjectName());
-		String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,Axis2CreationUIMessages.DIR_DOT_METADATA);
-	    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,Axis2CreationUIMessages.DIR_DOT_PLUGINS);
-	    String matadataAxis2Dir = FileUtils.addAnotherNodeToPath(matadataPluginsDir, Axis2CreationUIMessages.AXIS2_PROJECT);
+		String workspaceDirectory = ResourcesPlugin.getWorkspace()
+														.getRoot().getLocation().toOSString();
+		String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, 
+														model.getWebProjectName());
+		String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,
+														Axis2CreationUIMessages.DIR_DOT_METADATA);
+	    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,
+	    												Axis2CreationUIMessages.DIR_DOT_PLUGINS);
+	    String matadataAxis2Dir = FileUtils.addAnotherNodeToPath(matadataPluginsDir, 
+	    												Axis2CreationUIMessages.AXIS2_PROJECT);
 	    String tempServicesDir = FileUtils.addAnotherNodeToPath(matadataAxis2Dir,
 	    													   Axis2CreationUIMessages.DIR_SERVICES);
 	    
 	    model.setPathToWebServicesTempDir(tempServicesDir);
 		
 	    //Exploded temperory services directory
-		String currentservicesDirectory = FileUtils.addAnotherNodeToPath(tempServicesDir, model.getServiceName());
-		String metaInfDirectory = FileUtils.addAnotherNodeToPath(currentservicesDirectory, Axis2CreationUIMessages.DIR_META_INF);
+		String currentservicesDirectory = FileUtils.addAnotherNodeToPath(tempServicesDir, 
+														model.getServiceName());
+		String metaInfDirectory = FileUtils.addAnotherNodeToPath(currentservicesDirectory, 
+														Axis2CreationUIMessages.DIR_META_INF);
 		
 		//Create the directories
 		//Create the Webservices stuff on the workspace .matadata directory  
@@ -59,32 +79,42 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 	    
 	    //copy the generated resources (services.xml .wsdl ) files
 	    //at resources/service.xml
-	    String currentProjectResourcesDirString = FileUtils.addAnotherNodeToPath(currentDynamicWebProjectDir, Axis2CreationUIMessages.DIR_RESOURCES);
+	    String currentProjectResourcesDirString = FileUtils
+	    		.addAnotherNodeToPath(currentDynamicWebProjectDir, 
+	    							  Axis2CreationUIMessages.DIR_RESOURCES);
 	    File currentProjectResourcesDir = new File(currentProjectResourcesDirString);
 	    FileUtils.copyDirectory(currentProjectResourcesDir, new File(metaInfDirectory));
         
         // Copy the classes directory to the sevices directory
-		String defaultClassesSubDirectory = Axis2CreationUIMessages.DIR_BUILD + File.separator + Axis2CreationUIMessages.DIR_CLASSES;
+		String defaultClassesSubDirectory = Axis2CreationUIMessages.DIR_BUILD + File.separator + 
+											Axis2CreationUIMessages.DIR_CLASSES;
 		//TODO copy only the relevent .classes to the aar
-		String classesDirectory = currentDynamicWebProjectDir + File.separator + defaultClassesSubDirectory;
+		String classesDirectory = currentDynamicWebProjectDir + File.separator + 
+											defaultClassesSubDirectory;
 		
 		FileUtils.copyDirectory(new File(classesDirectory), new File(currentservicesDirectory));
 		
 //		//Create the .aar file 
-//		String aarDirString =  FileUtils.addAnotherNodeToPath(webservicesDir, Axis2CreationUIMessages.DIR_AAR);
+//		String aarDirString =  FileUtils.addAnotherNodeToPath(webservicesDir, 
+// 		Axis2CreationUIMessages.DIR_AAR);
 //		File aarDir = new File(aarDirString);
 //		FileUtils.createDirectorys(aarDirString);
 //		AARFileWriter aarFileWriter = new AARFileWriter();
 //		File serviseDir = new File(servicesDirectory);
-//		aarFileWriter.writeAARFile(aarDir, serviceName + Axis2CreationUIMessages.FILE_AAR, serviseDir);
+//		aarFileWriter.writeAARFile(aarDir, serviceName + 
+//		Axis2CreationUIMessages.FILE_AAR, serviseDir);
 		
 		
 		//Import all the stuff form the .matadata directory to inside the current web project
 		} catch (IOException e) {
-			status = StatusUtils.errorStatus(NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_FILE_READ_WRITEL,
+							new String[]{e.getLocalizedMessage()}), e);
 			environment.getStatusHandler().reportError(status); 
 		} catch (Exception e) {
-			status = StatusUtils.errorStatus(NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_SERVICE_CREATION,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_SERVICE_CREATION,
+							new String[]{e.getLocalizedMessage()}), e);
 			environment.getStatusHandler().reportError(status); 
 		}
 	    

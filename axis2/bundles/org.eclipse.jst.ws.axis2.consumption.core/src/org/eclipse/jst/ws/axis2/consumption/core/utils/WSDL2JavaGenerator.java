@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070118   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -64,14 +65,12 @@ public class WSDL2JavaGenerator {
        
      try{  
         //Reflection invocatin resources
-		Class CommandLineOptionConstantsClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.util.CommandLineOptionConstants$WSDL2JavaConstants");
-		Object stringDummyObj = String.class;
-		Class CommandLineOptionClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.util.CommandLineOption");
-		Class[] parameterTypes = new Class[2];
-		parameterTypes[0] = String.class;
-		parameterTypes[1] = String[].class;
-		Constructor CommandLineOptionConstructor = CommandLineOptionClass.getConstructor(parameterTypes);
-		Object[] initargs;
+		Class CommandLineOptionConstantsClass = ClassLoadingUtil.loadClassFromAntClassLoader(
+							"org.apache.axis2.util.CommandLineOptionConstants$WSDL2JavaConstants");
+		Class CommandLineOptionClass = ClassLoadingUtil.loadClassFromAntClassLoader(
+														"org.apache.axis2.util.CommandLineOption");
+		Constructor CommandLineOptionConstructor = CommandLineOptionClass.getConstructor(
+														new Class[]{String.class,String[].class});
         //WSDL file name
        
 							//       optionMap.put(CommandLineOptionConstants.WSDL2JavaConstants.WSDL_LOCATION_URI_OPTION, 
@@ -80,13 +79,12 @@ public class WSDL2JavaGenerator {
 							//    		   				 getStringArray(WSDLURI)));
 		
         //Reflection Invocation 
-		Field WSDL_LOCATION_URI_OPTION_FIELD = CommandLineOptionConstantsClass.getField("WSDL_LOCATION_URI_OPTION");
-		initargs = new Object[2];
-		initargs[0] = (String)WSDL_LOCATION_URI_OPTION_FIELD.get(stringDummyObj);
-		initargs[1] = 	getStringArray(WSDLURI);
-		
-		optionMap.put((String)WSDL_LOCATION_URI_OPTION_FIELD.get(stringDummyObj),
-							CommandLineOptionConstructor.newInstance(initargs));
+		Field WSDL_LOCATION_URI_OPTION_FIELD = CommandLineOptionConstantsClass.getField(
+																		"WSDL_LOCATION_URI_OPTION");
+		optionMap.put((String)WSDL_LOCATION_URI_OPTION_FIELD.get(String.class),
+						CommandLineOptionConstructor.newInstance(
+							new Object[]{(String)WSDL_LOCATION_URI_OPTION_FIELD.get(String.class),
+							getStringArray(WSDLURI)}));
        
        //Async only
        if (isAyncOnly)
@@ -97,13 +95,13 @@ public class WSDL2JavaGenerator {
 							//        		  			new String[0]));
         
     	//Reflection Invocation     	   
-   		Field CODEGEN_ASYNC_ONLY_OPTION_FIELD = CommandLineOptionConstantsClass.getField("CODEGEN_ASYNC_ONLY_OPTION");
-		initargs = new Object[2];
-		initargs[0] = (String)CODEGEN_ASYNC_ONLY_OPTION_FIELD.get(stringDummyObj);
-		initargs[1] = 	new String[0];
-		
-		optionMap.put((String)CODEGEN_ASYNC_ONLY_OPTION_FIELD.get(stringDummyObj),
-							CommandLineOptionConstructor.newInstance(initargs));
+   		Field CODEGEN_ASYNC_ONLY_OPTION_FIELD = CommandLineOptionConstantsClass
+   												.getField("CODEGEN_ASYNC_ONLY_OPTION");
+		optionMap.put((String)CODEGEN_ASYNC_ONLY_OPTION_FIELD.get(
+						String.class),
+						CommandLineOptionConstructor.newInstance(
+							new Object[]{(String)CODEGEN_ASYNC_ONLY_OPTION_FIELD.get(String.class),
+							new String[0]}));
        }
        
        //sync only
@@ -113,13 +111,13 @@ public class WSDL2JavaGenerator {
 							//        		  new CommandLineOption(
 							//        		  CommandLineOptionConstants.WSDL2JavaConstants.CODEGEN_SYNC_ONLY_OPTION,
 							//        		  new String[0]));
-      		Field CODEGEN_SYNC_ONLY_OPTION_FIELD = CommandLineOptionConstantsClass.getField("CODEGEN_SYNC_ONLY_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)CODEGEN_SYNC_ONLY_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	new String[0];
-    		
-    		optionMap.put((String)CODEGEN_SYNC_ONLY_OPTION_FIELD.get(stringDummyObj),
-					CommandLineOptionConstructor.newInstance(initargs));
+       //Reflection Invocation
+      		Field CODEGEN_SYNC_ONLY_OPTION_FIELD = CommandLineOptionConstantsClass
+      												.getField("CODEGEN_SYNC_ONLY_OPTION");
+    		optionMap.put((String)CODEGEN_SYNC_ONLY_OPTION_FIELD.get(String.class),
+					CommandLineOptionConstructor.newInstance(
+							new Object[]{(String)CODEGEN_SYNC_ONLY_OPTION_FIELD.get(String.class),
+							new String[0]}));
        }
        //serverside
        if (isServerSide)
@@ -128,40 +126,39 @@ public class WSDL2JavaGenerator {
 							//        		  new CommandLineOption(
 							//        		  CommandLineOptionConstants.WSDL2JavaConstants.SERVER_SIDE_CODE_OPTION,
 							//        		  new String[0]));
-     		Field SERVER_SIDE_CODE_OPTION_FIELD = CommandLineOptionConstantsClass.getField("SERVER_SIDE_CODE_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)SERVER_SIDE_CODE_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	new String[0];
-    		
-    		optionMap.put((String)SERVER_SIDE_CODE_OPTION_FIELD.get(stringDummyObj),
-					CommandLineOptionConstructor.newInstance(initargs));
+	    //Reflection Invocation
+		Field SERVER_SIDE_CODE_OPTION_FIELD = CommandLineOptionConstantsClass
+												.getField("SERVER_SIDE_CODE_OPTION");
+		optionMap.put((String)SERVER_SIDE_CODE_OPTION_FIELD.get(String.class),
+				CommandLineOptionConstructor.newInstance(
+						new Object[]{(String)SERVER_SIDE_CODE_OPTION_FIELD.get(String.class),
+						new String[0]}));
           //server xml
           if (isServerXML)
           {
-							//             optionMap.put(CommandLineOptionConstants.WSDL2JavaConstants.GENERATE_SERVICE_DESCRIPTION_OPTION,
-							//            		 new CommandLineOption(
+          //optionMap.put(
 							//            		 CommandLineOptionConstants.WSDL2JavaConstants.GENERATE_SERVICE_DESCRIPTION_OPTION,
+          // 	new CommandLineOption(
+          // 	CommandLineOptionConstants.WSDL2JavaConstants.GENERATE_SERVICE_DESCRIPTION_OPTION,
 							//            		 new String[0]));
-       		Field GENERATE_SERVICE_DESCRIPTION_OPTION_FIELD = CommandLineOptionConstantsClass.getField("GENERATE_SERVICE_DESCRIPTION_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)GENERATE_SERVICE_DESCRIPTION_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	new String[0];
-    		
-    		optionMap.put((String)GENERATE_SERVICE_DESCRIPTION_OPTION_FIELD.get(stringDummyObj),
-					CommandLineOptionConstructor.newInstance(initargs));
+       		Field GENERATE_SERVICE_DESCRIPTION_OPTION_FIELD = CommandLineOptionConstantsClass
+   												.getField("GENERATE_SERVICE_DESCRIPTION_OPTION");
+    		optionMap.put((String)GENERATE_SERVICE_DESCRIPTION_OPTION_FIELD.get(String.class),
+				CommandLineOptionConstructor.newInstance(
+				   new Object[]{(String)GENERATE_SERVICE_DESCRIPTION_OPTION_FIELD.get(String.class),
+				   new String[0]}));
           }
           if (isGenerateAll){
 							//              optionMap.put(CommandLineOptionConstants.WSDL2JavaConstants.GENERATE_ALL_OPTION, 
 							//            		  new CommandLineOption(
 							//            		  CommandLineOptionConstants.WSDL2JavaConstants.GENERATE_ALL_OPTION,
 							//            		  new String[0]));
-        		Field GENERATE_ALL_OPTION_FIELD = CommandLineOptionConstantsClass.getField("GENERATE_ALL_OPTION");
-        		initargs = new Object[2];
-        		initargs[0] = (String)GENERATE_ALL_OPTION_FIELD.get(stringDummyObj);
-        		initargs[1] = 	new String[0];
-        		
-        		optionMap.put((String)GENERATE_ALL_OPTION_FIELD.get(stringDummyObj),
-    					CommandLineOptionConstructor.newInstance(initargs));
+			Field GENERATE_ALL_OPTION_FIELD = CommandLineOptionConstantsClass
+														.getField("GENERATE_ALL_OPTION");
+			optionMap.put((String)GENERATE_ALL_OPTION_FIELD.get(String.class),
+					CommandLineOptionConstructor.newInstance(
+							new Object[]{(String)GENERATE_ALL_OPTION_FIELD.get(String.class),
+							new String[0]}));
           }
        }
        //test case
@@ -171,13 +168,12 @@ public class WSDL2JavaGenerator {
 							//        		  new CommandLineOption(
 							//        		  CommandLineOptionConstants.WSDL2JavaConstants.GENERATE_TEST_CASE_OPTION,
 							//        		  new String[0]));
-    		Field GENERATE_TEST_CASE_OPTION_FIELD = CommandLineOptionConstantsClass.getField("GENERATE_TEST_CASE_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)GENERATE_TEST_CASE_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	new String[0];
-    		
-    		optionMap.put((String)GENERATE_TEST_CASE_OPTION_FIELD.get(stringDummyObj),
-					CommandLineOptionConstructor.newInstance(initargs));
+		Field GENERATE_TEST_CASE_OPTION_FIELD = CommandLineOptionConstantsClass
+													.getField("GENERATE_TEST_CASE_OPTION");
+		optionMap.put((String)GENERATE_TEST_CASE_OPTION_FIELD.get(String.class),
+				CommandLineOptionConstructor.newInstance(
+						new Object[]{(String)GENERATE_TEST_CASE_OPTION_FIELD.get(String.class),
+						new String[0]}));
        }
        //package name
 							//       optionMap.put(CommandLineOptionConstants.WSDL2JavaConstants.PACKAGE_OPTION,
@@ -185,47 +181,46 @@ public class WSDL2JavaGenerator {
 							//    		   CommandLineOptionConstants.WSDL2JavaConstants.PACKAGE_OPTION,
 							//    		   getStringArray(packageName)));
  		Field PACKAGE_OPTION_FIELD = CommandLineOptionConstantsClass.getField("PACKAGE_OPTION");
-		initargs = new Object[2];
-		initargs[0] = (String)PACKAGE_OPTION_FIELD.get(stringDummyObj);
-		initargs[1] = 	getStringArray(packageName);
-		optionMap.put((String)PACKAGE_OPTION_FIELD.get(stringDummyObj),
-							CommandLineOptionConstructor.newInstance(initargs));
+		optionMap.put((String)PACKAGE_OPTION_FIELD.get(String.class),
+							CommandLineOptionConstructor.newInstance(
+									new Object[]{(String)PACKAGE_OPTION_FIELD.get(String.class),
+									getStringArray(packageName)}));
 		
        //selected language
 							//       optionMap.put(CommandLineOptionConstants.WSDL2JavaConstants.STUB_LANGUAGE_OPTION,
 							//    		   new CommandLineOption(
 							//    		   CommandLineOptionConstants.WSDL2JavaConstants.STUB_LANGUAGE_OPTION,
 							//    		   getStringArray(mapLanguagesWithCombo(selectedLanguage))));
- 		Field STUB_LANGUAGE_OPTION_FIELD = CommandLineOptionConstantsClass.getField("STUB_LANGUAGE_OPTION");
-		initargs = new Object[2];
-		initargs[0] = (String)STUB_LANGUAGE_OPTION_FIELD.get(stringDummyObj);
-		initargs[1] = 	getStringArray(mapLanguagesWithCombo(selectedLanguage));
-		optionMap.put((String)STUB_LANGUAGE_OPTION_FIELD.get(stringDummyObj),
-							CommandLineOptionConstructor.newInstance(initargs));
+ 		Field STUB_LANGUAGE_OPTION_FIELD = CommandLineOptionConstantsClass
+ 															.getField("STUB_LANGUAGE_OPTION");
+		optionMap.put((String)STUB_LANGUAGE_OPTION_FIELD.get(String.class),
+							CommandLineOptionConstructor.newInstance(
+								new Object[]{(String)STUB_LANGUAGE_OPTION_FIELD.get(String.class),
+								getStringArray(mapLanguagesWithCombo(selectedLanguage))}));
 		
        //output location
 							//       optionMap.put(CommandLineOptionConstants.WSDL2JavaConstants.OUTPUT_LOCATION_OPTION,
 							//    		   new CommandLineOption(
 							//    		   CommandLineOptionConstants.WSDL2JavaConstants.OUTPUT_LOCATION_OPTION,
 							//    		   getStringArray(outputLocation)));
- 		Field OUTPUT_LOCATION_OPTION_FIELD = CommandLineOptionConstantsClass.getField("OUTPUT_LOCATION_OPTION");
-		initargs = new Object[2];
-		initargs[0] = (String)OUTPUT_LOCATION_OPTION_FIELD.get(stringDummyObj);
-		initargs[1] = 	 getStringArray(outputLocation);
-		optionMap.put((String)OUTPUT_LOCATION_OPTION_FIELD.get(stringDummyObj),
-							CommandLineOptionConstructor.newInstance(initargs));
+ 		Field OUTPUT_LOCATION_OPTION_FIELD = CommandLineOptionConstantsClass
+ 														.getField("OUTPUT_LOCATION_OPTION");
+		optionMap.put((String)OUTPUT_LOCATION_OPTION_FIELD.get(String.class),
+							CommandLineOptionConstructor.newInstance(
+								new Object[]{(String)OUTPUT_LOCATION_OPTION_FIELD.get(String.class),
+								getStringArray(outputLocation)}));
        
       //databinding
 							//       optionMap.put(CommandLineOptionConstants.WSDL2JavaConstants.DATA_BINDING_TYPE_OPTION,
 							//    		   new CommandLineOption(
 							//    		   CommandLineOptionConstants.WSDL2JavaConstants.DATA_BINDING_TYPE_OPTION,
 							//    		   getStringArray(databindingName)));
- 		Field DATA_BINDING_TYPE_OPTION_FIELD = CommandLineOptionConstantsClass.getField("DATA_BINDING_TYPE_OPTION");
-		initargs = new Object[2];
-		initargs[0] = (String)DATA_BINDING_TYPE_OPTION_FIELD.get(stringDummyObj);
-		initargs[1] = 	 getStringArray(databindingName);
-		optionMap.put((String)DATA_BINDING_TYPE_OPTION_FIELD.get(stringDummyObj),
-							CommandLineOptionConstructor.newInstance(initargs));
+ 		Field DATA_BINDING_TYPE_OPTION_FIELD = CommandLineOptionConstantsClass
+ 													.getField("DATA_BINDING_TYPE_OPTION");
+		optionMap.put((String)DATA_BINDING_TYPE_OPTION_FIELD.get(String.class),
+							CommandLineOptionConstructor.newInstance(
+							  new Object[]{(String)DATA_BINDING_TYPE_OPTION_FIELD.get(String.class),
+							  getStringArray(databindingName)}));
        
        //port name
        if (portName!=null){
@@ -233,12 +228,12 @@ public class WSDL2JavaGenerator {
 							//	    		   new CommandLineOption(
 							//	    		   CommandLineOptionConstants.WSDL2JavaConstants.PORT_NAME_OPTION,
 							//	    		   getStringArray(portName)));
-     		Field PORT_NAME_OPTION_FIELD = CommandLineOptionConstantsClass.getField("PORT_NAME_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)PORT_NAME_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	getStringArray(portName);
-    		optionMap.put((String)PORT_NAME_OPTION_FIELD.get(stringDummyObj),
-    							CommandLineOptionConstructor.newInstance(initargs));
+     		Field PORT_NAME_OPTION_FIELD = CommandLineOptionConstantsClass
+     														.getField("PORT_NAME_OPTION");
+    		optionMap.put((String)PORT_NAME_OPTION_FIELD.get(String.class),
+    						CommandLineOptionConstructor.newInstance(
+    								new Object[]{(String)PORT_NAME_OPTION_FIELD.get(String.class),
+    								getStringArray(portName)}));
        }
        //service name
        if (serviceName!= null){
@@ -246,12 +241,12 @@ public class WSDL2JavaGenerator {
 							//	    		   new CommandLineOption(
 							//	    		   CommandLineOptionConstants.WSDL2JavaConstants.SERVICE_NAME_OPTION,
 							//	    		   getStringArray(serviceName)));
-     		Field SERVICE_NAME_OPTION_FIELD = CommandLineOptionConstantsClass.getField("SERVICE_NAME_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)SERVICE_NAME_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	getStringArray(serviceName);
-    		optionMap.put((String)SERVICE_NAME_OPTION_FIELD.get(stringDummyObj),
-    							CommandLineOptionConstructor.newInstance(initargs));
+     		Field SERVICE_NAME_OPTION_FIELD = CommandLineOptionConstantsClass
+     													.getField("SERVICE_NAME_OPTION");
+    		optionMap.put((String)SERVICE_NAME_OPTION_FIELD.get(String.class),
+    					CommandLineOptionConstructor.newInstance(
+    							new Object[]{(String)SERVICE_NAME_OPTION_FIELD.get(String.class),
+    									getStringArray(serviceName)}));
        }
        //ns2pkg mapping
        if (namespace2packageList!= null){
@@ -259,12 +254,12 @@ public class WSDL2JavaGenerator {
 							//	    		   new CommandLineOption(
 							//	    		   CommandLineOptionConstants.WSDL2JavaConstants.NAME_SPACE_TO_PACKAGE_OPTION
 							//	    		   , getStringArray(namespace2packageList)));
-     		Field NAME_SPACE_TO_PACKAGE_OPTION_FIELD = CommandLineOptionConstantsClass.getField("NAME_SPACE_TO_PACKAGE_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)NAME_SPACE_TO_PACKAGE_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	getStringArray(namespace2packageList);
-    		optionMap.put((String)NAME_SPACE_TO_PACKAGE_OPTION_FIELD.get(stringDummyObj),
-    							CommandLineOptionConstructor.newInstance(initargs));
+     		Field NAME_SPACE_TO_PACKAGE_OPTION_FIELD = CommandLineOptionConstantsClass
+     											.getField("NAME_SPACE_TO_PACKAGE_OPTION");
+    		optionMap.put((String)NAME_SPACE_TO_PACKAGE_OPTION_FIELD.get(String.class),
+    				CommandLineOptionConstructor.newInstance(
+    					new Object[]{(String)NAME_SPACE_TO_PACKAGE_OPTION_FIELD.get(String.class),
+    					getStringArray(namespace2packageList)}));
        }
        
        //server side interface  mapping
@@ -273,12 +268,12 @@ public class WSDL2JavaGenerator {
 							//	    		   new CommandLineOption(
 							//	    		   CommandLineOptionConstants.WSDL2JavaConstants.SERVER_SIDE_INTERFACE_OPTION,
 							//	    		   new String[0]));
-     		Field SERVER_SIDE_INTERFACE_OPTION_FIELD = CommandLineOptionConstantsClass.getField("SERVER_SIDE_INTERFACE_OPTION");
-    		initargs = new Object[2];
-    		initargs[0] = (String)SERVER_SIDE_INTERFACE_OPTION_FIELD.get(stringDummyObj);
-    		initargs[1] = 	new String[0];
-    		optionMap.put((String)SERVER_SIDE_INTERFACE_OPTION_FIELD.get(stringDummyObj),
-    							CommandLineOptionConstructor.newInstance(initargs));
+     		Field SERVER_SIDE_INTERFACE_OPTION_FIELD = CommandLineOptionConstantsClass
+     											.getField("SERVER_SIDE_INTERFACE_OPTION");
+    		optionMap.put((String)SERVER_SIDE_INTERFACE_OPTION_FIELD.get(String.class),
+    				CommandLineOptionConstructor.newInstance(
+    					new Object[]{(String)SERVER_SIDE_INTERFACE_OPTION_FIELD.get(String.class),
+    					new String[0]}));
        }
        
      }catch(Exception e){
@@ -345,36 +340,32 @@ public class WSDL2JavaGenerator {
 			//builder class or through a builder Abstract Factor or Abstract factory methods.
 			
 			
-							//			WSDL11ToAxisServiceBuilder builder = new WSDL11ToAxisServiceBuilder(url.openConnection()
-							//																				.getInputStream());
+			//WSDL11ToAxisServiceBuilder builder = new WSDL11ToAxisServiceBuilder(
+			//											url.openConnection().getInputStream());
 							//			builder.setBaseUri(getBaseUri(wsdlURI));
 							//			return builder.populateService();
 			
 			//Reflection invocation
-			//Class WSDL11ToAxisServiceBuilderClass = ClassLoadingUtil.loadClassFromAxis2LibPath(projectName,"org.apache.axis2.description.WSDL11ToAxisServiceBuilder");
-			Class WSDL11ToAxisServiceBuilderClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.description.WSDL11ToAxisServiceBuilder");
+			//Class WSDL11ToAxisServiceBuilderClass = ClassLoadingUtil.loadClassFromAxis2LibPath(
+			//                projectName,
+			//                "org.apache.axis2.description.WSDL11ToAxisServiceBuilder");
 			
-			Class[] parameterTypes = new Class[1];
-			//parameterTypes[0] = url.openConnection().getInputStream().getClass();
-			parameterTypes[0] =InputStream.class;
-			//Constructor WSDL11ToAxisServiceBuilderConstructor = WSDL11ToAxisServiceBuilderClass.getConstructor(parameterTypes);
-			Object[] initargs = new Object[1];
-			initargs[0] = url.openConnection().getInputStream();
-			//Object WSDL11ToAxisServiceBuilderInstance = WSDL11ToAxisServiceBuilderConstructor.newInstance(initargs);
-			//Object WSDL11ToAxisServiceBuilderInstance = ClassLoadingUtil.getInstanceFromAxis2LibPath("t/TestThis","org.apache.axis2.description.WSDL11ToAxisServiceBuilder",parameterTypes,initargs);
+			Class WSDL11ToAxisServiceBuilderClass = ClassLoadingUtil.loadClassFromAntClassLoader(
+					"org.apache.axis2.description.WSDL11ToAxisServiceBuilder");
+			Constructor constructor = WSDL11ToAxisServiceBuilderClass.getConstructor(
+					new Class[]{InputStream.class});
+			Object WSDL11ToAxisServiceBuilderInstance = constructor.newInstance(
+					new Object[]{url.openConnection().getInputStream()});
+			Method setBaseUriMethod = WSDL11ToAxisServiceBuilderClass.getMethod(
+					"setBaseUri", 
+					new Class[]{String.class});
+			setBaseUriMethod.invoke(
+					WSDL11ToAxisServiceBuilderInstance, 
+					new Object[]{wsdlURI});
 			
-			Constructor constructor = WSDL11ToAxisServiceBuilderClass.getConstructor(parameterTypes);
-			Object WSDL11ToAxisServiceBuilderInstance = constructor.newInstance(initargs);
-			
-			Class[] parameterTypes1 = new Class[1];
-			parameterTypes1[0] = String.class;
-			Method setBaseUriMethod = WSDL11ToAxisServiceBuilderClass.getMethod("setBaseUri", parameterTypes1);
-			
-			Object[] args = new Object[1];
-			args[0]= wsdlURI;
-			setBaseUriMethod.invoke(WSDL11ToAxisServiceBuilderInstance, args);
-			
-			Method populateServiceMethod = WSDL11ToAxisServiceBuilderClass.getMethod("populateService", null);
+			Method populateServiceMethod = WSDL11ToAxisServiceBuilderClass.getMethod(
+					"populateService", 
+					null);
 			return populateServiceMethod.invoke(WSDL11ToAxisServiceBuilderInstance, null);
 			
 			//return this import org.apache.axis2.description.AxisService;

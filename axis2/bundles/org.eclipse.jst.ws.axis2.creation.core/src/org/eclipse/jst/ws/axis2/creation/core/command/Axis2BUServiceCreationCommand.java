@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -56,11 +57,16 @@ public class Axis2BUServiceCreationCommand extends
 		try {
 			
 //			String workspaceDirectory = ResourceUtils.getWorkspaceRoot().getLocation().toOSString();
-			String workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
-			String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, model.getWebProjectName());
-			String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,Axis2CreationUIMessages.DIR_DOT_METADATA);
-		    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,Axis2CreationUIMessages.DIR_DOT_PLUGINS);
-		    String matadataAxis2Dir = FileUtils.addAnotherNodeToPath(matadataPluginsDir, Axis2CreationUIMessages.AXIS2_PROJECT);
+			String workspaceDirectory = ResourcesPlugin.getWorkspace()
+														.getRoot().getLocation().toOSString();
+			String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, 
+														model.getWebProjectName());
+			String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,
+														Axis2CreationUIMessages.DIR_DOT_METADATA);
+		    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,
+		    											Axis2CreationUIMessages.DIR_DOT_PLUGINS);
+		    String matadataAxis2Dir = FileUtils.addAnotherNodeToPath(matadataPluginsDir, 
+		    											Axis2CreationUIMessages.AXIS2_PROJECT);
 		    String webservicesDir = FileUtils.addAnotherNodeToPath(matadataAxis2Dir,
 		    													   Axis2CreationUIMessages.DIR_WEBSERVICES);
 		    model.setPathToWebServicesTempDir(webservicesDir);
@@ -70,9 +76,8 @@ public class Axis2BUServiceCreationCommand extends
 		    //String servicePackage = CommonUtils.packageNameFromQualifiedName(serviceClass); 
 			
 			String servicesDirectory = FileUtils.addAnotherNodeToPath(webservicesDir, serviceName);
-			//String servicePackagePath = CommonUtils.packgeName2PathName(servicePackage); 
-			//String serviceClassImplDirectory = servicesDirectory + File.separator + servicePackagePath;
-			String serviceXMLDirectory = FileUtils.addAnotherNodeToPath(servicesDirectory, Axis2CreationUIMessages.DIR_META_INF);
+			String serviceXMLDirectory = FileUtils.addAnotherNodeToPath(servicesDirectory, 
+														Axis2CreationUIMessages.DIR_META_INF);
 			
 			//Create the directories
 			//Create the Webservices stuff on the workspace .matadata directory  
@@ -82,8 +87,11 @@ public class Axis2BUServiceCreationCommand extends
 		    //create the services.xml file
 		    File serviceXMLFile;
             if (model.isGenerateServicesXML()){
-			    ServiceXMLCreator serviceXMLCreator = new ServiceXMLCreator(serviceName, serviceClass, null);
-			    serviceXMLFile = new File(serviceXMLDirectory + File.separator + Axis2CreationUIMessages.FILE_SERVICES_XML);
+			    ServiceXMLCreator serviceXMLCreator = new ServiceXMLCreator(serviceName, 
+			    															serviceClass, 	
+			    															null);
+			    serviceXMLFile = new File(serviceXMLDirectory + File.separator + 
+			    						  Axis2CreationUIMessages.FILE_SERVICES_XML);
 			    FileWriter serviceXMLFileWriter;
 	
 				serviceXMLFileWriter = new FileWriter(serviceXMLFile, false);
@@ -93,37 +101,47 @@ public class Axis2BUServiceCreationCommand extends
             }else {
             	String pathToServicesXML = model.getPathToServicesXML();
             	if (pathToServicesXML == null){
-    				status = StatusUtils.errorStatus(Axis2CreationUIMessages.ERROR_INVALID_SERVICES_XML);
+    				status = StatusUtils
+    					.errorStatus(Axis2CreationUIMessages.ERROR_INVALID_SERVICES_XML);
     				environment.getStatusHandler().reportError(status); 
             	}else{
             		serviceXMLFile = new File(pathToServicesXML);
-            		File targetServicesXMLFile = new File(serviceXMLDirectory + File.separator + Axis2CreationUIMessages.FILE_SERVICES_XML);
+            		File targetServicesXMLFile = new File(serviceXMLDirectory + File.separator + 
+            										Axis2CreationUIMessages.FILE_SERVICES_XML);
             		FileUtils.copy(serviceXMLFile, targetServicesXMLFile);
             	}
             	
             }
 	        
             // Copy the classes directory to the sevices directory
-			String defaultClassesSubDirectory = Axis2CreationUIMessages.DIR_BUILD + File.separator + Axis2CreationUIMessages.DIR_CLASSES;
+			String defaultClassesSubDirectory = Axis2CreationUIMessages.DIR_BUILD +File.separator+ 
+													Axis2CreationUIMessages.DIR_CLASSES;
 			//TODO copy only the relevent .classes to the aar
-			String classesDirectory = currentDynamicWebProjectDir + File.separator + defaultClassesSubDirectory;
+			String classesDirectory = currentDynamicWebProjectDir + File.separator + 
+									  defaultClassesSubDirectory;
 			
 			FileUtils.copyDirectory(new File(classesDirectory), new File(servicesDirectory));
 			
 //			//Create the .aar file 
-//			String aarDirString =  FileUtils.addAnotherNodeToPath(webservicesDir, Axis2CreationUIMessages.DIR_AAR);
+//			String aarDirString =  FileUtils.addAnotherNodeToPath(webservicesDir, 
+//			Axis2CreationUIMessages.DIR_AAR);
 //			File aarDir = new File(aarDirString);
 //			FileUtils.createDirectorys(aarDirString);
 //			AARFileWriter aarFileWriter = new AARFileWriter();
 //			File serviseDir = new File(servicesDirectory);
-//			aarFileWriter.writeAARFile(aarDir, serviceName + Axis2CreationUIMessages.FILE_AAR, serviseDir);
+//			aarFileWriter.writeAARFile(aarDir, serviceName + 
+//			Axis2CreationUIMessages.FILE_AAR, serviseDir);
 			
 			//Import all the stuff form the .matadata directory to inside the current web project
 			} catch (IOException e) {
-				status = StatusUtils.errorStatus(NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+				status = StatusUtils.errorStatus(
+						NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_FILE_READ_WRITEL,
+								new String[]{e.getLocalizedMessage()}), e);
 				environment.getStatusHandler().reportError(status); 
 			} catch (Exception e) {
-				status = StatusUtils.errorStatus(NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_SERVICE_CREATION,new String[]{e.getLocalizedMessage()}), e);
+				status = StatusUtils.errorStatus(
+						NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_SERVICE_CREATION,
+								new String[]{e.getLocalizedMessage()}), e);
 				environment.getStatusHandler().reportError(status); 
 			}
 		    

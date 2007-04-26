@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -50,7 +51,10 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 	private Label statusLabel;
 	@SuppressWarnings("unused")
 	private IStatus status = Status.OK_STATUS;
-	private boolean warExist = false;
+	private boolean webappExist = false;
+	private boolean isWar = false;
+	private String statusBanner = null;
+	
 
 	  
 	protected Control createContents(Composite superparent) {
@@ -61,11 +65,13 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		TabFolder axis2PreferenceTab = new TabFolder(mainComp, SWT.NONE);
 		TabItem runtimeInstalLocationItem = new TabItem(axis2PreferenceTab, SWT.NONE);
 		runtimeInstalLocationItem.setText(Axis2CoreUIMessages.AXIS2_RUNTIME);
+		runtimeInstalLocationItem.setToolTipText(Axis2CoreUIMessages.AXIS2_RUNTIME_TOOLTIP);
 		
-		//---------------------------------------------------Axis2 Rintume Location Group------------------------------//
+		//-----------------------------Axis2 Rintume Location Group------------------------------//
 		Group runtimeGroup = new Group(axis2PreferenceTab, SWT.NONE);
 		runtimeGroup.setText("Axis2 Rintume Location");
 		runtimeInstalLocationItem.setControl(runtimeGroup);
+		runtimeGroup.setToolTipText(Axis2CoreUIMessages.AXIS2_RUNTIME_TOOLTIP);
 		
 		Label label = new Label( runtimeGroup, SWT.NONE );
 		label.setText( Axis2CoreUIMessages.AXIS2_LOCATION );
@@ -73,17 +79,23 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		label.setSize(100,20);
 		
 		axis2Path = new Text( runtimeGroup, SWT.BORDER );
-		axis2Path.setText(
-					(RuntimePropertyUtils.getServerPathFromPropertiesFile() == null) ? "" 
-					: RuntimePropertyUtils.getServerPathFromPropertiesFile()
-				);
+		String serverPath = (RuntimePropertyUtils.getServerPathFromPropertiesFile() == null) ? "" 
+							: RuntimePropertyUtils.getServerPathFromPropertiesFile();
+		axis2Path.setText(serverPath);
+		ServerModel.setAxis2ServerPath( serverPath );
+		webappExist =runtimeExist(serverPath);
+		if(isWar){
+			ServerModel.setAxis2ServerPathRepresentsWar(true);
+		}else{
+			ServerModel.setAxis2ServerPathRepresentsWar(false);
+		}
 		axis2Path.setLocation(110,30);
 		axis2Path.setSize(400, 20);
 		axis2Path.addModifyListener( new ModifyListener(){
 			public void modifyText(ModifyEvent e){
 				ServerModel.setAxis2ServerPath( axis2Path.getText() );
-				warExist =runtimeExist(axis2Path.getText());
-				if (warExist) {
+				webappExist =runtimeExist(axis2Path.getText());
+				if (webappExist) {
 					status = RuntimePropertyUtils.writeServerPathToPropertiesFile(
 																axis2Path.getText());
 				}
@@ -114,21 +126,28 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		statusLabel.setLocation(20,100);
 		statusLabel.setSize(560,40);
 		statusLabel.setAlignment(SWT.CENTER);
-		statusLabel.setText(
-				(axis2Path.getText().equals("") || !warExist) ?Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD_ERROR
-						: Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD
-		);
 		
-		warExist =runtimeExist(axis2Path.getText());
+		if (axis2Path.getText().equals("")) {
+			statusBanner = Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_NOT_EXIT;
+		} else if ( !axis2Path.getText().equals("") && (!webappExist)) {
+			statusBanner = Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD_ERROR;
+		}else{
+			statusBanner = Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD;
+		}
+		statusLabel.setText(statusBanner);
+		
+		webappExist =runtimeExist(axis2Path.getText());
 		
 		TabItem codegenPreferencesItem = new TabItem(axis2PreferenceTab, SWT.NONE);
 		codegenPreferencesItem.setText(Axis2CoreUIMessages.AXIS2_PREFERENCES);
+		codegenPreferencesItem.setToolTipText(Axis2CoreUIMessages.AXIS2_PREFERENCES_TOOLTIP);
 		
-		//---------------------------------------------------Axis2 Runtime Preferences------------------------------//
+		//--------------------------------Axis2 Runtime Preferences------------------------------//
 		
 		Group codegenGroup = new Group(axis2PreferenceTab, SWT.NONE);
 		codegenGroup.setText("Axis2 Runtime Preferences");
 		codegenPreferencesItem.setControl(codegenGroup);
+		codegenGroup.setToolTipText(Axis2CoreUIMessages.AXIS2_PREFERENCES_TOOLTIP);
 		
 		//Service Codegen Options
 		Label serviceCodegenLabel = new Label( codegenGroup, SWT.NONE );
@@ -143,22 +162,22 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		databindingLabel.setSize(200,20);
 		
 		final Text databindingText = new Text( codegenGroup,SWT.BORDER );
-		databindingText.setText(Axis2CoreUIMessages.ADB);
+		databindingText.setText(ServerModel.getServiceDatabinding());
 		databindingText.addModifyListener( new ModifyListener() {
 			public void modifyText(ModifyEvent e){
-				ServerModel.setAxis2ServerPath( databindingText.getText() );
+				ServerModel.setServiceDatabinding( databindingText.getText() );
 			}
 		});
 		databindingText.setLocation(220,60);
 		databindingText.setSize(100,20);
 		
 		// generate test case option
-		Button testCaseCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+		final Button testCaseCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
 		testCaseCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
-		//model.setTestCaseCheck(false);
+		testCaseCheckBoxButton.setSelection(ServerModel.isServiceTestcase());
 		testCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setTestCaseCheck(true);
+				ServerModel.setServiceTestcase(testCaseCheckBoxButton.getSelection());
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -170,13 +189,16 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		//model.setServerXMLCheck(true);
 
 		//the server side interface option
-		Button generateServerSideInterfaceCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
-		generateServerSideInterfaceCheckBoxButton.setSelection(false);
-		generateServerSideInterfaceCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_SERVERSIDE_INTERFACE);
-		//model.setGenerateAllCheck(false);
+		final Button generateServerSideInterfaceCheckBoxButton = 
+							new Button(codegenGroup, SWT.CHECK);
+		generateServerSideInterfaceCheckBoxButton.setText(
+				Axis2CoreUIMessages.LABEL_GENERATE_SERVERSIDE_INTERFACE);
+		generateServerSideInterfaceCheckBoxButton.setSelection(
+									ServerModel.isServiceInterfaceSkeleton());
 		generateServerSideInterfaceCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setGenerateServerSideInterface(true);
+				ServerModel.setServiceInterfaceSkeleton(
+						generateServerSideInterfaceCheckBoxButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -185,12 +207,12 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		generateServerSideInterfaceCheckBoxButton.setSize(300, 15);
 
 		// generate all
-		Button generateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
-		generateAllCheckBoxButton.setSelection(false);
+		final Button generateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+		generateAllCheckBoxButton.setSelection(ServerModel.isServiceGenerateAll());
 		generateAllCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_ALL);
 		generateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setGenerateAllCheck(true);
+				ServerModel.setServiceGenerateAll(generateAllCheckBoxButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -198,7 +220,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		generateAllCheckBoxButton.setLocation(10, 150);
 		generateAllCheckBoxButton.setSize(350, 15);
 		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////
 		
 		//seperator
 		Label seperatorLabel0 = new Label( codegenGroup, SWT.SEPARATOR|SWT.BORDER);
@@ -218,14 +240,17 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		clientLabel.setSize(70,20); 
 		
 		//client side buttons
-		Button syncAndAsyncRadioButton = new Button(codegenGroup, SWT.RADIO);
+		final Button syncAndAsyncRadioButton = new Button(codegenGroup, SWT.RADIO);
 		syncAndAsyncRadioButton.setText(Axis2CoreUIMessages.LABEL_SYNC_AND_ASYNC);
 		syncAndAsyncRadioButton.setVisible(true);
-		syncAndAsyncRadioButton.setSelection(true);
+		syncAndAsyncRadioButton.setSelection(
+				((ServerModel.isAsync() || ServerModel.isSync())==false)
+				?true
+				:(ServerModel.isAsync() && ServerModel.isSync()));
 		syncAndAsyncRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setSync(syncOnlyRadioButton.getSelection());
-				//model.setSync(asyncOnlyRadioButton.getSelection());
+				ServerModel.setSync(syncAndAsyncRadioButton.getSelection());
+				ServerModel.setAsync(syncAndAsyncRadioButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -233,12 +258,13 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		syncAndAsyncRadioButton.setLocation(80,240);
 		syncAndAsyncRadioButton.setSize(190,20); 
 		
-		Button syncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
+		final Button syncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
 		syncOnlyRadioButton.setText(Axis2CoreUIMessages.LABEL_SYNC);
-		syncOnlyRadioButton.setSelection(false);
+		syncOnlyRadioButton.setSelection(ServerModel.isSync() && !ServerModel.isAsync() );
 		syncOnlyRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setSync(syncOnlyRadioButton.getSelection());
+				ServerModel.setSync(syncOnlyRadioButton.getSelection());
+				ServerModel.setAsync(!syncOnlyRadioButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -246,12 +272,13 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		syncOnlyRadioButton.setLocation(280,240);
 		syncOnlyRadioButton.setSize(170,20); 
 
-		Button asyncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
+		final Button asyncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
 		asyncOnlyRadioButton.setText(Axis2CoreUIMessages.LABEL_ASYNC);
-		asyncOnlyRadioButton.setSelection(false);
+		asyncOnlyRadioButton.setSelection(ServerModel.isAsync() && !ServerModel.isSync());
 		asyncOnlyRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setSync(asyncOnlyRadioButton.getSelection());
+				ServerModel.setAsync(asyncOnlyRadioButton.getSelection());
+				ServerModel.setSync(!asyncOnlyRadioButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -266,7 +293,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		clientDatabindingLabel.setSize(200,20);
 		
 		final Text databindingText1 = new Text( codegenGroup, SWT.BORDER );
-		databindingText1.setText(Axis2CoreUIMessages.ADB);
+		databindingText1.setText(ServerModel.getCleintDatabinding());
 		databindingText1.addModifyListener( new ModifyListener() {
 			public void modifyText(ModifyEvent e){
 				ServerModel.setAxis2ServerPath( databindingText1.getText() );
@@ -277,12 +304,12 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		
 		
 		// generate test case option
-		Button clientTestCaseCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+		final Button clientTestCaseCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
 		clientTestCaseCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
-		//model.setTestCaseCheck(false);
+		clientTestCaseCheckBoxButton.setSelection(ServerModel.isClientTestcase());
 		clientTestCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setTestCaseCheck(true);
+				ServerModel.setClientTestcase(clientTestCaseCheckBoxButton.getSelection());
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -291,15 +318,14 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		clientTestCaseCheckBoxButton.setLocation(10,300);
 		clientTestCaseCheckBoxButton.setSize(300, 15);
 
-		//model.setServerXMLCheck(true);
 
 		// generate all
-		Button clientGenerateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
-		clientGenerateAllCheckBoxButton.setSelection(false);
+		final Button clientGenerateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+		clientGenerateAllCheckBoxButton.setSelection(ServerModel.isClientGenerateAll());
 		clientGenerateAllCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_ALL);
 		clientGenerateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				//model.setGenerateAllCheck(true);
+				ServerModel.setClientGenerateAll(clientGenerateAllCheckBoxButton.getSelection());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -307,7 +333,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		clientGenerateAllCheckBoxButton.setLocation(10, 330);
 		clientGenerateAllCheckBoxButton.setSize(400, 15);
 		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////
 
 		//seperator
 		Label seperatorLabel1 = new Label( codegenGroup, SWT.SEPARATOR|SWT.BORDER);
@@ -327,10 +353,10 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		aarExtentionLabel.setSize(200,20);
 		
 		final Text aarExtentionText = new Text( codegenGroup, SWT.BORDER);
-		aarExtentionText.setText(Axis2CoreUIMessages.AAR);
+		aarExtentionText.setText(ServerModel.getAarExtention());
 		aarExtentionText.addModifyListener( new ModifyListener() {
 			public void modifyText(ModifyEvent e){
-				ServerModel.setAxis2ServerPath( databindingText1.getText() );
+				ServerModel.setAarExtention( aarExtentionText.getText() );
 			}
 		});
 		aarExtentionText.setLocation(220,420);
@@ -356,40 +382,55 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		if (fileName != null) {
 			axis2Path.setText(fileName);
 			ServerModel.setAxis2ServerPath( axis2Path.getText() );
+			if(isWar){
+				ServerModel.setAxis2ServerPathRepresentsWar(true);
+			}else{
+				ServerModel.setAxis2ServerPathRepresentsWar(false);
+			}
 		}
 	}
 	
 	private void statusUpdate(boolean status){
+		if(statusLabel != null){
+			if(!axis2Path.getText().equals("")){
 		if (status) {
 			statusLabel.setText(Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD);
 			this.setErrorMessage(null);
 		} else {
 			statusLabel.setText(Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD_ERROR);
-			this.setErrorMessage(Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD_ERROR);
+					//this.setErrorMessage(Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_LOAD_ERROR);
 		}
-		
+			}else{
+				statusLabel.setText(Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_NOT_EXIT);
+			}
+		}
 	}
 	
 	private boolean runtimeExist(String path){
+		isWar=false;
 		File axis2HomeDir = new File(path);
 		if (axis2HomeDir.isDirectory()) {
-			String axis2DistPath = Axis2CoreUtils.addAnotherNodeToPath(
+			String axis2LibPath = Axis2CoreUtils.addAnotherNodeToPath(
 													axis2HomeDir.getAbsolutePath(),
-													"dist");
-			if (new File(axis2DistPath).isDirectory()) {
+													"lib");
+			String axis2WebappPath = Axis2CoreUtils.addAnotherNodeToPath(
+					axis2HomeDir.getAbsolutePath(),
+					"webapp");
+			if (new File(axis2LibPath).isDirectory() && new File(axis2WebappPath).isDirectory()) {
+				statusUpdate(true);
+				return true;
+			} else {
 				String axis2WarPath = Axis2CoreUtils.addAnotherNodeToPath(
-						axis2DistPath,
+						path,
 						"axis2.war");
 				if (new File(axis2WarPath).isFile()) {
+					isWar = true;
 					statusUpdate(true);
 					return true;
 				} else {
 					statusUpdate(false);
 					return false;
 				}
-			} else {
-				statusUpdate(false);
-				return false;
 			}
 		}else{
 			statusUpdate(false);

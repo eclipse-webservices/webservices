@@ -1,17 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM and WSO2 Inc. and others.
+ * Copyright (c) 2007 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IBM Corporation - Initial API and implementation
  * WSO2 Inc. - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
+ * IBM Corporation - Initial API and implementation
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the 
  * 										  Axis2 runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -97,11 +98,13 @@ public class FileUtils
 		deleteDirectories(directory);
 	}
 
-	public static void createTargetFile(String sourceFileName, String targetFileName) throws Exception {
+	public static void createTargetFile(String sourceFileName, String targetFileName) 
+							throws Exception {
 		createTargetFile(sourceFileName, targetFileName, false);
 	}
 
-	public static void createTargetFile(String sourceFileName, String targetFileName, boolean overwrite) throws Exception{
+	public static void createTargetFile(String sourceFileName, String targetFileName, 
+						boolean overwrite) throws Exception{
 		File idealResultFile = new File(targetFileName);
 		if (overwrite || !idealResultFile.exists())
 		{

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070213  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -64,14 +65,12 @@ public class Axis2RuntimeUtils {
 			Properties properties = new Properties();
 			properties.load(new FileInputStream(Axis2CoreUtils.tempAxis2WebappFileLocation()));
 				if (properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_PATH)){
-					String axis2WarLocation = Axis2CoreUtils.addAnotherNodeToPath(
-													(ServerModel.getAxis2ServerPath()!=null)?ServerModel.getAxis2ServerPath():		
-															properties.getProperty(Axis2CoreUIMessages.PROPERTY_KEY_PATH),
-													Axis2CoreUIMessages.DIR_DIST);
 					String axis2WarFile = Axis2CoreUtils.addAnotherNodeToPath(
-																axis2WarLocation,
+													(ServerModel.getAxis2ServerPath()!=null)
+													?ServerModel.getAxis2ServerPath()
+													:properties.getProperty(
+															Axis2CoreUIMessages.PROPERTY_KEY_PATH),
 																Axis2CoreUIMessages.FILE_AXIS2_WAR);
-					
 					FileChannel srcChannel = new FileInputStream(axis2WarFile).getChannel();
 					FileChannel dstChannel = new FileOutputStream(tempWarFile).getChannel();
 					// Copy file contents from source to destination
@@ -81,7 +80,8 @@ public class Axis2RuntimeUtils {
 					dstChannel.close();
 				
 				//unzip this into another foulder
-				tempUnzipLocation = FileUtils.addAnotherNodeToPath(tempWarLocation, Axis2CoreUIMessages.DIR_UNZIP);
+				tempUnzipLocation = FileUtils.addAnotherNodeToPath(tempWarLocation, 
+											Axis2CoreUIMessages.DIR_UNZIP);
 				File tempUnzipLocationFile= new File(tempUnzipLocation);
 				if (!tempUnzipLocationFile.exists()) {
 					tempUnzipLocationFile.mkdirs();

@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
+ * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt;
 
@@ -80,11 +81,13 @@ public class Axis2WebService extends AbstractWebService
 			commands.add(new Axis2DefaultingCommand( model,this, ctx.getScenario().getValue()  ) );
 			commands.add(new Axis2TDCommand( model) );
 			commands.add(new Axis2WSDL2JavaCommand( model) );
-			commands.add( new Axis2BuildProjectCommand(ResourcesPlugin.getWorkspace().getRoot().getProject(project),true));
+			commands.add( new Axis2BuildProjectCommand(
+						ResourcesPlugin.getWorkspace().getRoot().getProject(project),true));
 			commands.add(new Axis2TDServiceCreationCommand(model,this,project));
 			commands.add(new Axis2WebservicesServerCommand(model, ctx.getScenario().getValue()));
 			//yes, again invoke the build command to redeploy the service after complete full build
-			commands.add( new Axis2BuildProjectCommand(ResourcesPlugin.getWorkspace().getRoot().getProject(project),true));
+			commands.add( new Axis2BuildProjectCommand(
+						ResourcesPlugin.getWorkspace().getRoot().getProject(project),true));
 			commands.add(new Axis2SkelImplCommand(this.getWebServiceInfo(),model));
 			commands.add(new Axis2CleanupCommand());
 		} 

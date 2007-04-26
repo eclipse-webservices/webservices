@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.wizard.client;
 
@@ -37,16 +38,19 @@ public class WebServiceClientAxis2Type implements CommandWidgetBinding {
 
 	
 	  /* (non-Javadoc)
-	   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings(org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
+	   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerDataMappings
+	   * (org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry)
 	   */
 	  public void registerDataMappings(DataMappingRegistry dataRegistry) {
 	  	// AxisClientDefaultingCommand  	
-	    // dataRegistry.addMapping( Axis2ClientDefaultingCommand.class, "CustomizeClientMappings", Axis2ProxyWidget.class );
+	    // dataRegistry.addMapping( Axis2ClientDefaultingCommand.class, 
+		// "CustomizeClientMappings", Axis2ProxyWidget.class );
 	    
 	  }
 	  
 	  /* (non-Javadoc)
-	   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerWidgetMappings(org.eclipse.wst.command.env.ui.widgets.WidgetRegistry)
+	   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerWidgetMappings
+	   * (org.eclipse.wst.command.env.ui.widgets.WidgetRegistry)
 	   */
 	  public void registerWidgetMappings(WidgetRegistry widgetRegistry) {
 	   
@@ -74,7 +78,8 @@ public class WebServiceClientAxis2Type implements CommandWidgetBinding {
 	  }
 	  
 	  /* (non-Javadoc)
-	   * @see org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactoryFactory#create()
+	   * @see org.eclipse.wst.command.internal.env.core.fragment
+	   * .CommandFragmentFactoryFactory#create()
 	   */
 	  public CommandFragmentFactory create() 
 	  {
@@ -88,7 +93,8 @@ public class WebServiceClientAxis2Type implements CommandWidgetBinding {
 	           };
 	  }
 	  /* (non-Javadoc)
-	   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerCanFinish(org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry)
+	   * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerCanFinish
+	   * (org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry)
 	   */
 	  public void registerCanFinish(CanFinishRegistry canFinishRegistry){
 	  }

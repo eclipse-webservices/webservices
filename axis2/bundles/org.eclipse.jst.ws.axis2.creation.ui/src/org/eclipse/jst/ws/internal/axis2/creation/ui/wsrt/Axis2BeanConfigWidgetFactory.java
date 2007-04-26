@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt;
@@ -63,7 +64,8 @@ public class Axis2BeanConfigWidgetFactory implements INamedWidgetContributorFact
 
 	private void init(){
 		//Pages of Axis2 Web Services Java Bean Scenario
-		ServicesXMLSelectBeanWidget servicesXMLSelectWidget = new ServicesXMLSelectBeanWidget(model);
+		ServicesXMLSelectBeanWidget servicesXMLSelectWidget = 
+								new ServicesXMLSelectBeanWidget(model);
 		servicesXMLSelectWidgetContrib  = createWidgetContributor( 
 				Axis2CreationUIMessages.LABEL_AXIS2_PREFERENCE_PAGE_HEADING,
 				Axis2CreationUIMessages.LABEL_AXIS2_PREFERENCE_PAGE_SUB_HEADING, 

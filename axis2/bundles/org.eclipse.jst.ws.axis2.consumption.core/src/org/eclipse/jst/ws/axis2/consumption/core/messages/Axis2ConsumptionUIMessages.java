@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.messages;
 
@@ -17,7 +18,8 @@ import org.eclipse.osgi.util.NLS;
 
 public final class Axis2ConsumptionUIMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUI";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = 
+		"org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUI";//$NON-NLS-1$
 
 	private Axis2ConsumptionUIMessages() {
 		// Do not instantiate

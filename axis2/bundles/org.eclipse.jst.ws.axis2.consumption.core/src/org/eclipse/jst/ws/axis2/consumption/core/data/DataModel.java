@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.data;
 
@@ -21,10 +22,11 @@ public class DataModel extends Model{
 	private String 	serviceClass;
 	private String 	databindingType;
 	private String 	namespaseToPackageMapping;
-	private boolean	Sync;
-	private boolean	ASync;
-	private boolean generateAllCheck;
-	private boolean testCaseCheck;
+	//Default setting is to generate both sync and async
+	private boolean	Sync = false; 
+	private boolean	ASync = false;
+	private boolean generateAllCheck = false;
+	private boolean testCaseCheck = false;
 
 	
 	public String getDatabindingType() {
@@ -88,8 +90,8 @@ public class DataModel extends Model{
 	public boolean isASync() {
 		return ASync;
 	}
-	public void setASync(boolean sync) {
-		ASync = sync;
+	public void setASync(boolean async) {
+		ASync = async;
 	}
 	public boolean isSync() {
 		return Sync;

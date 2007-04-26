@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -54,7 +55,8 @@ public class RuntimePropertyUtils {
 	}
 	
 	public static IStatus writeServerPathToPropertiesFile(String axis2Path) {
-		//Fix for properties file skipping the File seperator charactor on windows when loading again
+		//Fix for properties file skipping the File seperator charactor 
+		// on windows when loading again
 		String axis2PathNew = null;
 		if ((axis2Path.indexOf("\\")) != -1) {
 			axis2PathNew = axis2Path.replace(File.separator, File.separator+File.separator);;

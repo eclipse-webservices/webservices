@@ -12,6 +12,7 @@
  * 20070205   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070206   172186 sandakith@wso2.com	- Fix for 172186, Added a check to overcome the issue.
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -48,7 +49,6 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 													 throws ExecutionException {
-		
 		IStatus status = Status.OK_STATUS;  
 		IEnvironment environment = getEnvironment();
 		IStatusHandler statusHandler = environment.getStatusHandler();	
@@ -81,6 +81,8 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 		Object axisServiceInstance;
 	try {
 		//service = generator.getAxisService(model.getWsdlURI());
+		ClassLoadingUtil.setInitByClient(true);
+		ClassLoadingUtil.cleanAntClassLoader();
 		ClassLoadingUtil.init(model.getWebProjectName());
 		axisServiceInstance = generator.getAxisService(model.getWsdlURI());
 		Map optionsMap = generator.fillOptionMap(	
@@ -88,11 +90,13 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
             model.isSync(), //sync
             false,  //servirside false always
             false,  //services.xml false always
-            false, //model.isTestCaseCheck(),
+            model.isTestCaseCheck(),
             model.isGenerateAllCheck(),
             (model.getServiceName()!=null)?model.getServiceName():null,
             (model.getPortName()!=null)?model.getPortName():null,
-            (model.getDatabindingType().toLowerCase()!=null)?model.getDatabindingType().toLowerCase():null,
+            (model.getDatabindingType().toLowerCase()!=null)
+            			?model.getDatabindingType().toLowerCase()
+            			:null,
             (model.getWsdlURI()!=null)?model.getWsdlURI():null,
             (model.getPackageText()!=null)?model.getPackageText():null,
             "java",
@@ -102,65 +106,49 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
            ); 
       
         //CodeGenConfiguration codegenConfig = new CodeGenConfiguration(service, optionsMap);
-		Class CodeGenConfigurationClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.wsdl.codegen.CodeGenConfiguration");
+		Class CodeGenConfigurationClass = ClassLoadingUtil
+				.loadClassFromAntClassLoader("org.apache.axis2.wsdl.codegen.CodeGenConfiguration");
 
-		Class[] parameterTypes = new Class[2];
-		parameterTypes[0] = axisServiceInstance.getClass();
-		parameterTypes[1] = Map.class;
-		Constructor CodeGenConfigurationConstructor = CodeGenConfigurationClass.getConstructor(parameterTypes);
-       
-		Object initargs[] = new Object[2];
-		initargs[0] = axisServiceInstance;
-		initargs[1] = optionsMap;
-		Object CodeGenConfigurationInstance  = CodeGenConfigurationConstructor.newInstance(initargs);
+		Constructor CodeGenConfigurationConstructor = CodeGenConfigurationClass
+				.getConstructor(new Class[]{axisServiceInstance.getClass(),Map.class});
+		Object CodeGenConfigurationInstance  = CodeGenConfigurationConstructor
+				.newInstance(new Object[]{axisServiceInstance,optionsMap});
 		
         //set the baseURI
         //codegenConfig.setBaseURI(generator.getBaseUri(model.getWsdlURI()));
 		
-		Class[] parameterTypes1 = new Class[1];
-		parameterTypes1[0] = String.class;
-		Method setBaseURIMethod = CodeGenConfigurationClass.getMethod("setBaseURI", parameterTypes1);
-
-		Object args[] = new Object[1];
-		args[0] = generator.getBaseUri(model.getWsdlURI());
-		setBaseURIMethod.invoke(CodeGenConfigurationInstance, args);
+		Method setBaseURIMethod = CodeGenConfigurationClass
+				.getMethod("setBaseURI", new Class[]{String.class});
+		setBaseURIMethod.invoke(CodeGenConfigurationInstance, 
+								new Object[]{generator.getBaseUri(model.getWsdlURI())});
 		
 		//Get the namespace from the AxisService and set it in the configuration 
-		Class AxisServiceClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.description.AxisService");
+		Class AxisServiceClass = ClassLoadingUtil
+					.loadClassFromAntClassLoader("org.apache.axis2.description.AxisService");
 
 		Method getTargetNamespaceMethod = AxisServiceClass.getMethod("getTargetNamespace", null);
 		Object targetNamespace = getTargetNamespaceMethod.invoke(axisServiceInstance, null);
 		
-		Class URLProcessorClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
-		Class parameterTypes4[] = new Class[1];
-		parameterTypes4[0] = String.class;
-		Method makePackageNameMethod = URLProcessorClass.getMethod("makePackageName", parameterTypes4);
-		
-		Object args4[] = new Object[1];
-		args4[0] = targetNamespace;
-		Object stringReturn = makePackageNameMethod.invoke(null, args4);
+		Class URLProcessorClass = ClassLoadingUtil
+					.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
+		Method makePackageNameMethod = URLProcessorClass
+					.getMethod("makePackageName", new Class[]{String.class});
+		Object stringReturn = makePackageNameMethod.invoke(null, new Object[]{targetNamespace});
 		
 		model.setPackageText(stringReturn.toString());
 		
-		Class[] parameterTypes3 = new Class[1];
-		parameterTypes3[0] = String.class;
-		Method setPackageNameMethod = CodeGenConfigurationClass.getMethod("setPackageName", parameterTypes3);
-
-		Object args2[] = new Object[1];
-		args2[0] = stringReturn;
-		setPackageNameMethod.invoke(CodeGenConfigurationInstance, args2);
+		Method setPackageNameMethod = CodeGenConfigurationClass
+					.getMethod("setPackageName", new Class[]{String.class});
+		setPackageNameMethod.invoke(CodeGenConfigurationInstance, new Object[]{stringReturn});
 		
         //new CodeGenerationEngine(codegenConfig).generate();
 		
-		Class CodeGenerationEngineClass = ClassLoadingUtil.loadClassFromAntClassLoader("org.apache.axis2.wsdl.codegen.CodeGenerationEngine");
-
-		Class[] parameterTypes2 = new Class[1];
-		parameterTypes2[0] = CodeGenConfigurationInstance.getClass();
-		Constructor CodeGenerationEngineConstructor = CodeGenerationEngineClass.getConstructor(parameterTypes2);
-        
-		Object initargs1[] = new Object[1];
-		initargs1[0] = CodeGenConfigurationInstance;
-		Object CodeGenerationEngineInstance  = CodeGenerationEngineConstructor.newInstance(initargs1);
+		Class CodeGenerationEngineClass = ClassLoadingUtil
+				.loadClassFromAntClassLoader("org.apache.axis2.wsdl.codegen.CodeGenerationEngine");
+		Constructor CodeGenerationEngineConstructor = CodeGenerationEngineClass
+					.getConstructor(new Class[]{CodeGenConfigurationInstance.getClass()});
+		Object CodeGenerationEngineInstance  = CodeGenerationEngineConstructor
+					.newInstance(new Object[]{CodeGenConfigurationInstance});
 		
 		//Invoke Codegen Method
 		Method generateMethod = CodeGenerationEngineClass.getMethod("generate", null);

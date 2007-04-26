@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ui Plug-in
+Bundle-Name: Axis2 Creation Ui Plug-in
 Bundle-SymbolicName: org.eclipse.jst.ws.axis2.creation.ui;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.jst.ws.internal.axis2.creation.ui.plugin.WebServiceAxis2CreationUIPlugin

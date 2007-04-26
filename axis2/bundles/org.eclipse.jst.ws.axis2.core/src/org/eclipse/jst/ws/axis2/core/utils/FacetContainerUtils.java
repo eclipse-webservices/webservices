@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070222  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -99,6 +100,7 @@ public class FacetContainerUtils {
 										 Axis2CoreUIMessages.SERVICES,
 										 serviceName
 										 };
-		return FileUtils.addNodesToURL(Axis2CoreUIMessages.LOCAL_SERVER_PORT, deployedWSDLURLParts)+"?wsdl";
+		return FileUtils.addNodesToURL(Axis2CoreUIMessages.LOCAL_SERVER_PORT, 
+										deployedWSDLURLParts)+"?wsdl";
 	}
 }

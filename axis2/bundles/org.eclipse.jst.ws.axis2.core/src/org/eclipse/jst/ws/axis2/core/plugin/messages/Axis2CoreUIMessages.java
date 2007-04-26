@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse 
  * 										the Axis2 runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin.messages;
 
@@ -18,7 +19,8 @@ import org.eclipse.osgi.util.NLS;
 
 public final class Axis2CoreUIMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUI";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = 
+			"org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUI";//$NON-NLS-1$
 
 	private Axis2CoreUIMessages() {
 		// Do not instantiate
@@ -32,6 +34,7 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static String LABEL_DATABINDING;
 	public static String LABEL_AXIS2_RUNTIME_LOAD;
 	public static String LABEL_AXIS2_RUNTIME_LOAD_ERROR;
+	public static String LABEL_AXIS2_RUNTIME_NOT_EXIT;
 	public static String LABEL_GENERATE_TESTCASE_CAPTION;
 	public static String LABEL_GENERATE_SERVERSIDE_INTERFACE;
 	public static String LABEL_GENERATE_ALL;
@@ -42,6 +45,7 @@ public final class Axis2CoreUIMessages extends NLS {
 	
 	public static String DIR_WEBCONTENT;
 	public static String DIR_TEMPWAR;
+	public static String DIR_EXPLOADED_TEMPWAR;
 	public static String DIR_DIST;
 	public static String DIR_DOT_METADATA;
 	public static String DIR_WEB_INF;
@@ -54,6 +58,8 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static String AXIS2_LOCATION;
 	public static String AXIS2_RUNTIME;
 	public static String AXIS2_PREFERENCES;
+	public static String AXIS2_RUNTIME_TOOLTIP;
+	public static String AXIS2_PREFERENCES_TOOLTIP;
 	public static String TEMP_AXIS2_FACET_DIR;
 	public static String WEBAPP_EXPLODED_SERVER_LOCATION_FILE;
 	public static String SERVER_STATUS_LOCATION_FILE;

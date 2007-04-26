@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070206   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -57,7 +58,8 @@ public class DefaultCodegenUtil {
 				if (!serviceQNameList.isEmpty()) {
 					// add the local part of the
 					Object serviceQnameInstance = serviceQNameList.get(0);
-					Class QNameClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.xml.namespace.QName");
+					Class QNameClass = ClassLoadingUtil
+							.loadClassFromAntClassLoader("javax.xml.namespace.QName");
 					Method GetLocalPartMethod  = QNameClass.getMethod("getLocalPart", null);
 					Object resultLocalPart = GetLocalPartMethod.invoke(serviceQnameInstance, null);
 					model.setServiceName(resultLocalPart.toString());

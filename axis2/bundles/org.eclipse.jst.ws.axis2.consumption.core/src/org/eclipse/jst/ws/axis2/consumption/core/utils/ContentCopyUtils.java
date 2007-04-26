@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070118   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -39,14 +40,18 @@ public class ContentCopyUtils {
 	FileInputStream finStream = null;		
 
 	/**
-	 * This method will copy the source directory into the eclipse workspace according to the Eclipse Framework API
+	 * This method will copy the source directory into the eclipse workspace according 
+	 * to the Eclipse Framework API
 	 * @param sourceDir
 	 * @param destinationDir
 	 * @param monitor
 	 * @param statusHandler
 	 * @return
 	 */
-	public IStatus copyDirectoryRecursivelyIntoWorkspace(String sourceDir, String destinationDir,IProgressMonitor monitor,IStatusHandler statusHandler) {
+	public IStatus copyDirectoryRecursivelyIntoWorkspace(String sourceDir, 
+				String destinationDir,
+				IProgressMonitor monitor,
+				IStatusHandler statusHandler) {
 		IStatus status = Status.OK_STATUS;
 		fileAndDirectoriesList.clear();
 		File axis2WebappFolder = new File(sourceDir);
@@ -84,13 +89,15 @@ public class ContentCopyUtils {
 					fileName = deployFile.substring(tempOutputDir.length());
 					targetPath = outputPath.append(fileName).makeAbsolute();
 					if (isDirectory){
-						org.eclipse.wst.command.internal.env.common.FileResourceUtils.makeFolderPathAtLocation(context,  
+						org.eclipse.wst.command.internal.env.common.FileResourceUtils
+						.makeFolderPathAtLocation(context,  
 								targetPath,
 								monitor,
 								statusHandler);
 					}else{
 						if (finStream != null) {
-							org.eclipse.wst.command.internal.env.common.FileResourceUtils.createFileAtLocation(context,  
+							org.eclipse.wst.command.internal.env.common.FileResourceUtils
+							.createFileAtLocation(context,  
 									targetPath,
 									finStream,
 									monitor,
@@ -101,9 +108,13 @@ public class ContentCopyUtils {
 				}
 			}
 		} catch (IOException e) {
-			status = StatusUtils.errorStatus(NLS.bind(Axis2ConsumptionUIMessages.ERROR_INVALID_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2ConsumptionUIMessages.ERROR_INVALID_FILE_READ_WRITEL,
+							new String[]{e.getLocalizedMessage()}), e);
 		} catch (CoreException e) {
-			status = StatusUtils.errorStatus(NLS.bind(Axis2ConsumptionUIMessages.ERROR_INVALID_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2ConsumptionUIMessages.ERROR_INVALID_FILE_READ_WRITEL,
+							new String[]{e.getLocalizedMessage()}), e);
 		}
 
 		return status;

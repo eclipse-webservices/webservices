@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin;
 
@@ -23,7 +24,7 @@ import org.osgi.framework.BundleContext;
 public class WebServiceAxis2CorePlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.jst.ws.axis2.core.plugin";
+	public static final String PLUGIN_ID = "org.eclipse.jst.ws.axis2.core";
 
 	// The shared instance
 	private static WebServiceAxis2CorePlugin plugin;

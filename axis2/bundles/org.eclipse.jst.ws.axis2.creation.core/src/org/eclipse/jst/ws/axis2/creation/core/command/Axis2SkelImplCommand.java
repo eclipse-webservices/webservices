@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070123   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -80,7 +81,9 @@ public class Axis2SkelImplCommand extends AbstractDataModelOperation {
 
 			
 		} catch (MalformedURLException e) {
-			status = StatusUtils.errorStatus(NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2CreationUIMessages.ERROR_INVALID_FILE_READ_WRITEL,
+							new String[]{e.getLocalizedMessage()}), e);
 			environment.getStatusHandler().reportError(status); 
 		}
 

@@ -11,15 +11,13 @@
  * -------- -------- -----------------------------------------------------------
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.Project;
@@ -28,19 +26,32 @@ import org.apache.tools.ant.types.Path;
 public class ClassLoadingUtil {
 
 	private static String[] axis2ClassPath = null;
+	private static String[] classLoadPath = null;
 	private static int libCount = 0;
 	private static AntClassLoader antClassLoader;
+	private static boolean libsLoaded = false;
+	private static URL[] urls = null;
+	private static boolean alreadyInit = false;
+	private static boolean initByClient = false;
 	
 	public static void init(String project) {
+		if (!alreadyInit) {
 
 		//Obtain a ant class loader instance
+			if(antClassLoader==null){
 		antClassLoader =  new AntClassLoader();
+			}
 		
 		// Set the class loader to child first
 		antClassLoader.setParentFirst(false);
 		
-		String[] classLoadPath = getAxis2Libs(project);
-		URL[] urls = new URL[classLoadPath.length];
+			if (!(axis2ClassPath ==null) || !libsLoaded){
+				classLoadPath = getAxis2Libs(project);
+			}
+			
+			if(urls == null){
+				urls= new URL[classLoadPath.length];
+			}
 
 		Path classpath = new Path(new Project());
 		
@@ -60,116 +71,10 @@ public class ClassLoadingUtil {
 			e.printStackTrace();
 		}
 			antClassLoader.setClassPath(classpath);
-	}
-	
-	
-	
-
-	/**
-	 * Load the class from the class loader 
-	 * @param project
-	 * @param fillyQualifiedClassName
-	 * @return Class loaded through class loader
-	 */
-	public static Class loadClassFromAxis2LibPath(String project, String fillyQualifiedClassName){
-
-		String[] classLoadPath = getAxis2Libs(project);
-		Class cls = null;
-		URL[] urls = new URL[classLoadPath.length];
-
-
-		try {	
-			for (int i = 0; i < classLoadPath.length; i++) {
-				//Create a File object on the root of the directory containing the class file
-				if(classLoadPath[i]!=null){
-					File file = new File(classLoadPath[i]);
-					// Convert File to a URL
-					URL url = file.toURL();          
-					urls[i]= url;
+			alreadyInit = true;
 				}
 			}
 
-			// Create a new class loader with the directory
-			ClassLoader cl = new URLClassLoader(urls,Thread.currentThread().getContextClassLoader());
-//			ClassLoader cl = new URLClassLoader(urls,null); //Set no parent class loader and give me from local jars only
-
-			// Load in the class
-			cls = cl.loadClass(fillyQualifiedClassName);
-			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		return cls;
-	}
-
-	/**
-	 * load the instance from the class loader
-	 * @param project
-	 * @param fillyQualifiedClassName
-	 * @param parameterTypes
-	 * @param initargs
-	 * @deprecated 
-	 * @return instance from the class loader
-	 */
-	public static Object getInstanceFromAxis2LibPath(String project, String fillyQualifiedClassName,Class[] parameterTypes,Object[] initargs){
-
-		String[] classLoadPath = getAxis2Libs(project);
-		Class cls = null;
-		Object instance = null;
-		URL[] urls = new URL[classLoadPath.length];
-
-
-		try {	
-			for (int i = 0; i < classLoadPath.length; i++) {
-				//Create a File object on the root of the directory containing the class file
-				if(classLoadPath[i]!=null){
-					File file = new File(classLoadPath[i]);
-					// Convert File to a URL
-					URL url = file.toURL();          
-					urls[i]= url;
-				}
-			}
-
-			// Create a new class loader with the directory
-			URLClassLoader cl = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
-			//cl.
-
-			// Load in the class
-			cls = cl.loadClass(fillyQualifiedClassName);
-			
-			Constructor constructor = cls.getConstructor(parameterTypes);
-			instance = constructor.newInstance(initargs);
-			
-			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return instance;
-	}
 	
 	
 	public static Class loadClassFromAntClassLoader(String fillyQualifiedClassName){
@@ -182,7 +87,6 @@ public class ClassLoadingUtil {
 		}
 		return cls;
 	}
-	
 	
 	
 	private static String[] getAxis2Libs(String project){
@@ -209,8 +113,16 @@ public class ClassLoadingUtil {
 			}
 
 		}
-
+		libsLoaded = true;
 	}
 
-
+	public static void cleanAntClassLoader(){
+		if(initByClient){
+			antClassLoader.cleanup();
+			alreadyInit = false;
+		}
+}
+	public static void setInitByClient(boolean status){
+		initByClient = status;
+	}
 }

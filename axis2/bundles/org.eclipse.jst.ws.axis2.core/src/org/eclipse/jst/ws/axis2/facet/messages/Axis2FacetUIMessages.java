@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070213  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.messages;
 
@@ -18,7 +19,8 @@ import org.eclipse.osgi.util.NLS;
 
 public final class Axis2FacetUIMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUI";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = 
+				"org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUI";//$NON-NLS-1$
 
 	private Axis2FacetUIMessages() {
 		// Do not instantiate

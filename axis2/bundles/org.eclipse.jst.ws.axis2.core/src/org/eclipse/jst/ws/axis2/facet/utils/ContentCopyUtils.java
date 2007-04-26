@@ -1,17 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation, WSO2 Inc. and others.
+ * Copyright (c) 2007 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IBM Corporation - initial API and implementation
- * WSO2 Inc. - initial extended API and implementation
+ * WSO2 Inc. - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
+ * IBM Corporation - initial API and implementation
+ * WSO2 Inc. - initial extended API and implementation
  * 20070213  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
+ * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -50,14 +52,16 @@ public class ContentCopyUtils {
 	FileInputStream finStream = null;		
 
 	/**
-	 * This method will copy the source directory into the eclipse workspace according to the Eclipse Framework API
+	 * This method will copy the source directory into the eclipse workspace 
+	 * according to the Eclipse Framework API
 	 * @param sourceDir
 	 * @param destinationDir
 	 * @param monitor
 	 * @param statusHandler
 	 * @return
 	 */
-	public IStatus copyDirectoryRecursivelyIntoWorkspace(String sourceDir, String destinationDir,IProgressMonitor monitor) {
+	public IStatus copyDirectoryRecursivelyIntoWorkspace(String sourceDir, 
+									String destinationDir,IProgressMonitor monitor) {
 		IStatus status = Status.OK_STATUS;
 		fileAndDirectoriesList.clear();
 		File axis2WebappFolder = new File(sourceDir);
@@ -110,9 +114,13 @@ public class ContentCopyUtils {
 				}
 			}
 		} catch (IOException e) {
-			status = StatusUtils.errorStatus(NLS.bind(Axis2CoreUIMessages.ERROR_INVALID_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2CoreUIMessages.ERROR_INVALID_FILE_READ_WRITEL,
+							 new String[]{e.getLocalizedMessage()}), e);
 		} catch (CoreException e) {
-			status = StatusUtils.errorStatus(NLS.bind(Axis2CoreUIMessages.ERROR_INVALID_FILE_READ_WRITEL,new String[]{e.getLocalizedMessage()}), e);
+			status = StatusUtils.errorStatus(
+					NLS.bind(Axis2CoreUIMessages.ERROR_INVALID_FILE_READ_WRITEL,
+							 new String[]{e.getLocalizedMessage()}), e);
 		}
 
 		return status;
@@ -185,14 +193,16 @@ public class ContentCopyUtils {
 								 new Status( IStatus.ERROR, 
 										 "ResourceUtils",
 										 0, 
-										 NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_RESOURCE_NOT_FOLDER,
+										 NLS.bind("ERROR",
 												 new Object[]{ resource.getFullPath().toString() }),
 												 null ) );
 					 }
 				 }
 				 else
 				 {
-					 IContainer parent = makeFolderPathAtLocation(resourceContext, resource.getParent(), progressMonitor );
+					 IContainer parent = makeFolderPathAtLocation(resourceContext, 
+							 			resource.getParent(), 
+							 			progressMonitor );
 					 String folderName = resource.getName();
 					 
 					 return makeFolder(resourceContext, parent, folderName, progressMonitor  );
@@ -241,20 +251,24 @@ public class ContentCopyUtils {
 			   {    
 			     if (!absolutePath.isAbsolute())
 			     {
-			       throw new CoreException(new Status(IStatus.ERROR, "ResourceUtils",0,NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_PATH_NOT_ABSOLUTE,
+			       throw new CoreException(new Status(IStatus.ERROR, "ResourceUtils",0,
+			    		   NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_PATH_NOT_ABSOLUTE,
 			    		   new Object[] {absolutePath.toString()}),null));
 			     }
 			     if (absolutePath.segmentCount() < 1)
 			     {
-			       throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_PATH_EMPTY,
+			       throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,
+			    		   NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_PATH_EMPTY,
 			    		   new Object[] {absolutePath.toString()}),null));
 			     }
 			     if (absolutePath.segmentCount() < 2)
 			     {
-			       throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_PATH_NOT_FOLDER,
+			       throw new CoreException(new Status(IStatus.ERROR,"ResourceUtils",0,
+			    		   NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_PATH_NOT_FOLDER,
 			    		   new Object[] {absolutePath.toString()}),null));
 			     }
-			     IContainer parent   = makeFolderPathAtLocation(resourceContext, absolutePath.removeLastSegments(1), progressMonitor);
+			     IContainer parent   = makeFolderPathAtLocation(resourceContext, 
+			    		 				absolutePath.removeLastSegments(1), progressMonitor);
 			     String     fileName = absolutePath.lastSegment();
 			     
 			     return makeFile(resourceContext, parent, fileName, inputStream, progressMonitor);
@@ -296,7 +310,7 @@ public class ContentCopyUtils {
 			          new Status( IStatus.ERROR,
 			                      "ResourceUtils",
 			                      0, 
-			                      NLS.bind("ERROR",//EnvironmentMessages.MSG_ERROR_RESOURCE_NOT_FILE,
+			                      NLS.bind("ERROR",
 							                       new Object[] {parent.getFullPath().append(fileName)}),
 								  null ) );
 			      }
