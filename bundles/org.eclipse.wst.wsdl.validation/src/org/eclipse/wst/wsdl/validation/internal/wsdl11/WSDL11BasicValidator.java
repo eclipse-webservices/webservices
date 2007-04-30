@@ -65,7 +65,7 @@ public class WSDL11BasicValidator implements IWSDL11Validator
   private final String _PORT_NAME_NOT_UNIQUE = "_PORT_NAME_NOT_UNIQUE";
   private final String _NO_BINDING_FOR_PORT = "_NO_BINDING_FOR_PORT";
   private final String _NO_ADDRESS_PORT = "_NO_ADDRESS_PORT";
-  private final String _MORE_THEN_ONE_ADDRESS_PORT = "_MORE_THEN_ONE_ADDRESS_PORT"; //TODO should be _MORE_THAN_ONE_ADDRESS_PORT, not THEN
+//  private final String _MORE_THEN_ONE_ADDRESS_PORT = "_MORE_THEN_ONE_ADDRESS_PORT"; //TODO should be _MORE_THAN_ONE_ADDRESS_PORT, not THEN
   private final String _PORTTYPE_UNDEFINED_FOR_BINDING = "_PORTTYPE_UNDEFINED_FOR_BINDING";
   private final String _OPERATION_UNDEFINED_FOR_PORTTYPE = "_OPERATION_UNDEFINED_FOR_PORTTYPE";
   private final String _OPERATION_NO_INPUT_OR_OUTPUT = "_OPERATION_NO_INPUT_OR_OUTPUT";
@@ -234,22 +234,29 @@ public class WSDL11BasicValidator implements IWSDL11Validator
             // TODO: Check that the output of one port isn't the input of another and vice versa
             // extensibility elements the port
             // there can only be one and must be one extensibility element defined for a port
+            // TODO: Revisit. There is no standard way to determine which extensibility element
+            // specifies the address. Even when the port has at least one extensibility element,
+            // there is no way to ensure that is "the" address one.
             List extelems = p.getExtensibilityElements();
             if (extelems.size() < 1)
             { String args[]= {p.getName()};
               valInfo.addError(messagegenerator.getString(_NO_ADDRESS_PORT, QUOTE + args[0] + QUOTE),
                   p, _NO_ADDRESS_PORT, args);
             }
-            else if (extelems.size() > 1)
-            {
-              for (int k = 1; k < extelems.size(); k++)
-              {
-                String[] args = {p.getName()};
-                valInfo.addError(
-                  messagegenerator.getString(_MORE_THEN_ONE_ADDRESS_PORT, QUOTE + args[0] + QUOTE),
-                  extelems.get(k), _MORE_THEN_ONE_ADDRESS_PORT, args);
-              }
-            }
+// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=173854            
+// The WS-I basic profile has relaxed the number of extensibility elements allowed for ports.
+// A number of WS specifications like JAX-WS and WS Policy define extensibility elements for ports.
+// This code is commented out because it is too restrictive and generates errors that appear invalid.            
+//            else if (extelems.size() > 1)
+//            {
+//              for (int k = 1; k < extelems.size(); k++)
+//              {
+//                String[] args = {p.getName()};
+//                valInfo.addError(
+//                  messagegenerator.getString(_MORE_THEN_ONE_ADDRESS_PORT, QUOTE + args[0] + QUOTE),
+//                  extelems.get(k), _MORE_THEN_ONE_ADDRESS_PORT, args);
+//              }
+//            }
             validateExtensibilityElementList(parents, p.getExtensibilityElements(), valInfo);
           }
         }
