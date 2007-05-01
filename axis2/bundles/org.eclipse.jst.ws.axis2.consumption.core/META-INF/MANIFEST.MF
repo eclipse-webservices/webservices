@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Axis2 Consumption Core Plug-in
+Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis2.consumption.core
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.jst.ws.axis2.consumption.core.plugin.WebServiceAxis2ConsumptionCorePlugin
@@ -33,3 +33,4 @@ Export-Package: org.eclipse.jst.ws.axis2.consumption.core.command,
  org.eclipse.jst.ws.axis2.consumption.core.utils,
  org.eclipse.jst.ws.axis2.creation.core.data
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: %PLUGIN_PROVIDER

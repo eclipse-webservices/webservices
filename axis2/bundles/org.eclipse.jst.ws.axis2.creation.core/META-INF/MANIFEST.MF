@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Axis2 Creation Core Plug-in
+Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis2.creation.core
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.jst.ws.axis2.creation.core.plugin.WebServiceAxis2CreationCorePlugin
@@ -26,3 +26,4 @@ Export-Package: org.eclipse.jst.ws.axis2.creation.core.command,
  org.eclipse.jst.ws.axis2.creation.core.plugin,
  org.eclipse.jst.ws.axis2.creation.core.utils
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: %PLUGIN_PROVIDER
