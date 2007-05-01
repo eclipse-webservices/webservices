@@ -12,6 +12,7 @@
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -26,7 +27,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 
 public class RuntimePropertyUtils {
-	private static File PropertiesFileDir,serverPropertiesFile,statusPropertyFile;
+	private static File PropertiesFileDir,serverPropertiesFile,statusPropertyFile,warPropertyFile;
 	private static IStatus status;
 	private static Properties properties;
 	
@@ -53,6 +54,16 @@ public class RuntimePropertyUtils {
 		}
 		properties.load(new FileInputStream(statusPropertyFile));
 	}
+	
+	private static void warPropertiesFileInit() throws IOException{
+		warPropertyFile = new File(Axis2CoreUtils.tempWarStatusFileLocation());
+		if (!warPropertyFile.exists()){
+			warPropertyFile.createNewFile();
+		}
+		properties.load(new FileInputStream(warPropertyFile));
+	}
+	
+	
 	
 	public static IStatus writeServerPathToPropertiesFile(String axis2Path) {
 		//Fix for properties file skipping the File seperator charactor 
@@ -123,6 +134,48 @@ public class RuntimePropertyUtils {
 		}
 		
 		return status;
+	}
+	
+	public static IStatus writeWarStausToPropertiesFile(boolean warStatus) {
+		try {
+			init();
+			warPropertiesFileInit();
+			if(! (properties.size()== 0)){
+				if(properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_STATUS)){
+					properties.remove(Axis2CoreUIMessages.PROPERTY_KEY_STATUS);
+				}
+			}
+			Axis2CoreUtils.writePropertyToFile(warPropertyFile, 
+											   Axis2CoreUIMessages.PROPERTY_KEY_STATUS, 
+											   String.valueOf(warStatus));
+		} catch (FileNotFoundException e) {
+			updateStatusError(); 
+		} catch (IOException e) {
+			updateStatusError();
+		}
+		
+		return status;
+	}
+	
+	public static boolean getWarStatusFromPropertiesFile(){
+		init();
+		boolean warStatus = false;
+		warPropertyFile = new File(Axis2CoreUtils.tempWarStatusFileLocation());
+		if (!warPropertyFile.exists()){
+			updateStatusError();			
+		}
+		try {
+			properties.load(new FileInputStream(warPropertyFile));
+			if(properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_STATUS)){
+				warStatus = Boolean.parseBoolean(
+						properties.getProperty(Axis2CoreUIMessages.PROPERTY_KEY_STATUS));
+			}
+		} catch (FileNotFoundException e) {
+			updateStatusError();
+		} catch (IOException e) {
+			updateStatusError();
+		}
+		return warStatus;
 	}
 
 	private static void updateStatusError(){

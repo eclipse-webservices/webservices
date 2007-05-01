@@ -12,6 +12,7 @@
  * 20070410 168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -32,9 +33,9 @@ public class Axis2WebappUtils {
 	private static String tempWarLocation = null;
 	private static boolean alreadyWarExist = false;
 
-	public static String  copyAxis2War(IProgressMonitor monitor, String Axis2Home) {
+	public static String  copyAxis2War(IProgressMonitor monitor, String Axis2Home)
+										throws FileNotFoundException, IOException{
 		if(!alreadyWarExist){
-		try {
 			File tempAxis2Directory = new File (Axis2CoreUtils.tempAxis2Directory());
 			if(!tempAxis2Directory.exists()){
 				tempAxis2Directory.mkdirs();
@@ -102,11 +103,6 @@ public class Axis2WebappUtils {
 				alreadyWarExist = false;
 				//Throws an error message
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();	
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		}	
 		return tempWarLocation;
 	}

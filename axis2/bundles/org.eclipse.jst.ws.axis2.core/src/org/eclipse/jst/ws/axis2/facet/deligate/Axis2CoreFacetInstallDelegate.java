@@ -11,10 +11,10 @@
  * -------- -------- -----------------------------------------------------------
  * 20070213  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
+ * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.deligate;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -33,7 +33,6 @@ public class Axis2CoreFacetInstallDelegate implements IDelegate {
 	public void execute(IProject project, IProjectFacetVersion arg1, Object arg2,
 			IProgressMonitor monitor) throws CoreException {
 			monitor.beginTask(Axis2CoreUIMessages.PROGRESS_INSTALL_AXIS2_RUNTIME, 2 );
-	        try {
 	        	Axis2WebservicesServerCommand command = new Axis2WebservicesServerCommand(
 	        													project.toString()
 	        												); 
@@ -44,15 +43,10 @@ public class Axis2CoreFacetInstallDelegate implements IDelegate {
 	        	}else{
 	        		RuntimePropertyUtils.writeServerStausToPropertiesFile(
 							Axis2CoreUIMessages.SERVER_STATUS_FAIL);
+	        		throw new CoreException(status);
 	        	}
 	            monitor.worked( 1 );
-	            
-	        } catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-	        finally {
 	            monitor.done();
-	        }
 	}
 
 }

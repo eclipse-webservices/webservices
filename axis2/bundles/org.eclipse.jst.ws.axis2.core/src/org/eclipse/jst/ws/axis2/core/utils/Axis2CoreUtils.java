@@ -12,6 +12,7 @@
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -53,6 +54,12 @@ public class Axis2CoreUtils {
 		return
 		addAnotherNodeToPath(tempAxis2Directory(),
 							 Axis2CoreUIMessages.SERVER_STATUS_LOCATION_FILE);
+	}
+	
+	public static String tempWarStatusFileLocation() {
+		return
+		addAnotherNodeToPath(tempAxis2Directory(),
+							 Axis2CoreUIMessages.WAR_STATUS_LOCATION_FILE);
 	}
 	
 	public static String addAnotherNodeToPath(String currentPath, String newNode) {

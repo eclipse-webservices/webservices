@@ -12,6 +12,7 @@
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -79,15 +80,22 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		label.setSize(100,20);
 		
 		axis2Path = new Text( runtimeGroup, SWT.BORDER );
-		String serverPath = (RuntimePropertyUtils.getServerPathFromPropertiesFile() == null) ? "" 
-							: RuntimePropertyUtils.getServerPathFromPropertiesFile();
-		axis2Path.setText(serverPath);
-		ServerModel.setAxis2ServerPath( serverPath );
+		String serverPath = null;
+		if (ServerModel.getAxis2ServerPath()==null||ServerModel.getAxis2ServerPath().equals("")){
+			serverPath = (RuntimePropertyUtils.getServerPathFromPropertiesFile() == null) ? "" 
+					: RuntimePropertyUtils.getServerPathFromPropertiesFile();
+			axis2Path.setText(serverPath);
+			ServerModel.setAxis2ServerPath( serverPath );
+		}else{
+			axis2Path.setText(ServerModel.getAxis2ServerPath());
+			serverPath = ServerModel.getAxis2ServerPath();
+		}
+
 		webappExist =runtimeExist(serverPath);
 		if(isWar){
-			ServerModel.setAxis2ServerPathRepresentsWar(true);
+			updateWarStatus(true);
 		}else{
-			ServerModel.setAxis2ServerPathRepresentsWar(false);
+			updateWarStatus(false);
 		}
 		axis2Path.setLocation(110,30);
 		axis2Path.setSize(400, 20);
@@ -95,9 +103,14 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 			public void modifyText(ModifyEvent e){
 				ServerModel.setAxis2ServerPath( axis2Path.getText() );
 				webappExist =runtimeExist(axis2Path.getText());
+				status = RuntimePropertyUtils.writeServerPathToPropertiesFile(
+						axis2Path.getText());
 				if (webappExist) {
-					status = RuntimePropertyUtils.writeServerPathToPropertiesFile(
-																axis2Path.getText());
+					status = Status.OK_STATUS;
+					statusUpdate(true);
+				}else{
+					status = Status.CANCEL_STATUS;
+					statusUpdate(false);
 				}
 			}
 		});
@@ -383,9 +396,9 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 			axis2Path.setText(fileName);
 			ServerModel.setAxis2ServerPath( axis2Path.getText() );
 			if(isWar){
-				ServerModel.setAxis2ServerPathRepresentsWar(true);
+				updateWarStatus(true);
 			}else{
-				ServerModel.setAxis2ServerPathRepresentsWar(false);
+				updateWarStatus(false);
 			}
 		}
 	}
@@ -436,6 +449,11 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 			statusUpdate(false);
 			return false;
 		}
+	}
+	
+	private void updateWarStatus(boolean status){
+		ServerModel.setAxis2ServerPathRepresentsWar(status);
+		RuntimePropertyUtils.writeWarStausToPropertiesFile(status);
 	}
 	
 }
