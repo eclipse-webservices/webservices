@@ -53,7 +53,6 @@ public class Axis2CreationUIMessages extends NLS {
 	public static String FILE_AAR;
 	public static String FILE_XML;
 	//folders
-	public static String DIR_DYNAMIC_PROJECT_WEBSERVICES;
 	public static String DIR_BUILD;
 	public static String DIR_SRC;
 	public static String DIR_CLASSES;
