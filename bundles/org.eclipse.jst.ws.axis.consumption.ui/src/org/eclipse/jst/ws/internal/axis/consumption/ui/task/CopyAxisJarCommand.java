@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,18 +13,21 @@
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060517   142342 kathy@ca.ibm.com - Kathy Chan
  * 20060828	  155439 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070501   184505 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,7 +40,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
-import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
@@ -52,41 +54,42 @@ import org.eclipse.wst.ws.internal.common.BundleUtils;
 
 
 public class CopyAxisJarCommand extends AbstractDataModelOperation {
-
+  
+  public static String AXIS_JAR = "axis.jar"; //$NON-NLS-1$
   public static String AXIS_RUNTIME_PLUGIN_ID = "org.apache.axis"; //$NON-NLS-1$
-  public static String[] JARLIST = new String[] {
-	  "axis.jar",
-	  "commons-discovery-0.2.jar",
-	  "jaxrpc.jar",
-	  "saaj.jar",
-	  "wsdl4j-1.5.1.jar"
-  };
-  //these are the jar sizes that correspond to the jars in JARLIST.
-  private static long[] JARSIZES = {
-	  1632995L, 	// axis.jar
-	  71442L,		// commons-discovery-0.2.jar
-	  32062L,		// jaxrpc.jar
-	  19419L,		// saaj.jar	
-	  126771L		// wsdl4j-1.5.1.jar
-  };
-  private static long COMMON_LOGGING_JAR_SIZE = 38015L;
-  //Web Services Jars Used in previous Versions of WTP but now obsolete
+  public static String COMMON_DISCOVERY_PLUGIN_ID = "org.apache.commons.discovery"; //$NON-NLS-1$
+  public static String COMMON_DISCOVERY_JAR = "commons-discovery-0.2.jar"; //$NON-NLS-1$
+  public static String JAVAX_XML_RPC_PLUGIN_ID = "javax.xml.rpc"; //$NON-NLS-1$
+  public static String JAVAX_XML_RPC_JAR = "jaxrpc.jar"; //$NON-NLS-1$
+  public static String JAVAX_XML_SOAP_PLUGIN_ID = "javax.xml.soap"; //$NON-NLS-1$
+  public static String JAVAX_XML_SOAP_JAR = "saaj.jar"; //$NON-NLS-1$
+  public static String JAVAX_WSDL_PLUGIN_ID = "javax.wsdl"; //$NON-NLS-1$
+  public static String JAVAX_WSDL_JAR = "wsdl4j-1.5.1.jar"; //$NON-NLS-1$
+  public static String COMMON_LOGGING_PLUGIN_ID = "org.apache.commons.logging"; //$NON-NLS-1$
+  public static String COMMON_LOGGING_JAR = "commons-logging.jar"; //$NON-NLS-1$
+  private static long AXIS_JAR_SIZE = 1599570L;
+  private static long COMMON_DISCOVERY_JAR_SIZE = 71442L;
+  private static long JAVAX_XML_RPC_JAR_SIZE = 31191L;
+  private static long JAVAX_XML_SOAP_JAR_SIZE = 18979L;
+  private static long JAVAX_WSDL_JAR_SIZE = 126771L;
+  private static long COMMON_LOGGING_JAR_SIZE = 43217L;
+  
+//Web Services Jars Used in previous Versions of WTP but now obsolete
   private static String[] OBSOLETE_JARS = new String[]{
 	  "commons-discovery.jar",
-	  "commons-logging.jar",
+	  "commons-logging-1.0.4.jar",
 	  "log4j-1.2.4.jar",
 	  "log4j-1.2.8.jar",
 	  "wsdl4j.jar",
 	  "axis-ant.jar"
   };
   
-  
-  public static String COMMON_LOGGING_PLUGIN_ID = "org.apache.commons_logging"; //$NON-NLS-1$
-  public static String COMMON_LOGGING_JAR = "commons-logging-1.0.4.jar"; //$NON-NLS-1$
   public static String PATH_TO_JARS_IN_PLUGIN = "lib/";
 
   private IProject project;
   private Boolean projectRestartRequired_ = Boolean.FALSE;
+  private IClasspathEntry[] oldClasspath;
+  private ArrayList newJarNamesList = new ArrayList();
   
   /**
    * Default CTOR;
@@ -144,13 +147,24 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	
     deleteObsoleteJars(webModulePath);
     
-	for (int i=0; i<JARLIST.length; ) {
-		copyIFile(AXIS_RUNTIME_PLUGIN_ID, "lib/"+JARLIST[i], webModulePath, "WEB-INF/lib/"+JARLIST[i++], status, env, monitor); 
-	    if (status.getSeverity() == Status.ERROR)
-	      return;
-	}
 	
-	copyIFile(COMMON_LOGGING_PLUGIN_ID, "lib/"+COMMON_LOGGING_JAR, webModulePath, "WEB-INF/lib/"+COMMON_LOGGING_JAR, status, env, monitor); 
+    copyIFile(AXIS_RUNTIME_PLUGIN_ID, "lib/"+AXIS_JAR, webModulePath, "WEB-INF/lib/"+AXIS_JAR, status, env, monitor); 
+    if (status.getSeverity() == Status.ERROR)
+    	return;	
+	copyIFile(COMMON_DISCOVERY_PLUGIN_ID, "lib/"+COMMON_DISCOVERY_JAR, webModulePath, "WEB-INF/lib/"+COMMON_DISCOVERY_JAR, status, env, monitor); 
+    if (status.getSeverity() == Status.ERROR)
+      return;
+    copyIFile(JAVAX_XML_RPC_PLUGIN_ID, "lib/"+JAVAX_XML_RPC_JAR, webModulePath, "WEB-INF/lib/"+JAVAX_XML_RPC_JAR, status, env, monitor); 
+    if (status.getSeverity() == Status.ERROR)
+      return;
+    copyIFile(JAVAX_XML_SOAP_PLUGIN_ID, "lib/"+JAVAX_XML_SOAP_JAR, webModulePath, "WEB-INF/lib/"+JAVAX_XML_SOAP_JAR, status, env, monitor); 
+    if (status.getSeverity() == Status.ERROR)
+      return;
+    copyIFile(JAVAX_WSDL_PLUGIN_ID, "lib/"+JAVAX_WSDL_JAR, webModulePath, "WEB-INF/lib/"+JAVAX_WSDL_JAR, status, env, monitor); 
+    if (status.getSeverity() == Status.ERROR)
+      return;
+
+    copyPluginJar(COMMON_LOGGING_PLUGIN_ID, webModulePath, "WEB-INF/lib/"+COMMON_LOGGING_JAR, status, env, monitor);
     if (status.getSeverity() == Status.ERROR)
       return;
     return;
@@ -185,6 +199,41 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 
     }
   }
+  
+  /**
+   * Copy plugins that has been JARed
+ */
+private void copyPluginJar(String pluginId, IPath targetPath, String targetFile, IStatus status, IEnvironment env, IProgressMonitor monitor) {
+	  IPath target = targetPath.append(new Path(targetFile));
+	  ProgressUtils.report(monitor,ConsumptionMessages.PROGRESS_INFO_COPYING_FILE);
+
+	  try {
+		  ResourceContext context = new TransientResourceContext();
+		  context.setOverwriteFilesEnabled(true);
+		  context.setCreateFoldersEnabled(true);
+		  context.setCheckoutFilesEnabled(true);
+
+		  IPath jarPath = BundleUtils.getJarredPluginPath(pluginId);
+		  if (jarPath != null) {
+			  IFile resource = ResourceUtils.getWorkspaceRoot().getFile(target);
+
+			  if (!resource.exists()) {    	  
+				  InputStream is = new FileInputStream (new File (jarPath.toString()));
+				  IFile file = FileResourceUtils.createFile(context, target, is, monitor, 
+						  env.getStatusHandler());
+				  if (projectRestartRequired_.booleanValue() == false && file.exists()) {
+					  projectRestartRequired_ = Boolean.TRUE;
+				  }
+
+			  }
+		  }
+	  }
+	  catch (Exception e) {
+		  status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_FILECOPY, e);
+		  env.getStatusHandler().reportError(status);
+
+	  }
+  }
 
   /*
    * Check for any obsolete Jars in WEB-INF/lib folder
@@ -204,41 +253,29 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 			  deleteResource(resource);
 		  }
 	  }
-	  /*
-	   * Next check for jars with the same name as a Jar in JARLIST
-	   * but that have a different size than in JARSIZES.  We need to 
-	   * do this because a jar could have the same name but still be out
-	   * of date so size is only way to check.
-	   * E.g. all versions of axis have the same name of axis.jar
-	   */
-	  for (int i=0; i< JARLIST.length; i++)
-	  {
-		  IPath path = webModulePath.append("WEB-INF/lib/" + JARLIST[i]);
-		  IFile resource = ResourceUtils.getWorkspaceRoot().getFile(path);
-		  if (resource.exists())
-		  {
-			  //calculate the size of the resource by getting the java.io.File    	  
-			  long fileSize =resource.getLocation().toFile().length();
-			  if (fileSize != JARSIZES[i])
-			  {
-				  deleteResource(resource);
-			  }
-		  }
-	  }
-	  //Finally check logging plugin (only left seperate because not in JARLIST)
-	  IPath path = webModulePath.append("WEB-INF/lib/" + COMMON_LOGGING_JAR);
-	  IFile resource = ResourceUtils.getWorkspaceRoot().getFile(path);
+	  
+	  // delete older JARs of the same name 
+	  deleteOldJar(webModulePath.append("WEB-INF/lib/" + AXIS_JAR), AXIS_JAR_SIZE);
+	  deleteOldJar(webModulePath.append("WEB-INF/lib/" + COMMON_DISCOVERY_JAR), COMMON_DISCOVERY_JAR_SIZE);
+	  deleteOldJar(webModulePath.append("WEB-INF/lib/" + JAVAX_XML_RPC_JAR), JAVAX_XML_RPC_JAR_SIZE);
+	  deleteOldJar(webModulePath.append("WEB-INF/lib/" + JAVAX_XML_SOAP_JAR), JAVAX_XML_SOAP_JAR_SIZE);
+	  deleteOldJar(webModulePath.append("WEB-INF/lib/" + JAVAX_WSDL_JAR), JAVAX_WSDL_JAR_SIZE);
+	  deleteOldJar(webModulePath.append("WEB-INF/lib/" + COMMON_LOGGING_JAR), COMMON_LOGGING_JAR_SIZE);
+	  
+  }
+  
+  private void deleteOldJar (IPath jarPath, long jarSize) {
+	  IFile resource = ResourceUtils.getWorkspaceRoot().getFile(jarPath);
 	  if (resource.exists())
 	  {
 		  //calculate the size of the resource by getting the java.io.File    	  
 		  long fileSize =resource.getLocation().toFile().length();
-		  if (fileSize != COMMON_LOGGING_JAR_SIZE)
+		  if (fileSize != jarSize)
 		  {
 			  deleteResource(resource);
 		  }
 	  }
   }
-  
   private void deleteResource(IFile resource)
   {	  //delete the resource
 	  try
@@ -252,118 +289,123 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   }
  
 
-  public IStatus addAxisJarsToBuildPath(IProject p, IEnvironment env, IProgressMonitor monitor)
+  /**
+   * Addes Axis JARs to the build path of Java project
+ * @param env
+ * @param monitor
+ * @return
+ */
+public IStatus addAxisJarsToBuildPath(IProject project, IEnvironment env, IProgressMonitor monitor)
   {
-	  String[] jarNames = new String[JARLIST.length];
-	  for (int i=0; i<JARLIST.length; i++)
-	  {
-		  StringBuffer sb = new StringBuffer();
-		  sb.append(PATH_TO_JARS_IN_PLUGIN);
-		  sb.append(JARLIST[i]);
-		  String jarName = sb.toString();
-		  jarNames[i] = jarName;
-	  }
+	    
+	  IStatus status;
 	  
-	  IStatus status = addJar(p, AXIS_RUNTIME_PLUGIN_ID, jarNames, env, monitor);
-	  if (status.getSeverity()==Status.ERROR)
-	  {			  
-		  return status;
-	  }
+	  try {
+	  getJavaProjectClasspath(env, monitor);
 	  
-	  StringBuffer sb2 = new StringBuffer();
-	  sb2.append(PATH_TO_JARS_IN_PLUGIN);
-	  sb2.append(COMMON_LOGGING_JAR);
-	  String jarName = sb2.toString();
-	  String[] jarNames2 = new String[1];
-	  jarNames2[0] = jarName;
-	  status = addJar(p, COMMON_LOGGING_PLUGIN_ID, jarNames2, env, monitor);
-	  if (status.getSeverity()==Status.ERROR)
-	  {			  
-		  return status;
+	  addNewJarEntry(PATH_TO_JARS_IN_PLUGIN+AXIS_JAR, getTheJarPath(AXIS_RUNTIME_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN+AXIS_JAR));
+	  addNewJarEntry(PATH_TO_JARS_IN_PLUGIN+COMMON_DISCOVERY_JAR, getTheJarPath(COMMON_DISCOVERY_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN+COMMON_DISCOVERY_JAR));
+	  addNewJarEntry(PATH_TO_JARS_IN_PLUGIN+JAVAX_XML_RPC_JAR, getTheJarPath(JAVAX_XML_RPC_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN+JAVAX_XML_RPC_JAR));
+	  addNewJarEntry(PATH_TO_JARS_IN_PLUGIN+JAVAX_XML_SOAP_JAR, getTheJarPath(JAVAX_XML_SOAP_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN+JAVAX_XML_SOAP_JAR));
+	  addNewJarEntry(PATH_TO_JARS_IN_PLUGIN+JAVAX_WSDL_JAR, getTheJarPath(JAVAX_WSDL_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN+JAVAX_WSDL_JAR));
+	  
+	  IPath commonLoggingJarPath = BundleUtils.getJarredPluginPath(COMMON_LOGGING_PLUGIN_ID);
+	  if (commonLoggingJarPath != null) {
+		  addNewJarEntry(commonLoggingJarPath.toString(), commonLoggingJarPath);
 	  }
+	  updateClasspath(monitor);
+	  } catch (Exception e) {
+		  status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH, e);
+	      return status;
+	}
 	  
 	  return Status.OK_STATUS;
   }
-
   
-  private IStatus addJar(IProject webProject, String pluginId, String[] jarNames, IEnvironment env, IProgressMonitor monitor)
+  /**
+ * @param env
+ * @param monitor
+ * @return The Java project classpath
+ * @throws JavaModelException
+ */
+private IStatus getJavaProjectClasspath(IEnvironment env, IProgressMonitor monitor) throws JavaModelException
+  {
+
+	  IStatus status = Status.OK_STATUS;
+
+	  IJavaProject javaProject_ = null;
+	  oldClasspath = null;
+	  javaProject_ = JavaCore.create(project);
+
+	  oldClasspath = javaProject_.getRawClasspath();
+
+	  return status;
+  }
+  
+  /**
+   * Store new JAR name in newJarNamesList if it's not already on build path
+ * @param jarName name of the JAR
+ * @param jarPath Absolute path to the JAR
+ */
+private void addNewJarEntry(String jarName, IPath jarPath)
+  {
+
+	  boolean found = false;
+	  for (int i = 0; i < oldClasspath.length; i++)
+	  {
+		  found = oldClasspath[i].getPath().toString().toLowerCase().endsWith(jarName.toLowerCase());
+		  if (found)
+		  {
+			  break;
+		  }
+	  }
+
+	  if (!found)
+	  {
+		  newJarNamesList.add(new JarEntry (jarName, jarPath));
+	  }
+
+  }
+  
+  /**
+   * Update the Java project classpath adding classpath from newJarNamesList to oldClasspath 
+ * @param monitor
+ * @return
+ * @throws JavaModelException
+ */
+private IStatus updateClasspath(IProgressMonitor monitor) throws JavaModelException
   {
 
     IStatus status = Status.OK_STATUS;
-    //
-    // Get the current classpath.
-    //
-    IJavaProject javaProject_ = null;
-    IClasspathEntry[] oldClasspath = null;
-    javaProject_ = JavaCore.create(webProject);
-    try
-    {
-      oldClasspath = javaProject_.getRawClasspath();
-    } catch (JavaModelException jme)
-    {
-      status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH, jme);
-      // env.getStatusHandler().reportError(status);
-      return status;
-    }
-
-    ArrayList newJarNamesList = new ArrayList();
-
-    for (int k = 0; k < jarNames.length; k++)
-    {
-      boolean found = false;
-      for (int i = 0; i < oldClasspath.length; i++)
-      {
-        found = oldClasspath[i].getPath().toString().toLowerCase().endsWith(jarNames[k].toLowerCase());
-        if (found)
-        {
-          break;
-        }
-      }
-
-      if (!found)
-      {
-        newJarNamesList.add(jarNames[k]);
-      }
-    }
-
+    
     if (newJarNamesList.size() > 0)
     {
-      String[] newJarNames = (String[]) newJarNamesList.toArray(new String[] {});
+      JarEntry[] newJarEntries = (JarEntry[]) newJarNamesList.toArray(new JarEntry[] {});
 
-      IClasspathEntry[] newClasspath = new IClasspathEntry[oldClasspath.length + newJarNames.length];
+      IClasspathEntry[] newClasspath = new IClasspathEntry[oldClasspath.length + newJarEntries.length];
       int i = 0;
+      // Add oldClasspath entries
       while (i < oldClasspath.length)
       {
         newClasspath[i] = oldClasspath[i];
         i++;
       }
 
-      try
-      {
         int m = 0;
         while (i < newClasspath.length)
         {
-          newClasspath[i] = JavaCore.newLibraryEntry(getTheJarPath(pluginId, newJarNames[m]), null, null);
+          newClasspath[i] = JavaCore.newLibraryEntry(newJarEntries[m].getJarPath(), null, null);
           m++;
           i++;
         }
-      } catch (CoreException e)
-      {
-        status = StatusUtils.errorStatus( AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH, e);
-        return status;
-      }
 
       //
       // Then update the project classpath.
       //
-      try
-      {
-        javaProject_.setRawClasspath(newClasspath, monitor);
-      } catch (JavaModelException e)
-      {
-        status = StatusUtils.errorStatus(AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH, e);
-        return status;
-      }
+
+    	IJavaProject javaProject = JavaCore.create(project);
+        javaProject.setRawClasspath(newClasspath, monitor);
+      
     }
 
     return status;
@@ -373,33 +415,16 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 		//
 		// Returns the local native pathname of the jar.
 		//
-		private IPath getTheJarPath(String pluginId, String theJar)
-			throws CoreException {
-			try {
-				if (pluginId != null) {
-					URL localURL =	Platform.asLocalURL(BundleUtils.getURLFromBundle( pluginId, theJar ) );
-					return new Path(localURL.getFile());
-				} else {
-					return new Path(theJar);
-				}
-			} catch (MalformedURLException e) {
-				throw new CoreException(
-					new org.eclipse.core.runtime.Status(
-						IStatus.WARNING,
-						WebServiceAxisConsumptionUIPlugin.ID,
-						0,
-						AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH,
-						e));
-			} catch (IOException e) {
-				throw new CoreException(
-					new org.eclipse.core.runtime.Status(
-						IStatus.WARNING,
-						WebServiceAxisConsumptionUIPlugin.ID,
-						0,
-						AxisConsumptionUIMessages.MSG_ERROR_BAD_BUILDPATH,
-						e));
-			}
-		}  
+  private IPath getTheJarPath(String pluginId, String theJar) throws MalformedURLException, IOException
+  {
+	  if (pluginId != null) {
+			URL localURL =	Platform.asLocalURL(BundleUtils.getURLFromBundle( pluginId, theJar ) );
+			return new Path(localURL.getFile());
+		} else {
+			return new Path(theJar);
+		}
+
+  }  
   
   public void setProject(IProject project) {
     this.project = project;
@@ -409,4 +434,23 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
     return projectRestartRequired_.booleanValue();
   }
   
+  public class JarEntry {
+		private String jarName;
+		private IPath jarPath;
+		
+		public JarEntry(String name, IPath path)
+		{
+			jarName = name;
+			jarPath = path;
+		}
+
+		public String getJarName() {
+			return jarName;
+		}
+
+		public IPath getJarPath() {
+			return jarPath;
+		}
+
+	}
 }
