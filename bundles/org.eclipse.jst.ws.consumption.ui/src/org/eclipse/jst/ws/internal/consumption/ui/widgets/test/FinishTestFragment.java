@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
+ * 20070502   180304 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 /*
  * Created on May 4, 2004
@@ -91,7 +92,7 @@ public class FinishTestFragment extends BooleanFragment{
     this.testService = testService;	 
   }
 
-  public void setGenerateProxy(boolean generateProxy)
+  public void setCanGenerateProxy(boolean generateProxy)
   {
     this.generateProxy = generateProxy;	 
   }

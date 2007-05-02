@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
+ * 20070502   180304 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 /**
  */
@@ -26,6 +27,7 @@ public class ClientTestFragment extends BooleanFragment
   private boolean testService;
   private boolean genProxy;  // This actually represent whether client test is requested
   private boolean launchedTest = false;
+  private boolean canGenProxy;
   
   public ClientTestFragment( String id )
   {
@@ -39,7 +41,21 @@ public class ClientTestFragment extends BooleanFragment
                                       };
     setCondition( condition );
     
-    clientTestRoot.add( new SimpleFragment( new WebServiceClientTestArrivalCommand(), "" ) );
+    
+    Condition jspCondition      = new Condition()
+    {
+      public boolean evaluate()
+      {
+        return canGenProxy;
+      }
+    };
+
+    SimpleFragment simpleJSPFragment = new SimpleFragment( new WebServiceClientTestArrivalCommand(), "" );
+    BooleanFragment choiceJSPFragment = new BooleanFragment();
+    choiceJSPFragment.setTrueFragment(simpleJSPFragment);
+    choiceJSPFragment.setCondition(jspCondition);
+    clientTestRoot.add(choiceJSPFragment);
+    
     clientTestRoot.add( new SimpleFragment( id ) );
     setTrueFragment( clientTestRoot );
     
@@ -50,11 +66,18 @@ public class ClientTestFragment extends BooleanFragment
     this.genProxy = genProxy;  
   }
   
+  public void setCanGenerateProxy( boolean canGenProxy )
+  {
+    this.canGenProxy = canGenProxy;  
+  }
+  
   public void setTestService( Boolean testService )
   {
     this.testService = testService.booleanValue();  
   } 
 
+ 
+    
   public boolean getLaunchedTest()
   {
   	return launchedTest;
