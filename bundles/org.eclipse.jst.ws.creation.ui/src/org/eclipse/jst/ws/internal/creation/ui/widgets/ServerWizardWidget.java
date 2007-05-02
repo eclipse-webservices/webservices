@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@
  * 20061003   159142 kathy@ca.ibm.com - Kathy Chan
  * 20061212   164177 makandre@ca.ibm.com - Andrew Mak, Incorrect validation error complaining about runtime not supporting a project type
  * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
+ * 20070205   172687 makandre@ca.ibm.com - Andrew Mak, NPE in Scencario Defaults preferences page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -308,10 +309,15 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 				String oldTypeId = ids_.getTypeId();
 				int currentSelectionIdx = webserviceType_.getSelectionIndex();
 				String currentTypeId = labelIds_.getIds_()[currentSelectionIdx];
-				int oldScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(oldTypeId);
-				int currentScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(currentTypeId);
 				if (!oldTypeId.equals(currentTypeId)) {					
 					ids_.setTypeId(currentTypeId);
+					
+					// don't need to refresh runtime or validate fields if we are on the preference page, just return
+					if (preferencesPage_)
+						return;
+						
+					int oldScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(oldTypeId);
+					int currentScenario = WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(currentTypeId);
 
 			      objectSelectionWidget_ = getSelectionWidget();
 					// change the label for the service
