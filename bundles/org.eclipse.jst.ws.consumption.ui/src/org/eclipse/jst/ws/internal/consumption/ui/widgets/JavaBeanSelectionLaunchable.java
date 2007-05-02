@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060420   135912 joan@ca.ibm.com - Joan Haggarty
  * 20060719   149352 mahutch@ca.ibm.com - Mark Hutchinson
  * 20060826   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
+ * 20070313   170126 makandre@ca.ibm.com - Andrew Mak, BUJava scenario doesn't catch improper service definition
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -25,6 +26,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaConventions;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -191,11 +194,9 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 	  
 	  public boolean validate(String s) {
 		  beanClassString_ = s;
-		  if (s.length() > 0)
-		  {		
-			  return true;
-		  }
-  		  return false;
+		  String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
+		  String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
+		  return JavaConventions.validateJavaTypeName(s, sourceLevel, complianceLevel).isOK();
 	  }
 
 }
