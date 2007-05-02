@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
+ * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.ext.test;
@@ -84,7 +85,7 @@ public class WebServiceTestRegistry extends WebServiceExtensionRegistryImpl
       // label is found, hence we have a master extension element
       if (label != null) {
     	  WebServiceExtension webServiceExtension = createWebServiceExtension(elem);	
-    	  nameExtensionTable_.put(label,webServiceExtension);
+    	  nameExtensionTable_.put(id,webServiceExtension);
     	  label_.add(label);
     	  id_.add(id);
       }
@@ -114,6 +115,42 @@ public class WebServiceTestRegistry extends WebServiceExtensionRegistryImpl
     }    
   }
   
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.ext.WebServiceExtensionRegistryImpl#getWebServiceExtensionNames()
+   */
+  public String[] getWebServiceExtensionNames() {
+	return (String[])label_.toArray( new String[0] );
+  } 
+
+  /**
+   * Return the ID corresponding to the label.
+   * @param label The label.
+   * @return The ID corresponding to the label, or if the label parameter is not a label
+   * (must be already an ID), it is returned.
+   */
+  public String labelToId(String label) {
+    int labelIndex = label_.indexOf(label);
+    if (labelIndex == -1)
+      return label;
+    return (String) id_.elementAt(labelIndex);
+  } 
+
+  /**
+   * Returns the WebServiceExtension with the given ID.
+   * @param id The ID.
+   * @return The WebServiceExtension object.
+   */
+  public WebServiceExtension getWebServiceExtensionsById(String id) {
+    return (WebServiceExtension) nameExtensionTable_.get(id);
+  } 
+
+  /* (non-Javadoc)
+   * @see org.eclipse.jst.ws.internal.ext.WebServiceExtensionRegistryImpl#getWebServiceExtensionsByName(java.lang.String)
+   */
+  public WebServiceExtension getWebServiceExtensionsByName(String name) {
+    return getWebServiceExtensionsById(labelToId(name));
+  }
+
   /**
   * Children registries will have different extension types 
   * @return WebserviceExtension holds a config elem

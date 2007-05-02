@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060816   104870 kathy@ca.ibm.com - Kathy Chan
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
+ * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.ext.test;
@@ -152,6 +153,15 @@ public class WebServiceTestExtension extends WebServiceExtensionImpl
 	return getConfigElement().getAttribute( "id" ); 
   }
    
+  /**
+   * Returns the label attribute of this WebServiceTestExtension
+   * 
+   * @return The value of the label attribute.
+   */
+  public String getLabel() {
+    return getConfigElement().getAttribute( "label" );
+  }
+  
   /**
    * Does this extension allow extenders to restrict the runtimes that are supported?
    *  

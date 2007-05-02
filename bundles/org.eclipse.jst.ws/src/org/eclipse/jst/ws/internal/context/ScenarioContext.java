@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.context;
 
@@ -46,6 +49,9 @@ public interface ScenarioContext
   public final static int WS_ASSEMBLE=4;
   public final static int WS_DEVELOP=5;  
   public final static int WS_NONE=6;
+  
+  public String[] getWebServiceTestIds();
+  public void setWebServiceTestIds(String[] ids);
   
   public String[] getWebServiceTestTypes();
   public void setWebServiceTestTypes(String[] testTypes);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.context;
@@ -34,7 +35,7 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
   public void load()
   {
     ScenarioDefaults defaults = new ScenarioDefaults();
-    String[] ids = defaults.getWebServiceTestTypes();
+    String[] ids = defaults.getWebServiceTestIds();
     StringBuffer sb = new StringBuffer();
     for (int i = 0; i < ids.length; i++)
     {
@@ -63,14 +64,14 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
   public String[] getNonJavaTestService()
   {
     WebServiceTestRegistry registry = WebServiceTestRegistry.getInstance();
-    String[] testTypes = getWebServiceTestTypes();
+    String[] ids = getWebServiceTestIds();
     Vector newTestCases = new Vector();
-	for (int i = 0; i < testTypes.length; i++)
+	for (int i = 0; i < ids.length; i++)
     {
       WebServiceTestExtension wse = (WebServiceTestExtension) registry
-          .getWebServiceExtensionsByName(testTypes[i]);
-      if (wse.testWSDL()) 
-		  newTestCases.addElement(testTypes[i]);
+          .getWebServiceExtensionsById(ids[i]);
+      if (wse != null && wse.testWSDL()) 
+		  newTestCases.addElement(wse.getLabel());
     }
 	String[] wsdlTestArray = new String[newTestCases.size()];
 	Enumeration e = newTestCases.elements();
@@ -83,30 +84,55 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
 	return wsdlTestArray;
   }
   
+  public void setWebServiceTestIds(String[] ids)
+  {
+	StringBuffer sb = new StringBuffer();
+	for (int i = 0; i < ids.length; i++)
+	{
+	  if (i != 0) sb.append(",");
+	  sb.append(ids[i]);
+	}
+	setValue(PREFERENCE_WEBSERVICE_TEST_TYPES, sb.toString());  
+  }
+  
+  public String[] getWebServiceTestIds()
+  {
+	StringTokenizer st = new StringTokenizer(
+	    getValueAsString(PREFERENCE_WEBSERVICE_TEST_TYPES), ",");
+	String[] s = new String[st.countTokens()];
+	for (int i = 0; i < s.length; i++) {
+	  // 154543: we have to continue to interpret the old label style preferences
+	  s[i] = WebServiceTestRegistry.getInstance().labelToId(st.nextToken());
+	}
+	return s;
+  }
+  
   public void setWebServiceTestTypes(String[] ids)
   {
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < ids.length; i++)
-    {
-      if (i != 0) sb.append(",");
-      sb.append(ids[i]);
-    }
-    setValue(PREFERENCE_WEBSERVICE_TEST_TYPES, sb.toString());
+	// 154543: deprecated, noop
   }
 
   public String[] getWebServiceTestTypes()
   {
-    StringTokenizer st = new StringTokenizer(
-        getValueAsString(PREFERENCE_WEBSERVICE_TEST_TYPES), ",");
-    String[] s = new String[st.countTokens()];
-    for (int i = 0; i < s.length; i++)
-      s[i] = st.nextToken();
+	WebServiceTestRegistry registry = WebServiceTestRegistry.getInstance();
+	String[] ids = getWebServiceTestIds();  
+    Vector labels = new Vector();
+	for (int i = 0; i < ids.length; i++)
+    {
+      WebServiceTestExtension wse = (WebServiceTestExtension) registry
+          .getWebServiceExtensionsById(ids[i]);
+      if (wse != null) 
+		  labels.addElement(wse.getLabel());
+    }	  	  
+    String[] s = new String[labels.size()];
+    labels.copyInto(s);
     return s;
   }
 
   public ScenarioContext copy()
   {
     TransientScenarioContext context = new TransientScenarioContext();
+    context.setWebServiceTestIds(getWebServiceTestIds());
     context.setWebServiceTestTypes(getWebServiceTestTypes());
     context.setNonJavaTestService(getNonJavaTestService());
     

@@ -1,18 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.context;
 
 public class TransientScenarioContext implements ScenarioContext
 {
+  private String[] webServiceTestIds;
   private String[] webServiceTestTypes;
   private String[] nonJavaTestService;
   private String   webServiceType_;
@@ -42,6 +46,14 @@ public class TransientScenarioContext implements ScenarioContext
     this.nonJavaTestService = nonJavaTestService;	
   }
  
+  public void setWebServiceTestIds(String[] webServiceTestIds) {
+    this.webServiceTestIds = webServiceTestIds;
+  }
+  
+  public String[] getWebServiceTestIds() {
+    return webServiceTestIds;
+  }
+  
   public void setWebServiceTestTypes(String[] webServiceTestTypes)
   {
     this.webServiceTestTypes = webServiceTestTypes;
@@ -54,6 +66,7 @@ public class TransientScenarioContext implements ScenarioContext
  
   public ScenarioContext copy() {
   	TransientScenarioContext context = new TransientScenarioContext();
+  	context.setWebServiceTestIds(getWebServiceTestIds());
 	context.setWebServiceTestTypes(getWebServiceTestTypes());
 	context.setNonJavaTestService(getNonJavaTestService());
 	

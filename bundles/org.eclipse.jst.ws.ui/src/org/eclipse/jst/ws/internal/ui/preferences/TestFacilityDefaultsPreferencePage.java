@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060217   113169 pmoogk@ca.ibm.com - Peter Moogk
  * 20060222   118711 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.preferences;
 
@@ -25,6 +26,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.context.ScenarioDefaults;
+import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
+import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.jst.ws.internal.ui.plugin.WebServiceUIPlugin;
@@ -190,7 +193,7 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     //pgm launchSample.setSelection( defaults.getLaunchSampleDefault());
     
     webServiceTestTypes_.clear();
-    String[] types = defaults.getWebServiceTestTypes();
+    String[] types = defaults.getWebServiceTestIds();
     for (int i = 0; i < types.length; i++)
       webServiceTestTypes_.add(types[i]);
     webServiceTestTypeViewer_.refresh();
@@ -206,12 +209,12 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     
     launchSample.setSelection( context.isLaunchSampleEnabled());
         
-    String[] types = context.getWebServiceTestTypes();
+    String[] types = context.getWebServiceTestIds();
     for (int i = 0; i < types.length; i++)
       webServiceTestTypes_.add(types[i]);
     // check whether we missed any types from the default list
     boolean missed = false;
-    types = defaults.getWebServiceTestTypes();
+    types = defaults.getWebServiceTestIds();
     for (int i = 0; i < types.length; i++)
     {
       if (webServiceTestTypes_.indexOf(types[i]) == -1)
@@ -224,7 +227,7 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     {
       types = new String[webServiceTestTypes_.size()];
       webServiceTestTypes_.copyInto(types);
-      context.setWebServiceTestTypes(types);
+      context.setWebServiceTestIds(types);
     }
     // refresh viewer
     webServiceTestTypeViewer_.refresh();
@@ -238,7 +241,7 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     ScenarioContext context = WebServicePlugin.getInstance().getScenarioContext();
     String[] types = new String[webServiceTestTypes_.size()];
     webServiceTestTypes_.copyInto(types);
-    context.setWebServiceTestTypes(types);
+    context.setWebServiceTestIds(types);
     
     context.setLaunchSampleEnabled(launchSample.getSelection());
   }
@@ -311,7 +314,10 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
      */
     public String getText(Object value) 
     {
-      //return getElementByAttribute("id", value.toString()).getAttribute("label"); 
+      WebServiceTestExtension extension = (WebServiceTestExtension) WebServiceTestRegistry.getInstance()
+      		.getWebServiceExtensionsById(value.toString());
+      if (extension != null)
+    	  return extension.getLabel();
       return value.toString();
     }
   }
