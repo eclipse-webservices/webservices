@@ -188,8 +188,8 @@ public class BaseTestCase extends TestCase
          numwarnings++;
          // If the message contains any file references make them relative.
          String message = valmes.getMessage();
-         message = message.replaceAll("'[^']*" + PLUGIN_NAME + "[^'/]*/", "'");
-         message = message.replaceAll("[(][^(]*" + PLUGIN_NAME + "[^'/]*/", "[(]");
+         message = message.replaceAll("'[^']*" + getPluginName() + "[^'/]*/", "'");
+         message = message.replaceAll("[(][^(]*" + getPluginName() + "[^'/]*/", "[(]");
          warningsString.append(message + " [" + valmes.getLine() +", " + valmes.getColumn() +"]\n");
          warningsString.append(createNestedMessageString(valmes.getNestedMessages()));
        }
@@ -198,8 +198,8 @@ public class BaseTestCase extends TestCase
          numerrors++;
          // If the message contains any file references make them relative.
          String message = valmes.getMessage();
-         message = message.replaceAll("'[^']*" + PLUGIN_NAME + "[^'/]*/", "'");
-         message = message.replaceAll("[(][^(]*" + PLUGIN_NAME + "[^'/]*/", "(");
+         message = message.replaceAll("'[^']*" + getPluginName() + "[^'/]*/", "'");
+         message = message.replaceAll("[(][^(]*" + getPluginName() + "[^'/]*/", "(");
          errorsString.append(message + " [" + valmes.getLine() +", " + valmes.getColumn() +"]\n");
          errorsString.append(createNestedMessageString(valmes.getNestedMessages()));
        }
@@ -253,6 +253,11 @@ public class BaseTestCase extends TestCase
     }
     return log.toString();
   }
+
+  protected String getPluginName()
+  {
+    return PLUGIN_NAME;
+  }
   
   private String createNestedMessageString(List nestedMessages)
   {
@@ -274,8 +279,8 @@ public class BaseTestCase extends TestCase
         }
         // If the message contains any file references make them relative.
         String message = nesvalmes.getMessage();
-        message = message.replaceAll("'[^']*" + PLUGIN_NAME + "[^'/]*/", "'");
-        message = message.replaceAll("[(][^(]*" + PLUGIN_NAME + "[^'/]*/", "[(]");
+        message = message.replaceAll("'[^']*" + getPluginName() + "[^'/]*/", "'");
+        message = message.replaceAll("[(][^(]*" + getPluginName() + "[^'/]*/", "[(]");
         messageString += ("-> " + message + " [" + nesvalmes.getLine() +", " + nesvalmes.getColumn() +"]\n");
         messageString += createNestedMessageString(nesvalmes.getNestedMessages(), depth + 1);
       }
