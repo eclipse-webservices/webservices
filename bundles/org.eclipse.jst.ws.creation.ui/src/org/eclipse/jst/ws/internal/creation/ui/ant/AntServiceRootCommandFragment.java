@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,13 @@
  * 20060823   154938 pmoogk@ca.ibm.com - Peter Moogk
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
+ * 20070501   178129 makandre@ca.ibm.com - Andrew Mak, workspace reports "crash detected" after running WS ant task (cmdline)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
 import org.eclipse.jst.ws.internal.consumption.ui.command.AntDefaultingOperation;
 import org.eclipse.jst.ws.internal.consumption.ui.command.AntRestoringCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.command.AntWorkspaceSaveCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.ListOptionsCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ScenarioCleanupCommand;
@@ -68,6 +70,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     add(new FinishFragment());
     add( new SimpleFragment( new AntRestoringCommand(), "" ));
     add( new SimpleFragment( new ScenarioCleanupCommand(), "" ));
+    add( new SimpleFragment( new AntWorkspaceSaveCommand(), ""));
   }
   
   public void registerDataMappings(DataMappingRegistry dataRegistry)
