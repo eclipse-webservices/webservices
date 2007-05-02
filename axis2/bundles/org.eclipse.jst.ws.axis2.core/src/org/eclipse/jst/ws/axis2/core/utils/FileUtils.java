@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007 IBM Corporation, WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  * WSO2 Inc. - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * IBM Corporation - Initial API and implementation
+ * IBM Corporation, WSO2 Inc. - Initial API and implementation
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the 
  * 										  Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
