@@ -14,6 +14,7 @@
  * 20060517   142342 kathy@ca.ibm.com - Kathy Chan
  * 20060828	  155439 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070501   184505 kathy@ca.ibm.com - Kathy Chan
+ * 20070502   184505 kathy@ca.ibm.com - Kathy Chan, Update JAR sizes
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -67,12 +68,12 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
   public static String JAVAX_WSDL_JAR = "wsdl4j-1.5.1.jar"; //$NON-NLS-1$
   public static String COMMON_LOGGING_PLUGIN_ID = "org.apache.commons.logging"; //$NON-NLS-1$
   public static String COMMON_LOGGING_JAR = "commons-logging.jar"; //$NON-NLS-1$
-  private static long AXIS_JAR_SIZE = 1599570L;
-  private static long COMMON_DISCOVERY_JAR_SIZE = 71442L;
-  private static long JAVAX_XML_RPC_JAR_SIZE = 31191L;
-  private static long JAVAX_XML_SOAP_JAR_SIZE = 18979L;
-  private static long JAVAX_WSDL_JAR_SIZE = 126771L;
-  private static long COMMON_LOGGING_JAR_SIZE = 43217L;
+  private static long AXIS_JAR_SIZE = 1586943L;
+  private static long COMMON_DISCOVERY_JAR_SIZE = 71105L;
+  private static long JAVAX_XML_RPC_JAR_SIZE = 32141L;
+  private static long JAVAX_XML_SOAP_JAR_SIZE = 19506L;
+  private static long JAVAX_WSDL_JAR_SIZE = 126775L;
+  private static long COMMON_LOGGING_JAR_SIZE = 38895L;
   
 //Web Services Jars Used in previous Versions of WTP but now obsolete
   private static String[] OBSOLETE_JARS = new String[]{
