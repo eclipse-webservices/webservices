@@ -9,9 +9,9 @@ protocol for the exchange of information in a decentralized, distributed environ
 A SOAP message is a transmission of information from a sender to a receiver.
 SOAP messages can be combined to perform request/response patterns. </shortdesc>
 <prolog><metadata>
-<keywords><indexterm>SOAP<indexterm>overview</indexterm></indexterm><indexterm>Web
-services<indexterm>SOAP</indexterm><indexterm>binding styles</indexterm><indexterm>encoding
-styles</indexterm><indexterm>mappings</indexterm></indexterm></keywords>
+<keywords><indexterm>SOAP<indexterm>overview</indexterm></indexterm>
+<indexterm>Web services<indexterm>SOAP</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <conbody>
 <p>SOAP is transport independent but is most commonly carried over HTTP in
@@ -82,7 +82,7 @@ tmtype="reg" trademark="IBM">IBM</tm> project called SOAP4J, as well as Apache
 Axis and the <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> <tm
 tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="WebSphere">WebSphere</tm> run-time
 environment. The provided Web services tools support Apache SOAP 2.3, Axis
-1.0, and <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> <tm
+1.3, and <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> <tm
 tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="WebSphere">WebSphere</tm> implementations.</p></section>
 <section><title>Mappings</title><p>A mapping defines an association between
 a qualified XML element name, a <tm tmclass="special" tmowner="Sun Microsystems, Inc."

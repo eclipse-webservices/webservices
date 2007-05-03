@@ -16,46 +16,23 @@
     <entry keyword="SOAP">
       <topic href="concepts/csoap.html#csoap" title="SOAP"/>
     </entry>
-    <entry keyword="binding styles">
-      <topic href="concepts/csoap.html#csoap" title="SOAP"/>
-    </entry>
-    <entry keyword="encoding styles">
-      <topic href="concepts/csoap.html#csoap" title="SOAP"/>
-    </entry>
-    <entry keyword="mappings">
-      <topic href="concepts/csoap.html#csoap" title="SOAP"/>
-    </entry>
     <entry keyword="WSIL">
       <topic href="concepts/cwsil.html#cwsil" title="Web Services Inspection Language (WSIL)"/>
     </entry>
     <entry keyword="JAX-RPC">
       <topic href="concepts/cjaxrpc.html#cjaxrpc" title="JAX-RPC"/>
     </entry>
-    <entry keyword="JSR 109">
-      <topic href="concepts/cjsr109.html#cjsr109" title="JSR 109 and JSR 921- Implementing Enterprise Web services"/>
-    </entry>
-    <entry keyword="JSR 921">
+    <entry keyword="Java specification requests">
       <topic href="concepts/cjsr109.html#cjsr109" title="JSR 109 and JSR 921- Implementing Enterprise Web services"/>
     </entry>
     <entry keyword="tools overview">
       <topic href="concepts/cwsinwsa.html#cwsinwsa" title="Tools for Web services development"/>
     </entry>
-    <entry keyword="setting preferences">
+    <entry keyword="preferences">
       <topic href="ref/rwspref.html#rwspref" title="Web services preferences"/>
     </entry>
-    <entry keyword="interoperability (WS-I)">
-      <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
-    </entry>
-    <entry keyword="WS-I">
-      <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
-    </entry>
-    <entry keyword="setting WS-I compliance">
+    <entry keyword="interoperability compliance">
       <topic href="tasks/twsicomply.html#twsicomply" title="Setting the level of WS-I compliance"/>
-    </entry>
-    <entry keyword="interoperability">
-      <entry keyword="setting compliance">
-        <topic href="tasks/twsicomply.html#twsicomply" title="Setting the level of WS-I compliance"/>
-      </entry>
     </entry>
     <entry keyword="creating">
       <entry keyword="overview">
@@ -63,14 +40,10 @@
       </entry>
     </entry>
     <entry keyword="top-down">
-      <entry keyword="overview">
-        <topic href="concepts/cwstopdown.html#creatingtop-downwebservices" title="Creating top-down Web services"/>
-      </entry>
+      <topic href="concepts/cwstopdown.html#creatingtop-downwebservices" title="Creating top-down Web services"/>
     </entry>
     <entry keyword="bottom-up">
-      <entry keyword="overview">
-        <topic href="concepts/cwsbtmup.html#creatingbottom-upwebservices" title="Creating bottom-up Web services"/>
-      </entry>
+      <topic href="concepts/cwsbtmup.html#creatingbottom-upwebservices" title="Creating bottom-up Web services"/>
     </entry>
   </entry>
   <entry keyword="WSDL">
@@ -100,34 +73,43 @@
     </entry>
   </entry>
   <entry keyword="JAX-RPC">
-    <topic href="concepts/cjaxrpc.html#cjaxrpc" title="JAX-RPC"/>
+    <entry keyword="Web services">
+      <topic href="concepts/cjaxrpc.html#cjaxrpc" title="JAX-RPC"/>
+    </entry>
   </entry>
-  <entry keyword="JSR 109">
+  <entry keyword="JSR 109 Java specification">
     <topic href="concepts/cjsr109.html#cjsr109" title="JSR 109 and JSR 921- Implementing Enterprise Web services"/>
   </entry>
-  <entry keyword="JSR 921">
+  <entry keyword="JSR 921 Java specification">
     <topic href="concepts/cjsr109.html#cjsr109" title="JSR 109 and JSR 921- Implementing Enterprise Web services"/>
   </entry>
   <entry keyword="preferences">
-    <entry keyword="setting for Web services">
+    <entry keyword="Web services">
       <topic href="ref/rwspref.html#rwspref" title="Web services preferences"/>
     </entry>
   </entry>
-  <entry keyword="WS-I (Web services interoperability)">
-    <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
+  <entry keyword="Web services interoperability">
+    <entry keyword="traffic compliance">
+      <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
+    </entry>
   </entry>
-  <entry keyword="WS-I">
+  <entry keyword="interoperability">
+    <entry keyword="Web service traffic compliance">
+      <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
+    </entry>
+  </entry>
+  <entry keyword="WSI">
     <entry keyword="setting compliance">
       <topic href="tasks/twsicomply.html#twsicomply" title="Setting the level of WS-I compliance"/>
     </entry>
   </entry>
-  <entry keyword="top-down">
-    <entry keyword="creating Web services">
+  <entry keyword="top-down Web services">
+    <entry keyword="creating">
       <topic href="concepts/cwstopdown.html#creatingtop-downwebservices" title="Creating top-down Web services"/>
     </entry>
   </entry>
-  <entry keyword="bottom-up">
-    <entry keyword="creating Web services">
+  <entry keyword="bottom-up Web services">
+    <entry keyword="overview">
       <topic href="concepts/cwsbtmup.html#creatingbottom-upwebservices" title="Creating bottom-up Web services"/>
     </entry>
   </entry>

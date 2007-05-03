@@ -10,31 +10,31 @@
     <entry keyword="editing">
       <topic href="tasks/tedtwsdl.html#tedtwsdl" title="Editing WSDL files"/>
     </entry>
-    <entry keyword="adding services">
+    <entry keyword="services">
       <topic href="tasks/taddsrvc.html#taddsrvc" title="Adding a service"/>
     </entry>
-    <entry keyword="adding ports">
+    <entry keyword="ports">
       <topic href="tasks/taddport.html#taddport" title="Adding a port to a service"/>
     </entry>
     <entry keyword="setting port types">
       <topic href="tasks/tsetprtt.html#tsetprtt" title="Setting a port type"/>
     </entry>
-    <entry keyword="setting bindings">
+    <entry keyword="bindings">
       <topic href="tasks/tsetbind.html#tsetbind" title="Setting a binding"/>
     </entry>
-    <entry keyword="adding operations">
+    <entry keyword="operations">
       <topic href="tasks/taddoper.html#taddoper" title="Adding an operation"/>
     </entry>
-    <entry keyword="adding messages">
+    <entry keyword="messages">
       <topic href="tasks/taddmess.html#taddmess" title="Adding a message"/>
     </entry>
-    <entry keyword="adding message parts">
+    <entry keyword="message parts">
       <topic href="tasks/taddpart.html#taddpart" title="Adding a part to a message"/>
     </entry>
-    <entry keyword="adding import statements">
+    <entry keyword="import statements">
       <topic href="tasks/tcrtimpt.html#tcrtimpt" title="Creating an import statement"/>
     </entry>
-    <entry keyword="creating types">
+    <entry keyword="types">
       <topic href="tasks/tcrttype.html#tcrttype" title="Creating a new type for your WSDL file"/>
     </entry>
   </entry>
@@ -57,13 +57,13 @@
     <entry keyword="setting port types">
       <topic href="tasks/tsetprtt.html#tsetprtt" title="Setting a port type"/>
     </entry>
-    <entry keyword="setting WSDL bindings">
-      <topic href="tasks/tsetbind.html#tsetbind" title="Setting a binding"/>
-    </entry>
     <entry keyword="bindings">
       <entry keyword="creating">
         <topic href="tasks/tsetbind.html#tsetbind" title="Setting a binding"/>
       </entry>
+    </entry>
+    <entry keyword="setting WSDL bindings">
+      <topic href="tasks/tsetbind.html#tsetbind" title="Setting a binding"/>
     </entry>
     <entry keyword="adding WSDL operations">
       <topic href="tasks/taddoper.html#taddoper" title="Adding an operation"/>

@@ -15,10 +15,8 @@ tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm> bean
 proxy and a sample application. The sample Web application demonstrates how
 to code a proxy file.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>Axis runtime environment<indexterm>creating
-a Web service client</indexterm></indexterm></indexterm><indexterm>Axis runtime
-environment<indexterm>creating a Web service client</indexterm></indexterm>
-<indexterm>Web service clients<indexterm>creating with the Axis runtime environment</indexterm></indexterm>
+<keywords><indexterm>Axis runtime environment<indexterm>Web service clients</indexterm></indexterm>
+<indexterm>Web services<indexterm>Axis runtime environment<indexterm>Web service clients</indexterm></indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>
@@ -83,7 +81,10 @@ create custom mappings between namespaces and packages.</cmd></step>
 <step><cmd>Web Service Namespace to Package Mappings page: if you selected
  <uicontrol>Define custom mapping for namespace to package</uicontrol> on
 the previous page, you can enter your custom mapping pairs on this page by
-clicking  <uicontrol>Add</uicontrol>.</cmd></step>
+clicking  <uicontrol>Add</uicontrol>. Alternately, you can click  <b>Import</b> to
+import custom mapping pairs from a  <systemoutput>.properties</systemoutput> file.
+The content of the properties file must be of the format  <codeph><varname>namespace=package</varname></codeph>.</cmd>
+</step>
 <step><cmd>Web Service Client Test page: This page displays if you selected
 to test your client. Select the test facility that you will use to test the
 proxy, and the methods that you want included in the proxy. Note that the

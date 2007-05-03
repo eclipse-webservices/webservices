@@ -13,7 +13,7 @@ exactly one port type.</shortdesc>
 <keywords><indexterm>WSDL<indexterm>setting port types</indexterm></indexterm>
 <indexterm>Web services<indexterm>setting port types</indexterm></indexterm>
 </keywords>
-</metadata></prolog><?Pub Caret?>
+</metadata></prolog>
 <taskbody>
 <context><p>You can create a port type by right clicking in any blank space
 in the Design view and selecting <uicontrol>Add PortType</uicontrol>. As a

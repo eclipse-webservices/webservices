@@ -73,9 +73,8 @@ tools currently support WS-I Simple SOAP Binding Profile 1.0 and the Attachment
 Profile 1.0. To view the specifications, refer to the WS-I Web site, and under
  <uicontrol>Resources</uicontrol> select  <uicontrol>Documentation</uicontrol>: <xref
 href="http://www.ws-i.org" scope="external">http://www.ws-i.org</xref></p>
-<p>Several new Web services standards are also supported by <tm tmclass="ibm"
-tmowner="IBM Corporation" tmtype="reg" trademark="Rational">Rational</tm> Developer
-products. These include:<dl><dlentry>
+<p>Several new Web services standards are also supported by this development
+environment. These include:<dl><dlentry>
 <dt>JAX-RPC</dt>
 <dd>JAX-RPC stands for <tm tmclass="special" tmowner="Sun Microsystems, Inc."
 tmtype="tm" trademark="Java">Java</tm> API for XML-based RPC, also known as

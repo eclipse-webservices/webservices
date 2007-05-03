@@ -7,8 +7,8 @@
 <shortdesc>Before you begin developing Web services or clients, you can optimize
 the workbench for Web services development by setting a variety of preferences.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>setting preferences</indexterm></indexterm>
-<indexterm>preferences<indexterm>setting for Web services</indexterm></indexterm>
+<keywords><indexterm>preferences<indexterm>Web services</indexterm></indexterm>
+<indexterm>Web services<indexterm>preferences</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <refbody>

@@ -9,10 +9,10 @@ A message consists of logical parts, each of which is associated with a definiti
 within some type system. WSDL messages are top level objects that can be referenced
 by an operation's input, output and fault elements (within a port type).</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>adding messages</indexterm></indexterm>
-<indexterm>Web services<indexterm>adding WSDL messages</indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>adding WSDL messages</indexterm></indexterm>
+<indexterm>WSDL<indexterm>messages</indexterm></indexterm>
 </keywords>
-</metadata></prolog><?Pub Caret?>
+</metadata></prolog>
 <taskbody>
 <context><p>You can create a message using the Outline view by right-clicking
 the <b>Messages</b> folder and clicking <b>Add Message</b>.</p><p>If you want

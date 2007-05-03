@@ -11,9 +11,8 @@ can choose to make your Web service compliant or non-compliant, depending
 on your needs. For example, encoded style (RPC/encoded), SOAP over JMS protocols
 are not WS-I compliant.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>setting WS-I compliance</indexterm></indexterm>
-<indexterm>WS-I<indexterm>setting compliance</indexterm></indexterm><indexterm>Web
-services<indexterm>interoperability<indexterm>setting compliance</indexterm></indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>interoperability compliance</indexterm></indexterm>
+<indexterm>WSI<indexterm>setting compliance</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>

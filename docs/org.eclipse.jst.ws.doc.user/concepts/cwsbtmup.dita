@@ -9,8 +9,8 @@ and bottom-up development. Bottom-up Web services development involves creating
 a Web service from a <tm tmclass="special" tmowner="Sun Microsystems, Inc."
 tmtype="tm" trademark="Java">Java</tm> bean or enterprise bean.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>bottom-up<indexterm>overview</indexterm></indexterm></indexterm>
-<indexterm>bottom-up<indexterm>creating Web services</indexterm></indexterm>
+<keywords><indexterm>bottom-up Web services<indexterm>overview</indexterm></indexterm>
+<indexterm>Web services<indexterm>bottom-up</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <conbody>

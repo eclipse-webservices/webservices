@@ -8,10 +8,10 @@
 and outputs. The operation element may also contain a fault sub-element that
 describes any error data the operation may return.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>adding operations</indexterm></indexterm>
-<indexterm>Web services<indexterm>adding WSDL operations</indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>adding WSDL operations</indexterm></indexterm>
+<indexterm>WSDL<indexterm>operations</indexterm></indexterm>
 </keywords>
-</metadata></prolog><?Pub Caret?>
+</metadata></prolog>
 <taskbody>
 <context>Using these, you can declare four transmission primitives that an
 endpoint can support:<ul>

@@ -16,9 +16,8 @@ that correspond to the operations described in the WSDL document. When the
 bean is created, each method has a trivial implementation that you replace
 by editing the bean.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>Axis runtime environment<indexterm>creating
-a skeleton Web service</indexterm></indexterm></indexterm><indexterm>Axis
-runtime environment<indexterm>creating a skeleton Web service</indexterm></indexterm>
+<keywords><indexterm>Axis runtime environment<indexterm>skeleton Web services</indexterm></indexterm>
+<indexterm>Web services<indexterm>Axis runtime environment<indexterm>skeleton Web services</indexterm></indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>
@@ -27,8 +26,8 @@ runtime environment<indexterm>creating a skeleton Web service</indexterm></index
 <li>Create or import a WSDL file into the Web Content folder of the Web project.
 You can only use a WSDL file that contains a service element.</li>
 </ol></prereq>
-<context>To create a Web service from a WSDL file using the Apache Axis 1.0
-run-time environment:</context>
+<context>To create a Web service from a WSDL file using the Apache Axis run-time
+environment:</context>
 <steps>
 <step><cmd>Switch to the J2EE perspective (<uicontrol>Window > Open Perspective
 > J2EE</uicontrol>).</cmd></step>
@@ -55,8 +54,10 @@ custom mapping for namespace to package</uicontrol> check box. Click  <uicontrol
 <step><cmd>Web Service Namespace to Package Mappings page: if you selected
  <uicontrol>Define custom mapping for package to namespace</uicontrol> on
 the previous panel, you can enter your custom mapping pairs on this panel
-by clicking  <uicontrol>Add.</uicontrol> Click  <uicontrol>Next</uicontrol>.</cmd>
-</step>
+by clicking  <uicontrol>Add</uicontrol>. Alternately, you can click  <b>Import</b> to
+import custom mapping pairs from a  <systemoutput>.properties</systemoutput> file.
+The content of the properties file must be of the format  <codeph><varname>namespace=package</varname></codeph>.
+Click  <uicontrol>Next</uicontrol>.</cmd></step>
 <step><cmd>Web Service Test page: If you selected to test the Web service,
 select the test facility for the generated Web service. This will open the
 Web service in the Web Services Explorer. Select the operation you want to

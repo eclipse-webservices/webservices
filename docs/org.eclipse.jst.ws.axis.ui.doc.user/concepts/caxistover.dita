@@ -11,8 +11,9 @@ SOAP to make the SOAP engine more flexible, configurable, and able to handle
 both SOAP and the upcoming XML Protocol specification from the W3C open-source
 effort.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>Axis</indexterm></indexterm><indexterm>Axis<indexterm>Web
-services</indexterm></indexterm></keywords>
+<keywords><indexterm>Axis runtime environment<indexterm>Web services<indexterm>overview</indexterm></indexterm></indexterm>
+<indexterm>Web services<indexterm>Axis runtime environment</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <conbody>
 <section><title>Overview</title><p>Axis is based on JSR 101 <tm tmclass="special"

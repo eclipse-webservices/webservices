@@ -8,9 +8,10 @@
 for a binding. The port contains a 'binding' attribute that references a binding
 and an address element that provides a specification for the endpoint.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>adding ports</indexterm></indexterm><indexterm>Web
-services<indexterm>adding WSDL ports</indexterm></indexterm></keywords>
-</metadata></prolog><?Pub Caret?>
+<keywords><indexterm>Web services<indexterm>adding WSDL ports</indexterm></indexterm>
+<indexterm>WSDL<indexterm>ports</indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <context><p>Services are used to group sets of related ports together. Ports
 within a service have the following relationship:</p><ul>

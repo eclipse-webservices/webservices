@@ -8,12 +8,12 @@
 WSDL is not tied exclusively to a specific typing system, but it uses the
 W3C XML Schema specification as its default choice.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>creating types</indexterm></indexterm>
-<indexterm>Web services<indexterm>creating WSDL types</indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>creating WSDL types</indexterm></indexterm>
+<indexterm>WSDL<indexterm>types</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>
-<context><p>WSDL allows type systems to be added via extensibility el<?Pub Caret?>ements.
+<context><p>WSDL allows type systems to be added via extensibility elements.
 An extensibility element may appear under the  <b>types</b> element to identify
 the type definition system being used and to provide an XML container element
 for the type definitions.</p><p>To add an XSD type or element to your WSDL

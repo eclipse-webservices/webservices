@@ -10,7 +10,7 @@ and edit them in the WSDL editor.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>WSDL<indexterm>editing</indexterm></indexterm><indexterm>Web
 services<indexterm>editing WSDL</indexterm></indexterm></keywords>
-</metadata></prolog><?Pub Caret?>
+</metadata></prolog>
 <taskbody>
 <context><p>To open a WSDL file in the WSDL editor, double-click it in the
 Navigator view or right-click it and click  <b>Open With > WSDL Editor.</b></p></context>

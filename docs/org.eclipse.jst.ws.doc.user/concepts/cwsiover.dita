@@ -7,8 +7,9 @@
 <shortdesc>WS-I is an organization designed to promote Web service interoperability
 across platforms, operating systems, and programming languages.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>interoperability (WS-I)</indexterm><indexterm>WS-I</indexterm></indexterm>
-<indexterm>WS-I (Web services interoperability)</indexterm></keywords>
+<keywords><indexterm>Web services interoperability<indexterm>traffic compliance</indexterm></indexterm>
+<indexterm>interoperability<indexterm>Web service traffic compliance</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <conbody>
 <p>For more information on WS-I, refer to their Web site:  <xref format="html"

@@ -7,10 +7,10 @@
 <shortdesc>The  <systemoutput>service</systemoutput> element is a collection
 of related ports and specifies the location of the service.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>adding services</indexterm></indexterm>
-<indexterm>Web services<indexterm>adding services to WSDL</indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>adding services to WSDL</indexterm></indexterm>
+<indexterm>WSDL<indexterm>services</indexterm></indexterm>
 </keywords>
-</metadata></prolog><?Pub Caret?>
+</metadata></prolog>
 <taskbody>
 <context><p>To create a new service, follow these steps:</p></context>
 <steps>

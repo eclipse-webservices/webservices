@@ -8,8 +8,8 @@
 and bottom-up development. Top-down Web services development involves creating
 a Web service from a WSDL file.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>top-down<indexterm>overview</indexterm></indexterm></indexterm>
-<indexterm>top-down<indexterm>creating Web services</indexterm></indexterm>
+<keywords><indexterm>top-down Web services<indexterm>creating</indexterm></indexterm>
+<indexterm>Web services<indexterm>top-down</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <conbody>

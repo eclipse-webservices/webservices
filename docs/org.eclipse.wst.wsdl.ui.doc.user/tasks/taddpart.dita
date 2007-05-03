@@ -8,8 +8,8 @@
 for describing the logical abstract content of a message. The message definition
 associates each part with a type using a message-typing attribute.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>adding message parts</indexterm></indexterm>
-<indexterm>Web services<indexterm>adding WSDL message parts</indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>adding WSDL message parts</indexterm></indexterm>
+<indexterm>WSDL<indexterm>message parts</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>
@@ -18,7 +18,7 @@ associates each part with a type using a message-typing attribute.</shortdesc>
 <step><cmd>In Design view, right-click an input, output, or fault object and
 click <b>Add Part</b>. </cmd><stepresult> The part is added to the input,
 output, or fault's message reference.</stepresult></step>
-<step><cmd>T<?Pub Caret1?>o select the part, click the part in the port type
+<step><cmd>To select the part, click the part in the port type
 object.</cmd></step>
 <step><cmd>In the Properties view, click the <b>General</b> pane.</cmd></step>
 <step><cmd>In the <b>Name</b> field, type the name of the part.</cmd></step>

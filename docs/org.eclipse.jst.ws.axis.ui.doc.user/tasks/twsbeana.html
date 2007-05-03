@@ -11,8 +11,8 @@
 <meta name="DC.Title" content="Creating a Web service from a Java bean using the Apache Axis run-time environment" />
 <meta name="abstract" content="The Web Service wizard assists you in creating a new Web service, configuring it for deployment, and deploying the Web service to a server. Once your Web service is deployed, the wizard assists you in generating the client proxy and sample application to test the Web service. When you have completed testing, you can publish your Web service to a UDDI Business Registry using the Export wizard." />
 <meta name="description" content="The Web Service wizard assists you in creating a new Web service, configuring it for deployment, and deploying the Web service to a server. Once your Web service is deployed, the wizard assists you in generating the client proxy and sample application to test the Web service. When you have completed testing, you can publish your Web service to a UDDI Business Registry using the Export wizard." />
-<meta content="Web services, Axis runtime environment, creating a Web service" name="DC.subject" />
-<meta content="Web services, Axis runtime environment, creating a Web service" name="keywords" />
+<meta content="Axis runtime environment, Web services, Java beans, creating a Web service" name="DC.subject" />
+<meta content="Axis runtime environment, Web services, Java beans, creating a Web service" name="keywords" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html" />
@@ -143,7 +143,10 @@ Click  <span class="uicontrol">Next</span></li>
 <li class="stepexpand"><span>Web Service Package to Namespace Mappings page: if you selected
  <span class="uicontrol">Define custom mapping for package to namespace</span> on
 the previous panel, you can enter your custom mapping pairs on this panel
-by clicking  <span class="uicontrol">Add</span>.</span></li>
+by clicking  <span class="uicontrol">Add</span>. Alternately, you can click  <strong>Import</strong> to
+import custom mapping pairs from a  <tt class="sysout">.properties</tt> file.
+The content of the properties file must be of the format  <samp class="codeph"><var class="varname">package=namespace</var></samp>.</span>
+</li>
 
 <li class="stepexpand"><span>Web Service Test page: If you selected to test the Web service,
 select the test facility for the generated Web service.</span> This will

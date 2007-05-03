@@ -10,9 +10,10 @@ services in the J2EE environment; more specifically, in the Web, EJB, and
 Client Application containers. One of its main goals is to ensure vendors'
 implementations interoperate.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>JSR 109</indexterm><indexterm>Web services<indexterm>JSR
-109</indexterm></indexterm><indexterm>JSR 921</indexterm><indexterm>Web services<indexterm>JSR
-921</indexterm></indexterm></keywords>
+<keywords><indexterm>JSR 109 Java specification</indexterm>
+<indexterm>JSR 921 Java specification</indexterm>
+<indexterm>Web services<indexterm>Java specification requests</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <conbody>
 <p>JSR 109 and JSR 921 build on top of JAX-RPC to cover the use of JAX-RPC

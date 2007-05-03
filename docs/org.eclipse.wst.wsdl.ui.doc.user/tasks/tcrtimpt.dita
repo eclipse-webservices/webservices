@@ -12,12 +12,12 @@ which can then be imported as needed. This technique helps in writing clearer
 service definitions, by separating the definitions according to their level
 of abstraction.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>adding import statements</indexterm></indexterm>
-<indexterm>Web services<indexterm>adding WSDL import statements</indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>adding WSDL import statements</indexterm></indexterm>
+<indexterm>WSDL<indexterm>import statements</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>
-<context><?Pub Caret?><p>To create an import statement, follow these steps:</p></context>
+<context><p>To create an import statement, follow these steps:</p></context>
 <steps>
 <step><cmd>In the Outline view, right-click the <b>Imports</b> folder and
 click <b>Add Import.</b> Select your new import statement.</cmd></step>

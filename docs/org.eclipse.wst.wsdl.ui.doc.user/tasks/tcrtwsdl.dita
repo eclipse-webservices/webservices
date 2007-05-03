@@ -41,7 +41,7 @@ your Web service.</info></substep>
 options you want to use in the WSDL document. The options are SOAP and HTTP.
 Use the SOAP protocol when you want to exchange structured and typed information.
 Use the HTTP protocol when you want your application client to just request
-or update information<?Pub Caret?>.</cmd><info> If you select SOAP you can
+or update information.</cmd><info> If you select SOAP you can
 then select the encoding style you want to use.<ul>
 <li><b>Document literal</b>. Document style messages, literal encoding. Use
 this style of binding when you want to send SOAP messages that can be validated

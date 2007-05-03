@@ -18,7 +18,8 @@ tmtype="tm" trademark="Java">Java</tm> platform. Often used in a distributed
 client/server model, an RPC mechanism enables clients to execute procedures
 on other systems.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>JAX-RPC</indexterm><indexterm>Web services<indexterm>JAX-RPC</indexterm></indexterm>
+<keywords><indexterm>JAX-RPC<indexterm>Web services</indexterm></indexterm>
+<indexterm>Web services<indexterm>JAX-RPC</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <conbody>

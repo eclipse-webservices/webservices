@@ -29,7 +29,7 @@ documentation.</p><p>To import a WSDL file to your Web project:</p></context>
 select <uicontrol>Import</uicontrol>.</cmd></step>
 <step><cmd>Select <uicontrol>File System</uicontrol> and click  <uicontrol>Next</uicontrol>.</cmd>
 </step>
-<step><cmd>Click <uicontrol>Browse</uicontrol> <?Pub Caret?>on the next page
+<step><cmd>Click <uicontrol>Browse</uicontrol> on the next page
 of the wizard to select the directories from which you would like to add the
 WSDL.</cmd></step>
 <step><cmd>In the import selection panes, use the following methods to select

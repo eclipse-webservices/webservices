@@ -11,8 +11,8 @@
 <meta name="DC.Title" content="Creating a Java bean skeleton from a WSDL document using the Apache Axis run-time environment" />
 <meta name="abstract" content="The Web service wizard assists you in creating a skeleton bean from an existing WSDL document. The skeleton bean contains a set of methods that correspond to the operations described in the WSDL document. When the bean is created, each method has a trivial implementation that you replace by editing the bean." />
 <meta name="description" content="The Web service wizard assists you in creating a skeleton bean from an existing WSDL document. The skeleton bean contains a set of methods that correspond to the operations described in the WSDL document. When the bean is created, each method has a trivial implementation that you replace by editing the bean." />
-<meta content="Web services, Axis runtime environment, creating a skeleton Web service, Axis runtime environment, creating a skeleton Web service" name="DC.subject" />
-<meta content="Web services, Axis runtime environment, creating a skeleton Web service, Axis runtime environment, creating a skeleton Web service" name="keywords" />
+<meta content="Axis runtime environment, skeleton Web services, Web services" name="DC.subject" />
+<meta content="Axis runtime environment, skeleton Web services, Web services" name="keywords" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
 <meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html" />
@@ -52,8 +52,8 @@ You can only use a WSDL file that contains a service element.</li>
 </ol>
 </div>
 
-<div class="section">To create a Web service from a WSDL file using the Apache Axis 1.0
-run-time environment:</div>
+<div class="section">To create a Web service from a WSDL file using the Apache Axis run-time
+environment:</div>
 
 <ol>
 <li><span>Switch to the J2EE perspective (<span class="uicontrol">Window &gt; Open Perspective
@@ -133,8 +133,10 @@ custom mapping for namespace to package</span> check box. Click  <span class="ui
 <li><span>Web Service Namespace to Package Mappings page: if you selected
  <span class="uicontrol">Define custom mapping for package to namespace</span> on
 the previous panel, you can enter your custom mapping pairs on this panel
-by clicking  <span class="uicontrol">Add.</span> Click  <span class="uicontrol">Next</span>.</span>
-</li>
+by clicking  <span class="uicontrol">Add</span>. Alternately, you can click  <strong>Import</strong> to
+import custom mapping pairs from a  <tt class="sysout">.properties</tt> file.
+The content of the properties file must be of the format  <samp class="codeph"><var class="varname">namespace=package</var></samp>.
+Click  <span class="uicontrol">Next</span>.</span></li>
 
 <li><span>Web Service Test page: If you selected to test the Web service,
 select the test facility for the generated Web service. This will open the

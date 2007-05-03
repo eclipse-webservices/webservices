@@ -11,10 +11,10 @@ closely to that of the port type. The binding contains extensibility elements
 (for example, soap, http, and mime) that specify protocol specific details.
 Each port within a service references exactly one binding.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>setting bindings</indexterm></indexterm>
-<indexterm>Web services<indexterm>setting WSDL bindings</indexterm><indexterm>bindings<indexterm>creating</indexterm></indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>bindings<indexterm>creating</indexterm></indexterm><indexterm>setting WSDL bindings</indexterm></indexterm>
+<indexterm>WSDL<indexterm>bindings</indexterm></indexterm>
 </keywords>
-</metadata></prolog><?Pub Caret?>
+</metadata></prolog>
 <taskbody>
 <context><p>You can create a binding by right clicking in any blank space
 in the Design view and selecting <uicontrol>Add Binding</uicontrol>. You can
