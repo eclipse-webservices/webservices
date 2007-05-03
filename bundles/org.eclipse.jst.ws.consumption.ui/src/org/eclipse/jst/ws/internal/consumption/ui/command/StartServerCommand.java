@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070426   162287 makandre@ca.ibm.com - Andrew Mak, Server publish cancel button unavailable
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.command;
@@ -19,9 +22,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -134,7 +137,8 @@ public class StartServerCommand extends AbstractDataModelOperation
 	{
 		if( doAsyncPublish_ )
 		{	
-		  PlatformUI.getWorkbench().getProgressService().run(true,false,runnable);
+		  ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+		  dialog.run(true, true, runnable);
 		}
 		else
 		{
@@ -157,6 +161,8 @@ public class StartServerCommand extends AbstractDataModelOperation
 	if (istatus[0].getSeverity() != IStatus.OK)
     {
       status = istatus[0];
+      if (status.getSeverity() == IStatus.CANCEL)
+    	  status = StatusUtils.errorStatus("");
       return status;
     }
     

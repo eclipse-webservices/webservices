@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070502   162287 makandre@ca.ibm.com - Andrew Mak, Server publish cancel button unavailable
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.eclipse;
 
@@ -131,6 +132,10 @@ public class EclipseStatusHandler extends BaseStatusHandler
 
   private boolean reportErrorStatus(final IStatus status)
   {
+	// no need to report an empty message with no exception
+	if ("".equals(status.getMessage()) && status.getException() == null)
+		return false;
+	  
     Runnable runnable = new Runnable()
     {
       public void run()
