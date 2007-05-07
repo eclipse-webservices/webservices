@@ -12,6 +12,7 @@
  * 20070118   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -362,6 +363,15 @@ public class WSDL2JavaGenerator {
 			setBaseUriMethod.invoke(
 					WSDL11ToAxisServiceBuilderInstance, 
 					new Object[]{wsdlURI});
+			
+			//Fix for the Axis2 1.2 
+			//builder.setCodegen(true);
+			Method setCodegenMethod = WSDL11ToAxisServiceBuilderClass.getMethod(
+					"setCodegen", 
+					new Class[]{boolean.class});
+			setCodegenMethod.invoke(
+					WSDL11ToAxisServiceBuilderInstance, 
+					new Object[]{true});
 			
 			Method populateServiceMethod = WSDL11ToAxisServiceBuilderClass.getMethod(
 					"populateService", 

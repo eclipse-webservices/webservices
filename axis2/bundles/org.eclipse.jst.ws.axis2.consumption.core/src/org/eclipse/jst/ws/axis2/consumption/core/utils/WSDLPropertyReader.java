@@ -12,6 +12,7 @@
  * 20070118   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
@@ -47,6 +48,8 @@ public class WSDLPropertyReader {
 	public void readWSDL(String projectName, String filepath) throws Exception {
 		
 		ClassLoadingUtil.init(projectName);
+		
+		DefinitionClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.wsdl.Definition");
 		
 		//		WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
 		//		wsdlDefinition = reader.readWSDL(filepath); 
@@ -132,7 +135,6 @@ public class WSDLPropertyReader {
 		List returnList = new ArrayList();
 		try{
 			Object serviceInstance;
-			DefinitionClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.wsdl.Definition");
 			Method getServicesMethod = DefinitionClass.getMethod("getServices", null);
 			Map serviceMap = (Map)getServicesMethod.invoke(DefinitionInstance, null);
 
@@ -216,5 +218,22 @@ public class WSDLPropertyReader {
 		}
 		return returnList;
 	}
+	
+    /**
+     * public method to get loaded wsdl Definition Instance
+     * @return
+     */
+    public Object getWsdlDefinitionInstance() {
+            return DefinitionInstance;
+    }
+    
+    /**
+     * public method to get loaded Definition Class
+     * @return
+     */
+    public Class getWsdlDefinitionClass() {
+            return DefinitionClass;
+    }
+
 }
 
