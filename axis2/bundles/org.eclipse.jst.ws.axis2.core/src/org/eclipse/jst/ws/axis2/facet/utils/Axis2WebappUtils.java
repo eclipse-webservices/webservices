@@ -13,6 +13,7 @@
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   185686 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -58,9 +59,6 @@ public class Axis2WebappUtils {
 					String axis2WebappLocation = Axis2CoreUtils.addAnotherNodeToPath(
 							axis2HomeLocation,
 							"webapp");
-					String axis2WEBINFDir = Axis2CoreUtils.addAnotherNodeToPath(
-							axis2HomeLocation,
-					"WEB-INF");
 					String axis2LibFile = Axis2CoreUtils.addAnotherNodeToPath(
 							axis2HomeLocation,
 					"lib");

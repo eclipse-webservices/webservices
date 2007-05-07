@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   185686 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -23,8 +24,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class Axis2BuildProjectCommand extends
@@ -67,8 +68,8 @@ public class Axis2BuildProjectCommand extends
 	    }
 	    
 	    try{
-	      Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
-	    		  		new NullProgressMonitor());   
+	     Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
+  		  		new NullProgressMonitor());   
 	    }
 	    catch (InterruptedException ie){
 	      // continue execution
