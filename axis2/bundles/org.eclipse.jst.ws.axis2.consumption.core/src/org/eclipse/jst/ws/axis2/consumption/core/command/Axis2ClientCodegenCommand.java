@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070206   172186 sandakith@wso2.com	- Fix for 172186, Added a check to overcome the issue.
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   185398 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -31,6 +32,7 @@ import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDL2JavaGenerator;
+import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.osgi.util.NLS;
@@ -109,10 +111,36 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 		Class CodeGenConfigurationClass = ClassLoadingUtil
 				.loadClassFromAntClassLoader("org.apache.axis2.wsdl.codegen.CodeGenConfiguration");
 
+		//-----------------------------------------------------------------------------------//
+		//Fix for the Axis2 1.2 
+		//Constructor CodeGenConfigurationConstructor = CodeGenConfigurationClass
+		//		.getConstructor(new Class[]{axisServiceInstance.getClass(),Map.class});
+		//Object CodeGenConfigurationInstance = CodeGenConfigurationConstructor
+		//		.newInstance(new Object[]{axisServiceInstance,optionsMap});
+		
 		Constructor CodeGenConfigurationConstructor = CodeGenConfigurationClass
-				.getConstructor(new Class[]{axisServiceInstance.getClass(),Map.class});
-		Object CodeGenConfigurationInstance  = CodeGenConfigurationConstructor
-				.newInstance(new Object[]{axisServiceInstance,optionsMap});
+				.getConstructor(new Class[]{Map.class});
+		Object CodeGenConfigurationInstance = CodeGenConfigurationConstructor
+				.newInstance(new Object[]{optionsMap});
+		
+		// codegenConfig.addAxisService(service);
+		Method addAxisServiceMethod = CodeGenConfigurationClass
+				.getMethod("addAxisService", new Class[]{ axisServiceInstance.getClass()});
+		addAxisServiceMethod.invoke(CodeGenConfigurationInstance, 
+							new Object[]{axisServiceInstance});
+		
+        //set the wsdl definision for codegen config for skeleton generarion.
+        WSDLPropertyReader reader = new WSDLPropertyReader();
+        reader.readWSDL(model.getWebProjectName(),model.getWsdlURI());
+        Object wsdlDefinitionInstance = reader.getWsdlDefinitionInstance();
+        //Class DefinitionClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.wsdl.Definition");
+        //codegenConfig.setWsdlDefinition(wsdlDefinition);
+		Method setWsdlDefinitionMethod = CodeGenConfigurationClass
+				.getMethod("setWsdlDefinition", new Class[]{reader.getWsdlDefinitionClass()});
+		setWsdlDefinitionMethod.invoke(CodeGenConfigurationInstance, 
+					new Object[]{wsdlDefinitionInstance});       
+        
+		//-----------------------------------------------------------------------------------//
 		
         //set the baseURI
         //codegenConfig.setBaseURI(generator.getBaseUri(model.getWsdlURI()));
