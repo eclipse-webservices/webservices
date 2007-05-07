@@ -17,6 +17,7 @@
  * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
  * 20060920   158061 kathy@ca.ibm.com - Kathy Chan, Do not add module to EAR when adding J2EE facets to project
  * 20070124   162326 kathy@ca.ibm.com - Kathy Chan
+ * 20070505   184772 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -324,6 +325,35 @@ public class FacetUtils
     }             
     
     return initial;
+  }
+  
+  /**
+   * Returns a set of facet versions given a template. The default facet version of every fixed 
+   * facet in the template is returned.  If unable to get default versions, an empty set will be returned.
+   * 
+   * @param templateId id of a {@link IFacetedProjectTemplate}
+   * @return Set containing elements of type {@link IProjectFacetVersion}
+   */
+  public static Set getDefaultFacetVersionsFromTemplate(String templateId)
+  {
+	  HashSet defaultSet = new HashSet(); 
+	  try {
+		  IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
+		  Set fixedFacets = template.getFixedProjectFacets(); 
+		  for (Iterator itr2 = fixedFacets.iterator(); itr2.hasNext(); ) 
+		  { 
+			  IProjectFacet facet = (IProjectFacet) itr2.next(); 
+			  IProjectFacetVersion defaultFacetVersion = null;
+			  defaultFacetVersion = facet.getDefaultVersion();
+			  defaultSet.add(defaultFacetVersion); 
+		  }             
+		  return defaultSet;
+	  } catch (IllegalArgumentException e) {
+		  return defaultSet;
+	  } catch (VersionFormatException e) {
+		  return defaultSet;
+	  } 
+	  
   }
   
   /**
