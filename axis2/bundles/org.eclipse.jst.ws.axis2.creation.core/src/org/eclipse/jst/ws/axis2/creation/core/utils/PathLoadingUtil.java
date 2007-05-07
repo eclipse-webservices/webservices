@@ -12,6 +12,8 @@
  * 20070330   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   184740 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   185686 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.utils;
 
@@ -29,18 +31,23 @@ public class PathLoadingUtil {
 	private static String tempCodegenOutputLocation = null;
 	private static String currentDynamicWebProjectDir = null;
 	private static String workspaceDirectory = null;
+	private static String currentProjectWebProjectName = null;
 	
 	//Already Computed
 	private static boolean alreadyInit = false;
 	private static boolean alreadyComputeTempCodegenOutputLocation = false;
 	private static boolean alreadyComputeCurrentDynamicWebProjectDir = false;
 	private static boolean alreadyComputeWorkspaceDirectory = false;
+	private static boolean requireToupdateModel = false;
 	
 	public static void init(DataModel inputModel){
-		if(!alreadyInit){
-			model = inputModel;
+		requireToupdateModel = !alreadyInit || 
+		!currentProjectWebProjectName.equals(inputModel.getWebProjectName());
+		if(requireToupdateModel){
+		model = inputModel;
+		currentProjectWebProjectName = inputModel.getWebProjectName();
 		}
-	}
+		}
 
 	public	static String getWorkspaceDirectory() {
 		if (!alreadyComputeWorkspaceDirectory){
@@ -52,7 +59,7 @@ public class PathLoadingUtil {
 	}
 	
 	public static String getCurrentDynamicWebProjectDir(){
-		if (!alreadyComputeCurrentDynamicWebProjectDir){
+		if (!alreadyComputeCurrentDynamicWebProjectDir || requireToupdateModel){
 			currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(
 			getWorkspaceDirectory(), model.getWebProjectName());
 			alreadyComputeCurrentDynamicWebProjectDir = true;

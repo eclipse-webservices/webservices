@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070507   184740 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -83,6 +84,9 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 	    		.addAnotherNodeToPath(currentDynamicWebProjectDir, 
 	    							  Axis2CreationUIMessages.DIR_RESOURCES);
 	    File currentProjectResourcesDir = new File(currentProjectResourcesDirString);
+	    if(!currentProjectResourcesDir.exists()){
+	    	currentProjectResourcesDir.mkdir();
+	    }
 	    FileUtils.copyDirectory(currentProjectResourcesDir, new File(metaInfDirectory));
         
         // Copy the classes directory to the sevices directory
