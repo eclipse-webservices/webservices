@@ -11,10 +11,12 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.properties.sections;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -39,7 +41,7 @@ import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
 public class EndPointSection extends ReferenceSection {
 	protected Text addressText;
-	protected CLabel protocolValueLabel;
+	protected CCombo protocolCombo;
 	
 	protected List bindingsInCombo = new ArrayList();
 	
@@ -72,21 +74,21 @@ public class EndPointSection extends ReferenceSection {
 
 		// Protocol Row
 		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		protocolValueLabel = getWidgetFactory().createCLabel(composite, "----"); //$NON-NLS-1$
-		
+		protocolCombo = getWidgetFactory().createCCombo(composite); //$NON-NLS-1$
+
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(protocolValueLabel, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(protocolValueLabel, 0, SWT.CENTER);
+		data.right = new FormAttachment(protocolCombo, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(protocolCombo, 0, SWT.CENTER);
 		protocolLabel.setLayoutData(data);
 		
 		data = new FormData();
 		data.left = new FormAttachment(0, 100);
 		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(addressText, +ITabbedPropertyConstants.VSPACE);
-		protocolValueLabel.setLayoutData(data);
-		protocolValueLabel.addListener(SWT.Modify, this);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolValueLabel, ASDEditorCSHelpIds.PROPERTIES_PORT_PROTOCOL_TEXT);
+		protocolCombo.setLayoutData(data);
+		protocolCombo.addListener(SWT.Modify, this);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.PROPERTIES_PORT_PROTOCOL_TEXT);
 
 		comboLabel.setText(Messages._UI_LABEL_BINDING + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		
@@ -98,6 +100,7 @@ public class EndPointSection extends ReferenceSection {
 	 */
 	public void refresh() {
 		removeListeners(addressText);
+		protocolCombo.removeListener(SWT.Modify, this);
 
 		super.refresh();
 
@@ -108,15 +111,22 @@ public class EndPointSection extends ReferenceSection {
 			}
 		}
 
-		String protocolValue = endPoint.getProtocol();
-		if (protocolValue.equals("")) { //$NON-NLS-1$
-			protocolValue = "----"; //$NON-NLS-1$
+		protocolCombo.removeAll();
+		if (endPoint instanceof W11EndPoint) {
+			String protocolValue = ((W11EndPoint) endPoint).getProtocol();
+			List protocols = ((W11EndPoint) getModel()).getApplicableProtocol();
+			Iterator it = protocols.iterator();
+			while (it.hasNext()) {
+				protocolCombo.add((String) it.next());
+			}
+		
+			protocolCombo.setText(protocolValue);
 		}
-		protocolValueLabel.setText(protocolValue);
 		
 		setControlForegroundColor(addressText);
-		setControlForegroundColor(protocolValueLabel);
+		setControlForegroundColor(protocolCombo);
 		applyTextListeners(addressText);
+		protocolCombo.addListener(SWT.Modify, this);
 	}
 	
 	protected ComponentReferenceEditManager getComponentReferenceEditManager() {
@@ -210,6 +220,13 @@ public class EndPointSection extends ReferenceSection {
 		  IEndPoint endPoint = (IEndPoint) getModel();
 		  Command command = endPoint.getSetAddressCommand(newAddress);
 		  executeCommand(command);
+	  }
+	  else if (event.widget == protocolCombo && !protocolCombo.isDisposed()) {
+		  String newProtocol = protocolCombo.getText();
+		  if (newProtocol != null && getModel() instanceof W11EndPoint) {
+			  W11EndPoint endPoint = (W11EndPoint) getModel();
+			  endPoint.setProtocol(newProtocol);
+		  }
 	  }
 	  else {
 		  super.doHandleEvent(event);
