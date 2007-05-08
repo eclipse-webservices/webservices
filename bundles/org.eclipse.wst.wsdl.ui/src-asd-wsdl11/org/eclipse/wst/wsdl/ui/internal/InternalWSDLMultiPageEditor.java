@@ -357,7 +357,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 			// has been done via the outline or properties and not the source view).  We don't want to be selecting
 			// and unselecting things in the source when editing in the source!!
 			boolean makeSelection = true;
-			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
+			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null  && !(event.getSource() instanceof IPostSelectionProvider)) {
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				if (page.getActivePart() instanceof InternalWSDLMultiPageEditor) {
 					if (getActiveEditor() instanceof StructuredTextEditor) {
