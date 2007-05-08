@@ -28,7 +28,7 @@ public class ASDGenerateBindingAction extends BaseSelectionAction {
 	}
 	
 	public void run() {
-		if (getSelectedObjects().size() > 0) {
+ 		if (getSelectedObjects().size() > 0) {
 			Object o = getSelectedObjects().get(0);
 			
 			if (o instanceof IBinding) {
@@ -36,6 +36,8 @@ public class ASDGenerateBindingAction extends BaseSelectionAction {
 			    CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
 			    stack.execute(command);
 			}
+			
+			performSelection(o);
 		}  
 	}
 }

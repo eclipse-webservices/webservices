@@ -130,23 +130,28 @@ public abstract class BaseSelectionAction extends SelectionAction
 	}
 	
     protected void performSelection(Object object) {
-		if (!(object instanceof Notifier)) {
-			return;
-		}
-		
-		Notifier element = (Notifier) object;
-		
-    	try {
+    	Object adapted = null;
+    	
+		if (object instanceof Notifier) {
+			Notifier element = (Notifier) object;
 			// TODO: We shouldn't know about WSDLAdapterFactoryHelper here....
-	    	Object adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);
-	        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-	        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
-	        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
-	        	if (provider != null) {
-	        		provider.setSelection(new StructuredSelection(adapted));
-	        	}
-	        }
-    	}
-    	catch (Exception e) {}
+			adapted = WSDLAdapterFactoryHelper.getInstance().adapt(element);			
+		}
+		else if (object instanceof IASDObject) {
+			adapted = object;
+		}
+
+		if (adapted != null) {
+	    	try {
+		        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		        if (editor != null && editor.getAdapter(ISelectionProvider.class) != null) {
+		        	ISelectionProvider provider = (ISelectionProvider) editor.getAdapter(ISelectionProvider.class);
+		        	if (provider != null) {
+		        		provider.setSelection(new StructuredSelection(adapted));
+		        	}
+		        }
+	    	}
+	    	catch (Exception e) {}
+		}
     }
 }
