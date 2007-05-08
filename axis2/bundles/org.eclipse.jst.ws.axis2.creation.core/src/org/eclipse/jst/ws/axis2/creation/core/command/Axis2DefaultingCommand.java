@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070206   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070508   175030 sandakith@wso2.com - Lahiru Sandakith, WSDL not passed to Axis2 client fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -24,9 +25,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.DefaultCodegenUtil;
-import org.eclipse.jst.ws.axis2.core.context.BUServiceContext;
+import org.eclipse.jst.ws.axis2.core.context.ServiceContext;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
+import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
 import org.eclipse.jst.ws.axis2.creation.core.utils.CommonUtils;
@@ -75,10 +77,11 @@ public class Axis2DefaultingCommand extends AbstractDataModelOperation
 			defaultCodegenUtil.populateModelParamsFromWSDL();
 			model.setServicesXML(true);
 			model.setServerXMLCheck(true);
+			ServiceContext.getInstance().setServiceName(model.getServiceName());
 		}else if (scenario == WebServiceScenario.BOTTOMUP) {
 			model.setServiceClass(ws.getWebServiceInfo().getImplURL());
 			//set the service name inside BUServiceContext for used by client if invoke together
-			BUServiceContext.getInstance().setServiceName(
+			ServiceContext.getInstance().setServiceName(
 					CommonUtils.classNameFromQualifiedName(ws.getWebServiceInfo().getImplURL())
 					);
 			
@@ -86,6 +89,17 @@ public class Axis2DefaultingCommand extends AbstractDataModelOperation
 		}else{
 			//never come here
 		}
+		
+		// Fix for the Bugzilla Bug 175030
+		// Axis2: WSDL representing Web service not passed to Axis2 client
+		// After setting the initial wsdlURL return from the framework to the data model,
+		// replace it with the deployed wsdlURL
+		String deployedWSDLURL = FacetContainerUtils.getDeployedWSDLURL(
+					model.getWebProjectName(),
+					ServiceContext.getInstance().getServiceName());
+		ws.getWebServiceInfo().setWsdlURL(deployedWSDLURL);
+		
+		
 		return status;      	
 	}
 

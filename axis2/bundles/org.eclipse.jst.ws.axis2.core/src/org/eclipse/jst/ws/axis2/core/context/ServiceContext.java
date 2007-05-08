@@ -12,20 +12,21 @@
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse 
  * 											the Axis2 runtime to the framework for 168762
  * 20070502   184302 sandakith@wso2.com - Lahiru Sandakith, Fix copyright for Axis2 plugins
+ * 20070508   175030 sandakith@wso2.com - Lahiru Sandakith, Refactor BuServiceContext 
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.context;
 
-public class BUServiceContext {
+public class ServiceContext {
 	
-	private static BUServiceContext instance;
+	private static ServiceContext instance;
 	private static String serviceName; 
 	
 	//singleton
-	private BUServiceContext(){}
+	private ServiceContext(){}
 	
-	public static BUServiceContext getInstance(){
+	public static ServiceContext getInstance(){
 		if (instance == null) {
-			instance = new BUServiceContext();
+			instance = new ServiceContext();
 		}
 		return instance;
 	}
@@ -35,7 +36,7 @@ public class BUServiceContext {
 	}
 
 	public void setServiceName(String serviceName) {
-		BUServiceContext.serviceName = serviceName;
+		ServiceContext.serviceName = serviceName;
 	}
 	
 	
