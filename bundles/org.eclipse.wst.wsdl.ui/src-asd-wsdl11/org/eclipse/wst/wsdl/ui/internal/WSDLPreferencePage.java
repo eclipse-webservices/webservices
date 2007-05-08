@@ -70,7 +70,6 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     compositeLayout.marginWidth = 5;   // Default value
     compositeLayout.numColumns = 2;
     addField(targetNamespace);
-    targetNamespace.setFocus();
     PlatformUI.getWorkbench().getHelpSystem().setHelp(targetNamespace.getTextControl(composite), ASDEditorCSHelpIds.WSDL_PREF_DEFAULT_TNS);
 	
 	String generateLabel = Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING; //$NON-NLS-1$
