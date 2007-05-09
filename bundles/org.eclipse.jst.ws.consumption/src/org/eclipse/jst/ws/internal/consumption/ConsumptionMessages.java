@@ -109,6 +109,7 @@ public final class ConsumptionMessages extends NLS {
     public static String MSG_ERROR_FIXED_FACETS;
     public static String MSG_FACETS;
     public static String MSG_ERROR_SETTING_RUNTIME;
+    public static String MSG_ERROR_FILE_MERGE_LOAD;
 	public static String MSG_ERROR_FILE_MERGE;
     
 

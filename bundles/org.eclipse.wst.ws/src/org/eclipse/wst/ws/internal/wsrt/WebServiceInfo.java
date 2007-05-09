@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,19 @@
  * -------- -------- -----------------------------------------------------------
  * 20060221   128905 kathy@ca.ibm.com - Kathy Chan
  * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
+ * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
 
-import org.eclipse.wst.ws.internal.common.MergeUtils;
+import java.util.ArrayList;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
+import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
+
 
 public class WebServiceInfo {
 
@@ -27,6 +35,9 @@ public class WebServiceInfo {
 	private java.lang.String endPointURL;
 	private java.lang.String implURL;
 	private java.lang.String[] implURLs;
+	
+	private IMerger merger;
+	private IStatus loadMergerStatus;
 	
 	public java.lang.String getEndPointURL()
 	{
@@ -91,7 +102,37 @@ public class WebServiceInfo {
 	public void setImplURLs(java.lang.String[] implURLs)
 	{
 		this.implURLs = implURLs;
-		MergeUtils.storeMergeModels(implURLs);
+		loadMerger();
+		
+	}
+	public IMerger getMerger() {
+		return merger;
+	}
+	public void setMerger(IMerger merger) {
+		this.merger = merger;
+	}
+	
+	private void loadMerger() {
+		if (merger != null) {
+			PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
+			if (mergeContext.isSkeletonMergeEnabled()) {
+				IFile file = null;
+				ArrayList fileList = new ArrayList();
+				for (int i = 0; i < implURLs.length; i++) {
+					String url = implURLs[i];
+					// Convert the urls to Eclipse IFiles in workspace.  Null is returned if url is not in workspace. 
+					file = UniversalPathTransformer.toFile(url);
+					if (file != null) {
+						fileList.add(file);
+					}
+				}
+				IFile[] files = (IFile[]) fileList.toArray( new IFile[0]);
+				loadMergerStatus = merger.load(files);
+			}
+		}
+	}
+	public IStatus getLoadMergerStatus() {
+		return loadMergerStatus;
 	}
 	
 }

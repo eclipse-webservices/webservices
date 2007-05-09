@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files 
+ * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.util;
 
@@ -134,5 +135,33 @@ public class UniversalPathTransformer {
 		}
 				
 		return str;
+	}	
+	
+	/**
+	 * Transform the given URI to an IFile.  Returns null if the URI is not in the workspace.
+	 * 
+	 * @param str The URI to transform.
+	 * @return Returns IFile
+	 */
+	public static IFile toFile(String str) {
+		
+		IFile file = null;
+		
+		// local filesystem path
+		if (str.startsWith(LOCATION_PREFIX)) {
+			str = str.substring(LOCATION_PREFIX.length());				
+			file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(str));
+		}
+		else {	
+			// platform path
+			if (str.startsWith(PLATFORM_PREFIX))
+				str = str.substring(PLATFORM_PREFIX.length());
+		
+			if (str.indexOf(':') == -1) {			
+				file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(str));
+			}
+		}
+								
+		return file;
 	}	
 }

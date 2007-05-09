@@ -15,6 +15,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070123   167487 makandre@ca.ibm.com - Andrew Mak
  * 20070403   173654 kathy@ca.ibm.com - Kathy Chan
+ * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -28,6 +29,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
@@ -38,6 +40,7 @@ import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.wsrt.IMerger;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
@@ -99,6 +102,10 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  wsInfo.setServerInstanceId( typeRuntimeServer_.getServerInstanceId());
 		  wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
 		  wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
+		  
+		  ServiceRuntimeDescriptor serviceRuntimeDescriptor =  WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_);
+		  IMerger merger = serviceRuntimeDescriptor.getServiceImplementationType().getMergerClass();
+		  wsInfo.setMerger(merger);		  
 
 		  webService_  = wsrt.getWebService( wsInfo );
 

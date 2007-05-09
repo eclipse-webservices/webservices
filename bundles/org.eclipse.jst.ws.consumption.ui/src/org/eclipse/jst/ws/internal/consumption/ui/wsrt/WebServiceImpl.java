@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,14 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.wst.ws.internal.wsrt.IMerger;
+
 import com.ibm.icu.util.StringTokenizer;
 
 public class WebServiceImpl {
@@ -23,7 +27,8 @@ public class WebServiceImpl {
 	private String label;
 	private String[] resourceTypeMetadata;
 	private String[] extensionMetadata;
-  private String objectSelectionWidget;
+	private String objectSelectionWidget;
+	private IMerger mergerClass;
   
   public WebServiceImpl(IConfigurationElement elem_)
   {
@@ -95,8 +100,20 @@ public class WebServiceImpl {
     return objectSelectionWidget;
   }
   
-	
-  
+public IMerger getMergerClass() {
+	if (mergerClass == null)
+    {
+        try
+        {
+            mergerClass = (IMerger) elem_.createExecutableExtension("mergerClass");
+        }
+        catch(CoreException ce)
+        {
+            
+        }
+    }	
+	return mergerClass;
+}
   
 
 
