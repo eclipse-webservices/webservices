@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu 
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
 
@@ -111,7 +114,9 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 	  	IStatus status = Status.OK_STATUS;
 	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 	    JUnitUtils.disableWSIDialog(webProject);
-
+		JUnitUtils.enableOverwrite(true);
+	    JUnitUtils.setRuntimePreference("org.eclipse.jst.ws.axis.creation.axisWebServiceRT");
+	    
 	    Performance perf= Performance.getDefault();
 	    PerformanceMeter performanceMeter= perf.createPerformanceMeter(perf.getDefaultScenarioId(this));	    
 	    try {

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -283,6 +284,11 @@ public class JUnitUtils {
 		boolean previousSetting = ctx.isOverwriteFilesEnabled();
 		ctx.setOverwriteFilesEnabled(enable);
 		return previousSetting;
+	}
+	
+	public static void setRuntimePreference(String rt){
+		PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+		context.setRuntimeId(rt);
 	}
 	
 	public static void disableWSIDialog(IProject project){

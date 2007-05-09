@@ -7,6 +7,9 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu      
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
 
@@ -102,6 +105,8 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	  	
 		JUnitUtils.enableProxyGeneration(true);
 		JUnitUtils.enableOverwrite(true);
+		JUnitUtils.setRuntimePreference("org.eclipse.jst.ws.axis.creation.axisWebServiceRT");
+		
 		Performance perf= Performance.getDefault();
 		PerformanceMeter performanceMeter= perf.createPerformanceMeter(perf.getDefaultScenarioId(this));	    
 	    try {
