@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2006 IBM Corporation and others.
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
@@ -290,11 +293,7 @@ public abstract class XSDFragment extends Fragment implements IXSDFragment
           Node child = children.item(i);
           if (child != null)
           {
-            eCopy.appendChild(child);
-            // When you append a node from one element to another,
-            // the original element will lose its reference to this node,
-            // therefore, the size of the node list will decrease by 1.
-            i--;
+        	  eCopy.appendChild(child.cloneNode(true));
           }
         }
         for (int j = 0; j < attributes.getLength(); j++)

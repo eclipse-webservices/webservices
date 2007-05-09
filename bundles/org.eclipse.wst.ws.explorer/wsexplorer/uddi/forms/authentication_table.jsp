@@ -79,7 +79,7 @@ if (password == null)
       <td><input type="text" id="<%=tableContainerId+"_input_user_id"%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_USERID%>" value="<%=HTMLUtils.charactersToHTMLEntitiesStrict(username)%>" class="textenter"></td>
     </tr>
     <tr>
-      <td class="labels" height=30 valign="bottom"><label for="<%=tableContainerId+"_input_password"%>"><%=uddiPerspective.getMessage("FORM_LABEL_PASSWORD")%></td></label>
+      <td class="labels" height=30 valign="bottom"><label for="<%=tableContainerId+"_input_password"%>"><%=uddiPerspective.getMessage("FORM_LABEL_PASSWORD")%></label></td>
     </tr>
     <tr>
       <td><input type="password" id="<%=tableContainerId+"_input_password"%>" name="<%=UDDIActionInputs.QUERY_INPUT_ADVANCED_PASSWORD%>" value="<%=HTMLUtils.charactersToHTMLEntitiesStrict(password)%>" class="textenter"></td>

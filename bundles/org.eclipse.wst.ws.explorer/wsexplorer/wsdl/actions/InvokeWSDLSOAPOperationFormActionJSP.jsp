@@ -1,13 +1,16 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.*,
@@ -15,8 +18,8 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.perspective.MessageQueue,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLActionInputs,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective,
-                                                        org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport.HTTPException,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport.HTTPTransport,
+                                                        org.eclipse.wst.ws.internal.explorer.transport.HTTPTransportException,
                                                         sun.misc.BASE64Decoder,
                                                         javax.servlet.http.HttpServletResponse"%>
 
@@ -96,7 +99,7 @@ else
     </html>
 <%
   }
-  catch (HTTPException httpe)
+  catch (HTTPTransportException httpe)
   {
     int code = httpe.getStatusCode();
     if (code == HttpServletResponse.SC_UNAUTHORIZED)
@@ -116,7 +119,7 @@ else
       MessageQueue messageQueue = wsdlPerspective.getMessageQueue();
       messageQueue.addMessage(controller.getMessage("MSG_ERROR_UNEXPECTED"));
       messageQueue.addMessage(String.valueOf(code));
-      messageQueue.addMessage(httpe.getStatusMessage());
+      messageQueue.addMessage(httpe.getMessage());
       %>
         <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
         <html>

@@ -42,7 +42,6 @@
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
       <%=(xsdBuiltInType != null ? xsdBuiltInType.getName() : simpleType.getName())%>
     </td>
-    <td>
       <% 
       if(elementFragment != null && elementFragment.isNillable()){
         if(elementFragment.isNil()){
@@ -57,7 +56,7 @@
         }
       }
       %>
-
+    <td>
 <%
    if (!frag.validateParameterValues(frag.getID()))
    {

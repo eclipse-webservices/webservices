@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060222   118019 andyzhai@ca.ibm.com - Andy Zhai
  * 20060222   128564 jesper@selskabet.org - Jesper S Moller
  * 20060823    99034 makandre@ca.ibm.com - Andrew Mak, WSE support for basic-authenticating firewalls
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
@@ -29,7 +30,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Hashtable;
 import javax.net.ssl.SSLSocketFactory;
+
 import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;
+import org.eclipse.wst.ws.internal.explorer.transport.HTTPTransportException;
 import org.w3c.dom.Element;
 import sun.misc.BASE64Encoder;
 
@@ -335,7 +338,7 @@ public class HTTPTransport
     code = httpResponse.getStatusCode();
     String contentType = httpResponse.getHeader(HTTP_HEADER_CONTENT_TYPE.toLowerCase());
     if (code >= HTTP_CODE_EXCEPTION && (contentType == null || contentType.toLowerCase().indexOf(TEXT_XML.toLowerCase()) == -1))
-      throw new HTTPException(code, httpResponse.getStatusMessage(), httpResponse.getHeaders());
+      throw new HTTPTransportException(code, httpResponse.getStatusMessage(), httpResponse.getHeaders());
   }
 
   private void readHTTPResponseHeader(InputStream is, HTTPResponse resp) throws IOException
@@ -431,14 +434,18 @@ public class HTTPTransport
     resp.setPayload(baos.toByteArray());
   }
 
-  public BufferedReader receive()
+  /**
+   * Receives the bytes from the last web service invocation.  This is used by WSE's default
+   * SOAP transport.
+   * 
+   * @return A byte array.
+   * @throws IOException
+   */
+  byte[] receiveBytes() throws IOException
   {
     if (httpResponse != null)
     {
-      try
-      {
         byte[] payload = httpResponse.getPayload();
-        Element soapEnvelope = null;
         if (CHUNKED.equalsIgnoreCase(httpResponse.getHeader(HTTP_HEADER_TRANSFER_ENCODEING.toLowerCase())))
         {
           ByteArrayInputStream bais = new ByteArrayInputStream(payload);
@@ -450,19 +457,36 @@ public class HTTPTransport
           baos.close();
           cis.close();
           bais.close();
-          soapEnvelope = XMLUtils.byteArrayToElement(baos.toByteArray(), false);
+          return baos.toByteArray();
         }
         else
         {
-          soapEnvelope = XMLUtils.byteArrayToElement(payload, false);
+          return payload;
         }
+    }
+    return null;
+  }
+  
+  /**
+   * This method is deprecated after WSE swtiches to using a pluggable transport via enhancement 176493.
+   * The core functionality of this method is refactored to the receiveBytes() method. 
+   * 
+   * @deprecated
+   */
+  public BufferedReader receive()
+  {
+    try
+    {
+      byte[] payload = receiveBytes();
+      if (payload != null) {
+    	Element soapEnvelope = XMLUtils.byteArrayToElement(payload, false);
         // remove XML namespace declaration
         if (soapEnvelope != null)
-          return new BufferedReader(new InputStreamReader(new ByteArrayInputStream(XMLUtils.serialize(soapEnvelope, true).getBytes(DEFAULT_SOAP_ENCODING)), DEFAULT_SOAP_ENCODING));
+          return new BufferedReader(new InputStreamReader(new ByteArrayInputStream(XMLUtils.serialize(soapEnvelope, true).getBytes(DEFAULT_SOAP_ENCODING)), DEFAULT_SOAP_ENCODING)); 
       }
-      catch (Throwable t)
-      {
-      }
+    }
+    catch (Throwable t)
+    {
     }
     return null;
   }
@@ -525,7 +549,7 @@ public class HTTPTransport
 
 	  // ensure we are successfully connected to the proxy
 	  if (code != HTTP_CODE_OK)
-		  throw new HTTPException(code, httpResponse.getStatusMessage(), httpResponse.getHeaders());
+		  throw new HTTPTransportException(code, httpResponse.getStatusMessage(), httpResponse.getHeaders());
 	  
 	  return tunnel;
   }

@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants;
@@ -29,4 +30,9 @@ public class WSDLModelConstants
     public final static String PROP_SOURCE_CONTENT_HEADER = "propSourceContentHeader";
     public final static String PROP_SOURCE_CONTENT = "propSourceContent";
     public final static String PROP_SOURCE_CONTENT_NAMESPACE = "propSourceContentNS";
+    
+    // Transport
+    public final static String PROP_SOAP_REQUEST_TMP = "propSOAPRequestTmp";
+    public final static String PROP_SOAP_REQUEST = "propSOAPRequest";    
+    public final static String PROP_SOAP_RESPONSE = "propSOAPResponse";
 }

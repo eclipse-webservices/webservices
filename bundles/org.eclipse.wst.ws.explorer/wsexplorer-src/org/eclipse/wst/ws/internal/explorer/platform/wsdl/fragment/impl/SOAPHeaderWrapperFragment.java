@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
@@ -17,6 +18,7 @@ package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
@@ -187,23 +189,18 @@ public class SOAPHeaderWrapperFragment extends XSDDelegationFragment {
 	}
 	
 	/**
-	 * Sets the values for this SOAP header given a hashtable of instance documents and a namespace table.
+	 * Sets the values for this SOAP header given an instance document and a namespace table.
 	 * 
-	 * @param instanceDocuments The hashtable of instance documents.  The key is the document's name with namespace prefix.
+	 * @param instanceDocument The instance document.
 	 * @param namespaceTable The namespace table.
 	 * 
 	 * @return True if all values extracted from the instance document are valid.
 	 */
-	public boolean setParameterValuesFromInstanceDocuments(Hashtable instanceDocuments, Hashtable namespaceTable) {
-		String tagName = ((XSDFragment) getXSDDelegationFragment()).getInstanceDocumentTagName(namespaceTable);
-		Element instanceDocument = (Element) instanceDocuments.get(tagName);
-		 
-		if (instanceDocument == null)
-			return false;
-		 
+	public boolean setParameterValuesFromInstanceDocument(Element instanceDocument, Map namespaceTable) {
+
 		boolean valid = setParameterValuesFromInstanceDocuments(new Element[] { instanceDocument });		
 		 
-		String prefix = getPrefixFromNamespaceURI(FragmentConstants.NS_URI_SOAP_ENV, namespaceTable) + FragmentConstants.COLON;
+		String prefix = namespaceTable.get(FragmentConstants.NS_URI_SOAP_ENV) + FragmentConstants.COLON;
 		 
 		String mustUnderstandValue = instanceDocument.getAttribute(prefix + MUST_UNDERSTAND);
 		if ("".equals(mustUnderstandValue))

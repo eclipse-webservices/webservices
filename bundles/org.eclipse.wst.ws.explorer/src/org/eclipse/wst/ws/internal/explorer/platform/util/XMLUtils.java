@@ -22,6 +22,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -29,6 +30,8 @@ import org.xml.sax.SAXException;
 
 public final class XMLUtils
 {
+  public static final String UTF8_ENCODING = "UTF-8"; 
+	
   /**
    * Serialize an XML Element into a String.
    * @param e Element to be serialized.
@@ -45,12 +48,12 @@ public final class XMLUtils
 		Transformer serializer = TransformerFactory.newInstance().newTransformer();
 		serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, ((omitXMLDeclaration) ? "yes" : "no"));
 		serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-		serializer.setOutputProperty(OutputKeys.ENCODING, HTMLUtils.UTF8_ENCODING);
+		serializer.setOutputProperty(OutputKeys.ENCODING, UTF8_ENCODING);
 		serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		serializer.transform(domSource, new	StreamResult(baos));
 		baos.close();
-		return new String(baos.toByteArray(), HTMLUtils.UTF8_ENCODING);
+		return new String(baos.toByteArray(), UTF8_ENCODING);
       }
       catch (Throwable t)
       {
@@ -75,12 +78,12 @@ public final class XMLUtils
 		Transformer serializer = TransformerFactory.newInstance().newTransformer();
 		serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, ((omitXMLDeclaration) ? "yes" : "no"));
 		serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-		serializer.setOutputProperty(OutputKeys.ENCODING, HTMLUtils.UTF8_ENCODING);
+		serializer.setOutputProperty(OutputKeys.ENCODING, UTF8_ENCODING);
 		serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		serializer.transform(domSource, new	StreamResult(baos));
 		baos.close();
-		return new String(baos.toByteArray(), HTMLUtils.UTF8_ENCODING);
+		return new String(baos.toByteArray(), UTF8_ENCODING);
       }
       catch (Throwable t)
       {
@@ -124,7 +127,7 @@ public final class XMLUtils
    */
   public static Element stringToElement(String s, boolean namespaceAware) throws ParserConfigurationException, SAXException, UnsupportedEncodingException, IOException
   {
-    return byteArrayToElement(s.getBytes(HTMLUtils.UTF8_ENCODING), namespaceAware);
+    return byteArrayToElement(s.getBytes(UTF8_ENCODING), namespaceAware);
   }
 
   /**

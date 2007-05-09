@@ -13,6 +13,7 @@
  * 20060222   127443 jesper@selskabet.org - Jesper S Moller
  * 20060726   144824 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -22,6 +23,7 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.util.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.util.*,
+                                                        org.eclipse.wst.ws.internal.explorer.transport.*,
                                                         org.eclipse.wst.wsdl.binding.soap.SOAPHeader,
                                                         org.w3c.dom.*,
                                                         javax.wsdl.*,
@@ -34,86 +36,56 @@
 <%
    WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
    WSDLOperationElement operElement = (WSDLOperationElement)(wsdlPerspective.getNodeManager().getSelectedNode().getTreeElement());
-   Operation oper = operElement.getOperation();
-   Hashtable soapEnvelopeNamespaceTable = new Hashtable();
-   SoapHelper.addDefaultSoapEnvelopeNamespaces(soapEnvelopeNamespaceTable);
+   ISOAPTransport soapTransport = operElement.getSOAPTransportProvider().newTransport();
+   ISOAPMessage soapMessage = soapTransport.newMessage(operElement.getMessageContext());
+   operElement.setPropertyAsObject(WSDLModelConstants.PROP_SOAP_REQUEST_TMP, soapMessage);
    
-   Iterator it = operElement.getSOAPHeaders().iterator();
-   StringBuffer sourceContentHeader = new StringBuffer();
-   String cachedSourceContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER);
-   if (cachedSourceContent != null)   
-     sourceContentHeader.append(cachedSourceContent);        
-   else
-   {
-     while (it.hasNext())
-     {
-       SOAPHeader soapHeader = (SOAPHeader)it.next();
-       IXSDFragment frag = operElement.getHeaderFragment(soapHeader);
-       Element[] instanceDocuments = frag.genInstanceDocumentsFromParameterValues(!operElement.isUseLiteral(), soapEnvelopeNamespaceTable, XMLUtils.createNewDocument(null));
-       for (int i = 0; i < instanceDocuments.length; i++)
-       {
-    	 String serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
-		 if (serializedFragment == null)
-		 {
-			 // On Some JRE's (Sun java 5) elements with an attribute with the xsi
-			 // prefix do not serialize properly because the namespace can not
-			 // be found so the string returned comes back as null. To workaround
-			 // this problem try adding in the namespace declaration attribute
-			 // and retry the serialization (bug 144824)			 
-			 instanceDocuments[i].setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
-			 serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
-		 }
-    	 
-    	 sourceContentHeader.append(serializedFragment);
-         sourceContentHeader.append(HTMLUtils.LINE_SEPARATOR);
-       }     
-     }
+   Hashtable soapEnvelopeNamespaceTable = new Hashtable(soapMessage.getNamespaceTable());      
+   
+   String cachedHeaderContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER);
+   String cachedBodyContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT);
+   
+   // if either header or body has been cached, need to ensure namespace table is updated
+   // from the cached copy
+   if (cachedHeaderContent != null || cachedBodyContent != null) {
+	   if (SOAPMessageUtils.decodeNamespaceTable(soapEnvelopeNamespaceTable, operElement))
+		   soapMessage.setNamespaceTable(soapEnvelopeNamespaceTable);
+   }
+	            
+   String headerContent;
+   String bodyContent;
+   
+   if (cachedHeaderContent != null)
+       headerContent = cachedHeaderContent;
+   else {
+	   try {
+	       SOAPMessageUtils.setHeaderContentFromModel(soapEnvelopeNamespaceTable, operElement, soapMessage);
+	       
+	       // ensure namespace table updated in message before serialize operation
+	       soapMessage.setNamespaceTable(soapEnvelopeNamespaceTable);
+	       headerContent = soapTransport.newSerializer().serialize(ISOAPMessage.HEADER_CONTENT, soapMessage);
+	   }
+	   catch (Exception e) {
+		   headerContent = "";
+	   }
    }
    
-   it = operElement.getOrderedBodyParts().iterator();
-   StringBuffer sourceContent = new StringBuffer();
-   cachedSourceContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT);
-   if (cachedSourceContent != null)
-   {
-     sourceContent.append(cachedSourceContent);
-     String[] nsDeclarations = (String[])operElement.getPropertyAsObject(WSDLModelConstants.PROP_SOURCE_CONTENT_NAMESPACE);
-     if (nsDeclarations != null)
-     {
-       for (int i = 0; i < nsDeclarations.length; i++)
-       {
-         String[] prefix_ns = SoapHelper.decodeNamespaceDeclaration(nsDeclarations[i]);
-         if (!soapEnvelopeNamespaceTable.contains(prefix_ns[1]))
-           soapEnvelopeNamespaceTable.put(prefix_ns[1], prefix_ns[0]);
-       }
-     }
-   }
-   else
-   {
-     while (it.hasNext())
-     {
-       Part part = (Part)it.next();
-       IXSDFragment frag = operElement.getFragment(part);
-       Element[] instanceDocuments = frag.genInstanceDocumentsFromParameterValues(!operElement.isUseLiteral(), soapEnvelopeNamespaceTable, XMLUtils.createNewDocument(null));
-       for (int i = 0; i < instanceDocuments.length; i++)
-       {
-    	 String serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
-		 if (serializedFragment == null)
-		 {
-			 // On Some JRE's (Sun java 5) elements with an attribute with the xsi
-			 // prefix do not serialize properly because the namespace can not
-			 // be found so the string returned comes back as null. To workaround
-			 // this problem try adding in the namespace declaration attribute
-			 // and retry the serialization (bug 144824)			 
-			 instanceDocuments[i].setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
-			 serializedFragment = XMLUtils.serialize(instanceDocuments[i], true);
-		 }
-    	 
-    	 sourceContent.append(serializedFragment);
-         sourceContent.append(HTMLUtils.LINE_SEPARATOR);
-       }     
-     }
-   }
-
+   if (cachedBodyContent != null)
+	   bodyContent = cachedBodyContent;
+   else {
+	   try {
+	       SOAPMessageUtils.setBodyContentFromModel(soapEnvelopeNamespaceTable, operElement, soapMessage);
+	       
+	       // ensure namespace table updated in message before serialize operation
+	       soapMessage.setNamespaceTable(soapEnvelopeNamespaceTable);
+	       bodyContent = soapTransport.newSerializer().serialize(ISOAPMessage.BODY_CONTENT, soapMessage);
+	   }
+	   catch (Exception e) {
+		   bodyContent = "";
+	   }
+   }      
+   
+   // cache the namespace table
    Enumeration enm = soapEnvelopeNamespaceTable.keys();
    while (enm.hasMoreElements())
    {
@@ -129,8 +101,7 @@
   <tr>
     <td height=30 valign="bottom" class="labels">
 <%
-    Document doc = XMLUtils.createNewDocument(null);
-    Element soapEnvelopeElement = SoapHelper.createSoapEnvelopeElement(doc,soapEnvelopeNamespaceTable);
+	Element soapEnvelopeElement = soapMessage.getEnvelope(false);
     StringBuffer header = new StringBuffer("<");
     header.append(soapEnvelopeElement.getTagName());
     NamedNodeMap attributes = soapEnvelopeElement.getAttributes();
@@ -163,8 +134,8 @@
 </table>
 <%
     }
-
-    Element soapHeaderElement = SoapHelper.createSoapHeaderElement(doc);
+    
+    Element soapHeaderElement = soapMessage.getHeader(false);
     header.setLength(0);
     header.append('<').append(soapHeaderElement.getTagName());
     attributes = soapHeaderElement.getAttributes();
@@ -226,7 +197,7 @@
       <img width="16" height="16" src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
     </td>
     <td width="100%">
-      <textarea id="soap_header_content" name="<%=FragmentConstants.SOURCE_CONTENT_HEADER%>" class="textareaenter"><%=HTMLUtils.charactersToHTMLEntitiesStrict(sourceContentHeader.toString())%></textarea>
+      <textarea id="soap_header_content" name="<%=FragmentConstants.SOURCE_CONTENT_HEADER%>" class="textareaenter"><%=HTMLUtils.charactersToHTMLEntitiesStrict(headerContent)%></textarea>
     </td>
   </tr>
 </table>
@@ -245,7 +216,7 @@
   </tr>
 </table>
 <%
-    Element soapBodyElement = SoapHelper.createSoapBodyElement(doc);
+    Element soapBodyElement = soapMessage.getBody(false);
     header.setLength(0);
     header.append('<').append(soapBodyElement.getTagName());
     attributes = soapBodyElement.getAttributes();
@@ -287,51 +258,9 @@
 
     Element wrapperElement = null;
     if (!operElement.isDocumentStyle())
-    {
-      // Must be RPC style.
-      String encodingNamespaceURI = null;
-      /*
-       * WS-I: In a rpc-literal SOAP binding, the serialized child element of the 
-       * soap:Body element consists of a wrapper element, whose namespace is the value 
-       * of the namespace attribute of the soapbind:body element and whose local name is 
-       * either the name of the operation or the name of the operation suffixed 
-       * with "Response". The namespace attribute is required, as opposed to being 
-       * optional, to ensure that the children of the soap:Body element are namespace-
-       * qualified.
-       */
-      BindingOperation bindingOperation = operElement.getBindingOperation();
-      if (bindingOperation != null)
-      {
-        BindingInput bindingInput = bindingOperation.getBindingInput();
-        if (bindingInput != null)
-        {
-          List extElements = bindingInput.getExtensibilityElements();
-          for (Iterator extElementsIt = extElements.iterator(); extElementsIt.hasNext();)
-          {
-            ExtensibilityElement extElement = (ExtensibilityElement)extElementsIt.next();
-            if (extElement instanceof SOAPBody)
-            {
-              encodingNamespaceURI = ((SOAPBody)extElement).getNamespaceURI();
-              break;
-            }
-          }
-        }
-      }
-      // If the namespace of the soapbind:body element is not set, get it from the operation element
-      if (encodingNamespaceURI == null)
-        encodingNamespaceURI = operElement.getEncodingNamespace();
-      // If the namespace of the operation element is not set, get it from the definition element
-      if (encodingNamespaceURI == null)
-      {
-        WSDLBindingElement bindingElement = (WSDLBindingElement)operElement.getParentElement();
-        WSDLServiceElement serviceElement = (WSDLServiceElement)bindingElement.getParentElement();
-        WSDLElement wsdlElement = (WSDLElement)serviceElement.getParentElement();
-        Definition definition = wsdlElement.getDefinition();
-        encodingNamespaceURI = definition.getTargetNamespace();
-      }
-      // Generate an RPC style wrapper element.
-      String encodingStyle = (operElement.isUseLiteral() ? null : operElement.getEncodingStyle());
-      wrapperElement = SoapHelper.createRPCWrapperElement(doc,soapEnvelopeNamespaceTable,encodingNamespaceURI,oper.getName(),encodingStyle);
+    {      
+      // Generate an RPC style wrapper element.      
+      wrapperElement = (Element) soapBodyElement.getFirstChild();
       header.setLength(0);
       header.append('<').append(wrapperElement.getTagName());
       attributes = wrapperElement.getAttributes();
@@ -398,7 +327,7 @@
       <img width=<%=sourceContentIndentationImageWidth%> height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
     </td>
     <td width="100%">
-      <textarea id="soap_body_content" name="<%=FragmentConstants.SOURCE_CONTENT%>" class="bigtextareaenter"><%=HTMLUtils.charactersToHTMLEntitiesStrict(sourceContent.toString())%></textarea>
+      <textarea id="soap_body_content" name="<%=FragmentConstants.SOURCE_CONTENT%>" class="bigtextareaenter"><%=HTMLUtils.charactersToHTMLEntitiesStrict(bodyContent)%></textarea>
     </td>
   </tr>
 </table>

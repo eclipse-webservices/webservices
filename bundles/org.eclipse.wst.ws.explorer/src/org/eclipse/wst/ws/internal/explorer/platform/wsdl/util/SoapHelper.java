@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.util;
@@ -96,6 +97,10 @@ public class SoapHelper
           break;
         nsId++;
       } while (true);
+      
+      // need to ensure whatever prefix we choose is added to the namespace table
+      // so that it will not be reused lated on
+      soapEnvelopeNamespaceTable.put(encodingNamespaceURI, wrapperElementName.toString());
     }    
     String wrapperElementNamePrefix = wrapperElementName.toString();
     wrapperElementName.append(':').append(operationName);

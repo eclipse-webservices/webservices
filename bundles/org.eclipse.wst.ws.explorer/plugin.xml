@@ -2,6 +2,7 @@
 <?eclipse version="3.0"?>
 
 <plugin>
+   <extension-point id="wseTransportProvider" name="%XP_WSE_TRANSPORT_PROVIDER" schema="schema/wseTransportProvider.exsd"/>
 
     
 <!-- ================================================================= -->
@@ -43,5 +44,13 @@
          </action>
       </objectContribution>
    </extension>
-
+   <extension
+         point="org.eclipse.wst.ws.explorer.wseTransportProvider">
+      <soapTransportProvider
+            class="org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport.SOAPTransportProvider"
+            id="org.eclipse.wst.ws.explorer.soapTransportProvider"
+            name="%SOAP_TRANSPORT_PROVIDER"
+            namespaceURI="http://schemas.xmlsoap.org/wsdl/soap/"
+            transportURI="http://schemas.xmlsoap.org/soap/http"/>
+   </extension>
 </plugin>

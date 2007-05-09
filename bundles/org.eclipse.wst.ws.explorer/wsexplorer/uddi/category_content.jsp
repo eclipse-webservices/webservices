@@ -74,6 +74,7 @@
         <%=uddiPerspective.getMessage("MSG_INFO_NO_CATEGORY_DATA",categoryModel.getDisplayName())%>
       </td>
     </tr>
+    <tr>
       <td height=10 valign="bottom">&nbsp;</td>
     </tr>
     <tr>

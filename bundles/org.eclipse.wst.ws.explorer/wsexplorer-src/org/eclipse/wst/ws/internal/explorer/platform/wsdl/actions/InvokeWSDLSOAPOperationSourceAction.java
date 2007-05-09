@@ -10,36 +10,28 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Hashtable;
-import java.util.Vector;
-import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
-import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLModelConstants;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLBindingElement;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLElement;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLOperationElement;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLServiceElement;
-import org.eclipse.wst.ws.internal.explorer.platform.wsdl.util.SoapHelper;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.eclipse.wst.ws.internal.explorer.transport.ISOAPMessage;
 
 public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperationAction
 {
   private boolean newFileSelected_;
   private boolean saveAsSelected_;
   private boolean isHeader_;
-  private static final String DUMMY_WRAPPER_START_TAG = "<dummyWrapper>";
-  private static final String DUMMY_WRAPPER_END_TAG = "</dummyWrapper>";
   
   public InvokeWSDLSOAPOperationSourceAction(Controller controller)
   {
@@ -120,66 +112,30 @@ public class InvokeWSDLSOAPOperationSourceAction extends InvokeWSDLSOAPOperation
     return false;
     */
   }
-
-  protected Vector getHeaderEntries(Hashtable soapEnvelopeNamespaceTable, WSDLOperationElement operElement) throws ParserConfigurationException, Exception {
-	
-	  Vector headerEntries = new Vector();
-      String[] nsDeclarations = (String[])operElement.getPropertyAsObject(WSDLModelConstants.PROP_SOURCE_CONTENT_NAMESPACE);
-   	  for (int i = 0; i < nsDeclarations.length; i++)
-	  {
-	    String[] prefix_ns = SoapHelper.decodeNamespaceDeclaration(nsDeclarations[i]);
-	    if (!soapEnvelopeNamespaceTable.contains(prefix_ns[1]))
-	      soapEnvelopeNamespaceTable.put(prefix_ns[1], prefix_ns[0]);
-	  }
-	  StringBuffer sourceContent = new StringBuffer(operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER));
-	  sourceContent.insert(0,DUMMY_WRAPPER_START_TAG).append(DUMMY_WRAPPER_END_TAG);
-	  Element dummyWrapperElement = XMLUtils.stringToElement(sourceContent.toString());          
-	  NodeList nl = dummyWrapperElement.getChildNodes();
-	  for (int i = 0; i < nl.getLength(); i++)
-	  {
-	    if (nl.item(i) instanceof Element)
-	      headerEntries.add(nl.item(i));
-	  }
-	  
-	  return headerEntries;
-  }
-
-  /**
-   * Generate a Vector of the elements inside the Soap Body.
-   * @param soapEnvelopeNamespaceTable - Hashtable containing a map of the namespace URIs to prefixes.
-   * @param operElement - WSDLOperationElement encapsulating the WSDL operation.
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.InvokeWSDLSOAPOperationAction#getSOAPRequestMessage(org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLOperationElement)
    */
-  protected Vector getBodyEntries(Hashtable soapEnvelopeNamespaceTable,WSDLOperationElement operElement,WSDLBindingElement bindingElement,WSDLServiceElement serviceElement) throws ParserConfigurationException,Exception
-  {
-    Vector bodyEntries = new Vector();
-    String[] nsDeclarations = (String[])operElement.getPropertyAsObject(WSDLModelConstants.PROP_SOURCE_CONTENT_NAMESPACE);
-    for (int i = 0; i < nsDeclarations.length; i++)
-    {
-      String[] prefix_ns = SoapHelper.decodeNamespaceDeclaration(nsDeclarations[i]);
-      if (!soapEnvelopeNamespaceTable.contains(prefix_ns[1]))
-        soapEnvelopeNamespaceTable.put(prefix_ns[1], prefix_ns[0]);
-    }
-    StringBuffer sourceContent = new StringBuffer(operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT));
-    sourceContent.insert(0,DUMMY_WRAPPER_START_TAG).append(DUMMY_WRAPPER_END_TAG);
-    Element dummyWrapperElement = XMLUtils.stringToElement(sourceContent.toString());          
-    NodeList nl = dummyWrapperElement.getChildNodes();
-    for (int i = 0; i < nl.getLength(); i++)
-    {
-      if (nl.item(i) instanceof Element)
-        bodyEntries.add(nl.item(i));
-    }
-    if (!operElement.isDocumentStyle())
-    {
-      try
-      {
-        addRPCWrapper(bodyEntries,(WSDLElement)serviceElement.getParentElement(),operElement,soapEnvelopeNamespaceTable);
-      }
-      catch (ParserConfigurationException e)
-      {
-        throw e;
-      }
-    }
-    return bodyEntries;
+  protected ISOAPMessage getSOAPRequestMessage(WSDLOperationElement operElement) {	  
+	  return (ISOAPMessage) operElement.getPropertyAsObject(WSDLModelConstants.PROP_SOAP_REQUEST_TMP);
+  } 
+
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.InvokeWSDLSOAPOperationAction#setHeaderContent(java.util.Hashtable, org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLOperationElement, org.eclipse.wst.ws.internal.explorer.transport.ISOAPMessage)
+   */
+  protected void setHeaderContent(Hashtable soapEnvelopeNamespaceTable, WSDLOperationElement operElement, ISOAPMessage soapMessage) {	
+   	String headerContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT_HEADER);
+    operElement.getSOAPTransportProvider().newTransport().newDeserializer()
+    	.deserialize(ISOAPMessage.HEADER_CONTENT, headerContent, soapMessage);
+  }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.InvokeWSDLSOAPOperationAction#setBodyContent(java.util.Hashtable, org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLOperationElement, org.eclipse.wst.ws.internal.explorer.transport.ISOAPMessage)
+   */ 
+  protected void setBodyContent(Hashtable soapEnvelopeNamespaceTable, WSDLOperationElement operElement, ISOAPMessage soapMessage) {
+    String bodyContent = operElement.getPropertyAsString(WSDLModelConstants.PROP_SOURCE_CONTENT);    
+    operElement.getSOAPTransportProvider().newTransport().newDeserializer()
+    	.deserialize(ISOAPMessage.BODY_CONTENT, bodyContent, soapMessage);        
   }
 
   public final boolean wasNewFileSelected()

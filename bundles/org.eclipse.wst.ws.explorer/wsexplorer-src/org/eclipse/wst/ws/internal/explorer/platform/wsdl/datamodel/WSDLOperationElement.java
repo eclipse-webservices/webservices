@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -21,6 +22,7 @@ import java.util.Vector;
 import javax.wsdl.Binding;
 import javax.wsdl.BindingInput;
 import javax.wsdl.BindingOperation;
+import javax.wsdl.Definition;
 import javax.wsdl.Input;
 import javax.wsdl.Operation;
 import javax.wsdl.Output;
@@ -29,6 +31,7 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap.SOAPBody;
 import javax.wsdl.extensions.soap.SOAPOperation;
+import org.eclipse.wst.ws.internal.explorer.platform.perspective.TransportProviderRegistry;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.BindingTypes;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
@@ -36,6 +39,8 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragment
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.XSDToFragmentController;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl.SOAPHeaderWrapperFragment;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDTypeMapper;
+import org.eclipse.wst.ws.internal.explorer.transport.ISOAPTransportProvider;
+import org.eclipse.wst.ws.internal.explorer.transport.MessageContext;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
 import org.eclipse.xsd.XSDNamedComponent;
 
@@ -55,7 +60,10 @@ public class WSDLOperationElement extends WSDLCommonElement
   private String encodingStyle_;
   private String encodingNamespace_;
 
-  private Map headerCache = new Hashtable();
+  private Map headerCache;
+  
+  private MessageContext messageContext = null;
+  private ISOAPTransportProvider soapTransportProvider = null;  
   
   private final void gatherSoapInformation(WSDLBindingElement bindingElement,SOAPBinding soapBinding)
   {
@@ -116,6 +124,37 @@ public class WSDLOperationElement extends WSDLCommonElement
     setOperation(bindingElement,operation);
   }
 
+  private Definition getDefinition(WSDLBindingElement bindingElement) {
+	  WSDLServiceElement serviceElement = (WSDLServiceElement) bindingElement.getParentElement();
+      WSDLElement wsdlElement = (WSDLElement) serviceElement.getParentElement();
+      return wsdlElement.getDefinition();
+  }
+  
+  private void setMessageContext(WSDLBindingElement bindingElement) {
+	  messageContext = new MessageContext();
+	  messageContext.setDefinition(getDefinition(bindingElement));
+	  messageContext.setBindingOperation(getBindingOperation(bindingElement));
+	  messageContext.setBindingProtocol(bindingElement.getBindingExtensibilityElement());
+	  messageContext.setDocumentStyle(isDocumentStyle_);
+  }
+  
+  public MessageContext getMessageContext() {
+	  return messageContext;
+  }
+  
+  private void setSOAPTransportProvider(SOAPBinding soapBinding) {
+	  	  
+	  String namespaceURI = soapBinding.getElementType().getNamespaceURI();
+	  String transportURI = soapBinding.getTransportURI();
+	  	  
+	  soapTransportProvider = TransportProviderRegistry.getInstance()
+	  	.getSOAPTransportProvider(namespaceURI, transportURI);
+  }
+  
+  public ISOAPTransportProvider getSOAPTransportProvider() {
+	  return soapTransportProvider;
+  }
+  
   public void setOperation(WSDLBindingElement bindingElement,Operation operation) {
     operation_ = operation;
     setDocumentation(operation.getDocumentationElement());
@@ -127,6 +166,9 @@ public class WSDLOperationElement extends WSDLCommonElement
     {
       case BindingTypes.SOAP:
         gatherSoapInformation(bindingElement,(SOAPBinding)bindingExtensibilityElement);
+        setMessageContext(bindingElement);
+        setSOAPTransportProvider((SOAPBinding) bindingExtensibilityElement);
+        headerCache = new Hashtable();
       case BindingTypes.HTTP_GET:
       case BindingTypes.HTTP_POST:
       default:
@@ -255,7 +297,7 @@ public class WSDLOperationElement extends WSDLCommonElement
 	else
 	  id.append(FragmentConstants.OUTPUT_ID).append(soapHeader.getMessage()).append(FragmentConstants.PART_TOKEN);
 	
-	return getFragment(part, id, isInput); // only wrap input header fragments
+	return getFragment(part, id, true, isInput); // only wrap input header fragments
   }
   
   public IXSDFragment getFragment(Part part) {
@@ -269,17 +311,17 @@ public class WSDLOperationElement extends WSDLCommonElement
     else
       id.append(FragmentConstants.OUTPUT_ID);
 
-	return getFragment(part, id, false);
+	return getFragment(part, id, false, false);
   }
   
-  private IXSDFragment getFragment(Part part, StringBuffer id, boolean useSOAPHeaderWrapper) {
+  private IXSDFragment getFragment(Part part, StringBuffer id, boolean isHeader, boolean useSOAPHeaderWrapper) {
     String partName = part.getName();
     id.append(partName);
     XSDToFragmentConfiguration config = new XSDToFragmentConfiguration();
     config.setIsWSDLPart(true);
     config.setWSDLPartName(partName);
     config.setXSDComponent(getSchema(part, id.toString()));
-    if (isDocumentStyle())
+    if (isDocumentStyle() || isHeader)
       config.setStyle(FragmentConstants.STYLE_DOCUMENT);
     else
       config.setStyle(FragmentConstants.STYLE_RPC);
