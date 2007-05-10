@@ -12,6 +12,7 @@
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
  * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu 
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -44,7 +45,7 @@ import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.env.context.PersistentActionDialogsContext;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
-import org.eclipse.wst.command.internal.env.eclipse.BaseStatusHandler;
+import org.eclipse.wst.command.internal.env.eclipse.AccumulateStatusHandler;
 import org.eclipse.wst.command.internal.env.preferences.ActionDialogPreferenceType;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EnvironmentUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -309,9 +310,9 @@ public class JUnitUtils {
 	}
 	
 
-	private static IStatus launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	private static IStatus[] launchWizard(String pluginNS,String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
-		BaseStatusHandler statusHandler = new BaseStatusHandler();
+		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler();
 
         DynamicPopupJUnitWizard wizard = new DynamicPopupJUnitWizard(statusHandler);
         wizard.setInitialData(wizardId);
@@ -321,18 +322,18 @@ public class JUnitUtils {
         } 
         catch (Exception e){
         	e.printStackTrace();
-        	return StatusUtils.errorStatus(e);
+        	return new IStatus[]{StatusUtils.errorStatus(e)};
         }
-        return Status.OK_STATUS;
+        return statusHandler.getAllReports();
 
 	}
 	
-	public static IStatus launchCreationWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	public static IStatus[] launchCreationWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		return launchWizard("org.eclipse.jst.ws.creation.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	public static IStatus launchConsumptionWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
+	public static IStatus[] launchConsumptionWizard(String wizardId,String objectClassId,IStructuredSelection initialSelection) throws Exception
 	{
 		return launchWizard("org.eclipse.jst.ws.internal.consumption.ui",wizardId,objectClassId,initialSelection);
 	}
@@ -347,7 +348,7 @@ public class JUnitUtils {
         createWeb.setModuleType(CreateModuleCommand.WEB);
 	    createWeb.setJ2eeLevel(j2eeVersion);
 	    createWeb.setServerFactoryId(serverFactoryId);
-      createWeb.setEnvironment( env );
+        createWeb.setEnvironment( env );
 	    return createWeb.execute( monitor, null );
 	  }
 	  catch (Exception e){

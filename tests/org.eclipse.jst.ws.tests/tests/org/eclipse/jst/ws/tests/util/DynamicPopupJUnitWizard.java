@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070509   180567 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -67,4 +68,5 @@ public class DynamicPopupJUnitWizard extends DynamicPopupWizard {
 		manager.setRootFragment( rootFragment );
 		manager.runForwardToNextStop( context );
 	}
+	
 }

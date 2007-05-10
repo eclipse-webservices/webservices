@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu      
+ * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
 
@@ -19,7 +20,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
@@ -33,6 +33,7 @@ import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
 import org.eclipse.test.performance.Performance;
 import org.eclipse.test.performance.PerformanceMeter;
+import org.eclipse.wst.command.internal.env.eclipse.AccumulateStatusHandler;
 
 /**
  * Client performance scenario with Axis and Tomcat v5.0
@@ -101,7 +102,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
    */
 	public void testClientAxisTC50() throws Exception
 	{	
-	  	IStatus status = Status.OK_STATUS;
+	  	IStatus[] status;
 	  	
 		JUnitUtils.enableProxyGeneration(true);
 		JUnitUtils.enableOverwrite(true);
@@ -112,7 +113,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	    try {
     
 	      performanceMeter.start();
-	      PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_CLIENT,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
+	      status = PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_CLIENT,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 	      performanceMeter.stop();
 	      performanceMeter.commit();
 	      perf.assertPerformance(performanceMeter);
@@ -122,11 +123,8 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	    		performanceMeter.dispose();
 	 	}
 	    
-		if (status.getSeverity() == Status.OK) {
-		  verifyOutput();
-		} else {
-		  throw new Exception(status.getException());
-		}
+	    verifyOutput(status);
+
 
 	}
 	
@@ -134,7 +132,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
    * Verify the scenario completed succesfully
    * @throws Exception
    */
-	private final void verifyOutput() throws Exception {
+	private final void verifyOutput(IStatus[] status) throws Exception {
         IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
     
         IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
@@ -145,7 +143,15 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 		assertTrue(folder.exists());
 		assertTrue(folder.members().length > 0);
 		
-		//TODO Check that the client runs    
+		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
+		IStatus[] s = statusHandler.getErrorReports();
+		//
+		if (s.length > 0){
+			for (int i=0;i<s.length;i++){
+				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
+			}
+		}
+		assertTrue(s.length == 0);       
 
 	}
 	

@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070509   180567 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -22,7 +23,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
@@ -32,6 +32,7 @@ import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleComman
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
+import org.eclipse.wst.command.internal.env.eclipse.AccumulateStatusHandler;
 
 /**
  * Bottom up performance scenario with Axis and Tomcat v5.0
@@ -115,16 +116,13 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	public void testBUJavaAxisTC50() throws Exception
 	{
-	  	IStatus status = Status.OK_STATUS;
 	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 	    JUnitUtils.disableWSIDialog(webProject);
 
-	    status = JUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_BOTTOM_UP,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
+	    IStatus[] status = JUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_BOTTOM_UP,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 
-		if (status.getSeverity() == Status.OK)
-		  verifyOutput();
-		else
-		  throw new Exception(status.getException());
+        verifyOutput(status);
+
 		
 	}
 	
@@ -132,7 +130,7 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
    * Verify the scenario completed successfully
    * @throws Exception
    */
-	private final void verifyOutput() throws Exception
+	private final void verifyOutput(IStatus[] status) throws Exception
 	{
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
 		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
@@ -142,8 +140,16 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
 		assertTrue(wsdlFolder.members().length > 0);
 		assertTrue(webContentFolder.getFolder("wsdl").members().length > 0);
     
-        //TODO Check if wsdd contains new Web service
-        //TODO Check if Web serivce can be invoked by a client
+		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
+		IStatus[] s = statusHandler.getErrorReports();
+		//
+		if (s.length > 0){
+			for (int i=0;i<s.length;i++){
+				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
+			}
+		}
+		assertTrue(s.length == 0);
+
 	}
 	
   /**
