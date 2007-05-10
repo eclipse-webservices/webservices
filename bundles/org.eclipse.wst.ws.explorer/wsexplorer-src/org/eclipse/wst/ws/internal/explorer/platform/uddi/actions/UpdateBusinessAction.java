@@ -1,12 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070419 182864   gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
@@ -14,6 +16,7 @@ package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
 import java.net.MalformedURLException;
 import java.util.Hashtable;
 import java.util.Vector;
+
 import org.eclipse.wst.ws.internal.explorer.platform.datamodel.ListElement;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.FormToolPropertiesInterface;
@@ -396,13 +399,17 @@ public class UpdateBusinessAction extends UpdateAction
     }
     catch (UDDIException e)
     {
-      messageQueue.addMessage(uddiPerspective.getController().getMessage("MSG_ERROR_UNEXPECTED"));
-      messageQueue.addMessage("UDDIException");
-      messageQueue.addMessage(e.toString());
+    	if(UDDIExceptionHandler.requiresReset(e)){
+    		RegistryElement regElement = (RegistryElement)regNode_.getTreeElement();
+    		regElement.setDefaults();
+    	}	
+    	messageQueue.addMessage(uddiPerspective.getController().getMessage("MSG_ERROR_UNEXPECTED"));
+    	messageQueue.addMessage("UDDIException");
+    	messageQueue.addMessage(e.toString());
     }
     catch (MalformedURLException e)
     {
-      handleUnexpectedException(uddiPerspective,messageQueue,"MalformedURLException",e);
+    	handleUnexpectedException(uddiPerspective,messageQueue,"MalformedURLException",e);
     }    
     return false;
   }

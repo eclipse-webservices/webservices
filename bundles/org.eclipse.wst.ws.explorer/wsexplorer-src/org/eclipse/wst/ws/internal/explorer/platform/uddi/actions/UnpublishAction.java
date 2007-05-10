@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070419 182864   gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.actions;
@@ -91,7 +94,8 @@ public class UnpublishAction extends UDDIPropertiesFormAction
 
   public boolean run()
   {
-    RegistryElement registryElement = (RegistryElement)registryNode_.getTreeElement();
+
+	RegistryElement registryElement = (RegistryElement)registryNode_.getTreeElement();
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
     MessageQueue messageQueue = uddiPerspective.getMessageQueue();
     NodeManager navigatorManager = uddiPerspective.getNavigatorManager();
@@ -146,10 +150,12 @@ public class UnpublishAction extends UDDIPropertiesFormAction
     }
     catch (UDDIException e)
     {
-      messageQueue.addMessage(uddiPerspective.getController().getMessage("MSG_ERROR_UNEXPECTED"));
-      messageQueue.addMessage("UDDIException");
-      messageQueue.addMessage(e.toString());
-      return false;
+    	if(UDDIExceptionHandler.requiresReset(e))
+    		registryElement.setDefaults();
+    	messageQueue.addMessage(uddiPerspective.getController().getMessage("MSG_ERROR_UNEXPECTED"));
+    	messageQueue.addMessage("UDDIException");
+    	messageQueue.addMessage(e.toString());
+    	return false;
     }
     catch (MalformedURLException e)
     {

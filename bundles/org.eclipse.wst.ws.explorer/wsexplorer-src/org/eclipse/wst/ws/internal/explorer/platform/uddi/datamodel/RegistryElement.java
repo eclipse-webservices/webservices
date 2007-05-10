@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060427   136449 brunssen@us.ibm.com - Vince Brunssen  
  * 20060912   141796 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20070419   182864 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.datamodel;
 
@@ -74,6 +75,14 @@ public class RegistryElement extends AbstractUDDIElement
     return proxy_;
   }
 
+  public void setDefaults()
+  {
+	  
+	  authTokenTimestamp_ = -1;
+	  authToken_ = null;
+	  cachedPublishURL_ = null; 
+  }
+  
   public final String getInquiryURL()
   {
     return inquiryURL_;
