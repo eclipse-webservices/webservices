@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20070510   186375 makandre@ca.ibm.com - Andrew Mak, Compile errors in wst.ws.explorer
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions;
 
@@ -145,7 +146,7 @@ public abstract class InvokeWSDLSOAPOperationAction extends WSDLPropertiesFormAc
       Throwable t = e;
       if (e instanceof TransportException && e.getCause() != null)
     	t = e.getCause();
-      handleUnexpectedException(wsdlPerspective, messageQueue, t.getClass().getSimpleName(), t);
+      handleUnexpectedException(wsdlPerspective, messageQueue, t.getClass().getName(), t);
     }
     return false;
   }

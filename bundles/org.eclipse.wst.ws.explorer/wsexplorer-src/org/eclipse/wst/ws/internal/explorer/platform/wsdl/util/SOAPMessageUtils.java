@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20070510   186375 makandre@ca.ibm.com - Andrew Mak, Compile errors in wst.ws.explorer
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.util;
 
@@ -26,7 +27,9 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel.WSDLOperatio
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.IXSDFragment;
 import org.eclipse.wst.ws.internal.explorer.transport.ISOAPMessage;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 
 /**
  * This class has some common routines used by the Web Services explorer to work with ISOAPMessages.
@@ -131,6 +134,33 @@ public class SOAPMessageUtils {
 	    soapMessage.setBodyContent(bodyContent);
 	}
 	
+	/*
+	 * If the attribute is a namespace declaration, the namespace prefix is returned.
+	 * Otherwise null is returned.
+	 */
+	private static String getNSPrefix(Attr attribute) {
+		String name = attribute.getName();
+		if (name.startsWith("xmlns:"))
+			return name.substring(6);
+		return null;
+	}
+	
+	/*
+	 * lookup the prefix of the namespaceURI, assuming that it is declared on the element itself
+	 */
+	private static String lookupPrefix(Element element, String namespaceURI) {
+		
+		NamedNodeMap attributes = element.getAttributes();
+		for (int i = 0; i < attributes.getLength(); i++) {
+			Attr attribute = (Attr) attributes.item(i);
+			String prefix = getNSPrefix(attribute);
+			if (prefix != null && attribute.getValue().equals(namespaceURI))
+				return prefix;
+		}		
+		
+		return null;
+	}
+	
 	/**
 	 * Given an array of elements, this method will return the index of the first element that matches
 	 * the given Part.  A match is determined by comparing the fully qualified names of the Part and Elements.
@@ -158,8 +188,8 @@ public class SOAPMessageUtils {
 			String name = element.getTagName();
 			
 			// try to get prefix again, the namespace declaration can be directly on the element
-			if (prefix == null && namespaceURI != null)
-				prefix = element.lookupPrefix(namespaceURI);
+			if (prefix == null && namespaceURI != null && element.hasAttributes())
+				prefix = lookupPrefix(element, namespaceURI);
 			
 			if (prefix == null && name.equals(fragName))
 				return i;
