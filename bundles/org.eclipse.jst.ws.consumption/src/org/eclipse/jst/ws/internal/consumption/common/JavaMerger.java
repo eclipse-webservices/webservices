@@ -73,7 +73,7 @@ public class JavaMerger extends Merger implements IMerger {
 		
 		loadStatus = Status.OK_STATUS;
 		if (files != null) {
-
+			workspaceFiles = files;
 			PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
 			if (mergeContext.isSkeletonMergeEnabled()) {
 				// initialize JMerger
@@ -82,7 +82,6 @@ public class JavaMerger extends Merger implements IMerger {
 				if (jMergeControlModel != null) {
 					// JMerger initialized properly
 					size = files.length;
-					workspaceFiles = new IFile[size];
 					mergeModels = new JMerger[size];
 					
 					for (int i = 0; i < size; i++) {
@@ -110,7 +109,6 @@ public class JavaMerger extends Merger implements IMerger {
 								}
 							}				
 						}
-						workspaceFiles[i] = file;
 						mergeModels[i] = jMerger;
 					}
 				}

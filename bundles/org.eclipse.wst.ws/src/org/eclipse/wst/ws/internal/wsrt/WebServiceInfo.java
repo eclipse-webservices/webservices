@@ -16,10 +16,6 @@
 
 package org.eclipse.wst.ws.internal.wsrt;
 
-import java.util.ArrayList;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
 import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
@@ -37,7 +33,6 @@ public class WebServiceInfo {
 	private java.lang.String[] implURLs;
 	
 	private IMerger merger;
-	private IStatus loadMergerStatus;
 	
 	public java.lang.String getEndPointURL()
 	{
@@ -116,23 +111,9 @@ public class WebServiceInfo {
 		if (merger != null) {
 			PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
 			if (mergeContext.isSkeletonMergeEnabled()) {
-				IFile file = null;
-				ArrayList fileList = new ArrayList();
-				for (int i = 0; i < implURLs.length; i++) {
-					String url = implURLs[i];
-					// Convert the urls to Eclipse IFiles in workspace.  Null is returned if url is not in workspace. 
-					file = UniversalPathTransformer.toFile(url);
-					if (file != null) {
-						fileList.add(file);
-					}
-				}
-				IFile[] files = (IFile[]) fileList.toArray( new IFile[0]);
-				loadMergerStatus = merger.load(files);
+				merger.load(UniversalPathTransformer.toFiles(implURLs));
 			}
 		}
-	}
-	public IStatus getLoadMergerStatus() {
-		return loadMergerStatus;
 	}
 	
 }

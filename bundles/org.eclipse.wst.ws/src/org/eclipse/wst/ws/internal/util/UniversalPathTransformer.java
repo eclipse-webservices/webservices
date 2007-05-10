@@ -164,4 +164,24 @@ public class UniversalPathTransformer {
 								
 		return file;
 	}	
+	
+	/**
+	 * Transform the given URIs to an IFiles.  
+	 * IFile set to null if the URI is not in the workspace.
+	 * 
+	 * @param str The URIs to transform.
+	 * @return Returns IFile[]
+	 */
+	public static IFile[] toFiles(String[] uris) {
+		
+		IFile[] files = null;
+		if (uris != null) {
+			files = new IFile[uris.length];		
+			for (int i = 0; i < uris.length; i++) {
+				String uri = uris[i];
+				files[i] = UniversalPathTransformer.toFile(uri);
+			}
+		}
+		return files;
+	}	
 }
