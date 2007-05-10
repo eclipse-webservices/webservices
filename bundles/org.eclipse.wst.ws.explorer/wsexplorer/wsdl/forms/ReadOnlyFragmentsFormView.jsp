@@ -12,6 +12,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20070507   185600 makandre@ca.ibm.com - Andrew Mak, WSE status pane's "header" twistie should not appear for responses without headers
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -75,44 +76,29 @@ else
     </table>
   <%
   }
-  else if ((headerContent == null || headerContent.length == 0) && 
-		   (soapMessage.getFault() != null || bodyContent == null || bodyContent.length == 0))
-  {
-  %>
-    <table width="95%" border=0 cellpadding=6 cellspacing=0>
-      <tr>
-        <td height=20 valign="bottom" align="left" class="labels">
-          <%=wsdlPerspective.getMessage("FORM_LABEL_NOTHING_TO_DISPLAY_IN_FORM_VIEW")%>
-        </td>
-      </tr>
-    </table>
-  <%
-  }
   else
   {
-	String headerDivId = "Header";
-	String headerImgId = "xHeader";
-	String bodyDivId = "Body";
-	String bodyImgId = "xBody";	  
-    %>
-    <table border=0 cellpadding=6 cellspacing=0>
-	  <tr>
-	    <td height=20 valign="bottom" align="left" nowrap width=11><a href="javascript:twist('<%=headerDivId%>','<%=headerImgId%>')"><img name="<%=headerImgId%>" src="<%=response.encodeURL(controller.getPathWithContext("images/twistopened.gif"))%>" alt="<%=controller.getMessage("ALT_TWIST_OPENED")%>" class="twist"></a></td>
-	    <td height=20 valign="bottom" align="left" nowrap class="labels"><strong><%=wsdlPerspective.getMessage("FORM_LABEL_HEADER")%></strong></td>
-	  </tr>
-	</table>
-	
-	<table width="95%" border=0 cellpadding=0 cellspacing=0>
-	  <tr>
-	    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" height=2 width="100%"></td>
-	  </tr>
-	</table>
-	
-	<div id="<%=headerDivId%>" class="fragarea">
-	<%
-	boolean hasSOAPHeaders = false;
 	if (headerContent != null && headerContent.length > 0) {		
+
+		String headerDivId = "Header";
+		String headerImgId = "xHeader";		
+	    %>
+	    <table border=0 cellpadding=6 cellspacing=0>
+		  <tr>
+		    <td height=20 valign="bottom" align="left" nowrap width=11><a href="javascript:twist('<%=headerDivId%>','<%=headerImgId%>')"><img name="<%=headerImgId%>" src="<%=response.encodeURL(controller.getPathWithContext("images/twistopened.gif"))%>" alt="<%=controller.getMessage("ALT_TWIST_OPENED")%>" class="twist"></a></td>
+		    <td height=20 valign="bottom" align="left" nowrap class="labels"><strong><%=wsdlPerspective.getMessage("FORM_LABEL_HEADER")%></strong></td>
+		  </tr>
+		</table>
 		
+		<table width="95%" border=0 cellpadding=0 cellspacing=0>
+		  <tr>
+		    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" height=2 width="100%"></td>
+		  </tr>
+		</table>
+		
+		<div id="<%=headerDivId%>" class="fragarea">
+		<%
+		boolean hasSOAPHeaders = false;		
 		Iterator it = operElement.getSOAPHeaders(false).iterator();
 		int start = 0;
 		while (it.hasNext() && start < headerContent.length) {
@@ -146,21 +132,25 @@ else
 			<jsp:include page="<%=fragment.getReadFragment()%>" flush="true"/>
 			<%  
 		}		
-	}
-	if (!hasSOAPHeaders) {
+		if (!hasSOAPHeaders) {
+			%>
+			<table width="95%" border=0 cellpadding=6 cellspacing=0>
+		      <tr>
+		        <td height=20 valign="bottom" align="left" class="labels">
+		          <%=wsdlPerspective.getMessage("FORM_LABEL_CANNOT_DISPLAY_HEADER_IN_FORM_VIEW")%>
+		        </td>
+		      </tr>
+		    </table>
+			<%
+		}
 		%>
-		<table width="95%" border=0 cellpadding=6 cellspacing=0>
-	      <tr>
-	        <td height=20 valign="bottom" align="left" class="labels">
-	          <%=wsdlPerspective.getMessage("FORM_LABEL_NOTHING_TO_DISPLAY_IN_FORM_VIEW")%>
-	        </td>
-	      </tr>
-	    </table>
-		<%
+		</div>
+		<%   
 	}
-	%>	
-	</div>	
-	
+		
+	String bodyDivId = "Body";
+	String bodyImgId = "xBody";	  		
+	%>			
 	<table border=0 cellpadding=6 cellspacing=0>
 	  <tr>
 	    <td height=20 valign="bottom" align="left" nowrap width=11><a href="javascript:twist('<%=bodyDivId%>','<%=bodyImgId%>')"><img name="<%=bodyImgId%>" src="<%=response.encodeURL(controller.getPathWithContext("images/twistopened.gif"))%>" alt="<%=controller.getMessage("ALT_TWIST_OPENED")%>" class="twist"></a></td>
@@ -208,12 +198,24 @@ else
 	    }
 	    operElement.setPropertyAsObject(WSDLActionInputs.SOAP_RESPONSE_CACHED, new Boolean(true));
 	}
-	if (!hasSOAPBody) {
+	
+	if (soapMessage.getFault() == null && (bodyContent == null || bodyContent.length == 0)) {
 		%>
 		<table width="95%" border=0 cellpadding=6 cellspacing=0>
 	      <tr>
 	        <td height=20 valign="bottom" align="left" class="labels">
-	          <%=wsdlPerspective.getMessage("FORM_LABEL_NOTHING_TO_DISPLAY_IN_FORM_VIEW")%>
+	          <%=wsdlPerspective.getMessage("FORM_LABEL_BODY_IS_EMPTY")%>
+	        </td>
+	      </tr>
+	    </table>
+		<%
+    }
+	else if (!hasSOAPBody) {
+		%>
+		<table width="95%" border=0 cellpadding=6 cellspacing=0>
+	      <tr>
+	        <td height=20 valign="bottom" align="left" class="labels">
+	          <%=wsdlPerspective.getMessage("FORM_LABEL_CANNOT_DISPLAY_BODY_IN_FORM_VIEW")%>
 	        </td>
 	      </tr>
 	    </table>
