@@ -13,6 +13,7 @@
  * 										the Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin.messages;
 
@@ -47,7 +48,6 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static String DIR_WEBCONTENT;
 	public static String DIR_TEMPWAR;
 	public static String DIR_EXPLOADED_TEMPWAR;
-	public static String DIR_DIST;
 	public static String DIR_DOT_METADATA;
 	public static String DIR_WEB_INF;
 	public static String DIR_LIB;
@@ -65,7 +65,6 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static String WEBAPP_EXPLODED_SERVER_LOCATION_FILE;
 	public static String SERVER_STATUS_LOCATION_FILE;
 	public static String WAR_STATUS_LOCATION_FILE;
-	public static String LABEL_WEBAPP_LOCATION;
 	public static String NULL;
 	public static String ADB;
 	public static String AAR;
@@ -73,8 +72,9 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static String PROPERTY_KEY_STATUS;
 	public static String LOCAL_SERVER_PORT;
 	public static String SERVICES;
+	public static String AXIS2_RUNTIME_LOCATION;
+	public static String AXIS2_RUNTIME_PREFERENCES;
 
-	public static String SERVER_STATUS;
 	public static String SERVER_STATUS_PASS;
 	public static String SERVER_STATUS_FAIL;
 

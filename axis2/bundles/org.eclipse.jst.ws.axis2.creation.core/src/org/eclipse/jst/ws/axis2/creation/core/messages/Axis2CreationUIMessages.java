@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.messages;
 
@@ -33,11 +34,9 @@ public class Axis2CreationUIMessages extends NLS {
 	public static String LABEL_AXIS2_PREFERENCE_PAGE_SUB_HEADING;
 	public static String LABEL_BROWSE;
 	public static String LABEL_DATA_MODEL;
-	public static String LABEL_EDIT_SERVICES_XML;
 	public static String LABEL_JAVA_2_WSDL_PAGE_HEADING;
 	public static String LABEL_JAVA_2_WSDL_PAGE_SUB_HEADING;
 	public static String LABEL_SERVICE_NAME_CAPTION;
-	public static String LABEL_GENERATE_SERVICEXML_CAPTION;
 	public static String LABEL_GENERATE_TESTCASE_CAPTION;
 	public static String LABEL_DATABINDING_CAPTION;
 	public static String LABEL_PORTNAME;
@@ -50,22 +49,17 @@ public class Axis2CreationUIMessages extends NLS {
 	
 	//files
 	public static String FILE_SERVICES_XML;
-	public static String FILE_AAR;
 	public static String FILE_XML;
 	//folders
 	public static String DIR_BUILD;
 	public static String DIR_SRC;
 	public static String DIR_CLASSES;
 	public static String DIR_RESOURCES;
-	public static String DIR_AAR;
 	public static String DIR_META_INF;
 	public static String DIR_WEB_INF;
 	public static String DIR_SERVICES;
 	public static String DIR_WEBSERVICES;
 	public static String DIR_WEBCONTENT;
-	public static String DIR_WORKSPACE;
-	public static String DIR_AXIS2;
-	public static String DIR_PLUGINS;
 	public static String DIR_DOT_METADATA;
 	public static String DIR_DOT_PLUGINS;
 	//error
@@ -76,7 +70,6 @@ public class Axis2CreationUIMessages extends NLS {
 	public static String ERROR_CODEGEN_EXCEPTION;
 	//other
 	public static String JAR_TASK;
-	public static String AXIS2_RUNTIME;
 	public static String AXIS2_PROJECT;
 	public static String CODEGEN_RESULTS;
 	public static String DATA_BINDING_ADB;

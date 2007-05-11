@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -70,7 +71,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		
 		//-----------------------------Axis2 Rintume Location Group------------------------------//
 		Group runtimeGroup = new Group(axis2PreferenceTab, SWT.NONE);
-		runtimeGroup.setText("Axis2 Rintume Location");
+		runtimeGroup.setText(Axis2CoreUIMessages.AXIS2_RUNTIME_LOCATION);
 		runtimeInstalLocationItem.setControl(runtimeGroup);
 		runtimeGroup.setToolTipText(Axis2CoreUIMessages.AXIS2_RUNTIME_TOOLTIP);
 		
@@ -158,7 +159,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		//--------------------------------Axis2 Runtime Preferences------------------------------//
 		
 		Group codegenGroup = new Group(axis2PreferenceTab, SWT.NONE);
-		codegenGroup.setText("Axis2 Runtime Preferences");
+		codegenGroup.setText(Axis2CoreUIMessages.AXIS2_RUNTIME_PREFERENCES);
 		codegenPreferencesItem.setControl(codegenGroup);
 		codegenGroup.setToolTipText(Axis2CoreUIMessages.AXIS2_PREFERENCES_TOOLTIP);
 		
