@@ -112,7 +112,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.wsdl4j"
+         id="javax.wsdl"
          download-size="0"
          install-size="0"
          version="1.4.0.qualifier"/>
