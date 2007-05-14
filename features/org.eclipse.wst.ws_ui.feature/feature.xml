@@ -29,6 +29,10 @@
          id="org.eclipse.wst.ws_core.feature"
          version="0.0.0"/>
 
+   <requires>
+      <import feature="org.eclipse.gef" version="3.3.0" match="compatible"/>
+   </requires>
+
    <plugin
          id="org.eclipse.wst.ws.infopop"
          download-size="0"
