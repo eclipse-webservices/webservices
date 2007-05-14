@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes 
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -26,6 +27,7 @@ import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -48,15 +50,14 @@ public class Axis2WebservicesServerCommand extends AbstractDataModelOperation {
 		IEnvironment environment = getEnvironment();
 		IStatusHandler statusHandler = environment.getStatusHandler();	
 
-		String workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot().
-													getLocation().toOSString();
-		String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(
-														workspaceDirectory, 
-														model.getWebProjectName()); 
+		 String currentDynamicWebProjectDir = J2EEUtils.getWebContentPath(
+				 				ResourcesPlugin.getWorkspace().getRoot().getProject(
+				 				model.getWebProjectName())
+						).toOSString();
 
-		//TODO The Web content directory can be different. cater that also
-		String webContainerDirString = FileUtils.addAnotherNodeToPath(currentDynamicWebProjectDir,
-															Axis2CreationUIMessages.DIR_WEBCONTENT);
+		String webContainerDirString = FileUtils.addAnotherNodeToPath(
+				ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString(),
+				currentDynamicWebProjectDir);
 
 		ContentCopyUtils contentCopyUtils = new ContentCopyUtils();
 		

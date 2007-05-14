@@ -12,6 +12,7 @@
  * 20070222  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -20,6 +21,7 @@ import java.io.File;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 
 public class FacetContainerUtils {
 
@@ -29,15 +31,14 @@ public class FacetContainerUtils {
 												   .getLocation().toOSString();
 		String projectString = replaceEscapecharactors(project.toString());
 
-		String currentDynamicWebProjectDir = Axis2CoreUtils.addAnotherNodeToPath(
-															workspaceDirectory, 
-															getProjectNameFromFramewokNameString(projectString)
-															); 
+		String currentDynamicWebProjectDir = J2EEUtils.getWebContentPath(
+				ResourcesPlugin.getWorkspace().getRoot().getProject(
+						getProjectNameFromFramewokNameString(projectString)
+						)).toOSString();
 
-		//TODO The Web content directory can be different. cater that also
 		String webContainerDirString = Axis2CoreUtils.addAnotherNodeToPath(
-														currentDynamicWebProjectDir,
-														Axis2CoreUIMessages.DIR_WEBCONTENT);
+				workspaceDirectory,
+				currentDynamicWebProjectDir);
 		
 		return webContainerDirString;
 	}
@@ -45,13 +46,20 @@ public class FacetContainerUtils {
 	
 	public static String pathToWebProjectContainerLib(String project){
 
+		String workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot()
+		   								.getLocation().toOSString();
+		
+		String webContainerWEBINF = J2EEUtils.getWebInfPath(
+						ResourcesPlugin.getWorkspace().getRoot().getProject(
+						getProjectNameFromFramewokNameString(project))).toOSString();
+		
 		String webContainerWEBINFString = Axis2CoreUtils.addAnotherNodeToPath(
-															pathToWebProjectContainer(project),
-															Axis2CoreUIMessages.DIR_WEB_INF);
-
+															workspaceDirectory,
+															webContainerWEBINF);
 		return  Axis2CoreUtils.addAnotherNodeToPath(
-								webContainerWEBINFString,
-								Axis2CoreUIMessages.DIR_LIB);
+				webContainerWEBINFString,
+				Axis2CoreUIMessages.DIR_LIB);
+		
 	}
 	
 	

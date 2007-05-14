@@ -14,6 +14,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
+ * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin.messages;
 
@@ -45,11 +46,9 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static String LABEL_SYNC;
 	public static String LABEL_ASYNC;
 	
-	public static String DIR_WEBCONTENT;
 	public static String DIR_TEMPWAR;
 	public static String DIR_EXPLOADED_TEMPWAR;
 	public static String DIR_DOT_METADATA;
-	public static String DIR_WEB_INF;
 	public static String DIR_LIB;
 	public static String DIR_DOT_PLUGINS;
 	public static String DIR_UNZIP;
