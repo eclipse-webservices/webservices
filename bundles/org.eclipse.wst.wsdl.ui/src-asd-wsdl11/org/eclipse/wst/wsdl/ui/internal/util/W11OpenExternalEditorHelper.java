@@ -14,30 +14,23 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
-import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11ParameterForPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
-import org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor;
-import org.eclipse.wst.xsd.ui.internal.editor.XSDFileEditorInput;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
+import org.eclipse.wst.xsd.ui.internal.dialogs.IOpenInNewEditor;
+import org.eclipse.wst.xsd.ui.internal.dialogs.XSDGraphViewerDialog;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 
-public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
+public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper, IOpenInNewEditor {
 	private Object object;
 	private IFile wsdlFile;
 	
@@ -56,11 +49,28 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 			Object openOnModel = getModelToOpenOn(notifier);
 			
 			if (openOnModel instanceof XSDConcreteComponent) {
-				openXSDEditor((XSDConcreteComponent) openOnModel);
+			  XSDConcreteComponent xsdComponent = (XSDConcreteComponent) openOnModel;
+			  XSDSchema schema = getSchema(xsdComponent);
+			  if (schema.eResource() instanceof WSDLResourceImpl)
+			  {
+			    String fileName = schema.eResource().getURI().lastSegment();
+			    if (fileName == null) fileName = "WSDL"; //$NON-NLS-1$
+			    String editorName = Messages._UI_LABEL_INLINE_SCHEMA_OF + fileName;
+			    XSDGraphViewerDialog.openNonXSDResourceSchema(xsdComponent, schema, editorName);
+			  }
+			  else
+			  {
+				  XSDGraphViewerDialog.openXSDEditor(xsdComponent);
+			  }
 			}
 		}
 	}
 	
+  public void openXSDEditor()
+  {
+    openExternalEditor();  
+  }
+
 	protected XSDSchema getSchema(XSDConcreteComponent xsdComponent) {
 		XSDSchema schema = xsdComponent.getSchema();
 		if (schema == null) {
@@ -72,69 +82,7 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 		
 		return schema;
 	}
-	
-	protected void openXSDEditor(XSDConcreteComponent xsdComponent) {
-		XSDSchema schema = getSchema(xsdComponent);
-		if (schema != null) {
-			String schemaLocation = URIHelper.removePlatformResourceProtocol(schema.getSchemaLocation());
-			IPath schemaPath = new Path(schemaLocation);
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(schemaPath);
-			if (file != null && file.exists()) {
-				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-				if (workbenchWindow != null) {
-					IWorkbenchPage page = workbenchWindow.getActivePage();
-					try {
-            
-            IEditorPart editorPart = null;
-            if (isInlineSchema(file)) {
-              XSDFileEditorInput editorInput = new XSDFileEditorInput(file, schema);
-					
-							editorInput.setEditorName(Messages._UI_LABEL_INLINE_SCHEMA_OF + file.getName()); //$NON-NLS-1$
-							IEditorReference [] refs = page.getEditorReferences();
-							int length = refs.length;
-							for (int i = 0; i < length; i++)
-							{
-								IEditorInput input = refs[i].getEditorInput();
-								if (input instanceof XSDFileEditorInput)
-								{
-									IFile aFile = ((XSDFileEditorInput)input).getFile();
-									if (aFile.getFullPath().equals(file.getFullPath()))
-									{
-										if (((XSDFileEditorInput)input).getSchema() == schema)
-										{
-											editorPart = refs[i].getEditor(true);
-											page.activate(refs[i].getPart(true));
-											break;
-										}
-									}
-								}
-							}
-							
-							if (editorPart == null)
-							{
-								editorPart = page.openEditor(editorInput, "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true, 0); //$NON-NLS-1$
-							}
-						}
-						else {
-              // Should open in default editor
-              editorPart = IDE.openEditor(page, file, true);
-              // editorPart = page.openEditor(new FileEditorInput(file), "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor", true); //$NON-NLS-1$
-						}
-						
-						if (editorPart instanceof InternalXSDMultiPageEditor)
-						{
-							InternalXSDMultiPageEditor xsdEditor = (InternalXSDMultiPageEditor)editorPart;
-							xsdEditor.openOnGlobalReference(xsdComponent);
-						}						
-					}
-					catch (PartInitException pie) {
-//						Logger.log(Logger.WARNING_DEBUG, pie.getMessage(), pie);
-					}
-				}
-			}
-		}	        
-	}
-	
+		
 	public boolean linkApplicable() {
 		boolean applicable = true;
 		
@@ -201,26 +149,24 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper {
 	}
 	
 	public void showPreview() {
-		W11ParameterForPart param = (W11ParameterForPart) object;
-		Object xsdModel = null;
-		String title = null;
-		String info = null;
-		if (param.isType()) {
-			XSDTypeDefinition type = ((Part)param.getTarget()).getTypeDefinition();
-			xsdModel = type;
-			title = type.getName();
-			info = type.getTargetNamespace(); 
-		}
-		else {
-			XSDElementDeclaration elem = ((Part)param.getTarget()).getElementDeclaration();
-			xsdModel = elem;
-			title = elem.getName();
-			info = elem.getTargetNamespace(); 
-		}
-		XSDGraphViewerDialog dialog = new XSDGraphViewerDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title, info, xsdModel);
-		dialog.setOpenExternalEditor(this);
-		dialog.create();
-		dialog.open();
-		dialog.getShell().setFocus();
+    Object xsdModel = null;
+    String title = "";
+    String info = "";
+
+    Object notifier = ((WSDLBaseAdapter) object).getTarget();
+    xsdModel = getModelToOpenOn(notifier);
+    if (xsdModel instanceof XSDNamedComponent)
+    {
+      XSDNamedComponent namedComponent = (XSDNamedComponent) xsdModel;
+      title = namedComponent.getName();
+      info = namedComponent.getTargetNamespace();
+    }
+    
+    if (isValid() && xsdModel != null)
+    {
+  		XSDGraphViewerDialog dialog = new XSDGraphViewerDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title, info, xsdModel, "org.eclipse.wst.wsdl.ui.preview");
+  		dialog.setOpenExternalEditor(this);
+      dialog.open();
+    }
 	}
 }
