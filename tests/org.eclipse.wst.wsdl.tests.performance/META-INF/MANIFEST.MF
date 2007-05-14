@@ -8,7 +8,7 @@ Bundle-Activator: org.eclipse.wst.wsdl.tests.performance.PerformancePlugin
 Bundle-Localization: plugin
 Export-Package: org.eclipse.wst.wsdl.tests.performance,
  org.eclipse.wst.wsdl.tests.performance.scalability
-Require-Bundle: org.junit,
+Require-Bundle: org.junit;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.emf.ecore,
@@ -20,7 +20,7 @@ Require-Bundle: org.junit,
  org.eclipse.wst.wsdl,
  org.eclipse.wst.wsdl.ui,
  org.eclipse.wst.wsdl.validation,
- org.wsdl4j,
+ javax.wsdl;bundle-version="[1.4.0,1.5.0)",
  org.eclipse.wst.ws,
  org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.core,
