@@ -22,6 +22,9 @@
             category="org.eclipse.jst.ws.ui.new"
             class="org.eclipse.wst.command.internal.env.ui.widgets.DynamicWizard"
             id="org.eclipse.jst.ws.internal.uddiregistry.widgets.binding.PrivateUDDIWidgetBinding">
+            <description>
+            %PRIVATE_UDDI_REGISTRY_DESC
+         </description>
       </wizard>
    </extension>
    <extension
