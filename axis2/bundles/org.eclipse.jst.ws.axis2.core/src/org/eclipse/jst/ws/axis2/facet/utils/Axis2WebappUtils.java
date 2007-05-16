@@ -14,16 +14,17 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   185686 sandakith@wso2.com - Lahiru Sandakith
+ * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
@@ -50,12 +51,17 @@ public class Axis2WebappUtils {
 					FileUtils.deleteDirectories(tempWarLocationFile);
 				}
 				tempWarLocationFile.mkdirs();
-				Properties properties = new Properties();
-				properties.load(new FileInputStream(Axis2CoreUtils.tempAxis2WebappFileLocation()));
-				if (properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_PATH)){
-					String axis2HomeLocation = (ServerModel.getAxis2ServerPath()!=null)
-									?ServerModel.getAxis2ServerPath()
-									:properties.getProperty(Axis2CoreUIMessages.PROPERTY_KEY_PATH);
+		
+				String axis2HomeLocation = null;
+				if(ServerModel.getAxis2ServerPath()!=null){
+					axis2HomeLocation = ServerModel.getAxis2ServerPath();
+				}else{
+				    Axis2EmitterContext context = WebServiceAxis2CorePlugin
+													.getDefault().getAxisEmitterContext();
+				    axis2HomeLocation =  context.getAxis2RuntimeLocation();
+
+				}
+
 					String axis2WebappLocation = Axis2CoreUtils.addAnotherNodeToPath(
 							axis2HomeLocation,
 							"webapp");
@@ -97,10 +103,6 @@ public class Axis2WebappUtils {
 					alreadyWarExist= true;
 				}
 
-			} else {
-				alreadyWarExist = false;
-				//Throws an error message
-			}
 		}	
 		return tempWarLocation;
 	}

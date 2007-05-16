@@ -13,6 +13,7 @@
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -24,13 +25,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.util.Enumeration;
-import java.util.Properties;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
@@ -64,15 +66,18 @@ public class Axis2RuntimeUtils {
 															tempWarLocation,	
 															Axis2CoreUIMessages.FILE_AXIS2_WAR);
 			new File(tempWarFile).createNewFile();
-			Properties properties = new Properties();
-			properties.load(new FileInputStream(Axis2CoreUtils.tempAxis2WebappFileLocation()));
-				if (properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_PATH)){
+			String axis2RuntimrLocation = null;
+			if(ServerModel.getAxis2ServerPath()!=null){
+				axis2RuntimrLocation = ServerModel.getAxis2ServerPath();
+			}else{
+			    Axis2EmitterContext context = WebServiceAxis2CorePlugin
+												.getDefault().getAxisEmitterContext();
+			    axis2RuntimrLocation =  context.getAxis2RuntimeLocation();
+
+			}
 					String axis2WarFile = Axis2CoreUtils.addAnotherNodeToPath(
-													(ServerModel.getAxis2ServerPath()!=null)
-													?ServerModel.getAxis2ServerPath()
-													:properties.getProperty(
-															Axis2CoreUIMessages.PROPERTY_KEY_PATH),
-																Axis2CoreUIMessages.FILE_AXIS2_WAR);
+										axis2RuntimrLocation,
+										Axis2CoreUIMessages.FILE_AXIS2_WAR);
 					FileChannel srcChannel = new FileInputStream(axis2WarFile).getChannel();
 					FileChannel dstChannel = new FileOutputStream(tempWarFile).getChannel();
 					// Copy file contents from source to destination
@@ -92,9 +97,9 @@ public class Axis2RuntimeUtils {
 
 				}
 				
-			} else {
+			//} else {
 				//Throws an error message
-			}
+			//}
 		} catch (FileNotFoundException e) {
 			throw e;	
 		} catch (IOException e) {

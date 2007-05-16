@@ -16,6 +16,7 @@
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
  *										  Text not accessible on AXIS2 wizard pages.
+ * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -24,6 +25,8 @@ import java.io.File;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
@@ -58,6 +61,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 	private boolean webappExist = false;
 	private boolean isWar = false;
 	private String statusBanner = null;
+	Axis2EmitterContext context;
 	
 
 	  
@@ -85,10 +89,11 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		axis2Path = new Text( runtimeGroup, SWT.BORDER );
 		String serverPath = null;
 		if (ServerModel.getAxis2ServerPath()==null||ServerModel.getAxis2ServerPath().equals("")){
-			serverPath = (RuntimePropertyUtils.getServerPathFromPropertiesFile() == null) ? "" 
-					: RuntimePropertyUtils.getServerPathFromPropertiesFile();
-			axis2Path.setText(serverPath);
-			ServerModel.setAxis2ServerPath( serverPath );
+		    Axis2EmitterContext context = WebServiceAxis2CorePlugin
+		    								.getDefault().getAxisEmitterContext();
+		    	serverPath = context.getAxis2RuntimeLocation();
+		    	axis2Path.setText(serverPath);
+		    	ServerModel.setAxis2ServerPath( serverPath );
 		}else{
 			axis2Path.setText(ServerModel.getAxis2ServerPath());
 			serverPath = ServerModel.getAxis2ServerPath();
@@ -106,6 +111,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 			public void modifyText(ModifyEvent e){
 				ServerModel.setAxis2ServerPath( axis2Path.getText() );
 				webappExist =runtimeExist(axis2Path.getText());
+				storeValues();
 				status = RuntimePropertyUtils.writeServerPathToPropertiesFile(
 						axis2Path.getText());
 				if (webappExist) {
@@ -138,7 +144,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		}
 		
 		
-		Text statusLabel = new Text(runtimeGroup,SWT.BACKGROUND | SWT.READ_ONLY | SWT.CENTER | SWT.WRAP);
+		statusLabel = new Text(runtimeGroup,SWT.BACKGROUND | SWT.READ_ONLY | SWT.CENTER);
 		statusLabel.setLocation(20,100);
 		statusLabel.setSize(560,40);
 		
@@ -456,6 +462,13 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 	private void updateWarStatus(boolean status){
 		ServerModel.setAxis2ServerPathRepresentsWar(status);
 		RuntimePropertyUtils.writeWarStausToPropertiesFile(status);
+	}
+	
+	private void storeValues(){
+	    // get the persistent context from the plugin
+	    Axis2EmitterContext context = WebServiceAxis2CorePlugin.getInstance()
+	    													   .getAxisEmitterContext();
+	    context.setAxis2RuntimeLocation( axis2Path.getText() );
 	}
 	
 }

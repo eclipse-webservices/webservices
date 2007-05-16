@@ -12,10 +12,13 @@
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.context.PersistentAxis2EmitterContext;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -27,15 +30,27 @@ public class WebServiceAxis2CorePlugin extends Plugin {
 	public static final String PLUGIN_ID = "org.eclipse.jst.ws.axis2.core";
 
 	// The shared instance
-	private static WebServiceAxis2CorePlugin plugin;
+	private static WebServiceAxis2CorePlugin instance_;
+	
+
+	private PersistentAxis2EmitterContext axis2EmitterContext_;
 	
 	/**
 	 * The constructor
 	 */
 	public WebServiceAxis2CorePlugin() {
-		plugin = this;
+		super();
+		if (instance_ == null) {
+			instance_ = this;
+		}
 	}
 
+	
+	public Axis2EmitterContext getAxisEmitterContext(){
+		if (axis2EmitterContext_ == null) 
+	  		axis2EmitterContext_ = PersistentAxis2EmitterContext.getInstance();
+		return axis2EmitterContext_;
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
@@ -49,7 +64,7 @@ public class WebServiceAxis2CorePlugin extends Plugin {
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
+		instance_ = null;
 		super.stop(context);
 	}
 
@@ -59,7 +74,22 @@ public class WebServiceAxis2CorePlugin extends Plugin {
 	 * @return the shared instance
 	 */
 	public static WebServiceAxis2CorePlugin getDefault() {
-		return plugin;
+		return instance_;
 	}
+	
+	 // This method is needed to keep the logging from blowing up.
+	  public String toString()
+	  {
+	    return PLUGIN_ID;  
+	  }
+	  
+		/**
+		* Returns the singleton instance of this plugin. Equivalent to calling
+		* (WebServiceWasConsumptionPlugin)Platform.getPlugin("org.eclipse.jst.ws.was.v5.tp");
+		* @return The WebServiceAxisConsumptionCorePlugin singleton.
+		*/
+		static public WebServiceAxis2CorePlugin getInstance() {
+			return instance_;
+		}
 
 }
