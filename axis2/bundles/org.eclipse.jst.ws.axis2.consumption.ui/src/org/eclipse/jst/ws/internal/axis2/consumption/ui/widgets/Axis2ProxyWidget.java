@@ -12,6 +12,8 @@
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
+ *										  Text not accessible on AXIS2 wizard pages.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.widgets;
 
@@ -171,9 +173,9 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		//Client type label 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 3;
-		fillLabel2 = new Label(mainComp, SWT.HORIZONTAL | SWT.NULL);
-		fillLabel2.setText(Axis2ConsumptionUIMessages.LABEL_CLIENT_SIDE);
-		fillLabel2.setLayoutData(gd);
+		Text clientlabel = new Text(mainComp,SWT.BACKGROUND | SWT.READ_ONLY);
+		clientlabel.setText(Axis2ConsumptionUIMessages.LABEL_CLIENT_SIDE);
+		clientlabel.setLayoutData(gd);
 		
 		//client side buttons
 		gd = new GridData(GridData.FILL_HORIZONTAL);

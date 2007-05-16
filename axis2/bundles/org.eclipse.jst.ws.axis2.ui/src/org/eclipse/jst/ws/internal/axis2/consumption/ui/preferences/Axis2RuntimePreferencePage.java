@@ -14,6 +14,8 @@
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
+ * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
+ *										  Text not accessible on AXIS2 wizard pages.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -50,7 +52,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 
 	private Button browseButton; 
 	private Text axis2Path; 
-	private Label statusLabel;
+	private Text statusLabel;
 	@SuppressWarnings("unused")
 	private IStatus status = Status.OK_STATUS;
 	private boolean webappExist = false;
@@ -136,10 +138,9 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		}
 		
 		
-		statusLabel = new Label( runtimeGroup, SWT.NONE );
+		Text statusLabel = new Text(runtimeGroup,SWT.BACKGROUND | SWT.READ_ONLY | SWT.CENTER | SWT.WRAP);
 		statusLabel.setLocation(20,100);
 		statusLabel.setSize(560,40);
-		statusLabel.setAlignment(SWT.CENTER);
 		
 		if (axis2Path.getText().equals("")) {
 			statusBanner = Axis2CoreUIMessages.LABEL_AXIS2_RUNTIME_NOT_EXIT;
@@ -164,10 +165,10 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		codegenGroup.setToolTipText(Axis2CoreUIMessages.AXIS2_PREFERENCES_TOOLTIP);
 		
 		//Service Codegen Options
-		Label serviceCodegenLabel = new Label( codegenGroup, SWT.NONE );
+		Text serviceCodegenLabel = new Text(codegenGroup,SWT.BACKGROUND | SWT.READ_ONLY);
 		serviceCodegenLabel.setText( Axis2CoreUIMessages.LABEL_WEB_SERVICE_CODEGEN);
 		serviceCodegenLabel.setLocation(10,30);
-		serviceCodegenLabel.setSize(200,20);
+		serviceCodegenLabel.setSize(220,20);
 		
 		//Data binding
 		Label databindingLabel = new Label( codegenGroup, SWT.NONE );
@@ -242,10 +243,10 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		seperatorLabel0.setSize(570,1);
 		
 		///Client Codegen Options
-		Label clientCodegenLabel = new Label( codegenGroup, SWT.NONE );
+		Text clientCodegenLabel = new Text(codegenGroup,SWT.BACKGROUND | SWT.READ_ONLY);
 		clientCodegenLabel.setText( Axis2CoreUIMessages.LABEL_WEB_SERVICE_CLIENT_CODEGEN);
 		clientCodegenLabel.setLocation(10,200);
-		clientCodegenLabel.setSize(200,20);
+		clientCodegenLabel.setSize(220,20);
 		
 		//Client type label 
 		Label clientLabel = new Label(codegenGroup, SWT.HORIZONTAL | SWT.NULL);
@@ -355,10 +356,10 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
 		seperatorLabel1.setSize(570,1);
 		
 		///AAR Options
-		Label aarLabel = new Label( codegenGroup, SWT.NONE );
+		Text aarLabel = new Text(codegenGroup,SWT.BACKGROUND | SWT.READ_ONLY);
 		aarLabel.setText( Axis2CoreUIMessages.LABEL_WEB_SERVICE_AAR);
 		aarLabel.setLocation(10,380);
-		aarLabel.setSize(200,20);
+		aarLabel.setSize(220,20);
 		
 		//aar extention 
 		Label aarExtentionLabel = new Label( codegenGroup, SWT.NONE );

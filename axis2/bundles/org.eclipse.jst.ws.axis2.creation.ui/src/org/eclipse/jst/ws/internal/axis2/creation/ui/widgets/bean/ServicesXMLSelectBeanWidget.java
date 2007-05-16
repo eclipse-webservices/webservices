@@ -11,6 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
+ *										  Text not accessible on AXIS2 wizard pages.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.bean;
 
@@ -55,13 +57,15 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 		GridLayout layout   = new GridLayout();
 		layout.numColumns = 14;
 		GridData   griddata = new GridData( GridData.FILL_HORIZONTAL );
-		Label      label    = new Label( mainComp, SWT.NONE );
 
 		griddata = new GridData( GridData.FILL_HORIZONTAL );
 		griddata.horizontalSpan = 14;
 		mainComp.setLayout( layout );
 		mainComp.setLayoutData( griddata );
+		
+		Text label = new Text(mainComp,SWT.BACKGROUND | SWT.READ_ONLY);
 		label.setText( Axis2CreationUIMessages.LABEL_AXIS2_PREFERENCE_PAGE );
+		
 		model.setGenerateServicesXML(true);
 		model.setServicesXML(false);
 
