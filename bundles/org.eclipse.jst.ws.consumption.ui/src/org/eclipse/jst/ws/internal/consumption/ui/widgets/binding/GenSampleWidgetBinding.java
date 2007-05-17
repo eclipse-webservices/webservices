@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  * 20060717   146332 makandre@ca.ibm.com - Andrew Mak
+ * 20070516   186233 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -255,6 +256,11 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       return true;
     }
     
+    public boolean getCanGenerateProxy()
+    {
+      return true;
+    }
+    
 	public void setClientTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
 	{
       typeRuntimeServer_ = typeRuntimeServer;  
@@ -365,15 +371,15 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  
       // Map InitializeProxyCommand command.
       dataRegistry.addMapping(InitializeProxyCommand.class, "WebServiceClient", ClientExtensionOutputCommand.class);      
-      dataRegistry.addMapping(InitializeProxyCommand.class, "GenerateProxy", ClientExtensionOutputCommand.class);
+      dataRegistry.addMapping(InitializeProxyCommand.class, "GenerateProxy", ClientExtensionDefaultingCommand.class);
       
       // Map ClientExtensionOutputCommand command.
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", WebServiceClientTestArrivalCommand.class);      
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class);      
-	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", TestDefaultingFragment.class);
-	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestFragment.class);
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", FinishTestFragment.class);
-      dataRegistry.addMapping(ClientExtensionOutputCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", TestDefaultingFragment.class);
+	  dataRegistry.addMapping(InitializeProxyCommand.class, "CanGenerateProxy", ClientTestFragment.class);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", FinishTestFragment.class);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "RunTestClient", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ServerInstanceId", FinishDefaultCommand.class);
 	  
