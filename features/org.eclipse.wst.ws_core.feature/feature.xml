@@ -21,6 +21,11 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates/"/>
    </url>
 
+   <requires>
+      <import feature="org.eclipse.emf.ecore" version="2.3.0" match="compatible"/>
+      <import feature="org.eclipse.emf.common" version="2.3.0" match="compatible"/>
+   </requires>
+
    <plugin
          id="org.eclipse.wst.ws"
          download-size="0"
@@ -55,19 +60,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-	<!-- 
-	
-	  The following are not built by us, but come from Orbit project.
-	 
-		The Orbit URL map file is added to our maps, and the referenced
-		plugins picked up automatically via the packaging tasks 
-		
-		Therefore (just a url map rule) the desired bundles to be picked 
-		have to specify a specific version to use. (There can be more than 
-		one).  
-		
-		-->
 
    <plugin
          id="javax.mail"
