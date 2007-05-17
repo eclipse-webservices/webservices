@@ -15,6 +15,7 @@
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
+ * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin.messages;
 
@@ -23,7 +24,28 @@ import org.eclipse.osgi.util.NLS;
 public final class Axis2CoreUIMessages extends NLS {
 
 	private static final String BUNDLE_NAME = 
-			"org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUI";//$NON-NLS-1$
+			"org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUI";		//$NON-NLS-1$
+	public static final String DIR_TEMPWAR="tempwar";							//$NON-NLS-1$
+	public static final String DIR_EXPLOADED_TEMPWAR="exploadedwar";			//$NON-NLS-1$
+	public static final String DIR_LIB="lib";									//$NON-NLS-1$
+	public static final String FILE_AXIS2_WAR="axis2.war";						//$NON-NLS-1$
+	public static final String  NULL="";										//$NON-NLS-1$
+	public static final String ADB="adb";										//$NON-NLS-1$
+	public static final String AAR="aar";										//$NON-NLS-1$
+	public static final String TEMP_AXIS2_FACET_DIR="org.apache.axis2.facet";	//$NON-NLS-1$
+	public static final String DIR_DOT_METADATA=".metadata";					//$NON-NLS-1$
+	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$
+	public static final String DIR_UNZIP="nzip";								//$NON-NLS-1$
+	public static final String LOCAL_SERVER_PORT="http://localhost:8080";		//$NON-NLS-1$
+	public static final String SERVICES="services";								//$NON-NLS-1$
+	public static final String WEBAPP_EXPLODED_SERVER_LOCATION_FILE=
+			"server.properties";												//$NON-NLS-1$
+	public static final String SERVER_STATUS_LOCATION_FILE="status.properties";	//$NON-NLS-1$
+	public static final String WAR_STATUS_LOCATION_FILE="war.properties";		//$NON-NLS-1$
+	public static final String PROPERTY_KEY_PATH="path";						//$NON-NLS-1$
+	public static final String PROPERTY_KEY_STATUS="status";					//$NON-NLS-1$
+	public static final String SERVER_STATUS_PASS="pass";						//$NON-NLS-1$
+	public static final String SERVER_STATUS_FAIL="fail";						//$NON-NLS-1$
 
 	private Axis2CoreUIMessages() {
 		// Do not instantiate
@@ -46,42 +68,18 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static String LABEL_SYNC;
 	public static String LABEL_ASYNC;
 	
-	public static String DIR_TEMPWAR;
-	public static String DIR_EXPLOADED_TEMPWAR;
-	public static String DIR_DOT_METADATA;
-	public static String DIR_LIB;
-	public static String DIR_DOT_PLUGINS;
-	public static String DIR_UNZIP;
-
-	public static String FILE_AXIS2_WAR;
-	
 	public static String AXIS2_LOCATION;
 	public static String AXIS2_RUNTIME;
 	public static String AXIS2_PREFERENCES;
 	public static String AXIS2_RUNTIME_TOOLTIP;
 	public static String AXIS2_PREFERENCES_TOOLTIP;
-	public static String TEMP_AXIS2_FACET_DIR;
-	public static String WEBAPP_EXPLODED_SERVER_LOCATION_FILE;
-	public static String SERVER_STATUS_LOCATION_FILE;
-	public static String WAR_STATUS_LOCATION_FILE;
-	public static String NULL;
-	public static String ADB;
-	public static String AAR;
-	public static String PROPERTY_KEY_PATH;
-	public static String PROPERTY_KEY_STATUS;
-	public static String LOCAL_SERVER_PORT;
-	public static String SERVICES;
 	public static String AXIS2_RUNTIME_LOCATION;
 	public static String AXIS2_RUNTIME_PREFERENCES;
-
-	public static String SERVER_STATUS_PASS;
-	public static String SERVER_STATUS_FAIL;
 
 	public static String ERROR_INVALID_AXIS2_SERVER_LOCATION;
 	public static String ERROR_INVALID_FILE_READ_WRITEL;
 	public static String ERROR_SERVER_IS_NOT_SET;
 
-	
 	public static String PROGRESS_INSTALL_AXIS2_RUNTIME;
 	public static String PROGRESS_UNINSTALL_AXIS2_RUNTIME;
 	

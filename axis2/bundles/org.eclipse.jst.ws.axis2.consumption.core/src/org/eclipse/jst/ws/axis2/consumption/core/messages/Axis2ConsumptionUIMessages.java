@@ -12,6 +12,7 @@
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
+ * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.messages;
 
@@ -21,7 +22,13 @@ public final class Axis2ConsumptionUIMessages extends NLS {
 
 	private static final String BUNDLE_NAME = 
 		"org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUI";//$NON-NLS-1$
-
+	public static final String DATA_BINDING_ADB="ADB";							//$NON-NLS-1$
+	public static final String DATA_BINDING_NONE="NONE";						//$NON-NLS-1$
+	public static final String DIR_DOT_METADATA=".metadata";					//$NON-NLS-1$
+	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$
+	public static final String AXIS2_PROJECT="org.eclipse.jst.ws.axis2";		//$NON-NLS-1$
+	public static final String CODEGEN_RESULTS="codegen";						//$NON-NLS-1$
+	
 	private Axis2ConsumptionUIMessages() {
 		// Do not instantiate
 	}
@@ -43,18 +50,9 @@ public final class Axis2ConsumptionUIMessages extends NLS {
 	public static String PAGE_TITLE_WS_AXIS2_PROXY;
 	public static String PAGE_DESC_WS_AXIS2_PROXY;
 	
-	public static String DIR_DOT_METADATA;
-	public static String DIR_DOT_PLUGINS;
-	
 	public static String ERROR_INVALID_FILE_READ_WRITEL;
 	public static String ERROR_INVALID_WSDL_FILE_READ_WRITEL;
 	public static String ERROR_CODEGEN_EXCEPTION;
-	
-	public static String AXIS2_PROJECT;
-	public static String CODEGEN_RESULTS;
-	
-	public static String DATA_BINDING_ADB;
-	public static String DATA_BINDING_NONE;
 	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, Axis2ConsumptionUIMessages.class);

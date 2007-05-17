@@ -12,6 +12,7 @@
  * 20070213  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.messages;
 
@@ -26,8 +27,6 @@ public final class Axis2FacetUIMessages extends NLS {
 		// Do not instantiate
 	}
 
-	public static String WEB_INF_LIB;
-	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, Axis2FacetUIMessages.class);
 	}
