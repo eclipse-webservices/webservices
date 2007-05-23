@@ -14,6 +14,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
+ * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -33,7 +34,6 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
-import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
@@ -46,9 +46,11 @@ public class Axis2RuntimeUtils {
 	protected static byte[] b;
 	static SortedSet createdDirs;
 	static String outputPath;
+	static Axis2EmitterContext context;
 
 	public static String  copyAxis2War(IProgressMonitor monitor, String Axis2Home)
 							throws FileNotFoundException, IOException{
+		context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
 		String tempWarFile = null;
 		String tempWarLocation = null;
 		String  tempUnzipLocation = null;
@@ -67,8 +69,8 @@ public class Axis2RuntimeUtils {
 															Axis2CoreUIMessages.FILE_AXIS2_WAR);
 			new File(tempWarFile).createNewFile();
 			String axis2RuntimrLocation = null;
-			if(ServerModel.getAxis2ServerPath()!=null){
-				axis2RuntimrLocation = ServerModel.getAxis2ServerPath();
+			if(context.getAxis2RuntimeLocation()!=null){
+				axis2RuntimrLocation = context.getAxis2RuntimeLocation();
 			}else{
 			    Axis2EmitterContext context = WebServiceAxis2CorePlugin
 												.getDefault().getAxisEmitterContext();

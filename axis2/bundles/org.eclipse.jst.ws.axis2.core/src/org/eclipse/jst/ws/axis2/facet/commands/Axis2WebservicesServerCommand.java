@@ -13,6 +13,7 @@
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
@@ -25,7 +26,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
@@ -40,7 +42,10 @@ public class Axis2WebservicesServerCommand extends
 AbstractDataModelOperation {
 
 	String project;
+	Axis2EmitterContext context;
+	
 	public Axis2WebservicesServerCommand(String project){
+		context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
 		this.project = project;
 	}
 
@@ -55,7 +60,7 @@ AbstractDataModelOperation {
 		String runtimeLocation = null;
 		ContentCopyUtils contentCopyUtils = new ContentCopyUtils();
 		try {
-			if(ServerModel.isAxis2ServerPathRepresentsWar() 
+			if(context.isAxis2ServerPathRepresentsWar() 
 					|| RuntimePropertyUtils.getWarStatusFromPropertiesFile()){
 				runtimeLocation = Axis2RuntimeUtils.copyAxis2War(
 														monitor,
@@ -81,7 +86,7 @@ AbstractDataModelOperation {
 		status = Status.OK_STATUS;
 		//clean up tempory files
 		File tempFacetDirectory = new File(runtimeLocation);
-		if (tempFacetDirectory.exists() && ServerModel.isAxis2ServerPathRepresentsWar()) {
+		if (tempFacetDirectory.exists() && context.isAxis2ServerPathRepresentsWar()) {
 			FileUtils.deleteDir(tempFacetDirectory);
 		}
 		return status;

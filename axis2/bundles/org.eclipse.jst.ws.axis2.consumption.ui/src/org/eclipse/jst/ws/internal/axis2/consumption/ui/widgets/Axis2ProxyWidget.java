@@ -14,6 +14,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
  *										  Text not accessible on AXIS2 wizard pages.
+ * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.widgets;
 
@@ -25,7 +26,8 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
@@ -85,11 +87,12 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 	
 	private WSDLPropertyReader reader;
 	private List serviceQNameList = null;
+	Axis2EmitterContext context;
 
 
 	public WidgetDataEvents addControls( Composite parent, Listener statusListener )
 	{
-		
+		context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
 		Composite  mainComp = new Composite( parent, SWT.NONE );
 		GridLayout layout   = new GridLayout();
 		mainComp.setLayout(layout);
@@ -185,9 +188,9 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		syncAndAsyncRadioButton.setText(Axis2ConsumptionUIMessages.LABEL_SYNC_AND_ASYNC);
 		syncAndAsyncRadioButton.setVisible(true);
 		syncAndAsyncRadioButton.setSelection(
-				((ServerModel.isAsync() || ServerModel.isSync())==false)
+				((context.isAsync() || context.isSync())==false)
 				?true
-				:(ServerModel.isAsync() && ServerModel.isSync()));
+				:(context.isAsync() && context.isSync()));
 		syncAndAsyncRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				//Because default setting in axis2 to be both false in thie case
@@ -205,7 +208,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		syncOnlyRadioButton = new Button(mainComp, SWT.RADIO);
 		syncOnlyRadioButton.setLayoutData(gd);
 		syncOnlyRadioButton.setText(Axis2ConsumptionUIMessages.LABEL_SYNC);
-		syncOnlyRadioButton.setSelection(ServerModel.isSync() && !ServerModel.isAsync());
+		syncOnlyRadioButton.setSelection(context.isSync() && !context.isAsync());
 		syncOnlyRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				model.setSync(syncOnlyRadioButton.getSelection());
@@ -221,7 +224,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		asyncOnlyRadioButton.setLayoutData(gd);
 		asyncOnlyRadioButton
 				.setText(Axis2ConsumptionUIMessages.LABEL_ASYNC);
-		asyncOnlyRadioButton.setSelection(ServerModel.isAsync() && !ServerModel.isSync());
+		asyncOnlyRadioButton.setSelection(context.isAsync() && !context.isSync());
 		asyncOnlyRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				model.setASync(asyncOnlyRadioButton.getSelection());
@@ -232,8 +235,8 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		});
 		
 		//Set the sync async to default 
-		model.setSync(ServerModel.isSync());
-		model.setASync(ServerModel.isAsync());
+		model.setSync(context.isSync());
+		model.setASync(context.isAsync());
 		
 		//filling label 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -247,8 +250,8 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		testCaseCheckBoxButton = new Button(mainComp, SWT.CHECK);
 		testCaseCheckBoxButton.setLayoutData(gd);
 		testCaseCheckBoxButton.setText(Axis2ConsumptionUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
-		testCaseCheckBoxButton.setSelection(ServerModel.isClientTestcase());
-		model.setTestCaseCheck(ServerModel.isClientTestcase());
+		testCaseCheckBoxButton.setSelection(context.isClientTestCase());
+		model.setTestCaseCheck(context.isClientTestCase());
 		testCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				model.setTestCaseCheck(testCaseCheckBoxButton.getSelection());
@@ -263,7 +266,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 3;
 		generateAllCheckBoxButton.setLayoutData(gd);
-		generateAllCheckBoxButton.setSelection(ServerModel.isClientGenerateAll());
+		generateAllCheckBoxButton.setSelection(context.isClientGenerateAll());
 		generateAllCheckBoxButton.setText(Axis2ConsumptionUIMessages.LABEL_GENERATE_ALL);
 		generateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {

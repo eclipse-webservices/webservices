@@ -15,6 +15,7 @@
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   185686 sandakith@wso2.com - Lahiru Sandakith
  * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
+ * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -25,7 +26,6 @@ import java.io.IOException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
-import org.eclipse.jst.ws.axis2.core.plugin.data.ServerModel;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
@@ -34,9 +34,11 @@ public class Axis2WebappUtils {
 
 	private static String tempWarLocation = null;
 	private static boolean alreadyWarExist = false;
+	private static Axis2EmitterContext context;
 
 	public static String  copyAxis2War(IProgressMonitor monitor, String Axis2Home)
 										throws FileNotFoundException, IOException{
+		context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
 		if(!alreadyWarExist){
 			File tempAxis2Directory = new File (Axis2CoreUtils.tempAxis2Directory());
 			if(!tempAxis2Directory.exists()){
@@ -53,8 +55,8 @@ public class Axis2WebappUtils {
 				tempWarLocationFile.mkdirs();
 		
 				String axis2HomeLocation = null;
-				if(ServerModel.getAxis2ServerPath()!=null){
-					axis2HomeLocation = ServerModel.getAxis2ServerPath();
+				if(context.getAxis2RuntimeLocation()!=null){
+					axis2HomeLocation = context.getAxis2RuntimeLocation();
 				}else{
 				    Axis2EmitterContext context = WebServiceAxis2CorePlugin
 													.getDefault().getAxisEmitterContext();
