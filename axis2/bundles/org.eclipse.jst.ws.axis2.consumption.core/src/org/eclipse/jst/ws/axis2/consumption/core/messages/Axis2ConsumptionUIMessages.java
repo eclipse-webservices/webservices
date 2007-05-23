@@ -13,6 +13,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith
+ * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.messages;
 
@@ -28,6 +29,8 @@ public final class Axis2ConsumptionUIMessages extends NLS {
 	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$
 	public static final String AXIS2_PROJECT="org.eclipse.jst.ws.axis2";		//$NON-NLS-1$
 	public static final String CODEGEN_RESULTS="codegen";						//$NON-NLS-1$
+	public static final String JUNIT_JAR="junit.jar";							//$NON-NLS-1$
+	public static final String JUNIT_BUNDLE="org.junit";						//$NON-NLS-1$
 	
 	private Axis2ConsumptionUIMessages() {
 		// Do not instantiate
@@ -53,6 +56,7 @@ public final class Axis2ConsumptionUIMessages extends NLS {
 	public static String ERROR_INVALID_FILE_READ_WRITEL;
 	public static String ERROR_INVALID_WSDL_FILE_READ_WRITEL;
 	public static String ERROR_CODEGEN_EXCEPTION;
+	public static String ERROR_JUNIT_JAR_NOT_FOUND;
 	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, Axis2ConsumptionUIMessages.class);

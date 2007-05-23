@@ -16,6 +16,7 @@
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
+ * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin.messages;
 
@@ -28,6 +29,7 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static final String DIR_TEMPWAR="tempwar";							//$NON-NLS-1$
 	public static final String DIR_EXPLOADED_TEMPWAR="exploadedwar";			//$NON-NLS-1$
 	public static final String DIR_LIB="lib";									//$NON-NLS-1$
+	public static final String DIR_TEST="test";									//$NON-NLS-1$
 	public static final String FILE_AXIS2_WAR="axis2.war";						//$NON-NLS-1$
 	public static final String  NULL="";										//$NON-NLS-1$
 	public static final String ADB="adb";										//$NON-NLS-1$

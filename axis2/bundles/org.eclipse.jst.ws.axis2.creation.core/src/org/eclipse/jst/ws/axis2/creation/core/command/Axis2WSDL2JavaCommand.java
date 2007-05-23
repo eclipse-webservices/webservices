@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
+ * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -77,7 +78,7 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
             false,	//sync always false
             true,   //is serverside true
             model.isServerXMLCheck(),
-            model.isTestCaseCheck(),
+            false,  //No test case with out stub
             model.isGenerateAllCheck(),
             (model.getServiceName()!=null)?model.getServiceName():null,
             (model.getPortName()!=null)?model.getPortName():null,

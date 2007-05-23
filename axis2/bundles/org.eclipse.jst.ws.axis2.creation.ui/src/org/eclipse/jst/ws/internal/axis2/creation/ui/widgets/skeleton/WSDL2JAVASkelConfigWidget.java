@@ -12,6 +12,7 @@
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton;
 
@@ -62,7 +63,6 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 	//check box for server side interface
 	private Button generateServerSideInterfaceCheckBoxButton;
 	private Button generateAllCheckBoxButton;
-	private Button testCaseCheckBoxButton;
 	private Combo databindingTypeCombo;
 	// Text box to have the portname
 	private Combo portNameCombo;
@@ -174,24 +174,6 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 3;
 		fillLabel4 = new Label(mainComp, SWT.HORIZONTAL | SWT.NULL);
-
-		// generate test case option
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		testCaseCheckBoxButton = new Button(mainComp, SWT.CHECK);
-		testCaseCheckBoxButton.setLayoutData(gd);
-		testCaseCheckBoxButton
-		.setText(Axis2CreationUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
-		testCaseCheckBoxButton.setSelection(ServerModel.isServiceTestcase());
-		model.setTestCaseCheck(ServerModel.isServiceTestcase());
-		testCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				model.setTestCaseCheck(testCaseCheckBoxButton.getSelection());
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-		});
 
 		model.setServerXMLCheck(true);
 
@@ -333,7 +315,6 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		model.setGenerateAllCheck(generateAllCheckBoxButton.getSelection());
 		model.setGenerateServerSideInterface(
 				generateServerSideInterfaceCheckBoxButton.getSelection());
-		model.setTestCaseCheck(testCaseCheckBoxButton.getSelection());
 		model.setNamespaseToPackageMapping(getNs2PkgMapping());
 	}
 

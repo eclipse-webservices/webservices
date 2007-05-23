@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.data;
 
@@ -30,7 +31,6 @@ public class DataModel extends Model{
 	private boolean generateServerSideInterface;
     private boolean serverXMLCheck;
 	private boolean generateAllCheck;
-	private boolean testCaseCheck;
 	private String databindingType;
 	private String namespaseToPackageMapping;
 
@@ -129,14 +129,6 @@ public class DataModel extends Model{
 
 	public void setServiceName(String serviceName) {
 		super.setServiceName(serviceName);
-	}
-
-	public boolean isTestCaseCheck() {
-		return testCaseCheck;
-	}
-
-	public void setTestCaseCheck(boolean testCaseCheck) {
-		this.testCaseCheck = testCaseCheck;
 	}
 
 	public String getPackageText() {

@@ -11,13 +11,16 @@
  * -------- -------- -----------------------------------------------------------
  * 20070230   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.wsrt;
 
 import java.util.Vector;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2ClientCodegenCommand;
 import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2ClientDefaultingCommand;
+import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2ClientTestCaseIntegrateCommand;
 import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2WebservicesServerCommand;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
 import org.eclipse.jst.ws.internal.axis2.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
@@ -58,6 +61,8 @@ public class Axis2WebServiceClient extends AbstractWebServiceClient {
 		commands.add(new Axis2ClientDefaultingCommand(model,this));
 		commands.add(new Axis2WebservicesServerCommand(model, project));
 		commands.add(new Axis2ClientCodegenCommand(model));
+		commands.add(new Axis2ClientTestCaseIntegrateCommand(
+				ResourcesPlugin.getWorkspace().getRoot().getProject(project),model));
 		
 		return new SimpleCommandFactory(commands);
 	}
