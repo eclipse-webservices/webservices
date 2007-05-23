@@ -1,28 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2007 IBM Corporation. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IBM Corporation - initial API and implementation
+ * IBM Corporation. - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner
- * 20060206 126408   rsinha@ca.ibm.com - Rupam Kuehner
- * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060227   124392 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060315   131963 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060418   129688 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060427   126780 kathy@ca.ibm.com - Kathy Chan
- * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
- * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
- * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
- * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
- * 20070326   159458 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -510,7 +497,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           fProject = ProjectFacetsManager.create(project);
           if (fProject != null)
           {
-            fRuntime = fProject.getRuntime();
+        	  fRuntime = fProject.getPrimaryRuntime();
           }
         } catch (CoreException ce)
         {
@@ -655,7 +642,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
 	        fProject = ProjectFacetsManager.create(project);
 	        if (fProject != null)
 	        {
-	          fRuntime = fProject.getRuntime();
+	        	fRuntime = fProject.getPrimaryRuntime();
 	        }
 	      } catch (CoreException ce)
 	      {

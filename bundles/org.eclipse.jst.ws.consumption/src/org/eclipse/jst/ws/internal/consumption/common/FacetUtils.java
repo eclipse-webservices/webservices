@@ -1,29 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2007 IBM Corporation. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IBM Corporation - initial API and implementation
+ * IBM Corporation. - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
- * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060419   137548 kathy@ca.ibm.com - Kathy Chan
- * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
- * 20060523   133714 joan@ca.ibm.com - Joan Haggarty
- * 20060920   158061 kathy@ca.ibm.com - Kathy Chan, Do not add module to EAR when adding J2EE facets to project
- * 20070124   162326 kathy@ca.ibm.com - Kathy Chan
- * 20070505   184772 kathy@ca.ibm.com - Kathy Chan
+ * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -190,7 +183,7 @@ public class FacetUtils
         IFacetedProject fproject = ProjectFacetsManager.create(project);
         if (fproject != null)
         {
-          return fproject.getRuntime();
+          return fproject.getPrimaryRuntime();
         }
       } catch (CoreException ce)
       {
@@ -1011,7 +1004,7 @@ public class FacetUtils
       {
         try
         {
-          fProject.setRuntime(fRuntime, shellMonitor);
+        	fProject.setTargetedRuntimes(Collections.singleton(fRuntime), shellMonitor);
         } catch (CoreException e)
         {
           status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
@@ -1037,7 +1030,7 @@ public class FacetUtils
     {
     	try
         {
-          fProject.setRuntime(fRuntime, null); //jvh - happens here...
+    		fProject.setTargetedRuntimes(Collections.singleton(fRuntime), null); //jvh - happens here...
         } catch (CoreException e)
         {
           status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
