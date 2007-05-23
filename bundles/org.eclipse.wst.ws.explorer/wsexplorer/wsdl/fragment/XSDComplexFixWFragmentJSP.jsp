@@ -1,13 +1,16 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2002, 2004 IBM Corporation and others.
+ * Copyright (c) 2002, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070516   185596 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer misinterprets response message
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -89,17 +92,18 @@ String twistImageName = (new StringBuffer("x")).append(tableContainerID).toStrin
     </td>
   </tr>
   <%
-  }
  
   IXSDAttributeFragment[] attributeFragments = frag.getAllAttributeFragments();
   IXSDAttributeFragment attributeFragment;
   for(int j = 0; j < attributeFragments.length; j++){
     attributeFragment = attributeFragments[j];
-    IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
-    fragID.delete(0, fragID.length());
-    fragID.append(delegationFragment.getID());
-    attribute.delete(0, attribute.length());
-    attribute.append("true");
+    
+    if(attributeFragment.getID().startsWith(childFragID)){
+      IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
+      fragID.delete(0, fragID.length());
+      fragID.append(delegationFragment.getID());
+      attribute.delete(0, attribute.length());
+      attribute.append("true");
       %>
       <tr>
         <td width=16>
@@ -108,13 +112,12 @@ String twistImageName = (new StringBuffer("x")).append(tableContainerID).toStrin
         <td>
           <input type="hidden" name="<%=frag.getID()%>" value="<%=attributeFragment.getID()%>">
           <jsp:include page="<%=delegationFragment.getWriteFragment()%>" flush="true"/>
-      </td>
-     </tr>
-    
-    <%
-  
-  
-  }
+        </td>
+      </tr>
+      <%
+    }  
+  }  
+}
   %>
 </table>
 </span>

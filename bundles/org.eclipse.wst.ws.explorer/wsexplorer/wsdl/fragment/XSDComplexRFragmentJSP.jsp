@@ -7,7 +7,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070516   185596 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer misinterprets response message
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -56,16 +59,18 @@ for (int i = 0; i < childFrags.length; i++) {
       </td>
     </tr>
   <%
-}
+
   IXSDAttributeFragment[] attributeFragments = frag.getAllAttributeFragments();
   IXSDAttributeFragment attributeFragment;
   for(int j = 0; j < attributeFragments.length; j++){
     attributeFragment = attributeFragments[j];
-    IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
-    fragID.delete(0, fragID.length());
-    fragID.append(delegationFragment.getID());
-    attribute.delete(0, attribute.length());
-    attribute.append("true");
+    
+    if (attributeFragment.getID().startsWith(childFrags[i].getID())) {
+      IXSDFragment delegationFragment = attributeFragment.getXSDDelegationFragment();
+      fragID.delete(0, fragID.length());
+      fragID.append(delegationFragment.getID());
+      attribute.delete(0, attribute.length());
+      attribute.append("true");
       %>
       <tr>
         <td width=16>
@@ -74,12 +79,12 @@ for (int i = 0; i < childFrags.length; i++) {
         <td>
           <input type="hidden" name="<%=frag.getID()%>" value="<%=attributeFragment.getID()%>">
           <jsp:include page="<%=delegationFragment.getReadFragment()%>" flush="true"/>
-      </td>
-     </tr>
-    <%
-  
-  
+        </td>
+      </tr>
+      <%
+    }  
   }
+}  
   %>
   
   </table>

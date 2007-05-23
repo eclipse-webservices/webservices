@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
+ * 20070516   185596 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer misinterprets response message
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
 
@@ -65,14 +66,19 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
   private boolean setParamsForAttributes(Element[] instanceDocuments){
   	boolean paramsValid = true;
   	
+  	String[] fragmentsOrder = getFragmentsOrder();
   	IXSDAttributeFragment[] attributeFragments = getAllAttributeFragments();
   	for (int i = 0; i < instanceDocuments.length; i++){
   	  
-  	  NamedNodeMap nodeMap = instanceDocuments[i].getAttributes();	
+  	  if (i >= fragmentsOrder.length) break;
+  	  String fragmentID = fragmentsOrder[i];
+
   	  for (int k = 0; k < attributeFragments.length; k++){
-    	
-  	  	String name = ((XSDAttributeUse)attributeFragments[k].getXSDToFragmentConfiguration().getXSDComponent()).getAttributeDeclaration().getName();
-  	    paramsValid = attributeFragments[k].getXSDDelegationFragment().setAttributeParamsFromInstanceDocuments(nodeMap.getNamedItem(name));	
+  		if(attributeFragments[k].getID().startsWith(fragmentID)){
+  		  NamedNodeMap nodeMap = instanceDocuments[i].getAttributes();
+  	  	  String name = ((XSDAttributeUse)attributeFragments[k].getXSDToFragmentConfiguration().getXSDComponent()).getAttributeDeclaration().getName();
+  	      paramsValid = attributeFragments[k].getXSDDelegationFragment().setAttributeParamsFromInstanceDocuments(nodeMap.getNamedItem(name));
+  		}
       }
   	}
     return paramsValid;
@@ -135,11 +141,18 @@ public abstract class XSDComplexFragment extends XSDMapFragment implements IXSDC
 
   private Element[] addAttributes(Element[] instanceDocuments){
   	
+	String[] fragmentsOrder = getFragmentsOrder();
+  	IXSDAttributeFragment[] attributeFragments = getAllAttributeFragments();
   	for (int i = 0;i< instanceDocuments.length;i++){
-  	  IXSDAttributeFragment[] attributeFragments = getAllAttributeFragments();
+
+  	  if (i >= fragmentsOrder.length) break;
+   	  String fragmentID = fragmentsOrder[i];
+  		
       for (int k = 0; k < attributeFragments.length; k++){
-    	String name = ((XSDAttributeUse)attributeFragments[k].getXSDToFragmentConfiguration().getXSDComponent()).getAttributeDeclaration().getName();
-    	attributeFragments[k].getXSDDelegationFragment().setAttributesOnInstanceDocuments(instanceDocuments[i],name);	
+    	if(attributeFragments[k].getID().startsWith(fragmentID)){
+    	  String name = ((XSDAttributeUse)attributeFragments[k].getXSDToFragmentConfiguration().getXSDComponent()).getAttributeDeclaration().getName();
+    	  attributeFragments[k].getXSDDelegationFragment().setAttributesOnInstanceDocuments(instanceDocuments[i],name);
+    	}
       }
    	}
    	return instanceDocuments;
