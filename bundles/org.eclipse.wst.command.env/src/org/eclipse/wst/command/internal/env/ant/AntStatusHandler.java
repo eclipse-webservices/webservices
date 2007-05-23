@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070522   176943 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ant;
 
@@ -23,6 +24,7 @@ public class AntStatusHandler extends BaseStatusHandler
 
 	public Choice report(IStatus status, Choice[] choices) {
 		// TODO 
+	  checkStatus(status);
 		return null;
 	}
 
@@ -35,10 +37,12 @@ public class AntStatusHandler extends BaseStatusHandler
 	}
 
 	public void reportError(IStatus status) {
+	  checkStatus(status);
 		System.err.println(status.getMessage());
 	}
 
-	public void reportInfo(IStatus status) {		
+	public void reportInfo(IStatus status) {	
+	  checkStatus(status);
 		System.out.println(status.getMessage());		
 	}
 

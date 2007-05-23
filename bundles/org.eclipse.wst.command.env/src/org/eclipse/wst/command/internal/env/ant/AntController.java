@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060726   151614 pmoogk@ca.ibm.com - Peter Moogk
  * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
+ * 20070522   176943 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.wst.command.internal.env.ant;
@@ -28,6 +29,7 @@ import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
+import org.eclipse.wst.command.internal.env.eclipse.BaseStatusHandler;
 
 /**
  * 
@@ -38,10 +40,11 @@ import org.eclipse.wst.command.internal.env.core.fragment.FragmentListener;
  *
  */
 
-public class AntController {
-	
-	
+public class AntController 
+{	
    private AntOperationManager operationManager_;
+   private String              errorMessage_ = null;
+   private AntEnvironment      environment_;
 	
    public AntController(Hashtable properties)
    {
@@ -50,35 +53,47 @@ public class AntController {
 	   // --code to access extension point mappings for operations to retrieve data from property table
 	   TransientResourceContext  resourceContext = (TransientResourceContext)PersistentResourceContext.getInstance().copy();
 	   AntStatusHandler          handler         = new AntStatusHandler();
-	   AntEnvironment            environment     = new AntEnvironment(this, resourceContext, handler, properties);
+     
+	   environment_ = new AntEnvironment(this, resourceContext, handler, properties);
        
 	   // construct data manager for maintaining state across operations
-	   DataFlowManager dataManager = new DataFlowManager( new DataMappingRegistryImpl(), environment);
+	   DataFlowManager dataManager = new DataFlowManager( new DataMappingRegistryImpl(), environment_ );
        
 	   //  set up operation fragments - conditional on options by user... service or client
 	   //  also need to initialize the "selection" or input file (WSDL, Java) here
 	   
-	   CommandFragment rootFragment =  environment.getRootCommandFragment();
+	   CommandFragment rootFragment =  environment_.getRootCommandFragment();
 	   
 	   if (rootFragment != null)
 	   {		   
 	       //construct the engine - manages execution of operations
-		   createOperationManager(rootFragment, dataManager, environment);
+		   createOperationManager( rootFragment, dataManager, environment_ );
 		   
 		   DataMappingRegistryImpl    dataRegistry_   = new DataMappingRegistryImpl();
 		   rootFragment.registerDataMappings(dataRegistry_);		   
 	   }
 	   else  //problem getting the root fragment - scenario type is likely missing
 	   {
-		   handler.reportError(new Status(IStatus.ERROR, "ws_ant", 9999, EnvironmentMessages.MSG_ERROR_ANT_SCENARIO_TYPE, null));
+       errorMessage_ = EnvironmentMessages.MSG_ERROR_ANT_SCENARIO_TYPE;
+		   handler.reportError(new Status(IStatus.ERROR, "ws_ant", 9999, errorMessage_, null));
 		   return;
 	   }
 	      
 	   //ready to start running operations
- 	   ((AntOperationManager)getOperationManager()).moveForwardToNextStop(new NullProgressMonitor());
+ 	   operationManager_.moveForwardToNextStop(new NullProgressMonitor());
 
- 	   if (!operationManager_.getLastStatus().isOK()) 		   
+     IStatus lastStatus = operationManager_.getLastStatus();
+     
+ 	   if ( !lastStatus.isOK() ) 
+     {
+       errorMessage_ = lastStatus.getMessage();
  		   operationManager_.undoToLastStop();
+     }
+   }
+   
+   public String getErrorMessage()
+   {
+     return errorMessage_;  
    }
    
    private void createOperationManager(CommandFragment frag, DataFlowManager mgr, AntEnvironment env)
@@ -111,6 +126,15 @@ public class AntController {
 				          return undoFragment( fragment );
 				        }
 				      } );
+       
+       operationManager_.setAfterExecuteFragmentListener(
+            new FragmentListener()
+            {
+              public boolean notify( CommandFragment fragment )
+              {
+                return afterExecuteNextFragment( fragment );
+              }
+            } );
    }
 	
 	protected CommandManager getOperationManager()
@@ -156,9 +180,37 @@ public class AntController {
 	  {  	  	
 	    return true;
 	  }
-	   
-
-	
-	
-   
-   }
+    
+    protected boolean afterExecuteNextFragment( CommandFragment fragment )
+    {
+      boolean           continueExecute = true;
+      BaseStatusHandler statusHandler   = (BaseStatusHandler)environment_.getStatusHandler();
+      IStatus           commandStatus   = operationManager_.getLastStatus();
+      IStatus           handlerStatus   = statusHandler.getStatus();
+      
+      if( commandStatus.getSeverity() == IStatus.ERROR &&
+          handlerStatus.getSeverity() != IStatus.ERROR )
+      {
+        // The command returned an error status for the engine to stop,
+        // but the status handler did not have report and error.
+        // Therefore, we will report this status returned by the command
+        // if there is a message to display.  
+        String errorMessage = commandStatus.getMessage();
+        
+        if( errorMessage != null && errorMessage.length() > 0 )
+        {
+          statusHandler.reportError( commandStatus );
+        }
+      }
+      else if( commandStatus.getSeverity() != IStatus.ERROR &&
+               handlerStatus.getSeverity() == IStatus.ERROR )
+      {
+        // The last command didn't return an error, but the status handler
+        // did report and error.  Therefore, we should stop.
+        errorMessage_ = handlerStatus.getMessage();
+        continueExecute = false;   
+      }
+      
+      return continueExecute;
+    }
+}
