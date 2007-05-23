@@ -1,14 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070522   184006 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.preferences;
+
+import java.util.HashSet;
 
 /**
  * This class is used to define preference ids. It corresponds to information
@@ -27,6 +32,7 @@ package org.eclipse.wst.command.internal.env.preferences;
  *           category="org.eclipse.jst.wss.popup.category"
  *           tooltip="%TOOLTIP_PPAD_CHECKBOX_WSDL2PROXY"
  *           infopop="org.eclipse.jst.ws.consumption.ui.PPAD0004"
+ *           objectids="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard.file"
  *           alwayshide="false"
  *           id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard"&gt;
  *     &lt;/actionDialogPreferenceType&gt;
@@ -38,7 +44,7 @@ package org.eclipse.wst.command.internal.env.preferences;
  *      <objectContribution
  *           objectClass="org.eclipse.core.resources.IFile"
  *           nameFilter="*.wsdl"
- *           id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard">
+ *           id="org.eclipse.jst.ws.consumption.ui.wizard.client.clientwizard.file">
  * <!-- WSDL To Java Bean Proxy -->
  *        <action
  *              label="%ACTION_GENERATE_JAVA_PROXY"
@@ -63,7 +69,18 @@ public class ActionDialogPreferenceType
   private boolean showCheckbox_;
   private boolean alwaysHide_;
   private String  category_;
+  private HashSet objectIds_ = new HashSet();
 
+  public HashSet getObjectIds()
+  {
+    return objectIds_;
+  }
+  
+  public void addObjectId( String id )
+  {
+    objectIds_.add( id );  
+  }
+  
   /**
    * Sets the id for this popup action.  This id link the actionDialogPreference
    * with an ObjectContribution.

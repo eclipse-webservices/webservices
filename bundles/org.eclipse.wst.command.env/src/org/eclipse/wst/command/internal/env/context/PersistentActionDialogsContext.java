@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070522   184006 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.context;
 
@@ -57,6 +60,19 @@ public class PersistentActionDialogsContext extends PersistentContext
     setValue(id, value);
   }
 
+  // This method is usually called from the popup wizard with the Id
+  // of the ObjectContribution defining the popup.
+  public void setObjectActionDialogEnabled( String id, boolean value )
+  {
+    // Need to first find the dialog object that references the popup.
+    ActionDialogPreferenceType dialog = registry.getActionDialogsPrefrence( id );
+    
+    if( dialog != null )
+    {
+      setActionDialogEnabled( dialog.getId(), value );
+    }
+  }
+  
   public boolean isActionDialogEnabled(String id)
   {
     if (id == null) return true;
@@ -80,7 +96,7 @@ public class PersistentActionDialogsContext extends PersistentContext
     return dialog == null ||
            ( ( dialog.getShowCheckbox() && 
                !dialog.getAlwaysHide() && 
-               !isActionDialogEnabled( id ) ) ||
+               !isActionDialogEnabled( dialog.getId()) ) ||
              ( !dialog.getShowCheckbox() && 
                !dialog.getAlwaysHide() ) );
   }

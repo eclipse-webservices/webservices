@@ -84,6 +84,7 @@
             tooltip="%TOOLTIP_PPAD_CHECKBOX_DEPLOY"
             infopop="org.eclipse.jst.ws.creation.ui.PPAD0006"
             category="org.eclipse.jst.wss.popup.category"
+            objectids="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.ejb org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.file org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.compunit org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.service.bean org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.bean.link"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
       </actionDialogPreferenceType>
 
@@ -92,6 +93,7 @@
             tooltip="%TOOLTIP_PPAD_CHECKBOX_SKELETON"
             infopop="org.eclipse.jst.ws.creation.ui.PPAD0008"
             category="org.eclipse.jst.wss.popup.category"
+            objectids="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.file.wsdl org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.service org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.wsdlres org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.serviceref org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.file.wsil"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
       </actionDialogPreferenceType>
 
@@ -100,6 +102,7 @@
             tooltip="%TOOLTIP_PPAD_CHECKBOX_PUBLISH"
             infopop="org.eclipse.jst.ws.creation.ui.PPAD0009"
             category="org.eclipse.jst.wss.popup.category"
+            objectids="org.eclipse.jst.ws.creation.ui.wizard.publish.file org.eclipse.jst.ws.creation.ui.wizard.publish.service org.eclipse.jst.ws.creation.ui.wizard.publish.wsdlres org.eclipse.jst.ws.creation.ui.wizard.publish.serviceref"
             id="org.eclipse.jst.ws.creation.ui.wizard.publish">
       </actionDialogPreferenceType>
 
@@ -113,7 +116,7 @@
       <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.java"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.file">
          <action
                label="%ACTION_DEPLOY_WEBSERVICE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -125,7 +128,7 @@
       <objectContribution
             objectClass="org.eclipse.jdt.internal.core.CompilationUnit"
             nameFilter="*.java"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.compunit">
          <action
                label="%ACTION_DEPLOY_WEBSERVICE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -137,7 +140,7 @@
       <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.wsdl"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.file.wsdl">
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -149,7 +152,7 @@
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.service">
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -161,7 +164,7 @@
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.util.WSDLResourceImpl"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.wsdlres">
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -173,7 +176,7 @@
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.serviceref">
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -185,7 +188,7 @@
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsdd.ServiceImplBean"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.service.bean">
          <action
                label="%ACTION_DEPLOY_WEBSERVICE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -197,7 +200,7 @@
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsdd.BeanLink"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.bean.link">
          <action
                label="%ACTION_DEPLOY_WEBSERVICE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -209,7 +212,7 @@
       <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.wsil"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.file.wsil">
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -221,7 +224,7 @@
       <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.wsdl"
-            id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+            id="org.eclipse.jst.ws.creation.ui.wizard.publish.file">
          <action
                label="%ACTION_PUBLISH_WSDL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -233,7 +236,7 @@
        <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+            id="org.eclipse.jst.ws.creation.ui.wizard.publish.service">
          <action
                label="%ACTION_PUBLISH_WSDL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -245,7 +248,7 @@
        <objectContribution
             objectClass="org.eclipse.wst.wsdl.util.WSDLResourceImpl"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+            id="org.eclipse.jst.ws.creation.ui.wizard.publish.wsdlres">
          <action
                label="%ACTION_PUBLISH_WSDL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -257,7 +260,7 @@
        <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.publish">
+            id="org.eclipse.jst.ws.creation.ui.wizard.publish.serviceref">
          <action
                label="%ACTION_PUBLISH_WSDL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
