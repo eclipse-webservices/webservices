@@ -27,3 +27,4 @@ Export-Package: org.eclipse.wst.wsdl.validation.internal.resolver;x-internal:=tr
  org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd;x-internal:=true,
  org.eclipse.wst.wsdl.validation.internal.xml;x-internal:=true,
  org.eclipse.wst.wsdl.validation.tests.internal;x-internal:=true
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
