@@ -2,5 +2,27 @@
 <?eclipse version="3.0"?>
 
 <plugin>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="org.eclipse.wst.ws.test.popup.contribution1">
+         <menu
+               label="Popup test menu"
+               path="additions"
+               id="org.eclipse.wst.ws.test.popup.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Popup test action"
+               class="org.eclipse.wst.ws.test.popup.NewAction"
+               menubarPath="org.eclipse.wst.ws.test.popup.menu1/group1"
+               enablesFor="1"
+               id="org.eclipse.wst.ws.test.popup.newAction">
+         </action>
+      </objectContribution>
+   </extension>
     
 </plugin>

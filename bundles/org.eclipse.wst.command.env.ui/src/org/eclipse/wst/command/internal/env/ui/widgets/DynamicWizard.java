@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20060822   154750 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070529   187780 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -125,7 +126,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
 			                         Object                data )
     throws CoreException
   {
-    String wizardId   = config.getAttribute( "id" );
+    String wizardId   = config.getAttribute( "id" ); //$NON-NLS-1$
     
     setInitialData( wizardId );
     originalElement_ = config;
@@ -143,6 +144,9 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
    *                       is relative to the plugin specified by the 
    *                       descriptor parameter.
    * @param wizardTitle    the wizard title
+   * 
+   * @deprecated Use either setInitialData(wizardId) or
+   *                        setInitialData(wizardId, bundle, iconBannerPath, wizardTitle )
    */
   public void setInitialData( CommandWidgetBinding binding,
                               Bundle               bundle,
@@ -162,17 +166,35 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
    */
   public void setInitialData( String wizardId ) throws CoreException
   {
+    setInitialData(wizardId, null, null, null );
+  }
+  
+  /**
+   * Sets the initial data based on the dynamic wizard id.
+   * 
+   * @param wizardId the ID of the wizard.
+   * @param bundle the bundle used to find an icon banner.  Can be null if
+   * no icon banner is specified.
+   * @param iconBannerPath the path relative to the bundle specified.
+   * @param wizardTitle the title of the wizard.
+   * 
+   * Note: normally the wizard associated with a wizardId will have an
+   * icon banner and a title.  The parameters on this method allow the caller
+   * to override these values.
+   */
+  public void setInitialData( String wizardId, Bundle bundle, String iconBannerPath, String wizardTitle ) throws CoreException
+  {
     IExtensionRegistry    registry      = Platform.getExtensionRegistry();
-    IExtensionPoint       point         = registry.getExtensionPoint("org.eclipse.wst.command.env.dynamicWizard");
+    IExtensionPoint       point         = registry.getExtensionPoint("org.eclipse.wst.command.env.dynamicWizard"); //$NON-NLS-1$
     IExtension[]          extensions    = point.getExtensions();
     
     for( int index = 0; index < extensions.length; index++) 
     {
       IConfigurationElement[] elements = extensions[index].getConfigurationElements();
       
-      if( elements.length == 1 && elements[0].getName().equals( "dynamicWizard") ) 
+      if( elements.length == 1 && elements[0].getName().equals( "dynamicWizard") )  //$NON-NLS-1$
       {
-        String id = elements[0].getAttribute( "id" );
+        String id = elements[0].getAttribute( "id" ); //$NON-NLS-1$
         
         if( id != null && id.equals( wizardId ) )
         {
@@ -181,10 +203,14 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
         }
       }
     }
-        
+       
+    bundle_         = bundle;
+    iconBannerName_ = iconBannerPath;
+    wizardTitle_    = wizardTitle;
+    
     if( wizardElement_ == null )
     {
-      Status status = new Status( Status.ERROR, "id", 0, NLS.bind(EnvironmentUIMessages.MSG_ERROR_WIZARD_ID_NOT_FOUND, new String[]{ wizardId}) , null );
+      Status status = new Status( Status.ERROR, "id", 0, NLS.bind(EnvironmentUIMessages.MSG_ERROR_WIZARD_ID_NOT_FOUND, new String[]{ wizardId}) , null ); //$NON-NLS-1$
       throw new CoreException( status );
     }
   }
@@ -192,6 +218,10 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   /**
    * This method is called by the eclipse framework to initialize the
    * wizard. 
+   * 
+   * Note: if this method is called programatically(ie. not by the eclipse
+   * framework.) one of the setInitalData methods needs to be called before this
+   * method is invoked.
    * 
    * @param workbench the eclipse workbench
    * @param selection the initial selection that the user has made within
@@ -209,10 +239,28 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     
     try
     {
-      commandWidgetBinding_ = (CommandWidgetBinding)wizardElement_.createExecutableExtension( "class" );
-      bundle_               = Platform.getBundle( wizardElement_.getNamespace() );
-      iconBannerName_       = wizardElement_.getAttribute( "iconbanner" );
-      wizardTitle_          = wizardElement_.getAttribute( "title" );
+      if( wizardElement_ != null )
+      {
+        if( commandWidgetBinding_ == null )
+        {
+          commandWidgetBinding_ = (CommandWidgetBinding)wizardElement_.createExecutableExtension( "class" ); //$NON-NLS-1$
+        }
+        
+        if( bundle_ == null )
+        {
+          bundle_ = Platform.getBundle( wizardElement_.getNamespace() );
+        }
+        
+        if( iconBannerName_ == null )
+        {
+          iconBannerName_ = wizardElement_.getAttribute( "iconbanner" ); //$NON-NLS-1$
+        }
+        
+        if( wizardTitle_ == null )
+        {
+          wizardTitle_ = wizardElement_.getAttribute( "title" ); //$NON-NLS-1$
+        }
+      }
     }
     catch( CoreException exc )
     {
@@ -257,7 +305,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
     {
       try
       {
-        URL installURL        = bundle_.getEntry("/");
+        URL installURL        = bundle_.getEntry("/"); //$NON-NLS-1$
         URL imageURL          = new URL(installURL, iconBannerName_ );
         ImageDescriptor image = ImageDescriptor.createFromURL(imageURL);
         
@@ -357,10 +405,10 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
   {
     SequenceFragment root = new SequenceFragment();
     
-    root.add( new SimpleFragment( new SelectionCommand( selection ), "" ) );
-    root.add( new SimpleFragment( new CurrentPageCommand( pageManager ), "" ) );
+    root.add( new SimpleFragment( new SelectionCommand( selection ), "" ) ); //$NON-NLS-1$
+    root.add( new SimpleFragment( new CurrentPageCommand( pageManager ), "" ) ); //$NON-NLS-1$
     root.add( commandWidgetBinding_.create().create() );
-	root.add( new SimpleFragment( dataObjectCommand_, "" ));
+	root.add( new SimpleFragment( dataObjectCommand_, "" )); //$NON-NLS-1$
     
     return root;
   }
