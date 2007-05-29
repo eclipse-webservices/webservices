@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
  *										  Text not accessible on AXIS2 wizard pages.
+ * 20070529   188742 sandakith@wso2.com - Lahiru Sandakith, fix for 188742
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.bean;
 
@@ -70,7 +71,7 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 
 		griddata = new GridData( GridData.FILL_HORIZONTAL );
 		griddata.horizontalSpan = 14;
-		haveServicesXML = new Button( mainComp, SWT.CHECK );
+		haveServicesXML = new Button( mainComp, SWT.RADIO );
 		haveServicesXML.setText(Axis2CreationUIMessages.LABEL_HAVE_SERVICES_XML_FILE);	
 		haveServicesXML.setLayoutData(griddata);
 		haveServicesXML.addSelectionListener( new SelectionAdapter()
@@ -140,7 +141,7 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 
 		griddata = new GridData( GridData.FILL_HORIZONTAL );
 		griddata.horizontalSpan = 14;
-		generateServicesXML = new Button( mainComp, SWT.CHECK );
+		generateServicesXML = new Button( mainComp, SWT.RADIO );
 		generateServicesXML.setText( Axis2CreationUIMessages.LABEL_DEFAULT_SERVICES_XML_FILE );
 		generateServicesXML.setLayoutData(griddata);
 		generateServicesXML.setSelection(true);
