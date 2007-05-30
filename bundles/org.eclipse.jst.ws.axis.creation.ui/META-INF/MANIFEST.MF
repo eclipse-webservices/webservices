@@ -15,8 +15,7 @@ Export-Package: org.eclipse.jst.ws.internal.axis.creation.ui;x-internal:=true,
  org.eclipse.jst.ws.internal.axis.creation.ui.wizard.beans;x-internal:=true,
  org.eclipse.jst.ws.internal.axis.creation.ui.wizard.wsdl;x-internal:=true,
  org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;x-internal:=true
-Require-Bundle: org.w3c.dom;bundle-version="[1.3.3,2.0.0)",
- org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
+Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.2.0,3.4.0)",
  org.eclipse.emf.ecore;bundle-version="[2.2.0,2.4.0)",
@@ -48,3 +47,4 @@ Require-Bundle: org.w3c.dom;bundle-version="[1.3.3,2.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.wst.wsdl;bundle-version="[1.1.0,1.2.0)"
 Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
