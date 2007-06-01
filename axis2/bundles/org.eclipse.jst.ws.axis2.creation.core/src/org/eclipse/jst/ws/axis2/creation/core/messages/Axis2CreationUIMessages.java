@@ -13,6 +13,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
+ * 20070601   190505 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.messages;
 
@@ -53,7 +54,6 @@ public class Axis2CreationUIMessages extends NLS {
 	public static String LABEL_AXIS2_PREFERENCE_PAGE_HEADING;
 	public static String LABEL_AXIS2_PREFERENCE_PAGE_SUB_HEADING;
 	public static String LABEL_BROWSE;
-	public static String LABEL_DATA_MODEL;
 	public static String LABEL_JAVA_2_WSDL_PAGE_HEADING;
 	public static String LABEL_JAVA_2_WSDL_PAGE_SUB_HEADING;
 	public static String LABEL_SERVICE_NAME_CAPTION;

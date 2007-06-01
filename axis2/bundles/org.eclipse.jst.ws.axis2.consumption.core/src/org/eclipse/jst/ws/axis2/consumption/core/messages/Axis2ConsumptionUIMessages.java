@@ -13,7 +13,8 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith
- * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
+ * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
+ * 20070601   190505 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.messages;
 
@@ -48,7 +49,6 @@ public final class Axis2ConsumptionUIMessages extends NLS {
 	public static String LABEL_SYNC_AND_ASYNC;
 	public static String LABEL_SYNC;
 	public static String LABEL_ASYNC;
-	public static String LABEL_DATA_MODEL;
 	
 	public static String PAGE_TITLE_WS_AXIS2_PROXY;
 	public static String PAGE_DESC_WS_AXIS2_PROXY;

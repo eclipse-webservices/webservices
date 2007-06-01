@@ -12,6 +12,7 @@
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070601   190505 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt;
@@ -53,9 +54,9 @@ public class Axis2BeanConfigWidgetFactory implements INamedWidgetContributorFact
 		// The framework will actually to the call to getWebServiceDataModel in
 		// the ExampleDefaultingCommand class and then call the setWebServiceDataModel
 		// method in this class.
-		dataRegistry.addMapping(Axis2DefaultingCommand.class, 
-								Axis2CreationUIMessages.LABEL_DATA_MODEL, 
-								Axis2BeanConfigWidgetFactory.class );
+		dataRegistry.addMapping( Axis2DefaultingCommand.class, 
+		                         "WebServiceDataModel",  //$NON-NLS-1$
+								             Axis2BeanConfigWidgetFactory.class );
 	}
 
 	public void setWebServiceDataModel( DataModel model ){

@@ -12,12 +12,12 @@
  * 20070230   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070601   190505 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.wsrt;
 
 import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2ClientDefaultingCommand;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
-import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.axis2.consumption.ui.widgets.Axis2ProxyWidget;
 import org.eclipse.jst.ws.internal.axis2.consumption.ui.wizard.client.WebServiceClientAxis2Type;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
@@ -56,7 +56,7 @@ public class Axis2ClientConfigWidgetFactory implements INamedWidgetContributorFa
 		// the ExampleDefaultingCommand class and then call the setWebServiceDataModel
 		// method in this class.
 		dataRegistry.addMapping( Axis2ClientDefaultingCommand.class, 
-								 Axis2ConsumptionUIMessages.LABEL_DATA_MODEL, 
+								 "WebServiceDataModel",  //$NON-NLS-1$
 								 Axis2ClientConfigWidgetFactory.class );
 	}
 	
@@ -67,10 +67,10 @@ public class Axis2ClientConfigWidgetFactory implements INamedWidgetContributorFa
 	private void init(){
 		  wsClientAxis2Type = new WebServiceClientAxis2Type(model);
 		  adapter = new WidgetBindingToWidgetFactoryAdapter(wsClientAxis2Type );
-		  proxyConfigWidget = adapter.getWidget( "AxisClientStart" );
+		  proxyConfigWidget = adapter.getWidget( "AxisClientStart" ); //$NON-NLS-1$
 		  proxyWidget       = (Axis2ProxyWidget)proxyConfigWidget
 		  				.getWidgetContributorFactory().create();
-		  mappingsWidget   = adapter.getWidget( "AxisClientBeanMapping" );
+		  mappingsWidget   = adapter.getWidget( "AxisClientBeanMapping" ); //$NON-NLS-1$
 		  adapter.registerDataMappings( dataRegistry );
 
 	}
