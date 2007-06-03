@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.eclipse.wst.wsdl.tests.ui; singleton:=true
 Bundle-Version: 1.0.0.qualifer
 Bundle-ClassPath: wsdl.tests.ui.jar
 Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
-Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime.compatibility,
  org.eclipse.wst.wsdl,
  org.eclipse.wst.wsdl.tests,
