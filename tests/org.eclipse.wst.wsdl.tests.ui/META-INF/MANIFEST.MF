@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WSDL Model UI Samples
 Bundle-SymbolicName: org.eclipse.wst.wsdl.tests.ui; singleton:=true
-Bundle-Version: 1.0.0.qualifer
+Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: wsdl.tests.ui.jar
 Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
 Require-Bundle: org.eclipse.core.runtime.compatibility,
