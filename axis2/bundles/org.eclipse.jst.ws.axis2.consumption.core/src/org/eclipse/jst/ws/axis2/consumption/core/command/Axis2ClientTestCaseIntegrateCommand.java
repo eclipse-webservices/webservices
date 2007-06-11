@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
+ * 20070608        191055 sandakith@wso2.com - Lahiru Sandakith, Duplicate classpath entry fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -48,6 +49,8 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
 
     private DataModel model;
     private IProject project;
+    private boolean testClassPathExists;
+    private boolean junitClassPathExists;
 
     public Axis2ClientTestCaseIntegrateCommand(IProject project_,DataModel model_){
         this.model = model_;
@@ -75,16 +78,39 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
                                 .newSourceEntry(getPathToTestFolder(project,workspaceDirectory)); 
             IClasspathEntry junitClasspathEntry = JavaCore.newLibraryEntry (junitPath,null,null); 
            
-            int classPathLength = classpathEntries.length;
-            IClasspathEntry[] newClasspathEntryArray = new IClasspathEntry[classPathLength+2];
+            //Check test directory already in the classpath entries.
             for (int i = 0; i < classpathEntries.length; i++) {
-                newClasspathEntryArray[i]= classpathEntries[i];
+                if (classpathEntries[i].equals(newClasspathEntry)){
+                	testClassPathExists = true;
+                }
+                if (classpathEntries[i].equals(junitClasspathEntry)){
+                	junitClassPathExists = true;
+                }
             }
-           
-            // add new Class Path Entries of junit.jar and test directory
-            newClasspathEntryArray[classPathLength] = newClasspathEntry;
-            newClasspathEntryArray[classPathLength+1] = junitClasspathEntry;
-           
+            
+            int classPathLength = classpathEntries.length;
+            if(!testClassPathExists){
+            	classPathLength+=1;
+            }
+            if(!junitClassPathExists){
+            	classPathLength+=1;
+            }
+            IClasspathEntry[] newClasspathEntryArray = new IClasspathEntry[classPathLength];
+            
+            for (int i = 0; i < classpathEntries.length; i++) {
+            	 newClasspathEntryArray[i]= classpathEntries[i];
+            }
+            // if not already exist add new Class Path Entries of junit.jar and test directory
+            if(!testClassPathExists && !junitClassPathExists){
+            	newClasspathEntryArray[classPathLength-2] = newClasspathEntry;
+            	newClasspathEntryArray[classPathLength-1] = junitClasspathEntry;
+            }
+            else if(!junitClassPathExists){
+            	newClasspathEntryArray[classPathLength-1] = junitClasspathEntry;
+            }
+            else if(!testClassPathExists){
+            	newClasspathEntryArray[classPathLength-1] = newClasspathEntry;
+            }
             javaProj.setRawClasspath(newClasspathEntryArray,monitor);
            
             } catch (JavaModelException e) {
