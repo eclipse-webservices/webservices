@@ -13,14 +13,17 @@
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
+ * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
 import java.io.File;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
-import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
+import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 
 public class FacetContainerUtils {
@@ -43,26 +46,47 @@ public class FacetContainerUtils {
 		return webContainerDirString;
 	}
 	
+	public static String  pathToWebProjectContainerWEBINF(String project) {
+		IPath workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+		String projectString = replaceEscapecharactors(project.toString());
+		IPath webContainerWEBINF = J2EEUtils.getWebInfPath(
+					ResourcesPlugin.getWorkspace().getRoot().getProject(
+						getProjectNameFromFramewokNameString(projectString)));
+		return workspaceDirectory.append(webContainerWEBINF).toOSString();
+	}
+	
+	public static String  pathToWebProjectContainerMETAINF(String project) {
+		String containerDirectory = pathToWebProjectContainer(project);
+		String webContainerMETAINF = Axis2FacetUIMessages.DIR_META_INF;
+		String webContainerMETAINFString = Axis2CoreUtils.addAnotherNodeToPath(
+												containerDirectory,
+												webContainerMETAINF);
+		return webContainerMETAINFString;
+	}
+	
+	public static String  pathToWebProjectContainerAxis2Web(String project) {
+		String containerDirectory = pathToWebProjectContainer(project);
+		String webContainerAxis2Web = Axis2FacetUIMessages.DIR_AXIS2_WEB;
+		String webContainerAxis2WebString = Axis2CoreUtils.addAnotherNodeToPath(
+				containerDirectory,
+												webContainerAxis2Web);
+		return webContainerAxis2WebString;
+	}
 	
 	public static String pathToWebProjectContainerLib(String project){
-
-		String workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot()
-		   								.getLocation().toOSString();
-		
-		String webContainerWEBINF = J2EEUtils.getWebInfPath(
-						ResourcesPlugin.getWorkspace().getRoot().getProject(
-						getProjectNameFromFramewokNameString(project))).toOSString();
-		
-		String webContainerWEBINFString = Axis2CoreUtils.addAnotherNodeToPath(
-															workspaceDirectory,
-															webContainerWEBINF);
+		String webContainerWEBINFString = pathToWebProjectContainerWEBINF(project);
 		return  Axis2CoreUtils.addAnotherNodeToPath(
 				webContainerWEBINFString,
 				Axis2CoreUIMessages.DIR_LIB);
 		
 	}
 	
-	
+	public static String pathToWebProjectContainerWebXML(String project){
+		String webContainerWEBINFString = pathToWebProjectContainerWEBINF(project);
+		return  Axis2CoreUtils.addAnotherNodeToPath(
+				webContainerWEBINFString,
+				"web.xml");
+	}
 	
 	//Fix for the windows build not working
 	private static String replaceEscapecharactors(String vulnarableString){
@@ -79,7 +103,6 @@ public class FacetContainerUtils {
 		}else{
 			return frameworkProjectString.split(getSplitCharactors())[1];
 		}
-		
 	}
 	
 	
@@ -90,6 +113,16 @@ public class FacetContainerUtils {
 		}else{
 			return File.separator;
 		}
+	}
+	
+	public static String pathToAxis2CoreFacetTempDirectory(String project){
+	//
+		String pluginAxis2CoreTempDir = WebServiceAxis2CorePlugin
+        .getInstance().getStateLocation().toOSString();
+		String projectString = replaceEscapecharactors(project);
+		return FileUtils.addAnotherNodeToPath(pluginAxis2CoreTempDir, projectString);
+		
+		
 	}
 	
 	private static String getSplitCharactors(){
@@ -111,4 +144,6 @@ public class FacetContainerUtils {
 		return FileUtils.addNodesToURL(Axis2CoreUIMessages.LOCAL_SERVER_PORT, 
 										deployedWSDLURLParts)+"?wsdl";
 	}
+	
+	
 }

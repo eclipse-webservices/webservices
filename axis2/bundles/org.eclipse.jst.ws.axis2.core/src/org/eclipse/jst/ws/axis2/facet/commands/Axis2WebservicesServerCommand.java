@@ -14,6 +14,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
+ * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
@@ -22,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -41,10 +43,10 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class Axis2WebservicesServerCommand extends
 AbstractDataModelOperation {
 
-	String project;
+	IProject project;
 	Axis2EmitterContext context;
 	
-	public Axis2WebservicesServerCommand(String project){
+	public Axis2WebservicesServerCommand(IProject project){
 		context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
 		this.project = project;
 	}
@@ -54,8 +56,8 @@ AbstractDataModelOperation {
 		return Status.OK_STATUS;
 	}
 	
-	public IStatus exexuteOverrride(IProgressMonitor monitor)  {
-		//Copy the axis2 libs in to this client project
+	public IStatus executeOverride(IProgressMonitor monitor)  {
+		//Copy the axis2 facet in to this project
 		IStatus status =null;
 		String runtimeLocation = null;
 		ContentCopyUtils contentCopyUtils = new ContentCopyUtils();
@@ -78,17 +80,26 @@ AbstractDataModelOperation {
 		} catch (Exception e) {
 			return handleExceptionStatus(e);
 		}
+		
 		status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
 				runtimeLocation, 
-				FacetContainerUtils.pathToWebProjectContainer(project), 
+				FacetContainerUtils.pathToWebProjectContainer(project.toString()), 
 				monitor 
 		);
-		status = Status.OK_STATUS;
-		//clean up tempory files
+		
+
+		//Merge web.xml Files
+		MergeWEBXMLCommand mergeWebXMLCommand = new MergeWEBXMLCommand();
+		mergeWebXMLCommand.setExtraAxis2TagsAdded(false);
+		mergeWebXMLCommand.setServerProject(project);
+		mergeWebXMLCommand.exexuteOverride(monitor);
+
+		//clean up tempery files
 		File tempFacetDirectory = new File(runtimeLocation);
 		if (tempFacetDirectory.exists() && context.isAxis2ServerPathRepresentsWar()) {
 			FileUtils.deleteDir(tempFacetDirectory);
 		}
+		status = Status.OK_STATUS;
 		return status;
 	}
 	
@@ -101,7 +112,7 @@ AbstractDataModelOperation {
 	
 	private IStatus handleExceptionStatus(Exception e){
 		IStatus status = null;
-		status = new Status(1,project,1,Axis2CoreUIMessages.ERROR_SERVER_IS_NOT_SET,e);
+		status = new Status(1,project.toString(),1,Axis2CoreUIMessages.ERROR_SERVER_IS_NOT_SET,e);
 		cleanupIfFacetStatusFailed(Axis2CoreUtils.tempAxis2Directory());
 		return status;
 	}
