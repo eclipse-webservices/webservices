@@ -20,9 +20,11 @@
     		<action type="INSTALL">
       			<delegate class="org.eclipse.jst.ws.axis2.facet.deligate.Axis2CoreFacetInstallDelegate"/>
     		</action>
+<!--
     		<action type="UNINSTALL">
       			<delegate class="org.eclipse.jst.ws.axis2.facet.deligate.Axis2CoreFacetUnInstallDelegate"/>
     		</action>
+-->
   		</project-facet-version>
 
 		  <project-facet id="axis2.ext">
@@ -38,9 +40,11 @@
     		<action type="INSTALL">
       			<delegate class="org.eclipse.jst.ws.axis2.facet.deligate.Axis2ExtFacetInstallDelegate"/>
     		</action>
+<!--
     		<action type="UNINSTALL">
       			<delegate class="org.eclipse.jst.ws.axis2.facet.deligate.Axis2ExtFacetUnInstallDelegate"/>
     		</action>
+-->
   		</project-facet-version>
   
 	</extension>
