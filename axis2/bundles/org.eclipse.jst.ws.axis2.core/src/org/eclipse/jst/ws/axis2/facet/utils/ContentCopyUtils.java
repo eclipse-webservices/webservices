@@ -14,6 +14,7 @@
  * 20070213  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -290,8 +291,10 @@ public class ContentCopyUtils {
 			    {
 			      if( child.getType() == IResource.FILE )
 			      {
+			    
 			        //We have permission to overwrite so check if file is read-only
-			        if( child.getResourceAttributes().isReadOnly() )
+			        if(child.getResourceAttributes()!=null && 
+			        						child.getResourceAttributes().isReadOnly() )
 			        {
 			          IFile[] files = new IFile[1];
 			          files[0] = (IFile)child;

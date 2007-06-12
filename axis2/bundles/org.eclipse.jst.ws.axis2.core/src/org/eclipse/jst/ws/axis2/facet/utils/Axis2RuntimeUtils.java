@@ -31,12 +31,15 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
+import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 
 public class Axis2RuntimeUtils {
 	
@@ -98,6 +101,12 @@ public class Axis2RuntimeUtils {
 				unzipAxis2War(tempWarFile,tempUnzipLocation );
 
 				}
+			
+			IPath tempWebXMLLocationPath = new Path(tempUnzipLocation)
+											   .append(Axis2FacetUIMessages.DIR_WEB_INF)
+											   .append(Axis2FacetUIMessages.FILE_WEB_XML);
+			//delete the axis2 web.xml File(DWP already have)
+			new File(tempWebXMLLocationPath.toOSString()).delete();
 				
 			//} else {
 				//Throws an error message

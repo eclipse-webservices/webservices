@@ -12,6 +12,7 @@
  * 20070213  168766 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  facet to the framework for 168766
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.deligate;
 
@@ -27,26 +28,25 @@ import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class Axis2CoreFacetInstallDelegate implements IDelegate {
-	
+
 	private IStatus status;
-	
+
 	public void execute(IProject project, IProjectFacetVersion arg1, Object arg2,
 			IProgressMonitor monitor) throws CoreException {
-			monitor.beginTask(Axis2CoreUIMessages.PROGRESS_INSTALL_AXIS2_RUNTIME, 2 );
-	        	Axis2WebservicesServerCommand command = new Axis2WebservicesServerCommand(
-	        													project.toString()
-	        												); 
-	        	status = command.exexuteOverrride(monitor);
-	        	if (status.getCode() == Status.OK_STATUS.getCode() ){
-	        		RuntimePropertyUtils.writeServerStausToPropertiesFile(
-	        								Axis2CoreUIMessages.SERVER_STATUS_PASS);
-	        	}else{
-	        		RuntimePropertyUtils.writeServerStausToPropertiesFile(
-							Axis2CoreUIMessages.SERVER_STATUS_FAIL);
-	        		throw new CoreException(status);
-	        	}
-	            monitor.worked( 1 );
-	            monitor.done();
+		monitor.beginTask(Axis2CoreUIMessages.PROGRESS_INSTALL_AXIS2_RUNTIME, 2 );
+
+		Axis2WebservicesServerCommand command = new Axis2WebservicesServerCommand(project); 
+		status = command.executeOverride(monitor);
+		if (status.getCode() == Status.OK_STATUS.getCode() ){
+			RuntimePropertyUtils.writeServerStausToPropertiesFile(
+					Axis2CoreUIMessages.SERVER_STATUS_PASS);
+		}else{
+			RuntimePropertyUtils.writeServerStausToPropertiesFile(
+					Axis2CoreUIMessages.SERVER_STATUS_FAIL);
+			throw new CoreException(status);
+		}
+		monitor.worked( 1 );
+		monitor.done();
 	}
 
 }

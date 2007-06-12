@@ -29,6 +29,7 @@ import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
+import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 
 public class Axis2WebappUtils {
 
@@ -88,11 +89,16 @@ public class Axis2WebappUtils {
 					String axis2TempWebBuildFile = Axis2CoreUtils.addAnotherNodeToPath(
 							tempWarLocation,
 					"build.xml");
+					String axis2TempWebXMLFile = Axis2CoreUtils.addAnotherNodeToPath(
+							axis2TempWebInfFile,
+							Axis2FacetUIMessages.FILE_WEB_XML);
 
 					//Copy the webapp content 
 					FileUtils.copyDirectory(new File(axis2WebappLocation), tempWarLocationFile);
-					//delete the build.xml File
+					////delete the axis2 web.xml File(DWP already have)
 					new File(axis2TempWebBuildFile).delete();
+					//delete the web.xml File
+					new File(axis2TempWebXMLFile).delete();
 					//Copy libs 
 					FileUtils.copyDirectory(new File(axis2LibFile),
 											new File(axis2TempWebInfLibFile));
