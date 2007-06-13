@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.environment,
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.common.frameworks.ui,
- org.eclipse.wst.command.env.ui
+ org.eclipse.wst.command.env.ui,
+ org.eclipse.wst.server.core
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.jst.ws.axis2.core.context,
  org.eclipse.jst.ws.axis2.core.plugin,

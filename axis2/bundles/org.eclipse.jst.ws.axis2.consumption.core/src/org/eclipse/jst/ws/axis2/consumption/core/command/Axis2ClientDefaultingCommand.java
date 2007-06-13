@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007 WSO2 Inc., IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070508   175030 sandakith@wso2.com - Lahiru Sandakith, WSDL not passed to Axis2 client fix
+ * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
+ * 20070612   192047 kathy@ca.ibm.com   - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -24,8 +26,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.DefaultCodegenUtil;
-import org.eclipse.jst.ws.axis2.core.context.ServiceContext;
-import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
@@ -43,19 +43,9 @@ public class Axis2ClientDefaultingCommand extends AbstractDataModelOperation {
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		//Default Settings for the Codegeneration
-		String deployedWSDLURL = FacetContainerUtils.getDeployedWSDLURL(
-	  								model.getWebProjectName().split("Client")[0],
-	  								ServiceContext.getInstance().getServiceName());
-		String wsFrameworkWSDLURL = ws.getWebServiceClientInfo().getWsdlURL();
- 
-		model.setWsdlURI(
-				((wsFrameworkWSDLURL!=null) || (deployedWSDLURL!=wsFrameworkWSDLURL))?
-						wsFrameworkWSDLURL:
-							deployedWSDLURL
-		);
-		
-		// WSE with Client alone. 
-		ws.getWebServiceClientInfo().setWsdlURL(deployedWSDLURL);
+
+		String wsdlURL = ws.getWebServiceClientInfo().getWsdlURL();
+		model.setWsdlURI(wsdlURL);
 		
 		model.setDatabindingType(Axis2ConsumptionUIMessages.DATA_BINDING_ADB);
 		model.setASync(false);

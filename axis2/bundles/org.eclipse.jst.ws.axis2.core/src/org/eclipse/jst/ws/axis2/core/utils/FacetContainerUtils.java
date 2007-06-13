@@ -14,17 +14,23 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
+ * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
+ * 20070612   192047 kathy@ca.ibm.com   - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 
 public class FacetContainerUtils {
 
@@ -135,14 +141,24 @@ public class FacetContainerUtils {
 	}
 	
 	
-	public static String getDeployedWSDLURL(String projectName, String serviceName){
-		//TODO get the hostname and port from eclispe runtime  
-		String[] deployedWSDLURLParts = {projectName.split("Client")[0],
-										 Axis2CoreUIMessages.SERVICES,
-										 serviceName
-										 };
-		return FileUtils.addNodesToURL(Axis2CoreUIMessages.LOCAL_SERVER_PORT, 
-										deployedWSDLURLParts)+"?wsdl";
+	public static String getDeployedWSDLURL(IProject serverProject, 
+											String ServerFactoryId, 
+											String ServerInstanceId,
+											String serviceName){ 
+		// Note that ServerCore.findServer() might return null if the server cannot be found and
+		// ServerUtils.getEncodedWebComponentURL() can handle null server properly (by using ServerFactoryId)
+		String deployedWSDLURLpath = null;
+		IServer server = null;
+		if (ServerInstanceId != null) {
+			server = ServerCore.findServer(ServerInstanceId);
+		}
+		deployedWSDLURLpath = ServerUtils.getEncodedWebComponentURL(serverProject, 
+				ServerFactoryId, server);
+		if (deployedWSDLURLpath == null) {
+			deployedWSDLURLpath = Axis2CoreUIMessages.LOCAL_SERVER_PORT;
+		}
+		String[] deployedWSDLURLParts = {Axis2CoreUIMessages.SERVICES,serviceName};
+		return FileUtils.addNodesToURL(deployedWSDLURLpath, deployedWSDLURLParts)+"?wsdl";
 	}
 	
 	

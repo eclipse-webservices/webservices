@@ -12,6 +12,7 @@
  * 20070206   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070508   175030 sandakith@wso2.com - Lahiru Sandakith, WSDL not passed to Axis2 client fix
+ * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -20,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -95,10 +97,12 @@ public class Axis2DefaultingCommand extends AbstractDataModelOperation
 		// After setting the initial wsdlURL return from the framework to the data model,
 		// replace it with the deployed wsdlURL
 		String deployedWSDLURL = FacetContainerUtils.getDeployedWSDLURL(
-					model.getWebProjectName(),
-					ServiceContext.getInstance().getServiceName());
-		ws.getWebServiceInfo().setWsdlURL(deployedWSDLURL);
+				ResourcesPlugin.getWorkspace().getRoot().getProject(model.getWebProjectName()),
+				ws.getWebServiceInfo().getServerFactoryId(),
+				ws.getWebServiceInfo().getServerInstanceId(),
+				ServiceContext.getInstance().getServiceName());
 		
+		ws.getWebServiceInfo().setWsdlURL(deployedWSDLURL);
 		
 		return status;      	
 	}
