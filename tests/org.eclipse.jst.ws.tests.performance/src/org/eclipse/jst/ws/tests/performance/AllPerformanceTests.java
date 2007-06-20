@@ -24,12 +24,23 @@ public class AllPerformanceTests {
 	
   public static Test suite() {
     
-    // TODO: Create a test suite 
     TestSuite suite = new TestSuite("Test for org.eclipse.jst.ws.tests.performance");
     //$JUnit-BEGIN$
-    suite.addTestSuite(PerfmsrBUJavaAxisTC50.class);
-    suite.addTestSuite(PerfmsrTDJavaAxisTC50.class);
-    suite.addTestSuite(PerfmsrClientAxisTC50.class);
+    
+	String s = System.getProperty("org.eclipse.jst.server.tomcat.50");
+	if (s==null){
+		s = System.getProperty("tomcat50Dir");
+	}
+
+	if (s != null && s.length() > 0) {
+	    suite.addTestSuite(PerfmsrBUJavaAxisTC50.class);
+	    suite.addTestSuite(PerfmsrTDJavaAxisTC50.class);
+	    suite.addTestSuite(PerfmsrClientAxisTC50.class);
+	} else {
+	
+		System.err.println("Warning: Tomcat 5.0 not found - performance tests skipped");
+	}
+
     //$JUnit-END$
     return suite;
   }
