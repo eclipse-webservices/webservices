@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070625   192522 sandakith@wso2.com - Lahiru Sandakith, fix the build path problem
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -22,6 +23,7 @@ import java.io.IOException;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,6 +32,7 @@ import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
 import org.eclipse.jst.ws.axis2.creation.core.utils.CommonUtils;
 import org.eclipse.jst.ws.axis2.creation.core.utils.ServiceXMLCreator;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -41,11 +44,13 @@ public class Axis2BUServiceCreationCommand extends
 	
 	  	private DataModel model;
 		private IWebService ws;
+		private String project;
 
 	  public Axis2BUServiceCreationCommand( DataModel model,IWebService ws, String project )
 	  {
 	    this.model = model;  
 	    this.ws=ws;
+	    this.project= project;
 	  }
 
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
@@ -113,14 +118,14 @@ public class Axis2BUServiceCreationCommand extends
             	
             }
 	        
-            // Copy the classes directory to the sevices directory
-			String defaultClassesSubDirectory = Axis2CreationUIMessages.DIR_BUILD +File.separator+ 
-													Axis2CreationUIMessages.DIR_CLASSES;
-			//TODO copy only the relevent .classes to the aar
-			String classesDirectory = currentDynamicWebProjectDir + File.separator + 
-									  defaultClassesSubDirectory;
-			
-			FileUtils.copyDirectory(new File(classesDirectory), new File(servicesDirectory));
+            //Copy the classes directory to the sevices directory
+            IPath defaultClassesSubDirectory = ResourceUtils.getJavaOutputLocation(
+            		ResourcesPlugin.getWorkspace().getRoot().getProject(project));
+            String classesDirectory = FileUtils.addAnotherNodeToPath(workspaceDirectory,
+            									defaultClassesSubDirectory.toOSString());
+            //TODO copy only the relevent .classes to the aar
+			FileUtils.copyDirectory(new File(classesDirectory),
+									new File(servicesDirectory));
 			
 //			//Create the .aar file 
 //			String aarDirString =  FileUtils.addAnotherNodeToPath(webservicesDir, 
