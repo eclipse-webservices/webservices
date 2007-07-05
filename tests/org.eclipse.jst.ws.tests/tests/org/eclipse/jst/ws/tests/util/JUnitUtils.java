@@ -10,9 +10,10 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
- * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070314  176886 pmoogk@ca.ibm.com - Peter Moogk
  * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu 
+ * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -21,7 +22,10 @@ import java.util.Enumeration;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -58,6 +62,10 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.validation.internal.ConfigurationManager;
+import org.eclipse.wst.validation.internal.GlobalConfiguration;
+import org.eclipse.wst.validation.internal.ValidatorMetaData;
+import org.eclipse.wst.validation.internal.operations.ValidatorManager;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 
@@ -356,6 +364,23 @@ public class JUnitUtils {
 	  }
 	  return status;
 	  
+	}
+	
+	public static boolean disableValidation(IProject project){
+		
+    	// disable validators for project
+		try
+		{
+			ValidatorManager vm = ValidatorManager.getManager();
+			vm.disableAllValidators(project, null);			
+			
+		}
+		catch (Exception e)
+		{
+			System.out.println("Failed to set Validators...");
+		}
+		
+		return true;
 	}
 	
 }

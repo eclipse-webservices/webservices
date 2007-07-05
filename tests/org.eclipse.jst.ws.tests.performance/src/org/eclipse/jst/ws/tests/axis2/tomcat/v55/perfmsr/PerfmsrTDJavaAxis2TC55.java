@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,11 +9,9 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu     
- * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
-package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
+package org.eclipse.jst.ws.tests.axis2.tomcat.v55.perfmsr;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -25,7 +23,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
+import org.eclipse.jst.ws.tests.axis.tomcat.v55.WSWizardTomcat55Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
@@ -35,11 +33,11 @@ import org.eclipse.test.performance.PerformanceMeter;
 import org.eclipse.wst.command.internal.env.eclipse.AccumulateStatusHandler;
 
 /**
- * Top down performance scenario with Axis and Tomcat v5.0
+ * Top down performance scenario with Axis2 and Tomcat v5.5
  */
-public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
+public class PerfmsrTDJavaAxis2TC55 extends WSWizardTomcat55Test {
 
-  private final String WS_RUNTIMEID_AXIS = WSJUnitConstants.WS_RUNTIMEID_AXIS;
+  private final String WS_RUNTIMEID_AXIS = WSJUnitConstants.WS_RUNTIMEID_AXIS2;
   
   private final String PROJECT_NAME = WSJUnitConstants.TD_PROJECT_NAME;
   
@@ -59,7 +57,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 	    cmc.setModuleName(componentName);
 	    cmc.setModuleType(CreateModuleCommand.WEB);
 	    cmc.setProjectName(projectNm);
-	    cmc.setServerFactoryId(SERVERTYPEID_TC50);
+	    cmc.setServerFactoryId(SERVERTYPEID_TC55);
 	    cmc.setServerInstanceId(server_.getId());
 	    cmc.execute(null, null );
 	    
@@ -74,11 +72,11 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	protected void installInputData() throws Exception {
 
+	
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);		
 		IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
 		JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
-		
 		JUnitUtils.disableValidation(webProject);
 		JUnitUtils.syncBuildProject(webProject,env_, null);
 	}
@@ -88,7 +86,7 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception {
 		// Set default preferences for Axis and Tomcat v5.0 server
-		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);		
+		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC55);		
 	}
 
   /**
@@ -107,7 +105,8 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 	  
 	    IStatus[] status;
 		JUnitUtils.enableOverwrite(true);
-		JUnitUtils.setRuntimePreference("org.eclipse.jst.ws.axis.creation.axisWebServiceRT");
+		JUnitUtils.setRuntimePreference(WS_AXIS2_RUNTIME);
+
 		
 		Performance perf= Performance.getDefault();
 		PerformanceMeter performanceMeter= perf.createPerformanceMeter(perf.getDefaultScenarioId(this));	    
@@ -136,12 +135,14 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 	private final void verifyOutput(IStatus[] status) throws Exception
 	{
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
-        IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);    
+		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
     
-		
-		IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
-		assertTrue(wsdlFolder.exists());
-		assertTrue(wsdlFolder.members().length > 0);
+        IFolder webInfFolder = webContentFolder.getFolder("WEB-INF");
+        IFolder servicesFolder = webInfFolder.getFolder("services");
+		assertTrue(servicesFolder.exists());
+		IFolder wsFolder = servicesFolder.getFolder("EchoService");
+		assertTrue(wsFolder.exists());
+		assertTrue(wsFolder.members().length > 0);
 
 		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
 		IStatus[] s = statusHandler.getErrorReports();

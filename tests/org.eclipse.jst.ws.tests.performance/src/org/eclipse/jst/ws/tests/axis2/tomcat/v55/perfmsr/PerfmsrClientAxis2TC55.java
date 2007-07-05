@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,23 +9,23 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu     
- * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
-package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
+package org.eclipse.jst.ws.tests.axis2.tomcat.v55.perfmsr;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
+import org.eclipse.jst.ws.tests.axis.tomcat.v55.WSWizardTomcat55Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
@@ -35,86 +35,87 @@ import org.eclipse.test.performance.PerformanceMeter;
 import org.eclipse.wst.command.internal.env.eclipse.AccumulateStatusHandler;
 
 /**
- * Top down performance scenario with Axis and Tomcat v5.0
+ * Client performance scenario with Axis2 and Tomcat v5.5
  */
-public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
+public class PerfmsrClientAxis2TC55 extends WSWizardTomcat55Test {
 
-  private final String WS_RUNTIMEID_AXIS = WSJUnitConstants.WS_RUNTIMEID_AXIS;
+	private final String WS_RUNTIMEID_AXIS = WSJUnitConstants.WS_RUNTIMEID_AXIS2;
   
-  private final String PROJECT_NAME = WSJUnitConstants.TD_PROJECT_NAME;
-  
-  private IFile sourceFile_;
+	private final String CLIENT_PROJECT_NAME = WSJUnitConstants.CLIENT_PROJECT_NAME;
 	
-  protected void createProjects() throws Exception{
-	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
-	    if (!webProject.exists()){
-	      createWebModule(PROJECT_NAME, PROJECT_NAME,J2EEVersionConstants.J2EE_1_4_ID);
-	    }
-	  }
-	  
-	  private void createWebModule(String projectNm, String componentName, int j2eeVersion){
+	private IFile sourceFile_;
 
-	    CreateModuleCommand cmc = new CreateModuleCommand();
-	    cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
-	    cmc.setModuleName(componentName);
-	    cmc.setModuleType(CreateModuleCommand.WEB);
-	    cmc.setProjectName(projectNm);
-	    cmc.setServerFactoryId(SERVERTYPEID_TC50);
-	    cmc.setServerInstanceId(server_.getId());
-	    cmc.execute(null, null );
-	    
-	    System.out.println("Done creating Web Project, "+projectNm);      
-	   
-	  }  
-	  
-  /**
+    protected void createProjects() throws Exception{
+        IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
+        if (!webProject.exists()){
+          createWebModule(CLIENT_PROJECT_NAME, CLIENT_PROJECT_NAME,J2EEVersionConstants.J2EE_1_4_ID);
+        }
+      }
+      
+      private void createWebModule(String projectNm, String componentName, int j2eeVersion){
+
+        CreateModuleCommand cmc = new CreateModuleCommand();
+        cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
+        cmc.setModuleName(componentName);
+        cmc.setModuleType(CreateModuleCommand.WEB);
+        cmc.setProjectName(projectNm);
+        cmc.setServerFactoryId(SERVERTYPEID_TC55);
+        cmc.setServerInstanceId(server_.getId());
+        cmc.execute(null, null );
+        
+      }
+      
+	/**
    * Sets up the input data;
    * - create project(s),
    * - copy resources to workspace 
-   */  
+	 */
 	protected void installInputData() throws Exception {
-
-		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);		
-		IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
-		JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
-		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));
 		
+	
+		IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
+        IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
+        JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
+		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));	
 		JUnitUtils.disableValidation(webProject);
 		JUnitUtils.syncBuildProject(webProject,env_, null);
+		
 	}
 
   /**
    * Set the persistent server runtime context preferences
-   */  
+   */
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception {
-		// Set default preferences for Axis and Tomcat v5.0 server
-		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);		
+        // Set default preferences for Axis and Tomcat 5.0    
+		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC55);
 	}
 
   /**
    * Set the initial selection
-   */  
+   */
 	protected void initInitialSelection() throws Exception {
 		initialSelection_ = new StructuredSelection(sourceFile_);
-
 	}
 
   /**
    * Launches the pop-up command to initiate the scenario
    * @throws Exception
-   */  
-	public void testTDJavaAxisTC50() throws Exception {
-	  
-	    IStatus[] status;
+   */
+	public void testClientAxisTC50() throws Exception
+	{	
+	  	IStatus[] status;
+	  	
+		JUnitUtils.enableProxyGeneration(true);
 		JUnitUtils.enableOverwrite(true);
-		JUnitUtils.setRuntimePreference("org.eclipse.jst.ws.axis.creation.axisWebServiceRT");
+		JUnitUtils.setRuntimePreference(WS_AXIS2_RUNTIME);
+
 		
 		Performance perf= Performance.getDefault();
 		PerformanceMeter performanceMeter= perf.createPerformanceMeter(perf.getDefaultScenarioId(this));	    
 	    try {
     
 	      performanceMeter.start();
-	      status = PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_TOP_DOWN,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
+	      status = PerformanceJUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_CLIENT,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 	      performanceMeter.stop();
 	      performanceMeter.commit();
 	      perf.assertPerformance(performanceMeter);
@@ -128,39 +129,42 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
 
 
 	}
-
+	
   /**
-   * Verify the scenario completed successfully
+   * Verify the scenario completed succesfully
    * @throws Exception
    */
-	private final void verifyOutput(IStatus[] status) throws Exception
-	{
-        IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
-        IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);    
+	private final void verifyOutput(IStatus[] status) throws Exception {
+        IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
     
+        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
+        IFolder srcFolder = (IFolder)ResourceUtils.findResource(destPath);
+    
+		//IFolder srcFolder = JUnitUtils.getSourceFolderForWebProject(CLIENT_PROJECT_NAME);
+		IFolder folder = srcFolder.getFolder("foo");
+		assertTrue(folder.exists());
+		assertTrue(folder.members().length > 0);
 		
-		IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
-		assertTrue(wsdlFolder.exists());
-		assertTrue(wsdlFolder.members().length > 0);
-
 		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
 		IStatus[] s = statusHandler.getErrorReports();
 		//
 		if (s.length > 0){
 			for (int i=0;i<s.length;i++){
-				System.out.println("TDJava Error message for report #"+i+": "+s[i].getMessage());
+				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
 			}
 		}
-		assertTrue(s.length == 0);
+		assertTrue(s.length == 0);       
+
 	}
 	
   /**
-   * Clear workspace if required
+   * Remove workspace if necessary
    */
 	protected void deleteInputData() throws Exception {
+
 		// Delete the Web project.
-		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
-		webProject.delete(true,true,null);
+		IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
+		webProject.delete(true,true, null);
 		
 	}
 

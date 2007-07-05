@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu      
+ *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
 import org.eclipse.core.runtime.Path;
@@ -9,6 +22,9 @@ public interface WSJUnitConstants {
   public final String RUNTIMETYPEID_TC50 = "org.eclipse.jst.server.tomcat.runtime.50";
 
   public final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.runtime.axis11";
+  public final String WS_RUNTIMEID_AXIS2 = "org.eclipse.jst.ws.runtime.axis2";
+  
+  public final String WS_AXIS2_RUNTIME = "org.eclipse.jst.ws.axis2.creation.axis2WebServiceRT";
   
   public final String SERVERTYPEID_TC50 = "org.eclipse.jst.server.tomcat.50";
   

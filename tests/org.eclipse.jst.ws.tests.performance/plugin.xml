@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin id="org.eclipse.jst.ws.tests.performance"
+   name="JST.WS Performance Tests"
+   version="1.0.0"
+   provider-name="IBM"
+   class="org.eclipse.jst.ws.tests.performance.plugin.PerformancePlugin">
+ 
+   
+
+</plugin>

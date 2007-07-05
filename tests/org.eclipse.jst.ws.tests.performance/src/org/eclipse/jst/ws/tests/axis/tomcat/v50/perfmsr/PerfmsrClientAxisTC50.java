@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu      
  * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
 
@@ -73,10 +74,13 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 	 */
 	protected void installInputData() throws Exception {
 		
+	
 		IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
         IFolder destFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
         JUnitUtils.copyTestData("TDJava",destFolder,env_, null);
 		sourceFile_ = destFolder.getFile(new Path("Echo.wsdl"));		
+
+		JUnitUtils.disableValidation(webProject);
 		JUnitUtils.syncBuildProject(webProject,env_, null);
 		
 	}
@@ -107,7 +111,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
 		JUnitUtils.enableProxyGeneration(true);
 		JUnitUtils.enableOverwrite(true);
 		JUnitUtils.setRuntimePreference("org.eclipse.jst.ws.axis.creation.axisWebServiceRT");
-		
+	
 		Performance perf= Performance.getDefault();
 		PerformanceMeter performanceMeter= perf.createPerformanceMeter(perf.getDefaultScenarioId(this));	    
 	    try {

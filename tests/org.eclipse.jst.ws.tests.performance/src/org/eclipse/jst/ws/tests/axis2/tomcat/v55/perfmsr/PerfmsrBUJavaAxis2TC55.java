@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,11 +9,9 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu 
- * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
-package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
+package org.eclipse.jst.ws.tests.axis2.tomcat.v55.perfmsr;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -27,7 +25,7 @@ import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
-import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
+import org.eclipse.jst.ws.tests.axis.tomcat.v55.WSWizardTomcat55Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
@@ -37,11 +35,11 @@ import org.eclipse.test.performance.PerformanceMeter;
 import org.eclipse.wst.command.internal.env.eclipse.AccumulateStatusHandler;
 
 /**
- * Bottom up performance scenario with Axis and Tomcat v5.0
+ * Bottom up performance scenario with Axis2 and Tomcat v5.5
  */
-public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
+public final class PerfmsrBUJavaAxis2TC55 extends WSWizardTomcat55Test {
 	// Constants
-    private final String WS_RUNTIMEID_AXIS =  WSJUnitConstants.WS_RUNTIMEID_AXIS; 
+    private final String WS_RUNTIMEID_AXIS =  WSJUnitConstants.WS_RUNTIMEID_AXIS2; 
 	private final String PROJECT_NAME = WSJUnitConstants.BU_PROJECT_NAME;
     
 	private IFile sourceFile_;
@@ -53,7 +51,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
    */
 	protected void installInputData() throws Exception
 	{
-	    
+    
 		IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
         IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
         IFolder folder = (IFolder)ResourceUtils.findResource(destPath);		
@@ -64,7 +62,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 		JUnitUtils.disableValidation(webProject);
 		JUnitUtils.syncBuildProject(webProject,env_, null);
 		//assertTrue(JUnitUtils.getClassesFolderForWebProject(WEB_PROJECT_NAME).getFile(new Path("foo/Echo.class")).exists());
-
+		
 		
 	}
 	
@@ -82,7 +80,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
         cmc.setModuleName(componentName);
         cmc.setModuleType(CreateModuleCommand.WEB);
         cmc.setProjectName(projectNm);
-        cmc.setServerFactoryId(SERVERTYPEID_TC50);
+        cmc.setServerFactoryId(SERVERTYPEID_TC55);
         cmc.setServerInstanceId(server_.getId());
         cmc.execute(null, null );
         
@@ -96,8 +94,8 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception
 	{
-		// Set default preferences for Axis and Tomcat 5.0
-		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);		
+		// Set default preferences for Axis2 and Tomcat 5.5
+		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC55);		
 	}
 	
   /**
@@ -118,7 +116,7 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
 	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 	    JUnitUtils.disableWSIDialog(webProject);
 		JUnitUtils.enableOverwrite(true);
-	    JUnitUtils.setRuntimePreference("org.eclipse.jst.ws.axis.creation.axisWebServiceRT");
+	    JUnitUtils.setRuntimePreference(WS_AXIS2_RUNTIME);
 
 	    
 	    Performance perf= Performance.getDefault();
@@ -150,10 +148,12 @@ public final class PerfmsrBUJavaAxisTC50 extends WSWizardTomcat50Test {
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
 		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
     
-        IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
-		assertTrue(wsdlFolder.exists());
-		assertTrue(wsdlFolder.members().length > 0);
-		assertTrue(webContentFolder.getFolder("wsdl").members().length > 0);
+        IFolder webInfFolder = webContentFolder.getFolder("WEB-INF");
+        IFolder servicesFolder = webInfFolder.getFolder("services");
+		assertTrue(servicesFolder.exists());
+		IFolder wsFolder = servicesFolder.getFolder("Echo");
+		assertTrue(wsFolder.exists());
+		assertTrue(wsFolder.members().length > 0);
     
 		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
 		IStatus[] s = statusHandler.getErrorReports();
