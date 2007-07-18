@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20070716   191357 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.utils;
 
@@ -30,6 +31,8 @@ public class AdapterUtils {
 	 *         Returns null if an adapter is not found.
 	 */
 	public static Object getAdaptedObject (Object object) { 
+		if (object == null) 
+			return null;
 		Object adaptedObject = Platform.getAdapterManager().loadAdapter(object, "org.eclipse.core.resources.IFile");
 		if (adaptedObject == null) {
 			adaptedObject = Platform.getAdapterManager().loadAdapter(object, "java.lang.String");
