@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20070713   191357 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -40,7 +41,10 @@ public class WSDLSelectionTransformer implements Transformer
   {
     if (value instanceof IStructuredSelection)
     {
-      Object sel = ((IStructuredSelection)value).getFirstElement();
+     IStructuredSelection selection = (IStructuredSelection)value;
+     if (selection != null && !selection.isEmpty()) {
+     
+      Object sel = selection.getFirstElement();
       if (sel instanceof IResource)
       {
         try
@@ -84,6 +88,7 @@ public class WSDLSelectionTransformer implements Transformer
     		  return new StructuredSelection(wsdlURI);
     	  }
       }
+     }
     }
     return value;
   }
