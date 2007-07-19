@@ -37,6 +37,7 @@ import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
@@ -186,6 +187,14 @@ public class BugFixesTest extends TestCase
       }
     });
 
+    suite.addTest(new BugFixesTest("HandlesDocumentationElements") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testHandlesDocumentationElements();
+      }
+    });
+    
     return suite;
   }
 
@@ -820,5 +829,118 @@ public class BugFixesTest extends TestCase
     assertNotNull(output2TypeDefinition);
     assertNotNull(output2TypeDefinition.getContainer());
     assertNull(output2TypeDefinition.getTargetNamespace());
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=151674
+   */
+  public void testHandlesDocumentationElements()
+  {
+    try
+    {
+      // Load a sample WSDL document that has documentation elements in all allowed places.
+      
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/HandlesDocumentationElements/Documented.wsdl");
+      
+      // Make sure imports are added after the documentation element.
+      
+      WSDLFactory factory = WSDLFactory.eINSTANCE;
+      Import anImport = factory.createImport();
+      anImport.setNamespaceURI("http://www.test.com");
+      definition.addImport(anImport);
+      
+      Element definitionDocumentationElement = definition.getDocumentationElement();
+      assertNotNull(definitionDocumentationElement);
+      Element expectedImportElement = getNextElement(definitionDocumentationElement);
+      Element importElement = anImport.getElement();
+      assertEquals(importElement, expectedImportElement);
+      
+      // This is a bit overkill since the documentation elements are handled in the base class WSDLElementImpl but...
+      
+      // Make sure new message parts are added after the documentation element and as the last element.
+
+      Message aMessage = (Message)definition.getEMessages().get(0);
+      Part newPart = factory.createPart();
+      aMessage.addPart(newPart);
+
+      Element messageElement = aMessage.getElement();
+
+      Element messageDocumentationElement = aMessage.getDocumentationElement();
+      assertNotNull(messageDocumentationElement);
+      Element firstChildElement = getFirstChildElement(messageElement);
+      assertEquals(messageDocumentationElement, firstChildElement);
+      
+      Element partElement = newPart.getElement();
+      Element lastChildElement = getLastChildElement(messageElement);
+      assertEquals(partElement, lastChildElement);
+      
+      // Make sure new operations are added after the documentation element and as the last element.
+
+      PortType portType = (PortType)definition.getEPortTypes().get(0);
+      Operation newOperation = factory.createOperation();
+      portType.addOperation(newOperation);
+      
+      Element portTypeElement = portType.getElement();
+
+      Element portTypeDocumentationElement = portType.getDocumentationElement();
+      assertNotNull(portTypeDocumentationElement);
+      firstChildElement = getFirstChildElement(portTypeElement);
+      assertEquals(portTypeDocumentationElement, firstChildElement);
+      
+      Element newOperationElement = newOperation.getElement();
+      lastChildElement = getLastChildElement(portTypeElement);
+      assertEquals(newOperationElement, lastChildElement);
+      
+      // Make sure the output element is added after the documentation element and as the last element.
+      
+      Operation operation = (Operation)portType.getEOperations().get(0);
+      Output output = factory.createOutput();
+      operation.setOutput(output);
+
+      Element operationElement = operation.getElement();
+
+      Element operationDocumentationElement = operation.getDocumentationElement();
+      assertNotNull(operationDocumentationElement);
+      firstChildElement = getFirstChildElement(operationElement);
+      assertEquals(operationDocumentationElement, firstChildElement);
+      
+      Element outputElement = output.getElement();
+      lastChildElement = getLastChildElement(operationElement);
+      assertEquals(outputElement, lastChildElement);
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+    }
+  }
+
+  private Element getNextElement(Element anElement)
+  {
+    Node node = anElement.getNextSibling();
+    while (node != null && node.getNodeType() != Node.ELEMENT_NODE)
+    {
+      node = node.getNextSibling();
+    }
+    return (Element)node;
+  }
+
+  private Element getFirstChildElement(Element anElement)
+  {
+    Node node = anElement.getFirstChild();
+    while (node != null && node.getNodeType() != Node.ELEMENT_NODE)
+    {
+      node = node.getNextSibling();
+    }
+    return (Element)node;
+  }
+
+  private Element getLastChildElement(Element anElement)
+  {
+    Node node = anElement.getLastChild();
+    while (node != null && node.getNodeType() != Node.ELEMENT_NODE)
+    {
+      node = node.getPreviousSibling();
+    }
+    return (Element)node;
   }
 }
