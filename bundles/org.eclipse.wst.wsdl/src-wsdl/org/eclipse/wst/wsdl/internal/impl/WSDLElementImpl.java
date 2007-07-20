@@ -738,8 +738,12 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
     if (!isAttached)
     {
-      if (referencedElement == null && !eReference.isMany())
+      // If we're dealing with a documentation element we need to put it first in the list
+      
+      if (referencedElement == null && WSDLConstants.nodeType(childElement) == WSDLConstants.DOCUMENTATION && !eReference.isMany())
       {
+        // Here we find the first element node in the list, the documentation element needs to go before this element
+        
         for (Node child = adoptionParent.getFirstChild(); child != null; child = child.getNextSibling())
         {
           if (child.getNodeType() == Node.ELEMENT_NODE)
