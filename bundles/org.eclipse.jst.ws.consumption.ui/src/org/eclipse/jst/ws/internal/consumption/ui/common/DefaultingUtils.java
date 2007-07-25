@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,14 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
+ * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -73,8 +75,27 @@ public class DefaultingUtils {
 			    }
 			}
 			
+			
+			String baseEARName = projectName + ResourceUtils.getDefaultEARExtension();
+			String earName = baseEARName;
+
+			boolean foundEAR = false;
+			int i = 1;
+			
+			while (!foundEAR) {
+				// 194434 - Check for non-existing EAR with contents that's not deleted previously
+				IStatus canCreateEARStatus = J2EEUtils.canCreateEAR(ProjectUtilities.getProject(earName));
+				if (canCreateEARStatus.isOK()) {
+					foundEAR = true;
+				} else {
+					earName = baseEARName + i;
+					i++;
+				}
+			}
+			
+			
 			//Step 2 - return project name with EAR on the end
-			return projectName + ResourceUtils.getDefaultEARExtension();			
+			return earName;			
 		}
 		
 		//Step 3 - return the default EAR project name
