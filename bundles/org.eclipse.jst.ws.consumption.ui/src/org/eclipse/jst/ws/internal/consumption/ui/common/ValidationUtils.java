@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20060427   138058 joan@ca.ibm.com - Joan Haggarty
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -410,6 +411,13 @@ public class ValidationUtils
 			if (needEar) {
 				IProject project = ProjectUtilities.getProject(projectName);
 				IProject ep = ProjectUtilities.getProject(earProjectName);
+				
+				// 194434 - Check for non-existing EAR with contents that's not deleted previously
+				IStatus canCreateEARStatus = J2EEUtils.canCreateEAR(ep);
+				if (!canCreateEARStatus.isOK()) {
+					return canCreateEARStatus;
+				}
+			
 				if (project.exists() && ep.exists()) {
 					if (!J2EEUtils.isComponentAssociated(ep, project)) {
 						IStatus associateStatus = J2EEUtils.canAssociateProjectToEAR(project, ep);
