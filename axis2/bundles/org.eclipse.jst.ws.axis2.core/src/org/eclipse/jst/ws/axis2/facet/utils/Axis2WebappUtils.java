@@ -16,6 +16,7 @@
  * 20070507   185686 sandakith@wso2.com - Lahiru Sandakith
  * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
+ * 20070730   194786 sandakith@wso2.com - Lahiru Sandakith, adding servletapi jar filter
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -108,6 +109,10 @@ public class Axis2WebappUtils {
 					//Copy modules and services 					
 					FileUtils.copyDirectory(new File(axis2RepositoryFile), 
 											new File(axis2TempWebInfFile));
+					//Filter out the servletapi jars
+					FileUtils.filterOutRestrictedFiles(axis2TempWebInfLibFile,
+							                           Axis2FacetUIMessages.FILE_SERVLET_API,"jar");
+					
 					alreadyWarExist= true;
 				}
 
