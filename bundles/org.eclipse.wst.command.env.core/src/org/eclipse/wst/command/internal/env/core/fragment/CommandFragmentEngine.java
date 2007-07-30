@@ -13,6 +13,7 @@
  * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  * 20070323   175800 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070730   197144 pmoogk@ca.ibm.com - Peter Moogk, Pass progress monitor to undo commands.
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.core.fragment;
 
@@ -261,7 +262,7 @@ public class CommandFragmentEngine implements CommandManager
    * @return returns true if the there is not longer any elements on the stack.  Note:
    *                 that last two entries are always left on the stack.
    */
-  public boolean undoToLastStop()
+  public boolean undoToLastStop( IProgressMonitor monitor )
   {    
   	CommandListEntry topEntry = (CommandListEntry)commandStack_.lastElement();	
   	
@@ -271,18 +272,18 @@ public class CommandFragmentEngine implements CommandManager
       // it has been execute, it means that we tried to execute and it failed.
       // The first command in the command stack failed.  Therefore, we should
       // only undo this command.
-      performUndo( topEntry );
+      performUndo( topEntry, monitor );
       return topEntry.parentIndex_ == 0;
     }
     
-  	performUndo( topEntry );
+  	performUndo( topEntry, monitor );
   		
     while( topEntry.parentIndex_ != 0 )
   	{
       commandStack_.pop();
   	  topEntry = (CommandListEntry)commandStack_.lastElement();	  
       
-  	  performUndo( topEntry );
+  	  performUndo( topEntry, monitor );
   	  
   	  if( topEntry.fragmentStopped_ )
   	  {
@@ -293,7 +294,7 @@ public class CommandFragmentEngine implements CommandManager
   	return topEntry.parentIndex_ == 0;
   }
    
-  private void performUndo( CommandListEntry entry )
+  private void performUndo( CommandListEntry entry, IProgressMonitor monitor )
   {
     if( entry.parentIndex_ == 0 ) return;
     
@@ -305,7 +306,7 @@ public class CommandFragmentEngine implements CommandManager
       {
         if( cmd.canUndo() && !entry.beforeExecute_ )
 	      {
-	        cmd.undo( null, null );
+	        cmd.undo( monitor, null );
         }
         
         dataManager_.unprocess( cmd );

@@ -12,12 +12,14 @@
  * 20060726   151614 pmoogk@ca.ibm.com - Peter Moogk
  * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  * 20070522   176943 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070730   197144 pmoogk@ca.ibm.com - Peter Moogk, Pass progress monitor to undo commands.
  *******************************************************************************/
 
 package org.eclipse.wst.command.internal.env.ant;
 
 import java.util.Hashtable;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -80,14 +82,16 @@ public class AntController
 	   }
 	      
 	   //ready to start running operations
- 	   operationManager_.moveForwardToNextStop(new NullProgressMonitor());
+	   IProgressMonitor nullMonitor = new NullProgressMonitor();
+	   
+ 	   operationManager_.moveForwardToNextStop( nullMonitor );
 
      IStatus lastStatus = operationManager_.getLastStatus();
      
  	   if ( !lastStatus.isOK() ) 
      {
        errorMessage_ = lastStatus.getMessage();
- 		   operationManager_.undoToLastStop();
+ 		   operationManager_.undoToLastStop( nullMonitor );
      }
    }
    

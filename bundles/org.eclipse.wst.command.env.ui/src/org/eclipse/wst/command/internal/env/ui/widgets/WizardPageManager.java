@@ -13,11 +13,14 @@
  * 20060313   130958 pmoogk@ca.ibm.com - Peter Moogk
  * 20070319   175721 pmoogk@ca.ibm.com - Peter Moogk
  * 20070328   173345 pmoogk@ca.ibm.com - Peter Moogk, Peek next page problem
+ * 20070730   197144 pmoogk@ca.ibm.com - Peter Moogk, Pass progress monitor to undo commands.
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
 import java.util.Hashtable;
 import java.util.Stack;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
@@ -85,17 +88,22 @@ public class WizardPageManager extends SimpleCommandEngineManager
   {    
   	firstFragment_  = true;
   	nextPage_       = null;
- 
-  	IWizardContainer container = wizard_.getContainer();
-  	
-  	if( container == null || container.getCurrentPage() == null )
-  	{
-  	  container = null;
-  	}
-  	
-  	return super.runForwardToNextStop( container );
+   	
+  	return super.runForwardToNextStop( getContainer() );
   }
     
+  private IWizardContainer getContainer()
+  {
+    IWizardContainer container = wizard_.getContainer();
+    
+    if( container == null || container.getCurrentPage() == null )
+    {
+      container = null;
+    }   
+    
+    return container;
+  }
+  
   public IWizardPage getCurrentPage()
   {
     return currentPage_;
@@ -271,7 +279,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
   	  
   	  do
   	  {
-  	    done = engine_.undoToLastStop();
+  	    done = runUndoToNextStop( getContainer() );
   	    page = getPage( lastUndoFragment_ );
         
         if( page == null && 
@@ -306,7 +314,9 @@ public class WizardPageManager extends SimpleCommandEngineManager
   
   public boolean performCancel()
   {
-  	while( !engine_.undoToLastStop() ){}
+    IWizardContainer container = getContainer();
+    
+  	while( !runUndoToNextStop( container ) ){}
   	
   	return true;
   }
@@ -423,7 +433,7 @@ public class WizardPageManager extends SimpleCommandEngineManager
     
 	  while( !doneUndoing )
 	  {
-	    stackEmpty = engine_.undoToLastStop();
+	    stackEmpty = runUndoToNextStop( getContainer() );
 	  
 	    IWizardPage page = null;
 	  

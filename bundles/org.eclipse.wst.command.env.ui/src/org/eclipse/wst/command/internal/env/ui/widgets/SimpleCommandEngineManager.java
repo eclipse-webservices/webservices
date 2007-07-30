@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070730   197144 pmoogk@ca.ibm.com - Peter Moogk, Pass progress monitor to undo commands.
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -182,6 +183,47 @@ public class SimpleCommandEngineManager
     return true;
   }
     
+  /**
+   * This method undoes the commands that were executed in the runForwardToNextStop
+   * method.
+   * @param context the runnable context.
+   * @return returns if all commands have been undone or not.
+   */
+  public boolean runUndoToNextStop( IRunnableContext context )
+  {
+    final boolean result[] = new boolean[]{true};
+    
+    IRunnableWithProgress undoOperation 
+      = new IRunnableWithProgress()
+        {
+          public void run(IProgressMonitor monitor)
+          {
+            result[0] = engine_.undoToLastStop(monitor);
+          }
+        };
+        
+    try
+    {      
+      if( context == null )
+      {
+        // We don't have a container yet so just run the operation.
+        undoOperation.run( null );
+      }
+      else
+      {
+        // We have a container where this operation can run and have
+        // its progress displayed.
+        context.run( false, false, undoOperation );
+      }
+    }
+    catch( Exception exc )
+    {
+      // For now we will ignore all exceptions.
+    } 
+    
+    return result[0];
+  }
+  
   /**
    * The method executes the CommandFragment commands in the context provided.
    * 
