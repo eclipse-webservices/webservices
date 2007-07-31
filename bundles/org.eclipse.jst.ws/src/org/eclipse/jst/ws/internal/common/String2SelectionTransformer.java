@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060222   128094 joan@ca.ibm.com - Joan Haggarty
+ * 20070305   175194 makandre@ca.ibm.com - Andrew Mak, Ant task InitialSelection only allows wsdl within the workspace
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -83,6 +84,10 @@ public class String2SelectionTransformer implements Transformer {
 			{
 			  selection = new StructuredSelection(resource);
 			}
+		}
+		else if (value instanceof String && value.toString().indexOf(":") != -1) {
+			// remote file
+			selection = new StructuredSelection(value);
 		}
 		else
 		{

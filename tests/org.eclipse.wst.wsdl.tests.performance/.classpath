@@ -2,6 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="performance"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins">
+		<accessrules>
+			<accessrule kind="accessible" pattern="org/eclipse/wst/wsdl/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/wst/ws/internal/preferences/PersistentWSIContext"/>
+			<accessrule kind="accessible" pattern="org/eclipse/wst/ws/internal/plugin/WSPlugin"/>
+			<accessrule kind="accessible" pattern="org/eclipse/wst/validation/internal/**"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

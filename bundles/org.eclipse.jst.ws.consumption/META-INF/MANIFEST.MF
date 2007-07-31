@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.consumption; singleton:=true
-Bundle-Version: 1.0.102.qualifier
+Bundle-Version: 1.0.105.qualifier
 Bundle-ClassPath: wsc.jar,
  webserviceutils.jar
 Bundle-Activator: org.eclipse.jst.ws.internal.consumption.plugin.WebServiceConsumptionPlugin
@@ -27,12 +27,12 @@ Export-Package: org.eclipse.jst.ws.internal.consumption;x-internal:=true,
  org.eclipse.jst.ws.util
 Require-Bundle: org.eclipse.jem;bundle-version="[1.2.0,1.3.0)",
  org.eclipse.jem.workbench;bundle-version="[1.2.0,1.3.0)",
- org.eclipse.emf.common;bundle-version="[2.2.0,2.4.0)",
- org.eclipse.emf.ecore;bundle-version="[2.2.0,2.4.0)",
+ org.eclipse.emf.common;bundle-version="[2.2.0,2.3.0)",
+ org.eclipse.emf.ecore;bundle-version="[2.2.0,2.3.0)",
  org.eclipse.jdt.core;bundle-version="[3.2.0,4.0.0)",
- org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
- org.eclipse.core.resources;bundle-version="[3.2.0,3.4.0)",
- org.eclipse.xsd;bundle-version="[2.2.0,2.4.0)",
+ org.eclipse.core.runtime;bundle-version="[3.2.0,3.3.0)",
+ org.eclipse.core.resources;bundle-version="[3.2.0,3.3.0)",
+ org.eclipse.xsd;bundle-version="[2.2.0,2.3.0)",
  org.eclipse.debug.core;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.jst.ws;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.jdt.launching;bundle-version="[3.2.0,3.3.0)",
@@ -55,6 +55,6 @@ Require-Bundle: org.eclipse.jem;bundle-version="[1.2.0,1.3.0)",
  org.eclipse.wst.common.environment;bundle-version="[1.0.100,1.1.0)",
  org.eclipse.wst.common.project.facet.core;bundle-version="[1.1.0,1.2.0)",
  org.eclipse.jst.server.core;bundle-version="[1.0.102,1.1.0)",
- com.ibm.icu;bundle-version="[3.4.4,4.0.0)",
+ com.ibm.icu;bundle-version="[3.4.4,3.5.0)",
  org.eclipse.ui;bundle-version="[3.2.0,4.0.0)"
 Eclipse-LazyStart: true

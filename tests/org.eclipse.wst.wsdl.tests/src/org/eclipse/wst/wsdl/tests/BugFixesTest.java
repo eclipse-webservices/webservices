@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.wsdl.OperationType;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
@@ -36,6 +37,7 @@ import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
+import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
@@ -177,6 +179,22 @@ public class BugFixesTest extends TestCase
       }
     });
 
+    suite.addTest(new BugFixesTest("AllowNullNamespaceURI") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testAllowNullNamespaceURI();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("HandlesDocumentationElements") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testHandlesDocumentationElements();
+      }
+    });
+    
     return suite;
   }
 
@@ -752,5 +770,177 @@ public class BugFixesTest extends TestCase
     javax.wsdl.Operation actualOperation3 = bindingOperation3.getOperation();
 
     assertEquals(operation3, actualOperation3);
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=178555
+   */
+  public void testAllowNullNamespaceURI()
+  {
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/NullNamespaceURI/ContactInfoService.wsdl", true); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    String targetNamespace = "http://www.example.org/ContactInfoService"; //$NON-NLS-1$
+
+    // The element declaration for the output message part is specified in a
+    // schema with no target namespace. It should resolve fine and have a null
+    // namespace URI.
+    
+    QName output1QName = new QName(targetNamespace, "updatePhoneNumberResponseMsg"); //$NON-NLS-1$
+    Message output1Message = (Message) definition.getMessage(output1QName);
+    assertNotNull(output1Message);
+
+    Part part1 = (Part) output1Message.getPart("output1"); //$NON-NLS-1$
+    assertNotNull(part1);
+
+    QName output2ElementName = part1.getElementName();
+    assertNotNull(output2ElementName);
+    assertEquals(XMLConstants.NULL_NS_URI, output2ElementName.getNamespaceURI());
+    
+    XSDElementDeclaration output2ElementDeclaration = part1.getElementDeclaration();
+    assertNotNull(output2ElementDeclaration);
+    assertNotNull(output2ElementDeclaration.getContainer());
+    assertNull(output2ElementDeclaration.getTargetNamespace());
+
+    // The type definition for the output message part is specified in a
+    // schema with no target namespace. It should resolve fine and have a null
+    // namespace URI.
+    
+    QName output2QName = new QName(targetNamespace, "updateAddressResponseMsg"); //$NON-NLS-1$
+    Message output2Message = (Message) definition.getMessage(output2QName);
+    assertNotNull(output2Message);
+    
+    Part part2 = (Part) output2Message.getPart("output2"); //$NON-NLS-1$
+    assertNotNull(part1);
+
+    QName output2TypeName = part2.getTypeName();
+    assertNotNull(output2TypeName);
+    assertEquals(XMLConstants.NULL_NS_URI, output2TypeName.getNamespaceURI());
+    
+    XSDTypeDefinition output2TypeDefinition = part2.getTypeDefinition();
+    assertNotNull(output2TypeDefinition);
+    assertNotNull(output2TypeDefinition.getContainer());
+    assertNull(output2TypeDefinition.getTargetNamespace());
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=151674
+   */
+  public void testHandlesDocumentationElements()
+  {
+    try
+    {
+      // Load a sample WSDL document that has documentation elements in all allowed places.
+      
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/HandlesDocumentationElements/Documented.wsdl");
+      
+      // Make sure imports are added after the documentation element.
+      
+      WSDLFactory factory = WSDLFactory.eINSTANCE;
+      Import anImport = factory.createImport();
+      anImport.setNamespaceURI("http://www.test.com");
+      definition.addImport(anImport);
+      
+      Element definitionDocumentationElement = definition.getDocumentationElement();
+      assertNotNull(definitionDocumentationElement);
+      Element expectedImportElement = getNextElement(definitionDocumentationElement);
+      Element importElement = anImport.getElement();
+      assertEquals(importElement, expectedImportElement);
+      
+      // This is a bit overkill since the documentation elements are handled in the base class WSDLElementImpl but...
+      
+      // Make sure new message parts are added after the documentation element and as the last element.
+
+      Message aMessage = (Message)definition.getEMessages().get(0);
+      Part newPart = factory.createPart();
+      aMessage.addPart(newPart);
+
+      Element messageElement = aMessage.getElement();
+
+      Element messageDocumentationElement = aMessage.getDocumentationElement();
+      assertNotNull(messageDocumentationElement);
+      Element firstChildElement = getFirstChildElement(messageElement);
+      assertEquals(messageDocumentationElement, firstChildElement);
+      
+      Element partElement = newPart.getElement();
+      Element lastChildElement = getLastChildElement(messageElement);
+      assertEquals(partElement, lastChildElement);
+      
+      // Make sure new operations are added after the documentation element and as the last element.
+
+      PortType portType = (PortType)definition.getEPortTypes().get(0);
+      Operation newOperation = factory.createOperation();
+      portType.addOperation(newOperation);
+      
+      Element portTypeElement = portType.getElement();
+
+      Element portTypeDocumentationElement = portType.getDocumentationElement();
+      assertNotNull(portTypeDocumentationElement);
+      firstChildElement = getFirstChildElement(portTypeElement);
+      assertEquals(portTypeDocumentationElement, firstChildElement);
+      
+      Element newOperationElement = newOperation.getElement();
+      lastChildElement = getLastChildElement(portTypeElement);
+      assertEquals(newOperationElement, lastChildElement);
+      
+      // Make sure the output element is added after the documentation element and as the last element.
+      
+      Operation operation = (Operation)portType.getEOperations().get(0);
+      Output output = factory.createOutput();
+      operation.setOutput(output);
+
+      Element operationElement = operation.getElement();
+
+      Element operationDocumentationElement = operation.getDocumentationElement();
+      assertNotNull(operationDocumentationElement);
+      firstChildElement = getFirstChildElement(operationElement);
+      assertEquals(operationDocumentationElement, firstChildElement);
+      
+      Element outputElement = output.getElement();
+      lastChildElement = getLastChildElement(operationElement);
+      assertEquals(outputElement, lastChildElement);
+    }
+    catch (Exception e)
+    {
+      Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+    }
+  }
+
+  private Element getNextElement(Element anElement)
+  {
+    Node node = anElement.getNextSibling();
+    while (node != null && node.getNodeType() != Node.ELEMENT_NODE)
+    {
+      node = node.getNextSibling();
+    }
+    return (Element)node;
+  }
+
+  private Element getFirstChildElement(Element anElement)
+  {
+    Node node = anElement.getFirstChild();
+    while (node != null && node.getNodeType() != Node.ELEMENT_NODE)
+    {
+      node = node.getNextSibling();
+    }
+    return (Element)node;
+  }
+
+  private Element getLastChildElement(Element anElement)
+  {
+    Node node = anElement.getLastChild();
+    while (node != null && node.getNodeType() != Node.ELEMENT_NODE)
+    {
+      node = node.getPreviousSibling();
+    }
+    return (Element)node;
   }
 }

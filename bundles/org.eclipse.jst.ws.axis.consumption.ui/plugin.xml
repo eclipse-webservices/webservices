@@ -22,22 +22,7 @@
               property="CustomizeClientMappings"/>                                 
  		<map
               key="Mappings"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.DefaultsForHTTPBasicAuthCommand"
-              property="JavaWSDLParam"
-              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
- 		<map
-              key="Mappings"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.DefaultsForClientJavaWSDLCommand"
-              property="JavaWSDLParam"
-              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
- 		<map
-              key="Mappings"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand"
-              property="JavaWSDLParam"
-              transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
- 		<map
-              key="Mappings"
-              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.Stub2BeanCommand"
+              operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.ClientCodeGenOperation"
               property="JavaWSDLParam"
               transform="org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamModifier"/>
   </extension> 

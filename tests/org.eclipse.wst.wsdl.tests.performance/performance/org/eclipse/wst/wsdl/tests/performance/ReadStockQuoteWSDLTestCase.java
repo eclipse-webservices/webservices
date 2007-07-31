@@ -37,6 +37,7 @@ public class ReadStockQuoteWSDLTestCase extends PerformanceTestCase
     WSDLFactoryImpl factory = new WSDLFactoryImpl();
     WSDLReader reader = factory.newWSDLReader();
     Definition definition = reader.readWSDL(wsdl.toString(), new InputSource(wsdl.openStream()));
+    definition.getQName();
     stopMeasuring();
 	commitMeasurements();
 	assertPerformance();

@@ -4,12 +4,14 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
+ * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20070713   191357 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -29,6 +31,7 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
+import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
@@ -38,7 +41,10 @@ public class WSDLSelectionTransformer implements Transformer
   {
     if (value instanceof IStructuredSelection)
     {
-      Object sel = ((IStructuredSelection)value).getFirstElement();
+     IStructuredSelection selection = (IStructuredSelection)value;
+     if (selection != null && !selection.isEmpty()) {
+     
+      Object sel = selection.getFirstElement();
       if (sel instanceof IResource)
       {
         try
@@ -76,7 +82,13 @@ public class WSDLSelectionTransformer implements Transformer
       else if (sel instanceof BeanLink)
       {
         return new StructuredSelection(getWSDLURI((BeanLink) sel));
+      } else {
+    	  String wsdlURI = AdapterUtils.getAdaptedWSDL(sel);
+    	  if (wsdlURI != null) {
+    		  return new StructuredSelection(wsdlURI);
+    	  }
       }
+     }
     }
     return value;
   }

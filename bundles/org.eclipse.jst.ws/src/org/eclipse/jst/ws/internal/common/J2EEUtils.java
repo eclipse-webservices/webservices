@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060329   128069 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060524   131132 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -29,6 +30,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -60,6 +62,7 @@ import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.internal.operations.ProjectCreationDataModelProviderNew;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -1403,5 +1406,17 @@ public final class J2EEUtils {
 	public static IFolder getOutputContainerRoot (IVirtualComponent component) {
 		return (IFolder)J2EEProjectUtilities.getOutputContainers(component.getProject())[0];
 	}
+	
+	// 194434 - Check for non-existing EAR with contents that's not deleted previously
+	public static IStatus canCreateEAR(IProject earProject)
+    {
+		IStatus status = Status.OK_STATUS;
+		if( !earProject.exists() ){
+			IPath path = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+			path = path.append(earProject.getName());
+			status = ProjectCreationDataModelProviderNew.validateExisting(earProject.getName(), path.toOSString());
+		}
+		return status;
+    }
 	
 }

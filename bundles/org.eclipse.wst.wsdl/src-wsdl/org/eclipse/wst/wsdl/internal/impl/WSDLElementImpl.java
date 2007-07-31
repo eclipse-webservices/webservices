@@ -732,9 +732,14 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     
     if (!isAttached)
     {
+      // If we're dealing with a documentation element we need to put it first in the list
+      
       if (referencedElement == null && 
+          WSDLConstants.nodeType(childElement) == WSDLConstants.DOCUMENTATION &&
           !eReference.isMany())
     {
+      // Here we find the first element node in the list, the documentation element needs to go before this element
+        
       for (Node child = adoptionParent.getFirstChild(); child != null; child = child.getNextSibling())
       {
         if (child.getNodeType() == Node.ELEMENT_NODE)
@@ -1000,6 +1005,29 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    */
   protected QName createQName(Definition definition, String prefixedName, Element element)
   {
+     return createQName(definition, prefixedName, element, false);
+  }
+  
+  /**
+   * Creates a QName from a prefixed name. Takes into account locally defined
+   * namespace prefixes. Selectively allows null namespace URIs.
+   * 
+   * @param definition
+   *          the enclosing definition. Must not be null.
+   * @param prefixedName
+   *          the prefixed name to convert to QName
+   * @param element
+   *          the enclosing element. May be null in which case the prefix is
+   *          only looked up among the ones defined at the definition level.
+   * @param allowNullNamespaceURI if true and the prefixed name does not have 
+   *          a prefix a QName is constructed and returned using 
+   *          {@link XMLConstants#NULL_NS_URI} for the namespace URI          
+   * @return the QName equivalent for the given prefixed name, or null if a
+   *         namespace prefix cannot be found for the given namespace URI or if
+   *         the prefixed name is null. 
+   */
+  protected QName createQName(Definition definition, String prefixedName, Element element, boolean allowNullNamespaceURI)
+  {
     QName qname = null;
     if (prefixedName != null)
     {
@@ -1014,7 +1042,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
         namespace = getNamespaceURIFromPrefix(element, prefix);
       }
       
-      if (namespace != null)
+      if (namespace != null || (allowNullNamespaceURI && prefix.length() == 0))
       {
         String localPart = prefixedName.substring(index + 1);
         qname = new QName(namespace, localPart);       

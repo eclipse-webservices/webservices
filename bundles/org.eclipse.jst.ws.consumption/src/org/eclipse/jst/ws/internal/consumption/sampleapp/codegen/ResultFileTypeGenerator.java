@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070410   180952 makandre@ca.ibm.com - Andrew Mak, Sample JSP generator chokes on interfaces and abstract classes
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
@@ -69,34 +72,40 @@ public class ResultFileTypeGenerator extends ResultFileHelp2Generator
        String typeName = typeElement.getName(); 
        fTypeIdName = idName(typeName);
               
-       AttributeVisitor attributeVisitor = new AttributeVisitor();
-       ResultFileAttributeGenerator resultFileAttributeGenerator = new ResultFileAttributeGenerator(fbuffer);
-       resultFileAttributeGenerator.setNumberFactory(getNumberFactory());
-       attributeVisitor.run(typeElement,resultFileAttributeGenerator);
-       setNumberFactory(resultFileAttributeGenerator.getNumberFactory());
-       fbuffer = resultFileAttributeGenerator.getStringBuffer();
-
-       FieldVisitor fieldVisitor = new FieldVisitor();
-       ResultFileAttributeGenerator resultFileAttributeGenerator2 = new ResultFileAttributeGenerator(fbuffer);
-       resultFileAttributeGenerator2.setNumberFactory(getNumberFactory());
-       fieldVisitor.run(typeElement,resultFileAttributeGenerator2);
-       setNumberFactory(resultFileAttributeGenerator2.getNumberFactory());
-       fbuffer = resultFileAttributeGenerator2.getStringBuffer();
+       if (!Boolean.TRUE.equals(typeElement.getPropertyAsObject(TypeElement.NON_INSTANTIABLE))) {
+       
+	       AttributeVisitor attributeVisitor = new AttributeVisitor();
+	       ResultFileAttributeGenerator resultFileAttributeGenerator = new ResultFileAttributeGenerator(fbuffer);
+	       resultFileAttributeGenerator.setNumberFactory(getNumberFactory());
+	       attributeVisitor.run(typeElement,resultFileAttributeGenerator);
+	       setNumberFactory(resultFileAttributeGenerator.getNumberFactory());
+	       fbuffer = resultFileAttributeGenerator.getStringBuffer();
+	
+	       FieldVisitor fieldVisitor = new FieldVisitor();
+	       ResultFileAttributeGenerator resultFileAttributeGenerator2 = new ResultFileAttributeGenerator(fbuffer);
+	       resultFileAttributeGenerator2.setNumberFactory(getNumberFactory());
+	       fieldVisitor.run(typeElement,resultFileAttributeGenerator2);
+	       setNumberFactory(resultFileAttributeGenerator2.getNumberFactory());
+	       fbuffer = resultFileAttributeGenerator2.getStringBuffer();
 
       
-       fbuffer.append(Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE);
-       fbuffer.append(Generator.DOUBLE_TAB + "<jsp:useBean id=\"" + fTypeIdName + "\" scope=\"session\" class=\"" + typeName + "\" />" + StringUtils.NEWLINE);
-       fbuffer.append(Generator.DOUBLE_TAB + "<%" + StringUtils.NEWLINE);
-         
-       Enumeration e = resultFileAttributeGenerator.getResidentVector().elements();
-       while(e.hasMoreElements()){
-          fbuffer.append(Generator.DOUBLE_TAB + fTypeIdName + "." + e.nextElement() + StringUtils.NEWLINE);
-       }
-
-       Enumeration e2 = resultFileAttributeGenerator2.getResidentVector().elements();
-       while(e2.hasMoreElements()){
-          fbuffer.append(Generator.DOUBLE_TAB + fTypeIdName + "." + e2.nextElement() + StringUtils.NEWLINE);
-       } 
+	       fbuffer.append(Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE);
+	       fbuffer.append(Generator.DOUBLE_TAB + "<jsp:useBean id=\"" + fTypeIdName + "\" scope=\"session\" class=\"" + typeName + "\" />" + StringUtils.NEWLINE);
+	       fbuffer.append(Generator.DOUBLE_TAB + "<%" + StringUtils.NEWLINE);
+	       
+	       Enumeration e = resultFileAttributeGenerator.getResidentVector().elements();
+	       while(e.hasMoreElements()){
+	          fbuffer.append(Generator.DOUBLE_TAB + fTypeIdName + "." + e.nextElement() + StringUtils.NEWLINE);
+	       }
+	
+	       Enumeration e2 = resultFileAttributeGenerator2.getResidentVector().elements();
+	       while(e2.hasMoreElements()){
+	          fbuffer.append(Generator.DOUBLE_TAB + fTypeIdName + "." + e2.nextElement() + StringUtils.NEWLINE);
+	       } 
+	   }
+       else
+    	   fbuffer.append(Generator.DOUBLE_TAB + typeName + " " + fTypeIdName + " = null;"+ StringUtils.NEWLINE);     
+       
        putResidentVector(fTypeIdName);
        //end of changes
      

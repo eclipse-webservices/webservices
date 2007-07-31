@@ -639,17 +639,17 @@ public class PartImpl extends WSDLElementImpl implements Part
   {
     Definition definition = getEnclosingDefinition();
 
-    String name = changedElement.getAttributeNS(null, "name");
+    String name = changedElement.getAttributeNS(null, WSDLConstants.NAME_ATTRIBUTE);
     if (name != null)
     {
       setName(name);
     }
 
     String elementAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.ELEMENT_ATTRIBUTE);
-    setElementName(elementAttr != null ? createQName(definition, elementAttr, element) : null);
+    setElementName(elementAttr != null ? createQName(definition, elementAttr, element, true) : null);
 		    
     String typeAttr = WSDLConstants.getAttribute(changedElement, WSDLConstants.TYPE_ATTRIBUTE);
-    setTypeName(typeAttr != null ? createQName(definition, typeAttr, element) : null);
+    setTypeName(typeAttr != null ? createQName(definition, typeAttr, element, true) : null);
 
     reconcileReferences(false);
   }

@@ -9,7 +9,8 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070202   172615 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -106,9 +107,10 @@ public class TDJavaAxisTC50 extends WSWizardTomcat50Test {
 	public void testTDJavaAxisTC50() throws Exception {
 	  
 	  IStatus status = Status.OK_STATUS;
+	  JUnitUtils.setTDScenarioDefaults();
 
 	  status = JUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_TOP_DOWN,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
-
+	  
 		if (status.getSeverity() == Status.OK)
 		  verifyOutput();
 		else {

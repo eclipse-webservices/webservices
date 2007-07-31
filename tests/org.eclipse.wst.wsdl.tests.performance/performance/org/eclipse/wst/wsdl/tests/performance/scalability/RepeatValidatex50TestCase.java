@@ -24,7 +24,7 @@ public class RepeatValidatex50TestCase extends RepeatRunWSDLValidatorTestCase
     {
       super.execute();
     }
-    catch (Throwable t)
+    catch (Exception t)
     {
       fail(t.getMessage());
     }

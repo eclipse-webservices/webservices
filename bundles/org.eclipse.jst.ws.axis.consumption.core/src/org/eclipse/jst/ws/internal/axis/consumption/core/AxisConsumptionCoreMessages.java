@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070412   177005 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core;
 
@@ -31,7 +34,8 @@ public final class AxisConsumptionCoreMessages extends NLS {
 	public static String MSG_ERROR_JAVA_WSDL_PARAM_NOT_SET;
 	public static String MSG_ERROR_MOVE_RESOURCE;
 	public static String MSG_ERROR_CREATE_TEMP_DIR;
-
+  public static String MSG_ERROR_FOLDER_NOT_FOUND;
+  
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, AxisConsumptionCoreMessages.class);
 	}

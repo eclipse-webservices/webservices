@@ -171,11 +171,11 @@
   	<antcall target="Validate10WSDLsXSDDependsTestCase"/>
   	<antcall target="Validate10WSDLsXSDDependsTestCase"/>
   	<antcall target="Validate10WSDLsXSDDependsTestCase"/>
-  	
+<!--  	
   	<antcall target="Validate1000WSDLsCrossDependsTestCase"/>
   	<antcall target="Validate1000WSDLsCrossDependsTestCase"/>
   	<antcall target="Validate1000WSDLsCrossDependsTestCase"/>
- 	
+--> 	
   	<antcall target="Validate100WSDLsCrossDependsTestCase"/>
   	<antcall target="Validate100WSDLsCrossDependsTestCase"/>
   	<antcall target="Validate100WSDLsCrossDependsTestCase"/>

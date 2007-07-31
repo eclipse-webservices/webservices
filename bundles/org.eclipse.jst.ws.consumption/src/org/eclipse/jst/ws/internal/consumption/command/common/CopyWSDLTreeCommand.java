@@ -10,6 +10,9 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070112   165721 makandre@ca.ibm.com - Andrew Mak, WSDL import cannot use relative import with to parent directories
+ * 20070308   176649 makandre@ca.ibm.com - Andrew Mak, CopyWSDLTreeCommand does not handle "\" correctly in an absolute wsdl URL
+ * 20070326   179337 makandre@ca.ibm.com - Andrew Mak, Regen web service skeleton re-copies wsdl and xsd onto themselves
+ * 20070531   189734 makandre@ca.ibm.com - Andrew Mak, IResource.refreshLocal needed if we want to take advantage of 179337
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -47,6 +50,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.UniversalPathTransformer;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -104,10 +108,29 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
   private class CopyWSDLRunnable implements IWorkspaceRunnable {
   	
   	private IEnvironment environment = null;
+  	private UniversalPathTransformer transformer = null;
   	
   	protected CopyWSDLRunnable(IEnvironment env){
   		environment = env;
+  		transformer = new UniversalPathTransformer();
   	}
+  	
+	/*
+	 * Compares the 2 uris and see if they point to the same file. 
+	 * We need to convert both uris to filesystem uris in order to compare.
+	 */	
+	private boolean isSameLocation(String uri1, String uri2) {
+
+		// if either uri is null, we cannot make any meaningful comparison
+		if (uri1 == null || uri2 == null)
+			return false;
+		
+		uri1 = transformer.toLocation(uri1);
+		uri2 = transformer.toLocation(uri2);
+		
+		return uri1.equals(uri2);
+	}
+	
   	public void run(IProgressMonitor pm) throws CoreException {
   		ignoreList = new Vector();
   		xmlObjectInfos = new Vector();
@@ -134,7 +157,13 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
   					if (definition == def)
   						wsdlRelPath = relPath.toString();
 
-  					writeXMLObj(environment, baseDestinationURI, relPath.toString(), definition);
+  					String destURI = writeXMLObj(environment, baseDestinationURI, relPath.toString(), definition);
+  					
+  					// for the starting wsdl, if the the source path and destination path are the same,
+  					// we do not need to copy the rest of the files onto themselves (bug 179337)
+  					if (definition == def && wsdlURI != null &&
+  						isSameLocation(normalize(wsdlURI), normalize(destURI)))
+  						return;
   				}
   				else
   					writeXMLObj(environment, baseDestinationURI, relPath.toString(), (XSDSchema) info.content);
@@ -189,8 +218,8 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
     }
   }    
   
-  // write a wsdl file
-  private void writeXMLObj(IEnvironment env, String destURI, String destLocalname, Definition definition) 
+  // write a wsdl file, returns the uri of the file written.
+  private String writeXMLObj(IEnvironment env, String destURI, String destLocalname, Definition definition) 
 	throws WSDLException, IOException, URIException {
 	
 	StringBuffer destinationFileURI = new StringBuffer(addTrailingSeparator(destURI));
@@ -201,10 +230,12 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
     OutputStream os = env.getURIFactory().newURI(destinationFileURI.toString()).getOutputStream();
     wsdlWriter.writeWSDL(definition, os);
     os.close();
+    
+    return destinationFileURI.toString();
   }
   
-  // write an xsd file
-  private void writeXMLObj(IEnvironment env, String destURI, String destLocalname, XSDSchema xsdSchema) 
+  // write an xsd file, returns the uri of the file written.
+  private String writeXMLObj(IEnvironment env, String destURI, String destLocalname, XSDSchema xsdSchema) 
 	throws TransformerConfigurationException, URIException, TransformerException, IOException {
 		
 	StringBuffer destinationFileURI = new StringBuffer(addTrailingSeparator(destURI));
@@ -219,6 +250,8 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
 	OutputStream os = env.getURIFactory().newURI(destinationFileURI.toString()).getOutputStream();
 	serializer.transform(domSource, new StreamResult(os));
 	os.close();
+	
+	return destinationFileURI.toString();
   }  
   
   private void copyWSDL(IEnvironment env, String uri, String destURI, String destLocalname) throws WSDLException, IOException, WWWAuthenticationException, TransformerException, TransformerConfigurationException, URIException
@@ -443,6 +476,8 @@ public class CopyWSDLTreeCommand extends AbstractDataModelOperation
 	  
   public void setWsdlURI(String wsdlURI)
   {
+    if (wsdlURI != null)
+        wsdlURI = wsdlURI.replace('\\', '/');
     this.wsdlURI = wsdlURI;
   }
 
