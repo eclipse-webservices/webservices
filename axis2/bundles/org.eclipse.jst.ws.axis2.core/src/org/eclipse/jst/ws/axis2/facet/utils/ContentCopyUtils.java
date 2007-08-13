@@ -15,6 +15,7 @@
  * 										  facet to the framework for 168766
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
+ * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -51,6 +52,7 @@ public class ContentCopyUtils {
 	private static IWorkspace workspace_ = null;
 	private List fileAndDirectoriesList = new ArrayList();
 	FileInputStream finStream = null;		
+	private List checkList = null;
 
 	/**
 	 * This method will copy the source directory into the eclipse workspace 
@@ -59,14 +61,20 @@ public class ContentCopyUtils {
 	 * @param destinationDir
 	 * @param monitor
 	 * @param statusHandler
-	 * @return
+	 * @return IStatus : Status of the operation
 	 */
 	public IStatus copyDirectoryRecursivelyIntoWorkspace(String sourceDir, 
-									String destinationDir,IProgressMonitor monitor) {
+						String destinationDir,IProgressMonitor monitor, boolean includeListSet) {
 		IStatus status = Status.OK_STATUS;
+		//First of all clear the content in the targeted list
 		fileAndDirectoriesList.clear();
 		File axis2WebappFolder = new File(sourceDir);
-		visitAllDirsAndFiles(axis2WebappFolder);
+		if (includeListSet) {
+			visitAllDirsAndFilesWithIncludeList(axis2WebappFolder,checkList);
+		}else{
+			visitAllDirsAndFilesWithIgnoreList(axis2WebappFolder,checkList);
+		}
+		
 		List deployFiles = new ArrayList();
 		deployFiles= fileAndDirectoriesList;
 
@@ -127,21 +135,63 @@ public class ContentCopyUtils {
 		return status;
 
 	}
+	
+	public void updateCheckList(List list){
+		checkList = list;
+	}
 
-	//	Process all files and directories under dir
-	private void visitAllDirsAndFiles(File dir) {
-
-		fileAndDirectoriesList.add(dir.getAbsolutePath());
-
-		if (dir.isDirectory()) {
-			String[] children = dir.list();
-			for (int i=0; i<children.length; i++) {
-				visitAllDirsAndFiles(new File(dir, children[i]));
+	/**
+	 * Load the list with directory contents (files/folders) excluding the ignore list
+	 * @param dir
+	 * @param ignoreList
+	 */
+	private void visitAllDirsAndFilesWithIgnoreList(File dir, List ignoreList) {
+		if(!checkCheckListHit(dir,ignoreList)){
+			fileAndDirectoriesList.add(dir.getAbsolutePath());
+			if (dir.isDirectory()) {
+				String[] children = dir.list();
+				for (int i=0; i<children.length; i++) {
+					visitAllDirsAndFilesWithIgnoreList(new File(dir, children[i]),ignoreList);
+				}
 			}
 		}
 	}
 	
+	/**
+	 * Load the list with directory contents (files/folders) only match with the include list 
+	 * @param dir
+	 * @param includeList
+	 */
+	private void visitAllDirsAndFilesWithIncludeList(File dir, List includeList) {
+		if(checkCheckListHit(dir,includeList)){
+			fileAndDirectoriesList.add(dir.getAbsolutePath());
+		}
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i=0; i<children.length; i++) {
+				visitAllDirsAndFilesWithIncludeList(new File(dir, children[i]),includeList);
+			}
+		}
+	}
 	
+	/**
+	 * Check the <code>file</code> pass in, matches a file in the <code>list</code>
+	 * @param file 
+	 * @param list
+	 * @return result of the check
+	 */
+	private boolean checkCheckListHit(File file, List list){
+		if(list != null){
+			Iterator iterator = list.iterator();
+			while (iterator.hasNext()) {
+				String elem = (String) iterator.next();
+				if(elem.equals(file.getAbsoluteFile().toString())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	private static IFolder makeFolder (
 		    ResourceContext  resourceContext,
@@ -228,7 +278,9 @@ public class ContentCopyUtils {
 	   throws CoreException
 	 {
 	 	return makeFolderPathAtLocation(resourceContext,
-	 		getWorkspaceRoot().getContainerForLocation(absolutePath),
+ 			getWorkspaceRoot().getContainerForLocation(absolutePath),
+	 		//getWorkspaceRoot().getContainerForLocation(new Path("/home/sandakith/temp/Test/Test/WebContent")),
+	 		//"/home/sandakith/Eclipse_Workspace/workspace/testThis"
 	 		progressMonitor);
 	 }
 	 

@@ -17,6 +17,7 @@
  * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
  * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
+ * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin.messages;
 
@@ -34,6 +35,7 @@ public final class Axis2CoreUIMessages extends NLS {
 	public static final String  NULL="";										//$NON-NLS-1$
 	public static final String ADB="adb";										//$NON-NLS-1$
 	public static final String AAR="aar";										//$NON-NLS-1$
+	public static final String JAR="jar";										//$NON-NLS-1$
 	public static final String TEMP_AXIS2_FACET_DIR="org.apache.axis2.facet";	//$NON-NLS-1$
 	public static final String DIR_DOT_METADATA=".metadata";					//$NON-NLS-1$
 	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$

@@ -15,18 +15,23 @@
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
+ * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
@@ -35,6 +40,7 @@ import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.core.utils.RuntimePropertyUtils;
+import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 import org.eclipse.jst.ws.axis2.facet.utils.Axis2RuntimeUtils;
 import org.eclipse.jst.ws.axis2.facet.utils.Axis2WebappUtils;
 import org.eclipse.jst.ws.axis2.facet.utils.ContentCopyUtils;
@@ -81,12 +87,34 @@ AbstractDataModelOperation {
 			return handleExceptionStatus(e);
 		}
 		
+		//First Setting the libs folder as ignored and then copy the content of the runtime
+		IPath libPath = new Path(runtimeLocation);
+		libPath = libPath.append(Axis2FacetUIMessages.DIR_WEB_INF);
+		libPath = libPath.append(Axis2CoreUIMessages.DIR_LIB);
+		List<String> ignoreList = new ArrayList<String>();
+		ignoreList.add(libPath.toOSString());
+		contentCopyUtils.updateCheckList(ignoreList);
+		
 		status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
 				runtimeLocation, 
 				FacetContainerUtils.pathToWebProjectContainer(project.toString()), 
-				monitor 
+				monitor,
+				false
 		);
 		
+		// After that copy the nesessery set of libraries to the project again
+		List<String> includeList = new ArrayList<String>();
+		contentCopyUtils.updateCheckList(loadIncludeListWithAxis2Libs(libPath.toOSString(),
+				includeList));
+		String[] nodes = {Axis2FacetUIMessages.DIR_WEB_INF,Axis2CoreUIMessages.DIR_LIB};
+		status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
+				libPath.toOSString(), 
+				FileUtils.addNodesToPath(
+						FacetContainerUtils.pathToWebProjectContainer(project.toString()), 
+						nodes), 
+				monitor,
+				true
+		);
 
 		//Merge web.xml Files
 		MergeWEBXMLCommand mergeWebXMLCommand = new MergeWEBXMLCommand();
@@ -115,5 +143,24 @@ AbstractDataModelOperation {
 		status = new Status(1,project.toString(),1,Axis2CoreUIMessages.ERROR_SERVER_IS_NOT_SET,e);
 		cleanupIfFacetStatusFailed(Axis2CoreUtils.tempAxis2Directory());
 		return status;
+	}
+	
+	/**
+	 * Load the exact libs from the axis2 jars with the correct versions to the 
+	 * <code>path</code>. This way we can 
+	 * @param runtimeLocation
+	 * @param includeList
+	 * @return loaded list
+	 */
+	private List loadIncludeListWithAxis2Libs(String path, List includeList){
+		for (int i = 0; i < Axis2FacetUIMessages.AXIS2_LIB_PREFIXES.length; i++) {
+			File[] fileList = FileUtils.getMatchingFiles(path,
+					Axis2FacetUIMessages.AXIS2_LIB_PREFIXES[i], 
+					Axis2CoreUIMessages.JAR);
+			for (int j = 0; j < fileList.length; j++) {
+				includeList.add(fileList[j].getAbsolutePath());
+			}
+		}
+		return includeList;
 	}
 }

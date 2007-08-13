@@ -15,6 +15,7 @@
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  * 20070730   194786 sandakith@wso2.com - Lahiru Sandakith, adding servletapi jar filter
+ * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.messages;
 
@@ -29,6 +30,24 @@ public final class Axis2FacetUIMessages extends NLS {
 	public static final String DIR_AXIS2_WEB="axis2-web";//$NON-NLS-1$
 	public static final String FILE_WEB_XML="web.xml";//$NON-NLS-1$
 	public static final String FILE_SERVLET_API="servletapi";//$NON-NLS-1$
+	
+	public static final String[] AXIS2_LIB_PREFIXES = {		//$NON-NLS-1$
+        "ant",
+        "axiom",
+        "axis2",
+        "commons",
+        "log4j",
+        "neethi",
+        "stax",
+        "wsdl4j",
+        "wstx",
+        "xbean",
+        "XmlSchema",
+        "woden",
+        "activation",
+        "annogen",
+        "backport-util"
+	};
 
 	private Axis2FacetUIMessages() {
 		// Do not instantiate
