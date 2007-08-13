@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
+import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
@@ -50,14 +51,17 @@ public class Axis2WebservicesServerCommand extends AbstractDataModelOperation {
 		IEnvironment environment = getEnvironment();
 		IStatusHandler statusHandler = environment.getStatusHandler();	
 
-		 String currentDynamicWebProjectDir = J2EEUtils.getWebContentPath(
-				 				ResourcesPlugin.getWorkspace().getRoot().getProject(
-				 				model.getWebProjectName())
-						).toOSString();
-
-		String webContainerDirString = FileUtils.addAnotherNodeToPath(
-				ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString(),
-				currentDynamicWebProjectDir);
+//		 String currentDynamicWebProjectDir = J2EEUtils.getWebContentPath(
+//				 				ResourcesPlugin.getWorkspace().getRoot().getProject(
+//				 				model.getWebProjectName())
+//						).toOSString();
+//
+//		String webContainerDirString = FileUtils.addAnotherNodeToPath(
+//				ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString(),
+//				currentDynamicWebProjectDir);
+		
+		String webContainerDirString = FacetContainerUtils.pathToWebProjectContainer(
+				model.getWebProjectName());
 
 		ContentCopyUtils contentCopyUtils = new ContentCopyUtils();
 		

@@ -31,6 +31,7 @@ import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDL2JavaGenerator;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
+import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
@@ -59,7 +60,9 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
 		
 		PathLoadingUtil.init(model);
 		String tempCodegenOutputLocation =PathLoadingUtil.getTempCodegenOutputLocation();
-		String currentDynamicWebProjectDir = PathLoadingUtil.getCurrentDynamicWebProjectDir();
+//		String currentDynamicWebProjectDir = PathLoadingUtil.getCurrentDynamicWebProjectDir();
+		String currentDynamicWebProjectDir = FacetContainerUtils.getProjectRoot(
+				                                  model.getWebProjectName()).toOSString();
 		
 		File tempCodegenLocationFile = new File(tempCodegenOutputLocation);
 		if (tempCodegenLocationFile.exists())FileUtils.deleteDirectories(tempCodegenOutputLocation);

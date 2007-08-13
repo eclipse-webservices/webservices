@@ -34,6 +34,7 @@ import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDL2JavaGenerator;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
+import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -57,9 +58,8 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 		
 		String workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot().
 													getLocation().toOSString();
-		String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(
-														workspaceDirectory,
-														model.getWebProjectName());
+		String currentDynamicWebProjectDir = FacetContainerUtils.getProjectRoot(
+				                                  model.getWebProjectName()).toOSString();
 		String matadataDir = FileUtils.addAnotherNodeToPath(
 										workspaceDirectory,
 										Axis2ConsumptionUIMessages.DIR_DOT_METADATA);

@@ -33,32 +33,52 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
 public class FacetContainerUtils {
+	
+	public static IPath getWorkspace(){
+		return ResourcesPlugin.getWorkspace().getRoot().getLocation();
+	}
+	
+	public static IProject getProjectName(String project){
+		String projectString = replaceEscapecharactors(project.toString());
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(
+				getProjectNameFromFramewokNameString(projectString));
+	}
+	
+	public static IPath getProjectRoot(String project){
+		String projectString = replaceEscapecharactors(project.toString());
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(
+				getProjectNameFromFramewokNameString(projectString)).getLocation();
+	}
 
 	public static String  pathToWebProjectContainer(String project) {
-
-		String workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot()
-												   .getLocation().toOSString();
-		String projectString = replaceEscapecharactors(project.toString());
-
-		String currentDynamicWebProjectDir = J2EEUtils.getWebContentPath(
-				ResourcesPlugin.getWorkspace().getRoot().getProject(
-						getProjectNameFromFramewokNameString(projectString)
-						)).toOSString();
-
-		String webContainerDirString = Axis2CoreUtils.addAnotherNodeToPath(
-				workspaceDirectory,
-				currentDynamicWebProjectDir);
+		IPath projectRoot = getProjectRoot(project);
+		IPath currentDynamicWebProjectDir = J2EEUtils.getWebContentPath(
+				getProjectName(project));
+		IPath currentDynamicWebProjectDirWithoutProjectRoot = J2EEUtils.getWebContentPath(
+				getProjectName(project)).removeFirstSegments(1).makeAbsolute();
+		if(projectRoot.toOSString().contains(getWorkspace().toOSString())){
+			return getWorkspace()
+						.append(currentDynamicWebProjectDir).toOSString();
+		}else{
+			return projectRoot
+						.append(currentDynamicWebProjectDirWithoutProjectRoot).toOSString();
+		}
 		
-		return webContainerDirString;
 	}
 	
 	public static String  pathToWebProjectContainerWEBINF(String project) {
-		IPath workspaceDirectory = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-		String projectString = replaceEscapecharactors(project.toString());
-		IPath webContainerWEBINF = J2EEUtils.getWebInfPath(
-					ResourcesPlugin.getWorkspace().getRoot().getProject(
-						getProjectNameFromFramewokNameString(projectString)));
-		return workspaceDirectory.append(webContainerWEBINF).toOSString();
+		IPath projectRoot = getProjectRoot(project);
+		IPath webContainerWEBINFDir = J2EEUtils.getWebInfPath(
+				getProjectName(project));
+		IPath webContainerWEBINFDirWithoutProjectRoot = J2EEUtils.getWebInfPath(
+				getProjectName(project)).removeFirstSegments(1).makeAbsolute();
+		if(projectRoot.toOSString().contains(getWorkspace().toOSString())){
+			return getWorkspace()
+						.append(webContainerWEBINFDir).toOSString();
+		}else{
+			return projectRoot
+						.append(webContainerWEBINFDirWithoutProjectRoot).toOSString();
+		}
 	}
 	
 	public static String  pathToWebProjectContainerMETAINF(String project) {

@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
@@ -57,8 +58,10 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 //		String workspaceDirectory = ResourceUtils.getWorkspaceRoot().getLocation().toOSString();
 		String workspaceDirectory = ResourcesPlugin.getWorkspace()
 														.getRoot().getLocation().toOSString();
-		String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, 
-														model.getWebProjectName());
+//		String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, 
+//				model.getWebProjectName());
+		String currentDynamicWebProjectDir = FacetContainerUtils.getProjectRoot( 
+														model.getWebProjectName()).toOSString();
 		String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,
 														Axis2CreationUIMessages.DIR_DOT_METADATA);
 	    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,
@@ -94,10 +97,25 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 	    FileUtils.copyDirectory(currentProjectResourcesDir, new File(metaInfDirectory));
         
         //Copy the classes directory to the sevices directory
-        IPath defaultClassesSubDirectory = ResourceUtils.getJavaOutputLocation(
+        String classesDirectory = null;
+		IPath projectRoot = FacetContainerUtils.getProjectRoot(project);
+		IPath defaultClassesSubDirectory = ResourceUtils.getJavaOutputLocation(
         		ResourcesPlugin.getWorkspace().getRoot().getProject(project));
-        String classesDirectory = FileUtils.addAnotherNodeToPath(workspaceDirectory,
-        									defaultClassesSubDirectory.toOSString());
+		IPath defaultClassesSubDirectoryWithoutProjectRoot = ResourceUtils.getJavaOutputLocation(
+        		ResourcesPlugin.getWorkspace().getRoot().getProject(project))
+        		.removeFirstSegments(1).makeAbsolute();
+		if(projectRoot.toOSString().contains(FacetContainerUtils.getWorkspace().toOSString())){
+			classesDirectory = FacetContainerUtils.getWorkspace()
+						.append(defaultClassesSubDirectory).toOSString();
+		}else{
+			classesDirectory = projectRoot
+						.append(defaultClassesSubDirectoryWithoutProjectRoot).toOSString();
+		}
+		
+//        IPath defaultClassesSubDirectory = ResourceUtils.getJavaOutputLocation(
+//        		ResourcesPlugin.getWorkspace().getRoot().getProject(project));
+//        String classesDirectory = FileUtils.addAnotherNodeToPath(workspaceDirectory,
+//        									defaultClassesSubDirectory.toOSString());
         //TODO copy only the relevent .classes to the aar
 		FileUtils.copyDirectory(new File(classesDirectory),
 								new File(currentservicesDirectory));
