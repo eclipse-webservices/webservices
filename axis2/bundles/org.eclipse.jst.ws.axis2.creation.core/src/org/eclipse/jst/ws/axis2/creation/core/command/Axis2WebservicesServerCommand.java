@@ -11,14 +11,14 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
- * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes 
+ * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
+ * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
 import java.io.File;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -28,7 +28,6 @@ import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -51,15 +50,6 @@ public class Axis2WebservicesServerCommand extends AbstractDataModelOperation {
 		IEnvironment environment = getEnvironment();
 		IStatusHandler statusHandler = environment.getStatusHandler();	
 
-//		 String currentDynamicWebProjectDir = J2EEUtils.getWebContentPath(
-//				 				ResourcesPlugin.getWorkspace().getRoot().getProject(
-//				 				model.getWebProjectName())
-//						).toOSString();
-//
-//		String webContainerDirString = FileUtils.addAnotherNodeToPath(
-//				ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString(),
-//				currentDynamicWebProjectDir);
-		
 		String webContainerDirString = FacetContainerUtils.pathToWebProjectContainer(
 				model.getWebProjectName());
 

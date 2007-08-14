@@ -12,6 +12,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   184740 sandakith@wso2.com - Lahiru Sandakith
  * 20070625   192522 sandakith@wso2.com - Lahiru Sandakith, fix the build path problem
+ * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -51,15 +52,11 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 		throws ExecutionException {
 	IStatus status = Status.OK_STATUS;  
 	IEnvironment environment = getEnvironment();
-	//The full Qulalified Service Class
-//	String serviceDefinition = ws.getWebServiceInfo().getWsdlURL(); 
+
 	try {
 		
-//		String workspaceDirectory = ResourceUtils.getWorkspaceRoot().getLocation().toOSString();
 		String workspaceDirectory = ResourcesPlugin.getWorkspace()
 														.getRoot().getLocation().toOSString();
-//		String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, 
-//				model.getWebProjectName());
 		String currentDynamicWebProjectDir = FacetContainerUtils.getProjectRoot( 
 														model.getWebProjectName()).toOSString();
 		String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,
@@ -112,10 +109,6 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 						.append(defaultClassesSubDirectoryWithoutProjectRoot).toOSString();
 		}
 		
-//        IPath defaultClassesSubDirectory = ResourceUtils.getJavaOutputLocation(
-//        		ResourcesPlugin.getWorkspace().getRoot().getProject(project));
-//        String classesDirectory = FileUtils.addAnotherNodeToPath(workspaceDirectory,
-//        									defaultClassesSubDirectory.toOSString());
         //TODO copy only the relevent .classes to the aar
 		FileUtils.copyDirectory(new File(classesDirectory),
 								new File(currentservicesDirectory));

@@ -14,6 +14,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
  * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
+ * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -60,7 +61,6 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
 		
 		PathLoadingUtil.init(model);
 		String tempCodegenOutputLocation =PathLoadingUtil.getTempCodegenOutputLocation();
-//		String currentDynamicWebProjectDir = PathLoadingUtil.getCurrentDynamicWebProjectDir();
 		String currentDynamicWebProjectDir = FacetContainerUtils.getProjectRoot(
 				                                  model.getWebProjectName()).toOSString();
 		

@@ -16,6 +16,7 @@
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
  * 20070612   192047 kathy@ca.ibm.com   - Kathy Chan
+ * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 

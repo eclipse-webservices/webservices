@@ -12,6 +12,7 @@
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070625   192522 sandakith@wso2.com - Lahiru Sandakith, fix the build path problem
+ * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -33,7 +34,6 @@ import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
 import org.eclipse.jst.ws.axis2.creation.core.utils.CommonUtils;
 import org.eclipse.jst.ws.axis2.creation.core.utils.ServiceXMLCreator;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -63,11 +63,8 @@ public class Axis2BUServiceCreationCommand extends
 		String serviceClass = ws.getWebServiceInfo().getImplURL(); 
 		try {
 			
-//			String workspaceDirectory = ResourceUtils.getWorkspaceRoot().getLocation().toOSString();
 			String workspaceDirectory = ResourcesPlugin.getWorkspace()
 														.getRoot().getLocation().toOSString();
-			String currentDynamicWebProjectDir = FileUtils.addAnotherNodeToPath(workspaceDirectory, 
-														model.getWebProjectName());
 			String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,
 														Axis2CreationUIMessages.DIR_DOT_METADATA);
 		    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,
@@ -136,11 +133,6 @@ public class Axis2BUServiceCreationCommand extends
     						.append(defaultClassesSubDirectoryWithoutProjectRoot).toOSString();
     		}
     		
-//            IPath defaultClassesSubDirectory = ResourceUtils.getJavaOutputLocation(
-//            		ResourcesPlugin.getWorkspace().getRoot().getProject(project));
-//            
-//            String classesDirectory = FileUtils.addAnotherNodeToPath(workspaceDirectory,
-//            									defaultClassesSubDirectory.toOSString());
             //TODO copy only the relevent .classes to the aar
 			FileUtils.copyDirectory(new File(classesDirectory),
 									new File(servicesDirectory));

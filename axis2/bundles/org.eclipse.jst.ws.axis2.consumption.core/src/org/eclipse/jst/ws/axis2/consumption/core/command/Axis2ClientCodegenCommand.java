@@ -14,6 +14,7 @@
  * 20070206   172186 sandakith@wso2.com	- Fix for 172186, Added a check to overcome the issue.
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   185398 sandakith@wso2.com - Lahiru Sandakith
+ * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
