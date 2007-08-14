@@ -15,6 +15,7 @@
  * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
  * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
+ * 20070814   187840 sandakith@wso2.com - Lahiru Sandakith, Fixing 187840 ITE message
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -184,7 +185,7 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
 	} catch (Exception e) {
 		status = StatusUtils.errorStatus(NLS.bind(
 											Axis2CreationUIMessages.ERROR_CODEGEN_EXCEPTION,
-											new String[]{e.getLocalizedMessage()}),
+											new String[]{" : "+e.getCause()}),
 										e);
 		e.printStackTrace();
 		environment.getStatusHandler().reportError(status); 

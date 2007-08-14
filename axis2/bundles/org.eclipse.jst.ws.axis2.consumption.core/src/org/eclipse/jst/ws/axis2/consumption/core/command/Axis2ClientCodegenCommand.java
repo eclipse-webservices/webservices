@@ -15,6 +15,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   185398 sandakith@wso2.com - Lahiru Sandakith
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
+ * 20070814   187840 sandakith@wso2.com - Lahiru Sandakith, Fixing 187840 ITE message
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -194,7 +195,7 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 	} catch (Exception e) {
 		status = StatusUtils.errorStatus(NLS.bind(
 											Axis2ConsumptionUIMessages.ERROR_CODEGEN_EXCEPTION,
-											new String[]{e.getLocalizedMessage()}),
+											new String[]{" : "+e.getCause()}),
 										e);
 		environment.getStatusHandler().reportError(status); 
 	}
