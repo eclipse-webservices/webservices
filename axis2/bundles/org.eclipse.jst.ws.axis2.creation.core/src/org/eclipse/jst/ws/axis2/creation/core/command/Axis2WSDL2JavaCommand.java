@@ -16,6 +16,7 @@
  * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  * 20070814   187840 sandakith@wso2.com - Lahiru Sandakith, Fixing 187840 ITE message
+ * 20070814   193593 sandakith@wso2.com - Lahiru Sandakith, custom package name fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -147,12 +148,16 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
 		Method getTargetNamespaceMethod = AxisServiceClass.getMethod("getTargetNamespace", null);
 		Object targetNamespace = getTargetNamespaceMethod.invoke(axisServiceInstance, null);
 		
-		
-		Class URLProcessorClass = ClassLoadingUtil
-				.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
-		Method makePackageNameMethod = URLProcessorClass
-				.getMethod("makePackageName", new Class[]{String.class});
-		Object stringReturn = makePackageNameMethod.invoke(null, new Object[]{targetNamespace});
+		Object stringReturn = null;
+		if(model.getPackageText()!=null){
+			stringReturn = model.getPackageText();
+		}else{
+			Class URLProcessorClass = ClassLoadingUtil
+					.loadClassFromAntClassLoader("org.apache.axis2.util.URLProcessor");
+			Method makePackageNameMethod = URLProcessorClass
+					.getMethod("makePackageName", new Class[]{String.class});
+			stringReturn = makePackageNameMethod.invoke(null, new Object[]{targetNamespace});
+		}
 		
 		model.setPackageText(stringReturn.toString());
 		

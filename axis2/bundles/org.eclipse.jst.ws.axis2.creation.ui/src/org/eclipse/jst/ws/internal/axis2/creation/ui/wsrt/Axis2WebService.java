@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070815   187840 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt;
 
@@ -76,6 +77,9 @@ public class Axis2WebService extends AbstractWebService
 			commands.add(new Axis2ServicesXMLValidationCommand());
 			commands.add(new Axis2BUServiceCreationCommand(model,this,project));
 			commands.add(new Axis2WebservicesServerCommand(model, ctx.getScenario().getValue() ));
+			//Including command to build for the fix 187840
+			commands.add( new Axis2BuildProjectCommand(
+					ResourcesPlugin.getWorkspace().getRoot().getProject(project),true));
 		} 
 		else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {  
 			commands.add(new Axis2DefaultingCommand( model,this, ctx.getScenario().getValue()  ) );
