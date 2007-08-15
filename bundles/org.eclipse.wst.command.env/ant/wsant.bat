@@ -13,14 +13,25 @@ setlocal
 
 REM *********** Local envars ***************************
 
-REM The JRE java.exe to be used
+REM The JRE java.exe to be used by Ant.  Note: for WTP 2.0 the JDK needs to be 1.5 or higher.
 set JAVAEXE="C:\j2sdk1.4.2_07\jre\bin\java.exe"
 
-REM The Eclipse Equinox Launcher jar.  Usually in eclipse\plugins\org.eclipse.equinox.launcher*.jar
-set LAUNCHER_JAR="D:\wtp\eclipse\plugins\org.eclipse.equinox.launcher_1.0.0.v20070208a.jar"
+REM The Eclipse install directory.  Some Eclipse based products may refer to this directory
+REM as the non shared directory.
+set INSTALL_DIRECTORY=d:\wtp\eclipse 
+
+REM The shared Eclipse features directory.  Some Eclipse based products may split their 
+REM directory structure into shared and non shared folders.  The variable below should be
+REM set to the shared directory.  Note: a default WTP installation does not split it's
+REM directory structure so the INSTALL_DIRECTORY and the SHARED_DIRECTORY should be the same.
+set SHARED_DIRECTORY=%INSTALL_DIRECTORY%
+
+REM The Eclipse Equinox Launcher jar.  Usually this plugin jar file is located in the
+REM shared plugin directory(ie. plugins\org.eclipse.equinox.launcher*.jar )
+set LAUNCHER_JAR="%SHARED_DIRECTORY%\plugins\org.eclipse.equinox.launcher_1.0.0.v20070606.jar"
 
 REM The location of your workspace
-set WORKSPACE=D:\workspaces\ant_task
+set WORKSPACE=D:\builds\wtp_20_ga\eclipse\workspace
 
 REM ****************************************************
 
@@ -32,7 +43,7 @@ if not exist %LAUNCHER_JAR% goto done
 
 :run
 @echo on
-%JAVAEXE% -jar %LAUNCHER_JAR% -application org.eclipse.ant.core.antRunner -data %WORKSPACE% -file wsgen.xml %* >wsgen.txt 2>&1
+%JAVAEXE% -jar %LAUNCHER_JAR% -install %INSTALL_DIRECTORY% -configuration %INSTALL_DIRECTORY%\configuration -application org.eclipse.ant.core.antRunner -data %WORKSPACE% -file wsgen.xml %* >wsgen.txt 2>&1
 
 :done
 pause
