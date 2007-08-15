@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20070815   188999 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
@@ -34,6 +37,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
@@ -140,8 +144,8 @@ public class CopyClientWSDLCommand extends AbstractDataModelOperation
 		byte[] b = baos.toByteArray();
 		ByteArrayInputStream bais = new ByteArrayInputStream(b);
 
-		ResourceContext context =
-			WebServicePlugin.getInstance().getResourceContext();
+    ResourceContext context = ((BaseEclipseEnvironment)env).getResourceContext();    
+    
 		FileResourceUtils.createFile(
 			context,
 			wsdlPath.makeAbsolute(),

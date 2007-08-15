@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060524   130755 kathy@ca.ibm.com - Kathy Chan
  * 20061221   168787 kathy@ca.ibm.com - Kathy Chan
+ * 20070815   188999 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -35,6 +36,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -116,9 +118,11 @@ public class CopyDeploymentFileCommand extends AbstractDataModelOperation
 								  IPath targetPath = newLocation.getWorkspaceRelativePath();
 								  if (targetPath != null) {
 									  finStream = new FileInputStream(serverConfigPath.toString());
-									  if (finStream != null) {
-										  IStatusHandler statusHandler = environment.getStatusHandler();
-										  ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
+									  if (finStream != null) 
+									  {
+										  IStatusHandler  statusHandler = environment.getStatusHandler();
+									    ResourceContext context       = ((BaseEclipseEnvironment)environment).getResourceContext();
+									    
 										  FileResourceUtils.createFile(context,  
 												  targetPath,
 												  finStream,

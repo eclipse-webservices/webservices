@@ -13,6 +13,7 @@
  * 20060403 128827   kathy@ca.ibm.com - Kathy Chan
  * 20060524 127343   mahutch@ca.ibm.com - Mark Hutchinson
  * 20070116 169138   mahutch@ca.ibm.com - Mark Hutchinson	
+ * 20070815   188999 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
@@ -45,6 +46,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -133,8 +135,8 @@ public class BackupSkelImplCommand extends AbstractDataModelOperation
 		  
 		  FileInputStream finStream = null;
 		  
-		  ResourceContext context = WebServicePlugin.getInstance().getResourceContext();
-		  IStatusHandler statusHandler = environment.getStatusHandler();
+	    ResourceContext context       = ((BaseEclipseEnvironment)environment).getResourceContext();        
+		  IStatusHandler  statusHandler = environment.getStatusHandler();
 		  
 		  String beanNamePathString = beanNameString.replace('.',IPath.SEPARATOR);
 		  IPath skelImplPath = new Path (javaWSDLParam.getJavaOutput()).append(new Path (beanNamePathString)).addFileExtension(JAVA);

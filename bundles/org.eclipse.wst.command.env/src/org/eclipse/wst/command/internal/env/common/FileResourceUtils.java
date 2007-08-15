@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060112   121199 jesper@selskabet.org - Jesper Møller
+ * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.common;
 
@@ -503,9 +504,25 @@ public final class FileResourceUtils
       IContainer parent = makeFolderPath(resourceContext, absolutePath.removeLastSegments(1), progressMonitor, statusHandler );
       String folderName = absolutePath.lastSegment();
       
+      checkParent( parent, absolutePath );
       return makeFolder(resourceContext, parent,folderName, progressMonitor , statusHandler );
     }
   }
+  
+  private static void checkParent( IContainer parent, IPath absolutePath ) throws CoreException
+  {
+    if( parent == null )
+    {
+      // The parent is null, so there must have been problems creating it.  We will throw
+      // a CoreException warning for this problem.
+      IPath  parentPath = absolutePath.removeLastSegments(1);
+      String folderPath = absolutePath.lastSegment();
+      throw new CoreException( StatusUtils.warningStatus(
+                                  NLS.bind(EnvironmentMessages.MSG_ERROR_FOLDER_CREATION_DISABLED,
+                                  new Object[]{ parentPath.toString(), folderPath} ) ) );
+    }  
+  }
+  
   //
   // Creates a folder under a container.
   // The container must already exist.
@@ -704,6 +721,8 @@ public final class FileResourceUtils
      }
      IContainer parent   = makeFolderPathAtLocation(resourceContext, absolutePath.removeLastSegments(1), progressMonitor, statusHandler);
      String     fileName = absolutePath.lastSegment();
+     
+     checkParent( parent, absolutePath );
      
      return makeFile(resourceContext, parent, fileName, inputStream, progressMonitor, statusHandler);
    }

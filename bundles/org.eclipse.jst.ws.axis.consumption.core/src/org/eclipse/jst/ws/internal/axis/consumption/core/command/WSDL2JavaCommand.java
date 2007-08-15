@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai
  * 20060404   134791 andyzhai@ca.ibm.com - Andy Zhai
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -45,6 +46,7 @@ import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.environment.IStatusHandler;
@@ -240,9 +242,9 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			String outputDir, javaOutput;
 			outputDir = removeFileProtocol(javaWSDLParam.getOutput());
 			javaOutput = removeFileProtocol(javaWSDLParam.getJavaOutput());
-			ResourceContext context = WebServicePlugin.getInstance().getResourceContext();				
 			
-			IPath outputPath = new Path (outputDir);
+			ResourceContext context    = ((BaseEclipseEnvironment)environment).getResourceContext();				
+			IPath           outputPath = new Path (outputDir);
 			
 			String fileName;
 			IPath targetPath=null;
