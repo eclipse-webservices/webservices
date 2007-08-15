@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
+ * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
@@ -23,6 +24,7 @@ public class WebServiceClientInfo {
 	private java.lang.String wsdlURL;
 	private java.lang.String implURL;
 	private java.lang.String proxyEndpoint = null;
+	private boolean serverCreated = false;
 	
 	public java.lang.String getImplURL() {
 		return implURL;
@@ -65,5 +67,21 @@ public class WebServiceClientInfo {
 	}
 	public void setProxyEndpoint(java.lang.String proxyEndpoint) {
 		this.proxyEndpoint = proxyEndpoint;
+	}
+	
+	/**
+	 * @return Indicated whether the framework had created 
+	 * the server instance referenced by getServerInstanceId
+	 */
+	public boolean isServerCreated() {
+		return serverCreated;
+	}
+	
+	/**
+	 * @param serverCreated True if the framework had created 
+	 * the server instance referenced by getServerInstanceId
+	 */
+	public void setServerCreated(boolean serverCreated) {
+		this.serverCreated = serverCreated;
 	}
 }

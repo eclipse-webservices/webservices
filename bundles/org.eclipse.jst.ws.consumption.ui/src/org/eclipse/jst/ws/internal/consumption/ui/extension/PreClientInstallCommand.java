@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -49,6 +50,7 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
 	        if (createServerStatus.getSeverity()==Status.OK)
 	        {
 	          webServiceClient_.getWebServiceClientInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
+	          webServiceClient_.getWebServiceClientInfo().setServerCreated(true);
 	        }
 	        else
 	        {

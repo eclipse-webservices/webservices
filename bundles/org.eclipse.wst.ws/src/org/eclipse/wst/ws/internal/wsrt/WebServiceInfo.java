@@ -12,6 +12,7 @@
  * 20060221   128905 kathy@ca.ibm.com - Kathy Chan
  * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
+ * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
@@ -31,6 +32,7 @@ public class WebServiceInfo {
 	private java.lang.String endPointURL;
 	private java.lang.String implURL;
 	private java.lang.String[] implURLs;
+	private boolean serverCreated = false;
 	
 	private IMerger merger;
 	
@@ -114,6 +116,22 @@ public class WebServiceInfo {
 				merger.load(UniversalPathTransformer.toFiles(implURLs));
 			}
 		}
+	}
+	
+	/**
+	 * @return Indicated whether the framework had created 
+	 * the server instance referenced by getServerInstanceId
+	 */
+	public boolean isServerCreated() {
+		return serverCreated;
+	}
+	
+	/**
+	 * @param serverCreated True if the framework had created 
+	 * the server instance referenced by getServerInstanceId
+	 */
+	public void setServerCreated(boolean serverCreated) {
+		this.serverCreated = serverCreated;
 	}
 	
 }

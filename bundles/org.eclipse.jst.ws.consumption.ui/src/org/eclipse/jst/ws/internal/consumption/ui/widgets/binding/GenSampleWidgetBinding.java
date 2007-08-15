@@ -14,6 +14,7 @@
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  * 20060717   146332 makandre@ca.ibm.com - Andrew Mak
  * 20070516   186233 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -187,6 +188,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	    IStatus createServerStatus = createServerCommand.execute( null, null );
 	    if (createServerStatus.getSeverity()==Status.OK){
 	      clientInfo.setServerInstanceId(createServerCommand.getServerInstanceId());
+	      clientInfo.setServerCreated(true);
 	    }
 	    else if (createServerStatus.getSeverity()==Status.ERROR){
 	      env.getStatusHandler().reportError(  createServerStatus );
