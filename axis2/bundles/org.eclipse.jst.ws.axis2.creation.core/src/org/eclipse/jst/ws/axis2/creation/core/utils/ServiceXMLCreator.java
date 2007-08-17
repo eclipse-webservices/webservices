@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070620   193441 sandakith@wso2.com - Lahiru Sandakith, fix for the discription not attach to service
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.utils;
 
@@ -41,9 +42,9 @@ public class ServiceXMLCreator {
 
     public String toString() {
         String serviceXML = "<service name=\"" + serviceName + "\" >\n" +
-        "\t<description>\n" +
+        "\t<Description>\n" +
         "\t\tPlease Type your service description here\n" +
-        "\t</description>\n" +
+        "\t</Description>\n" +
         "\t<messageReceivers>\n" +
         "\t\t<messageReceiver mep=\"http://www.w3.org/2004/08/wsdl/in-only\" " +
         "class=\"org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver\" />\n" +
