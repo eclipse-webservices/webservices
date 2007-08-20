@@ -34,21 +34,6 @@
          point="org.eclipse.ui.popupMenus">
 
       <objectContribution
-            objectClass="org.eclipse.core.resources.IResource"
-            adaptable="true"
-            id="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu">
-         <menu
-               label="%LABEL_POPUP_CATEGORY_WEB_SERVICES"
-               path="additions"
-               id="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu">
-            <separator
-                  name="popupActions">
-            </separator>
-         </menu>
-      </objectContribution>
-
-
-      <objectContribution
             objectClass="org.eclipse.jst.j2ee.ejb.EnterpriseBean"
             adaptable="true"
             id="org.eclipse.jst.ws.atk.ui.webservice.category.ejb.popupMenu">

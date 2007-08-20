@@ -248,33 +248,6 @@
       
    </extension>
 
-   <!-- Main Menu Actions -->
-
-   <extension point="org.eclipse.ui.actionSets">
-
-      <actionSet
-            label="%COMMAND_LAUNCH_WS_EXPLORER"
-            visible="true"
-            id="org.eclipse.jst.ws.consumption">
-         <menu
-               label="%MENU_RUN"
-               path="additions"
-               id="org.eclipse.ui.run">
-            <separator name="explorer">
-            </separator>
-         </menu>
-         <action
-               label="%COMMAND_LAUNCH_WS_EXPLORER"
-               icon="icons/registry.gif"
-               tooltip="%TOOLTIP_LAUNCH_WS_EXPLORER"
-               class="org.eclipse.jst.ws.internal.consumption.ui.action.LaunchWSEAction"
-               menubarPath="org.eclipse.ui.run/explorer"
-               toolbarPath="additions"
-               id="org.eclipse.jst.ws.internal.consumption.ui.action.LaunchWSEAction">
-        </action>
-     </actionSet>
-
-   </extension>
 
    <!-- "Don't Show Me" Extensions -->
 
