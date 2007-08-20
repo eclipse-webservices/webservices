@@ -53,4 +53,33 @@
             namespaceURI="http://schemas.xmlsoap.org/wsdl/soap/"
             transportURI="http://schemas.xmlsoap.org/soap/http"/>
    </extension>
+   
+   <!-- Main Menu Actions -->
+
+   <extension point="org.eclipse.ui.actionSets">
+
+      <actionSet
+            label="%COMMAND_LAUNCH_WS_EXPLORER"
+            visible="true"
+            id="org.eclipse.wst.ws.explorer.explorer">
+         <menu
+               label="%MENU_RUN"
+               path="additions"
+               id="org.eclipse.ui.run">
+            <separator name="explorer">
+            </separator>
+         </menu>
+         <action
+               label="%COMMAND_LAUNCH_WS_EXPLORER"
+               icon="icons/registry.gif"
+               tooltip="%TOOLTIP_LAUNCH_WS_EXPLORER"
+               class="org.eclipse.wst.ws.internal.explorer.action.LaunchWSEAction"
+               menubarPath="org.eclipse.ui.run/explorer"
+               toolbarPath="additions"
+               id="org.eclipse.wst.ws.internal.explorer.action.LaunchWSEAction">
+        </action>
+     </actionSet>
+
+   </extension>
+   
 </plugin>

@@ -32,4 +32,23 @@
       </page>
 
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+
+      <!-- The id for this category should be changed from jst to wst in version 3.0.-->
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IResource"
+            adaptable="true"
+            id="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu">
+         <menu
+               label="%LABEL_POPUP_CATEGORY_WEB_SERVICES"
+               path="additions"
+               id="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu">
+            <separator
+                  name="popupActions">
+            </separator>
+         </menu>
+      </objectContribution>
+   </extension>   
 </plugin>
