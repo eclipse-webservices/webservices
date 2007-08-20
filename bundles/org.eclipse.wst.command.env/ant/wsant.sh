@@ -21,7 +21,7 @@ JAVAEXE=/home/tester/sunjdk/j2sdk1.5.0/bin/java
        
 # The Eclipse install directory.  Some Eclipse based products may refer to this directory
 # as the non shared directory.
-INSTALL_DIRECTORY=/wtp/eclipse 
+INSTALL_DIRECTORY=/wtp/eclipse
 
 # The shared Eclipse features directory.  Some Eclipse based products may split their 
 # directory structure into shared and non shared folders.  The variable below should be

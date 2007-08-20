@@ -18,7 +18,7 @@ set JAVAEXE="C:\j2sdk1.4.2_07\jre\bin\java.exe"
 
 REM The Eclipse install directory.  Some Eclipse based products may refer to this directory
 REM as the non shared directory.
-set INSTALL_DIRECTORY=d:\wtp\eclipse 
+set INSTALL_DIRECTORY=d:\wtp\eclipse
 
 REM The shared Eclipse features directory.  Some Eclipse based products may split their 
 REM directory structure into shared and non shared folders.  The variable below should be
