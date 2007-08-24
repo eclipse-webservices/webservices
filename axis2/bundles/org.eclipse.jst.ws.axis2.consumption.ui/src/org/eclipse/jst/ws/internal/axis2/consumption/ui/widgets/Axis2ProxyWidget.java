@@ -16,6 +16,7 @@
  *										  Text not accessible on AXIS2 wizard pages.
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  * 20070823   200413 sandakith@wso2.com - Lahiru Sandakith, Namespace to Package table fix
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.widgets;
 
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
@@ -432,8 +434,8 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 	 * Fill the combo with proper databinding names
 	 */
 	private void fillDatabinderCombo() {
-		databindingTypeCombo.add(Axis2ConsumptionUIMessages.DATA_BINDING_ADB);
-		databindingTypeCombo.add(Axis2ConsumptionUIMessages.DATA_BINDING_NONE);
+		databindingTypeCombo.add(Axis2Constants.DATA_BINDING_ADB);
+		databindingTypeCombo.add(Axis2Constants.DATA_BINDING_NONE);
 		databindingTypeCombo.select(0);
 	}
 	

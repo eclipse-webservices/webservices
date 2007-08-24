@@ -12,6 +12,7 @@
  * 20070123   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -25,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
@@ -57,15 +59,14 @@ public class Axis2SkelImplCommand extends AbstractDataModelOperation {
 													   model.getWebProjectName());
 		String projectSrcDir =  FileUtils.addAnotherNodeToPath(
 											currentDynamicWebProjectDir, 
-											Axis2CreationUIMessages.DIR_SRC);
+											Axis2Constants.DIR_SRC);
 
 		String packagePath = CommonUtils.packgeName2PathName(model.getPackageText());
 		String packageDir = FileUtils.addAnotherNodeToPath(projectSrcDir, packagePath);
 		String serviceSkeletonImpl = FileUtils.addAnotherNodeToPath(packageDir, model.
 																	getServiceName());
 
-		String serviceSkeletonImplURL =  serviceSkeletonImpl + 
-										 Axis2CreationUIMessages.SKELETON_SUFFIX;
+		String serviceSkeletonImplURL =  serviceSkeletonImpl + Axis2Constants.SKELETON_SUFFIX;
 		IPath serviceSkeletonImplURLPath = new Path(serviceSkeletonImplURL); 
 		try {
 			//webServiceInfo.setImplURL(serviceSkeletonImplURLPath.toFile().toURL().toString());

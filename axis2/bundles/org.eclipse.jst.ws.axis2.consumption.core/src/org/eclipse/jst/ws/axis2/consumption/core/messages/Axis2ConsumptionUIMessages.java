@@ -15,6 +15,7 @@
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith
  * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070601   190505 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.messages;
 
@@ -24,14 +25,6 @@ public final class Axis2ConsumptionUIMessages extends NLS {
 
 	private static final String BUNDLE_NAME = 
 		"org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUI";//$NON-NLS-1$
-	public static final String DATA_BINDING_ADB="ADB";							//$NON-NLS-1$
-	public static final String DATA_BINDING_NONE="NONE";						//$NON-NLS-1$
-	public static final String DIR_DOT_METADATA=".metadata";					//$NON-NLS-1$
-	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$
-	public static final String AXIS2_PROJECT="org.eclipse.jst.ws.axis2";		//$NON-NLS-1$
-	public static final String CODEGEN_RESULTS="codegen";						//$NON-NLS-1$
-	public static final String JUNIT_JAR="junit.jar";							//$NON-NLS-1$
-	public static final String JUNIT_BUNDLE="org.junit";						//$NON-NLS-1$
 	
 	private Axis2ConsumptionUIMessages() {
 		// Do not instantiate

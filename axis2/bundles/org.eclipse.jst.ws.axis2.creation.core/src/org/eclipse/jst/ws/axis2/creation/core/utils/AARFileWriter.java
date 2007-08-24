@@ -11,22 +11,24 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.utils;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Jar;
-import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 
 public class AARFileWriter extends Jar{
 
     public AARFileWriter() {
         this.setProject(new Project());
         this.getProject().init();
-        this.setTaskType(Axis2CreationUIMessages.JAR_TASK);
-        this.setTaskName(Axis2CreationUIMessages.JAR_TASK);
+        this.setTaskType(Axis2Constants.JAR_TASK);
+        this.setTaskName(Axis2Constants.JAR_TASK);
         this.setOwningTarget(new org.apache.tools.ant.Target());
     }
 

@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -24,10 +25,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
-import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -61,8 +62,8 @@ public class Axis2WebservicesServerCommand extends AbstractDataModelOperation {
 				//Import the tempory webservices directory according to the Resources API of eclipse 
 				String webserviceTempDirString = model.getPathToWebServicesTempDir();
 				String repositoryString = webContainerDirString 
-				+ File.separator + Axis2CreationUIMessages.DIR_WEB_INF 
-				+ File.separator + Axis2CreationUIMessages.DIR_SERVICES;
+				+ File.separator + Axis2Constants.DIR_WEB_INF 
+				+ File.separator + Axis2Constants.DIR_SERVICES;
 				//Copy the existing services to the repository
 				status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
 											webserviceTempDirString, 
@@ -76,8 +77,8 @@ public class Axis2WebservicesServerCommand extends AbstractDataModelOperation {
 				//Do topdown
 				String webserviceTempDirString = model.getPathToWebServicesTempDir();
 				String repositoryString = webContainerDirString 
-				+ File.separator + Axis2CreationUIMessages.DIR_WEB_INF 
-				+ File.separator + Axis2CreationUIMessages.DIR_SERVICES;
+				+ File.separator + Axis2Constants.DIR_WEB_INF 
+				+ File.separator + Axis2Constants.DIR_SERVICES;
 				//Copy the existing services to the repository
 				status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
 											webserviceTempDirString, 

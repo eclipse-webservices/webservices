@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -24,7 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 
 public class Axis2CoreUtils {
 	
@@ -33,9 +34,9 @@ public class Axis2CoreUtils {
 	
 	public static String tempAxis2Directory() {
 		if (!alreadyComputedTempAxis2Directory){
-			String[] nodes = {Axis2CoreUIMessages.DIR_DOT_METADATA,
-								Axis2CoreUIMessages.DIR_DOT_PLUGINS,
-								Axis2CoreUIMessages.TEMP_AXIS2_FACET_DIR};
+			String[] nodes = {Axis2Constants.DIR_DOT_METADATA,
+					Axis2Constants.DIR_DOT_PLUGINS,
+					Axis2Constants.TEMP_AXIS2_FACET_DIR};
 			tempAxis2Dir =FileUtils.addNodesToPath(
 					ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString(), nodes); 
 			alreadyComputedTempAxis2Directory= true;
@@ -46,20 +47,20 @@ public class Axis2CoreUtils {
 	public static String tempAxis2WebappFileLocation() {
 		return
 		addAnotherNodeToPath(tempAxis2Directory(),
-							 Axis2CoreUIMessages.WEBAPP_EXPLODED_SERVER_LOCATION_FILE);
+				Axis2Constants.WEBAPP_EXPLODED_SERVER_LOCATION_FILE);
 	}
 	
 	
 	public static String tempRuntimeStatusFileLocation() {
 		return
 		addAnotherNodeToPath(tempAxis2Directory(),
-							 Axis2CoreUIMessages.SERVER_STATUS_LOCATION_FILE);
+				Axis2Constants.SERVER_STATUS_LOCATION_FILE);
 	}
 	
 	public static String tempWarStatusFileLocation() {
 		return
 		addAnotherNodeToPath(tempAxis2Directory(),
-							 Axis2CoreUIMessages.WAR_STATUS_LOCATION_FILE);
+				Axis2Constants.WAR_STATUS_LOCATION_FILE);
 	}
 	
 	public static String addAnotherNodeToPath(String currentPath, String newNode) {

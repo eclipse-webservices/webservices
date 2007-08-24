@@ -15,6 +15,7 @@
  * 20070508   175030 sandakith@wso2.com - Lahiru Sandakith, WSDL not passed to Axis2 client fix
  * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
  * 20070612   192047 kathy@ca.ibm.com   - Kathy Chan
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -24,8 +25,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
-import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.DefaultCodegenUtil;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
@@ -47,7 +48,7 @@ public class Axis2ClientDefaultingCommand extends AbstractDataModelOperation {
 		String wsdlURL = ws.getWebServiceClientInfo().getWsdlURL();
 		model.setWsdlURI(wsdlURL);
 		
-		model.setDatabindingType(Axis2ConsumptionUIMessages.DATA_BINDING_ADB);
+		model.setDatabindingType(Axis2Constants.DATA_BINDING_ADB);
 		model.setASync(false);
 		model.setSync(false);
 		

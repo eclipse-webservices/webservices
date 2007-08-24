@@ -14,6 +14,7 @@
  * 20070511   186440 sandakith@wso2.com - Lahiru Sandakith fix 186440
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
  * 20070601   190505 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.messages;
 
@@ -24,25 +25,6 @@ public class Axis2CreationUIMessages extends NLS {
 	//get the lables from this massages to the properties file
 	private static final String BUNDLE_NAME = 
 			"org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUI";	//$NON-NLS-1$
-	public static final String FILE_SERVICES_XML="services.xml";				//$NON-NLS-1$
-	public static final String FILE_XML="*.xml";								//$NON-NLS-1$
-	public static final String DIR_META_INF="META-INF";							//$NON-NLS-1$
-	public static final String DIR_BUILD="build";								//$NON-NLS-1$
-	public static final String DIR_SRC="src";									//$NON-NLS-1$
-	public static final String DIR_CLASSES="classes";							//$NON-NLS-1$
-	public static final String DIR_RESOURCES="resources";						//$NON-NLS-1$
-	public static final String DIR_WEB_INF="WEB-INF";							//$NON-NLS-1$
-	public static final String DIR_SERVICES="services";							//$NON-NLS-1$
-	public static final String DIR_WEBSERVICES="webservices";					//$NON-NLS-1$
-	public static final String DIR_WEBCONTENT="WebContent";						//$NON-NLS-1$
-	public static final String DIR_DOT_METADATA=".metadata";					//$NON-NLS-1$
-	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$
-	public static final String JAR_TASK="jar";									//$NON-NLS-1$
-	public static final String AXIS2_PROJECT="org.eclipse.jst.ws.axis2";		//$NON-NLS-1$
-	public static final String CODEGEN_RESULTS="codegen";						//$NON-NLS-1$
-	public static final String DATA_BINDING_ADB="ADB";							//$NON-NLS-1$
-	public static final String DATA_BINDING_NONE="NONE";						//$NON-NLS-1$
-	public static final String SKELETON_SUFFIX="Skeleton.java";					//$NON-NLS-1$
 
 	private Axis2CreationUIMessages() {
 		// Do not instantiate

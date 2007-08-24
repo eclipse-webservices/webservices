@@ -13,6 +13,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070625   192522 sandakith@wso2.com - Lahiru Sandakith, fix the build path problem
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -28,6 +29,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
@@ -66,13 +68,13 @@ public class Axis2BUServiceCreationCommand extends
 			String workspaceDirectory = ResourcesPlugin.getWorkspace()
 														.getRoot().getLocation().toOSString();
 			String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,
-														Axis2CreationUIMessages.DIR_DOT_METADATA);
+					Axis2Constants.DIR_DOT_METADATA);
 		    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,
-		    											Axis2CreationUIMessages.DIR_DOT_PLUGINS);
+		    		Axis2Constants.DIR_DOT_PLUGINS);
 		    String matadataAxis2Dir = FileUtils.addAnotherNodeToPath(matadataPluginsDir, 
-		    											Axis2CreationUIMessages.AXIS2_PROJECT);
+		    		Axis2Constants.AXIS2_PROJECT);
 		    String webservicesDir = FileUtils.addAnotherNodeToPath(matadataAxis2Dir,
-		    													   Axis2CreationUIMessages.DIR_WEBSERVICES);
+		    		Axis2Constants.DIR_WEBSERVICES);
 		    model.setPathToWebServicesTempDir(webservicesDir);
 		    
 			//Get the Service name from the class name
@@ -81,7 +83,7 @@ public class Axis2BUServiceCreationCommand extends
 			
 			String servicesDirectory = FileUtils.addAnotherNodeToPath(webservicesDir, serviceName);
 			String serviceXMLDirectory = FileUtils.addAnotherNodeToPath(servicesDirectory, 
-														Axis2CreationUIMessages.DIR_META_INF);
+					Axis2Constants.DIR_META_INF);
 			
 			//Create the directories
 			//Create the Webservices stuff on the workspace .matadata directory  
@@ -95,7 +97,7 @@ public class Axis2BUServiceCreationCommand extends
 			    															serviceClass, 	
 			    															null);
 			    serviceXMLFile = new File(serviceXMLDirectory + File.separator + 
-			    						  Axis2CreationUIMessages.FILE_SERVICES_XML);
+			    		Axis2Constants.FILE_SERVICES_XML);
 			    FileWriter serviceXMLFileWriter;
 	
 				serviceXMLFileWriter = new FileWriter(serviceXMLFile, false);
@@ -111,7 +113,7 @@ public class Axis2BUServiceCreationCommand extends
             	}else{
             		serviceXMLFile = new File(pathToServicesXML);
             		File targetServicesXMLFile = new File(serviceXMLDirectory + File.separator + 
-            										Axis2CreationUIMessages.FILE_SERVICES_XML);
+            				Axis2Constants.FILE_SERVICES_XML);
             		FileUtils.copy(serviceXMLFile, targetServicesXMLFile);
             	}
             	

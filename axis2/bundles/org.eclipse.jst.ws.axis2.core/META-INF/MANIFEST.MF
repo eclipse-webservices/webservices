@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.command.env.ui,
  org.eclipse.wst.server.core
 Eclipse-LazyStart: true
-Export-Package: org.eclipse.jst.ws.axis2.core.context,
+Export-Package: org.eclipse.jst.ws.axis2.core.constant,
+ org.eclipse.jst.ws.axis2.core.context,
  org.eclipse.jst.ws.axis2.core.plugin,
  org.eclipse.jst.ws.axis2.core.plugin.messages,
  org.eclipse.jst.ws.axis2.core.utils

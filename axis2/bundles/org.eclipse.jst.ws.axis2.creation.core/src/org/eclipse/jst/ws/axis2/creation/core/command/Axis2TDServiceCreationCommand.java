@@ -13,6 +13,7 @@
  * 20070507   184740 sandakith@wso2.com - Lahiru Sandakith
  * 20070625   192522 sandakith@wso2.com - Lahiru Sandakith, fix the build path problem
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -26,6 +27,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
@@ -60,13 +62,13 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 		String currentDynamicWebProjectDir = FacetContainerUtils.getProjectRoot( 
 														model.getWebProjectName()).toOSString();
 		String matadataDir = FileUtils.addAnotherNodeToPath(workspaceDirectory,
-														Axis2CreationUIMessages.DIR_DOT_METADATA);
+				Axis2Constants.DIR_DOT_METADATA);
 	    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(matadataDir,
-	    												Axis2CreationUIMessages.DIR_DOT_PLUGINS);
+	    		Axis2Constants.DIR_DOT_PLUGINS);
 	    String matadataAxis2Dir = FileUtils.addAnotherNodeToPath(matadataPluginsDir, 
-	    												Axis2CreationUIMessages.AXIS2_PROJECT);
+	    		Axis2Constants.AXIS2_PROJECT);
 	    String tempServicesDir = FileUtils.addAnotherNodeToPath(matadataAxis2Dir,
-	    													   Axis2CreationUIMessages.DIR_SERVICES);
+	    		Axis2Constants.DIR_SERVICES);
 	    
 	    model.setPathToWebServicesTempDir(tempServicesDir);
 		
@@ -74,7 +76,7 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 		String currentservicesDirectory = FileUtils.addAnotherNodeToPath(tempServicesDir, 
 														model.getServiceName());
 		String metaInfDirectory = FileUtils.addAnotherNodeToPath(currentservicesDirectory, 
-														Axis2CreationUIMessages.DIR_META_INF);
+				Axis2Constants.DIR_META_INF);
 		
 		//Create the directories
 		//Create the Webservices stuff on the workspace .matadata directory  
@@ -86,7 +88,7 @@ public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 	    //at resources/service.xml
 	    String currentProjectResourcesDirString = FileUtils
 	    		.addAnotherNodeToPath(currentDynamicWebProjectDir, 
-	    							  Axis2CreationUIMessages.DIR_RESOURCES);
+	    				Axis2Constants.DIR_RESOURCES);
 	    File currentProjectResourcesDir = new File(currentProjectResourcesDirString);
 	    if(!currentProjectResourcesDir.exists()){
 	    	currentProjectResourcesDir.mkdir();

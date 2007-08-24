@@ -17,6 +17,7 @@
  * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
  * 20070612   192047 kathy@ca.ibm.com   - Kathy Chan
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -25,9 +26,8 @@ import java.io.File;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
-import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
-import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.wst.server.core.IServer;
@@ -84,7 +84,7 @@ public class FacetContainerUtils {
 	
 	public static String  pathToWebProjectContainerMETAINF(String project) {
 		String containerDirectory = pathToWebProjectContainer(project);
-		String webContainerMETAINF = Axis2FacetUIMessages.DIR_META_INF;
+		String webContainerMETAINF = Axis2Constants.DIR_META_INF;
 		String webContainerMETAINFString = Axis2CoreUtils.addAnotherNodeToPath(
 												containerDirectory,
 												webContainerMETAINF);
@@ -93,7 +93,7 @@ public class FacetContainerUtils {
 	
 	public static String  pathToWebProjectContainerAxis2Web(String project) {
 		String containerDirectory = pathToWebProjectContainer(project);
-		String webContainerAxis2Web = Axis2FacetUIMessages.DIR_AXIS2_WEB;
+		String webContainerAxis2Web = Axis2Constants.DIR_AXIS2_WEB;
 		String webContainerAxis2WebString = Axis2CoreUtils.addAnotherNodeToPath(
 				containerDirectory,
 												webContainerAxis2Web);
@@ -104,7 +104,7 @@ public class FacetContainerUtils {
 		String webContainerWEBINFString = pathToWebProjectContainerWEBINF(project);
 		return  Axis2CoreUtils.addAnotherNodeToPath(
 				webContainerWEBINFString,
-				Axis2CoreUIMessages.DIR_LIB);
+				Axis2Constants.DIR_LIB);
 		
 	}
 	
@@ -176,9 +176,9 @@ public class FacetContainerUtils {
 		deployedWSDLURLpath = ServerUtils.getEncodedWebComponentURL(serverProject, 
 				ServerFactoryId, server);
 		if (deployedWSDLURLpath == null) {
-			deployedWSDLURLpath = Axis2CoreUIMessages.LOCAL_SERVER_PORT;
+			deployedWSDLURLpath = Axis2Constants.LOCAL_SERVER_PORT;
 		}
-		String[] deployedWSDLURLParts = {Axis2CoreUIMessages.SERVICES,serviceName};
+		String[] deployedWSDLURLParts = {Axis2Constants.SERVICES,serviceName};
 		return FileUtils.addNodesToURL(deployedWSDLURLpath, deployedWSDLURLParts)+"?wsdl";
 	}
 	

@@ -21,6 +21,7 @@
  * 20070603   188740 sandakith@wso2.com - Lahiru Sandakith, 
  * 20070604   190505 sandakith@wso2.com - Lahiru Sandakith, 
  * 20070604   190067 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -29,6 +30,7 @@ import java.io.File;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
@@ -157,7 +159,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
       }     
     }); 
   
-    if(axis2Path.getText().equals(Axis2CoreUIMessages.NULL)){
+    if(axis2Path.getText().equals(Axis2Constants.NULL)){
       status = new Status( IStatus.ERROR, 
           "id", 
           0, 
@@ -412,7 +414,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     aarExtentionLabel.setText( Axis2CoreUIMessages.LABEL_AAR_EXTENTION);
     
     //AAR extention items
-    final String[] aarExtentionItems = { Axis2CoreUIMessages.AAR };
+    final String[] aarExtentionItems = { Axis2Constants.AAR };
     
     aarExtensionCombo = new Combo(codegenGroup,SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
     aarExtensionCombo.setItems(aarExtentionItems);

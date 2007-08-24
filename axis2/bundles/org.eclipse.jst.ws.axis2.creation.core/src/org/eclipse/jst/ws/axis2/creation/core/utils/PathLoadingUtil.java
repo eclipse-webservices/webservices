@@ -14,13 +14,14 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   184740 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   185686 sandakith@wso2.com - Lahiru Sandakith
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.utils;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
-import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
 
 public class PathLoadingUtil {
 	
@@ -70,10 +71,11 @@ public class PathLoadingUtil {
 	
 	public static String getTempCodegenOutputLocation() {
 		if (!alreadyComputeTempCodegenOutputLocation){
-			String[] nodes = {	Axis2CreationUIMessages.DIR_DOT_METADATA,
-								Axis2CreationUIMessages.DIR_DOT_PLUGINS,
-								Axis2CreationUIMessages.AXIS2_PROJECT,
-								Axis2CreationUIMessages.CODEGEN_RESULTS};
+			String[] nodes = {	
+					Axis2Constants.DIR_DOT_METADATA,
+					Axis2Constants.DIR_DOT_PLUGINS,
+					Axis2Constants.AXIS2_PROJECT,
+					Axis2Constants.CODEGEN_RESULTS};
 			tempCodegenOutputLocation = FileUtils.addNodesToPath(getWorkspaceDirectory(), nodes);
 			alreadyComputeTempCodegenOutputLocation = true;
 		}

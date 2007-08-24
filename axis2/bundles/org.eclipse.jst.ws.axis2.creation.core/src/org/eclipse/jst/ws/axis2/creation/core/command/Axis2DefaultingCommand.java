@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070508   175030 sandakith@wso2.com - Lahiru Sandakith, WSDL not passed to Axis2 client fix
  * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -27,12 +28,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.DefaultCodegenUtil;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.ServiceContext;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
-import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
 import org.eclipse.jst.ws.axis2.creation.core.utils.CommonUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -58,7 +59,7 @@ public class Axis2DefaultingCommand extends AbstractDataModelOperation
 		Properties properties = new Properties();
 		try {
 			properties.load(new FileInputStream(Axis2CoreUtils.tempRuntimeStatusFileLocation()));
-			if (properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_STATUS)){
+			if (properties.containsKey(Axis2Constants.PROPERTY_KEY_STATUS)){
 				 status = Status.OK_STATUS;
 				 model.setServerStatus(true);
 			}else{
@@ -74,7 +75,7 @@ public class Axis2DefaultingCommand extends AbstractDataModelOperation
 		
 		if (scenario == WebServiceScenario.TOPDOWN) {
 			model.setWsdlURI(ws.getWebServiceInfo().getWsdlURL());
-			model.setDatabindingType(Axis2CreationUIMessages.DATA_BINDING_ADB);
+			model.setDatabindingType(Axis2Constants.DATA_BINDING_ADB);
 			DefaultCodegenUtil defaultCodegenUtil = new DefaultCodegenUtil(model);
 			defaultCodegenUtil.populateModelParamsFromWSDL();
 			model.setServicesXML(true);

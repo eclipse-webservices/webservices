@@ -18,6 +18,7 @@
  * 20070517   187307 sandakith@wso2.com - Lahiru Sandakith, Fix 187307 Property File Fix
  * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.plugin.messages;
 
@@ -27,29 +28,6 @@ public final class Axis2CoreUIMessages extends NLS {
 
 	private static final String BUNDLE_NAME = 
 			"org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUI";		//$NON-NLS-1$
-	public static final String DIR_TEMPWAR="tempwar";							//$NON-NLS-1$
-	public static final String DIR_EXPLOADED_TEMPWAR="exploadedwar";			//$NON-NLS-1$
-	public static final String DIR_LIB="lib";									//$NON-NLS-1$
-	public static final String DIR_TEST="test";									//$NON-NLS-1$
-	public static final String FILE_AXIS2_WAR="axis2.war";						//$NON-NLS-1$
-	public static final String  NULL="";										//$NON-NLS-1$
-	public static final String ADB="adb";										//$NON-NLS-1$
-	public static final String AAR="aar";										//$NON-NLS-1$
-	public static final String JAR="jar";										//$NON-NLS-1$
-	public static final String TEMP_AXIS2_FACET_DIR="org.apache.axis2.facet";	//$NON-NLS-1$
-	public static final String DIR_DOT_METADATA=".metadata";					//$NON-NLS-1$
-	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$
-	public static final String DIR_UNZIP="nzip";								//$NON-NLS-1$
-	public static final String LOCAL_SERVER_PORT="http://localhost:8080";		//$NON-NLS-1$
-	public static final String SERVICES="services";								//$NON-NLS-1$
-	public static final String WEBAPP_EXPLODED_SERVER_LOCATION_FILE=
-			"server.properties";												//$NON-NLS-1$
-	public static final String SERVER_STATUS_LOCATION_FILE="status.properties";	//$NON-NLS-1$
-	public static final String WAR_STATUS_LOCATION_FILE="war.properties";		//$NON-NLS-1$
-	public static final String PROPERTY_KEY_PATH="path";						//$NON-NLS-1$
-	public static final String PROPERTY_KEY_STATUS="status";					//$NON-NLS-1$
-	public static final String SERVER_STATUS_PASS="pass";						//$NON-NLS-1$
-	public static final String SERVER_STATUS_FAIL="fail";						//$NON-NLS-1$
 
 	private Axis2CoreUIMessages() {
 		// Do not instantiate

@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -24,6 +25,7 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 
 public class RuntimePropertyUtils {
@@ -78,12 +80,12 @@ public class RuntimePropertyUtils {
 			init();
 			serverPropertiesFileInit();
 			if(! (properties.size()== 0)){
-				if(properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_PATH)){
-					properties.remove(Axis2CoreUIMessages.PROPERTY_KEY_PATH);
+				if(properties.containsKey(Axis2Constants.PROPERTY_KEY_PATH)){
+					properties.remove(Axis2Constants.PROPERTY_KEY_PATH);
 				}
 			}
 				Axis2CoreUtils.writePropertyToFile(serverPropertiesFile, 
-												   Axis2CoreUIMessages.PROPERTY_KEY_PATH,
+						Axis2Constants.PROPERTY_KEY_PATH,
 												   axis2PathNew);
 		} catch (FileNotFoundException e) {
 			updateStatusError();
@@ -103,8 +105,8 @@ public class RuntimePropertyUtils {
 		}
 		try {
 			properties.load(new FileInputStream(serverPropertiesFile));
-			if(properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_PATH)){
-				serverPath = properties.getProperty(Axis2CoreUIMessages.PROPERTY_KEY_PATH);
+			if(properties.containsKey(Axis2Constants.PROPERTY_KEY_PATH)){
+				serverPath = properties.getProperty(Axis2Constants.PROPERTY_KEY_PATH);
 			}
 		} catch (FileNotFoundException e) {
 			updateStatusError();
@@ -120,13 +122,13 @@ public class RuntimePropertyUtils {
 			init();
 			statusPropertiesFileInit();
 			if(! (properties.size()== 0)){
-				if(properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_STATUS)){
-					properties.remove(Axis2CoreUIMessages.PROPERTY_KEY_STATUS);
+				if(properties.containsKey(Axis2Constants.PROPERTY_KEY_STATUS)){
+					properties.remove(Axis2Constants.PROPERTY_KEY_STATUS);
 				}
 			}
 			Axis2CoreUtils.writePropertyToFile(statusPropertyFile, 
-											   Axis2CoreUIMessages.PROPERTY_KEY_STATUS, 
-											   runtimeStatus);
+					Axis2Constants.PROPERTY_KEY_STATUS, 
+		            runtimeStatus);
 		} catch (FileNotFoundException e) {
 			updateStatusError(); 
 		} catch (IOException e) {
@@ -141,13 +143,13 @@ public class RuntimePropertyUtils {
 			init();
 			warPropertiesFileInit();
 			if(! (properties.size()== 0)){
-				if(properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_STATUS)){
-					properties.remove(Axis2CoreUIMessages.PROPERTY_KEY_STATUS);
+				if(properties.containsKey(Axis2Constants.PROPERTY_KEY_STATUS)){
+					properties.remove(Axis2Constants.PROPERTY_KEY_STATUS);
 				}
 			}
 			Axis2CoreUtils.writePropertyToFile(warPropertyFile, 
-											   Axis2CoreUIMessages.PROPERTY_KEY_STATUS, 
-											   String.valueOf(warStatus));
+					Axis2Constants.PROPERTY_KEY_STATUS, 
+		            String.valueOf(warStatus));
 		} catch (FileNotFoundException e) {
 			updateStatusError(); 
 		} catch (IOException e) {
@@ -166,9 +168,9 @@ public class RuntimePropertyUtils {
 		}
 		try {
 			properties.load(new FileInputStream(warPropertyFile));
-			if(properties.containsKey(Axis2CoreUIMessages.PROPERTY_KEY_STATUS)){
+			if(properties.containsKey(Axis2Constants.PROPERTY_KEY_STATUS)){
 				warStatus = Boolean.parseBoolean(
-						properties.getProperty(Axis2CoreUIMessages.PROPERTY_KEY_STATUS));
+						properties.getProperty(Axis2Constants.PROPERTY_KEY_STATUS));
 			}
 		} catch (FileNotFoundException e) {
 			updateStatusError();

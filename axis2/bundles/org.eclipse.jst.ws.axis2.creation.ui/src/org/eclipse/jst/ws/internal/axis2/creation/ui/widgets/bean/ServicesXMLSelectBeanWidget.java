@@ -14,11 +14,13 @@
  * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
  *										  Text not accessible on AXIS2 wizard pages.
  * 20070529   188742 sandakith@wso2.com - Lahiru Sandakith, fix for 188742
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.bean;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
 import org.eclipse.swt.SWT;
@@ -215,7 +217,7 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 	 */
 	private void handleBrowse(Shell parent) {
 		FileDialog fileDialog = new FileDialog(parent);
-		fileDialog.setFilterExtensions(new String[] { Axis2CreationUIMessages.FILE_XML });
+		fileDialog.setFilterExtensions(new String[] { Axis2Constants.FILE_XML });
 		String fileName = fileDialog.open();
 		if (fileName != null) {
 			servicesXMLPath.setText(fileName);

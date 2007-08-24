@@ -17,6 +17,7 @@
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  * 20070814   187840 sandakith@wso2.com - Lahiru Sandakith, Fixing 187840 ITE message
  * 20070814   193593 sandakith@wso2.com - Lahiru Sandakith, custom package name fix
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -36,6 +37,7 @@ import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMess
 import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDL2JavaGenerator;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
@@ -65,16 +67,16 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 				                                  model.getWebProjectName()).toOSString();
 		String matadataDir = FileUtils.addAnotherNodeToPath(
 										workspaceDirectory,
-										Axis2ConsumptionUIMessages.DIR_DOT_METADATA);
+										Axis2Constants.DIR_DOT_METADATA);
 	    String matadataPluginsDir = FileUtils.addAnotherNodeToPath(
 	    								matadataDir,
-	    								Axis2ConsumptionUIMessages.DIR_DOT_PLUGINS);
+	    								Axis2Constants.DIR_DOT_PLUGINS);
 	    String matadataAxis2Dir = FileUtils.addAnotherNodeToPath(
 	    									matadataPluginsDir, 
-	    									Axis2ConsumptionUIMessages.AXIS2_PROJECT);
+	    									Axis2Constants.AXIS2_PROJECT);
 		String tempCodegenOutputLocation = FileUtils.addAnotherNodeToPath(
 											matadataAxis2Dir, 
-											Axis2ConsumptionUIMessages.CODEGEN_RESULTS);
+											Axis2Constants.CODEGEN_RESULTS);
 		File tempCodegenOutputLocationFile = new File(tempCodegenOutputLocation);
 		if (tempCodegenOutputLocationFile.exists()){
 			FileUtils.deleteDirectories(tempCodegenOutputLocation);

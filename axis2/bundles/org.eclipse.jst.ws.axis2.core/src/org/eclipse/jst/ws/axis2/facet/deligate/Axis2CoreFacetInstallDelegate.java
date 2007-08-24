@@ -13,6 +13,7 @@
  * 										  facet to the framework for 168766
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.deligate;
 
@@ -21,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.RuntimePropertyUtils;
 import org.eclipse.jst.ws.axis2.facet.commands.Axis2WebservicesServerCommand;
@@ -39,10 +41,10 @@ public class Axis2CoreFacetInstallDelegate implements IDelegate {
 		status = command.executeOverride(monitor);
 		if (status.getCode() == Status.OK_STATUS.getCode() ){
 			RuntimePropertyUtils.writeServerStausToPropertiesFile(
-					Axis2CoreUIMessages.SERVER_STATUS_PASS);
+					Axis2Constants.SERVER_STATUS_PASS);
 		}else{
 			RuntimePropertyUtils.writeServerStausToPropertiesFile(
-					Axis2CoreUIMessages.SERVER_STATUS_FAIL);
+					Axis2Constants.SERVER_STATUS_FAIL);
 			throw new CoreException(status);
 		}
 		monitor.worked( 1 );

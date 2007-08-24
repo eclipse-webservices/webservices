@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070608        191055 sandakith@wso2.com - Lahiru Sandakith, Duplicate classpath entry fix
+ * 20070824        200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -33,7 +34,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
-import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -134,8 +135,8 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
     private String CopyJUnitJarToProject(String workspace) throws ExecutionException, IOException {
     	File relativeWebInfJunitFile = new File(FileUtils.addAnotherNodeToPath(
     												J2EEUtils.getWebInfPath(project).toOSString(),
-    												Axis2CoreUIMessages.DIR_LIB+File.separator+
-    												Axis2ConsumptionUIMessages.JUNIT_JAR));
+    												Axis2Constants.DIR_LIB+File.separator+
+    												Axis2Constants.JUNIT_JAR));
     	
     	File obsaluteWebInfJunitFile = new File(FileUtils.addAnotherNodeToPath(
     														workspace, 
@@ -150,10 +151,10 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
      * @throws ExecutionException
      */
 	private File getFrameworkJunitFile() throws ExecutionException {
-    	IPath junitJarPath=BundleUtils.getJarredPluginPath(Axis2ConsumptionUIMessages.JUNIT_BUNDLE);
+    	IPath junitJarPath=BundleUtils.getJarredPluginPath(Axis2Constants.JUNIT_BUNDLE);
     	if (junitJarPath != null){
     		return new File(FileUtils.addAnotherNodeToPath(junitJarPath.toOSString(),
-    						Axis2ConsumptionUIMessages.JUNIT_JAR));
+    				Axis2Constants.JUNIT_JAR));
     	}else{
     		throw new ExecutionException(Axis2ConsumptionUIMessages.ERROR_JUNIT_JAR_NOT_FOUND);
     	}
@@ -167,7 +168,7 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
 	 */
     private IPath getPathToTestFolder(IProject project, String workspace) {
         String pathToTest = project.getFullPath().toOSString() + File.separator
-                            + Axis2CoreUIMessages.DIR_TEST;
+                            + Axis2Constants.DIR_TEST;
         IPath pathToTestFolder = new Path(pathToTest);
         return pathToTestFolder;
     }

@@ -15,6 +15,7 @@
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -34,12 +35,11 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
-import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
-import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 
 public class Axis2RuntimeUtils {
 	
@@ -61,7 +61,7 @@ public class Axis2RuntimeUtils {
 			if (new File (Axis2CoreUtils.tempAxis2Directory()).isDirectory()) {
 				tempWarLocation = Axis2CoreUtils.addAnotherNodeToPath(
 															Axis2CoreUtils.tempAxis2Directory(),
-															Axis2CoreUIMessages.DIR_TEMPWAR);
+															Axis2Constants.DIR_TEMPWAR);
 			File tempWarLocationFile= new File(tempWarLocation);
 			if (tempWarLocationFile.exists()) {
 				FileUtils.deleteDirectories(tempWarLocationFile);
@@ -69,7 +69,7 @@ public class Axis2RuntimeUtils {
 			tempWarLocationFile.mkdirs();
 			tempWarFile = Axis2CoreUtils.addAnotherNodeToPath(
 															tempWarLocation,	
-															Axis2CoreUIMessages.FILE_AXIS2_WAR);
+															Axis2Constants.FILE_AXIS2_WAR);
 			new File(tempWarFile).createNewFile();
 			String axis2RuntimrLocation = null;
 			if(context.getAxis2RuntimeLocation()!=null){
@@ -82,7 +82,7 @@ public class Axis2RuntimeUtils {
 			}
 					String axis2WarFile = Axis2CoreUtils.addAnotherNodeToPath(
 										axis2RuntimrLocation,
-										Axis2CoreUIMessages.FILE_AXIS2_WAR);
+										Axis2Constants.FILE_AXIS2_WAR);
 					FileChannel srcChannel = new FileInputStream(axis2WarFile).getChannel();
 					FileChannel dstChannel = new FileOutputStream(tempWarFile).getChannel();
 					// Copy file contents from source to destination
@@ -93,7 +93,7 @@ public class Axis2RuntimeUtils {
 				
 				//unzip this into another foulder
 				tempUnzipLocation = FileUtils.addAnotherNodeToPath(tempWarLocation, 
-											Axis2CoreUIMessages.DIR_UNZIP);
+						Axis2Constants.DIR_UNZIP);
 				File tempUnzipLocationFile= new File(tempUnzipLocation);
 				if (!tempUnzipLocationFile.exists()) {
 					tempUnzipLocationFile.mkdirs();
@@ -103,8 +103,8 @@ public class Axis2RuntimeUtils {
 				}
 			
 			IPath tempWebXMLLocationPath = new Path(tempUnzipLocation)
-											   .append(Axis2FacetUIMessages.DIR_WEB_INF)
-											   .append(Axis2FacetUIMessages.FILE_WEB_XML);
+											   .append(Axis2Constants.DIR_WEB_INF)
+											   .append(Axis2Constants.FILE_WEB_XML);
 			//delete the axis2 web.xml File(DWP already have)
 			new File(tempWebXMLLocationPath.toOSString()).delete();
 				

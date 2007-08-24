@@ -16,6 +16,7 @@
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
@@ -33,6 +34,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
@@ -40,7 +42,6 @@ import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.core.utils.RuntimePropertyUtils;
-import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 import org.eclipse.jst.ws.axis2.facet.utils.Axis2RuntimeUtils;
 import org.eclipse.jst.ws.axis2.facet.utils.Axis2WebappUtils;
 import org.eclipse.jst.ws.axis2.facet.utils.ContentCopyUtils;
@@ -72,12 +73,12 @@ AbstractDataModelOperation {
 					|| RuntimePropertyUtils.getWarStatusFromPropertiesFile()){
 				runtimeLocation = Axis2RuntimeUtils.copyAxis2War(
 														monitor,
-														Axis2CoreUIMessages.PROPERTY_KEY_PATH);
+														Axis2Constants.PROPERTY_KEY_PATH);
 			}else{
 
 				runtimeLocation = Axis2WebappUtils.copyAxis2War(
 														monitor,
-														Axis2CoreUIMessages.PROPERTY_KEY_PATH);
+														Axis2Constants.PROPERTY_KEY_PATH);
 			}
 		} catch (FileNotFoundException e) {
 			return handleExceptionStatus(e);
@@ -89,8 +90,8 @@ AbstractDataModelOperation {
 		
 		//First Setting the libs folder as ignored and then copy the content of the runtime
 		IPath libPath = new Path(runtimeLocation);
-		libPath = libPath.append(Axis2FacetUIMessages.DIR_WEB_INF);
-		libPath = libPath.append(Axis2CoreUIMessages.DIR_LIB);
+		libPath = libPath.append(Axis2Constants.DIR_WEB_INF);
+		libPath = libPath.append(Axis2Constants.DIR_LIB);
 		List<String> ignoreList = new ArrayList<String>();
 		ignoreList.add(libPath.toOSString());
 		contentCopyUtils.updateCheckList(ignoreList);
@@ -106,7 +107,7 @@ AbstractDataModelOperation {
 		List<String> includeList = new ArrayList<String>();
 		contentCopyUtils.updateCheckList(loadIncludeListWithAxis2Libs(libPath.toOSString(),
 				includeList));
-		String[] nodes = {Axis2FacetUIMessages.DIR_WEB_INF,Axis2CoreUIMessages.DIR_LIB};
+		String[] nodes = {Axis2Constants.DIR_WEB_INF,Axis2Constants.DIR_LIB};
 		status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
 				libPath.toOSString(), 
 				FileUtils.addNodesToPath(
@@ -153,10 +154,10 @@ AbstractDataModelOperation {
 	 * @return loaded list
 	 */
 	private List loadIncludeListWithAxis2Libs(String path, List includeList){
-		for (int i = 0; i < Axis2FacetUIMessages.AXIS2_LIB_PREFIXES.length; i++) {
+		for (int i = 0; i < Axis2Constants.AXIS2_LIB_PREFIXES.length; i++) {
 			File[] fileList = FileUtils.getMatchingFiles(path,
-					Axis2FacetUIMessages.AXIS2_LIB_PREFIXES[i], 
-					Axis2CoreUIMessages.JAR);
+					Axis2Constants.AXIS2_LIB_PREFIXES[i], 
+					Axis2Constants.JAR);
 			for (int j = 0; j < fileList.length; j++) {
 				includeList.add(fileList[j].getAbsolutePath());
 			}

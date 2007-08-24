@@ -17,6 +17,7 @@
  * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  * 20070730   194786 sandakith@wso2.com - Lahiru Sandakith, adding servletapi jar filter
+ * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -25,12 +26,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
-import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
-import org.eclipse.jst.ws.axis2.facet.messages.Axis2FacetUIMessages;
 
 public class Axis2WebappUtils {
 
@@ -49,7 +49,7 @@ public class Axis2WebappUtils {
 			if (tempAxis2Directory.isDirectory()) {
 				tempWarLocation = Axis2CoreUtils.addAnotherNodeToPath(
 						Axis2CoreUtils.tempAxis2Directory(),
-						Axis2CoreUIMessages.DIR_EXPLOADED_TEMPWAR);
+						Axis2Constants.DIR_EXPLOADED_TEMPWAR);
 				File tempWarLocationFile= new File(tempWarLocation);
 				if (tempWarLocationFile.exists()) {
 					FileUtils.deleteDirectories(tempWarLocationFile);
@@ -92,7 +92,7 @@ public class Axis2WebappUtils {
 					"build.xml");
 					String axis2TempWebXMLFile = Axis2CoreUtils.addAnotherNodeToPath(
 							axis2TempWebInfFile,
-							Axis2FacetUIMessages.FILE_WEB_XML);
+							Axis2Constants.FILE_WEB_XML);
 
 					//Copy the webapp content 
 					FileUtils.copyDirectory(new File(axis2WebappLocation), tempWarLocationFile);
@@ -111,7 +111,7 @@ public class Axis2WebappUtils {
 											new File(axis2TempWebInfFile));
 					//Filter out the servletapi jars
 					FileUtils.filterOutRestrictedFiles(axis2TempWebInfLibFile,
-							                           Axis2FacetUIMessages.FILE_SERVLET_API,"jar");
+							Axis2Constants.FILE_SERVLET_API,"jar");
 					
 					alreadyWarExist= true;
 				}
