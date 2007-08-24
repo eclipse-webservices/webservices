@@ -14,6 +14,7 @@
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
+ * 20070823   200413 sandakith@wso2.com - Lahiru Sandakith, Namespace to Package table fix
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton;
 
@@ -304,6 +305,12 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
               model.setNamespaseToPackageMapping(getNs2PkgMapping());
             }
           });
+        
+        namespace2packageTable.addListener(SWT.MouseExit, new Listener() {
+            public void handleEvent(Event event) {
+            	 model.setNamespaseToPackageMapping(getNs2PkgMapping());
+            }
+        });
         
 		populateParamsFromWSDL();
 		populateModel();

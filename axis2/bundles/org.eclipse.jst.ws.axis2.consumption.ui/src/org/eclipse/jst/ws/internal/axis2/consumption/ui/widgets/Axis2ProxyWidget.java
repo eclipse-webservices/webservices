@@ -15,6 +15,7 @@
  * 20070513   186430 sandakith@wso2.com - Lahiru Sandakith, fix for 186430
  *										  Text not accessible on AXIS2 wizard pages.
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
+ * 20070823   200413 sandakith@wso2.com - Lahiru Sandakith, Namespace to Package table fix
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.widgets;
 
@@ -367,6 +368,12 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
               model.setNamespaseToPackageMapping(getNs2PkgMapping());
             }
           });
+        
+        namespace2packageTable.addListener(SWT.MouseExit, new Listener() {
+            public void handleEvent(Event event) {
+            	 model.setNamespaseToPackageMapping(getNs2PkgMapping());
+            }
+        });
         
 
 //		UIUtils      uiUtils  = new UIUtils( pluginId_ );
