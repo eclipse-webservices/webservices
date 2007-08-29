@@ -22,6 +22,7 @@
  * 20070604   190505 sandakith@wso2.com - Lahiru Sandakith, 
  * 20070604   190067 pmoogk@ca.ibm.com - Peter Moogk
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20070827   188732 sandakith@wso2.com - Lahiru Sandakith, Restore defaults for preferences
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -32,6 +33,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterDefaults;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
@@ -72,6 +74,13 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
   private Combo aarExtensionCombo; 
   private Combo serviceDatabindingCombo;
   private Combo clientDatabindingCombo;
+  private Button generateServerSideInterfaceCheckBoxButton;
+  private Button generateAllCheckBoxButton;
+  private Button syncAndAsyncRadioButton;
+  private Button syncOnlyRadioButton;
+  private Button asyncOnlyRadioButton;
+  private Button clientTestCaseCheckBoxButton;
+  private Button clientGenerateAllCheckBoxButton;
   
 
     
@@ -235,7 +244,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     });
     
     //the server side interface option
-    final Button generateServerSideInterfaceCheckBoxButton = 
+    generateServerSideInterfaceCheckBoxButton = 
               new Button(codegenGroup, SWT.CHECK);
     generateServerSideInterfaceCheckBoxButton.setText(
         Axis2CoreUIMessages.LABEL_GENERATE_SERVERSIDE_INTERFACE);
@@ -255,7 +264,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     generateServerSideInterfaceCheckBoxButton.setLayoutData(gd);
 
     // generate all
-    final Button generateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+    generateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
     generateAllCheckBoxButton.setSelection(context.isServiceGenerateAll());
     generateAllCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_ALL);
     generateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
@@ -294,7 +303,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     clientLabel.setText(Axis2CoreUIMessages.LABEL_CLIENT_SIDE);
     
     //client side buttons
-    final Button syncAndAsyncRadioButton = new Button(codegenGroup, SWT.RADIO);
+    syncAndAsyncRadioButton = new Button(codegenGroup, SWT.RADIO);
     syncAndAsyncRadioButton.setText(Axis2CoreUIMessages.LABEL_SYNC_AND_ASYNC);
     syncAndAsyncRadioButton.setVisible(true);
     syncAndAsyncRadioButton.setSelection(
@@ -315,7 +324,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     // Skip a column
     new Label( codegenGroup, SWT.NONE );
     
-    final Button syncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
+    syncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
     syncOnlyRadioButton.setText(Axis2CoreUIMessages.LABEL_SYNC);
     syncOnlyRadioButton.setSelection(context.isSync() && !context.isAsync() );
     syncOnlyRadioButton.addSelectionListener(new SelectionListener() {
@@ -330,7 +339,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     // Skip a column
     new Label( codegenGroup, SWT.NONE );
 
-    final Button asyncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
+    asyncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
     asyncOnlyRadioButton.setText(Axis2CoreUIMessages.LABEL_ASYNC);
     asyncOnlyRadioButton.setSelection(context.isAsync() && !context.isSync());
     asyncOnlyRadioButton.addSelectionListener(new SelectionListener() {
@@ -358,7 +367,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     });
     
     // generate test case option
-    final Button clientTestCaseCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+    clientTestCaseCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
     clientTestCaseCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
     clientTestCaseCheckBoxButton.setSelection(context.isClientTestCase());
     clientTestCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
@@ -375,7 +384,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     clientTestCaseCheckBoxButton.setLayoutData(gd);
 
     // generate all
-    final Button clientGenerateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+    clientGenerateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
     clientGenerateAllCheckBoxButton.setSelection(context.isClientGenerateAll());
     clientGenerateAllCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_ALL);
     clientGenerateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
@@ -510,6 +519,62 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
   private void storeValues(){
       // get the persistent context from the plugin
       context.setAxis2RuntimeLocation( axis2Path.getText() );
+  }
+  
+  /**
+   * Initializes states of the controls using default values
+   * in the preference store.
+   */
+  private void initializeDefaults() {
+	  aarExtensionCombo.select(0);
+	  serviceDatabindingCombo.select(0);
+	  clientDatabindingCombo.select(0);
+	  generateServerSideInterfaceCheckBoxButton.setSelection(Axis2EmitterDefaults.isServiceInterfaceSkeleton());
+	  context.setServiceInterfaceSkeleton(Axis2EmitterDefaults.isServiceInterfaceSkeleton());
+	  generateAllCheckBoxButton.setSelection(Axis2EmitterDefaults.isServiceGenerateAll());
+	  context.setServiceGenerateAll(Axis2EmitterDefaults.isServiceGenerateAll());
+	  syncAndAsyncRadioButton.setSelection(
+			  ((Axis2EmitterDefaults.isClientSync() || Axis2EmitterDefaults.isClientAsync())==false)?true:
+				  (Axis2EmitterDefaults.isClientSync()) && Axis2EmitterDefaults.isClientAsync());
+	  syncOnlyRadioButton.setSelection(
+			  Axis2EmitterDefaults.isClientSync() && !Axis2EmitterDefaults.isClientAsync());
+	  asyncOnlyRadioButton.setSelection(
+			  Axis2EmitterDefaults.isClientAsync() && !Axis2EmitterDefaults.isClientSync());
+	  context.setSync(Axis2EmitterDefaults.isClientSync());
+	  context.setAsync(Axis2EmitterDefaults.isClientAsync());
+	  clientTestCaseCheckBoxButton.setSelection(Axis2EmitterDefaults.isClientTestCase());
+	  context.setClientTestCase(Axis2EmitterDefaults.isClientTestCase());
+	  clientGenerateAllCheckBoxButton.setSelection(Axis2EmitterDefaults.isClientGenerateAll());
+	  context.setClientGenerateAll(Axis2EmitterDefaults.isClientGenerateAll());
+  }
+
+  /**
+   * Default button has been pressed.
+   */
+  protected void performDefaults() {
+	  super.performDefaults();
+	  initializeDefaults();
+  }
+
+  /**
+   * Apply button has been pressed.
+   */
+  protected void performApply() {
+	  super.performApply();
+  }
+
+  /**
+   * Cancel button has been pressed.
+   */	
+  public boolean performCancel() {
+	  return super.performCancel();
+  }
+
+  /**
+   * OK button has been pressed.
+   */	
+  public boolean performOk() {
+	  return super.performOk();
   }
   
 }
