@@ -19,7 +19,6 @@ import java.net.URL;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.osgi.framework.internal.core.AbstractBundle;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
@@ -65,9 +64,8 @@ public class BundleUtils
 	static public Version getVersion(String bundleId) {
 		Version result = null;
 		Bundle bundle = Platform.getBundle(bundleId);
-		if (bundle instanceof AbstractBundle) {
-			result = ((AbstractBundle) bundle).getVersion();
-		}
+		String versionString = (String) bundle.getHeaders().get("Bundle-Version");
+		result = new Version(versionString);
 		return result;
 	}
 
