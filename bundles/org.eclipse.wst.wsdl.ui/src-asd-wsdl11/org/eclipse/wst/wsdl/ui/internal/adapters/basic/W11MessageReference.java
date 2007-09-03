@@ -164,12 +164,12 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
     // this method is called when one of the 'otherThingsToListenTo' has changed
     // when one of these things changes it means our paramter list may have changes
     // so we need to recompute it
-    Object notifier = null;
-    if (object instanceof Adapter)
-    {
-      notifier = ((Adapter)object).getTarget();
-    }  
-    //System.out.println("something in the 'otherThingsToListenTo' list has changed " + notifier);    
+//    Object notifier = null;
+//    if (object instanceof Adapter)
+//    {
+//      notifier = ((Adapter)object).getTarget();
+//    }  
+//    System.out.println("something in the 'otherThingsToListenTo' list has changed " + notifier);    
     clearParameters();
     notifyListeners(this, null);     
   }
@@ -347,7 +347,8 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 			}
 		}
 
-		if (messageRef == null || messageRef.getEMessage() == null) {
+		// messageRef can not be null, given above
+		if (messageRef.getEMessage() == null) {
 			addErrorDiagnosticMessage(getUndefinedArg1String("message")); //$NON-NLS-1$
 		}
 		else if (parts.size() <= 0) {
