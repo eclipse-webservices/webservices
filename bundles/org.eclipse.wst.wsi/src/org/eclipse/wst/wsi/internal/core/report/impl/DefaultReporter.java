@@ -59,13 +59,6 @@ public class DefaultReporter implements Reporter
   protected AssertionResultType assertionResultType;
 
   /**
-   * Do not allow the reporter to be created with null constructor.
-   */
-  private DefaultReporter()
-  {
-  }
-
-  /**
    * Create result reporter.
    * @param report a Report object.
    * @param reportWriter a ReportWriterObject.
