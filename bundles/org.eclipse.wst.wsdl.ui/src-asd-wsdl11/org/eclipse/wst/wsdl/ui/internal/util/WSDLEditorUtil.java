@@ -214,19 +214,19 @@ public class WSDLEditorUtil extends WSDLConstants {
 			reader.parse(new InputSource(input));
 		}
 		catch (StopParseException e) {
-			// this is a normal exception to stop parsing early, 
+			// this is a normal exception to stop parsing early,
 			// when info is found, so we can safely ignore
 		}
 		catch (SAXException e) {
-			// TODO: these should be logged, but the obvious choice, 
-			// WSDLEditorPlugin.logMessage(message) is an empy implementation, 
-			// so, for now, we'll at least print out. 
+			// TODO: these should be logged, but the obvious choice,
+			// WSDLEditorPlugin.logMessage(message) is an empy implementation,
+			// so, for now, we'll at least print out.
 			e.printStackTrace();
 		}
 		catch (IOException e) {
-			// TODO: this should be logged, but the obvious choice, 
-			// WSDLEditorPlugin.logMessage(message) is an empy implementation, 
-			// so, for now, we'll at least print out. 
+			// TODO: this should be logged, but the obvious choice,
+			// WSDLEditorPlugin.logMessage(message) is an empy implementation,
+			// so, for now, we'll at least print out.
 			e.printStackTrace();
 		}
 		finally {
@@ -263,10 +263,11 @@ public class WSDLEditorUtil extends WSDLConstants {
 					if (attributes.getLocalName(i).equals("targetNamespace")) //$NON-NLS-1$
 					{
 						targetNamespaceURI = attributes.getValue(i);
-						throw new StopParseException();
+						break;
 					}
 				}
 			}
+			throw new StopParseException();
 		}
 	}
 }
