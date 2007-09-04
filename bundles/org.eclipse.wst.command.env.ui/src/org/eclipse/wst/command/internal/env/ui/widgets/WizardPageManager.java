@@ -20,7 +20,6 @@ package org.eclipse.wst.command.internal.env.ui.widgets;
 import java.util.Hashtable;
 import java.util.Stack;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
