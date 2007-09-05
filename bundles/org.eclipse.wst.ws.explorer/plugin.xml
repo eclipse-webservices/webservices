@@ -71,7 +71,7 @@
          </menu>
          <action
                label="%COMMAND_LAUNCH_WS_EXPLORER"
-               icon="icons/registry.gif"
+               icon="icons/launchWSE.gif"
                tooltip="%TOOLTIP_LAUNCH_WS_EXPLORER"
                class="org.eclipse.wst.ws.internal.explorer.action.LaunchWSEAction"
                menubarPath="org.eclipse.ui.run/explorer"
