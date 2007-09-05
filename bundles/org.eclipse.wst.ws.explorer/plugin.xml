@@ -53,8 +53,39 @@
             namespaceURI="http://schemas.xmlsoap.org/wsdl/soap/"
             transportURI="http://schemas.xmlsoap.org/soap/http"/>
    </extension>
+   <extension
+         point="org.eclipse.equinox.http.registry.httpcontexts">
+      <httpcontext
+            id="wse">
+         <resource-mapping
+               path="/wsexplorer">
+         </resource-mapping>
+      </httpcontext>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.http.registry.resources">
+      <resource
+            alias="/"
+            base-name="/"
+            httpcontextId="wse">
+      </resource>
+      <serviceSelector
+            filter="(other.info=org.eclipse.wst.ws.explorer)">
+      </serviceSelector>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.http.registry.servlets">
+      <servlet
+            alias="/*.jsp"
+            class="org.eclipse.equinox.jsp.jasper.registry.JSPFactory:/"
+            httpcontextId="wse">
+      </servlet>
+      <serviceSelector
+            filter="(other.info=org.eclipse.wst.ws.explorer)">
+      </serviceSelector>
+   </extension>
    
-   <!-- Main Menu Actions -->
+    <!-- Main Menu Actions -->
 
    <extension point="org.eclipse.ui.actionSets">
 

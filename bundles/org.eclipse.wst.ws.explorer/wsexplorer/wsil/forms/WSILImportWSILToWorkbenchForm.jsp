@@ -29,7 +29,7 @@ NodeManager nodeManager = wsilPerspective.getNodeManager();
 Node selectedNode = nodeManager.getSelectedNode();
 WsilElement wsilElement = (WsilElement)selectedNode.getTreeElement();
 %>
-</jsp:useBean>
+
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

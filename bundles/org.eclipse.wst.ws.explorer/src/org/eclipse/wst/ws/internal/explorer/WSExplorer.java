@@ -24,6 +24,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
@@ -56,10 +57,6 @@ public class WSExplorer {
 		return ExplorerPlugin.ID;
 	}
 
-	public String getWARLocation() {
-		return "wsexplorer.war";
-	}
-
 	public String getWebAppLocation() {
 		return "wsexplorer";
 	}
@@ -74,8 +71,14 @@ public class WSExplorer {
 
 	public String getBaseURL() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("http://localhost:");
-		sb.append(CatalinaRunnable.getCatalinaRunnable().getTomcatPort());
+		  
+		
+		sb.append("http://"); 
+		sb.append(JettyRunnable.getJettyRunnable().getJettyHost()); 
+		sb.append(":");
+		sb.append(JettyRunnable.getJettyRunnable().getJettyPort());
+		sb.append("/");
+		sb.append("wse");
 		sb.append("/");
 		sb.append(getContextName());
 		sb.append("/");

@@ -33,11 +33,12 @@ public class ExplorerPlugin extends AbstractUIPlugin
    */
   public static final String ID = "org.eclipse.wst.ws.explorer";
   public static final String CHARSET = "UTF-8";
+  
   /**
    * The reference to the singleton instance of this plugin.
    */
   private static ExplorerPlugin instance_;
-
+  private BundleContext context;
   /**
    * Constructs a runtime plugin object for this plugin. The "plugin" element
    * in plugin.xml should include the attribute class =
@@ -70,6 +71,7 @@ public class ExplorerPlugin extends AbstractUIPlugin
   {
     super.start(bundle);
     // init the shell of LaunchWizardTask
+    this.context = bundle;
     LaunchWizardTask.getInstance();
   }
 
@@ -185,4 +187,8 @@ public class ExplorerPlugin extends AbstractUIPlugin
       return null;
     }
   }
+  
+  public static BundleContext getBundleContext() {
+		return getInstance().context;
+	}
 }
