@@ -33,7 +33,7 @@ public class WebappManager {
 	public static void start(String webappName) throws Exception {
 		Dictionary d = new Hashtable();
 		
-		configurePort();
+		
 		d.put("http.port", new Integer(getPortParameter())); //$NON-NLS-1$
 
 		// set the base URL
@@ -78,21 +78,6 @@ public class WebappManager {
 		return port;
 	}
 
-	private static void configurePort() {
-		if (port == -1) {
-			String portCommandLineOverride = ExplorerPlugin.getBundleContext().getProperty("server_port");
-			if (portCommandLineOverride != null && portCommandLineOverride.trim().length() > 0) {
-				try {
-					port = Integer.parseInt(portCommandLineOverride);
-				}
-				catch (NumberFormatException e) {
-					String msg = "WSE server port specified in VM arguments is invalid (" + portCommandLineOverride + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-					//HelpBasePlugin.logError(msg, e);
-				}
-			}
-		}
-	}
-	
 	/*
 	 * Get the port number which will be passed to Jetty
 	 */
