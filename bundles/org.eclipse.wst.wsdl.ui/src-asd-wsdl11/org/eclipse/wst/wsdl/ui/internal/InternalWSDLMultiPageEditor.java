@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -25,6 +26,7 @@ import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -34,11 +36,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.search.ui.text.ISearchEditorAccess;
+import org.eclipse.search.ui.text.Match;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
@@ -236,6 +241,33 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
         else if (type == IOpenExternalEditorHelper.class) {
         	return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
         }
+        else if (type == ISearchEditorAccess.class)
+    {
+      return new ISearchEditorAccess()
+      {
+        public IDocument getDocument(Match match)
+        {
+          IDocument document = null;
+          ITextEditor textEditor = getTextEditor();
+          if (textEditor != null)
+          {
+            document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
+          }
+          return document;
+        }
+
+        public IAnnotationModel getAnnotationModel(Match match)
+        {
+          IAnnotationModel annoModel = null;
+          ITextEditor textEditor = getTextEditor();
+          if (textEditor != null)
+          {
+            annoModel = textEditor.getDocumentProvider().getAnnotationModel(textEditor.getEditorInput());
+          }
+          return annoModel;
+        }
+      };
+    }
 		return super.getAdapter(type);
 	}
 	
