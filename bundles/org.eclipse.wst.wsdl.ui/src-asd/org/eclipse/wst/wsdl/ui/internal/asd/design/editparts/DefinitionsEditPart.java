@@ -88,6 +88,7 @@ public class DefinitionsEditPart extends BaseEditPart {
 	  protected void createEditPolicies()
 	  {
 	    // TODO Auto-generated method stub
+		super.createEditPolicies();
 	  }
 	  
       public void setModelChildren(List list)

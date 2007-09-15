@@ -39,6 +39,7 @@ public class ColumnEditPart extends BaseEditPart
   protected void createEditPolicies()
   {
     // TODO Auto-generated method stub
+	super.createEditPolicies();
   }
   
   protected List getModelChildren()

@@ -91,7 +91,11 @@ class EditPartNavigationHandlerUtil
         
     if (t instanceof ColumnEditPart || t instanceof DefinitionsEditPart)
     {
-      t = null;
+      t = focusEditPart;
+      while ((t instanceof ColumnEditPart || t instanceof DefinitionsEditPart) && t.getChildren().size() > 0)
+      {
+    	  t = (EditPart) t.getChildren().get(0);
+      }
     }      
     return (GraphicalEditPart)t;
   }
