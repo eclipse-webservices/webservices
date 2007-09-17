@@ -10,10 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
+import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
@@ -28,6 +33,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.RetargetAction;
 import org.eclipse.ui.part.MultiPageEditorActionBarContributor;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -43,6 +49,10 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
   private InternalWSDLMultiPageEditor wsdlEditor;
   protected ITextEditor textEditor;
   protected IEditorActionBarContributor sourceViewerActionContributor = null;
+  protected List fPartListeners= new ArrayList();
+  ZoomInRetargetAction zoomInRetargetAction;
+  ZoomOutRetargetAction zoomOutRetargetAction;
+  ZoomComboContributionItem zoomComboContributionItem;
   Action captureScreenAction;
 
   /**
@@ -52,7 +62,11 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
   {
     super();
     sourceViewerActionContributor = new SourcePageActionContributor();
+    zoomInRetargetAction = new ZoomInRetargetAction();
+    zoomOutRetargetAction = new ZoomOutRetargetAction();
     captureScreenAction = new CaptureScreenAction();
+    fPartListeners.add(zoomInRetargetAction);
+    fPartListeners.add(zoomOutRetargetAction);
   }
 
   public void setActivePage(IEditorPart part)
@@ -63,11 +77,15 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
     activeEditorPart = part;
 
     IActionBars actionBars = getActionBars();
+    boolean isSource = false;
     
     if (activeEditorPart != null && activeEditorPart instanceof ITextEditor)
     {
-      activateSourcePage(activeEditorPart, true);
-      captureScreenAction.setEnabled(false);
+    	isSource = true;
+        zoomInRetargetAction.setEnabled(false);
+        zoomOutRetargetAction.setEnabled(false);
+        activateSourcePage(activeEditorPart, true);
+        captureScreenAction.setEnabled(false);
     }
     else
     {
@@ -95,6 +113,8 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
         {
           ActionRegistry registry = (ActionRegistry) adapter;
           actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(), registry.getAction(ASDDeleteAction.ID));
+          zoomInRetargetAction.setEnabled(true);
+          zoomOutRetargetAction.setEnabled(true);
           captureScreenAction.setEnabled(true);
         }
       }
@@ -103,6 +123,12 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
     if (actionBars != null) {
       // update menu bar and tool bar
       actionBars.updateActionBars();
+    }
+    
+    if (zoomComboContributionItem != null)
+    {
+      zoomComboContributionItem.setVisible(!isSource);
+      zoomComboContributionItem.update();
     }
   }
 
@@ -132,8 +158,9 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
     }
 
 //    manager.add(new Separator());
-//    String[] zoomStrings = new String[] { ZoomManager.FIT_ALL, ZoomManager.FIT_HEIGHT, ZoomManager.FIT_WIDTH };
-//    manager.add(new ZoomComboContributionItem(getPage(), zoomStrings));
+    String[] zoomStrings = new String[] { ZoomManager.FIT_ALL, ZoomManager.FIT_HEIGHT, ZoomManager.FIT_WIDTH };
+    zoomComboContributionItem = new ZoomComboContributionItem(getPage(), zoomStrings);
+    manager.add(zoomComboContributionItem);
     manager.add(captureScreenAction);
   }
 
@@ -176,8 +203,14 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
 
   public void init(IActionBars bars, IWorkbenchPage page)
   {
-    initSourceViewerActionContributor(bars);
-    super.init(bars, page);
+	  Iterator e = fPartListeners.iterator();
+	  while (e.hasNext())
+	  {
+		  page.addPartListener((RetargetAction) e.next());
+	  }
+
+	  initSourceViewerActionContributor(bars);
+	  super.init(bars, page);
   }
 
   
@@ -188,9 +221,10 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
   
   public void dispose()
   {
-    if (sourceViewerActionContributor != null)
-      sourceViewerActionContributor.dispose();
-    super.dispose();
+	  fPartListeners = null;
+	  if (sourceViewerActionContributor != null)
+		  sourceViewerActionContributor.dispose();
+	  super.dispose();
   }
 
 public void contributeToMenu(IMenuManager manager) {
@@ -198,6 +232,8 @@ public void contributeToMenu(IMenuManager manager) {
 	
 	IMenuManager menu = new MenuManager(Messages._UI_EDITOR_NAME, "WSDLEditor");
 
+    menu.add(zoomInRetargetAction);
+    menu.add(zoomOutRetargetAction);
 	manager.appendToGroup(IWorkbenchActionConstants.MB_ADDITIONS, menu);
 	menu.add(captureScreenAction);
 
