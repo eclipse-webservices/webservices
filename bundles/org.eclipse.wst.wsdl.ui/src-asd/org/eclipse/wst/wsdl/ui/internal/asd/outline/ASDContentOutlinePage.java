@@ -69,7 +69,7 @@ public class ASDContentOutlinePage extends ContentOutlinePage {
 		getTreeViewer().getControl().setMenu(menu);
 		menuManager.addMenuListener(menuListener);
 		
-	    getSite().registerContextMenu("org.eclipse.wst.wsdl.wsdleditor", menuManager, wsdlEditor.getSelectionManager()); //$NON-NLS-1$
+	    getSite().registerContextMenu("org.eclipse.wst.wsdl.ui.popup.outline", menuManager, wsdlEditor.getSelectionManager()); //$NON-NLS-1$
 		  PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),ASDEditorCSHelpIds.WSDL_OUTLINE_VIEW); 
 	}
 	
