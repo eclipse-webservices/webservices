@@ -45,12 +45,10 @@
 		name="Extensiblity Element Filter"
 		schema="schema/extensibilityElementFilter.exsd" />
 		
-    <extension-point id="WSDLEditorExtensionConfiguration" name="WSDLEditorExtensionConfiguration"/>
+	<extension-point id="internalEditorConfiguration" name="WSDLEditorExtensionConfiguration"/>    
     <extension-point id="editorModes" name="%WSDLEditorModes"/>
-    
-    <!-- this extension point is deprecated, use extensionCategories -->
-	<extension-point id="ExtensionsSchemasDescription" name="this extension point is deprecated"/>	
 	<extension-point id="extensionCategories" name="Extension Categories"/>		
+
 	<extension
 		point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
 		<propertyContributor

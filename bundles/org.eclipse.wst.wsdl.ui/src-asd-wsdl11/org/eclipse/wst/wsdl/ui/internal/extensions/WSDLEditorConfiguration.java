@@ -22,6 +22,7 @@ import org.eclipse.wst.wsdl.ui.internal.actions.IWSDLToolbarAction;
 
 public class WSDLEditorConfiguration {
 	  public static final String WSDLEDITORCONFIGURATIONEXTENSIONID = "org.eclipse.wst.wsdl.ui.WSDLEditorExtensionConfiguration"; //$NON-NLS-1$
+	  public static final String INTERNALEDITORCONFIGURATION_EXTENSIONID = "org.eclipse.wst.wsdl.ui.internalEditorConfiguration"; //$NON-NLS-1$
 	  public static final String CLASSNAME = "class"; //$NON-NLS-1$
 	  public static final String ADAPTERFACTORY = "adapterFactory"; //$NON-NLS-1$
 	  public static final String TOOLBARACTION = "toolbarAction"; //$NON-NLS-1$
@@ -107,7 +108,14 @@ public class WSDLEditorConfiguration {
 
 	  public void readWSDLConfigurationRegistry()
 	  {
-	    IConfigurationElement[] wsdlEditorExtensionList = Platform.getExtensionRegistry().getConfigurationElementsFor(WSDLEDITORCONFIGURATIONEXTENSIONID);
+	    definedExtensionsList = new ArrayList();
+	    updateList(INTERNALEDITORCONFIGURATION_EXTENSIONID);
+	    updateList(WSDLEDITORCONFIGURATIONEXTENSIONID);
+	  }
+	  
+	  public void updateList(String ID)
+	  {
+	    IConfigurationElement[] wsdlEditorExtensionList = Platform.getExtensionRegistry().getConfigurationElementsFor(ID);
 
 	    boolean definedExtensionsExist = (wsdlEditorExtensionList != null && wsdlEditorExtensionList.length > 0);
 
