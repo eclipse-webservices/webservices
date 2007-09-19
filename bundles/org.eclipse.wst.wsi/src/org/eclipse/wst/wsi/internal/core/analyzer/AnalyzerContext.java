@@ -25,6 +25,13 @@ public class AnalyzerContext
   protected WSDLDocument wsdlDocument = null;
 
   /**
+   * Do not allow the usage of the null constructor.
+   */
+  private AnalyzerContext()
+  {
+  }
+
+  /**
    * Create analyzer context with service reference.
    * @param serviceReference a service reference.
    */

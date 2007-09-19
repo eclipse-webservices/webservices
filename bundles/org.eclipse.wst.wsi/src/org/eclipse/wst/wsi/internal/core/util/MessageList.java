@@ -26,6 +26,13 @@ public class MessageList
   private ResourceBundle messageResourceBundle = null;
 
   /**
+   * Do not allow this object to be created with null constructor.
+   */
+  private MessageList()
+  {
+  }
+
+  /**
    * Constructor for MessageList.
    * @param resourceBundleName  a resource bundle name.
    */
