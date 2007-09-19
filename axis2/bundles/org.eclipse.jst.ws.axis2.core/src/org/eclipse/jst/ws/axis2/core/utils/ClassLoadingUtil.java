@@ -12,6 +12,7 @@
  * 20070130   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20070919   202299 sandakith@wso2.com - Lahiru Sandakith Fix for AIOB Exp
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -45,11 +46,13 @@ public class ClassLoadingUtil {
 		// Set the class loader to child first
 		antClassLoader.setParentFirst(false);
 		
-			if (!(axis2ClassPath ==null) || !libsLoaded){
+			if ((classLoadPath ==null) || !libsLoaded){
 				classLoadPath = getAxis2Libs(project);
 			}
 			
 			if(urls == null){
+				urls= new URL[classLoadPath.length];
+			}else if(urls != null && (urls.length)!=(classLoadPath.length)){
 				urls= new URL[classLoadPath.length];
 			}
 
