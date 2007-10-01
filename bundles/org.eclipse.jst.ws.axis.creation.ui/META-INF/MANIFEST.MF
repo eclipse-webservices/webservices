@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis.creation.ui; singleton:=true
-Bundle-Version: 1.0.205.qualifier
+Bundle-Version: 1.0.305.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -18,7 +18,7 @@ Export-Package: org.eclipse.jst.ws.internal.axis.creation.ui;x-internal:=true,
 Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.2.0,3.4.0)",
- org.eclipse.emf.ecore;bundle-version="[2.2.0,2.4.0)",
+ org.eclipse.emf.ecore;bundle-version="[2.2.0,3.0.0)",
  org.eclipse.jem;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jem.workbench;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.wst.ws.parser;bundle-version="[1.0.100,1.1.0)",
