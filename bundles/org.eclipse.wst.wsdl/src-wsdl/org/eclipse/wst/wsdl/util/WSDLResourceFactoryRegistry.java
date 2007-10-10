@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -42,7 +43,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * </p>
  * @since 1.0
  */
-public class WSDLResourceFactoryRegistry implements Resource.Factory.Registry
+public class WSDLResourceFactoryRegistry extends ResourceFactoryRegistryImpl
 {
   protected Resource.Factory.Registry parent;
 
