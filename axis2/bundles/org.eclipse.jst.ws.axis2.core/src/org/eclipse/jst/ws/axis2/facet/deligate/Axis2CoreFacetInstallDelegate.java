@@ -14,6 +14,7 @@
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20071010   204182 kathy@ca.ibm.com - Kathy Chan, check for Xalan TransformerFactoryImpl
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.deligate;
 
@@ -37,6 +38,16 @@ public class Axis2CoreFacetInstallDelegate implements IDelegate {
 			IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(Axis2CoreUIMessages.PROGRESS_INSTALL_AXIS2_RUNTIME, 2 );
 
+		// Defect 204182 - If the xalan transformer factory TransformerFactoryImpl is loadable, use that as the XSLT processor.
+		// Otherwise, just use the default XSLT processor.
+		try {
+			Class.forName("org.apache.xalan.processor.TransformerFactoryImpl");
+			System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
+		}
+		catch (ClassNotFoundException e) {
+			// Do nothing.  Just leave as default.
+		}
+		
 		Axis2WebservicesServerCommand command = new Axis2WebservicesServerCommand(project); 
 		status = command.executeOverride(monitor);
 		if (status.getCode() == Status.OK_STATUS.getCode() ){
