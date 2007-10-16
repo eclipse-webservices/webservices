@@ -17,6 +17,7 @@
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20071011   205972 sandakith@wso2.com - Lahiru Sandakith, Axis2 Libraries License files fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
@@ -147,19 +148,28 @@ AbstractDataModelOperation {
 	}
 	
 	/**
-	 * Load the exact libs from the axis2 jars with the correct versions to the 
-	 * <code>path</code>. This way we can 
+	 * Load the exact libraries list from the axis2 jars with the correct versions to the 
+	 * <code>path</code>. Doing it this way introduce the scalability to the solution 
+	 * where the need comes in the future releases to include additional libraries and 
+	 * if needed filter out some libraries.
 	 * @param runtimeLocation
 	 * @param includeList
 	 * @return loaded list
 	 */
 	private List loadIncludeListWithAxis2Libs(String path, List includeList){
 		for (int i = 0; i < Axis2Constants.AXIS2_LIB_PREFIXES.length; i++) {
-			File[] fileList = FileUtils.getMatchingFiles(path,
+			File[] jarFileList = FileUtils.getMatchingFiles(path,
 					Axis2Constants.AXIS2_LIB_PREFIXES[i], 
 					Axis2Constants.JAR);
-			for (int j = 0; j < fileList.length; j++) {
-				includeList.add(fileList[j].getAbsolutePath());
+			for (int j = 0; j < jarFileList.length; j++) {
+				includeList.add(jarFileList[j].getAbsolutePath());
+			}
+			//Fix for the 205972 
+			File[] licenseFileList = FileUtils.getMatchingFiles(path,
+					Axis2Constants.AXIS2_LIB_PREFIXES[i], 
+					Axis2Constants.TXT);
+			for (int k = 0; k < licenseFileList.length; k++) {
+				includeList.add(licenseFileList[k].getAbsolutePath());
 			}
 		}
 		return includeList;

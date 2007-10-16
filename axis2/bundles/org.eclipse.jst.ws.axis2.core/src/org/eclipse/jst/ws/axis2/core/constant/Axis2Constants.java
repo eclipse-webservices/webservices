@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20071011   205972 sandakith@wso2.com - Lahiru Sandakith, Axis2 Libraries License files fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.constant;
 
@@ -25,6 +26,7 @@ public class Axis2Constants {
 	public static final String ADB="adb";										//$NON-NLS-1$
 	public static final String AAR="aar";										//$NON-NLS-1$
 	public static final String JAR="jar";										//$NON-NLS-1$
+	public static final String TXT="txt";										//$NON-NLS-1$
 	public static final String TEMP_AXIS2_FACET_DIR="org.apache.axis2.facet";	//$NON-NLS-1$
 	public static final String DIR_DOT_METADATA=".metadata";					//$NON-NLS-1$
 	public static final String DIR_DOT_PLUGINS=".plugins";						//$NON-NLS-1$
