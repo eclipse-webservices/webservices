@@ -14,11 +14,11 @@ setlocal
 REM *********** Local envars ***************************
 
 REM The JRE java.exe to be used by Ant.  Note: for WTP 2.0 the JDK needs to be 1.5 or higher.
-set JAVAEXE="C:\j2sdk1.4.2_07\jre\bin\java.exe"
+set JAVAEXE="C:\jdk1.5.0\jre\bin\java.exe"
 
 REM The Eclipse install directory.  Some Eclipse based products may refer to this directory
 REM as the non shared directory.
-set INSTALL_DIRECTORY=d:\wtp\eclipse
+set INSTALL_DIRECTORY=d:\productdirectory\eclipse
 
 REM The shared Eclipse features directory.  Some Eclipse based products may split their 
 REM directory structure into shared and non shared folders.  The variable below should be
@@ -31,7 +31,7 @@ REM shared plugin directory(ie. plugins\org.eclipse.equinox.launcher*.jar )
 set LAUNCHER_JAR="%SHARED_DIRECTORY%\plugins\org.eclipse.equinox.launcher_1.0.0.v20070606.jar"
 
 REM The location of your workspace
-set WORKSPACE=D:\builds\wtp_20_ga\eclipse\workspace
+set WORKSPACE=C:\workspace
 
 REM ****************************************************
 
