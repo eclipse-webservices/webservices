@@ -16,12 +16,12 @@ set +v
 echo "Setting environment variables"
 
 # The JRE java.exe to be used by Ant.  Note: for WTP 2.0 the JDK needs to be 1.5 or higher.
-JAVAEXE=/home/tester/sunjdk/j2sdk1.5.0/bin/java
+JAVAEXE=/home/tester/jdk1.5.0/jre/bin/java
        
        
 # The Eclipse install directory.  Some Eclipse based products may refer to this directory
 # as the non shared directory.
-INSTALL_DIRECTORY=/wtp/eclipse
+INSTALL_DIRECTORY=/productdirectory/eclipse
 
 # The shared Eclipse features directory.  Some Eclipse based products may split their 
 # directory structure into shared and non shared folders.  The variable below should be
@@ -35,7 +35,7 @@ LAUNCHER_JAR=$SHARED_DIRECTORY/plugins/org.eclipse.equinox.launcher_1.0.0.v20070
 
 
 # The location of your workspace
-WORKSPACE=/home/tester/workspace_1116b
+WORKSPACE=/home/tester/workspace
 
 run() {
   set -v
