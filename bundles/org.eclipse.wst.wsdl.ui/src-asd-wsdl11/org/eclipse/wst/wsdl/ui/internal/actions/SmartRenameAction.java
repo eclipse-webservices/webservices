@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.actions;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
+import javax.wsdl.BindingOperation;
 import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsdl.Binding;
@@ -28,6 +31,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
@@ -111,6 +115,56 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 				renamer.run();
 			}
 			*/
+			
+			
+			// 
+			WSDLElement wsdlElement = operation.getContainer();
+			if (wsdlElement instanceof PortType) {
+				PortType portType = (PortType) wsdlElement;
+				Map bindings = portType.getEnclosingDefinition().getBindings();
+				Collection values = bindings.values();
+				Iterator iterator = values.iterator();
+				while (iterator.hasNext()) {
+					Binding binding = (Binding) iterator.next();
+					
+					// Find only Bindings which reference the modified PortType-->Operation
+					if (binding.getPortType().equals(portType)) {
+						String operationInputName = null;
+						String operationOutputName = null;
+						if(operation.getInput() != null) {
+							operationInputName = operation.getInput().getName();
+						}
+						if(operation.getOutput() != null) {
+							operationOutputName = operation.getOutput().getName();
+						}
+						
+						BindingOperation bindingOperation = binding.getBindingOperation(operation.getName(), operationInputName , operationOutputName);
+						// There may be no binding content in which case bindingOperation would be null
+						if (bindingOperation != null) {
+							List extensibilityElements = bindingOperation.getExtensibilityElements();
+							Iterator extensibilityElementsIterator = extensibilityElements.iterator();
+							while (extensibilityElementsIterator.hasNext()) {
+								Object object = extensibilityElementsIterator.next();
+								if(object instanceof SOAPOperation) {
+									SOAPOperation soapOperation = (SOAPOperation) object;
+									String soapActionURI = soapOperation.getSoapActionURI();
+
+									// Check if the old soapActionURI is a generated String.  If it's not
+									// generated, leave it.  It means a user has edited and we shouldn't touch it.
+									String tns = operation.getEnclosingDefinition().getTargetNamespace();
+									if (computeSOAPActionURI(tns, oldName).equals(soapActionURI)) {
+										// Chop off the Operation name at the end and append the new name.
+										String newSOAPActionURI = soapActionURI.substring(0, soapActionURI.length() - oldName.length());
+										newSOAPActionURI = newSOAPActionURI + newName;
+										soapOperation.setSoapActionURI(newSOAPActionURI);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
 			
 			// Rename Messages and Parts
 			Message msg;
@@ -322,6 +376,13 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 		endRecording();
 	}
 	
+	private String computeSOAPActionURI(String tns, String operationName) {
+		// We need more investigation here.  We should take a look at how this SOAPActionURI
+		// is generated in the first place.  One issue I see here is the trailing slash of the
+		// targetnamespace.  More specifically, the lack of one.  If there is no trailing slash,
+		// does it add one?
+		return tns + operationName;
+	}
 	// boolean isInputOutput should be set to true if the part is an Input or Output.
 	// Set false if the part is a Fault.
 	private void renamePartsHelper(List partsList, String oldSubString, String newSubString, boolean isInputOutput) {
