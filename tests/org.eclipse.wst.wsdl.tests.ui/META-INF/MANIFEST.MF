@@ -4,19 +4,10 @@ Bundle-Name: WSDL Model UI Samples
 Bundle-SymbolicName: org.eclipse.wst.wsdl.tests.ui; singleton:=true
 Bundle-Version: 1.0.1.qualifier
 Bundle-ClassPath: wsdl.tests.ui.jar
-Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
-Require-Bundle: org.eclipse.core.runtime.compatibility,
- org.eclipse.wst.wsdl,
+Require-Bundle: org.eclipse.wst.wsdl,
  org.eclipse.wst.wsdl.tests,
- org.eclipse.xsd,
  org.eclipse.core.resources,
  org.eclipse.ui,
- org.eclipse.ui.ide;resolution:=optional,
- org.eclipse.ui.views;resolution:=optional,
- org.eclipse.ui.editors;resolution:=optional,
- org.eclipse.jface.text;resolution:=optional,
- org.eclipse.ui.workbench.texteditor;resolution:=optional,
- org.junit,
- org.eclipse.core.runtime;bundle-version="2.1"
+ org.eclipse.core.runtime
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
