@@ -5,25 +5,11 @@
   xmlns:uddi="urn:uddi-org:api">
   <abstract xml:lang="en-US">v5_0_1_0</abstract>
 
-  <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_SAP_TEST</abstract>
-    <abstract xml:lang="en-US">http://udditest.sap.com/UDDI/api/inquiry/</abstract>
-    <abstract xml:lang="en-US">https://udditest.sap.com/UDDI/api/publish/</abstract>
-    <abstract xml:lang="en-US">http://udditest.sap.com/</abstract>
-  </link>
-
-  <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_SAP</abstract>
-    <abstract xml:lang="en-US">http://uddi.sap.com/UDDI/api/inquiry/</abstract>
-    <abstract xml:lang="en-US">https://uddi.sap.com/UDDI/api/publish/</abstract>
-    <abstract xml:lang="en-US">http://uddi.sap.com/</abstract>
-  </link>
-
-  <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US">%PUBLICUDDIREGISTRYTYPE_NAME_XMETHODS</abstract>
-    <abstract xml:lang="en-US">http://uddi.xmethods.net/inquire</abstract>
-    <abstract xml:lang="en-US">https://uddi.xmethods.net/publish</abstract>
-    <abstract xml:lang="en-US">http://www.xmethods.net/ve2/Register.po?event=registerOrg</abstract>
+   <link referencedNamespace="urn:uddi-org:api">
+    <abstract xml:lang="en-US">%Registry Name</abstract>
+    <abstract xml:lang="en-US">Fill In Inquiry URL</abstract>
+    <abstract xml:lang="en-US">Fill In Publish URL</abstract>
+    <abstract xml:lang="en-US">File In Site</abstract>
   </link>
 
  
