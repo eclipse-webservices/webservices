@@ -108,7 +108,27 @@ while (favoriteRegistryElements.hasMoreElements())
       
       <form id="openRegistryForm" action="<%=response.encodeURL(controller.getPathWithContext("uddi/actions/OpenRegistryActionJSP.jsp"))%>" method="post" target="<%=FrameNames.PERSPECTIVE_WORKAREA%>" enctype="multipart/form-data" onSubmit="return handleSubmit(this)">
         <table width="95%" border=0 cellpadding=3 cellspacing=0>
-         
+          <tr>
+            <td class="labels" valign="bottom" nowrap height=25>
+              <label for="favoriteRegistry"><%=uddiPerspective.getMessage("FORM_LABEL_FAVORITE_REGISTRY")%></label>
+            </td>
+          </tr>
+          <tr>
+            <td height=25 valign="bottom">
+              <select id="favoriteRegistry" onChange="fillFavoriteInfo(this)" class="selectlist">
+                <option value="" selected>
+                <%
+                for (int i=0;i<favoriteRegistryList.size();i++)
+                {
+                  FavoritesUDDIRegistryElement favRegElement = (FavoritesUDDIRegistryElement)favoriteRegistryList.elementAt(i);
+                %>
+                  <option value="<%=favRegElement.getName()%>"><%=favRegElement.getName()%>
+                <%
+                }
+                %>
+              </select>
+            </td>
+          </tr>
           <tr>
             <td class="labels" height=25 valign="bottom">
               <label for="input_registry_name"><%=uddiPerspective.getMessage("FORM_LABEL_REGISTRY_NAME")%></label>
