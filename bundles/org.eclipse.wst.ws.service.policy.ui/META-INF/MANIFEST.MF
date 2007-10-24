@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %PLUGIN_NAME
+Bundle-SymbolicName: org.eclipse.wst.ws.service.policy.ui;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI
+Bundle-Vendor: %PLUGIN_PROVIDER
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.wst.ws.service.policy
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
