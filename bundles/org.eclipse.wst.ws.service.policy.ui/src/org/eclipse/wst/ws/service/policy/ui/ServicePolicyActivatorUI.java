@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
@@ -21,7 +24,7 @@ import org.osgi.framework.BundleContext;
 public class ServicePolicyActivatorUI extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.wst.ws.service.policy.ui";
+	public static final String PLUGIN_ID = "org.eclipse.wst.ws.service.policy.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ServicePolicyActivatorUI plugin;

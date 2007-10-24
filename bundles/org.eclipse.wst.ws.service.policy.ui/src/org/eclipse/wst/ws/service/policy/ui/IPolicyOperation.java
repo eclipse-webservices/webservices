@@ -6,15 +6,23 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
+import java.util.List;
+
 import org.eclipse.wst.ws.service.policy.Descriptor;
+import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
 public interface IPolicyOperation
 {
-  public enum OperationKind { Enumeration, Selection, Complex };
+  public enum OperationKind { enumeration, selection, iconSelection, complex };
+ 
+  public String getId();
   
   public Descriptor getDescriptor();
   
@@ -22,9 +30,9 @@ public interface IPolicyOperation
   
   public String getEnumerationId();
   
-  public void launchOperation();
+  public void launchOperation( List<IServicePolicy> selectedPolicies );
   
-  public boolean isEnabled();
+  public boolean isEnabled( List<IServicePolicy> selectedPolicies );
   
   public String getPolicyIdPattern();
 }

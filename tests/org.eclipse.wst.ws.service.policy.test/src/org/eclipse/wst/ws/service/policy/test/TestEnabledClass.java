@@ -11,9 +11,19 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
-package org.eclipse.wst.ws.service.policy;
+package org.eclipse.wst.ws.service.policy.test;
 
-public interface IFilter
+import java.util.List;
+
+import org.eclipse.wst.ws.service.policy.IServicePolicy;
+import org.eclipse.wst.ws.service.policy.ui.IEnableOperation;
+
+public class TestEnabledClass implements IEnableOperation
 {
-  public boolean accept( IServicePolicy policy );
+
+  public boolean isEnabled(List<IServicePolicy> selectedPolicies)
+  {
+    System.out.println( "Is enabled operation called." );
+    return true;
+  }
 }

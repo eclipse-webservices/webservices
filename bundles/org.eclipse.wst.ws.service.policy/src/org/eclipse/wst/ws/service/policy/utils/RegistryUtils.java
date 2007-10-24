@@ -6,7 +6,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.utils;
 
@@ -20,15 +24,15 @@ public class RegistryUtils
   {
     Descriptor descriptor = new Descriptor();
     
-    String shortName   = getAttribute( element, "shortname" );
-    String longName    = getAttribute( element, "longname" );
-    String description = getAttribute( element, "description" );
-    String iconPath    = getAttribute( element, "iconpath" );
-    String contextHelp = getAttribute( element, "contexthelpid" );
+    String shortName   = getAttribute( element, "shortname" ); //$NON-NLS-1$
+    String longName    = getAttribute( element, "longname" ); //$NON-NLS-1$
+    String description = getAttribute( element, "description" ); //$NON-NLS-1$
+    String iconPath    = getAttribute( element, "iconpath" ); //$NON-NLS-1$
+    String contextHelp = getAttribute( element, "contexthelpid" ); //$NON-NLS-1$
     
     if( shortName == null && longName == null )
     {
-      ServicePolicyActivator.logError( "Short name or Long name missing from service policy descriptor.", null );
+      ServicePolicyActivator.logError( "Short name or Long name missing from service policy descriptor.", null ); //$NON-NLS-1$
     }
     else if( shortName == null )
     {

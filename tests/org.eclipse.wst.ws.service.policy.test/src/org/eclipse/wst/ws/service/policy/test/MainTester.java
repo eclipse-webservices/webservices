@@ -1,11 +1,16 @@
-/***************************************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Eclipse Public License v1.0
+/*******************************************************************************
+ * Copyright (c) 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: IBM Corporation - initial API and implementation
- **************************************************************************************************/
+ *
+ * Contributors:
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.test;
 
 import java.util.List;
@@ -32,20 +37,20 @@ public class MainTester extends TestCase
        displayPolicyNode( policy );
      }   
      
-     System.out.println( "" );
-     System.out.println("=========== Enumerations:" );
+     System.out.println( "" ); //$NON-NLS-1$
+     System.out.println("=========== Enumerations:" ); //$NON-NLS-1$
      
-     List<IStateEnumerationItem> errorWarnEnum = platform.getStateEnumeration( "org.eclipse.wst.service.policy.errorWarnEnum" );
+     List<IStateEnumerationItem> errorWarnEnum = platform.getStateEnumeration( "org.eclipse.wst.service.policy.errorWarnEnum" ); //$NON-NLS-1$
      
-     System.out.println( "Enum id: " + "org.eclipse.wst.service.policy.errorWarnEnum" );
+     System.out.println( "Enum id: " + "org.eclipse.wst.service.policy.errorWarnEnum" ); //$NON-NLS-1$ //$NON-NLS-2$
      
      for( IStateEnumerationItem item : errorWarnEnum )
      {
-       System.out.println( "  id: " + item.getId() );
-       System.out.println( "  shortname: " + item.getShortName() );
-       System.out.println( "  longname: " + item.getLongName() );
-       System.out.println( "  isDefault: " + item.isDefault() );
-       System.out.println( "" );
+       System.out.println( "  id: " + item.getId() ); //$NON-NLS-1$
+       System.out.println( "  shortname: " + item.getShortName() ); //$NON-NLS-1$
+       System.out.println( "  longname: " + item.getLongName() ); //$NON-NLS-1$
+       System.out.println( "  isDefault: " + item.isDefault() ); //$NON-NLS-1$
+       System.out.println( "" ); //$NON-NLS-1$
      }
    }
    
@@ -54,16 +59,16 @@ public class MainTester extends TestCase
      IServicePolicy parentPolicy = policy.getParentPolicy();
      Descriptor     descriptor   = policy.getDescriptor();
      
-     System.out.println( "Found policy: " + policy.getId() + " parentid:" + (parentPolicy == null ? "null" : parentPolicy.getId()) );
+     System.out.println( "Found policy: " + policy.getId() + " parentid:" + (parentPolicy == null ? "null" : parentPolicy.getId()) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
      
      for( IServicePolicy child : policy.getChildren() )
      {
-       System.out.println( "  child id: " + child.getId() );
+       System.out.println( "  child id: " + child.getId() ); //$NON-NLS-1$
      }
      
      List<IPolicyRelationship> relationships = policy.getRelationships();
      
-     System.out.println(  "  relationships:" );
+     System.out.println(  "  relationships:" ); //$NON-NLS-1$
      
      for( IPolicyRelationship relationship : relationships )
      {
@@ -73,7 +78,7 @@ public class MainTester extends TestCase
        
        for( IStateEnumerationItem item : sourceEnumList )
        {
-         System.out.println( "    " + item.getId() );
+         System.out.println( "    " + item.getId() ); //$NON-NLS-1$
        }
        
        for( IPolicyEnumerationList policyEnumList : targetList )
@@ -81,24 +86,24 @@ public class MainTester extends TestCase
          String                      policyId       = policyEnumList.getPolicy().getId();
          List<IStateEnumerationItem> targetEnumList = policyEnumList.getEnumerationList();
          
-         System.out.println( "    policy id: " + policyId );
+         System.out.println( "    policy id: " + policyId ); //$NON-NLS-1$
          
          for( IStateEnumerationItem targetItem : targetEnumList )
          {
-           System.out.println( "      target enum id: " + targetItem.getId() );
+           System.out.println( "      target enum id: " + targetItem.getId() ); //$NON-NLS-1$
          }
        }
      }
          
-     System.out.println( "Descriptor:" );
-     System.out.println( "  short name: " + descriptor.getShortName() );
-     System.out.println( "  long name: " + descriptor.getLongName() );
-     System.out.println( "  description: " + descriptor.getDescription() );
-     System.out.println( "  context help: " + descriptor.getContextHelpId() );
-     System.out.println( "  icon path: " + descriptor.getIconPath() );
-     System.out.println( "  icon path bundle id: " + descriptor.getIconBundleId() );
-     System.out.println( "===" );
-     System.out.println( "" );
+     System.out.println( "Descriptor:" ); //$NON-NLS-1$
+     System.out.println( "  short name: " + descriptor.getShortName() ); //$NON-NLS-1$
+     System.out.println( "  long name: " + descriptor.getLongName() ); //$NON-NLS-1$
+     System.out.println( "  description: " + descriptor.getDescription() ); //$NON-NLS-1$
+     System.out.println( "  context help: " + descriptor.getContextHelpId() ); //$NON-NLS-1$
+     System.out.println( "  icon path: " + descriptor.getIconPath() ); //$NON-NLS-1$
+     System.out.println( "  icon path bundle id: " + descriptor.getIconBundleId() ); //$NON-NLS-1$
+     System.out.println( "===" ); //$NON-NLS-1$
+     System.out.println( "" ); //$NON-NLS-1$
      
      for( IServicePolicy child : policy.getChildren() )
      {

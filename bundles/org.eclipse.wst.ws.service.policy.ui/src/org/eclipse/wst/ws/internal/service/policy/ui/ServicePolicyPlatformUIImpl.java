@@ -9,49 +9,43 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
+ * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding of service policy
  *******************************************************************************/
-package org.eclipse.wst.ws.service.policy.ui;
+package org.eclipse.wst.ws.internal.service.policy.ui;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
-import org.eclipse.wst.ws.internal.service.policy.ui.ServicePolicyPlatformUIImpl;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
+import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 
-
-public class ServicePolicyPlatformUI
+public class ServicePolicyPlatformUIImpl
 {
-  private static ServicePolicyPlatformUI instance;
+  Map<String, PolicyOperationImpl> operationMap = new HashMap<String, PolicyOperationImpl>();
   
-  private ServicePolicyPlatformUIImpl platformUI;
-  
-  private ServicePolicyPlatformUI()
+  public ServicePolicyPlatformUIImpl()
   {
-    platformUI = new ServicePolicyPlatformUIImpl();
-  }
-  
-  public static ServicePolicyPlatformUI getInstance()
-  {
-    if( instance == null )
-    {
-      instance = new ServicePolicyPlatformUI();
-    }
+    ServicePolicyRegistryUI registry = new ServicePolicyRegistryUI();
     
-    return instance;
+    operationMap = new HashMap<String, PolicyOperationImpl>();
+    registry.load( operationMap );
   }
   
   public IPolicyOperation getOperation( String operationId )
   {
-    return platformUI.getOperation( operationId );
+    return operationMap.get( operationId );
   }
   
   public List<IPolicyOperation> getAllOperations()
   {
-    return platformUI.getAllOperations();
+    return new Vector<IPolicyOperation>( operationMap.values() );
   }
   
   public List<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected )
   {
-    return platformUI.getSelectedOperations( policiesSelected );
+    //TODO implement getting the list of operations from selected policies.
+    return null;
   }
 }
