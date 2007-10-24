@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20071024   206556 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -86,6 +87,8 @@ public class WSDLOperationElement extends WSDLCommonElement
       {
         soapOperation = (SOAPOperation)e;
         soapAction_ = soapOperation.getSoapActionURI();
+        if(soapAction_ == null) soapAction_ = "";
+        
         String style = soapOperation.getStyle();
         if (style != null)
           isDocumentStyle_ = style.equals("document");
