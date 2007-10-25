@@ -16,6 +16,7 @@ package org.eclipse.wst.ws.service.internal.policy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.wst.ws.service.policy.IFilter;
@@ -52,6 +53,11 @@ public class ServicePolicyPlatformImpl
     //TODO
   }
   
+  public Set<String> getAllPolicyIds()
+  {
+    return policyMap.keySet();
+  }
+    
   public List<IServicePolicy> getRootServicePolicies( IFilter filter )
   {
     List<IServicePolicy> rootPolicies = new Vector<IServicePolicy>();

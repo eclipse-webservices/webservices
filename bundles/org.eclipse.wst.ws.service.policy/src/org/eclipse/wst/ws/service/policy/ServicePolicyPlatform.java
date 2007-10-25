@@ -14,17 +14,18 @@
 package org.eclipse.wst.ws.service.policy;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.wst.ws.service.internal.policy.ServicePolicyPlatformImpl;
 
 public class ServicePolicyPlatform
 {
   private static ServicePolicyPlatform instance;
-  private ServicePolicyPlatformImpl policyImpl;
+  private ServicePolicyPlatformImpl platformImpl;
   
   private ServicePolicyPlatform()
   {
-    policyImpl = new ServicePolicyPlatformImpl();
+    platformImpl = new ServicePolicyPlatformImpl();
   }
   
   public static ServicePolicyPlatform getInstance()
@@ -39,22 +40,27 @@ public class ServicePolicyPlatform
   
   public void commitChanges()
   {
-    policyImpl.commitChanges();
+    platformImpl.commitChanges();
   }
   
   public void discardChanges()
   {
-    policyImpl.discardChanges(); 
+    platformImpl.discardChanges(); 
+  }
+  
+  public Set<String> getAllPolicyIds()
+  {
+    return platformImpl.getAllPolicyIds();
   }
   
   public List<IServicePolicy> getRootServicePolicies( IFilter filter )
   {
-    return policyImpl.getRootServicePolicies( filter );
+    return platformImpl.getRootServicePolicies( filter );
   }
   
   public IServicePolicy getServicePolicy( String id )
   {
-    return policyImpl.getServicePolicy( id );  
+    return platformImpl.getServicePolicy( id );  
   }
   
   /**
@@ -77,16 +83,16 @@ public class ServicePolicyPlatform
    */
   public IServicePolicy createServicePolicy( IServicePolicy parent, String id, String enumListId, String defaultEnumId )
   {
-    return policyImpl.createServicePolicy( parent, id, enumListId, defaultEnumId );
+    return platformImpl.createServicePolicy( parent, id, enumListId, defaultEnumId );
   }
   
   public List<IStateEnumerationItem> getStateEnumeration( String enumId )
   {
-    return policyImpl.getStateEnumeration( enumId ); 
+    return platformImpl.getStateEnumeration( enumId ); 
   }
   
   public IStateEnumerationItem getStateItemEnumeration( String stateItemId )
   {
-    return policyImpl.getStateItemEnumeration( stateItemId );
+    return platformImpl.getStateItemEnumeration( stateItemId );
   }
 }

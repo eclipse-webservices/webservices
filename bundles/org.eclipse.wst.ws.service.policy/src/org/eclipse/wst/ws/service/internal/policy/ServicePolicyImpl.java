@@ -56,7 +56,8 @@ public class ServicePolicyImpl implements IServicePolicy
     this.relationshipList           = new Vector<IPolicyRelationship>();
     this.unresolvedRelationshipList = new Vector<UnresolvedRelationship>();
     this.policyState                = new PolicyStateImpl();
-    this.platform                   = platform;    
+    this.platform                   = platform;  
+    this.childChangeListeners       = new Vector<IPolicyChildChangeListener>();
   }
   
   public boolean getPredefined()

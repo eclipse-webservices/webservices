@@ -62,27 +62,27 @@
    
    <extension point="org.eclipse.wst.ws.service.policy.ui.servicepolicyui">
      <servicePolicyUI>
-       <operation id="service.ui.policy1"
+       <operation id="service.ui.operation1"
                       policyPattern="id3|id2" >
          <descriptor shortName="UI policy1 short name" longName="UI policy1 long name" />
          <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum"/>
        </operation>
        
-       <operation id="service.ui.policy2"
-                      policyPattern="id2" >
+       <operation id="service.ui.operation2"
+                      policyPattern="id.*" >
          <descriptor shortName="UI policy2 short name" longName="UI policy2 long name" />
          <selection/>
        </operation>
        
-       <operation id="service.ui.policy3"
-                      policyPattern="id3" >
+       <operation id="service.ui.operation3"
+                      policyPattern="id4" >
          <descriptor shortName="UI policy3 short name" longName="UI policy3 long name" />
          <selection icon="true"/>
          <enabled multiselect="true"/>
        </operation>
        
-       <operation id="service.ui.policy4"
-                      policyPattern="id3" >
+       <operation id="service.ui.operation4"
+                      policyPattern="id1|id2|id3" >
          <descriptor shortName="UI policy4 short name" longName="UI policy4 long name" />
          <complex launchClass="org.eclipse.wst.ws.service.policy.test.TestLaunchClass"/>
          <enabled multiselect="true"

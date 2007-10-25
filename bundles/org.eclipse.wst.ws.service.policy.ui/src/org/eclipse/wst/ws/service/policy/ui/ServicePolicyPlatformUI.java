@@ -14,6 +14,7 @@
 package org.eclipse.wst.ws.service.policy.ui;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.wst.ws.internal.service.policy.ui.ServicePolicyPlatformUIImpl;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
@@ -50,7 +51,7 @@ public class ServicePolicyPlatformUI
     return platformUI.getAllOperations();
   }
   
-  public List<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected )
+  public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected )
   {
     return platformUI.getSelectedOperations( policiesSelected );
   }
