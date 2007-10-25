@@ -29,7 +29,7 @@ public class PolicyOperationImpl implements IPolicyOperation
   private Descriptor            descriptor;
   private OperationKind         operationKind;
   private String                policyIdPattern;
-  private boolean               multiSelect;
+  private boolean               multiSelect = false;
   private ILaunchOperation      launchOperationObject;
   private IEnableOperation      enableOperationObject;
   private String                enumId;

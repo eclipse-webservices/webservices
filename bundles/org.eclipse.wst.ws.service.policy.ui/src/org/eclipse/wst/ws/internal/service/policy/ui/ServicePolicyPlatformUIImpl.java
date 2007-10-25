@@ -46,6 +46,6 @@ public class ServicePolicyPlatformUIImpl
   public List<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected )
   {
     //TODO implement getting the list of operations from selected policies.
-    return null;
+    return getAllOperations();
   }
 }
