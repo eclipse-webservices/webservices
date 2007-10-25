@@ -13,9 +13,13 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -52,6 +56,21 @@ public class ServicePolicyActivatorUI extends Plugin {
 		plugin = null;
 		super.stop(context);
 	}
+
+	/**
+	 * Returns an image descriptor for the named resource
+	 * as relative to the plugin install location.
+	 * @return An image descriptor, possibly null.
+	 */
+		public static ImageDescriptor getImageDescriptor(String name) {
+			try {
+				URL installURL = plugin.getBundle().getEntry("/");
+				URL imageURL = new URL(installURL, name);
+				return ImageDescriptor.createFromURL(imageURL);
+			} catch (MalformedURLException e) {
+	     return null;
+	   }
+	 }
 
 	/**
 	 * Returns the shared instance

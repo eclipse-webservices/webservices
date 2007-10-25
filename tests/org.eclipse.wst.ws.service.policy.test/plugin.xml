@@ -23,7 +23,7 @@
        </policy>
        
        <policy id="someparent">
-         <descriptor longName="parent longname" iconPath="a/b/c" />
+         <descriptor longName="parent longname" />
        </policy>
        
        <policy id="id2" parentPolicyId="someparent">
