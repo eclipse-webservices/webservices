@@ -22,6 +22,7 @@ import org.eclipse.wst.ws.service.policy.ui.IEnableOperation;
 import org.eclipse.wst.ws.service.policy.ui.ILaunchOperation;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
+import org.eclipse.wst.ws.service.policy.utils.RegistryUtils;
 
 public class PolicyOperationImpl implements IPolicyOperation
 {
@@ -90,7 +91,7 @@ public class PolicyOperationImpl implements IPolicyOperation
     
     // If we don't allow multi select and multiple policies have been selected
     // then this operation is not enabled.
-    if( !multiSelect && selectedPolicies.size() <= 1 )
+    if( !multiSelect && selectedPolicies.size() > 1 )
     {
       result = false;
     }
@@ -103,7 +104,8 @@ public class PolicyOperationImpl implements IPolicyOperation
       {
         try
         {
-          enableOperationObject = (IEnableOperation)enabledElement.createExecutableExtension( "" );
+          String enabledClassName = RegistryUtils.getAttributeName( enabledElement, "enabledclass" );
+          enableOperationObject = (IEnableOperation)enabledElement.createExecutableExtension( enabledClassName );
         }
         catch( Exception exc )
         {
@@ -126,7 +128,8 @@ public class PolicyOperationImpl implements IPolicyOperation
     {
       try
       {
-        launchOperationObject = (ILaunchOperation)complexElement.createExecutableExtension( "launchclass" );
+        String launchClassName = RegistryUtils.getAttributeName( complexElement, "launchclass" );
+        launchOperationObject = (ILaunchOperation)complexElement.createExecutableExtension( launchClassName );
       }
       catch( Exception exc )
       {

@@ -23,7 +23,7 @@ public class TestEnabledClass implements IEnableOperation
 
   public boolean isEnabled(List<IServicePolicy> selectedPolicies)
   {
-    System.out.println( "Is enabled operation called." );
+    System.out.println( "          Is enabled operation called." );
     return true;
   }
 }

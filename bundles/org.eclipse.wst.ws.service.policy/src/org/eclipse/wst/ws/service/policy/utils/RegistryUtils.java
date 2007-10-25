@@ -57,6 +57,33 @@ public class RegistryUtils
     return descriptor;
   }
   
+  /**
+   * This method takes in a lower case attribute name.  It will then return
+   * the same attribute name that includes potentially uppercase characters.
+   * This method allows clients to specify attribute names in a case insensitive
+   * fashion.
+   *  
+   * @param element
+   * @param attribute
+   * @return
+   */
+  public static String getAttributeName( IConfigurationElement element, String attribute )
+  {
+    String[] names  = element.getAttributeNames();
+    String   result = null;
+    
+    for( String name : names )
+    {
+      if( name.toLowerCase().equals( attribute ) )
+      {
+        result = name;
+        break;
+      }
+    }
+        
+    return result;
+  }
+  
   public static String getAttribute( IConfigurationElement element, String attribute )
   {
     String[] names = element.getAttributeNames();

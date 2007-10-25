@@ -85,7 +85,7 @@
                       policyPattern="id3" >
          <descriptor shortName="UI policy4 short name" longName="UI policy4 long name" />
          <complex launchClass="org.eclipse.wst.ws.service.policy.test.TestLaunchClass"/>
-         <enabled multiselect="false"
+         <enabled multiselect="true"
                   enabledClass="org.eclipse.wst.ws.service.policy.test.TestEnabledClass"/>
        </operation>
        
