@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.wst.ws.service.policy.test;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.wst.ws.service.policy.test.ServicePolicytTestActivator
 Bundle-Vendor: %PLUGIN_PROVIDER
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.junit4,
  org.eclipse.wst.ws.service.policy,

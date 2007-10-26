@@ -67,12 +67,12 @@ public class IConManager
     try
     {
       Bundle bundle      = ServicePolicyActivatorUI.getDefault().getBundle();
-      URL    folderUrl   = FileLocator.find( bundle, new Path( "icons/obj16/folder_obj.gif" ), null );
-      URL    leafUrl     = FileLocator.find( bundle, new Path( "icons/obj16/leaf_obj.gif" ), null );
-      URL    favoriteUrl = FileLocator.find( bundle, new Path( "icons/ovr16/favorite_ovr.gif" ), null );
-      URL    invalidUrl  = FileLocator.find( bundle, new Path( "icons/ovr16/invalidtype_ovr.gif" ), null );
-      URL    warningUrl  = FileLocator.find( bundle, new Path( "icons/ovr16/warning_ovr.gif" ), null );
-      URL    lockUrl     = FileLocator.find( bundle, new Path( "icons/ovr16/unmodifiable_ovr.gif" ), null );
+      URL    folderUrl   = FileLocator.find( bundle, new Path( "icons/full/obj16/fldr_obj.gif" ), null );
+      URL    leafUrl     = FileLocator.find( bundle, new Path( "icons/full/obj16/file_obj.gif" ), null );
+      URL    favoriteUrl = FileLocator.find( bundle, new Path( "icons/full/ovr16/favorite_ovr.gif" ), null );
+      URL    invalidUrl  = FileLocator.find( bundle, new Path( "icons/full/ovr16/invalidtype_ovr.gif" ), null );
+      URL    warningUrl  = FileLocator.find( bundle, new Path( "icons/full/ovr16/warning_ovr.gif" ), null );
+      URL    lockUrl     = FileLocator.find( bundle, new Path( "icons/full/ovr16/unmodifiable_ovr.gif" ), null );
       
       getIconImage( folderUrl );
       getIconImage( leafUrl );
