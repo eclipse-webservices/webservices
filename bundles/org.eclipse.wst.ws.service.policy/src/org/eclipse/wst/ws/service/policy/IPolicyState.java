@@ -26,7 +26,7 @@ import org.eclipse.wst.ws.service.policy.listeners.IPolicyStateChangeListener;
  * 
  * Note: this data will eventually be stored in Eclipse with the following key:
  * 
- *     "org.eclipse.wst.service.policy." + servicePolicyId + "." + key
+ *     servicePolicyId + "." + key
  *     
  *     where policyServiceId is the unique id for this service policy and the key
  *     is the key specified in the putValue method.
@@ -77,9 +77,13 @@ public interface IPolicyState
   
   /**
    * Adds a policy state change listener to this service policy.
-   * @param listener
+   * 
+   * @param listener the listener
+   * @param notifyOnlyOnCommit indicates if this listener should be
+   * called for all state changes or only when the state data is
+   * committed. 
    */
-  public void addPolicyStateChangeListener( IPolicyStateChangeListener listener );
+  public void addPolicyStateChangeListener( IPolicyStateChangeListener listener, boolean notifyOnlyOnCommit );
   
   /**
    * Removes a policy state change listener from this service policy.

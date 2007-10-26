@@ -19,9 +19,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.wst.ws.service.policy.IFilter;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
+import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformLoadListener;
 
 
@@ -45,12 +49,34 @@ public class ServicePolicyPlatformImpl
   
   public void commitChanges()
   {
-    //TODO 
+    for( ServicePolicyImpl policy : policyMap.values() )
+    {
+      ((PolicyStateImpl)policy.getPolicyState()).commitChanges();
+    }
+  }
+  
+  public void commitChanges( IProject project )
+  {
+    for( ServicePolicyImpl policy : policyMap.values() )
+    {
+      ((PolicyStateImpl)policy.getPolicyState( project )).commitChanges();
+    }
   }
   
   public void discardChanges()
   {
-    //TODO
+    for( ServicePolicyImpl policy : policyMap.values() )
+    {
+      ((PolicyStateImpl)policy.getPolicyState()).discardChanges();
+    }
+  }
+  
+  public void discardChanges( IProject project )
+  {
+    for( ServicePolicyImpl policy : policyMap.values() )
+    {
+      ((PolicyStateImpl)policy.getPolicyState( project )).discardChanges();
+    }
   }
   
   public Set<String> getAllPolicyIds()
@@ -97,5 +123,23 @@ public class ServicePolicyPlatformImpl
   public IStateEnumerationItem getStateItemEnumeration( String stateItemId )
   {
     return enumItemList.get( stateItemId );
+  }
+  
+  public boolean isProjectPreferencesEnabled( IProject project )
+  {
+    String              pluginId          = ServicePolicyActivator.PLUGIN_ID;
+    IEclipsePreferences projectPreference = new ProjectScope( project ).getNode( pluginId );
+    String              key               = pluginId + ".projectEnabled"; //$NON-NLS-1$
+    
+    return projectPreference.getBoolean( key, false );
+  }
+  
+  public void setProjectPreferencesEnabled( IProject project, boolean value )
+  {
+    String              pluginId          = ServicePolicyActivator.PLUGIN_ID;
+    IEclipsePreferences projectPreference = new ProjectScope( project ).getNode( pluginId );
+    String              key               = pluginId + ".projectEnabled"; //$NON-NLS-1$
+
+    projectPreference.putBoolean( key, value );
   }
 }

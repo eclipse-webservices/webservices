@@ -27,7 +27,7 @@ public interface IServicePolicy
    * @return returns true if this Service policy is defined in plugin.xml 
    * meta data.  Otherwise, false is returned.
    */
-  public boolean getPredefined();
+  public boolean isPredefined();
   
   /**
    * 

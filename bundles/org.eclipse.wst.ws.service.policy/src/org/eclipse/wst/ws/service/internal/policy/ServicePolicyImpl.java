@@ -13,11 +13,17 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.wst.ws.service.policy.Descriptor;
 import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
 import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
@@ -39,28 +45,35 @@ public class ServicePolicyImpl implements IServicePolicy
   private Descriptor                       descriptor;
   private List<IServicePolicy>             children;
   private PolicyStateImpl                  policyState;
+  private Map<IProject, PolicyStateImpl>   projectPolicyStates;
   private List<IPolicyRelationship>        relationshipList;
   private List<IPolicyChildChangeListener> childChangeListeners;
   private ServicePolicyPlatformImpl        platform;
   private String                           enumListId;
   private String                           defaultEnumId;
+  private List<IStatusChangeListener>      statusChangeListeners; 
+  private IStatus                          status;
   
   private String                           unresolvedParent;
   private List<UnresolvedRelationship>     unresolvedRelationshipList;
   
   public ServicePolicyImpl( boolean isPredefined, String id, ServicePolicyPlatformImpl platform )
   {
+    IEclipsePreferences instancePreference = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
+    
     this.predefined                 = isPredefined;  
     this.id                         = id;
     this.children                   = new Vector<IServicePolicy>();
     this.relationshipList           = new Vector<IPolicyRelationship>();
     this.unresolvedRelationshipList = new Vector<UnresolvedRelationship>();
-    this.policyState                = new PolicyStateImpl();
+    this.policyState                = new PolicyStateImpl( this, new IEclipsePreferences[]{ instancePreference });
     this.platform                   = platform;  
     this.childChangeListeners       = new Vector<IPolicyChildChangeListener>();
+    this.projectPolicyStates        = new HashMap<IProject, PolicyStateImpl>();
+    this.status                     = Status.OK_STATUS;
   }
   
-  public boolean getPredefined()
+  public boolean isPredefined()
   {
     return predefined;
   }
@@ -130,8 +143,19 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public IPolicyState getPolicyState( IProject project )
   {
-    // TODO
-    return null;
+    PolicyStateImpl policyState = projectPolicyStates.get( project );
+    
+    if( policyState == null )
+    {
+      IEclipsePreferences   instancePreference = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
+      IEclipsePreferences   projectPreferences = new ProjectScope( project ).getNode( ServicePolicyActivator.PLUGIN_ID );
+      IEclipsePreferences[] nodes              = new IEclipsePreferences[]{ instancePreference, projectPreferences };
+      
+      policyState = new PolicyStateImpl( this, nodes );
+      projectPolicyStates.put( project, policyState );
+    }
+    
+    return policyState;
   }
   
   public IPolicyStateEnum getPolicyStateEnum()
@@ -141,8 +165,7 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public IPolicyStateEnum getPolicyStateEnum( IProject project )
   {
-    //TODO
-    return null;
+    return new EnumerationStateImpl( enumListId, defaultEnumId, getPolicyState( project ) );
   }
 
   public void setPolicyState( PolicyStateImpl policyState )
@@ -242,25 +265,44 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public void addStatusChangeListener( IStatusChangeListener listener )
   {
-    //TODO
+    if( statusChangeListeners == null )
+    {
+      statusChangeListeners = new Vector<IStatusChangeListener>();    
+    }
+    
   }
   
   public void removeStatusChangeListener( IStatusChangeListener listener )
   {
-    //TODO
+    if( statusChangeListeners != null )
+    {
+      statusChangeListeners.remove( listener );
+    }
   }
   
   public IStatus getStatus()
   {
-    return null;
-    //TODO
+    return status;
   }
   
   public void setStatus( IStatus status )
   {
-    //TODO
+    IStatus oldStatus = this.status;
+    this.status = status;
+    fireStatusChangeEvent( oldStatus, status );
   }
-
+  
+  private void fireStatusChangeEvent( IStatus oldStatus, IStatus newStatus )
+  {
+    if( statusChangeListeners != null )
+    {
+      for( IStatusChangeListener listener : statusChangeListeners )
+      {
+        listener.statusChange( this, oldStatus, newStatus);
+      }
+    }
+  }
+  
   private void fireChildChangeEvent( IServicePolicy policy, boolean isAdd )
   {
     for( IPolicyChildChangeListener listener : childChangeListeners )

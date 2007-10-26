@@ -16,6 +16,7 @@ package org.eclipse.wst.ws.service.policy;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.ws.service.internal.policy.ServicePolicyPlatformImpl;
 
 public class ServicePolicyPlatform
@@ -48,6 +49,16 @@ public class ServicePolicyPlatform
     platformImpl.discardChanges(); 
   }
   
+  public void commitChanges( IProject project )
+  {
+    platformImpl.commitChanges( project );
+  }
+  
+  public void discardChanges( IProject project )
+  {
+    platformImpl.discardChanges( project ); 
+  }
+  
   public Set<String> getAllPolicyIds()
   {
     return platformImpl.getAllPolicyIds();
@@ -61,6 +72,16 @@ public class ServicePolicyPlatform
   public IServicePolicy getServicePolicy( String id )
   {
     return platformImpl.getServicePolicy( id );  
+  }
+  
+  public boolean isProjectPreferencesEnabled( IProject project )
+  {
+    return platformImpl.isProjectPreferencesEnabled( project );
+  }
+  
+  public void setProjectPreferencesEnabled( IProject project, boolean value )
+  {
+    platformImpl.setProjectPreferencesEnabled( project, value ); 
   }
   
   /**

@@ -18,5 +18,5 @@ import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
 public interface IPolicyStateChangeListener
 {
-  public void policyStateChange( IServicePolicy policy, boolean notifyOnCommitOnly );
+  public void policyStateChange( IServicePolicy policy, String key, String oldValue, String newValue );
 }
