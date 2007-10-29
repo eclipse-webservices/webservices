@@ -26,15 +26,15 @@
          <descriptor longName="parent longname" />
        </policy>
        
-       <policy id="id2" parentPolicyId="someparent">
+       <policy id="id2" parentPolicyId="someparent" enumListId="org.eclipse.wst.service.policy.errorWarnEnum">
          <descriptor shortName="id2 shortname" contextHelpId="somecontextid.A001"/>
        </policy>
        
-       <policy id="id3" parentPolicyId="id2">
+       <policy id="id3" parentPolicyId="id2" enumListId="org.eclipse.wst.service.policy.errorWarnEnum">
          <descriptor shortName="id3 short name"/>
        </policy>
        
-       <policy id="id4">
+       <policy id="id4" enumListId="org.eclipse.wst.service.policy.errorWarnEnum">
          <descriptor shortName="id4 short name" longName="id4 long name" />
        </policy>
      </servicePolicy>      

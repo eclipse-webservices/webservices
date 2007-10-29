@@ -116,9 +116,13 @@ public class MainTester extends TestCase
    {
      ServicePolicyPlatform platform  = ServicePolicyPlatform.getInstance();
      IServicePolicy        id1       = platform.getServicePolicy( "id1" );
-     IPolicyStateEnum      state     = id1.getPolicyStateEnum();
-     IStateEnumerationItem item      = state.getCurrentItem();
+     IServicePolicy        id2       = platform.getServicePolicy( "id2" );
+     IPolicyStateEnum      state1    = id1.getPolicyStateEnum();
+     IPolicyStateEnum      state2    = id2.getPolicyStateEnum();
+     IStateEnumerationItem item1     = state1.getCurrentItem();
+     IStateEnumerationItem item2     = state2.getCurrentItem();
      
-     System.out.println( "id2 value:" + item.getShortName() );
+     System.out.println( "id1 value:" + item1.getShortName() );
+     System.out.println( "id2 value:" + item2.getShortName() );
    }
 }
