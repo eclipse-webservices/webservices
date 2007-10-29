@@ -39,6 +39,16 @@
        <policy id="id4" enumListId="org.eclipse.wst.service.policy.errorWarnEnum">
          <descriptor shortName="id4 short name" longName="id4 long name" />
        </policy>
+       
+       <policy id="id_boolean1" enumListId="org.eclipse.wst.service.policy.booleanEnum"
+                                defaultEnumId="org.eclipse.wst.true">
+         <descriptor shortName="boolean1 short name" longName="boolean1 long name" />
+       </policy>
+       
+       <policy id="id_boolean2" enumListId="org.eclipse.wst.service.policy.booleanEnum"
+                                defaultEnumId="org.eclipse.wst.false">
+         <descriptor shortName="boolean2 short name" longName="boolean2 long name" />
+       </policy>
      </servicePolicy>      
    </extension>
    
@@ -53,18 +63,36 @@
        <operation id="service.ui.operation2"
                       policyPattern="id.*" >
          <descriptor shortName="UI policy2 short name" longName="UI policy2 long name" />
-         <selection/>
+         <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum"/>
        </operation>
        
        <operation id="service.ui.operation3"
                       policyPattern="id4" >
          <descriptor shortName="UI policy3 short name" longName="UI policy3 long name" />
-         <selection icon="true"/>
-         <enabled multiselect="true"/>
+         <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum"/>
        </operation>
        
        <operation id="service.ui.operation4"
                       policyPattern="id1|id2|id3" >
+         <descriptor shortName="UI policy4 short name" longName="UI policy4 long name" />
+         <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum"/>
+       </operation>
+       
+       <operation id="service.ui.boolean.operation1"
+                      policyPattern="id_bool.*" >
+         <descriptor shortName="UI policy2 short name" longName="UI policy2 long name" />
+         <selection/>
+       </operation>
+       
+       <operation id="service.ui.boolean.operation2"
+                      policyPattern="id_boolean2" >
+         <descriptor shortName="UI policy3 short name" longName="UI policy3 long name" />
+         <selection icon="true"/>
+         <enabled multiselect="true"/>
+       </operation>
+       
+       <operation id="service.ui.complex.operation1"
+                      policyPattern="someparent" >
          <descriptor shortName="UI policy4 short name" longName="UI policy4 long name" />
          <complex launchClass="org.eclipse.wst.ws.service.policy.test.TestLaunchClass"/>
          <enabled multiselect="true"

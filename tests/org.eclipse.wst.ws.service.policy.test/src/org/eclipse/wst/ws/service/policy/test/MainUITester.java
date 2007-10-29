@@ -47,6 +47,8 @@ public class MainUITester extends TestCase
      IServicePolicy          id2        = platform.getServicePolicy( "id2" );
      IServicePolicy          id3        = platform.getServicePolicy( "id3" );
      IServicePolicy          id4        = platform.getServicePolicy( "id4" );
+     //IServicePolicy          id_bool1   = platform.getServicePolicy( "id_boolean1" );
+//     /IServicePolicy          id_bool2   = platform.getServicePolicy( "id_boolean2" );
      List<IServicePolicy>    list1      = new Vector<IServicePolicy>();
      List<IServicePolicy>    list2      = new Vector<IServicePolicy>();
      List<IServicePolicy>    list3      = new Vector<IServicePolicy>();
