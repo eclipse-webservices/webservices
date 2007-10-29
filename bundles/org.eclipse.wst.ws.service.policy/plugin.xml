@@ -4,5 +4,27 @@
 <plugin>
 
    <extension-point id="servicepolicy" name="%SERVICE_POLICY_NAME" schema="schema/servicePolicy.exsd"/>
+   
+   <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
+     <servicePolicy>
+         <enumeration id="org.eclipse.wst.service.policy.booleanEnum" 
+                    default="org.eclipse.wst.true">
+         <item id="org.eclipse.wst.true"
+               shortName="%TRUE_SHORTNAME" />
+         <item id="org.eclipse.wst.false"
+               shortName="%FALSE_SHORTNAME" />
+       </enumeration>
+       
+       <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum" 
+                    default="org.eclipse.wst.warn">
+         <item id="org.eclipse.wst.ignore"
+               shortName="%IGNORE_SHORTNAME" />
+         <item id="org.eclipse.wst.warn"
+               shortName="%WARN_SHORTNAME" />
+         <item id="org.eclipse.wst.error"
+               shortName="%ERROR_SHORTNAME" />
+       </enumeration>
+     </servicePolicy>
+   </extension>
 
 </plugin>

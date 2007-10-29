@@ -106,7 +106,7 @@ public class PolicyStateImpl implements IPolicyState
         defaultValue = entry.defaultValue;
       }
       
-      service.get( storeKey, defaultValue, nodes);
+      result = service.get( storeKey, defaultValue, nodes);
     }
     
     return result;
@@ -131,6 +131,7 @@ public class PolicyStateImpl implements IPolicyState
     if( entry == null )
     {
       entry = new TableEntry();
+      table.put( key, entry );
     }
     
     entry.defaultValue = defaultValue;

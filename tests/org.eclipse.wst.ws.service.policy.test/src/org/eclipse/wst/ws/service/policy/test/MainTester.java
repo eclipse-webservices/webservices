@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import org.eclipse.wst.ws.service.policy.Descriptor;
 import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
 import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
+import org.eclipse.wst.ws.service.policy.IPolicyStateEnum;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
@@ -109,5 +110,15 @@ public class MainTester extends TestCase
      {
        displayPolicyNode( child );
      }   
+   }
+   
+   public void testEnumerations()
+   {
+     ServicePolicyPlatform platform  = ServicePolicyPlatform.getInstance();
+     IServicePolicy        id1       = platform.getServicePolicy( "id1" );
+     IPolicyStateEnum      state     = id1.getPolicyStateEnum();
+     IStateEnumerationItem item      = state.getCurrentItem();
+     
+     System.out.println( "id2 value:" + item.getShortName() );
    }
 }

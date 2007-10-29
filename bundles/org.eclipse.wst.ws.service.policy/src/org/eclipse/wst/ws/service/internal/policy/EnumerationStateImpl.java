@@ -50,7 +50,7 @@ public class EnumerationStateImpl implements IPolicyStateEnum
         if( enumItem.isDefault() )
         {
           this.defaultId = enumItem.getId();
-          state.putDefaultValue( VALUE,  defaultId );
+          state.putDefaultValue( VALUE,  this.defaultId );
           break;
         }
       }
@@ -86,7 +86,7 @@ public class EnumerationStateImpl implements IPolicyStateEnum
     
     for( IStateEnumerationItem enumItem : enumList )
     {
-      if( enumItem.equals( currentEnum ) )
+      if( enumItem.getId().equals( currentEnum ) )
       {
         currentItem = enumItem;
         break;

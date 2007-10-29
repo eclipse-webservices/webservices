@@ -16,7 +16,7 @@
                    itemList="org.eclipse.wst.error"/>
          </relationship>
          
-         <relationship enumList="org.eclipse.wst.service.policy.errorWarnEnum.ignore">
+         <relationship enumList="org.eclipse.wst.ignore">
            <policy id="id3"
                    itemList="org.eclipse.wst.warn org.eclipse.wst.error"/>
          </relationship>
@@ -37,27 +37,7 @@
        <policy id="id4">
          <descriptor shortName="id4 short name" longName="id4 long name" />
        </policy>
-       
-       <enumeration id="org.eclipse.wst.service.policy.booleanEnum" 
-                    default="org.eclipse.wst.true">
-         <item id="org.eclipse.wst.true"
-               shortName="true" />
-         <item id="org.eclipse.wst.false"
-               shortName="false" 
-               longName="falsehood"/>
-       </enumeration>
-       
-       <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum" 
-                    default="org.eclipse.wst..warn">
-         <item id="org.eclipse.wst.service.policy.errorWarnEnum.ignore"
-               shortName="ignore" />
-         <item id="org.eclipse.wst.warn"
-               shortName="warn" 
-               longName="long name for warn"/>
-         <item id="org.eclipse.wst.error"
-               longName="error" />
-       </enumeration>
-     </servicePolicy>
+     </servicePolicy>      
    </extension>
    
    <extension point="org.eclipse.wst.ws.service.policy.ui.servicepolicyui">
