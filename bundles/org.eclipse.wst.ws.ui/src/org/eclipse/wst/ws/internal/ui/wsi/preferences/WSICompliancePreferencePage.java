@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060310   131352 pmoogk@ca.ibm.com - Peter Moogk
  * 20060728   151632 kathy@ca.ibm.com - Kathy Chan
+ * 20071025          ericdp@ca.ibm.com - Eric Peters
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.wsi.preferences;
 
@@ -21,12 +22,9 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
@@ -35,7 +33,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSDLValidationContext;
-import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.ws.internal.ui.WstWSUIPluginMessages;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 
@@ -47,22 +44,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
 	  
   /*CONTEXT_ID PWSI0001 for the WS-I Preference Page*/
   private String INFOPOP_PWSI_PAGE = WSUIPlugin.ID + ".PWSI0000";
-  //
-
-  private Label wsi_ssbp_Label_;
-  private Combo wsi_ssbp_Types_;
-  
-  /*CONTEXT_ID PWSI0004 for the WS-I SSBP type combo box on the Profile Compliance and Validation page*/
-  private String INFOPOP_PWSI_SSBP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0004";
-  /*CONTEXT_ID PWSI0008 for the WS-I AP type combo box on the Profile Compliance and Validation page*/
-  private String INFOPOP_PWSI_AP_COMBO_TYPE = WSUIPlugin.ID + ".PWSI0008";
-      
-  private Label wsi_ap_Label_;
-  private Combo wsi_ap_Types_;
-  
-  private int savedSSBPSetting_ = -1;
-  
-  private Group validationSelectionGroup_;
   
   private Text wsdlValidationLabel_;
   /*CONTEXT_ID PWSI0009 for the No Wizard WSDL validation button on the Profile Compliance and Validation page*/
@@ -92,7 +73,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
 
  /**
    * Creates preference page controls on demand.
-   *   @param parent  the parent for the preference page
+   *   @param parentComposite  the parent for the preference page
    */
   protected Control createContents(Composite superparent)
   {
@@ -103,7 +84,7 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     GridLayout layout = new GridLayout();
     layout.numColumns = 1;
     parent.setLayout( layout );
-    parent.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+    parent.setLayoutData( new GridData( GridData.FILL_VERTICAL ) );
     parent.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_PAGE);
     helpSystem.setHelp(parent,INFOPOP_PWSI_PAGE);
 
@@ -112,70 +93,30 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
     gl.marginHeight = 0;
     gl.marginWidth = 0;
 
-    Composite wsi_Composite = new Composite (parent, SWT.NONE);
-    wsi_Composite.setLayout(gl);
-    wsi_Composite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
     
-    wsi_ap_Label_ = new Label(wsi_Composite, SWT.NONE);
-    wsi_ap_Label_.setText(WstWSUIPluginMessages.LABEL_WSI_AP);
-    wsi_ap_Label_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_AP_LABEL);
-    wsi_ap_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-    wsi_ap_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    wsi_ap_Types_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_AP_COMBO);
-    helpSystem.setHelp(wsi_ap_Types_,INFOPOP_PWSI_AP_COMBO_TYPE);
-    
-    wsi_ap_Types_.add(WstWSUIPluginMessages.STOP_NON_WSI);
-    wsi_ap_Types_.add(WstWSUIPluginMessages.WARN_NON_WSI);
-    wsi_ap_Types_.add(WstWSUIPluginMessages.IGNORE_NON_WSI);
-    
-    wsi_ap_Types_.addSelectionListener(this);
-    
-    wsi_ssbp_Label_ = new Label(wsi_Composite, SWT.NONE);
-    wsi_ssbp_Label_.setText(WstWSUIPluginMessages.LABEL_WSI_SSBP);
-    wsi_ssbp_Label_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_SSBP_LABEL);
-    wsi_ssbp_Types_ = new Combo(wsi_Composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-    wsi_ssbp_Types_.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-    wsi_ssbp_Types_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_SSBP_COMBO);
-    helpSystem.setHelp(wsi_ssbp_Types_,INFOPOP_PWSI_SSBP_COMBO_TYPE);
-    
-    wsi_ssbp_Types_.add(WstWSUIPluginMessages.STOP_NON_WSI);
-    wsi_ssbp_Types_.add(WstWSUIPluginMessages.WARN_NON_WSI);
-    wsi_ssbp_Types_.add(WstWSUIPluginMessages.IGNORE_NON_WSI);
-  
-    // WSDL validation preferences
-    validationSelectionGroup_ = new Group(wsi_Composite, SWT.NONE);
-    gl = new GridLayout();
-    gl.marginHeight = 0;
-    gl.marginWidth = 0;
-    validationSelectionGroup_.setLayout(gl);
-    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-    validationSelectionGroup_.setLayoutData(gd);
-    
-    wsdlValidationLabel_ = new Text(validationSelectionGroup_, SWT.READ_ONLY);
+    wsdlValidationLabel_ = new Text(parent, SWT.READ_ONLY);
     wsdlValidationLabel_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL);
     wsdlValidationLabel_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_WSDLVAL_LABEL);
     helpSystem.setHelp(wsdlValidationLabel_, INFOPOP_PWSI_WSDLVAL_LABEL);
     
-    validateNoWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
+    validateNoWsdlButton_ = new Button(parent, SWT.RADIO);
     validateNoWsdlButton_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL_NONE);
     validateNoWsdlButton_.addListener(SWT.Selection, this);
     validateNoWsdlButton_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_RADIO_WSDLVAL_NONE);
     helpSystem.setHelp(validateNoWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_NONE);
     
-    validateRemoteWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
+    validateRemoteWsdlButton_ = new Button(parent, SWT.RADIO);
     validateRemoteWsdlButton_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL_REMOTE);
     validateRemoteWsdlButton_.addListener(SWT.Selection, this);
     validateRemoteWsdlButton_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_RADIO_WSDLVAL_REMOTE);
     helpSystem.setHelp(validateRemoteWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_REMOTE);
     
-    validateAllWsdlButton_ = new Button(validationSelectionGroup_, SWT.RADIO);
+    validateAllWsdlButton_ = new Button(parent, SWT.RADIO);
     validateAllWsdlButton_.setText(WstWSUIPluginMessages.LABEL_WSDLVAL_ALL);
     validateAllWsdlButton_.addListener(SWT.Selection, this);
     validateAllWsdlButton_.setToolTipText(WstWSUIPluginMessages.TOOLTIP_PWSI_RADIO_WSDLVAL_ALL);
     helpSystem.setHelp(validateAllWsdlButton_, INFOPOP_PWSI_RADIO_WSDLVAL_ALL);
     
-    new Label(validationSelectionGroup_, SWT.NONE);;
-        
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
     return parent;
@@ -196,7 +137,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
    */
   public boolean performOk()
   {
-    storeValues();
     return true;
   }
 
@@ -216,13 +156,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
    */
   private void initializeDefaults()
   {
-    // force WSI compliance by default
-    
-    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(WstWSUIPluginMessages.WARN_NON_WSI));
-    int apSelection = wsi_ap_Types_.indexOf(WstWSUIPluginMessages.WARN_NON_WSI);
-    wsi_ap_Types_.select(apSelection);
-    savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
-    processAPSelection(apSelection);
 
     PersistentWSDLValidationContext wsdlValidationContext = WSPlugin.getInstance().getWSDLValidationContext();
     String validationSelection = wsdlValidationContext.getDefault();
@@ -241,15 +174,6 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
    */
   private void initializeValues()
   {
-    
-	String WSIText = getWSISelection(WSPlugin.getInstance().getWSISSBPContext());
-    wsi_ssbp_Types_.select(wsi_ssbp_Types_.indexOf(WSIText));
-    
-    int apSelection = wsi_ap_Types_.indexOf(getWSISelection(WSPlugin.getInstance().getWSIAPContext()));
-    wsi_ap_Types_.select(apSelection);
-    savedSSBPSetting_ = -1;  // do not restore saved SSBP setting
-    processAPSelection(apSelection);
-    
     String validationSelection = WSPlugin.getInstance().getWSDLValidationContext().getPersistentWSDLValidation();
     processWSDLValidationSelection(validationSelection);
     
@@ -267,69 +191,8 @@ public class WSICompliancePreferencePage extends PreferencePage implements IWork
 
 	}
 
-private String getWSISelection(PersistentWSIContext context)
-  {
-    
-    String WSIvalue = context.getPersistentWSICompliance();
-    String WSIText = WstWSUIPluginMessages.WARN_NON_WSI;
-    if (PersistentWSIContext.STOP_NON_WSI.equals(WSIvalue)) {
-		WSIText = WstWSUIPluginMessages.STOP_NON_WSI;
-	} else if (PersistentWSIContext.IGNORE_NON_WSI.equals(WSIvalue)) {
-		WSIText = WstWSUIPluginMessages.IGNORE_NON_WSI;
-	}
-	return WSIText;
-  }
-  /**
-   * Stores the values of the controls back to the preference store.
-   */
-  private void storeValues()
-  {
-  	updateWSIContext(wsi_ssbp_Types_.getSelectionIndex(), WSPlugin.getInstance().getWSISSBPContext());
-  	updateWSIContext(wsi_ap_Types_.getSelectionIndex(), WSPlugin.getInstance().getWSIAPContext());
-  }
-  
-  private void updateWSIContext(int selectionIndex, PersistentWSIContext context)
-  {
-    // get the persistent context from the plugin
-    
-    String value=null;
-    switch (selectionIndex) {
-    	case 0:
-    		value = PersistentWSIContext.STOP_NON_WSI;
-    		break;
-    	case 1:
-    		value = PersistentWSIContext.WARN_NON_WSI;
-    		break;
-    	case 2:
-    		value = PersistentWSIContext.IGNORE_NON_WSI;		
-    		break;
-    }
-    context.updateWSICompliances(value);
-  }
-  
   public void widgetSelected(SelectionEvent e)
   {
-  	
-  	processAPSelection( wsi_ap_Types_.getSelectionIndex() );
-  	
-  }
-  
-  public void processAPSelection(int selection) {
-  	if (selection == 2) { // reset SSBP to default if AP is ignore
-  		wsi_ssbp_Types_.setEnabled(true);
-  		if (savedSSBPSetting_ != -1)  {
-  			// restore saved SSBP setting, if any
-  			wsi_ssbp_Types_.select(savedSSBPSetting_);
-  			savedSSBPSetting_ = -1;
-  		}
-  	} else { // set SSBP to follow AP setting if STOP or WARN chosen
-  		if (savedSSBPSetting_ == -1)  {  // SSBP setting not saved
-  			savedSSBPSetting_ = wsi_ssbp_Types_.getSelectionIndex();
-  		}
-  		wsi_ssbp_Types_.select(selection);
-  		wsi_ssbp_Types_.setEnabled(false);
-  		
-  	}
   }
 
   public void widgetDefaultSelected(SelectionEvent e) {
