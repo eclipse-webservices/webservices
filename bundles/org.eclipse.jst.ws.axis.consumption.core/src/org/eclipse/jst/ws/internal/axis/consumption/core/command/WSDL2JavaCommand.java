@@ -14,6 +14,7 @@
  * 20060404   134791 andyzhai@ca.ibm.com - Andy Zhai
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
+ * 20070927   204649 kelvinhc@ca.ibm.com - Kelvin Cheung
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -28,6 +29,7 @@ import java.util.List;
 import org.apache.axis.constants.Scope;
 import org.apache.axis.wsdl.toJava.Emitter;
 import org.apache.axis.wsdl.toJava.GeneratedFileInfo;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -40,7 +42,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterCont
 import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterDefaults;
 import org.eclipse.jst.ws.internal.axis.consumption.core.plugin.WebServiceAxisConsumptionCorePlugin;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
@@ -295,11 +296,12 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 						if (javaFile.startsWith(tempOutputDir)) {
 							fullClassName = javaFile.substring(tempOutputDir.length());
 							targetPath = javaOutputPath.append(fullClassName).makeAbsolute(); 
-							FileResourceUtils.createFileAtLocation(context,  
+							IFile file = FileResourceUtils.createFileAtLocation(context,  
 									targetPath,
 									finStream,
 									monitor,
 									statusHandler);
+							file.setCharset("UTF-8", monitor);
 							movedJavaFiles[i++]= ResourceUtils.getWorkspaceRoot().getFileForLocation(targetPath).getLocation().toString();
 						}
 					}
