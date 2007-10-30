@@ -43,10 +43,10 @@ public class MainUITester extends TestCase
    {
      ServicePolicyPlatform   platform   = ServicePolicyPlatform.getInstance();
      ServicePolicyPlatformUI platformUI = ServicePolicyPlatformUI.getInstance();
-     IServicePolicy          id1        = platform.getServicePolicy( "id1" );
-     IServicePolicy          id2        = platform.getServicePolicy( "id2" );
-     IServicePolicy          id3        = platform.getServicePolicy( "id3" );
-     IServicePolicy          id4        = platform.getServicePolicy( "id4" );
+     IServicePolicy          id1        = platform.getServicePolicy( "id1" ); //$NON-NLS-1$
+     IServicePolicy          id2        = platform.getServicePolicy( "id2" ); //$NON-NLS-1$
+     IServicePolicy          id3        = platform.getServicePolicy( "id3" ); //$NON-NLS-1$
+     IServicePolicy          id4        = platform.getServicePolicy( "id4" ); //$NON-NLS-1$
      //IServicePolicy          id_bool1   = platform.getServicePolicy( "id_boolean1" );
 //     /IServicePolicy          id_bool2   = platform.getServicePolicy( "id_boolean2" );
      List<IServicePolicy>    list1      = new Vector<IServicePolicy>();
@@ -56,10 +56,10 @@ public class MainUITester extends TestCase
      List<IServicePolicy>    list5      = new Vector<IServicePolicy>();
      List<IServicePolicy>    list6      = new Vector<IServicePolicy>();
      List<IServicePolicy>    list7      = new Vector<IServicePolicy>();
-     IPolicyOperation        op1        = platformUI.getOperation( "service.ui.operation1" );
-     IPolicyOperation        op2        = platformUI.getOperation( "service.ui.operation2" );
-     IPolicyOperation        op3        = platformUI.getOperation( "service.ui.operation3" );
-     IPolicyOperation        op4        = platformUI.getOperation( "service.ui.operation4" );
+     IPolicyOperation        op1        = platformUI.getOperation( "service.ui.operation1" ); //$NON-NLS-1$
+     IPolicyOperation        op2        = platformUI.getOperation( "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op3        = platformUI.getOperation( "service.ui.operation3" ); //$NON-NLS-1$
+     IPolicyOperation        op4        = platformUI.getOperation( "service.ui.operation4" ); //$NON-NLS-1$
   
      list1.add( id1 );
      list2.add( id2 );
@@ -82,43 +82,43 @@ public class MainUITester extends TestCase
      Set<IPolicyOperation> set6 = platformUI.getSelectedOperations( list6 );
      Set<IPolicyOperation> set7 = platformUI.getSelectedOperations( list7 );
      
-     System.out.println( "\nDisplay sets" );
-     displaySet( "Set1", set1 );
-     displaySet( "Set2", set2 );
-     displaySet( "Set3", set3 );
-     displaySet( "Set4", set4 );
-     displaySet( "Set5", set5 );
-     displaySet( "Set6", set6 );
-     displaySet( "Set7", set7 );
+     System.out.println( "\nDisplay sets" ); //$NON-NLS-1$
+     displaySet( "Set1", set1 ); //$NON-NLS-1$
+     displaySet( "Set2", set2 ); //$NON-NLS-1$
+     displaySet( "Set3", set3 ); //$NON-NLS-1$
+     displaySet( "Set4", set4 ); //$NON-NLS-1$
+     displaySet( "Set5", set5 ); //$NON-NLS-1$
+     displaySet( "Set6", set6 ); //$NON-NLS-1$
+     displaySet( "Set7", set7 ); //$NON-NLS-1$
      
-     checkContents( "Set1", set1, new IPolicyOperation[]{ op2, op4 } );
-     checkContents( "Set2", set2, new IPolicyOperation[]{ op1, op2, op4 } );
-     checkContents( "Set3", set3, new IPolicyOperation[]{ op1, op2, op4 } );
-     checkContents( "Set4", set4, new IPolicyOperation[]{ op2, op3 } );
-     checkContents( "Set5", set5, new IPolicyOperation[]{ op2, op3, op4 } );
-     checkContents( "Set6", set6, new IPolicyOperation[]{ op1, op2, op4 } );
-     checkContents( "Set7", set7, new IPolicyOperation[]{ op1, op2, op3, op4 } );
+     checkContents( "Set1", set1, new IPolicyOperation[]{ op2, op4 } ); //$NON-NLS-1$
+     checkContents( "Set2", set2, new IPolicyOperation[]{ op1, op2, op4 } ); //$NON-NLS-1$
+     checkContents( "Set3", set3, new IPolicyOperation[]{ op1, op2, op4 } ); //$NON-NLS-1$
+     checkContents( "Set4", set4, new IPolicyOperation[]{ op2, op3 } ); //$NON-NLS-1$
+     checkContents( "Set5", set5, new IPolicyOperation[]{ op2, op3, op4 } ); //$NON-NLS-1$
+     checkContents( "Set6", set6, new IPolicyOperation[]{ op1, op2, op4 } ); //$NON-NLS-1$
+     checkContents( "Set7", set7, new IPolicyOperation[]{ op1, op2, op3, op4 } ); //$NON-NLS-1$
    }
    
    private void displaySet( String setName, Set<IPolicyOperation> operationSet )
    {
-     System.out.print( setName + ": " );
+     System.out.print( setName + ": " ); //$NON-NLS-1$
      
      for( IPolicyOperation operation : operationSet )
      {
-       System.out.print( operation.getId() + "," );
+       System.out.print( operation.getId() + "," ); //$NON-NLS-1$
      }
      
-     System.out.println( "" );
+     System.out.println( "" ); //$NON-NLS-1$
    }
    
    private void checkContents( String setName, Set<IPolicyOperation> operationSet, IPolicyOperation[] operationArray )
    {
-     assertTrue( "Set and array sizes don't match for " + setName + ".", operationSet.size() == operationArray.length );
+     assertTrue( "Set and array sizes don't match for " + setName + ".", operationSet.size() == operationArray.length ); //$NON-NLS-1$ //$NON-NLS-2$
 
      for( IPolicyOperation operation : operationArray )
      {
-       assertTrue( setName + " does not contain operation " + operation.getId() + ".", operationSet.contains( operation ) );
+       assertTrue( setName + " does not contain operation " + operation.getId() + ".", operationSet.contains( operation ) ); //$NON-NLS-1$ //$NON-NLS-2$
      }
    }
    
@@ -130,36 +130,36 @@ public class MainUITester extends TestCase
      String               shortName    = descriptor.getShortName();
      String               longName     = descriptor.getLongName();
      
-     System.out.println( "Operation id: " + operation.getId() );
-     System.out.println( "          short name: " + shortName );
-     System.out.println( "          long name: " + longName );
-     System.out.println( "          pattern: " + operation.getPolicyIdPattern() );
-     System.out.println( "          isEnabled zero: " + operation.isEnabled( zeroPolicies ) );
-     System.out.println( "          isEnabled many: " + operation.isEnabled( manyPolicies ) );
+     System.out.println( "Operation id: " + operation.getId() ); //$NON-NLS-1$
+     System.out.println( "          short name: " + shortName ); //$NON-NLS-1$
+     System.out.println( "          long name: " + longName ); //$NON-NLS-1$
+     System.out.println( "          pattern: " + operation.getPolicyIdPattern() ); //$NON-NLS-1$
+     System.out.println( "          isEnabled zero: " + operation.isEnabled( zeroPolicies ) ); //$NON-NLS-1$
+     System.out.println( "          isEnabled many: " + operation.isEnabled( manyPolicies ) ); //$NON-NLS-1$
      
      switch( operation.getOperationKind() )
      {
        case selection:
        {
-         System.out.println( "          selection: true" );
+         System.out.println( "          selection: true" ); //$NON-NLS-1$
          break;  
        }
        
        case iconSelection:
        {
-         System.out.println( "          selection icon: true" );
+         System.out.println( "          selection icon: true" ); //$NON-NLS-1$
          break;  
        }
        
        case enumeration:
        {      
-         System.out.println( "          enumeration id: " + operation.getEnumerationId() );
+         System.out.println( "          enumeration id: " + operation.getEnumerationId() ); //$NON-NLS-1$
          break;  
        }
        
        case complex:
        {
-         System.out.println( "          complex: true" ); 
+         System.out.println( "          complex: true" );  //$NON-NLS-1$
          operation.launchOperation( zeroPolicies );
          break;  
        }

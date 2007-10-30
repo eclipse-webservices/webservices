@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -32,9 +34,11 @@ import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformLoadListener;
 public class ServicePolicyPlatformImpl 
 {
   private List<IPolicyPlatformLoadListener>        loadListeners;
+  private Map<String, ServicePolicyImpl>           committedPolicyMap;
   private Map<String, ServicePolicyImpl>           policyMap;
   private Map<String, List<IStateEnumerationItem>> enumList;
   private Map<String, StateEnumerationItemImpl>    enumItemList;
+  private int                                      idCount;
   
   public ServicePolicyPlatformImpl()
   {
@@ -44,15 +48,28 @@ public class ServicePolicyPlatformImpl
     policyMap     = new HashMap<String, ServicePolicyImpl>();
     enumList      = new HashMap<String, List<IStateEnumerationItem>>();
     enumItemList  = new HashMap<String, StateEnumerationItemImpl>();
+    idCount       = 1;
+    
+    //TODO load local changes
     registry.load( loadListeners, policyMap, enumList, enumItemList );
+    commitChanges();
   }
   
   public void commitChanges()
   {
     for( ServicePolicyImpl policy : policyMap.values() )
     {
-      ((PolicyStateImpl)policy.getPolicyState()).commitChanges();
+      policy.commitChanges();
     }
+    
+    committedPolicyMap = new HashMap<String, ServicePolicyImpl>();
+    committedPolicyMap.putAll( policyMap );
+    ServicePolicyActivator.getDefault().savePluginPreferences();
+  }
+  
+  public void removePolicy( ServicePolicyImpl policy )
+  {
+    policyMap.remove( policy.getId() );
   }
   
   public void commitChanges( IProject project )
@@ -67,8 +84,11 @@ public class ServicePolicyPlatformImpl
   {
     for( ServicePolicyImpl policy : policyMap.values() )
     {
-      ((PolicyStateImpl)policy.getPolicyState()).discardChanges();
+      policy.discardChanges();
     }
+    
+    policyMap = new HashMap<String, ServicePolicyImpl>();
+    policyMap.putAll( committedPolicyMap );
   }
   
   public void discardChanges( IProject project )
@@ -77,6 +97,22 @@ public class ServicePolicyPlatformImpl
     {
       ((PolicyStateImpl)policy.getPolicyState( project )).discardChanges();
     }
+  }
+  
+  public void restoreDefaults()
+  {
+    for( ServicePolicyImpl policy : policyMap.values() )
+    {
+      policy.restoreDefaults();
+    }
+  }
+  
+  public void restoreDefaults( IProject project )
+  {
+    for( ServicePolicyImpl policy : policyMap.values() )
+    {
+      policy.restoreDefaults( project );
+    }    
   }
   
   public Set<String> getAllPolicyIds()
@@ -106,8 +142,13 @@ public class ServicePolicyPlatformImpl
                                                 String         enumListId, 
                                                 String         defaultEnumId )
   {
-    //TODO
-    return null;
+    String            uniqueId = makeUniqueId( id );
+    ServicePolicyImpl policy   = new ServicePolicyImpl( false, uniqueId, this );
+    
+    policy.setParent( (ServicePolicyImpl)parent );
+    policy.setEnumListId( enumListId );
+    policy.setDefaultEnumId( defaultEnumId );
+    return policy;
   }
   
   public ServicePolicyImpl getServicePolicy( String id )
@@ -141,5 +182,17 @@ public class ServicePolicyPlatformImpl
     String              key               = pluginId + ".projectEnabled"; //$NON-NLS-1$
 
     projectPreference.putBoolean( key, value );
+  }
+  
+  private String makeUniqueId( String id )
+  {
+    String  result = id;
+    Pattern pattern = Pattern.compile( "\\d*$" ); // Match any numerical digits at the end //$NON-NLS-1$
+                                                 // of the string.
+    Matcher matcher = pattern.matcher( id );
+    
+    matcher.replaceFirst( id );
+    // TODO implement makeUnique
+    return result;
   }
 }

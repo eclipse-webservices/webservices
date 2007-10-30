@@ -23,6 +23,6 @@ public class TestLaunchClass implements ILaunchOperation
 
   public void launch(List<IServicePolicy> selectedPolicies)
   {
-    System.out.println( "          Launch class called." );
+    System.out.println( "          Launch class called." ); //$NON-NLS-1$
   }  
 }

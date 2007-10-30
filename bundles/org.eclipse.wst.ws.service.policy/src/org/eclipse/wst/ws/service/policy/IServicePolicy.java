@@ -55,6 +55,26 @@ public interface IServicePolicy
   public void setRelationships( List<IPolicyRelationship> relationships );
   
   /**
+   * Restores the policy to its original state.  All locally added
+   * child policies will be removed.  The state of each policy will
+   * be set to is default value.   Note: the changes made calling
+   * this method can be undone if the platform performs a discardChanges
+   * operation.  Alternatively, if the plaform performs a commitChanges
+   * operation these changes will be saved.
+   */
+  public void restoreDefaults();
+  
+  /**
+   * Restores the policy to its original state for a particular project.  
+   * The state of each policy will be set to is default value.   
+   * Note: the changes made calling
+   * this method can be undone if the platform performs a discardChanges
+   * operation.  Alternatively, if the plaform performs a commitChanges
+   * operation these changes will be saved.
+   */
+  public void restoreDefaults( IProject project );
+  
+  /**
    * 
    * @return returns the policy state for this service policy.
    */

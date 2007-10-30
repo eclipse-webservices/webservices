@@ -55,9 +55,9 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 	private Label label_DetailsPanel_description;
 	private Label label_detailsPanel_dependancies;
 	private static final Image folderImage = ServicePolicyActivatorUI
-			.getImageDescriptor("icons/full/obj16/fldr_obj.gif").createImage();
+			.getImageDescriptor("icons/full/obj16/fldr_obj.gif").createImage(); //$NON-NLS-1$
 	private static final Image leafImage = ServicePolicyActivatorUI
-			.getImageDescriptor("icons/full/obj16/file_obj.gif").createImage();
+			.getImageDescriptor("icons/full/obj16/file_obj.gif").createImage(); //$NON-NLS-1$
 
 	/**
 	 * Creates preference page controls on demand.
@@ -261,10 +261,10 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 				}
 				helpSystem.setHelp(parentComposite, CSH_ID);
 				String desc = (sp.getDescriptor() == null || sp.getDescriptor()
-						.getDescription() == null) ? "" : sp.getDescriptor()
+						.getDescription() == null) ? "" : sp.getDescriptor() //$NON-NLS-1$
 						.getDescription();
 				text_DetailsPanel_description.setText(desc);
-				String dep = (sp.getRelationships() == null) ? "" : sp
+				String dep = (sp.getRelationships() == null) ? "" : sp //$NON-NLS-1$
 						.getRelationships().toString();
 				text_DetailsPanel_dependencies.setText(dep);
 				if (e.getSource() == masterPrefTree) {

@@ -115,14 +115,33 @@ public class MainTester extends TestCase
    public void testEnumerations()
    {
      ServicePolicyPlatform platform  = ServicePolicyPlatform.getInstance();
-     IServicePolicy        id1       = platform.getServicePolicy( "id1" );
-     IServicePolicy        id2       = platform.getServicePolicy( "id2" );
+     IServicePolicy        id1       = platform.getServicePolicy( "id1" ); //$NON-NLS-1$
+     IServicePolicy        id2       = platform.getServicePolicy( "id2" ); //$NON-NLS-1$
      IPolicyStateEnum      state1    = id1.getPolicyStateEnum();
      IPolicyStateEnum      state2    = id2.getPolicyStateEnum();
      IStateEnumerationItem item1     = state1.getCurrentItem();
      IStateEnumerationItem item2     = state2.getCurrentItem();
      
-     System.out.println( "id1 value:" + item1.getShortName() );
-     System.out.println( "id2 value:" + item2.getShortName() );
+     assertTrue( "Unexpected shortname:" + item1.getShortName(), item1.getShortName().equals( "ignore") ); //$NON-NLS-1$ //$NON-NLS-2$
+     assertTrue( "Unexpected shortname:" + item2.getShortName(), item2.getShortName().equals( "warn") ); //$NON-NLS-1$ //$NON-NLS-2$
+     System.out.println( "id1 value:" + item1.getShortName() ); //$NON-NLS-1$
+     System.out.println( "id2 value:" + item2.getShortName() ); //$NON-NLS-1$
+   }
+   
+   public void testPolicyState()
+   {
+     ServicePolicyPlatform platform  = ServicePolicyPlatform.getInstance();
+     IServicePolicy        id1       = platform.getServicePolicy( "id1" ); //$NON-NLS-1$
+     IPolicyStateEnum      enumState = id1.getPolicyStateEnum();
+     IStateEnumerationItem enumItem  = enumState.getCurrentItem();
+     String                ignoreId  = "org.eclipse.wst.ignore"; //$NON-NLS-1$
+     String                warnId    = "org.eclipse.wst.warn"; //$NON-NLS-1$
+     
+     assertTrue( "Default enum not:" + ignoreId, enumItem.getId().equals( ignoreId ) ); //$NON-NLS-1$
+     
+     enumState.setCurrentItem( warnId );
+     enumItem = enumState.getCurrentItem();
+     
+     assertTrue( "Updated enum not:" + warnId, enumItem.getId().equals( warnId ) ); //$NON-NLS-1$
    }
 }

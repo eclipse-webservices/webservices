@@ -16,7 +16,7 @@
        </enumeration>
        
        <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum" 
-                    default="org.eclipse.wst.warn">
+                    default="org.eclipse.wst.ignore">
          <item id="org.eclipse.wst.ignore"
                shortName="%IGNORE_SHORTNAME" />
          <item id="org.eclipse.wst.warn"

@@ -104,12 +104,12 @@ public class PolicyOperationImpl implements IPolicyOperation
       {
         try
         {
-          String enabledClassName = RegistryUtils.getAttributeName( enabledElement, "enabledclass" );
+          String enabledClassName = RegistryUtils.getAttributeName( enabledElement, "enabledclass" ); //$NON-NLS-1$
           enableOperationObject = (IEnableOperation)enabledElement.createExecutableExtension( enabledClassName );
         }
         catch( Exception exc )
         {
-          ServicePolicyActivatorUI.logError( "Error loading service policy ui \"enabled\" class.", exc );          
+          ServicePolicyActivatorUI.logError( "Error loading service policy ui \"enabled\" class.", exc );           //$NON-NLS-1$
         }
         
         if( enableOperationObject != null )
@@ -128,12 +128,12 @@ public class PolicyOperationImpl implements IPolicyOperation
     {
       try
       {
-        String launchClassName = RegistryUtils.getAttributeName( complexElement, "launchclass" );
+        String launchClassName = RegistryUtils.getAttributeName( complexElement, "launchclass" ); //$NON-NLS-1$
         launchOperationObject = (ILaunchOperation)complexElement.createExecutableExtension( launchClassName );
       }
       catch( Exception exc )
       {
-        ServicePolicyActivatorUI.logError( "Error loading service policy ui launch class.", exc );
+        ServicePolicyActivatorUI.logError( "Error loading service policy ui launch class.", exc ); //$NON-NLS-1$
       }
     }
     

@@ -67,13 +67,15 @@ public class EnumerationStateImpl implements IPolicyStateEnum
     return defaultId;
   }
   
-  public void setCurrentItem( String ItemId )
+  public void setCurrentItem( String itemId )
   {
     for( IStateEnumerationItem enumItem : enumList )
     {
-      if( enumItem.getId().equals( enumId ) )
+      String enumItemId = enumItem.getId();
+      
+      if( enumItemId.equals( itemId ) )
       {
-        state.putValue( VALUE, "" + enumId ); //$NON-NLS-1$
+        state.putValue( VALUE, enumItemId ); 
         break;
       }
     }

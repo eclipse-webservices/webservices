@@ -64,7 +64,7 @@ public class ServicePolicyActivatorUI extends Plugin {
 	 */
 		public static ImageDescriptor getImageDescriptor(String name) {
 			try {
-				URL installURL = plugin.getBundle().getEntry("/");
+				URL installURL = plugin.getBundle().getEntry("/"); //$NON-NLS-1$
 				URL imageURL = new URL(installURL, name);
 				return ImageDescriptor.createFromURL(imageURL);
 			} catch (MalformedURLException e) {

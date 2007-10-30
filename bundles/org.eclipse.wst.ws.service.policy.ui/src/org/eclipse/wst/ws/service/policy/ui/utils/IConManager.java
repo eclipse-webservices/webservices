@@ -31,10 +31,10 @@ public class IConManager
 {
   private Map<String, Image> iconTable;
   
-  public final String favorite = "fav";
-  public final String invalid  = "inv";
-  public final String warning  = "war";
-  public final String lock     = "loc";
+  public final String favorite = "fav"; //$NON-NLS-1$
+  public final String invalid  = "inv"; //$NON-NLS-1$
+  public final String warning  = "war"; //$NON-NLS-1$
+  public final String lock     = "loc"; //$NON-NLS-1$
   
   private String folderBaseURL; 
   private String leafBaseURL;
@@ -67,12 +67,12 @@ public class IConManager
     try
     {
       Bundle bundle      = ServicePolicyActivatorUI.getDefault().getBundle();
-      URL    folderUrl   = FileLocator.find( bundle, new Path( "icons/full/obj16/fldr_obj.gif" ), null );
-      URL    leafUrl     = FileLocator.find( bundle, new Path( "icons/full/obj16/file_obj.gif" ), null );
-      URL    favoriteUrl = FileLocator.find( bundle, new Path( "icons/full/ovr16/favorite_ovr.gif" ), null );
-      URL    invalidUrl  = FileLocator.find( bundle, new Path( "icons/full/ovr16/invalidtype_ovr.gif" ), null );
-      URL    warningUrl  = FileLocator.find( bundle, new Path( "icons/full/ovr16/warning_ovr.gif" ), null );
-      URL    lockUrl     = FileLocator.find( bundle, new Path( "icons/full/ovr16/unmodifiable_ovr.gif" ), null );
+      URL    folderUrl   = FileLocator.find( bundle, new Path( "icons/full/obj16/fldr_obj.gif" ), null ); //$NON-NLS-1$
+      URL    leafUrl     = FileLocator.find( bundle, new Path( "icons/full/obj16/file_obj.gif" ), null ); //$NON-NLS-1$
+      URL    favoriteUrl = FileLocator.find( bundle, new Path( "icons/full/ovr16/favorite_ovr.gif" ), null ); //$NON-NLS-1$
+      URL    invalidUrl  = FileLocator.find( bundle, new Path( "icons/full/ovr16/invalidtype_ovr.gif" ), null ); //$NON-NLS-1$
+      URL    warningUrl  = FileLocator.find( bundle, new Path( "icons/full/ovr16/warning_ovr.gif" ), null ); //$NON-NLS-1$
+      URL    lockUrl     = FileLocator.find( bundle, new Path( "icons/full/ovr16/unmodifiable_ovr.gif" ), null ); //$NON-NLS-1$
       
       getIconImage( folderUrl );
       getIconImage( leafUrl );
@@ -86,7 +86,7 @@ public class IConManager
     }
     catch( Throwable exc )
     {
-      ServicePolicyActivatorUI.logError( "Error reading icon overlays", exc );
+      ServicePolicyActivatorUI.logError( "Error reading icon overlays", exc ); //$NON-NLS-1$
       exc.printStackTrace();
     }
   }
@@ -128,7 +128,7 @@ public class IConManager
         }
         catch( Exception exc )
         {
-          ServicePolicyActivatorUI.logError( "Error loading image from:" + baseUrl, exc);
+          ServicePolicyActivatorUI.logError( "Error loading image from:" + baseUrl, exc); //$NON-NLS-1$
         }
       }
       
@@ -167,7 +167,7 @@ public class IConManager
     {
       if( value != null )
       {
-        url = url + ":" + value;
+        url = url + ":" + value; //$NON-NLS-1$
       }
     }
     

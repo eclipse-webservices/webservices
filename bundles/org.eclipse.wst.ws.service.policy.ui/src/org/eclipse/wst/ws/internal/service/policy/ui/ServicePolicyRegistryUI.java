@@ -45,7 +45,7 @@ public class ServicePolicyRegistryUI
         {
           String name = child.getName().toLowerCase();
           
-          if( name.equals( "operation" ) )
+          if( name.equals( "operation" ) ) //$NON-NLS-1$
           {
             loadServicePolicyui( child, operationMap );
           }

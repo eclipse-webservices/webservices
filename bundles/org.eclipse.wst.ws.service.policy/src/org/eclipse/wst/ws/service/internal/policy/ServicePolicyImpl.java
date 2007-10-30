@@ -43,6 +43,7 @@ public class ServicePolicyImpl implements IServicePolicy
   private String                           id;
   private ServicePolicyImpl                parent;
   private Descriptor                       descriptor;
+  private List<IServicePolicy>             committedChildren;
   private List<IServicePolicy>             children;
   private PolicyStateImpl                  policyState;
   private Map<IProject, PolicyStateImpl>   projectPolicyStates;
@@ -93,6 +94,22 @@ public class ServicePolicyImpl implements IServicePolicy
     }
   }
   
+  public void commitChanges()
+  {
+    policyState.commitChanges();
+    
+    // Make a copy of the children in the committedChildren object.
+    committedChildren = new Vector<IServicePolicy>( children );
+  }
+  
+  public void discardChanges()
+  {
+    policyState.discardChanges();
+    
+    //Restore children.
+    children = new Vector<IServicePolicy>( committedChildren );
+  }
+  
   public List<IServicePolicy> getChildren()
   {
     return children;
@@ -116,6 +133,7 @@ public class ServicePolicyImpl implements IServicePolicy
       
       if( removed )
       {
+        platform.removePolicy( this );
         fireChildChangeEvent( policy, false );
       }
     }
@@ -172,6 +190,26 @@ public class ServicePolicyImpl implements IServicePolicy
   {
     this.policyState = policyState;
   }
+  
+  public void restoreDefaults()
+  {
+    // Remove all local children from the tree
+    for( IServicePolicy child : children )
+    {
+      if( !child.isPredefined() )
+      {
+        removeChild( child );
+      }
+    }
+    
+    policyState.restoreDefaults();
+  }
+  
+  public void restoreDefaults( IProject project )
+  {
+    projectPolicyStates.get(project).restoreDefaults();
+  }
+  
   
   public List<IPolicyRelationship> getRelationships()
   {

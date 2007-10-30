@@ -42,33 +42,46 @@ public class PolicyStateImpl implements IPolicyState
     this.nodes                = nodes;
     this.policy               = policy;
     this.mutable              = policy.isPredefined() ? false : true;
+    this.table                = new HashMap<String, TableEntry>();
   }
   
   public void commitChanges()
   {
-    if( table != null )
+    for( Map.Entry<String, TableEntry> entry : table.entrySet() )
     {
-      for( Map.Entry<String, TableEntry> entry : table.entrySet() )
-      {
-        String     key        = entry.getKey();
-        String     storeKey   = makeStoreKey( key );
-        TableEntry tableEntry = entry.getValue();
-        String     value      = tableEntry.value;
+      String     key        = entry.getKey();
+      String     storeKey   = makeStoreKey( key );
+      TableEntry tableEntry = entry.getValue();
+      String     value      = tableEntry.value;
       
-        if( value != null )
-        {
-          String oldValue = getValue( key );
-        
-          nodes[0].put( storeKey, tableEntry.value );
-          firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );        
-        }
+      if( value != null )
+      {
+        String oldValue = getValue( key );
+       
+        nodes[0].put( storeKey, tableEntry.value );
+        firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );        
       }
     }
   }
   
   public void discardChanges()
   {
-    this.table = null;
+    for( TableEntry entry : table.values() )
+    {
+      entry.value = null;
+    }
+  }
+  
+  public void restoreDefaults()
+  {
+    // We want to restore the setting to there default state, but we don't
+    // want change the backend eclipse preferences, since the user might not
+    // commit these changes.  Therefore, we will set the values for all the
+    // table entries to their default value.  
+    for( TableEntry entry : table.values() )
+    {
+       entry.value = entry.defaultValue;
+    }
   }
   
   /** 
@@ -82,23 +95,18 @@ public class PolicyStateImpl implements IPolicyState
   public String getValue(String key)
   {
     String     result = null;
-    TableEntry entry  = null;
+    TableEntry entry  = table.get( key );
     
-    if( table != null )
+    if( entry != null )
     {
-      entry = table.get( key );
-      
-      if( entry != null )
-      {
-        result = entry.value;
-      }
+      result = entry.value;
     }
     
     if( result == null )
     {
       // We don't have a local value for this key so we will look in the
       // preference store.
-      String defaultValue = "";
+      String defaultValue = ""; //$NON-NLS-1$
       String storeKey     = makeStoreKey( key );
       
       if( entry != null && entry.defaultValue != null )
@@ -114,7 +122,7 @@ public class PolicyStateImpl implements IPolicyState
 
   private String makeStoreKey( String key )
   {
-    return policy.getId() + "." + key;   
+    return policy.getId() + "." + key;    //$NON-NLS-1$
   }
   
   public boolean isMutable()
@@ -123,9 +131,7 @@ public class PolicyStateImpl implements IPolicyState
   }
 
   public void putDefaultValue(String key, String defaultValue)
-  {
-    createTableIfNull();
-    
+  {    
     TableEntry entry = table.get( key );
     
     if( entry == null )
@@ -139,8 +145,6 @@ public class PolicyStateImpl implements IPolicyState
 
   public void putValue(String key, String value)
   {
-    createTableIfNull();
-    
     TableEntry entry = table.get( key );
     
     if( entry == null )
@@ -158,7 +162,7 @@ public class PolicyStateImpl implements IPolicyState
   {
     if( policy.isPredefined() )
     {
-      ServicePolicyActivator.logError( "Attempt to set mutability on a predefined service policy.", null );
+      ServicePolicyActivator.logError( "Attempt to set mutability on a predefined service policy.", null ); //$NON-NLS-1$
     }
     else
     {
@@ -212,14 +216,6 @@ public class PolicyStateImpl implements IPolicyState
       {
         listener.policyStateChange( policy, key, oldValue, newValue );
       }
-    }
-  }
-  
-  private void createTableIfNull()
-  {
-    if( table == null )
-    {
-      table = new HashMap<String, TableEntry>();
     }
   }
   

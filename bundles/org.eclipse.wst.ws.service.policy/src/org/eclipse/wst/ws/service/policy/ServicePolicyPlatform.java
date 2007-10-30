@@ -84,6 +84,16 @@ public class ServicePolicyPlatform
     platformImpl.setProjectPreferencesEnabled( project, value ); 
   }
   
+  public void restoreDefaults()
+  {
+    platformImpl.restoreDefaults();
+  }
+  
+  public void restoreDefaults( IProject project )
+  {
+    platformImpl.restoreDefaults( project );
+  }
+  
   /**
    * This method creates an IServicePolicy object.
    * 
