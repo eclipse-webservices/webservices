@@ -156,5 +156,11 @@
          download-size="0"
          install-size="0"
          version="1.4.0.qualifier"/>
+         
+   <plugin
+         id="org.eclipse.wst.ws.service.policy"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"/>
 
 </feature>
