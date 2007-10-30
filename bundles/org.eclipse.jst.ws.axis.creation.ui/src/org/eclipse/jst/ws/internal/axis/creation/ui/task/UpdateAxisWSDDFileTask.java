@@ -12,14 +12,14 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060517   134104 kathy@ca.ibm.com - Kathy Chan
+ * 20071030   128419 kelvinhc@ca.ibm.com - Kelvin H. Cheung
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.task;
 
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.InputStream;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
@@ -47,7 +46,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.ws.internal.common.BundleUtils;
 
 public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 	
@@ -95,7 +93,6 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 						.append(DEPLOY_BAK)
 						.toString();
 				FileUtil.createTargetFile(wsdd_deploy, deployBackup, true);
-				String deployXSL = getPluginFilePath(DEPLOY_XSL).toString();
 
 				TransformerFactory tFactory = TransformerFactory.newInstance();
 
@@ -103,7 +100,7 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 				// the stylesheet you specify. This method call also processes the stylesheet
 				// into a compiled Templates object.
 				Transformer transformer =
-					tFactory.newTransformer(new StreamSource(deployXSL));
+					tFactory.newTransformer(new StreamSource(getPluginFileAsInputStream(DEPLOY_XSL)));
 				transformer.setParameter(CLASSNAME_PARAM, javaWSDLParam_.getBeanName());
 
 				// Use the Transformer to apply the associated Templates object to an XML document
@@ -137,23 +134,12 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 		
 		return status;
 	}
-  
-	private IPath getPluginFilePath(String pluginfileName)
-		throws CoreException {
+	
+	private InputStream getPluginFileAsInputStream(String pluginfileName) throws CoreException {
 		try {
-
-			URL localURL =
-				Platform.asLocalURL(
-					BundleUtils.getURLFromBundle( WebServiceAxisCreationUIPlugin.ID, pluginfileName));
-			return new Path(localURL.getFile());
-		} catch (MalformedURLException e) {
-			throw new CoreException(
-				new org.eclipse.core.runtime.Status(
-					IStatus.WARNING,
-					WebServiceAxisCreationUIPlugin.ID,
-					0,
-					AxisCreationUIMessages.MSG_PLUGIN_FILE_URL,
-					e));
+			InputStream is = WebServiceAxisCreationUIPlugin.getInstance().getBundle().getEntry(pluginfileName).openStream();
+		
+			return is;
 		} catch (IOException e) {
 			throw new CoreException(
 				new org.eclipse.core.runtime.Status(
@@ -164,7 +150,6 @@ public class UpdateAxisWSDDFileTask extends AbstractDataModelOperation {
 					e));
 		}
 	}
-
 
 	/**
 	* Sets the javaWSDLParam.
