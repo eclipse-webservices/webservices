@@ -40,11 +40,11 @@
       <objectContribution
             objectClass="org.eclipse.core.resources.IResource"
             adaptable="true"
-            id="org.eclipse.wst.ws.ui.webservice.category.popupMenu">
+            id="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu">
          <menu
                label="%LABEL_POPUP_CATEGORY_WEB_SERVICES"
                path="additions"
-               id="org.eclipse.wst.ws.ui.webservice.category.popupMenu">
+               id="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu">
             <separator
                   name="popupActions">
             </separator>
