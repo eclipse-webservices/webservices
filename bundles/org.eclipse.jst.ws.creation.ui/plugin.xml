@@ -120,7 +120,7 @@
          <action
                label="%ACTION_DEPLOY_WEBSERVICE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
          </action>
       </objectContribution>
@@ -132,7 +132,7 @@
          <action
                label="%ACTION_DEPLOY_WEBSERVICE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
          </action>
       </objectContribution>
@@ -144,7 +144,7 @@
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
          </action>
       </objectContribution>
@@ -216,7 +216,7 @@
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard">
          </action>
       </objectContribution>
@@ -228,7 +228,7 @@
          <action
                label="%ACTION_PUBLISH_WSDL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.creation.ui.wizard.publish">
          </action>
       </objectContribution>

@@ -300,7 +300,7 @@
          <action
                label="%POPUP_GENERATE_WSIL"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.consumption.ui.wsilimport">
          </action>
       </objectContribution>
@@ -312,7 +312,7 @@
          <action
                label="%ACTION_GENERATE_JAVA_PROXY"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard">
          </action>
       </objectContribution>
@@ -324,7 +324,7 @@
          <action
                label="%ACTION_GENERATE_JAVA_PROXY"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard">
          </action>
       </objectContribution>
@@ -336,7 +336,7 @@
          <action
                label="%ACTION_GEN_SAMPLE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.gensamplewizard">
          </action>
       </objectContribution>
@@ -348,7 +348,7 @@
          <action
                label="%ACTION_GEN_SAMPLE"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.gensamplewizard">
          </action>
       </objectContribution>
@@ -384,7 +384,7 @@
          <action
                label="%POPUP_ADD_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.service">
          </action>
       </objectContribution>
@@ -437,7 +437,7 @@
          <action
                label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
          </action>
       </objectContribution>
@@ -449,7 +449,7 @@
          <action
                label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
          </action>
       </objectContribution>    
@@ -461,7 +461,7 @@
          <action
                label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
          </action>
       </objectContribution>  
@@ -473,7 +473,7 @@
          <action
                label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.client">
          </action>
       </objectContribution> 

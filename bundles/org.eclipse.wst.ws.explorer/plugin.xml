@@ -13,18 +13,18 @@
       <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.wsdl"
-            id="org.eclipse.jst.ws.internal.consumption.ui.action.WSDLFileMenu.file.wsdl">
+            id="org.eclipse.wst.ws.ui.action.WSDLFileMenu.file.wsdl">
          <action
                label="%POPUP_TEST_WSDL"
                class="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL"
-               menubarPath="org.eclipse.jst.ws.atk.ui.webservice.category.popupMenu/popupActions"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
                id="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL">
          </action>
       </objectContribution>
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.util.WSDLResourceImpl"
             nameFilter="*"
-            id="org.eclipse.jst.ws.internal.consumption.ui.action.WSDLFileMenu.wsdlres">
+            id="org.eclipse.wst.ws.ui.action.WSDLFileMenu.wsdlres">
          <action
                label="%POPUP_TEST_WSDL"
                class="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL"
@@ -35,7 +35,7 @@
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
-            id="org.eclipse.jst.ws.internal.consumption.ui.action.WSDLFileMenu.service">
+            id="org.eclipse.wst.ws.ui.action.WSDLFileMenu.service">
          <action
                label="%POPUP_TEST_WSDL"
                class="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL"
