@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.ws.tests; singleton:=true
-Bundle-Version: 1.0.201.qualifier
+Bundle-Version: 1.0.301.qualifier
 Bundle-Activator: org.eclipse.wst.ws.tests.plugin.TestsPlugin
 Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
@@ -24,9 +24,11 @@ Require-Bundle: org.eclipse.wst.ws,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi
 Eclipse-LazyStart: true
-Export-Package: org.eclipse.wst.ws.tests.data,
+Export-Package: org.eclipse.wst.ws.test.popup,
+ org.eclipse.wst.ws.tests.data,
  org.eclipse.wst.ws.tests.plugin,
- org.eclipse.wst.ws.tests.unittest
+ org.eclipse.wst.ws.tests.unittest,
+ org.eclipse.wst.ws.tests.utils
 Bundle-ClassPath: tests.jar
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
 
