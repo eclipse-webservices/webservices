@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.ws.service.policy.Descriptor;
+import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.ws.service.policy.utils.RegistryUtils;
 
@@ -68,7 +68,7 @@ public class ServicePolicyRegistryUI
     String                  id             = RegistryUtils.getAttribute( element, "id" ); //$NON-NLS-1$
     String                  policyPattern  = RegistryUtils.getAttribute( element, "policypattern" ); //$NON-NLS-1$
     IConfigurationElement[] children       = element.getChildren();
-    Descriptor              descriptor     = null;
+    IDescriptor              descriptor     = null;
     String                  enumId         = null;
     boolean                 selection      = false;
     boolean                 icon           = false;

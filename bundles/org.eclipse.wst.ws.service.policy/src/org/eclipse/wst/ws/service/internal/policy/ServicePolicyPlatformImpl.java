@@ -38,29 +38,49 @@ public class ServicePolicyPlatformImpl
   private Map<String, ServicePolicyImpl>           policyMap;
   private Map<String, List<IStateEnumerationItem>> enumList;
   private Map<String, StateEnumerationItemImpl>    enumItemList;
-  private int                                      idCount;
   
   public ServicePolicyPlatformImpl()
   {
     ServicePolicyRegistry registry  = new ServicePolicyRegistry( this );
+    List<String>          localIds  = LocalUtils.getLocalPolicyIds();
     
     loadListeners = new Vector<IPolicyPlatformLoadListener>();
     policyMap     = new HashMap<String, ServicePolicyImpl>();
     enumList      = new HashMap<String, List<IStateEnumerationItem>>();
     enumItemList  = new HashMap<String, StateEnumerationItemImpl>();
-    idCount       = 1;
     
-    //TODO load local changes
+    //Load local policies
+    for( String localPolicyId : localIds )
+    {
+      ServicePolicyImpl localPolicy = LocalUtils.loadLocalPolicy( localPolicyId );
+      
+      policyMap.put( localPolicyId, localPolicy );
+    }
+   
     registry.load( loadListeners, policyMap, enumList, enumItemList );
-    commitChanges();
+    
+    // TODO call the load listeners.
+    commitChanges( false );
   }
   
-  public void commitChanges()
+  public void commitChanges( boolean saveLocals )
   {
+    List<String> localIds = new Vector<String>();
+    
+    if( saveLocals ) LocalUtils.removeAllLocalPolicies();
+    
     for( ServicePolicyImpl policy : policyMap.values() )
     {
       policy.commitChanges();
+      
+      if( saveLocals && !policy.isPredefined() )
+      {
+        LocalUtils.saveLocalPolicy( policy );
+        localIds.add( policy.getId() );
+      }
     }
+    
+    if( saveLocals ) LocalUtils.saveLocalIds( localIds );
     
     committedPolicyMap = new HashMap<String, ServicePolicyImpl>();
     committedPolicyMap.putAll( policyMap );
@@ -148,6 +168,8 @@ public class ServicePolicyPlatformImpl
     policy.setParent( (ServicePolicyImpl)parent );
     policy.setEnumListId( enumListId );
     policy.setDefaultEnumId( defaultEnumId );
+    policyMap.put( uniqueId, policy );
+    
     return policy;
   }
   
@@ -186,13 +208,19 @@ public class ServicePolicyPlatformImpl
   
   private String makeUniqueId( String id )
   {
-    String  result = id;
+    String  result  = id;
+    int     idCount = 1;
     Pattern pattern = Pattern.compile( "\\d*$" ); // Match any numerical digits at the end //$NON-NLS-1$
-                                                 // of the string.
-    Matcher matcher = pattern.matcher( id );
+                                                  // of the string.
     
-    matcher.replaceFirst( id );
-    // TODO implement makeUnique
+    while( policyMap.containsKey( result ) )
+    {
+      Matcher matcher = pattern.matcher( result );
+    
+      result = matcher.replaceFirst( "" ) + idCount;
+      idCount++;
+    }
+    
     return result;
   }
 }

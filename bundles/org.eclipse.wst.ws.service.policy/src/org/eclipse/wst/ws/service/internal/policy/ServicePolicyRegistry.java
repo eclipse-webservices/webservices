@@ -21,7 +21,6 @@ import java.util.Vector;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.ws.service.policy.Descriptor;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformLoadListener;
@@ -209,7 +208,7 @@ public class ServicePolicyRegistry
     String                       id             = RegistryUtils.getAttribute( policy, "id" ); //$NON-NLS-1$
     String                       enumListId     = RegistryUtils.getAttribute( policy, "enumlistid" ); //$NON-NLS-1$
     String                       defaultEnumId  = RegistryUtils.getAttribute( policy, "defaultenumid" ); //$NON-NLS-1$
-    Descriptor                   descriptor     = null;
+    DescriptorImpl               descriptor     = null;
     List<UnresolvedRelationship> relationships  = new Vector<UnresolvedRelationship>();
     
     try
@@ -265,7 +264,7 @@ public class ServicePolicyRegistry
     {
       String name = child.getName().toLowerCase();
       
-      if( name.equals( "policy" ) ) //$NON-NLS-1$
+      if( name.equals( "targetPolicy" ) ) //$NON-NLS-1$
       {
         loadPolicyRelationship( child, targetRelationshipList );
       }

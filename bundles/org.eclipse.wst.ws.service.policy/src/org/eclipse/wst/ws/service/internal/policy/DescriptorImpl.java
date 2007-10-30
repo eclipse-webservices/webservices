@@ -9,19 +9,32 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071030   196997 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
-package org.eclipse.wst.ws.service.policy;
+package org.eclipse.wst.ws.service.internal.policy;
 
-public class Descriptor
+import org.eclipse.wst.ws.service.policy.IDescriptor;
+
+public class DescriptorImpl implements IDescriptor
 {
-  private String shortName;
-  private String longName;
-  private String description;
-  private String iconPath;
-  private String iconBundleId;
-  private String contextHelpId;
+  private String  shortName;
+  private String  longName;
+  private String  description;
+  private String  iconPath;
+  private String  iconBundleId;
+  private String  contextHelpId;
+  private boolean hasChanged = false;
     
+  public boolean hasChanged()
+  {
+    return hasChanged;
+  }
+  
+  public void resetHasChanged()
+  {
+    hasChanged = false;  
+  }
+  
   public String getShortName()
   {
     return shortName;
@@ -40,6 +53,7 @@ public class Descriptor
   public void setLongName(String longName)
   {
     this.longName = longName;
+    hasChanged = true;
   }
 
   public String getDescription()
@@ -50,6 +64,7 @@ public class Descriptor
   public void setDescription(String description)
   {
     this.description = description;
+    hasChanged = true;
   }
   
   public String getIconPath()
@@ -60,6 +75,7 @@ public class Descriptor
   public void setIconPath(String iconPath)
   {
     this.iconPath = iconPath;
+    hasChanged = true;
   }
   
   public String getIconBundleId()
@@ -70,6 +86,7 @@ public class Descriptor
   public void setIconBundleId(String iconBundleId)
   {
     this.iconBundleId = iconBundleId;
+    hasChanged = true;
   }
   
   public String getContextHelpId()
@@ -80,5 +97,6 @@ public class Descriptor
   public void setContextHelpId(String contextHelpId)
   {
     this.contextHelpId = contextHelpId;
+    hasChanged = true;
   } 
 }

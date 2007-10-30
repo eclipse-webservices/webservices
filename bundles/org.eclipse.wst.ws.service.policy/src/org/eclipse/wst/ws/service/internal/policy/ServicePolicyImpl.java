@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.wst.ws.service.policy.Descriptor;
+import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
 import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
 import org.eclipse.wst.ws.service.policy.IPolicyState;
@@ -42,7 +42,7 @@ public class ServicePolicyImpl implements IServicePolicy
   private boolean                          predefined;
   private String                           id;
   private ServicePolicyImpl                parent;
-  private Descriptor                       descriptor;
+  private DescriptorImpl                   descriptor;
   private List<IServicePolicy>             committedChildren;
   private List<IServicePolicy>             children;
   private PolicyStateImpl                  policyState;
@@ -139,12 +139,17 @@ public class ServicePolicyImpl implements IServicePolicy
     }
   }
 
-  public Descriptor getDescriptor()
+  public IDescriptor getDescriptor()
   {
+    if( descriptor == null )
+    {
+      descriptor = new DescriptorImpl();  
+    }
+    
     return descriptor;
   }
   
-  public void setDescriptor( Descriptor descriptor )
+  public void setDescriptor( DescriptorImpl descriptor )
   {
     this.descriptor = descriptor;
   }

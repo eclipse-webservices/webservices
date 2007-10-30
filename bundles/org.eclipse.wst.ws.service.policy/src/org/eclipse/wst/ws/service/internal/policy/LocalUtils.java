@@ -9,30 +9,39 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
+ * 20071030   196997 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
-package org.eclipse.wst.ws.service.policy.ui;
+package org.eclipse.wst.ws.service.internal.policy;
 
 import java.util.List;
+import java.util.Vector;
 
-import org.eclipse.wst.ws.service.policy.IDescriptor;
-import org.eclipse.wst.ws.service.policy.IServicePolicy;
-
-public interface IPolicyOperation
+public class LocalUtils
 {
-  public enum OperationKind { enumeration, selection, iconSelection, complex };
- 
-  public String getId();
+  public static List<String> getLocalPolicyIds()
+  {
+    //TODO implement
+    return new Vector<String>();
+  }
   
-  public IDescriptor getDescriptor();
+  public static void saveLocalIds( List<String> localIds )
+  {
+    // TODO implement
+  }
   
-  public OperationKind getOperationKind();
+  public static void removeAllLocalPolicies()
+  {
+    // TODO implement removealllocalpolicies
+  }
   
-  public String getEnumerationId();
+  public static void saveLocalPolicy( ServicePolicyImpl policy )
+  {
+    // TODO implement
+  }
   
-  public void launchOperation( List<IServicePolicy> selectedPolicies );
-  
-  public boolean isEnabled( List<IServicePolicy> selectedPolicies );
-  
-  public String getPolicyIdPattern();
+  public static ServicePolicyImpl loadLocalPolicy( String policyId )
+  {
+    // TODO implement
+    return null;
+  }
 }

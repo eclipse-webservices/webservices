@@ -17,7 +17,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.wst.ws.service.policy.Descriptor;
+import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
 import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
 import org.eclipse.wst.ws.service.policy.IPolicyStateEnum;
@@ -58,7 +58,7 @@ public class MainTester extends TestCase
    private void displayPolicyNode( IServicePolicy policy )
    {
      IServicePolicy parentPolicy = policy.getParentPolicy();
-     Descriptor     descriptor   = policy.getDescriptor();
+     IDescriptor     descriptor   = policy.getDescriptor();
      
      System.out.println( "Found policy: " + policy.getId() + " parentid:" + (parentPolicy == null ? "null" : parentPolicy.getId()) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
      
@@ -143,5 +143,33 @@ public class MainTester extends TestCase
      enumItem = enumState.getCurrentItem();
      
      assertTrue( "Updated enum not:" + warnId, enumItem.getId().equals( warnId ) ); //$NON-NLS-1$
+     
+     platform.discardChanges();
+     enumItem = enumState.getCurrentItem();
+     
+     assertTrue( "Discard enum not:" + ignoreId, enumItem.getId().equals( ignoreId ) ); //$NON-NLS-1$
+   }
+   
+   public void testUniqueIds()
+   {
+     ServicePolicyPlatform platform  = ServicePolicyPlatform.getInstance();
+     IServicePolicy        policy    = platform.createServicePolicy( null, "someid", null, null );
+     
+     assertTrue( policy.getId().equals( "someid" ) );
+     
+     policy = platform.createServicePolicy( null, "someid", null, null );
+     assertTrue( policy.getId().equals( "someid1" ) );
+     
+     policy = platform.createServicePolicy( null, "someid", null, null );
+     assertTrue( policy.getId().equals( "someid2" ) );
+     
+     policy = platform.createServicePolicy( null, "someid1", null, null );
+     assertTrue( policy.getId().equals( "someid3" ) );
+     
+     policy = platform.createServicePolicy( null, "some55id5", null, null );
+     assertTrue( policy.getId().equals( "some55id5" ) );
+     
+     policy = platform.createServicePolicy( null, "some55id5", null, null );
+     assertTrue( policy.getId().equals( "some55id1" ) );
    }
 }

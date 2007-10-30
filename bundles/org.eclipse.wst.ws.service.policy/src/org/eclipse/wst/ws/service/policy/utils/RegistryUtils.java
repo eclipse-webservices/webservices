@@ -15,14 +15,14 @@
 package org.eclipse.wst.ws.service.policy.utils;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.wst.ws.service.policy.Descriptor;
+import org.eclipse.wst.ws.service.internal.policy.DescriptorImpl;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 
 public class RegistryUtils
 {
-  public static Descriptor loadDescriptor( IConfigurationElement element )
+  public static DescriptorImpl loadDescriptor( IConfigurationElement element )
   {
-    Descriptor descriptor = new Descriptor();
+    DescriptorImpl descriptor = new DescriptorImpl();
     
     String shortName   = getAttribute( element, "shortname" ); //$NON-NLS-1$
     String longName    = getAttribute( element, "longname" ); //$NON-NLS-1$
@@ -54,6 +54,7 @@ public class RegistryUtils
       descriptor.setIconBundleId( element.getContributor().getName() );
     }
     
+    descriptor.resetHasChanged();
     return descriptor;
   }
   

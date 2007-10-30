@@ -8,16 +8,16 @@
        <policy parentPolicyId="someparent" id="id1" enumListId="org.eclipse.wst.service.policy.errorWarnEnum">
          <descriptor shortName="id1 shortName" description="id1 description"/>
          <relationship enumList="org.eclipse.wst.warn">
-           <policy id="id2"
+           <targetPolicy id="id2"
                    itemList="org.eclipse.wst.warn org.eclipse.wst.error"/>
-           <policy id="id3"
+           <targetPolicy id="id3"
                    itemList="org.eclipse.wst.warn"/>
-           <policy id="id4"
+           <targetPolicy id="id4"
                    itemList="org.eclipse.wst.error"/>
          </relationship>
          
          <relationship enumList="org.eclipse.wst.ignore">
-           <policy id="id3"
+           <targetPolicy id="id3"
                    itemList="org.eclipse.wst.warn org.eclipse.wst.error"/>
          </relationship>
        </policy>
@@ -53,7 +53,7 @@
    </extension>
    
    <extension point="org.eclipse.wst.ws.service.policy.ui.servicepolicyui">
-     <servicePolicyUI>
+     <servicePolicyUI> 
        <operation id="service.ui.operation1"
                       policyPattern="id3|id2" >
          <descriptor shortName="UI policy1 short name" longName="UI policy1 long name" />

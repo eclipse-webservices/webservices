@@ -9,30 +9,33 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
+ * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
-package org.eclipse.wst.ws.service.policy.ui;
+package org.eclipse.wst.ws.service.policy;
 
-import java.util.List;
-
-import org.eclipse.wst.ws.service.policy.IDescriptor;
-import org.eclipse.wst.ws.service.policy.IServicePolicy;
-
-public interface IPolicyOperation
+public interface IDescriptor
 {
-  public enum OperationKind { enumeration, selection, iconSelection, complex };
- 
-  public String getId();
+  public String getShortName();
   
-  public IDescriptor getDescriptor();
+  public void setShortName(String name);
   
-  public OperationKind getOperationKind();
+  public String getLongName();
+
+  public void setLongName(String longName);
+
+  public String getDescription();
   
-  public String getEnumerationId();
+  public void setDescription(String description);
   
-  public void launchOperation( List<IServicePolicy> selectedPolicies );
+  public String getIconPath();
   
-  public boolean isEnabled( List<IServicePolicy> selectedPolicies );
+  public void setIconPath(String iconPath);
   
-  public String getPolicyIdPattern();
+  public String getIconBundleId();
+  
+  public void setIconBundleId(String iconBundleId);
+  
+  public String getContextHelpId();
+
+  public void setContextHelpId(String contextHelpId);
 }

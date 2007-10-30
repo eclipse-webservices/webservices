@@ -16,7 +16,7 @@ package org.eclipse.wst.ws.internal.service.policy.ui;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.wst.ws.service.policy.Descriptor;
+import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.ui.IEnableOperation;
 import org.eclipse.wst.ws.service.policy.ui.ILaunchOperation;
@@ -27,7 +27,7 @@ import org.eclipse.wst.ws.service.policy.utils.RegistryUtils;
 public class PolicyOperationImpl implements IPolicyOperation
 {
   private String                id;
-  private Descriptor            descriptor;
+  private IDescriptor            descriptor;
   private OperationKind         operationKind;
   private String                policyIdPattern;
   private boolean               multiSelect = false;
@@ -59,7 +59,7 @@ public class PolicyOperationImpl implements IPolicyOperation
     }
   }
   
-  public Descriptor getDescriptor()
+  public IDescriptor getDescriptor()
   {
     return descriptor;
   }
@@ -153,7 +153,7 @@ public class PolicyOperationImpl implements IPolicyOperation
     this.multiSelect = multiSelect;
   }
 
-  public void setDescriptor(Descriptor descriptor)
+  public void setDescriptor(IDescriptor descriptor)
   {
     this.descriptor = descriptor;
   }

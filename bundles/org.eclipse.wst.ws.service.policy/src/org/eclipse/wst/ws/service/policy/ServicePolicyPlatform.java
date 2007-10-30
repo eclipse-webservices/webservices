@@ -41,7 +41,7 @@ public class ServicePolicyPlatform
   
   public void commitChanges()
   {
-    platformImpl.commitChanges();
+    platformImpl.commitChanges( true );
   }
   
   public void discardChanges()

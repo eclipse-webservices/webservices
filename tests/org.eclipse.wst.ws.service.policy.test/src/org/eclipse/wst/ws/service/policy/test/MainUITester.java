@@ -19,7 +19,7 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
-import org.eclipse.wst.ws.service.policy.Descriptor;
+import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
@@ -126,7 +126,7 @@ public class MainUITester extends TestCase
    {
      List<IServicePolicy> zeroPolicies = new Vector<IServicePolicy>();
      List<IServicePolicy> manyPolicies = ServicePolicyPlatform.getInstance().getRootServicePolicies( null );
-     Descriptor           descriptor   = operation.getDescriptor();
+     IDescriptor           descriptor   = operation.getDescriptor();
      String               shortName    = descriptor.getShortName();
      String               longName     = descriptor.getLongName();
      

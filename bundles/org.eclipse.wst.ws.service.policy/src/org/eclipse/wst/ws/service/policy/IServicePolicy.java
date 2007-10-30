@@ -38,7 +38,7 @@ public interface IServicePolicy
    * 
    * @return returns the descriptor for this service policy.
    */
-  public Descriptor getDescriptor();
+  public IDescriptor getDescriptor();
   
   /**
    * 
