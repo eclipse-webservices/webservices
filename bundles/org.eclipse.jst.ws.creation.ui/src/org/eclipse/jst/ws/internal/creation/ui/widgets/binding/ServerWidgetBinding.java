@@ -27,6 +27,7 @@
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  * 20070502   180304 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -292,7 +293,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
 
     widgetRegistry.add( "ServerWizardWidget", 
                         ConsumptionUIMessages.PAGE_TITLE_WS_PROJECT,
-                        ConsumptionUIMessages.PAGE_DESC_WS_PROJECT,
+                        ConsumptionUIMessages.PAGE_DESC_WS_SERVICE,
 				        new WidgetContributorFactory()
 				        {
 				          public WidgetContributor create()

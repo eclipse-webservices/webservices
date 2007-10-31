@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@
  * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20060719   139977 kathy@ca.ibm.com - Kathy Chan
+ * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -63,7 +64,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String COMBINED_TYPE_AND_RUNTIME_LABEL;
 	public static String WIZARD_TITLE_WSC;
 	public static String PAGE_TITLE_WS_PROJECT;
-	public static String PAGE_DESC_WS_PROJECT;
+	public static String PAGE_DESC_WS_SERVICE;
+	public static String PAGE_DESC_WS_CLIENT;
 	public static String BUTTON_START_WEB_PROJECT;
 	public static String BUTTON_INSTALL_SERVICE_WEB_PROJECT;
 	public static String BUTTON_INSTALL_CLIENT_WEB_PROJECT;
