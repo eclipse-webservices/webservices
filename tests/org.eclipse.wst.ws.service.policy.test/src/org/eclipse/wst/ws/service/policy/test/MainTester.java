@@ -17,12 +17,15 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
 import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
 import org.eclipse.wst.ws.service.policy.IPolicyStateEnum;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
+import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 
 public class MainTester extends TestCase
@@ -136,6 +139,7 @@ public class MainTester extends TestCase
      IStateEnumerationItem enumItem  = enumState.getCurrentItem();
      String                ignoreId  = "org.eclipse.wst.ignore"; //$NON-NLS-1$
      String                warnId    = "org.eclipse.wst.warn"; //$NON-NLS-1$
+     String                errorId   = "org.eclipse.wst.error"; //$NON-NLS-1$
      
      assertTrue( "Default enum not:" + ignoreId, enumItem.getId().equals( ignoreId ) ); //$NON-NLS-1$
      
@@ -148,6 +152,30 @@ public class MainTester extends TestCase
      enumItem = enumState.getCurrentItem();
      
      assertTrue( "Discard enum not:" + ignoreId, enumItem.getId().equals( ignoreId ) ); //$NON-NLS-1$
+     
+     enumState.setCurrentItem( errorId );
+     enumItem = enumState.getCurrentItem();
+     assertTrue( "Error enum not:" + errorId, enumItem.getId().equals( errorId ) ); //$NON-NLS-1$
+     
+     platform.commitChanges();
+     enumItem = enumState.getCurrentItem();
+     assertTrue( "Error enum not:" + errorId, enumItem.getId().equals( errorId ) ); //$NON-NLS-1$
+     
+     IEclipsePreferences projectPreferences = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
+     
+     try
+     {
+       String[]            keys               = projectPreferences.keys();
+     
+       for( String key : keys )
+       {
+         System.out.println( "Key=" + key + " value=" + projectPreferences.get( key, "" ));
+       }
+     }
+     catch( Exception exc )
+     {
+       assertTrue( "Exception thrown" + exc.getMessage(), false );
+     }
    }
    
    public void testUniqueIds()

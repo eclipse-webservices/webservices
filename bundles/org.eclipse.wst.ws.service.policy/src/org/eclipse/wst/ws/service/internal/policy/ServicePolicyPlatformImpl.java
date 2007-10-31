@@ -52,14 +52,18 @@ public class ServicePolicyPlatformImpl
     //Load local policies
     for( String localPolicyId : localIds )
     {
-      ServicePolicyImpl localPolicy = LocalUtils.loadLocalPolicy( localPolicyId );
+      ServicePolicyImpl localPolicy = LocalUtils.loadLocalPolicy( localPolicyId, this );
       
       policyMap.put( localPolicyId, localPolicy );
     }
    
     registry.load( loadListeners, policyMap, enumList, enumItemList );
     
-    // TODO call the load listeners.
+    for( IPolicyPlatformLoadListener loadListener : loadListeners )
+    {
+      loadListener.load();
+    }
+    
     commitChanges( false );
   }
   

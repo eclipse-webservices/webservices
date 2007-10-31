@@ -14,9 +14,8 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.listeners;
 
-import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 
 public interface IPolicyPlatformLoadListener
 {
-  public void load( ServicePolicyPlatform platform );
+  public void load();
 }

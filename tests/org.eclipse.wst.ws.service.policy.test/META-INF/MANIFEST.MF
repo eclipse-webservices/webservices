@@ -9,6 +9,7 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.junit4,
  org.eclipse.wst.ws.service.policy,
- org.eclipse.wst.ws.service.policy.ui
+ org.eclipse.wst.ws.service.policy.ui,
+ org.eclipse.core.resources
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

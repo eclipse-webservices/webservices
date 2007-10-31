@@ -229,11 +229,21 @@ public class ServicePolicyImpl implements IServicePolicy
     }
   }
 
+  public String getEnumListId()
+  {
+    return enumListId;  
+  }
+  
   public void setEnumListId(String enumListId)
   {
     this.enumListId = enumListId;
   }
 
+  public String getDefaultEnumId()
+  {
+    return defaultEnumId;  
+  }
+  
   public void setDefaultEnumId(String defaultEnumValue)
   {
     this.defaultEnumId = defaultEnumValue;

@@ -3,7 +3,6 @@
 <plugin>
    <extension-point id="servicepolicyui" name="%SERVICE_POLICY_NAME" schema="schema/servicePolicyui.exsd"/>
    
-   <!--
    <extension point="org.eclipse.ui.preferencePages">
       <page name="%PLUGIN_NAME"
             class="org.eclipse.wst.ws.internal.service.policy.ui.preferences.ServicePoliciesPreferencePage"
@@ -11,7 +10,6 @@
             id="org.eclipse.wst.ws.service.policy.ui.preferences.ServicePoliciesPreferencePage">
       </page>
    </extension>
-   -->
    
    <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
      <servicePolicy>

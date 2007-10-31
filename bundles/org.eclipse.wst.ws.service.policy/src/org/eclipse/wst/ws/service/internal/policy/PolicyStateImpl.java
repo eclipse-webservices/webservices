@@ -150,6 +150,7 @@ public class PolicyStateImpl implements IPolicyState
     if( entry == null )
     {
       entry = new TableEntry();
+      table.put( key, entry );
     }
 
     String oldValue = getValue( key );
