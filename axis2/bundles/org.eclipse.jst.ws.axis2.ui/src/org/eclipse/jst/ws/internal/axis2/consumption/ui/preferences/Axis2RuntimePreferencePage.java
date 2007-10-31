@@ -23,6 +23,7 @@
  * 20070604   190067 pmoogk@ca.ibm.com - Peter Moogk
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20070827   188732 sandakith@wso2.com - Lahiru Sandakith, Restore defaults for preferences
+ * 20071030	  207618 zina@ca.ibm.com - Zina Mostafia, Page GUI sequence using tab is not correct ( violates Accessibility)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -38,6 +39,8 @@ import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.plugin.messages.Axis2CoreUIMessages;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.RuntimePropertyUtils;
+import org.eclipse.jst.ws.axis2.ui.plugin.WebServiceAxis2UIPlugin;
+import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -51,6 +54,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -206,33 +210,24 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     codegenPreferencesItem.setText(Axis2CoreUIMessages.AXIS2_PREFERENCES);
     codegenPreferencesItem.setToolTipText(Axis2CoreUIMessages.AXIS2_PREFERENCES_TOOLTIP);
     
-    Composite codegenGroup = new Composite(axis2PreferenceTab, SWT.NONE);
+    UIUtils uiUtils = new UIUtils(WebServiceAxis2UIPlugin.PLUGIN_ID);
+    Composite codegenGroup = uiUtils.createComposite(axis2PreferenceTab, 1);
     codegenPreferencesItem.setControl(codegenGroup);
     codegenGroup.setToolTipText(Axis2CoreUIMessages.AXIS2_PREFERENCES_TOOLTIP);
     
-    layout = new GridLayout();
-    codegenGroup.setLayout(layout);
-    layout.numColumns = 2;
-    layout.marginHeight = 10;
-    gd = new GridData(GridData.FILL_BOTH);
-    codegenGroup.setLayoutData( gd );
+    ///////////////////////////////////////////////////////////////////////////////////////////
     
     //Service Codegen Options
-    Text serviceCodegenLabel = new Text(codegenGroup,SWT.BACKGROUND | SWT.READ_ONLY);
-    serviceCodegenLabel.setText( Axis2CoreUIMessages.LABEL_WEB_SERVICE_CODEGEN);
+    Composite serviceCodegenGroup = uiUtils.createComposite(codegenGroup, 1);
     
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    serviceCodegenLabel.setLayoutData(gd);
-
+    Text serviceCodegenGroupLabel= new Text(serviceCodegenGroup, SWT.READ_ONLY);
+    serviceCodegenGroupLabel.setText(Axis2CoreUIMessages.LABEL_WEB_SERVICE_CODEGEN);
+      
+    Composite dataBindComp = uiUtils.createComposite(serviceCodegenGroup, 2);
     //Data binding
-    Label databindingLabel = new Label( codegenGroup, SWT.NONE );
-    databindingLabel.setText( Axis2CoreUIMessages.LABEL_DATABINDING);
-  
+    serviceDatabindingCombo = uiUtils.createCombo(dataBindComp, Axis2CoreUIMessages.LABEL_DATABINDING, null, null, SWT.READ_ONLY);
     //Data binding items
     final String[] databindingItems = {context.getServiceDatabinding().toUpperCase()};
-    
-    serviceDatabindingCombo = new Combo(codegenGroup,SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
     serviceDatabindingCombo.setItems(databindingItems);
     serviceDatabindingCombo.select(0);
     context.setServiceDatabinding(serviceDatabindingCombo.getItem(0));
@@ -244,10 +239,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     });
     
     //the server side interface option
-    generateServerSideInterfaceCheckBoxButton = 
-              new Button(codegenGroup, SWT.CHECK);
-    generateServerSideInterfaceCheckBoxButton.setText(
-        Axis2CoreUIMessages.LABEL_GENERATE_SERVERSIDE_INTERFACE);
+    generateServerSideInterfaceCheckBoxButton = uiUtils.createCheckbox(serviceCodegenGroup, Axis2CoreUIMessages.LABEL_GENERATE_SERVERSIDE_INTERFACE, null, null);
     generateServerSideInterfaceCheckBoxButton.setSelection(
                   context.isServiceInterfaceSkeleton());
     generateServerSideInterfaceCheckBoxButton.addSelectionListener(new SelectionListener() {
@@ -259,14 +251,9 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
       }
     });
     
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    generateServerSideInterfaceCheckBoxButton.setLayoutData(gd);
-
     // generate all
-    generateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+    generateAllCheckBoxButton = uiUtils.createCheckbox(serviceCodegenGroup, Axis2CoreUIMessages.LABEL_GENERATE_ALL, null,null);
     generateAllCheckBoxButton.setSelection(context.isServiceGenerateAll());
-    generateAllCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_ALL);
     generateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
       public void widgetSelected(SelectionEvent e) {
         context.setServiceGenerateAll(generateAllCheckBoxButton.getSelection());
@@ -275,37 +262,19 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
       }
     });
     
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    generateAllCheckBoxButton.setLayoutData(gd);
-
+    uiUtils.createHorizontalSeparator(codegenGroup,2);
     ///////////////////////////////////////////////////////////////////////////////////////////
     
-    //seperator
-    Label seperatorLabel0 = new Label( codegenGroup, SWT.SEPARATOR | SWT.HORIZONTAL );
-    
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    gd.verticalIndent=5;
-    seperatorLabel0.setLayoutData(gd);
-            
+        
     ///Client Codegen Options
-    Text clientCodegenLabel = new Text(codegenGroup,SWT.BACKGROUND | SWT.READ_ONLY);
-    clientCodegenLabel.setText( Axis2CoreUIMessages.LABEL_WEB_SERVICE_CLIENT_CODEGEN);
-    
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    gd.verticalIndent=5;
-    clientCodegenLabel.setLayoutData(gd);
-    
-    //Client type label 
-    Label clientLabel = new Label(codegenGroup, SWT.HORIZONTAL | SWT.NULL);
-    clientLabel.setText(Axis2CoreUIMessages.LABEL_CLIENT_SIDE);
+    Composite clientCodegenGroup = uiUtils.createComposite(codegenGroup, 1);
+    Text clientCodegenGroupLabel= new Text(clientCodegenGroup, SWT.READ_ONLY);
+    clientCodegenGroupLabel.setText(Axis2CoreUIMessages.LABEL_WEB_SERVICE_CLIENT_CODEGEN);
+   
+    Group clientModeRadioComp = uiUtils.createGroup(clientCodegenGroup, Axis2CoreUIMessages.LABEL_CLIENT_SIDE, null, null);
     
     //client side buttons
-    syncAndAsyncRadioButton = new Button(codegenGroup, SWT.RADIO);
-    syncAndAsyncRadioButton.setText(Axis2CoreUIMessages.LABEL_SYNC_AND_ASYNC);
-    syncAndAsyncRadioButton.setVisible(true);
+    syncAndAsyncRadioButton = uiUtils.createRadioButton(clientModeRadioComp, Axis2CoreUIMessages.LABEL_SYNC_AND_ASYNC, null, null);
     syncAndAsyncRadioButton.setSelection(
         ((context.isSync() || context.isAsync())==false)
         ?true
@@ -321,11 +290,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
       }
     });
 
-    // Skip a column
-    new Label( codegenGroup, SWT.NONE );
-    
-    syncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
-    syncOnlyRadioButton.setText(Axis2CoreUIMessages.LABEL_SYNC);
+    syncOnlyRadioButton = uiUtils.createRadioButton(clientModeRadioComp,Axis2CoreUIMessages.LABEL_SYNC, null, null);
     syncOnlyRadioButton.setSelection(context.isSync() && !context.isAsync() );
     syncOnlyRadioButton.addSelectionListener(new SelectionListener() {
       public void widgetSelected(SelectionEvent e) {
@@ -336,11 +301,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
       }
     });
     
-    // Skip a column
-    new Label( codegenGroup, SWT.NONE );
-
-    asyncOnlyRadioButton = new Button(codegenGroup, SWT.RADIO);
-    asyncOnlyRadioButton.setText(Axis2CoreUIMessages.LABEL_ASYNC);
+    asyncOnlyRadioButton = uiUtils.createRadioButton(clientModeRadioComp, Axis2CoreUIMessages.LABEL_ASYNC, null, null);
     asyncOnlyRadioButton.setSelection(context.isAsync() && !context.isSync());
     asyncOnlyRadioButton.addSelectionListener(new SelectionListener() {
       public void widgetSelected(SelectionEvent e) {
@@ -351,11 +312,8 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
       }
     });
     
-    //Data binding
-    Label clientDatabindingLabel = new Label( codegenGroup, SWT.NONE );
-    clientDatabindingLabel.setText( Axis2CoreUIMessages.LABEL_DATABINDING);
-    
-    clientDatabindingCombo = new Combo(codegenGroup,SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
+    Composite dataBind = uiUtils.createComposite(clientCodegenGroup, 2);
+    clientDatabindingCombo = uiUtils.createCombo(dataBind, Axis2CoreUIMessages.LABEL_DATABINDING, null, null, SWT.READ_ONLY);
     clientDatabindingCombo.setItems(databindingItems);
     clientDatabindingCombo.select(0);
     context.setClientDatabinding(clientDatabindingCombo.getItem(0));
@@ -367,26 +325,19 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
     });
     
     // generate test case option
-    clientTestCaseCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
-    clientTestCaseCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
+    clientTestCaseCheckBoxButton = uiUtils.createCheckbox(clientCodegenGroup, Axis2CoreUIMessages.LABEL_GENERATE_TESTCASE_CAPTION, null, null);
     clientTestCaseCheckBoxButton.setSelection(context.isClientTestCase());
     clientTestCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
       public void widgetSelected(SelectionEvent e) {
         context.setClientTestCase(clientTestCaseCheckBoxButton.getSelection());
       }
-
       public void widgetDefaultSelected(SelectionEvent e) {
       }
     });
     
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    clientTestCaseCheckBoxButton.setLayoutData(gd);
-
     // generate all
-    clientGenerateAllCheckBoxButton = new Button(codegenGroup, SWT.CHECK);
+    clientGenerateAllCheckBoxButton = uiUtils.createCheckbox(clientCodegenGroup, Axis2CoreUIMessages.LABEL_GENERATE_ALL, null, null);
     clientGenerateAllCheckBoxButton.setSelection(context.isClientGenerateAll());
-    clientGenerateAllCheckBoxButton.setText(Axis2CoreUIMessages.LABEL_GENERATE_ALL);
     clientGenerateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
       public void widgetSelected(SelectionEvent e) {
         context.setClientGenerateAll(clientGenerateAllCheckBoxButton.getSelection());
@@ -395,37 +346,23 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
       }
     });
     
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    clientGenerateAllCheckBoxButton.setLayoutData(gd);
-    
+    uiUtils.createHorizontalSeparator(codegenGroup,2);
+       
     ///////////////////////////////////////////////////////////////////////////////////////////
 
-    //seperator
-    Label seperatorLabel11 = new Label( codegenGroup, SWT.SEPARATOR | SWT.HORIZONTAL );
-    
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    gd.verticalIndent=5;
-    seperatorLabel11.setLayoutData(gd);
-
     ///AAR Options
-    Text aarLabel = new Text(codegenGroup,SWT.BACKGROUND | SWT.READ_ONLY);
-    aarLabel.setText( Axis2CoreUIMessages.LABEL_WEB_SERVICE_AAR);
+    Composite aarGroup = uiUtils.createComposite(codegenGroup,1);
     
-    gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    gd.verticalIndent=5;
-    aarLabel.setLayoutData(gd);
+    Text arrGroupLabel= new Text(aarGroup, SWT.READ_ONLY);
+    arrGroupLabel.setText(Axis2CoreUIMessages.LABEL_WEB_SERVICE_AAR);
+    
+    Composite aarExtGroup = uiUtils.createComposite(aarGroup,2);
     
     //aar extention 
-    Label aarExtentionLabel = new Label( codegenGroup, SWT.NONE );
-    aarExtentionLabel.setText( Axis2CoreUIMessages.LABEL_AAR_EXTENTION);
-    
+    aarExtensionCombo = uiUtils.createCombo(aarExtGroup, Axis2CoreUIMessages.LABEL_AAR_EXTENTION, null, null, SWT.READ_ONLY );
+        
     //AAR extention items
     final String[] aarExtentionItems = { Axis2Constants.AAR };
-    
-    aarExtensionCombo = new Combo(codegenGroup,SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
     aarExtensionCombo.setItems(aarExtentionItems);
     aarExtensionCombo.select(0);
     context.setAarExtention( aarExtensionCombo.getItem(0) );
@@ -439,7 +376,6 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements
         
     axis2PreferenceTab.setEnabled(true);
     axis2PreferenceTab.setVisible(true);
-    
     return mainComp;
   }
 

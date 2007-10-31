@@ -17,6 +17,7 @@
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  * 20070823   200413 sandakith@wso2.com - Lahiru Sandakith, Namespace to Package table fix
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20071030	  207618 zina@ca.ibm.com - Zina Mostafia, Page GUI sequence using tab is not correct ( violates Accessibility)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.widgets;
 
@@ -28,13 +29,15 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
-import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
-import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
+import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
+import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
+import org.eclipse.jst.ws.axis2.ui.plugin.WebServiceAxis2UIPlugin;
+import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -44,12 +47,11 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
@@ -82,7 +84,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 	private Combo portNameCombo;
 	private Combo serviceNameCombo;
 	private Text packageText;
-	Label   label, fillLabel, fillLabel1, fillLabel2, fillLabel3, fillLabel4, fillLabel5, fillLabel6;
+	
 	//private java.util.List serviceQNameList2 = null;
 	private Table namespace2packageTable = null;
 	private Button generateAllCheckBoxButton;
@@ -96,23 +98,12 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 	public WidgetDataEvents addControls( Composite parent, Listener statusListener )
 	{
 		context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
-		Composite  mainComp = new Composite( parent, SWT.NONE );
-		GridLayout layout   = new GridLayout();
-		mainComp.setLayout(layout);
-
-		layout.numColumns = 3;
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		mainComp.setLayoutData( gd );
-
+		UIUtils uiUtils = new UIUtils(WebServiceAxis2UIPlugin.PLUGIN_ID);
+		
+		Composite  topComp = uiUtils.createComposite(parent, 2 );
+	
 		// service name
-		label = new Label(mainComp, SWT.NULL);
-		label.setText(Axis2ConsumptionUIMessages.LABEL_SERVICE_NAME_CAPTION);
-
-		serviceNameCombo = new Combo(mainComp, SWT.DROP_DOWN | SWT.BORDER
-				| SWT.READ_ONLY);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		serviceNameCombo.setLayoutData(gd);
+		serviceNameCombo = uiUtils.createCombo(topComp, Axis2ConsumptionUIMessages.LABEL_SERVICE_NAME_CAPTION, null, null, SWT.READ_ONLY);
 		serviceNameCombo.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				//loadPortNames();
@@ -123,13 +114,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		});
 
 		// port name
-		label = new Label(mainComp, SWT.NULL);
-		label.setText(Axis2ConsumptionUIMessages.LABEL_PORTNAME);
-		portNameCombo = new Combo(mainComp, SWT.DROP_DOWN | SWT.BORDER
-				| SWT.READ_ONLY);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		portNameCombo.setLayoutData(gd);
+		portNameCombo = uiUtils.createCombo(topComp, Axis2ConsumptionUIMessages.LABEL_PORTNAME, null, null, SWT.READ_ONLY);
 		portNameCombo.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				model.setPortName(portNameCombo.getText());
@@ -139,12 +124,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		});
 
 		// Databinding
-		label = new Label(mainComp, SWT.NULL);
-		label.setText(Axis2ConsumptionUIMessages.LABEL_DATABINDING_CAPTION);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		databindingTypeCombo = new Combo(mainComp, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
-		databindingTypeCombo.setLayoutData(gd);
+		databindingTypeCombo = uiUtils.createCombo(topComp, Axis2ConsumptionUIMessages.LABEL_DATABINDING_CAPTION, null, null, SWT.READ_ONLY);
 		fillDatabinderCombo();
 		databindingTypeCombo.select(0);
 		databindingTypeCombo.addSelectionListener(new SelectionListener() {
@@ -156,40 +136,17 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		});
 		
 		// package name
-		label = new Label(mainComp, SWT.NULL);
-		label.setText(Axis2ConsumptionUIMessages.LABEL_PACKEGE_NAME);
-		packageText = new Text(mainComp, SWT.BORDER);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-
-		packageText.setLayoutData(gd);
-		packageText.setText(""); // get this text from the
+		packageText = uiUtils.createText(topComp, Axis2ConsumptionUIMessages.LABEL_PACKEGE_NAME, null, null,SWT.BORDER);
 		packageText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				model.setPackageText(packageText.getText());
 			}
 		});
 		
-		//filling label 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		fillLabel = new Label(mainComp, SWT.HORIZONTAL | SWT.NULL);
-		fillLabel.setLayoutData(gd);
-		
-		//Client type label 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		Text clientlabel = new Text(mainComp,SWT.BACKGROUND | SWT.READ_ONLY);
-		clientlabel.setText(Axis2ConsumptionUIMessages.LABEL_CLIENT_SIDE);
-		clientlabel.setLayoutData(gd);
-		
-		//client side buttons
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 1;
-		syncAndAsyncRadioButton = new Button(mainComp, SWT.RADIO);
-		syncAndAsyncRadioButton.setLayoutData(gd);
-		syncAndAsyncRadioButton.setText(Axis2ConsumptionUIMessages.LABEL_SYNC_AND_ASYNC);
-		syncAndAsyncRadioButton.setVisible(true);
+	  	//Client type label 
+		Group clientTypeGroup = uiUtils.createGroup(parent, Axis2ConsumptionUIMessages.LABEL_CLIENT_SIDE, null, null);
+				
+		syncAndAsyncRadioButton = uiUtils.createRadioButton(clientTypeGroup, Axis2ConsumptionUIMessages.LABEL_SYNC_AND_ASYNC, null, null);
 		syncAndAsyncRadioButton.setSelection(
 				((context.isAsync() || context.isSync())==false)
 				?true
@@ -205,12 +162,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 			}
 		});
 
-		
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 1;
-		syncOnlyRadioButton = new Button(mainComp, SWT.RADIO);
-		syncOnlyRadioButton.setLayoutData(gd);
-		syncOnlyRadioButton.setText(Axis2ConsumptionUIMessages.LABEL_SYNC);
+		syncOnlyRadioButton = uiUtils.createRadioButton(clientTypeGroup, Axis2ConsumptionUIMessages.LABEL_SYNC, null, null);
 		syncOnlyRadioButton.setSelection(context.isSync() && !context.isAsync());
 		syncOnlyRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
@@ -221,12 +173,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 			}
 		});
 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 1;
-		asyncOnlyRadioButton = new Button(mainComp, SWT.RADIO);
-		asyncOnlyRadioButton.setLayoutData(gd);
-		asyncOnlyRadioButton
-				.setText(Axis2ConsumptionUIMessages.LABEL_ASYNC);
+		asyncOnlyRadioButton = uiUtils.createRadioButton(clientTypeGroup, Axis2ConsumptionUIMessages.LABEL_ASYNC, null, null);
 		asyncOnlyRadioButton.setSelection(context.isAsync() && !context.isSync());
 		asyncOnlyRadioButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
@@ -241,18 +188,10 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		model.setSync(context.isSync());
 		model.setASync(context.isAsync());
 		
-		//filling label 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		fillLabel = new Label(mainComp, SWT.HORIZONTAL | SWT.NULL);
-		fillLabel.setLayoutData(gd);
+	   	// generate test case option
 		
-		// generate test case option
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		testCaseCheckBoxButton = new Button(mainComp, SWT.CHECK);
-		testCaseCheckBoxButton.setLayoutData(gd);
-		testCaseCheckBoxButton.setText(Axis2ConsumptionUIMessages.LABEL_GENERATE_TESTCASE_CAPTION);
+		Composite checkBoxes = uiUtils.createComposite(parent, 1);
+		testCaseCheckBoxButton = uiUtils.createCheckbox(checkBoxes, Axis2ConsumptionUIMessages.LABEL_GENERATE_TESTCASE_CAPTION, null, null);
 		testCaseCheckBoxButton.setSelection(context.isClientTestCase());
 		model.setTestCaseCheck(context.isClientTestCase());
 		testCaseCheckBoxButton.addSelectionListener(new SelectionListener() {
@@ -265,12 +204,8 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 
 
 		// generate all
-		generateAllCheckBoxButton = new Button(mainComp, SWT.CHECK);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		generateAllCheckBoxButton.setLayoutData(gd);
+		generateAllCheckBoxButton = uiUtils.createCheckbox(checkBoxes, Axis2ConsumptionUIMessages.LABEL_GENERATE_ALL, null, null);
 		generateAllCheckBoxButton.setSelection(context.isClientGenerateAll());
-		generateAllCheckBoxButton.setText(Axis2ConsumptionUIMessages.LABEL_GENERATE_ALL);
 		generateAllCheckBoxButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				model.setGenerateAllCheck(generateAllCheckBoxButton.getSelection());
@@ -279,28 +214,13 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 			}
 		});
 
-		
-		//filling label 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		fillLabel3 = new Label(mainComp, SWT.HORIZONTAL | SWT.NULL);
-
-		//filling label 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 3;
-		fillLabel4 = new Label(mainComp, SWT.HORIZONTAL | SWT.NULL);
-		
-		//add a table to set namespace to package mapping
-		gd = new GridData(GridData.FILL_BOTH);
-        gd.horizontalSpan = 3;
-        gd.verticalSpan = 5;
-        
-        namespace2packageTable = new Table(mainComp,SWT.BORDER|SWT.MULTI);
+	   
+	    new Label(parent,SWT.HORIZONTAL);
+        namespace2packageTable = new Table(parent,SWT.BORDER|SWT.MULTI);
         namespace2packageTable.setLinesVisible(true);
         namespace2packageTable.setHeaderVisible(true); 
         namespace2packageTable.setEnabled(true);
-        namespace2packageTable.setLayoutData(gd);
-       
+              
         declareColumn(namespace2packageTable,
         		350, //a default width until we adjust
         		Axis2ConsumptionUIMessages.LABEL_NAMESPACE);
