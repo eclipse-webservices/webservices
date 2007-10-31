@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20071011   205972 sandakith@wso2.com - Lahiru Sandakith, Axis2 Libraries License files fix
+ * 20071029   206967 sandakith@wso2.com - Lahiru Sandakith
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.constant;
 
@@ -83,7 +84,9 @@ public class Axis2Constants {
         "woden",
         "activation",
         "annogen",
-        "backport-util"
+        "backport-util",
+        "mex-impl",
+        "mail"
 	};
 }	
 	
