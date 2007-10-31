@@ -15,6 +15,7 @@
  *										  Text not accessible on AXIS2 wizard pages.
  * 20070529   188742 sandakith@wso2.com - Lahiru Sandakith, fix for 188742
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20071030	  207621 zina@ca.ibm.com - Zina Mostafia, Page GUI sequence using tab is not correct ( violates Accessibility)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.bean;
 
@@ -23,13 +24,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
+import org.eclipse.jst.ws.internal.axis2.consumption.ui.plugin.WebServiceAxis2ConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -55,27 +56,17 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 
 	public WidgetDataEvents addControls( Composite parent, final Listener statusListener )
 	{
-		final Composite  mainComp = new Composite( parent, SWT.NONE );
-		GridLayout layout   = new GridLayout();
-		layout.numColumns = 14;
-		GridData   griddata = new GridData( GridData.FILL_HORIZONTAL );
-
-		griddata = new GridData( GridData.FILL_HORIZONTAL );
-		griddata.horizontalSpan = 14;
-		mainComp.setLayout( layout );
-		mainComp.setLayoutData( griddata );
+		UIUtils uiUtils = new UIUtils(WebServiceAxis2ConsumptionUIPlugin.PLUGIN_ID);
 		
-		Text label = new Text(mainComp,SWT.BACKGROUND | SWT.READ_ONLY);
+		Text label = new Text(parent, SWT.READ_ONLY);
 		label.setText( Axis2CreationUIMessages.LABEL_AXIS2_PREFERENCE_PAGE );
 		
 		model.setGenerateServicesXML(true);
 		model.setServicesXML(false);
 
-		griddata = new GridData( GridData.FILL_HORIZONTAL );
-		griddata.horizontalSpan = 14;
-		haveServicesXML = new Button( mainComp, SWT.RADIO );
-		haveServicesXML.setText(Axis2CreationUIMessages.LABEL_HAVE_SERVICES_XML_FILE);	
-		haveServicesXML.setLayoutData(griddata);
+		final Composite radioComp = uiUtils.createComposite(parent, 1);
+		
+		haveServicesXML = uiUtils.createRadioButton(radioComp, Axis2CreationUIMessages.LABEL_HAVE_SERVICES_XML_FILE, null, null );
 		haveServicesXML.addSelectionListener( new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -103,12 +94,9 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 				statusListener.handleEvent( null );
 			}     
 		});
-		griddata = new GridData( GridData.FILL_HORIZONTAL );
-		griddata.horizontalSpan = 13;
-
-		servicesXMLPath = new Text( mainComp, SWT.BORDER );
-		servicesXMLPath.setText("");
-		servicesXMLPath.setLayoutData(griddata);
+		
+		final Composite pathComp = uiUtils.createComposite(radioComp, 3);
+		servicesXMLPath = uiUtils.createText(pathComp, "", null, null, SWT.BORDER );
 		servicesXMLPath.addModifyListener( new ModifyListener()
 		{
 			public void modifyText(ModifyEvent e)
@@ -121,18 +109,13 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 			}
 		});
 
-		griddata = new GridData( );
-		griddata.horizontalSpan = 1;
-		griddata.minimumWidth = 50;
-		griddata.grabExcessHorizontalSpace = true;
-		browseButton = new Button( mainComp, SWT.NULL );
-		browseButton.setText(Axis2CreationUIMessages.LABEL_BROWSE);
-		browseButton.setLayoutData(griddata);
+		
+		browseButton = uiUtils.createPushButton(pathComp, Axis2CreationUIMessages.LABEL_BROWSE, null, null );
 		browseButton.addSelectionListener( new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				handleBrowse(mainComp.getShell());
+				handleBrowse(pathComp.getShell());
 				// Need to trigger a validation at this point to ensure
 				// that the next button is enabled properly just in case
 				// this is the last page in the wizard.
@@ -141,11 +124,7 @@ public class ServicesXMLSelectBeanWidget extends SimpleWidgetDataContributor
 		}); 
 
 
-		griddata = new GridData( GridData.FILL_HORIZONTAL );
-		griddata.horizontalSpan = 14;
-		generateServicesXML = new Button( mainComp, SWT.RADIO );
-		generateServicesXML.setText( Axis2CreationUIMessages.LABEL_DEFAULT_SERVICES_XML_FILE );
-		generateServicesXML.setLayoutData(griddata);
+		generateServicesXML = uiUtils.createRadioButton(radioComp, Axis2CreationUIMessages.LABEL_DEFAULT_SERVICES_XML_FILE, null, null);
 		generateServicesXML.setSelection(true);
 		generateServicesXML.addSelectionListener( new SelectionAdapter()
 		{

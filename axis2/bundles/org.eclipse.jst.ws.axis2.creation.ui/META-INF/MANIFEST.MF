@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.jst.ws.axis2.creation.ui;singleton:=true
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.0.2.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.axis2.creation.ui.plugin.WebServiceAxis2CreationUIPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.ws.axis2.creation.core,
  org.eclipse.jst.ws.axis2.consumption.ui,
  org.eclipse.jst.ws.axis2.consumption.core,
- org.eclipse.jst.ws.axis2.core
+ org.eclipse.jst.ws.axis2.core,
+ org.eclipse.jst.ws.ui
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.bean,
  org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton,
