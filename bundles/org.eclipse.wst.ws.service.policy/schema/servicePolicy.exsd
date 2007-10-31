@@ -117,7 +117,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="iconpath" type="string">
+         <attribute name="iconPath" type="string">
             <annotation>
                <documentation>
                   A plugin relative path to some icon file for this service policy.

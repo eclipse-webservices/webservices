@@ -15,17 +15,24 @@ package org.eclipse.wst.ws.internal.service.policy.ui.preferences;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Vector;
+import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -35,36 +42,45 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import org.eclipse.wst.ws.service.policy.IDescriptor;
+import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
+import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
+import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
+import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
+import org.eclipse.wst.ws.service.policy.ui.ServicePolicyPlatformUI;
 import org.osgi.framework.Bundle;
 
 public class ServicePoliciesPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage, SelectionListener
 
 {
-	Composite parentComposite;
-	IWorkbenchHelpSystem helpSystem;
-	Composite masterComposite;
-	Composite detailsComposite;
+	private Composite parentComposite;
+	private ScrolledComposite sc2;
+	private Composite c2;
+	private IWorkbenchHelpSystem helpSystem;
+	private Composite masterComposite;
+	private Composite detailsComposite;
 	private Tree masterPrefTree;
 	private Tree detailsPrefTree;
 	private Text text_DetailsPanel_description;
 	private Text text_DetailsPanel_dependencies;
 	private Label label_DetailsPanel_description;
 	private Label label_detailsPanel_dependancies;
+	private List<IStatus> errorMessages;
 	private static final Image folderImage = ServicePolicyActivatorUI
-			.getImageDescriptor("icons/full/obj16/fldr_obj.gif").createImage(); //$NON-NLS-1$
+			.getImageDescriptor("icons/full/obj16/fldr_obj.gif").createImage();
 	private static final Image leafImage = ServicePolicyActivatorUI
-			.getImageDescriptor("icons/full/obj16/file_obj.gif").createImage(); //$NON-NLS-1$
+			.getImageDescriptor("icons/full/obj16/file_obj.gif").createImage();
 
 	/**
 	 * Creates preference page controls on demand.
 	 *   @param parentComposite  the parent for the preference page
 	 */
 	protected Control createContents(Composite superparent) {
-
+		errorMessages = new Vector<IStatus>();
 		helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 
 		parentComposite = new Composite(superparent, SWT.NONE);
@@ -113,6 +129,18 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 			}
 
 		}
+	 	
+	    sc2 = new ScrolledComposite(detailsComposite, SWT.H_SCROLL
+				| SWT.V_SCROLL);
+		sc2.setExpandHorizontal(true);
+		sc2.setExpandVertical(true);
+		c2 = new Composite(sc2, SWT.NONE);
+		sc2.setContent(c2);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		c2.setLayout(layout);
+		sc2.setMinSize(c2.computeSize(400, 100));
+		
 		label_DetailsPanel_description = new Label(detailsComposite, SWT.NONE);
 
 		label_DetailsPanel_description
@@ -195,6 +223,13 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 	protected void performDefaults() {
 		super.performDefaults();
 		initializeDefaults();
+		//fire selection event to tree that is associated with operation UI so operation UI gets updated
+		if (detailsPrefTree.isVisible())
+			detailsPrefTree.notifyListeners(SWT.Selection, new Event());
+		else
+			masterPrefTree.notifyListeners(SWT.Selection, new Event());
+			
+		
 	}
 
 	/**
@@ -205,9 +240,17 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 		storeValues();
 		return true;
 	}
-
+	/**
+	 * Do anything necessary because the Cancel button has been pressed.
+	 *  @return whether it is okay to close the preference page
+	 */
+	public boolean performCancel() {
+		ServicePolicyPlatform.getInstance().discardChanges();
+		return true;
+	}
+	
 	protected void performApply() {
-		performOk();
+		storeValues();
 	}
 
 	/**
@@ -221,7 +264,7 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 	 * in the preference store.
 	 */
 	private void initializeDefaults() {
-
+		ServicePolicyPlatform.getInstance().restoreDefaults();
 	}
 
 	/**
@@ -235,6 +278,7 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 	 * Stores the values of the controls back to the preference store.
 	 */
 	private void storeValues() {
+		ServicePolicyPlatform.getInstance().commitChanges();
 	}
 
 	public void widgetSelected(SelectionEvent e) {
@@ -261,12 +305,11 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 				}
 				helpSystem.setHelp(parentComposite, CSH_ID);
 				String desc = (sp.getDescriptor() == null || sp.getDescriptor()
-						.getDescription() == null) ? "" : sp.getDescriptor() //$NON-NLS-1$
+						.getDescription() == null) ? "" : sp.getDescriptor()
 						.getDescription();
 				text_DetailsPanel_description.setText(desc);
-				String dep = (sp.getRelationships() == null) ? "" : sp //$NON-NLS-1$
-						.getRelationships().toString();
-				text_DetailsPanel_dependencies.setText(dep);
+				text_DetailsPanel_dependencies.setText(getDependanciesText(sp));
+				
 				if (e.getSource() == masterPrefTree) {
 					// if selected node in master tree is 2nd level & has
 					// children, populate details tree
@@ -287,10 +330,175 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 					} else
 						detailsPrefTree.setVisible(false);
 				}
+				addActionButtons(sp);
 
 			}
 
+		} else {
+			//an action control fired a change event
+			Control actionControl = (Control) e.getSource();
+			updatePreference(actionControl);
 		}
+
+	}
+
+	private String getDependanciesText(IServicePolicy sp) {
+
+		List<IPolicyRelationship> relationShipList = sp.getRelationships();
+		if (relationShipList == null || relationShipList.size() == 0)
+			return WstSPUIPluginMessages.SERVICEPOLICIES_DEPENDENCIES_NONE;
+		String toReturn = new String();
+		for (IPolicyRelationship relationShipItem : relationShipList) {
+			String operationLongName = "";
+			String operationSelectionLongName = "";
+			String dependantPolicyShortName = "";
+			String dependantOperationShortName = "";
+			String dependantOperationSelectionShortNameList = "";
+			IPolicyEnumerationList pel = relationShipItem
+					.getPolicyEnumerationList();
+
+			List<IPolicyEnumerationList> rpel = relationShipItem
+					.getRelatedPolicies();
+			for (IPolicyEnumerationList relationshipPolicyItem : rpel) {
+				dependantPolicyShortName = relationshipPolicyItem.getPolicy()
+						.getDescriptor().getShortName();
+				List<IStateEnumerationItem> stateEnumerationList = relationshipPolicyItem
+						.getEnumerationList();
+				for (IStateEnumerationItem stateEnumerationItem : stateEnumerationList) {
+					if (dependantOperationSelectionShortNameList.length() != 0) 
+						dependantOperationSelectionShortNameList += " | ";
+					dependantOperationSelectionShortNameList += stateEnumerationItem
+							.getShortName();
+
+				}
+			}
+
+			String[] args = { operationLongName, operationSelectionLongName,
+					dependantPolicyShortName, dependantOperationShortName,
+					"[" + dependantOperationSelectionShortNameList + "]" };
+//			toReturn += NLS.bind(
+//					WstSPUIPluginMessages.SERVICEPOLICIES_DEPENDENCIES, args)
+//					+ "\r\n";
+		}
+
+		return toReturn;
+	}
+	private void updatePreference(Control actionControl) {
+
+		IPolicyOperation po = (IPolicyOperation) ((Object[]) (actionControl
+				.getData()))[0];
+		IServicePolicy sp = (IServicePolicy) ((Object[]) (actionControl
+				.getData()))[1];
+		if (actionControl instanceof Button) {
+			updateComplexOperationPreference((Button) actionControl, po, sp);
+		} else
+			updateSelectionOperationPreference((Combo) actionControl, po, sp);
+		performValidation(sp);
+	}
+
+	private void performValidation(IServicePolicy sp) {
+		
+		List<IPolicyRelationship> relationShipList = sp.getRelationships(); 
+		for (IPolicyRelationship relationShipItem : relationShipList) {
+			IPolicyEnumerationList pel = relationShipItem.getPolicyEnumerationList();
+			List<IPolicyEnumerationList> rpel =  relationShipItem.getRelatedPolicies();
+			
+		}
+
+	}
+		
+
+	private void updateSelectionOperationPreference(Combo actionControl,
+			IPolicyOperation po, IServicePolicy sp) {
+			String selectedValue = actionControl.getText();
+			List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform.getInstance().getStateEnumeration(po.getEnumerationId());
+			for (IStateEnumerationItem enumItem : enumItemList) {
+				if (enumItem.getLongName().equals(selectedValue)) {
+				sp.getPolicyStateEnum().setCurrentItem(enumItem.getId());
+				sp.getPolicyStateEnum().getCurrentItem();
+				break;
+				}
+			}
+	}
+
+
+	private void updateComplexOperationPreference(Button actionControl,
+			IPolicyOperation po, IServicePolicy sp) {
+	} 
+		
+
+
+	private void addActionButtons(IServicePolicy sp) {
+		//remove existing action controls
+		Control[] toRemove = c2.getChildren();
+		for (int i =0; i < toRemove.length ; i++)
+		{
+			toRemove[i].dispose();
+		}
+		ServicePolicyPlatformUI platform = ServicePolicyPlatformUI.getInstance();
+		List<IPolicyOperation> operationList = platform.getAllOperations();
+
+		for (IPolicyOperation policyOperation : operationList) {
+			if (Pattern.matches(policyOperation.getPolicyIdPattern(), sp
+					.getId())) {
+				if (policyOperation.getOperationKind() == IPolicyOperation.OperationKind.complex) {
+					addComplexOperationUI(policyOperation, sp);
+				} else 
+					addSelectionOperationUI(policyOperation, sp);
+				
+			}
+
+		}
+		//just removed and added some controls so force composite
+		//to re-layout it's controls
+        sc2.setMinSize(c2.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        c2.layout();
+	}
+
+	private void addSelectionOperationUI(IPolicyOperation po, IServicePolicy sp) {
+		IDescriptor d = po.getDescriptor();
+		Control selectionControl;
+		if (po.getOperationKind() == IPolicyOperation.OperationKind.enumeration) {
+			Label l = new Label(c2, SWT.NONE);
+			l.setText(d.getLongName());
+			Combo cb = new Combo(c2, SWT.DROP_DOWN | SWT.READ_ONLY);
+			selectionControl = cb;
+			cb.addSelectionListener(this);
+			List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform.getInstance().getStateEnumeration(po.getEnumerationId());
+			for (IStateEnumerationItem enumItem : enumItemList) {
+				cb.add(enumItem.getLongName());
+			}
+			cb.setText(getEnumOperationSelection(sp));
+		}
+		else {
+			//a selection or icon 
+			Button checkBox = new Button(c2, SWT.CHECK);
+			selectionControl = checkBox;
+			GridData checkBoxGD = new GridData();
+			checkBoxGD.horizontalSpan = 2;
+			checkBox.setLayoutData(checkBoxGD);
+			checkBox.setText(d.getLongName());
+			boolean selected = (getSelectionOperationSelection(sp));
+			checkBox.setSelection(selected);
+
+		}
+		selectionControl.setData(new Object[] {po, sp});
+
+	}
+
+	private boolean getSelectionOperationSelection(IServicePolicy sp) {
+		return (sp.getPolicyStateEnum().getCurrentItem().getId().equals("org.eclipse.wst.true")) ? true : false;
+	}
+	private String getEnumOperationSelection (IServicePolicy sp) {
+		return sp.getPolicyStateEnum().getCurrentItem().getLongName();
+	}
+
+	private void addComplexOperationUI(IPolicyOperation po, IServicePolicy sp) {
+		IDescriptor d = po.getDescriptor();
+		Button pushButton = new Button(c2, SWT.PUSH);
+		GridData pushButtonGD = new GridData();
+		pushButtonGD.horizontalSpan = 2;
+		pushButton.setText(d.getLongName());
 
 	}
 
@@ -298,8 +506,20 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 
 	}
 
-	public void selectionChanged() {
+	public Tree getMasterPrefTree() {
+		return masterPrefTree;
+	}
 
+	public void setMasterPrefTree(Tree masterPrefTree) {
+		this.masterPrefTree = masterPrefTree;
+	}
+
+	public Tree getDetailsPrefTree() {
+		return detailsPrefTree;
+	}
+
+	public void setDetailsPrefTree(Tree detailsPrefTree) {
+		this.detailsPrefTree = detailsPrefTree;
 	}
 
 }

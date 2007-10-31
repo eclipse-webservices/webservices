@@ -27,6 +27,8 @@ public final class WstSPUIPluginMessages extends NLS {
 	public static String LABEL_SERVICEPOLICIES_DEPENDENCIES;
 	public static String TOOLTIP_PSP_DESCRIPTION;	
 	public static String TOOLTIP_PSP_TREE;
+	public static String SERVICEPOLICIES_DEPENDENCIES;
+	public static String SERVICEPOLICIES_DEPENDENCIES_NONE;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WstSPUIPluginMessages.class);

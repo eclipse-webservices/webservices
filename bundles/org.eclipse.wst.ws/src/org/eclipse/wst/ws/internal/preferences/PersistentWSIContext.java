@@ -19,6 +19,7 @@ import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 
 
 
@@ -28,6 +29,8 @@ public class PersistentWSIContext extends PersistentContext
 	public static final String WARN_NON_WSI = "1";
 	public static final String IGNORE_NON_WSI = "2";
 	public static final String FOLLOW_WSI_PREFERENCE = "3";
+	public static final String NON_WSI_SSBP_POLICYID = "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp";
+	public static final String[] NON_WSI_SSBP_POLICYID_VALUES = {"org.eclipse.wst.error", "org.eclipse.wst.warn", "org.eclipse.wst.ignore"};
 
 	protected QualifiedName name = null; // set in subclass
 	protected String non_wsi_compliance;
@@ -137,18 +140,20 @@ private String getProjectPersistentProperty(IProject project)
 
 public String getProjectWSICompliance(IProject project)
 {
-  try {
-     	String property = project.getPersistentProperty(name);
-     	if (property == null || property.equals(""))
-     	{
-     		property = FOLLOW_WSI_PREFERENCE;
-     	}
-     	return property;
-     }
-     catch (CoreException e)     {
-    	System.out.println("No such Project");
-    	return getPersistentWSICompliance();
-     }     
+	
+    	String currentStateID = ServicePolicyPlatform.getInstance()
+				.getServicePolicy(NON_WSI_SSBP_POLICYID).getPolicyStateEnum(
+						project).getCurrentItem().getId();
+		String property = "";
+		if (currentStateID.equals(NON_WSI_SSBP_POLICYID_VALUES[0]))
+			property = STOP_NON_WSI;
+		else if (currentStateID.equals(NON_WSI_SSBP_POLICYID_VALUES[1]))
+			property = WARN_NON_WSI;
+		else if (currentStateID.equals(NON_WSI_SSBP_POLICYID_VALUES[2]))
+			property = IGNORE_NON_WSI;
+		else
+			property = FOLLOW_WSI_PREFERENCE;
+		return property;
 }
 
 public String getWarning()

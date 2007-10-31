@@ -18,12 +18,41 @@
        <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum" 
                     default="org.eclipse.wst.ignore">
          <item id="org.eclipse.wst.ignore"
-               shortName="%IGNORE_SHORTNAME" />
+               shortName="%IGNORE_SHORTNAME" longName="%IGNORE_LONGNAME" />
          <item id="org.eclipse.wst.warn"
-               shortName="%WARN_SHORTNAME" />
+               shortName="%WARN_SHORTNAME" longName="%WARN_LONGNAME" />
          <item id="org.eclipse.wst.error"
-               shortName="%ERROR_SHORTNAME" />
+               shortName="%ERROR_SHORTNAME" longName="%ERROR_LONGNAME" />
        </enumeration>
+     </servicePolicy>
+   </extension>
+   
+   <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
+     <servicePolicy>
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp">
+         <!-- CONTEXT_ID PSPW0001 for the Service Policies WS-I Preferences category -->
+         <descriptor longName="%PREFERENCE_SERVICEPOLICIES_CONTAINER_WSI_COMPLIANCE" iconPath="icons/full/obj16/wsicat.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0001"/>
+       </policy>
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.errorWarnEnum" defaultEnumId="org.eclipse.wst.warn">
+         <!-- CONTEXT_ID PSPW0002 for the Service Policies WS-I AP 1.0 Preference -->
+         <descriptor longName="%LABEL_WSI_AP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0002"/>
+       </policy>
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.errorWarnEnum" defaultEnumId="org.eclipse.wst.warn">
+         <!-- CONTEXT_ID PSPW0003 for the Service Policies WS-I SSBP 1.0 Preference -->
+         <descriptor longName="%LABEL_WSI_SSBP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0003"/>
+       <relationship enumList="org.eclipse.wst.ignore">
+       <targetPolicy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap"
+                   itemList="org.eclipse.wst.ignore"/>
+       </relationship>
+       <relationship enumList="org.eclipse.wst.warn">
+       <targetPolicy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap"
+                   itemList="org.eclipse.wst.warn org.eclipse.wst.ignore"/>
+       </relationship>
+       <relationship enumList="org.eclipse.wst.error">
+       <targetPolicy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap"
+                   itemList="org.eclipse.wst.ignore org.eclipse.wst.error"/>
+       </relationship>
+       </policy>
      </servicePolicy>
    </extension>
 

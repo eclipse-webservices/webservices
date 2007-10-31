@@ -2,39 +2,19 @@
 <?eclipse version="3.0"?>
 <plugin>
    <extension-point id="servicepolicyui" name="%SERVICE_POLICY_NAME" schema="schema/servicePolicyui.exsd"/>
-   
    <extension point="org.eclipse.ui.preferencePages">
-      <page name="%PLUGIN_NAME"
+      <page name="%PREFERENCE_SERVICEPOLICIES"
             class="org.eclipse.wst.ws.internal.service.policy.ui.preferences.ServicePoliciesPreferencePage"
-            category="org.eclipse.wst.ws.internal.ui.preferences.name"
             id="org.eclipse.wst.ws.service.policy.ui.preferences.ServicePoliciesPreferencePage">
       </page>
    </extension>
-   
-   <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
-     <servicePolicy>
-       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp">
-         <!-- CONTEXT_ID PSPW0001 for the Service Policies WS-I Preferences category -->
-         <descriptor longName="%PREFERENCE_SERVICEPOLICIES_CONTAINER_WSI_COMPLIANCE" iconPath="icons/full/obj16/wsicat.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0001"/>
-       </policy>
-       
-       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.ws.service.policy.ui.servicepols.enums.wsierrorwarnignore">
-         <!-- CONTEXT_ID PSPW0002 for the Service Policies WS-I AP 1.0 Preference -->
-         <descriptor longName="%LABEL_WSI_AP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0002"/>
-       </policy>
-       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.ws.service.policy.ui.servicepols.enums.wsierrorwarnignore">
-         <!-- CONTEXT_ID PSPW0003 for the Service Policies WS-I SSBP 1.0 Preference -->
-         <descriptor longName="%LABEL_WSI_SSBP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0003"/>
-       </policy>
-     </servicePolicy>
-        <enumeration id="org.eclipse.wst.ws.service.policy.ui.servicepols.enums.wsierrorwarnignore" 
-                    default="org.eclipse.wst.ws.service.policy.ui.servicepols.enums.wsierrorwarnignore.warn">
-         <item id="org.eclipse.wst.ws.service.policy.ui.servicepols.enums.wsierrorwarnignore.ignore"
-               shortName="%IGNORE_NON_WSI_SHORT" longName="%IGNORE_NON_WSI_LONG" />
-         <item id="org.eclipse.wst.ws.service.policy.ui.servicepols.enums.wsierrorwarnignore.warn"
-               shortName="%WARN_NON_WSI_SHORT" longName="%WARN_NON_WSI_LONG"/>
-         <item id="org.eclipse.wst.ws.service.policy.ui.servicepols.enums.wsierrorwarnignore.error"
-               shortName="STOP_NON_WSI_SHORT" longName="%STOP_NON_WSI_LONG" />
-        </enumeration>
+   <extension point="org.eclipse.wst.ws.service.policy.ui.servicepolicyui">
+     <servicePolicyUI>
+       <operation id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp"
+                      policyPattern="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.*" >
+         <descriptor longName="%COMPLIANCE_LEVEL_LONGNAME"/>
+         <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum"/>
+       </operation>
+     </servicePolicyUI>
    </extension>
 </plugin>
