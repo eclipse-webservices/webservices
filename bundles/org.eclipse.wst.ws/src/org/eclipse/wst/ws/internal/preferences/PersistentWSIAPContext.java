@@ -41,4 +41,10 @@ public String getPersistentWSICompliance ()
 	else
 		return property;
 }
+
+protected String getServicePolicyId()
+{
+  return "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap";
+}  
+
 }

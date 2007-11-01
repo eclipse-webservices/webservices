@@ -34,6 +34,7 @@ public class ServicePolicyPlatform
     if( instance == null )
     {
       instance = new ServicePolicyPlatform();
+      instance.platformImpl.load();
     }
     
     return instance;

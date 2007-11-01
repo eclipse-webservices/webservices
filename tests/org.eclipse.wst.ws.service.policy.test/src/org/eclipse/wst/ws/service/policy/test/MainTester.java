@@ -17,8 +17,16 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIAPContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.internal.preferences.PersistentWSISSBPContext;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
 import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
@@ -126,7 +134,7 @@ public class MainTester extends TestCase
      IStateEnumerationItem item2     = state2.getCurrentItem();
      
      assertTrue( "Unexpected shortname:" + item1.getShortName(), item1.getShortName().equals( "ignore") ); //$NON-NLS-1$ //$NON-NLS-2$
-     assertTrue( "Unexpected shortname:" + item2.getShortName(), item2.getShortName().equals( "suggest") ); //$NON-NLS-1$ //$NON-NLS-2$
+     assertTrue( "Unexpected shortname:" + item2.getShortName(), item2.getShortName().equals( "warn") ); //$NON-NLS-1$ //$NON-NLS-2$
      System.out.println( "id1 value:" + item1.getShortName() ); //$NON-NLS-1$
      System.out.println( "id2 value:" + item2.getShortName() ); //$NON-NLS-1$
    }
@@ -199,5 +207,73 @@ public class MainTester extends TestCase
      
      policy = platform.createServicePolicy( null, "some55id5", null, null );
      assertTrue( policy.getId().equals( "some55id1" ) );
+   }
+   
+   public void testOldWSIContext()
+   {
+     ServicePolicyPlatform    platform    = ServicePolicyPlatform.getInstance();
+     IServicePolicy           apPolicy    = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" );
+     IPolicyStateEnum         apState     = apPolicy.getPolicyStateEnum();
+     IServicePolicy           ssbpPolicy  = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" );
+     IPolicyStateEnum         ssbpState   = ssbpPolicy.getPolicyStateEnum();
+     PersistentWSIAPContext   apContext   = new PersistentWSIAPContext();
+     PersistentWSISSBPContext ssbpContext = new PersistentWSISSBPContext();
+     IWorkspaceRoot           root        = ResourcesPlugin.getWorkspace().getRoot();
+     IProject                 project     = root.getProject("TestProject");
+     String                   item        = null;
+     
+     try
+     {
+       project.create(new NullProgressMonitor());
+     }
+     catch( CoreException exc )
+     {
+       assertTrue( "Core exception:" + exc.getMessage(), false );  
+     }
+     
+     IPolicyStateEnum  apProjState   = apPolicy.getPolicyStateEnum( project );
+     IPolicyStateEnum  ssbpProjState = ssbpPolicy.getPolicyStateEnum( project );
+     
+     // Ensure that project preferences are gotten from the workspace
+     apState.setCurrentItem( "org.eclipse.wst.sug.ignore" );
+     platform.commitChanges();
+     apProjState.setCurrentItem( "org.eclipse.wst.sug.suggest" );
+     item = apProjState.getCurrentItem().getId();
+     assertTrue( "Ap value not ignore, but got " + item, item.equals("org.eclipse.wst.sug.ignore"));
+     
+     apState.setCurrentItem( "org.eclipse.wst.sug.require" );
+     platform.commitChanges();
+     apProjState.setCurrentItem( "org.eclipse.wst.sug.ignore" );
+     item = apProjState.getCurrentItem().getId();
+     assertTrue( "Ap value not require, but got " + item, item.equals("org.eclipse.wst.sug.require"));
+     
+     platform.setProjectPreferencesEnabled( project , true );
+     item = apProjState.getCurrentItem().getId();
+     assertTrue( "Ap value not ingore, but got " + item, item.equals("org.eclipse.wst.sug.ignore"));
+     
+     platform.commitChanges( project );
+     item = apProjState.getCurrentItem().getId();
+     assertTrue( "Ap value not ingore, but got " + item, item.equals("org.eclipse.wst.sug.ignore"));
+     
+     String apContextValue = apContext.getProjectWSICompliance( project );
+     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.IGNORE_NON_WSI ) );
+     
+     apState.setCurrentItem( "org.eclipse.wst.sug.suggest" );
+     platform.commitChanges();
+     apContextValue = apContext.getProjectWSICompliance( project );
+     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.IGNORE_NON_WSI ) );
+     
+     platform.setProjectPreferencesEnabled( project, false );
+     apContextValue = apContext.getProjectWSICompliance( project );
+     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) );
+     
+     apProjState.setCurrentItem( "org.eclipse.wst.sug.require" );
+     platform.commitChanges( project );
+     apContextValue = apContext.getProjectWSICompliance( project );
+     assertTrue( "Ap context not suggest, but " + apContextValue, apContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) );
+     
+     platform.setProjectPreferencesEnabled( project, true );
+     apContextValue = apContext.getProjectWSICompliance( project );
+     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
    }
 }

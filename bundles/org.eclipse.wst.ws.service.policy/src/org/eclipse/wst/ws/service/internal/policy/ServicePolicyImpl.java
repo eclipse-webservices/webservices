@@ -19,11 +19,8 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IPolicyEnumerationList;
 import org.eclipse.wst.ws.service.policy.IPolicyRelationship;
@@ -60,14 +57,12 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public ServicePolicyImpl( boolean isPredefined, String id, ServicePolicyPlatformImpl platform )
   {
-    IEclipsePreferences instancePreference = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
-    
     this.predefined                 = isPredefined;  
     this.id                         = id;
     this.children                   = new Vector<IServicePolicy>();
     this.relationshipList           = new Vector<IPolicyRelationship>();
     this.unresolvedRelationshipList = new Vector<UnresolvedRelationship>();
-    this.policyState                = new PolicyStateImpl( this, new IEclipsePreferences[]{ instancePreference });
+    this.policyState                = new PolicyStateImpl( this, null );
     this.platform                   = platform;  
     this.childChangeListeners       = new Vector<IPolicyChildChangeListener>();
     this.projectPolicyStates        = new HashMap<IProject, PolicyStateImpl>();
@@ -170,11 +165,7 @@ public class ServicePolicyImpl implements IServicePolicy
     
     if( policyState == null )
     {
-      IEclipsePreferences   instancePreference = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
-      IEclipsePreferences   projectPreferences = new ProjectScope( project ).getNode( ServicePolicyActivator.PLUGIN_ID );
-      IEclipsePreferences[] nodes              = new IEclipsePreferences[]{ instancePreference, projectPreferences };
-      
-      policyState = new PolicyStateImpl( this, nodes );
+      policyState = new PolicyStateImpl( this, project );
       projectPolicyStates.put( project, policyState );
     }
     

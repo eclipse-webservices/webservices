@@ -21,13 +21,17 @@ public class PersistentWSISSBPContext extends PersistentWSIContext
 {
 	private static final String NON_WSI_SSBP_COMPLIANCE = "nonWSISSBPCompliance";
 
-public PersistentWSISSBPContext () 
-{
-	super();
-	non_wsi_compliance = NON_WSI_SSBP_COMPLIANCE;
-	name = new QualifiedName(WSPlugin.ID , non_wsi_compliance);
-	wsiWarning_ = WstWSPluginMessages.WSI_SSBP_WARNING;
-	wsiError_ = WstWSPluginMessages.WSI_SSBP_ERROR;
-}
+  public PersistentWSISSBPContext () 
+  {
+	  super();
+	  non_wsi_compliance = NON_WSI_SSBP_COMPLIANCE;
+	  name = new QualifiedName(WSPlugin.ID , non_wsi_compliance);
+	  wsiWarning_ = WstWSPluginMessages.WSI_SSBP_WARNING;
+	  wsiError_ = WstWSPluginMessages.WSI_SSBP_ERROR;
+  }
 
+  protected String getServicePolicyId()
+  {
+    return "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp";
+  }  
 }

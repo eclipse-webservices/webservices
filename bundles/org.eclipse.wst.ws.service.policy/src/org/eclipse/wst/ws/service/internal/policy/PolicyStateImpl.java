@@ -18,12 +18,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.wst.ws.service.policy.IPolicyState;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
+import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyStateChangeListener;
 
 public class PolicyStateImpl implements IPolicyState
@@ -31,15 +35,17 @@ public class PolicyStateImpl implements IPolicyState
   private List<IPolicyStateChangeListener> stateChangeListeners;
   private List<IPolicyStateChangeListener> stateChangeListenersOnlyOnCommit;
   private IPreferencesService              service;
-  private IEclipsePreferences[]            nodes;
+  private IProject                         project;
   private boolean                          mutable;
   private IServicePolicy                   policy;
   private Map<String,TableEntry>           table;
+  private ServicePolicyPlatform            platform;
 
-  public PolicyStateImpl( IServicePolicy policy,IEclipsePreferences[] nodes )
+  public PolicyStateImpl( IServicePolicy policy, IProject project)
   {
     this.service              = Platform.getPreferencesService();
-    this.nodes                = nodes;
+    this.platform             = ServicePolicyPlatform.getInstance();
+    this.project              = project;
     this.policy               = policy;
     this.mutable              = policy.isPredefined() ? false : true;
     this.table                = new HashMap<String, TableEntry>();
@@ -58,10 +64,29 @@ public class PolicyStateImpl implements IPolicyState
       {
         String oldValue = getValue( key );
        
-        nodes[0].put( storeKey, tableEntry.value );
+        getNodes()[0].put( storeKey, tableEntry.value );
         firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );        
       }
     }
+  }
+  
+  private IEclipsePreferences[] getNodes()
+  {
+    IEclipsePreferences[] result = null;
+    
+    if( project != null && platform.isProjectPreferencesEnabled(project) )
+    { 
+      result    = new IEclipsePreferences[2];
+      result[0] = new ProjectScope( project ).getNode( ServicePolicyActivator.PLUGIN_ID );
+      result[1] = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
+    }
+    else
+    {
+      result = new IEclipsePreferences[1];
+      result[0] = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
+    }
+    
+    return result;
   }
   
   public void discardChanges()
@@ -97,9 +122,13 @@ public class PolicyStateImpl implements IPolicyState
     String     result = null;
     TableEntry entry  = table.get( key );
     
-    if( entry != null )
+    if( entry != null  )
     {
-      result = entry.value;
+      if( project == null ||
+          ( project != null && platform.isProjectPreferencesEnabled( project ) ) )
+      { 
+        result = entry.value;
+      }
     }
     
     if( result == null )
@@ -114,7 +143,7 @@ public class PolicyStateImpl implements IPolicyState
         defaultValue = entry.defaultValue;
       }
       
-      result = service.get( storeKey, defaultValue, nodes);
+      result = service.get( storeKey, defaultValue, getNodes() );
     }
     
     return result;

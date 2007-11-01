@@ -13,7 +13,7 @@
        <operation id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp"
                       policyPattern="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.*" >
          <descriptor longName="%COMPLIANCE_LEVEL_LONGNAME"/>
-         <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum"/>
+         <enumeration id="org.eclipse.wst.service.policy.suggestionEnum"/>
        </operation>
      </servicePolicyUI>
    </extension>

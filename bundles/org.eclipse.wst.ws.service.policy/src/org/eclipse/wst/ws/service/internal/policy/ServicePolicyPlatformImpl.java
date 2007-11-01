@@ -41,6 +41,10 @@ public class ServicePolicyPlatformImpl
   
   public ServicePolicyPlatformImpl()
   {
+  }
+  
+  public void load()
+  {
     ServicePolicyRegistry registry  = new ServicePolicyRegistry( this );
     List<String>          localIds  = LocalUtils.getLocalPolicyIds();
     
@@ -64,7 +68,7 @@ public class ServicePolicyPlatformImpl
       loadListener.load();
     }
     
-    commitChanges( false );
+    commitChanges( false );    
   }
   
   public void commitChanges( boolean saveLocals )

@@ -19,6 +19,7 @@ import org.eclipse.wst.common.environment.EnvironmentService;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
+import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 
 
@@ -29,9 +30,10 @@ public class PersistentWSIContext extends PersistentContext
 	public static final String WARN_NON_WSI = "1";
 	public static final String IGNORE_NON_WSI = "2";
 	public static final String FOLLOW_WSI_PREFERENCE = "3";
-	public static final String NON_WSI_SSBP_POLICYID = "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp";
-	public static final String[] NON_WSI_SSBP_POLICYID_VALUES = {"org.eclipse.wst.error", "org.eclipse.wst.warn", "org.eclipse.wst.ignore"};
-
+	
+	private static final String[] ENUM_ID_VALUES = { "org.eclipse.wst.sug.require", "org.eclipse.wst.sug.suggest", "org.eclipse.wst.sug.ignore"};
+  private static final String[] CONTEXT_IDS    = { STOP_NON_WSI, WARN_NON_WSI, IGNORE_NON_WSI };
+	
 	protected QualifiedName name = null; // set in subclass
 	protected String non_wsi_compliance;
 	private static final String NON_WSI_SSBP_COMPLIANCE = "nonWSISSBPCompliance";
@@ -138,32 +140,43 @@ private String getProjectPersistentProperty(IProject project)
 	return property;
  }
 
-public String getProjectWSICompliance(IProject project)
-{
-	
-    	String currentStateID = ServicePolicyPlatform.getInstance()
-				.getServicePolicy(NON_WSI_SSBP_POLICYID).getPolicyStateEnum(
-						project).getCurrentItem().getId();
-		String property = "";
-		if (currentStateID.equals(NON_WSI_SSBP_POLICYID_VALUES[0]))
-			property = STOP_NON_WSI;
-		else if (currentStateID.equals(NON_WSI_SSBP_POLICYID_VALUES[1]))
-			property = WARN_NON_WSI;
-		else if (currentStateID.equals(NON_WSI_SSBP_POLICYID_VALUES[2]))
-			property = IGNORE_NON_WSI;
-		else
-			property = FOLLOW_WSI_PREFERENCE;
+  public String getProjectWSICompliance(IProject project)
+  {
+
+    ServicePolicyPlatform platform       = ServicePolicyPlatform.getInstance();
+    IServicePolicy        servicePolicy  = platform.getServicePolicy( getServicePolicyId() );
+    String                currentStateID = servicePolicy.getPolicyStateEnum(project).getCurrentItem().getId();
+		String                property       = FOLLOW_WSI_PREFERENCE;
+		
+		for( int index = 0; index < ENUM_ID_VALUES.length; index++ )
+		{
+		  if( ENUM_ID_VALUES[index].equals( currentStateID ) )
+		  {
+		    property = CONTEXT_IDS[index];
+		    break;
+		  }
+		}
+		
 		return property;
-}
+  }
 
-public String getWarning()
-{
-	return wsiWarning_;
-}
+  protected String getServicePolicyId()
+  {
+    return "";
+  }
+  
+  public QualifiedName getName()
+  {
+    return name;  
+  }
+  
+  public String getWarning()
+  {
+	  return wsiWarning_;
+  }
 
-public String getError()
-{
-	return wsiError_;
-}
-
+  public String getError()
+  {
+	  return wsiError_;
+  }
 }
