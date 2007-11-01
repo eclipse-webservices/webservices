@@ -264,7 +264,7 @@ public class ServicePolicyRegistry
     {
       String name = child.getName().toLowerCase();
       
-      if( name.equals( "targetPolicy" ) ) //$NON-NLS-1$
+      if( name.equals( "targetpolicy" ) ) //$NON-NLS-1$
       {
         loadPolicyRelationship( child, targetRelationshipList );
       }

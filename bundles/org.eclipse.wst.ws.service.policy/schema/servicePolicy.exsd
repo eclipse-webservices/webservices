@@ -45,7 +45,8 @@
    <element name="servicePolicy">
       <complexType>
          <sequence>
-            <element ref="policy" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="policy" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="enumeration" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
       </complexType>
    </element>
@@ -157,6 +158,54 @@
             </annotation>
          </attribute>
          <attribute name="itemList" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="enumeration">
+      <complexType>
+         <sequence>
+            <element ref="item" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="default" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="item">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="shortName" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="longName" type="string">
             <annotation>
                <documentation>
                   

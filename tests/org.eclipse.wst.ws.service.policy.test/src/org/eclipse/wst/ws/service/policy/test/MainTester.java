@@ -126,7 +126,7 @@ public class MainTester extends TestCase
      IStateEnumerationItem item2     = state2.getCurrentItem();
      
      assertTrue( "Unexpected shortname:" + item1.getShortName(), item1.getShortName().equals( "ignore") ); //$NON-NLS-1$ //$NON-NLS-2$
-     assertTrue( "Unexpected shortname:" + item2.getShortName(), item2.getShortName().equals( "warn") ); //$NON-NLS-1$ //$NON-NLS-2$
+     assertTrue( "Unexpected shortname:" + item2.getShortName(), item2.getShortName().equals( "suggest") ); //$NON-NLS-1$ //$NON-NLS-2$
      System.out.println( "id1 value:" + item1.getShortName() ); //$NON-NLS-1$
      System.out.println( "id2 value:" + item2.getShortName() ); //$NON-NLS-1$
    }
