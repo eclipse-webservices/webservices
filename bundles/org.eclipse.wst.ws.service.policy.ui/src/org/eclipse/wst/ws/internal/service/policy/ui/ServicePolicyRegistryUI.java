@@ -67,8 +67,9 @@ public class ServicePolicyRegistryUI
   {
     String                  id             = RegistryUtils.getAttribute( element, "id" ); //$NON-NLS-1$
     String                  policyPattern  = RegistryUtils.getAttribute( element, "policypattern" ); //$NON-NLS-1$
+    String                  workspaceOnly  = RegistryUtils.getAttribute( element, "workspaceonly" ); //$NON-NLS-1$
     IConfigurationElement[] children       = element.getChildren();
-    IDescriptor              descriptor     = null;
+    IDescriptor             descriptor     = null;
     String                  enumId         = null;
     boolean                 selection      = false;
     boolean                 icon           = false;
@@ -170,13 +171,15 @@ public class ServicePolicyRegistryUI
     
     if( ! error )
     {
-      PolicyOperationImpl operation = new PolicyOperationImpl();
+      PolicyOperationImpl operation          = new PolicyOperationImpl();
+      boolean             workspaceOnlyValue = workspaceOnly != null && workspaceOnly.equals( "true" );
       
       operation.setId( id );
       operation.setPolicyIdPattern( policyPattern );
       operation.setDescriptor( descriptor );
       operation.setMultiSelect( multiSelect );
       operation.setEnumerationId( enumId );
+      operation.setWorkspaceOnly( workspaceOnlyValue );
       
       if( selection )
       {

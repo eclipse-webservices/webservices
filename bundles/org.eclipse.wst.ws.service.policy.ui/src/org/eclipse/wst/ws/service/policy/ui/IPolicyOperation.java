@@ -26,6 +26,8 @@ public interface IPolicyOperation
   
   public IDescriptor getDescriptor();
   
+  public boolean isWorkspaceOnly();
+  
   public OperationKind getOperationKind();
   
   public String getEnumerationId();

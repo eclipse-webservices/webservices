@@ -74,13 +74,13 @@ public class MainUITester extends TestCase
      list7.add( id3 );
      list7.add( id4 );
     
-     Set<IPolicyOperation> set1 = platformUI.getSelectedOperations( list1 );
-     Set<IPolicyOperation> set2 = platformUI.getSelectedOperations( list2 );
-     Set<IPolicyOperation> set3 = platformUI.getSelectedOperations( list3 );
-     Set<IPolicyOperation> set4 = platformUI.getSelectedOperations( list4 );
-     Set<IPolicyOperation> set5 = platformUI.getSelectedOperations( list5 );
-     Set<IPolicyOperation> set6 = platformUI.getSelectedOperations( list6 );
-     Set<IPolicyOperation> set7 = platformUI.getSelectedOperations( list7 );
+     Set<IPolicyOperation> set1 = platformUI.getSelectedOperations( list1, true );
+     Set<IPolicyOperation> set2 = platformUI.getSelectedOperations( list2, true );
+     Set<IPolicyOperation> set3 = platformUI.getSelectedOperations( list3, true );
+     Set<IPolicyOperation> set4 = platformUI.getSelectedOperations( list4, true );
+     Set<IPolicyOperation> set5 = platformUI.getSelectedOperations( list5, true );
+     Set<IPolicyOperation> set6 = platformUI.getSelectedOperations( list6, true );
+     Set<IPolicyOperation> set7 = platformUI.getSelectedOperations( list7, true );
      
      System.out.println( "\nDisplay sets" ); //$NON-NLS-1$
      displaySet( "Set1", set1 ); //$NON-NLS-1$

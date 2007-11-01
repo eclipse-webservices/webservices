@@ -43,6 +43,13 @@ public class ServicePolicyPlatformUIImpl
     policyCache  = new HashMap<IServicePolicy, Set<IPolicyOperation>>();
     registry.load( operationMap );
     createOperationCache( policyIds );
+    
+    // Now add listeners to each node.
+    for( String policyId : policyIds )
+    {
+      IServicePolicy policy = platform.getServicePolicy( policyId );
+      policy.addPolicyChildChangeListener( new ChildListener() );
+    }
   }
   
   public IPolicyOperation getOperation( String operationId )
@@ -55,7 +62,7 @@ public class ServicePolicyPlatformUIImpl
     return new Vector<IPolicyOperation>( operationMap.values() );
   }
   
-  public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected )
+  public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected, boolean isWorkspace )
   {
     Set<IPolicyOperation> operations = new HashSet<IPolicyOperation>();
     
@@ -67,6 +74,20 @@ public class ServicePolicyPlatformUIImpl
       {
         operations.addAll( policyOperations );
       }
+    }
+    
+    if( !isWorkspace )
+    {
+      // We are getting operations for a project so we must remove the operations that are
+      // only for a workspace.
+      List<IPolicyOperation> operationsToRemove = new Vector<IPolicyOperation>();
+      
+      for( IPolicyOperation operation : operations )
+      {
+        if( operation.isWorkspaceOnly() ) operationsToRemove.add( operation );
+      }
+      
+      operations.removeAll( operationsToRemove );
     }
     
     return operations;
@@ -100,14 +121,7 @@ public class ServicePolicyPlatformUIImpl
           operationsSet.add( operation );
         }
       }
-    }
-    
-    // Now add listeners to each node.
-    for( String policyId : policyIds )
-    {
-      IServicePolicy policy = platform.getServicePolicy( policyId );
-      policy.addPolicyChildChangeListener( new ChildListener() );
-    }
+    }    
   }
   
   private class ChildListener implements IPolicyChildChangeListener

@@ -115,6 +115,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="workspaceOnly" type="boolean">
+            <annotation>
+               <documentation>
+                  This attribute indicates if this operation is only to be used in the workspace preference page.  If this attribute is not specified it is defaulted to false.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

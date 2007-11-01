@@ -36,6 +36,7 @@ public class PolicyOperationImpl implements IPolicyOperation
   private String                enumId;
   private IConfigurationElement enabledElement;
   private IConfigurationElement complexElement;
+  private boolean               workspaceOnly;
   
   public String getId()
   {
@@ -46,7 +47,16 @@ public class PolicyOperationImpl implements IPolicyOperation
   {
     this.id = id;
   }
+  public boolean isWorkspaceOnly()
+  {
+    return workspaceOnly;
+  }
 
+  public void setWorkspaceOnly( boolean workspaceOnly )
+  {
+    this.workspaceOnly = workspaceOnly;  
+  }
+  
   public void setSelection( boolean isIcon )
   {
     if( isIcon )

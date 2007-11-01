@@ -51,8 +51,8 @@ public class ServicePolicyPlatformUI
     return platformUI.getAllOperations();
   }
   
-  public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected )
+  public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected, boolean isWorkspace )
   {
-    return platformUI.getSelectedOperations( policiesSelected );
+    return platformUI.getSelectedOperations( policiesSelected, isWorkspace );
   }
 }
