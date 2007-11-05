@@ -208,6 +208,8 @@ public class ServicePolicyRegistry
     String                       id             = RegistryUtils.getAttribute( policy, "id" ); //$NON-NLS-1$
     String                       enumListId     = RegistryUtils.getAttribute( policy, "enumlistid" ); //$NON-NLS-1$
     String                       defaultEnumId  = RegistryUtils.getAttribute( policy, "defaultenumid" ); //$NON-NLS-1$
+    String                       mutableValue   = RegistryUtils.getAttribute( policy, "mutable" ); //$NON-NLS-1$
+    boolean                      mutable        = mutableValue != null && mutableValue.equalsIgnoreCase( "true" );         
     DescriptorImpl               descriptor     = null;
     List<UnresolvedRelationship> relationships  = new Vector<UnresolvedRelationship>();
     
@@ -238,6 +240,7 @@ public class ServicePolicyRegistry
       newPolicy.setDescriptor( descriptor );
       newPolicy.setEnumListId( enumListId );
       newPolicy.setDefaultEnumId( defaultEnumId );
+      ((PolicyStateImpl)newPolicy.getPolicyState()).internalSetMutable( mutable );
       policyMap.put( id, newPolicy );
     }
     catch( IllegalArgumentException exc )

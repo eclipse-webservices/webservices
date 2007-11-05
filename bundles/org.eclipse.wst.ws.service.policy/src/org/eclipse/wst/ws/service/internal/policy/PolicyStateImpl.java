@@ -53,6 +53,17 @@ public class PolicyStateImpl implements IPolicyState
   
   public void commitChanges()
   {
+    IEclipsePreferences preferences = null;
+    
+    if( project == null )
+    {
+      preferences = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
+    }
+    else
+    {
+      preferences = new ProjectScope( project ).getNode( ServicePolicyActivator.PLUGIN_ID );
+    }
+
     for( Map.Entry<String, TableEntry> entry : table.entrySet() )
     {
       String     key        = entry.getKey();
@@ -64,7 +75,7 @@ public class PolicyStateImpl implements IPolicyState
       {
         String oldValue = getValue( key );
        
-        getNodes()[0].put( storeKey, tableEntry.value );
+        preferences.put( storeKey, tableEntry.value );
         firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );        
       }
     }
@@ -188,6 +199,11 @@ public class PolicyStateImpl implements IPolicyState
     firePolicyStateChange( stateChangeListeners, key, oldValue, value );
   }
 
+  public void internalSetMutable( boolean mutable )
+  {
+    this.mutable = mutable;  
+  }
+  
   public void setMutable(boolean mutable)
   {
     if( policy.isPredefined() )

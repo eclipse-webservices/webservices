@@ -44,9 +44,10 @@
 
    <element name="servicePolicy">
       <complexType>
-         <sequence>
-            <element ref="policy" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="enumeration" minOccurs="0" maxOccurs="unbounded"/>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="policy" minOccurs="0" maxOccurs="1"/>
+            <element ref="enumeration" minOccurs="0" maxOccurs="1"/>
+            <element ref="loadListener" minOccurs="0" maxOccurs="1"/>
          </sequence>
       </complexType>
    </element>
@@ -82,6 +83,13 @@
             <annotation>
                <documentation>
                   This attribute should only be specified if the enumListId is also specified.  It is used to override the default enum value defined by the enumeration.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="mutable" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  Indicates if this policy has mutable data or not.
                </documentation>
             </annotation>
          </attribute>
@@ -209,6 +217,18 @@
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="loadListener">
+      <complexType>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  A class that implements the IPolicyPlatformLoadListener interface.  The load method of this class will be called when the ServicePolicy framework is first loaded.
                </documentation>
             </annotation>
          </attribute>

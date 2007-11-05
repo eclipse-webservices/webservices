@@ -275,5 +275,31 @@ public class MainTester extends TestCase
      platform.setProjectPreferencesEnabled( project, true );
      apContextValue = apContext.getProjectWSICompliance( project );
      assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
+     
+     ssbpProjState.setCurrentItem( "org.eclipse.wst.sug.suggest" );
+     
+     String ssbpContextValue = ssbpContext.getProjectWSICompliance( project );
+     
+     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
+     assertTrue( "SSBP context not suggest, but " + ssbpContextValue, ssbpContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) );
+     
+     ssbpProjState.setCurrentItem( "org.eclipse.wst.sug.require" );
+     
+     ssbpContextValue = ssbpContext.getProjectWSICompliance( project );
+     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
+     assertTrue( "SSBP context not require, but " + ssbpContextValue, ssbpContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
+     
+   }
+   
+   public void testMutable()
+   {
+     ServicePolicyPlatform    platform    = ServicePolicyPlatform.getInstance();
+     IServicePolicy           apPolicy    = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" );
+     IServicePolicy           ssbpPolicy  = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" );
+     IServicePolicy           wsiPolicy   = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" );
+     
+     assertTrue( "Root wsi policy is mutable", !wsiPolicy.getPolicyState().isMutable() );
+     assertTrue( "Ap policy is not mutable", apPolicy.getPolicyState().isMutable() );
+     assertTrue( "SSBP policy is not mutable", ssbpPolicy.getPolicyState().isMutable() );
    }
 }
