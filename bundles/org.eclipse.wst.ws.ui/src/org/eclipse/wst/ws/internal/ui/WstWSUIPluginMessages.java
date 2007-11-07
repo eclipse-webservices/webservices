@@ -28,6 +28,7 @@ public final class WstWSUIPluginMessages extends NLS {
 	public static String PLUGIN_VENDOR;
 	public static String PLUGIN_DESC;
 	public static String PLUGIN_NEW_CATEGORY_NAME_WS;
+	public static String WEBSERVICE_CATEGORY_PREF_LINK;
 	public static String PREFERENCE_CATEGORY_WSI;
 	public static String STOP_NON_WSI;
 	public static String WARN_NON_WSI;

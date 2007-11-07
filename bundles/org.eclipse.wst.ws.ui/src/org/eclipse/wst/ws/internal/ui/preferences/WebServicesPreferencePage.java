@@ -44,9 +44,10 @@ protected Control createContents(org.eclipse.swt.widgets.Composite parent)
 {
   Composite composite = new Composite( parent, SWT.NONE );
   Text      message   = new Text( composite, SWT.READ_ONLY | SWT.WRAP );
-  
+  Text      linkMessage   = new Text( composite, SWT.READ_ONLY | SWT.WRAP );
   composite.setLayout( new GridLayout() ); 
   message.setText( WstWSUIPluginMessages.WEBSERVICE_CATEGORY_PREF );
+  linkMessage.setText(WstWSUIPluginMessages.WEBSERVICE_CATEGORY_PREF_LINK);
   noDefaultAndApplyButton();
   Dialog.applyDialogFont( composite );    
 	return parent;

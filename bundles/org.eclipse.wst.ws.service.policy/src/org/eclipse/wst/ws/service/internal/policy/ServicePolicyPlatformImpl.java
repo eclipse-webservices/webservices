@@ -29,6 +29,7 @@ import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformLoadListener;
+import org.osgi.service.prefs.BackingStoreException;
 
 
 public class ServicePolicyPlatformImpl 
@@ -105,6 +106,17 @@ public class ServicePolicyPlatformImpl
     for( ServicePolicyImpl policy : policyMap.values() )
     {
       ((PolicyStateImpl)policy.getPolicyState( project )).commitChanges();
+    }
+    
+    try
+    {
+      IEclipsePreferences projectPrefs = new ProjectScope( project ).getNode( ServicePolicyActivator.PLUGIN_ID );
+      
+      projectPrefs.flush();
+    }
+    catch( BackingStoreException exc )
+    {
+      ServicePolicyActivator.logError( "Error while committing project preferences.", exc ); //$NON-NLS-1$
     }
     
   }
@@ -226,7 +238,7 @@ public class ServicePolicyPlatformImpl
     {
       Matcher matcher = pattern.matcher( result );
     
-      result = matcher.replaceFirst( "" ) + idCount;
+      result = matcher.replaceFirst( "" ) + idCount; //$NON-NLS-1$
       idCount++;
     }
     

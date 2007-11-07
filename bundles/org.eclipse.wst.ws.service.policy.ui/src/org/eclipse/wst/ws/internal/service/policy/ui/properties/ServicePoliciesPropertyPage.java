@@ -27,15 +27,17 @@ import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 
 public class ServicePoliciesPropertyPage extends PropertyPage implements
 		SelectionListener {
-	ServicePoliciesComposite propertyPage;
+  
+	private ServicePoliciesComposite propertyPage;
+	private IProject                 project;
 
-	protected Control createContents(Composite superparent) {
-		IProject p = (IProject) getElement();
-		ServicePolicyPlatform.getInstance().setProjectPreferencesEnabled(p, true);
-		propertyPage = new ServicePoliciesComposite(superparent, p, this);
+	protected Control createContents(Composite superparent) 
+	{
+		project = (IProject) getElement();
+		ServicePolicyPlatform.getInstance().setProjectPreferencesEnabled(project, true);
+		propertyPage = new ServicePoliciesComposite(superparent, project, this);
 		org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);
 		return propertyPage;
-
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {
@@ -61,7 +63,7 @@ public class ServicePoliciesPropertyPage extends PropertyPage implements
 	 *  @return whether it is okay to close the preference page
 	 */
 	public boolean performCancel() {
-		ServicePolicyPlatform.getInstance().discardChanges();
+		ServicePolicyPlatform.getInstance().discardChanges( project );
 		return true;
 	}
 
@@ -93,7 +95,7 @@ public class ServicePoliciesPropertyPage extends PropertyPage implements
 	 * Stores the values of the controls back to the preference store.
 	 */
 	private void storeValues() {
-		ServicePolicyPlatform.getInstance().commitChanges();
+		ServicePolicyPlatform.getInstance().commitChanges( project );
 	}
 
 	public void widgetSelected(SelectionEvent e) {
