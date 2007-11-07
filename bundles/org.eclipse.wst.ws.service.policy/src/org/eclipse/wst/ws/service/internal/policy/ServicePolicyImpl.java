@@ -175,12 +175,26 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public IPolicyStateEnum getPolicyStateEnum()
   {
-    return new EnumerationStateImpl( enumListId, defaultEnumId, policyState );
+    EnumerationStateImpl newEnum = null;
+    
+    if( enumListId != null )
+    {
+      newEnum = new EnumerationStateImpl( enumListId, defaultEnumId, policyState );
+    }
+    
+    return newEnum;
   }
   
   public IPolicyStateEnum getPolicyStateEnum( IProject project )
   {
-    return new EnumerationStateImpl( enumListId, defaultEnumId, getPolicyState( project ) );
+    EnumerationStateImpl newEnum = null;
+    
+    if( enumListId != null )
+    {
+      newEnum = new EnumerationStateImpl( enumListId, defaultEnumId, getPolicyState( project ) );
+    }
+    
+    return newEnum;
   }
 
   public void setPolicyState( PolicyStateImpl policyState )
