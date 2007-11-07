@@ -1,12 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * -------- -------- -----------------------------------------------------------
+ * 20071107 203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -23,6 +25,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntimeChecker;
 
 public class ClientRuntimeDescriptor
 {
@@ -36,6 +39,7 @@ public class ClientRuntimeDescriptor
   private IWebServiceRuntime webServiceRuntime;
   private RequiredFacetVersion[] requiredFacetVersions;
   private Set projectFacetVersions;
+  private IWebServiceRuntimeChecker webServiceRuntimeChecker;
   
   public ClientRuntimeDescriptor(IConfigurationElement elem, Hashtable allWebServiceClientImpls, Hashtable allRuntimes)
   {
@@ -144,4 +148,23 @@ public class ClientRuntimeDescriptor
     
     return webServiceRuntime;
   }
+  
+  public IWebServiceRuntimeChecker getClientRuntimeChecker()
+  {
+    if (webServiceRuntimeChecker == null)
+    {
+        try
+        {
+        	if (elem.getAttribute("checkerClass") != null ) {
+        		webServiceRuntimeChecker = (IWebServiceRuntimeChecker)elem.createExecutableExtension("checkerClass");
+        	}
+        }
+        catch(CoreException ce)
+        {
+            
+        }
+    }
+    
+    return webServiceRuntimeChecker;
+  } 
 }

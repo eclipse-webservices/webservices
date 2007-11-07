@@ -7,7 +7,7 @@
  *
  * Contributors:
  * IBM Corporation - initial API and implementation
- * yyyymmdd bug      Email and other contact information
+ * yyyymmdd bug           Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
@@ -15,6 +15,7 @@
  * 20060324   116750 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -48,6 +49,7 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.ui.ServerUICore;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntimeChecker;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 /**
@@ -1948,5 +1950,25 @@ public class WebServiceRuntimeExtensionUtils2
   private static Set getRuntimes(RequiredFacetVersion[] requiredFacetVersions)
   {
     return FacetUtils.getRuntimes(requiredFacetVersions);
+  }
+  
+/**
+ * Get the service runtime checker class
+ * @param serviceRuntimeId service runtime ID
+ * @return
+ */
+  public static IWebServiceRuntimeChecker getServiceRuntimeChecker(String serviceRuntimeId) {
+	  return getServiceRuntimeDescriptorById(serviceRuntimeId).getServiceRuntimeChecker();
+	  
+  }
+
+/**
+ * Get the client runtime checker class
+ * @param clientRuntimeId
+ * @return
+ */
+public static IWebServiceRuntimeChecker getClientRuntimeChecker(String clientRuntimeId) {
+	  return getClientRuntimeDescriptorById(clientRuntimeId).getClientRuntimeChecker();
+	  
   }
 }

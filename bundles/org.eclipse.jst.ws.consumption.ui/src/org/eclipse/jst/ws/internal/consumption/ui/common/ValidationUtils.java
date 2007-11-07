@@ -7,7 +7,7 @@
  *
  * Contributors:
  * IBM Corporation - initial API and implementation
- * yyyymmdd bug      Email and other contact information
+ * yyyymmdd bug           Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
@@ -20,6 +20,7 @@
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
+ * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -61,6 +62,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
+import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
@@ -78,6 +80,7 @@ import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntimeChecker;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 /**
@@ -440,6 +443,28 @@ public class ValidationUtils
 			}
 		}		
 
+	    // Defect 203826 - Give extender a way to veto server, project, project type and EAR choices
+	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_SERVER_RUNTIME_CHANGES
+				|| validationState == VALIDATE_PROJECT_CHANGES) {	
+	    	TypeRuntimeServer trs = new TypeRuntimeServer();
+	    	trs.setTypeId(typeId);
+	    	trs.setRuntimeId(runtimeId);
+	    	trs.setServerId(serverId);
+	    	IWebServiceRuntimeChecker runtimeChecker = null;
+	    	if (isClient) {
+	    		String clientRuntimeId = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(trs, projectName, projectTypeId);
+	    		runtimeChecker = WebServiceRuntimeExtensionUtils2.getClientRuntimeChecker(clientRuntimeId);
+	    		
+	    	} else {
+	    		String serviceRuntimeId = WebServiceRuntimeExtensionUtils2.getServiceRuntimeId(trs, projectName, projectTypeId);
+	    		runtimeChecker = WebServiceRuntimeExtensionUtils2.getServiceRuntimeChecker(serviceRuntimeId);
+	    	}
+	    	if (runtimeChecker != null) {
+		    	return runtimeChecker.checkRuntimeCompatibility(serverId, projectName, projectTypeId, earProjectName);
+		    }
+	    }
+	    
+	    
 		return Status.OK_STATUS;
 
 	}
