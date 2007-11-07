@@ -161,15 +161,16 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public IPolicyState getPolicyState( IProject project )
   {
-    PolicyStateImpl policyState = projectPolicyStates.get( project );
+    PolicyStateImpl projectPolicyState = projectPolicyStates.get( project );
     
-    if( policyState == null )
+    if( projectPolicyState == null )
     {
-      policyState = new PolicyStateImpl( this, project );
-      projectPolicyStates.put( project, policyState );
+      projectPolicyState = new PolicyStateImpl( this, project );
+      projectPolicyState.internalSetMutable( policyState.isMutable() );
+      projectPolicyStates.put( project, projectPolicyState );
     }
     
-    return policyState;
+    return projectPolicyState;
   }
   
   public IPolicyStateEnum getPolicyStateEnum()

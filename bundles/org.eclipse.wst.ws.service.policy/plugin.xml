@@ -7,8 +7,6 @@
    
    <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
      <servicePolicy>
-         <loadListener class="org.eclipse.wst.ws.service.internal.policy.migration.MigrateWSIpreferencesLoadListener"/>
-         
          <enumeration id="org.eclipse.wst.service.policy.booleanEnum" 
                     default="org.eclipse.wst.true">
          <item id="org.eclipse.wst.true"
@@ -45,7 +43,7 @@
          <!-- CONTEXT_ID PSPW0001 for the Service Policies WS-I Preferences category -->
          <descriptor longName="%PREFERENCE_SERVICEPOLICIES_CONTAINER_WSI_COMPLIANCE" iconPath="icons/full/obj16/wsicat.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0001"/>
        </policy>
-       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.suggestionEnum" defaultEnumId="org.eclipse.wst.sug.suggest" mutable="true">
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.suggestionEnum" defaultEnumId="org.eclipse.wst.sug.suggest">
          <!-- CONTEXT_ID PSPW0002 for the Service Policies WS-I AP 1.0 Preference -->
          <descriptor longName="%LABEL_WSI_AP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0002"/>
          <relationship enumList="org.eclipse.wst.sug.suggest">
@@ -57,7 +55,7 @@
                    itemList="org.eclipse.wst.sug.require"/>
          </relationship>
        </policy>
-       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.suggestionEnum" defaultEnumId="org.eclipse.wst.sug.suggest" mutable="true">
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.suggestionEnum" defaultEnumId="org.eclipse.wst.sug.suggest">
          <!-- CONTEXT_ID PSPW0003 for the Service Policies WS-I SSBP 1.0 Preference -->
          <descriptor longName="%LABEL_WSI_SSBP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0003"/>
        </policy>

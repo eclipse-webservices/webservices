@@ -40,5 +40,10 @@
             default-charset="UTF-8"
             file-extensions="wsil"/>
    </extension>
-    
+   
+   <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
+     <servicePolicy>
+         <loadListener class="org.eclipse.wst.ws.internal.preferences.MigrateWSIpreferencesLoadListener"/>
+     </servicePolicy>
+   </extension> 
 </plugin>

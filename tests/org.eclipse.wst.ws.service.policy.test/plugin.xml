@@ -5,7 +5,7 @@
 
    <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
      <servicePolicy>
-       <policy parentPolicyId="someparent" id="id1" enumListId="org.eclipse.wst.service.policy.errorWarnEnum">
+       <policy parentPolicyId="someparent" id="id1" enumListId="org.eclipse.wst.service.policy.errorWarnEnum" mutable="true">
          <descriptor shortName="id1 shortName" description="id1 description"/>
          <relationship enumList="org.eclipse.wst.warn">
            <targetPolicy id="id2"
@@ -28,7 +28,8 @@
        
        <policy id="id2" parentPolicyId="someparent" 
                         enumListId="org.eclipse.wst.service.policy.errorWarnEnum"
-                        defaultEnumId="org.eclipse.wst.warn">
+                        defaultEnumId="org.eclipse.wst.warn"
+                        mutable="true">
          <descriptor shortName="id2 shortname" contextHelpId="somecontextid.A001"/>
        </policy>
        

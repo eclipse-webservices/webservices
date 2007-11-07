@@ -213,6 +213,15 @@ public class ServicePolicyRegistry
     DescriptorImpl               descriptor     = null;
     List<UnresolvedRelationship> relationships  = new Vector<UnresolvedRelationship>();
     
+    // If the mutable attribute was not specified and the enumListId attribute
+    // attribute was specified then this policy should be mutable, since
+    // it doesn't make sense to associate state with a policy that is not
+    // changeable.
+    if( mutableValue == null && enumListId != null )
+    {
+      mutable = true;  
+    }
+    
     try
     {
       for( IConfigurationElement policyElement : policyElements )

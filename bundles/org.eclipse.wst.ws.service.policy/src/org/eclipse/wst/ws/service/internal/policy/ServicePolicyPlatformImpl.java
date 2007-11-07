@@ -106,6 +106,7 @@ public class ServicePolicyPlatformImpl
     {
       ((PolicyStateImpl)policy.getPolicyState( project )).commitChanges();
     }
+    
   }
   
   public void discardChanges()

@@ -53,6 +53,9 @@ public class PolicyStateImpl implements IPolicyState
   
   public void commitChanges()
   {
+    // We don't do anything if this policy is not mutable.
+    if( !mutable ) return;
+    
     IEclipsePreferences preferences = null;
     
     if( project == null )
@@ -102,6 +105,8 @@ public class PolicyStateImpl implements IPolicyState
   
   public void discardChanges()
   {
+    if( !mutable ) return;
+    
     for( TableEntry entry : table.values() )
     {
       entry.value = null;
@@ -172,6 +177,8 @@ public class PolicyStateImpl implements IPolicyState
 
   public void putDefaultValue(String key, String defaultValue)
   {    
+    if( !mutable ) return;
+    
     TableEntry entry = table.get( key );
     
     if( entry == null )
@@ -185,6 +192,8 @@ public class PolicyStateImpl implements IPolicyState
 
   public void putValue(String key, String value)
   {
+    if( !mutable ) return;
+    
     TableEntry entry = table.get( key );
     
     if( entry == null )
