@@ -60,7 +60,7 @@ public class MigrateWSIpreferencesLoadListener implements IPolicyPlatformLoadLis
         
         if( newApValue != null )
         {
-          apState.putDefaultValue( "value", newApValue );
+          apState.putValue( "value", newApValue );
         }
       }
     }
@@ -85,7 +85,7 @@ public class MigrateWSIpreferencesLoadListener implements IPolicyPlatformLoadLis
         
         if( newSSBPValue != null )
         {
-          ssbpState.putDefaultValue( "value", newSSBPValue );
+          ssbpState.putValue( "value", newSSBPValue );
         }
       }
     }
