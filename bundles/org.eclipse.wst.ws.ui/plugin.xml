@@ -15,24 +15,11 @@
             name="%PREFERENCE_CATEGORY_WSI"
             category="org.eclipse.wst.ws.internal.ui.preferences.name"
             class="org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage"
-            id="org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage">
+            id="org.eclipse.wst.ws.internal.ui.wsi.preferences.WizardValidation">
       </page>
 
    </extension>
 
-   <extension
-         point="org.eclipse.ui.propertyPages">
-
-      <page
-            objectClass="org.eclipse.core.resources.IProject"
-            adaptable="true"
-            name="%PREFERENCE_CATEGORY_WSI"
-            class="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"
-            id="org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage">
-      </page>
-
-   </extension>
-   
    <extension
          point="org.eclipse.ui.popupMenus">
 

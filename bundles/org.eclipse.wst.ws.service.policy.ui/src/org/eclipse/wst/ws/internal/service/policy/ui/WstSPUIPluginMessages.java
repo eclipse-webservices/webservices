@@ -10,14 +10,15 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071025          ericdp@ca.ibm.com - Eric Peters
+ * 20071107          ericdp@ca.ibm.com - Eric Peters
  *******************************************************************************/
-package org.eclipse.wst.ws.internal.service.policy.ui.preferences;
+package org.eclipse.wst.ws.internal.service.policy.ui;
 
 import org.eclipse.osgi.util.NLS;
 
 public final class WstSPUIPluginMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.eclipse.wst.ws.internal.service.policy.ui.preferences.WstSPUIPluginMessages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.wst.ws.internal.service.policy.ui.WstSPUIPluginMessages";//$NON-NLS-1$
 
 	private WstSPUIPluginMessages() {
 		// Do not instantiate
@@ -28,6 +29,7 @@ public final class WstSPUIPluginMessages extends NLS {
 	public static String TOOLTIP_PSP_DESCRIPTION;	
 	public static String TOOLTIP_PSP_TREE;
 	public static String SERVICEPOLICIES_DEPENDENCIES;
+	public static String SERVICEPOLICIES_DEPENDENCY_ERROR;
 	public static String SERVICEPOLICIES_DEPENDENCIES_NONE;
 
 	static {

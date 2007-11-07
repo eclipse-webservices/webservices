@@ -7,13 +7,17 @@
      <servicePolicy>
        <policy parentPolicyId="someparent" id="id1" enumListId="org.eclipse.wst.service.policy.errorWarnEnum" mutable="true">
          <descriptor shortName="id1 shortName" description="id1 description"/>
-         <relationship enumList="org.eclipse.wst.warn">
+         <relationship enumList="org.eclipse.wst.warn org.eclipse.wst.error">
            <targetPolicy id="id2"
                    itemList="org.eclipse.wst.warn org.eclipse.wst.error"/>
            <targetPolicy id="id3"
                    itemList="org.eclipse.wst.warn"/>
            <targetPolicy id="id4"
                    itemList="org.eclipse.wst.error"/>
+           <targetPolicy id="id22"
+                   itemList="org.eclipse.wst.warn2 org.eclipse.wst.error2"/>
+  			<targetPolicy id="id_boolean2"
+                   itemList="org.eclipse.wst.false"/>  
          </relationship>
          
          <relationship enumList="org.eclipse.wst.ignore">
@@ -41,6 +45,12 @@
          <descriptor shortName="id4 short name" longName="id4 long name" />
        </policy>
        
+       <policy id="id22" parentPolicyId="someparent" 
+                        enumListId="org.eclipse.wst.service.policy.errorWarnEnum2"
+                        defaultEnumId="org.eclipse.wst.warn2">
+         <descriptor shortName="id22 shortname" contextHelpId="somecontextid.A001"/>
+       </policy>
+       
        <policy id="id_boolean1" enumListId="org.eclipse.wst.service.policy.booleanEnum"
                                 defaultEnumId="org.eclipse.wst.true">
          <descriptor shortName="boolean1 short name" longName="boolean1 long name" />
@@ -50,6 +60,16 @@
                                 defaultEnumId="org.eclipse.wst.false">
          <descriptor shortName="boolean2 short name" longName="boolean2 long name" />
        </policy>
+       <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum2" 
+                    default="org.eclipse.wst.ignore2">
+         <item id="org.eclipse.wst.ignore2"
+               shortName="IGNORE SHORTNAME2" longName="IGNORE LONGNAME2" />
+         <item id="org.eclipse.wst.warn2"
+               shortName="WARN SHORTNAME2" longName="WARN LONGNAME2" />
+         <item id="org.eclipse.wst.error2"
+               shortName="ERROR SHORTNAME2" longName="ERROR LONGNAME2" />
+       </enumeration> 
+       
      </servicePolicy>      
    </extension>
    
@@ -78,7 +98,12 @@
          <descriptor shortName="UI policy4 short name" longName="UI policy4 long name" />
          <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum"/>
        </operation>
-       
+     
+       <operation id="service.ui.operation5"
+                      policyPattern="id22" >
+         <descriptor shortName="UI policy5 short name" longName="UI policy5 long name" />
+         <enumeration id="org.eclipse.wst.service.policy.errorWarnEnum2"/>
+       </operation>      
        <operation id="service.ui.boolean.operation1"
                       policyPattern="id_bool.*" >
          <descriptor shortName="UI policy2 short name" longName="UI policy2 long name" />
