@@ -82,7 +82,7 @@ public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
     if (s != null && s.length() > 0) {
 //      testSuite.addTest( BUJavaAxisTC50.suite() );
 //      testSuite.addTest( TDJavaAxisTC50.suite() );
-      testSuite.addTest( ClientAxisTC50.suite() );
+//      testSuite.addTest( ClientAxisTC50.suite() );
       testSuite.addTest( ServerCreationTests.suite());
 
     }
