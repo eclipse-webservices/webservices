@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071107          ericdp@ca.ibm.com - Eric Peters
+ * 20071108          ericdp@ca.ibm.com - Eric Peters
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui.properties;
 
@@ -30,6 +31,7 @@ public class ServicePoliciesPropertyPage extends PropertyPage implements
   
 	private ServicePoliciesComposite propertyPage;
 	private IProject                 project;
+	public static final String PAGE_ID= "org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage"; //$NON-NLS-1$
 
 	protected Control createContents(Composite superparent) 
 	{

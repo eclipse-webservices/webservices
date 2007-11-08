@@ -6,7 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ *     IBM Corporation - initial API and implementation * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071108 196997   ericdp@ca.ibm.com - Eric Peters
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.wizards;
 
@@ -44,7 +47,7 @@ import org.eclipse.wst.common.ui.internal.UIPlugin;
 import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
-import org.eclipse.wst.ws.internal.ui.wsi.properties.WSICompliancePropertyPage;
+import org.eclipse.wst.ws.internal.service.policy.ui.properties.ServicePoliciesPropertyPage;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
@@ -420,7 +423,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		IProject targetProject = ResourcesPlugin.getWorkspace().getRoot().getFile(newFilePage.getContainerFullPath().append(newFilePage.getFileName())).getProject();
 		//PreferencesUtil.createPropertyDialogOn(shell,targetProject,null,null,null).open();
 
-		PreferencesUtil.createPropertyDialogOn(shell,targetProject,WSICompliancePropertyPage.PAGE_ID ,new String[] {WSICompliancePropertyPage.PAGE_ID},null).open();
+		PreferencesUtil.createPropertyDialogOn(shell,targetProject,ServicePoliciesPropertyPage.PAGE_ID ,new String[] {ServicePoliciesPropertyPage.PAGE_ID},null).open();
 	}
 	
 	  public String getWSIPreferences() {
