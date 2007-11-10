@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071110   209087 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
@@ -76,7 +79,7 @@ public class GregorianCalendarType extends SimpleType
   {
      String conversion =  Generator.DOUBLE_TAB + "java.text.DateFormat dateFormat" + getUniqueName()+ " = java.text.DateFormat.getDateInstance();"  
                          + StringUtils.NEWLINE + Generator.DOUBLE_TAB +  "java.util.Date dateTemp" + getUniqueName()+ "  = dateFormat" + getUniqueName()+ ".parse(" + attributeName + ");"                         
-                         + StringUtils.NEWLINE + Generator.DOUBLE_TAB + "java.util.GregorianCalendar" + Generator.SPACE + nodeName + " = " + "new java.util.GregorianCalendar();" 
+                         + StringUtils.NEWLINE + Generator.DOUBLE_TAB + Generator.SPACE + nodeName + " = " + "new java.util.GregorianCalendar();" 
                          + StringUtils.NEWLINE + Generator.DOUBLE_TAB + nodeName + ".setTime(dateTemp" + getUniqueName()+ ");"
                          + "" + StringUtils.NEWLINE;
      return conversion;
