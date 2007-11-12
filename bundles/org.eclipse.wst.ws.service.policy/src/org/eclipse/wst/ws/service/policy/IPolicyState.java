@@ -28,7 +28,7 @@ import org.eclipse.wst.ws.service.policy.listeners.IPolicyStateChangeListener;
  * 
  *     servicePolicyId + "." + key
  *     
- *     where policyServiceId is the unique id for this service policy and the key
+ *     where servicePolicyId is the unique id for this service policy and the key
  *     is the key specified in the putValue method.
  * 
  */
@@ -44,8 +44,7 @@ public interface IPolicyState
    * 
    * @param mutable sets whether this policy is mutable or not.  Note:
    * if the service policy for this IPolicyState object is predefined calling
-   * this method will have no effect, since predefined service policies are
-   * always non-mutable.
+   * this method will have no effect.
    */
   public void setMutable( boolean mutable );
   

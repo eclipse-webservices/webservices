@@ -13,7 +13,17 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
+/**
+ * 
+ * This interface is used to filter service policies.
+ *
+ */
 public interface IFilter
 {
+  /**
+   * 
+   * @param policy the service policy.
+   * @return returns true if this policy is accepted by the filter.
+   */
   public boolean accept( IServicePolicy policy );
 }

@@ -19,6 +19,11 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.ws.service.internal.policy.ServicePolicyPlatformImpl;
 
+/**
+ * 
+ * This class is used to access and add service policies to the platform.
+ *
+ */
 public class ServicePolicyPlatform
 {
   private static ServicePolicyPlatform instance;
@@ -29,6 +34,10 @@ public class ServicePolicyPlatform
     platformImpl = new ServicePolicyPlatformImpl();
   }
   
+  /**
+   * 
+   * @return returns a singleton instance of this service policy platform.
+   */
   public static ServicePolicyPlatform getInstance()
   {
     if( instance == null )
@@ -40,61 +49,129 @@ public class ServicePolicyPlatform
     return instance;
   }
   
+  /**
+   * 
+   * @param object
+   * @return returns true if this platform is enabled for specified object.  In most
+   * cases the specified object will be an IProject.  This method is usually called
+   * to determine if a the service policy entry should appear for a particular project.
+   */
   public boolean isEnabled( Object object )
   {
     return platformImpl.isEnabled( object );  
   }
   
+  /**
+   * Calling this method will commit all the state changes that were made to all
+   * the service policies.  The method only applies to state changes at the workspace
+   * level.
+   */
   public void commitChanges()
   {
     platformImpl.commitChanges( true );
   }
   
+  /**
+   * Calling this method will discard all the state changes that were made to all
+   * the service policies.  The method only applies to state changes at the workspace
+   * level.
+   */
   public void discardChanges()
   {
     platformImpl.discardChanges(); 
   }
   
+  /**
+   * Calling this method will commit all the state changes that were made to all
+   * the service policies for a particular project.  The method only applies to 
+   * state changes at the project level.
+   */
   public void commitChanges( IProject project )
   {
     platformImpl.commitChanges( project );
   }
   
+  /**
+   * Calling this method will discard all the state changes that were made to all
+   * the service policies for a particular project.  The method only applies to 
+   * state changes at the project level.
+   */
   public void discardChanges( IProject project )
   {
     platformImpl.discardChanges( project ); 
   }
   
+  /**
+   * 
+   * @return returns all service policy IDs that are defined.
+   */
   public Set<String> getAllPolicyIds()
   {
     return platformImpl.getAllPolicyIds();
   }
   
+  /**
+   * 
+   * @param filter a filter a the service policies.  This method may be null if
+   * no filter is required.
+   * @return returns all root level service policies.  If a filter is specified
+   * some service policies may be removed from the returned list.  A root
+   * level service policy is defined to be a service policy with no parent.
+   * 
+   */
   public List<IServicePolicy> getRootServicePolicies( IFilter filter )
   {
     return platformImpl.getRootServicePolicies( filter );
   }
   
+  /**
+   * 
+   * @param id
+   * @return returns a service policy given it's unique ID.
+   */
   public IServicePolicy getServicePolicy( String id )
   {
     return platformImpl.getServicePolicy( id );  
   }
   
+  /**
+   * 
+   * @param project
+   * @return returns true if the specified project has been enabled for
+   * project specific policy preferences.
+   */
   public boolean isProjectPreferencesEnabled( IProject project )
   {
     return platformImpl.isProjectPreferencesEnabled( project );
   }
   
+  /**
+   * Sets whether project specific service policy preferences is enabled or not.
+   * 
+   * @param project
+   * @param value
+   */
   public void setProjectPreferencesEnabled( IProject project, boolean value )
   {
     platformImpl.setProjectPreferencesEnabled( project, value ); 
   }
   
+  /**
+   * Restores the workspace level defaults.  Note: the state changes made by 
+   * calling this method need to be committed or discarded by the platform.
+   */
   public void restoreDefaults()
   {
     platformImpl.restoreDefaults();
   }
   
+  /**
+   * Restores the project level defaults.  Note: the state changes made by 
+   * calling this method need to be committed or discarded by the platform.
+   *
+   * 
+   * @param project
+   */
   public void restoreDefaults( IProject project )
   {
     platformImpl.restoreDefaults( project );
@@ -123,11 +200,23 @@ public class ServicePolicyPlatform
     return platformImpl.createServicePolicy( parent, id, enumListId, defaultEnumId );
   }
   
+  /**
+   * 
+   * @param enumId
+   * @return returns a list of state enumeration items given the unique
+   * enumeration ID for this enumeration.
+   */
   public List<IStateEnumerationItem> getStateEnumeration( String enumId )
   {
     return platformImpl.getStateEnumeration( enumId ); 
   }
   
+  /**
+   * 
+   * @param stateItemId
+   * @return returns a state enumeration item given this ID for this enumeration
+   * item.
+   */
   public IStateEnumerationItem getStateItemEnumeration( String stateItemId )
   {
     return platformImpl.getStateItemEnumeration( stateItemId );

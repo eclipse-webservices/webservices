@@ -15,9 +15,24 @@ package org.eclipse.wst.ws.service.policy;
 
 import java.util.List;
 
+/**
+ * 
+ * This interface encapsulates the combination of a policy and a list
+ * of state enumeration items.  This interface is used with the IPolicyRelationship
+ * interface.
+ *
+ */
 public interface IPolicyEnumerationList
 {
+  /**
+   * 
+   * @return returns a service policy.
+   */
   public IServicePolicy getPolicy();
   
+  /**
+   * 
+   * @return returns a list of state enumeration items.
+   */
   public List<IStateEnumerationItem> getEnumerationList();  
 }

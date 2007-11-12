@@ -15,7 +15,12 @@ package org.eclipse.wst.ws.service.policy;
 
 import java.util.List;
 
-
+/**
+ * 
+ * This class provides a simple implementation of the IPolicyRelationship
+ * interface.
+ *
+ */
 public class PolicyRelationshipImpl implements IPolicyRelationship
 {
   private IPolicyEnumerationList       policyEnumerationList;
@@ -28,11 +33,21 @@ public class PolicyRelationshipImpl implements IPolicyRelationship
     this.relatedPolices        = relatedPolicies;
   }
   
+  /**
+   * 
+   * @return This method returns the source service policy along with a list
+   * of possible states that this source policy could be in.
+   */
   public IPolicyEnumerationList getPolicyEnumerationList()
   {
     return policyEnumerationList;
   }
 
+  /**
+   * 
+   * @return returns a list of other target service policies and the states that
+   * these policies must be in to satisfy the relationship.
+   */
   public List<IPolicyEnumerationList> getRelatedPolicies()
   {
     return relatedPolices;

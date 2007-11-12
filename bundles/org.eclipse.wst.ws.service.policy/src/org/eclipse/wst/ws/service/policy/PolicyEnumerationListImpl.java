@@ -15,23 +15,41 @@ package org.eclipse.wst.ws.service.policy;
 
 import java.util.List;
 
-
+/**
+ * 
+ * This class provides a simple implementation of the IPolicyEnumerationList interface.
+ *
+ */
 public class PolicyEnumerationListImpl implements IPolicyEnumerationList
 {
   private List<IStateEnumerationItem> enumList;
   private IServicePolicy              policy;
   
+  /**
+   * A simple constructor for this class.
+   * 
+   * @param enumList
+   * @param policy
+   */
   public PolicyEnumerationListImpl( List<IStateEnumerationItem> enumList, IServicePolicy policy )
   {
     this.enumList = enumList;
     this.policy   = policy;
   }
   
+  /**
+   * 
+   * @return returns a list of state enumeration items.
+   */
   public List<IStateEnumerationItem> getEnumerationList()
   {
     return enumList;
   }
 
+  /**
+   * 
+   * @return returns a service policy.
+   */
   public IServicePolicy getPolicy()
   {
     return policy;

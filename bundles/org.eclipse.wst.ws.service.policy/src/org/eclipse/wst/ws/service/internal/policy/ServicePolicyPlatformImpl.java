@@ -228,7 +228,10 @@ public class ServicePolicyPlatformImpl
       
       if( policy.getParentPolicy() == null )
       {
-        rootPolicies.add( policy );
+        if( filter != null && filter.accept( policy ) )
+        {
+          rootPolicies.add( policy );
+        }
       }
     }
     

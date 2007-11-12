@@ -34,6 +34,7 @@ public interface IServicePolicy
    * @return returns the unique ID for this service policy.
    */
   public String getId();
+  
   /**
    * 
    * @return returns the descriptor for this service policy.
@@ -87,8 +88,21 @@ public interface IServicePolicy
    */
   public IPolicyState getPolicyState( IProject project );
   
+  /**
+   * 
+   * @return returns the state enumeration object for this service
+   * policy.  If this policy is not associated with an enumeration
+   * null will be returned.
+   */
   public IPolicyStateEnum getPolicyStateEnum();
   
+  /**
+   * 
+   * @param project
+   * @return returns the state enumeration for a particular project.  If
+   * no state enumeration is associated with the service policy
+   * null will be returned.
+   */
   public IPolicyStateEnum getPolicyStateEnum( IProject project );
   
   /**
@@ -128,11 +142,31 @@ public interface IServicePolicy
    */
   public void removePolicyChildChangeListener( IPolicyChildChangeListener listener );
   
+  /**
+   * Adds a status change listener to this service policy. When the status changes
+   * this listener will be notified.
+   *  
+   * @param listener
+   */
   public void addStatusChangeListener( IStatusChangeListener listener );
   
+  /**
+   * Removes a status change listener from this service policy.
+   * 
+   * @param listener
+   */
   public void removeStatusChangeListener( IStatusChangeListener listener );
   
+  /**
+   * 
+   * @return returns the status for this service policy.
+   */
   public IStatus getStatus();
   
+  /**
+   * Sets the status for this service policy.
+   * 
+   * @param status
+   */
   public void setStatus( IStatus status );
 }

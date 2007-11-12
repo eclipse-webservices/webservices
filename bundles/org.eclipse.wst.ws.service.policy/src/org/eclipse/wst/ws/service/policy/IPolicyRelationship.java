@@ -15,9 +15,25 @@ package org.eclipse.wst.ws.service.policy;
 
 import java.util.List;
 
+/**
+ * 
+ * This interface is used to describe the dependency relationships between
+ * service policies.
+ *
+ */
 public interface IPolicyRelationship
 {
+  /**
+   * 
+   * @return This method returns the source service policy along with a list
+   * of possible states that this source policy could be in.
+   */
   public IPolicyEnumerationList getPolicyEnumerationList();
   
+  /**
+   * 
+   * @return returns a list of other target service policies and the states that
+   * these policies must be in to satisfy the relationship.
+   */
   public List<IPolicyEnumerationList> getRelatedPolicies();
 }

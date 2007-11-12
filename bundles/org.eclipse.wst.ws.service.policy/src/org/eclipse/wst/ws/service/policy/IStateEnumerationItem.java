@@ -13,13 +13,36 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
+/**
+ * 
+ * This interface is used to describe a state enumeration item that was
+ * defined by an enumeration in plugin.xml meta data.
+ *
+ */
 public interface IStateEnumerationItem
 {  
+  /**
+   * 
+   * @return returns the ID of this state enumeration item.
+   */
   public String getId();
 
+  /**
+   * 
+   * @return returns the short name of this state enumeration item.
+   */
   public String getShortName();
     
+  /**
+   * 
+   * @return returns the long name of this state enumeration item.
+   */
   public String getLongName();
 
+  /**
+   * 
+   * @return returns true if this enumeration item is the default for this
+   * enumeration.
+   */
   public boolean isDefault();
 }

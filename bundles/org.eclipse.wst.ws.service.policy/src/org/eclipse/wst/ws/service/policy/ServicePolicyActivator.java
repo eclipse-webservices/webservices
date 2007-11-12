@@ -62,6 +62,12 @@ public class ServicePolicyActivator extends Plugin {
 		return plugin;
 	}
 	
+	/**
+	 * Logs an error with this plugin.
+	 * 
+	 * @param message
+	 * @param exc
+	 */
   public static void logError( String message, Throwable exc )
   {
     IStatus status = new Status( IStatus.ERROR, PLUGIN_ID, 0, message, exc );

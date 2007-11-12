@@ -13,13 +13,36 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
+/**
+ * 
+ * This interface is used to access the state when an enumeration is used
+ * to persist state.  
+ *
+ */
 public interface IPolicyStateEnum
 {
+  /**
+   * 
+   * @return returns the enumeration id associated with this service policy.
+   */
   public String getEnumId();
   
+  /**
+   * 
+   * @return returns the default enum item for this enumeration.
+   */
   public String getDefaultId();
   
+  /**
+   * Sets the current enum item.  This enum item id needs to be and enum item
+   * id associated with this enumeration.
+   * @param itemId
+   */
   public void setCurrentItem( String itemId );
   
+  /**
+   * 
+   * @return returns the current enum item.
+   */
   public IStateEnumerationItem getCurrentItem(); 
 }
