@@ -19,7 +19,11 @@ import java.util.Set;
 import org.eclipse.wst.ws.internal.service.policy.ui.ServicePolicyPlatformUIImpl;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
-
+/**
+ * 
+ * This class is used to get Service policy UI information.
+ *
+ */
 public class ServicePolicyPlatformUI
 {
   private static ServicePolicyPlatformUI instance;
@@ -31,6 +35,10 @@ public class ServicePolicyPlatformUI
     platformUI = new ServicePolicyPlatformUIImpl();
   }
   
+  /**
+   * 
+   * @return returns an instance of this service policy platform UI object.
+   */
   public static ServicePolicyPlatformUI getInstance()
   {
     if( instance == null )
@@ -41,16 +49,35 @@ public class ServicePolicyPlatformUI
     return instance;
   }
   
+  /**
+   * 
+   * @param operationId the operation ID
+   * @return returns the service policy operation given it ID.
+   */
   public IPolicyOperation getOperation( String operationId )
   {
     return platformUI.getOperation( operationId );
   }
   
+  /**
+   * 
+   * @return returns all the operations that are known to the platform.
+   */
   public List<IPolicyOperation> getAllOperations()
   {
     return platformUI.getAllOperations();
   }
   
+  /**
+   * 
+   * @param policiesSelected the selected service policies.
+   * @param isWorkspace indicates if this method is being called from the workspace
+   * preference page or from a project property page.
+   * @return returns the set of operations that are applicable to the list
+   * selected service policies.  This set is further restricted by the
+   * isWorkspace parameter.  If this parameter is false then operations that 
+   * are only associated with the workspace will be removed. 
+   */
   public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected, boolean isWorkspace )
   {
     return platformUI.getSelectedOperations( policiesSelected, isWorkspace );

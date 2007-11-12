@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.wst.service.policy">
+<schema targetNamespace="org.eclipse.wst.service.policy.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.wst.service.policy" id="servicePolicy" name="%SERVICE_POLICY_NAME"/>
+         <meta.schema plugin="org.eclipse.wst.service.policy.ui" id="servicePolicyUI" name="Service policy UI"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         This extension allows extenders to add service policy UI operations for the
+         service policies that they have added.
       </documentation>
    </annotation>
 
@@ -43,6 +44,11 @@
    </element>
 
    <element name="servicePolicyUI">
+      <annotation>
+         <documentation>
+            This extension is intended for extenders who want to add UI operations to the Service policies that they have defined.
+         </documentation>
+      </annotation>
       <complexType>
          <sequence>
             <element ref="operation" minOccurs="1" maxOccurs="unbounded"/>
@@ -51,6 +57,11 @@
    </element>
 
    <element name="descriptor">
+      <annotation>
+         <documentation>
+            A descriptor for this Service policy operation
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="description" type="string">
             <annotation>
@@ -91,6 +102,11 @@
    </element>
 
    <element name="operation">
+      <annotation>
+         <documentation>
+            Defines a Service policy operation.
+         </documentation>
+      </annotation>
       <complexType>
          <sequence>
             <element ref="descriptor"/>
@@ -126,6 +142,11 @@
    </element>
 
    <element name="enumeration">
+      <annotation>
+         <documentation>
+            This element defines the enumeration that this operation is associated with.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -138,11 +159,16 @@
    </element>
 
    <element name="selection">
+      <annotation>
+         <documentation>
+            This element indicates that the service policy operation is associated with a some kind of UI boolean selection.  All service policies that are associated with this operation should use the org.eclipse.wst.service.policy.booleanEnum enumeration.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="icon" type="boolean">
             <annotation>
                <documentation>
-                  
+                  This boolean attribute indicates that the boolean selection should be rendered via an icon.
                </documentation>
             </annotation>
          </attribute>
@@ -150,11 +176,16 @@
    </element>
 
    <element name="complex">
+      <annotation>
+         <documentation>
+            This element indicates that this operation is complex to render and persist.  The launchClass attribute can be used to launch a dialog to set more complex data.  The extender will need to call the service policy platform API to persist data on each policy as required.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="launchClass" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  A class that can be used to launch a dialog.  The class specified must implement the ILaunchOperation interface.
                </documentation>
             </annotation>
          </attribute>
@@ -162,18 +193,23 @@
    </element>
 
    <element name="enabled">
+      <annotation>
+         <documentation>
+            Indicates if this operation is enabled/grayed out or not in the UI.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="enabledClass" type="string">
             <annotation>
                <documentation>
-                  
+                  The class specified in the attribute much implement the IEnableOperation interface.  This class allows extenders to provide a more complex logic for when the operation should be enabled or not.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="multiselect" type="string">
             <annotation>
                <documentation>
-                  
+                  Indicates if this operation allows multiple selection of policy objects or not.
                </documentation>
             </annotation>
          </attribute>
@@ -185,7 +221,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         1.0
       </documentation>
    </annotation>
 

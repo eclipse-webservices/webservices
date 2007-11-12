@@ -68,7 +68,6 @@ import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyPlatformUI;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation.OperationKind;
-import org.eclipse.wst.ws.service.policy.ui.utils.IConManager;
 import org.osgi.framework.Bundle;
 import org.eclipse.core.resources.IProject;
 

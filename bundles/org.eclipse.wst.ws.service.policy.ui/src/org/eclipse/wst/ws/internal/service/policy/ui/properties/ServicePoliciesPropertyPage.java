@@ -35,7 +35,7 @@ public class ServicePoliciesPropertyPage extends PropertyPage implements
 
 	protected Control createContents(Composite superparent) 
 	{
-		project = (IProject) getElement();
+		project = (IProject) getElement().getAdapter( IProject.class );
 		ServicePolicyPlatform.getInstance().setProjectPreferencesEnabled(project, true);
 		propertyPage = new ServicePoliciesComposite(superparent, project, this);
 		org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);

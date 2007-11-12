@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.eclipse.core.expressions.Expression;
+import org.eclipse.core.expressions.ExpressionConverter;
+import org.eclipse.core.expressions.ExpressionTagNames;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
@@ -91,10 +94,28 @@ public class ServicePolicyRegistry
       {
         loadEnumeration( child, enumMap, enumItemMap );
       }
+      else if( childName.equals( ExpressionTagNames.ENABLEMENT ) ) 
+      {
+        loadEnablement( child );
+      }
       else
       {
         error( "Undefined service policy element, " + childName + " found." );         //$NON-NLS-1$ //$NON-NLS-2$
       }
+    }
+  }
+  
+  private void loadEnablement( IConfigurationElement element )
+  {
+    try
+    {
+      Expression expression = ExpressionConverter.getDefault().perform( element );
+      
+      platform.addEnabledExpression( expression );
+    }
+    catch( CoreException exc )
+    {
+      error( "Error loading enablement expression: " + exc.getMessage() );
     }
   }
   

@@ -17,7 +17,18 @@ import java.util.List;
 
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
+/**
+ * 
+ * This interface is associated with the enabledClass attribute of the
+ * enabled element.
+ *
+ */
 public interface IEnableOperation
 {
+  /**
+   * 
+   * @param selectedPolicies the selected service policies.
+   * @return returns whether the service policy operation should be enabled or not.
+   */
   public boolean isEnabled( List<IServicePolicy> selectedPolicies );
 }

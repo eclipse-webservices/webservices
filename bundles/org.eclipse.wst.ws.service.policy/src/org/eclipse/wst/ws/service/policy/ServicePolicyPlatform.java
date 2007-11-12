@@ -40,6 +40,11 @@ public class ServicePolicyPlatform
     return instance;
   }
   
+  public boolean isEnabled( Object object )
+  {
+    return platformImpl.isEnabled( object );  
+  }
+  
   public void commitChanges()
   {
     platformImpl.commitChanges( true );

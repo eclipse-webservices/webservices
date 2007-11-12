@@ -21,8 +21,13 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.EvaluationResult;
+import org.eclipse.core.expressions.Expression;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.wst.ws.service.policy.IFilter;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
@@ -39,6 +44,8 @@ public class ServicePolicyPlatformImpl
   private Map<String, ServicePolicyImpl>           policyMap;
   private Map<String, List<IStateEnumerationItem>> enumList;
   private Map<String, StateEnumerationItemImpl>    enumItemList;
+  private Map<IProject, ProjectEntry>              enabledProjectMap;
+  private List<Expression>                         enabledList;
   
   public ServicePolicyPlatformImpl()
   {
@@ -49,10 +56,12 @@ public class ServicePolicyPlatformImpl
     ServicePolicyRegistry registry  = new ServicePolicyRegistry( this );
     List<String>          localIds  = LocalUtils.getLocalPolicyIds();
     
-    loadListeners = new Vector<IPolicyPlatformLoadListener>();
-    policyMap     = new HashMap<String, ServicePolicyImpl>();
-    enumList      = new HashMap<String, List<IStateEnumerationItem>>();
-    enumItemList  = new HashMap<String, StateEnumerationItemImpl>();
+    loadListeners     = new Vector<IPolicyPlatformLoadListener>();
+    policyMap         = new HashMap<String, ServicePolicyImpl>();
+    enumList          = new HashMap<String, List<IStateEnumerationItem>>();
+    enumItemList      = new HashMap<String, StateEnumerationItemImpl>();
+    enabledProjectMap = new HashMap<IProject, ProjectEntry>();
+    enabledList       = new Vector<Expression>();
     
     //Load local policies
     for( String localPolicyId : localIds )
@@ -70,6 +79,45 @@ public class ServicePolicyPlatformImpl
     }
     
     commitChanges( false );    
+  }
+  
+  public void addEnabledExpression( Expression expression )
+  {
+    if( expression != null )
+    {
+      enabledList.add( expression );
+    }
+  }
+  
+  public boolean isEnabled( Object object )
+  {
+    boolean            result = false;
+    IEvaluationContext context = new EvaluationContext( null, object );
+    context.addVariable( "selection", object ); //$NON-NLS-1$
+    context.setAllowPluginActivation( true );
+    
+    for( Expression enabledItem : enabledList )
+    {
+      try
+      {
+        EvaluationResult expResult = enabledItem.evaluate( context );
+        
+        // If any expression returns TRUE or NOT_LOADED we will return true as
+        // the result.
+        if( expResult != EvaluationResult.FALSE )
+        {
+          result = true;
+          break;
+        }
+      }
+      catch( CoreException exc )
+      {
+        // Ignore the expression if an exception occurs.
+        ServicePolicyActivator.logError( "Error evaluating enablement expression.", exc ); //$NON-NLS-1$
+      }
+    }
+    
+    return result;
   }
   
   public void commitChanges( boolean saveLocals )
@@ -108,6 +156,11 @@ public class ServicePolicyPlatformImpl
       ((PolicyStateImpl)policy.getPolicyState( project )).commitChanges();
     }
     
+    ProjectEntry entry = getProjectEntry( project );
+    
+    entry.isEnabledCommitted = entry.isEnabled;  
+    setProjectEnabled( project, entry.isEnabledCommitted );
+    
     try
     {
       IEclipsePreferences projectPrefs = new ProjectScope( project ).getNode( ServicePolicyActivator.PLUGIN_ID );
@@ -138,6 +191,10 @@ public class ServicePolicyPlatformImpl
     {
       ((PolicyStateImpl)policy.getPolicyState( project )).discardChanges();
     }
+    
+    ProjectEntry entry = getProjectEntry( project );
+    
+    entry.isEnabled = entry.isEnabledCommitted;  
   }
   
   public void restoreDefaults()
@@ -211,20 +268,49 @@ public class ServicePolicyPlatformImpl
   
   public boolean isProjectPreferencesEnabled( IProject project )
   {
+    ProjectEntry entry  = getProjectEntry( project );
+    
+    return entry.isEnabled;
+  }
+  
+  private boolean getProjectPreferenceEnabled( IProject project )
+  {
     String              pluginId          = ServicePolicyActivator.PLUGIN_ID;
     IEclipsePreferences projectPreference = new ProjectScope( project ).getNode( pluginId );
     String              key               = pluginId + ".projectEnabled"; //$NON-NLS-1$
     
-    return projectPreference.getBoolean( key, false );
+    return projectPreference.getBoolean( key, false );    
   }
   
   public void setProjectPreferencesEnabled( IProject project, boolean value )
+  {
+    ProjectEntry entry  = getProjectEntry( project );
+    
+    entry.isEnabled = value;
+  }
+  
+  private void setProjectEnabled( IProject project, boolean value )
   {
     String              pluginId          = ServicePolicyActivator.PLUGIN_ID;
     IEclipsePreferences projectPreference = new ProjectScope( project ).getNode( pluginId );
     String              key               = pluginId + ".projectEnabled"; //$NON-NLS-1$
 
-    projectPreference.putBoolean( key, value );
+    projectPreference.putBoolean( key, value );    
+  }
+  
+  private ProjectEntry getProjectEntry( IProject project )
+  {
+    ProjectEntry entry  = enabledProjectMap.get( project );
+    
+    if( entry == null )
+    {
+      entry = new ProjectEntry();
+      enabledProjectMap.put( project, entry );
+      entry.isEnabledCommitted = getProjectPreferenceEnabled( project );
+      entry.isEnabled = entry.isEnabledCommitted;
+    }
+
+    return entry;
   }
   
   private String makeUniqueId( String id )
@@ -243,5 +329,11 @@ public class ServicePolicyPlatformImpl
     }
     
     return result;
+  }
+  
+  private class ProjectEntry
+  {
+     boolean isEnabledCommitted;
+     boolean isEnabled;
   }
 }

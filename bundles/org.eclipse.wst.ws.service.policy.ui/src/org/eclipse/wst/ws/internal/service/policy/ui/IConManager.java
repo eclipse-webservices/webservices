@@ -11,7 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071025   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
  *******************************************************************************/
-package org.eclipse.wst.ws.service.policy.ui.utils;
+package org.eclipse.wst.ws.internal.service.policy.ui;
 
 import java.net.URL;
 import java.util.HashMap;

@@ -17,7 +17,18 @@ import java.util.List;
 
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
+/**
+ * 
+ * This interface is used in conjunction with the launchClass attribute of
+ * the complex element.
+ *
+ */
 public interface ILaunchOperation
 {
+  /**
+   * This method is called when the user has selected this complex operation.
+   * 
+   * @param selectedPolicies a list of the service policies that were selected.
+   */
   public void launch( List<IServicePolicy> selectedPolicies );
 }

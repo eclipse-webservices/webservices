@@ -3,12 +3,14 @@
 <schema targetNamespace="org.eclipse.wst.service.policy">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.wst.service.policy" id="servicePolicy" name="%SERVICE_POLICY_NAME"/>
+         <meta.schema plugin="org.eclipse.wst.service.policy" id="servicePolicy" name="Service policy"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         This extension allows extenders to define service policies.
       </documentation>
    </annotation>
+
+   <include schemaLocation="schema://org.eclipse.core.expressions/schema/expressionLanguage.exsd"/>
 
    <element name="extension">
       <complexType>
@@ -48,6 +50,7 @@
             <element ref="policy" minOccurs="0" maxOccurs="1"/>
             <element ref="enumeration" minOccurs="0" maxOccurs="1"/>
             <element ref="loadListener" minOccurs="0" maxOccurs="1"/>
+            <element ref="enablement" minOccurs="0" maxOccurs="1"/>
          </sequence>
       </complexType>
    </element>
@@ -240,7 +243,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         1.0
       </documentation>
    </annotation>
 
