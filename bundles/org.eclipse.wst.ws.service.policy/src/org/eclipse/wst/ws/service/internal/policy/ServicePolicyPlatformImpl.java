@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071113   209701 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -228,7 +229,7 @@ public class ServicePolicyPlatformImpl
       
       if( policy.getParentPolicy() == null )
       {
-        if( filter != null && filter.accept( policy ) )
+        if( filter == null || (filter != null && filter.accept( policy )) )
         {
           rootPolicies.add( policy );
         }
