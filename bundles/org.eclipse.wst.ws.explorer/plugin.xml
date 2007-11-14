@@ -85,13 +85,24 @@
       </serviceSelector>
    </extension>
    
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jst.j2ee.J2EEPerspective">
+         <actionSet
+               id="org.eclipse.wst.ws.explorer.explorer">
+         </actionSet>
+      </perspectiveExtension>
+   </extension>
+   
+   
     <!-- Main Menu Actions -->
 
    <extension point="org.eclipse.ui.actionSets">
 
       <actionSet
             label="%COMMAND_LAUNCH_WS_EXPLORER"
-            visible="true"
+            visible="false"
             id="org.eclipse.wst.ws.explorer.explorer">
          <menu
                label="%MENU_RUN"
@@ -102,7 +113,7 @@
          </menu>
          <action
                label="%COMMAND_LAUNCH_WS_EXPLORER"
-               icon="icons/launchWSE.gif"
+               icon="icons/etool16/launch_ws_explorer.gif"
                tooltip="%TOOLTIP_LAUNCH_WS_EXPLORER"
                class="org.eclipse.wst.ws.internal.explorer.action.LaunchWSEAction"
                menubarPath="org.eclipse.ui.run/explorer"
