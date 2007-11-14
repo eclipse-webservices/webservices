@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,13 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060403   128827 kathy@ca.ibm.com - Kathy Chan
+ * 20071109   209075 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.preferences;
 
 public class MergeDefaults
 {
- private static final boolean PREFERENCE_SKELETON_MERGE_DEFAULT = false;
+ private static final boolean PREFERENCE_SKELETON_MERGE_DEFAULT = true;
  
  /**
   * 
