@@ -115,7 +115,7 @@ public class ServicePolicyRegistry
     }
     catch( CoreException exc )
     {
-      error( "Error loading enablement expression: " + exc.getMessage() );
+      error( "Error loading enablement expression: " + exc.getMessage() ); //$NON-NLS-1$
     }
   }
   
@@ -230,7 +230,7 @@ public class ServicePolicyRegistry
     String                       enumListId     = RegistryUtils.getAttribute( policy, "enumlistid" ); //$NON-NLS-1$
     String                       defaultEnumId  = RegistryUtils.getAttribute( policy, "defaultenumid" ); //$NON-NLS-1$
     String                       mutableValue   = RegistryUtils.getAttribute( policy, "mutable" ); //$NON-NLS-1$
-    boolean                      mutable        = mutableValue != null && mutableValue.equalsIgnoreCase( "true" );         
+    boolean                      mutable        = mutableValue != null && mutableValue.equalsIgnoreCase( "true" );          //$NON-NLS-1$
     DescriptorImpl               descriptor     = null;
     List<UnresolvedRelationship> relationships  = new Vector<UnresolvedRelationship>();
     

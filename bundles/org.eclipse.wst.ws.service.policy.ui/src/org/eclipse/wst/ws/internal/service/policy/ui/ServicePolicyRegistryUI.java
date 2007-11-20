@@ -13,11 +13,14 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
+import org.eclipse.wst.ws.service.policy.ui.IQuickFixActionInfo;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.ws.service.policy.utils.RegistryUtils;
 
@@ -29,7 +32,7 @@ public class ServicePolicyRegistryUI
   {
   }
   
-  public void load( Map<String, PolicyOperationImpl> operationMap )
+  public void load( Map<String, PolicyOperationImpl> operationMap, Map<String, List<IQuickFixActionInfo>> quickFixes )
   {
     IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(SERVICE_POLICY_ID);
     
@@ -48,6 +51,10 @@ public class ServicePolicyRegistryUI
           if( name.equals( "operation" ) ) //$NON-NLS-1$
           {
             loadServicePolicyui( child, operationMap );
+          }
+          else if( name.equals( "quickfix") ) //$NON-NLS-1$
+          {
+            loadQuickFix( child, quickFixes );
           }
           else
           {
@@ -172,7 +179,7 @@ public class ServicePolicyRegistryUI
     if( ! error )
     {
       PolicyOperationImpl operation          = new PolicyOperationImpl();
-      boolean             workspaceOnlyValue = workspaceOnly != null && workspaceOnly.equals( "true" );
+      boolean             workspaceOnlyValue = workspaceOnly != null && workspaceOnly.equals( "true" ); //$NON-NLS-1$
       
       operation.setId( id );
       operation.setPolicyIdPattern( policyPattern );
@@ -198,6 +205,63 @@ public class ServicePolicyRegistryUI
       
       operationMap.put( id, operation );
     }
+  }
+  
+  private void loadQuickFix( IConfigurationElement element, Map<String, List<IQuickFixActionInfo>> quickFixes )
+  {
+    IConfigurationElement[]   children = element.getChildren( "action" ); //$NON-NLS-1$
+    String                    pluginId = RegistryUtils.getAttribute( element, "pluginid" ); //$NON-NLS-1$
+    String                    code     = RegistryUtils.getAttribute( element, "code" ); //$NON-NLS-1$
+    List<IQuickFixActionInfo> fixList  = new Vector<IQuickFixActionInfo>();
+    
+    for( IConfigurationElement child : children )
+    {
+      loadAction( child, fixList );
+    }
+    
+    if( pluginId == null )
+    {
+      error( "Missing pluginId attribute for Service policy UI quick fix extension" ); //$NON-NLS-1$
+      return;
+    }
+    
+    if( code == null )
+    {
+      error( "Missing code attribute for Service policy UI quick fix extension" ); //$NON-NLS-1$
+      return;
+    }
+    
+    if( fixList.size() == 0 )
+    {
+      error( "Missing action element for Service policy UI quick fix extension" ); //$NON-NLS-1$
+      return;
+    }
+    
+    String key = pluginId + ":" + code; //$NON-NLS-1$
+    quickFixes.put( key, fixList );
+  }
+  
+  private void loadAction( IConfigurationElement element, List<IQuickFixActionInfo> fixList )
+  {
+    IConfigurationElement[] descElem = element.getChildren( "descriptor" ); //$NON-NLS-1$
+    String                  clazz    = RegistryUtils.getAttribute( element, "class" ); //$NON-NLS-1$
+    
+    if( descElem == null )
+    {
+      error( "Missing descriptor element for Service policy UI quick fix extension" ); //$NON-NLS-1$
+      return;      
+    }
+    
+    if( clazz == null )
+    {
+      error( "Missing class attribute for Service policy UI quick fix extension" ); //$NON-NLS-1$
+      return;           
+    }
+    
+    IDescriptor            descriptor = RegistryUtils.loadDescriptor( element );
+    QuickFixActionInfoImpl action     = new QuickFixActionInfoImpl( element, descriptor );
+    
+    fixList.add( action );
   }
   
   private void error( String message )

@@ -36,6 +36,7 @@ import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 
+@SuppressWarnings("restriction") //$NON-NLS-1$
 public class MainTester extends TestCase
 {  
    
@@ -128,13 +129,17 @@ public class MainTester extends TestCase
      ServicePolicyPlatform platform  = ServicePolicyPlatform.getInstance();
      IServicePolicy        id1       = platform.getServicePolicy( "id1" ); //$NON-NLS-1$
      IServicePolicy        id2       = platform.getServicePolicy( "id2" ); //$NON-NLS-1$
+     IServicePolicy        id3       = platform.getServicePolicy( "id3" ); //$NON-NLS-1$
      IPolicyStateEnum      state1    = id1.getPolicyStateEnum();
      IPolicyStateEnum      state2    = id2.getPolicyStateEnum();
+     IPolicyStateEnum      state3    = id3.getPolicyStateEnum();
      IStateEnumerationItem item1     = state1.getCurrentItem();
      IStateEnumerationItem item2     = state2.getCurrentItem();
+     IStateEnumerationItem item3     = state3.getCurrentItem();
      
      assertTrue( "Unexpected shortname:" + item1.getShortName(), item1.getShortName().equals( "ignore") ); //$NON-NLS-1$ //$NON-NLS-2$
      assertTrue( "Unexpected shortname:" + item2.getShortName(), item2.getShortName().equals( "warn") ); //$NON-NLS-1$ //$NON-NLS-2$
+     assertTrue( "Unexpected shortname:" + item3.getShortName(), item3.getShortName().equals( "ignore") ); //$NON-NLS-1$ //$NON-NLS-2$
      System.out.println( "id1 value:" + item1.getShortName() ); //$NON-NLS-1$
      System.out.println( "id2 value:" + item2.getShortName() ); //$NON-NLS-1$
    }
@@ -177,49 +182,50 @@ public class MainTester extends TestCase
      
        for( String key : keys )
        {
-         System.out.println( "Key=" + key + " value=" + projectPreferences.get( key, "" ));
+         System.out.println( "Key=" + key + " value=" + projectPreferences.get( key, "" )); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
        }
      }
      catch( Exception exc )
      {
-       assertTrue( "Exception thrown" + exc.getMessage(), false );
+       assertTrue( "Exception thrown" + exc.getMessage(), false ); //$NON-NLS-1$
      }
    }
    
    public void testUniqueIds()
    {
      ServicePolicyPlatform platform  = ServicePolicyPlatform.getInstance();
-     IServicePolicy        policy    = platform.createServicePolicy( null, "someid", null, null );
+     IServicePolicy        policy    = platform.createServicePolicy( null, "someid", null, null ); //$NON-NLS-1$
      
-     assertTrue( policy.getId().equals( "someid" ) );
+     assertTrue( policy.getId().equals( "someid" ) ); //$NON-NLS-1$
      
-     policy = platform.createServicePolicy( null, "someid", null, null );
-     assertTrue( policy.getId().equals( "someid1" ) );
+     policy = platform.createServicePolicy( null, "someid", null, null ); //$NON-NLS-1$
+     assertTrue( policy.getId().equals( "someid1" ) ); //$NON-NLS-1$
      
-     policy = platform.createServicePolicy( null, "someid", null, null );
-     assertTrue( policy.getId().equals( "someid2" ) );
+     policy = platform.createServicePolicy( null, "someid", null, null ); //$NON-NLS-1$
+     assertTrue( policy.getId().equals( "someid2" ) ); //$NON-NLS-1$
      
-     policy = platform.createServicePolicy( null, "someid1", null, null );
-     assertTrue( policy.getId().equals( "someid3" ) );
+     policy = platform.createServicePolicy( null, "someid1", null, null ); //$NON-NLS-1$
+     assertTrue( policy.getId().equals( "someid3" ) ); //$NON-NLS-1$
      
-     policy = platform.createServicePolicy( null, "some55id5", null, null );
-     assertTrue( policy.getId().equals( "some55id5" ) );
+     policy = platform.createServicePolicy( null, "some55id5", null, null ); //$NON-NLS-1$
+     assertTrue( policy.getId().equals( "some55id5" ) ); //$NON-NLS-1$
      
-     policy = platform.createServicePolicy( null, "some55id5", null, null );
-     assertTrue( policy.getId().equals( "some55id1" ) );
+     policy = platform.createServicePolicy( null, "some55id5", null, null ); //$NON-NLS-1$
+     assertTrue( policy.getId().equals( "some55id1" ) ); //$NON-NLS-1$
    }
+ 
    
-   public void testOldWSIContext()
+  @SuppressWarnings("restriction") //$NON-NLS-1$
+  public void testOldWSIContext()
    {
      ServicePolicyPlatform    platform    = ServicePolicyPlatform.getInstance();
-     IServicePolicy           apPolicy    = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" );
+     IServicePolicy           apPolicy    = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" ); //$NON-NLS-1$
      IPolicyStateEnum         apState     = apPolicy.getPolicyStateEnum();
-     IServicePolicy           ssbpPolicy  = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" );
-     IPolicyStateEnum         ssbpState   = ssbpPolicy.getPolicyStateEnum();
+     IServicePolicy           ssbpPolicy  = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" ); //$NON-NLS-1$
      PersistentWSIAPContext   apContext   = new PersistentWSIAPContext();
      PersistentWSISSBPContext ssbpContext = new PersistentWSISSBPContext();
      IWorkspaceRoot           root        = ResourcesPlugin.getWorkspace().getRoot();
-     IProject                 project     = root.getProject("TestProject");
+     IProject                 project     = root.getProject("TestProject"); //$NON-NLS-1$
      String                   item        = null;
      
      try
@@ -228,78 +234,78 @@ public class MainTester extends TestCase
      }
      catch( CoreException exc )
      {
-       assertTrue( "Core exception:" + exc.getMessage(), false );  
+       assertTrue( "Core exception:" + exc.getMessage(), false );   //$NON-NLS-1$
      }
      
      IPolicyStateEnum  apProjState   = apPolicy.getPolicyStateEnum( project );
      IPolicyStateEnum  ssbpProjState = ssbpPolicy.getPolicyStateEnum( project );
      
      // Ensure that project preferences are gotten from the workspace
-     apState.setCurrentItem( "org.eclipse.wst.sug.ignore" );
+     apState.setCurrentItem( "org.eclipse.wst.sug.ignore" ); //$NON-NLS-1$
      platform.commitChanges();
-     apProjState.setCurrentItem( "org.eclipse.wst.sug.suggest" );
+     apProjState.setCurrentItem( "org.eclipse.wst.sug.suggest" ); //$NON-NLS-1$
      item = apProjState.getCurrentItem().getId();
-     assertTrue( "Ap value not ignore, but got " + item, item.equals("org.eclipse.wst.sug.ignore"));
+     assertTrue( "Ap value not ignore, but got " + item, item.equals("org.eclipse.wst.sug.ignore")); //$NON-NLS-1$ //$NON-NLS-2$
      
-     apState.setCurrentItem( "org.eclipse.wst.sug.require" );
+     apState.setCurrentItem( "org.eclipse.wst.sug.require" ); //$NON-NLS-1$
      platform.commitChanges();
-     apProjState.setCurrentItem( "org.eclipse.wst.sug.ignore" );
+     apProjState.setCurrentItem( "org.eclipse.wst.sug.ignore" ); //$NON-NLS-1$
      item = apProjState.getCurrentItem().getId();
-     assertTrue( "Ap value not require, but got " + item, item.equals("org.eclipse.wst.sug.require"));
+     assertTrue( "Ap value not require, but got " + item, item.equals("org.eclipse.wst.sug.require")); //$NON-NLS-1$ //$NON-NLS-2$
      
      platform.setProjectPreferencesEnabled( project , true );
      item = apProjState.getCurrentItem().getId();
-     assertTrue( "Ap value not ingore, but got " + item, item.equals("org.eclipse.wst.sug.ignore"));
+     assertTrue( "Ap value not ingore, but got " + item, item.equals("org.eclipse.wst.sug.ignore")); //$NON-NLS-1$ //$NON-NLS-2$
      
      platform.commitChanges( project );
      item = apProjState.getCurrentItem().getId();
-     assertTrue( "Ap value not ingore, but got " + item, item.equals("org.eclipse.wst.sug.ignore"));
+     assertTrue( "Ap value not ingore, but got " + item, item.equals("org.eclipse.wst.sug.ignore")); //$NON-NLS-1$ //$NON-NLS-2$
      
      String apContextValue = apContext.getProjectWSICompliance( project );
-     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.IGNORE_NON_WSI ) );
+     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.IGNORE_NON_WSI ) ); //$NON-NLS-1$
      
-     apState.setCurrentItem( "org.eclipse.wst.sug.suggest" );
+     apState.setCurrentItem( "org.eclipse.wst.sug.suggest" ); //$NON-NLS-1$
      platform.commitChanges();
      apContextValue = apContext.getProjectWSICompliance( project );
-     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.IGNORE_NON_WSI ) );
+     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.IGNORE_NON_WSI ) ); //$NON-NLS-1$
      
      platform.setProjectPreferencesEnabled( project, false );
      apContextValue = apContext.getProjectWSICompliance( project );
-     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) );
+     assertTrue( "Ap context not ignore, but " + apContextValue, apContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) ); //$NON-NLS-1$
      
-     apProjState.setCurrentItem( "org.eclipse.wst.sug.require" );
+     apProjState.setCurrentItem( "org.eclipse.wst.sug.require" ); //$NON-NLS-1$
      platform.commitChanges( project );
      apContextValue = apContext.getProjectWSICompliance( project );
-     assertTrue( "Ap context not suggest, but " + apContextValue, apContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) );
+     assertTrue( "Ap context not suggest, but " + apContextValue, apContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) ); //$NON-NLS-1$
      
      platform.setProjectPreferencesEnabled( project, true );
      apContextValue = apContext.getProjectWSICompliance( project );
-     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
+     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) ); //$NON-NLS-1$
      
-     ssbpProjState.setCurrentItem( "org.eclipse.wst.sug.suggest" );
+     ssbpProjState.setCurrentItem( "org.eclipse.wst.sug.suggest" ); //$NON-NLS-1$
      
      String ssbpContextValue = ssbpContext.getProjectWSICompliance( project );
      
-     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
-     assertTrue( "SSBP context not suggest, but " + ssbpContextValue, ssbpContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) );
+     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) ); //$NON-NLS-1$
+     assertTrue( "SSBP context not suggest, but " + ssbpContextValue, ssbpContextValue.equals( PersistentWSIContext.WARN_NON_WSI ) ); //$NON-NLS-1$
      
-     ssbpProjState.setCurrentItem( "org.eclipse.wst.sug.require" );
+     ssbpProjState.setCurrentItem( "org.eclipse.wst.sug.require" ); //$NON-NLS-1$
      
      ssbpContextValue = ssbpContext.getProjectWSICompliance( project );
-     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
-     assertTrue( "SSBP context not require, but " + ssbpContextValue, ssbpContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) );
+     assertTrue( "Ap context not require, but " + apContextValue, apContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) ); //$NON-NLS-1$
+     assertTrue( "SSBP context not require, but " + ssbpContextValue, ssbpContextValue.equals( PersistentWSIContext.STOP_NON_WSI ) ); //$NON-NLS-1$
      
    }
    
    public void testMutable()
    {
      ServicePolicyPlatform    platform    = ServicePolicyPlatform.getInstance();
-     IServicePolicy           apPolicy    = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" );
-     IServicePolicy           ssbpPolicy  = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" );
-     IServicePolicy           wsiPolicy   = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" );
+     IServicePolicy           apPolicy    = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" ); //$NON-NLS-1$
+     IServicePolicy           ssbpPolicy  = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" ); //$NON-NLS-1$
+     IServicePolicy           wsiPolicy   = platform.getServicePolicy( "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" ); //$NON-NLS-1$
      
-     assertTrue( "Root wsi policy is mutable", !wsiPolicy.getPolicyState().isMutable() );
-     assertTrue( "Ap policy is not mutable", apPolicy.getPolicyState().isMutable() );
-     assertTrue( "SSBP policy is not mutable", ssbpPolicy.getPolicyState().isMutable() );
+     assertTrue( "Root wsi policy is mutable", !wsiPolicy.getPolicyState().isMutable() ); //$NON-NLS-1$
+     assertTrue( "Ap policy is not mutable", apPolicy.getPolicyState().isMutable() ); //$NON-NLS-1$
+     assertTrue( "SSBP policy is not mutable", ssbpPolicy.getPolicyState().isMutable() ); //$NON-NLS-1$
    }
 }

@@ -19,10 +19,14 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
+import org.eclipse.wst.ws.service.policy.ui.IQuickFixAction;
+import org.eclipse.wst.ws.service.policy.ui.IQuickFixActionInfo;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyPlatformUI;
 
 public class MainUITester extends TestCase
@@ -98,6 +102,62 @@ public class MainUITester extends TestCase
      checkContents( "Set5", set5, new IPolicyOperation[]{ op2, op3, op4 } ); //$NON-NLS-1$
      checkContents( "Set6", set6, new IPolicyOperation[]{ op1, op2, op4 } ); //$NON-NLS-1$
      checkContents( "Set7", set7, new IPolicyOperation[]{ op1, op2, op3, op4 } ); //$NON-NLS-1$
+   }
+   
+   public void testEnabledOperations()
+   {
+     ServicePolicyPlatform   platform    = ServicePolicyPlatform.getInstance();
+     ServicePolicyPlatformUI platformUI  = ServicePolicyPlatformUI.getInstance();
+     IServicePolicy          id1         = platform.getServicePolicy( "id1" ); //$NON-NLS-1$
+     IServicePolicy          id2         = platform.getServicePolicy( "id2" ); //$NON-NLS-1$
+     IServicePolicy          id3         = platform.getServicePolicy( "id3" ); //$NON-NLS-1$
+     IServicePolicy          id4         = platform.getServicePolicy( "id4" ); //$NON-NLS-1$
+     List<IServicePolicy>    policyList1 = new Vector<IServicePolicy>();
+     List<IServicePolicy>    policyList2 = new Vector<IServicePolicy>();
+     IPolicyOperation        op1         = platformUI.getOperation( "service.ui.operation3" ); //$NON-NLS-1$
+     
+     policyList1.add( id1 );
+     policyList1.add( id2 );
+     policyList1.add( id3 );
+     policyList1.add( id4 );
+     policyList2.add( id4 );
+     
+     assertTrue( "Expected operation to not be enabled", !op1.isEnabled( policyList1 ) ); //$NON-NLS-1$
+     assertTrue( "Expected operation to be enabled", op1.isEnabled( policyList2 ) ); //$NON-NLS-1$
+   }
+   
+   public void testQuickFixActions()
+   {
+     ServicePolicyPlatform      platform    = ServicePolicyPlatform.getInstance();
+     ServicePolicyPlatformUI    platformUI  = ServicePolicyPlatformUI.getInstance();
+     IServicePolicy             id1         = platform.getServicePolicy( "id1" ); //$NON-NLS-1$
+     IStatus                    status1     = new Status( IStatus.ERROR, "org.eclipse.wst.ws.service.policy.test", 1, "some error", null ); //$NON-NLS-1$ //$NON-NLS-2$
+     IStatus                    status2     = new Status( IStatus.ERROR, "org.eclipse.wst.ws.service.policy.test", 2, "some error", null ); //$NON-NLS-1$ //$NON-NLS-2$
+     List<IQuickFixActionInfo>  fixList1    = platformUI.getQuickFixes( status1 );
+     List<IQuickFixActionInfo>  fixList2    = platformUI.getQuickFixes( status2 );
+     
+     assertTrue( "Expecting two quick fixes", fixList1.size() == 2 ); //$NON-NLS-1$
+     assertTrue( "Expection one quick fix", fixList2.size() == 1 ); //$NON-NLS-1$
+     
+     for( IQuickFixActionInfo actionInfo : fixList1 )
+     {
+       IQuickFixAction action = actionInfo.getAction();
+       id1.setStatus( status1 );
+       
+       assertTrue( "Status is not OK", !id1.getStatus().isOK() ); //$NON-NLS-1$
+       action.action( id1 );
+       assertTrue( "Status is Ok ", id1.getStatus().isOK() ); //$NON-NLS-1$
+     }
+     
+     for( IQuickFixActionInfo actionInfo : fixList2 )
+     {
+       IQuickFixAction action = actionInfo.getAction();
+       id1.setStatus( status2 );
+       
+       assertTrue( "Status is not OK", !id1.getStatus().isOK() ); //$NON-NLS-1$
+       action.action( id1 );
+       assertTrue( "Status is Ok ", id1.getStatus().isOK() ); //$NON-NLS-1$
+     }
    }
    
    private void displaySet( String setName, Set<IPolicyOperation> operationSet )

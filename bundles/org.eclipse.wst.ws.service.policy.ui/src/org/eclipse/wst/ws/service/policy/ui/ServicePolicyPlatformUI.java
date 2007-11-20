@@ -16,6 +16,7 @@ package org.eclipse.wst.ws.service.policy.ui;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.ws.internal.service.policy.ui.ServicePolicyPlatformUIImpl;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
@@ -81,5 +82,16 @@ public class ServicePolicyPlatformUI
   public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected, boolean isWorkspace )
   {
     return platformUI.getSelectedOperations( policiesSelected, isWorkspace );
+  }
+  
+  /**
+   * 
+   * @param status
+   * @return returns a list of quick fixes for this status object.  If
+   * no quick fixes are available an empty list will be returned.
+   */
+  public List<IQuickFixActionInfo> getQuickFixes( IStatus status )
+  {
+    return platformUI.getQuickFixes( status );
   }
 }

@@ -31,30 +31,30 @@ import org.osgi.service.prefs.BackingStoreException;
 
 public class LocalUtils
 {
-  private static final String BASE_KEY      = "org.eclipse.wst.";
-  private static final String LOCAL_IDS_KEY = "localIds";
-  private static final String PARENT_KEY    = "parentId";
-  private static final String MUTABLE_KEY   = "mutable";
-  private static final String DESCR_KEY     = "description";
-  private static final String LONGNAME_KEY  = "longname";
-  private static final String SHORTNAME_KEY = "shortname";
-  private static final String ICONPATH_KEY  = "iconpath";
-  private static final String ICONBUND_KEY  = "iconbundleid";
-  private static final String HELPID_KEY    = "contexthelpid";
-  private static final String ENUMLIST_KEY  = "enumlistid";
-  private static final String DEFENUM_KEY   = "defaultenumid";
-  private static final String REL_KEY       = "rel";
-  private static final String TARGET_SUFFIX = ".target";
-  private static final String SOURCE_SUFFIX = ".source";
+  private static final String BASE_KEY      = "org.eclipse.wst."; //$NON-NLS-1$
+  private static final String LOCAL_IDS_KEY = "localIds"; //$NON-NLS-1$
+  private static final String PARENT_KEY    = "parentId"; //$NON-NLS-1$
+  private static final String MUTABLE_KEY   = "mutable"; //$NON-NLS-1$
+  private static final String DESCR_KEY     = "description"; //$NON-NLS-1$
+  private static final String LONGNAME_KEY  = "longname"; //$NON-NLS-1$
+  private static final String SHORTNAME_KEY = "shortname"; //$NON-NLS-1$
+  private static final String ICONPATH_KEY  = "iconpath"; //$NON-NLS-1$
+  private static final String ICONBUND_KEY  = "iconbundleid"; //$NON-NLS-1$
+  private static final String HELPID_KEY    = "contexthelpid"; //$NON-NLS-1$
+  private static final String ENUMLIST_KEY  = "enumlistid"; //$NON-NLS-1$
+  private static final String DEFENUM_KEY   = "defaultenumid"; //$NON-NLS-1$
+  private static final String REL_KEY       = "rel"; //$NON-NLS-1$
+  private static final String TARGET_SUFFIX = ".target"; //$NON-NLS-1$
+  private static final String SOURCE_SUFFIX = ".source"; //$NON-NLS-1$
   
   public static List<String> getLocalPolicyIds()
   {
     List<String>        result      = new Vector<String>();
     IEclipsePreferences preferences = getPreferences();
     String              key         = BASE_KEY + LOCAL_IDS_KEY;
-    String              idsValue    = preferences.get( key , "" );
+    String              idsValue    = preferences.get( key , "" ); //$NON-NLS-1$
     
-    if( !idsValue.equals( "" ) )
+    if( !idsValue.equals( "" ) ) //$NON-NLS-1$
     {
       result = createStringList( idsValue );
     }
@@ -90,7 +90,7 @@ public class LocalUtils
     }
     catch( BackingStoreException exc )
     {
-      ServicePolicyActivator.logError( "Error loading service policy local preferences.", exc);
+      ServicePolicyActivator.logError( "Error loading service policy local preferences.", exc); //$NON-NLS-1$
     }
   }
   
@@ -102,7 +102,7 @@ public class LocalUtils
     IServicePolicy      parent      = policy.getParentPolicy();
     
     save( preferences, policyId, PARENT_KEY,  parent == null ? null : parent.getId() );
-    save( preferences, policyId, MUTABLE_KEY, "" + policy.getPolicyState().isMutable() );
+    save( preferences, policyId, MUTABLE_KEY, "" + policy.getPolicyState().isMutable() ); //$NON-NLS-1$
     save( preferences, policyId, ENUMLIST_KEY, policy.getEnumListId() );
     save( preferences, policyId, DEFENUM_KEY, policy.getDefaultEnumId() );
     save( preferences, policyId, DESCR_KEY, descriptor.getDescription() );
@@ -149,7 +149,7 @@ public class LocalUtils
   
   private static List<String> createStringList( String spaceDelimitedString )
   {
-    String[] splitValues = spaceDelimitedString.split( " " );
+    String[] splitValues = spaceDelimitedString.split( " " ); //$NON-NLS-1$
     
     return Arrays.asList( splitValues );
   }
@@ -238,12 +238,12 @@ public class LocalUtils
                                                                 String                    keySuffix )
   {
     String                 key      = createKey( policyId, REL_KEY + relCount + keySuffix );
-    String                 value    = preferences.get( key, "" );
+    String                 value    = preferences.get( key, "" ); //$NON-NLS-1$
     IPolicyEnumerationList enumList = null;
     
-    if( !value.equals( "" ) )
+    if( !value.equals( "" ) ) //$NON-NLS-1$
     {
-      String[]                    splitValue     = value.split( " " );
+      String[]                    splitValue     = value.split( " " ); //$NON-NLS-1$
       String                      targetPolicyId = splitValue[0];
       IServicePolicy              targetPolicy   = platform.getServicePolicy( targetPolicyId );
       List<IStateEnumerationItem> items          = new Vector<IStateEnumerationItem>();
@@ -286,7 +286,7 @@ public class LocalUtils
   
   private static void save( IEclipsePreferences preferences, String policyId, String key, String value )
   {
-    if( value != null && !value.equals( "" ) )
+    if( value != null && !value.equals( "" ) ) //$NON-NLS-1$
     {
       preferences.put( createKey(policyId,key), value );      
     }

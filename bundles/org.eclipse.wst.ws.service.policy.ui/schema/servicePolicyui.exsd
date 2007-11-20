@@ -50,16 +50,17 @@
          </documentation>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="operation" minOccurs="1" maxOccurs="unbounded"/>
-         </sequence>
+         <choice>
+            <element ref="operation" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="quickFix" minOccurs="0" maxOccurs="unbounded"/>
+         </choice>
       </complexType>
    </element>
 
    <element name="descriptor">
       <annotation>
          <documentation>
-            A descriptor for this Service policy operation
+            A descriptor for this Service policy operation or action.
          </documentation>
       </annotation>
       <complexType>
@@ -210,6 +211,54 @@
             <annotation>
                <documentation>
                   Indicates if this operation allows multiple selection of policy objects or not.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="quickFix">
+      <annotation>
+         <documentation>
+            This element allows extenders to add quick fixes to the Service policy UI frameworks.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="action" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="pluginId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The plugin id that the enclosed quick fix actions apply to.  This is the id that will match the plugin id from the IStatus of a ServicePolicy object.
+
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="code" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The code that the enclosed quick fix actions apply to.  This is the code that will match the code from the IStatus of a ServicePolicy object.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="action">
+      <annotation>
+         <documentation>
+            The element is used to add a quick fix action.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="descriptor"/>
+         </sequence>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class that the framework will call for a particular quick fix action.  This class must implement the IQuickFixAction interface.
                </documentation>
             </annotation>
          </attribute>

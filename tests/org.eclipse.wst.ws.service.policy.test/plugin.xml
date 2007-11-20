@@ -125,6 +125,22 @@
                   enabledClass="org.eclipse.wst.ws.service.policy.test.TestEnabledClass"/>
        </operation>
        
+       <quickFix pluginId="org.eclipse.wst.ws.service.policy.test"
+                 code="1">
+          <action class="org.eclipse.wst.ws.service.policy.test.action1">
+             <descriptor shortName="quick fix 1 for code 1"/>
+          </action>
+          <action class="org.eclipse.wst.ws.service.policy.test.action2">
+             <descriptor shortName="quick fix 2 for code 1"/>
+          </action>
+       </quickFix>
+       
+       <quickFix pluginId="org.eclipse.wst.ws.service.policy.test"
+                 code="2">
+          <action class="org.eclipse.wst.ws.service.policy.test.action3">
+             <descriptor shortName="quick fix 1 for code 2"/>
+          </action>
+       </quickFix>
      </servicePolicyUI>
    </extension>
 

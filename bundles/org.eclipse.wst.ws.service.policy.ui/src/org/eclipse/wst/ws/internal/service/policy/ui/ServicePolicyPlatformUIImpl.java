@@ -23,15 +23,18 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
+import org.eclipse.wst.ws.service.policy.ui.IQuickFixActionInfo;
 
 public class ServicePolicyPlatformUIImpl
 {
   private Map<String, PolicyOperationImpl>           operationMap;
   private Map<IServicePolicy, Set<IPolicyOperation>> policyCache;
+  private Map<String,List<IQuickFixActionInfo>>      quickFixes;
   
   public ServicePolicyPlatformUIImpl()
   {
@@ -41,7 +44,8 @@ public class ServicePolicyPlatformUIImpl
     
     operationMap = new HashMap<String, PolicyOperationImpl>();
     policyCache  = new HashMap<IServicePolicy, Set<IPolicyOperation>>();
-    registry.load( operationMap );
+    quickFixes   = new HashMap<String, List<IQuickFixActionInfo>>();
+    registry.load( operationMap, quickFixes );
     createOperationCache( policyIds );
     
     // Now add listeners to each node.
@@ -55,6 +59,22 @@ public class ServicePolicyPlatformUIImpl
   public IPolicyOperation getOperation( String operationId )
   {
     return operationMap.get( operationId );
+  }
+  
+  public List<IQuickFixActionInfo> getQuickFixes( IStatus status )
+  {
+    String                    pluginId = status.getPlugin();
+    int                       code     = status.getCode();
+    String                    key      = pluginId + ":" + code; //$NON-NLS-1$
+    List<IQuickFixActionInfo> result   = quickFixes.get( key );
+    
+    if( result == null )
+    {
+      result = new Vector<IQuickFixActionInfo>();
+      quickFixes.put( key, result );
+    }
+    
+    return result;
   }
   
   public List<IPolicyOperation> getAllOperations()
