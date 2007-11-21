@@ -19,9 +19,10 @@
    <extension point="org.eclipse.wst.ws.service.policy.ui.servicepolicyui">
      <servicePolicyUI>
        <operation id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp"
-                      policyPattern="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.*" >
+                      policyPattern="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsi.*">
          <descriptor longName="%COMPLIANCE_LEVEL_LONGNAME"/>
          <enumeration id="org.eclipse.wst.service.policy.suggestionEnum"/>
+         <enabled multiselect="true"/>
        </operation>
      </servicePolicyUI>
    </extension>

@@ -329,6 +329,7 @@ public class ServicePolicyImpl implements IServicePolicy
       statusChangeListeners = new Vector<IStatusChangeListener>();    
     }
     
+    statusChangeListeners.add( listener );
   }
   
   public void removeStatusChangeListener( IStatusChangeListener listener )

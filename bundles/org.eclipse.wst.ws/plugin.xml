@@ -46,4 +46,15 @@
          <loadListener class="org.eclipse.wst.ws.internal.preferences.MigrateWSIpreferencesLoadListener"/>
      </servicePolicy>
    </extension> 
+   
+  <extension point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+      id="org.eclipse.wst.ws.service.ws.service.policy"
+      type="org.eclipse.core.resources.IProject"
+      namespace="org.eclipse.wst.ws.service.ws.service.policy"
+      properties="projectHasWSDLfiles"
+      class="org.eclipse.wst.ws.internal.preferences.WSDLFilePropertyTester">
+    </propertyTester>
+  </extension>
+   
 </plugin>

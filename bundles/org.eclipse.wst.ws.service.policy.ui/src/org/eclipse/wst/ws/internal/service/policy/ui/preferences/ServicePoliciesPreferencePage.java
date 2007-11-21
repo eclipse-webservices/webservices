@@ -9,8 +9,9 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20071025          ericdp@ca.ibm.com - Eric Peters
- * 20071107          ericdp@ca.ibm.com - Eric Peters
+ * 20071025 196997   ericdp@ca.ibm.com - Eric Peters
+ * 20071107 196997   ericdp@ca.ibm.com - Eric Peters
+ * 20071120   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui.preferences;
 
@@ -31,10 +32,13 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 {
 	ServicePoliciesComposite preferencePage;
 	Composite superParent;
+	public static final String PAGE_ID = "org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage";
 
 	/**
 	 * Creates preference page controls on demand.
-	 *   @param parentComposite  the parent for the preference page
+	 * 
+	 * @param parentComposite
+	 *            the parent for the preference page
 	 */
 	protected Control createContents(Composite superparent) {
 		preferencePage = new ServicePoliciesComposite(superparent, null, this);
@@ -61,7 +65,8 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 
 	/**
 	 * Do anything necessary because the OK button has been pressed.
-	 *  @return whether it is okay to close the preference page
+	 * 
+	 * @return whether it is okay to close the preference page
 	 */
 	public boolean performOk() {
 		storeValues();
@@ -77,13 +82,18 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 
 	/**
 	 * Do anything necessary because the Cancel button has been pressed.
-	 *  @return whether it is okay to close the preference page
+	 * 
+	 * @return whether it is okay to close the preference page
 	 */
 	public boolean performCancel() {
 		ServicePolicyPlatform.getInstance().discardChanges();
 		return true;
 	}
 
+	/**
+	 * Do anything necessary because the OK button has been pressed.
+	 * 
+	 */
 	protected void performApply() {
 		storeValues();
 	}
@@ -94,6 +104,9 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 	public void init(IWorkbench workbench) {
 	}
 
+	/**
+	 * @return whether it is okay to close the preference page
+	 */
 	public boolean okToLeave() {
 		return preferencePage.getError() == null;
 

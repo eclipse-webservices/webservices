@@ -9,8 +9,9 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20071025          ericdp@ca.ibm.com - Eric Peters
- * 20071107          ericdp@ca.ibm.com - Eric Peters
+ * 20071025 196997   ericdp@ca.ibm.com - Eric Peters
+ * 20071107 196997   ericdp@ca.ibm.com - Eric Peters
+ * 20071120   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -31,6 +32,12 @@ public final class WstSPUIPluginMessages extends NLS {
 	public static String SERVICEPOLICIES_DEPENDENCIES;
 	public static String SERVICEPOLICIES_DEPENDENCY_ERROR;
 	public static String SERVICEPOLICIES_DEPENDENCIES_NONE;
+	public static String LINK_CONFIGWORKSPACE_SETTINGS;
+	public static String LABEL_ENABLE_PROJECT_SETTINGS;
+	public static String LABEL_QFLINK;
+	public static String TEXT_QFIX_NOSUG;
+	public static String TEXT_DETAILS;
+
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, WstSPUIPluginMessages.class);
