@@ -50,9 +50,12 @@ public class ArrayType extends RecognizedReturnType
   public String TypeConversion(String name)
   {
      
-    String nonBean = Generator.DOUBLE_TAB + "java.util.List list" + getUniqueName() + "= java.util.Arrays.asList(" + name + ");" +StringUtils.NEWLINE
-    	             + Generator.DOUBLE_TAB + "String temp"+ getUniqueName() +" = list" + getUniqueName() + ".toString();" + StringUtils.NEWLINE 
-                     + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE  
+    String nonBean = Generator.DOUBLE_TAB + "String temp"+ getUniqueName() + " = null;" + StringUtils.NEWLINE
+    				 + Generator.DOUBLE_TAB + "if(" + name + " != null){" + StringUtils.NEWLINE
+    				 + Generator.DOUBLE_TAB + "java.util.List list" + getUniqueName() + "= java.util.Arrays.asList(" + name + ");" +StringUtils.NEWLINE
+    	             + Generator.DOUBLE_TAB + "temp"+ getUniqueName() +" = list" + getUniqueName() + ".toString();" + StringUtils.NEWLINE 
+    	             + Generator.DOUBLE_TAB + "}" + StringUtils.NEWLINE
+    	             + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE  
     	             + Generator.DOUBLE_TAB + "<%=temp"+ getUniqueName() +"%>" + StringUtils.NEWLINE
                      + Generator.DOUBLE_TAB + "<%"+ StringUtils.NEWLINE;
 
