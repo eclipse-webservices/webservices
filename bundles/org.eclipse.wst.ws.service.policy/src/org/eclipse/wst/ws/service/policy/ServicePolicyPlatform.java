@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.ws.service.internal.policy.ServicePolicyPlatformImpl;
+import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 
 /**
  * 
@@ -198,6 +199,38 @@ public class ServicePolicyPlatform
   public IServicePolicy createServicePolicy( IServicePolicy parent, String id, String enumListId, String defaultEnumId )
   {
     return platformImpl.createServicePolicy( parent, id, enumListId, defaultEnumId );
+  }
+  
+  /**
+   * Removes a service policy from the service policy platform.
+   * 
+   * @param policy the service policy
+   */
+  public void removeServicePolicy( IServicePolicy policy )
+  {
+    platformImpl.removePlatformPolicy( policy );
+  }
+  
+  /**
+   * This method allows calls to listener to any child change that is
+   * made in the service policy platform regardless of where it is 
+   * located in the tree of service policies.
+   * 
+   * @param listener
+   */
+  public void addChildChangeListener( IPolicyChildChangeListener listener )
+  {
+    platformImpl.addChildChangeListener( listener );  
+  }
+  
+  /**
+   * Removes a child change listener from the service policy platform.
+   * 
+   * @param listener
+   */
+  public void removeChildChangeListener( IPolicyChildChangeListener listener )
+  {
+    platformImpl.removeChildChangeListener( listener );   
   }
   
   /**

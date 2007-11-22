@@ -110,7 +110,7 @@ public class ServicePolicyImpl implements IServicePolicy
     return children;
   }
   
-  public void addChild( ServicePolicyImpl child, boolean fireEvent )
+  private void addChild( ServicePolicyImpl child, boolean fireEvent )
   {
     children.add( child );
       
@@ -120,16 +120,24 @@ public class ServicePolicyImpl implements IServicePolicy
     }
   }
   
-  public void removeChild(IServicePolicy policy)
+  public void removeChild(IServicePolicy policyToRemove )
   {
     if( !predefined )
     {
-      boolean removed = children.remove( policy );
+      // Remove all the children of this policy first.
+      List<IServicePolicy> childPolicies = new Vector<IServicePolicy>( policyToRemove .getChildren() );
+      
+      for( IServicePolicy childPolicy : childPolicies )
+      {
+        policyToRemove .removeChild( childPolicy );
+      }
+      
+      boolean removed = children.remove( policyToRemove  );
       
       if( removed )
       {
         platform.removePolicy( this );
-        fireChildChangeEvent( policy, false );
+        fireChildChangeEvent( policyToRemove , false );
       }
     }
   }

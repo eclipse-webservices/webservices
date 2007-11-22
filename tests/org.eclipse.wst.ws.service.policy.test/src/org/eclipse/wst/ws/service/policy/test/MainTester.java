@@ -35,6 +35,7 @@ import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
+import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 
 @SuppressWarnings("restriction") //$NON-NLS-1$
 public class MainTester extends TestCase
@@ -139,7 +140,7 @@ public class MainTester extends TestCase
      
      assertTrue( "Unexpected shortname:" + item1.getShortName(), item1.getShortName().equals( "ignore") ); //$NON-NLS-1$ //$NON-NLS-2$
      assertTrue( "Unexpected shortname:" + item2.getShortName(), item2.getShortName().equals( "warn") ); //$NON-NLS-1$ //$NON-NLS-2$
-     assertTrue( "Unexpected shortname:" + item3.getShortName(), item3.getShortName().equals( "ignore") ); //$NON-NLS-1$ //$NON-NLS-2$
+     assertTrue( "Unexpected shortname:" + item3.getShortName(), item3.getShortName().equals( "error") ); //$NON-NLS-1$ //$NON-NLS-2$
      System.out.println( "id1 value:" + item1.getShortName() ); //$NON-NLS-1$
      System.out.println( "id2 value:" + item2.getShortName() ); //$NON-NLS-1$
    }
@@ -307,5 +308,85 @@ public class MainTester extends TestCase
      assertTrue( "Root wsi policy is mutable", !wsiPolicy.getPolicyState().isMutable() ); //$NON-NLS-1$
      assertTrue( "Ap policy is not mutable", apPolicy.getPolicyState().isMutable() ); //$NON-NLS-1$
      assertTrue( "SSBP policy is not mutable", ssbpPolicy.getPolicyState().isMutable() ); //$NON-NLS-1$
+   }
+   
+   public void testChildChangeListeners()
+   {
+     ServicePolicyPlatform platform = ServicePolicyPlatform.getInstance();
+     ChildChangeListener   listener = new ChildChangeListener();
+     
+     platform.addChildChangeListener(listener);
+     listener.childEventOccured = false;
+     listener.isAdded = false;
+     
+     IServicePolicy parent = platform.createServicePolicy( null, "parent_id1", null, null );
+     
+     assertTrue( "Listener not called", listener.childEventOccured );
+     assertTrue( "Listener not added", listener.isAdded );
+     
+     listener.childEventOccured = false;   
+     listener.isAdded = false;
+     IServicePolicy child1 = platform.createServicePolicy( parent, "parent_id1", null, null );
+     
+     assertTrue( "Listener not called", listener.childEventOccured );
+     assertTrue( "Listener not added", listener.isAdded );
+     
+     listener.childEventOccured = false;   
+     listener.isAdded = false;
+     listener.count   = 0;
+     IServicePolicy child2 = platform.createServicePolicy( child1, "parent_id1", null, null );
+     IServicePolicy child3 = platform.createServicePolicy( child2, "parent_id1", null, null );
+     
+     assertTrue( "Listener not called", listener.childEventOccured );
+     assertTrue( "Listener not added", listener.isAdded );
+     assertTrue( "Listener count not 2", listener.count == 2 );
+     
+     listener.childEventOccured = false;   
+     listener.isAdded = true;
+     listener.count   = 0;
+     
+     child2.removeChild( child3 );
+     
+     assertTrue( "Listener not called", listener.childEventOccured );
+     assertTrue( "Listener not removed", !listener.isAdded );
+     assertTrue( "Listener count not 1", listener.count == 1 );
+     
+     listener.childEventOccured = false;   
+     listener.isAdded = true;
+     listener.count   = 0;
+     
+     // Should remove parent, child1, and child2
+     platform.removeServicePolicy( parent );
+     
+     assertTrue( "Listener not called", listener.childEventOccured );
+     assertTrue( "Listener not removed", !listener.isAdded );
+     assertTrue( "Listener count not 3", listener.count == 3 );
+     
+     platform.removeChildChangeListener( listener );
+     
+     listener.childEventOccured = false;   
+     listener.isAdded = true;
+     listener.count   = 0;
+     
+     parent = platform.createServicePolicy( null, "parent_id1", null, null );
+     child1 = platform.createServicePolicy( parent, "parent_id1", null, null );
+     
+     assertTrue( "Listener called", !listener.childEventOccured );
+     assertTrue( "Listener isadded changed", listener.isAdded );
+     assertTrue( "Listener count not 0", listener.count == 0 );
+   }
+   
+   private class ChildChangeListener implements IPolicyChildChangeListener
+   {
+     public boolean childEventOccured = false;
+     public boolean isAdded = false;
+     public int     count = 0;;
+     
+     public void childChange(IServicePolicy child, boolean added)
+     {
+       childEventOccured = true;
+       isAdded = added;
+       count++;
+     }
    }
 }

@@ -34,6 +34,7 @@ import org.eclipse.wst.ws.service.policy.IFilter;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
+import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformLoadListener;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -47,6 +48,7 @@ public class ServicePolicyPlatformImpl
   private Map<String, StateEnumerationItemImpl>    enumItemList;
   private Map<IProject, ProjectEntry>              enabledProjectMap;
   private List<Expression>                         enabledList;
+  private List<IPolicyChildChangeListener>         childChangeListeners;
   
   public ServicePolicyPlatformImpl()
   {
@@ -63,6 +65,7 @@ public class ServicePolicyPlatformImpl
     enumItemList      = new HashMap<String, StateEnumerationItemImpl>();
     enabledProjectMap = new HashMap<IProject, ProjectEntry>();
     enabledList       = new Vector<Expression>();
+    childChangeListeners = new Vector<IPolicyChildChangeListener>();
     
     //Load local policies
     for( String localPolicyId : localIds )
@@ -145,9 +148,60 @@ public class ServicePolicyPlatformImpl
     ServicePolicyActivator.getDefault().savePluginPreferences();
   }
   
+  /**
+   * This method is called internally to remove a service policy.
+   * 
+   * @param policy
+   */
   public void removePolicy( ServicePolicyImpl policy )
   {
     policyMap.remove( policy.getId() );
+    fireChildChangeEvent( policy, false );
+  }
+  
+  /**
+   * This method is only called from the platform API
+   * 
+   * @param policy
+   */
+  public void removePlatformPolicy( IServicePolicy policy )
+  {
+    IServicePolicy parent = policy.getParentPolicy();
+    
+    if( parent == null )
+    {
+      // Remove any children first
+      List<IServicePolicy> children = new Vector<IServicePolicy>( policy.getChildren() );
+      
+      for( IServicePolicy child : children )
+      {
+        policy.removeChild( child );  
+      }
+      
+      removePolicy( (ServicePolicyImpl)policy);
+    }
+    else
+    {
+      parent.removeChild( policy );
+    }
+  }
+  
+  public void addChildChangeListener( IPolicyChildChangeListener listener )
+  {
+    childChangeListeners.add( listener );
+  }
+  
+  public void removeChildChangeListener( IPolicyChildChangeListener listener )
+  {
+    childChangeListeners.remove( listener );  
+  }
+  
+  private void fireChildChangeEvent( IServicePolicy policy, boolean isAdd )
+  {
+    for( IPolicyChildChangeListener listener : childChangeListeners )
+    {
+      listener.childChange( policy, isAdd );     
+    }
   }
   
   public void commitChanges( IProject project )
@@ -251,6 +305,7 @@ public class ServicePolicyPlatformImpl
     policy.setEnumListId( enumListId );
     policy.setDefaultEnumId( defaultEnumId );
     policyMap.put( uniqueId, policy );
+    fireChildChangeEvent( policy, true );
     
     return policy;
   }

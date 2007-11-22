@@ -56,5 +56,35 @@
       class="org.eclipse.wst.ws.internal.preferences.WSDLFilePropertyTester">
     </propertyTester>
   </extension>
+  
+   <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
+     <servicePolicy>
+       <enablement>
+         <test property="org.eclipse.wst.ws.service.ws.service.policy.projectHasWSDLfiles"/>
+       </enablement>
+       
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp">
+         <!-- CONTEXT_ID PSPW0001 for the Service Policies WS-I Preferences category -->
+         <descriptor longName="%PREFERENCE_SERVICEPOLICIES_CONTAINER_WSI_COMPLIANCE" iconPath="icons/full/obj16/wsicat.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0001"/>
+       </policy>
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.suggestionEnum" defaultEnumId="org.eclipse.wst.sug.suggest">
+         <!-- CONTEXT_ID PSPW0002 for the Service Policies WS-I AP 1.0 Preference -->
+         <descriptor longName="%LABEL_WSI_AP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0002"/>
+         <relationship enumList="org.eclipse.wst.sug.suggest">
+           <targetPolicy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp"
+                   itemList="org.eclipse.wst.sug.suggest org.eclipse.wst.sug.require"/>
+         </relationship>
+         <relationship enumList="org.eclipse.wst.sug.require">
+           <targetPolicy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp"
+                   itemList="org.eclipse.wst.sug.require"/>
+         </relationship>
+       </policy>
+       <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.suggestionEnum" defaultEnumId="org.eclipse.wst.sug.suggest">
+         <!-- CONTEXT_ID PSPW0003 for the Service Policies WS-I SSBP 1.0 Preference -->
+         <descriptor longName="%LABEL_WSI_SSBP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0003"/>
+       </policy>
+     </servicePolicy>
+   </extension>
+
    
 </plugin>

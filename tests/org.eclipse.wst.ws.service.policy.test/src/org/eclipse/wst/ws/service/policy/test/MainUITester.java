@@ -22,12 +22,14 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
+import org.eclipse.wst.ws.service.policy.IFilter;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 import org.eclipse.wst.ws.service.policy.ui.IQuickFixAction;
 import org.eclipse.wst.ws.service.policy.ui.IQuickFixActionInfo;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyPlatformUI;
+import org.eclipse.wst.ws.service.policy.ui.utils.ActivityUtils;
 
 public class MainUITester extends TestCase
 {  
@@ -157,6 +159,24 @@ public class MainUITester extends TestCase
        assertTrue( "Status is not OK", !id1.getStatus().isOK() ); //$NON-NLS-1$
        action.action( id1 );
        assertTrue( "Status is Ok ", id1.getStatus().isOK() ); //$NON-NLS-1$
+     }
+   }
+   
+   public void testActivitiesFilter()
+   {
+     IFilter                    activitiesFilter = ActivityUtils.getCurrentActivitiesFilter();
+     ServicePolicyPlatform      platform         = ServicePolicyPlatform.getInstance();
+     List<IServicePolicy>       policyList       = platform.getRootServicePolicies( activitiesFilter );
+         
+     displayPolicies( policyList );
+   }
+   
+   private void displayPolicies( List<IServicePolicy> policyList )
+   {
+     System.out.println( "Listing service policies:" );
+     for( IServicePolicy policy : policyList )
+     {
+       System.out.println( "  " + policy.getId() );
      }
    }
    
