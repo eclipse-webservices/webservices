@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071122   210692 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
@@ -50,9 +53,12 @@ public class ArrayType extends RecognizedReturnType
   public String TypeConversion(String name)
   {
      
-    String nonBean = Generator.DOUBLE_TAB + "java.util.List list" + getUniqueName() + "= java.util.Arrays.asList(" + name + ");" +StringUtils.NEWLINE
-    	             + Generator.DOUBLE_TAB + "String temp"+ getUniqueName() +" = list" + getUniqueName() + ".toString();" + StringUtils.NEWLINE 
-                     + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE  
+    String nonBean = Generator.DOUBLE_TAB + "String temp"+ getUniqueName() + " = null;" + StringUtils.NEWLINE
+    				 + Generator.DOUBLE_TAB + "if(" + name + " != null){" + StringUtils.NEWLINE
+    				 + Generator.DOUBLE_TAB + "java.util.List list" + getUniqueName() + "= java.util.Arrays.asList(" + name + ");" +StringUtils.NEWLINE
+    	             + Generator.DOUBLE_TAB + "temp"+ getUniqueName() +" = list" + getUniqueName() + ".toString();" + StringUtils.NEWLINE 
+    	             + Generator.DOUBLE_TAB + "}" + StringUtils.NEWLINE
+    	             + Generator.DOUBLE_TAB + "%>" + StringUtils.NEWLINE  
     	             + Generator.DOUBLE_TAB + "<%=temp"+ getUniqueName() +"%>" + StringUtils.NEWLINE
                      + Generator.DOUBLE_TAB + "<%"+ StringUtils.NEWLINE;
 
