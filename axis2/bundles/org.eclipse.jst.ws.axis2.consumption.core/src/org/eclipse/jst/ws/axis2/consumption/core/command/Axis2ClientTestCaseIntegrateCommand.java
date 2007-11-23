@@ -11,7 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 20070518        187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070608        191055 sandakith@wso2.com - Lahiru Sandakith, Duplicate classpath entry fix
- * 20070824        200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20070824        200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to separate file
+ * 20071121        205227 sandakith@wso2.com - Lahiru Sandakith, jUnit problem with project export
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -34,9 +35,12 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.consumption.core.messages.Axis2ConsumptionUIMessages;
+import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
 import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.BundleUtils;
 
@@ -51,7 +55,6 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
     private DataModel model;
     private IProject project;
     private boolean testClassPathExists;
-    private boolean junitClassPathExists;
 
     public Axis2ClientTestCaseIntegrateCommand(IProject project_,DataModel model_){
         this.model = model_;
@@ -66,7 +69,7 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
         if(model.isTestCaseCheck()){
         	try{
         	// Then add the latest junit.jar from to the project class path
-            IPath junitPath = new Path(CopyJUnitJarToProject(workspaceDirectory));
+        	CopyJUnitJarToProject(workspaceDirectory,monitor);
 
             // make the test folder as source folder.
             // Get the Project Handler
@@ -77,15 +80,11 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
             // where path is the new source directory
             IClasspathEntry newClasspathEntry = JavaCore
                                 .newSourceEntry(getPathToTestFolder(project,workspaceDirectory)); 
-            IClasspathEntry junitClasspathEntry = JavaCore.newLibraryEntry (junitPath,null,null); 
            
             //Check test directory already in the classpath entries.
             for (int i = 0; i < classpathEntries.length; i++) {
                 if (classpathEntries[i].equals(newClasspathEntry)){
                 	testClassPathExists = true;
-                }
-                if (classpathEntries[i].equals(junitClasspathEntry)){
-                	junitClassPathExists = true;
                 }
             }
             
@@ -93,23 +92,13 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
             if(!testClassPathExists){
             	classPathLength+=1;
             }
-            if(!junitClassPathExists){
-            	classPathLength+=1;
-            }
             IClasspathEntry[] newClasspathEntryArray = new IClasspathEntry[classPathLength];
             
             for (int i = 0; i < classpathEntries.length; i++) {
             	 newClasspathEntryArray[i]= classpathEntries[i];
             }
-            // if not already exist add new Class Path Entries of junit.jar and test directory
-            if(!testClassPathExists && !junitClassPathExists){
-            	newClasspathEntryArray[classPathLength-2] = newClasspathEntry;
-            	newClasspathEntryArray[classPathLength-1] = junitClasspathEntry;
-            }
-            else if(!junitClassPathExists){
-            	newClasspathEntryArray[classPathLength-1] = junitClasspathEntry;
-            }
-            else if(!testClassPathExists){
+            // if not already exist add new Class Path Entry test directory
+           	if(!testClassPathExists){
             	newClasspathEntryArray[classPathLength-1] = newClasspathEntry;
             }
             javaProj.setRawClasspath(newClasspathEntryArray,monitor);
@@ -126,13 +115,14 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
     }
    
     /**
-     * Copy the Junit jar from the framework location to the project classpath.
+     * Copy the JUnit jar from the framework location to the project classpath.
      * @param workspace
      * @return absolute path location of the copying file
      * @throws ExecutionException
      * @throws IOException
      */
-    private String CopyJUnitJarToProject(String workspace) throws ExecutionException, IOException {
+    private String CopyJUnitJarToProject(String workspace, IProgressMonitor monitor) 
+                                                           throws ExecutionException, IOException {
     	File relativeWebInfJunitFile = new File(FileUtils.addAnotherNodeToPath(
     												J2EEUtils.getWebInfPath(project).toOSString(),
     												Axis2Constants.DIR_LIB+File.separator+
@@ -141,7 +131,13 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
     	File obsaluteWebInfJunitFile = new File(FileUtils.addAnotherNodeToPath(
     														workspace, 
     														relativeWebInfJunitFile.toString()));
-		FileUtils.copy(getFrameworkJunitFile(), obsaluteWebInfJunitFile);
+    	IEnvironment environment = getEnvironment();
+		IStatusHandler statusHandler = environment.getStatusHandler();	
+    	ContentCopyUtils contentCopyUtils = new ContentCopyUtils();
+    	contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
+    			getFrameworkJunitFile().getAbsolutePath(),
+    			obsaluteWebInfJunitFile.getAbsolutePath(), 
+    			monitor, statusHandler);
 		return obsaluteWebInfJunitFile.getAbsolutePath();
 	}
 
