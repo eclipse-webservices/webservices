@@ -18,6 +18,7 @@
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  * 20070730   194786 sandakith@wso2.com - Lahiru Sandakith, adding servletapi jar filter
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20071120   205228 sandakith@wso2.com	- Lahiru Sandakith, Axis2 Runtime change issue.
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -37,11 +38,16 @@ public class Axis2WebappUtils {
 	private static String tempWarLocation = null;
 	private static boolean alreadyWarExist = false;
 	private static Axis2EmitterContext context;
+	private static String axis2HomeLocation = null;
 
 	public static String  copyAxis2War(IProgressMonitor monitor, String Axis2Home)
 										throws FileNotFoundException, IOException{
 		context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
-		if(!alreadyWarExist){
+
+		if( ! ( alreadyWarExist && context.getAxis2RuntimeLocation().equals(axis2HomeLocation) )){
+			if(context.getAxis2RuntimeLocation() != null){
+				axis2HomeLocation = context.getAxis2RuntimeLocation();
+			}
 			File tempAxis2Directory = new File (Axis2CoreUtils.tempAxis2Directory());
 			if(!tempAxis2Directory.exists()){
 				tempAxis2Directory.mkdirs();
@@ -56,16 +62,6 @@ public class Axis2WebappUtils {
 				}
 				tempWarLocationFile.mkdirs();
 		
-				String axis2HomeLocation = null;
-				if(context.getAxis2RuntimeLocation()!=null){
-					axis2HomeLocation = context.getAxis2RuntimeLocation();
-				}else{
-				    Axis2EmitterContext context = WebServiceAxis2CorePlugin
-													.getDefault().getAxisEmitterContext();
-				    axis2HomeLocation =  context.getAxis2RuntimeLocation();
-
-				}
-
 					String axis2WebappLocation = Axis2CoreUtils.addAnotherNodeToPath(
 							axis2HomeLocation,
 							"webapp");
