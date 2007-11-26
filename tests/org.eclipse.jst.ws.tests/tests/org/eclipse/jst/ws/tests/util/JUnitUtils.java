@@ -14,6 +14,7 @@
  * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu 
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20071116  208124 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -22,10 +23,7 @@ import java.util.Enumeration;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -40,6 +38,7 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
+import org.eclipse.jst.ws.internal.context.PersistentScenarioContext;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.tests.plugin.TestsPlugin;
@@ -62,9 +61,6 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.validation.internal.ConfigurationManager;
-import org.eclipse.wst.validation.internal.GlobalConfiguration;
-import org.eclipse.wst.validation.internal.ValidatorMetaData;
 import org.eclipse.wst.validation.internal.operations.ValidatorManager;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
@@ -381,6 +377,30 @@ public class JUnitUtils {
 		}
 		
 		return true;
+	}
+	
+	public static void setServiceScenarioDefault() {
+		PersistentScenarioContext context = (PersistentScenarioContext)WebServicePlugin.getInstance().getScenarioContext();
+	      context.setGenerateProxy( false );
+	      context.setLaunchWebServiceExplorer( false );
+	      context.setInstallWebService( false );
+	      context.setInstallClient( false );
+	      context.setStartWebService( false );
+	      context.setTestWebService( false );
+	      context.setMonitorWebService(false);
+	      context.setGenerateWebService(ScenarioContext.WS_DEVELOP);    
+	}
+	
+	public static void setClientScenarioDefault() {
+		PersistentScenarioContext context = (PersistentScenarioContext)WebServicePlugin.getInstance().getScenarioContext();
+	      context.setGenerateProxy( true );
+	      context.setLaunchWebServiceExplorer( false );
+	      context.setInstallWebService( false );
+	      context.setInstallClient( false );
+	      context.setStartWebService( false );
+	      context.setTestWebService( false );
+	      context.setMonitorWebService(false);
+	      context.setGenerateClient(ScenarioContext.WS_DEVELOP);
 	}
 	
 }

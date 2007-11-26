@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu      
+ * 20071116  208124 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -21,7 +22,7 @@ public interface WSJUnitConstants {
   public final String SERVER_INSTALL_PATH = System.getProperty("org.eclipse.jst.server.tomcat.50");
   public final String RUNTIMETYPEID_TC50 = "org.eclipse.jst.server.tomcat.runtime.50";
 
-  public final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.runtime.axis11";
+  public final String WS_RUNTIMEID_AXIS = "org.eclipse.jst.ws.axis.creation.axisWebServiceRT";
   public final String WS_RUNTIMEID_AXIS2 = "org.eclipse.jst.ws.runtime.axis2";
   
   public final String WS_AXIS2_RUNTIME = "org.eclipse.jst.ws.axis2.creation.axis2WebServiceRT";

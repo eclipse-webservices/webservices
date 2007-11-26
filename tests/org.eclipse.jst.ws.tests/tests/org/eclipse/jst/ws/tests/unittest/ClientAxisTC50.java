@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070509   180567 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20071116   208124 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -91,6 +92,7 @@ public class ClientAxisTC50 extends WSWizardTomcat50Test {
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception {
         // Set default preferences for Axis and Tomcat 5.0    
 		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);
+		JUnitUtils.setClientScenarioDefault();
 	}
 
   /**
