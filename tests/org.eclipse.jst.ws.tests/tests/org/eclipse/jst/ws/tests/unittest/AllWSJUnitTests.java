@@ -10,8 +10,10 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
- * 20070314   176886 pmoogk@ca.ibm.com - Peter Moogk
- * 20071109   208124 kathy@ca.ibm.com - Kathy Chan
+ * 20070314  176886 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071030  208124 kathy@ca.ibm.com - Kathy Chan
+ * 20071031  208124 kathy@ca.ibm.com - Kathy Chan
+ * 20071116  208124 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -79,10 +81,11 @@ public class AllWSJUnitTests extends TestCase implements WSJUnitConstants
     // Tests which require a Tomcat server
     String s = System.getProperty("org.eclipse.jst.server.tomcat.50");
     if (s != null && s.length() > 0) {
- //     testSuite.addTest( BUJavaAxisTC50.suite() );
- //     testSuite.addTest( TDJavaAxisTC50.suite() );
- //     testSuite.addTest( ClientAxisTC50.suite() );
-    	testSuite.addTest( ServerCreationTests.suite());
+      testSuite.addTest( BUJavaAxisTC50.suite() );
+      testSuite.addTest( TDJavaAxisTC50.suite() );
+      testSuite.addTest( ClientAxisTC50.suite() );
+      testSuite.addTest( ServerCreationTests.suite());
+
     }
     testSuite.addTest( ResourceUtilsTests.suite() );
 
