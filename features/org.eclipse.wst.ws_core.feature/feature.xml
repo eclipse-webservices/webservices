@@ -133,7 +133,7 @@
          version="0.2.0.qualifier"/>
 
    <plugin
-         id="javax.wsdl15"
+         id="javax.wsdl"
          download-size="0"
          install-size="0"
          version="1.5.1.qualifier"
