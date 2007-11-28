@@ -43,6 +43,10 @@ public class DescriptorImpl implements IDescriptor
   public void setShortName(String name)
   {
     this.shortName = name;
+    
+    if( longName == null ) longName = shortName;
+    
+    hasChanged = true;
   }
   
   public String getLongName()
@@ -53,6 +57,9 @@ public class DescriptorImpl implements IDescriptor
   public void setLongName(String longName)
   {
     this.longName = longName;
+    
+    if( shortName == null ) shortName = longName;
+    
     hasChanged = true;
   }
 

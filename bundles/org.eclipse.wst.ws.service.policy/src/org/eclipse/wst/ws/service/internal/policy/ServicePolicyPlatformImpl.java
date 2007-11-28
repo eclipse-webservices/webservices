@@ -67,6 +67,8 @@ public class ServicePolicyPlatformImpl
     enabledList       = new Vector<Expression>();
     childChangeListeners = new Vector<IPolicyChildChangeListener>();
     
+    registry.load( loadListeners, policyMap, enumList, enumItemList );
+    
     //Load local policies
     for( String localPolicyId : localIds )
     {
@@ -74,9 +76,7 @@ public class ServicePolicyPlatformImpl
       
       policyMap.put( localPolicyId, localPolicy );
     }
-   
-    registry.load( loadListeners, policyMap, enumList, enumItemList );
-    
+       
     for( IPolicyPlatformLoadListener loadListener : loadListeners )
     {
       loadListener.load();
@@ -298,6 +298,8 @@ public class ServicePolicyPlatformImpl
                                                 String         enumListId, 
                                                 String         defaultEnumId )
   {
+    if( id == null ) id = "org.eclipse.wst.ws.service.policy.id";
+    
     String            uniqueId = makeUniqueId( id );
     ServicePolicyImpl policy   = new ServicePolicyImpl( false, uniqueId, this );
     
