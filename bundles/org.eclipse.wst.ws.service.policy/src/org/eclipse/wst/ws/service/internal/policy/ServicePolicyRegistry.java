@@ -233,6 +233,7 @@ public class ServicePolicyRegistry
     boolean                      mutable        = mutableValue != null && mutableValue.equalsIgnoreCase( "true" );          //$NON-NLS-1$
     DescriptorImpl               descriptor     = null;
     List<UnresolvedRelationship> relationships  = new Vector<UnresolvedRelationship>();
+    List<String[]>               stateKeyValues = new Vector<String[]>();
     
     // If the mutable attribute was not specified and the enumListId attribute
     // attribute was specified then this policy should be mutable, since
@@ -257,6 +258,26 @@ public class ServicePolicyRegistry
         {
           loadRelationship( policyElement, relationships );
         }
+        else if( name.equals( "state" ) ) //$NON-NLS-1$
+        {
+          String key   = RegistryUtils.getAttribute( policyElement, "key" ); //$NON-NLS-1$
+          String value = RegistryUtils.getAttribute( policyElement, "value" ); //$NON-NLS-1$
+          
+          if( key == null )
+          {
+            error( "Service policy state missing attribute \"key\"." ); //$NON-NLS-1$           
+          }
+          
+          if( value == null )
+          {
+            error( "Service policy state missing attribute \"value\"." ); //$NON-NLS-1$           
+          }
+          
+          if( key != null && value != null )
+          {
+            stateKeyValues.add( new String[]{ key, value } );
+          }
+        }
         else
         {
           error( "Undefined service policy element, " + name + " found." );                   //$NON-NLS-1$ //$NON-NLS-2$
@@ -270,8 +291,20 @@ public class ServicePolicyRegistry
       newPolicy.setDescriptor( descriptor );
       newPolicy.setEnumListId( enumListId );
       newPolicy.setDefaultEnumId( defaultEnumId );
-      ((PolicyStateImpl)newPolicy.getPolicyState()).internalSetMutable( mutable );
       policyMap.put( id, newPolicy );
+      
+      PolicyStateImpl policyState = (PolicyStateImpl)newPolicy.getPolicyState();
+      
+      // Temporarily allow the state to be updated for static state provided
+      // by the extender.
+      policyState.internalSetMutable( true );
+      
+      for( String[] keyValue : stateKeyValues )
+      {
+        policyState.putValue( keyValue[0], keyValue[1] );
+      }
+      
+      policyState.internalSetMutable( mutable );
     }
     catch( IllegalArgumentException exc )
     {

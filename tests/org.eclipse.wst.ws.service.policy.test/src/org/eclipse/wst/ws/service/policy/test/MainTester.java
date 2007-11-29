@@ -376,6 +376,15 @@ public class MainTester extends TestCase
      assertTrue( "Listener count not 0", listener.count == 0 );
    }
    
+   public void testState()
+   {
+     ServicePolicyPlatform platform = ServicePolicyPlatform.getInstance();
+     IServicePolicy        id2      = platform.getServicePolicy( "id2" );
+     String                value    = id2.getPolicyState().getValue( "id2_key" );
+     
+     assertTrue( "Expected state value to be id2_value.", value.equals( "id2_value" ) );
+   }
+   
    private class ChildChangeListener implements IPolicyChildChangeListener
    {
      public boolean childEventOccured = false;

@@ -69,12 +69,20 @@ public class ServicePolicyPlatformImpl
     
     registry.load( loadListeners, policyMap, enumList, enumItemList );
     
-    //Load local policies
+    // This first loop through the ids will only create service policy objects
+    // without populating them with there values.
     for( String localPolicyId : localIds )
     {
-      ServicePolicyImpl localPolicy = LocalUtils.loadLocalPolicy( localPolicyId, this );
+      ServicePolicyImpl localPolicy = new ServicePolicyImpl( false, localPolicyId, this );
       
       policyMap.put( localPolicyId, localPolicy );
+    }
+    
+    // This second loop will populate the service policy values and
+    // crossreference parent and child service policies.
+    for( String localPolicyId : localIds )
+    {
+      LocalUtils.loadLocalPolicy( localPolicyId, this );
     }
        
     for( IPolicyPlatformLoadListener loadListener : loadListeners )

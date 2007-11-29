@@ -60,6 +60,7 @@
          <sequence>
             <element ref="descriptor"/>
             <element ref="relationship" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="state" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="parentPolicyId" type="string">
             <annotation>
@@ -232,6 +233,30 @@
             <annotation>
                <documentation>
                   A class that implements the IPolicyPlatformLoadListener interface.  The load method of this class will be called when the ServicePolicy framework is first loaded.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="state">
+      <annotation>
+         <documentation>
+            This element allows the extender to define state data for this policy.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="key" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The key for this state data.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The value of this state data.
                </documentation>
             </annotation>
          </attribute>

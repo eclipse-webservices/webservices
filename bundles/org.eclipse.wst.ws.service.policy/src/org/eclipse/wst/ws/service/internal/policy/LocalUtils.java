@@ -114,10 +114,10 @@ public class LocalUtils
     saveRelationships( preferences, policyId, policy.getRelationships() );
   }
   
-  public static ServicePolicyImpl loadLocalPolicy( String policyId, ServicePolicyPlatformImpl platform )
+  public static void loadLocalPolicy( String policyId, ServicePolicyPlatformImpl platform )
   {
     IEclipsePreferences preferences = getPreferences();
-    ServicePolicyImpl   policy      = new ServicePolicyImpl( false, policyId, platform );
+    ServicePolicyImpl   policy      = platform.getServicePolicy( policyId );
     DescriptorImpl      descriptor  = (DescriptorImpl)policy.getDescriptor();
     String              parentId    = preferences.get( createKey( policyId, PARENT_KEY), null );
     
@@ -138,8 +138,6 @@ public class LocalUtils
     descriptor.setIconBundleId( preferences.get( createKey( policyId, ICONBUND_KEY), null ) );
     descriptor.setContextHelpId( preferences.get( createKey( policyId, HELPID_KEY), null ) );
     policy.setRelationships( loadRelationships( preferences, policyId, platform ) );
-    
-    return policy;
   }
   
   private static IEclipsePreferences getPreferences()

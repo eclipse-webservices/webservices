@@ -35,6 +35,7 @@
                         defaultEnumId="org.eclipse.wst.warn"
                         mutable="true">
          <descriptor shortName="id2 shortname" contextHelpId="somecontextid.A001"/>
+         <state key="id2_key" value="id2_value" />
        </policy>
        
        <policy id="id3" parentPolicyId="id2" 
