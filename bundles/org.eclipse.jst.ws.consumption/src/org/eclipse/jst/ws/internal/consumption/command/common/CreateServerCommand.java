@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20071130   203826 Kathy Chan - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -31,10 +34,11 @@ import org.eclipse.wst.server.core.ServerUtil;
 public class CreateServerCommand extends AbstractDataModelOperation
 {
 	private String serverFactoryId;
+	private String serverRuntimeId;
 	private String serverInstanceId;
 	
 	/**
-	 * Creates a server of the factory id
+	 * Creates a server of the factory id using the server runtime Id if provided
 	 * Note1: Checking for server instance == null is done in the PreService/ClientInstallCommands
 	 * Note2: Reporting of errors is done in PreService/ClientInstallCommands; simply return the status.
 	 */
@@ -58,33 +62,42 @@ public class CreateServerCommand extends AbstractDataModelOperation
 			IServerType serverType = ServerCore.findServerType(serverFactoryId);
 			if (serverType!=null) {
 				
-				//Choose a Runtime which is not a stub
-				IRuntime nonStubRuntime = null;
-				IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
-				String serverRuntimeTypeId = serverType.getRuntimeType().getId();
-				for (int i = 0; i < runtimes.length; i++) {
-					IRuntime runtime = runtimes[i];
-					String thisRuntimeTypeId = runtime.getRuntimeType().getId();
-					if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
-				        //Found an appropriate IRuntime that is not a stub
-						nonStubRuntime = runtime;
-						break;
-					}
-				}				
-				
-				if (nonStubRuntime==null)
-				{					
-					status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_STUB_ONLY,new String[]{serverFactoryId}) );
-					return status;					
+				IRuntime serverRuntime = null;
+				if (serverRuntimeId != null) {
+					ServerCore.findRuntime(serverRuntimeId);  // may return null if no runtime is found
 				}
+				
+				if (serverRuntime == null) { // either serverRuntimeId is null or did not find a runtime with that Id
+					//Choose a Runtime which is not a stub
+					IRuntime nonStubRuntime = null;
+					IRuntime[] runtimes = ServerUtil.getRuntimes(null, null);
+					String serverRuntimeTypeId = serverType.getRuntimeType().getId();
+					for (int i = 0; i < runtimes.length; i++) {
+						IRuntime runtime = runtimes[i];
+						String thisRuntimeTypeId = runtime.getRuntimeType().getId();
+						if (thisRuntimeTypeId.equals(serverRuntimeTypeId) && !runtime.isStub()) {
+							//Found an appropriate IRuntime that is not a stub
+							nonStubRuntime = runtime;
+							break;
+						}
+					}				
+
+					if (nonStubRuntime==null)
+					{					
+						status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_STUB_ONLY,new String[]{serverFactoryId}) );
+						return status;					
+					}
+
+					serverRuntime = nonStubRuntime;
+				} 
 				
 				if (env!=null)
 				{
-					serverWC = serverType.createServer(null, null, nonStubRuntime, monitor );
+					serverWC = serverType.createServer(null, null, serverRuntime, monitor );
 				}
 				else
 				{					
-					serverWC = serverType.createServer(null, null, nonStubRuntime, null);
+					serverWC = serverType.createServer(null, null, serverRuntime, null);
 				}
 				
 				if (serverWC != null) {
@@ -114,6 +127,11 @@ public class CreateServerCommand extends AbstractDataModelOperation
 		this.serverFactoryId = serverFactoryId;
 	}
 
+	public void setServerRuntimeid(String serverRuntimeId)
+	{
+		this.serverRuntimeId = serverRuntimeId;
+	}
+	
 	public String getServerInstanceId()
 	{
 		return serverInstanceId;

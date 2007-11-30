@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
+ * 20071130   203826 Kathy Chan - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
@@ -18,30 +19,31 @@ package org.eclipse.wst.ws.internal.wsrt;
 public class WebServiceClientInfo {
 
 	private WebServiceState state;
-	private java.lang.String serverFactoryId;
-	private java.lang.String serverInstanceId;
-	private java.lang.String webServiceRuntimeId;
-	private java.lang.String wsdlURL;
-	private java.lang.String implURL;
-	private java.lang.String proxyEndpoint = null;
+	private String serverFactoryId;
+	private String serverInstanceId;
+	private String serverRuntimeId;
+	private String webServiceRuntimeId;
+	private String wsdlURL;
+	private String implURL;
+	private String proxyEndpoint = null;
 	private boolean serverCreated = false;
 	
-	public java.lang.String getImplURL() {
+	public String getImplURL() {
 		return implURL;
 	}
-	public void setImplURL(java.lang.String implURL) {
+	public void setImplURL(String implURL) {
 		this.implURL = implURL;
 	}
-	public java.lang.String getServerFactoryId() {
+	public String getServerFactoryId() {
 		return serverFactoryId;
 	}
-	public void setServerFactoryId(java.lang.String serverFactoryId) {
+	public void setServerFactoryId(String serverFactoryId) {
 		this.serverFactoryId = serverFactoryId;
 	}
-	public java.lang.String getServerInstanceId() {
+	public String getServerInstanceId() {
 		return serverInstanceId;
 	}
-	public void setServerInstanceId(java.lang.String serverInstanceId) {
+	public void setServerInstanceId(String serverInstanceId) {
 		this.serverInstanceId = serverInstanceId;
 	}
 	public WebServiceState getState() {
@@ -50,22 +52,22 @@ public class WebServiceClientInfo {
 	public void setState(WebServiceState state) {
 		this.state = state;
 	}
-	public java.lang.String getWebServiceRuntimeId() {
+	public String getWebServiceRuntimeId() {
 		return webServiceRuntimeId;
 	}
-	public void setWebServiceRuntimeId(java.lang.String webServiceRuntimeId) {
+	public void setWebServiceRuntimeId(String webServiceRuntimeId) {
 		this.webServiceRuntimeId = webServiceRuntimeId;
 	}
-	public java.lang.String getWsdlURL() {
+	public String getWsdlURL() {
 		return wsdlURL;
 	}
-	public void setWsdlURL(java.lang.String wsdlURL) {
+	public void setWsdlURL(String wsdlURL) {
 		this.wsdlURL = wsdlURL;
 	}
-	public java.lang.String getProxyEndpoint() {
+	public String getProxyEndpoint() {
 		return proxyEndpoint;
 	}
-	public void setProxyEndpoint(java.lang.String proxyEndpoint) {
+	public void setProxyEndpoint(String proxyEndpoint) {
 		this.proxyEndpoint = proxyEndpoint;
 	}
 	
@@ -83,5 +85,11 @@ public class WebServiceClientInfo {
 	 */
 	public void setServerCreated(boolean serverCreated) {
 		this.serverCreated = serverCreated;
+	}
+	public String getServerRuntimeId() {
+		return serverRuntimeId;
+	}
+	public void setServerRuntimeId(String serverRuntimeId) {
+		this.serverRuntimeId = serverRuntimeId;
 	}
 }

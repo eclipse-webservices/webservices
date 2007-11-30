@@ -7,7 +7,7 @@
  *
  * Contributors:
  * IBM Corporation - initial API and implementation
- * yyyymmdd bug           Email and other contact information
+ * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060222   115834 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
@@ -21,6 +21,7 @@
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20071130   203826 Kathy Chan - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -257,6 +258,7 @@ public class ValidationUtils
    * @param typeId Web service type id (isClient=false) or Web service client implementation type id (isClient=true)
    * @param runtimeId Web service runtime id
    * @param serverId server type id
+   * @param serverInstanceId server instance id
    * @param projectName name of project
    * @param needEar boolean <code>true</code> if EAR is required, <code>false</code> if not.
    * @param earProjectName name of EAR project
@@ -267,7 +269,7 @@ public class ValidationUtils
    * IStatus with severity IStatus.ERROR otherwise.
    */
   public IStatus checkErrorStatus(int validationState, String typeId, String runtimeId, String serverId,
-			String projectName, boolean needEar, String earProjectName, String projectTypeId,
+			String serverInstanceId, String projectName, boolean needEar, String earProjectName, String projectTypeId,
 			boolean isClient) {
 	
 	  	// Ensure server, Web service runtime, and Web service type are
@@ -460,7 +462,7 @@ public class ValidationUtils
 	    		runtimeChecker = WebServiceRuntimeExtensionUtils2.getServiceRuntimeChecker(serviceRuntimeId);
 	    	}
 	    	if (runtimeChecker != null) {
-		    	return runtimeChecker.checkRuntimeCompatibility(serverId, projectName, projectTypeId, earProjectName);
+		    	return runtimeChecker.checkRuntimeCompatibility(serverId, serverInstanceId, projectName, projectTypeId, earProjectName);
 		    }
 	    }
 	    

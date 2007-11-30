@@ -7,10 +7,11 @@
  *
  * Contributors:
  * IBM Corporation - initial API and implementation
- * yyyymmdd bug           Email and other contact information
+ * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060802   152150 mahutch@ca.ibm.com
  * 20071107        203826 kathy@ca.ibm.com - Kathy Chan
+ * 20071130   203826 Kathy Chan - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -178,8 +179,8 @@ public class ServiceRuntimeDescriptor
     {
         try
         {
-        	if (elem.getAttribute("checkerClass") != null ) {
-        		webServiceRuntimeChecker = (IWebServiceRuntimeChecker)elem.createExecutableExtension("checkerClass");
+        	if (elem.getAttribute("runtimeChecker") != null ) {
+        		webServiceRuntimeChecker = (IWebServiceRuntimeChecker)elem.createExecutableExtension("runtimeChecker");
         	}
         }
         catch(CoreException ce)

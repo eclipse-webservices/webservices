@@ -47,6 +47,7 @@
  * 20061212   164177 makandre@ca.ibm.com - Andrew Mak, Incorrect validation error complaining about runtime not supporting a project type
  * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
  * 20070205   172687 makandre@ca.ibm.com - Andrew Mak, NPE in Scencario Defaults preferences page
+ * 20071130   203826 Kathy Chan - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1169,13 +1170,14 @@ private void handleTypeChange()
 		// 1. Check for errors on service side
 		String runtimeId = getServiceTypeRuntimeServer().getRuntimeId();
 		String serverId = getServiceTypeRuntimeServer().getServerId();
+		String serverInstanceId = getServiceTypeRuntimeServer().getServerInstanceId();
 		String typeId = getServiceTypeRuntimeServer().getTypeId();
 		String projectName = getServiceProjectName();
 		boolean needEar = getServiceNeedEAR();
 		String earProjectName = getServiceEarProjectName();
 		String projectTypeId = getServiceComponentType();
-		IStatus serviceSideErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId,
-				projectName, needEar, earProjectName, projectTypeId, false);
+		IStatus serviceSideErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId, 
+				serverInstanceId, projectName, needEar, earProjectName, projectTypeId, false);
 		if (serviceSideErrorStatus.getSeverity() == IStatus.ERROR) {
 			return serviceSideErrorStatus;
 		}

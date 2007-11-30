@@ -13,6 +13,7 @@
  * 20060330   128827 kathy@ca.ibm.com - Kathy Chan
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
+ * 20071130   203826 Kathy Chan - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
@@ -25,46 +26,47 @@ import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
 public class WebServiceInfo {
 
 	private WebServiceState state;
-	private java.lang.String serverFactoryId;
-	private java.lang.String serverInstanceId;
-	private java.lang.String webServiceRuntimeId;
-	private java.lang.String wsdlURL;
-	private java.lang.String endPointURL;
-	private java.lang.String implURL;
-	private java.lang.String[] implURLs;
+	private String serverFactoryId;
+	private String serverInstanceId;
+	private String serverRuntimeId;
+	private String webServiceRuntimeId;
+	private String wsdlURL;
+	private String endPointURL;
+	private String implURL;
+	private String[] implURLs;
 	private boolean serverCreated = false;
 	
 	private IMerger merger;
 	
-	public java.lang.String getEndPointURL()
+	public String getEndPointURL()
 	{
 		return endPointURL;
 	}
-	public void setEndPointURL(java.lang.String endPointURL)
+	public void setEndPointURL(String endPointURL)
 	{
 		this.endPointURL = endPointURL;
 	}
-	public java.lang.String getImplURL()
+	public String getImplURL()
 	{
 		return implURL;
 	}
-	public void setImplURL(java.lang.String implURL)
+	public void setImplURL(String implURL)
 	{
 		this.implURL = implURL;
 	}
-	public java.lang.String getServerFactoryId()
+	public String getServerFactoryId()
 	{
 		return serverFactoryId;
 	}
-	public void setServerFactoryId(java.lang.String serverFactoryId)
+	public void setServerFactoryId(String serverFactoryId)
 	{
 		this.serverFactoryId = serverFactoryId;
 	}
-	public java.lang.String getServerInstanceId()
+	public String getServerInstanceId()
 	{
 		return serverInstanceId;
 	}
-	public void setServerInstanceId(java.lang.String serverInstanceId)
+	public void setServerInstanceId(String serverInstanceId)
 	{
 		this.serverInstanceId = serverInstanceId;
 	}
@@ -76,27 +78,27 @@ public class WebServiceInfo {
 	{
 		this.state = state;
 	}
-	public java.lang.String getWebServiceRuntimeId()
+	public String getWebServiceRuntimeId()
 	{
 		return webServiceRuntimeId;
 	}
-	public void setWebServiceRuntimeId(java.lang.String webServiceRuntimeId)
+	public void setWebServiceRuntimeId(String webServiceRuntimeId)
 	{
 		this.webServiceRuntimeId = webServiceRuntimeId;
 	}
-	public java.lang.String getWsdlURL()
+	public String getWsdlURL()
 	{
 		return wsdlURL;
 	}
-	public void setWsdlURL(java.lang.String wsdlURL)
+	public void setWsdlURL(String wsdlURL)
 	{
 		this.wsdlURL = wsdlURL;
 	}
-	public java.lang.String[] getImplURLs()
+	public String[] getImplURLs()
 	{
 		return implURLs;
 	}
-	public void setImplURLs(java.lang.String[] implURLs)
+	public void setImplURLs(String[] implURLs)
 	{
 		this.implURLs = implURLs;
 		loadMerger();
@@ -132,6 +134,12 @@ public class WebServiceInfo {
 	 */
 	public void setServerCreated(boolean serverCreated) {
 		this.serverCreated = serverCreated;
+	}
+	public String getServerRuntimeId() {
+		return serverRuntimeId;
+	}
+	public void setServerRuntimeId(String serverRuntimeId) {
+		this.serverRuntimeId = serverRuntimeId;
 	}
 	
 }

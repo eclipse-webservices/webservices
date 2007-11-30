@@ -7,8 +7,10 @@
  *
  * Contributors:
  * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071107 203826 kathy@ca.ibm.com - Kathy Chan
+ * 20071130 203826 Kathy Chan - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;
@@ -19,8 +21,9 @@ import org.eclipse.core.runtime.Status;
 public class AbstractWebServiceRuntimeChecker implements
 		IWebServiceRuntimeChecker {
 
-	public IStatus checkRuntimeCompatibility(String serverTypeId,
+	public IStatus checkRuntimeCompatibility(String serverTypeId, String serverInstanceId,
 			String projectName, String projectTypeId, String earProjectName) {
 		return Status.OK_STATUS;
 	}
+	
 }
