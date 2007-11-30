@@ -21,7 +21,7 @@
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
- * 20071130   203826 Kathy Chan - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 

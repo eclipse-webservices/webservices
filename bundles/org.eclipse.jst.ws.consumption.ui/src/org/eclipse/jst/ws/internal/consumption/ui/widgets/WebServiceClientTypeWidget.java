@@ -32,7 +32,7 @@
  * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  * 20070126   138484 kathy@ca.ibm.com - Kathy Chan
- * 20071130   203826 Kathy Chan - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 

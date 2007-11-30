@@ -10,8 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060802   152150 mahutch@ca.ibm.com
- * 20071107        203826 kathy@ca.ibm.com - Kathy Chan
- * 20071130   203826 Kathy Chan - Kathy Chan
+ * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;

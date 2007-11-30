@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -45,6 +46,7 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
 	      {
 	        CreateServerCommand createServerCommand = new CreateServerCommand();
 	        createServerCommand.setServerFactoryid(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
+	        createServerCommand.setServerRuntimeId(webServiceClient_.getWebServiceClientInfo().getServerRuntimeId());
 	        createServerCommand.setEnvironment( environment );
 	        IStatus createServerStatus = createServerCommand.execute(null, null);
 	        if (createServerStatus.getSeverity()==Status.OK)

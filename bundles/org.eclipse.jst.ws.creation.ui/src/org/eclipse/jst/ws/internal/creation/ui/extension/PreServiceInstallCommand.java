@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -44,6 +45,7 @@ public class PreServiceInstallCommand extends AbstractDataModelOperation
 				{
 					CreateServerCommand createServerCommand = new CreateServerCommand();
 					createServerCommand.setServerFactoryid(webService_.getWebServiceInfo().getServerFactoryId());
+					createServerCommand.setServerRuntimeId(webService_.getWebServiceInfo().getServerRuntimeId());
 	                createServerCommand.setEnvironment( environment );
 					IStatus createServerStatus = createServerCommand.execute( monitor, null);
 					if (createServerStatus.getSeverity()==Status.OK)

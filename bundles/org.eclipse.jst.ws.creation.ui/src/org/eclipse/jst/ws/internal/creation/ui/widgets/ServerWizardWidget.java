@@ -47,7 +47,7 @@
  * 20061212   164177 makandre@ca.ibm.com - Andrew Mak, Incorrect validation error complaining about runtime not supporting a project type
  * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
  * 20070205   172687 makandre@ca.ibm.com - Andrew Mak, NPE in Scencario Defaults preferences page
- * 20071130   203826 Kathy Chan - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 

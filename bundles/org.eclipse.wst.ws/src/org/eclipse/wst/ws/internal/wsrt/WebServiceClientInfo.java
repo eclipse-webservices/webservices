@@ -11,7 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
- * 20071130   203826 Kathy Chan - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsrt;

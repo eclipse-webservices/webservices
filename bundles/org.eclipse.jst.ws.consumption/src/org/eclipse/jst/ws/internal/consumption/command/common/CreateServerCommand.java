@@ -9,7 +9,7 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20071130   203826 Kathy Chan - Kathy Chan
+ * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -127,7 +127,7 @@ public class CreateServerCommand extends AbstractDataModelOperation
 		this.serverFactoryId = serverFactoryId;
 	}
 
-	public void setServerRuntimeid(String serverRuntimeId)
+	public void setServerRuntimeId(String serverRuntimeId)
 	{
 		this.serverRuntimeId = serverRuntimeId;
 	}
