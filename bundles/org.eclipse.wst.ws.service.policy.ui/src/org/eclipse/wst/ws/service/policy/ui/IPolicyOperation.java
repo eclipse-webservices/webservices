@@ -15,6 +15,7 @@ package org.eclipse.wst.ws.service.policy.ui;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
@@ -76,6 +77,13 @@ public interface IPolicyOperation
   public String getEnumerationId();
   
   /**
+   * 
+   * @return returns if this is an enumeration it returns the default item for this
+   * enumeration.
+   */
+  public String getDefaultItem();
+  
+  /**
    * Launches the service policy operation if this is a complex operation.
    * 
    * @param selectedPolicies the selected service policies.
@@ -97,4 +105,25 @@ public interface IPolicyOperation
    * with this operation.
    */
   public String getPolicyIdPattern();
+  
+  /**
+   * 
+   * @return returns the service policy for this operation.
+   */
+  public IServicePolicy getServicePolicy();
+  
+  /**
+   * @param project the project if this is project property page item.
+   * For the preference page context null should be specified.
+   * @return returns the current enumeration item for this operation.
+   */
+  public String getStateItem( IProject project );
+  
+  /**
+   * Sets the current enumeration item for this operation.
+   * @param project the project if this is project property page item.
+   * For the preference page context null should be specified.
+   * @param stateItem the item.
+   */
+  public void setStateItem( IProject project, String stateItem );
 }

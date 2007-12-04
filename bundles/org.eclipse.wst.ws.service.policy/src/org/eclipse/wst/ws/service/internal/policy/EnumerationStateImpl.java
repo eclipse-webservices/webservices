@@ -22,7 +22,7 @@ import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 
 public class EnumerationStateImpl implements IPolicyStateEnum
 {
-  private final String VALUE = "value";  //$NON-NLS-1$
+  private final String VALUE = IPolicyState.DefaultValueKey;  //$NON-NLS-1$
   
   private String                      enumId;
   private List<IStateEnumerationItem> enumList;

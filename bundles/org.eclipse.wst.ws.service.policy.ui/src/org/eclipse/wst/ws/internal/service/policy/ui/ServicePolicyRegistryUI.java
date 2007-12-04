@@ -32,7 +32,7 @@ public class ServicePolicyRegistryUI
   {
   }
   
-  public void load( Map<String, PolicyOperationImpl> operationMap, Map<String, List<IQuickFixActionInfo>> quickFixes )
+  public void load( Map<String, BaseOperationImpl> operationMap, Map<String, List<IQuickFixActionInfo>> quickFixes )
   {
     IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(SERVICE_POLICY_ID);
     
@@ -70,7 +70,7 @@ public class ServicePolicyRegistryUI
   }
    
   private void loadServicePolicyui( IConfigurationElement element,
-                                    Map<String, PolicyOperationImpl> operationMap )
+                                    Map<String, BaseOperationImpl> operationMap )
   {
     String                  id             = RegistryUtils.getAttribute( element, "id" ); //$NON-NLS-1$
     String                  policyPattern  = RegistryUtils.getAttribute( element, "policypattern" ); //$NON-NLS-1$
@@ -78,12 +78,14 @@ public class ServicePolicyRegistryUI
     IConfigurationElement[] children       = element.getChildren();
     IDescriptor             descriptor     = null;
     String                  enumId         = null;
+    String                  defaultItem    = null;
     boolean                 selection      = false;
     boolean                 icon           = false;
     boolean                 multiSelect    = false;
     IConfigurationElement   enabledElement = null;
     IConfigurationElement   launchElement  = null;
     boolean                 error          = false;
+    boolean                 useDefaultData = true;
     
     for( IConfigurationElement child : children )
     {
@@ -95,24 +97,39 @@ public class ServicePolicyRegistryUI
       }
       else if( name.equals( "enumeration" ) ) //$NON-NLS-1$
       {
+        String defaultData = RegistryUtils.getAttribute( child, "defaultdata" ); //$NON-NLS-1$
+        
         enumId = RegistryUtils.getAttribute( child, "id" ); //$NON-NLS-1$
+        defaultItem = RegistryUtils.getAttribute( child, "defaultItem" ); //$NON-NLS-1$
         
         if( enumId == null )
         {
           error( "Service policy ui enumeration element is missing id attribute." ); //$NON-NLS-1$
           error = true;
         }
+        
+        if( defaultData != null && defaultData.equalsIgnoreCase( "false" ) ) //$NON-NLS-1$
+        {
+          useDefaultData = false;
+        }        
       }
       else if( name.equals( "selection" ) ) //$NON-NLS-1$
       {
-        String iconValue = RegistryUtils.getAttribute( child, "icon" ); //$NON-NLS-1$
+        String iconValue   = RegistryUtils.getAttribute( child, "icon" ); //$NON-NLS-1$
+        String defaultData = RegistryUtils.getAttribute( child, "defaultdata" ); //$NON-NLS-1$
         
         selection = true;
+        
+        if( defaultData != null && defaultData.equalsIgnoreCase( "false" ) ) //$NON-NLS-1$
+        {
+          useDefaultData = false;
+        }        
         
         if( iconValue != null && iconValue.equalsIgnoreCase( "true" ) ) //$NON-NLS-1$
         {
           icon = true;
-        }
+          useDefaultData = true;
+        }        
       }
       else if( name.equals( "complex" ) ) //$NON-NLS-1$
       {
@@ -178,7 +195,7 @@ public class ServicePolicyRegistryUI
     
     if( ! error )
     {
-      PolicyOperationImpl operation          = new PolicyOperationImpl();
+      BaseOperationImpl operation          = new BaseOperationImpl();
       boolean             workspaceOnlyValue = workspaceOnly != null && workspaceOnly.equals( "true" ); //$NON-NLS-1$
       
       operation.setId( id );
@@ -186,7 +203,9 @@ public class ServicePolicyRegistryUI
       operation.setDescriptor( descriptor );
       operation.setMultiSelect( multiSelect );
       operation.setEnumerationId( enumId );
+      operation.setDefaultItem( defaultItem );
       operation.setWorkspaceOnly( workspaceOnlyValue );
+      operation.setUseDefaultData( useDefaultData );
       
       if( selection )
       {
