@@ -156,13 +156,6 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="defaultData" type="boolean" use="default" value="true">
-            <annotation>
-               <documentation>
-                  Indicates if this enumeration operation should store it&apos;s persistent data as the default for the service policy.  A service policy can only have one default state data.
-               </documentation>
-            </annotation>
-         </attribute>
       </complexType>
    </element>
 
@@ -177,13 +170,6 @@
             <annotation>
                <documentation>
                   This boolean attribute indicates that the boolean selection should be rendered via an icon.
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="defaultData" type="boolean" use="default" value="true">
-            <annotation>
-               <documentation>
-                  Indicates if this selection operation should store it&apos;s persistent data as the default for the service policy.  A service policy can only have one default state data.  This attribute is ignored if the icon attribute is set to true, since all icon attribute operation must store their data as default service policy data.
                </documentation>
             </annotation>
          </attribute>
@@ -245,6 +231,7 @@
             <annotation>
                <documentation>
                   The plugin id that the enclosed quick fix actions apply to.  This is the id that will match the plugin id from the IStatus of a ServicePolicy object.
+
                </documentation>
             </annotation>
          </attribute>

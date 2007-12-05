@@ -14,18 +14,9 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.listeners;
 
-import java.util.List;
-
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
 public interface IPolicyChildChangeListener
 {
-  /**
-   * The method is called with an array of child changes.  Each child item
-   * is associated with the added item at the same index value.
-   * 
-   * @param child service policies that have changed.
-   * @param added indicates if the associate policy was added or removed.
-   */
-  public void childChange( List<IServicePolicy> child, List<Boolean> added );
+  public void childChange( IServicePolicy child, boolean added );
 }

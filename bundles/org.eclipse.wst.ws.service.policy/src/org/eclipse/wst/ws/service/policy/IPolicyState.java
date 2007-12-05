@@ -34,8 +34,6 @@ import org.eclipse.wst.ws.service.policy.listeners.IPolicyStateChangeListener;
  */
 public interface IPolicyState
 {
-  public final static String DefaultValueKey = "default.value.key";
-  
   /**
    * 
    * @return returns true if the state of this policy is mutable.

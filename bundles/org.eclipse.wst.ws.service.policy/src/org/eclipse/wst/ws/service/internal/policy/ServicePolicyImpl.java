@@ -375,12 +375,7 @@ public class ServicePolicyImpl implements IServicePolicy
   {
     for( IPolicyChildChangeListener listener : childChangeListeners )
     {
-      List<IServicePolicy> policyList = new Vector<IServicePolicy>(1);
-      List<Boolean>        addedList  = new Vector<Boolean>(1);
-      
-      policyList.add( policy );
-      addedList.add( isAdd );
-      listener.childChange( policyList, addedList );     
+      listener.childChange( policy, isAdd );     
     }
   }
 }

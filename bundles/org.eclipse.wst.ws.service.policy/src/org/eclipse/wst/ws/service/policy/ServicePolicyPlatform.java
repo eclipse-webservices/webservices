@@ -223,11 +223,6 @@ public class ServicePolicyPlatform
     platformImpl.addChildChangeListener( listener );  
   }
   
-  public void queueChildChangeListeners( boolean queue )
-  {
-    platformImpl.queueChildChangeListeners( queue );
-  }
-  
   /**
    * Removes a child change listener from the service policy platform.
    * 

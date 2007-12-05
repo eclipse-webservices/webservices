@@ -391,10 +391,10 @@ public class MainTester extends TestCase
      public boolean isAdded = false;
      public int     count = 0;;
      
-     public void childChange(List<IServicePolicy> childList, List<Boolean> addedList)
+     public void childChange(IServicePolicy child, boolean added)
      {
        childEventOccured = true;
-       isAdded = addedList.get(0);
+       isAdded = added;
        count++;
      }
    }
