@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
+ * 20071205   211262 ericdp@ca.ibm.com - Eric Peters, CopyWSDLTreeCommand fails to copy ?wsdl
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.util;
@@ -53,6 +54,7 @@ import org.eclipse.wst.common.environment.uri.IURIScheme;
 import org.eclipse.wst.common.environment.uri.SimpleURIFactory;
 import org.eclipse.wst.common.environment.uri.URIException;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
+import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
@@ -464,8 +466,13 @@ public class WSDLCopier implements IWorkspaceRunnable {
 		if (targetFolderURI == null)
 			throw new CoreException(StatusUtils.errorStatus(WstWSPluginMessages.MSG_ERROR_TARGET_FOLDER_NOT_SPECIFIED));		
 				
-  		try {  			
-  			URI uri = new URI(URIEncoder.encode(sourceURI, "UTF-8"));  			
+  		try {
+  			URI uri;
+  			if (URIHelper.isProtocolFile(sourceURI) || URIHelper.isPlatformResourceProtocol(sourceURI)) 
+  				uri = new URI(URIEncoder.encode(sourceURI, "UTF-8"));  			
+  			else 
+  				uri = new URI(sourceURI);
+  			
   			analyzeWSDL(uri, definition);  			 
   			
   			// begin writing out files
