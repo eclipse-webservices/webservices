@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20071210   203826 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -64,7 +65,7 @@ public class CreateServerCommand extends AbstractDataModelOperation
 				
 				IRuntime serverRuntime = null;
 				if (serverRuntimeId != null) {
-					ServerCore.findRuntime(serverRuntimeId);  // may return null if no runtime is found
+					serverRuntime = ServerCore.findRuntime(serverRuntimeId);  // may return null if no runtime is found
 				}
 				
 				if (serverRuntime == null) { // either serverRuntimeId is null or did not find a runtime with that Id
