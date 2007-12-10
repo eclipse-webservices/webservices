@@ -73,8 +73,9 @@ public interface IPolicyState
    * 
    * @param key the key
    * @param defaultValue the default value.
+   * @param overrideExisting indicates if a existing default value should be overridden.
    */
-  public void putDefaultValue( String key, String defaultValue );
+  public void putDefaultValue( String key, String defaultValue, boolean overrideExisting );
   
   /**
    * Adds a policy state change listener to this service policy.

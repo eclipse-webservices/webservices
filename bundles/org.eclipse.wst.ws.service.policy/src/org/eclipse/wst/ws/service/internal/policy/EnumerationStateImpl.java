@@ -41,7 +41,7 @@ public class EnumerationStateImpl implements IPolicyStateEnum
     if( defaultId != null )
     {
       this.defaultId = defaultId;
-      state.putDefaultValue( VALUE, defaultId ); 
+      state.putDefaultValue( VALUE, defaultId, false ); 
     }
     else
     {
@@ -50,7 +50,7 @@ public class EnumerationStateImpl implements IPolicyStateEnum
         if( enumItem.isDefault() )
         {
           this.defaultId = enumItem.getId();
-          state.putDefaultValue( VALUE,  this.defaultId );
+          state.putDefaultValue( VALUE,  this.defaultId, false );
           break;
         }
       }

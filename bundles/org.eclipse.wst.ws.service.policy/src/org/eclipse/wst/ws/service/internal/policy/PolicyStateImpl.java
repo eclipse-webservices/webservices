@@ -175,8 +175,8 @@ public class PolicyStateImpl implements IPolicyState
     return mutable;
   }
 
-  public void putDefaultValue(String key, String defaultValue)
-  {    
+  public void putDefaultValue( String key, String defaultValue, boolean overrideExisting )
+  {
     if( !mutable ) return;
     
     TableEntry entry = table.get( key );
@@ -187,7 +187,11 @@ public class PolicyStateImpl implements IPolicyState
       table.put( key, entry );
     }
     
-    entry.defaultValue = defaultValue;
+    if( entry.defaultValue == null || overrideExisting )
+    {
+      entry.defaultValue = defaultValue;
+    }
+    
   }
 
   public void putValue(String key, String value)

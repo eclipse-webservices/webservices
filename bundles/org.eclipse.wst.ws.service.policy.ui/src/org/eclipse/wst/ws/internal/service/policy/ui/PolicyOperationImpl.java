@@ -90,7 +90,7 @@ public class PolicyOperationImpl implements IPolicyOperation
     
     if( defaultItem != null )
     {
-      state.putDefaultValue( key, defaultItem );
+      state.putDefaultValue( key, defaultItem, false );
     }
     
     return state.getValue( key );
