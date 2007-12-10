@@ -32,7 +32,7 @@ import org.eclipse.wst.ws.service.policy.ui.IQuickFixActionInfo;
 
 public class ServicePolicyPlatformUIImpl
 {
-  private Map<String, PolicyOperationImpl>           operationMap;
+  private Map<String, BaseOperationImpl>             baseOperationMap;
   private Map<IServicePolicy, Set<IPolicyOperation>> policyCache;
   private Map<String,List<IQuickFixActionInfo>>      quickFixes;
   
@@ -42,25 +42,15 @@ public class ServicePolicyPlatformUIImpl
     ServicePolicyRegistryUI registry  = new ServicePolicyRegistryUI();
     Set<String>             policyIds = platform.getAllPolicyIds();
     
-    operationMap = new HashMap<String, PolicyOperationImpl>();
-    policyCache  = new HashMap<IServicePolicy, Set<IPolicyOperation>>();
-    quickFixes   = new HashMap<String, List<IQuickFixActionInfo>>();
-    registry.load( operationMap, quickFixes );
+    baseOperationMap = new HashMap<String, BaseOperationImpl>();
+    policyCache      = new HashMap<IServicePolicy, Set<IPolicyOperation>>();
+    quickFixes       = new HashMap<String, List<IQuickFixActionInfo>>();
+    registry.load( baseOperationMap, quickFixes );
     createOperationCache( policyIds );
     
-    // Now add listeners to each node.
-    for( String policyId : policyIds )
-    {
-      IServicePolicy policy = platform.getServicePolicy( policyId );
-      policy.addPolicyChildChangeListener( new ChildListener() );
-    }
+    platform.addChildChangeListener( new ChildListener() );
   }
-  
-  public IPolicyOperation getOperation( String operationId )
-  {
-    return operationMap.get( operationId );
-  }
-  
+      
   public List<IQuickFixActionInfo> getQuickFixes( IStatus status )
   {
     String                    pluginId = status.getPlugin();
@@ -79,46 +69,75 @@ public class ServicePolicyPlatformUIImpl
   
   public List<IPolicyOperation> getAllOperations()
   {
-    return new Vector<IPolicyOperation>( operationMap.values() );
-  }
-  
-  public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected, boolean isWorkspace )
-  {
-    Set<IPolicyOperation> operations = new HashSet<IPolicyOperation>();
+    List<IPolicyOperation> operations = new Vector<IPolicyOperation>();
     
-    for( IServicePolicy policy : policiesSelected )
+    for( Set<IPolicyOperation> operationSet : policyCache.values() )
     {
-      Set<IPolicyOperation> policyOperations = policyCache.get( policy );
-      
-      if( policyOperations != null )
-      {
-        operations.addAll( policyOperations );
-      }
-    }
-    
-    if( !isWorkspace )
-    {
-      // We are getting operations for a project so we must remove the operations that are
-      // only for a workspace.
-      List<IPolicyOperation> operationsToRemove = new Vector<IPolicyOperation>();
-      
-      for( IPolicyOperation operation : operations )
-      {
-        if( operation.isWorkspaceOnly() ) operationsToRemove.add( operation );
-      }
-      
-      operations.removeAll( operationsToRemove );
+      operations.addAll( operationSet );  
     }
     
     return operations;
   }
   
+  public Set<IPolicyOperation> getOperationsForPolicy( IServicePolicy policy, boolean isWorkspace )
+  {
+    Set<IPolicyOperation> policyOperations   = policyCache.get( policy );
+    Set<IPolicyOperation> result             = new HashSet<IPolicyOperation>();
+    
+    if( policyOperations != null )
+    {
+      result.addAll( policyOperations );  
+    
+      if( !isWorkspace )
+      {
+        for( IPolicyOperation operation : policyOperations )
+        {
+          if( operation.isWorkspaceOnly() )
+          {
+            result.remove( operation );
+          }
+        }
+      }
+    }
+    
+    return result;
+  }
+  
+  public List<List<IPolicyOperation>> getOperationsList( List<IServicePolicy> policies, boolean isWorkspace )
+  {
+    Map<String, List<IPolicyOperation>> operationMap = new HashMap<String, List<IPolicyOperation>>();
+    
+    for( IServicePolicy policy : policies )
+    {
+      Set<IPolicyOperation> operations = policyCache.get( policy );
+
+      if( operations != null )
+      {
+        for( IPolicyOperation operation : operations )
+        {
+          String                 id        = operation.getId();
+          List<IPolicyOperation> entryList = operationMap.get( id );
+        
+          if( entryList == null )
+          {
+            entryList = new Vector<IPolicyOperation>();
+            operationMap.put( id, entryList );
+          }
+        
+          entryList.add( operation );
+        }
+      }
+    }
+    
+    return new Vector<List<IPolicyOperation>>( operationMap.values() );
+  }
+  
   private void createOperationCache( Set<String> policyIds )
   {
-    ServicePolicyPlatform           platform   = ServicePolicyPlatform.getInstance();
-    Collection<PolicyOperationImpl> operations = operationMap.values();
+    ServicePolicyPlatform         platform   = ServicePolicyPlatform.getInstance();
+    Collection<BaseOperationImpl> operations = baseOperationMap.values();
     
-    for( PolicyOperationImpl operation : operations )
+    for( BaseOperationImpl operation : operations )
     {
       String  policyPattern = operation.getPolicyIdPattern();
       Pattern pattern       = Pattern.compile( policyPattern );
@@ -138,7 +157,7 @@ public class ServicePolicyPlatformUIImpl
             policyCache.put( policy, operationsSet );
           }
           
-          operationsSet.add( operation );
+          operationsSet.add( new PolicyOperationImpl( operation, policy ) );
         }
       }
     }    
@@ -146,18 +165,29 @@ public class ServicePolicyPlatformUIImpl
   
   private class ChildListener implements IPolicyChildChangeListener
   {
-    public void childChange(IServicePolicy child, boolean added)
+    public void childChange(List<IServicePolicy> childList, List<Boolean> addedList)
     {
-      if( added )
+      Set<String> idSet = new HashSet<String>();
+      
+      for( int index = 0; index < childList.size(); index++ )
       {
-        Set<String> idSet = new HashSet<String>();
+        IServicePolicy policy = childList.get( index );
+        boolean        added  = addedList.get( index );
         
-        idSet.add( child.getId() );
-        createOperationCache( idSet );
+        if( added )
+        {
+        
+          idSet.add( policy.getId() );
+        }
+        else
+        {
+          policyCache.remove( policy );
+        }
       }
-      else
+      
+      if( idSet.size() > 0 )
       {
-        policyCache.remove( child );
+        createOperationCache( idSet );
       }
     }    
   }

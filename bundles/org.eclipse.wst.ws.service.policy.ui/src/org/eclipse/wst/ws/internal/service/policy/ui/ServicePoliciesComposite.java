@@ -16,9 +16,7 @@ package org.eclipse.wst.ws.internal.service.policy.ui;
 
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
@@ -124,13 +122,13 @@ public class ServicePoliciesComposite extends Composite implements
 	 */
 	private class ActionControlData {
 		private List<IServicePolicy> spList;
-		private IPolicyOperation po;
+		private List<IPolicyOperation> poList;
+//		private IPolicyOperation po;
 
-		public ActionControlData(List<IServicePolicy> spList, IPolicyOperation po) {
+		public ActionControlData(List<IServicePolicy> spList, List<IPolicyOperation> poList) {
 			this.spList = spList;
-			this.po = po;
+			this.poList = poList;
 		}
-
 		public List<IServicePolicy> getSpList() {
 			return spList;
 		}
@@ -138,13 +136,21 @@ public class ServicePoliciesComposite extends Composite implements
 		public void setSpList(List<IServicePolicy> spList) {
 			this.spList = spList;
 		}
+//
+//		public IPolicyOperation getPo() {
+//			return po;
+//		}
+//
+//		public void setPo(IPolicyOperation po) {
+//			this.po = po;
+//		}
 
-		public IPolicyOperation getPo() {
-			return po;
+		public List<IPolicyOperation> getPoList() {
+			return poList;
 		}
 
-		public void setPo(IPolicyOperation po) {
-			this.po = po;
+		public void setPoList(List<IPolicyOperation> poList) {
+			this.poList = poList;
 		}
 	}
 
@@ -258,15 +264,20 @@ public class ServicePoliciesComposite extends Composite implements
 				SWT.H_SCROLL | SWT.V_SCROLL);
 		operationsScrolledComposite.setExpandHorizontal(true);
 		operationsScrolledComposite.setExpandVertical(true);
-
-		operationsScrolledComposite.setLayoutData(new GridData(
-				GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
+		GridData operationsScrolledCompositeGD = new GridData(
+				GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+		operationsScrolledCompositeGD.heightHint =60;
+		operationsScrolledComposite.setLayoutData(operationsScrolledCompositeGD);
 		operationsComposite = new Composite(operationsScrolledComposite,
 				SWT.NONE);
 		operationsScrolledComposite.setContent(operationsComposite);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		operationsComposite.setLayout(layout);
+//		GridData operationsCompositeGD = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+//		operationsCompositeGD.heightHint = 1000;
+//		operationsCompositeGD.widthHint = 1000;
+//		operationsComposite.setLayoutData(operationsCompositeGD);
 		operationsScrolledComposite.setMinSize(operationsComposite.computeSize(
 				400, 100));
 		makeScrollableCompositeAware(operationsScrolledComposite);
@@ -311,10 +322,18 @@ public class ServicePoliciesComposite extends Composite implements
 		masterPolicyTree.addSelectionListener(this);
 
 		List<IServicePolicy> policyList = platform.getRootServicePolicies(null);
-
+		
 		for (IServicePolicy policy : policyList) {
 			addPolicy(policy, masterPolicyTree, true);
 		}
+		TreeItem[] treeItems = masterPolicyTree.getItems();
+		if (treeItems.length > 0) {
+			//select the first item in the tree & fire event so UI is updated
+			masterPolicyTree.setSelection(treeItems[0]);
+			masterPolicyTree.notifyListeners(SWT.Selection, new Event());
+		}
+		
+			
 
 	}
 
@@ -386,8 +405,6 @@ public class ServicePoliciesComposite extends Composite implements
 	 */
 	private String[] getIconOverlayInfo(IServicePolicy sp, boolean invalid) {
 		String[] overLays = new String[4];
-			if (sp.getId().equals("id_boolean1")) { 
-			}
 				
 		IPolicyState polState = (project == null) ? sp.getPolicyState() : sp
 				.getPolicyState(project);
@@ -401,12 +418,32 @@ public class ServicePoliciesComposite extends Composite implements
 			overLays[2] = iconManager.warning;
 		if (polEnum != null) {
 			if (polEnum.getEnumId().equals(
-					"org.eclipse.wst.service.policy.booleanEnum")
-					&& polEnum.getCurrentItem().getId().equals(
-							"org.eclipse.wst.true"))
-				overLays[3] = iconManager.favorite;
+					"org.eclipse.wst.service.policy.booleanEnum")) {
+				if (policyHasIconSelectionOperationSelected(sp))
+					overLays[3] = iconManager.favorite;
+//					&& polEnum.getCurrentItem().getId().equals(
+//							"org.eclipse.wst.true"))
+			}
+				
 		}
 		return overLays;
+	}
+
+	/**
+	 * @param sp
+	 */
+	private boolean policyHasIconSelectionOperationSelected(IServicePolicy sp) {
+		boolean iconSelectionOperationSelected = false;
+		List<IPolicyOperation> operationList = platformUI.getOperations(sp, project == null);
+		for (IPolicyOperation operationItem : operationList) {
+			if (operationItem.getOperationKind().equals(OperationKind.iconSelection)) {
+				String stateID = operationItem.getStateItem(project);
+				if (stateID.equals("org.eclipse.wst.true")) 
+					return true;
+			}
+			
+		}
+		return iconSelectionOperationSelected;
 	}
 
 	/**
@@ -464,7 +501,7 @@ public class ServicePoliciesComposite extends Composite implements
 			}
 			//update the context sensitive help
 			updateCSH(sp);
-			updateDetailsPanels(sp);
+			updateInfoPanels(sp);
 
 			if (e.getSource() == masterPolicyTree) {
 				// if selected node in master tree is 2nd level & has
@@ -526,7 +563,7 @@ public class ServicePoliciesComposite extends Composite implements
 	 * policy in spList
 	 * @param spList a list of selected service policies
 	 */
-	private void updateDetailsPanels(List<IServicePolicy> spList) {
+	private void updateInfoPanels(List<IServicePolicy> spList) {
 		String desc = (spList.get(0) == null
 				|| spList.get(0).getDescriptor() == null || spList.get(0)
 				.getDescriptor().getDescription() == null) ? "" : spList.get(0)
@@ -653,72 +690,82 @@ public class ServicePoliciesComposite extends Composite implements
 		String operationSelectionLongName;
 		String dependantPolicyShortName;
 		List<IPolicyRelationship> relationShipList = sp.getRelationships();
-		List<IPolicyOperation> spOperationsUsingEnumList;
 		String currentValueID = null;
-		if (sp.getPolicyStateEnum() != null) {
-			currentValueID = (project == null) ? sp.getPolicyStateEnum()
-					.getCurrentItem().getId() : sp.getPolicyStateEnum(project)
-					.getCurrentItem().getId();
-			spOperationsUsingEnumList = getEnumerationOperations(sp);
-			for (IPolicyOperation operationItem : spOperationsUsingEnumList) {
-				operationLongName = operationItem.getDescriptor().getLongName();
-				for (IPolicyRelationship relationShipItem : relationShipList) {
-					// policies associated with the relationship item
-					List<IPolicyEnumerationList> relatedPolicies = relationShipItem
-							.getRelatedPolicies();
-					List<IStateEnumerationItem> spStateEnumerationList = relationShipItem
-							.getPolicyEnumerationList().getEnumerationList();
-					for (IStateEnumerationItem stateEnumerationItem : spStateEnumerationList) {
-						if (!stateEnumerationItem.getId()
-								.equals(currentValueID))
-							continue;
-						operationSelectionLongName = stateEnumerationItem
-								.getLongName();
-						for (IPolicyEnumerationList relatedPolicyEnumerationItem : relatedPolicies) {
-							dependantPolicyShortName = relatedPolicyEnumerationItem
-									.getPolicy().getDescriptor().getShortName();
-							List<IPolicyOperation> relatedSPOperationsUsingEnumList = getEnumerationOperations(relatedPolicyEnumerationItem
-									.getPolicy());
-							for (IPolicyOperation relatedSPOperationsUsingEnumItem : relatedSPOperationsUsingEnumList) {
-								List<IStateEnumerationItem> relatedSPStateEnumerationList = relatedPolicyEnumerationItem
-										.getEnumerationList();
-								List<String> validShortNames = new Vector<String>();
-								for (int i = 0; i < relatedSPStateEnumerationList
-										.size(); i++) {
-									validShortNames
-											.add(relatedSPStateEnumerationList
-													.get(i).getShortName());
-
-								}
-								String currentItemShortName = (project == null) ? relatedPolicyEnumerationItem
-										.getPolicy().getPolicyStateEnum()
-										.getCurrentItem().getShortName()
-										: relatedPolicyEnumerationItem
-												.getPolicy()
-												.getPolicyStateEnum(project)
-												.getCurrentItem()
-												.getShortName();
-								if (!validShortNames
-										.contains(currentItemShortName)) {
-									// policy state is invalid
-									IStatus error = createUnsatisfiedRelationshipError(sp,
-											operationLongName,
-											operationSelectionLongName,
-											dependantPolicyShortName,
-											relatedSPOperationsUsingEnumItem,
-											relatedSPStateEnumerationList);
-									allErrors.put(sp.getId(), error);
-
-								}
-
-							}
-
-						}
-
-					}
+		if (relationShipList != null && relationShipList.size() > 0) {
+		for (IPolicyRelationship relationShipItem : relationShipList) {
+			//operations for the policy
+			List<IPolicyOperation> policyOperationsList = platformUI
+					.getOperations(relationShipItem.getPolicyEnumerationList()
+							.getPolicy(), project == null);
+			//default operation name
+			operationLongName = "";
+			for (IPolicyOperation policyOperationItem : policyOperationsList) {
+				if (policyOperationItem.isUseDefaultData()) {
+					operationLongName = policyOperationItem.getDescriptor()
+							.getLongName();
+					currentValueID = policyOperationItem.getStateItem(project);
+					break;
 				}
 			}
+			// a list of states
+			List<IStateEnumerationItem> spStateEnumerationList = relationShipItem
+					.getPolicyEnumerationList().getEnumerationList();
+			// a list of related policies and their acceptable states to satisfy a stateEnumerationItem in spStateEnumerationList
+			List<IPolicyEnumerationList> relatedPolicies = relationShipItem
+					.getRelatedPolicies();
+			for (IStateEnumerationItem stateEnumerationItem : spStateEnumerationList) {
+				if (stateEnumerationItem.getId() != currentValueID)
+					continue;
+				//long name of the related policy operation
+				operationSelectionLongName = stateEnumerationItem.getLongName();
+				for (IPolicyEnumerationList relatedPolicyEnumerationItem : relatedPolicies) {
+					dependantPolicyShortName = relatedPolicyEnumerationItem
+							.getPolicy().getDescriptor().getShortName();
+					//the list of related sp states that satisfy the stateEnumerationItem
+					List<IStateEnumerationItem> relatedSPStateEnumerationList = relatedPolicyEnumerationItem
+							.getEnumerationList();
+					//the list of valid ids for the related service policy operation
+					List<String> validIds = new Vector<String>();
+					for (int i = 0; i < relatedSPStateEnumerationList
+							.size(); i++) {
+						validIds
+								.add(relatedSPStateEnumerationList
+										.get(i).getId());
+
+					}
+					//get the current value of the related service policy default operation
+					String currentItemID = "";
+					List<IPolicyOperation> relatedServicePolicyPolicyOperationsList = platformUI.getOperations(relatedPolicyEnumerationItem.getPolicy(), project ==null);
+					IPolicyOperation relatedPolicyOperationItem = null;
+					for (IPolicyOperation relatedServicePolicyPolicyOperationItem : relatedServicePolicyPolicyOperationsList) {
+						if (relatedServicePolicyPolicyOperationItem.isUseDefaultData()) {
+							currentItemID = relatedServicePolicyPolicyOperationItem.getStateItem(project);
+							relatedPolicyOperationItem = relatedServicePolicyPolicyOperationItem;
+							break;
+						}
+					}
+					
+					if (!validIds
+							.contains(currentItemID)) {
+						// policy state is invalid
+						IStatus error = createUnsatisfiedRelationshipError(sp,
+								operationLongName,
+								operationSelectionLongName,
+								dependantPolicyShortName,
+								relatedPolicyOperationItem,
+								relatedSPStateEnumerationList);
+						allErrors.put(sp.getId(), error);
+
+					}
+
+
+				}
+
+			}
+
 		}
+		}
+
 		List<IServicePolicy> servicePolicyChildrenList = sp.getChildren();
 		for (IServicePolicy servicePolicyChildrenItem : servicePolicyChildrenList) {
 			validatePolicy(servicePolicyChildrenItem);
@@ -861,115 +908,91 @@ public class ServicePoliciesComposite extends Composite implements
 		String dependantPolicyShortName;
 		String dependantOperationShortName;
 		String dependantOperationSelectionShortNameList;
-		// the operations using the same enumeration as the policy
-		List<IPolicyOperation> spOperationsUsingEnumList = getEnumerationOperations(sp);
-		for (IPolicyOperation operationItem : spOperationsUsingEnumList) {
-			operationLongName = operationItem.getDescriptor().getLongName();
-			for (IPolicyRelationship relationShipItem : relationShipList) {
-				// policies associated with the relationship item
-				List<IPolicyEnumerationList> relatedPolicies = relationShipItem
-						.getRelatedPolicies();
-				List<IStateEnumerationItem> spStateEnumerationList = relationShipItem
-						.getPolicyEnumerationList().getEnumerationList();
-				for (IStateEnumerationItem stateEnumerationItem : spStateEnumerationList) {
-					operationSelectionLongName = stateEnumerationItem
+
+		for (IPolicyRelationship relationShipItem : relationShipList) {
+			List<IPolicyOperation> policyOperationsList = platformUI
+					.getOperations(relationShipItem.getPolicyEnumerationList()
+							.getPolicy(), project == null);
+			operationLongName = "";
+			for (IPolicyOperation policyOperationItem : policyOperationsList) {
+				if (policyOperationItem.isUseDefaultData()) {
+					operationLongName = policyOperationItem.getDescriptor()
 							.getLongName();
-					for (IPolicyEnumerationList relatedPolicyEnumerationItem : relatedPolicies) {
-						dependantPolicyShortName = relatedPolicyEnumerationItem
-								.getPolicy().getDescriptor().getShortName();
-						List<IPolicyOperation> relatedSPOperationsUsingEnumList = getEnumerationOperations(relatedPolicyEnumerationItem
-								.getPolicy());
-						for (IPolicyOperation relatedSPOperationsUsingEnumItem : relatedSPOperationsUsingEnumList) {
-							List<IStateEnumerationItem> relatedSPStateEnumerationList = relatedPolicyEnumerationItem
-									.getEnumerationList();
-							dependantOperationShortName = relatedSPOperationsUsingEnumItem
+				break;
+				}
+			}
+			// policies associated with the relationship item
+			List<IPolicyEnumerationList> relatedPolicies = relationShipItem
+					.getRelatedPolicies();
+			List<IStateEnumerationItem> spStateEnumerationList = relationShipItem
+					.getPolicyEnumerationList().getEnumerationList();
+			for (IStateEnumerationItem stateEnumerationItem : spStateEnumerationList) {
+				operationSelectionLongName = stateEnumerationItem.getLongName();
+				for (IPolicyEnumerationList relatedPolicyEnumerationItem : relatedPolicies) {
+					dependantPolicyShortName = relatedPolicyEnumerationItem
+							.getPolicy().getDescriptor().getShortName();
+					List<IStateEnumerationItem> relatedSPStateEnumerationList = relatedPolicyEnumerationItem
+							.getEnumerationList();
+					List<IPolicyOperation> relatedPolicyOperationsList = platformUI
+							.getOperations(relatedPolicyEnumerationItem
+									.getPolicy(), (project == null));
+					dependantOperationShortName = "";
+					for (IPolicyOperation relatedPolicyOperationItem : relatedPolicyOperationsList) {
+						if (relatedPolicyOperationItem.isUseDefaultData())
+							dependantOperationShortName = relatedPolicyOperationItem
 									.getDescriptor().getShortName();
-							dependantOperationSelectionShortNameList = new String();
-							for (int i = 0; i < relatedSPStateEnumerationList
-									.size(); i++) {
-								IStateEnumerationItem item = relatedSPStateEnumerationList
-										.get(i);
-								if (i != 0)
-									dependantOperationSelectionShortNameList += " | ";
-								dependantOperationSelectionShortNameList += item
-										.getShortName();
-
-							}
-							String[] args = {
-									operationLongName,
-									operationSelectionLongName,
-									dependantPolicyShortName,
-									dependantOperationShortName,
-									dependantOperationSelectionShortNameList};
-							toReturn += NLS
-									.bind(
-											WstSPUIPluginMessages.SERVICEPOLICIES_DEPENDENCIES,
-											args)
-									+ "\r\n";
-
-						}
-
+						break;
 					}
 
+					dependantOperationSelectionShortNameList = new String();
+					for (int i = 0; i < relatedSPStateEnumerationList.size(); i++) {
+						IStateEnumerationItem item = relatedSPStateEnumerationList
+								.get(i);
+						if (i != 0)
+							dependantOperationSelectionShortNameList += " | ";
+						dependantOperationSelectionShortNameList += item
+								.getShortName();
+
+					}
+					String[] args = { operationLongName,
+							operationSelectionLongName,
+							dependantPolicyShortName,
+							dependantOperationShortName,
+							dependantOperationSelectionShortNameList };
+					toReturn += NLS.bind(
+							WstSPUIPluginMessages.SERVICEPOLICIES_DEPENDENCIES,
+							args)
+							+ "\r\n";
+
 				}
+
 			}
+
 		}
 		return toReturn;
 	}
 
-	/** Returns a list of policy operations for this service policy (note: framework is currently
-	 * limited to 1 policy operation of type enumeration per policy, UI is not limited to accomodate future
-	 * changes to framework if required)
-	 * @param sp a service policy that has enumeration type policy operations
-	 * @return a list of 0 or more enumeration type operations for the service policy
-	 */
-	private List<IPolicyOperation> getEnumerationOperations(IServicePolicy sp) {
-		List<IPolicyOperation> toReturn = null;
-		toReturn = new Vector<IPolicyOperation>();
-		List<IPolicyOperation> operationList = platformUI.getAllOperations();
-
-		for (IPolicyOperation policyOperation : operationList) {
-			if (Pattern.matches(policyOperation.getPolicyIdPattern(), sp
-					.getId())) {
-				IPolicyStateEnum polEnum = (project == null) ? sp
-						.getPolicyStateEnum() : sp.getPolicyStateEnum(project);
-				if ((polEnum.getEnumId().equals(
-						"org.eclipse.wst.service.policy.booleanEnum") && (policyOperation
-						.getOperationKind().equals(OperationKind.selection) || policyOperation
-						.getOperationKind().equals(OperationKind.iconSelection)))
-						|| (policyOperation.getOperationKind().equals(
-								OperationKind.enumeration) && policyOperation
-								.getEnumerationId().equals(polEnum.getEnumId()))) {
-
-					toReturn.add(policyOperation);
-				}
-			}
-
-		}
-
-		return toReturn;
-
-	}
 
 	/**
-	 * Saves to the preference store the widget data (widget data contains associated service policy 
-	 * and service policy operation)
-	 * @param actionControl a widget who's value needs to be saved to the preference store
+	 * Saves to the preference store the widget data (widget data contains all 
+	 * service policy operations the control applies to)
+	 * @param actionControl a widget who's data needs to be saved to the preference store
 	 * 
 	 */
 	private void updatePolicy(Control actionControl) {
 
-		IPolicyOperation po = ((ActionControlData) actionControl.getData()).getPo();
+		List<IPolicyOperation> policyOperationList = ((ActionControlData) actionControl.getData()).getPoList();
+		IPolicyOperation po0 = policyOperationList.get(0);
+		
 		List<IServicePolicy> servicePolicyList = ((ActionControlData) actionControl
 				.getData()).getSpList();
 		if (actionControl instanceof Button
-				&& po.getOperationKind().equals(OperationKind.complex))
-			updateComplexOperationPreference(po, servicePolicyList);
+				&& po0.getOperationKind().equals(OperationKind.complex))
+			updateComplexOperationPreference(po0, servicePolicyList);
 		else
-			for (IServicePolicy servicePolicyItem : servicePolicyList) {
+			for (IPolicyOperation policyOperationItem : policyOperationList) {
 
-				updateSelectionOperationPreference(actionControl, po,
-						servicePolicyItem);
+				updateSelectionOperationPreference(actionControl, policyOperationItem);
 			}
 
 	}
@@ -986,27 +1009,24 @@ public class ServicePoliciesComposite extends Composite implements
 	 * @param po 
 	 * @param sp
 	 */
-	private void updateSelectionOperationPreference(Control actionControl,
-			IPolicyOperation po, IServicePolicy sp) {
+	private void updateSelectionOperationPreference(Control actionControl, IPolicyOperation po) {
 		String selectedValue;
-		IPolicyStateEnum polEnum = (project == null) ? sp.getPolicyStateEnum()
-				: sp.getPolicyStateEnum(project);
 		if (actionControl instanceof Combo) {
 			selectedValue = ((Combo) actionControl).getText();
 			List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform
 					.getInstance().getStateEnumeration(po.getEnumerationId());
 			for (IStateEnumerationItem enumItem : enumItemList) {
 				if (enumItem.getLongName().equals(selectedValue)) {
-					polEnum.setCurrentItem(enumItem.getId());
+					po.setStateItem(project, enumItem.getId());
 					break;
 				}
 			}
 
 		} else {
 			if (((Button) actionControl).getSelection()) {
-				polEnum.setCurrentItem("org.eclipse.wst.true");
+				po.setStateItem(project, "org.eclipse.wst.true");
 			} else
-				polEnum.setCurrentItem("org.eclipse.wst.false");
+				po.setStateItem(project, "org.eclipse.wst.false");
 
 		}
 
@@ -1038,14 +1058,15 @@ public class ServicePoliciesComposite extends Composite implements
 		for (int i = 0; i < toRemove.length; i++) {
 			toRemove[i].dispose();
 		}
-		Set<IPolicyOperation> operationList = platformUI.getSelectedOperations(
-				spList, (project == null));
+		List<List<IPolicyOperation>> policyOperationListList = platformUI.getOperationsList(spList, (project == null));
 
-		for (IPolicyOperation policyOperation : operationList) {
-			if (policyOperation.getOperationKind() == IPolicyOperation.OperationKind.complex) {
-				addComplexOperationUI(policyOperation, spList);
+		for (List<IPolicyOperation> policyOperationList : policyOperationListList) {
+			if (policyOperationList.size() > 0) {
+			if (policyOperationList.get(0).getOperationKind() == IPolicyOperation.OperationKind.complex) {
+				addComplexOperationUI(policyOperationList, spList);
 			} else
-				addSelectionOperationUI(policyOperation, spList);
+				addSelectionOperationUI(policyOperationList, spList);
+			}
 
 		}
 		// just removed and added some controls so force composite
@@ -1060,11 +1081,13 @@ public class ServicePoliciesComposite extends Composite implements
 	 * @param po the policy operation to create a UI widget for
 	 * @param sp the service policies this operation will apply to
 	 */
-	private void addSelectionOperationUI(IPolicyOperation po,
-			List<IServicePolicy> sp) {
-		IDescriptor d = po.getDescriptor();
+	private void addSelectionOperationUI(List<IPolicyOperation> pos, List<IServicePolicy> sps) {
+		//use the first operation instance in the list for data
+		IPolicyOperation po0 = pos.get(0);
+		//IServicePolicy sp0 = pos.get(0).getServicePolicy();
+		IDescriptor d = po0.getDescriptor();
 		Control selectionControl;
-		if (po.getOperationKind() == IPolicyOperation.OperationKind.enumeration) {
+		if (po0.getOperationKind() == IPolicyOperation.OperationKind.enumeration) {
 			Label l = new Label(operationsComposite, SWT.NONE);
 			l.setText(d.getLongName() + ":");
 			Combo cb = new Combo(operationsComposite, SWT.DROP_DOWN
@@ -1072,14 +1095,14 @@ public class ServicePoliciesComposite extends Composite implements
 			selectionControl = cb;
 			cb.addSelectionListener(this);
 			List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform
-					.getInstance().getStateEnumeration(po.getEnumerationId());
+					.getInstance().getStateEnumeration(po0.getEnumerationId());
 			for (IStateEnumerationItem enumItem : enumItemList) {
 				cb.add(enumItem.getLongName());
 			}
-			l.setEnabled(po.isEnabled(sp));
-			cb.setEnabled(po.isEnabled(sp));
+			l.setEnabled(po0.isEnabled(sps));
+			cb.setEnabled(po0.isEnabled(sps));
 			if (cb.isEnabled())
-				cb.setText(getEnumerationOperationCurrentSelection(sp.get(0)));
+				cb.setText(getEnumerationOperationCurrentSelection(po0));
 		} else {
 			// a selection or icon
 			Button checkBox = new Button(operationsComposite, SWT.CHECK);
@@ -1089,53 +1112,59 @@ public class ServicePoliciesComposite extends Composite implements
 			checkBoxGD.horizontalSpan = 2;
 			checkBox.setLayoutData(checkBoxGD);
 			checkBox.setText(d.getLongName());
-			checkBox.setEnabled(po.isEnabled(sp));
+			checkBox.setEnabled(po0.isEnabled(sps));
 			if (checkBox.isEnabled())
 				checkBox
-						.setSelection(getSelectionOperationCurrentSelection(sp.get(0)));
+						.setSelection(getSelectionOperationCurrentSelection(po0));
 
 		}
 
-		selectionControl.setData(new ActionControlData(sp, po));
+		selectionControl.setData(new ActionControlData(sps, pos));
 
 	}
 	/**
 	 * @param sp a service policy with a selection or iconselection operation defined
 	 * @return true if the operation is currently selected
 	 */
-	private boolean getSelectionOperationCurrentSelection(IServicePolicy sp) {
-		IPolicyStateEnum polEnum = (project == null) ? sp.getPolicyStateEnum()
-				: sp.getPolicyStateEnum(project);
-		return (polEnum.getCurrentItem().getId().equals("org.eclipse.wst.true")) ? true
-				: false;
+	private boolean getSelectionOperationCurrentSelection(IPolicyOperation po) {
+		return po.getStateItem(project).equals("org.eclipse.wst.true") ? true : false;
+
 	}
 
 	/**
 	 * @param sp a service policy with an enumeration operation defined
 	 * @return the currently selected enumeration item
 	 */
-	private String getEnumerationOperationCurrentSelection(IServicePolicy sp) {
-		IPolicyStateEnum polEnum = (project == null) ? sp.getPolicyStateEnum()
-				: sp.getPolicyStateEnum(project);
-		return polEnum.getCurrentItem().getLongName();
+	private String getEnumerationOperationCurrentSelection(IPolicyOperation po) {
+		String currentSelection = "";
+		List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform
+		.getInstance().getStateEnumeration(po.getEnumerationId());
+		for (IStateEnumerationItem enumItem : enumItemList) {
+			if (enumItem.getId().equals(po.getStateItem(project))) {
+				currentSelection = enumItem.getLongName();
+				break;
+			}
+		}
+		return currentSelection;
 	}
 
 	/**
 	 * Creates UI widgets for policy operations of complex type
 	 * @param po the policy operation to create a UI widget for
-	 * @param sp the service policies this operation will apply to
+	 * @param sps the service policies this operation will apply to
 	 */
-	private void addComplexOperationUI(IPolicyOperation po,
-			List<IServicePolicy> sp) {
-		IDescriptor d = po.getDescriptor();
+	private void addComplexOperationUI(List<IPolicyOperation> pos,
+			List<IServicePolicy> sps) {
+		IPolicyOperation po0 = pos.get(0);
+		IDescriptor d = po0.getDescriptor();
 		Button pushButton = new Button(operationsComposite, SWT.PUSH);
 		GridData pushButtonGD = new GridData();
 		pushButtonGD.horizontalSpan = 2;
 		pushButton.setLayoutData(pushButtonGD);
 		pushButton.setText(d.getLongName());
 		pushButton.addSelectionListener(this);
-		pushButton.setData(new ActionControlData(sp, po));
-		pushButton.setEnabled(po.isEnabled(sp));
+		pushButton.setData(new ActionControlData(sps, pos));
+		pushButton.setEnabled(po0.isEnabled(sps));
   
 	}
 

@@ -226,7 +226,12 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public void restoreDefaults( IProject project )
   {
-    projectPolicyStates.get(project).restoreDefaults();
+    PolicyStateImpl stateImpl = projectPolicyStates.get( project );
+    
+    if( stateImpl != null )
+    {
+      stateImpl.restoreDefaults();
+    }
   }
   
   
@@ -375,7 +380,12 @@ public class ServicePolicyImpl implements IServicePolicy
   {
     for( IPolicyChildChangeListener listener : childChangeListeners )
     {
-      listener.childChange( policy, isAdd );     
+      List<IServicePolicy> policyList = new Vector<IServicePolicy>(1);
+      List<Boolean>        addedList  = new Vector<Boolean>(1);
+      
+      policyList.add( policy );
+      addedList.add( isAdd );
+      listener.childChange( policyList, addedList );     
     }
   }
 }

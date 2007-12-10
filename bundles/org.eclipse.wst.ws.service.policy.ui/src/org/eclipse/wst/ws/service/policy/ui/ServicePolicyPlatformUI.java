@@ -14,7 +14,7 @@
 package org.eclipse.wst.ws.service.policy.ui;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Vector;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.ws.internal.service.policy.ui.ServicePolicyPlatformUIImpl;
@@ -52,36 +52,53 @@ public class ServicePolicyPlatformUI
   
   /**
    * 
-   * @param operationId the operation ID
-   * @return returns the service policy operation given it ID.
-   */
-  public IPolicyOperation getOperation( String operationId )
-  {
-    return platformUI.getOperation( operationId );
-  }
-  
-  /**
-   * 
-   * @return returns all the operations that are known to the platform.
+   * @return returns all the operations for all known policies.
    */
   public List<IPolicyOperation> getAllOperations()
   {
     return platformUI.getAllOperations();
   }
   
+  public IPolicyOperation getOperation( IServicePolicy policy, String id )
+  {
+    List<IPolicyOperation> operations = getOperations( policy, true );
+    IPolicyOperation       result     = null;
+    
+    for( IPolicyOperation operation : operations )
+    {
+      if( operation.getId().equals( id ) )
+      {
+        result = operation;
+        break;
+      }
+    }
+    
+    return result;
+  }
+  
   /**
    * 
-   * @param policiesSelected the selected service policies.
-   * @param isWorkspace indicates if this method is being called from the workspace
-   * preference page or from a project property page.
-   * @return returns the set of operations that are applicable to the list
-   * selected service policies.  This set is further restricted by the
-   * isWorkspace parameter.  If this parameter is false then operations that 
-   * are only associated with the workspace will be removed. 
+   * @param policy the policy
+   * @param isWorkspace true if this is a preference page context
+   * @return returns the list of operations for this policy.
    */
-  public Set<IPolicyOperation> getSelectedOperations( List<IServicePolicy> policiesSelected, boolean isWorkspace )
+  public List<IPolicyOperation> getOperations( IServicePolicy policy, boolean isWorkspace )
   {
-    return platformUI.getSelectedOperations( policiesSelected, isWorkspace );
+    return new Vector<IPolicyOperation>( platformUI.getOperationsForPolicy( policy, isWorkspace ) );
+  }
+   
+  /**
+   * 
+   * @param policies
+   * @param isWorkspace
+   * @return returns a list that contains a list of operations.  Each list
+   * as the top level contains list of IPolicyOperations that reference the 
+   * same base operation.  However, they will each have different associated
+   * policies.
+   */
+  public List<List<IPolicyOperation>> getOperationsList( List<IServicePolicy> policies, boolean isWorkspace )
+  {
+    return platformUI.getOperationsList( policies, isWorkspace );
   }
   
   /**

@@ -139,6 +139,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="defaultdata" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -153,6 +160,13 @@
             <annotation>
                <documentation>
                   The id of this enumeration.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="defaultItem" type="string">
+            <annotation>
+               <documentation>
+                  Overrides the default set by the enumeration.
                </documentation>
             </annotation>
          </attribute>
@@ -231,7 +245,6 @@
             <annotation>
                <documentation>
                   The plugin id that the enclosed quick fix actions apply to.  This is the id that will match the plugin id from the IStatus of a ServicePolicy object.
-
                </documentation>
             </annotation>
          </attribute>

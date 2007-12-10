@@ -49,6 +49,8 @@ public class ServicePolicyPlatformImpl
   private Map<IProject, ProjectEntry>              enabledProjectMap;
   private List<Expression>                         enabledList;
   private List<IPolicyChildChangeListener>         childChangeListeners;
+  private List<IServicePolicy>                     queuedChildChangePolicy;
+  private List<Boolean>                            queuedChildChangeAdded;
   
   public ServicePolicyPlatformImpl()
   {
@@ -204,11 +206,45 @@ public class ServicePolicyPlatformImpl
     childChangeListeners.remove( listener );  
   }
   
+  public void queueChildChangeListeners( boolean queue )
+  {
+    if( queue && queuedChildChangeAdded == null )
+    {
+      queuedChildChangeAdded = new Vector<Boolean>();
+      queuedChildChangePolicy = new Vector<IServicePolicy>();
+    }
+    else if( !queue && queuedChildChangeAdded != null )
+    {
+      // Queuing has been turned off so we will fire all the queued events.
+      for( IPolicyChildChangeListener listener : childChangeListeners )
+      {
+        listener.childChange( queuedChildChangePolicy, queuedChildChangeAdded );
+      }
+      
+      queuedChildChangeAdded = null;
+      queuedChildChangePolicy = null;
+    }
+  }
+  
   private void fireChildChangeEvent( IServicePolicy policy, boolean isAdd )
   {
-    for( IPolicyChildChangeListener listener : childChangeListeners )
+    if( queuedChildChangeAdded == null )
     {
-      listener.childChange( policy, isAdd );     
+      List<IServicePolicy> policyList = new Vector<IServicePolicy>(1);
+      List<Boolean>        addedList  = new Vector<Boolean>(1);
+      
+      policyList.add( policy );
+      addedList.add( isAdd );
+      
+      for( IPolicyChildChangeListener listener : childChangeListeners )
+      {
+        listener.childChange( policyList, addedList );     
+      }
+    }
+    else
+    {
+      queuedChildChangeAdded.add( isAdd );
+      queuedChildChangePolicy.add( policy );
     }
   }
   

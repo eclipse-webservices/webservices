@@ -200,19 +200,21 @@ public class BaseOperationImpl
       ServicePolicyPlatform       platform = ServicePolicyPlatform.getInstance();
       List<IStateEnumerationItem> enumList = platform.getStateEnumeration( enumId );
       
-      defaultItem = enumList.get(0).getId();
-      
-      // No default item has been specified so we will search the enumeration for one.
-      // If none was specified the first item in the enumeration is used.
-      for( IStateEnumerationItem item : enumList )
+      if( enumList != null )
       {
-        if( item.isDefault() )
+        defaultItem = enumList.get(0).getId();
+      
+        // No default item has been specified so we will search the enumeration for one.
+        // If none was specified the first item in the enumeration is used.
+        for( IStateEnumerationItem item : enumList )
         {
-          defaultItem = item.getId();
-          break;
+          if( item.isDefault() )
+          {
+            defaultItem = item.getId();
+            break;
+          }
         }
       }
-      
     }
       
     return defaultItem;
