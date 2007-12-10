@@ -114,10 +114,9 @@ public class ServicePolicyRegistryUI
       }
       else if( name.equals( "selection" ) ) //$NON-NLS-1$
       {
-        String iconValue   = RegistryUtils.getAttribute( child, "icon" ); //$NON-NLS-1$
+        String iconValue = RegistryUtils.getAttribute( child, "icon" ); //$NON-NLS-1$
         
         selection = true;
-        enumId = "org.eclipse.wst.service.policy.booleanEnum"; //$NON-NLS-1$
                 
         if( iconValue != null && iconValue.equalsIgnoreCase( "true" ) ) //$NON-NLS-1$
         {
@@ -207,6 +206,7 @@ public class ServicePolicyRegistryUI
       
       if( selection )
       {
+        operation.setEnumerationId( "org.eclipse.wst.service.policy.booleanEnum" ); //$NON-NLS-1$
         operation.setSelection( icon );
       }
       
