@@ -13,8 +13,8 @@
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.test;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
 import junit.framework.TestCase;
@@ -53,57 +53,32 @@ public class MainUITester extends TestCase
      IServicePolicy          id2        = platform.getServicePolicy( "id2" ); //$NON-NLS-1$
      IServicePolicy          id3        = platform.getServicePolicy( "id3" ); //$NON-NLS-1$
      IServicePolicy          id4        = platform.getServicePolicy( "id4" ); //$NON-NLS-1$
-     //IServicePolicy          id_bool1   = platform.getServicePolicy( "id_boolean1" );
-//     /IServicePolicy          id_bool2   = platform.getServicePolicy( "id_boolean2" );
-     List<IServicePolicy>    list1      = new Vector<IServicePolicy>();
-     List<IServicePolicy>    list2      = new Vector<IServicePolicy>();
-     List<IServicePolicy>    list3      = new Vector<IServicePolicy>();
-     List<IServicePolicy>    list4      = new Vector<IServicePolicy>();
-     List<IServicePolicy>    list5      = new Vector<IServicePolicy>();
-     List<IServicePolicy>    list6      = new Vector<IServicePolicy>();
-     List<IServicePolicy>    list7      = new Vector<IServicePolicy>();
-     IPolicyOperation        op1        = platformUI.getOperation( "service.ui.operation1" ); //$NON-NLS-1$
-     IPolicyOperation        op2        = platformUI.getOperation( "service.ui.operation2" ); //$NON-NLS-1$
-     IPolicyOperation        op3        = platformUI.getOperation( "service.ui.operation3" ); //$NON-NLS-1$
-     IPolicyOperation        op4        = platformUI.getOperation( "service.ui.operation4" ); //$NON-NLS-1$
-  
-     list1.add( id1 );
-     list2.add( id2 );
-     list3.add( id3 );
-     list4.add( id4 );
-     list5.add( id4 );
-     list5.add( id1 );
-     list6.add( id2 );
-     list6.add( id3 );
-     list7.add( id1 );
-     list7.add( id2 );
-     list7.add( id3 );
-     list7.add( id4 );
-    
-     Set<IPolicyOperation> set1 = platformUI.getSelectedOperations( list1, true );
-     Set<IPolicyOperation> set2 = platformUI.getSelectedOperations( list2, true );
-     Set<IPolicyOperation> set3 = platformUI.getSelectedOperations( list3, true );
-     Set<IPolicyOperation> set4 = platformUI.getSelectedOperations( list4, true );
-     Set<IPolicyOperation> set5 = platformUI.getSelectedOperations( list5, true );
-     Set<IPolicyOperation> set6 = platformUI.getSelectedOperations( list6, true );
-     Set<IPolicyOperation> set7 = platformUI.getSelectedOperations( list7, true );
+     IPolicyOperation        op1_id2    = platformUI.getOperation( id2, "service.ui.operation1" ); //$NON-NLS-1$
+     IPolicyOperation        op1_id3    = platformUI.getOperation( id3, "service.ui.operation1" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id1    = platformUI.getOperation( id1, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id2    = platformUI.getOperation( id2, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id3    = platformUI.getOperation( id3, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id4    = platformUI.getOperation( id4, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op3_id4    = platformUI.getOperation( id4, "service.ui.operation3" ); //$NON-NLS-1$
+     IPolicyOperation        op4_id1    = platformUI.getOperation( id1, "service.ui.operation4" ); //$NON-NLS-1$
+     IPolicyOperation        op4_id2    = platformUI.getOperation( id2, "service.ui.operation4" ); //$NON-NLS-1$
+     IPolicyOperation        op4_id3    = platformUI.getOperation( id3, "service.ui.operation4" ); //$NON-NLS-1$
      
-     System.out.println( "\nDisplay sets" ); //$NON-NLS-1$
-     displaySet( "Set1", set1 ); //$NON-NLS-1$
-     displaySet( "Set2", set2 ); //$NON-NLS-1$
-     displaySet( "Set3", set3 ); //$NON-NLS-1$
-     displaySet( "Set4", set4 ); //$NON-NLS-1$
-     displaySet( "Set5", set5 ); //$NON-NLS-1$
-     displaySet( "Set6", set6 ); //$NON-NLS-1$
-     displaySet( "Set7", set7 ); //$NON-NLS-1$
+     List<IPolicyOperation> list1 = platformUI.getOperations( id1, true );
+     List<IPolicyOperation> list2 = platformUI.getOperations( id2, true );
+     List<IPolicyOperation> list3 = platformUI.getOperations( id3, true );
+     List<IPolicyOperation> list4 = platformUI.getOperations( id4, true );
      
-     checkContents( "Set1", set1, new IPolicyOperation[]{ op2, op4 } ); //$NON-NLS-1$
-     checkContents( "Set2", set2, new IPolicyOperation[]{ op1, op2, op4 } ); //$NON-NLS-1$
-     checkContents( "Set3", set3, new IPolicyOperation[]{ op1, op2, op4 } ); //$NON-NLS-1$
-     checkContents( "Set4", set4, new IPolicyOperation[]{ op2, op3 } ); //$NON-NLS-1$
-     checkContents( "Set5", set5, new IPolicyOperation[]{ op2, op3, op4 } ); //$NON-NLS-1$
-     checkContents( "Set6", set6, new IPolicyOperation[]{ op1, op2, op4 } ); //$NON-NLS-1$
-     checkContents( "Set7", set7, new IPolicyOperation[]{ op1, op2, op3, op4 } ); //$NON-NLS-1$
+     System.out.println( "\nDisplay lists" ); //$NON-NLS-1$
+     displayList( "List1", list1 ); //$NON-NLS-1$
+     displayList( "List2", list2 ); //$NON-NLS-1$
+     displayList( "List3", list3 ); //$NON-NLS-1$
+     displayList( "List4", list4 ); //$NON-NLS-1$
+     
+     checkContents( "List1", list1, new IPolicyOperation[]{ op2_id1, op4_id1 } ); //$NON-NLS-1$
+     checkContents( "List2", list2, new IPolicyOperation[]{ op1_id2, op2_id2, op4_id2 } ); //$NON-NLS-1$
+     checkContents( "List3", list3, new IPolicyOperation[]{ op1_id3, op2_id3, op4_id3 } ); //$NON-NLS-1$
+     checkContents( "List4", list4, new IPolicyOperation[]{ op2_id4, op3_id4 } ); //$NON-NLS-1$
    }
    
    public void testEnabledOperations()
@@ -116,7 +91,7 @@ public class MainUITester extends TestCase
      IServicePolicy          id4         = platform.getServicePolicy( "id4" ); //$NON-NLS-1$
      List<IServicePolicy>    policyList1 = new Vector<IServicePolicy>();
      List<IServicePolicy>    policyList2 = new Vector<IServicePolicy>();
-     IPolicyOperation        op1         = platformUI.getOperation( "service.ui.operation3" ); //$NON-NLS-1$
+     IPolicyOperation        op1         = platformUI.getOperation( id4, "service.ui.operation3" ); //$NON-NLS-1$
      
      policyList1.add( id1 );
      policyList1.add( id2 );
@@ -171,6 +146,116 @@ public class MainUITester extends TestCase
      displayPolicies( policyList );
    }
    
+   @SuppressWarnings("unchecked")
+  public void testGetOperationsList()
+   {
+     ServicePolicyPlatform   platform   = ServicePolicyPlatform.getInstance();
+     ServicePolicyPlatformUI platformUI = ServicePolicyPlatformUI.getInstance();
+     IServicePolicy          id1        = platform.getServicePolicy( "id1" ); //$NON-NLS-1$
+     IServicePolicy          id2        = platform.getServicePolicy( "id2" ); //$NON-NLS-1$
+     IServicePolicy          id3        = platform.getServicePolicy( "id3" ); //$NON-NLS-1$
+     IServicePolicy          id4        = platform.getServicePolicy( "id4" ); //$NON-NLS-1$
+     IPolicyOperation        op1_id2    = platformUI.getOperation( id2, "service.ui.operation1" ); //$NON-NLS-1$
+     IPolicyOperation        op1_id3    = platformUI.getOperation( id3, "service.ui.operation1" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id1    = platformUI.getOperation( id1, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id2    = platformUI.getOperation( id2, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id3    = platformUI.getOperation( id3, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op2_id4    = platformUI.getOperation( id4, "service.ui.operation2" ); //$NON-NLS-1$
+     IPolicyOperation        op3_id4    = platformUI.getOperation( id4, "service.ui.operation3" ); //$NON-NLS-1$
+     IPolicyOperation        op4_id1    = platformUI.getOperation( id1, "service.ui.operation4" ); //$NON-NLS-1$
+     IPolicyOperation        op4_id2    = platformUI.getOperation( id2, "service.ui.operation4" ); //$NON-NLS-1$
+     IPolicyOperation        op4_id3    = platformUI.getOperation( id3, "service.ui.operation4" ); //$NON-NLS-1$
+     List<IServicePolicy>    idList1    = null;
+     List<IServicePolicy>    idList2    = null;
+     List<IServicePolicy>    idList3    = null;
+     List<IServicePolicy>    idList4    = null;
+     
+     List<List<IPolicyOperation>> checkList1 = null;
+     List<List<IPolicyOperation>> checkList2 = null;
+     List<List<IPolicyOperation>> checkList3 = null;
+     List<List<IPolicyOperation>> checkList4 = null;
+     
+     checkList1 = ll( l(op2_id1), l(op4_id1) );
+     checkList2 = ll( l(op1_id2), l(op2_id1, op2_id2), l(op4_id1, op4_id2) );
+     checkList3 = ll( l(op1_id2, op1_id3), l(op2_id1, op2_id2, op2_id3), l(op4_id1, op4_id2, op4_id3) );
+     checkList4 = ll( l(op1_id2, op1_id3), l(op2_id1, op2_id2, op2_id3, op2_id4), l(op3_id4), l(op4_id1, op4_id2, op4_id3) );
+     
+     idList1 = Arrays.asList( new IServicePolicy[]{ id1 } );
+     idList2 = Arrays.asList( new IServicePolicy[]{ id1, id2 } );
+     idList3 = Arrays.asList( new IServicePolicy[]{ id1, id2, id3 } );
+     idList4 = Arrays.asList( new IServicePolicy[]{ id1, id2, id3, id4 } );
+     
+     List<List<IPolicyOperation>> opList1 = platformUI.getOperationsList( idList1, true );
+     List<List<IPolicyOperation>> opList2 = platformUI.getOperationsList( idList2, true );
+     List<List<IPolicyOperation>> opList3 = platformUI.getOperationsList( idList3, true );
+     List<List<IPolicyOperation>> opList4 = platformUI.getOperationsList( idList4, true );
+     
+     verifyLists( "List1", opList1, checkList1 );
+     verifyLists( "List2", opList2, checkList2 );
+     verifyLists( "List3", opList3, checkList3 );
+     verifyLists( "List4", opList4, checkList4 );
+   }
+   
+   private List<List<IPolicyOperation>> ll( List<IPolicyOperation>... opList )
+   {
+     return Arrays.asList( opList );
+   }
+   
+   private List<IPolicyOperation> l( IPolicyOperation... opList )
+   {
+     return Arrays.asList( opList );
+   }
+   
+   private void verifyLists( String listName, List<List<IPolicyOperation>> list1, List<List<IPolicyOperation>> list2 )
+   {
+     assertTrue( listName + " does not have the same size.", list1.size() == list2.size() );
+             
+     for( int listIndex = 0 ; listIndex < list1.size(); listIndex++ )
+     {
+       List<IPolicyOperation> policyList1 = list1.get( listIndex );
+       List<IPolicyOperation> policyList2 = findList( policyList1.get(0).getId(), list2 );
+       
+       assertTrue( listName + " nested list at index " + listIndex + " is not the same size.", policyList1.size() == policyList2.size() );
+       
+       for( int index = 0; index < policyList1.size(); index++ )
+       {
+         IPolicyOperation op1 = policyList1.get( index );
+         
+         assertTrue( listName + " operation not found", findOp( op1, policyList2 ) );
+       }
+     }  
+   }
+  
+   private boolean findOp( IPolicyOperation op, List<IPolicyOperation> list )
+   {
+     boolean result = false;
+     
+     for( IPolicyOperation foundOp : list )
+     {
+       if( op == foundOp )
+       {
+         result = true;
+         break;
+       }
+     }
+     
+     return result;
+   }
+   
+   private List<IPolicyOperation> findList( String id, List<List<IPolicyOperation>> searchList )
+   {
+     for( List<IPolicyOperation> policyList : searchList )
+     {
+       if( policyList.get(0).getId().equals( id ) )
+       {
+         return policyList;
+       }
+     }
+     
+     assertTrue( "List not found for id" + id, false );
+     return null;
+   }
+   
    private void displayPolicies( List<IServicePolicy> policyList )
    {
      System.out.println( "Listing service policies:" );
@@ -180,11 +265,11 @@ public class MainUITester extends TestCase
      }
    }
    
-   private void displaySet( String setName, Set<IPolicyOperation> operationSet )
+   private void displayList( String setName, List<IPolicyOperation> operationList )
    {
      System.out.print( setName + ": " ); //$NON-NLS-1$
      
-     for( IPolicyOperation operation : operationSet )
+     for( IPolicyOperation operation : operationList )
      {
        System.out.print( operation.getId() + "," ); //$NON-NLS-1$
      }
@@ -192,7 +277,7 @@ public class MainUITester extends TestCase
      System.out.println( "" ); //$NON-NLS-1$
    }
    
-   private void checkContents( String setName, Set<IPolicyOperation> operationSet, IPolicyOperation[] operationArray )
+   private void checkContents( String setName, List<IPolicyOperation> operationSet, IPolicyOperation[] operationArray )
    {
      assertTrue( "Set and array sizes don't match for " + setName + ".", operationSet.size() == operationArray.length ); //$NON-NLS-1$ //$NON-NLS-2$
 

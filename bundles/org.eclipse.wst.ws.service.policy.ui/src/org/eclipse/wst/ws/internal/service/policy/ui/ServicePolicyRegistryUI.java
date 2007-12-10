@@ -90,7 +90,7 @@ public class ServicePolicyRegistryUI
     
     if( useDefaultString != null )
     {
-      useDefaultData = useDefaultString.equals( "true" );  
+      useDefaultData = useDefaultString.equals( "true" );   //$NON-NLS-1$
     }
     
     for( IConfigurationElement child : children )

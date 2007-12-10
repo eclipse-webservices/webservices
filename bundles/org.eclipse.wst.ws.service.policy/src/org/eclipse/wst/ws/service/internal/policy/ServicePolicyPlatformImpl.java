@@ -342,7 +342,7 @@ public class ServicePolicyPlatformImpl
                                                 String         enumListId, 
                                                 String         defaultEnumId )
   {
-    if( id == null ) id = "org.eclipse.wst.ws.service.policy.id";
+    if( id == null ) id = "org.eclipse.wst.ws.service.policy.id"; //$NON-NLS-1$
     
     String            uniqueId = makeUniqueId( id );
     ServicePolicyImpl policy   = new ServicePolicyImpl( false, uniqueId, this );

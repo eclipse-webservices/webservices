@@ -32,7 +32,7 @@ public class ServicePoliciesPreferencePage extends PreferencePage implements
 {
 	ServicePoliciesComposite preferencePage;
 	Composite superParent;
-	public static final String PAGE_ID = "org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage";
+	public static final String PAGE_ID = "org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage"; //$NON-NLS-1$
 
 	/**
 	 * Creates preference page controls on demand.

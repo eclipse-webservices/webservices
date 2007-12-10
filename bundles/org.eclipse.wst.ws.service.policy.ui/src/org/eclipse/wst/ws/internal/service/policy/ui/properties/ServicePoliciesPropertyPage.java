@@ -257,12 +257,12 @@ public class ServicePoliciesPropertyPage extends PropertyPage implements
 		if (useProjectSettings()) {
 			IStatus status;
 			status = (propertyPage.getError() == null) ? new Status(IStatus.OK,
-					ServicePolicyActivatorUI.PLUGIN_ID, "") : propertyPage
+					ServicePolicyActivatorUI.PLUGIN_ID, "") : propertyPage //$NON-NLS-1$
 					.getError();
 			updateStatus(status);
 		} else {
 			updateStatus(new Status(IStatus.OK,
-					ServicePolicyActivatorUI.PLUGIN_ID, ""));
+					ServicePolicyActivatorUI.PLUGIN_ID, "")); //$NON-NLS-1$
 		}
 	}
 

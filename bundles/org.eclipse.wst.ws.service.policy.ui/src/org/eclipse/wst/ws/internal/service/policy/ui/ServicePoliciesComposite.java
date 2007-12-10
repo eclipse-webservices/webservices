@@ -418,7 +418,7 @@ public class ServicePoliciesComposite extends Composite implements
 			overLays[2] = iconManager.warning;
 		if (polEnum != null) {
 			if (polEnum.getEnumId().equals(
-					"org.eclipse.wst.service.policy.booleanEnum")) {
+					"org.eclipse.wst.service.policy.booleanEnum")) { //$NON-NLS-1$
 				if (policyHasIconSelectionOperationSelected(sp))
 					overLays[3] = iconManager.favorite;
 //					&& polEnum.getCurrentItem().getId().equals(
@@ -438,7 +438,7 @@ public class ServicePoliciesComposite extends Composite implements
 		for (IPolicyOperation operationItem : operationList) {
 			if (operationItem.getOperationKind().equals(OperationKind.iconSelection)) {
 				String stateID = operationItem.getStateItem(project);
-				if (stateID.equals("org.eclipse.wst.true")) 
+				if (stateID.equals("org.eclipse.wst.true"))  //$NON-NLS-1$
 					return true;
 			}
 			
@@ -553,7 +553,7 @@ public class ServicePoliciesComposite extends Composite implements
 
 		excomposite.setVisible(true);
 		excomposite.setText(sp.get(0).getDescriptor().getLongName()
-				+ " (" + WstSPUIPluginMessages.TEXT_DETAILS + ")");
+				+ " (" + WstSPUIPluginMessages.TEXT_DETAILS + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		// text has changed, so need to force layout so updated
 		excomposite.layout();
 	}
@@ -566,7 +566,7 @@ public class ServicePoliciesComposite extends Composite implements
 	private void updateInfoPanels(List<IServicePolicy> spList) {
 		String desc = (spList.get(0) == null
 				|| spList.get(0).getDescriptor() == null || spList.get(0)
-				.getDescriptor().getDescription() == null) ? "" : spList.get(0)
+				.getDescriptor().getDescription() == null) ? "" : spList.get(0) //$NON-NLS-1$
 				.getDescriptor().getDescription();
 		text_DetailsPanel_description.setText(desc);
 		text_DetailsPanel_dependencies.setText(getDependanciesText(spList
@@ -698,7 +698,7 @@ public class ServicePoliciesComposite extends Composite implements
 					.getOperations(relationShipItem.getPolicyEnumerationList()
 							.getPolicy(), project == null);
 			//default operation name
-			operationLongName = "";
+			operationLongName = ""; //$NON-NLS-1$
 			for (IPolicyOperation policyOperationItem : policyOperationsList) {
 				if (policyOperationItem.isUseDefaultData()) {
 					operationLongName = policyOperationItem.getDescriptor()
@@ -734,7 +734,7 @@ public class ServicePoliciesComposite extends Composite implements
 
 					}
 					//get the current value of the related service policy default operation
-					String currentItemID = "";
+					String currentItemID = ""; //$NON-NLS-1$
 					List<IPolicyOperation> relatedServicePolicyPolicyOperationsList = platformUI.getOperations(relatedPolicyEnumerationItem.getPolicy(), project ==null);
 					IPolicyOperation relatedPolicyOperationItem = null;
 					for (IPolicyOperation relatedServicePolicyPolicyOperationItem : relatedServicePolicyPolicyOperationsList) {
@@ -838,7 +838,7 @@ public class ServicePoliciesComposite extends Composite implements
 		for (int i = 0; i < relatedOperationAcceptableValues.size(); i++) {
 			IStateEnumerationItem item = relatedOperationAcceptableValues.get(i);
 			if (i != 0)
-				dependantOperationSelectionShortNameList += " | ";
+				dependantOperationSelectionShortNameList += " | "; //$NON-NLS-1$
 			dependantOperationSelectionShortNameList += item.getShortName();
 
 		}
@@ -913,7 +913,7 @@ public class ServicePoliciesComposite extends Composite implements
 			List<IPolicyOperation> policyOperationsList = platformUI
 					.getOperations(relationShipItem.getPolicyEnumerationList()
 							.getPolicy(), project == null);
-			operationLongName = "";
+			operationLongName = ""; //$NON-NLS-1$
 			for (IPolicyOperation policyOperationItem : policyOperationsList) {
 				if (policyOperationItem.isUseDefaultData()) {
 					operationLongName = policyOperationItem.getDescriptor()
@@ -936,7 +936,7 @@ public class ServicePoliciesComposite extends Composite implements
 					List<IPolicyOperation> relatedPolicyOperationsList = platformUI
 							.getOperations(relatedPolicyEnumerationItem
 									.getPolicy(), (project == null));
-					dependantOperationShortName = "";
+					dependantOperationShortName = ""; //$NON-NLS-1$
 					for (IPolicyOperation relatedPolicyOperationItem : relatedPolicyOperationsList) {
 						if (relatedPolicyOperationItem.isUseDefaultData())
 							dependantOperationShortName = relatedPolicyOperationItem
@@ -949,7 +949,7 @@ public class ServicePoliciesComposite extends Composite implements
 						IStateEnumerationItem item = relatedSPStateEnumerationList
 								.get(i);
 						if (i != 0)
-							dependantOperationSelectionShortNameList += " | ";
+							dependantOperationSelectionShortNameList += " | "; //$NON-NLS-1$
 						dependantOperationSelectionShortNameList += item
 								.getShortName();
 
@@ -962,7 +962,7 @@ public class ServicePoliciesComposite extends Composite implements
 					toReturn += NLS.bind(
 							WstSPUIPluginMessages.SERVICEPOLICIES_DEPENDENCIES,
 							args)
-							+ "\r\n";
+							+ "\r\n"; //$NON-NLS-1$
 
 				}
 
@@ -1024,9 +1024,9 @@ public class ServicePoliciesComposite extends Composite implements
 
 		} else {
 			if (((Button) actionControl).getSelection()) {
-				po.setStateItem(project, "org.eclipse.wst.true");
+				po.setStateItem(project, "org.eclipse.wst.true"); //$NON-NLS-1$
 			} else
-				po.setStateItem(project, "org.eclipse.wst.false");
+				po.setStateItem(project, "org.eclipse.wst.false"); //$NON-NLS-1$
 
 		}
 
@@ -1089,7 +1089,7 @@ public class ServicePoliciesComposite extends Composite implements
 		Control selectionControl;
 		if (po0.getOperationKind() == IPolicyOperation.OperationKind.enumeration) {
 			Label l = new Label(operationsComposite, SWT.NONE);
-			l.setText(d.getLongName() + ":");
+			l.setText(d.getLongName() + ":"); //$NON-NLS-1$
 			Combo cb = new Combo(operationsComposite, SWT.DROP_DOWN
 					| SWT.READ_ONLY);
 			selectionControl = cb;
@@ -1127,7 +1127,7 @@ public class ServicePoliciesComposite extends Composite implements
 	 * @return true if the operation is currently selected
 	 */
 	private boolean getSelectionOperationCurrentSelection(IPolicyOperation po) {
-		return po.getStateItem(project).equals("org.eclipse.wst.true") ? true : false;
+		return po.getStateItem(project).equals("org.eclipse.wst.true") ? true : false; //$NON-NLS-1$
 
 	}
 
@@ -1136,7 +1136,7 @@ public class ServicePoliciesComposite extends Composite implements
 	 * @return the currently selected enumeration item
 	 */
 	private String getEnumerationOperationCurrentSelection(IPolicyOperation po) {
-		String currentSelection = "";
+		String currentSelection = ""; //$NON-NLS-1$
 		List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform
 		.getInstance().getStateEnumeration(po.getEnumerationId());
 		for (IStateEnumerationItem enumItem : enumItemList) {
