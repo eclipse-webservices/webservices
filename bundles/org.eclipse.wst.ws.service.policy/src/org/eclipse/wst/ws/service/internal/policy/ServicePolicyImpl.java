@@ -122,7 +122,7 @@ public class ServicePolicyImpl implements IServicePolicy
   
   public void removeChild(IServicePolicy policyToRemove )
   {
-    if( !predefined )
+    if( !policyToRemove.isPredefined() )
     {
       // Remove all the children of this policy first.
       List<IServicePolicy> childPolicies = new Vector<IServicePolicy>( policyToRemove .getChildren() );
@@ -136,7 +136,7 @@ public class ServicePolicyImpl implements IServicePolicy
       
       if( removed )
       {
-        platform.removePolicy( this );
+        platform.removePolicy( policyToRemove );
         fireChildChangeEvent( policyToRemove , false );
       }
     }

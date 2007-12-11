@@ -163,7 +163,7 @@ public class ServicePolicyPlatformImpl
    * 
    * @param policy
    */
-  public void removePolicy( ServicePolicyImpl policy )
+  public void removePolicy( IServicePolicy policy )
   {
     policyMap.remove( policy.getId() );
     fireChildChangeEvent( policy, false );
@@ -176,6 +176,8 @@ public class ServicePolicyPlatformImpl
    */
   public void removePlatformPolicy( IServicePolicy policy )
   {
+    if( policy.isPredefined() ) return;
+    
     IServicePolicy parent = policy.getParentPolicy();
     
     if( parent == null )
