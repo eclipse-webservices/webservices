@@ -12,6 +12,7 @@
  * 20071025 196997   ericdp@ca.ibm.com - Eric Peters
  * 20071107 196997   ericdp@ca.ibm.com - Eric Peters
  * 20071120   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
+ * 20071212   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -27,8 +28,10 @@ public final class WstSPUIPluginMessages extends NLS {
 
 	public static String LABEL_SERVICEPOLICIES_DESCRIPTION;
 	public static String LABEL_SERVICEPOLICIES_DEPENDENCIES;
-	public static String TOOLTIP_PSP_DESCRIPTION;	
+	public static String TOOLTIP_PSP_DESCRIPTION;
+	public static String TOOLTIP_PSP_DEPENDENCIES;
 	public static String TOOLTIP_PSP_TREE;
+	public static String TOOLTIP_PSP_DETAILSTREE;
 	public static String SERVICEPOLICIES_DEPENDENCIES;
 	public static String SERVICEPOLICIES_DEPENDENCY_ERROR;
 	public static String SERVICEPOLICIES_DEPENDENCIES_NONE;

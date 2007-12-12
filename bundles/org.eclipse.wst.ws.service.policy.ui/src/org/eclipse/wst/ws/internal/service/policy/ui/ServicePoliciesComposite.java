@@ -11,10 +11,13 @@
  * -------- -------- -----------------------------------------------------------
  * 20071106 196997   ericdp@ca.ibm.com - Eric Peters
  * 20071120 209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI 
- ********************************************************************************/
+ * 20071212   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
+ *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -56,6 +59,7 @@ import org.eclipse.wst.ws.service.policy.IPolicyStateEnum;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
+import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyPlatformUI;
@@ -63,7 +67,7 @@ import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation.OperationKind;
 import org.osgi.framework.Bundle;
 
 public class ServicePoliciesComposite extends Composite implements
-		SelectionListener {
+		SelectionListener, IPolicyChildChangeListener  {
 
 	private ScrolledComposite operationsScrolledComposite;
 	//a scrollable composite containing operations available for the selected policies
@@ -80,6 +84,8 @@ public class ServicePoliciesComposite extends Composite implements
 	private Label label_detailsPanel_dependancies;
 	private Hashtable<String, IStatus> allErrors;
 	private IStatus error;
+	private boolean bComplexOpCompleted = true;
+	private List<ChildChangeEvent> listChildChangeEvents;
 	private IConManager iconManager = new IConManager();
 	private IProject project = null;
 	private SelectionListener listener;
@@ -216,6 +222,7 @@ public class ServicePoliciesComposite extends Composite implements
 				GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
 		detailsPrefTreeGD.heightHint = 50;
 		detailsPolicyTree.setLayoutData(detailsPrefTreeGD);
+		detailsPolicyTree.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_DETAILSTREE);
 		//make the scrollable composite aware of the tree so expand/collapse works properly
 		makeScrollableCompositeAware(detailsPolicyTree);
 		
@@ -225,8 +232,6 @@ public class ServicePoliciesComposite extends Composite implements
 
 		label_DetailsPanel_description
 				.setText(WstSPUIPluginMessages.LABEL_SERVICEPOLICIES_DESCRIPTION);
-		label_DetailsPanel_description
-				.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_DESCRIPTION);
 		makeScrollableCompositeAware(label_DetailsPanel_description);
 		text_DetailsPanel_description = new Text(composite, SWT.WRAP
 				| SWT.BORDER | SWT.V_SCROLL | SWT.READ_ONLY);
@@ -235,16 +240,16 @@ public class ServicePoliciesComposite extends Composite implements
 		detailsGD.heightHint = 50;
 		detailsGD.widthHint = 400;
 		text_DetailsPanel_description.setLayoutData(detailsGD);
+		text_DetailsPanel_description.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_DESCRIPTION);
+
 		makeScrollableCompositeAware(text_DetailsPanel_description);
 		label_detailsPanel_dependancies = new Label(composite, SWT.NONE);
 		makeScrollableCompositeAware(label_detailsPanel_dependancies);
 		label_detailsPanel_dependancies
 				.setText(WstSPUIPluginMessages.LABEL_SERVICEPOLICIES_DEPENDENCIES);
-		label_detailsPanel_dependancies
-				.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_DESCRIPTION);
-
 		text_DetailsPanel_dependencies = new Text(composite, SWT.WRAP
 				| SWT.BORDER | SWT.V_SCROLL | SWT.READ_ONLY);
+		text_DetailsPanel_dependencies.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_DEPENDENCIES);
 		makeScrollableCompositeAware(text_DetailsPanel_dependencies);
 		GridData dependenciesGD = new GridData(GridData.HORIZONTAL_ALIGN_FILL
 				| GridData.GRAB_HORIZONTAL);
@@ -313,6 +318,7 @@ public class ServicePoliciesComposite extends Composite implements
 		detailsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		masterPolicyTree = new Tree(masterComposite, SWT.BORDER | SWT.MULTI);
 		masterPolicyTree.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+		masterPolicyTree.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_TREE);
 
 		Composite othersComposite = createDetailsScrollPageContent(detailsComposite);
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
@@ -364,19 +370,24 @@ public class ServicePoliciesComposite extends Composite implements
 		// image has changed, notify change listeners so tree gets updated
 		ti.notifyListeners(SWT.Modify, new Event());
 	}
-
+	
+	private boolean is3rdLevelOrHigherPolicy (IServicePolicy sp) {
+		return sp.getParentPolicy() != null
+		&& sp.getParentPolicy().getParentPolicy() != null;
+		
+	}
 	/**
 	 * Add service policy sp and children of sp to the parent
 	 * @param sp the service policy to add
 	 * @param parent either a Tree (masterPolicyTree or DetailsPolicyTree), or a TreeItem
 	 * to add service policy children to
-	 * @param addLevel2Only false if should add tertiary and higher level
+	 * @param addUpToLevel2Only false if should add tertiary and higher level
 	 * child policies
 	 */
 	private void addPolicy(IServicePolicy sp, Widget parent,
-			boolean addLevel2Only) {
-		if (addLevel2Only && sp.getParentPolicy() != null
-				&& sp.getParentPolicy().getParentPolicy() != null)
+			boolean addUpToLevel2Only) {
+		sp.addPolicyChildChangeListener(this);
+		if (addUpToLevel2Only && is3rdLevelOrHigherPolicy(sp) )
 			// don't add tertiary and higher branches, these are added on demand
 			// to a different tree
 			return;
@@ -391,7 +402,7 @@ public class ServicePoliciesComposite extends Composite implements
 		setImage(ti, sp, getIconOverlayInfo(sp, false));
 		List<IServicePolicy> childrenPolicyList = sp.getChildren();
 		for (IServicePolicy policy : childrenPolicyList) {
-			addPolicy(policy, ti, addLevel2Only);
+			addPolicy(policy, ti, addUpToLevel2Only);
 		}
 
 	}
@@ -421,8 +432,6 @@ public class ServicePoliciesComposite extends Composite implements
 					"org.eclipse.wst.service.policy.booleanEnum")) { //$NON-NLS-1$
 				if (policyHasIconSelectionOperationSelected(sp))
 					overLays[3] = iconManager.favorite;
-//					&& polEnum.getCurrentItem().getId().equals(
-//							"org.eclipse.wst.true"))
 			}
 				
 		}
@@ -469,7 +478,214 @@ public class ServicePoliciesComposite extends Composite implements
 		error = validateAllPolicies(focusSP);
 
 	}
+	private class ChildChangeEvent {
+		public ChildChangeEvent(List<IServicePolicy> changedChildren, List<Boolean> added ) {
+			this.changedChildren = changedChildren;
+			this.added = added;
+			
+		}
+		private List<IServicePolicy> changedChildren;
+		private List<Boolean> added;
+		public List<IServicePolicy> getChangedChildren() {
+			return changedChildren;
+		}
+		public void setChangedChildren(List<IServicePolicy> changedChildren) {
+			this.changedChildren = changedChildren;
+		}
+		public List<Boolean> getAdded() {
+			return added;
+		}
+		public void setAdded(List<Boolean> added) {
+			this.added = added;
+		}
+	}
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener#childChange(List<org.eclipse.wst.ws.service.policy.IServicePolicy>, List<java.lang.Boolean>)
+	 */
+	public void childChange( List<IServicePolicy> child, List<Boolean> added ) {
+		//ignore events unless we are in a complex operation
+		if (!bComplexOpCompleted)
+			//cache the event until complex operation completed
+			listChildChangeEvents.add(new ChildChangeEvent(child, added));
+			
+	}
+	
+	
+	/**
+	 * @param child
+	 * @param added
+	 */
+	private void processChildChangeEvent(ChildChangeEvent cce,
+			Hashtable<String, IServicePolicy> htTopLevelAddtions) {
+		List<IServicePolicy> changedServicePolicyList = cce.getChangedChildren();
+		List<Boolean> changedServicePolicyAddedList = cce.getAdded();
+		for (int i = 0; i < changedServicePolicyList.size(); i++) {
+			IServicePolicy nextChangedServicePolicy = changedServicePolicyList.get(i);
+			boolean added = changedServicePolicyAddedList.get(i);
+			if (!added) {
+				//delete node
+				processChildChangeEventRemoveServicePolicy(nextChangedServicePolicy);
+			} else {
+				//an addition, only process top level additions as this is a recursive operation (adds children too)
+				if (htTopLevelAddtions.containsKey(nextChangedServicePolicy.getId())) {
+					processChildChangeEventAddServicePolicy(nextChangedServicePolicy);
+				}
+			}
+		}
+	}
 
+	
+	/**
+	 * @param nextChangedServicePolicy
+	 */
+	private void processChildChangeEventRemoveServicePolicy(IServicePolicy nextChangedServicePolicy) {
+		boolean is3rdLevelOrHigher = is3rdLevelOrHigherPolicy(nextChangedServicePolicy);
+		if (is3rdLevelOrHigher) {
+			if (detailsPolicyTree.isVisible()) {
+				TreeItem[] children = detailsPolicyTree.getItems();
+				TreeItem found = null;
+				for (int i=0; i < children.length; i++) {
+					 found = findPolicy(nextChangedServicePolicy, children[i]);	
+					 if (found != null)
+						 break;
+				}
+				if (found != null && !found.isDisposed()) {
+					processChildChangeEventDeleteTreeItem(found);
+				}
+			}
+		} else {
+			TreeItem[] children = masterPolicyTree.getItems();
+			TreeItem found = null;
+			for (int i=0; i < children.length; i++) {
+				 found = findPolicy(nextChangedServicePolicy, children[i]);	
+				 if (found != null)
+					 break;
+			}
+			if (found != null && !found.isDisposed()) {
+				processChildChangeEventDeleteTreeItem(found);
+				
+			}
+
+			
+			
+		}
+		
+	}
+
+	/**
+	 * Delete the item, and choose set a new selection as appropriate from one of the policy trees 
+	 * @param deleteItem
+	 */
+	private void processChildChangeEventDeleteTreeItem(TreeItem deleteItem) {
+		Tree parentTree = deleteItem.getParent();
+		Tree selectionTree = parentTree;
+		TreeItem parentTreeItem = deleteItem.getParentItem();
+		//index of found in the tree
+		int idx = (parentTreeItem == null) ? parentTree.indexOf(deleteItem) : parentTreeItem.indexOf(deleteItem);
+		//is index the last index in the tree
+		boolean isLastIndex = (parentTreeItem == null) ? parentTree.indexOf(deleteItem) == parentTree.getItemCount() -1 : parentTreeItem.indexOf(deleteItem) == parentTreeItem.getItemCount() -1;
+		//number of siblings
+		int siblingsCount = (parentTreeItem == null) ? parentTree.getItemCount() -1 : parentTreeItem.getItemCount() -1;
+		boolean hasParent = (parentTreeItem == null) ? parentTree.getItemCount() == 0 : parentTreeItem.getItemCount() == 0;
+		deleteItem.dispose();
+		if (parentTreeItem == null) 
+			parentTree.redraw();
+		else
+			parentTree.redraw();
+		TreeItem selectItem = null;
+		if (siblingsCount == 0) {
+			if (hasParent) {
+			//no siblings, select parent
+			if  (parentTreeItem == null) 
+				selectItem = parentTree.getItem(0);
+			else 
+				selectItem = parentTreeItem;
+			} else {
+				if (parentTree == detailsPolicyTree)
+					//select something from master tree
+					if (masterPolicyTree.getItems().length > 0) {
+						selectItem = masterPolicyTree.getItem(0);
+						selectionTree = masterPolicyTree;
+					}
+				
+			}
+			
+		} else {
+			if  (parentTreeItem == null) {
+				if (isLastIndex)
+					selectItem = parentTree.getItem(idx -1);
+				else 
+					selectItem = parentTree.getItem(idx);
+			} else {
+				if (isLastIndex)
+					selectItem = parentTreeItem.getItem(idx -1);
+				else 
+					selectItem = parentTreeItem.getItem(idx);
+
+			}
+		}
+		if (selectItem != null) {
+			selectionTree.setSelection(selectItem);
+			selectionTree.notifyListeners(SWT.Selection, new Event());
+		}
+	}
+
+	/**
+	 * @param policyToAdd
+	 */
+	private void processChildChangeEventAddServicePolicy(IServicePolicy policyToAdd) {
+		boolean is3rdLevelOrHigher = is3rdLevelOrHigherPolicy(policyToAdd);
+		IServicePolicy parent = policyToAdd.getParentPolicy();
+		if (is3rdLevelOrHigher) {
+			if (detailsPolicyTree.isVisible()) {
+				TreeItem[] children = detailsPolicyTree.getItems();
+				TreeItem found = null;
+				for (int i=0; i < children.length; i++) {
+					 found = findPolicy(parent, children[i]);	
+					 if (found != null)
+						 break;
+				}
+				if (found != null && !found.isDisposed()) {
+					addPolicy(policyToAdd, found, false);
+				}
+			}
+		} else {
+				//less than 3rd level policy
+				TreeItem[] children = masterPolicyTree.getItems();
+				TreeItem found = null;
+				for (int i=0; i < children.length; i++) {
+					 found = findPolicy(parent, children[i]);	
+					 if (found != null)
+						 break;
+				}
+				if (found != null && !found.isDisposed()) {
+					addPolicy(policyToAdd, found, false);
+					
+				}
+		}
+	}
+
+	/**
+	 * Find the policy within the tree ti
+	 * @param policyToFind
+	 */
+	private TreeItem findPolicy(IServicePolicy policyToFind, TreeItem ti) {
+		TreeItem toReturn = null;
+		if (ti == null || !(ti.getData() instanceof IServicePolicy))
+			return toReturn;
+		IServicePolicy sp = (IServicePolicy)ti.getData();
+		if (sp.getId().equals(policyToFind.getId()))
+			return ti;
+		else {
+			TreeItem[] tiChildren = ti.getItems();
+			for (int i =0; i < tiChildren.length; i++) {
+				toReturn = findPolicy(policyToFind, tiChildren[i]);
+				if (toReturn != null)
+					break;
+			}
+		}
+		return toReturn;
+	}
 	/**
 	 * Initializes states of the controls using default values in the preference
 	 * store.
@@ -524,7 +740,10 @@ public class ServicePoliciesComposite extends Composite implements
 			// an action control fired a change event
 			Control actionControl = (Control) e.getSource();
 			updatePolicy(actionControl);
-			IServicePolicy changedSP = ((ActionControlData) actionControl.getData())
+			//policy updates might delete nodes in the tree, so make sure action control not disposed
+			IServicePolicy changedSP = null;
+			if (!actionControl.isDisposed())
+				changedSP = ((ActionControlData) actionControl.getData())
 					.getSpList().get(0);
 			error = validateAllPolicies(changedSP);
 			//inform listeners that a control has changed, as composite may be in error now
@@ -1032,6 +1251,7 @@ public class ServicePoliciesComposite extends Composite implements
 
 	}
 
+	
 	/**
 	 * Launches the complex operation for the list of service policies
 	 * @param po a "complex" policy operation 
@@ -1039,9 +1259,46 @@ public class ServicePoliciesComposite extends Composite implements
 	 */
 	private void  updateComplexOperationPreference(IPolicyOperation po,
 			List<IServicePolicy> sps) {
-		po.launchOperation(sps);
+		//complex operations can result in added and deleted nodes, cache them until operation completed
+		bComplexOpCompleted = false;
+		listChildChangeEvents = new Vector<ChildChangeEvent>();
+		try {
+			po.launchOperation(sps);
+		} catch (RuntimeException e) {
+			//just want to make sure finally clause is executed so can update UI of additions/deletions
+		} finally {
+			bComplexOpCompleted =true;
+			Hashtable<String, IServicePolicy> topLevelAdds = getHighestLevelChildren(listChildChangeEvents, true);
+			for (ChildChangeEvent childChangeEventItem : listChildChangeEvents) {
+				processChildChangeEvent(childChangeEventItem, topLevelAdds);
+			}
+			
+		}
 	}
-
+	private Hashtable<String, IServicePolicy> getHighestLevelChildren (List<ChildChangeEvent> htChildChangeEvents, boolean forAddOnly) {
+		Hashtable<String, IServicePolicy> toReturn = new Hashtable<String, IServicePolicy>();
+		Iterator<ChildChangeEvent> elements = htChildChangeEvents.iterator();
+		ChildChangeEvent next;
+		Hashtable<String, IServicePolicy> allSps = new Hashtable<String, IServicePolicy>();
+		while (elements.hasNext()) {
+			next = elements.next();
+			List<IServicePolicy> changedChildrenList = next.getChangedChildren();
+			List<Boolean> addedList = next.getAdded();
+			for (int i = 0; i < changedChildrenList.size(); i++) {
+				if (forAddOnly && addedList.get(i).booleanValue() == true)
+					allSps.put(changedChildrenList.get(i).getId(), changedChildrenList.get(i));
+			}
+		}
+		Enumeration<IServicePolicy> servicePolicyElements = allSps.elements();
+		IServicePolicy nextServicePolicyElement;
+		while (servicePolicyElements.hasMoreElements()) {
+			nextServicePolicyElement = servicePolicyElements.nextElement();
+			if (nextServicePolicyElement.getParentPolicy() == null || !allSps.containsKey(nextServicePolicyElement.getParentPolicy().getId())) {
+				toReturn.put(nextServicePolicyElement.getId(), nextServicePolicyElement);
+			}
+		}
+		return toReturn;
+	}
 	public void dispose() {
 		super.dispose();
 		iconManager.dispose();
