@@ -2,3 +2,4 @@ bin
 build.xml
 temp.folder
 wsdl.tests.jar
+javaCompiler.wsdl.tests.jar.args

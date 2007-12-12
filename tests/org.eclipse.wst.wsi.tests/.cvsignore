@@ -2,3 +2,4 @@ bin
 temp.folder
 wsi.tests.jar
 build.xml
+javaCompiler.wsi.tests.jar.args
