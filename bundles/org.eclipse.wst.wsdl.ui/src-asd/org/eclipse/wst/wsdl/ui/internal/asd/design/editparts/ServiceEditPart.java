@@ -129,7 +129,7 @@ public class ServiceEditPart extends BaseEditPart implements INamedEditPart
   private DirectEditManager manager;
   
   public void performDirectEdit(Point cursorLocation){
-	  if (cursorLocation == null || hitTest(headingFigure.getLabel(), cursorLocation) && !isReadOnly()) {
+	  if (!isFileReadOnly() && (cursorLocation == null || hitTest(headingFigure.getLabel(), cursorLocation) && !isReadOnly())) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
     }

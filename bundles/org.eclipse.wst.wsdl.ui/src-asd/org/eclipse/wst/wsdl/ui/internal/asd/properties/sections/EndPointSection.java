@@ -146,11 +146,12 @@ public class EndPointSection extends ReferenceSection {
 		items.add(BROWSE_STRING);
 		items.add(NEW_STRING);
 
-		ComponentSpecification[] comboItems = manager.getQuickPicks();
-		for (int index = 0; index < comboItems.length; index++) {
-			items.add(comboItems[index]);
+		if (manager != null) {
+		  ComponentSpecification[] comboItems = manager.getQuickPicks();
+		  for (int index = 0; index < comboItems.length; index++) {
+		  	items.add(comboItems[index]);
+		  }
 		}
-		
 		return items;
 	}
 	

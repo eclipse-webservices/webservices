@@ -108,7 +108,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
   private IStructuredModel structuredModel;
   private final static String WSDL_EDITOR_MODE_EXTENSION_ID = "org.eclipse.wst.wsdl.ui.editorModes"; //$NON-NLS-1$
   
-  public IDescription buildModel(IFileEditorInput editorInput) {   
+  public IDescription buildModel(IEditorInput editorInput) {   
 	  try {
 		  // ISSUE: This code which deals with the structured model is similar to the one in the XSD editor. 
 		  // It could be refactored into the base class.
@@ -177,7 +177,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
           return ((Adapter)model).getTarget(); 
         }
 		else if (type == IOpenExternalEditorHelper.class) {
-			return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
+			return new W11OpenExternalEditorHelper(getEditorInput());
 		}
 
         else if (type == XSDTypeReferenceEditManager.class)
@@ -234,7 +234,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 			return new KeyboardDragImpl();
 		}
         else if (type == IOpenExternalEditorHelper.class) {
-        	return new W11OpenExternalEditorHelper(((IFileEditorInput) getEditorInput()).getFile());
+        	return new W11OpenExternalEditorHelper(getEditorInput());
         }
 		return super.getAdapter(type);
 	}
@@ -450,12 +450,14 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 		finally {
 		}
 	}
-	
+
 	protected void createActions() {
 		super.createActions();
-	    ActionRegistry registry = getActionRegistry();
 
-	    BaseSelectionAction action = new ASDAddMessageAction(this);
+    ActionRegistry registry = getActionRegistry();
+    BaseSelectionAction action;
+    if (!isFileReadOnly()) {
+	    action = new ASDAddMessageAction(this);
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);
 
@@ -487,18 +489,18 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);
 	    
-	    action = new W11OpenImportAction(this);
-	    action.setSelectionProvider(getSelectionManager());
-	    registry.registerAction(action);
+      ASDDirectEditAction directEditAction = new ASDDirectEditAction(this);
+      directEditAction.setSelectionProvider(getSelectionManager());
+      registry.registerAction(directEditAction);
+    }
+    action = new W11OpenImportAction(this);
+    action.setSelectionProvider(getSelectionManager());
+    registry.registerAction(action);
 
-	    action = new OpenInNewEditor(this);
-	    action.setSelectionProvider(getSelectionManager());
-	    registry.registerAction(action);
-
-	    ASDDirectEditAction directEditAction = new ASDDirectEditAction(this);
-	    directEditAction.setSelectionProvider(getSelectionManager());
-	    registry.registerAction(directEditAction);
-	  }
+    action = new OpenInNewEditor(this);
+    action.setSelectionProvider(getSelectionManager());
+    registry.registerAction(action);
+	}
 
   private static final String DEFAULT_EDITOR_MODE_ID = "org.eclipse.wst.wsdl.ui.defaultEditorModeId"; //$NON-NLS-1$
   

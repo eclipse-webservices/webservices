@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,22 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -36,6 +43,8 @@ import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLSwitch;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.xsd.ui.internal.adt.editor.ADTReadOnlyFileEditorInput;
+import org.eclipse.wst.xsd.ui.internal.editor.XSDEditorPlugin;
 import org.eclipse.wst.xsd.ui.internal.editor.XSDHyperlinkTargetLocator;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDPackage;
@@ -76,6 +85,10 @@ public class OpenOnSelectionHelper extends WSDLSwitch
   protected void openEditor(String resource, String spec)
   {
     String pattern = "platform:/resource"; //$NON-NLS-1$
+    IWorkbenchPage workbenchPage = WSDLEditorPlugin.getInstance().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    IEditorPart editorPart = workbenchPage.getActiveEditor();
+    String currentEditorId = editorPart.getEditorSite().getId();
+    
     if (resource != null && resource.startsWith(pattern))
     {
       try
@@ -83,8 +96,6 @@ public class OpenOnSelectionHelper extends WSDLSwitch
         Path path = new Path(resource.substring(pattern.length()));
         IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 
-        IWorkbenchPage workbenchPage = WSDLEditorPlugin.getInstance().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IEditorPart editorPart = workbenchPage.getActiveEditor();
         
         if (editorPart.getEditorInput() instanceof IFileEditorInput &&
            ((IFileEditorInput)editorPart.getEditorInput()).getFile().equals(file))
@@ -95,6 +106,7 @@ public class OpenOnSelectionHelper extends WSDLSwitch
         {
           try
           {
+            // TODO: Use content type as below
             if (resource.endsWith("xsd")) //$NON-NLS-1$
             {
               editorPart = workbenchPage.openEditor(new FileEditorInput(file), WSDLEditorPlugin.XSD_EDITOR_ID); 
@@ -118,6 +130,72 @@ public class OpenOnSelectionHelper extends WSDLSwitch
         workbenchPage.getNavigationHistory().markLocation(editorPart);
       }
       catch (Exception e)
+      {
+      }
+    }
+    else if (resource != null && resource.startsWith("http"))
+    {
+      IEditorPart newEditorPart = null;
+      boolean doOpenWsdlEditor = true;
+      if (resource.endsWith("xsd")) //$NON-NLS-1$
+      {
+        doOpenWsdlEditor = false;
+      }
+      try
+      {
+        IEditorReference[] refs = workbenchPage.getEditorReferences();
+        int length = refs.length;
+        // Need to find if an editor on that schema has already been opened
+        for (int i = 0; i < length; i++)
+        {
+          IEditorInput input = refs[i].getEditorInput();
+          if (input instanceof ADTReadOnlyFileEditorInput)
+          {
+            ADTReadOnlyFileEditorInput readOnlyEditorInput = (ADTReadOnlyFileEditorInput) input;
+            if (readOnlyEditorInput.getUrlString().equals(resource) && 
+                (!doOpenWsdlEditor && readOnlyEditorInput.getEditorID().equals(WSDLEditorPlugin.XSD_EDITOR_ID)
+                || (doOpenWsdlEditor && readOnlyEditorInput.getEditorID().equals(WSDLEditorPlugin.WSDL_EDITOR_ID))))
+            {
+              newEditorPart = refs[i].getEditor(true);
+              workbenchPage.activate(refs[i].getPart(true));
+              break;
+            }
+          }
+        }
+        if (newEditorPart == null)
+        {
+          ADTReadOnlyFileEditorInput readOnlyStorageEditorInput = new ADTReadOnlyFileEditorInput(resource);
+          IContentType contentType = null;
+          InputStream iStream = null;
+          try
+          {
+            iStream = readOnlyStorageEditorInput.getStorage().getContents();
+            contentType = Platform.getContentTypeManager().findContentTypeFor(iStream, resource);
+          }
+          catch (CoreException coreException)
+          {
+            
+          }
+          finally
+          {
+          }
+          // content type more reliable check
+          if (contentType != null && contentType.equals(XSDEditorPlugin.XSD_CONTENT_TYPE_ID) || resource.endsWith("xsd")) //$NON-NLS-1$
+          {
+            readOnlyStorageEditorInput.setEditorID(WSDLEditorPlugin.XSD_EDITOR_ID);
+            workbenchPage.openEditor(readOnlyStorageEditorInput, WSDLEditorPlugin.XSD_EDITOR_ID, true, 0); //$NON-NLS-1$
+          }
+          else
+          {
+            readOnlyStorageEditorInput.setEditorID(currentEditorId);
+            workbenchPage.openEditor(readOnlyStorageEditorInput, currentEditorId, true, 0); //$NON-NLS-1$
+          }
+        }
+      }
+      catch (PartInitException pie)
+      {
+      }
+      catch (IOException ioe)
       {
       }
     }
@@ -273,7 +351,7 @@ public class OpenOnSelectionHelper extends WSDLSwitch
 			
 			result = theImport.getESchema();
 		}
-		else if (extension.equalsIgnoreCase("wsdl")) { //$NON-NLS-1$
+		else if (extension.equalsIgnoreCase("wsdl") || extension.endsWith("wsdl")) { //$NON-NLS-1$
 			if (theImport.getEDefinition() == null) {
 				((ImportImpl)theImport).importDefinitionOrSchema();
 			}

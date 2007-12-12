@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
@@ -212,13 +213,25 @@ public class ImportSection extends ASDAbstractSection
 			W11Import w11Import = (W11Import) getModel();
 
 			IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-			IFile currentWSDLFile = ((IFileEditorInput) editor.getEditorInput()).getFile();
-
-			SelectSingleFileDialog dialog = new SelectSingleFileDialog(WSDLEditorPlugin.getShell(), null, true);
-			String [] filters = { "xsd", "wsdl" }; //$NON-NLS-1$ //$NON-NLS-2$
-			IFile [] excludedFiles = { currentWSDLFile };
-
-			dialog.addFilterExtensions(filters, excludedFiles);
+			
+      SelectSingleFileDialog dialog = new SelectSingleFileDialog(WSDLEditorPlugin.getShell(), null, true);
+      
+      IFile currentWSDLFile = null;
+      IEditorInput editorInput = editor.getEditorInput();
+      String [] filters = { "xsd", "wsdl" }; //$NON-NLS-1$ //$NON-NLS-2$
+      
+      if (editorInput instanceof IFileEditorInput)
+      {
+        currentWSDLFile = ((IFileEditorInput)editorInput).getFile();
+        IFile [] excludedFiles = { currentWSDLFile };
+        dialog.addFilterExtensions(filters, excludedFiles);
+      }
+      else
+      {
+        IFile [] excludedFiles = { };
+        dialog.addFilterExtensions(filters, excludedFiles);
+      }
+		
 			dialog.create();
 			dialog.getShell().setText(org.eclipse.wst.wsdl.ui.internal.Messages._UI_TITLE_SELECT); //$NON-NLS-1$
 			dialog.setTitle(org.eclipse.wst.wsdl.ui.internal.Messages._UI_TITLE_SELECT_FILE); //$NON-NLS-1$

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
@@ -20,9 +21,14 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
@@ -162,5 +168,31 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
   public EditPart getRelativeEditPart(int direction)
   {
     return EditPartNavigationHandlerUtil.getRelativeEditPart(this, direction);
+  }
+
+  protected boolean isFileReadOnly()
+  {
+    IWorkbench workbench = PlatformUI.getWorkbench();
+    if (workbench != null)
+    {
+      IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
+      if (workbenchWindow != null)
+      {
+        IWorkbenchPage page = workbenchWindow.getActivePage();
+        if (page != null)
+        {
+          IEditorPart editor = page.getActiveEditor();
+          if (editor != null)
+          {
+            IEditorInput editorInput = editor.getEditorInput();
+            if (!(editorInput instanceof IFileEditorInput || editorInput instanceof FileStoreEditorInput))
+            {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
 }

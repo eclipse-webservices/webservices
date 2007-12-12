@@ -136,7 +136,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   private DirectEditManager manager;
   
   public void performDirectEdit(Point cursorLocation){
-	  if (!isReadOnly() && (cursorLocation == null || hitTest(getLabelFigure().getBounds(), cursorLocation))) {
+	  if (!isFileReadOnly() && !isReadOnly() && (cursorLocation == null || hitTest(getLabelFigure().getBounds(), cursorLocation))) {
 		manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		manager.show();
 	  }
@@ -155,7 +155,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
   {
       super.createEditPolicies();
 	  installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ASDLabelDirectEditPolicy());
-	  if (!isReadOnly()) {
+	  if (!isReadOnly() && !isFileReadOnly()) {
 		  installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ASDDragAndDropEditPolicy(getViewer(), selectionHandlesEditPolicy));
 	  }
 	  installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, selectionHandlesEditPolicy);

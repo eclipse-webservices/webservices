@@ -44,8 +44,10 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   public static final String SOURCE_PAGE = "org.eclipse.wst.wsdl.ui.internal.sourcepage"; //$NON-NLS-1$
 
   public final static String PLUGIN_ID = "org.eclipse.wst.wsdl.ui"; //$NON-NLS-1$
+  public final static String WSDL_EDITOR_ID = "org.eclipse.wst.wsdl.ui.internal.WSDLEditor";  //$NON-NLS-1$
   public final static String XSD_EDITOR_ID = "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor";  //$NON-NLS-1$
-  
+  public final static String WSDL_CONTENT_TYPE_ID = "org.eclipse.wst.wsdl.wsdlsource"; //$NON-NLS-1$
+
   public final static String DEFAULT_TARGET_NAMESPACE = "http://www.example.org"; //$NON-NLS-1$
   
   public static int DEPENDECIES_CHANGED_POLICY_PROMPT = 0;

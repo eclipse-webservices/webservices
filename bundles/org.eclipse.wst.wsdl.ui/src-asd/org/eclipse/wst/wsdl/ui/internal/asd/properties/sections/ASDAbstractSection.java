@@ -30,10 +30,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.views.properties.tabbed.ISection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -84,7 +89,30 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 		if (input instanceof IASDObject) {
 			isReadOnly = ((IASDObject) input).isReadOnly();
 		}
-		
+
+		IEditorPart owningEditor = null;
+    if (part!=null) {
+      if (part instanceof IEditorPart) {
+        owningEditor = (IEditorPart)part;
+      } else {
+        IWorkbench workbench = PlatformUI.getWorkbench();
+        if (workbench != null) {
+          IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+          if (window != null) {
+            IWorkbenchPage page = window.getActivePage();
+            if (page != null) {
+              owningEditor = page.getActiveEditor();
+            }
+          }
+        }
+      }
+    }
+    if (owningEditor != null) {
+      IEditorInput editorInput = owningEditor.getEditorInput();
+      if (!(editorInput instanceof IFileEditorInput || editorInput instanceof FileStoreEditorInput)) {
+        isReadOnly = true;
+      }
+    }
 		refresh();
 	}
 	

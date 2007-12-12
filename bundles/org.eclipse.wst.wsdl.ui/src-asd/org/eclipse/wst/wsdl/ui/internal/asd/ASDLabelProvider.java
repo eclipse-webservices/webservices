@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,14 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
@@ -73,15 +79,33 @@ public class ASDLabelProvider extends LabelProvider {
 		if (object instanceof StructuredSelection) {
 			selected = ((StructuredSelection) object).getFirstElement();
 			
-            ILabelProvider delegate = getDelegate();
-            if (delegate != null) {
-              result = delegate.getText(selected);
+      ILabelProvider delegate = getDelegate();
+      if (delegate != null) {
+        result = delegate.getText(selected);
+      }
+      else if (selected instanceof ITreeElement) {
+          result = ((ITreeElement) selected).getText();
+      }
+
+      boolean isFileReadOnly = false;
+      IWorkbench workbench = PlatformUI.getWorkbench();
+      if (workbench != null) {
+        IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+        if (window != null) {
+          IWorkbenchPage page = window.getActivePage();
+          if (page != null) {
+            IEditorPart editor = page.getActiveEditor();
+            if (editor != null) {
+              IEditorInput editorInput = editor.getEditorInput();
+              if (!(editorInput instanceof IFileEditorInput || editorInput instanceof FileStoreEditorInput)) {
+                isFileReadOnly = true;
+              }
             }
-            else if (selected instanceof ITreeElement) {
-                result = ((ITreeElement) selected).getText();
-            }
-			
-			if (selected instanceof IASDObject && ((IASDObject) selected).isReadOnly()) {
+          }
+        }
+      }
+
+			if (selected instanceof IASDObject && ((IASDObject) selected).isReadOnly() || isFileReadOnly) {
 				result  = result + " (" + Messages._UI_LABEL_READ_ONLY + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}

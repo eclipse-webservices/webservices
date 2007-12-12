@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,11 @@ package org.eclipse.wst.wsdl.ui.internal.refactor.actions;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.ISelectionMapper;
 import org.eclipse.wst.xsd.ui.internal.refactor.wizard.RefactorActionGroup;
@@ -44,7 +47,9 @@ public class WSDLRefactorGroupActionDelegate extends RefactorGroupActionDelegate
       if (site == null)
         return;
       IEditorPart editor = site.getPage().getActiveEditor();
-      if (editor != null)
+      IEditorInput editorInput = editor.getEditorInput();
+      boolean shouldFillMenu = editor != null && (editorInput instanceof IFileEditorInput || editorInput instanceof FileStoreEditorInput);
+      if (shouldFillMenu)
       {
         ISelectionMapper mapper = (ISelectionMapper) editor.getAdapter(ISelectionMapper.class);
         ISelection selection = mapper != null ? mapper.mapSelection(fSelection) : fSelection;

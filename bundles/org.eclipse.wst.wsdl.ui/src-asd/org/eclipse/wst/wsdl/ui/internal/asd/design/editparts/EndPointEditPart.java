@@ -128,7 +128,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   public void performDirectEdit(Point cursorLocation)
   {
     this.cursorLocation = cursorLocation;
-    if (!isReadOnly() && (cursorLocation == null || hitTest(getLabelFigure(), cursorLocation))) {
+    if (!isReadOnly() && !isFileReadOnly() && (cursorLocation == null || hitTest(getLabelFigure(), cursorLocation))) {
     	manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
     	manager.show();
     }

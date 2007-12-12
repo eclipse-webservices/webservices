@@ -28,8 +28,10 @@ import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDAddBindingAction;
@@ -168,83 +170,91 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
   }
   
   public void buildAndSetModel() {
-	  model = buildModel((IFileEditorInput)getEditorInput());
+	  model = buildModel(getEditorInput());
   }
 
-  abstract public IDescription buildModel(IFileEditorInput editorInput);
+  abstract public IDescription buildModel(IEditorInput editorInput);
   
+  public boolean isFileReadOnly() {
+    IEditorInput editorInput = getEditorInput();
+    return !(editorInput instanceof IFileEditorInput || editorInput instanceof FileStoreEditorInput);
+  }
+
   protected void createActions()
   {
     ActionRegistry registry = getActionRegistry();
+    BaseSelectionAction action;
+    if (!isFileReadOnly())
+    {
+      action = new ASDAddServiceAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
 
-    BaseSelectionAction action = new ASDAddServiceAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddBindingAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddInterfaceAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddEndPointAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddOperationAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddInputAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddOutputAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddFaultAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
+      action = new ASDAddBindingAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
 
-    action = new ASDDeleteAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDSetNewBindingAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDSetExistingBindingAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
+      action = new ASDAddInterfaceAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
 
-    action = new ASDSetNewInterfaceAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDSetExistingInterfaceAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDGenerateBindingAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddImportAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
-    action = new ASDAddParameterAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);    
-    
-    action = new ASDAddSchemaAction(this);
-    action.setSelectionProvider(getSelectionManager());
-    registry.registerAction(action);
-    
+      action = new ASDAddEndPointAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDAddOperationAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDAddInputAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDAddOutputAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDAddFaultAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDDeleteAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDSetNewBindingAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDSetExistingBindingAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDSetNewInterfaceAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDSetExistingInterfaceAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDGenerateBindingAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDAddImportAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDAddParameterAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+
+      action = new ASDAddSchemaAction(this);
+      action.setSelectionProvider(getSelectionManager());
+      registry.registerAction(action);
+    }
+
     action = new ASDOpenSchemaAction(this);
     action.setSelectionProvider(getSelectionManager());
     registry.registerAction(action);

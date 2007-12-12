@@ -102,7 +102,7 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
   public void performDirectEdit(Point cursorLocation){
 	  Rectangle textArea = getLabelFigure().getBounds();
 	  textArea.width = getFigure().getBounds().width;
-	  if (cursorLocation == null || hitTest(textArea, cursorLocation) && !isReadOnly()) {
+	  if (!isFileReadOnly() && (cursorLocation == null || hitTest(textArea, cursorLocation) && !isReadOnly())) {
 		  manager = new LabelEditManager(this, new LabelCellEditorLocator(this, cursorLocation));
 		  manager.show();
 	  }

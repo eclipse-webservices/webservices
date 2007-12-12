@@ -12,9 +12,15 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -32,11 +38,11 @@ import org.eclipse.xsd.util.XSDConstants;
 
 public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper, IOpenInNewEditor {
 	private Object object;
-	private IFile wsdlFile;
+	private IEditorInput editorInput;
 	
-	public W11OpenExternalEditorHelper(IFile wsdlFile)
+	public W11OpenExternalEditorHelper(IEditorInput editorInput)
 	{
-		this.wsdlFile = wsdlFile;
+		this.editorInput = editorInput;
 	}
 	
 	public void setModel(Object object) {
@@ -51,16 +57,17 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper, I
 			if (openOnModel instanceof XSDConcreteComponent) {
 			  XSDConcreteComponent xsdComponent = (XSDConcreteComponent) openOnModel;
 			  XSDSchema schema = getSchema(xsdComponent);
+			  if (schema == null) return;
 			  if (schema.eResource() instanceof WSDLResourceImpl)
 			  {
 			    String fileName = schema.eResource().getURI().lastSegment();
 			    if (fileName == null) fileName = "WSDL"; //$NON-NLS-1$
 			    String editorName = Messages._UI_LABEL_INLINE_SCHEMA_OF + fileName;
-			    XSDGraphViewerDialog.openNonXSDResourceSchema(xsdComponent, schema, editorName);
+		      XSDGraphViewerDialog.openInlineSchema(editorInput, xsdComponent, schema, editorName);
 			  }
 			  else
 			  {
-				  XSDGraphViewerDialog.openXSDEditor(xsdComponent);
+				  XSDGraphViewerDialog.openXSDEditor(editorInput, xsdComponent.getSchema(), xsdComponent);
 			  }
 			}
 		}
@@ -120,7 +127,28 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper, I
 	 */
 	protected boolean isInlineSchema(IFile file) {
 		// Should there be a better test for this?  The IFiles are different so we can't use file == wsdlFile.
-		return file.getFullPath().equals(wsdlFile.getFullPath());
+		// return file.getFullPath().equals(wsdlFile.getFullPath());
+    if (editorInput instanceof FileStoreEditorInput) {
+      FileStoreEditorInput fileStoreEditorInput = (FileStoreEditorInput)editorInput;
+      file.getFullPath().equals(fileStoreEditorInput.getURI().getPath());
+      return true;
+    }
+    else if (editorInput instanceof IStorageEditorInput) {
+      IStorageEditorInput storage = (IStorageEditorInput) editorInput;
+      try {
+        IPath path = storage.getStorage().getFullPath();
+        if (path != null && path.equals(file.getFullPath())) {
+          return true;
+        }
+      }
+      catch (CoreException e) {
+      }
+    }
+    else if (editorInput instanceof IFileEditorInput) {
+      IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
+      return  file.getFullPath().equals(fileEditorInput.getFile().getFullPath());
+    }
+	  return false;
 	}
 	
 	public boolean isValid() {
@@ -135,11 +163,30 @@ public class W11OpenExternalEditorHelper implements IOpenExternalEditorHelper, I
 
 				XSDSchema schema = getSchema(xsdComponent);
 				if (schema != null) {
-					String schemaLocation = URIHelper.removePlatformResourceProtocol(schema.getSchemaLocation());
-					IPath schemaPath = new Path(schemaLocation);
-					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(schemaPath);
-					if (file != null && file.exists()) {
-						return true;
+          String schemaLocation = URIHelper.removePlatformResourceProtocol(schema.getSchemaLocation());
+          IPath schemaPath = new Path(schemaLocation);
+          if (schemaLocation.startsWith("http")) {
+            return true;
+          }
+				  if (editorInput instanceof FileEditorInput) {
+		  			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(schemaPath);
+			  		if (file != null && file.exists()) {
+				  		return true;
+					  }
+				  }
+				  else if (editorInput instanceof FileStoreEditorInput) {
+				    return true;
+// Revisit
+//            schemaLocation = schema.getSchemaLocation();
+//            schemaPath = new Path(URIHelper.removeProtocol(schemaLocation));
+//		        IFileStore fileStore = EFS.getLocalFileSystem().getStore(schemaPath);
+//		        if (!fileStore.fetchInfo().isDirectory() && fileStore.fetchInfo().exists())
+//		        {
+//					    return true;
+//		        }
+					}
+					else if (editorInput instanceof IStorageEditorInput) {
+					  return true;
 					}
 				}
 			}
