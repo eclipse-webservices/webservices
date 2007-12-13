@@ -9,10 +9,8 @@
   </description>
   <expectedFailures>
 	<assertion id="BP2102" tadID="SSBP10"/>
-	<assertion id="BP2122" tadID="SSBP10"/>
 	<assertion id="BP2202" tadID="SSBP10"/>
 	<assertion id="BP2102" tadID="AP10"/>
-	<assertion id="BP2122" tadID="AP10"/>
 	<assertion id="BP2202" tadID="AP10"/>
   </expectedFailures>
 </testcase>

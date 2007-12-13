@@ -6,10 +6,11 @@
 			<accessrule kind="accessible" pattern="org/apache/xerces/**"/>
 			<accessrule kind="accessible" pattern="org/apache/xml/**"/>
 			<accessrule kind="accessible" pattern="sun/misc/BASE64Decoder"/>
-      <accessrule kind="accessible" pattern="sun/misc/BASE64Encoder"/>
-      <accessrule kind="accessible" pattern="sun/misc/CharacterEncoder"/>
-      <accessrule kind="accessible" pattern="sun/misc/CharacterDecoder"/>
-      <accessrule kind="accessible" pattern="sun/net/www/MessageHeader"/>            
+			<accessrule kind="accessible" pattern="sun/misc/BASE64Encoder"/>
+			<accessrule kind="accessible" pattern="sun/misc/CharacterEncoder"/>
+			<accessrule kind="accessible" pattern="sun/misc/CharacterDecoder"/>
+			<accessrule kind="accessible" pattern="sun/net/www/MessageHeader"/>
+			<accessrule kind="accessible" pattern="javax/xml/namespace/QName"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
