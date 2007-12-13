@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002-2007 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,13 +46,13 @@ public class Monitor
   protected MessageList messageList = null;
 
   private final static String RESOURCE_BUNDLE_NAME =
-    "org.wsi.test.monitor.Monitor";
+    "org.eclipse.wst.wsi.internal.core.monitor.Monitor";
 
   public final static String USAGE_MESSAGE =
     "Usage: Monitor -config <configFilename>";
 
   /**
-   * Converstation ID.
+   * Conversation ID.
    */
   private int conversationId = 1;
 
