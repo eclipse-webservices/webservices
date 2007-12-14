@@ -228,7 +228,7 @@ public class ServicePolicyPlatformImpl
     }
   }
   
-  private void fireChildChangeEvent( IServicePolicy policy, boolean isAdd )
+  public void fireChildChangeEvent( IServicePolicy policy, boolean isAdd )
   {
     if( queuedChildChangeAdded == null )
     {
@@ -277,13 +277,13 @@ public class ServicePolicyPlatformImpl
   
   public void discardChanges()
   {
-    for( ServicePolicyImpl policy : policyMap.values() )
-    {
-      policy.discardChanges();
-    }
-    
     policyMap = new HashMap<String, ServicePolicyImpl>();
     policyMap.putAll( committedPolicyMap );
+    
+    for( ServicePolicyImpl policy : committedPolicyMap.values() )
+    {
+      policy.discardChanges();
+    }    
   }
   
   public void discardChanges( IProject project )

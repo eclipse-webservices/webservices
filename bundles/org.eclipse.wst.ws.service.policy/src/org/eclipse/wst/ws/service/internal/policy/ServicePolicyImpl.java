@@ -14,8 +14,10 @@
 package org.eclipse.wst.ws.service.internal.policy;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
@@ -100,6 +102,8 @@ public class ServicePolicyImpl implements IServicePolicy
   public void discardChanges()
   {
     policyState.discardChanges();
+        
+    fireChildChangesDuetoDiscard();
     
     //Restore children.
     children = new Vector<IServicePolicy>( committedChildren );
@@ -373,6 +377,34 @@ public class ServicePolicyImpl implements IServicePolicy
       {
         listener.statusChange( this, oldStatus, newStatus);
       }
+    }
+  }
+  
+  private void fireChildChangesDuetoDiscard()
+  {
+    Set<IServicePolicy> childSet = new HashSet<IServicePolicy>( children );
+    Set<IServicePolicy> committedChildSet = new HashSet<IServicePolicy>( committedChildren );
+    
+    for( IServicePolicy child : childSet )
+    {
+      if( committedChildSet.contains( child ) )
+      {
+        committedChildSet.remove( child );
+      }
+      else
+      {
+        // A child was added and is now being deleted by the discard.
+        fireChildChangeEvent( child, false );
+        platform.fireChildChangeEvent( child, false );
+      }
+    }
+    
+    // Any children left in the committed set must have been deleted and are now
+    // being added back due to the discard.
+    for( IServicePolicy child : committedChildSet )
+    {
+      fireChildChangeEvent( child, true );
+      platform.fireChildChangeEvent( child, true );
     }
   }
   
