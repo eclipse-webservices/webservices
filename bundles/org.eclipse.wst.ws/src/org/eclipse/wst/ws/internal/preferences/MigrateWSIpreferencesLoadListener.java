@@ -10,10 +10,15 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071105   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071218   209858 epeters@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.preferences;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
@@ -60,10 +65,39 @@ public class MigrateWSIpreferencesLoadListener implements IPolicyPlatformLoadLis
         
         if( newApValue != null )
         {
-          apState.putValue( "value", newApValue );
+          apState.putValue( IPolicyState.DefaultValueKey, newApValue );
         }
       }
+      		// also need to check if any project specific preferences were set
+			QualifiedName name = new QualifiedName(WSPlugin.ID,
+					"nonWSIAPCompliance");
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+					.getProjects();
+			for (int i = 0; i < projects.length; i++) {
+				try {
+					IProject project = projects[i];
+					String oldProperty = null;
+						oldProperty = project.getPersistentProperty(name);
+					if (oldProperty != null && !oldProperty.equals("")) {
+						int oldApIndex = indexOfString(oldProperty, CONTEXT_IDS);
+						String newApValue = null;
+						if (oldApIndex != -1 && oldApIndex < ENUM_ID_VALUES.length) {
+							newApValue = ENUM_ID_VALUES[oldApIndex];
+						}
+
+						if (newApValue != null) {
+							apState = apPolicy.getPolicyState(project);
+							platform.setProjectPreferencesEnabled(project, true);
+					        apState.putValue( IPolicyState.DefaultValueKey, newApValue );
+						}
+					}
+				} catch (CoreException e) {
+					//ignore this project
+				}
+			}
     }
+
+
     
     if( ssbpValue == null )
     {
@@ -85,9 +119,37 @@ public class MigrateWSIpreferencesLoadListener implements IPolicyPlatformLoadLis
         
         if( newSSBPValue != null )
         {
-          ssbpState.putValue( "value", newSSBPValue );
+        	ssbpState.putValue( IPolicyState.DefaultValueKey, newSSBPValue );
         }
       }
+		// also need to check if any project specific preferences were set
+		QualifiedName name = new QualifiedName(WSPlugin.ID,
+				"nonWSISSBPCompliance");
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
+		for (int i = 0; i < projects.length; i++) {
+			try {
+				IProject project = projects[i];
+				String oldProperty = null;
+					oldProperty = project.getPersistentProperty(name);
+				if (oldProperty != null && !oldProperty.equals("")) {
+					int oldSSBPIndex = indexOfString(oldProperty, CONTEXT_IDS);
+					String newSSBPValue = null;
+					if (oldSSBPIndex != -1 && oldSSBPIndex < ENUM_ID_VALUES.length) {
+						newSSBPValue = ENUM_ID_VALUES[oldSSBPIndex];
+					}
+
+					if (newSSBPValue != null) {
+						ssbpState = ssbpPolicy.getPolicyState(project);
+						platform.setProjectPreferencesEnabled(project, true);
+						ssbpState.putValue( IPolicyState.DefaultValueKey, newSSBPValue );
+					}
+				}
+			} catch (CoreException e) {
+				//ignore this project
+			}
+		}
+
     }
   }
   
