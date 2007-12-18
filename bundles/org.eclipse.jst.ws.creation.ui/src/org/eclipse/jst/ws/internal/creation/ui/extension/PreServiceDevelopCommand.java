@@ -15,21 +15,30 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070123   167487 makandre@ca.ibm.com - Andrew Mak
  * 20070403   173654 kathy@ca.ibm.com - Kathy Chan
+ * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import java.io.IOException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.AddModuleDependenciesCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -39,6 +48,7 @@ import org.eclipse.wst.ws.internal.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntime;
 import org.eclipse.wst.ws.internal.wsrt.SimpleContext;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
@@ -54,6 +64,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   private String			moduleType_;
   private String			earProject_;
   private String            ear_;
+  private IProject		initialProject_;
 	
   private IWebService       webService_;
   private String            j2eeLevel_;
@@ -158,6 +169,29 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		        		return status;
 		        	}      
 		        }
+		  }
+		   
+		  // add the module dependency if the initial project is Java project
+		  if(FacetUtils.isJavaProject(initialProject_)){
+			  AddModuleDependenciesCommand addMod = new AddModuleDependenciesCommand();
+			  // Should not call AddModuleDependenciesCommand execute() method here since the 
+			  // necessary testInfo is not set up.  We are just using some methods here.
+			  addMod.addJavaProjectAsUtilityJar(initialProject_, project, monitor);
+			  try
+			  {
+				  String uri = initialProject_.getName() + ".jar";
+				  addMod.addJAROrModuleDependency(project, uri);
+			  } catch (CoreException ce)
+			  {
+				  String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{project.getName(), initialProject_.getName()});
+				  IStatus errorStatus = StatusUtils.errorStatus(errorMessage);
+				  environment.getStatusHandler().reportError(errorStatus);
+			  } catch (IOException ioe)
+			  {
+				  String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{project.getName(), initialProject_.getName()});
+				  IStatus errorStatus = StatusUtils.errorStatus(errorMessage);
+				  environment.getStatusHandler().reportError(errorStatus);					
+			  }							
 		  }
 	  }
 	  return status;
@@ -279,6 +313,16 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
   public void setGenerateProxy(boolean genProxy)
   {
     client_ = genProxy;  
+  }	
+  
+  public void setInitialProject(IProject initialProject)
+  {
+	  initialProject_ = initialProject;  
+  }	
+  
+  public IProject getInitialProject()
+  {
+	  return initialProject_;  
   }	
 	
 

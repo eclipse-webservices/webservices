@@ -26,6 +26,7 @@
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -191,6 +192,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceNeedEAR", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ServerWizardWidget.class); //jvh
+    dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialProject", PreServiceDevelopCommand.class );
                 
     // After ServerWizardWidget  
     dataRegistry.addMapping(ServerWizardWidget.class, "ServiceTypeRuntimeServer", ServerExtensionDefaultingCommand.class);

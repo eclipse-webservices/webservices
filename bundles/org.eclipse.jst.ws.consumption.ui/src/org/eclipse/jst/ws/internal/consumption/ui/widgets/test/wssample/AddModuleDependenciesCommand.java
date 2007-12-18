@@ -12,6 +12,7 @@
  * 20060324   122799 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060503   138478 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
@@ -71,6 +72,12 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
     this.testInfo = testInfo;
   }
 
+  // Defect 200193 - This default constructor is put as a temporary fix for allowing other
+  // code to have access to methods in this command without calling execute().  
+  public AddModuleDependenciesCommand()
+  {   
+  }
+  
   /**
    * Execute WebServerDefaultingTask Set the default server name and id given a
    * deployable.
@@ -237,7 +244,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
     return Status.OK_STATUS;
   }
   
-  private void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
+  public void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
   {
     if (J2EEUtils.isWebComponent(project))
     {
@@ -247,11 +254,12 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
     }
   }
   
-  private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject,IProgressMonitor monitor)
+  public void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject,IProgressMonitor monitor)
   {
 	  try {
 		  IDataModel migrationdm = DataModelFactory.createDataModel(new JavaProjectMigrationDataModelProvider());
 		  migrationdm.setProperty(IJavaProjectMigrationDataModelProperties.PROJECT_NAME, javaProject.getName());
+		  migrationdm.setProperty(IJavaProjectMigrationDataModelProperties.ADD_TO_EAR, Boolean.FALSE);
 		  migrationdm.getDefaultOperation().execute(monitor, null);
  
  
@@ -272,7 +280,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
   }
 
   
-  private void addBuildPath(IProject referencingProject, IProject referencedProject) throws JavaModelException
+  public void addBuildPath(IProject referencingProject, IProject referencedProject) throws JavaModelException
   {
     IJavaProject javaProject = JavaCore.create(referencingProject);
     if (javaProject != null)

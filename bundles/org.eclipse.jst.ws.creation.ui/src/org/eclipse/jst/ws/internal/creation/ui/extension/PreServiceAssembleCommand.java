@@ -13,10 +13,13 @@
  * 20060330 128827   kathy@ca.ibm.com - Kathy Chan
  * 20060524   141925 kathy@ca.ibm.com - Kathy Chan
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,21 +28,25 @@ import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.SkeletonMergeCommand;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.AddModuleDependenciesCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
+import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class PreServiceAssembleCommand extends AbstractDataModelOperation 
 {
-	private IWebService				webService_;
-	private String						project_;
-  private String            module_;
-	private String						earProject_;
-  private String            ear_;
-  private IContext          context_;
+	private IWebService		webService_;
+	private String			project_;
+	private String          module_;
+	private String			earProject_;
+	private String          ear_;
+	private IContext        context_;
+	private IProject		initialProject_;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
@@ -102,10 +109,30 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 			  environment.getStatusHandler().reportError(status);		  
 		  }			
 
+		  // add the module dependency if the initial project is Java project
+		  if(FacetUtils.isJavaProject(initialProject_)) {
+			  AddModuleDependenciesCommand addMod = new AddModuleDependenciesCommand(); 
+			  // Should not call AddModuleDependenciesCommand execute() method here since the 
+			  // necessary testInfo is not set up.  We are just using some methods here.
+			  IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProject_);
+			  addMod.addJavaProjectAsUtilityJar(initialProject_, earProject, monitor);
+		  }		  
+		  
 	  }
 	  return status;	  
   }
 	
+  public void setInitialProject(IProject initialProject)
+  {
+	  initialProject_ = initialProject;  
+  }	
+  
+  public IProject getInitialProject()
+  {
+	  return initialProject_;  
+  }	
+  
+  
   public void setProject( String project )
   {
 	  project_ = project;
