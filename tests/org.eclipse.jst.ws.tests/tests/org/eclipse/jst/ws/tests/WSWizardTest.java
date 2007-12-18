@@ -10,15 +10,19 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20071217  187280 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.tests.plugin.TestsPlugin;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
 import org.eclipse.wst.command.internal.env.ui.eclipse.EclipseStatusHandler;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -205,4 +209,11 @@ public abstract class WSWizardTest extends TestCase implements WSJUnitConstants
 		url.append(path);
 		return url.toString();
 	}	
+	
+	protected void logBadStatus(IStatus status)
+	{
+		TestsPlugin.getDefault().getLog().log(StatusUtils.infoStatus("*** JST.WS JUNIT ERROR (START) ***"));
+		TestsPlugin.getDefault().getLog().log(status);
+		TestsPlugin.getDefault().getLog().log(StatusUtils.infoStatus("*** JST.WS JUNIT ERROR (END) ***"));
+	}
 }
