@@ -14,10 +14,12 @@
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060524   131132 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
+ * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +35,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -40,6 +43,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
+import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.ejb.EJBResource;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
@@ -50,10 +54,14 @@ import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
+import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
+import org.eclipse.wst.common.componentcore.internal.operation.CreateReferenceComponentsDataModelProvider;
+import org.eclipse.wst.common.componentcore.internal.util.ComponentUtilities;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -1419,4 +1427,40 @@ public final class J2EEUtils {
 		return status;
     }
 	
+
+	 public static void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
+	  {
+	    if (J2EEUtils.isWebComponent(project))
+	    {
+	      ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
+	      manifest.mergeClassPath(new String[]{uri});
+	      J2EEProjectUtilities.writeManifest(project, manifest);
+	    }
+	  }
+	  
+	  public static void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject,IProgressMonitor monitor)
+	  {
+		  try {
+			  IDataModel migrationdm = DataModelFactory.createDataModel(new JavaProjectMigrationDataModelProvider());
+			  migrationdm.setProperty(IJavaProjectMigrationDataModelProperties.PROJECT_NAME, javaProject.getName());
+			  migrationdm.setProperty(IJavaProjectMigrationDataModelProperties.ADD_TO_EAR, Boolean.FALSE);
+			  migrationdm.getDefaultOperation().execute(monitor, null);
+	 
+	 
+			  IDataModel refdm = DataModelFactory.createDataModel(new CreateReferenceComponentsDataModelProvider());
+			  List targetCompList = (List) refdm.getProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST);
+	 
+			  IVirtualComponent targetcomponent = ComponentCore.createComponent(javaProject);
+			  IVirtualComponent sourcecomponent = ComponentUtilities.getComponent(earProject.getName());
+			  targetCompList.add(targetcomponent);
+	 
+			  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT,sourcecomponent );
+			  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, targetCompList);
+			  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_DEPLOY_PATH,  "/WEB-INF/lib");
+			  refdm.getDefaultOperation().execute(monitor, null);
+		  }catch (Exception e) {
+			  
+		  }
+	  }
+
 }

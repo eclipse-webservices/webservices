@@ -28,6 +28,7 @@
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  * 20070502   180304 gilberta@ca.ibm.com - Gilbert Andrews
  * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
+ * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -525,6 +526,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "GenerateProxy", ClientFragment.class);
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "GenerateProxy", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceNeedEAR", ServerExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialProject", PreServiceDevelopCommand.class );
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
       
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "InstallService", ServerExtensionDefaultingCommand.class);  
