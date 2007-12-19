@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
+ * 20071219   213356 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -1108,6 +1109,10 @@ public class FacetUtils
     else if (jdkComplianceLevel.equals("1.5"))
     {
       javaFacetVersion = javaFacet.getVersion("5.0");
+    }
+    else if (jdkComplianceLevel.equals("1.6"))
+    {
+      javaFacetVersion = javaFacet.getVersion("6.0");
     }
     else
     {
