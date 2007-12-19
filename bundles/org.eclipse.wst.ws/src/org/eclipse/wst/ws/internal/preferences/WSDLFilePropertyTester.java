@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071120   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071219   213447 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.preferences;
 
@@ -50,7 +51,12 @@ public class WSDLFilePropertyTester extends PropertyTester
         }
         else if( child instanceof IFile )
         {
-          result = child.getFileExtension().equals( "wsdl" );
+          String extension = child.getFileExtension();
+          
+          if( extension != null )
+          {
+            result = extension.equals( "wsdl" );
+          }
         }
         
         // If we found a single wsdl file we will break out of the loop.
