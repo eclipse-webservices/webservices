@@ -17,6 +17,7 @@
  * 20070403   173654 kathy@ca.ibm.com - Kathy Chan
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20071220   213640 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -177,7 +178,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  }
 	  
 	  
-		  if(FacetUtils.isJavaProject(initialProject_)){
+		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)){
 			  J2EEUtils.addJavaProjectAsUtilityJar(initialProject_, project, monitor);
 			  try{
 		  		String uri = initialProject_.getName() + ".jar";

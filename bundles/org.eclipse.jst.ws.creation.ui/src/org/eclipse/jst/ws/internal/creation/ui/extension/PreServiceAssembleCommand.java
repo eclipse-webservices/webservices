@@ -15,6 +15,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20071220   213640 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -120,7 +121,7 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 
 		  //make sure the ear file has been created.
 		  
-		  if(FacetUtils.isJavaProject(initialProject_)) {
+		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)) {
 			  IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProject_);
 			  J2EEUtils.addJavaProjectAsUtilityJar(initialProject_, earProject, monitor);
 		  }		 
