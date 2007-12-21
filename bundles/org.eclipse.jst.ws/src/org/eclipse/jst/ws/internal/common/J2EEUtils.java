@@ -15,12 +15,15 @@
  * 20060524   131132 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20071221   213726 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +55,7 @@ import org.eclipse.jst.j2ee.ejb.SessionType;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
+import org.eclipse.jst.j2ee.internal.common.classpath.J2EEComponentClasspathUpdater;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
@@ -1435,6 +1439,7 @@ public final class J2EEUtils {
 	      ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
 	      manifest.mergeClassPath(new String[]{uri});
 	      J2EEProjectUtilities.writeManifest(project, manifest);
+	      forceClasspathUpdate(project);
 	    }
 	  }
 	  
@@ -1458,9 +1463,19 @@ public final class J2EEUtils {
 			  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, targetCompList);
 			  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_DEPLOY_PATH,  "/WEB-INF/lib");
 			  refdm.getDefaultOperation().execute(monitor, null);
+			  
+			  forceClasspathUpdate(earProject);
+			  
 		  }catch (Exception e) {
 			  
 		  }
+	  }
+	  
+	//Forcing classpath update
+	  public static void forceClasspathUpdate (IProject project) {
+		  J2EEComponentClasspathUpdater classpathUpdater = J2EEComponentClasspathUpdater.getInstance();
+		  Collection projCollection = Collections.singleton(project);
+		  classpathUpdater.forceUpdate(projCollection, false);
 	  }
 
 }
