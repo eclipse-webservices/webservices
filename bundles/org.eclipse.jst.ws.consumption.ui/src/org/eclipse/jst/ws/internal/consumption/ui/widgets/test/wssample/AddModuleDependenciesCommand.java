@@ -17,6 +17,8 @@
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -32,6 +34,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
+import org.eclipse.jst.j2ee.internal.common.classpath.J2EEComponentClasspathUpdater;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
@@ -251,6 +254,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
       ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
       manifest.mergeClassPath(new String[]{uri});
       J2EEProjectUtilities.writeManifest(project, manifest);
+      forceClasspathUpdate(project);
     }
   }
   
@@ -274,11 +278,19 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, targetCompList);
 		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_DEPLOY_PATH,  "/WEB-INF/lib");
 		  refdm.getDefaultOperation().execute(monitor, null);
+		 
+		  forceClasspathUpdate(earProject);
 	  }catch (Exception e) {
 		  
 	  }
   }
 
+//Forcing classpath update
+  private void forceClasspathUpdate (IProject project) {
+	  J2EEComponentClasspathUpdater classpathUpdater = J2EEComponentClasspathUpdater.getInstance();
+	  Collection projCollection = Collections.singleton(project);
+	  classpathUpdater.forceUpdate(projCollection, false);
+  }
   
   public void addBuildPath(IProject referencingProject, IProject referencedProject) throws JavaModelException
   {
