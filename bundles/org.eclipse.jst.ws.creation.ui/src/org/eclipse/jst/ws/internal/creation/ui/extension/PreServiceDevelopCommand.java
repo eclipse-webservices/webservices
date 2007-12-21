@@ -172,7 +172,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  }
 		   
 		  // add the module dependency if the initial project is Java project
-		  if(FacetUtils.isJavaProject(initialProject_)){
+		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)){
 			  AddModuleDependenciesCommand addMod = new AddModuleDependenciesCommand();
 			  // Should not call AddModuleDependenciesCommand execute() method here since the 
 			  // necessary testInfo is not set up.  We are just using some methods here.
