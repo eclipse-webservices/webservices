@@ -14,18 +14,30 @@
  * 20060524   141925 kathy@ca.ibm.com - Kathy Chan
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
+ * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20071220   213640 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
+import java.io.IOException;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
@@ -43,6 +55,7 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 	private String						earProject_;
   private String            ear_;
   private IContext          context_;
+  private IProject		initialProject_;
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
   {
@@ -106,10 +119,27 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 			  environment.getStatusHandler().reportError(status);		  
 		  }			
 
+		  //make sure the ear file has been created.
+		  
+		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)) {
+			  IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProject_);
+			  J2EEUtils.addJavaProjectAsUtilityJar(initialProject_, earProject, monitor);
+		  }		 
+	  
 	  }
 	  return status;	  
   }
 	
+  public void setInitialProject(IProject initialProject)
+  {
+	  initialProject_ = initialProject;  
+  }	
+    
+  public IProject getInitialProject()
+  {
+	  return initialProject_;  
+  }	
+  
   public void setProject( String project )
   {
 	  project_ = project;

@@ -12,29 +12,20 @@
  * 20060324   122799 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060503   138478 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
-import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
-import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
@@ -45,15 +36,8 @@ import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
-import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.datamodel.properties.ICreateReferenceComponentsDataModelProperties;
-import org.eclipse.wst.common.componentcore.internal.operation.CreateReferenceComponentsDataModelProvider;
-import org.eclipse.wst.common.componentcore.internal.util.ComponentUtilities;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.ws.internal.wsrt.TestInfo;
 
 public class AddModuleDependenciesCommand extends AbstractDataModelOperation
@@ -203,14 +187,14 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 
 		if (clientIProject != null && !J2EEUtils.isWebComponent(clientIProject)) {
 			if (J2EEUtils.isJavaComponent(clientIProject)) {				
-				addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, monitor);
-				addJavaProjectAsUtilityJar(clientIProject, sampleIProject,monitor);
+				J2EEUtils.addJavaProjectAsUtilityJar(clientIProject, sampleEARIProject, monitor);
+				J2EEUtils.addJavaProjectAsUtilityJar(clientIProject, sampleIProject,monitor);
 			}
 
 				try
 				{
 				  String uri = clientIProject.getName() + ".jar";
-				  addJAROrModuleDependency(sampleIProject, uri);
+				  J2EEUtils.addJAROrModuleDependency(sampleIProject, uri);
 				} catch (CoreException ce)
 				{
 					String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{sampleIProject.getName(), clientIProject.getName()});
@@ -223,70 +207,15 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 					env.getStatusHandler().reportError(errorStatus);					
 				}							
 			
-			try {		
-				addBuildPath(sampleIProject, clientIProject);
-			} catch (JavaModelException jme) {
-				// Do nothing in this catch block. The worst that
-				// will happen is that the sample Web project
-				// will show some compile errors. The sample will
-				// likely still launch successfully on the server
-				// and the user will be able to use it.
-			}
+			
 		}      	  
     
     return Status.OK_STATUS;
   }
   
-  private void addJAROrModuleDependency(IProject project, String uri) throws IOException, CoreException
-  {
-    if (J2EEUtils.isWebComponent(project))
-    {
-      ArchiveManifest manifest = J2EEProjectUtilities.readManifest(project);
-      manifest.mergeClassPath(new String[]{uri});
-      J2EEProjectUtilities.writeManifest(project, manifest);
-    }
-  }
-  
-  private void addJavaProjectAsUtilityJar(IProject javaProject, IProject earProject,IProgressMonitor monitor)
-  {
-	  try {
-		  IDataModel migrationdm = DataModelFactory.createDataModel(new JavaProjectMigrationDataModelProvider());
-		  migrationdm.setProperty(IJavaProjectMigrationDataModelProperties.PROJECT_NAME, javaProject.getName());
-		  migrationdm.getDefaultOperation().execute(monitor, null);
- 
- 
-		  IDataModel refdm = DataModelFactory.createDataModel(new CreateReferenceComponentsDataModelProvider());
-		  List targetCompList = (List) refdm.getProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST);
- 
-		  IVirtualComponent targetcomponent = ComponentCore.createComponent(javaProject);
-		  IVirtualComponent sourcecomponent = ComponentUtilities.getComponent(earProject.getName());
-		  targetCompList.add(targetcomponent);
- 
-		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.SOURCE_COMPONENT,sourcecomponent );
-		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, targetCompList);
-		  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_DEPLOY_PATH,  "/WEB-INF/lib");
-		  refdm.getDefaultOperation().execute(monitor, null);
-	  }catch (Exception e) {
-		  
-	  }
-  }
-
-  
-  private void addBuildPath(IProject referencingProject, IProject referencedProject) throws JavaModelException
-  {
-    IJavaProject javaProject = JavaCore.create(referencingProject);
-    if (javaProject != null)
-    {
-      IClasspathEntry[] oldCp = javaProject.getRawClasspath();
-	  IClasspathEntry[] newCp = new IClasspathEntry[oldCp.length + 1];
-	  for (int i = 0; i < oldCp.length; i++)
-        newCp[i] = oldCp[i];
-	  newCp[newCp.length - 1] = JavaCore.newProjectEntry(referencedProject.getFullPath());
-	  javaProject.setRawClasspath(newCp, new NullProgressMonitor());
-    }
-  }
  
 
+  
   public static final String DEFAULT_SAMPLE_EAR_PROJECT_EXT = "EAR";
  
 }
