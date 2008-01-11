@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20071113   209701 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080111   214907 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -92,7 +93,13 @@ public class ServicePolicyPlatformImpl
       loadListener.load();
     }
     
-    commitChanges( false );    
+    commitChanges( false );   
+
+    // Commit any project level changes that have been made by load listeners.
+    for( IProject project : enabledProjectMap.keySet() )
+    {
+      commitChanges( project );
+    }
   }
   
   public void addEnabledExpression( Expression expression )
