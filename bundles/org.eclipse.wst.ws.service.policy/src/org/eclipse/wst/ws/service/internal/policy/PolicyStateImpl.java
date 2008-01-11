@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20071221   213492 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080109   214818 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -119,10 +121,35 @@ public class PolicyStateImpl implements IPolicyState
     // want change the backend eclipse preferences, since the user might not
     // commit these changes.  Therefore, we will set the values for all the
     // table entries to their default value.  
-    for( TableEntry entry : table.values() )
+    if( project == null )
     {
-       entry.value = entry.defaultValue;
+      for( TableEntry entry : table.values() )
+      {
+         entry.value = entry.defaultValue;
+      }
     }
+    else
+    {
+      // Note: since we are restoring the state for a project we need to ensure
+      //       that only the instance scope values are used.  (ie. we want to
+      //       ignore project scope values.)
+      IEclipsePreferences[] nodes = new IEclipsePreferences[]{new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID )};
+      
+      for( Map.Entry<String,TableEntry> entry : table.entrySet() )
+      {
+        String     storeKey     = makeStoreKey( entry.getKey() );
+        TableEntry tableEntry   = entry.getValue();
+        String     defaultValue = "";
+        
+        if( tableEntry.defaultValue != null )
+        {
+          defaultValue = tableEntry.defaultValue; 
+        }
+        
+        tableEntry.value = service.get( storeKey, defaultValue, nodes );        
+      }
+    }
+    
   }
   
   /** 
@@ -138,13 +165,16 @@ public class PolicyStateImpl implements IPolicyState
     String     result = null;
     TableEntry entry  = table.get( key );
     
-    if( entry != null  )
+    if( entry == null )
     {
-      if( project == null ||
-          ( project != null && platform.isProjectPreferencesEnabled( project ) ) )
-      { 
+      entry = new TableEntry();
+      table.put( key, entry );
+    }
+    
+    if( project == null ||
+        ( project != null && platform.isProjectPreferencesEnabled( project ) ) )
+    { 
         result = entry.value;
-      }
     }
     
     if( result == null )
@@ -154,7 +184,7 @@ public class PolicyStateImpl implements IPolicyState
       String defaultValue = ""; //$NON-NLS-1$
       String storeKey     = makeStoreKey( key );
       
-      if( entry != null && entry.defaultValue != null )
+      if( entry.defaultValue != null )
       {
         defaultValue = entry.defaultValue;
       }

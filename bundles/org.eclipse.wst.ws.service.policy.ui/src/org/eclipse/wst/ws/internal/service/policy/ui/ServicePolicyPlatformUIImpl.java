@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding of service policy
+ * 20080109   213497 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -118,13 +119,19 @@ public class ServicePolicyPlatformUIImpl
           String                 id        = operation.getId();
           List<IPolicyOperation> entryList = operationMap.get( id );
         
-          if( entryList == null )
+          // We only want to add this operation if it is for the workspace preference page or
+          // if we are on the project preference page and the operation is not only
+          // for the workspace level.
+          if( isWorkspace || !operation.isWorkspaceOnly() )
           {
-            entryList = new Vector<IPolicyOperation>();
-            operationMap.put( id, entryList );
-          }
+            if( entryList == null )
+            {
+              entryList = new Vector<IPolicyOperation>();
+              operationMap.put( id, entryList );
+            }
         
-          entryList.add( operation );
+            entryList.add( operation );
+          }
         }
       }
     }
