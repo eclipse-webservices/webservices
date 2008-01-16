@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.wsdl.OperationType;
+import javax.wsdl.Port;
+import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
+import javax.wsdl.xml.WSDLReader;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -47,6 +50,7 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
+import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.mime.MIMEContent;
 import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
@@ -221,6 +225,14 @@ public class BugFixesTest extends TestCase
       }
     });
 
+    suite.addTest(new BugFixesTest("SupportsLocalNSForExtensibilityElements") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testSupportsLocalNSForExtensibilityElements();
+      }
+    });
+    
     return suite;
   }
 
@@ -1060,6 +1072,61 @@ public class BugFixesTest extends TestCase
     catch (Exception e)
     {
       Assert.fail("Test failed due to an exception: " + e.getLocalizedMessage());
+    }
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=198390
+   */
+  public void testSupportsLocalNSForExtensibilityElements()
+  {
+    try
+    {
+      String uri = PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LocalNamespace/LocalNamespace2.wsdl"; //$NON-NLS-1$
+      javax.wsdl.factory.WSDLFactory factory = WSDLPlugin.INSTANCE.createWSDL4JFactory();
+      WSDLReader wsdlReader = factory.newWSDLReader();
+      javax.wsdl.Definition definition = wsdlReader.readWSDL(uri);
+
+      String targetNamespace = "http://www.example.org/example/"; //$NON-NLS-1$
+
+      // Test a local SOAP namespace prefix declaration.
+
+      QName bindingQName = new QName(targetNamespace, "exampleSOAP"); //$NON-NLS-1$
+      javax.wsdl.Binding binding = definition.getBinding(bindingQName);
+      assertNotNull(binding);
+      List extensibilityElements = binding.getExtensibilityElements();
+      assertEquals(1, extensibilityElements.size());
+      ExtensibilityElement soapBinding = (ExtensibilityElement)extensibilityElements.get(0);
+      assertNotNull(soapBinding);
+      QName bindingElementType = soapBinding.getElementType();
+      assertNotNull(bindingElementType);
+      String localPart = bindingElementType.getLocalPart();
+      assertEquals(SOAPConstants.BINDING_ELEMENT_TAG, localPart);
+      String namespaceURI = bindingElementType.getNamespaceURI();
+      assertEquals(SOAPConstants.SOAP_NAMESPACE_URI, namespaceURI);
+      assertTrue(soapBinding instanceof javax.wsdl.extensions.soap.SOAPBinding);
+
+      // Test a default SOAP namespace declaration at the port level.
+
+      QName serviceQName = new QName(targetNamespace, "example"); //$NON-NLS-1$
+      javax.wsdl.Service service = definition.getService(serviceQName);
+      Port port = service.getPort("exampleSOAP");
+      extensibilityElements = port.getExtensibilityElements();
+      assertEquals(1, extensibilityElements.size());
+      ExtensibilityElement soapAddress = (ExtensibilityElement)extensibilityElements.get(0);
+      assertNotNull(soapAddress);
+      QName portElementType = soapAddress.getElementType();
+      assertNotNull(portElementType);
+      localPart = portElementType.getLocalPart();
+      assertEquals(SOAPConstants.ADDRESS_ELEMENT_TAG, localPart);
+      namespaceURI = portElementType.getNamespaceURI();
+      assertEquals(SOAPConstants.SOAP_NAMESPACE_URI, namespaceURI);
+      assertTrue(soapAddress instanceof javax.wsdl.extensions.soap.SOAPAddress);
+    }
+    catch (WSDLException e)
+    {
+      e.printStackTrace();
+      fail();
     }
   }
 
