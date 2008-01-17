@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060717   146707 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070124   167487 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080115   214955 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -213,26 +214,22 @@ public class WSDLElement extends WSDLCommonElement
 				  schemaList_.addElement(xsdSchema);
 				  gatherSchemaDirective(xsdSchema, definitionURL);
               }
-          	}
-          } 	
-          else if (obj instanceof XSDSchemaExtensibilityElementImpl)
-          {
-            XSDSchemaExtensibilityElementImpl schemaElement = (XSDSchemaExtensibilityElementImpl)obj;
-            xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
-			if(!checkSchemaURI(definitionURL)){
-				schemaList_.addElement(xsdSchema);
-				gatherSchemaDirective(xsdSchema, definitionURL);
-			}
-		  }
-          
-          if (xsdSchema != null)
-          {
-        	  //We need to add the schema to a Resource in a Resource set for proper validation
+			  //We need to add the schema to a Resource in a Resource set for proper validation
         	  org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(definitionURL);    		
         	  Resource resource = resourceSet.createResource(uri);
         	  //Add the Schema to the resource
         	  resource.getContents().add(xsdSchema);
-          }
+            }
+          } 	
+          else if (obj instanceof XSDSchemaExtensibilityElementImpl)
+          {
+            XSDSchemaExtensibilityElementImpl schemaElement = (XSDSchemaExtensibilityElementImpl)obj;
+            xsdSchema = schemaElement.getSchema();
+            if(!schemaList_.contains(xsdSchema)){
+				schemaList_.addElement(xsdSchema);
+				gatherSchemaDirective(xsdSchema, definitionURL);
+			}
+		  }
         }
       }
     }
