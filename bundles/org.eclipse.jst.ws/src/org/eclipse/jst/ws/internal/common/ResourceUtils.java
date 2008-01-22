@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060421   136761 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   115690 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20080122   215866 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -28,6 +29,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -824,6 +826,26 @@ public final class ResourceUtils {
         webModuleServerRoot = J2EEUtils.getOutputContainerRoot(vc);
 
 	  return webModuleServerRoot;
+	}
+	
+	/**
+	 * 
+	 * @param project
+	 * @return
+	 */
+	public static IPath getWebComponentServerRootPath(IProject project){
+		
+      IContainer webModuleServerRoot = null;
+      IVirtualComponent vc = ComponentCore.createComponent(project);
+      if (vc != null && vc.exists()){
+        IContainer[] containers = J2EEProjectUtilities.getOutputContainers(project.getProject());
+        if (containers.length > 0)
+          webModuleServerRoot = containers[0];
+      }
+      
+      if (webModuleServerRoot != null) 
+    	return webModuleServerRoot.getFullPath();
+      return null;
 	}
 
 	/**
