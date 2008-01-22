@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
+ * 20080122   215048 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.common;
 
@@ -146,7 +147,7 @@ public class JavaMerger extends Merger implements IMerger {
 		
 		IStatus status = Status.OK_STATUS;
 		
-		if (loadStatus.getSeverity() == IStatus.ERROR) {
+		if (loadStatus != null && loadStatus.getSeverity() == IStatus.ERROR) {
 			return loadStatus;
 		}
 		
