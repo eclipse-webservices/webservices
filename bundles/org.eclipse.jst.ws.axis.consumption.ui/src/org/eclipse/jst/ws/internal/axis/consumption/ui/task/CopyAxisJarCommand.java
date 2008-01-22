@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20070502   184505 kathy@ca.ibm.com - Kathy Chan, Update JAR sizes
  * 20071102   208620 kathy@ca.ibm.com - Kathy Chan, Update JAR sizes
  * 20071102   202222 kathy@ca.ibm.com - Kathy Chan
+ * 20080122   216165 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -294,8 +295,12 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 			addNewJarEntry(PATH_TO_JARS_IN_PLUGIN + COMMON_DISCOVERY_JAR, getTheJarPath(COMMON_DISCOVERY_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN + COMMON_DISCOVERY_JAR));
 			addNewJarEntry(PATH_TO_JARS_IN_PLUGIN + JAVAX_XML_RPC_JAR, getTheJarPath(JAVAX_XML_RPC_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN + JAVAX_XML_RPC_JAR));
 			addNewJarEntry(PATH_TO_JARS_IN_PLUGIN + JAVAX_XML_SOAP_JAR, getTheJarPath(JAVAX_XML_SOAP_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN + JAVAX_XML_SOAP_JAR));
-			addNewJarEntry(PATH_TO_JARS_IN_PLUGIN + JAVAX_WSDL_JAR, getTheJarPath(JAVAX_WSDL_PLUGIN_ID, PATH_TO_JARS_IN_PLUGIN + JAVAX_WSDL_JAR));
 
+			IPath javaxWsdlJarPath = BundleUtils.getJarredPluginPath(JAVAX_WSDL_PLUGIN_ID);
+			if (javaxWsdlJarPath != null) {
+				addNewJarEntry(javaxWsdlJarPath.toString(), javaxWsdlJarPath);
+			}
+			
 			IPath commonLoggingJarPath = BundleUtils.getJarredPluginPath(COMMON_LOGGING_PLUGIN_ID);
 			if (commonLoggingJarPath != null) {
 				addNewJarEntry(commonLoggingJarPath.toString(), commonLoggingJarPath);
