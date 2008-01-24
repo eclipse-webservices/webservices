@@ -12,6 +12,7 @@
  * 20060418   136335 joan@ca.ibm.com - Joan Haggarty
  * 20060418   136759 joan@ca.ibm.com - Joan Haggarty
  * 20061106   142500 david.schneider@unisys.com - David Schneider
+ * 20060829   180833 ericdp@ca.ibm.com - Eric D. Peters,  New Web Service wizard service settings dialog has unlabelled enabled text fields
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -53,6 +54,7 @@ public abstract class SimpleDialog extends Dialog implements DialogDataEvents
 	
 	//Text area to display validation messages
 	messageText_ = new Text(parent, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
+	messageText_.setBackground(parent.getBackground());
     GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
     griddata.horizontalIndent = 10;
     messageText_.setLayoutData( griddata );    

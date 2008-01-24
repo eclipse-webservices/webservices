@@ -18,6 +18,7 @@
  * 20060510   140868 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060524   141024 joan@ca.ibm.com - Joan Haggarty
  * 20060829   145449 makandre@ca.ibm.com - Andrew Mak, Web service client project type dropdown disabled after selecting client project
+ * 20060829   180833 ericdp@ca.ibm.com - Eric D. Peters,  New Web Service wizard service settings dialog has unlabelled enabled text fields
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -165,6 +166,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   					  
     // message area
     messageText_ = uiUtils.createText(parent, ConsumptionUIMessages.LABEL_NO_LABEL, ConsumptionUIMessages.LABEL_NO_LABEL, null, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
+    messageText_.setBackground(parent.getBackground());
     setEarProjectItems();
   
     return this;
