@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2007 IBM Corporation and others.
+ * Copyright (c) 2002, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060606   105069 mahutch@ca.ibm.com - Mark Hutchinson
  * 20060803   152790 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20080123   216372 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.popup;
 
@@ -27,8 +28,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IActionDelegate;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
 import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
@@ -42,21 +41,11 @@ import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
 public class PopupTestWSDL extends Action implements IActionDelegate
 {
+  protected IStructuredSelection selection = null;
+	
   public PopupTestWSDL()
   {
     super(ExplorerPlugin.getMessage("%POPUP_TEST_WSDL"));
-  }
-
-  protected IStructuredSelection getWorkbenchSelection()
-  {
-    IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-    if (window != null)
-    {
-      ISelection selection = window.getSelectionService().getSelection();
-      if (selection instanceof IStructuredSelection)
-        return (IStructuredSelection)selection;
-    }
-    return null;
   }
 
   public void run()
@@ -65,7 +54,6 @@ public class PopupTestWSDL extends Action implements IActionDelegate
 	String defaultFavoritesLocation = ExplorerPlugin.getInstance().getDefaultFavoritesLocation();
   	WSExplorerLauncherCommand command = new WSExplorerLauncherCommand();
     command.setForceLaunchOutsideIDE(false);
-    IStructuredSelection selection = getWorkbenchSelection();
     Vector launchOptions = new Vector();
     if (selection != null)
     {
@@ -145,6 +133,10 @@ public class PopupTestWSDL extends Action implements IActionDelegate
 
   public void selectionChanged(IAction action, ISelection selection)
   {
+	  if (selection instanceof IStructuredSelection)
+		  this.selection = (IStructuredSelection) selection;
+	  else
+		  this.selection = null;
   }
   
 }

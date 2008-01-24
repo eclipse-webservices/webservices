@@ -35,7 +35,8 @@
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
-            id="org.eclipse.wst.ws.ui.action.WSDLFileMenu.service">
+            id="org.eclipse.wst.ws.ui.action.WSDLFileMenu.service"
+            adaptable="true">
          <action
                label="%POPUP_TEST_WSDL"
                class="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL"

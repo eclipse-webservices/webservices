@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2007 IBM Corporation and others.
+ * Copyright (c) 2002, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,13 @@
  * -------- -------- -----------------------------------------------------------
  * 20060803   152790 mahutch@ca.ibm.com - Mark Hutchinson (created class)
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20080123   216372 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.popup;
 
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
@@ -40,7 +40,6 @@ public class PopupTestService extends PopupTestWSDL
 	String defaultFavoritesLocation = ExplorerPlugin.getInstance().getDefaultFavoritesLocation();
   	WSExplorerLauncherCommand command = new WSExplorerLauncherCommand();
     command.setForceLaunchOutsideIDE(false);
-    IStructuredSelection selection = getWorkbenchSelection();
     Vector launchOptions = new Vector();
     if (selection != null)
     {      

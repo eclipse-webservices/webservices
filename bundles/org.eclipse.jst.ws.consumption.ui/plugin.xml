@@ -356,7 +356,8 @@
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard.service">
+            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard.service"
+            adaptable="true">
          <action
                label="%ACTION_GENERATE_JAVA_PROXY"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -392,7 +393,8 @@
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor.service">
+            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor.service"
+            adaptable="true">
          <action
                label="%POPUP_ADD_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -481,7 +483,8 @@
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
             nameFilter="*"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor.serviceref">
+            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.handlers.editor.serviceref"
+            adaptable="true">
          <action
                label="%POPUP_CONFIG_CLIENT_HANDLERS"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -505,7 +508,8 @@
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
             nameFilter="*"
-            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard.serviceref">
+            id="org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard.serviceref"
+            adaptable="true">
          <action
                label="%ACTION_GENERATE_JAVA_PROXY"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"

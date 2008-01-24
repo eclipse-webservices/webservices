@@ -51,7 +51,8 @@
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
             nameFilter="*"
-            id="org.eclipse.jst.ws.internal.consumption.ui.action.WSDLFileMenu">
+            id="org.eclipse.jst.ws.internal.consumption.ui.action.WSDLFileMenu"
+            adaptable="true">
          <action
                label="%POPUP_TEST_WSDL"
                class="org.eclipse.jst.ws.internal.ui.popup.PopupTestService"
