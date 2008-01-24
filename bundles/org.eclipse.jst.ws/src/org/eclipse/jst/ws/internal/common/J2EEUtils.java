@@ -16,6 +16,7 @@
  * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20071221   213726 kathy@ca.ibm.com - Kathy Chan
+ * 20070123   216345 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -43,6 +44,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
@@ -1463,9 +1466,7 @@ public final class J2EEUtils {
 			  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENT_LIST, targetCompList);
 			  refdm.setProperty(ICreateReferenceComponentsDataModelProperties.TARGET_COMPONENTS_DEPLOY_PATH,  "/WEB-INF/lib");
 			  refdm.getDefaultOperation().execute(monitor, null);
-			  
-			  forceClasspathUpdate(earProject);
-			  
+					  
 		  }catch (Exception e) {
 			  
 		  }
@@ -1475,7 +1476,11 @@ public final class J2EEUtils {
 	  public static void forceClasspathUpdate (IProject project) {
 		  J2EEComponentClasspathUpdater classpathUpdater = J2EEComponentClasspathUpdater.getInstance();
 		  Collection projCollection = Collections.singleton(project);
-		  classpathUpdater.forceUpdate(projCollection, false);
+		  classpathUpdater.forceUpdate(projCollection, true);
+		  IJobManager jm = Job.getJobManager();
+		  try{
+			  jm.join(J2EEComponentClasspathUpdater.MODULE_UPDATE_JOB_NAME, null);
+		  }catch(Exception exc){}
 	  }
 
 }
