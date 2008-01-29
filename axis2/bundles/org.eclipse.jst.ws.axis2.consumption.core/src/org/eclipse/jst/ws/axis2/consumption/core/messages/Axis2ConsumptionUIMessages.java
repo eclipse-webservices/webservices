@@ -16,6 +16,7 @@
  * 20070518   187311 sandakith@wso2.com - Lahiru Sandakith, Fixing test resource addition
  * 20070601   190505 pmoogk@ca.ibm.com - Peter Moogk
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20080116    sandakith@wso2.com - Lahiru Sandakith, Introduced for the Fix 209411
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.messages;
 
@@ -50,6 +51,7 @@ public final class Axis2ConsumptionUIMessages extends NLS {
 	public static String ERROR_INVALID_WSDL_FILE_READ_WRITEL;
 	public static String ERROR_CODEGEN_EXCEPTION;
 	public static String ERROR_JUNIT_JAR_NOT_FOUND;
+	public static String ERROR_WSDL_PING_TIME_OUT;
 	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, Axis2ConsumptionUIMessages.class);

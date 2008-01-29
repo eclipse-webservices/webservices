@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20080114   209411 sandakith@wso2.com - Lahiru Sandakith, Fix for the 209411, ?wsdl not update 
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -34,12 +35,9 @@ AbstractDataModelOperation {
 
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 	throws ExecutionException {
-		//Copy the axis2 libs in to this client project
-		//TODO No Need to copy the axis2 libs after the introduction of the facet 
-		//     Check wether the facet is present and if not pop up a warning
 		IStatus status = Status.OK_STATUS;
 		model.setWebProjectName(project);
 		return status;
 	}
-
+	
 }

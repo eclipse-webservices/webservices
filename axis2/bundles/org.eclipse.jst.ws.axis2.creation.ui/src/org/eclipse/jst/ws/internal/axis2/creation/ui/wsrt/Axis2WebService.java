@@ -12,6 +12,7 @@
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070815   187840 sandakith@wso2.com - Lahiru Sandakith
+ * 20080129   209411 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt;
 
@@ -30,8 +31,6 @@ import org.eclipse.jst.ws.axis2.creation.core.command.Axis2TDServiceCreationComm
 import org.eclipse.jst.ws.axis2.creation.core.command.Axis2WSDL2JavaCommand;
 import org.eclipse.jst.ws.axis2.creation.core.command.Axis2WebservicesServerCommand;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
-//import org.eclipse.jst.ws.internal.axis2.creation.ui.command.Page1ComesUpBeforeThisBUCommand;
-//import org.eclipse.jst.ws.internal.axis2.creation.ui.command.Page1ComesUpBeforeThisTDCommand;
 import org.eclipse.wst.command.internal.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -112,6 +111,13 @@ public class Axis2WebService extends AbstractWebService
 	public ICommandFactory run(IEnvironment env, IContext ctx, ISelection sel,
 			String project, String earProject)
 	{
-		return null;
+		Vector commands = new Vector();
+
+		
+			commands.add(new Axis2CheckWSDLCommand(this));
+			
+
+			return new SimpleCommandFactory(commands);
+
 	}
 }
