@@ -20,7 +20,7 @@
 </topic>
 <topic label="Workspace and tools">
 <topic label="Tools for Web services development" href="concepts/cwsinwsa.html">
-<topic label="Creating Web services with the Apache Axis run-time environment" href="../org.eclipse.jst.ws.axis.ui.doc.user/concepts/caxistover.html"/>
+<topic label="Creating Web services with the Apache Axis runtime environments" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/caxistover.html"/>
 </topic>
 <topic label="Configuring your workspace">
 <topic label="Web services preferences" href="ref/rwspref.html"/>
@@ -36,14 +36,17 @@
 </topic>
 <topic label="Developing Web services" href="tasks/toverws.html">
 <topic label="Creating top-down Web services" href="concepts/cwstopdown.html">
-<topic label="Creating a Web service and Java bean skeleton from WSDL" href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/tsklwsdla.html"/>
+<topic label="Creating an Axis1 Web service from WSDL" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/tsklwsdla.html"/>
+<topic label="Creating an Axis2 Web service from WSDL" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/taxis2td.html"/>
 </topic>
 <topic label="Creating bottom-up Web services" href="concepts/cwsbtmup.html">
-<topic label="Creating a Web service from a Java bean" href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/twsbeana.html"/>
+<topic label="Creating an Axis1 Web service from a Java bean" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/twsbeana.html"/>
+<topic label="Creating an Axis2 Web service from a Java bean" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/taxis2bu.html"/>
 </topic>
 <topic label="Creating Web service clients">
 <topic label="Discovering and importing a Web service" href="../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tdiscov.html"/>
-<topic label="Generating a Java client proxy from a WSDL document using the Axis run-time environment" href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/tsampappa.html"/>
+<topic label="Generating a Java client proxy from a WSDL document using the Axis1 runtime" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/tsampappa.html"/>
+<topic label="Generating a Java client proxy from a WSDL document using the Axis2 runtime" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/taxis2client.html"/>
 <anchor id="extending_ws_client_creation"/>
 </topic>
 <link toc="../org.eclipse.wst.command.env.doc.user/wsaxisant_toc.xml"/>
