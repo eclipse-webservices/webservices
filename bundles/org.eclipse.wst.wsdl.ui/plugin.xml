@@ -30,10 +30,10 @@
 	</extension>
 	
 	<extension point="org.eclipse.ui.preferencePages">
-		<!-- place everything in "Web and XML" -->
+		<!-- place everything in "Web Services" -->
 		<page
 			name="%_UI_WSDL_LABEL"
-			category="org.eclipse.wst.sse.ui.internal.provisional.preferences"
+			category="org.eclipse.wst.ws.internal.ui.preferences.name"
 			class="org.eclipse.wst.wsdl.ui.internal.WSDLPreferencePage"
 			id="org.eclipse.wst.wsdl.ui.internal.WSDLPreferencePage" />
 	</extension>
@@ -280,12 +280,10 @@
 	
 		<extension point="org.eclipse.wst.sse.ui.editorConfiguration">
 		<!-- add preference pages to the context menu action (ID must correspond to the declared "path" above) -->
-<!--
 		<provisionalDefinition
 			type="preferencepages"
-			value="org.eclipse.wst.wsdl.ui.internal.util.WSDLPreferencePage"
-			target="org.eclipse.wst.wsdl.ui.internal.WSDLEditor.source" />
--->
+			value="org.eclipse.wst.wsdl.ui.internal.WSDLPreferencePage"
+			target="org.eclipse.wst.wsdl.wsdlsource" />
 		<sourceViewerConfiguration
 			class="org.eclipse.wst.wsdl.ui.internal.StructuredTextViewerConfigurationWSDL"
 			target="org.eclipse.wst.wsdl.wsdlsource" />
