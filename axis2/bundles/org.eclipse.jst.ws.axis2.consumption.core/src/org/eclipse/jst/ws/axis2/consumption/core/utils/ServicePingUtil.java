@@ -50,8 +50,7 @@ public class ServicePingUtil {
                     httpCon.setRequestMethod("GET");
                     HttpURLConnection.setFollowRedirects(true);  
                     httpCon.setReadTimeout(timeTORetrieveWSDL);
-                    httpCon.connect();
-                    Thread.sleep(1000);
+                    httpCon.connect();  // try to connect to WSDL
                     httpCon.disconnect();
 				} else {
 					// Do nothing 
