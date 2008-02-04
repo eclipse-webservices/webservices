@@ -63,6 +63,14 @@ public class BindingGenerator extends BaseGenerator
     this.binding = binding;
     contentGenerator = getContentGenerator(binding);
   }
+  
+  public void setDefinition(Definition definition) {
+    this.definition = definition;
+  }
+  
+  public void setBinding(Binding binding) {
+    this.binding = binding;
+  }
 
   /*
    * When the constructor is used, automatically attempt to retrieve a proper

@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.adapters;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.wst.wsdl.Binding;
@@ -33,6 +34,7 @@ import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11BindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11BindingOperation;
@@ -50,6 +52,7 @@ import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Service;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Type;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11AddressExtensibilityElementAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11ExtensibilityElementAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.adapterfactory.extension.AdapterFactoryExtension;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDConcreteComponent;
@@ -155,7 +158,21 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
       }         
       else if (target instanceof ExtensibilityElement)
       {
-        adapter = new W11ExtensibilityElementAdapter();
+    	  Adapter extensibilityAdapter = null;
+    	  ExtensibilityElement extElement = (ExtensibilityElement) target;
+    	  String namespace = extElement.getElementType().getNamespaceURI();
+    	  AdapterFactoryExtension extension = WSDLEditorPlugin.getInstance().getAdapterFactoryExtensionRegistry().getExtensionForNamespace(namespace);
+    	  if (extension != null) {
+    		  AdapterFactory factory = extension.getAdapterFactory();
+    		  extensibilityAdapter = factory.adapt(target, Adapter.class);
+    	  }
+    	  
+    	  if (extensibilityAdapter == null) {
+    		  adapter = new W11ExtensibilityElementAdapter();
+    	  }
+    	  else {
+    		  adapter = extensibilityAdapter;
+    	  }
       }  
 	  if (adapter == null)
 	  {

@@ -30,6 +30,10 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.adapterfactory.extension.AdapterFactoryExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.adapterfactory.extension.AdapterFactoryExtensionRegistry;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extensions.NSKeyedExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.extensions.WSDLEditorConfiguration;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
@@ -59,6 +63,9 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   private WSDLEditorConfiguration wsdlEditorConfiguration = null;
 
   private NSKeyedExtensionRegistry extensiblityElementFilterRegistry;
+  private ContentGeneratorUIExtensionRegistry contentGeneratorUIExtensionRegistry;
+  private AdapterFactoryExtensionRegistry adapterFactoryExtensionRegistry;
+  
   private int dependenciesChangedPolicy = DEPENDECIES_CHANGED_POLICY_RELOAD;
 
   public WSDLEditorConfiguration getWSDLEditorConfiguration()
@@ -134,6 +141,24 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
       new ElementContentFilterExtensionRegistryReader(extensiblityElementFilterRegistry).readRegistry();
     }
     return extensiblityElementFilterRegistry;
+  }
+  
+  public ContentGeneratorUIExtensionRegistry getContentGeneratorUIExtensionRegistry() {
+	  if (contentGeneratorUIExtensionRegistry == null) {
+		  contentGeneratorUIExtensionRegistry = new ContentGeneratorUIExtensionRegistry();
+		  new ContentGeneratorUIExtensionRegistryReader(contentGeneratorUIExtensionRegistry).readRegistry();
+	  }
+
+	  return contentGeneratorUIExtensionRegistry;
+  }
+
+  public AdapterFactoryExtensionRegistry getAdapterFactoryExtensionRegistry() {
+	  if (adapterFactoryExtensionRegistry == null) {
+		  adapterFactoryExtensionRegistry = new AdapterFactoryExtensionRegistry();
+		  new AdapterFactoryExtensionRegistryReader(adapterFactoryExtensionRegistry).readRegistry();
+	  }
+
+	  return adapterFactoryExtensionRegistry;
   }
 
   /**
@@ -455,5 +480,107 @@ class ElementContentFilterExtensionRegistryReader extends NSKeyedExtensionRegist
   public ElementContentFilterExtensionRegistryReader(NSKeyedExtensionRegistry nsKeyedExtensionRegistry)
   {
     super(EXTENSION_POINT_ID, TAG_NAME, "class", nsKeyedExtensionRegistry); //$NON-NLS-1$
+  }
+}
+
+class ContentGeneratorUIExtensionRegistryReader extends BaseRegistryReader
+{
+  protected static final String EXTENSION_POINT_ID = "contentGeneratorUI";
+  protected static final String ELEMENT_CONTENT_GENERATOR = "contentGeneratorUI";
+  protected static final String ATT_NAME = "name";
+  protected static final String ATT_NAMESPACE = "namespace";
+  protected static final String ATT_PORT_OPTIONS_PAGE_CLASS = "portOptionsPageClass";
+  protected static final String ATT_BINDING_OPTIONS_PAGE_CLASS = "bindingOptionsPageClass";
+
+  protected ContentGeneratorUIExtensionRegistry registry;
+
+  public ContentGeneratorUIExtensionRegistryReader(ContentGeneratorUIExtensionRegistry registry)
+  {
+    this.registry = registry;
+  }
+
+  /**
+   * read from plugin registry and parse it.
+   */
+  public void readRegistry()
+  {
+    super.readRegistry(EXTENSION_POINT_ID);
+  }
+
+  /**
+   * readElement()
+   */
+  protected void readElement(IConfigurationElement element)
+  {
+    if (element.getName().equals(ELEMENT_CONTENT_GENERATOR))
+    {
+      String name = element.getAttribute(ATT_NAME);
+      String namespace = element.getAttribute(ATT_NAMESPACE);
+
+      if (name != null && namespace != null)
+      {
+        ContentGeneratorUIExtension bindingGeneratorExtension = new ContentGeneratorUIExtension(name, namespace);
+        bindingGeneratorExtension.setPortOptionsPageClassName(element.getAttribute(ATT_PORT_OPTIONS_PAGE_CLASS));
+        bindingGeneratorExtension.setBindingOptionsPageClassName(element.getAttribute(ATT_BINDING_OPTIONS_PAGE_CLASS));
+        try
+        {
+          ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
+          bindingGeneratorExtension.setClassLoader(pluginClasssLoader);
+          registry.add(bindingGeneratorExtension);
+        }
+        catch (Exception e)
+        {
+        }
+      }
+    }
+  }
+}
+
+class AdapterFactoryExtensionRegistryReader extends BaseRegistryReader
+{
+  protected static final String EXTENSION_POINT_ID = "adapterFactory";
+  protected static final String ELEMENT_ADAPTER_FACTORY = "adapterFactory";
+  protected static final String ATT_NAMESPACE = "namespace";
+  protected static final String ATT_ADAPTER_FACTORY_CLASS = "adapterFactoryClass";
+
+  protected AdapterFactoryExtensionRegistry registry;
+
+  public AdapterFactoryExtensionRegistryReader(AdapterFactoryExtensionRegistry registry)
+  {
+    this.registry = registry;
+  }
+
+  /**
+   * read from plugin registry and parse it.
+   */
+  public void readRegistry()
+  {
+    super.readRegistry(EXTENSION_POINT_ID);
+  }
+
+  /**
+   * readElement()
+   */
+  protected void readElement(IConfigurationElement element)
+  {
+    if (element.getName().equals(ELEMENT_ADAPTER_FACTORY))
+    {
+      String namespace = element.getAttribute(ATT_NAMESPACE);
+
+      if (namespace != null)
+      {
+        AdapterFactoryExtension adapterFactoryExtension = new AdapterFactoryExtension(namespace);
+        adapterFactoryExtension.setAdapterFactoryClassName(element.getAttribute(ATT_ADAPTER_FACTORY_CLASS));
+        try
+        {
+          ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();
+          adapterFactoryExtension.setClassLoader(pluginClasssLoader);
+          registry.add(adapterFactoryExtension);
+        }
+        catch (Exception e)
+        {
+        }
+      }
+    }
   }
 }

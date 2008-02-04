@@ -21,7 +21,7 @@ public class W11AddressExtensibilityElementAdapter extends W11ExtensibilityEleme
   //
   public String getLocationURI()
   {
-    String address = null;
+    String address = "";
     if (target instanceof SOAPAddress)
     {
       address = ((SOAPAddress) target).getLocationURI();

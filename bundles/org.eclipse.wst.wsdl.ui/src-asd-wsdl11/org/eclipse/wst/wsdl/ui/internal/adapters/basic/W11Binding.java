@@ -25,8 +25,9 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
-import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
-import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
+import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
+import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
@@ -177,11 +178,18 @@ public class W11Binding extends WSDLBaseAdapter implements IBinding {
 		Iterator it = ((Binding) target).getEExtensibilityElements().iterator();
 		while (it.hasNext()) {
 			Object item = it.next();
-			if (item instanceof SOAPBinding) {
-				return "SOAP"; //$NON-NLS-1$
-			}
-			else if (item instanceof HTTPBinding) {
-				return "HTTP"; //$NON-NLS-1$
+			
+			if (item instanceof WSDLElement) {
+				WSDLElement wsdlElement = (WSDLElement) item;
+				String namespace = wsdlElement.getElement().getNamespaceURI();
+				
+				if (namespace != null) {
+					ContentGeneratorExtensionFactoryRegistry factoryRegistry = ContentGeneratorExtensionFactoryRegistry.getInstance();
+					ContentGenerator contentGenerator = factoryRegistry.getGeneratorClassFromNamespace(namespace);
+					if (contentGenerator != null) {
+						return contentGenerator.getProtocol();
+					}
+				}
 			}
 		}
 		

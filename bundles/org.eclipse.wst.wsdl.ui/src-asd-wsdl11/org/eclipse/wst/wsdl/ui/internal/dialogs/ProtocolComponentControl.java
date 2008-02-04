@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,10 +32,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
-import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
-import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
+import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
 import org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage;
 
 public abstract class ProtocolComponentControl extends Composite implements SelectionListener, ModifyListener
@@ -51,22 +52,15 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
   protected Composite emptySettingsPage;
   protected Map pageMap = new HashMap();
 
-  // List of ContentGenerators for each Protocol found in protocolCombo
-  protected List contentGenerators;
-  
-  //protected boolean isBindingComponent = true;
-  //protected boolean isNewComponent = true;
   protected String name;
   protected String refName;
 
   protected String UNSPECIFIED = Messages._UI_UNSPECIFIED; //$NON-NLS-1$
-  //protected BindingGenerator bindingGenerator;
 
   public ProtocolComponentControl(Composite parent, BaseGenerator generator, boolean showOverwriteButton)
   {
     super(parent, SWT.NONE);
     this.generator = generator;
-	contentGenerators = new ArrayList();
 
     GridLayout layout = new GridLayout();
     layout.marginWidth = 0;
@@ -180,16 +174,6 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     return gd;
   }
 
-//  private Control createPlaceHolder(Composite parent)
-//  {
-//    Label label = new Label(parent, SWT.NONE);
-//    return label;
-//  }
-  public BaseGenerator getGenerator()
-  {
-    return generator;
-  }
-
   // implements SelectionListener
   //
   public void widgetDefaultSelected(SelectionEvent event)
@@ -200,25 +184,28 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
   {
     if (event.widget == overwriteButton && overwriteButton != null)
     {
-      getGenerator().setOverwrite(overwriteButton.getSelection());
+      generator.setOverwrite(overwriteButton.getSelection());
     }
     else if (event.widget == refNameCombo)
     {
       int index = refNameCombo.getSelectionIndex();
       String refName = refNameCombo.getItem(index);
 	  if (refName.equals(UNSPECIFIED)) {
-	      getGenerator().setRefName(""); //$NON-NLS-1$
+	      generator.setRefName(""); //$NON-NLS-1$
 	  }
 	  else {
-	      getGenerator().setRefName(refName);
+	      generator.setRefName(refName);
 	  }
     }
     else if (event.widget == protocolCombo)
     {
-      int index = protocolCombo.getSelectionIndex();
-      String protocol = (index != -1) ? protocolCombo.getItem(index) : null;
-	  getGenerator().setContentGenerator((ContentGenerator) contentGenerators.get(index));
-      updatePageBook(protocol);
+        int index = protocolCombo.getSelectionIndex();
+        String protocol = (index != -1) ? protocolCombo.getItem(index) : null;
+        
+        ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+        String namespace = ext.getNamespace();
+  	    generator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
+        updatePageBook(protocol);
     }
   }
 
@@ -234,16 +221,11 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
 
         if (page != null)
         {
-          page.init(getGenerator());
+          page.init(generator);
           Control control = page.createControl(pageBook);
           control.setData(IS_OVERWRITE_APPLICABLE, new Boolean(page.isOverwriteApplicable()));
           pageMap.put(protocol, page);
         }
-
-//        if (page != null)
-//        {
-//          pageMap.put(protocol, page);
-//        }
       }
 
       boolean enableOverwriteButton = true;
@@ -287,8 +269,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
 
     List list = new ArrayList();
     list.add(UNSPECIFIED);
-//    list.addAll(WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getBindingExtensionNames());
-	list.addAll(ContentGeneratorExtensionFactoryRegistry.getInstance().getBindingExtensionNames());
+    list.addAll(WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getBindingExtensionNames());
 	
     String protocolText = generator.getProtocol();
 
@@ -296,25 +277,13 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     {
       String protocol = (String) i.next();
       protocolCombo.add(protocol);
-	  
-	  if (protocol.equals(UNSPECIFIED)) {
-		  contentGenerators.add(null);
-	  }
-	  else {
-		  ContentGenerator gen = ContentGeneratorExtensionFactoryRegistry.getInstance().getGeneratorClassFromName(protocol);
-		  contentGenerators.add(gen);  
-	  }
     }
 
     if (protocolText == null && protocolCombo.getItemCount() > 0)
     {
       protocolText = protocolCombo.getItem(0);
-//      generator.setProtocol(!UNSPECIFIED.equals(protocolText) ? protocolText : null);
     }
     protocolCombo.setText(protocolText);
-
-	ContentGenerator gen = ContentGeneratorExtensionFactoryRegistry.getInstance().getGeneratorClassFromName(protocolText);
-	generator.setContentGenerator(gen);
   }
 
   protected void updateRefNameCombo()
@@ -342,5 +311,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
   public abstract List getRefNames();
   public abstract String getRefNameLabelText();
   public abstract String getDefaultName();
+  // TODO: We don't need the String argument for createContentGeneratorOptionsPage() method.
+  // Remove when WTP allows API changes.
   public abstract ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol);
 }

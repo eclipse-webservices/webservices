@@ -24,6 +24,7 @@ import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
@@ -142,21 +143,12 @@ public class PortWizard extends Wizard
 
     public ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol)
     {
-      ContentGeneratorOptionsPage optionsPage = null;	  
-	  String protocolSelection = protocolCombo.getItem(protocolCombo.getSelectionIndex());
-	  if (protocolSelection.equals("SOAP")) { //$NON-NLS-1$
-		  optionsPage = new SoapBindingOptionsPage();
-	  }
-	  else if (protocolSelection.equals("HTTP")) { //$NON-NLS-1$
-		  optionsPage = new HttpBindingOptionsPage();
-	  }	  
-	  // TODO: We need to eventually put this back in
-//      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);
-//      if (extension != null)
-//      {
-//        optionsPage = extension.createPortContentGeneratorOptionsPage();
-//      }
-      return optionsPage;
+      ContentGeneratorUIExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+      if (extension != null) {
+        return extension.getPortContentGeneratorOptionsPage();
+      }
+      
+      return null;
     }
   }
 }

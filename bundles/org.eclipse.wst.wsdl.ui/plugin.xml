@@ -48,6 +48,7 @@
 	<extension-point id="internalEditorConfiguration" name="WSDLEditorExtensionConfiguration"/>    
     <extension-point id="editorModes" name="%WSDLEditorModes"/>
 	<extension-point id="extensionCategories" name="Extension Categories"/>		
+	<extension-point id="contentGeneratorUI" name="UI Port and Binding Content Generators"/>
 
 	<extension
 		point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
@@ -514,4 +515,21 @@
 			targetId="org.eclipse.wst.wsdl.wsdlsource">
 		</hyperlinkDetector>
    </extension>
+   
+   <extension point = "org.eclipse.wst.wsdl.ui.contentGeneratorUI">
+      <contentGeneratorUI
+        name="SOAP"
+        namespace="http://schemas.xmlsoap.org/wsdl/soap/"
+        portOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.AddressPortOptionsPage"
+        bindingOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.SoapBindingOptionsPage">
+      </contentGeneratorUI>
+   </extension>
+   <extension point = "org.eclipse.wst.wsdl.ui.contentGeneratorUI">
+      <contentGeneratorUI
+        name="HTTP"
+        namespace="http://schemas.xmlsoap.org/wsdl/http/"
+        portOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.AddressPortOptionsPage"
+        bindingOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.HttpBindingOptionsPage">
+      </contentGeneratorUI>
+   </extension>   
 </plugin>

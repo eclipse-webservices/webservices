@@ -20,12 +20,12 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Port;
+import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
-import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
-import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
+import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
+import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.actions.OpenInNewEditor;
@@ -61,42 +61,25 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 	}
 	
 	public List getApplicableProtocol() {
-		List protocols = new ArrayList();
-		protocols.add("SOAP");
-		protocols.add("HTTP");
-		
+		ContentGeneratorExtensionFactoryRegistry factoryRegistry = ContentGeneratorExtensionFactoryRegistry.getInstance();
+		List protocols = factoryRegistry.getBindingExtensionNames();
 		return protocols;
 	}
 	
 	public void setProtocol(String newProtocol) {
-		String currentAddress = getAddress();
-		if (newProtocol.equals("SOAP")) {
-			SOAPAddress soap = SOAPFactory.eINSTANCE.createSOAPAddress();
-			soap.setLocationURI(currentAddress);
-			setNewProtocol(soap);
-		}
-		else if (newProtocol.equals("HTTP")) {
-			HTTPAddress http = HTTPFactory.eINSTANCE.createHTTPAddress();
-			http.setLocationURI(currentAddress);
-			setNewProtocol(http);
-		}
-	}
-	
-	private void setNewProtocol(ExtensibilityElement element) {
-		Port port = getPort();
-		
-		List existingElements = port.getEExtensibilityElements();
-		for (int index = 0; index < existingElements.size(); index++) {
-			Object item = existingElements.get(index);
-			if (item instanceof SOAPAddress || item instanceof HTTPAddress) {
-				existingElements.remove(index);
-				break;
+		ContentGeneratorExtensionFactoryRegistry factoryRegistry = ContentGeneratorExtensionFactoryRegistry.getInstance();
+		ContentGenerator contentGenerator = factoryRegistry.getGeneratorClassFromName(newProtocol);
+		if (contentGenerator != null) {
+			String currentAddress = getAddress();
+			if (currentAddress != null) {
+				contentGenerator.setAddressLocation(currentAddress);
 			}
-		}
 
-		port.addExtensibilityElement(element);
+			Port port = getPort();
+			contentGenerator.generatePortContent(port);
+		}
 	}
-    
+
     protected List getAddressExtensiblityElements()
     {       
         addressExtensiblityElements = new ArrayList();
@@ -242,14 +225,18 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
         	W11AddressExtensibilityElementAdapter addressEE = (W11AddressExtensibilityElementAdapter)list.get(0);
         	Object target = addressEE.getTarget();
         	
-        	// TODO: rmah: We should not using hardcoded strings as the returned Protocol.  We need to get
-        	// the protocol dynamically....
-        	if (target instanceof SOAPAddress) {
-        		protocol = "SOAP"; //$NON-NLS-1$
-        	}
-        	else if (target instanceof HTTPAddress) {
-        		protocol = "HTTP"; //$NON-NLS-1$
-        	}
+			if (target instanceof WSDLElement) {
+				WSDLElement wsdlElement = (WSDLElement) target;
+				String namespace = wsdlElement.getElement().getNamespaceURI();
+				
+				if (namespace != null) {
+					ContentGeneratorExtensionFactoryRegistry factoryRegistry = ContentGeneratorExtensionFactoryRegistry.getInstance();
+					ContentGenerator contentGenerator = factoryRegistry.getGeneratorClassFromNamespace(namespace);
+					if (contentGenerator != null) {
+						protocol = contentGenerator.getProtocol();
+					}
+				}
+			}
         }	
 
 		return protocol;

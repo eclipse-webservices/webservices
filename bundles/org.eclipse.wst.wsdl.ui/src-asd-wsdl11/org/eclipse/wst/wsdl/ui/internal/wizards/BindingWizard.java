@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -21,17 +22,21 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.sse.core.internal.encoding.CommonEncodingPreferenceNames;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class BindingWizard extends Wizard
@@ -133,6 +138,32 @@ public class BindingWizard extends Wizard
   public boolean performFinish()
   {
   	boolean recordingStarted = false;
+  	if (definition.getElement() == null || (document != null && document.getChildNodes().getLength() == 0)) {
+  		recordingStarted = true;
+  		beginRecording();
+  		
+  		// Create the Definitions element with proper namespace
+  	    Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
+  		String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
+  	    if (charSet == null || charSet.trim().equals("")) //$NON-NLS-1$
+  	    {
+  	    	charSet = "UTF-8"; //$NON-NLS-1$
+  	    }
+  	    document.appendChild(document.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"" + charSet + "\"")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+  		Element root = document.createElement("wsdl:definitions");  		 //$NON-NLS-1$
+  		document.appendChild(root);
+
+  		// Add various namespace attributes here. 
+  		root.setAttribute("xmlns:soap", "http://schemas.xmlsoap.org/wsdl/soap/"); //$NON-NLS-1$ //$NON-NLS-2$
+  		root.setAttribute("xmlns:tns", getDefaultNamespace(definition)); //$NON-NLS-1$
+  		root.setAttribute("xmlns:wsdl", "http://schemas.xmlsoap.org/wsdl/"); //$NON-NLS-1$ //$NON-NLS-2$
+  		root.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$ //$NON-NLS-2$
+  		root.setAttribute("name", getFileName(definition)); //$NON-NLS-1$
+  		root.setAttribute("targetNamespace", getDefaultNamespace(definition)); //$NON-NLS-1$
+
+  		definition.setElement(root);	
+  	}
+  	
 	// Generate/re-generate the Binding
     try
     {
@@ -253,20 +284,12 @@ public class BindingWizard extends Wizard
 
     public ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol)
     {
-      ContentGeneratorOptionsPage optionsPage = null;
-	  String protocolSelection = protocolCombo.getItem(protocolCombo.getSelectionIndex());
-	  if (protocolSelection.equals("SOAP")) { //$NON-NLS-1$
-		  optionsPage = new SoapBindingOptionsPage();
-	  }
-	  else if (protocolSelection.equals("HTTP")) { //$NON-NLS-1$
-		  optionsPage = new HttpBindingOptionsPage();
-	  }
-//      ContentGeneratorExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorExtensionRegistry().getContentGeneratorExtension(protocol);
-//      if (extension != null)
-//      {
-//        optionsPage = extension.createBindingContentGeneratorOptionsPage();
-//      }
-      return optionsPage;
+      ContentGeneratorUIExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+      if (extension != null) {
+    	  return extension.getBindingContentGeneratorOptionsPage();
+      }
+
+      return null;
     }
   }
 }

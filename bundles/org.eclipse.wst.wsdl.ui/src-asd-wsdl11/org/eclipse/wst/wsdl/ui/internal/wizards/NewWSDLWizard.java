@@ -51,10 +51,6 @@ import org.eclipse.wst.ws.internal.service.policy.ui.properties.ServicePoliciesP
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.binding.http.internal.generator.HTTPContentGenerator;
-import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
-import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
-import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
@@ -82,12 +78,14 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 	private WSDLNewFilePage newFilePage;
 	private WSDLNewFileOptionsPage optionsPage;
 	private IStructuredSelection selection;
+	private BindingGenerator generator;
 
 	/**
 	 * Constructor for NewWSDLWizard.
 	 */
 	public NewWSDLWizard() {
 		super();
+		generator = new BindingGenerator(null, null);
 	}
 
 	/**
@@ -148,59 +146,21 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 				CreateWSDLElementHelper.portName = definitionName + optionsPage.getProtocol();
 				Service service = CreateWSDLElementHelper.createService(definition);
 
-
 				// Generate Binding
 				Iterator bindingIt = definition.getEBindings().iterator();
 				Binding binding = null;
 				if (bindingIt.hasNext()) {
 					binding = (Binding) bindingIt.next();
 				}
-				BindingGenerator bindingGenerator = new BindingGenerator(definition, binding, SOAPConstants.SOAP_NAMESPACE_URI);
+
+				generator.setDefinition(definition);
+				generator.setBinding(binding);
 				Port port = (Port) service.getEPorts().iterator().next();
-				bindingGenerator.setName(ComponentReferenceUtil.getName(port.getEBinding()));
-				bindingGenerator.setRefName(ComponentReferenceUtil.getPortTypeReference(port.getEBinding()));
-				bindingGenerator.setOverwrite(true);
-				
-				if (optionsPage.getProtocol().equals("SOAP")) { //$NON-NLS-1$
-					String namespace = SOAPConstants.SOAP_NAMESPACE_URI;
-					bindingGenerator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
-
-					SOAPContentGenerator soapGen = (SOAPContentGenerator) bindingGenerator.getContentGenerator();
-					Boolean booleanValue = (Boolean) optionsPage.getProtocolOptions()[0];
-					Boolean booleanValue2 = (Boolean) optionsPage.getProtocolOptions()[2];
-					if (booleanValue.booleanValue()) {
-						// Document Literal
-						soapGen.setStyle(SOAPContentGenerator.STYLE_DOCUMENT);
-						soapGen.setUse(SOAPContentGenerator.USE_LITERAL);
-					}
-					else if (booleanValue2.booleanValue()){
-						// RPC Literal
-						soapGen.setStyle(SOAPContentGenerator.STYLE_RPC);
-						soapGen.setUse(SOAPContentGenerator.USE_LITERAL);
-					}
-					else {
-						// RPC Encoded
-						soapGen.setStyle(SOAPContentGenerator.STYLE_RPC);
-						soapGen.setUse(SOAPContentGenerator.USE_ENCODED);
-					}
-				}
-				else if (optionsPage.getProtocol().equals("HTTP")) { //$NON-NLS-1$
-					String namespace = HTTPConstants.HTTP_NAMESPACE_URI;
-					bindingGenerator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
-
-					Boolean booleanValue = (Boolean) optionsPage.getProtocolOptions()[0];
-					if (booleanValue.booleanValue()) {
-						// Post
-						((HTTPContentGenerator) bindingGenerator.getContentGenerator()).setVerb(HTTPContentGenerator.VERB_POST);
-					}
-					else {
-						// Get
-						((HTTPContentGenerator) bindingGenerator.getContentGenerator()).setVerb(HTTPContentGenerator.VERB_GET);
-					}
-				}
-				
-				bindingGenerator.generateBinding();
-				bindingGenerator.generatePortContent();				
+				generator.setName(ComponentReferenceUtil.getName(port.getEBinding()));
+				generator.setRefName(ComponentReferenceUtil.getPortTypeReference(port.getEBinding()));
+				generator.setOverwrite(true);
+				generator.generateBinding();
+				generator.generatePortContent();	
 			}
 			resource.save(null);
 		}
@@ -238,7 +198,8 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 
 	public void addPages() {
 		newFilePage = new WSDLNewFilePage(selection);
-		optionsPage = new WSDLNewFileOptionsPage(Messages._UI_TITLE_OPTIONS, Messages._UI_TITLE_OPTIONS, null); //$NON-NLS-1$ //$NON-NLS-2$
+		optionsPage = new WSDLNewFileOptionsPage(Messages._UI_TITLE_OPTIONS, Messages._UI_TITLE_OPTIONS, null, newFilePage); //$NON-NLS-1$ //$NON-NLS-2$
+		optionsPage.setBindingGenerator(generator);
 		addPage(newFilePage);
 		addPage(optionsPage);
 	}

@@ -12,9 +12,15 @@ package org.eclipse.wst.wsdl.ui.internal.wizards;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -33,33 +39,32 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.part.PageBook;
-import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.BaseContentGeneratorOptionsPage;
+import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.ISoapStyleInfo;
 import org.eclipse.wst.wsdl.ui.internal.util.ValidateHelper;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.eclipse.wst.xml.ui.internal.dialogs.UpdateListener;
 
 public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener, UpdateListener, SelectionListener
 {
+  protected WizardNewFileCreationPage newFileCreationPage;
   protected Text targetNamespaceText;
   protected Text prefixText;
   protected boolean updatePortOpFieldBoolean = true;
   
   protected PageBook protocolPageBook;
   protected Combo protocolCombo;
-  protected Composite soapPage;
-  protected Composite httpPage;
-  protected Button docLitRadio;
-  protected Button rpcLitRadio;
-  protected Button rpcEncRadio;
-  protected Button httpGetRadio;
-  protected Button httpPostRadio;
   protected Link WSIPreferenceLink;
   
-//  private BindingGenerator generator;
+  private BindingGenerator generator;
+  private Map pageMap = new HashMap();
 
   /**
    * Constructor for WSDLNewFileOptionsPage.
@@ -69,6 +74,11 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   {
     super(pageName);
   }
+  
+  public void setBindingGenerator(BindingGenerator generator) {
+	  this.generator = generator;
+  }
+  
   /**
    * Constructor for WSDLNewFileOptionsPage.
    * @param pageName
@@ -80,6 +90,14 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     super(pageName, title, titleImage);
     setDescription(Messages._UI_DESCRIPTION_NEW_WSDL_FILE);
   }
+  
+  public WSDLNewFileOptionsPage(String pageName, String title, ImageDescriptor titleImage, WizardNewFileCreationPage newFilePage)
+  {
+    super(pageName, title, titleImage);
+    setDescription(Messages._UI_DESCRIPTION_NEW_WSDL_FILE);
+    newFileCreationPage = newFilePage;
+  }
+  
   /**
    * @see org.eclipse.jface.dialogs.IDialogPage#createControl(Composite)
    */
@@ -161,68 +179,38 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    dataC.horizontalAlignment = GridData.FILL;
    dataC.grabExcessHorizontalSpace = true;
    protocolCombo.setLayoutData(dataC);
-   protocolCombo.add(SOAP_PROTOCOL);
-   protocolCombo.add(HTTP_PROTOCOL);
-   protocolCombo.select(0);
+   
+   Iterator it = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getBindingExtensionNames().iterator();
+   while (it.hasNext()) {
+	   protocolCombo.add((String) it.next());
+   }
+
    protocolCombo.addModifyListener(this);
    PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_PROTOCOL_COMBO);
 
-   sepLabel = new Label(base, SWT.SEPARATOR | SWT.HORIZONTAL);
-   GridData sepData = new GridData();
-   sepData.horizontalAlignment = GridData.FILL;
-   sepData.grabExcessHorizontalSpace = true;
-   sepLabel.setLayoutData(sepData);
-   
-   
    // Create PageBook and pages/controls for the PageBook
    protocolPageBook = new PageBook(base, SWT.NONE);
+   GridData gdFill= new GridData();
+   gdFill.horizontalAlignment= GridData.FILL;
+   gdFill.grabExcessHorizontalSpace= true;
+   gdFill.verticalAlignment= GridData.FILL;
+   gdFill.grabExcessVerticalSpace= true;
+   protocolPageBook.setLayoutData(gdFill);
 
-   ///////////////////////// Soap Page
-   soapPage = new Composite(protocolPageBook, SWT.NONE);
-   GridLayout pbLayout = new GridLayout();
-   soapPage.setLayout(pbLayout);
-
-   GridData pbData = new GridData();
-   pbData.verticalAlignment = GridData.FILL;
-   pbData.horizontalAlignment = GridData.FILL;
-   soapPage.setLayoutData(pbData);
-
-   createLabel(soapPage, Messages._UI_LABEL_SOAP_BINDING_OPTIONS);
-   docLitRadio = new Button(soapPage, SWT.RADIO);
-   rpcLitRadio = new Button(soapPage, SWT.RADIO);
-   rpcEncRadio = new Button(soapPage, SWT.RADIO);
-   docLitRadio.setText(SOAP_DOCUMENT_LITERAL);
-   rpcLitRadio.setText(SOAP_RPC_LITERAL);
-   rpcEncRadio.setText(SOAP_RPC_ENCODED);
-   docLitRadio.setSelection(true);
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(docLitRadio, ASDEditorCSHelpIds.DOC_LIT_RADIO);
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(rpcLitRadio, ASDEditorCSHelpIds.RPC_LIT_RADIO);
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(rpcEncRadio, ASDEditorCSHelpIds.RPC_ENCODED_RADIO);
-   
-   ///////////////////////// Http Page
-   httpPage = new Composite(protocolPageBook, SWT.NONE);
-   pbLayout = new GridLayout();
-   httpPage.setLayout(pbLayout);
-
-   pbData = new GridData();
-   pbData.verticalAlignment = GridData.FILL;
-   pbData.horizontalAlignment = GridData.FILL;
-   httpPage.setLayoutData(pbData);
-   
-   createLabel(httpPage, Messages._UI_LABEL_HTTP_BINDING_OPTIONS);
-   httpGetRadio = new Button(httpPage, SWT.RADIO);
-   httpPostRadio = new Button(httpPage, SWT.RADIO);
-   httpGetRadio.setText(HTTP_GET);
-   httpPostRadio.setText(HTTP_POST);
-   httpGetRadio.setSelection(true);
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(httpGetRadio, ASDEditorCSHelpIds.HTTP_GET_RADIO);
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(httpPostRadio, ASDEditorCSHelpIds.HTTP_POST_RADIO);
+   if (protocolCombo.getItemCount() > 0) {
+	   String protocol = protocolCombo.getItem(0);
+	   ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+	   ContentGeneratorOptionsPage page = ext.getBindingContentGeneratorOptionsPage();
+	   page.init(generator);
+	   
+	   protocolPageBook.showPage(page.getControl());
+	   protocolPageBook.setVisible(true);
+	   protocolCombo.select(0);
+	   updatePageBook(protocol);
+   }
    
    wsdlSkeletonGroup.setVisible(true);
-   sepLabel.setVisible(true);
-   protocolPageBook.showPage(soapPage);
-   protocolPageBook.setVisible(true);
-   
+
    WSIPreferenceLink = new Link(base, SWT.NONE);
    WSIPreferenceLink.setText("<A>" + Messages._WSI_COMPLIANCE_LINK_TEXT + "</A>"); //$NON-NLS-1$ //$NON-NLS-2$
    WSIPreferenceLink.addSelectionListener(new SelectionAdapter() {
@@ -233,19 +221,12 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 	});
    
    WSIPreferenceLink.setLayoutData(new GridData(GridData.GRAB_VERTICAL | GridData.VERTICAL_ALIGN_END));
-   ////////////////////////// Add Selection Listeners
-   createSkeletonCheckBox.addSelectionListener(this);
-   
 
-   rpcEncRadio.addSelectionListener(this);
-   
-   
-//   BindingProtocolComponentControl component = new BindingProtocolComponentControl(base, generator, false);
-//   component.initFields();
-   
+   createSkeletonCheckBox.addSelectionListener(this);
+
    PlatformUI.getWorkbench().getHelpSystem().setHelp(base, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
 
-    setControl(base);
+   setControl(base);
     
   }
 
@@ -306,10 +287,8 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   {
   	return computeDefaultDefinitionName();
   }
-
   public void modifyText(ModifyEvent e)
   {
-
     if (e.widget == targetNamespaceText)
     {
       startDelayedEvent(e);
@@ -319,15 +298,57 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
       setPageComplete(isPageComplete());
     }
 	else if (e.widget == protocolCombo) {
-		// Update what page/control we show in the PageBook
-		if (protocolCombo.getText().equals("SOAP")) { //$NON-NLS-1$
-			protocolPageBook.showPage(soapPage);
-		}
-		else if (protocolCombo.getText().equals("HTTP")) { //$NON-NLS-1$
-			protocolPageBook.showPage(httpPage);
-		}
+		String protocol = protocolCombo.getText();
+
+		ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+		generator.setContentGenerator(BindingGenerator.getContentGenerator(ext.getNamespace()));
+		updatePageBook(protocol);
 		setPageComplete(isPageComplete());
 	}
+  }
+  
+  protected void updatePageBook(String protocol)
+  {
+    if (protocol != null)
+    {
+	  ContentGeneratorOptionsPage page = (ContentGeneratorOptionsPage) pageMap.get(protocol);
+      if (page == null)
+      {
+        page = createContentGeneratorOptionsPage(protocol);
+
+        if (page != null)
+        {
+          page.init(generator);
+          page.createControl(protocolPageBook);
+          pageMap.put(protocol, page);
+          
+          if (page instanceof BaseContentGeneratorOptionsPage) {
+        	  // We should put the setWizardPage() method into the ContentGeneratorOptionsPage Interface
+        	  ((BaseContentGeneratorOptionsPage) page).setWizardPage(this);
+          }
+          
+        }
+      }
+
+      if (page != null)
+      {
+    	  protocolPageBook.showPage(page.getControl());
+    	  protocolPageBook.layout();
+    	  protocolPageBook.getParent().layout();
+		
+    	  page.setOptionsOnGenerator();
+      }
+    }
+  }
+  
+  public ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol)
+  {
+    ContentGeneratorOptionsPage optionsPage = null;
+    ContentGeneratorUIExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+    if (extension != null) {
+  	  optionsPage = extension.getBindingContentGeneratorOptionsPage();
+    }
+    return optionsPage;
   }
 
   public void updateOccured(Object arg1, Object arg2)
@@ -360,9 +381,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     }
     
     if (createSkeletonCheckBox.getSelection()) {
-
-        if (!validateWSICompliance()) {
-        	
+        if (!displayDialogMessages()) {
         	ready = false;
         }
     }
@@ -373,27 +392,31 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     return ready;
   }
 
-  protected boolean validateWSICompliance() {
-	  String WSICompliance = getNewWSDLWizard().getWSIPreferences();
-  
-	  if (!(protocolCombo.getText().equals("SOAP"))) { //$NON-NLS-1$
-		  if (WSICompliance.equals(PersistentWSIContext.STOP_NON_WSI)) {
-			  this.setErrorMessage(Messages._ERROR_WSI_COMPLIANCE_SOAP_PROTOCOL);
-			  return false;
-		  } else if (WSICompliance.equals(PersistentWSIContext.WARN_NON_WSI)) {
-			  this.setMessage(Messages._WARN_WSI_COMPLIANCE_SOAP_PROTOCOL, WARNING);
-			  return true;
+  protected boolean displayDialogMessages() {
+	  String protocol = getProtocol();
+	  if (!(pageMap.get(protocol) instanceof ContentGeneratorOptionsPage)) {
+		  return false;
+	  }
+	  
+	  ContentGeneratorOptionsPage optionsPage = (ContentGeneratorOptionsPage) pageMap.get(protocol);
+	  IFile targetFile = ResourcesPlugin.getWorkspace().getRoot().getFile(newFileCreationPage.getContainerFullPath().append(newFileCreationPage.getFileName()));
+
+      if (optionsPage instanceof BaseContentGeneratorOptionsPage) {
+    	  ((BaseContentGeneratorOptionsPage) optionsPage).setTargetIFile(targetFile);
+    	  
+		  String message = ((IMessageProvider) optionsPage).getMessage();
+		  int messageType = ((IMessageProvider) optionsPage).getMessageType();
+		  
+		  if (messageType == IMessageProvider.NONE) {
+			  setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
 		  }
-	  } else if (rpcEncRadio.getSelection()) {
-		  if (WSICompliance.equals(PersistentWSIContext.STOP_NON_WSI)) {
-			  this.setErrorMessage(Messages._ERROR_WSI_COMPLIANCE_RPC_ENCODING);
-			  return false;
-		  } else if (WSICompliance.equals(PersistentWSIContext.WARN_NON_WSI)) {
-			  this.setMessage(Messages._WARN_WSI_COMPLIANCE_RPC_ENCODING, WARNING);
-			  return true;
+		  else {
+			  setMessage(message, messageType);
 		  }
-	  } else {
-		  this.setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
+		  
+		  if (messageType == IMessageProvider.ERROR) {
+			  return false;
+		  }
 	  }
 
 	  return true;
@@ -582,10 +605,6 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   }
   
   public void widgetSelected(SelectionEvent e) {
-  	 if (e.widget == rpcEncRadio) {
-  		setPageComplete(isPageComplete());
-  	 }
-	  
 	  if (e.widget == createSkeletonCheckBox) {
   	 	if (createSkeletonCheckBox.getSelection()) {
   	 		wsdlSkeletonGroup.setVisible(true);
@@ -600,14 +619,6 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   	 	setPageComplete(isPageComplete());
   	 }
   }
-  
-  private static final String SOAP_PROTOCOL = "SOAP"; //$NON-NLS-1$
-  private static final String HTTP_PROTOCOL = "HTTP"; //$NON-NLS-1$
-  private static final String SOAP_RPC_ENCODED = Messages._UI_RADIO_RPC_ENCODED; //$NON-NLS-1$
-  private static final String SOAP_RPC_LITERAL = Messages._UI_RADIO_RPC_LITERAL; //$NON-NLS-1$
-  private static final String SOAP_DOCUMENT_LITERAL = Messages._UI_RADIO_DOCUMENT_LITERAL; //$NON-NLS-1$
-  private static final String HTTP_POST = "HTTP POST"; //$NON-NLS-1$
-  private static final String HTTP_GET = "HTTP GET"; //$NON-NLS-1$
 
   Composite wsdlSkeletonGroup;
   Button createSkeletonCheckBox;
@@ -649,42 +660,15 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   	return protocolCombo.getText();
   }
   
-  public Object[] getProtocolOptions() {
-  	Object bool[] = new Boolean[3];
-  	if (protocolCombo.getText().equals(SOAP_PROTOCOL)) {
-  		if (docLitRadio.getSelection()) {
-  			bool[0] = new Boolean(true);
-  		}
-  		else {
-  			bool[0] = new Boolean(false);
-  		}
-  		
-  		if (rpcLitRadio.getSelection()) {
-  			bool[2] = new Boolean(true);
-  		}
-  		else {
-  			bool[2] = new Boolean(false);
-  		}
-  	}
-  	else if (protocolCombo.getText().equals(HTTP_PROTOCOL)){
-  		if (httpGetRadio.getSelection()) {
-  			bool[0] = new Boolean(false);
-  		}
-  		else {
-  			bool[0] = new Boolean(true);
-  		}
-  	}
-  	
-  	return bool;
-  }
-  
   public boolean isSoapDocLiteralProtocol() {
-  	if (getProtocol().equals(SOAP_PROTOCOL) && docLitRadio.getSelection()) {
-  		return true;
-  	}
-  	else {
-  		return false;
-  	}
-  }
-  }
+	  // We need to revisit this....  Can we make this code more generic...
+	  // Wee need this method because the NewWSDLWizard needs to know if it should create the new
+	  // WSDL with a doc-literal pattern (A WSDL Part referencing an XSD Element)
+	  ContentGeneratorOptionsPage optionsPage = (ContentGeneratorOptionsPage) pageMap.get(getProtocol());
+	  if (optionsPage instanceof ISoapStyleInfo) {
+		  return ((ISoapStyleInfo) optionsPage).isDocumentLiteralPattern();
+	  }
 
+	  return false;
+  }
+  }

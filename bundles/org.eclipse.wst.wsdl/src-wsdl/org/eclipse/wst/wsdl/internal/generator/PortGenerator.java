@@ -27,6 +27,7 @@ import org.eclipse.wst.wsdl.WSDLFactory;
 public class PortGenerator extends BaseGenerator
 {
   private Service service;
+  private String addressLocation;
 
   /**
    * Constructs a port generator given the target service.
@@ -36,6 +37,10 @@ public class PortGenerator extends BaseGenerator
   {
     this.service = service;
     definition = service.getEnclosingDefinition();
+  }
+  
+  public void setAddressLocation(String location) {
+    addressLocation = location;
   }
 
   /**
@@ -61,7 +66,7 @@ public class PortGenerator extends BaseGenerator
 
     if (contentGenerator != null)
     {
-      addRequiredNamespaces(service.getEnclosingDefinition());
+      contentGenerator.setAddressLocation(addressLocation);
       contentGenerator.generatePortContent(port);
     }
 

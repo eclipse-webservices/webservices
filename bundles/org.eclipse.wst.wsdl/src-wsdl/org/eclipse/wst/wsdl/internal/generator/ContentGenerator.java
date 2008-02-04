@@ -46,4 +46,6 @@ public interface ContentGenerator
   public void generateBindingFaultContent(BindingFault bindingFault, Fault fault);
 
   public String getProtocol();
+  
+  public void setAddressLocation(String addressLocation);
 }
