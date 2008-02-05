@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,7 @@
  * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
  * 20070205   172687 makandre@ca.ibm.com - Andrew Mak, NPE in Scencario Defaults preferences page
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1212,7 +1213,7 @@ private void handleTypeChange()
 		// 1. Check for warnings on the service side
 		int scaleSetting = getServiceGeneration();
 		String serverId = getServiceTypeRuntimeServer().getServerId();
-		IStatus serviceWarningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, false);
+		IStatus serviceWarningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, getServiceTypeRuntimeServer().getServerInstanceId(), false);
 		if (serviceWarningStatus.getSeverity() == IStatus.WARNING) {
 			return serviceWarningStatus;
 		}

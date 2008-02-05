@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060823   154938 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -388,10 +389,10 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
       }
 
       // Determine if the selected server type has only stub runtimes associated
-      // with it.
+      // with it and if a server instance is not selected.
       // If so, set install, run, and test to false in the context.
       IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverId);
-      if (nonStubRuntime == null)
+      if (nonStubRuntime == null && serviceIds_.getServerInstanceId() == null)
       {
         installService = Boolean.FALSE;
         startService = Boolean.FALSE;

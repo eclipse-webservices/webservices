@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  * 20070126   138484 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -983,7 +984,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 
 		int scaleSetting = getClientGeneration();
 		String serverId = getTypeRuntimeServer().getServerId();
-		IStatus warningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, true);
+		IStatus warningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, getTypeRuntimeServer().getServerInstanceId(), true);
 		return warningStatus;
 	}	
 	

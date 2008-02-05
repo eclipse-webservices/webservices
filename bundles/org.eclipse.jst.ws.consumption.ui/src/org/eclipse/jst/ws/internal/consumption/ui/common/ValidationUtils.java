@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20070723   194434 kathy@ca.ibm.com - Kathy Chan, Check for non-existing EAR with content not deleted
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -80,6 +81,7 @@ import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntimeChecker;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
@@ -484,13 +486,14 @@ public class ValidationUtils
    * ScenarioContext.WS_DEVELOP<BR/>
    * ScenarioContext.WS_NONE
    * @param serverId server type id
+   * @param serverId server instance id
    * @param isClient boolean <code>true</code> if the method is being called for client side validation, 
    * <code>false</code> for service side validation.
    * @return IStatus with severity IStatus.OK if no errors are present,
    * IStatus with severity IStatus.WARNING otherwise.
    */
   public IStatus checkWarningStatus(int validationState, int scaleSetting, String serverId,
-			boolean isClient) {
+			String serverInstanceId, boolean isClient) {
 		// Return a warning if there is no server selection and scale setting is
 		// anything beyond assemble.
 		if (validationState == VALIDATE_ALL || validationState == VALIDATE_SCALE_CHANGES
@@ -513,7 +516,7 @@ public class ValidationUtils
 				if (serverType != null) {
 					// Find a Runtime which is not a stub
 					IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverId);
-					if ((scaleSetting < ScenarioContext.WS_DEPLOY) && nonStubRuntime == null) {
+					if ((scaleSetting < ScenarioContext.WS_DEPLOY) && nonStubRuntime == null && serverInstanceId == null) {
 						String servertypeLabel = WebServiceRuntimeExtensionUtils2
 								.getServerLabelById(serverId);
 						return StatusUtils.warningStatus(NLS.bind(

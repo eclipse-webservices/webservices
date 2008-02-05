@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060818   154402 pmoogk@ca.ibm.com - Peter Moogk
  * 20060830   151091 kathy@ca.ibm.com - Kathy Chan, Client side still enabled when there's only stub server
+ * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -582,6 +583,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
           // require a server. Set deploy, install, run, and test to false.
           deployClient_ = false;
           installClient = Boolean.FALSE;
+          startClient = false;
           testService = Boolean.FALSE;
         }
       }
@@ -600,10 +602,10 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
       }
 
       // Determine if the selected server type has only stub runtimes associated
-      // with it.
+      // with it and if a server instance is not selected.
       // If so, set install and test to false in the context.
       IRuntime nonStubRuntime = ServerUtils.getNonStubRuntime(serverId);
-      if (nonStubRuntime == null)
+      if (nonStubRuntime == null && clientIds_.getServerInstanceId() == null)
       {
         installClient = Boolean.FALSE;
         startClient = false;
