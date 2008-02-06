@@ -48,8 +48,8 @@
 	<extension-point id="internalEditorConfiguration" name="WSDLEditorExtensionConfiguration"/>    
     <extension-point id="editorModes" name="%WSDLEditorModes"/>
 	<extension-point id="extensionCategories" name="Extension Categories"/>		
-	<extension-point id="contentGeneratorUI" name="UI Port and Binding Content Generators"/>
-	<extension-point id="adapterFactory" name="Adapter Factory Extension"/>
+	<extension-point id="contentGeneratorUI" name="UI Port and Binding Content Generators" schema="schema/contentGeneratorUI.exsd"/>
+	<extension-point id="adapterFactory" name="Adapter Factory Extension" schema="schema/adapterFactory.exsd"/>
 
 	<extension
 		point="org.eclipse.ui.views.properties.tabbed.propertyContributor">

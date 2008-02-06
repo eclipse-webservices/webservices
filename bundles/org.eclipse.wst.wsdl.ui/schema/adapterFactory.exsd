@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.wst.wsdl.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.wst.wsdl.ui" id="adapterFactory" name="Adapter Factory Extension"/>
+      </appInfo>
+      <documentation>
+         The Adapter Factory Extension extension point allows clients to register adapter factories that extend the description of WSDL elements for UI purposes.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <documentation>
+            The Adapter Factory Extension extension point allows clients to register adapter factories that extend the description of WSDL elements for UI purposes.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="adapterFactory">
+      <complexType>
+         <attribute name="namespace" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The namespace this extension point instance applies to.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="adapterFactoryClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Adapter factory for a specific namespace.  The class must implement &lt;code&gt;org.eclipse.emf.common.notify.AdapterFactory&lt;/code&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.emf.common.notify.AdapterFactory"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         &lt;b&gt;This extension point is internal and should not be used by any other plugins.&lt;/b&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a content generator ui contribution:
+&lt;pre&gt;
+	&lt;extension point = &quot;org.eclipse.wst.wsdl.ui.adapterFactory&quot;&gt;
+      &lt;adapterFactory
+		namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+        adapterFactoryClass=&quot;org.eclipse.wst.wsdl.ui.internal.soap.SOAPAdapterFactory&quot;&gt;
+      &lt;/adapterFactory&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The supplied classes must implement &lt;code&gt;org.eclipse.emf.common.notify.AdapterFactory&lt;/code&gt;.
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2008 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made 
+available under the terms of the Eclipse Public License v1.0 which accompanies 
+this distribution, and is available at &lt;a
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

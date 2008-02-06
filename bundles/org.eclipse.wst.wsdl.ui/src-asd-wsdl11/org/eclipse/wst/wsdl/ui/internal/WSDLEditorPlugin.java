@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -485,12 +485,12 @@ class ElementContentFilterExtensionRegistryReader extends NSKeyedExtensionRegist
 
 class ContentGeneratorUIExtensionRegistryReader extends BaseRegistryReader
 {
-  protected static final String EXTENSION_POINT_ID = "contentGeneratorUI";
-  protected static final String ELEMENT_CONTENT_GENERATOR = "contentGeneratorUI";
-  protected static final String ATT_NAME = "name";
-  protected static final String ATT_NAMESPACE = "namespace";
-  protected static final String ATT_PORT_OPTIONS_PAGE_CLASS = "portOptionsPageClass";
-  protected static final String ATT_BINDING_OPTIONS_PAGE_CLASS = "bindingOptionsPageClass";
+  protected static final String EXTENSION_POINT_ID = "contentGeneratorUI"; //$NON-NLS-1$
+  protected static final String ELEMENT_CONTENT_GENERATOR = "contentGeneratorUI"; //$NON-NLS-1$
+  protected static final String ATT_NAME = "name"; //$NON-NLS-1$
+  protected static final String ATT_NAMESPACE = "namespace"; //$NON-NLS-1$
+  protected static final String ATT_PORT_OPTIONS_PAGE_CLASS = "portOptionsPageClass"; //$NON-NLS-1$
+  protected static final String ATT_BINDING_OPTIONS_PAGE_CLASS = "bindingOptionsPageClass"; //$NON-NLS-1$
 
   protected ContentGeneratorUIExtensionRegistry registry;
 
@@ -538,10 +538,10 @@ class ContentGeneratorUIExtensionRegistryReader extends BaseRegistryReader
 
 class AdapterFactoryExtensionRegistryReader extends BaseRegistryReader
 {
-  protected static final String EXTENSION_POINT_ID = "adapterFactory";
-  protected static final String ELEMENT_ADAPTER_FACTORY = "adapterFactory";
-  protected static final String ATT_NAMESPACE = "namespace";
-  protected static final String ATT_ADAPTER_FACTORY_CLASS = "adapterFactoryClass";
+  protected static final String EXTENSION_POINT_ID = "adapterFactory"; //$NON-NLS-1$
+  protected static final String ELEMENT_ADAPTER_FACTORY = "adapterFactory"; //$NON-NLS-1$
+  protected static final String ATT_NAMESPACE = "namespace"; //$NON-NLS-1$
+  protected static final String ATT_ADAPTER_FACTORY_CLASS = "adapterFactoryClass"; //$NON-NLS-1$
 
   protected AdapterFactoryExtensionRegistry registry;
 
