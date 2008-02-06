@@ -49,6 +49,7 @@
     <extension-point id="editorModes" name="%WSDLEditorModes"/>
 	<extension-point id="extensionCategories" name="Extension Categories"/>		
 	<extension-point id="contentGeneratorUI" name="UI Port and Binding Content Generators"/>
+	<extension-point id="adapterFactory" name="Adapter Factory Extension"/>
 
 	<extension
 		point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
