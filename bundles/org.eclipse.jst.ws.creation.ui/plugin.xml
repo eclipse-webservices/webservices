@@ -152,8 +152,7 @@
       <objectContribution
             objectClass="org.eclipse.wst.wsdl.Service"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.service"
-            adaptable="true">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.service">
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
@@ -177,8 +176,7 @@
       <objectContribution
             objectClass="org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef"
             nameFilter="*"
-            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.serviceref"
-            adaptable="true">
+            id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.skeleton.serviceref">
          <action
                label="%ACTION_GENERATE_JAVA_SKELETON"
                class="org.eclipse.wst.command.internal.env.ui.widgets.popup.DynamicPopupWizard"
