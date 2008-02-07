@@ -82,7 +82,8 @@ browse to the location where it is installed.</li>
 <uicontrol>Properties</uicontrol><uicontrol>Project Facets</uicontrol><uicontrol>Modify
 project</uicontrol><uicontrol>Axis2 Web Services</uicontrol></menucascade>,
 and click <uicontrol>Finish</uicontrol>.</li>
-<li>If you have chosen to deploy to WebSphere Application Server, you must
+<li>If you have chosen to deploy to a server in which the Axis2 JAR files
+will reside on the server (such as WebSphere Application Server), you must
 change the classloading for the EAR from PARENT_FIRST to PARENT_LAST. Expand
 the EAR associated with your Axis2 project, and launch its deployment descriptor.
 On the <uicontrol>Deployment</uicontrol> tab, expand the <uicontrol>Application</uicontrol> section.
