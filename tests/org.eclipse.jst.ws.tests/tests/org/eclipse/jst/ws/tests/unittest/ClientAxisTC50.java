@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20070509   180567 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20071116   208124 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20071217   187280 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080207   217346 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -121,7 +122,7 @@ public class ClientAxisTC50 extends WSWizardTomcat50Test {
 	}
 	
   /**
-   * Verify the scenario completed succesfully
+   * Verify the scenario completed successfully
    * @throws Exception
    */
 	private final void verifyOutput(IStatus[] status) throws Exception {
@@ -132,7 +133,18 @@ public class ClientAxisTC50 extends WSWizardTomcat50Test {
     
 		//IFolder srcFolder = JUnitUtils.getSourceFolderForWebProject(CLIENT_PROJECT_NAME);
 		IFolder folder = srcFolder.getFolder("foo");
+		if (!folder.exists()){
+			runEventLoop(3000);
+			System.out.println("Running event loop..");
+		}
 		assertTrue(folder.exists());
+		System.out.println("Client java package exists? = "+folder.exists());
+		
+		if (!(folder.members().length > 0)){
+			runEventLoop(3000);
+			System.out.println("Running event loop..");
+		}
+		System.out.println("Client Java files exists? = "+(folder.members().length > 0));
 		assertTrue(folder.members().length > 0);
 		
 		// Check status handler for errors
@@ -145,6 +157,7 @@ public class ClientAxisTC50 extends WSWizardTomcat50Test {
 			}
 		}    
 		assertTrue(s.length == 0);
+		System.out.println(" Client # of Error reports = "+s.length);
 
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20071217  187280 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080207   217346 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests;
 
@@ -21,6 +22,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.tests.plugin.TestsPlugin;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.eclipse.EclipseEnvironment;
@@ -215,5 +217,30 @@ public abstract class WSWizardTest extends TestCase implements WSJUnitConstants
 		TestsPlugin.getDefault().getLog().log(StatusUtils.infoStatus("*** JST.WS JUNIT ERROR (START) ***"));
 		TestsPlugin.getDefault().getLog().log(status);
 		TestsPlugin.getDefault().getLog().log(StatusUtils.infoStatus("*** JST.WS JUNIT ERROR (END) ***"));
+	}
+	
+	/**
+	 * Spin the event loop for awhile to give background activity a chance to
+	 * die down. This decreases the chance that unrelated background work will
+	 * affect results for the scenario being tested.
+	 * 
+	 * @param duration
+	 *            The time in milliseconds to spin the event loop.
+	 */
+	protected void runEventLoop(final int duration) {
+		final Display display = Display.getDefault();
+		Runnable update = new Runnable() {
+			public void run() {
+				long start = System.currentTimeMillis();
+				while (System.currentTimeMillis() - start < duration) {
+					if (!display.readAndDispatch())
+						display.sleep();
+				}
+			}
+		};
+		if (Display.getCurrent() == null)
+			display.syncExec(update);
+		else
+			update.run();
 	}
 }
