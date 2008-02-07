@@ -8,6 +8,9 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080201   197865 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -61,7 +64,7 @@ String nameAnchorID = (new StringBuffer(FragmentConstants.NAME_ANCHOR_ID)).appen
       <a href="javascript:createInstance('<%=tableContainerID%>', <%=xsdConfig.getMaxOccurs()%>, '<%=fragID%>', '<%=nameAnchorID%>')"><%=wsdlPerspective.getMessage("FORM_LINK_ADD")%></a>
     </td>
     <td class="labels" height=25 valign="bottom" align="left" nowrap>
-      <a href="javascript:checkMinOccursAndRemoveSelectedRowsAttribute('<%=tableContainerID%>', <%=xsdConfig.getMinOccurs()%>)"><%=wsdlPerspective.getMessage("FORM_LINK_REMOVE")%></a>
+      <a href="javascript:checkMinOccursAndRemoveSelectedRows('<%=tableContainerID%>', <%=xsdConfig.getMinOccurs()%>)"><%=wsdlPerspective.getMessage("FORM_LINK_REMOVE")%></a>
     </td>
     <td nowrap width="90%">&nbsp;</td>
   </tr>
