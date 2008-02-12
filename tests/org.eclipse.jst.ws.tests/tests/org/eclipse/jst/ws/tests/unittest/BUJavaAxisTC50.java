@@ -163,8 +163,7 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
 				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
 			}
 		}
-		assertTrue(s.length == 0);
-		System.out.println(" BU # of Error reports = "+s.length);
+		assertEquals("BU Unexpected number of client error reports", 0, s.length);
 
 	}
 	

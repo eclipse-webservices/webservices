@@ -156,8 +156,7 @@ public class ClientAxisTC50 extends WSWizardTomcat50Test {
 				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
 			}
 		}    
-		assertTrue(s.length == 0);
-		System.out.println(" Client # of Error reports = "+s.length);
+		assertEquals("Client Unexpected number of client error reports", 0, s.length);
 
 	}
 	
