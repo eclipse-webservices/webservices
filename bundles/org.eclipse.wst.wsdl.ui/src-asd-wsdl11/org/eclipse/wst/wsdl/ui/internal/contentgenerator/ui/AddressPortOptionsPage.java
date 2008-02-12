@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.wsdl.internal.generator.BaseGenerator;
+import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
 import org.eclipse.wst.wsdl.internal.generator.PortGenerator;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage;
@@ -58,7 +59,7 @@ public class AddressPortOptionsPage implements ContentGeneratorOptionsPage, Modi
     Label addressLabel = new Label(control, SWT.NONE);
     addressLabel.setText(Messages._UI_LABEL_ADDRESS + ":"); //$NON-NLS-1$
     addressField = new Text(control, SWT.BORDER);
-    addressField.setText("http://example.org/"); //$NON-NLS-1$
+    addressField.setText(ContentGenerator.ADDRESS_LOCATION);
     addressField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     addressField.addModifyListener(this);
 

@@ -17,6 +17,9 @@
          </documentation>
       </annotation>
       <complexType>
+         <sequence>
+            <element ref="adapterFactory"/>
+         </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -82,9 +85,9 @@
       <documentation>
          The following is an example of a content generator ui contribution:
 &lt;pre&gt;
-	&lt;extension point = &quot;org.eclipse.wst.wsdl.ui.adapterFactory&quot;&gt;
+ &lt;extension point = &quot;org.eclipse.wst.wsdl.ui.adapterFactory&quot;&gt;
       &lt;adapterFactory
-		namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+  namespace=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
         adapterFactoryClass=&quot;org.eclipse.wst.wsdl.ui.internal.soap.SOAPAdapterFactory&quot;&gt;
       &lt;/adapterFactory&gt;
    &lt;/extension&gt;

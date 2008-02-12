@@ -608,12 +608,10 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 	  if (e.widget == createSkeletonCheckBox) {
   	 	if (createSkeletonCheckBox.getSelection()) {
   	 		wsdlSkeletonGroup.setVisible(true);
-  	 		sepLabel.setVisible(true);
   	 		protocolPageBook.setVisible(true);
   	 	}
   	 	else {
   	 		wsdlSkeletonGroup.setVisible(false);
-  	 		sepLabel.setVisible(false);
   	 		protocolPageBook.setVisible(false);
   	 	}
   	 	setPageComplete(isPageComplete());
@@ -622,8 +620,6 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   Composite wsdlSkeletonGroup;
   Button createSkeletonCheckBox;
-  
-  Label sepLabel;
   
   private Label createLabel(Composite comp, String labelString) {
     Label label = new Label(comp, SWT.LEFT);
