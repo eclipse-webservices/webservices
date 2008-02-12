@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20071106 196997   ericdp@ca.ibm.com - Eric Peters
  * 20071120 209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI 
  * 20071212   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
+ * 20080211   218520 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -64,6 +65,7 @@ import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyPlatformUI;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation.OperationKind;
+import org.eclipse.wst.ws.service.policy.ui.utils.ServiceUtils;
 import org.osgi.framework.Bundle;
 
 public class ServicePoliciesComposite extends Composite implements
@@ -329,6 +331,8 @@ public class ServicePoliciesComposite extends Composite implements
 
 		List<IServicePolicy> policyList = platform.getRootServicePolicies(null);
 		
+		policyList = ServiceUtils.sortList( policyList );
+		
 		for (IServicePolicy policy : policyList) {
 			addPolicy(policy, masterPolicyTree, true);
 		}
@@ -401,6 +405,9 @@ public class ServicePoliciesComposite extends Composite implements
 
 		setImage(ti, sp, getIconOverlayInfo(sp, false));
 		List<IServicePolicy> childrenPolicyList = sp.getChildren();
+		
+		childrenPolicyList = ServiceUtils.sortList( childrenPolicyList );
+		
 		for (IServicePolicy policy : childrenPolicyList) {
 			addPolicy(policy, ti, addUpToLevel2Only);
 		}
