@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20071221   213726 kathy@ca.ibm.com - Kathy Chan
  * 20070123   216345 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080212   208795 ericdp@ca.ibm.com - Eric Peters, WS wizard framework should support EJB 3.0
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -61,8 +62,11 @@ import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.common.classpath.J2EEComponentClasspathUpdater;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.model.IModelProvider;
+import org.eclipse.jst.j2ee.model.ModelProviderManager;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
 import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
+import org.eclipse.jst.javaee.ejb.SessionBean;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
@@ -536,6 +540,50 @@ public final class J2EEUtils {
 		return names;
 	}
 
+	
+	/**
+	 * 
+	 * @param project- the project to find stateless session beans in
+	 * @return  Vector of bean String names.
+	 */
+	public static Vector getBeanNames(IProject project) {
+		// We currently only support Stateless session beans.
+		Vector names = new Vector();
+    	IModelProvider provider = ModelProviderManager.getModelProvider(project);
+    	Object modelObject = provider.getModelObject();
+
+    	List sessionBeans;
+    	if (J2EEProjectUtilities.isJEEProject(project)) {
+    		//a JEE5 project
+    		sessionBeans = ((org.eclipse.jst.javaee.ejb.EJBJar)modelObject).getEnterpriseBeans().getSessionBeans();
+    	} else {
+    		sessionBeans = ((EJBJar)modelObject).getSessionBeans();
+    	}
+
+		Iterator iterator = sessionBeans.iterator();
+
+		while (iterator.hasNext()) {
+			Object next = (iterator.next());
+			if (next instanceof EnterpriseBean) {
+				EnterpriseBean bean = (EnterpriseBean) next;
+
+				if (bean.isSession()) {
+					Session sessionBean = (Session) bean;
+
+					if (sessionBean.getSessionType().getValue() == SessionType.STATELESS) {
+						names.add(bean.getName());
+					}
+				}
+			} else {
+				SessionBean bean = (SessionBean) next;
+				if (bean.getSessionType().getValue() == SessionType.STATELESS) {
+					names.add(bean.getEjbName());
+				}
+			}
+		}
+		return names;
+	}
+
 	/**
 	 * @param names
 	 *            specifies that vector of strings that will be used to add bean
@@ -558,7 +606,6 @@ public final class J2EEUtils {
 			}
 		}
 	}
-
 	/**
 	 * Uses jem ProjectUtilities to get the project
 	 * @param ejb eObject

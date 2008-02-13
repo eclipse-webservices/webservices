@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,14 @@
  * 20060418   136180 kathy@ca.ibm.com - Kathy Chan
  * 20060524   141194 joan@ca.ibm.com - Joan Haggarty
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
+ * 20080212   208795 ericdp@ca.ibm.com - Eric Peters, WS wizard framework should support EJB 3.0
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
@@ -31,6 +33,10 @@ import org.eclipse.jst.j2ee.ejb.EJBJar;
 import org.eclipse.jst.j2ee.ejb.EJBResource;
 import org.eclipse.jst.j2ee.ejb.Session;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.model.IModelProvider;
+import org.eclipse.jst.j2ee.model.ModelProviderManager;
+import org.eclipse.jst.javaee.ejb.SessionBean;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
@@ -209,22 +215,14 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
     ejbComponentProjectNames = new Vector();
     for (int index = 0; index < ejbComponentsArray.length; index++)
     {
-      EJBArtifactEdit  ejbEdit = null;
-      try {
-        ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponentsArray[index]);
-        EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
-        EJBJar jar = ejbRes.getEJBJar();
-        Vector beans = J2EEUtils.getBeanNames(jar);
+    	IProject project = ejbComponentsArray[index].getProject();
+        Vector beans = J2EEUtils.getBeanNames(project);
         String componentName = ejbComponentsArray[index].getName();
         String projectName = ejbComponentsArray[index].getProject().getName();
         ejbBeanNames.addAll(beans);
         ejbComponentNames.addAll(Collections.nCopies(beans.size(), componentName));
         ejbComponentProjectNames.addAll(Collections.nCopies(beans.size(), projectName));                
-      }
-      finally {
-        if (ejbEdit!=null)
-          ejbEdit.dispose();
-      }      
+   
     }
     beanList.setData(ejbBeanNames, ejbComponentNames);
     beanList.setInput(ejbBeanNames);
@@ -289,36 +287,48 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
 
   public IStructuredSelection getObjectSelection()
   {
-	  String selEJBName = (String) ejbBeanNames.get(selectedBeanIndex.intValue());
-	  if (selEJBName != null)
-	  {
-		  //Get the project containing the bean to get the corresponding Session object.
-		  //Then return the Session object in an IStructuredSelection.
-		  String ejbComponentName = (String) ejbComponentNames.get(selectedBeanIndex.intValue());
-		  IVirtualComponent ejbComponent = ComponentUtilities.getComponent(ejbComponentName);
-		  EJBArtifactEdit  ejbEdit = null;
-		  try 
-		  {
-			  ejbEdit = EJBArtifactEdit.getEJBArtifactEditForRead(ejbComponent);
-			  EJBResource ejbRes = ejbEdit.getEJBJarXmiResource();
-			  EJBJar jar = ejbRes.getEJBJar();
-			  java.util.List sessions = jar.getSessionBeans();
-			  for (Iterator it2 = sessions.iterator(); it2.hasNext();)
-			  {
-				  Session session = (Session) it2.next();
-				  if (selEJBName.equals(session.getName()))
-				  {
-					  return new StructuredSelection(new Session[]{session});
-				  }
-			  }
-		  }
-		  finally {
-			  if (ejbEdit!=null)
-				  ejbEdit.dispose();
-		  }
-	  }
-	  return new StructuredSelection(new Object[0]);
-  }
+		String selEJBName = (String) ejbBeanNames.get(selectedBeanIndex
+				.intValue());
+		if (selEJBName != null) {
+			// Get the project containing the bean to get the corresponding
+			// Session object.
+			// Then return the Session object in an IStructuredSelection.
+			String ejbComponentName = (String) ejbComponentNames
+					.get(selectedBeanIndex.intValue());
+			IVirtualComponent ejbComponent = ComponentUtilities
+					.getComponent(ejbComponentName);
+			IProject project = ejbComponent.getProject();
+			IModelProvider provider = ModelProviderManager
+					.getModelProvider(project);
+			Object modelObject = provider.getModelObject();
+			List sessions;
+			boolean isJ2EE5 = J2EEProjectUtilities.isJEEProject(project);
+			if (isJ2EE5) {
+				// a JEE5 project
+				sessions = ((org.eclipse.jst.javaee.ejb.EJBJar) modelObject)
+						.getEnterpriseBeans().getSessionBeans();
+			} else {
+				sessions = ((EJBJar) modelObject).getSessionBeans();
+			}
+			for (Iterator it2 = sessions.iterator(); it2.hasNext();) {
+				Object next = (it2.next());
+				if (isJ2EE5) {
+					SessionBean session = (SessionBean) next;
+					if (selEJBName.equals(session.getEjbName()))
+						return new StructuredSelection(
+								new SessionBean[] { session });
+
+				} else {
+					Session session = (Session) next;
+					if (selEJBName.equals(session.getName()))
+						return new StructuredSelection(
+								new Session[] { session });
+				}
+
+			}
+		}
+		return new StructuredSelection(new Object[0]);
+	}
   
   public IProject getProject()
   {
