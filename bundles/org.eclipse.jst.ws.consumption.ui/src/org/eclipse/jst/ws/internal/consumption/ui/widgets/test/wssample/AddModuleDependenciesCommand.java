@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,18 +13,23 @@
  * 20060503   138478 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080211   117924 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import java.io.IOException;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.classpathdep.UpdateClasspathAttributeUtil;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
@@ -195,6 +200,17 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 				{
 				  String uri = clientIProject.getName() + ".jar";
 				  J2EEUtils.addJAROrModuleDependency(sampleIProject, uri);
+				  
+				  // Adding the attribute to the referenced project's classpath entries of 'lib' kind
+				  // so that these libs will be bundled along with the project when exported
+				  IClasspathEntry[] classPath = JavaCore.create(clientIProject).getRawClasspath();
+				  for (int i = 0; i < classPath.length; i++) {
+					IClasspathEntry classpathEntry = classPath[i];
+					if ( classpathEntry.getEntryKind() == IClasspathEntry.CPE_LIBRARY ){
+						UpdateClasspathAttributeUtil.addDependencyAttribute(monitor, clientIProject.getName(), classpathEntry);
+					}
+				  }
+				  
 				} catch (CoreException ce)
 				{
 					String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{sampleIProject.getName(), clientIProject.getName()});
@@ -205,6 +221,9 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 					String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{sampleIProject.getName(), clientIProject.getName()});
 					IStatus errorStatus = StatusUtils.errorStatus(errorMessage);
 					env.getStatusHandler().reportError(errorStatus);					
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}							
 			
 			
