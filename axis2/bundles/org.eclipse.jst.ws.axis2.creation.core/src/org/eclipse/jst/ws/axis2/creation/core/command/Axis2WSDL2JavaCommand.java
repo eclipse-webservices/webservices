@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2008 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  * 20070814   187840 sandakith@wso2.com - Lahiru Sandakith, Fixing 187840 ITE message
  * 20070814   193593 sandakith@wso2.com - Lahiru Sandakith, custom package name fix
+ * 20080213   218910 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -73,8 +74,25 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
         
         //AxisService service;
         Object axisServiceInstance;
+       
+        String transformerFactory = null;
+        boolean transformerFactoryModified = false;
         
 	try {
+		// use the xalan transformer factory if loadable
+		try {
+			transformerFactory = System.getProperty("javax.xml.transform.TransformerFactory");
+			Class.forName("org.apache.xalan.processor.TransformerFactoryImpl");
+			String modifiedTransformerFactory = "org.apache.xalan.processor.TransformerFactoryImpl";
+			if (!modifiedTransformerFactory.equals(transformerFactory)) {
+				System.setProperty("javax.xml.transform.TransformerFactory", modifiedTransformerFactory);
+				transformerFactoryModified = true;
+			}
+		}
+		catch (ClassNotFoundException e) {
+			// If class not found, keep using the default transformer factory.
+		}
+		
 		//service = generator.getAxisService(model.getWsdlURI());
 		ClassLoadingUtil.init(model.getWebProjectName());
 		axisServiceInstance = generator.getAxisService(model.getWsdlURI());
@@ -194,6 +212,15 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
 										e);
 		e.printStackTrace();
 		environment.getStatusHandler().reportError(status); 
+	} finally {
+		if (transformerFactoryModified) {
+			// restore to the original TransformerFactory
+			if (transformerFactory == null) {
+				System.clearProperty("javax.xml.transform.TransformerFactory"); 
+			} else {
+				System.setProperty("javax.xml.transform.TransformerFactory", transformerFactory); 
+			}
+		}
 	}
 		
 		return status;
