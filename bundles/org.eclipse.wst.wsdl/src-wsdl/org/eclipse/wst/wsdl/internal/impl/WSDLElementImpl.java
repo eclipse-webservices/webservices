@@ -1586,13 +1586,36 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   protected String getNamespace(Element element)
   {
     String name = element.getTagName();
-    int index = name.indexOf(":");
-    if (index == -1)
-      return null;
-    else if (getEnclosingDefinition() != null)
-      return getEnclosingDefinition().getNamespace(name.substring(0, index));
+    int index = name.indexOf(":"); //$NON-NLS-1$
+    String nsPrefix  = null;
+    if (index != -1)
+    {
+      nsPrefix = name.substring(0, index);
+    }
     else
-      return null;
+    {
+      nsPrefix = "xmlns"; //$NON-NLS-1$
+    }
+
+    String namespaceURI = null;
+
+    // First try to locate the namespace URI in the definition's prefix to namespace map.
+    // This will provide backward compatibility for existing clients.
+    
+    Definition enclosingDefinition = getEnclosingDefinition();
+    if (enclosingDefinition != null)
+    {
+      namespaceURI = enclosingDefinition.getNamespace(nsPrefix);
+    }
+
+    // We did not find it at the top level, try to find a locally defined namespace prefix.
+
+    if (namespaceURI == null)
+    {
+      namespaceURI = getNamespaceURIFromPrefix(element, nsPrefix);
+    }
+
+    return namespaceURI;
   }
 
   protected String getLocalName(Element element)

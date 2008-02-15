@@ -12,6 +12,7 @@
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
+ * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -98,10 +99,11 @@ public class ServiceRootFragment extends SequenceFragment
 		
 		//Mappings from framework to framework commands
   	registry.addMapping( PreServiceDevelopCommand.class, "WebService", PreServiceAssembleCommand.class );
-		registry.addMapping( PreServiceDevelopCommand.class, "Project", PreServiceAssembleCommand.class );
+	registry.addMapping( PreServiceDevelopCommand.class, "Project", PreServiceAssembleCommand.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Module", PreServiceAssembleCommand.class );
-		registry.addMapping( PreServiceDevelopCommand.class, "EarProject", PreServiceAssembleCommand.class );
+	registry.addMapping( PreServiceDevelopCommand.class, "EarProject", PreServiceAssembleCommand.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Ear", PreServiceAssembleCommand.class );
+  	registry.addMapping( PreServiceDevelopCommand.class, "InitialProject", PreServiceAssembleCommand.class );
   	registry.addMapping( PreServiceDevelopCommand.class, "Context", PreServiceAssembleCommand.class );
 		
     registry.addMapping( PreServiceDevelopCommand.class, "Context", PreServiceDeployCommand.class );

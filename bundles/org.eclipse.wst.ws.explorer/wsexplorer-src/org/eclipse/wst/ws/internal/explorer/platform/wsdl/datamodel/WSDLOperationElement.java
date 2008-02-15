@@ -86,6 +86,8 @@ public class WSDLOperationElement extends WSDLCommonElement
       {
         soapOperation = (SOAPOperation)e;
         soapAction_ = soapOperation.getSoapActionURI();
+        if(soapAction_ == null) soapAction_ = "";
+        
         String style = soapOperation.getStyle();
         if (style != null)
           isDocumentStyle_ = style.equals("document");

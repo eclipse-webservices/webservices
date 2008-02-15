@@ -4,12 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070410   180952 makandre@ca.ibm.com - Andrew Mak, Sample JSP generator chokes on interfaces and abstract classes
+ * 20071110   209087 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.sampleapp.codegen;
@@ -62,7 +63,15 @@ public class ResultFileTypeGenerator extends ResultFileHelp2Generator
        DataType dataType = TypeFactory.createType(type.getName(),type.getOwningElement().getMUID());
   
        String nodeName = getTypeOwnerId()+ "Temp";
-       fbuffer.append(dataType.stringConversion(type.getName(),nodeName,getTypeOwnerId()));
+       if(!type.isPrimitive()){
+		  
+		   fbuffer.append(Generator.DOUBLE_TAB + Generator.TAB + type.getName() + " " + nodeName + " = null;" + StringUtils.NEWLINE);	   		   
+		   fbuffer.append(Generator.DOUBLE_TAB + "if(!" + getTypeOwnerId() + ".equals(\"\")){" + StringUtils.NEWLINE);
+		   fbuffer.append(dataType.stringConversion("",nodeName,getTypeOwnerId()));
+		   fbuffer.append(Generator.DOUBLE_TAB + "}" + StringUtils.NEWLINE);		   	       
+	   }
+       else
+    	   fbuffer.append(dataType.stringConversion(type.getName(),nodeName,getTypeOwnerId()));
 
        putResidentVector(nodeName);
      }

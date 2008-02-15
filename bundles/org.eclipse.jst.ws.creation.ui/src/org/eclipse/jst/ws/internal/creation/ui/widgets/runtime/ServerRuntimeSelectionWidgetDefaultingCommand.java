@@ -20,6 +20,7 @@
  * 20060525   143843 joan@ca.ibm.com - Joan Haggarty
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
  * 20070319	  159458 mahutch@ca.ibm.com - Mark Hutchinson added in some null checks
+ * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -295,7 +296,10 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   {
     //Choose an existing server the module is already associated with if possible
     IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
-    IServer[] configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(serviceProject), null);
+    IServer[] configuredServers = null;
+    if(serviceProject.exists())
+    	configuredServers = ServerUtil.getServersByModule(ServerUtils.getModule(serviceProject), null);
+    
     if (configuredServers!=null && configuredServers.length>0)
     {
       serviceIds_.setServerId(configuredServers[0].getServerType().getId());
@@ -550,6 +554,11 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   public void setInitialProject(IProject initialProject)
   {
     initialProject_ = initialProject;
+  }
+  
+  public IProject getInitialProject()
+  {
+    return initialProject_;  
   }
   
   public void setInitialComponentName(String name)

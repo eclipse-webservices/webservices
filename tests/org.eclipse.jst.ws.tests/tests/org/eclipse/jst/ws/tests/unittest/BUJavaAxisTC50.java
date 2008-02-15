@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  * -------- -------- -----------------------------------------------------------
  * 20070104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070509   180567 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20071116   208124 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20071217   187280 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080207   217346 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -99,7 +102,8 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception
 	{
 		// Set default preferences for Axis and Tomcat 5.0
-		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);		
+		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);
+		JUnitUtils.setServiceScenarioDefault();
 	}
 	
   /**
@@ -136,19 +140,30 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
 		IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);
     
         IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
+        if (!wsdlFolder.exists()){
+        	runEventLoop(3000);
+        	System.out.println("Running event loop..");
+        }
 		assertTrue(wsdlFolder.exists());
+		System.out.println("BU wsdl folder exists? = "+wsdlFolder.exists());
+		
+		if (!(wsdlFolder.members().length > 0)){
+			runEventLoop(3000);
+			System.out.println("Running event loop..");
+		}
 		assertTrue(wsdlFolder.members().length > 0);
-		assertTrue(webContentFolder.getFolder("wsdl").members().length > 0);
+		System.out.println("BU wsdl file exists? = " + (wsdlFolder.members().length > 0));
     
 		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
 		IStatus[] s = statusHandler.getErrorReports();
 		//
 		if (s.length > 0){
 			for (int i=0;i<s.length;i++){
+				logBadStatus(s[i]);
 				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
 			}
 		}
-		assertTrue(s.length == 0);
+		assertEquals("BU Unexpected number of client error reports", 0, s.length);
 
 	}
 	

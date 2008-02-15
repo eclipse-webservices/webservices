@@ -524,6 +524,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "GenerateProxy", ClientFragment.class);
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "GenerateProxy", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceNeedEAR", ServerExtensionDefaultingCommand.class);
+      dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialProject", PreServiceDevelopCommand.class );
       dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientNeedEAR", ClientExtensionDefaultingCommand.class);
       
       dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "InstallService", ServerExtensionDefaultingCommand.class);  

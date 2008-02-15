@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,10 @@
  * -------- -------- -----------------------------------------------------------
  * 20060216   115144 pmoogk@ca.ibm.com - Peter Moogk
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20080122   215866 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.command;
 
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
@@ -76,18 +76,14 @@ public class DefaultsForClientJavaWSDLCommand extends AbstractDataModelOperation
 			IPath javaOutput = ResourceUtils.findResource( new Path( outputFolder_ )).getLocation();
 			javaWSDLParam_.setJavaOutput(javaOutput.toString());
 			
-			IFolder webModuleContainer = ResourceUtils.getWebComponentServerRoot(proxyProject_);
-			if (webModuleContainer != null)
-			{
-				IPath webModulePath = webModuleContainer.getFullPath();
-				// output = PlatformUtils.getPlatformURL(webModulePath);
-				IResource res = ResourceUtils.findResource(webModulePath);
-				if (res != null)
-				{
-					output = res.getLocation().toString();
-				}
-				javaWSDLParam_.setOutput(output);
+
+			IPath webModulePath = ResourceUtils.getWebComponentServerRootPath(proxyProject_);
+			// output = PlatformUtils.getPlatformURL(webModulePath);
+			IResource res = ResourceUtils.findResource(webModulePath);
+			if (res != null) {
+				output = res.getLocation().toString();
 			}
+			javaWSDLParam_.setOutput(output);
 		}
 		else
 		{
