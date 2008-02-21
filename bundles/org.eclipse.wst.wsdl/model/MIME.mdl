@@ -273,7 +273,25 @@
 				client_cardinality 	(value cardinality "0..n")
 				Constraints 	"ordered"
 				Containment 	"By Value"
-				is_navigable 	TRUE))))
+				is_navigable 	TRUE)))
+		    (object Association "$UNNAMED$6"
+			quid       	"4687379A008C"
+			roles      	(list role_list
+			    (object Role "eExtensibilityElements"
+				quid       	"4687379B0280"
+				label      	"eExtensibilityElements"
+				supplier   	"Logical View::wsdl::ExtensibilityElement"
+				quidu      	"3AD5DBB602A9"
+				client_cardinality 	(value cardinality "0..n")
+				Constraints 	"ordered"
+				Containment 	"By Value"
+				is_navigable 	TRUE)
+			    (object Role "$UNNAMED$7"
+				quid       	"4687379B0290"
+				supplier   	"Logical View::mime::MIMEPart"
+				quidu      	"3AC913EE00EB"
+				client_cardinality 	(value cardinality "1..1")
+				is_aggregate 	TRUE))))
 		logical_presentations 	(list unit_reference_list
 		    (object ClassDiagram "Bindings"
 			quid       	"3AC9128B01F9"
@@ -481,6 +499,14 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AC913EE00EB"
+				compartment 	(object Compartment
+				    Parent_View 	@15
+				    location   	(296, 994)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	0)
 				width      	546
 				height     	236
 				annotation 	8
@@ -740,37 +766,13 @@
 			origin_x   	0
 			origin_y   	0
 			items      	(list diagram_item_list
-			    (object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @31
-				ShowCompartmentStereotypes 	TRUE
-				SuppressOperation 	TRUE
-				IncludeAttribute 	TRUE
-				IncludeOperation 	TRUE
-				location   	(976, 192)
-				font       	(object Font
-				    italics    	TRUE)
-				label      	(object ItemLabel
-				    Parent_View 	@31
-				    location   	(747, 87)
-				    fill_color 	13434879
-				    nlines     	1
-				    max_width  	458
-				    justify    	0
-				    label      	"ExtensibilityElement")
-				icon_style 	"Icon"
-				line_color 	3342489
-				fill_color 	13434879
-				quidu      	"3AD5DBB602A9"
-				width      	476
-				height     	234
-				annotation 	8
-				autoResize 	TRUE)
-			    (object ClassView "Class" "Logical View::mime::MIMEMimeXml" @32
+			    (object ClassView "Class" "Logical View::mime::MIMEMimeXml" @31
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
 				location   	(1328, 752)
 				label      	(object ItemLabel
-				    Parent_View 	@32
+				    Parent_View 	@31
 				    location   	(1174, 646)
 				    fill_color 	13434879
 				    nlines     	1
@@ -781,17 +783,25 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AC9145A01FF"
+				compartment 	(object Compartment
+				    Parent_View 	@31
+				    location   	(1174, 706)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	215)
 				width      	326
 				height     	236
 				annotation 	8
 				autoResize 	TRUE)
-			    (object ClassView "Class" "Logical View::mime::MIMEMultipartRelated" @33
+			    (object ClassView "Class" "Logical View::mime::MIMEMultipartRelated" @32
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
 				location   	(752, 1136)
 				label      	(object ItemLabel
-				    Parent_View 	@33
+				    Parent_View 	@32
 				    location   	(533, 1030)
 				    fill_color 	13434879
 				    nlines     	1
@@ -802,7 +812,43 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AC913FA025B"
+				compartment 	(object Compartment
+				    Parent_View 	@32
+				    location   	(533, 1090)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	343)
 				width      	456
+				height     	236
+				annotation 	8
+				autoResize 	TRUE)
+			    (object ClassView "Class" "Logical View::mime::MIMEContent" @33
+				ShowCompartmentStereotypes 	TRUE
+				IncludeOperation 	TRUE
+				location   	(1792, 752)
+				label      	(object ItemLabel
+				    Parent_View 	@33
+				    location   	(1650, 646)
+				    fill_color 	13434879
+				    nlines     	1
+				    max_width  	284
+				    justify    	0
+				    label      	"MIMEContent")
+				icon_style 	"Icon"
+				line_color 	3342489
+				fill_color 	13434879
+				quidu      	"3AC9135B03A7"
+				compartment 	(object Compartment
+				    Parent_View 	@33
+				    location   	(1650, 706)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	215)
+				width      	302
 				height     	236
 				annotation 	8
 				autoResize 	TRUE)
@@ -822,35 +868,55 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"3AC913EE00EB"
+				compartment 	(object Compartment
+				    Parent_View 	@34
+				    location   	(40, 722)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	3
+				    max_width  	534)
 				width      	546
 				height     	236
 				annotation 	8
 				autoResize 	TRUE)
-			    (object ClassView "Class" "Logical View::mime::MIMEContent" @35
+			    (object ClassView "Class" "Logical View::wsdl::ExtensibilityElement" @35
 				ShowCompartmentStereotypes 	TRUE
+				SuppressOperation 	TRUE
+				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
-				location   	(1792, 752)
+				location   	(976, 192)
+				font       	(object Font
+				    italics    	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@35
-				    location   	(1650, 646)
+				    location   	(747, 87)
 				    fill_color 	13434879
 				    nlines     	1
-				    max_width  	284
+				    max_width  	458
 				    justify    	0
-				    label      	"MIMEContent")
+				    label      	"ExtensibilityElement")
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"3AC9135B03A7"
-				width      	302
-				height     	236
+				quidu      	"3AD5DBB602A9"
+				compartment 	(object Compartment
+				    Parent_View 	@35
+				    location   	(747, 195)
+				    icon_style 	"Icon"
+				    fill_color 	16777215
+				    anchor     	2
+				    nlines     	2
+				    max_width  	465)
+				width      	476
+				height     	234
 				annotation 	8
 				autoResize 	TRUE)
 			    (object InheritTreeView "" @36
 				location   	(976, 526)
 				line_color 	3342489
 				fill_color 	13434879
-				supplier   	@31
+				supplier   	@35
 				vertices   	(list Points
 				    (976, 526)
 				    (976, 309)))
@@ -858,8 +924,8 @@
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AEF11DD038B"
-				client     	@32
-				supplier   	@31
+				client     	@31
+				supplier   	@35
 				line_style 	3
 				origin_attachment 	(1356, 634)
 				terminal_attachment 	(1356, 526)
@@ -868,8 +934,8 @@
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AEF11D50330"
-				client     	@33
-				supplier   	@31
+				client     	@32
+				supplier   	@35
 				line_style 	3
 				origin_attachment 	(844, 1018)
 				terminal_attachment 	(844, 526)
@@ -878,8 +944,8 @@
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"3AEF11CA038E"
-				client     	@35
-				supplier   	@31
+				client     	@33
+				supplier   	@35
 				line_style 	3
 				origin_attachment 	(1778, 634)
 				terminal_attachment 	(1778, 526)
@@ -889,11 +955,87 @@
 				line_color 	3342489
 				quidu      	"40A0FDEF0322"
 				client     	@34
-				supplier   	@31
+				supplier   	@35
 				line_style 	3
 				origin_attachment 	(256, 650)
 				terminal_attachment 	(256, 526)
-				drawSupplier 	@36)))))
+				drawSupplier 	@36)
+			    (object AssociationViewNew "$UNNAMED$6" @41
+				location   	(303, 251)
+				stereotype 	TRUE
+				line_color 	3342489
+				quidu      	"4687379A008C"
+				roleview_list 	(list RoleViews
+				    (object RoleView "eExtensibilityElements" @42
+					Parent_View 	@41
+					location   	(-1, -517)
+					label      	(object SegLabel @43
+					    Parent_View 	@42
+					    location   	(462, 131)
+					    anchor     	1
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	444
+					    justify    	0
+					    label      	"+eExtensibilityElements"
+					    pctDist    	0.443320
+					    height     	60
+					    orientation 	0)
+					stereotype 	TRUE
+					line_color 	3342489
+					quidu      	"4687379B0280"
+					client     	@41
+					supplier   	@35
+					vertices   	(list Points
+					    (303, 251)
+					    (303, 191)
+					    (737, 191))
+					line_style 	0
+					label      	(object SegLabel @44
+					    Parent_View 	@42
+					    location   	(622, 228)
+					    anchor     	2
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	15
+					    justify    	0
+					    label      	"0..*"
+					    pctDist    	0.767206
+					    height     	37
+					    orientation 	1)
+					label      	(object SegLabel @45
+					    Parent_View 	@42
+					    location   	(575, 284)
+					    anchor     	3
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	159
+					    justify    	0
+					    label      	"{ordered}"
+					    pctDist    	0.672065
+					    height     	93
+					    orientation 	1))
+				    (object RoleView "$UNNAMED$7" @46
+					Parent_View 	@41
+					location   	(-1, -517)
+					stereotype 	TRUE
+					line_color 	3342489
+					quidu      	"4687379B0290"
+					client     	@41
+					supplier   	@34
+					line_style 	0
+					label      	(object SegLabel @47
+					    Parent_View 	@46
+					    location   	(357, 609)
+					    anchor     	2
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	15
+					    justify    	0
+					    label      	"1..1"
+					    pctDist    	0.900000
+					    height     	54
+					    orientation 	0))))))))
 	    (object Class_Category "wsdl"
 		is_unit    	TRUE
 		is_loaded  	FALSE
@@ -914,10 +1056,10 @@
 		origin_x   	0
 		origin_y   	0
 		items      	(list diagram_item_list
-		    (object CategoryView "Logical View::mime" @41
+		    (object CategoryView "Logical View::mime" @48
 			location   	(400, 240)
 			label      	(object ItemLabel
-			    Parent_View 	@41
+			    Parent_View 	@48
 			    location   	(256, 156)
 			    fill_color 	13434879
 			    nlines     	2
@@ -930,10 +1072,10 @@
 			quidu      	"3AC9127C0266"
 			width      	300
 			height     	180)
-		    (object CategoryView "Logical View::wsdl" @42
+		    (object CategoryView "Logical View::wsdl" @49
 			location   	(880, 240)
 			label      	(object ItemLabel
-			    Parent_View 	@42
+			    Parent_View 	@49
 			    location   	(736, 156)
 			    fill_color 	13434879
 			    nlines     	2
@@ -946,10 +1088,10 @@
 			quidu      	"3ADFB8E5021E"
 			width      	300
 			height     	180)
-		    (object CategoryView "Logical View::xsd" @43
+		    (object CategoryView "Logical View::xsd" @50
 			location   	(1376, 240)
 			label      	(object ItemLabel
-			    Parent_View 	@43
+			    Parent_View 	@50
 			    location   	(1232, 156)
 			    fill_color 	13434879
 			    nlines     	2

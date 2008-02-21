@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.binding.mime.internal.impl;
 
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -61,7 +62,7 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
    * @generated
    * @ordered
    */
-  protected EList eMIMEPart = null;
+  protected EList eMIMEPart;
 
   /**
    * <!-- begin-user-doc -->
@@ -213,4 +214,24 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
     return elementType;
   }
 
+  /* (non-Javadoc)
+   * @see org.eclipse.wst.wsdl.internal.impl.ExtensibilityElementImpl#createElement()
+   */
+  public Element createElement()
+  {
+    Element newElement = super.createElement();
+
+    Iterator iterator = getMIMEParts().iterator();
+    while (iterator.hasNext())
+    {
+      Object obj = iterator.next();
+      if (obj instanceof MIMEPart)
+      {
+        MIMEPart mimePart = (MIMEPart)obj;
+        Element child = ((MIMEPartImpl)mimePart).createElement();
+        newElement.appendChild(child);
+      }
+    }
+    return newElement;
+  }
 } //MIMEMultipartRelatedImpl

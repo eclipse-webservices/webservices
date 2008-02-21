@@ -16,6 +16,8 @@
       <eParameters name="extensibilityElement" eType="ecore:EClass WSDL.ecore#//IExtensibilityElement"/>
     </eOperations>
     <eOperations name="getExtensibilityElements" eType="#//List"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eExtensibilityElements"
+        upperBound="-1" eType="ecore:EClass WSDL.ecore#//ExtensibilityElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MIMEMultipartRelated" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//IMIMEMultipartRelated">
     <eOperations name="addMIMEPart">

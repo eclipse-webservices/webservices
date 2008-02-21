@@ -171,13 +171,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Content</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Content</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Content</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Content</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -187,13 +187,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Part</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Part</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Part</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Part</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -203,13 +203,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Multipart Related</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Multipart Related</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Multipart Related</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Multipart Related</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -219,13 +219,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Mime Xml</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Mime Xml</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Mime Xml</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Mime Xml</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -235,13 +235,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IMIME Part</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IMIME Part</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IMIME Part</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IMIME Part</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -251,13 +251,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IMIME Multipart Related</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IMIME Multipart Related</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IMIME Multipart Related</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IMIME Multipart Related</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -267,13 +267,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IMIME Content</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IMIME Content</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IMIME Content</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IMIME Content</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -283,13 +283,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IMIME Mime Xml</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IMIME Mime Xml</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IMIME Mime Xml</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IMIME Mime Xml</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -299,13 +299,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -315,13 +315,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -331,13 +331,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -347,13 +347,13 @@ public class MIMESwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch, but this is the last case anyway.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject)
    * @generated
    */

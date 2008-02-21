@@ -13,6 +13,7 @@ package org.eclipse.wst.wsdl.binding.mime;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 
 
@@ -21,17 +22,39 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  * A representation of the model object '<em><b>Part</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.wst.wsdl.binding.mime.MIMEPart#getEExtensibilityElements <em>EExtensibility Elements</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEPart()
- * @model
+ * @model superTypes="org.eclipse.wst.wsdl.ExtensibilityElement org.eclipse.wst.wsdl.binding.mime.IMIMEPart"
  * @generated
  */
 public interface MIMEPart extends ExtensibilityElement, javax.wsdl.extensions.mime.MIMEPart
 {
   /**
+   * Returns the value of the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * The list contents are of type {@link org.eclipse.wst.wsdl.ExtensibilityElement}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>EExtensibility Elements</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>EExtensibility Elements</em>' containment reference list.
+   * @see org.eclipse.wst.wsdl.binding.mime.MIMEPackage#getMIMEPart_EExtensibilityElements()
+   * @model type="org.eclipse.wst.wsdl.ExtensibilityElement" containment="true"
+   * @generated
+   */
+  EList getEExtensibilityElements();
+
+  /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model
+   * @model extensibilityElementType="org.eclipse.wst.wsdl.IExtensibilityElement"
    * @generated
    */
   void addExtensibilityElement(javax.wsdl.extensions.ExtensibilityElement extensibilityElement);

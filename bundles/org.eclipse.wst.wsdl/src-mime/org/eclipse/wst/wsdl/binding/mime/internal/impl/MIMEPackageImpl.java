@@ -222,6 +222,16 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getMIMEPart_EExtensibilityElements()
+  {
+    return (EReference)mimePartEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getMIMEMultipartRelated()
   {
     return mimeMultipartRelatedEClass;
@@ -343,6 +353,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
     createEReference(mimeContentEClass, MIME_CONTENT__EPART);
 
     mimePartEClass = createEClass(MIME_PART);
+    createEReference(mimePartEClass, MIME_PART__EEXTENSIBILITY_ELEMENTS);
 
     mimeMultipartRelatedEClass = createEClass(MIME_MULTIPART_RELATED);
     createEReference(mimeMultipartRelatedEClass, MIME_MULTIPART_RELATED__EMIME_PART);
@@ -415,14 +426,19 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
     EOperation op = addEOperation(mimeContentEClass, null, "setPart"); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "part", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimeContentEClass, ecorePackage.getEString(), "getPart", 0, 1); //$NON-NLS-1$
+    addEOperation(mimeContentEClass, ecorePackage.getEString(), "getPart", 0, 1); //$NON-NLS-1$
 
     initEClass(mimePartEClass, MIMEPart.class, "MIMEPart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+    initEReference(
+      getMIMEPart_EExtensibilityElements(),
+      theWSDLPackage.getExtensibilityElement(),
+      null,
+      "eExtensibilityElements", null, 0, -1, MIMEPart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
     op = addEOperation(mimePartEClass, null, "addExtensibilityElement"); //$NON-NLS-1$
     addEParameter(op, theWSDLPackage.getIExtensibilityElement(), "extensibilityElement", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimePartEClass, this.getList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
+    addEOperation(mimePartEClass, this.getList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
 
     initEClass(
       mimeMultipartRelatedEClass,
@@ -437,7 +453,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
     op = addEOperation(mimeMultipartRelatedEClass, null, "addMIMEPart"); //$NON-NLS-1$
     addEParameter(op, this.getIMIMEPart(), "mimePart", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimeMultipartRelatedEClass, this.getList(), "getMIMEParts", 0, 1); //$NON-NLS-1$
+    addEOperation(mimeMultipartRelatedEClass, this.getList(), "getMIMEParts", 0, 1); //$NON-NLS-1$
 
     initEClass(mimeMimeXmlEClass, MIMEMimeXml.class, "MIMEMimeXml", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
     initEReference(
@@ -449,7 +465,7 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
     op = addEOperation(mimeMimeXmlEClass, null, "setPart"); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "part", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(mimeMimeXmlEClass, ecorePackage.getEString(), "getPart", 0, 1); //$NON-NLS-1$
+    addEOperation(mimeMimeXmlEClass, ecorePackage.getEString(), "getPart", 0, 1); //$NON-NLS-1$
 
     initEClass(
       imimePartEClass,

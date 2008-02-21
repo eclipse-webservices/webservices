@@ -34,10 +34,14 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEFactory;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
+import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
 import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.tests.WSDLTestsPlugin;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -98,7 +102,7 @@ public class MIMEExtensionsTest extends TestCase
   {
     try
     {
-      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/MIME/MIMETest.wsdl"); //$NON-NLS-1$
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/Extensions/MIME/MIMETest.wsdl", true); //$NON-NLS-1$
 
       String bindingName = "MIMETestBinding"; //$NON-NLS-1$
       QName bindingQName = new QName(TARGET_NAMESPACE, bindingName);
@@ -111,15 +115,25 @@ public class MIMEExtensionsTest extends TestCase
       MIMEMultipartRelated multipart = MIME_FACTORY.createMIMEMultipartRelated();
       bindingOutput.addExtensibilityElement(multipart);
       multipart.toString();
+      Element multipartElement = multipart.getElement();
+      assertNotNull(multipartElement);
 
       MIMEPart mimePart = MIME_FACTORY.createMIMEPart();
       multipart.addMIMEPart(mimePart);
+      Element mimePartElement = mimePart.getElement();
+      NodeList mimePartElements = multipartElement.getElementsByTagNameNS(MIMEConstants.MIME_NAMESPACE_URI, MIMEConstants.PART_ELEMENT_TAG);
+      assertEquals(1, mimePartElements.getLength());
+      assertEquals(mimePartElement, mimePartElements.item(0));
 
       SOAPBody soapBody = SOAP_FACTORY.createSOAPBody();
       soapBody.setUse("literal");
       mimePart.addExtensibilityElement(soapBody);
       mimePart.toString();
-
+      Element soapBodyElement = soapBody.getElement();
+      NodeList soapBodyElements = mimePartElement.getElementsByTagNameNS(SOAPConstants.SOAP_NAMESPACE_URI, SOAPConstants.BODY_ELEMENT_TAG);
+      assertEquals(1, soapBodyElements.getLength());
+      assertEquals(soapBodyElement, soapBodyElements.item(0));
+      
       mimePart = MIME_FACTORY.createMIMEPart();
       multipart.addMIMEPart(mimePart);
 
@@ -129,7 +143,12 @@ public class MIMEExtensionsTest extends TestCase
       mimeContent.toString();
       
       mimePart.addExtensibilityElement(mimeContent);
-
+      
+      mimePartElement = mimePart.getElement();
+      mimePartElements = multipartElement.getElementsByTagNameNS(MIMEConstants.MIME_NAMESPACE_URI, MIMEConstants.PART_ELEMENT_TAG);
+      assertEquals(2, mimePartElements.getLength());
+      assertEquals(mimePartElement, mimePartElements.item(1));
+      
       List mimeParts = multipart.getMIMEParts();
       assertEquals(2, mimeParts.size());
       
@@ -137,6 +156,8 @@ public class MIMEExtensionsTest extends TestCase
       bindingOutput.addExtensibilityElement(mimeXML);
       mimeXML.setPart("xmlData");
       mimeXML.toString();
+      
+      DefinitionLoader.store(definition, "samples/generated/MIMETestOut.wsdl");
     }
     catch (Exception e)
     {

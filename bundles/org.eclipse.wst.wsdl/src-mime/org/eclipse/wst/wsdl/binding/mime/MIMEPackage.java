@@ -188,13 +188,22 @@ public interface MIMEPackage extends EPackage
   int MIME_PART__ELEMENT_TYPE = WSDLPackage.EXTENSIBILITY_ELEMENT__ELEMENT_TYPE;
 
   /**
+   * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MIME_PART__EEXTENSIBILITY_ELEMENTS = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
    * The number of structural features of the '<em>Part</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MIME_PART_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 0;
+  int MIME_PART_FEATURE_COUNT = WSDLPackage.EXTENSIBILITY_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMultipartRelatedImpl <em>Multipart Related</em>}' class.
@@ -453,6 +462,17 @@ public interface MIMEPackage extends EPackage
   EClass getMIMEPart();
 
   /**
+   * Returns the meta object for the containment reference list '{@link org.eclipse.wst.wsdl.binding.mime.MIMEPart#getEExtensibilityElements <em>EExtensibility Elements</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>EExtensibility Elements</em>'.
+   * @see org.eclipse.wst.wsdl.binding.mime.MIMEPart#getEExtensibilityElements()
+   * @see #getMIMEPart()
+   * @generated
+   */
+  EReference getMIMEPart_EExtensibilityElements();
+
+  /**
    * Returns the meta object for class '{@link org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated <em>Multipart Related</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -607,6 +627,14 @@ public interface MIMEPackage extends EPackage
      * @generated
      */
     EClass MIME_PART = eINSTANCE.getMIMEPart();
+
+    /**
+     * The meta object literal for the '<em><b>EExtensibility Elements</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MIME_PART__EEXTENSIBILITY_ELEMENTS = eINSTANCE.getMIMEPart_EExtensibilityElements();
 
     /**
      * The meta object literal for the '{@link org.eclipse.wst.wsdl.binding.mime.internal.impl.MIMEMultipartRelatedImpl <em>Multipart Related</em>}' class.
