@@ -49,6 +49,7 @@
  * 20070205   172687 makandre@ca.ibm.com - Andrew Mak, NPE in Scencario Defaults preferences page
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
+ * 20080215   216337 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -944,7 +945,7 @@ private void handleTypeChange()
 
 	public Boolean getTestService() {
         return 
-	          new Boolean(testService_.booleanValue() || clientWidget_.getTestClient().booleanValue());
+	          new Boolean( testService_.booleanValue() );
 	}
 
 	public void setTestService(Boolean value) {
