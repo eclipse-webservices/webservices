@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20070716   191357 kathy@ca.ibm.com - Kathy Chan
+ * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.utils;
 
@@ -24,6 +25,21 @@ import org.eclipse.core.runtime.Platform;
  *
  */
 public class AdapterUtils {	
+	
+	/**
+	 * Determine if the given object has an IFile or String adapter.
+	 * 
+	 * @param object The object.
+	 * @return True the object is adaptable to IFile or String, false otherwise.
+	 */
+	public static boolean hasAdapter(Object object) {
+		if (object == null)
+			return false;
+		boolean hasAdapter = Platform.getAdapterManager().hasAdapter(object, "org.eclipse.core.resource.IFile");
+		if (!hasAdapter)
+			hasAdapter = Platform.getAdapterManager().hasAdapter(object, "java.lang.String");
+		return hasAdapter;
+	}
 	
 	/**
 	 * @param object Object to adapt

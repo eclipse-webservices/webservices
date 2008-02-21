@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -64,8 +65,8 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
 	  { 
 		  Object initialObject = initialSelection_.getFirstElement(); 
 		  // initialObject would not be null since !initialSelection_.isEmpty()
-		  Object adaptedObject = AdapterUtils.getAdaptedObject(initialObject);
-		  if (adaptedObject != null) {
+		  boolean hasAdapter = AdapterUtils.hasAdapter(initialObject);
+		  if (hasAdapter) {
 			  StringBuffer entrybuff = new StringBuffer();
 			  entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
 			  entrybuff.append("/");

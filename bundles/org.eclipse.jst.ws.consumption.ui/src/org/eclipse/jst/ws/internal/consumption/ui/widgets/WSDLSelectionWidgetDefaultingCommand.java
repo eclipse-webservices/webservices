@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  * 20070410   181827 kathy@ca.ibm.com - Kathy Chan
+ * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -40,10 +41,14 @@ import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOperation
 {
   private IStructuredSelection selection_;
+  private String uri_;
   
   public String getWebServiceURI()
   {
-    String uri = "";
+	if (uri_ != null)
+		return uri_;
+	  
+    uri_ = "";
     
   	if (selection_ != null && !selection_.isEmpty())
   	{
@@ -54,38 +59,39 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   	    String ext = ifile.getFileExtension();
   	    if (ext != null && (ext.equals("wsdl") || ext.equals("wsil") || ext.equals("html")))
   	    {
-  	      uri = ifile.getFullPath().toString();
+  	      uri_ = ifile.getFullPath().toString();
   	    }
   	  } else if (firstSel instanceof ServiceImpl)
       {
         ServiceImpl serviceImpl = (ServiceImpl)firstSel;
-        uri = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
+        uri_ = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
       } else if (firstSel instanceof ServiceRef)
       {
   	    ServiceRef serviceRef = (ServiceRef)firstSel;
-        uri = J2EEActionAdapterFactory.getWSDLURI(serviceRef);
+        uri_ = J2EEActionAdapterFactory.getWSDLURI(serviceRef);
       } else if (firstSel instanceof WSDLResourceImpl)
   	  {
   	    WSDLResourceImpl wsdlRI = (WSDLResourceImpl)firstSel;
-  	    uri = J2EEActionAdapterFactory.getWSDLURI(wsdlRI);
+  	    uri_ = J2EEActionAdapterFactory.getWSDLURI(wsdlRI);
   	  } else if (firstSel instanceof String)
   	  {
-  	    uri = (String)firstSel;
+  	    uri_ = (String)firstSel;
   	  } else {
   		String adaptedUri = AdapterUtils.getAdaptedWSDL(firstSel);
   		if (adaptedUri != null) {
-  			uri = adaptedUri;
+  			uri_ = adaptedUri;
   		}
   	  }
   	  
-  	  uri = UniversalPathTransformer.toPath(uri);
+  	  uri_ = UniversalPathTransformer.toPath(uri_);
   	}
-    return uri;
+    return uri_;
   }
  
   public void setInitialSelection( IStructuredSelection selection )
   {
     selection_ = selection;   
+    uri_ = null;
   }
   
   public boolean getGenWSIL()
