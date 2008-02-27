@@ -48,4 +48,35 @@
             file-extensions="wsdd" />
    </extension>
 
+	<extension 
+		point="org.eclipse.wst.command.env.ui.antfiles">
+  		<antfiles
+    		id="org.eclipse.jst.ws.axis.creation.axisWebServiceRTTopJava"
+    		runtimeid="axis"
+    		pluginlocation="org.eclipse.jst.ws.axis.consumption.core"
+    		path="ant/axis_tdjava.properties"
+    		wsgenpath="ant/axis_tdjava.xml"
+    		runtimelabel="%LABEL_RUNTIME_AXIS"
+    		scenariolabel="%LABEL_TOP_DOWN_JAVA_BEAN">
+  		</antfiles>
+  		<antfiles
+    		id="org.eclipse.jst.ws.axis.creation.axisWebServiceRTBUJava"
+    		runtimeid="axis"
+    		pluginlocation="org.eclipse.jst.ws.axis.consumption.core"
+    		path="ant/axis_bujava.properties"
+    		wsgenpath="ant/axis_bujava.xml"
+    		runtimelabel="%LABEL_RUNTIME_AXIS"
+    		scenariolabel="%LABEL_BOTTOM_UP_JAVA_BEAN">
+  		</antfiles>
+  		<antfiles
+    		id="org.eclipse.jst.ws.axis.creation.axisWebServiceRTClient"
+    		runtimeid="axis"
+    		pluginlocation="org.eclipse.jst.ws.axis.consumption.core"
+    		path="ant/axis_client.properties"
+    		wsgenpath="ant/axis_client.xml"
+    		runtimelabel="%LABEL_RUNTIME_AXIS"
+    		scenariolabel="%LABEL_CLIENT">
+  		</antfiles>
+  	</extension>
+
 </plugin>

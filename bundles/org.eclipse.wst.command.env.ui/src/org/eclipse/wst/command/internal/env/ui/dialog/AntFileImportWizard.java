@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,26 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060315   128711 joan@ca.ibm.com - Joan Haggarty
+ * 20080221   146023 gilberta@ca.ibm.com - Gilbert Andrews 
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -49,6 +56,7 @@ import org.eclipse.wst.command.internal.env.ui.EnvironmentUIMessages;
 import org.eclipse.wst.command.internal.env.ui.plugin.EnvUIPlugin;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.environment.NullStatusHandler;
+import org.osgi.framework.Bundle;
 
 public class AntFileImportWizard extends Wizard implements INewWizard {
 
@@ -58,6 +66,7 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
      * The workbench.
      */
     private IWorkbench workbench;
+    private AntExtensionCreation antExtC_;
 
     /**
      * The current selection.
@@ -81,6 +90,7 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 	    }
 	
 	public boolean performFinish() {	
+		antExtC_ = AntExtensionCreation.getInstance();
 		IPath destination = mainPage.getPath();
 		if (destination == null)
 		{
@@ -88,37 +98,46 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 		}			
 		else
 		{
-			//jvh: TODO: add extension so extenders of the command framework can register properties files to import
-			//  here we pick up all registered Ant files and import - also would be nice to allow user to choose a subset
-			String[] sourceFiles = new String[]{"ant/wsgen.xml", "ant/axisclient.properties", "ant/axisservice.properties"}; //$NON-NLS$
-			int filecount = 0;
-			for (int i = 0; i < sourceFiles.length; i++) {
-				String fileSource = sourceFiles[i];
-				String targetFile = fileSource;
-				//strip any leading segments off of targetFile
-				int fileStart = targetFile.lastIndexOf("/");
-				if (fileStart >= 0)
-				{
-				  targetFile = targetFile.substring(fileStart);
-				}
-				Plugin sourcePlugin = EnvPlugin.getInstance();  
-				//jvh: TODO - add real progress monitor in here...
-								
-				IStatus status = copyIFile(sourcePlugin, fileSource, destination, targetFile, (IProgressMonitor)new NullProgressMonitor());
-				if (status == Status.CANCEL_STATUS)
-				{
-					filecount++;
-				}								
-			}
-			if (filecount == sourceFiles.length)
-			{
-				return false;  //don't close if all files were not written out - give user opportunity to change destination
-			}
+			AntExtension antExt = antExtC_.getAnrExtByScenario(mainPage.getScenario());
+			Bundle wsBundle = Platform.getBundle(antExt.getPlugin());
+			IPath propertyPath = new Path(antExt.getPath());
+			URL propertyURL = FileLocator.find( wsBundle, propertyPath, null);
+			
+			URLConnection conn;
+			InputStream isProperty = null;
+			try{
+				conn = propertyURL.openConnection();
+				isProperty = conn.getInputStream();
+		    }
+		    catch (IOException ioe){}
+		    
+		    Plugin sourcePlugin = EnvPlugin.getInstance();  
+			String targetFile = antExt.getPath();
+		    createIFile(sourcePlugin, isProperty, destination, targetFile, (IProgressMonitor)new NullProgressMonitor());
+		    
+		    IPath wsgenPath = new Path(antExt.getWSGenPath());
+			URL fileURL = FileLocator.find( wsBundle, wsgenPath, null);
+			
+			URLConnection connWSGen;
+			InputStream isWSGen = null;
+			try{
+				connWSGen = fileURL.openConnection();
+				isWSGen = connWSGen.getInputStream();
+		    }
+		    catch (IOException ioe){}
+		    
+		    String targetFileWSGen = antExt.getWSGenPath();
+		    createIFile(sourcePlugin, isWSGen, destination, targetFileWSGen, (IProgressMonitor)new NullProgressMonitor());
+			
+		    
+		   
 		}
 	    return true;		
   }	
 	
-	private IStatus copyIFile(Plugin plugin, String source, IPath targetPath, String targetFile, /*IEnvironment env,*/ IProgressMonitor monitor )
+	
+	
+	private IStatus createIFile(Plugin plugin, InputStream source, IPath targetPath, String targetFile, /*IEnvironment env,*/ IProgressMonitor monitor )
 	{
 	    
 	  if (plugin != null)
@@ -139,14 +158,14 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 				overwriteBox.setText(EnvironmentUIMessages.DIALOG_TITLE_OVERWRITE);
 				int result = overwriteBox.open();
 				if (result != SWT.NO)
-					FileResourceUtils.createFile(context, target, plugin.openStream(new Path(source)),
+					FileResourceUtils.createFile(context, target, source,
                             monitor, (IStatusHandler)new NullStatusHandler());
 				else 
 					return Status.CANCEL_STATUS;
 			}       
 			else 
 			{
-				FileResourceUtils.createFile(context, target, plugin.openStream(new Path(source)),
+				FileResourceUtils.createFile(context, target, source,
                                     monitor, (IStatusHandler)new NullStatusHandler());
 			}
 	    }

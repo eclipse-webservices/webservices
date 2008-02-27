@@ -20,4 +20,10 @@
    <!-- The following extension point is internal and likely to be removed in a future release. -->
    <extension-point id="widgetRegistry" name="%WIDGET_REGISTRY_NAME" schema="schema/widgetRegistry.exsd"/>
 
+	<!-- Ant File Extensions beginning  -->
+	
+	<extension-point id="antfiles" name="%LABEL_ANT_EXTENTION"/>
+	
+	
+	
 </plugin>
