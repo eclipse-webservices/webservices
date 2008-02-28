@@ -1,31 +1,43 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080227   119964 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
 
 import java.io.File;
 
+import org.apache.axis.client.AdminClient;
 import org.apache.axis.tools.ant.axis.AdminClientTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Target;
+import org.apache.tools.ant.filters.StringInputStream;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 /**
  * Commands are executable, undoable, redoable objects. Every Command has a name and a description.
@@ -34,8 +46,10 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 public class AxisDeployCommand extends AbstractDataModelOperation
 {
   protected static final String SERVICE_EXT = "/services/AdminService"; //$NON-NLS-1$
+  protected static final String SERVER_CONFIG = "server-config.wsdd"; //$NON-NLS-1$
 
   private JavaWSDLParameter javaWSDLParam;
+  private String project_;
   
   /**
    * Constructor for AxisDeployCommand.
@@ -45,6 +59,10 @@ public class AxisDeployCommand extends AbstractDataModelOperation
    */
   public AxisDeployCommand()
   {
+  }
+  
+  public AxisDeployCommand(String project ){
+	  this.project_ = project;
   }
 
   public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
@@ -67,7 +85,7 @@ public class AxisDeployCommand extends AbstractDataModelOperation
 
     ProgressUtils.report(monitor, AxisConsumptionCoreMessages.MSG_AXIS_DEPLOY);
 
-    IStatus status = executeAntTask();
+    IStatus status = executeAntTask(monitor);
     if (status.getSeverity() == Status.ERROR)
     {
     	environment.getStatusHandler().reportError(status);
@@ -76,7 +94,7 @@ public class AxisDeployCommand extends AbstractDataModelOperation
     return status;
   }
 
-  protected IStatus executeAntTask()
+  protected IStatus executeAntTask(IProgressMonitor monitor)
   {
     final class DeployTask extends AdminClientTask
     {
@@ -127,6 +145,8 @@ public class AxisDeployCommand extends AbstractDataModelOperation
       
       // If after many tries we still get an exception, then we will re throw it.
       if( lastException != null ) throw lastException;
+      
+      return createConfigFile(monitor, url);
     }
     catch (BuildException e)
     {
@@ -141,7 +161,40 @@ public class AxisDeployCommand extends AbstractDataModelOperation
       childStatus[0] = StatusUtils.errorStatus( message);
       return StatusUtils.multiStatus(AxisConsumptionCoreMessages.MSG_ERROR_AXIS_DEPLOY, childStatus);
     }
-    return Status.OK_STATUS; 
+  }
+
+  /** Creates 'server-config.wsdd' in the WebContent folder in the Eclipse workspace project 
+   * @param monitor
+   * @param url
+   * @return
+   */
+  private IStatus createConfigFile(IProgressMonitor monitor, String url) {
+	AdminClient listAdmin = new AdminClient();
+	String config = "";
+    try {
+		config = listAdmin.process(new String[] { "-l" + url, "list" });
+
+		IPath webInfPath = J2EEUtils.getWebInfPath(ResourcesPlugin
+					.getWorkspace().getRoot().getProject(project_));
+		IPath relativeServerConfigPath = webInfPath.append(SERVER_CONFIG);
+		IStatusHandler statusHandler = getEnvironment().getStatusHandler();
+		ResourceContext context = WebServicePlugin.getInstance()
+					.getResourceContext();
+		FileResourceUtils.createFile(context, relativeServerConfigPath,
+					new StringInputStream(config), monitor, statusHandler);
+	} catch (Exception e){
+		e.printStackTrace();
+	    String message = e.getMessage();
+	    if (e.getCause() != null)
+	    {
+	       message = e.getCause().toString();
+	    }
+	      
+	    IStatus[] childStatus = new Status[1];
+	    childStatus[0] = StatusUtils.errorStatus( message);
+	    return StatusUtils.multiStatus(AxisConsumptionCoreMessages.MSG_ERROR_AXIS_DEPLOY, childStatus);
+	}
+	return Status.OK_STATUS; 
   }
 
   /**

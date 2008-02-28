@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20060607   144978 kathy@ca.ibm.com - Kathy Chan
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
+ * 20080227   119964 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -153,13 +154,8 @@ public class AxisWebService extends AbstractWebService
 		} else {// For BOTTOM_UP and TOP_DOWN
 			commands.add(new AxisRunInputCommand(this, project));
 			commands.add(new ModifyWSDLEndpointAddressCommand());
-			if (getWebServiceInfo().getServerFactoryId().equals("org.eclipse.jst.server.geronimo.10")) {
-				commands.add(new GeronimoAxisDeployCommand(project));
-			}
-			else {
-			    commands.add(new AxisDeployCommand());
-			}
-			commands.add( new CopyDeploymentFileCommand( project, earProject ) );
+		    commands.add(new AxisDeployCommand(project));
+
 			commands.add(new RefreshProjectCommand());
 
 			return new SimpleCommandFactory(commands);
