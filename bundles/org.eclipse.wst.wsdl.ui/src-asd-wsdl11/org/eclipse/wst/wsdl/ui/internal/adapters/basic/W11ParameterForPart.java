@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.ContentOutline;
@@ -207,22 +208,33 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 			String[] args = new String[2];
 			args[0] = "element"; //$NON-NLS-1$
 			args[1] = "type"; //$NON-NLS-1$
-			String newString = getStringForKey("_UI_LABEL_OR_UNDEFINED_ARG2", args); //$NON-NLS-1$
-			ModelDiagnosticInfo info = new ModelDiagnosticInfo(newString, ModelDiagnosticInfo.ERROR_TYPE, null);
+			
+			String string = NLS.bind(Messages._UI_LABEL_OR_UNDEFINED_ARG2, args);
+			String customizedMessage = getProductCustomizedMessage("_UI_LABEL_OR_UNDEFINED_ARG2", args); //$NON-NLS-1$
+			if (customizedMessage != null && !customizedMessage.equals("")) //$NON-NLS-1$
+				string = customizedMessage;
+			
+			ModelDiagnosticInfo info = new ModelDiagnosticInfo(string, ModelDiagnosticInfo.ERROR_TYPE, null);
 			errors.add(info);
 		}
 		
 		return errors;
 	}
 	
-	  private String getStringForKey(String key, Object[] args) {
-		  String newString = ""; //$NON-NLS-1$
-		  newString = Messages.getString(key, args);
-
+	  /**
+	   * Returns a customed product-based message for the given key and arguments
+	   * or null if none exists.
+	   * @param key
+	   * @param args
+	   * @return String customized message or null if none exists
+	   */
+	  private String getProductCustomizedMessage(String key, Object[] args) {
+		  String productMessage = null;
+		  
 		  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
 		  if (object instanceof ProductCustomizationProvider) {
 			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			  String customizedString = ""; //$NON-NLS-1$
+			  String customizedString = null;
 			  if (args == null) {
 				  customizedString = productCustomizationProvider.getProductString(key);
 			  }
@@ -231,14 +243,10 @@ public class W11ParameterForPart extends WSDLBaseAdapter implements IParameter
 			  }
 			  
 			  if (customizedString != null && !customizedString.equals("")) { //$NON-NLS-1$
-				  newString = customizedString;
+				  productMessage = customizedString;
 			  }
 		  }
 
-		  if (newString == null) {
-			  newString = ""; //$NON-NLS-1$
-		  }
-
-		  return newString;
+		  return productMessage;
 	  }
 }

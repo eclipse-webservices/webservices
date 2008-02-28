@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
@@ -354,7 +355,7 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 		else if (parts.size() <= 0) {
 			String[] args = new String[1];
 			args[0] = "part"; //$NON-NLS-1$
-			addWarningDiagnosticMessage(getStringForKey("_UI_LABEL_NO_OBJECT_SPECIFIED_ARG1", args)); //$NON-NLS-1$
+			addWarningDiagnosticMessage(getNoObjectSpecifiedArgsString(args));
 		}
 	}
 
@@ -423,28 +424,47 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 		}
 	}
 	
+	  private String getNoObjectSpecifiedArgsString(String[] args) {		  
+		  String string = NLS.bind(Messages._UI_LABEL_NO_OBJECT_SPECIFIED_ARG1, args);
+		  String customizedMessage = getProductCustomizedMessage("_UI_LABEL_NO_OBJECT_SPECIFIED_ARG1", args); //$NON-NLS-1$
+		  if (customizedMessage != null && !customizedMessage.equals("")) //$NON-NLS-1$
+			  string = customizedMessage;
+		  return string;
+	  }
+	
 	  private String getUndefinedArg1String(String arg) {
 		  String[] args = new String[1];
-		  args[0] = arg;
-		  String newString = getStringForKey("_UI_LABEL_UNDEFINED_ARG1", args); //$NON-NLS-1$
-		  return newString;
-	  }
-	  
-	  private String getNoParametersSpecifiedString() {
-		  String string = null;
-		  String[] args = new String[0];
-		  string = getStringForKey("_UI_LABEL_NO_PARAMETERS_SPECIFIED", args); //$NON-NLS-1$
+		  args[0] = arg;		  
+		  String string = NLS.bind(Messages._UI_LABEL_UNDEFINED_ARG1, args);
+		  String customizedMessage = getProductCustomizedMessage("_UI_LABEL_UNDEFINED_ARG1", args); //$NON-NLS-1$
+		  if (customizedMessage != null && !customizedMessage.equals("")) //$NON-NLS-1$
+			  string = customizedMessage;
 		  return string;
 	  }
 	  
-	  private String getStringForKey(String key, Object[] args) {
-		  String newString = ""; //$NON-NLS-1$
-		  newString = Messages.getString(key, args);
+	  private String getNoParametersSpecifiedString() {
+		  String[] args = new String[0];
+		  String string = NLS.bind(Messages._UI_LABEL_NO_PARAMETERS_SPECIFIED, args);
+		  String customizedMessage = getProductCustomizedMessage("_UI_LABEL_NO_PARAMETERS_SPECIFIED", args); //$NON-NLS-1$
+		  if (customizedMessage != null && !customizedMessage.equals("")) //$NON-NLS-1$
+			  string = customizedMessage;
+		  return string;
+	  }
+	  
+	  /**
+	   * Returns a customed product-based message for the given key and arguments
+	   * or null if none exists.
+	   * @param key
+	   * @param args
+	   * @return String customized message or null if none exists
+	   */
+	  private String getProductCustomizedMessage(String key, Object[] args) {
+		  String productMessage = null;
 		  
 		  Object object = WSDLEditorPlugin.getInstance().getProductCustomizationProvider();
 		  if (object instanceof ProductCustomizationProvider) {
 			  ProductCustomizationProvider productCustomizationProvider = (ProductCustomizationProvider)object;
-			  String customizedString = ""; //$NON-NLS-1$
+			  String customizedString = null;
 			  if (args == null) {
 				  customizedString = productCustomizationProvider.getProductString(key);
 			  }
@@ -453,14 +473,10 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
 			  }
 			  
 			  if (customizedString != null && !customizedString.equals("")) { //$NON-NLS-1$
-				  newString = customizedString;
+				  productMessage = customizedString;
 			  }
 		  }
-
-		  if (newString == null) {
-			  newString = ""; //$NON-NLS-1$
-		  }
-
-		  return newString;
+		  
+		  return productMessage;
 	  }
   }

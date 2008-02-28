@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,9 +27,8 @@ public class Messages {
 	private Messages() {
 	}
 
-	/*
+	/**
 	 * @deprecated: Use Messages._STRING_KEY to access strings.
-	 * This method will be made private in the near future.
 	 */
 	public static String getString(String key) {
 		try {
@@ -39,10 +38,16 @@ public class Messages {
 		}
 	}
 
+	/**
+	 * @deprecated: Use Messages._STRING_KEY to access strings.
+	 */
 	public static String getString(String key, String arg0) {
 		return MessageFormat.format(getString(key), new Object [] { arg0 });
 	}
 
+	/**
+	 * @deprecated: Use Messages._STRING_KEY to access strings.
+	 */
 	public static String getString(String key, Object[] args) {
 		return MessageFormat.format(getString(key), args);
 	}
@@ -152,4 +157,8 @@ public class Messages {
 	public static String _ERROR_WSI_COMPLIANCE_SOAP_PROTOCOL;
 	public static String _WARN_WSI_COMPLIANCE_RPC_ENCODING;
 	public static String _ERROR_WSI_COMPLIANCE_RPC_ENCODING;
+	public static String _UI_LABEL_UNDEFINED_ARG1;
+	public static String _UI_LABEL_OR_UNDEFINED_ARG2;
+	public static String _UI_LABEL_NO_OBJECT_SPECIFIED_ARG1;
+	public static String _UI_LABEL_NO_PARAMETERS_SPECIFIED;
 }
