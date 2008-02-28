@@ -14,13 +14,32 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
 public class ContentGeneratorUIExtensionRegistry {
 	protected List registeredContentGeneratorUIList = new ArrayList();
 
 	public void add(ContentGeneratorUIExtension extension) {
 		registeredContentGeneratorUIList.add(extension);
 	}
-	
+
+	/**
+	 * Get the default binding based on the project
+	 * 
+	 * @param project
+	 * @return String binding id
+	 */
+	public String getDefaultBinding(IProject project) {
+		// Default hard-code to SOAP
+		String defaultBinding = "SOAP"; //$NON-NLS-1$
+		/*
+		 * TODO: Determine default binding to use based on project's wsi compliance
+		 * preference.
+		 * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=220653
+		 */
+		return defaultBinding;
+	}
+
 	public List getBindingExtensionNames() {
 		List list = new ArrayList();
 		for (Iterator i = registeredContentGeneratorUIList.iterator(); i.hasNext();) {

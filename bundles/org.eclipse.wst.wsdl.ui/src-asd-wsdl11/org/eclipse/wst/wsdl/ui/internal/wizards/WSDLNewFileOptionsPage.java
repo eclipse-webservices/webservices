@@ -179,11 +179,25 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    dataC.horizontalAlignment = GridData.FILL;
    dataC.grabExcessHorizontalSpace = true;
    protocolCombo.setLayoutData(dataC);
-   
+
+//	 TODO: when getDefaultBinding really needs IProject, uncomment out below code
+//   IProject project = getProjectFromPath(newFileCreationPage.getContainerFullPath());
+//   String defaultProtocolName = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getDefaultBinding(project);
+   String defaultProtocolName = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getDefaultBinding(null);
    Iterator it = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getBindingExtensionNames().iterator();
+   int defaultIndex = 0;
+   boolean defaultFound = false;
    while (it.hasNext()) {
-	   protocolCombo.add((String) it.next());
+	   String protocolName = (String) it.next();
+	   protocolCombo.add(protocolName);
+	   if (!defaultFound && protocolName != null) {
+		   defaultFound = protocolName.equals(defaultProtocolName);
+		   if (!defaultFound)
+			   ++defaultIndex;
+	   }
    }
+   if (!defaultFound)
+	   defaultIndex = 0;
 
    protocolCombo.addModifyListener(this);
    PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_PROTOCOL_COMBO);
@@ -198,14 +212,14 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    protocolPageBook.setLayoutData(gdFill);
 
    if (protocolCombo.getItemCount() > 0) {
-	   String protocol = protocolCombo.getItem(0);
+	   String protocol = protocolCombo.getItem(defaultIndex);
 	   ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
 	   ContentGeneratorOptionsPage page = ext.getBindingContentGeneratorOptionsPage();
 	   page.init(generator);
 	   
 	   protocolPageBook.showPage(page.getControl());
 	   protocolPageBook.setVisible(true);
-	   protocolCombo.select(0);
+	   protocolCombo.select(defaultIndex);
 	   updatePageBook(protocol);
    }
    
@@ -667,4 +681,27 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
 	  return false;
   }
+  
+//	TODO: when we really do need IProject, uncomment out below code
+//	/**
+//	 * Returns the project that contains the specified path
+//	 * 
+//	 * @param path the path which project is needed
+//	 * @return IProject object. If path is <code>null</code> the return value 
+//	 * 		   is also <code>null</code>. 
+//	 */
+//	private IProject getProjectFromPath(IPath path) {
+//		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+//		IProject project = null;
+//		
+//		if (path != null) {
+//			if (workspace.validatePath(path.toString(), IResource.PROJECT).isOK()) {
+//				project = workspace.getRoot().getProject(path.toString());
+//			} else {
+//				project = workspace.getRoot().getFile(path).getProject();
+//			}
+//		}
+//		
+//		return project;
+//	}
   }

@@ -42,17 +42,29 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand implements I
 			
 			PortGenerator portGenerator = new PortGenerator(service);
 			
-			// Get the first available content generator
-			List protocols = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getBindingExtensionNames();
-			if (protocols.size() >= 1) {
-			  String protocol = (String)protocols.get(0);
-			  ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
-			  if (ext != null) {
-			    ContentGenerator contentGenerator = BindingGenerator.getContentGenerator(ext.getNamespace());
-			    portGenerator.setContentGenerator(contentGenerator);
-			  }
+			// set the default content generator
+			ContentGenerator contentGenerator = null;
+			// TODO: when getDefaultBinding really needs IProject, need to figure out how to get it
+			String protocol = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getDefaultBinding(null);
+			if (protocol != null) {
+				ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+				if (ext != null) {
+					contentGenerator = BindingGenerator.getContentGenerator(ext.getNamespace());
+				  }
 			}
-			
+			// unable to determine default content generator, try again
+			if (contentGenerator == null) {
+				// Get the first available content generator
+				List protocols = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getBindingExtensionNames();
+				if (protocols.size() >= 1) {
+					protocol = (String)protocols.get(0);
+					ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+					if (ext != null) {
+						contentGenerator = BindingGenerator.getContentGenerator(ext.getNamespace());
+				  }
+				}
+			}
+			portGenerator.setContentGenerator(contentGenerator);
 			portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort")); //$NON-NLS-1$
 			portGenerator.generatePort();
 			
