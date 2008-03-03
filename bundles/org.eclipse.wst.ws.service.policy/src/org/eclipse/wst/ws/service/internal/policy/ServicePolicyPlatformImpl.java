@@ -12,6 +12,7 @@
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20071113   209701 pmoogk@ca.ibm.com - Peter Moogk
  * 20080111   214907 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080214   218996 pmoogk@ca.ibm.com - Peter Moogk, Concurrent exception fix
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -307,7 +308,10 @@ public class ServicePolicyPlatformImpl
   
   public void restoreDefaults()
   {
-    for( ServicePolicyImpl policy : policyMap.values() )
+    Vector<ServicePolicyImpl> tempPolicyValues 
+       = new Vector<ServicePolicyImpl>( policyMap.values() );
+    
+    for( ServicePolicyImpl policy : tempPolicyValues )
     {
       policy.restoreDefaults();
     }

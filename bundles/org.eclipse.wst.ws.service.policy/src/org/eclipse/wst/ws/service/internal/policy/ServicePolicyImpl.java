@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080214   218996 pmoogk@ca.ibm.com - Peter Moogk, Concurrent exception fix
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -133,7 +134,7 @@ public class ServicePolicyImpl implements IServicePolicy
       
       for( IServicePolicy childPolicy : childPolicies )
       {
-        policyToRemove .removeChild( childPolicy );
+        policyToRemove.removeChild( childPolicy );
       }
       
       boolean removed = children.remove( policyToRemove  );
@@ -217,7 +218,12 @@ public class ServicePolicyImpl implements IServicePolicy
   public void restoreDefaults()
   {
     // Remove all local children from the tree
-    for( IServicePolicy child : children )
+    // Java will not let you remove an item from a collection
+    // that is being iterated over, so we need to create a temporary
+    // copy of the children collection to iterator over.
+    Vector<IServicePolicy> tempChildren = new Vector<IServicePolicy>( children );
+    
+    for( IServicePolicy child : tempChildren )
     {
       if( !child.isPredefined() )
       {
