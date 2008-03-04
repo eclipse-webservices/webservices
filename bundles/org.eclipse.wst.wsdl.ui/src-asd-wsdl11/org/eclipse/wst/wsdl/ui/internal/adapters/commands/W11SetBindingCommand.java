@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
-import java.util.Iterator;
-import java.util.List;
-
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
-import org.eclipse.wst.wsdl.binding.http.HTTPBinding;
-import org.eclipse.wst.wsdl.binding.http.HTTPFactory;
-import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
-import org.eclipse.wst.wsdl.binding.soap.SOAPBinding;
-import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
+import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
+import org.eclipse.wst.wsdl.internal.generator.extension.ContentGeneratorExtensionFactoryRegistry;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Binding;
+import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11SetBindingCommand extends W11TopLevelElementCommand {
 	private Port port;
@@ -47,71 +44,45 @@ public class W11SetBindingCommand extends W11TopLevelElementCommand {
 	}
 	
 	public static void updatePortProtocol(Port port, Binding binding) {
-		String portAddress = null;
-		Object bindingProtocol = getBindingProtocol(binding);
-		Object portProtocol = getPortProtocol(port);
-		
-		if (portProtocol instanceof SOAPAddress) {
-			portAddress = ((SOAPAddress) portProtocol).getLocationURI();
-		}
-		else if (portProtocol instanceof HTTPAddress) {
-			portAddress = ((HTTPAddress) portProtocol).getLocationURI();
-		}
-
-		if (portAddress == null) {
-			portAddress = "http://www.example.org";
-		}
-		
-		if (bindingProtocol instanceof SOAPBinding && !(portProtocol instanceof SOAPAddress)) {
-			SOAPAddress soap = SOAPFactory.eINSTANCE.createSOAPAddress();
-			soap.setLocationURI(portAddress);
-			setNewProtocol(port, soap);
-		}
-		else if (bindingProtocol instanceof HTTPBinding && !(portProtocol instanceof HTTPAddress)) {
-			HTTPAddress http = HTTPFactory.eINSTANCE.createHTTPAddress();
-			http.setLocationURI(portAddress);
-			setNewProtocol(port, http);
+		String bindingProtocol = getBindingProtocol(binding);
+		if (bindingProtocol != null) {
+	    W11EndPoint portProtocol = getPortProtocol(port);
+	    if ((portProtocol == null) || !(bindingProtocol.equals(portProtocol.getProtocol()))) {
+        String portAddress = null;
+	      if (portProtocol != null) {
+	        portAddress = portProtocol.getAddress();
+	      }
+	      if (portAddress == null) {
+	        portAddress = "http://www.example.org"; //$NON-NLS-1$
+	      }
+	      
+        ContentGeneratorExtensionFactoryRegistry factoryRegistry = ContentGeneratorExtensionFactoryRegistry.getInstance();
+        ContentGenerator contentGenerator = factoryRegistry.getGeneratorClassFromName(bindingProtocol);
+        if (contentGenerator != null) {
+          contentGenerator.setAddressLocation(portAddress);
+          contentGenerator.generatePortContent(port);
+        }
+	    }
 		}
 	}
 	
-	private static Object getBindingProtocol(Binding binding) {
-		Iterator it = binding.getEExtensibilityElements().iterator();
-		while (it.hasNext()) {
-			Object item = it.next();
-			if (item instanceof SOAPBinding || item instanceof HTTPBinding) {
-				return item;
-			}
-		}
+	private static String getBindingProtocol(Binding binding) {
+    Notifier notifier = (Notifier)binding;
+    Adapter adapter = WSDLAdapterFactoryHelper.getInstance().adapt(notifier);
+    if (adapter instanceof W11Binding) {
+      return ((W11Binding)adapter).getProtocol();
+    }
 		
 		return null;
 	}
 	
-	private static Object getPortProtocol(Port port) {
-		
-		Iterator it = port.getEExtensibilityElements().iterator();
-        while (it.hasNext()) {
-        	Object item = it.next();
-        	if (item instanceof SOAPAddress) {
-        		return item;
-        	}
-        	else if (item instanceof HTTPAddress) {
-        		return item;
-        	}
-        }	
-
-		return null;
-	}
-	
-	private static void setNewProtocol(Port port, ExtensibilityElement element) {
-		List existingElements = port.getEExtensibilityElements();
-		for (int index = 0; index < existingElements.size(); index++) {
-			Object item = existingElements.get(index);
-			if (item instanceof SOAPAddress || item instanceof HTTPAddress) {
-				existingElements.remove(index);
-				break;
-			}
-		}
-
-		port.addExtensibilityElement(element);
+	private static W11EndPoint getPortProtocol(Port port) {
+    Notifier notifier = (Notifier)port;
+    Adapter adapter = WSDLAdapterFactoryHelper.getInstance().adapt(notifier);
+    if (adapter instanceof W11EndPoint) {
+      return (W11EndPoint)adapter;
+    }
+    
+    return null;
 	}
 }

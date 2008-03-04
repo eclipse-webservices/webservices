@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -225,8 +225,15 @@ public class EndPointSection extends ReferenceSection {
 	  else if (event.widget == protocolCombo && !protocolCombo.isDisposed()) {
 		  String newProtocol = protocolCombo.getText();
 		  if (newProtocol != null && getModel() instanceof W11EndPoint) {
-			  W11EndPoint endPoint = (W11EndPoint) getModel();
-			  endPoint.setProtocol(newProtocol);
+		    W11EndPoint endPoint = (W11EndPoint) getModel();
+		    
+		    // Don't update the protocol if it's the same as the old one
+		    
+		    String oldProtocol = getOldProtocol(endPoint);
+		    if (oldProtocol.equals(newProtocol))
+		    	return;
+
+		    endPoint.setProtocol(newProtocol);
 		  }
 	  }
 	  else {
@@ -244,5 +251,15 @@ public class EndPointSection extends ReferenceSection {
 		  value = ""; //$NON-NLS-1$
 	  }
 	  return value;
+  }
+  
+  private String getOldProtocol(W11EndPoint endPoint) {
+    String value = null;
+    value = endPoint.getProtocol();
+
+    if (value == null) {
+      value = ""; //$NON-NLS-1$
+    }
+    return value;
   }
 }

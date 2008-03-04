@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.wst.wsdl.ExtensibilityElement;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.binding.http.HTTPAddress;
-import org.eclipse.wst.wsdl.binding.soap.SOAPAddress;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.adapters.specialized.W11AddressExtensibilityElementAdapter;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
@@ -67,16 +68,12 @@ public class W11SetAddressCommand extends W11TopLevelElementCommand {
 		if (port.getEExtensibilityElements().size() > 0) {
 			Iterator eeIt = port.getEExtensibilityElements().iterator();
 			while (eeIt.hasNext()) {
-				ExtensibilityElement ee = ((ExtensibilityElement) eeIt.next());
-				if (ee instanceof SOAPAddress) {
-					((SOAPAddress) ee).setLocationURI(newAddress);
-					success = true;
-				}
-				else if (ee instanceof HTTPAddress) {
-					((HTTPAddress) ee).setLocationURI(newAddress);
-					success = true;
-				}
-	//			ee.getElement().setAttribute("location", newAddress);
+				Notifier notifier = (Notifier)eeIt.next();
+				Adapter adapter = WSDLAdapterFactoryHelper.getInstance().adapt(notifier);
+		        if (adapter instanceof W11AddressExtensibilityElementAdapter) {
+		        	((W11AddressExtensibilityElementAdapter)adapter).setLocationURI(newAddress);
+		        	success = true;
+		        }
 			}
 		}
 		

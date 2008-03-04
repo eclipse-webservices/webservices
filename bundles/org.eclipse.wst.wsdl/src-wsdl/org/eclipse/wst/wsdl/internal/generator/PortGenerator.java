@@ -66,6 +66,8 @@ public class PortGenerator extends BaseGenerator
 
     if (contentGenerator != null)
     {
+      //wtp bug 221024 - namespace and prefixes are not added when add new port
+      addRequiredNamespaces(service.getEnclosingDefinition());
       contentGenerator.setAddressLocation(addressLocation);
       contentGenerator.generatePortContent(port);
     }

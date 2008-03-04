@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -186,7 +186,6 @@ public class BindingGenerator extends BaseGenerator
         }
         else
         {
-          addRequiredNamespaces(binding);
           List operations = portType.getOperations();
 
           /*******************************************************************************
@@ -219,6 +218,11 @@ public class BindingGenerator extends BaseGenerator
           // BindingOperation's
           List newBindingOps = createNewBindingOperations(newBindingOpsNeeded);
 
+          // don't add required namespace if nothing is really being added
+          if (!newBindingOps.isEmpty()) {
+            addRequiredNamespaces(binding);            
+          }
+          
           // Generate the contents of the new BindingOperation's
           Iterator newBindingOpsIt = newBindingOps.iterator();
           while (newBindingOpsIt.hasNext())
