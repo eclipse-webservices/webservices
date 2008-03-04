@@ -14,6 +14,7 @@
  * 20060524   141194 joan@ca.ibm.com - Joan Haggarty
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20080212   208795 ericdp@ca.ibm.com - Eric Peters, WS wizard framework should support EJB 3.0
+ * 20080229   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -36,6 +37,7 @@ import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
+import org.eclipse.jst.javaee.ejb.EnterpriseBeans;
 import org.eclipse.jst.javaee.ejb.SessionBean;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
@@ -301,12 +303,13 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
 			IModelProvider provider = ModelProviderManager
 					.getModelProvider(project);
 			Object modelObject = provider.getModelObject();
-			List sessions;
+			List sessions = new Vector();
 			boolean isJ2EE5 = J2EEProjectUtilities.isJEEProject(project);
 			if (isJ2EE5) {
-				// a JEE5 project
-				sessions = ((org.eclipse.jst.javaee.ejb.EJBJar) modelObject)
-						.getEnterpriseBeans().getSessionBeans();
+	    		//a JEE5 project
+	    		EnterpriseBeans eBeans = ((org.eclipse.jst.javaee.ejb.EJBJar)modelObject).getEnterpriseBeans();
+	    		if (eBeans !=null)
+	    			sessions = eBeans.getSessionBeans();
 			} else {
 				sessions = ((EJBJar) modelObject).getSessionBeans();
 			}

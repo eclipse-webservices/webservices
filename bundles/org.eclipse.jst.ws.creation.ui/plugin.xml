@@ -84,7 +84,7 @@
             tooltip="%TOOLTIP_PPAD_CHECKBOX_DEPLOY"
             infopop="org.eclipse.jst.ws.creation.ui.PPAD0006"
             category="org.eclipse.jst.wss.popup.category"
-            objectids="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.ejb org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.file org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.compunit org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.service.bean org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.bean.link"
+            objectids="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.ejb org.eclipse.jst.ws.creation.ui.wizard.serverwizard.ejb3 org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.file org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.compunit org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.service.bean org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java.bean.link"
             id="org.eclipse.jst.ws.creation.ui.wizard.serverwizard.java">
       </actionDialogPreferenceType>
 

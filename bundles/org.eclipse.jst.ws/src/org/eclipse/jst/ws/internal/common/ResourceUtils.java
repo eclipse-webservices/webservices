@@ -14,6 +14,7 @@
  * 20060424   115690 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20080122   215866 trungha@ca.ibm.com - Trung Ha
+ * 20080303   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -58,6 +59,7 @@ import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.javaee.ejb.SessionBean;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
@@ -1345,6 +1347,11 @@ public final class ResourceUtils {
 			} else if (obj instanceof EnterpriseBean) {
 				EnterpriseBean ejbBean = (EnterpriseBean) obj;
 				IProject ejbProject = ProjectUtilities.getProject(ejbBean);
+				if (ejbProject != null)
+					res = ejbProject;
+			} else if (obj instanceof SessionBean) {
+				SessionBean JEE5Bean = (SessionBean) obj;
+				IProject ejbProject = ProjectUtilities.getProject(JEE5Bean);
 				if (ejbProject != null)
 					res = ejbProject;
 			}

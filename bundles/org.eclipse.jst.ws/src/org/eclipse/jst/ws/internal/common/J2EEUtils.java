@@ -18,6 +18,7 @@
  * 20071221   213726 kathy@ca.ibm.com - Kathy Chan
  * 20070123   216345 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080212   208795 ericdp@ca.ibm.com - Eric Peters, WS wizard framework should support EJB 3.0
+ * 20080229   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -66,6 +67,7 @@ import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
 import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
+import org.eclipse.jst.javaee.ejb.EnterpriseBeans;
 import org.eclipse.jst.javaee.ejb.SessionBean;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -524,6 +526,7 @@ public final class J2EEUtils {
 	 * 
 	 * @param jar
 	 * @return  Vector of bean String names.
+	 * @deprecated use getBeanNames(IProject project)
 	 */
 	public static Vector getBeanNames(EJBJar jar) {
 		// We currently only support Stateless session beans.
@@ -552,10 +555,13 @@ public final class J2EEUtils {
     	IModelProvider provider = ModelProviderManager.getModelProvider(project);
     	Object modelObject = provider.getModelObject();
 
-    	List sessionBeans;
-    	if (J2EEProjectUtilities.isJEEProject(project)) {
+    	List sessionBeans = new Vector();
+		boolean isJ2EE5 = J2EEProjectUtilities.isJEEProject(project);
+		if (isJ2EE5) {
     		//a JEE5 project
-    		sessionBeans = ((org.eclipse.jst.javaee.ejb.EJBJar)modelObject).getEnterpriseBeans().getSessionBeans();
+    		EnterpriseBeans eBeans = ((org.eclipse.jst.javaee.ejb.EJBJar)modelObject).getEnterpriseBeans();
+    		if (eBeans !=null)
+    			sessionBeans = eBeans.getSessionBeans();
     	} else {
     		sessionBeans = ((EJBJar)modelObject).getSessionBeans();
     	}
