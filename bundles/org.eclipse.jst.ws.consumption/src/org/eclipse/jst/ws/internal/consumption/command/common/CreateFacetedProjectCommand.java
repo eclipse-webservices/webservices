@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@
  * 20060517 126965   kathy@ca.ibm.com - Kathy Chan
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
  * 20070505   184772 kathy@ca.ibm.com - Kathy Chan
+ * 20080305   220371 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -202,84 +203,58 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
    */
   private Set getFacetsToAdd()
   {
-	  Set facets = null;
-
-	  //Set the facet runtime.
-	  setFacetRuntime();
-
-	  //Get all facet version combinations for the template in order of ascending version numbers.
-	  Set[] allCombinations = FacetSetsByTemplateCache.getInstance().getFacetVersionCombinationsFromTemplate(templateId);
-	  int n = allCombinations.length;
-
-	  Set defaultFacets = FacetUtils.getDefaultFacetVersionsFromTemplate(templateId);
-	  int defaultIndex = n-1; // set default to highest versions
-	  if (!defaultFacets.isEmpty()) {
-		// find the index of the defaultFacet within all combinations
-		  for (int i=n-1; i>=0; i--)
-		  {
-			  Set combo = allCombinations[i];
-			  if (combo.equals (defaultFacets)) {
-				  defaultIndex = i;
-				  break;
-			  }
-		  }
-	  } else {
-		  // get the highest versions of all facets
-		  defaultFacets = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
-	  }
-	  
-	  // walk the facet version combinations from default version up to higher versions
-	  for (int i=defaultIndex; i<n; i++) 
-	  {
-		  //Check the template combination to see if it is compatible with both the 
-		  //required facet versions and the server runtime. If it is, choose it.
-		  Set combination = allCombinations[i];
-		  FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
-		  if (fm.isMatch())
-		  {
-			  if (facetRuntime != null)
-			  {
-				  if (FacetUtils.doesRuntimeSupportFacets(facetRuntime, combination))
-				  {
-					  facets = combination;
-					  break;
-				  }
-			  } else {
-				  facets = combination;
-				  break;
-			  }
-		  }                
-	  }
-	  if (facets == null)
-	  {
-		  // walk the facet version combinations from default version down to lower versions
-		  for (int i=defaultIndex-1; i>=0; i--) 
-		  {
-			  Set combination = allCombinations[i];
-			  FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
-			  if (fm.isMatch())
-			  {
-				  if (facetRuntime != null)
-				  {
-					  if (FacetUtils.doesRuntimeSupportFacets(facetRuntime, combination))
-					  {
-						  facets = combination;
-						  break;
-					  }
-				  } else {
-					  facets = combination;
-					  break;
-				  }
-			  }                
-		  }
-	  }
-
-	  //Unlikely to get to this point in the code, but if we do, choose the default version
-	  //of each fixed facet in the template.
-	  if (facets == null)
-	  {
-		  facets = defaultFacets;
-	  }
+    Set facets = null;
+    
+    //Set the facet runtime.
+    setFacetRuntime();
+    //Get all facet version combinations for the template in order of ascending version numbers.
+    Set[] allCombinations = FacetSetsByTemplateCache.getInstance().getFacetVersionCombinationsFromTemplate(templateId);
+    int n = allCombinations.length;
+    if (facetRuntime != null)
+    {
+      //Walk the facet version combinations in order of descending version numbers.
+      for (int i=n-1; i>=0; i--)
+      {
+        //Check this template combination to see if it is compatible with both the 
+        //required facet versions and the server runtime. If it is, choose it.
+        Set combination = allCombinations[i];
+        FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
+        if (fm.isMatch())
+        {
+          //Check against Runtime
+          if (FacetUtils.doesRuntimeSupportFacets(facetRuntime, combination))
+          {
+            //We have a match. Use this combination of facet versions for project creation.
+            facets = combination;
+            break;
+          }
+        }                
+      }
+      
+    }
+    else
+    {
+      for (int i=n-1; i>=0; i--)
+      {
+        //Check this template combination to see if it is compatible with both the 
+        //service/client runtime and the server runtime. If it is, choose it.
+        Set combination = allCombinations[i];
+        FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
+        if (fm.isMatch())
+        {
+            //We have a match. Use this combination of facet versions for project creation.
+            facets = combination;
+            break;
+        }                
+      }      
+    }
+   
+    //Unlikely to get to this point in the code, but if we do, choose the highest version
+    //of each fixed facet in the template.
+    if (facets == null)
+    {
+      facets = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
+    }
      
     return facets;
   }
