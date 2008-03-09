@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<testcase name="1309-1">
-  <description>
-    This is an example of a message log file that is conformant to requirement
-    1011.
-  </description>
-  <expectedFailures/>
-</testcase>
