@@ -64,10 +64,15 @@ public class WSDLResourceFactoryRegistry extends ResourceFactoryRegistryImpl
 
   public Factory getFactory(URI uri)
   {
+    return getFactory(uri, null);
+  }
+
+  public Resource.Factory getFactory(URI uri, String contentType)
+  {
     String uriString = uri.toString();
 
-    Factory factory = parent.getFactory(uri);
-    Factory defaultFactory = (Factory)INSTANCE.getFactory(URI.createURI(DEFAULT_EXTENSION));
+    Factory factory = parent.getFactory(uri, contentType);
+    Factory defaultFactory = (Factory)INSTANCE.getFactory(URI.createURI(DEFAULT_EXTENSION), contentType);
 
     // give the parent the first crack at getting the factory
     // if the factory is null or the known 'default' factory then we'll
@@ -78,13 +83,13 @@ public class WSDLResourceFactoryRegistry extends ResourceFactoryRegistryImpl
       {
         // handle cases like "http://xxx/Distance.jws?wsdl"
         //          	
-        factory = parent.getFactory(URI.createURI("*.wsdl"));
+        factory = parent.getFactory(URI.createURI("*.wsdl"), contentType);
       }
       else if (uriString.endsWith("xsd") || uriString.endsWith("XSD"))
       {
         // handle cases like "http://xxx/Distance.jws?xsd"
         //        	
-        factory = parent.getFactory(URI.createURI("*.xsd"));
+        factory = parent.getFactory(URI.createURI("*.xsd"), contentType);
       }
       else
       //if (uri.fileExtension() == null)
@@ -99,11 +104,11 @@ public class WSDLResourceFactoryRegistry extends ResourceFactoryRegistryImpl
         {
           if (rootElementName.equals("schema"))
           {
-            factory = parent.getFactory(URI.createURI("*.xsd"));
+            factory = parent.getFactory(URI.createURI("*.xsd"), contentType);
           }
           else if (rootElementName.equals("definitions"))
           {
-            factory = parent.getFactory(URI.createURI("*.wsdl"));
+            factory = parent.getFactory(URI.createURI("*.wsdl"), contentType);
           }
         }
       }
