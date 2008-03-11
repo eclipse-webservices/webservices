@@ -233,6 +233,14 @@ public class BugFixesTest extends TestCase
       }
     });
     
+    suite.addTest(new BugFixesTest("InlineTypesFromImportsAreVisible") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testInlineTypesFromImportsAreVisible();
+      }
+    });
+
     return suite;
   }
 
@@ -1158,5 +1166,32 @@ public class BugFixesTest extends TestCase
       node = node.getPreviousSibling();
     }
     return (Element)node;
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=208485
+   */
+  public void testInlineTypesFromImportsAreVisible()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/InlineTypesFromImportsAreVisible/A.wsdl"); //$NON-NLS-1$
+      String targetNamespace = "http://A"; //$NON-NLS-1$
+      QName messageQName = new QName(targetNamespace, "message" ); //$NON-NLS-1$
+      javax.wsdl.Message message = definition.getMessage(messageQName);
+      assertNotNull(message);
+      Part part = (Part)message.getPart("parameters"); //$NON-NLS-1$
+      assertNotNull(part);
+      XSDTypeDefinition typeDefinition = part.getTypeDefinition();
+      assertNotNull(typeDefinition);
+      String namespace = typeDefinition.getTargetNamespace();
+      assertEquals("http://B", namespace);
+      assertEquals("BType", typeDefinition.getName());
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
   }
 }

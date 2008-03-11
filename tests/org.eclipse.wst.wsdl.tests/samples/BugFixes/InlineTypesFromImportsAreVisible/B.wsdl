@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	name="B"
+	targetNamespace="http://B">
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="http://B">
+			<xsd:complexType name="BType">
+				<xsd:sequence>
+					<xsd:element name="attribute1" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>	
+	</wsdl:types>
+</wsdl:definitions>

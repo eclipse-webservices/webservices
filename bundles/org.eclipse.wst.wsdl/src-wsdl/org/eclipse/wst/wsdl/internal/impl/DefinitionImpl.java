@@ -2110,50 +2110,9 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     }
 
     List list = new ArrayList();
-    for (Iterator i = getEImports().iterator(); i.hasNext();)
-    {
-      Import theImport = (Import)i.next();
-      if (WSDLConstants.isMatchingNamespace(theImport.getNamespaceURI(), namespace))
-      {
-        ((ImportImpl)theImport).importDefinitionOrSchema();
-        XSDSchema schema = theImport.getESchema();
-        if (schema != null && WSDLConstants.isMatchingNamespace(schema.getTargetNamespace(), namespace))
-        {
-          list.add(schema);
-        }
-      }
-    }
-    if (getETypes() != null)
-    {
-      for (Iterator i = getETypes().getSchemas().iterator(); i.hasNext();)
-      {
-        XSDSchema schema = (XSDSchema)i.next();
-        String targetNamespace = schema.getTargetNamespace();
-        if (namespace.equals(targetNamespace))
-        {
-          list.add(schema);
-        }
-
-        for (Iterator j = schema.getContents().iterator(); j.hasNext();)
-        {
-          Object component = j.next();
-          if (component instanceof XSDImport)
-          {
-            XSDImport theImport = (XSDImport)component;
-            if (namespace.equals(theImport.getNamespace()))
-            {
-              ((XSDImportImpl)theImport).importSchema();
-              XSDSchema importedSchema = theImport.getResolvedSchema();
-              if (importedSchema != null)
-              {
-                list.add(importedSchema);
-              }
-            }
-          }
-        }
-
-      }
-    }
+    collectImportedSchemas(namespace, list);
+    collectInlinedSchemas(namespace, list);
+    collectInlinedSchemasOfImportedDefinitions(namespace, list);
     return list;
   }
 
@@ -2356,4 +2315,105 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     }
   }
 
+
+  /** 
+   *  This method will collect the schemas matching the namespace
+   *  that are inlined directly within this definition.
+   *  
+   *  @param namespace the namespace to match.
+   *  @param list all inline schemas that match the namespace will be added to this list.
+   */
+  protected void collectInlinedSchemas(String namespace, List list)
+  {
+    Types types = getETypes();
+    if (types != null)
+    {
+      List schemas = types.getSchemas();
+      Iterator schemasIterator = schemas.iterator();
+      while(schemasIterator.hasNext())
+      {
+        XSDSchema schema = (XSDSchema)schemasIterator.next();
+        String targetNamespace = schema.getTargetNamespace();
+        
+        if (WSDLConstants.isMatchingNamespace(namespace, targetNamespace))
+        {
+          list.add(schema);
+        }
+
+        EList schemaContents = schema.getContents();
+        Iterator schemaContentsIterator = schemaContents.iterator();
+        
+        while (schemaContentsIterator.hasNext())
+        {
+          Object component = schemaContentsIterator.next();
+          if (component instanceof XSDImport)
+          {
+            XSDImport theImport = (XSDImport)component;
+            String importNamespace = theImport.getNamespace();
+            if (WSDLConstants.isMatchingNamespace(namespace, importNamespace))
+            {
+              ((XSDImportImpl)theImport).importSchema();
+              XSDSchema importedSchema = theImport.getResolvedSchema();
+              if (importedSchema != null)
+              {
+                list.add(importedSchema);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /** 
+   *  This method will collect any schema matching the given namespace that are
+   *  imported directly via a wsdl import (e.g. &lt;wsdl:import schemaLocation="Foo.xsd"...)
+   *  
+   *  @param namespace the namespace to match
+   *  @param list all imported schemas that match the namespace will be added to this list.
+   */
+  protected void collectImportedSchemas(String namespace, List list)
+  {
+    EList imports = getEImports();
+    Iterator importsIterator = imports.iterator();
+    while (importsIterator.hasNext())
+    {
+      Import theImport = (Import)importsIterator.next();
+      String importNamespaceURI = theImport.getNamespaceURI();
+      
+      if (WSDLConstants.isMatchingNamespace(importNamespaceURI, namespace))
+      {
+        ((ImportImpl)theImport).importDefinitionOrSchema();
+        XSDSchema schema = theImport.getESchema();
+        
+        if (schema != null && WSDLConstants.isMatchingNamespace(schema.getTargetNamespace(), namespace))
+        {
+          list.add(schema);
+        }
+      }
+    }
+  }
+
+  /** 
+   *  This method will visit any imported wsdl's and collect any contained inlined schemas that match
+   *  the given namespace. 
+   *  
+   *  @param namespace the namespace to match
+   *  @param list all inlined schemas of imported definitions that match the namespace will be added to this list.
+   */
+  protected void collectInlinedSchemasOfImportedDefinitions(String namespace, List list)
+  {
+    EList imports = getEImports();
+    Iterator importsIterator = imports.iterator();
+    while (importsIterator.hasNext())
+    {
+      Import theImport = (Import)importsIterator.next();
+      DefinitionImpl importedDefinition = (DefinitionImpl)theImport.getEDefinition();
+      if (importedDefinition != null)
+      {
+        importedDefinition.collectInlinedSchemas(namespace, list);
+      }
+    }
+  }  
+  
 } //DefinitionImpl

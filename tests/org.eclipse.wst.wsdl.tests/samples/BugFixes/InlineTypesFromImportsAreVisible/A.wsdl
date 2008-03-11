@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:b="http://B"
+	xmlns:tns="http://A"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	name="A"
+	targetNamespace="http://A">		
+	<wsdl:import location="B.wsdl" namespace="http://B"/>				
+	<wsdl:message name="message">	
+		<wsdl:part name="parameters" type="b:BType" />
+	</wsdl:message>	
+	<wsdl:portType name="portType">
+		<wsdl:operation name="op">
+			<wsdl:output message="tns:message" />
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>
