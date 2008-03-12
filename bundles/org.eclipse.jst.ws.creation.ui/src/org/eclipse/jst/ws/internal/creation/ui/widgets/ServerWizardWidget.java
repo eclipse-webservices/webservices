@@ -51,6 +51,7 @@
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080215   216337 pmoogk@ca.ibm.com - Peter Moogk
  * 20080301   221034 kathy@ca.ibm.com - Kathy Chan
+ * 20080312   147442 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -456,6 +457,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 		serviceScale_.setMinimum(0);
 		serviceScale_.setMaximum(6);
 		serviceScale_.setIncrement(1);
+		serviceScale_.setPageIncrement(1);
 		serviceScale_.addSelectionListener(scaleSelectionListener);
 		serviceScale_.setSelection(getServiceGeneration());
 		serviceScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_SERVICE);

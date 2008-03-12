@@ -34,6 +34,7 @@
  * 20070126   138484 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
+ * 20080312   147442 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -273,6 +274,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 	clientScale_.setMinimum(0);
 	clientScale_.setMaximum(6);
 	clientScale_.setIncrement(1);
+	clientScale_.setPageIncrement(1);
 	clientScale_.addSelectionListener(scaleSelectionListener);		
 	setClientScale(getClientGeneration());
 	clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_CLIENT);
