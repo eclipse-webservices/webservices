@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-The port 'ServiceNoAddressSOAP' has no address defined. Each port must define one address. [34, 79]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
