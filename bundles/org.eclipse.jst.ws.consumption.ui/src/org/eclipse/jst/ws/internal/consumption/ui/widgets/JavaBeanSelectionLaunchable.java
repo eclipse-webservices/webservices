@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060719   149352 mahutch@ca.ibm.com - Mark Hutchinson
  * 20060826   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20070313   170126 makandre@ca.ibm.com - Andrew Mak, BUJava scenario doesn't catch improper service definition
+ * 20080310   222075 makandre@ca.ibm.com - Andrew Mak, Cannot launch Web Service wizard on an IType
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -60,6 +61,8 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 	      	if (fileExt.equals("java") || fileExt.equals("class"))
 	          setBeanClass(iFile);
 	      }
+	      else if (object instanceof IType)
+	    	setBeanClass((IType) object);
 	      else if (object instanceof ICompilationUnit)
 	      	setBeanClass(((ICompilationUnit)object).getResource());
 	      else if (object instanceof ServiceImplBeanImpl)
@@ -89,6 +92,10 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 	public int launch(Shell shell) {		
 		   
 		    IType itype = DialogUtils.browseClassesAsIType(shell, ResourcesPlugin.getWorkspace().getRoot().getProjects(), new ProgressMonitorDialog(shell));
+		    return setBeanClass(itype);
+	}
+		  	
+	private int setBeanClass(IType itype) {
 		    if (itype != null)
 		    {
 		       beanClassString_ = itype.getFullyQualifiedName();
