@@ -35,6 +35,7 @@
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080312   147442 trungha@ca.ibm.com - Trung Ha
+ * 20080311   222103 trungha@ca.ibm.com - Trung, Changing service scale doesn't update completely non-UI part of client scale
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -437,12 +438,22 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 	else
 	{
 		setClientScale(ScenarioContext.WS_NONE);
+		updateFields(ScenarioContext.WS_NONE);
 		setGraphics(ScenarioContext.WS_NONE);
 		clientScale_.setBackgroundImage(null);  //override background for disable to grey		
 	}	
 	showSummary(enable && (selection <= ScenarioContext.WS_DEVELOP));
   }
-  
+
+  private void updateFields(int selection) {
+		setDevelopClient(selection <= ScenarioContext.WS_DEVELOP);
+		setAssembleClient(selection <= ScenarioContext.WS_ASSEMBLE);
+		setDeployClient(selection <= ScenarioContext.WS_DEPLOY);
+		setTestClient(new Boolean(selection <= ScenarioContext.WS_TEST));
+		setInstallClient(new Boolean(selection <= ScenarioContext.WS_INSTALL));
+		setStartClient(new Boolean(selection <= ScenarioContext.WS_START));
+  }
+
   private void showSummary(boolean show)
   {
 	  if (clientOnly_)
@@ -758,42 +769,41 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
      String iconImage = "";
      String topologyImage = "";
      
-	  //TODO: change the hard coded integers here to the the ScenarioContext.WS_xxx when in less critical phase
 	  switch (selection) {
-		case 0:
+	    case ScenarioContext.WS_TEST:
 			iconImage=ICON_SCALE_BG_0;
 			topologyImage=GRAPHIC_CLIENT_0;
 			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_TEST);
 			break;
-		case 1:
+	    case ScenarioContext.WS_START:
 			iconImage=ICON_SCALE_BG_1;
 			topologyImage=GRAPHIC_CLIENT_1;
 			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_RUN);
 			break;
-		case 2:
+		case ScenarioContext.WS_INSTALL:
 			iconImage=ICON_SCALE_BG_2;
 			topologyImage=GRAPHIC_CLIENT_2;
 			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_INSTALL);
 			break;
-		case 3:
+		case ScenarioContext.WS_DEPLOY:
 			iconImage=ICON_SCALE_BG_3;
 			topologyImage=GRAPHIC_CLIENT_3;
 			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEPLOY);
 			break;
-		case 4:
+		case ScenarioContext.WS_ASSEMBLE:
 			iconImage=ICON_SCALE_BG_4;
 			topologyImage=GRAPHIC_CLIENT_4;
 			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_ASSEMBLE);
 			break;
-		case 5:
+		case ScenarioContext.WS_DEVELOP:
 			iconImage=ICON_SCALE_BG_5;
 			topologyImage=GRAPHIC_CLIENT_5;
 			clientScale_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_SCALE_DEVELOP);
 			break;
-		case 6:			
+		case ScenarioContext.WS_NONE:			
 			if (!clientOnly_)
 			{
-				if (enableProxy_)  //if service is install run or test...
+				if (enableProxy_)  //if service is start or test...
 					iconImage=ICON_SCALE_BG_6;  
 				else
 					iconImage=null;
@@ -837,7 +847,7 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 		  setDevelopClient(true);
 	  }
 	
-	  clientScaleSetting_ = value;
+	  // clientScaleSetting_ = value; commented out because setClientScale() below does it too (trung)
 	  setClientScale(value);
 	  	  
 	  setGraphics(value);
@@ -996,22 +1006,18 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 		public void widgetSelected(SelectionEvent e) {
 			    int oldClientScaleSetting = clientScaleSetting_;
 			    
-				setGraphics(((Scale)e.widget).getSelection());
+				// commented out as already called in setClientGeneration (trung)
+			    //setGraphics(((Scale)e.widget).getSelection());
 				
 				int selection = clientScale_.getSelection();
 				setClientGeneration(selection);
 			    
-			    setDevelopClient(selection <= ScenarioContext.WS_DEVELOP);
-				setAssembleClient(selection <= ScenarioContext.WS_ASSEMBLE);
-				setDeployClient(selection <= ScenarioContext.WS_DEPLOY);
-			    setTestClient(new Boolean(selection <= ScenarioContext.WS_TEST));
-				setInstallClient(new Boolean(selection <= ScenarioContext.WS_INSTALL));
-				setStartClient(new Boolean(selection <= ScenarioContext.WS_START));
+			    updateFields(selection);
 				
 				//disable the client settings if the client scenario setting isn't at least "DEVELOP"
-				boolean generate = selection<=ScenarioContext.WS_DEVELOP;
-				showSummary(generate);
-				
+				//boolean generate = selection<=ScenarioContext.WS_DEVELOP;
+				//showSummary(generate);
+				// commented out 2 lines above as they are already done in setClientGeneration() 4 lines earlier (trung)
 				
 				//When client slider moves out of the "WS_NONE" state, VALIDATE_ALL should be done. 
 				//Otherwise, VALIDATE_SCALE_CHANGES is sufficient.
