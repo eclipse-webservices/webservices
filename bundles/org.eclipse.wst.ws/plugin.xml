@@ -78,10 +78,12 @@
            <targetPolicy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp"
                    itemList="org.eclipse.wst.sug.require"/>
          </relationship>
+         <state key="defaultProtocol" value="http://schemas.xmlsoap.org/wsdl/soap/"/>
        </policy>
        <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp" parentPolicyId="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp" enumListId="org.eclipse.wst.service.policy.suggestionEnum" defaultEnumId="org.eclipse.wst.sug.suggest">
          <!-- CONTEXT_ID PSPW0003 for the Service Policies WS-I SSBP 1.0 Preference -->
          <descriptor longName="%LABEL_WSI_SSBP" iconPath="icons/full/obj16/wsicat_child.gif" contextHelpId="org.eclipse.wst.ws.service.policy.ui.PSPW0003"/>
+         <state key="defaultProtocol" value="http://schemas.xmlsoap.org/wsdl/soap/"/>
        </policy>
      </servicePolicy>
    </extension>

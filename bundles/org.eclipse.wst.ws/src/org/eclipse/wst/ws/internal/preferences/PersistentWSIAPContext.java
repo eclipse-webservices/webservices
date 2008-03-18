@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080318   223118 ericdp@ca.ibm.com - Eric D. Peters, metadata required in WS-I profiles to support editors & validators
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.preferences;
@@ -44,7 +47,7 @@ public String getPersistentWSICompliance ()
 
 protected String getServicePolicyId()
 {
-  return "org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsiap";
+  return WSIServicePoliciesConstants.ServicePolicyID_AP10;
 }  
 
 }
