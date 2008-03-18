@@ -40,6 +40,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -122,6 +123,7 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     gl.marginHeight = 10;
     gl.marginWidth = 0;
     c.setLayout(gl);
+    c.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 
     moveUp_ = new Button(c, SWT.PUSH);
     moveUp_.setText(WSUIPluginMessages.LABEL_MOVE_UP);
@@ -135,6 +137,8 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     moveDown_.addSelectionListener(this);
     moveDown_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_DOWN);
 
+    table.addSelectionListener(new TableSelectionListener(moveUp_, moveDown_, table));
+    
     initializeValues();
     org.eclipse.jface.dialogs.Dialog.applyDialogFont(superparent);    
 
@@ -231,6 +235,13 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     }
     // refresh viewer
     webServiceTestTypeViewer_.refresh();
+    
+    // Select the first item in the table
+    Table table = webServiceTestTypeViewer_.getTable();
+	if (table.getItemCount() > 0){
+    	table.setSelection(0);
+    	table.notifyListeners(SWT.Selection, new Event());
+    }
    }
 
   /**
@@ -267,6 +278,7 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
         webServiceTestTypes_.insertElementAt(object, index+1);
         webServiceTestTypeViewer_.refresh();
       }
+      webServiceTestTypeViewer_.getTable().notifyListeners(SWT.Selection, new Event());
     }
   }
 
@@ -319,6 +331,34 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
       if (extension != null)
     	  return extension.getLabel();
       return value.toString();
+    }
+  }
+  
+  protected class TableSelectionListener implements SelectionListener
+  {
+    Button up;
+    Button down;
+    Table  table;
+
+    public void widgetDefaultSelected(SelectionEvent arg0)
+    {
+      widgetSelected(arg0);
+    }
+
+    public void widgetSelected(SelectionEvent arg0)
+    {
+      int i = table.getSelectionIndex();
+      if (i == table.getItemCount() - 1) down.setEnabled(false);
+      else if (i > -1) down.setEnabled(true);
+      if (i == 0) up.setEnabled(false);
+      else if (i > -1) up.setEnabled(true);
+    }
+
+    public TableSelectionListener(Button up, Button down, Table table)
+    {
+      this.up = up;
+      this.down = down;
+      this.table = table;
     }
   }
 }

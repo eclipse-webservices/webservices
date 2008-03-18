@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -81,8 +82,8 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     Group serviceTypeComposite = new Group( parent, SWT.NONE );
     GridLayout servicegl = new GridLayout();
     servicegl.numColumns = 2;
-    servicegl.marginHeight = 0;
-    servicegl.marginWidth = 0;
+    //servicegl.marginHeight = 0;
+    //servicegl.marginWidth = 0;
     serviceTypeComposite.setLayout(servicegl);
     serviceTypeComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ));
     serviceTypeComposite.setText(WSUIPluginMessages.LABEL_SERVICE_TYPE_NAME);
@@ -105,13 +106,14 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     ColumnWeightData serviceColumnData = new ColumnWeightData(256, 256, false);
     serviceTableLayout.addColumnData(serviceColumnData);
     serviceTable.setLayout(serviceTableLayout);
-
+    
     Composite servicec = new Composite(serviceTypeComposite, SWT.NONE);
     servicegl = new GridLayout();
     servicegl.numColumns = 1;
-    servicegl.marginHeight = 10;
+    //servicegl.marginHeight = 10;
     servicegl.marginWidth = 0;
     servicec.setLayout(servicegl);
+    servicec.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 
     serviceMoveUp_ = new Button(servicec, SWT.PUSH);
     serviceMoveUp_.setText(WSUIPluginMessages.LABEL_MOVE_UP);
@@ -124,42 +126,44 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     serviceMoveDown_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     serviceMoveDown_.addSelectionListener(this);
     serviceMoveDown_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_DOWN);
-    
+
+    serviceTable.addSelectionListener(new TableSelectionListener(serviceMoveUp_, serviceMoveDown_, serviceTable));
 
     Group clientTypeComposite = new Group( parent, SWT.NONE );
     GridLayout gl = new GridLayout();
     gl.numColumns = 2;
-    gl.marginHeight = 0;
-    gl.marginWidth = 0;
+    //gl.marginHeight = 0;
+    //gl.marginWidth = 0;
     clientTypeComposite.setLayout(gl);
     clientTypeComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ));
     clientTypeComposite.setText(WSUIPluginMessages.LABEL_CLIENT_TYPE_NAME);
 
-    Table table= new Table(clientTypeComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+    Table clientTable= new Table(clientTypeComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
     gd.widthHint = 256;
-    table.setLayoutData(gd);
-    table.setToolTipText(WSUIPluginMessages.TOOLTIP_CLIENT_TYPE_TABLE_VIEWER);
+    clientTable.setLayoutData(gd);
+    clientTable.setToolTipText(WSUIPluginMessages.TOOLTIP_CLIENT_TYPE_TABLE_VIEWER);
 
     clientTypes_ = new Vector();
-    clientTypeViewer_ = new TableViewer(table);
+    clientTypeViewer_ = new TableViewer(clientTable);
     clientTypeViewer_.setContentProvider(new ClientTypeContentProvider());
     clientTypeViewer_.setLabelProvider(new ClientTypeLabelProvider());
     clientTypeViewer_.setInput(clientTypes_);
 
     TableLayout tableLayout = new TableLayout();
-    TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+    TableColumn tableColumn = new TableColumn(clientTable, SWT.NONE);
     tableColumn.setText(WSUIPluginMessages.LABEL_CLIENT_TYPE_NAME);
     ColumnWeightData columnData = new ColumnWeightData(256, 256, false);
     tableLayout.addColumnData(columnData);
-    table.setLayout(tableLayout);
+    clientTable.setLayout(tableLayout);
 
     Composite c = new Composite(clientTypeComposite, SWT.NONE);
     gl = new GridLayout();
     gl.numColumns = 1;
-    gl.marginHeight = 10;
+    //gl.marginHeight = 10;
     gl.marginWidth = 0;
     c.setLayout(gl);
+    c.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 
     moveUp_ = new Button(c, SWT.PUSH);
     moveUp_.setText(WSUIPluginMessages.LABEL_MOVE_UP_2);
@@ -172,6 +176,8 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     moveDown_.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
     moveDown_.addSelectionListener(this);
     moveDown_.setToolTipText(WSUIPluginMessages.TOOLTIP_MOVE_DOWN);
+
+    clientTable.addSelectionListener(new TableSelectionListener(moveUp_, moveDown_, clientTable));
 
     twoEAR_ = new Button(parent, SWT.CHECK | SWT.WRAP );
     twoEAR_.setText(WSUIPluginMessages.LABEL_ENABLE_TWO_EARS);
@@ -275,8 +281,13 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     }
     // refresh viewer
     serviceTypeViewer_.refresh();
-
     
+    // select the first item in this table
+    if (serviceTypeViewer_.getTable().getItemCount() > 0){
+    	serviceTypeViewer_.getTable().setSelection(0);
+    	serviceTypeViewer_.getTable().notifyListeners(SWT.Selection, new Event());
+    }
+
     //Initialize client project types.
     String[] clientTypesFromContext = context.getClientTypes();
     String[] allClientTypes = ProjectTopologyDefaults.getClientTypes();
@@ -290,6 +301,13 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
     
     // refresh viewer
     clientTypeViewer_.refresh();
+    
+    // select the first item in this table
+    Table table = clientTypeViewer_.getTable();
+	if (table.getItemCount() > 0){
+    	table.setSelection(0);
+    	table.notifyListeners(SWT.Selection, new Event());
+    }
     
     twoEAR_.setSelection(context.isUseTwoEARs());
    }
@@ -332,6 +350,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
           serviceTypes_.insertElementAt(object, index+1);
           serviceTypeViewer_.refresh();
         }
+        serviceTypeViewer_.getTable().notifyListeners(SWT.Selection, new Event());
       }
     }
     else if (e.widget == moveUp_ || e.widget == moveDown_)
@@ -350,6 +369,7 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
           clientTypes_.insertElementAt(object, index + 1);
           clientTypeViewer_.refresh();
         }
+        clientTypeViewer_.getTable().notifyListeners(SWT.Selection, new Event());
       }
     }
   }
@@ -401,6 +421,34 @@ public class ProjectTopologyPreferencePage extends PreferencePage implements IWo
       IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate( (String)value );
       
       return template.getLabel();
+    }
+  }
+  
+  protected class TableSelectionListener implements SelectionListener
+  {
+    private Button down;
+    private Button up;
+    private Table  table;
+
+    public TableSelectionListener(Button up, Button down, Table ownerTable)
+    {
+      this.up = up;
+      this.down = down;
+      this.table = ownerTable;
+    }
+
+    public void widgetDefaultSelected(SelectionEvent e)
+    {
+      widgetSelected(e);
+    }
+
+    public void widgetSelected(SelectionEvent e)
+    {
+      int i = table.getSelectionIndex();
+      if (i == table.getItemCount() - 1) down.setEnabled(false);
+      else if (i > -1) down.setEnabled(true);
+      if (i == 0) up.setEnabled(false);
+      else if (i > -1) up.setEnabled(true);
     }
   }
 }

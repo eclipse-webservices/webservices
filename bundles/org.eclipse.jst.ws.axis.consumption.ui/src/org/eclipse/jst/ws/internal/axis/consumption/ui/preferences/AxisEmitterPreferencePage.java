@@ -25,6 +25,7 @@ import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages
 import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -64,11 +65,13 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
   //*CONTEXT_ID PPAE0005 for the deploy scope type combo box on the Axis Emitter page*/
   private String INFOPOP_PPAE_COMBO_DEPLOY_SCOPE = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0005";
   
+  private StackLayout timeOutSubCompositeStackLayout;
+  
   private Text timeOutField;
   int timeOut;
   String wsdl2JavaTimeoutProperty = System.getProperty("AxisWsdl2JavaTimeout");
   
-  private Label timeOutPropertyLabel;
+  private Text timeOutMsgText;
   /*CONTEXT_ID PPAE0006 for the time out field on the Axis Emitter Preference page*/
   private String INFOPOP_PPAE_FIELD_TIME_OUT = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0006";
 
@@ -84,9 +87,7 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
   private String INFOPOP_PPAE_GROUP_WSDL2JAVA = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0008";
   /*CONTEXT_ID PPAE0009 for the java2wsdl group on the Axis Emitter Preference page*/
   private String INFOPOP_PPAE_GROUP_JAVA2WSDL = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0009";
-  
-
- /**
+/**
    * Creates preference page controls on demand.
    *   @param parent  the parent for the preference page
    */
@@ -114,9 +115,20 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
      * org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterContext
      */
     deployScopeTypes.setItems(new String []{AxisConsumptionUIMessages.DEPLOY_SCOPE_APPLICATION, AxisConsumptionUIMessages.DEPLOY_SCOPE_REQUEST,AxisConsumptionUIMessages.DEPLOY_SCOPE_SESSION});
-  
-    timeOutField = createTextField(wsdl2JavaGroup,AxisConsumptionUIMessages.LABEL_TIME_OUT,AxisConsumptionUIMessages.TOOLTIP_PPAE_FIELD_TIME_OUT,INFOPOP_PPAE_FIELD_TIME_OUT);
-    timeOutPropertyLabel = new Label(wsdl2JavaGroup, SWT.NONE);
+    
+    Label timeoutLabel = new Label(wsdl2JavaGroup, SWT.WRAP);
+    timeoutLabel.setText(AxisConsumptionUIMessages.LABEL_TIME_OUT);
+    timeoutLabel.setToolTipText(AxisConsumptionUIMessages.TOOLTIP_PPAE_FIELD_TIME_OUT);
+    
+    Composite timeOutSubComposite = utils.createComposite(wsdl2JavaGroup, 1);
+    timeOutSubCompositeStackLayout = new StackLayout();
+    timeOutSubComposite.setLayout(timeOutSubCompositeStackLayout);
+    
+    // only one of this is displayed at one time, they share infopop and tooltip text
+    timeOutField = createTextField(timeOutSubComposite, null ,AxisConsumptionUIMessages.TOOLTIP_PPAE_FIELD_TIME_OUT,INFOPOP_PPAE_FIELD_TIME_OUT);
+    timeOutMsgText = createTextField(timeOutSubComposite, null ,AxisConsumptionUIMessages.TOOLTIP_PPAE_FIELD_TIME_OUT,INFOPOP_PPAE_FIELD_TIME_OUT);
+    
+    timeOutMsgText.setEditable(false);
     
     Group java2WsdlGroup = utils.createGroup(parent, AxisConsumptionUIMessages.GROUP_JAVA2WSDL_NAME, AxisConsumptionUIMessages.TOOLTIP_PPAE_GROUP_JAVA2WSDL, INFOPOP_PPAE_GROUP_JAVA2WSDL, 2, 10,10);
     useInheritedMethods = createCheckBox(java2WsdlGroup, AxisConsumptionUIMessages.BUTTON_USE_INHERITED_METHODS,AxisConsumptionUIMessages.TOOLTIP_PPAE_CHECKBOX_USE_INHERITED_METHODS,INFOPOP_PPAE_CHECKBOX_USE_INHERITED_METHODS);
@@ -231,12 +243,14 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
     validateAgainstJAXRPC.setSelection( context.isValidateAgainstJAXRPCEnabled() );
     if (wsdl2JavaTimeoutProperty != null) 
     {	timeOut=getTimeOutValueWithProperty();
-    	timeOutField.setEnabled(false);
-        timeOutPropertyLabel.setText(AxisConsumptionUIMessages.MSG_USE_JVM_ARGUMENT_FOR_TIME_OUT);		
+    	//timeOutField.setEnabled(false);
+    	timeOutSubCompositeStackLayout.topControl = timeOutMsgText;
+        timeOutMsgText.setText(AxisConsumptionUIMessages.MSG_USE_JVM_ARGUMENT_FOR_TIME_OUT);		
     }
 	else
 	{
 	    timeOut = context.getTimeOut();
+	    timeOutSubCompositeStackLayout.topControl = timeOutField;
 	}
     timeOutField.setText(""+ timeOut);
    }
@@ -267,9 +281,14 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
   private int getTimeOutValueWithProperty() 
   {
 	  if (wsdl2JavaTimeoutProperty != null)
-	  {	long timeOutProperty = new Integer(wsdl2JavaTimeoutProperty).longValue();
-		if (timeOutProperty < 0) return -1; // timeout = -1 equals never time out; treating all negative number as -1
-		else return (int)Math.ceil(timeOutProperty/1000.0);
+	  {	try {
+		  long timeOutProperty = Long.parseLong(wsdl2JavaTimeoutProperty);
+		  if (timeOutProperty < 0) return -1; // timeout = -1 equals never time out; treating all negative number as -1
+		  else return (int)Math.ceil(timeOutProperty/1000.0);
+	    } catch (NumberFormatException e){
+	      System.err.print("AxisWSDL2JavaTimeout is not a valid number");
+	      return AxisEmitterDefaults.getTimeOutDefault();
+	    }
 	  }
 	  else return AxisEmitterDefaults.getTimeOutDefault();
   }
