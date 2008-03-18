@@ -14,6 +14,7 @@
  * 20060826   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20070313   170126 makandre@ca.ibm.com - Andrew Mak, BUJava scenario doesn't catch improper service definition
  * 20080310   222075 makandre@ca.ibm.com - Andrew Mak, Cannot launch Web Service wizard on an IType
+ * 20080318   213330 trungha@ca.ibm.com - Trung, Non-conventional Java naming prevents creating Web Services (client)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -48,6 +49,7 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 	  private IProject           serverProject_ = null;
 	  private String             serverComponentName_ = null;	  
 	  private String beanClassString_="";
+	  private IStatus validationStatus;
 		   
 	  public void setInitialSelection(IStructuredSelection initialSelection)
 	  {
@@ -192,7 +194,10 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 	  
 	  public IStatus validateSelection(IStructuredSelection objectSelection)
 	  {
-	    return Status.OK_STATUS;
+		if (validationStatus == null)
+			return Status.OK_STATUS;
+		
+		return validationStatus;
 	  }
 	  
 	  public String getObjectSelectionDisplayableString() {		  
@@ -203,7 +208,8 @@ public class JavaBeanSelectionLaunchable extends AbstractObjectSelectionLaunchab
 		  beanClassString_ = s;
 		  String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
 		  String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
-		  return JavaConventions.validateJavaTypeName(s, sourceLevel, complianceLevel).isOK();
+		  validationStatus = JavaConventions.validateJavaTypeName(s, sourceLevel, complianceLevel);
+		  return validationStatus.isOK();
 	  }
 
 }

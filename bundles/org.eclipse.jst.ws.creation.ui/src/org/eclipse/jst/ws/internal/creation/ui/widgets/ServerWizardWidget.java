@@ -52,6 +52,7 @@
  * 20080215   216337 pmoogk@ca.ibm.com - Peter Moogk
  * 20080301   221034 kathy@ca.ibm.com - Kathy Chan
  * 20080312   147442 trungha@ca.ibm.com - Trung Ha
+ * 20080318   213330 trungha@ca.ibm.com - Trung, Non-conventional Java naming prevents creating Web Services (client)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -62,6 +63,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.DefaultingUtils;
@@ -1068,9 +1070,12 @@ private void handleTypeChange()
 			return missingFieldStatus;
 		}
 
-		IStatus invalidServiceImplStatus = checkServiceImplTextStatus();
-		if (invalidServiceImplStatus.getSeverity() == IStatus.ERROR) {
-			return invalidServiceImplStatus;
+		IStatus serviceImplValidationStatus = checkServiceImplTextStatus();
+		if (serviceImplValidationStatus.getSeverity() == IStatus.ERROR) {
+			return serviceImplValidationStatus;
+		}
+		else if (serviceImplValidationStatus.getSeverity() == IStatus.WARNING){
+			return serviceImplValidationStatus;
 		}
 
 		IStatus possibleErrorStatus = checkErrorStatus();
@@ -1106,9 +1111,10 @@ private void handleTypeChange()
 			objectSelectionWidget_ = getSelectionWidget();
 		}
 		
+		IObjectSelectionLaunchable launchable = null;
 		if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
 		    {      	
-				IObjectSelectionLaunchable launchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
+				launchable = (IObjectSelectionLaunchable)objectSelectionWidget_;
 				validObjectSelection_ = launchable.validate(fieldText);
 			}
 			else 
@@ -1121,8 +1127,15 @@ private void handleTypeChange()
 		{
 			int scenario = getWebServiceScenario();
 			
-			if (scenario == WebServiceScenario.BOTTOMUP)
-				return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_IMPL);
+			if (scenario == WebServiceScenario.BOTTOMUP){
+				if (launchable != null){
+					IStatus valStatus = launchable.validateSelection(new StructuredSelection(fieldText));
+					if (valStatus.getSeverity() == IStatus.WARNING)
+						return StatusUtils.warningStatus(ConsumptionUIMessages.MSG_WARN_SERVICE_IMPL_NAMING_CONVENTION);
+				}
+				else
+					return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_IMPL);
+			}
 			else
 				return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_INVALID_SERVICE_DEF);			
 		}		
