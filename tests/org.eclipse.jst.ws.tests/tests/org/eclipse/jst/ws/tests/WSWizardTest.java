@@ -11,7 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20071217  187280 sengpl@ca.ibm.com - Seng Phung-Lu
- * 20080207   217346 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080207  217346 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080313  126774 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests;
 
@@ -155,7 +156,7 @@ public abstract class WSWizardTest extends TestCase implements WSJUnitConstants
 	protected void tearDown() throws Exception
 	{
 		stopServer();
-		deleteServer();
+//		deleteServer();
 //      deleteInputData();
 //		deleteServerRuntime();
 	}

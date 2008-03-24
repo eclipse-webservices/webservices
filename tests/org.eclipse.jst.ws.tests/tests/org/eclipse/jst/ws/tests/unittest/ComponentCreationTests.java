@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 2007104   114835 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080313  126774 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -22,12 +23,11 @@ import junit.framework.TestSuite;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.etools.common.test.apitools.ProjectUnzipUtil;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.tests.plugin.TestsPlugin;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 
@@ -82,59 +82,11 @@ public class ComponentCreationTests extends TestCase implements WSJUnitConstants
     public void createDynamicWebModule(String[] projectNames){
     	
       for (int i=0;i<projectNames.length;i++) {
-    	  CreateModuleCommand command = new CreateModuleCommand();
-	  	  command.setProjectName(projectNames[i]);
-	  	  command.setModuleName(projectNames[i]);			
-	  	  command.setModuleType(CreateModuleCommand.WEB);
-	  	  command.setServerFactoryId(SERVERTYPEID_TC50);
-	  	  command.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_4_ID).toString());
-	  	  command.execute( null, null ) ;
+          JUnitUtils.createWebModule(projectNames[i], projectNames[i], null, SERVERTYPEID_TC50, "14", null, new NullProgressMonitor());
 
 	      IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectNames[i]);
 	      assertTrue(p.exists());
       }
     }
   
-    public void dtestCreateEJBModule(){
-     
-      CreateModuleCommand cmc = new CreateModuleCommand();
-      cmc.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_4_ID).toString());
-      cmc.setModuleName(ejbComponentName);
-      cmc.setModuleType(CreateModuleCommand.EJB);
-      cmc.setProjectName(ejbProjectName);
-      cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null, null );
-      
-      System.out.println("Done creating EJB component.");
-      IProject p = ResourceUtils.getWorkspaceRoot().getProject(ejbProjectName);
-      assertTrue(p.exists());      
-    }
-    
-    public void dtestCreateAppClientModule(){
-      CreateModuleCommand cmc = new CreateModuleCommand();
-      cmc.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_4_ID).toString());
-      cmc.setModuleName(appClientCompName);
-      cmc.setModuleType(CreateModuleCommand.APPCLIENT);
-      cmc.setProjectName(appClientProjectName);
-      cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null, null);
-      
-      System.out.println("Done creating App client component.");
-      IProject p = ResourceUtils.getWorkspaceRoot().getProject(appClientProjectName);
-      assertTrue(p.exists());       
-    }
-
-    public void dtestCreateEARModule(){
-      CreateModuleCommand cmc = new CreateModuleCommand();
-      cmc.setJ2eeLevel(new Integer(J2EEVersionConstants.J2EE_1_4_ID).toString());
-      cmc.setModuleName(earCompName);
-      cmc.setModuleType(CreateModuleCommand.EAR);
-      cmc.setProjectName(projectName);
-      cmc.setServerFactoryId(SERVERTYPEID_TC50);
-      cmc.execute(null, null);
-      
-      System.out.println("Done creating EAR component.");
-      IProject p = ResourceUtils.getWorkspaceRoot().getProject(projectName);
-      assertTrue(p.exists());       
-    }
 }

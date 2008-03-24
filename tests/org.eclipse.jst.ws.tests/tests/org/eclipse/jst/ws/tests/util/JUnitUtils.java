@@ -15,6 +15,7 @@
  * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu 
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20071116  208124 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080313  126774 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.util;
 
@@ -35,7 +36,8 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
+import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
+import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.context.PersistentScenarioContext;
@@ -71,7 +73,8 @@ public class JUnitUtils {
 	public static IRuntime createServerRuntime(String runtimeTypeId,String serverInstallPath) throws Exception
 	{
 		IRuntimeType rt = ServerCore.findRuntimeType(runtimeTypeId);
-		IRuntimeWorkingCopy wc = rt.createRuntime("aRuntime", null);
+		String tcversion = runtimeTypeId.substring(runtimeTypeId.lastIndexOf(".")+1);
+		IRuntimeWorkingCopy wc = rt.createRuntime(tcversion+"Runtime", null);
 		wc.setLocation(new Path(serverInstallPath));
 		
 		return wc.save(true, null);
@@ -342,16 +345,17 @@ public class JUnitUtils {
 		return launchWizard("org.eclipse.jst.ws.internal.consumption.ui",wizardId,objectClassId,initialSelection);
 	}
 	
-	public static IStatus createWebModule(String webProjectName, String moduleName, String serverFactoryId, String j2eeVersion, IEnvironment env, IProgressMonitor monitor ){
+	public static IStatus createWebModule(String webProjectName, String moduleName, String serverInstanceID, String serverFactoryId, String j2eeVersion, IEnvironment env, IProgressMonitor monitor ){
 
 	  IStatus status = Status.OK_STATUS;
 	  try{
-	    CreateModuleCommand createWeb = new CreateModuleCommand();
+	    CreateFacetedProjectCommand createWeb = new CreateFacetedProjectCommand();
 	    createWeb.setProjectName(webProjectName);
-        createWeb.setModuleName(moduleName);
-        createWeb.setModuleType(CreateModuleCommand.WEB);
-	    createWeb.setJ2eeLevel(j2eeVersion);
+        createWeb.setProjectName(moduleName);
+        createWeb.setTemplateId("template.jst.web");
 	    createWeb.setServerFactoryId(serverFactoryId);
+	    createWeb.setServerInstanceId(serverInstanceID);
+	    createWeb.setRequiredFacetVersions(new RequiredFacetVersion[0]);
         createWeb.setEnvironment( env );
 	    return createWeb.execute( monitor, null );
 	  }

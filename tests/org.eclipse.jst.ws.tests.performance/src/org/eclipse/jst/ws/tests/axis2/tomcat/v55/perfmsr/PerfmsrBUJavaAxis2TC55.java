@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080313  126774 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.axis2.tomcat.v55.perfmsr;
 
@@ -18,13 +19,12 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.tests.axis.tomcat.v55.WSWizardTomcat55Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
@@ -40,7 +40,7 @@ import org.eclipse.wst.command.internal.env.eclipse.AccumulateStatusHandler;
 public final class PerfmsrBUJavaAxis2TC55 extends WSWizardTomcat55Test {
 	// Constants
     private final String WS_RUNTIMEID_AXIS =  WSJUnitConstants.WS_RUNTIMEID_AXIS2; 
-	private final String PROJECT_NAME = WSJUnitConstants.BU_PROJECT_NAME;
+	private final String PROJECT_NAME = "BUAxis2Web";
     
 	private IFile sourceFile_;
 	
@@ -69,25 +69,9 @@ public final class PerfmsrBUJavaAxis2TC55 extends WSWizardTomcat55Test {
     protected void createProjects() throws Exception{
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
         if (webProject==null || !webProject.exists()){
-          createWebModule(PROJECT_NAME, PROJECT_NAME,J2EEVersionConstants.J2EE_1_4_ID);
+          JUnitUtils.createWebModule(PROJECT_NAME, PROJECT_NAME, server_.getId(), SERVERTYPEID_TC55, "14", env_, new NullProgressMonitor());
         }
       }
-      
-      private void createWebModule(String projectNm, String componentName, int j2eeVersion){
-
-        CreateModuleCommand cmc = new CreateModuleCommand();
-        cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
-        cmc.setModuleName(componentName);
-        cmc.setModuleType(CreateModuleCommand.WEB);
-        cmc.setProjectName(projectNm);
-        cmc.setServerFactoryId(SERVERTYPEID_TC55);
-        cmc.setServerInstanceId(server_.getId());
-        cmc.execute(null, null );
-        
-        System.out.println("Done creating Web Project, "+projectNm);      
-       
-      }
-	
 	
   /**
    * Set the persistent server runtime context preferences
@@ -96,6 +80,7 @@ public final class PerfmsrBUJavaAxis2TC55 extends WSWizardTomcat55Test {
 	{
 		// Set default preferences for Axis2 and Tomcat 5.5
 		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC55);		
+		JUnitUtils.setServiceScenarioDefault();
 	}
 	
   /**
@@ -110,7 +95,7 @@ public final class PerfmsrBUJavaAxis2TC55 extends WSWizardTomcat55Test {
    * Launches the pop-up command to initiate the scenario
    * @throws Exception
    */  
-	public void testBUJavaAxisTC50() throws Exception
+	public void testBUJavaAxis2TC55() throws Exception
 	{
 	  	IStatus[] status;
 	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);

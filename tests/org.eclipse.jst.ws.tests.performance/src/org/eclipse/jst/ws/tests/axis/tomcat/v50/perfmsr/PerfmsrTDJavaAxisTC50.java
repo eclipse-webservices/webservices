@@ -12,6 +12,7 @@
  * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu     
  * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080313  126774 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
 
@@ -19,12 +20,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
@@ -48,25 +48,11 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
   protected void createProjects() throws Exception{
 	    IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
 	    if (!webProject.exists()){
-	      createWebModule(PROJECT_NAME, PROJECT_NAME,J2EEVersionConstants.J2EE_1_4_ID);
+	      JUnitUtils.createWebModule(PROJECT_NAME, PROJECT_NAME, server_.getId(), SERVERTYPEID_TC50, "14", env_, new NullProgressMonitor());
 	    }
 	  }
 	  
-	  private void createWebModule(String projectNm, String componentName, int j2eeVersion){
 
-	    CreateModuleCommand cmc = new CreateModuleCommand();
-	    cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
-	    cmc.setModuleName(componentName);
-	    cmc.setModuleType(CreateModuleCommand.WEB);
-	    cmc.setProjectName(projectNm);
-	    cmc.setServerFactoryId(SERVERTYPEID_TC50);
-	    cmc.setServerInstanceId(server_.getId());
-	    cmc.execute(null, null );
-	    
-	    System.out.println("Done creating Web Project, "+projectNm);      
-	   
-	  }  
-	  
   /**
    * Sets up the input data;
    * - create project(s),
@@ -88,7 +74,8 @@ public class PerfmsrTDJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	protected void initJ2EEWSRuntimeServerDefaults() throws Exception {
 		// Set default preferences for Axis and Tomcat v5.0 server
-		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);		
+		JUnitUtils.setWSRuntimeServer(WS_RUNTIMEID_AXIS, SERVERTYPEID_TC50);	
+		JUnitUtils.setServiceScenarioDefault();
 	}
 
   /**

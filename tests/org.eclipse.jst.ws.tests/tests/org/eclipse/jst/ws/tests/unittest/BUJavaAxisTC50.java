@@ -14,6 +14,7 @@
  * 20071116   208124 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20071217   187280 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20080207   217346 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080313   126774 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -25,13 +26,12 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.consumption.command.common.CreateModuleCommand;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
@@ -76,25 +76,9 @@ public final class BUJavaAxisTC50 extends WSWizardTomcat50Test {
     protected void createProjects() throws Exception{
         IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);
         if (webProject==null || !webProject.exists()){
-          createWebModule(PROJECT_NAME, PROJECT_NAME,J2EEVersionConstants.J2EE_1_4_ID);
+            JUnitUtils.createWebModule(PROJECT_NAME, PROJECT_NAME, server_.getId(), SERVERTYPEID_TC50, "14", env_, new NullProgressMonitor());
         }
       }
-      
-      private void createWebModule(String projectNm, String componentName, int j2eeVersion){
-
-        CreateModuleCommand cmc = new CreateModuleCommand();
-        cmc.setJ2eeLevel(new Integer(j2eeVersion).toString());
-        cmc.setModuleName(componentName);
-        cmc.setModuleType(CreateModuleCommand.WEB);
-        cmc.setProjectName(projectNm);
-        cmc.setServerFactoryId(SERVERTYPEID_TC50);
-        cmc.setServerInstanceId(server_.getId());
-        cmc.execute(null, null );
-        
-        System.out.println("Done creating Web Project, "+projectNm);      
-       
-      }
-	
 	
   /**
    * Set the persistent server runtime context preferences
