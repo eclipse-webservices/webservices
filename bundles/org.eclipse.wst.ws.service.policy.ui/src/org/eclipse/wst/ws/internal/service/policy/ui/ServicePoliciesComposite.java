@@ -13,10 +13,12 @@
  * 20071120 209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI 
  * 20071212   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
  * 20080211   218520 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080324   222095 pmoogk@ca.ibm.com - Peter Moogk, UI now listens for state changes.
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +63,7 @@ import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
+import org.eclipse.wst.ws.service.policy.listeners.IPolicyStateChangeListener;
 import org.eclipse.wst.ws.service.policy.ui.IPolicyOperation;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyPlatformUI;
@@ -95,7 +98,10 @@ public class ServicePoliciesComposite extends Composite implements
 	private ServicePolicyPlatform platform = ServicePolicyPlatform
 			.getInstance();
 	private ServicePolicyPlatformUI platformUI = ServicePolicyPlatformUI
-			.getInstance();;
+			.getInstance();
+	private IPolicyStateChangeListener stateChangeListener  = new StateChangeListener();
+	private boolean                    stateChangeEnabled   = true;
+	private HashSet<IServicePolicy>    stateChangePolicySet = new HashSet<IServicePolicy>();
 
 	/**
 	 * Creates an expandable composite
@@ -342,9 +348,6 @@ public class ServicePoliciesComposite extends Composite implements
 			masterPolicyTree.setSelection(treeItems[0]);
 			masterPolicyTree.notifyListeners(SWT.Selection, new Event());
 		}
-		
-			
-
 	}
 
 	/**
@@ -391,6 +394,7 @@ public class ServicePoliciesComposite extends Composite implements
 	private void addPolicy(IServicePolicy sp, Widget parent,
 			boolean addUpToLevel2Only) {
 		sp.addPolicyChildChangeListener(this);
+		addStateListener( sp );
 		if (addUpToLevel2Only && is3rdLevelOrHigherPolicy(sp) )
 			// don't add tertiary and higher branches, these are added on demand
 			// to a different tree
@@ -547,6 +551,9 @@ public class ServicePoliciesComposite extends Composite implements
 	 */
 	private void processChildChangeEventRemoveServicePolicy(IServicePolicy nextChangedServicePolicy) {
 		boolean is3rdLevelOrHigher = is3rdLevelOrHigherPolicy(nextChangedServicePolicy);
+		
+		removeStateListener( nextChangedServicePolicy );
+		
 		if (is3rdLevelOrHigher) {
 			if (detailsPolicyTree.isVisible()) {
 				TreeItem[] children = detailsPolicyTree.getItems();
@@ -1237,6 +1244,11 @@ public class ServicePoliciesComposite extends Composite implements
 	 */
 	private void updateSelectionOperationPreference(Control actionControl, IPolicyOperation po) {
 		String selectedValue;
+		
+		// We are updating the state of a service policy.  We don't want this
+		// update to trigger our state change listener.
+		enableStateListener( false );
+		
 		if (actionControl instanceof Combo) {
 			selectedValue = ((Combo) actionControl).getText();
 			List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform
@@ -1256,8 +1268,47 @@ public class ServicePoliciesComposite extends Composite implements
 
 		}
 
+		// Reenable our state change listener.
+		enableStateListener( true );
 	}
 
+	
+	private void addStateListener( IServicePolicy policy )
+	{
+	  if( stateChangePolicySet.contains( policy ) ) return;
+	  
+	  if( project == null )
+	  {
+	    policy.getPolicyState().addPolicyStateChangeListener( stateChangeListener, false );
+	  }
+	  else
+	  {
+	    policy.getPolicyState( project ).addPolicyStateChangeListener( stateChangeListener, false );
+	  }
+	  
+	  stateChangePolicySet.add( policy );
+	}
+	
+	private void removeStateListener( IServicePolicy policy )
+	{
+    if( stateChangePolicySet.contains( policy ) ) return;
+    
+    if( project == null )
+    {
+	    policy.getPolicyState().removePolicyStateChangeListener( stateChangeListener );
+    }
+    else
+    {
+      policy.getPolicyState( project ).removePolicyStateChangeListener( stateChangeListener );      
+    }
+    
+	  stateChangePolicySet.remove( policy );
+	}
+	
+	private void enableStateListener( boolean enabled )
+	{
+	  stateChangeEnabled = enabled;
+	}
 	
 	/**
 	 * Launches the complex operation for the list of service policies
@@ -1309,6 +1360,11 @@ public class ServicePoliciesComposite extends Composite implements
 	public void dispose() {
 		super.dispose();
 		iconManager.dispose();
+		
+		for( IServicePolicy policy : stateChangePolicySet )
+		{
+		  policy.getPolicyState().removePolicyStateChangeListener( stateChangeListener );
+		}
 	}
 
 	/**
@@ -1447,5 +1503,17 @@ public class ServicePoliciesComposite extends Composite implements
 	public IStatus getError() {
 		return error;
 	}
-
+	
+	private class StateChangeListener implements IPolicyStateChangeListener
+	{
+    public void policyStateChange(IServicePolicy policy, String key, String oldValue, String newValue)
+    {
+      // We are not enabled for state change events so we will ignore this event.
+      if( !stateChangeEnabled ) return;
+      
+      error = validateAllPolicies( policy );
+      //inform listeners that a control has changed, as composite may be in error now
+      listener.widgetSelected( null );
+    }	  
+	}
 }
