@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060329   124667 kathy@ca.ibm.com - Kathy Chan
  * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
  * 20060515   141398 cbrealey@ca.ibm.com - Chris Brealey
+ * 20080324   220983 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui;
 
@@ -60,6 +61,7 @@ public final class WSUIPluginMessages extends NLS {
 	public static String ISTATUS_WITH_EXCEPTION;
 	public static String MSG_INFO_SAVED_STATUS;
 	public static String DIALOG_TITLE_CLASS_BROWSE;
+	public static String LABEL_CLASS_BROWSE;
 	public static String DIALOG_TITLE_INTERFACE_BROWSE;
 	public static String LABEL_SAMPLE_TYPES;
 	public static String DIALOG_TITLE_RESOURCE_BROWSE;
