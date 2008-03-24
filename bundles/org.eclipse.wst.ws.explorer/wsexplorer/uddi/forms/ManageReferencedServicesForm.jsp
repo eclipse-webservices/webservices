@@ -40,7 +40,8 @@
    subQueryKeyProperty.setSubQueryKey(sk);
 %>
 </jsp:useBean>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <title><%=uddiPerspective.getMessage("FORM_TITLE_MANAGE_REFERENCED_SERVICES")%></title>
   <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(controller.getPathWithContext("css/windows.css"))%>">

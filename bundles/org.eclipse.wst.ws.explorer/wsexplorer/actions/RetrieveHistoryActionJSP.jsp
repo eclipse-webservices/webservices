@@ -25,7 +25,8 @@
    // Run the action and obtain the return code (fail/success).
    boolean actionResult = action.run();
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; UTF-8">
   <jsp:include page="/scripts/panes.jsp" flush="true"/>

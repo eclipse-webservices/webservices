@@ -34,7 +34,8 @@ if (modeString != null && modeString.length() > 0)
 }
 String playFileId = "playFileId";
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=controller.getMessage("TITLE_ACTION_RECORDER")%></title>

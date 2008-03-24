@@ -23,7 +23,8 @@
   WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
   Node bindingNode = wsdlPerspective.getNodeManager().getSelectedNode();
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=wsdlPerspective.getMessage("FORM_TITLE_WSDL_BINDING_DETAILS")%></title>

@@ -46,7 +46,8 @@
         }
     }
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><%=wsilPerspective.getMessage("FORM_TITLE_UDDI_BUSINESS_DETAILS")%></title>

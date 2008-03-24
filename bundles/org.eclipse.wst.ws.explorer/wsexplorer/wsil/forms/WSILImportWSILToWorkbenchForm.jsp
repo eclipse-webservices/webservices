@@ -30,7 +30,8 @@ Node selectedNode = nodeManager.getSelectedNode();
 WsilElement wsilElement = (WsilElement)selectedNode.getTreeElement();
 %>
 
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=controller.getMessage("FORM_TITLE_IMPORT_TO_WORKBENCH")%></title>

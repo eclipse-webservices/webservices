@@ -34,7 +34,8 @@
     Node selectedNode = nodeManager.getSelectedNode();
     TreeElement selectedElement = selectedNode.getTreeElement();
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><%=wsilPerspective.getMessage("VIEW_TITLE_UDDI_BUSINESSES")%></title>
@@ -77,7 +78,7 @@
 
         <table width="95%" border=0 cellpadding=0 cellspacing=0>
             <tr>
-                <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" height=2 width="100%"></td>
+                <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" alt="" height=2 width="100%"></td>
             </tr>
         </table>
 

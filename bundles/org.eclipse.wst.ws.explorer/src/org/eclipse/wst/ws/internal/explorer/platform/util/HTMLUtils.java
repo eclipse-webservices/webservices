@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060222   127443 jesper@selskabet.org - Jesper S Moller
+ * 20080324   186456 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.util;
@@ -39,11 +40,10 @@ public final class HTMLUtils
   {
     StringBuffer tag = new StringBuffer("<img src=\"");
     tag.append(response.encodeURL(src)).append('\"');
-    if (alt != null)
-    {
-      tag.append(" alt=\"").append(alt).append('\"');
-      tag.append(" title=\"").append(alt).append('\"');
-    }
+    if (alt == null)
+    	alt = "";
+    tag.append(" alt=\"").append(alt).append('\"');
+    tag.append(" title=\"").append(alt).append('\"');
     if (width != null)
       tag.append(" width=").append(width);
     if (height != null)

@@ -36,7 +36,8 @@
         ToolManager currentToolManager = selectedNode.getCurrentToolManager();
         TreeElement selectedElement = selectedNode.getTreeElement();
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><%=favPerspective.getMessage("FORM_TITLE_USER_DEF_UDDI_REGISTRY_DETAILS")%></title>

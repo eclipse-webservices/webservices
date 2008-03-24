@@ -18,6 +18,6 @@
     </td>
   </tr>
   <tr>
-    <td height=20> <img height=2 width="100%" align="top" src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>"> </td>
+    <td height=20> <img height=2 width="100%" align="top" src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" alt=""> </td>
   </tr>
 </table>

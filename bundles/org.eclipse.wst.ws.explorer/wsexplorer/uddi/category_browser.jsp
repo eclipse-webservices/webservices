@@ -27,7 +27,8 @@
    StringBuffer toolbarLink = new StringBuffer("uddi/category_toolbar.jsp?");
    toolbarLink.append(ActionInputs.SESSIONID).append('=').append(sessionId);
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=uddiPerspective.getMessage("TITLE_CATEGORY_BROWSER")%></title>

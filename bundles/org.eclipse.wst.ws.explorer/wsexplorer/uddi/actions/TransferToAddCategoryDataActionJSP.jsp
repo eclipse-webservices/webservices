@@ -29,7 +29,8 @@
    regDetailsTool.flagRowError(UDDIActionInputs.USER_DEFINED_CATEGORIES,categoryTModelKey);
    regNode.getCurrentToolManager().setSelectedToolId(regDetailsTool.getToolId());
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>">

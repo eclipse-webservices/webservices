@@ -33,7 +33,8 @@
    WSDLOperationElement operElement = (WSDLOperationElement)selectedNode.getTreeElement();
    IXSDFragment frag = operElement.getFragmentByID(fragID.toString());
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=wsdlPerspective.getMessage("FRAME_TITLE_XSD_INFORMATION_CONTENT")%></title>

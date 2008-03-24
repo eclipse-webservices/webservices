@@ -51,7 +51,7 @@ for (int i = 0; i < groupIDs.length; i++) {
 %>
       <tr>
         <td width=16>
-          <img width=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+          <img width=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
         </td>
         <td>
           <jsp:include page="<%=childFragments[j].getReadFragment()%>" flush="true"/>

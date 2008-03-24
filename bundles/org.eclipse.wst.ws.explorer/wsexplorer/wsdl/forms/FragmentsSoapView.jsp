@@ -125,7 +125,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=8>
-      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -146,7 +146,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=8>
-      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -165,7 +165,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=16>
-      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -178,7 +178,7 @@
 <table border=0 cellpadding=3 cellspacing=3>
   <tr>
     <td width="16">
-      <img width="16" height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width="16" height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>    
     <td valign="center" align="left" nowrap>
       <input type="file" name="<%=WSDLActionInputs.SELECTED_FILE_HEADER%>" title="<%=wsdlPerspective.getMessage("FORM_CONTROL_TITLE_SOAP_FILE")%>">
@@ -194,7 +194,7 @@
 <table width="95%" border=0 cellpadding=3 cellspacing=3>
   <tr>
     <td width="16">
-      <img width="16" height="16" src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width="16" height="16" src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td width="100%">
       <textarea id="soap_header_content" name="<%=FragmentConstants.SOURCE_CONTENT_HEADER%>" class="textareaenter"><%=HTMLUtils.charactersToHTMLEntitiesStrict(headerContent)%></textarea>
@@ -208,7 +208,7 @@
 <table width="95%" cellpadding=1 cellspacing=0>
   <tr>
     <td width=8>
-      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -227,7 +227,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=8>
-      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -246,7 +246,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=16>
-      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -271,7 +271,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=16>
-      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -290,7 +290,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=24>
-      <img width=24 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=24 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -308,7 +308,7 @@
 <table border=0 cellpadding=3 cellspacing=3>
   <tr>
     <td width=<%=sourceContentIndentationImageWidth%>>
-      <img width=<%=sourceContentIndentationImageWidth%> height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=<%=sourceContentIndentationImageWidth%> height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>    
     <td valign="center" align="left" nowrap>
       <input type="file" name="<%=WSDLActionInputs.SELECTED_FILE%>" title="<%=wsdlPerspective.getMessage("FORM_CONTROL_TITLE_SOAP_FILE")%>">
@@ -324,7 +324,7 @@
 <table width="95%" border=0 cellpadding=3 cellspacing=3>
   <tr>
     <td width=<%=sourceContentIndentationImageWidth%>>
-      <img width=<%=sourceContentIndentationImageWidth%> height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=<%=sourceContentIndentationImageWidth%> height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td width="100%">
       <textarea id="soap_body_content" name="<%=FragmentConstants.SOURCE_CONTENT%>" class="bigtextareaenter"><%=HTMLUtils.charactersToHTMLEntitiesStrict(bodyContent)%></textarea>
@@ -340,7 +340,7 @@
 <table width="95%" border=0 cellpadding=0 cellspacing=0>
   <tr>
     <td width=16>
-      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=16 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>
@@ -356,7 +356,7 @@
 <table width="95%" cellpadding=1 cellspacing=0>
   <tr>
     <td width=8>
-      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=8 height=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td valign="bottom" class="labels">
       <%=HTMLUtils.charactersToHTMLEntities(header.toString())%>

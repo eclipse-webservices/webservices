@@ -35,7 +35,8 @@
   int operationType = operElement.getOperationType();
   String invokeWSDLOperationURL = response.encodeURL(controller.getPathWithContext(invokeWSDLOperationTool.getFormActionLink(operationType,fragmentViewID)));
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=wsdlPerspective.getMessage("FORM_TITLE_INVOKE_WSDL_OPERATION")%></title>
@@ -98,7 +99,7 @@
     </td>
   </tr>
   <tr>
-    <td height=20 colspan=3><img height=2 width="100%" align="top" src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>"></td>
+    <td height=20 colspan=3><img height=2 width="100%" align="top" src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" alt=""></td>
   </tr>
 </table>
     <%

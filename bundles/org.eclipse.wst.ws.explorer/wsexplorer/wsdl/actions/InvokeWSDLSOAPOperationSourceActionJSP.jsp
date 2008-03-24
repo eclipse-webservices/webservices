@@ -46,7 +46,8 @@ else
   {
   %>
     <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
-    <html>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>"></script>
@@ -66,7 +67,8 @@ else
     {     
   %>
       <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
-      <html>
+      <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
         <head>
           <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
           <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>"></script>
@@ -104,7 +106,8 @@ else
         boolean actionResult = action.execute();
     %>
         <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
-        <html>
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
           <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>"></script>
@@ -154,7 +157,8 @@ else
           messageQueue.addMessage(httpe.getMessage());
           %>
           <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
-          <html>
+          <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
             <head>
               <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
               <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>"></script>

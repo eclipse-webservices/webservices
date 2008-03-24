@@ -18,7 +18,8 @@
                                                         java.net.*,
                                                         java.io.*"%>
 
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <script language="javascript">

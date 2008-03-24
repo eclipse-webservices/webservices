@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080324   186456 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
@@ -368,7 +371,7 @@ public abstract class Node
     additionalAttributes.put("name",anchorName_);
     String imagePath = (nodeManager_.getSelectedNodeId() == nodeId_)?getOpenImagePath():getClosedImagePath();
 
-    String imageTag = HTMLUtils.getHTMLImageTag(response,nodeManager_.getController().getPathWithContext(imagePath),"","16","16",additionalAttributes);
+    String imageTag = HTMLUtils.getHTMLImageTag(response,nodeManager_.getController().getPathWithContext(imagePath),getNodeName(),"16","16",additionalAttributes);
     String baseHref = getLinkActionHref();
     String href = ((baseHref == null)?baseHref:nodeManager_.getController().getPathWithContext(baseHref));
     String target = getLinkActionTarget();

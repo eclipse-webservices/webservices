@@ -92,7 +92,7 @@ else
 		
 		<table width="95%" border=0 cellpadding=0 cellspacing=0>
 		  <tr>
-		    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" height=2 width="100%"></td>
+		    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" alt="" height=2 width="100%"></td>
 		  </tr>
 		</table>
 		
@@ -160,7 +160,7 @@ else
 	
 	<table width="95%" border=0 cellpadding=0 cellspacing=0>
 	  <tr>
-	    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" height=2 width="100%"></td>
+	    <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" alt="" height=2 width="100%"></td>
 	  </tr>
 	</table>
 	

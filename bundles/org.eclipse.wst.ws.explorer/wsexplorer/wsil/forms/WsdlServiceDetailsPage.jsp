@@ -52,7 +52,8 @@
         }
     }
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><%=wsilPerspective.getMessage("FORM_TITLE_WSDL_SERVICE_DETAILS")%></title>
@@ -95,7 +96,7 @@
         <table border=0 cellpadding=6 cellspacing=0>
             <tr>
                 <td height=40 valign="bottom" align="left" nowrap width=11>
-                    <a href="javascript:twist('<%=bindingTable%>','<%=xbindingTable%>')"><img name="<%=xbindingTable%>" src="/wsexplorer/images/twistclosed.gif" class="twist"></a>
+                    <a href="javascript:twist('<%=bindingTable%>','<%=xbindingTable%>')"><img name="<%=xbindingTable%>" src="<%=response.encodeURL(controller.getPathWithContext("images/twistclosed.gif"))%>" alt="<%=controller.getMessage("ALT_TWIST_CLOSED")%>" class="twist"></a>
                 </td>
                 <td height=40 valign="bottom" align="left" nowrap class="labels">
                     <strong><%=wsilPerspective.getMessage("FORM_LABEL_WSDL_BINDINGS")%></strong>
@@ -105,7 +106,7 @@
 
         <table width="95%" border=0 cellpadding=0 cellspacing=0>
             <tr>
-                <td valign="top" height=10><img src="/wsexplorer/images/keyline.gif" height=2 width="100%"></td>
+                <td valign="top" height=10><img src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" alt="" height=2 width="100%"></td>
             </tr>
         </table>
 

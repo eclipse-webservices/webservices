@@ -13,7 +13,7 @@
 <table width="95%" border=0 cellpadding=3 cellspacing=0>
   <tr>
     <td align="left" nowrap>
-      <img src="<%=response.encodeURL(controller.getPathWithContext(titleImagePath))%>">
+      <img src="<%=response.encodeURL(controller.getPathWithContext(titleImagePath))%>" alt="">
       <strong><%=title%></strong>
     </td>
 <%
@@ -32,7 +32,7 @@
 %>
   </tr>
   <tr>
-    <td height=20 colspan=<%=colspan%>> <img height=2 width="100%" align="top" src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>"> </td>
+    <td height=20 colspan=<%=colspan%>> <img height=2 width="100%" align="top" src="<%=response.encodeURL(controller.getPathWithContext("images/keyline.gif"))%>" alt=""> </td>
   </tr>
   <tr>
     <td colspan=<%=colspan%>>

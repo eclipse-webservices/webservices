@@ -21,7 +21,8 @@
    // Populate the action with the request properties.
    boolean result = action.populatePropertyTable(request);
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="/wsdl/scripts/wsdlframesets.jsp" flush="true"/>

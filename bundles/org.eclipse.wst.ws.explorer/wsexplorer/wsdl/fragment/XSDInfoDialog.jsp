@@ -25,7 +25,8 @@
    String nodeId = request.getParameter(ActionInputs.NODEID);
    String fragmentId = request.getParameter(WSDLActionInputs.FRAGMENT_ID);
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>

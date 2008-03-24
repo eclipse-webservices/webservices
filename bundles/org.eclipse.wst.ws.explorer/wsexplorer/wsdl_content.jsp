@@ -46,7 +46,8 @@
    int workspaceEnd   = -1;
    
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title><%=controller.getMessage("FRAME_TITLE_WSDL_CONTENT")%></title>

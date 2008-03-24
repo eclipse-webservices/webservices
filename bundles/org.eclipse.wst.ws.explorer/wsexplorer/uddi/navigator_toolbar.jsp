@@ -18,7 +18,8 @@
 <%
    UDDIPerspective uddiPerspective = controller.getUDDIPerspective();
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=uddiPerspective.getMessage("FRAME_TITLE_NAVIGATOR_TOOLBAR")%></title>
@@ -43,7 +44,7 @@
 <jsp:include page="/uddi/forms/ProcessUDDIFramesetsForm.jsp" flush="true"/>
     <table width="100%" height=25 cellpadding=0 cellspacing=0 border=0>
       <tr>
-        <td valign="middle" align="center" width=25 height=25><img class="normal" src="<%=response.encodeURL(controller.getPathWithContext("images/navigator.gif"))%>" width=16 height=16></td>
+        <td valign="middle" align="center" width=25 height=25><img class="normal" src="<%=response.encodeURL(controller.getPathWithContext("images/navigator.gif"))%>" alt="" width=16 height=16></td>
 <%
    String doubleClickColumnTitle = null;
    if (uddiPerspective.getPerspectiveContentFramesetCols().startsWith("100%"))

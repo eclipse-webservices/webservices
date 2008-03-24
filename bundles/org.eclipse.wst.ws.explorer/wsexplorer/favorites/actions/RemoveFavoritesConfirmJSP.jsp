@@ -17,7 +17,8 @@
 
 <jsp:include page="/favorites/scripts/favoritesPanes.jsp" flush="true"/>
 <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>

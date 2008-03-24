@@ -45,7 +45,7 @@ String twistImageName = (new StringBuffer("x")).append(tableContainerID).toStrin
 <table cellpadding=0 cellspacing=0 class="<%=(xsdConfig.getIsWSDLPart() ? "fixfragtable" : "innerfixfragtable")%>">
   <tr>
     <td width=16>
-      <img width=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>">
+      <img width=16 src="<%=response.encodeURL(controller.getPathWithContext("images/space.gif"))%>" alt="">
     </td>
     <td>
       <jsp:include page="/wsdl/fragment/XSDGroupSeqFixWFragmentJSP.jsp" flush="true"/>

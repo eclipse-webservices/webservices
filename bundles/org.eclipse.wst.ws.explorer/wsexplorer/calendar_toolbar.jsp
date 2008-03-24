@@ -18,7 +18,8 @@
    HttpSession currentSession = (HttpSession)application.getAttribute(sessionId);
    Controller controller = (Controller)currentSession.getAttribute("controller");
 %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title><%=controller.getMessage("FRAME_TITLE_CALENDAR_TOOLBAR")%></title>
@@ -29,7 +30,7 @@
   <div id="toolbar">
     <table width="100%" height=25 cellpadding=0 cellspacing=0 border=0>
       <tr>
-        <td valign="middle" align="center" width=25 height=25><img class="normal" src="<%=response.encodeURL(controller.getPathWithContext("images/calendar.gif"))%>" width=16 height=16></td>
+        <td valign="middle" align="center" width=25 height=25><img class="normal" src="<%=response.encodeURL(controller.getPathWithContext("images/calendar.gif"))%>" alt="" width=16 height=16></td>
         <td valign="middle" align="left" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_CALENDAR_BROWSER")%></td>
       </tr>
     </table>
