@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
  * 20071205   211262 ericdp@ca.ibm.com - Eric Peters, CopyWSDLTreeCommand fails to copy ?wsdl
+ * 20080324   215552 makandre@ca.ibm.com - Andrew Mak, WSDLCopier expects not encoded URI
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.util;
@@ -19,8 +20,10 @@ package org.eclipse.wst.ws.internal.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -54,7 +57,6 @@ import org.eclipse.wst.common.environment.uri.IURIScheme;
 import org.eclipse.wst.common.environment.uri.SimpleURIFactory;
 import org.eclipse.wst.common.environment.uri.URIException;
 import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
-import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.ws.internal.WstWSPluginMessages;
 import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
@@ -116,10 +118,10 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	
 	private WebServicesParser parser	= null;					// parser to parse the wsdl and xsd files
 	
-	private String sourceURI			= "";					// uri of the starting wsdl
+	private URI sourceURI				= URI.create("");		// uri of the starting wsdl
 	private Definition definition		= null;					// representation of the starting wsdl
 	
-	private String targetFolderURI		= null;					// uri of the folder to copy to
+	private URI targetFolderURI			= null;					// uri of the folder to copy to
 	private String targetFilename		= null;					// optional new filename for the starting wsdl
 	
 	private IPath pathPrefix			= null;  				// the shortest common path of all files we need to copy
@@ -160,8 +162,21 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	 * protocol are acceptable. 
 	 * 
 	 * @param uri The URI of the starting wsdl document.
+	 * 
+	 * @deprecated
 	 */
 	public void setSourceURI(String uri) {
+		setSourceURI(uri, null);
+	}
+	
+	/**
+	 * Sets the URI of the starting wsdl document.  The URI must be an absolute URI
+	 * with a valid protocol.  For local files, both file:/ and platform:/resource 
+	 * protocol are acceptable. 
+	 * 
+	 * @param uri The URI of the starting wsdl document. 
+	 */
+	public void setSourceURI(URI uri) {
 		setSourceURI(uri, null);
 	}
 	
@@ -172,10 +187,36 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	 * 
 	 * @param uri The URI of the starting wsdl document.
 	 * @param definition A parsed representation of the starting wsdl document.
+	 * 
+	 * @deprecated
 	 */
 	public void setSourceURI(String uri, Definition definition) {
 		if (uri != null)
 			uri = uri.replace('\\', '/');
+		URI uriObj = null;		
+		try {
+			try {
+				uriObj = new URI(uri);
+			}
+			catch (URISyntaxException e) {				
+				uriObj = URI.create(URIEncoder.encode(uri, "UTF-8"));
+			}
+			setSourceURI(uriObj, definition);		
+		}
+		catch (UnsupportedEncodingException e) {
+			// ignore, default URI("") is used, operation will be a no-op
+		}		
+	}
+	
+	/**
+	 * Same as setSourceURI(String uri) version, except that an already parsed
+	 * representation of the wsdl document can be passed to this method to avoid
+	 * having to parse it a second time.
+	 * 
+	 * @param uri The URI of the starting wsdl document.
+	 * @param definition A parsed representation of the starting wsdl document. 
+	 */
+	public void setSourceURI(URI uri, Definition definition) {
 		sourceURI = uri;
 		this.definition = definition;
 	}
@@ -188,10 +229,37 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	 * it will be created. 
 	 * 
 	 * @param uri The target folder URI where the wsdl structure is copied to.
+	 * 
+	 * @deprecated
 	 */
 	public void setTargetFolderURI(String uri) {
 		if (uri != null)
 			uri = uri.replace('\\', '/');
+		URI uriObj = null;		
+		try {
+			try {
+				uriObj = new URI(uri);
+			}
+			catch (URISyntaxException e) {				
+				uriObj = URI.create(URIEncoder.encode(uri, "UTF-8"));
+			}
+			setTargetFolderURI(uriObj);		
+		}
+		catch (UnsupportedEncodingException e) {
+			// ignore, targetFolderURI will be checked for null later
+		}		
+	}
+	
+	/**
+	 * Specify the target folder URI for WSDLCopier to copy the wsdl to.  The URI must be
+	 * an absolute URI with a valid protocol.  Both file:/ and platform:/resource protocol
+	 * are acceptable.  The entire directory structure with all the files that the wsdl 
+	 * imports will be duplicated under this folder.  If the target folder does not exist, 
+	 * it will be created. 
+	 * 
+	 * @param uri The target folder URI where the wsdl structure is copied to. 
+	 */
+	public void setTargetFolderURI(URI uri) {		
 		targetFolderURI = uri;
 	}
 	
@@ -384,13 +452,22 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	}
 		
 	/*
-	 * Appends a path to a URI and returns the new combined URI.
+	 * Appends a path to a URI and returns the new combined URI in an array of 2 elements,
+	 * where the first element is in decoded form and the second element is in encoded form.
 	 */
-	private String appendPathToURI(String uri, IPath path) {
-		if (uri.endsWith("/"))
-			return uri + path.makeRelative();
+	private String[] appendPathToURI(URI uriObj, IPath path) {
+		
+		String schemeSpecificPart = uriObj.getSchemeSpecificPart(); 
+		
+		if (schemeSpecificPart.endsWith("/"))
+			path = path.makeRelative();
 		else
-			return uri + path.makeAbsolute();
+			path = path.makeAbsolute();
+		
+		return new String[] {
+				uriObj.getScheme() + ':' + schemeSpecificPart + path,
+				uriObj.getScheme() + ':' + uriObj.getRawSchemeSpecificPart() + path
+		};
 	}
 	
 	/*
@@ -402,13 +479,13 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	    WSDLFactory wsdlFactory = new WSDLFactoryImpl();	    
 	    WSDLWriter wsdlWriter = wsdlFactory.newWSDLWriter();
 	    
-	    String targetURI = appendPathToURI(targetFolderURI, path);
+	    String[] targetURI = appendPathToURI(targetFolderURI, path);
 	    
-	    OutputStream os = uriFactory.newURI(targetURI).getOutputStream();	    
+	    OutputStream os = uriFactory.newURI(targetURI[0]).getOutputStream();	    
 	    wsdlWriter.writeWSDL(definition, os);
 	    os.close();
 	    
-	    return targetURI;
+	    return targetURI[1];
 	}
   
 	/*
@@ -425,13 +502,13 @@ public class WSDLCopier implements IWorkspaceRunnable {
 		Element e = xsdSchema.getElement();
 		DOMSource domSource = new DOMSource(e);		
 		
-		String targetURI = appendPathToURI(targetFolderURI, path);
+		String[] targetURI = appendPathToURI(targetFolderURI, path);
 		
-		OutputStream os = uriFactory.newURI(targetURI).getOutputStream();
+		OutputStream os = uriFactory.newURI(targetURI[0]).getOutputStream();
 		serializer.transform(domSource, new StreamResult(os));
 		os.close();
 		
-		return targetURI;
+		return targetURI[1];
 	}  
 
 	/*
@@ -467,13 +544,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
 			throw new CoreException(StatusUtils.errorStatus(WstWSPluginMessages.MSG_ERROR_TARGET_FOLDER_NOT_SPECIFIED));		
 				
   		try {
-  			URI uri;
-  			if (URIHelper.isProtocolFile(sourceURI) || URIHelper.isPlatformResourceProtocol(sourceURI)) 
-  				uri = new URI(URIEncoder.encode(sourceURI, "UTF-8"));  			
-  			else 
-  				uri = new URI(sourceURI);
-  			
-  			analyzeWSDL(uri, definition);  			 
+  			analyzeWSDL(sourceURI, definition);  			 
   			
   			// begin writing out files
   			
@@ -492,7 +563,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
 
   					String targetURI = writeXMLObj(relPath, definition, monitor);
   					
-  					if (definition == this.definition && isSameLocation(uri.toString(), targetURI))
+  					if (definition == this.definition && isSameLocation(sourceURI.toString(), targetURI))
   						return;
   				}
   				else
@@ -500,7 +571,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
   			}  			
   		} catch (Exception t) {
   			throw new CoreException(StatusUtils.errorStatus(
-  					NLS.bind(WstWSPluginMessages.MSG_ERROR_COPY_WSDL, new String[] {sourceURI, targetFolderURI}), t));
+  					NLS.bind(WstWSPluginMessages.MSG_ERROR_COPY_WSDL, new String[] {sourceURI.toString(), targetFolderURI.toString()}), t));
   		}
 	}
 	
