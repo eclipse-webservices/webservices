@@ -388,7 +388,7 @@ public class ServicePoliciesComposite extends Composite implements
 	
 	private boolean is3rdLevelPolInMasterTreeWithChildren (List<IServicePolicy> spListInMasterTree) {
 		return spListInMasterTree.get(0).getParentPolicy() != null && spListInMasterTree.get(0).getParentPolicy().getParentPolicy() != null
-		&& spListInMasterTree.get(0).getChildren().size() > 0 && spListInMasterTree.get(0).getChildren().get(0).getChildren().size() > 0;
+		&& spListInMasterTree.get(0).getChildren().size() > 0 ;
 	}
 	/**
 	 * Add service policy sp and children of sp to the parent
