@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding of service policy
  * 20080109   213497 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -49,7 +50,7 @@ public class ServicePolicyPlatformUIImpl
     registry.load( baseOperationMap, quickFixes );
     createOperationCache( policyIds );
     
-    platform.addChildChangeListener( new ChildListener() );
+    platform.addChildChangeListener( new ChildListener(), false );
   }
       
   public List<IQuickFixActionInfo> getQuickFixes( IStatus status )

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071030   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -73,16 +74,18 @@ public class LocalUtils
     }
   }
   
-  public static void removeAllLocalPolicies()
+  public static void removeAllPreferencePolicies( String startsWith, IEclipsePreferences prefs )
   {
+    if( startsWith == null ) startsWith = BASE_KEY;
+    
     try
     {
-      IEclipsePreferences preferences = getPreferences();
+      IEclipsePreferences preferences = prefs == null ? getPreferences() : prefs;
       String[]            keys        = preferences.keys();
       
       for( String key : keys )
       {
-        if( key.startsWith( BASE_KEY ) )
+        if( key.startsWith( startsWith ) )
         {
           preferences.remove( key );
         }

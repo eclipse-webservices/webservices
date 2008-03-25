@@ -14,6 +14,7 @@
  * 20071212   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
  * 20080211   218520 pmoogk@ca.ibm.com - Peter Moogk
  * 20080324   222095 pmoogk@ca.ibm.com - Peter Moogk, UI now listens for state changes.
+ * 20080324   223634 ericdp@ca.ibm.com - Eric D. Peters, Service Policies preference tree should be 3 level tree
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -102,6 +103,7 @@ public class ServicePoliciesComposite extends Composite implements
 	private IPolicyStateChangeListener stateChangeListener  = new StateChangeListener();
 	private boolean                    stateChangeEnabled   = true;
 	private HashSet<IServicePolicy>    stateChangePolicySet = new HashSet<IServicePolicy>();
+	private List<IServicePolicy>       lastSelectedSp       = null;
 
 	/**
 	 * Creates an expandable composite
@@ -378,25 +380,30 @@ public class ServicePoliciesComposite extends Composite implements
 		ti.notifyListeners(SWT.Modify, new Event());
 	}
 	
-	private boolean is3rdLevelOrHigherPolicy (IServicePolicy sp) {
+	private boolean is4thLevelOrHigherPolicy (IServicePolicy sp) {
 		return sp.getParentPolicy() != null
-		&& sp.getParentPolicy().getParentPolicy() != null;
+		&& sp.getParentPolicy().getParentPolicy() != null && sp.getParentPolicy().getParentPolicy().getParentPolicy() != null;
 		
+	}
+	
+	private boolean is3rdLevelPolInMasterTreeWithChildren (List<IServicePolicy> spListInMasterTree) {
+		return spListInMasterTree.get(0).getParentPolicy() != null && spListInMasterTree.get(0).getParentPolicy().getParentPolicy() != null
+		&& spListInMasterTree.get(0).getChildren().size() > 0 && spListInMasterTree.get(0).getChildren().get(0).getChildren().size() > 0;
 	}
 	/**
 	 * Add service policy sp and children of sp to the parent
 	 * @param sp the service policy to add
 	 * @param parent either a Tree (masterPolicyTree or DetailsPolicyTree), or a TreeItem
 	 * to add service policy children to
-	 * @param addUpToLevel2Only false if should add tertiary and higher level
+	 * @param addUpToLevel3Only false if should add 4th and higher level
 	 * child policies
 	 */
 	private void addPolicy(IServicePolicy sp, Widget parent,
-			boolean addUpToLevel2Only) {
+			boolean addUpToLevel3Only) {
 		sp.addPolicyChildChangeListener(this);
 		addStateListener( sp );
-		if (addUpToLevel2Only && is3rdLevelOrHigherPolicy(sp) )
-			// don't add tertiary and higher branches, these are added on demand
+		if (addUpToLevel3Only && is4thLevelOrHigherPolicy(sp) )
+			// don't add 4th level and higher branches, these are added on demand
 			// to a different tree
 			return;
 		TreeItem ti;
@@ -413,7 +420,7 @@ public class ServicePoliciesComposite extends Composite implements
 		childrenPolicyList = ServiceUtils.sortList( childrenPolicyList );
 		
 		for (IServicePolicy policy : childrenPolicyList) {
-			addPolicy(policy, ti, addUpToLevel2Only);
+			addPolicy(policy, ti, addUpToLevel3Only);
 		}
 
 	}
@@ -550,11 +557,11 @@ public class ServicePoliciesComposite extends Composite implements
 	 * @param nextChangedServicePolicy
 	 */
 	private void processChildChangeEventRemoveServicePolicy(IServicePolicy nextChangedServicePolicy) {
-		boolean is3rdLevelOrHigher = is3rdLevelOrHigherPolicy(nextChangedServicePolicy);
+		boolean is4thLevelOrHigher = is4thLevelOrHigherPolicy(nextChangedServicePolicy);
 		
 		removeStateListener( nextChangedServicePolicy );
 		
-		if (is3rdLevelOrHigher) {
+		if (is4thLevelOrHigher) {
 			if (detailsPolicyTree.isVisible()) {
 				TreeItem[] children = detailsPolicyTree.getItems();
 				TreeItem found = null;
@@ -648,9 +655,9 @@ public class ServicePoliciesComposite extends Composite implements
 	 * @param policyToAdd
 	 */
 	private void processChildChangeEventAddServicePolicy(IServicePolicy policyToAdd) {
-		boolean is3rdLevelOrHigher = is3rdLevelOrHigherPolicy(policyToAdd);
+		boolean is4thLevelOrHigher = is4thLevelOrHigherPolicy(policyToAdd);
 		IServicePolicy parent = policyToAdd.getParentPolicy();
-		if (is3rdLevelOrHigher) {
+		if (is4thLevelOrHigher) {
 			if (detailsPolicyTree.isVisible()) {
 				TreeItem[] children = detailsPolicyTree.getItems();
 				TreeItem found = null;
@@ -664,7 +671,7 @@ public class ServicePoliciesComposite extends Composite implements
 				}
 			}
 		} else {
-				//less than 3rd level policy
+				//less than 4th level policy
 				TreeItem[] children = masterPolicyTree.getItems();
 				TreeItem found = null;
 				for (int i=0; i < children.length; i++) {
@@ -734,10 +741,9 @@ public class ServicePoliciesComposite extends Composite implements
 			updateInfoPanels(sp);
 
 			if (e.getSource() == masterPolicyTree) {
-				// if selected node in master tree is 2nd level & has
+				// if selected node in master tree is 3rd level & has
 				// children, populate details tree
-				if (sp.get(0).getParentPolicy() != null
-						&& sp.get(0).getChildren().size() > 0) {
+				if (is3rdLevelPolInMasterTreeWithChildren(sp)) {
 					populateDetailsPolicyTree(sp);
 				} else {
 					//if expandable composite was visible, collapse and set invisible
@@ -749,11 +755,18 @@ public class ServicePoliciesComposite extends Composite implements
 				}
 			}
 			addActionButtons(sp);
+			lastSelectedSp = sp;
 
 		} else {
 			// an action control fired a change event
 			Control actionControl = (Control) e.getSource();
 			updatePolicy(actionControl);
+			
+			if( lastSelectedSp != null )
+			{
+			  addActionButtons(lastSelectedSp);  
+			}
+			
 			//policy updates might delete nodes in the tree, so make sure action control not disposed
 			IServicePolicy changedSP = null;
 			if (!actionControl.isDisposed())
@@ -1363,7 +1376,9 @@ public class ServicePoliciesComposite extends Composite implements
 		
 		for( IServicePolicy policy : stateChangePolicySet )
 		{
-		  policy.getPolicyState().removePolicyStateChangeListener( stateChangeListener );
+		  IPolicyState state = project == null ? policy.getPolicyState() : policy.getPolicyState( project );
+		  
+		  state.removePolicyStateChangeListener( stateChangeListener );
 		}
 	}
 
@@ -1373,6 +1388,7 @@ public class ServicePoliciesComposite extends Composite implements
 	 * will be used to define operations/preferences to apply to the service policies in the list
 	 */
 	private void addActionButtons(List<IServicePolicy> spList) {
+	  
 		// remove existing action controls
 		Control[] toRemove = operationsComposite.getChildren();
 		for (int i = 0; i < toRemove.length; i++) {
@@ -1512,6 +1528,7 @@ public class ServicePoliciesComposite extends Composite implements
       if( !stateChangeEnabled ) return;
       
       error = validateAllPolicies( policy );
+      
       //inform listeners that a control has changed, as composite may be in error now
       listener.widgetSelected( null );
     }	  

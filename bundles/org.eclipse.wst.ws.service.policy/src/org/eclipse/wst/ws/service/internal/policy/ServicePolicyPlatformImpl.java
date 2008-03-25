@@ -13,6 +13,7 @@
  * 20071113   209701 pmoogk@ca.ibm.com - Peter Moogk
  * 20080111   214907 pmoogk@ca.ibm.com - Peter Moogk
  * 20080214   218996 pmoogk@ca.ibm.com - Peter Moogk, Concurrent exception fix
+ * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -38,6 +39,7 @@ import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformLoadListener;
+import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformProjectLoadListener;
 import org.osgi.service.prefs.BackingStoreException;
 
 
@@ -51,8 +53,12 @@ public class ServicePolicyPlatformImpl
   private Map<IProject, ProjectEntry>              enabledProjectMap;
   private List<Expression>                         enabledList;
   private List<IPolicyChildChangeListener>         childChangeListeners;
+  private List<IPolicyChildChangeListener>         childChangeListenersOnCommit;
+  private List<IServicePolicy>                     commitChildChangePolicy;
+  private List<Boolean>                            commitChildChangeAdded;
   private List<IServicePolicy>                     queuedChildChangePolicy;
   private List<Boolean>                            queuedChildChangeAdded;
+  private List<IPolicyPlatformProjectLoadListener> projectPlatformListeners;
   
   public ServicePolicyPlatformImpl()
   {
@@ -69,7 +75,12 @@ public class ServicePolicyPlatformImpl
     enumItemList      = new HashMap<String, StateEnumerationItemImpl>();
     enabledProjectMap = new HashMap<IProject, ProjectEntry>();
     enabledList       = new Vector<Expression>();
-    childChangeListeners = new Vector<IPolicyChildChangeListener>();
+    
+    childChangeListeners         = new Vector<IPolicyChildChangeListener>();
+    childChangeListenersOnCommit = new Vector<IPolicyChildChangeListener>();
+    commitChildChangePolicy      = new Vector<IServicePolicy>();
+    commitChildChangeAdded       = new Vector<Boolean>();
+    projectPlatformListeners     = new Vector<IPolicyPlatformProjectLoadListener>();
     
     registry.load( loadListeners, policyMap, enumList, enumItemList );
     
@@ -146,7 +157,18 @@ public class ServicePolicyPlatformImpl
   {
     List<String> localIds = new Vector<String>();
     
-    if( saveLocals ) LocalUtils.removeAllLocalPolicies();
+    if( saveLocals ) LocalUtils.removeAllPreferencePolicies( null, null );
+    
+    // Fire child change events for commit listeners
+    for( IPolicyChildChangeListener listener : childChangeListenersOnCommit )
+    {
+      listener.childChange( commitChildChangePolicy, commitChildChangeAdded );
+    }
+    
+    removeDeletedPreferenceData();
+    
+    commitChildChangePolicy = new Vector<IServicePolicy>();
+    commitChildChangeAdded  = new Vector<Boolean>();
     
     for( ServicePolicyImpl policy : policyMap.values() )
     {
@@ -164,6 +186,40 @@ public class ServicePolicyPlatformImpl
     committedPolicyMap = new HashMap<String, ServicePolicyImpl>();
     committedPolicyMap.putAll( policyMap );
     ServicePolicyActivator.getDefault().savePluginPreferences();
+  }
+  
+  private void removeDeletedPreferenceData()
+  {
+    for( int index = 0; index < commitChildChangePolicy.size(); index++ )
+    {
+      IServicePolicy policy = commitChildChangePolicy.get( index );
+      boolean        added  = commitChildChangeAdded.get( index );
+      
+      if( !added )
+      {
+        // Add policy is being deleted.  We need to remove any state data
+        // for this policy at the workspace level and the project level.
+        LocalUtils.removeAllPreferencePolicies( policy.getId(), null );
+        
+        for( IProject proj : enabledProjectMap.keySet() )
+        {
+          if( proj.exists() && proj.isOpen() )
+          {
+            IEclipsePreferences projPrefs = new ProjectScope( proj ).getNode( ServicePolicyActivator.PLUGIN_ID );
+            LocalUtils.removeAllPreferencePolicies( policy.getId(), projPrefs );
+          
+            try
+            {
+              projPrefs.flush();
+            }
+            catch( BackingStoreException exc )
+            {
+              ServicePolicyActivator.logError( "Error flushing project properties.", exc ); //$NON-NLS-1$         
+            }
+          }
+        }
+      }
+    }
   }
   
   /**
@@ -206,14 +262,28 @@ public class ServicePolicyPlatformImpl
     }
   }
   
-  public void addChildChangeListener( IPolicyChildChangeListener listener )
+  public void addChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
   {
-    childChangeListeners.add( listener );
+    if( onCommit )
+    {
+      childChangeListenersOnCommit.add( listener );
+    }
+    else
+    {
+      childChangeListeners.add( listener );
+    }
   }
   
-  public void removeChildChangeListener( IPolicyChildChangeListener listener )
+  public void removeChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
   {
-    childChangeListeners.remove( listener );  
+    if( onCommit )
+    {
+      childChangeListenersOnCommit.remove( listener );
+    }
+    else
+    {
+      childChangeListeners.remove( listener );
+    }
   }
   
   public void queueChildChangeListeners( boolean queue )
@@ -256,6 +326,9 @@ public class ServicePolicyPlatformImpl
       queuedChildChangeAdded.add( isAdd );
       queuedChildChangePolicy.add( policy );
     }
+    
+    commitChildChangeAdded.add( isAdd );
+    commitChildChangePolicy.add( policy );
   }
   
   public void commitChanges( IProject project )
@@ -269,7 +342,7 @@ public class ServicePolicyPlatformImpl
     
     entry.isEnabledCommitted = entry.isEnabled;  
     setProjectEnabled( project, entry.isEnabledCommitted );
-    
+        
     try
     {
       IEclipsePreferences projectPrefs = new ProjectScope( project ).getNode( ServicePolicyActivator.PLUGIN_ID );
@@ -287,6 +360,9 @@ public class ServicePolicyPlatformImpl
   {
     policyMap = new HashMap<String, ServicePolicyImpl>();
     policyMap.putAll( committedPolicyMap );
+    
+    commitChildChangePolicy = new Vector<IServicePolicy>();
+    commitChildChangeAdded  = new Vector<Boolean>();
     
     for( ServicePolicyImpl policy : committedPolicyMap.values() )
     {
@@ -407,6 +483,28 @@ public class ServicePolicyPlatformImpl
     entry.isEnabled = value;
   }
   
+  /**
+   * Add a project platform listener.  When a particular project is referenced
+   * by in the service policy platform this listener will be called the first
+   * time the project is loaded into the system.
+   * 
+   * @param listener the listener
+   */
+  public void addProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
+  {
+    projectPlatformListeners.add( listener );
+  }
+  
+  /**
+   * Removes a project platform listener.
+   * 
+   * @param listener the listener
+   */
+  public void removeProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
+  {
+    projectPlatformListeners.remove( listener );
+  }
+  
   private void setProjectEnabled( IProject project, boolean value )
   {
     String              pluginId          = ServicePolicyActivator.PLUGIN_ID;
@@ -426,9 +524,18 @@ public class ServicePolicyPlatformImpl
       enabledProjectMap.put( project, entry );
       entry.isEnabledCommitted = getProjectPreferenceEnabled( project );
       entry.isEnabled = entry.isEnabledCommitted;
+      fireProjectLoadListener( project );
     }
 
     return entry;
+  }
+  
+  private void fireProjectLoadListener( IProject project )
+  {
+    for( IPolicyPlatformProjectLoadListener listener : projectPlatformListeners )
+    {
+      listener.load( project );
+    }
   }
   
   private String makeUniqueId( String id )

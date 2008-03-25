@@ -315,7 +315,7 @@ public class MainTester extends TestCase
      ServicePolicyPlatform platform = ServicePolicyPlatform.getInstance();
      ChildChangeListener   listener = new ChildChangeListener();
      
-     platform.addChildChangeListener(listener);
+     platform.addChildChangeListener(listener, false );
      listener.childEventOccured = false;
      listener.isAdded = false;
      
@@ -362,7 +362,7 @@ public class MainTester extends TestCase
      assertTrue( "Listener not removed", !listener.isAdded );
      assertTrue( "Listener count not 3", listener.count == 3 );
      
-     platform.removeChildChangeListener( listener );
+     platform.removeChildChangeListener( listener, false );
      
      listener.childEventOccured = false;   
      listener.isAdded = true;

@@ -12,6 +12,7 @@
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20071221   213492 pmoogk@ca.ibm.com - Peter Moogk
  * 20080109   214818 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -78,10 +79,18 @@ public class PolicyStateImpl implements IPolicyState
       
       if( value != null )
       {
+        // Temporarily remove the tableEntry value so that getValue will get the old value.
+        tableEntry.value = null;
         String oldValue = getValue( key );
+        
+        // Restore the tableEntry value;
+        tableEntry.value = value;
        
-        preferences.put( storeKey, tableEntry.value );
-        firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );        
+        if( !value.equals( oldValue ) ) 
+        {
+          preferences.put( storeKey, tableEntry.value );
+          firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );
+        }
       }
     }
   }

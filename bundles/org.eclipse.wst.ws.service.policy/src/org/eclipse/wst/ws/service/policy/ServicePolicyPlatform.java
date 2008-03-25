@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
@@ -19,6 +20,7 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.ws.service.internal.policy.ServicePolicyPlatformImpl;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
+import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformProjectLoadListener;
 
 /**
  * 
@@ -217,10 +219,12 @@ public class ServicePolicyPlatform
    * located in the tree of service policies.
    * 
    * @param listener
+   * @param onCommit indicates whether this listener should be invoked when
+   * the the platform changes are committed.
    */
-  public void addChildChangeListener( IPolicyChildChangeListener listener )
+  public void addChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
   {
-    platformImpl.addChildChangeListener( listener );  
+    platformImpl.addChildChangeListener( listener, onCommit );  
   }
   
   public void queueChildChangeListeners( boolean queue )
@@ -232,10 +236,34 @@ public class ServicePolicyPlatform
    * Removes a child change listener from the service policy platform.
    * 
    * @param listener
+   * @param onCommit indicates whether this change listener should be removed
+   * from the onCommit list.
    */
-  public void removeChildChangeListener( IPolicyChildChangeListener listener )
+  public void removeChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
   {
-    platformImpl.removeChildChangeListener( listener );   
+    platformImpl.removeChildChangeListener( listener, onCommit );   
+  }
+  
+  /**
+   * Add a project platform listener.  When a particular project is referenced
+   * by in the service policy platform this listener will be called the first
+   * time the project is loaded into the system.
+   * 
+   * @param listener the listener
+   */
+  public void addProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
+  {
+    platformImpl.addProjectLoadListener( listener );
+  }
+  
+  /**
+   * Removes a project platform listener.
+   * 
+   * @param listener the listener
+   */
+  public void removeProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
+  {
+    platformImpl.removeProjectLoadListener( listener );    
   }
   
   /**
