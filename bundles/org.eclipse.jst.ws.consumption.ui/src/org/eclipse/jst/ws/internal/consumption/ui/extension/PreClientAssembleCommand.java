@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,13 @@
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner          
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -22,7 +25,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
-import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
@@ -53,9 +56,8 @@ public class PreClientAssembleCommand extends AbstractDataModelOperation
 		  command.setProjectName(earProject_);
 		  command.setTemplateId(IJ2EEModuleConstants.JST_EAR_TEMPLATE);
 
-		  // RequiredFacetVersions is set to an empty array because we don't need to impose any additional constraints.
-		  // We just want to create the highest level of EAR project that the selected server supports.
-		  command.setRequiredFacetVersions(new RequiredFacetVersion[0]); 
+		  IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(project_);
+		  command.setRequiredFacetVersions(FacetUtils.getRequiredEARFacetVersions(project)); 
 
 		  command.setServerFactoryId(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
 		  command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());

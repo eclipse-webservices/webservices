@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation. and others.
+ * Copyright (c) 2007, 2008 IBM Corporation. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
  * 20071219   213356 kathy@ca.ibm.com - Kathy Chan
+ * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -33,8 +34,12 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.EjbFacetInstallDataModelProvider;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.IEjbFacetInstallDataModelProperties;
+import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
 import org.eclipse.jst.j2ee.project.facet.AppClientFacetInstallDataModelProvider;
 import org.eclipse.jst.j2ee.project.facet.IAppClientFacetInstallDataModelProperties;
 import org.eclipse.jst.j2ee.project.facet.IUtilityFacetInstallDataModelProperties;
@@ -1411,4 +1416,44 @@ public class FacetUtils
     return false;
   }
       
+  	/**
+  	 * Returns the required facet version of a EAR that should contain the given project. 
+  	 * 
+  	 * @param project The project
+  	 * @return An array of required facet versions.  If no constraints can be inferred from the
+  	 * project, an empty array is returned.
+  	 */
+	public static RequiredFacetVersion[] getRequiredEARFacetVersions(IProject project) {
+  		
+		int version = 0;
+  		
+  		if (JavaEEProjectUtilities.isDynamicWebProject(project)) {
+  			
+  			version = J2EEVersionUtil.convertWebVersionStringToJ2EEVersionID(
+  					J2EEProjectUtilities.getJ2EEProjectVersion(project));
+  		}
+  		else if (JavaEEProjectUtilities.isEJBProject(project)) {
+  			
+  			version = J2EEVersionUtil.convertEJBVersionStringToJ2EEVersionID(
+  					J2EEProjectUtilities.getJ2EEProjectVersion(project));
+  		}
+  		else if (JavaEEProjectUtilities.isApplicationClientProject(project)) {
+  			
+  			version = J2EEVersionUtil.convertAppClientVersionStringToJ2EEVersionID(
+  					J2EEProjectUtilities.getJ2EEProjectVersion(project));
+  		}
+  		else
+  			// return empty array, no constraints
+  			return new RequiredFacetVersion[0];
+	  
+  		IProjectFacet projectFacet = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EAR_MODULE);
+  		IProjectFacetVersion projectFacetVersion = projectFacet.getVersion(J2EEVersionUtil.convertVersionIntToString(version));
+
+  		RequiredFacetVersion[] rfv = new RequiredFacetVersion[1];
+  		rfv[0] = new RequiredFacetVersion();
+  		rfv[0].setAllowNewer(false);	  
+  		rfv[0].setProjectFacetVersion(projectFacetVersion);
+  		
+  		return rfv;
+  	}
 }
