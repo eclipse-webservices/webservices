@@ -60,7 +60,13 @@
    <extension point="org.eclipse.wst.ws.service.policy.servicepolicy">
      <servicePolicy>
        <enablement>
-         <test property="org.eclipse.wst.ws.service.ws.service.policy.projectHasWSDLfiles"/>
+           <or>
+             <test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                   value="jst.web"/>
+             <test property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                   value="jst.ejb"/>
+             <test property="org.eclipse.wst.ws.service.ws.service.policy.projectHasWSDLfiles"/>
+           </or>
        </enablement>
        
        <policy id="org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp">
