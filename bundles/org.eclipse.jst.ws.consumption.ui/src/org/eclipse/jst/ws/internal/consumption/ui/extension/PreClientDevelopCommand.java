@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070123   167487 makandre@ca.ibm.com - Andrew Mak
  * 20070403   173654 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -32,6 +33,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensio
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.HTTPUtility;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
@@ -91,6 +93,7 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 			  }
 		  }    
 
+		  environment.getLog().log(ILog.INFO, "ws_framework", 5108, this, "PreClientDevelopCommand", "clientRuntimeId_ = "+ clientRuntimeId_);
 		  IWebServiceRuntime wsrt = WebServiceRuntimeExtensionUtils2
 		  .getClientRuntime(clientRuntimeId_);
 		  WebServiceClientInfo wsInfo = new WebServiceClientInfo();

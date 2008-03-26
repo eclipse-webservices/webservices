@@ -12,6 +12,7 @@
  * IBM Corporation. - initial API and implementation
  * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
+ * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -217,7 +218,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
         if (!vu.isProjectServiceProject(clientInitialProject_, wsdlURI_, parser_) && !clientIdsFixed_)
         {
           //If clientIntialProject_ does not contain the J2EE Web service, choose a clientRuntime based on it.
-          drt = getDefaultRuntime(clientInitialProject_, clientIds_.getTypeId(), true);
+          drt = getDefaultRuntime(clientInitialProject_, clientIds_.getTypeId(), true, clientIds_.getServerId());
           clientFacetMatcher_ = drt.getFacetMatcher();
           clientProjectName_ = drt.getProjectName(); 
           clientRuntimeId_ = drt.getRuntimeId();          
@@ -229,7 +230,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           if (!vu.isProjectServiceProject(initialProject_, wsdlURI_, parser_) && !clientIdsFixed_)
           {
             //If intialProject_ does not contain the J2EE Web service, choose a clientRuntime based on it.
-            drt = getDefaultRuntime(initialProject_, clientIds_.getTypeId(), true);
+            drt = getDefaultRuntime(initialProject_, clientIds_.getTypeId(), true, clientIds_.getServerId());
             clientFacetMatcher_ = drt.getFacetMatcher();
             clientProjectName_ = drt.getProjectName();
             clientRuntimeId_ = drt.getRuntimeId();            
@@ -240,7 +241,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
             //and cannot be used to influence clientRuntime defaulting.
             //Choose a clientRuntime but don't choose clientInitialProject_
             //as the clientProject.
-            drt = getDefaultRuntime(null, clientIds_.getTypeId(), true);
+            drt = getDefaultRuntime(null, clientIds_.getTypeId(), true, clientIds_.getServerId());
             clientRuntimeId_ = drt.getRuntimeId();                      
           }
         }
@@ -296,8 +297,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     } catch (Exception e)
     {
       // Catch all Exceptions in order to give some feedback to the user
-      IStatus errorStatus= StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
-    	          new String[] { e.getMessage() }), e);
+      IStatus errorStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
+          new String[] { e.getMessage() }), e);
         
       // If the exception has no error msg, it's kind of useless to the user so let's log it
       if ( e.getMessage() == null){
@@ -310,7 +311,6 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       }
           
       env.getStatusHandler().reportError(errorStatus);
-          
       return errorStatus;
     }
   }
@@ -960,20 +960,20 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     {
       //There are no client runtimes that match the fixed runtime and server. Fall back to original algorithm
       clientIdsFixed_ = false;
-      return getDefaultRuntime(project, clientIds_.getTypeId(), true);
+      return getDefaultRuntime(project, clientIds_.getTypeId(), true, clientIds_.getServerId());
     }
   }  
     
-  protected DefaultRuntimeTriplet getDefaultRuntime(IProject project, String typeId, boolean isClient)
+  protected DefaultRuntimeTriplet getDefaultRuntime(IProject project, String typeId, boolean isClient, String runtimePreferredServer)
   {
     String[] runtimes = null;
     if (isClient)
     {
-      runtimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(typeId);
+      runtimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(typeId, runtimePreferredServer);
     }
     else
     {
-      runtimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(typeId);
+      runtimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(typeId, runtimePreferredServer);
     }
         
     //Split the array of service/client runtimes into one containing the preferred set and one containing the rest.

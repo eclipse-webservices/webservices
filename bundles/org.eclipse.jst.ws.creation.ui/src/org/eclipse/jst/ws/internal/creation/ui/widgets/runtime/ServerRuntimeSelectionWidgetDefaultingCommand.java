@@ -22,6 +22,7 @@
  * 20070319	  159458 mahutch@ca.ibm.com - Mark Hutchinson added in some null checks
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
+ * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -116,7 +117,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     	 {
     		 initialProject_ = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
     		 
-    		 DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false);
+    		 DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false, serviceIds_.getServerId());
              serviceFacetMatcher_ = drt.getFacetMatcher();
     	     serviceProjectName_ = drt.getProjectName();
     	     serviceRuntimeId_ = drt.getRuntimeId();       
@@ -138,7 +139,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      else
      {
        // Set the runtime based on the initial selection
-       DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false);
+       DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false, serviceIds_.getServerId());
        serviceFacetMatcher_ = drt.getFacetMatcher();
        serviceProjectName_ = drt.getProjectName();
        serviceRuntimeId_ = drt.getRuntimeId();       
@@ -204,8 +205,8 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     } catch (Exception e)
     {
       // Catch all Exceptions in order to give some feedback to the user
-      IStatus errorStatus= StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
-  	          new String[] { e.getMessage() }), e);
+      IStatus errorStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
+          new String[] { e.getMessage() }), e);
       
       // If the exception has no error msg, it's kind of useless to the user so let's log it
       if ( e.getMessage() == null){
@@ -217,8 +218,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     	          new String[] { WSUIPluginMessages.MSG_SEE_ERROR_LOG }), e);  
       }
         
-  	  env.getStatusHandler().reportError(errorStatus);
-        
+      env.getStatusHandler().reportError(errorStatus);
       return errorStatus;
     }
   }
@@ -557,7 +557,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     {
       //There are no service runtimes that match the fixed runtime and server. Fall back to original algorithm.
       serviceIdsFixed_ = false;
-      return getDefaultRuntime(project, serviceIds_.getTypeId(), false);
+      return getDefaultRuntime(project, serviceIds_.getTypeId(), false, serviceIds_.getServerId());
     }
   }
   

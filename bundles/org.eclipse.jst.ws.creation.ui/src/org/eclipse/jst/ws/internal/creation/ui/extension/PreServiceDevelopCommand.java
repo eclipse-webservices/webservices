@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20071220   213640 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -43,6 +44,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
+import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.HTTPUtility;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
@@ -113,6 +115,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  wsInfo.setState( WebServiceState.UNKNOWN_LITERAL );
 		  wsInfo.setWebServiceRuntimeId( typeRuntimeServer_.getRuntimeId() );
 		  
+		  environment.getLog().log(ILog.INFO, "ws_framework", 5107, this, "PreServiceDevelopCommand", "serviceRuntimeId_ = "+ serviceRuntimeId_);
 		  ServiceRuntimeDescriptor serviceRuntimeDescriptor =  WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId_);
 		  IMerger merger = serviceRuntimeDescriptor.getServiceImplementationType().getMergerClass();
 		  wsInfo.setMerger(merger);		  

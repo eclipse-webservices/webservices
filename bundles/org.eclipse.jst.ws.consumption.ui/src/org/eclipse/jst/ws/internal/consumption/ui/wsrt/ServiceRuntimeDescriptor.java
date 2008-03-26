@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060802   152150 mahutch@ca.ibm.com
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -46,6 +47,7 @@ public class ServiceRuntimeDescriptor
   private RequiredFacetVersion[] requiredFacetVersions;
   private Set projectFacetVersions;
   private IWebServiceRuntimeChecker webServiceRuntimeChecker;
+  private String runtimePreferredServerType;
   
   public ServiceRuntimeDescriptor(IConfigurationElement elem, Hashtable allWebServiceImpls, Hashtable allRuntimes)
   {
@@ -192,4 +194,12 @@ public class ServiceRuntimeDescriptor
     return webServiceRuntimeChecker;
   } 
   
+  public String getRuntimePreferredServerType()
+  {
+    if (runtimePreferredServerType == null)
+    {
+    	runtimePreferredServerType = elem.getAttribute("runtimePreferredServerType");
+    }
+    return runtimePreferredServerType;
+  }
 }

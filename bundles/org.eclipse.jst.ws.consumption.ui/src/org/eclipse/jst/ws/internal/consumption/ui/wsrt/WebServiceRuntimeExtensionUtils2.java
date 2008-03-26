@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,7 @@
  *
  * Contributors:
  * IBM Corporation - initial API and implementation
- * yyyymmdd bug           Email and other contact information
+ * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner     
  * 20060221   119111 rsinha@ca.ibm.com - Rupam Kuehner
@@ -16,6 +16,7 @@
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -34,6 +35,8 @@ import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter2;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -349,7 +352,7 @@ public class WebServiceRuntimeExtensionUtils2
   {
     boolean serverSelected = (trs.getServerId() != null) && (trs.getServerId().length() > 0); 
     //Find the first serviceRuntime that supports the implementation type, runtime, server, and project
-    String[] descs = getServiceRuntimesByServiceType(trs.getTypeId());
+    String[] descs = getServiceRuntimesByServiceType(trs.getTypeId(), trs.getServerId());
     for (int i=0; i<descs.length; i++)
     {
       ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(descs[i]);      
@@ -509,6 +512,80 @@ public class WebServiceRuntimeExtensionUtils2
     }
     
     return (String[])ids.toArray(new String[]{});
+  }  
+  
+  /**
+   * Returns the ids of all serviceRuntimes that support the given
+   * Web service type, with preferred server 
+   * 
+   * @param typeId must be a String of the format "0/implId"
+   * where the digit before the "/" represents the scenario
+   * (e.g. WebServiceScenario.BOTTOM_UP) and the implId is the Web service implementation type id.
+   * 
+   * @returns String[] array containing the ids of all serviceRuntimes that
+   * support the given Web service type. The array may have 0 elements.
+   */
+  public static String[] getServiceRuntimesByServiceType(String typeId, String preferredServerFactoryId) 
+  {
+	//    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin
+	//			.getInstance().getServerRuntimeContext();
+	//	String preferredRuntimeId = context.getRuntimeId();
+	//	String preferredServerFactoryId = context.getServerFactoryId();
+
+    int scenario = getScenarioFromTypeId(typeId);
+    String implId = getWebServiceImplIdFromTypeId(typeId);    
+    ArrayList ids = new ArrayList();
+    ArrayList idsPreferredByServer = new ArrayList();
+    Iterator iter = registry.serviceRuntimes_.values().iterator();
+    while (iter.hasNext())   
+    {
+      ServiceRuntimeDescriptor desc = (ServiceRuntimeDescriptor)iter.next();
+      //Check if this serviceRuntime supports the implementation type
+      if (desc.getServiceImplementationType().getId().equals(implId))
+      {
+        switch (scenario)
+        {
+          case WebServiceScenario.BOTTOMUP:
+            if (desc.getBottomUp())
+            {
+              String serviceRuntimeId = desc.getId(); 
+              if (desc.getRuntimePreferredServerType() != null && desc.getRuntimePreferredServerType().equals(preferredServerFactoryId))
+            	  idsPreferredByServer.add(serviceRuntimeId);
+              else 
+            	  ids.add(serviceRuntimeId);
+            }
+            break;
+          case WebServiceScenario.TOPDOWN:
+            if (desc.getTopDown())
+            {
+              String serviceRuntimeId = desc.getId(); 
+              if (desc.getRuntimePreferredServerType() != null && desc.getRuntimePreferredServerType().equals(preferredServerFactoryId))
+            	  idsPreferredByServer.add(serviceRuntimeId);
+              else 
+            	  ids.add(serviceRuntimeId);
+            }
+            break;
+          default:          
+        }
+      }
+    }
+    // append preferredRuntime after preferredRuntimeIdsListPreferredByServer
+    String[] preferredRuntimeIds = new String[idsPreferredByServer.size()+ids.size()];
+    Iterator itr1 = idsPreferredByServer.iterator();
+    int preferredRTCounter = 0;
+    while (itr1.hasNext()) {
+		String runtimeId = (String) itr1.next();
+		preferredRuntimeIds[preferredRTCounter++] = runtimeId;
+	}
+    
+    Iterator itr2 = ids.iterator();  
+     
+    while (itr2.hasNext()) {
+		String runtimeId = (String) itr2.next();
+		preferredRuntimeIds[preferredRTCounter++] = runtimeId;		
+	}
+
+    return preferredRuntimeIds;
   }  
   
   /**
@@ -717,12 +794,26 @@ public class WebServiceRuntimeExtensionUtils2
       return null;
     }
     
+    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+    String preferredRuntimeId = context.getRuntimeId();
+    
+    String runtimeId;
+    
+    for (int i = 0; i < srIds.length; i++) {
+		runtimeId = getServiceRuntimeDescriptorById(srIds[i]).getRuntime().getId();
+		if (runtimeId.equals(preferredRuntimeId)) {
+			return runtimeId;
+		}
+	}
+    
+    // The preferred runtime does not support typeId.  Just return the first service runtime that does support typeId.
     ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(srIds[0]);
     return desc.getRuntime().getId();
   }      
 
   /**
    * Returns the id of a server type that supports the given Web service type.
+   * Returns the server type ID from the preference if it supports the typeId.
    *  
    * @param typeId will be a String of the format "0/implId"
    * where the digit before the "/" represents the scenario
@@ -737,6 +828,14 @@ public class WebServiceRuntimeExtensionUtils2
     if (fIds==null || fIds.length==0)
       return null;
     
+    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+    String preferredServerFactoryId = context.getServerFactoryId();
+    for (int i = 0; i < fIds.length; i++) {
+		String serverTypeId = fIds[i];
+		if (serverTypeId.equals(preferredServerFactoryId)) {
+			return serverTypeId;
+		}
+	}
     return fIds[0];
   }    
   
@@ -1127,7 +1226,7 @@ public class WebServiceRuntimeExtensionUtils2
   {
     boolean serverSelected = (trs.getServerId()!=null) && (trs.getServerId().length()>0);
     //Find the first clientRuntime that supports the implementation type, runtime, server, and project
-    String[] descs = getClientRuntimesByType(trs.getTypeId());
+    String[] descs = getClientRuntimesByType(trs.getTypeId(), trs.getServerId());
     for (int i=0; i<descs.length; i++)
     {
       ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(descs[i]);      
@@ -1206,6 +1305,52 @@ public class WebServiceRuntimeExtensionUtils2
     }
     
     return (String[])ids.toArray(new String[]{});
+  }  
+  
+  /**
+   * Returns the ids of all clientRuntimes that support the given
+   * Web service client implementation type and the preferred server
+   * @param clientImplId id of a Web service client implementation type
+   * @returns String[] array containing the ids of all clientRuntimes that
+   * support the given Web service client implementation type. The array may have 0 elements.
+   */
+  public static String[] getClientRuntimesByType(String clientImplId, String preferredServerFactoryId) 
+  {
+    ArrayList ids = new ArrayList();
+    ArrayList idsPreferredByServer = new ArrayList();
+    Iterator iter = registry.clientRuntimes_.values().iterator();
+    while (iter.hasNext())   
+    {
+      ClientRuntimeDescriptor desc = (ClientRuntimeDescriptor)iter.next();
+      //Check if this serviceRuntime supports the implementation type
+      if (desc.getClientImplementationType().getId().equals(clientImplId))
+      {
+    	  String clientRuntimeId = desc.getId();
+    	  if (desc.getRuntimePreferredServerType() != null && desc.getRuntimePreferredServerType().equals(preferredServerFactoryId)) {
+    		  idsPreferredByServer.add(clientRuntimeId);
+    	  } else {
+    		  ids.add(clientRuntimeId);
+    	  }
+      }
+    }
+    
+ // append preferredRuntime after preferredRuntimeIdsListPreferredByServer
+    String[] preferredRuntimeIds = new String[idsPreferredByServer.size()+ids.size()];
+    Iterator itr1 = idsPreferredByServer.iterator();
+    int preferredRTCounter = 0;
+    while (itr1.hasNext()) {
+		String runtimeId = (String) itr1.next();
+		preferredRuntimeIds[preferredRTCounter++] = runtimeId;
+	}
+    
+    Iterator itr2 = ids.iterator();  
+     
+    while (itr2.hasNext()) {
+		String runtimeId = (String) itr2.next();
+		preferredRuntimeIds[preferredRTCounter++] = runtimeId;		
+	}
+
+    return preferredRuntimeIds;
   }  
   
   /**
@@ -1969,6 +2114,26 @@ public class WebServiceRuntimeExtensionUtils2
  */
 public static IWebServiceRuntimeChecker getClientRuntimeChecker(String clientRuntimeId) {
 	  return getClientRuntimeDescriptorById(clientRuntimeId).getClientRuntimeChecker();
+	  
+  }
+
+/**
+ * Get the service runtime preferred server type
+ * @param serviceRuntimeId service runtime ID
+ * @return
+ */
+  public static String getServicePreferredServerType(String serviceRuntimeId) {
+	  return getServiceRuntimeDescriptorById(serviceRuntimeId).getRuntimePreferredServerType();
+	  
+  }
+
+/**
+ * Get the client runtime preferred server type
+ * @param clientRuntimeId
+ * @return
+ */
+public static String getClientPreferredServerType(String clientRuntimeId) {
+	  return getClientRuntimeDescriptorById(clientRuntimeId).getRuntimePreferredServerType();
 	  
   }
 }
