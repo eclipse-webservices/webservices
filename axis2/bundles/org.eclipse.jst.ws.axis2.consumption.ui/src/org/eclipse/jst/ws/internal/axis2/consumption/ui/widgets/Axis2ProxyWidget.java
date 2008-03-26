@@ -18,6 +18,7 @@
  * 20070823   200413 sandakith@wso2.com - Lahiru Sandakith, Namespace to Package table fix
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20071030	  207618 zina@ca.ibm.com - Zina Mostafia, Page GUI sequence using tab is not correct ( violates Accessibility)
+ * 20080319   207616 makandre@ca.ibm.com - Andrew Mak, Table in Axis2 Web Service Skeleton Java Bean Configuration Page not Accessible
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.widgets;
 
@@ -41,10 +42,18 @@ import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
@@ -216,7 +225,7 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 
 	   
 	    new Label(parent,SWT.HORIZONTAL);
-        namespace2packageTable = new Table(parent,SWT.BORDER|SWT.MULTI);
+        namespace2packageTable = new Table(parent,SWT.BORDER|SWT.FULL_SELECTION);
         namespace2packageTable.setLinesVisible(true);
         namespace2packageTable.setHeaderVisible(true); 
         namespace2packageTable.setEnabled(true);
@@ -232,7 +241,6 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
         
         // add the table editor
         final TableEditor editor = new TableEditor(namespace2packageTable);
-        editor.setColumn(1);
         editor.horizontalAlignment = SWT.LEFT;
         editor.grabHorizontal = true;
 
@@ -243,60 +251,41 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
               int index = namespace2packageTable.getTopIndex();
               while (index < namespace2packageTable.getItemCount()) {
                 boolean visible = false;
-                final TableItem item = namespace2packageTable.getItem(index);
-                for (int i = 0; i < namespace2packageTable.getColumnCount(); i++) {
-                  Rectangle rect = item.getBounds(i);
-                  if (rect.contains(pt)) {
-                    final int column = i;
-                    final Text text = new Text(namespace2packageTable, SWT.NONE);
-                    Listener textListener = new Listener() {
-                      public void handleEvent(final Event e) {
-                        switch (e.type) {
-                        case SWT.FocusOut:
-                          item.setText(column, text.getText());
-                          text.dispose();
-                          break;
-                        case SWT.Traverse:
-                          switch (e.detail) {
-                          case SWT.TRAVERSE_RETURN:
-                            item
-                                .setText(column, text
-                                    .getText());
-                          // FALL THROUGH
-                          case SWT.TRAVERSE_ESCAPE:
-                            text.dispose();
-                            e.doit = false;
-                          }
-                          break;
-                        }
-                      }
-                    };
-                    text.addListener(SWT.FocusOut, textListener);
-                    text.addListener(SWT.Traverse, textListener);
-                    editor.setEditor(text, item, i);
-                    text.setText(item.getText(i));
-                    text.selectAll();
-                    text.setFocus();
+                TableItem item = namespace2packageTable.getItem(index);                
+                Rectangle rect = item.getBounds(1);
+                if (rect.contains(pt)) {
+                	editCell(item, editor);
                     return;
-                  }
-                  if (!visible && rect.intersects(clientArea)) {
+                }
+                if (!visible && rect.intersects(clientArea)) {
                     visible = true;
-                  }
                 }
                 if (!visible)
                   return;
                 index++;
               }
-              model.setNamespaseToPackageMapping(getNs2PkgMapping());
             }
           });
         
-        namespace2packageTable.addListener(SWT.MouseExit, new Listener() {
-            public void handleEvent(Event event) {
-            	 model.setNamespaseToPackageMapping(getNs2PkgMapping());
-            }
+        namespace2packageTable.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				if (namespace2packageTable.getSelectionIndex() == -1)
+					namespace2packageTable.setSelection(0);
+			}
         });
         
+        namespace2packageTable.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(KeyEvent e) {			
+        		if (e.keyCode != 32)
+        			return;
+								
+        		TableItem[] item = namespace2packageTable.getSelection();
+				if (item.length != 1)
+					return;
+					
+				editCell(item[0], editor);															
+			}
+        });        
 
 //		UIUtils      uiUtils  = new UIUtils( pluginId_ );
 //		parent.setToolTipText( Axis2ConsumptionUIMessages.TOOLTIP_PPAE_PAGE );
@@ -306,6 +295,50 @@ public class Axis2ProxyWidget extends SimpleWidgetDataContributor {
 		populateModel();
 
 		return this;
+	}
+	
+	private void editCell(final TableItem item, TableEditor editor) {
+		
+		final Text textEdit = new Text(namespace2packageTable, SWT.NONE);		
+		textEdit.setText(item.getText(1));						
+		textEdit.selectAll();
+		textEdit.setFocus();
+		
+		textEdit.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				item.setText(1, textEdit.getText());
+				textEdit.dispose();
+			}			
+		});
+		
+		textEdit.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(TraverseEvent e) {
+				switch (e.detail) {
+					case SWT.TRAVERSE_RETURN:
+						item.setText(1, textEdit.getText());
+					case SWT.TRAVERSE_ESCAPE:
+						textEdit.dispose();
+						e.doit = false;
+				}
+			}			
+		});
+		
+		textEdit.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.keyCode == 32) {
+					item.setText(1, textEdit.getText());
+					textEdit.dispose();
+				}
+			}			
+		});
+		
+		textEdit.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				model.setNamespaseToPackageMapping(getNs2PkgMapping());				
+			}			
+		});
+		
+		editor.setEditor(textEdit, item, 1);
 	}
 	
 	/**
