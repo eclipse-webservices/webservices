@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.dialogs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -204,8 +203,14 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
         String protocol = (index != -1) ? protocolCombo.getItem(index) : null;
         
         ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForLabel(protocol);
-        String namespace = ext.getNamespace();
-  	    generator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
+        if (ext != null)
+        {
+        	String namespace = ext.getNamespace();
+        	generator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
+        } else
+        {
+        	generator.setContentGenerator(null);
+        }
         updatePageBook(protocol);
     }
   }
@@ -267,20 +272,19 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
   protected void updateProtocolCombo()
   {
     protocolCombo.removeAll();
+    protocolCombo.add(UNSPECIFIED);
 
-    List list = new ArrayList();
-    list.add(UNSPECIFIED);
     ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry(); 
-    list.addAll(registry.getBindingExtensionNames());
-	
+    List bindingNames = registry.getBindingExtensionNames();
+    
     String protocolText = generator.getProtocol();
     ContentGeneratorUIExtension extt = registry.getExtensionForName(protocolText);
     if (extt != null)
     {
       protocolText = extt.getLabel();
     }
-
-    for (Iterator i = list.iterator(); i.hasNext();)
+    
+    for (Iterator i = bindingNames.iterator(); i.hasNext();)
     {
       String protocol = (String) i.next();
       ContentGeneratorUIExtension ext = registry.getExtensionForName(protocol);
