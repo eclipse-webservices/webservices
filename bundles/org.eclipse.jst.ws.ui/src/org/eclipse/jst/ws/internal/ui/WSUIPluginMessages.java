@@ -15,6 +15,7 @@
  * 20060331   128827 kathy@ca.ibm.com - Kathy Chan
  * 20060515   141398 cbrealey@ca.ibm.com - Chris Brealey
  * 20080324   220983 trungha@ca.ibm.com - Trung Ha
+ * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui;
 
@@ -60,6 +61,7 @@ public final class WSUIPluginMessages extends NLS {
 	public static String ISTATUS_WITHOUT_EXCEPTION;
 	public static String ISTATUS_WITH_EXCEPTION;
 	public static String MSG_INFO_SAVED_STATUS;
+	public static String MSG_SEE_ERROR_LOG;
 	public static String DIALOG_TITLE_CLASS_BROWSE;
 	public static String LABEL_CLASS_BROWSE;
 	public static String DIALOG_TITLE_INTERFACE_BROWSE;

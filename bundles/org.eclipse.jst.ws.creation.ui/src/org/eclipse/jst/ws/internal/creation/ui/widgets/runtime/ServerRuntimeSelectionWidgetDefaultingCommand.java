@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@
  * 20060905   156230 kathy@ca.ibm.com - Kathy Chan, Handling projects with no target runtime
  * 20070319	  159458 mahutch@ca.ibm.com - Mark Hutchinson added in some null checks
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -30,6 +31,7 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -49,7 +51,9 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.FacetMatchCache;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
+import org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreationUIPlugin;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -200,9 +204,21 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     } catch (Exception e)
     {
       // Catch all Exceptions in order to give some feedback to the user
-      IStatus errorStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
-          new String[] { e.getMessage() }), e);
-      env.getStatusHandler().reportError(errorStatus);
+      IStatus errorStatus= StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
+  	          new String[] { e.getMessage() }), e);
+      
+      // If the exception has no error msg, it's kind of useless to the user so let's log it
+      if ( e.getMessage() == null){
+      	ILog pluginlog = WebServiceConsumptionUIPlugin.getInstance().getLog();
+      	pluginlog.log(errorStatus);
+      	  
+      	// create a new IStatus which has a non-null msg, this is to be thrown to the user.
+      	errorStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
+    	          new String[] { WSUIPluginMessages.MSG_SEE_ERROR_LOG }), e);  
+      }
+        
+  	  env.getStatusHandler().reportError(errorStatus);
+        
       return errorStatus;
     }
   }
@@ -496,7 +512,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   private DefaultRuntimeTriplet getDefaultServiceRuntimeForFixedRuntimeAndServer(IProject project)
   {
     String[] serviceRuntimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(serviceIds_.getTypeId());
-    ArrayList validServiceRuntimes = new ArrayList();
+    ArrayList<String> validServiceRuntimes = new ArrayList<String>();
     for (int i=0; i<serviceRuntimes.length; i++ )
     {
       ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimes[i]);

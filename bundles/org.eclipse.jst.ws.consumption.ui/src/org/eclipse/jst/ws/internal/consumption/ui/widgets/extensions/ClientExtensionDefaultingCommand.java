@@ -16,6 +16,7 @@
  * 20060818   154402 pmoogk@ca.ibm.com - Peter Moogk
  * 20060830   151091 kathy@ca.ibm.com - Kathy Chan, Client side still enabled when there's only stub server
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -589,8 +590,23 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
       }
     }
     
-    //If the server is non-null, ensure the server, runtime, and type are compatible
-    if (serverId != null && serverId.length() > 0)
+    // If the server is non-null, ensure there is an installed server with ID the same as 'serverID' registered in Eclipse
+    String[] runtimes = WebServiceRuntimeExtensionUtils2.getAllServerFactoryIdsWithRuntimes();
+    boolean noRuntimeInstalled = true;
+    for (int i = 0; i < runtimes.length; i++) {
+		if (runtimes[i].equals(serverId)){
+			noRuntimeInstalled = false;
+			break;
+		}
+	}
+    if (noRuntimeInstalled){
+        String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+    	status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME_INSTALLED, new String[] {serverLabel}));
+        env.getStatusHandler().reportError(status);
+    }
+    
+    //If the server is non-null and is installed in Eclipse, ensure the server, runtime, and type are compatible
+    if (!noRuntimeInstalled && serverId != null && serverId.length() > 0)
     {
       if (!WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(serverId, runtimeId, typeId))
       {

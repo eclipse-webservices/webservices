@@ -27,7 +27,8 @@
  * 20060719   139977 kathy@ca.ibm.com - Kathy Chan
  * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
  * 20080318   213330 trungha@ca.ibm.com - Trung, Non-conventional Java naming prevents creating Web Services (client)
- *******************************************************************************/
+ * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
+ ********************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
 import org.eclipse.osgi.util.NLS;
@@ -49,6 +50,7 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_SRPF_COMBO_J2EE;
 	public static String MSG_ERROR_TASK_EXCEPTED;
 	public static String MSG_ERROR_NO_SERVER_RUNTIME;
+	public static String MSG_ERROR_NO_SERVER_RUNTIME_INSTALLED;
 	public static String LABEL_FOLDER_NAME;
 	public static String LABEL_JSP_FOLDER_NAME;
 	public static String LABEL_WEB_PROJECT_NAME;

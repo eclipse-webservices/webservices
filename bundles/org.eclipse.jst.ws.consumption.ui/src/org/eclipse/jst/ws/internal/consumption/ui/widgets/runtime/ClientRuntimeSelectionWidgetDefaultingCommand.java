@@ -1,15 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation. and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IBM Corporation. - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
+ * IBM Corporation. - initial API and implementation
  * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -24,6 +26,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -48,6 +51,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
@@ -64,6 +68,7 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
@@ -291,9 +296,21 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     } catch (Exception e)
     {
       // Catch all Exceptions in order to give some feedback to the user
-      IStatus errorStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
-          new String[] { e.getMessage() }), e);
+      IStatus errorStatus= StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
+    	          new String[] { e.getMessage() }), e);
+        
+      // If the exception has no error msg, it's kind of useless to the user so let's log it
+      if ( e.getMessage() == null){
+        ILog pluginlog = WebServiceConsumptionUIPlugin.getInstance().getLog();
+        pluginlog.log(errorStatus);
+        	  
+        // create a new IStatus which has a non-null msg, this is to be thrown to the user.
+        errorStatus = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_TASK_EXCEPTED,
+      	       new String[] { WSUIPluginMessages.MSG_SEE_ERROR_LOG }), e);  
+      }
+          
       env.getStatusHandler().reportError(errorStatus);
+          
       return errorStatus;
     }
   }
