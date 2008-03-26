@@ -18,6 +18,7 @@
  * 20071102   208620 kathy@ca.ibm.com - Kathy Chan, Update JAR sizes
  * 20071102   202222 kathy@ca.ibm.com - Kathy Chan
  * 20080122   216165 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   224148 makandre@ca.ibm.com - Andrew Mak, Web service scenarios broke in latest builds with Equinox p2
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -209,12 +211,12 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 			context.setCreateFoldersEnabled(true);
 			context.setCheckoutFilesEnabled(true);
 
-			IPath jarPath = BundleUtils.getJarredPluginPath(pluginId);
-			if (jarPath != null) {
+			File jarFile = FileLocator.getBundleFile(Platform.getBundle(pluginId));
+			if (jarFile != null && jarFile.isFile()) {
 				IFile resource = ResourceUtils.getWorkspaceRoot().getFile(target);
 
 				if (!resource.exists()) {
-					InputStream is = new FileInputStream(new File(jarPath.toString()));
+					InputStream is = new FileInputStream(jarFile);
 					IFile file = FileResourceUtils.createFile(context, target, is, monitor, env.getStatusHandler());
 					if ((projectRestartRequired_.booleanValue() == false) && file.exists()) {
 						projectRestartRequired_ = Boolean.TRUE;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,16 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070501   184505 kathy@ca.ibm.com - Kathy Chan
+ * 20080326   224148 makandre@ca.ibm.com - Andrew Mak, Web service scenarios broke in latest builds with Equinox p2
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.common;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -41,18 +45,13 @@ public class BundleUtils
 		IPath result = null;
 		Bundle bundle = Platform.getBundle(bundleId);
 		if (bundle != null) {
-			Path runtimeLibFullPath = null;
-			String jarPluginLocation = bundle.getLocation().substring(7);
-			Path jarPluginPath = new Path(jarPluginLocation);
-			// handle case where jars are installed outside of eclipse installation
-			if (jarPluginPath.isAbsolute())
-				runtimeLibFullPath = jarPluginPath;
-			// handle normal case where all plugins under eclipse install
-			else {
-				String installPath = Platform.getInstallLocation().getURL().getPath();
-				runtimeLibFullPath = new Path(installPath + "/" + jarPluginLocation); //$NON-NLS-1$
+			try {
+				File file = FileLocator.getBundleFile(bundle);
+				result = new Path(file.getCanonicalPath());
 			}
-			result = runtimeLibFullPath;
+			catch (IOException e) {
+				// ignore, return null
+			}
 		}
 		return result;
 	}
