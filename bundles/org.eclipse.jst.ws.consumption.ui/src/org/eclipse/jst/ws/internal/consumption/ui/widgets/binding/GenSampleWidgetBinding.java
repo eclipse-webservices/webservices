@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,23 +15,37 @@
  * 20060717   146332 makandre@ca.ibm.com - Andrew Mak
  * 20070516   186233 gilberta@ca.ibm.com - Gilbert Andrews
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
+ * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
+import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
+import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetDefaultingCommand;
@@ -47,7 +61,12 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragmen
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestWebServiceClient;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
+import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
+import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
+import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
@@ -55,6 +74,7 @@ import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragmentFactory;
 import org.eclipse.wst.command.internal.env.core.fragment.SequenceFragment;
 import org.eclipse.wst.command.internal.env.core.fragment.SimpleFragment;
+import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.ui.widgets.CanFinishRegistry;
 import org.eclipse.wst.command.internal.env.ui.widgets.CommandWidgetBinding;
 import org.eclipse.wst.command.internal.env.ui.widgets.SelectionCommand;
@@ -63,6 +83,8 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
@@ -70,7 +92,10 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 
 public class GenSampleWidgetBinding implements CommandWidgetBinding
 {  
-  /* (non-Javadoc)
+
+	public static String JAX_RPC="jax-rpc";
+	
+/* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#create()
    */
   public CommandFragmentFactory create()
@@ -100,13 +125,13 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient", ClientTestWidget.class );
+    dataRegistry.addMapping(InitializeProxyCommand.class, "CanRunTestClient", ClientTestWidget.class );
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR", ClientTestWidget.class );
-    dataRegistry.addMapping(TestDefaultingFragment.class, "TestFacility",ClientTestWidget.class);
+    dataRegistry.addMapping(InitializeProxyCommand.class, "TestFacility",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Folder",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "JspFolder",ClientTestWidget.class);
-    dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "RunTestClient",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Methods",ClientTestWidget.class);
 
     // After the client test widget   
@@ -150,107 +175,120 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	private String            ear_;
 	private IWebServiceClient webServiceClient_;
 	private String            wsdlURI_;
+	private boolean canRunTestClient_;
     
-  public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
-  {    
-      IEnvironment env = getEnvironment();
+	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
+	{    
+		IEnvironment env = getEnvironment();
 	    IStatus status = Status.OK_STATUS;	
 	  
-      // Split up the project and module
-      int index = module_.indexOf("/");
-      if (index!=-1){
-        project_ = module_.substring(0,index);
-        module_ = module_.substring(index+1);
-      }
-
-      if (ear_!=null && ear_.length()>0)
-      {
-        int earIndex = ear_.indexOf("/");
-        if (earIndex!=-1) {
-          earProject_ = ear_.substring(0,earIndex);
-          ear_ = ear_.substring(earIndex+1);
-        }
-      }    
-	  
-	  WebServiceClientInfo clientInfo = new WebServiceClientInfo();
-	  clientInfo.setImplURL(getProxyBean());
-	  //clientInfo.setJ2eeLevel(j2eeLevel_);
-	  clientInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
-	  clientInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
-	  clientInfo.setState(WebServiceState.UNKNOWN_LITERAL);
-	  clientInfo.setWebServiceRuntimeId(typeRuntimeServer_.getRuntimeId());
-	  clientInfo.setWsdlURL(wsdlURI_);
-	  if (clientInfo.getServerInstanceId()==null)
-	  {
-	    CreateServerCommand createServerCommand = new CreateServerCommand();
-	    createServerCommand.setServerFactoryid(clientInfo.getServerFactoryId());
-      createServerCommand.setEnvironment( env );
-	    IStatus createServerStatus = createServerCommand.execute( null, null );
-	    if (createServerStatus.getSeverity()==Status.OK){
-	      clientInfo.setServerInstanceId(createServerCommand.getServerInstanceId());
-	      clientInfo.setServerCreated(true);
+	    // Split up the project and module
+	    int index = module_.indexOf("/");
+	    if (index!=-1){
+	    	project_ = module_.substring(0,index);
+	    	module_ = module_.substring(index+1);
 	    }
-	    else if (createServerStatus.getSeverity()==Status.ERROR){
-	      env.getStatusHandler().reportError(  createServerStatus );
-	    }               
+
 	    
-	  }
+	    if (ear_!=null && ear_.length()>0)
+	    {
+	    	int earIndex = ear_.indexOf("/");
+	    	if (earIndex!=-1) {
+	    		earProject_ = ear_.substring(0,earIndex);
+	    		ear_ = ear_.substring(earIndex+1);
+	    	}
+	    }    
 	  
-	  AddModuleToServerCommand command = new AddModuleToServerCommand();
-      command.setServerInstanceId(clientInfo.getServerInstanceId());
-      if (earProject_ != null && earProject_.length()>0 && ear_!= null && ear_.length()>0)
-      {
-        command.setProject(earProject_);
-        command.setModule(ear_);
-      }
-      else
-      {
-        command.setProject(project_);
-        command.setModule(module_);       
-      }
-
-      command.setEnvironment( env );
-      status = command.execute( monitor, null );
-      if (status.getSeverity()==Status.ERROR)
-      {
-        env.getStatusHandler().reportError(status);
-      }     
-
-	  webServiceClient_ = new TestWebServiceClient(clientInfo);
-	  return status;
-	}
+	    WebServiceClientInfo clientInfo = new WebServiceClientInfo();
+	    clientInfo.setImplURL(getProxyBean());
+	    //clientInfo.setJ2eeLevel(j2eeLevel_);
+	    clientInfo.setServerFactoryId(typeRuntimeServer_.getServerId());
+	  	clientInfo.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+	  	clientInfo.setState(WebServiceState.UNKNOWN_LITERAL);
+	  	clientInfo.setWebServiceRuntimeId(typeRuntimeServer_.getRuntimeId());
+	  	clientInfo.setWsdlURL(wsdlURI_);
+	  	if (clientInfo.getServerInstanceId()==null)
+	  	{
+	  		CreateServerCommand createServerCommand = new CreateServerCommand();
+	  		createServerCommand.setServerFactoryid(clientInfo.getServerFactoryId());
+	  		createServerCommand.setEnvironment( env );
+	  		IStatus createServerStatus = createServerCommand.execute( null, null );
+	  		if (createServerStatus.getSeverity()==Status.OK){
+	  			clientInfo.setServerInstanceId(createServerCommand.getServerInstanceId());
+	  			clientInfo.setServerCreated(true);
+	  			canRunTestClient_ = true;
+	  		}
+	  		else if (createServerStatus.getSeverity()==Status.ERROR){
+	  			canRunTestClient_ = false;
+	  		}               
+	  	}
+	  	else {
+	  		canRunTestClient_ = true;
+	  	}
+	  	
+	  	IProject project = ProjectUtilities.getProject(project_);
+	  	IProject[] earproject = J2EEProjectUtilities.getReferencingEARProjects(project);
+	  	boolean earNull = false;
+	  	if (earproject.length<1) earNull = true;
+	  		
+	  	boolean j2eeProject = J2EEProjectUtilities.isJEEProject(project);
+	  	
+	  	if (j2eeProject && earNull)
+	  		canRunTestClient_ = false;
+	  		
+	  	
+		if (!earNull){
+	  		
+	  		AddModuleToServerCommand command = new AddModuleToServerCommand();
+	  		command.setServerInstanceId(clientInfo.getServerInstanceId());
+	  		command.setProject(project_);
+	  		command.setModule(module_);
+	  		command.setEnvironment( env );
+	  		status = command.execute( monitor, null );
+	  		if (status.getSeverity()==Status.ERROR)
+	  		{
+	  			env.getStatusHandler().reportError(status);
+	  		}     
+	  	}
+	  	webServiceClient_ = new TestWebServiceClient(clientInfo);
+	  	return status;
+  	}
 	
+		
 	public String getProxyBean()
     {
-      String proxyBean = "";
-      
-      try
-      {
-        IResource resource    = ResourceUtils.getResourceFromSelection( selection_.getFirstElement() );
-        String    beanPackage = ResourceUtils.getJavaResourcePackageName( resource.getFullPath() );
-        
-        if( beanPackage==null )
-          beanPackage = "";
-        else
-          beanPackage = beanPackage + ".";
-
-        proxyBean = beanPackage + resource.getName();
-
-        if( proxyBean.toLowerCase().endsWith(".java") || proxyBean.toLowerCase().endsWith(".class")) 
+		String proxyBean = "";
+        try
         {
-          proxyBean = proxyBean.substring(0,proxyBean.lastIndexOf('.'));
+        	IResource resource    = ResourceUtils.getResourceFromSelection( selection_.getFirstElement() );
+        	String    beanPackage = ResourceUtils.getJavaResourcePackageName( resource.getFullPath() );
+        
+        	if( beanPackage==null )
+        		beanPackage = "";
+        	else
+        		beanPackage = beanPackage + ".";
+
+        	proxyBean = beanPackage + resource.getName();
+
+        	if( proxyBean.toLowerCase().endsWith(".java") || proxyBean.toLowerCase().endsWith(".class")) 
+        	{
+        		proxyBean = proxyBean.substring(0,proxyBean.lastIndexOf('.'));
+        	}
         }
-      }
-      catch( CoreException exc )
-      {        
-      }
+        catch( CoreException exc )
+        {        
+        }
       
-      return proxyBean;
+        return proxyBean;
     }
     
 	public IWebServiceClient getWebServiceClient()
 	{
 	  return webServiceClient_;
+	}
+	
+	public boolean getCanRunTestClient(){
+		return canRunTestClient_;
 	}
 	
     public boolean getGenerateProxy()
@@ -262,6 +300,34 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     {
       return true;
     }
+    
+    public SelectionList getTestFacility()
+    {
+    	return selectTestFacility();
+    }
+    
+    private SelectionList selectTestFacility()
+    {
+     	ScenarioContext scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
+    	String[] testTypes = scenarioContext.getWebServiceTestTypes();	  
+    	List newTestTypes = new ArrayList();
+  		
+    	for(int i = 0;i<testTypes.length;i++){
+    		WebServiceTestExtension extension =
+    			(WebServiceTestExtension) WebServiceTestRegistry.getInstance()
+    			.getWebServiceExtensionsByName(testTypes[i]);
+  		  
+    		if(extension.testJavaProxy()){
+    			boolean defaultJaxrpc = extension.isDefaultJAXRPC();
+    			if(defaultJaxrpc){
+    				newTestTypes.add(testTypes[i]); 
+      			}
+    		}
+    	}	
+    	String[] tempArray = new String[newTestTypes.size()];
+    	return new SelectionList((String[]) newTestTypes.toArray(tempArray), 0);
+    }
+    
     
 	public void setClientTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
 	{
@@ -326,13 +392,10 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       
       // Map ClientRuntimeSelectionWidgetDefaultingCommand command
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ClientExtensionDefaultingCommand.class); 
-      //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "Runtime2ClientTypes", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientProjectName", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarProjectName", ClientExtensionDefaultingCommand.class);
-      //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientEarComponentName", ClientExtensionDefaultingCommand.class);
-      //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentName", ClientExtensionDefaultingCommand.class);   
       dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientComponentType", ClientExtensionDefaultingCommand.class);
-      //dataRegistry.addMapping(ClientRuntimeSelectionWidgetDefaultingCommand.class, "ClientJ2EEVersion", ClientExtensionDefaultingCommand.class);
+      
       
       // Map WSDLSelectionWidgetDefaultingCommand command.
       dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", WSDLSelectionWidgetDefaultingCommand.class );
@@ -380,6 +443,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", ClientTestDelegateCommand.class);      
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", TestDefaultingFragment.class);
 	  dataRegistry.addMapping(InitializeProxyCommand.class, "CanGenerateProxy", ClientTestFragment.class);
+	  dataRegistry.addMapping(InitializeProxyCommand.class, "CanRunTestClient", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", FinishTestFragment.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "RunTestClient", ClientTestDelegateCommand.class);
@@ -395,7 +459,6 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "TestFacility",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Folder",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "JspFolder",ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "RunClientTest",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Methods",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject",ClientTestDelegateCommand.class);
       dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR",ClientTestDelegateCommand.class);

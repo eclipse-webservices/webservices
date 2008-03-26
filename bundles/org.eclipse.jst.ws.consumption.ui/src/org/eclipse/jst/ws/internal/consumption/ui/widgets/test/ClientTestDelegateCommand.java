@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
+ * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
@@ -54,6 +55,7 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
   private IServer sampleExistingServer;
   private String proxyBean;
   private boolean runTestClient;
+  private boolean canRunTestClient = true;
   private String sampleProject;
   private String sampleP;
   private String clientProject;
@@ -94,9 +96,11 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	
 	testInfo.setRunTestClient(runTestClient);
 	
-	status = commandFactoryExecution(iwst.launch(testInfo),env, monitor );
-	if(status.getSeverity() == Status.ERROR){
-		return status;	
+	if(canRunTestClient){
+		status = commandFactoryExecution(iwst.launch(testInfo),env, monitor );
+		if(status.getSeverity() == Status.ERROR){
+			return status;	
+		}
 	}
     return status;
   }
@@ -318,7 +322,9 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	this.clientEarComponentName = clientEarComponentName;
   }
   
-  
+  public void setCanRunTestClient(boolean canRunTestClient){
+	  this.canRunTestClient = canRunTestClient;
+  }
   
   /**
    * @param setEndpointMethod The setEndpointMethod to set.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,16 @@
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060815   104870 makandre@ca.ibm.com - Andrew Mak, enable/disable test page controls base on settings in test facility extension
  * 20060815   153903 makandre@ca.ibm.com - Andrew Mak, Browse does not work in generate client test page
+ * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
@@ -27,6 +30,7 @@ import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -43,6 +47,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
@@ -302,7 +307,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 
     sampleFolderText_.setEnabled( enabled );
     methodsTree_.setEnabled( enabled );
-    runTestCheckbox_.setEnabled( enabled );
+    if(canRunTestClient_)
+    	runTestCheckbox_.setEnabled( enabled );
     selectAllMethodsButton_.setEnabled( enabled );
     deselectAllMethodsButton_.setEnabled( enabled );
     sampleFolderBrowseButton_.setEnabled( enabled );
@@ -330,7 +336,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
       deselectAllMethodsButton_.setEnabled( hasMethods );
       
       // run on server only applicable for test facilities that needs launching
-      runTestCheckbox_.setEnabled( testExtension.isServerNeeded() );
+      if(canRunTestClient_)
+    	  runTestCheckbox_.setEnabled( testExtension.isServerNeeded() );
   }
   
   private void handleSelectAll( boolean value )
@@ -444,7 +451,20 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   public void setRunTestClient( boolean value )
   {
-    runTestCheckbox_.setSelection( value );
+	  runTestCheckbox_.setSelection( value );
+  }
+  
+  private boolean canRunTestClient_;
+  
+  public void setCanRunTestClient(boolean canRunTestClient){
+	  canRunTestClient_ = canRunTestClient;
+	  if(!canRunTestClient_)
+	  runTestCheckbox_.setEnabled(false);
+  }
+  
+  public boolean getCanRunTestClient()
+  {
+	  return canRunTestClient_;
   }
   
   public BooleanSelection[] getMethods()
@@ -476,5 +496,12 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   public void setInitialSelection( IStructuredSelection selection )
   {
     initialSelection_ = selection;
+  }
+  
+  public IStatus getStatus() {
+	  if(!canRunTestClient_)
+		  return StatusUtils.warningStatus(ConsumptionUIMessages.MSG_SERVER_NOT_FOUND_WARNING);
+  
+	  return  Status.OK_STATUS;
   }
 }

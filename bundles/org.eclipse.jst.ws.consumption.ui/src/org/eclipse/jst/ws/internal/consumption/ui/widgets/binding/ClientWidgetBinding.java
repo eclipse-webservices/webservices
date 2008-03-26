@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  * 20070502   180304 gilberta@ca.ibm.com - Gilbert Andrews
  * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
+ * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -166,8 +167,8 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     // Before Client Test widget.
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
-    dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient", FinishTestFragment.class );
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient", ClientTestWidget.class );
+    dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "CanRunTestClient", ClientTestWidget.class );
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR", ClientTestWidget.class );
@@ -184,6 +185,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientTestWidget.class, "Folder",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "JspFolder",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "RunTestClient",ClientTestDelegateCommand.class);
+    dataRegistry.addMapping(ClientTestWidget.class, "CanRunTestClient",ClientTestDelegateCommand.class);
     dataRegistry.addMapping(ClientTestWidget.class, "Methods",ClientTestDelegateCommand.class);    
     dataRegistry.addMapping(ClientTestWidget.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientTestWidget.class, "TestID",FinishTestFragment.class);

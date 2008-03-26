@@ -581,7 +581,7 @@
 
    <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="runtimes" name="%XP_runtimes" />
-
+   
    <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
    <extension-point id="serviceRuntimes" name="%XP_serviceRuntimes" />
 
@@ -598,11 +598,13 @@
     id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceSampleTest"
     label="%SAMPLE_TYPE_WEBSERVICES_ID"
     testWSDL="no"
+    testJavaProxy="yes"
     wsClientImplIds="org.eclipse.jst.ws.client.type.java"
     moduletypes="webmodule"
     methodsneeded="true"
     codeGenerated="true"
     serverRequired="true"
+    isdefaultjaxrpc="true"
     allowClientRuntimesRestriction="true"
     class="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample.GSTCWebServiceTester">
   </tester>
@@ -612,6 +614,7 @@
     id="org.eclipse.jst.ws.internal.consumption.ui.widgets.test.explorer.WebServiceExplorer"
     label="%WSEXPLORER_ID"
     testWSDL="yes"
+    testJavaProxy="no"
     wsClientImplIds="org.eclipse.jst.ws.client.type.java"
     moduletypes="webmodule"
     methodsneeded="false"

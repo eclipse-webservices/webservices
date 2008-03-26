@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060816   104870 kathy@ca.ibm.com - Kathy Chan
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
  * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
+ * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.ext.test;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jst.ws.internal.ext.WebServiceExtensionImpl;
+
 
 
 
@@ -90,6 +92,11 @@ public class WebServiceTestExtension extends WebServiceExtensionImpl
     return getConfigElement().getAttribute( "codegenfolder" );
   }
 
+  public boolean isDefaultJAXRPC()
+  {
+	  return Boolean.valueOf(getConfigElement().getAttribute( "isdefaultjaxrpc" )).booleanValue();
+  }
+   
   /**
   * Do we need to launch something
   * @return Boolean if true launch codegen
@@ -139,6 +146,16 @@ public class WebServiceTestExtension extends WebServiceExtensionImpl
   {
   	String wsdl = getConfigElement().getAttribute( "testWSDL" );
     if(wsdl.equals("yes") || wsdl.equals("true"))
+	  return true;
+	 
+	return false;  
+  }
+  
+  public boolean testJavaProxy()
+  {
+  	String javaProxy = getConfigElement().getAttribute( "testJavaProxy" );
+    if(javaProxy == null) return false;
+  	if(javaProxy.equals("yes") || javaProxy.equals("true"))
 	  return true;
 	 
 	return false;  

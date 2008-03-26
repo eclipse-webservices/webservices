@@ -16,7 +16,7 @@
  * 20060818   154402 pmoogk@ca.ibm.com - Peter Moogk
  * 20060830   151091 kathy@ca.ibm.com - Kathy Chan, Client side still enabled when there's only stub server
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
- * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
+ * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -52,7 +52,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
 	
   private TypeRuntimeServer    clientIds_;
   private String               clientRuntimeId_;
-  private Boolean              testService;
+  private boolean              testService;
   private Boolean              installClient;
   private boolean              startClient;
   private boolean              runTestClient;
@@ -282,7 +282,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
   /**
    * @return Returns the testProxySelected.
    */
-  public Boolean getTestService()
+  public boolean getTestService()
   {
     return testService;
   }
@@ -291,7 +291,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
    * @param testProxySelected
    *            The testProxySelected to set.
    */
-  public void setTestService(Boolean testService)
+  public void setTestService(boolean testService)
   {
     this.testService = testService;
   }
@@ -535,6 +535,12 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
   {
   	serviceServerInstanceId_ = id;
   }
+  
+  public boolean getCanRunTestClient(){
+	  if(serviceServerInstanceId_ != null || clientIds_.getServerInstanceId() != null) return true;
+	  
+	  return false;
+  }
 
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
   {
@@ -585,7 +591,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
           deployClient_ = false;
           installClient = Boolean.FALSE;
           startClient = false;
-          testService = Boolean.FALSE;
+          //testService = Boolean.FALSE;
         }
       }
     }
@@ -625,7 +631,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
       {
         installClient = Boolean.FALSE;
         startClient = false;
-        testService = Boolean.FALSE;
+        //testService = Boolean.FALSE;
       }
     }
 

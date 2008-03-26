@@ -14,6 +14,7 @@
  * 20060510   141115 rsinha@ca.ibm.com - Rupam Kuehner
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080211   117924 trungha@ca.ibm.com - Trung Ha
+ * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
@@ -160,17 +161,19 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
       else
       {
     	  //add sampleIProject directly to the server if needed.
-          AddModuleToServerCommand addToServer = new AddModuleToServerCommand();
-          addToServer.setModule(testInfo.getGenerationProject());
-          addToServer.setProject(testInfo.getGenerationProject());
-          addToServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
-          addToServer.setEnvironment( env );
-          IStatus status = addToServer.execute( monitor, null );
-          if (status.getSeverity()==Status.ERROR)
-          {
-            env.getStatusHandler().reportError(status);     
-          }                  	      	  
-      }
+    	  if(testInfo.getClientExistingServer()!= null){
+    		  AddModuleToServerCommand addToServer = new AddModuleToServerCommand();
+    		  addToServer.setModule(testInfo.getGenerationProject());
+    		  addToServer.setProject(testInfo.getGenerationProject());
+    		  addToServer.setServerInstanceId(testInfo.getClientExistingServer().getId());
+    		  addToServer.setEnvironment( env );
+    		  IStatus status = addToServer.execute( monitor, null );
+    		  if (status.getSeverity()==Status.ERROR)
+    		  {
+    			  env.getStatusHandler().reportError(status);     
+    		  }                  	      	  
+    	  }  
+    }
 	  
 	  //5. Call StartServerCommand if this command had to create the sample project.
       if (createdSampleProject)
