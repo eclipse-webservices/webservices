@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="taddport" xml:lang="en-us">
@@ -9,8 +9,7 @@ for a binding. The port contains a 'binding' attribute that references a binding
 and an address element that provides a specification for the endpoint.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>adding WSDL ports</indexterm></indexterm>
-<indexterm>WSDL<indexterm>ports</indexterm></indexterm>
-</keywords>
+<indexterm>WSDL<indexterm>ports</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>Services are used to group sets of related ports together. Ports
@@ -22,31 +21,33 @@ bindings or addresses, the ports are alternatives. Each port provides semantical
 equivalent behavior (within the transport and message format limitations imposed
 by each binding).</li>
 <li>You can determine a service's port types by examining its ports. Using
-this information a user can determine if a given machine supports all the
+this information, a user can determine if a given machine supports all the
 operations needed to complete a given task.</li>
-</ul><p>To add a port to a service, follow these steps:</p></context>
+</ul><p>To add a port to a service, complete the following steps:</p></context>
 <steps>
 <step><cmd>In the Design view, right-click the service you want to add a port
-to, then click <b>Add Port.</b> To select the new port, click the port in
-the service object.</cmd></step>
-<step><cmd>In the Properties view, click the <b>General</b> pane. In the <b>Name</b> field,
-type the name of the port.</cmd><info>The name of the port should provide
-it with a unique name amongst all the ports defined within the service.</info>
-</step>
-<step><cmd>A <b>Binding</b> defines the message format and protocol details
-for operations and messages defined by a particular port type.</cmd><info>You
-can create a new binding for your port, re-use an existing one, or import
-one. Refer to the related tasks for more details.</info></step>
-<step><cmd>In the <b>Address</b> field, type the address of the port.</cmd>
+to, then click <b>Add Port.</b> </cmd></step>
+<step><cmd>Fill in the <b>Name</b> for the port.</cmd><info>The name of the
+port should provide it with a unique name amongst all the ports defined within
+the service.</info></step>
+<step><cmd>Select a <b>Binding</b> and <uicontrol>Protocol</uicontrol> for
+the port, and enter the address of the port into the <uicontrol>Address</uicontrol> field.
+Click <uicontrol>Finish</uicontrol>.</cmd><info>To select the new port, click
+the port in the service object. You can change the information you entered
+about this port any time in the <uicontrol>General</uicontrol> pane.</info>
 </step>
 <step><cmd>Type any information about the port you want the user to read in
-the <b>Documentation</b> pane.</cmd></step>
-<step><cmd>To manage extensions, click the <b>Extensibility</b> pane. You
-can either add, sort, or remove extensions. <draft-comment>Refer to the related
+the <b>Documentation</b> pane of the Properties vie<?Pub Caret?>w.</cmd></step>
+<step><cmd>To manage extensions, click the <b>Extensions</b> pane. You can
+either add, sort, or remove extensions. <draft-comment>Refer to the related
 tasks for more details. Add link to XSD Editor in related tasks section.</draft-comment></cmd>
 </step>
 </steps>
-<result><p> <b>Tip</b>: You can also create a port using the Outline view
+<result><p>You can create a new binding for your port, re-use an existing
+one, or import one. A <b>Binding</b> defines the message format and protocol
+details for operations and messages defined by a particular port type. For
+more information, see <xref format="html" href="../tasks/tsetbind.dita" scope="peer">Setting
+a binding</xref> .</p><p>You can also create a port using the Outline view
 by right-clicking your service under the <b>Services</b> folder and clicking <b>Add
 Port</b>. Your port (regardless of which view you create it in) will appear
 in both the Design view and the Outline view.</p></result>
@@ -61,4 +62,4 @@ in both the Design view and the Outline view.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000003322?>
+<?Pub *0000003562?>

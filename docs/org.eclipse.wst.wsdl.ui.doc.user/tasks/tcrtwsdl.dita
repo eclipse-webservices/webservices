@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tcrtwsdl" xml:lang="en-us">
@@ -11,63 +11,67 @@ editor.</shortdesc>
 services<indexterm>creating WSDL</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
-<context><p>To create a WSDL file, follow these steps:</p></context>
+<context><p>To create a WSDL file, complete the following steps:</p></context>
 <steps>
 <step><cmd>Create a project to contain the WSDL document.</cmd><info>It does
 not matter what kind of project you create.</info></step>
-<step><cmd>In the workbench, click  <b>File > New > Other > Web Services >
-WSDL</b>.</cmd><info>Click <b>Next</b>.</info></step>
+<step><cmd>In the workbench, click <menucascade><uicontrol>File</uicontrol>
+<uicontrol>New</uicontrol><uicontrol>Other</uicontrol></menucascade> and select <menucascade>
+<uicontrol>Web Services</uicontrol><uicontrol>WSDL</uicontrol></menucascade>.</cmd>
+<info>Click <uicontrol>Next</uicontrol>.</info></step>
 <step><cmd>Select the project or folder that will contain the WSDL file.</cmd>
-<info>In the  <b>File name</b> field, type the name of the WSDL file, for
-example  <systemoutput>MyWSDLFile.wsdl</systemoutput>. The name of your XML
-file must end in  <systemoutput>.wsdl</systemoutput></info></step>
-<step><cmd>Click  <b>Next.</b></cmd></step>
-<step><cmd>Enter the  following information: </cmd>
+<info>In the  <uicontrol>File name</uicontrol> field, type the name of the
+WSDL file. The name of your XML file must end in  <systemoutput>.wsdl</systemoutput></info>
+</step>
+<step><cmd>Click  <uicontrol>Next</uicontrol> and enter the following information
+on the next page of the wizard:</cmd>
 <substeps>
-<substep><cmd><b>Target namespace</b> is the namespace for the WSDL file or
-accept the default (<codeph>http://www.example.org/<i>MyWSDLFile</i>/</codeph>).</cmd>
+<substep><cmd>A <uicontrol>Target namespace</uicontrol> for the WSDL file
+or accept the default (<codeph>http://www.example.org/<i>MyWSDLFile</i>/</codeph>).</cmd>
 <info>The target namespace is used for the names of messages and the port
 type, binding and service defined in the WSDL file. The value must take the
 form of a valid URI (for example, <codeph>http://www.mycompany.com/myservice/</codeph>)</info>
 </substep>
-<substep><cmd>The  <b>Prefix</b> is the prefix associated with the target
+<substep><cmd>The <uicontrol>Prefix</uicontrol> associated with the target
 namespace.</cmd></substep>
 <substep><cmd>Select <uicontrol>Create WSDL Skeleton</uicontrol> if you want
-the wizard to create the skeleton of the WSDL file.</cmd><info> This will
-generate the WSDL elements required for your service, including bindings,
-ports and messages. You can then modify these to meet the requirements of
-your Web service.</info></substep>
+the wizard to create the skeleton of the WSDL file.</cmd><info>This will generate
+the WSDL elements required for your service, including bindings, ports and
+messages. You can then modify these to meet the requirements of your Web service
+.</info></substep>
 <substep><cmd>If you have chosen to create a WSDL skeleton, select the binding
-options you want to use in the WSDL document. The options are SOAP and HTTP.
-Use the SOAP protocol when you want to exchange structured and typed information.
-Use the HTTP protocol when you want your application client to just request
-or update information.</cmd><info> If you select SOAP you can
-then select the encoding style you want to use.<ul>
-<li><b>Document literal</b>. Document style messages, literal encoding. Use
-this style of binding when you want to send SOAP messages that can be validated
-by an XML validator.  All the data types in the SOAP message body are defined
-in a schema, so the WSDL parts must point to schema elements. </li>
-<li><b>RPC literal</b>. RPC style messages, literal encoding. Use this style
-of binding when you want to specify the operation method names in your SOAP
-messages so a server can dispatch the specified methods.  Data types must
-be defined, so the WSDL parts must point to XSD types.</li>
-<li><b>RPC encoded</b>. RPC style messages and SOAP encoding. Use this style
-of binding when you want to encode data graphs in your SOAP messages so a
-server can deserialize the object data.  Data types must be defined, so the
-WSDL parts must point to XSD types.</li>
-</ul> If you select HTTP you can select whether to create an HTTP getter or
-setter.<ul>
-<li><b>HTTP GET</b>. A GET request fetches data from a Web server based on
-an URL value and a set of HTTP headers. Use this method when you want to retrieve
-information specified in the request. </li>
-<li><b>HTTP POST</b>. A POST request sends additional data to the server,
-specified after the URL and the headers. Use this method when you want to
-send data enclosed in the body of the request.</li>
+options you want to use in the <uicontrol>Protocol</uicontrol> drop down.
+The options are SOAP and HTTP. Use the SOAP protocol when you want to exchange
+structured and typed information. Use the HTTP protocol when you want your
+application client to just request or update information.</cmd></substep><?Pub Caret1?>
+<substep><cmd></cmd><info>If you select SOAP you can then select the encoding
+style you want to use:<ul>
+<li><uicontrol>document literal</uicontrol>. Document style messages, literal
+encoding. Use this style of binding when you want to send SOAP messages that
+can be validated by an XML validator.  All the data types in the SOAP message
+body are defined in a schema, so the WSDL parts must point to schema elements. </li>
+<li><uicontrol>rpc literal</uicontrol>. RPC style messages, literal encoding.
+Use this style of binding when you want to specify the operation method names
+in your SOAP messages so a server can dispatch the specified methods.  Data
+types must be defined, so the WSDL parts must point to XSD types.</li>
+<li><uicontrol>rpc encoded</uicontrol>. RPC style messages and SOAP encoding.
+Use this style of binding when you want to encode data graphs in your SOAP
+messages so a server can deserialize the object data.  Data types must be
+defined, so the WSDL parts must point to XSD types.</li>
+</ul></info></substep>
+<substep><cmd></cmd><info>If you select HTTP you can select whether to create
+an HTTP getter or setter.<ul>
+<li><uicontrol>HTTP GET</uicontrol>. A GET request fetches data from a Web
+server based on an URL value and a set of HTTP headers. Use this method when
+you want to retrieve information specified in the request. </li>
+<li><uicontrol>HTTP POST</uicontrol>. A POST request sends additional data
+to the server, specified after the URL and the headers. Use this method when
+you want to send data enclosed in the body of the request.</li>
 </ul></info></substep>
 </substeps>
 </step>
-<step><cmd>Click  <b>Finish</b>.</cmd><info>The WSDL file opens in the WSDL
-editor.</info></step>
+<step><cmd>Click  <uicontrol>Finish</uicontrol>.</cmd><info>The WSDL file
+opens in the WSDL editor.</info></step>
 </steps>
 <result><p>If you created a WSDL file with a skeleton using SOAP bindings,
 it should look similar to the following:</p><p><image alt="Image of a WSDL skeleton using SOAP bindings"
@@ -88,4 +92,4 @@ href="../images/httpskel.gif" placement="break"></image></p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000004991?>
+<?Pub *0000005363?>

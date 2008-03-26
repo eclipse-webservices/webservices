@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tedtwsdl" xml:lang="en-us">
@@ -18,10 +18,10 @@ Navigator view or right-click it and click  <b>Open With > WSDL Editor.</b></p><
 <task id="editisourceview">
 <title>Editing in the Source view</title>
 <taskbody>
-<context>To edit a WSDL file in the Source view, follow these steps:</context>
+<context>To edit a WSDL file in the Source view, complete the following steps:</context>
 <steps>
 <step><cmd>Open your WSDL file in the WSDL editor.</cmd></step>
-<step><cmd>Click the  <b>Source</b> tab.</cmd></step>
+<step><cmd>Click the  <uicontrol>Source</uicontrol> tab.</cmd></step>
 <step><cmd>Select the source code you want to edit.</cmd></step>
 </steps>
 <result><p>At any time, you can switch to the Source view to review the source
@@ -33,7 +33,7 @@ view.</p></result>
 <title>Editing in the Design view</title>
 <taskbody>
 <context><p>The Design view provides a graphical way to browse and edit your
-WSDL file. Each type of top level wsdl object is shown within a tabular view
+WSDL file. Each type of top level WSDL object is shown within a tabular view
 (for example, service, binding, port type). Each tabular view contains one
 or more rows that represent the structure of the object. The service, binding,
 and port type objects are 'linked'. A line displays to denote a reference
@@ -45,12 +45,14 @@ href="../images/wsdleditor.gif" placement="break"></image></p></context>
 <title>Editing in the Properties view</title>
 <taskbody>
 <context><p>The Properties view displays a list of attributes and editable
-attribute values of a selected wsdl object.</p><p>The Properties view contains
-the following panes (by clicking and selecting the appropriate pane) to edit:</p><ul>
-<li> <b>General</b> pane, which displays a list of object attributes.</li>
-<li> <b>Documentation</b> pane, which specifies the information you want the
-user to read.</li>
-<li> <b>Extensibility</b> pane, which is used to add extension components.</li>
+attribute values of a selected WSDL object and contains the following panes
+to edit:</p><ul>
+<li> <uicontrol>General</uicontrol> pane, which displays a list of object
+attributes.</li>
+<li> <uicontrol>Documentation</uicontrol> pane, which specifies the information
+you want the user to read.</li>
+<li> <uicontrol>Extensions</uicontrol> pane, which is used to add extension
+components.</li>
 </ul><draft-comment> [Legacy Title] Showing Bindings in the Design [Legacy
 Context]By default bindings are shown in the Design View. Select the show/hide
 binding button at the top left of the Design View to hide the bindings. With
@@ -75,8 +77,8 @@ messages exchanged. You cannot edit any types directly using this folder.</li>
 <li> <b>Services</b>, which are used to aggregate a set of related ports.</li>
 <li> <b>Bindings</b>, which specify concrete protocol and data format specifications
 for the operations and messages defined by a particular port type.</li>
-<li> <b>Port Types</b>, which are a set of abstract operations. Each operation
-refers to an input message and output messages. </li>
+<li> <b>Port Type</b>, which is <?Pub Caret?>a set of abstract operations.
+Each operation refers to an input message and output messages. </li>
 <li> <b>Messages</b>, which represent an abstract definition of the data being
 transmitted. A message consists of logical parts, each of which is associated
 with a definition within some type system.</li>
@@ -95,4 +97,4 @@ with a definition within some type system.</li>
 </related-links>
 </task>
 </task>
-<?Pub *0000004972?>
+<?Pub *0000004969?>

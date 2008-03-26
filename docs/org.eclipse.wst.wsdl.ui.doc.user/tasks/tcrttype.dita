@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tcrttype" xml:lang="en-us">
@@ -9,22 +9,22 @@ WSDL is not tied exclusively to a specific typing system, but it uses the
 W3C XML Schema specification as its default choice.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>creating WSDL types</indexterm></indexterm>
-<indexterm>WSDL<indexterm>types</indexterm></indexterm>
-</keywords>
+<indexterm>WSDL<indexterm>types</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>WSDL allows type systems to be added via extensibility elements.
 An extensibility element may appear under the  <b>types</b> element to identify
 the type definition system being used and to provide an XML container element
 for the type definitions.</p><p>To add an XSD type or element to your WSDL
-file:</p></context>
+file: </p></context>
 <steps-unordered>
-<step><cmd>In the Design view, click the indicator icon to the right of the
-port type object to drill down into the schema. Now you can edit the schema
-in the XML schema editor.</cmd></step>
+<step><cmd>In the Design view, click the arrow icon to the right of the port
+type object to open that operation in the XML <?Pub Caret?>schema editor.</cmd>
+</step>
 </steps-unordered>
-<result><p>For more information about XML schemas, refer to the XML schema
-editor online documentation.</p></result>
+<result><p>For more information about XML schemas, see the <xref format="html"
+href="/../../org.eclipse.wst.xsdeditor.doc.user/topics/cxmlsced.dita" scope="peer">XML
+schema editor documentation</xref> for links to online resources.</p></result>
 </taskbody>
 <related-links>
 <linklist><title>Related concepts</title>
@@ -36,4 +36,4 @@ editor online documentation.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000001697?>
+<?Pub *0000001777?>

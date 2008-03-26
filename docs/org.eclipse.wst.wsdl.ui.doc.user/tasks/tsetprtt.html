@@ -2,8 +2,8 @@
 <html lang="en-us" xml:lang="en-us">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<meta name="copyright" content="Copyright (c) 2000, 2006 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
-<meta name="DC.rights.owner" content="(C) Copyright 2000, 2006" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2008" />
 <meta content="public" name="security" />
 <meta content="index,follow" name="Robots" />
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
@@ -46,29 +46,29 @@ an existing one, or import one.</p>
 <h2 class="topictitle2">Create a new port type for a binding</h2>
 
 <div>
-<div class="section"><p>If you want to create a new port type for your binding, follow
-these steps:</p>
+<div class="section"><p>If you want to create a new port type for your binding, complete
+the following steps:</p>
 </div>
 
 <ol>
 <li class="stepexpand"><span>In the Design view, right-click on a binding object (note that
-port must reference a binding) and click <strong>Set Port Type &gt; New PortType</strong>.</span>
+port must reference a binding) and click <strong>Set PortType &gt; New PortType</strong>.</span>
 </li>
 
-<li class="stepexpand"><span>Type the name of the port type in the <strong>Name</strong> field.</span>
+<li class="stepexpand"><span>Type the name of the port type in the <strong>Name</strong> field and click <strong>OK</strong>.</span>
  The name should be unique name among all port types defined within in
-the enclosing WSDL document. Click <strong>OK</strong>. To select the new port type,
-click the port type object.</li>
+the enclosing WSDL document. To select the new port type, click the port type
+object.</li>
 
 <li class="stepexpand"><span>In the Properties view, type any information about the port type
 you wish the user to read in the <strong>Documentation</strong> pane.</span></li>
 
 </ol>
 
-<div class="section"><p> <strong>Tip</strong>: You can also create a new port type for your binding
-using the Outline view.</p>
-<p>Once you have created a port type, you can add
-operations to it, which can send and receive messages.</p>
+<div class="section"> <div class="tip"><span class="tiptitle">Tip:</span> You can also create a new port type for your binding
+using the Outline view.</div>
+<p>Once you have created a port type, you can
+add operations to it, which can send and receive messages.</p>
 </div>
 
 </div>
@@ -79,8 +79,8 @@ operations to it, which can send and receive messages.</p>
 <h2 class="topictitle2">Reuse a port type for a binding</h2>
 
 <div>
-<div class="section"><p>If you want to reuse a port type for your binding, follow these
-steps:</p>
+<div class="section"><p>If you want to reuse a port type for your binding, complete the
+following steps:</p>
 </div>
 
 <ol>
@@ -88,21 +88,21 @@ steps:</p>
 port must reference a binding) and click  <strong>Set Port Type &gt; Existing PortType</strong>.</span>
 </li>
 
-<li><span>In the <strong>Name</strong> field, type a search string to filter the list
-or leave the field blank to view all.</span></li>
+<li><strong>Optional: </strong><span>In the <strong>Name</strong> field, type a search string
+to filter the list or leave the field blank to view all.</span></li>
 
 <li><span>You can change the scope of the list by selecting one of the following
 options:</span>
 <ul>
-<li><strong>Workspace</strong>. Lists the port types available in your workspace.</li>
+<li><strong>Workspace</strong>: lists the port types available in your workspace.</li>
 
-<li><strong>Enclosing Project</strong>. Lists the port types available in the project
+<li><strong>Enclosing Project</strong>: lists the port types available in the project
 that contains your file.</li>
 
-<li><strong>Current Resource</strong>. Lists the port types available in your current
+<li><strong>Current Resource</strong>: lists the port types available in your current
 file.</li>
 
-<li><strong>Working Sets</strong>. Lists the port types available in a specified
+<li><strong>Working Sets</strong>: lists the port types available in a specified
 set of files. To specify a working set, click <strong>Choose</strong>. You can select
 files from an existing working set or create a new working set. Once you have
 selected the files, click <strong>OK</strong>.</li>
@@ -125,7 +125,7 @@ selected the files, click <strong>OK</strong>.</li>
 
 <div>
 <div class="section"><p>If you want to import an existing port type for your binding,
-follow these steps:</p>
+complete the following steps:</p>
 </div>
 
 <ol>
@@ -133,20 +133,20 @@ follow these steps:</p>
 port must reference a binding) and click  <strong>Set Port Type &gt; Existing PortType.</strong></span>
 </li>
 
-<li><span>In the <strong>Name</strong> field, type a search string to filter the list
-or leave the field blank to view all.</span></li>
+<li><strong>Optional: </strong><span>In the <strong>Name</strong> field, type a search string
+to filter the list or leave the field blank to view all.</span></li>
 
 <li><span>You can import a port type by selecting one of the following options:</span>
 <ul>
-<li><strong>Workspace</strong>. Lists the port types available in your workspace.</li>
+<li><strong>Workspace</strong>: lists the port types available in your workspace.</li>
 
-<li><strong>Enclosing Project</strong>. Lists the port types available in the project
+<li><strong>Enclosing Project</strong>: lists the port types available in the project
 that contains your file.</li>
 
-<li><strong>Working Sets</strong>. Lists the port types available in a specified
-set of files. To specify a working set, click <strong>Choose</strong>. You can select
-files from an existing working set or create a new working set. Once you have
-selected the files, click <strong>OK</strong>.</li>
+<li><strong>Working Sets</strong>: lists the port types available in
+a specified set of files. To specify a working set, click <strong>Choose</strong>. You
+can select files from an existing working set or create a new working set.
+Once you have selected the files, click <strong>OK</strong>.</li>
 
 </ul>
 

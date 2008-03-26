@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tsetbind" xml:lang="en-us">
@@ -8,11 +8,11 @@
 regarding the transmission of messages to and from a web service. A binding
 references exactly one port type. The structure of a binding corresponds very
 closely to that of the port type. The binding contains extensibility elements
-(for example, soap, http, and mime) that specify protocol specific details.
+(for example, SOAP, http, and mime) that specify protocol specific details.
 Each port within a service references exactly one binding.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>bindings<indexterm>creating</indexterm></indexterm><indexterm>setting WSDL bindings</indexterm></indexterm>
-<indexterm>WSDL<indexterm>bindings</indexterm></indexterm>
+<keywords><indexterm>Web services<indexterm>bindings<indexterm>creating</indexterm></indexterm><indexterm>setting
+WSDL bindings</indexterm></indexterm><indexterm>WSDL<indexterm>bindings</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>
@@ -23,7 +23,8 @@ create a new binding, reuse an existing one, or import one. </p></context>
 <task id="createnewbind">
 <title>Creating a new binding</title>
 <taskbody>
-<context><p>To create a new binding for your port, follow these steps:</p></context>
+<context><p>To create a new binding for your port, complete the following
+steps:</p></context>
 <steps>
 <step><cmd>In the Design view, right-click your port and click <b>Set Binding
 > New Binding</b>.</cmd></step>
@@ -31,21 +32,22 @@ create a new binding, reuse an existing one, or import one. </p></context>
 name should be unique among all bindings defined within the enclosing WSDL
 document. Click <b>OK.</b> To select the new binding, click the binding object.</info>
 </step>
-<step><cmd>A <b>Port Type</b> is a named set of abstract operations and the
-abstract messages involved. You can either create a new port type for your
-binding, reuse an existing one, or import one. Refer to the related tasks
-for more details.</cmd></step>
 <step><cmd>Type any information about the binding you want the user to read
 in the <b>Documentation</b> pane.</cmd></step>
 </steps>
-<result><p> <b>Tip</b>: You can also create a new binding for your port using
-the Outline view.</p></result>
+<result><note>A <b>PortType</b> is a named set of abstract operations and
+the abstract messages involved. You can either create a new port type for
+your binding, reuse an existing one, or import one. For more information,
+see <xref format="html" href="../tasks/tsetprtt.dita" scope="peer">Setting
+a Port Type</xref>.</note><note type="tip">You can also create a new binding
+for your port using the Outline view. Right click on the <uicontrol>Bindings</uicontrol> folder
+and select <uicontrol>Add Binding</uicontrol>.</note></result>
 </taskbody>
 </task>
 <task id="reusebinding">
 <title>Reusing a binding for a port</title>
 <taskbody>
-<context><p>To reuse a binding for your port, follow these steps:</p></context>
+<context><p>To reuse a binding for your port, complete the following steps:</p></context>
 <steps>
 <step><cmd>In the Design view, select your port.</cmd></step>
 <step><cmd>In the Properties view, click the <b>General</b> pane.</cmd></step>
@@ -57,32 +59,35 @@ want to use.</cmd></step>
 <task id="regeneratingabinding">
 <title>Regenerating a binding</title>
 <taskbody>
-<context>To regenerate a binding:</context>
+<context>To regenerate a binding, complete the following steps:</context>
 <steps>
 <step><cmd>Right-click the binding you want to regenerate.</cmd></step>
-<step><cmd>Select <uicontrol>Generate Binding Content</uicontrol>.<draft-comment>RATLC00975711
-provide more info about SOAP binding options</draft-comment></cmd></step>
-<step><cmd>Specify an required binding information. If you are modifying an
-existing binding, ensure that you select the <uicontrol>Overwrite existing
-binding information</uicontrol> check box.</cmd></step>
+<step><cmd>Select <uicontrol>Generate Binding Content</uicontrol>.</cmd><?Pub Caret1?>
+</step>
+<step><cmd>Specify the required binding information. If you are modifying
+an existing binding, select the <uicontrol>Overwrite existing binding information</uicontrol> check
+box.</cmd></step>
 </steps>
 </taskbody>
 </task>
 <task id="impbinding">
 <title>Import an existing binding</title>
 <taskbody>
-<context>To import an existing binding for your port, follow these steps:</context>
+<context>To import an existing binding for your port, complete the following
+steps:</context>
 <steps>
 <step><cmd>In the Design view, right-click your port and click  <b>Set Binding
 > Existing Binding.</b></cmd></step>
-<step><cmd>In the <b>Name</b> field, type a search string to filter the list
-or leave the field blank to view all.</cmd></step>
+<step importance="optional"><cmd>In the <b>Name</b> field, type a search string
+to filter the list or leave the field blank to view all.</cmd></step>
 <step><cmd>You can import a binding by selecting one of the following options:</cmd>
 <choices>
-<choice><b>Workspace</b>. Lists the bindings available in your workspace.</choice>
-<choice><b>Enclosing Project</b>. Lists the bindings available in the project
+<choice><b>Workspace</b>: lists the bindings available in your workspace.</choice>
+<choice><b>Enclosing Project</b>: lists the bindings available in the project
 that contains your file.</choice>
-<choice><b>Working Sets</b>. Lists the bindings available in a specified set
+<choice><b>Current Resource</b>: lists the binding types available in your
+current file.</choice>
+<choice><b>Working Sets</b>: lists the bindings available in a specified set
 of files. To specify a working set, click <b>Choose</b>. You can select files
 from an existing working set or create a new working set. Once you have selected
 the files, click <b>OK</b>.</choice>
@@ -105,4 +110,4 @@ you wish the user to read in the <b>Documentation</b> pane.</cmd></step>
 </related-links>
 </task>
 </task>
-<?Pub *0000004937?>
+<?Pub *0000005174?>

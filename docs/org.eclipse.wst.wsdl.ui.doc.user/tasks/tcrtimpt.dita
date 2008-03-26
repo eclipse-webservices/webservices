@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tcrtimpt" xml:lang="en-us">
 <title>Creating an import statement</title>
 <shortdesc>The import statement is used to import other WSDL documents or
 XML schemas into your WSDL document. This enables you to have more modular
-WSDL documents. The use of the  <b>import</b> statement allows the separation
+WSDL documents. The use of the <b>import</b> statement allows the separation
 of the different elements of a service definition into independent documents,
 which can then be imported as needed. This technique helps in writing clearer
 service definitions, by separating the definitions according to their level
 of abstraction.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>adding WSDL import statements</indexterm></indexterm>
-<indexterm>WSDL<indexterm>import statements</indexterm></indexterm>
-</keywords>
+<indexterm>WSDL<indexterm>import statements</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
-<context><p>To create an import statement, follow these steps:</p></context>
+<context><p>To create an import statement, complete the following steps:</p></context>
 <steps>
 <step><cmd>In the Outline view, right-click the <b>Imports</b> folder and
 click <b>Add Import.</b> Select your new import statement.</cmd></step>
 <step><cmd>In the Properties view, click the <b>General</b> pane.</cmd></step>
-<step><cmd>Click the icon to the right of the <b>Location</b> field.</cmd>
-<stepresult>A "Select file" window opens.</stepresult></step>
-<step><cmd>Select the WSDL file or XML Schema file you wish to import. Click <b>OK</b>.<draft-comment>Send
-for final sign-off</draft-comment></cmd></step>
-<step><cmd>Type any information about the import statement you wish the user
+<step><cmd>Click the icon to the right of the <b>Location</b> field to open
+the Select File window.<uicontrol></uicontrol>.</cmd></step>
+<step><cmd>Select a WSDL file or XML Schema to import by doing one of the
+following:</cmd><info><ul>
+<li>Select a file from another project in the workspace in the <uicontrol>Workspace
+Files</uicontrol> section.</li>
+<li>Click <uicontrol>Import Files</uicontrol> and then <uicontrol>Browse</uicontrol> to
+find and select files outside the workspace. Click <uicontrol>Finish</uicontrol> after
+completing this Import wizard.<?Pub Caret?></li>
+</ul>Click <uicontrol>OK</uicontrol>.</info></step>
+<step><cmd>Type any information about the import statement you want the user
 to read in the <b>Documentation</b> pane.</cmd></step>
 </steps>
 <result>Once you specify the location of the document you wish to import,
@@ -43,4 +48,4 @@ WSDL components may now be visible within the editor.</result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002258?>
+<?Pub *0000002584?>

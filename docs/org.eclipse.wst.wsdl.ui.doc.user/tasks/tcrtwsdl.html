@@ -2,8 +2,8 @@
 <html lang="en-us" xml:lang="en-us">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<meta name="copyright" content="Copyright (c) 2000, 2007 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
-<meta name="DC.rights.owner" content="(C) Copyright 2000, 2007" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2008" />
 <meta content="public" name="security" />
 <meta content="index,follow" name="Robots" />
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
@@ -33,72 +33,77 @@
 <div><p>You can create a new, empty WSDL file, then edit it using the WSDL
 editor.</p>
 
-<div class="section"><p>To create a WSDL file, follow these steps:</p>
+<div class="section"><p>To create a WSDL file, complete the following steps:</p>
 </div>
 
 <ol>
 <li class="stepexpand"><span>Create a project to contain the WSDL document.</span> It does
 not matter what kind of project you create.</li>
 
-<li class="stepexpand"><span>In the workbench, click  <strong>File &gt; New &gt; Other &gt; Web Services &gt;
-WSDL</strong>.</span> Click <strong>Next</strong>.</li>
+<li class="stepexpand"><span>In the workbench, click <span class="menucascade"><span class="uicontrol">File</span>
+ &gt; <span class="uicontrol">New</span> &gt; <span class="uicontrol">Other</span></span> and select <span class="menucascade">
+<span class="uicontrol">Web Services</span> &gt; <span class="uicontrol">WSDL</span></span>.</span>
+ Click <span class="uicontrol">Next</span>.</li>
 
 <li class="stepexpand"><span>Select the project or folder that will contain the WSDL file.</span>
- In the  <strong>File name</strong> field, type the name of the WSDL file, for
-example  <tt class="sysout">MyWSDLFile.wsdl</tt>. The name of your XML
-file must end in  <tt class="sysout">.wsdl</tt></li>
+ In the  <span class="uicontrol">File name</span> field, type the name of the
+WSDL file. The name of your XML file must end in  <tt class="sysout">.wsdl</tt>
+</li>
 
-<li class="stepexpand"><span>Click  <strong>Next.</strong></span></li>
-
-<li class="stepexpand"><span>Enter the  following information: </span>
+<li class="stepexpand"><span>Click  <span class="uicontrol">Next</span> and enter the following information
+on the next page of the wizard:</span>
 <ol type="a">
-<li class="substepexpand"><span><strong>Target namespace</strong> is the namespace for the WSDL file or
-accept the default (<samp class="codeph">http://www.example.org/<em>MyWSDLFile</em>/</samp>).</span>
+<li class="substepexpand"><span>A <span class="uicontrol">Target namespace</span> for the WSDL file
+or accept the default (<samp class="codeph">http://www.example.org/<em>MyWSDLFile</em>/</samp>).</span>
  The target namespace is used for the names of messages and the port
 type, binding and service defined in the WSDL file. The value must take the
 form of a valid URI (for example, <samp class="codeph">http://www.mycompany.com/myservice/</samp>)
 </li>
 
-<li class="substepexpand"><span>The  <strong>Prefix</strong> is the prefix associated with the target
+<li class="substepexpand"><span>The <span class="uicontrol">Prefix</span> associated with the target
 namespace.</span></li>
 
 <li class="substepexpand"><span>Select <span class="uicontrol">Create WSDL Skeleton</span> if you want
-the wizard to create the skeleton of the WSDL file.</span>  This will
-generate the WSDL elements required for your service, including bindings,
-ports and messages. You can then modify these to meet the requirements of
-your Web service.</li>
+the wizard to create the skeleton of the WSDL file.</span> This will generate
+the WSDL elements required for your service, including bindings, ports and
+messages. You can then modify these to meet the requirements of your Web service
+.</li>
 
 <li class="substepexpand"><span>If you have chosen to create a WSDL skeleton, select the binding
-options you want to use in the WSDL document. The options are SOAP and HTTP.
-Use the SOAP protocol when you want to exchange structured and typed information.
-Use the HTTP protocol when you want your application client to just request
-or update information.</span>  If you select SOAP you can
-then select the encoding style you want to use.<ul>
-<li><strong>Document literal</strong>. Document style messages, literal encoding. Use
-this style of binding when you want to send SOAP messages that can be validated
-by an XML validator.  All the data types in the SOAP message body are defined
-in a schema, so the WSDL parts must point to schema elements. </li>
+options you want to use in the <span class="uicontrol">Protocol</span> drop down.
+The options are SOAP and HTTP. Use the SOAP protocol when you want to exchange
+structured and typed information. Use the HTTP protocol when you want your
+application client to just request or update information.</span></li>
 
-<li><strong>RPC literal</strong>. RPC style messages, literal encoding. Use this style
-of binding when you want to specify the operation method names in your SOAP
-messages so a server can dispatch the specified methods.  Data types must
-be defined, so the WSDL parts must point to XSD types.</li>
+<li class="substepexpand"><span /> If you select SOAP you can then select the encoding
+style you want to use:<ul>
+<li><span class="uicontrol">document literal</span>. Document style messages, literal
+encoding. Use this style of binding when you want to send SOAP messages that
+can be validated by an XML validator.  All the data types in the SOAP message
+body are defined in a schema, so the WSDL parts must point to schema elements. </li>
 
-<li><strong>RPC encoded</strong>. RPC style messages and SOAP encoding. Use this style
-of binding when you want to encode data graphs in your SOAP messages so a
-server can deserialize the object data.  Data types must be defined, so the
-WSDL parts must point to XSD types.</li>
+<li><span class="uicontrol">rpc literal</span>. RPC style messages, literal encoding.
+Use this style of binding when you want to specify the operation method names
+in your SOAP messages so a server can dispatch the specified methods.  Data
+types must be defined, so the WSDL parts must point to XSD types.</li>
+
+<li><span class="uicontrol">rpc encoded</span>. RPC style messages and SOAP encoding.
+Use this style of binding when you want to encode data graphs in your SOAP
+messages so a server can deserialize the object data.  Data types must be
+defined, so the WSDL parts must point to XSD types.</li>
 
 </ul>
- If you select HTTP you can select whether to create an HTTP getter or
-setter.<ul>
-<li><strong>HTTP GET</strong>. A GET request fetches data from a Web server based on
-an URL value and a set of HTTP headers. Use this method when you want to retrieve
-information specified in the request. </li>
+</li>
 
-<li><strong>HTTP POST</strong>. A POST request sends additional data to the server,
-specified after the URL and the headers. Use this method when you want to
-send data enclosed in the body of the request.</li>
+<li class="substepexpand"><span /> If you select HTTP you can select whether to create
+an HTTP getter or setter.<ul>
+<li><span class="uicontrol">HTTP GET</span>. A GET request fetches data from a Web
+server based on an URL value and a set of HTTP headers. Use this method when
+you want to retrieve information specified in the request. </li>
+
+<li><span class="uicontrol">HTTP POST</span>. A POST request sends additional data
+to the server, specified after the URL and the headers. Use this method when
+you want to send data enclosed in the body of the request.</li>
 
 </ul>
 </li>
@@ -107,8 +112,8 @@ send data enclosed in the body of the request.</li>
 
 </li>
 
-<li class="stepexpand"><span>Click  <strong>Finish</strong>.</span> The WSDL file opens in the WSDL
-editor.</li>
+<li class="stepexpand"><span>Click  <span class="uicontrol">Finish</span>.</span> The WSDL file
+opens in the WSDL editor.</li>
 
 </ol>
 

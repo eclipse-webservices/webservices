@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
  "concept.dtd">
 <concept id="cwsdled" xml:lang="en-us">
@@ -15,25 +15,24 @@ view, and validate WSDL files.</shortdesc>
 <li>Create new WSDL files</li>
 <li>Validate and edit WSDL files</li>
 <li>Create and delete:  <ul>
-<li>services, which are used to aggregate a set of related ports. These are
-the root elements of all WSDL files.</li>
-<li>ports, which specify an address for a binding, thus defining a single
-communication endpoint.</li>
-<li>bindings, which specify concrete protocol and data format specifications
-for the operations and messages defined by a particular port type.</li>
-<li>port types, which are a set of abstract operations. Each operation refers
-to an input message and output messages.</li>
-<li>operations, which refer to input and output messages</li>
-<li>messages, which represent an abstract definition of the data being transmitted.
+<li>Services: used to aggregate a set of related ports. These are the root
+elements of all WSDL files.</li>
+<li>Ports: specify an address for a binding, thus defining a single communication
+endpoint.</li>
+<li>Bindings: specify concrete protocol and data format specifications for
+the operations and messages defined by a particular port type.</li>
+<li>Port types: a set of abstract operations that each refer to an input message
+and output messages.</li>
+<li>Operations: input and output messages.</li>
+<li>Messages: represent an abstract definition of the data being transmitted.
 A message consists of logical parts, each of which is associated with a definition
 within some type system.</li>
-<li>parts, which are a flexible mechanism for describing the logical abstract
-content of a message</li>
-<li>types, which describe all the data types used between the client and server.
+<li>Parts: a flexible mechanism for describing the logical abstract content
+of a message.<?Pub Caret?></li>
+<li>Types: describe all the data types used between the client and server.
 WSDL is not tied exclusively to a specific typing system, but it uses the
 W3C XML Schema specification as its default choice.</li>
-<li>import statements, which are used to associate a namespace with a document
-location </li>
+<li>Import statements: used to associate a namespace with a document location. </li>
 </ul></li>
 <li>Import existing WSDL files for structured viewing</li>
 <li>Generate documentation from a WSDL document.</li>
@@ -54,4 +53,4 @@ also used for validation.&nbsp; </p>
 </linklist>
 </related-links>
 </concept>
-<?Pub *0000002617?>
+<?Pub *0000002534?>

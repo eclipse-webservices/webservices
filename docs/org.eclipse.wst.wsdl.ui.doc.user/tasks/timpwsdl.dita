@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="timpwsdl" xml:lang="en-us">
@@ -23,20 +23,22 @@ the instructions below.</p><p> <uicontrol>Prerequisite:</uicontrol> Create
 a project. It is recommend that you create a Web project so that the WSDL
 can be easily used to generate additional artifacts and deployed.</p><p>For
 more information on creating a Web project, refer to the Web application development
-documentation.</p><p>To import a WSDL file to your Web project:</p></context>
+documentation.</p><p>To import a WSDL file to your Web project, complete the
+following steps:</p></context>
 <steps>
-<step><cmd>Select your project in the J2EE Navigator pane, and from the <uicontrol>File</uicontrol> menu,
+<step><cmd>Select your project in the Java EE Navigator pane, and from the <uicontrol>File</uicontrol> menu,
 select <uicontrol>Import</uicontrol>.</cmd></step>
-<step><cmd>Select <uicontrol>File System</uicontrol> and click  <uicontrol>Next</uicontrol>.</cmd>
+<step><cmd>Select <menucascade><uicontrol>General</uicontrol><uicontrol>File
+System</uicontrol></menucascade> and click  <uicontrol>Next</uicontrol>.</cmd>
 </step>
-<step><cmd>Click <uicontrol>Browse</uicontrol> on the next page
-of the wizard to select the directories from which you would like to add the
-WSDL.</cmd></step>
+<step><cmd>Click <uicontrol>Browse</uicontrol> on the next page of the wizard
+to select the directories from which you would like to add the WSDL.</cmd>
+</step><?Pub Caret?>
 <step><cmd>In the import selection panes, use the following methods to select
 exactly the resources you want to add:  </cmd><info><ul>
 <li>Expand the hierarchies in the left pane and select or clear the checkboxes
 that represent the folders in the selected directory. Then in the right pane,
-select or clear checkboxes for individual files.</li>
+select or clear check boxes for individual files.</li>
 <li>Click <uicontrol>Filter Types</uicontrol> to filter the current selection
 for files of a specific type.</li>
 <li>Click <uicontrol>Select All</uicontrol> to select all resources in the
@@ -49,21 +51,9 @@ destination.</cmd></step>
 <step><cmd>When you have finished specifying your import options, click <uicontrol>Finish.</uicontrol></cmd>
 </step>
 </steps>
-<result><p>After you have imported a WSDL file into the workbench and opened
-it in the WSDL editor, you can edit it.</p><p>Alternately, you can import
-a WSDL file using the WSDL Explorer. For more information, refer to:  <xref
-href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/twsdlexp.dita"
+<result><p>Alternately, you can import a WSDL file using the WSDL Explorer.
+For more information, refer to:  <xref href="../../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/twsdlexp.dita"
 scope="peer"> Using the WSDL Explorer</xref>.  </p></result>
-<postreq><b>Known limitation when importing WSDL:</b> On some <tm tmclass="special"
-tmowner="Microsoft Corporation" tmtype="reg" trademark="Windows">Windows</tm> systems,
-the "Import to File System" operation may result in saving the HTML file rather
-than the desired WSDL files. The workaround and fix for this problem is documented
-in <tm tmclass="special" tmowner="Microsoft Corporation" tmtype="reg" trademark="Microsoft">Microsoft</tm> Knowledge
-Base article Q281119. A dialog box may ask if you want to save "WSDLFileDownloader",
-the message is incorrect and does not affect the actual name of the file saved.
-If the file extension displays XML when selecting the save location for the
-WSDL document, ignore the incorrect extension and continue the save. The file
-will be saved with the WSDL extension.</postreq>
 </taskbody>
 <related-links>
 <linklist><title>Related concepts</title>
@@ -77,4 +67,4 @@ will be saved with the WSDL extension.</postreq>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000004517?>
+<?Pub *0000003678?>

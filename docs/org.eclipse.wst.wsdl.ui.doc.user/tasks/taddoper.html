@@ -2,8 +2,8 @@
 <html lang="en-us" xml:lang="en-us">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<meta name="copyright" content="Copyright (c) 2000, 2006 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
-<meta name="DC.rights.owner" content="(C) Copyright 2000, 2006" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2008" />
 <meta content="public" name="security" />
 <meta content="index,follow" name="Robots" />
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
@@ -11,8 +11,8 @@
 <meta name="DC.Title" content="Adding an operation" />
 <meta name="abstract" content="An operation names the operation and lists the expected inputs and outputs. The operation element may also contain a fault sub-element that describes any error data the operation may return." />
 <meta name="description" content="An operation names the operation and lists the expected inputs and outputs. The operation element may also contain a fault sub-element that describes any error data the operation may return." />
-<meta content="WSDL, adding operations, Web services, adding WSDL operations" name="DC.subject" />
-<meta content="WSDL, adding operations, Web services, adding WSDL operations" name="keywords" />
+<meta content="Web services, adding WSDL operations, WSDL, operations" name="DC.subject" />
+<meta content="Web services, adding WSDL operations, WSDL, operations" name="keywords" />
 <meta scheme="URI" name="DC.Relation" content="../concepts/cwsdled.html" />
 <meta scheme="URI" name="DC.Relation" content="tcrtwsdl.html" />
 <meta scheme="URI" name="DC.Relation" content="tedtwsdl.html" />
@@ -35,20 +35,20 @@ describes any error data the operation may return.</p>
 
 <div class="section">Using these, you can declare four transmission primitives that an
 endpoint can support:<ul>
-<li> <strong>One-way</strong>. The endpoint receives a message.</li>
+<li> <strong>One-way</strong>: the endpoint receives a message.</li>
 
-<li> <strong>Request-response</strong>. The endpoint receives a message, and sends a
+<li> <strong>Request-response</strong>: the endpoint receives a message, and sends a
 correlated message.</li>
 
-<li> <strong>Solicit-response</strong>. The endpoint sends a message, and receives a
+<li> <strong>Solicit-response</strong>: the endpoint sends a message, and receives a
 correlated message.</li>
 
-<li> <strong>Notification</strong>. The endpoint sends a message.</li>
+<li> <strong>Notification</strong>: the endpoint sends a message.</li>
 
 </ul>
 <p>You can add an operation to a port type or a port binding.</p>
 <p>To
-add an operation to a port type, follow these steps:</p>
+add an operation to a port type, complete the following steps:</p>
 </div>
 
 <ol>
@@ -81,7 +81,8 @@ you wish the user to read in the  <strong>Documentation</strong> pane.</span></l
 </ol>
 
 <div class="section"><p> <strong>Tip</strong>: You can also create a new operation for your port
-type using the Outline view.</p>
+type using the Outline view. Right click on a port type in the <span class="uicontrol">Port
+Type</span> folder and select <span class="uicontrol">Add Operation</span>.</p>
 </div>
 
 </div>

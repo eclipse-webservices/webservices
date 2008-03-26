@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tsetprtt" xml:lang="en-us">
@@ -25,44 +25,44 @@ an existing one, or import one.</p></context>
 <task id="createporttype">
 <title>Create a new port type for a binding</title>
 <taskbody>
-<context><p>If you want to create a new port type for your binding, follow
-these steps:</p></context>
+<context><p>If you want to create a new port type for your binding, complete
+the following steps:</p></context>
 <steps>
 <step><cmd>In the Design view, right-click on a binding object (note that
-port must reference a binding) and click <b>Set Port Type > New PortType</b>.</cmd>
+port must reference a binding) and click <b>Set PortType > New PortType</b>.</cmd>
 </step>
-<step><cmd>Type the name of the port type in the <b>Name</b> field.</cmd>
+<step><cmd>Type the name of the port type in the <b>Name</b> field and click <b>OK</b>.</cmd>
 <info>The name should be unique name among all port types defined within in
-the enclosing WSDL document. Click <b>OK</b>. To select the new port type,
-click the port type object.</info></step>
+the enclosing WSDL document. To select the new port type, click the port type
+object.</info></step>
 <step><cmd>In the Properties view, type any information about the port type
 you wish the user to read in the <b>Documentation</b> pane.</cmd></step>
 </steps>
-<result><p> <b>Tip</b>: You can also create a new port type for your binding
-using the Outline view.</p><p>Once you have created a port type, you can add
-operations to it, which can send and receive messages.</p></result>
+<result> <note type="tip">You can also create a new port type for your binding
+using the Outline view.</note><p>Once you have created a port type, you can
+add operations to it, which can send and receive messages.</p></result>
 </taskbody>
 </task>
 <task id="reuseporttype">
 <title>Reuse a port type for a binding</title>
 <taskbody>
-<context><p>If you want to reuse a port type for your binding, follow these
-steps:</p></context>
+<context><p>If you want to reuse a port type for your binding, complete the
+following steps:</p></context>
 <steps>
 <step><cmd>In the Design view, right-click on a binding object (note that
 port must reference a binding) and click  <b>Set Port Type > Existing PortType</b>.</cmd>
 </step>
-<step><cmd>In the <b>Name</b> field, type a search string to filter the list
-or leave the field blank to view all.</cmd></step>
+<step importance="optional"><cmd>In the <b>Name</b> field, type a search string
+to filter the list or leave the field blank to view all.</cmd></step>
 <step><cmd>You can change the scope of the list by selecting one of the following
 options:</cmd>
 <choices>
-<choice><b>Workspace</b>. Lists the port types available in your workspace.</choice>
-<choice><b>Enclosing Project</b>. Lists the port types available in the project
+<choice><b>Workspace</b>: lists the port types available in your workspace.</choice>
+<choice><b>Enclosing Project</b>: lists the port types available in the project
 that contains your file.</choice>
-<choice><b>Current Resource</b>. Lists the port types available in your current
+<choice><b>Current Resource</b>: lists the port types available in your current
 file.</choice>
-<choice><b>Working Sets</b>. Lists the port types available in a specified
+<choice><b>Working Sets</b>: lists the port types available in a specified
 set of files. To specify a working set, click <b>Choose</b>. You can select
 files from an existing working set or create a new working set. Once you have
 selected the files, click <b>OK</b>.</choice>
@@ -77,22 +77,22 @@ selected the files, click <b>OK</b>.</choice>
 <title>Import a port type for a binding</title>
 <taskbody>
 <context><p>If you want to import an existing port type for your binding,
-follow these steps:</p></context>
+complete the following steps:</p></context>
 <steps>
 <step><cmd>In the Design view, right-click on a binding object (note that
 port must reference a binding) and click  <b>Set Port Type > Existing PortType.</b></cmd>
 </step>
-<step><cmd>In the <b>Name</b> field, type a search string to filter the list
-or leave the field blank to view all.</cmd></step>
+<step importance="optional"><cmd>In the <b>Name</b> field, type a search string
+to filter the list or leave the field blank to view all.</cmd></step>
 <step><cmd>You can import a port type by selecting one of the following options:</cmd>
 <choices>
-<choice><b>Workspace</b>. Lists the port types available in your workspace.</choice>
-<choice><b>Enclosing Project</b>. Lists the port types available in the project
+<choice><b>Workspace</b>: lists the port types available in your workspace.</choice>
+<choice><b>Enclosing Project</b>: lists the port types available in the project
 that contains your file.</choice>
-<choice><b>Working Sets</b>. Lists the port types available in a specified
-set of files. To specify a working set, click <b>Choose</b>. You can select
-files from an existing working set or create a new working set. Once you have
-selected the files, click <b>OK</b>.</choice>
+<choice><b>Working Sets</b>:<?Pub Caret?> lists the port types available in
+a specified set of files. To specify a working set, click <b>Choose</b>. You
+can select files from an existing working set or create a new working set.
+Once you have selected the files, click <b>OK</b>.</choice>
 </choices>
 </step>
 <step><cmd>The port types will be listed. Select one and click <b>OK</b>.
@@ -112,4 +112,4 @@ you wish the user to read in the <b>Documentation</b> pane.</cmd></step>
 </related-links>
 </task>
 </task>
-<?Pub *0000005308?>
+<?Pub *0000005389?>
