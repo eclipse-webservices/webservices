@@ -489,6 +489,7 @@ class ContentGeneratorUIExtensionRegistryReader extends BaseRegistryReader
   protected static final String ELEMENT_CONTENT_GENERATOR = "contentGeneratorUI"; //$NON-NLS-1$
   protected static final String ATT_NAME = "name"; //$NON-NLS-1$
   protected static final String ATT_NAMESPACE = "namespace"; //$NON-NLS-1$
+  protected static final String ATT_LABEL = "label"; //$NON-NLS-1$
   protected static final String ATT_PORT_OPTIONS_PAGE_CLASS = "portOptionsPageClass"; //$NON-NLS-1$
   protected static final String ATT_BINDING_OPTIONS_PAGE_CLASS = "bindingOptionsPageClass"; //$NON-NLS-1$
 
@@ -522,6 +523,7 @@ class ContentGeneratorUIExtensionRegistryReader extends BaseRegistryReader
         ContentGeneratorUIExtension bindingGeneratorExtension = new ContentGeneratorUIExtension(name, namespace);
         bindingGeneratorExtension.setPortOptionsPageClassName(element.getAttribute(ATT_PORT_OPTIONS_PAGE_CLASS));
         bindingGeneratorExtension.setBindingOptionsPageClassName(element.getAttribute(ATT_BINDING_OPTIONS_PAGE_CLASS));
+        bindingGeneratorExtension.setLabel(element.getAttribute(ATT_LABEL));
         try
         {
           ClassLoader pluginClasssLoader = element.getDeclaringExtension().getDeclaringPluginDescriptor().getPlugin().getClass().getClassLoader();

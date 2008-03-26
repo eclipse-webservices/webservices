@@ -10,8 +10,17 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.commands;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
@@ -21,8 +30,10 @@ import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.ServicePolicyHelper;
 
 public class W11AddServiceCommand extends W11TopLevelElementCommand implements IASDAddCommand {
 	private Service service;
@@ -44,10 +55,11 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand implements I
 			
 			// set the default content generator
 			ContentGenerator contentGenerator = null;
-			// TODO: when getDefaultBinding really needs IProject, need to figure out how to get it
-			String protocol = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getDefaultBinding(null);
+			IProject project = getProject(definition);
+			String protocol = ServicePolicyHelper.getDefaultBinding(project);
 			if (protocol != null) {
-				ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+				ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry();
+				ContentGeneratorUIExtension ext = registry.getExtensionForNamespace(protocol);
 				if (ext != null) {
 					contentGenerator = BindingGenerator.getContentGenerator(ext.getNamespace());
 				  }
@@ -77,5 +89,38 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand implements I
 	
 	public Object getNewlyAddedComponent() {
 		return service;
+	}
+
+	private IProject getProject(Definition definition) {
+		IProject project = null;
+
+		String location = definition.getLocation();
+		URL url = null;
+		try {
+			url = new URL(location);
+		}
+		catch (MalformedURLException e)	{
+			e.printStackTrace();
+		}
+		if (url != null) {
+			URL fileURL = null;
+			try {
+				fileURL = FileLocator.toFileURL(url);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			if (fileURL != null) {
+				IPath path = new Path(fileURL.getPath());
+				IFile files[] = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(path);
+				IFile file = null;
+				if (files.length > 0) {
+					// just get the first file
+					file = files[0];
+				}
+				project = file.getProject();
+			}
+		}
+		return project;
 	}
 }

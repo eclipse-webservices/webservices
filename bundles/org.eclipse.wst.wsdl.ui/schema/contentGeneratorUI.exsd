@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.wst.wsdl.ui">
+<schema targetNamespace="org.eclipse.wst.wsdl.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appInfo>
+      <appinfo>
          <meta.schema plugin="org.eclipse.wst.wsdl.ui" id="contentGeneratorUI" name="UI Port and Binding Content Generators"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          The UI Port and Binding Content Generators extension point allows clients to register UI (in the New WSDL File wizard) for their custom generators for Ports and Bindings.
       </documentation>
@@ -39,9 +39,9 @@
                <documentation>
                   an optional name of the extension instance
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute translatable="true"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -68,9 +68,9 @@
                <documentation>
                   UI that offers port options.  The class must implement &lt;code&gt;org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage&lt;/code&gt;.
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="bindingOptionsPageClass" type="string" use="required">
@@ -78,27 +78,37 @@
                <documentation>
                   UI that offers binding options.  The class must implement &lt;code&gt;org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage&lt;/code&gt;.
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage"/>
-               </appInfo>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string">
+            <annotation>
+               <documentation>
+                  The label used to describe this extension point instance.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="since"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          &lt;b&gt;This extension point is internal and should not be used by any other plugins.&lt;/b&gt;
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="examples"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          The following is an example of a content generator ui contribution:
 &lt;pre&gt;
@@ -115,19 +125,20 @@
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="apiInfo"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          The supplied classes must implement &lt;code&gt;org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage&lt;/code&gt;.
       </documentation>
    </annotation>
 
 
+
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="copyright"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          Copyright (c) 2008 IBM Corporation and others.&lt;br&gt;
 All rights reserved. This program and the accompanying materials are made 

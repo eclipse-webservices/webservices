@@ -28,11 +28,14 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11EndPoint;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingBindingAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewBindingAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
@@ -114,10 +117,22 @@ public class EndPointSection extends ReferenceSection {
 		protocolCombo.removeAll();
 		if (endPoint instanceof W11EndPoint) {
 			String protocolValue = ((W11EndPoint) endPoint).getProtocol();
+			ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry();
+			ContentGeneratorUIExtension extt = registry.getExtensionForName(protocolValue);
+			if (extt != null) {
+				protocolValue = extt.getLabel();
+			}
 			List protocols = ((W11EndPoint) getModel()).getApplicableProtocol();
 			Iterator it = protocols.iterator();
 			while (it.hasNext()) {
-				protocolCombo.add((String) it.next());
+			  String protocol = (String) it.next();
+			  ContentGeneratorUIExtension ext = registry.getExtensionForName(protocol);
+			  if (ext != null) {
+				  String label = ext.getLabel();
+				  if (label != null) {
+					  protocolCombo.add(label);
+				  }
+			  }
 			}
 		
 			protocolCombo.setText(protocolValue);
@@ -224,6 +239,12 @@ public class EndPointSection extends ReferenceSection {
 	  }
 	  else if (event.widget == protocolCombo && !protocolCombo.isDisposed()) {
 		  String newProtocol = protocolCombo.getText();
+		  ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry();
+		  ContentGeneratorUIExtension ext = registry.getExtensionForLabel(newProtocol);
+		  if (ext != null)
+		  {
+		    newProtocol = ext.getName();
+		  }
 		  if (newProtocol != null && getModel() instanceof W11EndPoint) {
 		    W11EndPoint endPoint = (W11EndPoint) getModel();
 		    

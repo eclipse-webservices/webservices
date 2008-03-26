@@ -15,6 +15,7 @@ import org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage;
 public class ContentGeneratorUIExtension {
 	private String name;
 	private String namespace;
+	private String label;
 	private String bindingOptionsPageClassName;
 	private String portOptionsPageClassName;
 	
@@ -71,5 +72,13 @@ public class ContentGeneratorUIExtension {
 		}
 
 		return result;
+	}
+	
+	public String getLabel() {
+	  return label;
+	}
+	
+	public void setLabel(String label) {
+	  this.label = label;
 	}
 }

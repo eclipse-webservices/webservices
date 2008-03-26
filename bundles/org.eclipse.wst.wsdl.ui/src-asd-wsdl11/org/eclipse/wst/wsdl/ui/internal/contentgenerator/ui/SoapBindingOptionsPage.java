@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,7 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
+import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingOperation;
@@ -30,7 +31,9 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.binding.soap.internal.generator.SOAPContentGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.util.ServicePolicyHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.wsdl.ui.internal.wizards.WSDLNewFileOptionsPage;
 import org.w3c.dom.Element;
 
 
@@ -153,41 +156,58 @@ public class SoapBindingOptionsPage extends BaseContentGeneratorOptionsPage impl
 	  }
   }
   
-  public void widgetSelected(SelectionEvent event)
-  {
-	  setOptionsOnGenerator();
-    
-    if (wizardPage != null) {
-    	// A selection made by one of these widgets may impact the completness of a Wizard.
-    	wizardPage.setPageComplete(wizardPage.isPageComplete());
-    }
-  }
-  
-  public String getMessage() {
-	  if (rpcEncoded != null && rpcEncoded.getSelection()) {
-		  if (getWSIPreferences().equals(PersistentWSIContext.STOP_NON_WSI)) {
-			  return Messages._ERROR_WSI_COMPLIANCE_RPC_ENCODING;
-		  }
-		  else if (getWSIPreferences().equals(PersistentWSIContext.WARN_NON_WSI)) {
-			  return Messages._WARN_WSI_COMPLIANCE_RPC_ENCODING;
-		  }
-	  }
-	  
-  	return ""; //$NON-NLS-1$
-  }
+  public void widgetSelected(SelectionEvent event) {
+		setOptionsOnGenerator();
 
-  public int getMessageType() {
-	  if (rpcEncoded != null && rpcEncoded.getSelection()) {
-		  if (getWSIPreferences().equals(PersistentWSIContext.STOP_NON_WSI)) {
-			  return IMessageProvider.ERROR;
-		  }
-		  else if (getWSIPreferences().equals(PersistentWSIContext.WARN_NON_WSI)) {
-			  return IMessageProvider.WARNING;
-		  }
-	  }
-	  
-	  return IMessageProvider.NONE;
-  }
+		if (wizardPage != null) {
+			boolean isComplete = wizardPage.isPageComplete();
+			if (wizardPage instanceof WSDLNewFileOptionsPage) {
+				// A selection made by one of these widgets may impact the
+				// completness of a Wizard.
+				isComplete = ((WSDLNewFileOptionsPage) wizardPage)
+						.validatePage();
+			}
+			wizardPage.setPageComplete(isComplete);
+		}
+	}
+
+  public String getMessage() {
+		String message = null;
+		if (rpcEncoded != null && rpcEncoded.getSelection()) {
+			if (wizardPage instanceof WSDLNewFileOptionsPage) {
+				IProject project = ((WSDLNewFileOptionsPage) wizardPage)
+						.getProject();
+				IServicePolicy policy = ((WSDLNewFileOptionsPage) wizardPage)
+						.getServicePolicy();
+				int messageType = ServicePolicyHelper.getMessageSeverity(
+						project, policy);
+				if (messageType == IMessageProvider.ERROR) {
+					message = Messages._ERROR_WSI_COMPLIANCE_RPC_ENCODING;
+				} else if (messageType == IMessageProvider.WARNING) {
+					message = Messages._WARN_WSI_COMPLIANCE_RPC_ENCODING;
+				}
+			}
+		}
+		if (message == null)
+			message = ""; //$NON-NLS-1$ 
+		return message;
+	}
+
+	public int getMessageType() {
+		int messageType = IMessageProvider.NONE;
+
+		if (rpcEncoded != null && rpcEncoded.getSelection()) {
+			if (wizardPage instanceof WSDLNewFileOptionsPage) {
+				IProject project = ((WSDLNewFileOptionsPage) wizardPage)
+						.getProject();
+				IServicePolicy policy = ((WSDLNewFileOptionsPage) wizardPage)
+						.getServicePolicy();
+				messageType = ServicePolicyHelper.getMessageSeverity(project,
+						policy);
+			}
+		}
+		return messageType;
+	}
   
   public boolean isDocumentLiteralPattern() {
 	  return docLiteral.getSelection();

@@ -29,10 +29,13 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetExistingInterfaceAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDSetNewInterfaceAction;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
@@ -118,6 +121,12 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		super.refresh();
 		IBinding binding = getIBinding();
 		String protocol = binding.getProtocol();
+		ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry();
+		ContentGeneratorUIExtension ext = registry.getExtensionForName(protocol);
+		if (ext != null) {
+		  protocol = ext.getLabel();
+		}
+
 		if (protocol == null || protocol.equals("")) { //$NON-NLS-1$
 			protocol = "----"; //$NON-NLS-1$
 		}

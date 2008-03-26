@@ -18,11 +18,15 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -41,13 +45,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.part.PageBook;
+import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.wsdl.internal.generator.BindingGenerator;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.BaseContentGeneratorOptionsPage;
 import org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.ISoapStyleInfo;
+import org.eclipse.wst.wsdl.ui.internal.util.ServicePolicyHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.ValidateHelper;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.eclipse.wst.xml.ui.internal.dialogs.UpdateListener;
@@ -65,6 +72,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   
   private BindingGenerator generator;
   private Map pageMap = new HashMap();
+  private IServicePolicy activeServicePolicy;
 
   /**
    * Constructor for WSDLNewFileOptionsPage.
@@ -90,14 +98,14 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     super(pageName, title, titleImage);
     setDescription(Messages._UI_DESCRIPTION_NEW_WSDL_FILE);
   }
-  
+
   public WSDLNewFileOptionsPage(String pageName, String title, ImageDescriptor titleImage, WizardNewFileCreationPage newFilePage)
   {
     super(pageName, title, titleImage);
     setDescription(Messages._UI_DESCRIPTION_NEW_WSDL_FILE);
     newFileCreationPage = newFilePage;
   }
-  
+
   /**
    * @see org.eclipse.jface.dialogs.IDialogPage#createControl(Composite)
    */
@@ -180,68 +188,89 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
    dataC.grabExcessHorizontalSpace = true;
    protocolCombo.setLayoutData(dataC);
 
-//	 TODO: when getDefaultBinding really needs IProject, uncomment out below code
-//   IProject project = getProjectFromPath(newFileCreationPage.getContainerFullPath());
-//   String defaultProtocolName = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getDefaultBinding(project);
-   String defaultProtocolName = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getDefaultBinding(null);
-   Iterator it = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getBindingExtensionNames().iterator();
-   int defaultIndex = 0;
-   boolean defaultFound = false;
-   while (it.hasNext()) {
-	   String protocolName = (String) it.next();
-	   protocolCombo.add(protocolName);
-	   if (!defaultFound && protocolName != null) {
-		   defaultFound = protocolName.equals(defaultProtocolName);
-		   if (!defaultFound)
-			   ++defaultIndex;
-	   }
-   }
-   if (!defaultFound)
-	   defaultIndex = 0;
+    IProject project = getProject();
+    activeServicePolicy = ServicePolicyHelper.getActivePolicyWithProtocol(project);
+    String defaultProtocolNS = ServicePolicyHelper.getDefaultBinding(project, activeServicePolicy);
+    String defaultProtocolLabel = null;
+    ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry();
+    ContentGeneratorUIExtension extension = registry.getExtensionForNamespace(defaultProtocolNS);
+    if (extension != null)
+      defaultProtocolLabel = extension.getLabel();
 
-   protocolCombo.addModifyListener(this);
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_PROTOCOL_COMBO);
+    Iterator it = registry.getBindingExtensionNames().iterator();
+    int defaultIndex = 0;
+    boolean defaultFound = false;
+    while (it.hasNext()) {
+      String protocolName = (String) it.next();
+      String protocolLabel = null;
+      ContentGeneratorUIExtension ext = registry.getExtensionForName(protocolName);
+      if (ext != null) {
+        String label = ext.getLabel();
+        if (label != null) {
+          protocolLabel = label;
+          protocolCombo.add(protocolLabel);
+        }
+      }
 
-   // Create PageBook and pages/controls for the PageBook
-   protocolPageBook = new PageBook(base, SWT.NONE);
-   GridData gdFill= new GridData();
-   gdFill.horizontalAlignment= GridData.FILL;
-   gdFill.grabExcessHorizontalSpace= true;
-   gdFill.verticalAlignment= GridData.FILL;
-   gdFill.grabExcessVerticalSpace= true;
-   protocolPageBook.setLayoutData(gdFill);
+      if (!defaultFound && protocolLabel != null)
+      {
+        defaultFound = protocolLabel.equals(defaultProtocolLabel);
+        if (!defaultFound) {
+          ++defaultIndex;
+        }
+      }
+    }
+    if (!defaultFound) {    	
+      defaultIndex = 0;
+    }
 
-   if (protocolCombo.getItemCount() > 0) {
-	   String protocol = protocolCombo.getItem(defaultIndex);
-	   ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
-	   ContentGeneratorOptionsPage page = ext.getBindingContentGeneratorOptionsPage();
-	   page.init(generator);
-	   
-	   protocolPageBook.showPage(page.getControl());
-	   protocolPageBook.setVisible(true);
-	   protocolCombo.select(defaultIndex);
-	   updatePageBook(protocol);
-   }
-   
-   wsdlSkeletonGroup.setVisible(true);
+    protocolCombo.addModifyListener(this);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE_PROTOCOL_COMBO);
 
-   WSIPreferenceLink = new Link(base, SWT.NONE);
-   WSIPreferenceLink.setText("<A>" + Messages._WSI_COMPLIANCE_LINK_TEXT + "</A>"); //$NON-NLS-1$ //$NON-NLS-2$
-   WSIPreferenceLink.addSelectionListener(new SelectionAdapter() {
-		public void widgetSelected(SelectionEvent e) {
-			getNewWSDLWizard().openProjectWSIProperties();
-			setPageComplete(isPageComplete());
-		}
-	});
-   
-   WSIPreferenceLink.setLayoutData(new GridData(GridData.GRAB_VERTICAL | GridData.VERTICAL_ALIGN_END));
+    // Create PageBook and pages/controls for the PageBook
+    protocolPageBook = new PageBook(base, SWT.NONE);
+    GridData gdFill = new GridData();
+    gdFill.horizontalAlignment = GridData.FILL;
+    gdFill.grabExcessHorizontalSpace = true;
+    gdFill.verticalAlignment = GridData.FILL;
+    gdFill.grabExcessVerticalSpace = true;
+    protocolPageBook.setLayoutData(gdFill);
 
-   createSkeletonCheckBox.addSelectionListener(this);
+    if (protocolCombo.getItemCount() > 0) {
+      String protocol = protocolCombo.getItem(defaultIndex);
+      ContentGeneratorUIExtension ext = registry.getExtensionForLabel(protocol);
+      ContentGeneratorOptionsPage page = ext.getBindingContentGeneratorOptionsPage();
+      page.init(generator);
 
-   PlatformUI.getWorkbench().getHelpSystem().setHelp(base, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
+      protocolPageBook.showPage(page.getControl());
+      protocolPageBook.setVisible(true);
+      protocolCombo.select(defaultIndex);
+      updatePageBook(protocol);
+    }
 
-   setControl(base);
-    
+    wsdlSkeletonGroup.setVisible(true);
+
+    WSIPreferenceLink = new Link(base, SWT.NONE);
+    WSIPreferenceLink.setText("<A>" + Messages._WSI_COMPLIANCE_LINK_TEXT + "</A>"); //$NON-NLS-1$ //$NON-NLS-2$
+    WSIPreferenceLink.addSelectionListener(new SelectionAdapter()
+    {
+      public void widgetSelected(SelectionEvent e)
+      {
+        getNewWSDLWizard().openProjectWSIProperties();
+        IProject project = getProject();
+        activeServicePolicy = ServicePolicyHelper.getActivePolicyWithProtocol(project);
+        setPageComplete(validatePage());
+      }
+    });
+
+    WSIPreferenceLink.setLayoutData(new GridData(GridData.GRAB_VERTICAL | GridData.VERTICAL_ALIGN_END));
+
+    createSkeletonCheckBox.addSelectionListener(this);
+
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(base, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
+
+    setControl(base);
+
   }
 
   private NewWSDLWizard getNewWSDLWizard()
@@ -301,6 +330,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   {
   	return computeDefaultDefinitionName();
   }
+
   public void modifyText(ModifyEvent e)
   {
     if (e.widget == targetNamespaceText)
@@ -309,18 +339,19 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     }
     else if (e.widget == prefixText)
     {
-      setPageComplete(isPageComplete());
+      setPageComplete(validatePage());
     }
-	else if (e.widget == protocolCombo) {
-		String protocol = protocolCombo.getText();
+    else if (e.widget == protocolCombo)
+    {
+      String protocol = protocolCombo.getText();
 
-		ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
-		generator.setContentGenerator(BindingGenerator.getContentGenerator(ext.getNamespace()));
-		updatePageBook(protocol);
-		setPageComplete(isPageComplete());
-	}
+      ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForLabel(protocol);
+      generator.setContentGenerator(BindingGenerator.getContentGenerator(ext.getNamespace()));
+      updatePageBook(protocol);
+      setPageComplete(validatePage());
+    }
   }
-  
+
   protected void updatePageBook(String protocol)
   {
     if (protocol != null)
@@ -354,11 +385,11 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
       }
     }
   }
-  
+
   public ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol)
   {
     ContentGeneratorOptionsPage optionsPage = null;
-    ContentGeneratorUIExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+    ContentGeneratorUIExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForLabel(protocol);
     if (extension != null) {
   	  optionsPage = extension.getBindingContentGeneratorOptionsPage();
     }
@@ -367,17 +398,18 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   public void updateOccured(Object arg1, Object arg2)
   {
-    setPageComplete(isPageComplete());
+    setPageComplete(validatePage());
   }
 
-  public boolean isPageComplete()
+  public boolean validatePage()
   {
     boolean ready = true;
 
     setErrorMessage(null);
     setMessage(null);
 
-    //this.setMessage(Messages.getString("_UI_DESCRIPTION_NEW_WSDL_FILE"),this.NONE);  //$NON-NLS-1$
+    // this.setMessage(Messages.getString("_UI_DESCRIPTION_NEW_WSDL_FILE"),this.NONE);
+    // //$NON-NLS-1$
 
     // so that the page doesn't immediately show up with an error
     if (targetNamespaceText.getText().trim().equals("")) //$NON-NLS-1$
@@ -393,49 +425,66 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     {
       ready = false;
     }
-    
-    if (createSkeletonCheckBox.getSelection()) {
-        if (!displayDialogMessages()) {
-        	ready = false;
-        }
+
+    if (createSkeletonCheckBox.getSelection())
+    {
+      if (!displayDialogMessages())
+      {
+        ready = false;
+      }
     }
-    else {
-    	this.setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
+    else
+    {
+      this.setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
     }
- 
+
     return ready;
   }
 
-  protected boolean displayDialogMessages() {
-	  String protocol = getProtocol();
-	  if (!(pageMap.get(protocol) instanceof ContentGeneratorOptionsPage)) {
-		  return false;
-	  }
-	  
-	  ContentGeneratorOptionsPage optionsPage = (ContentGeneratorOptionsPage) pageMap.get(protocol);
-	  IFile targetFile = ResourcesPlugin.getWorkspace().getRoot().getFile(newFileCreationPage.getContainerFullPath().append(newFileCreationPage.getFileName()));
+  protected boolean displayDialogMessages()
+  {
+    String protocol = getProtocol();
+    if (!(pageMap.get(protocol) instanceof ContentGeneratorOptionsPage))
+    {
+      return false;
+    }
 
-      if (optionsPage instanceof BaseContentGeneratorOptionsPage) {
-    	  ((BaseContentGeneratorOptionsPage) optionsPage).setTargetIFile(targetFile);
-    	  
-		  String message = ((IMessageProvider) optionsPage).getMessage();
-		  int messageType = ((IMessageProvider) optionsPage).getMessageType();
-		  
-		  if (messageType == IMessageProvider.NONE) {
-			  setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
-		  }
-		  else {
-			  setMessage(message, messageType);
-		  }
-		  
-		  if (messageType == IMessageProvider.ERROR) {
-			  return false;
-		  }
-	  }
+    if (!validateProtocol(protocol))
+    {
+      if (getMessageType() == IMessageProvider.ERROR)
+        return false;
+      else
+        return true;
+    }
 
-	  return true;
+    ContentGeneratorOptionsPage optionsPage = (ContentGeneratorOptionsPage) pageMap.get(protocol);
+    IFile targetFile = ResourcesPlugin.getWorkspace().getRoot().getFile(newFileCreationPage.getContainerFullPath().append(newFileCreationPage.getFileName()));
+
+    if (optionsPage instanceof BaseContentGeneratorOptionsPage)
+    {
+      ((BaseContentGeneratorOptionsPage) optionsPage).setTargetIFile(targetFile);
+
+      String message = ((IMessageProvider) optionsPage).getMessage();
+      int messageType = ((IMessageProvider) optionsPage).getMessageType();
+
+      if (messageType == IMessageProvider.NONE)
+      {
+        setMessage(Messages._UI_DESCRIPTION_NEW_WSDL_FILE, NONE);
+      }
+      else
+      {
+        setMessage(message, messageType);
+      }
+
+      if (messageType == IMessageProvider.ERROR)
+      {
+        return false;
+      }
+    }
+
+    return true;
   }
-  
+
   protected boolean validatePrefix(String prefix)
   {
     String errorMessage = ValidateHelper.checkXMLPrefix(prefix);
@@ -445,6 +494,61 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
       return true;
     }
     return false;
+  }
+
+  /**
+   * Validates protocol by checking if there is an active wsi policy requires or
+   * suggests a default protocol and that protocol is not the same as the
+   * currently selected protocol
+   * 
+   * @param protocol
+   * @return
+   */
+  private boolean validateProtocol(String protocol)
+  {
+    ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry();
+    ContentGeneratorUIExtension extension = registry.getExtensionForLabel(protocol);
+    if (extension != null)
+    {
+      String namespace = extension.getNamespace();
+      if (namespace != null)
+      {
+        IProject project = getProject();
+        if (activeServicePolicy != null)
+        {
+          // get default binding and compare if same or not
+          String defaultBinding = ServicePolicyHelper.getDefaultBinding(project, activeServicePolicy);
+          if (!defaultBinding.equals(namespace))
+          {
+            int messageType = ServicePolicyHelper.getMessageSeverity(project, activeServicePolicy);
+            if (messageType == IMessageProvider.ERROR)
+            {
+              // if not same, set error message
+              // put up an error message
+              ContentGeneratorUIExtension ext = registry.getExtensionForNamespace(defaultBinding);
+              if (ext != null)
+              {
+                String n = ext.getLabel();
+                setMessage(NLS.bind(Messages._ERROR_WSI_COMPLIANCE_PROTOCOL, new String[] { n }), IMessageProvider.ERROR);
+              }
+              return false;
+            }
+            else if (messageType == IMessageProvider.WARNING)
+            {
+              // put up a warning message
+              ContentGeneratorUIExtension ext = registry.getExtensionForNamespace(defaultBinding);
+              if (ext != null)
+              {
+                String n = ext.getLabel();
+                setMessage(NLS.bind(Messages._WARN_WSI_COMPLIANCE_PROTOCOL, new String[] { n }), IMessageProvider.WARNING);
+              }
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
   }
 
   protected boolean validateXMLName(String xmlName)
@@ -490,81 +594,36 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   }
 
   /*
-  private boolean arePrefixesUniqueAndValid()
-  {
-    java.util.List infoList = namespaceInfo.getNamespaceInfoList();
-    java.util.List checkedList = namespaceInfo.getNamespaceCheckedList();
-
-    Vector prefixList = new Vector();
-    boolean test = true;
-    boolean isOneBlank = false;
-
-    String currentPrefix = prefixText.getText().trim();
-    if (currentPrefix.length() == 0)
-    {
-      isOneBlank = true;
-    }
-    else
-    {
-      if (validatePrefix(currentPrefix))
-      {
-        prefixList.add(currentPrefix);
-      }
-      else
-      {
-        setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_PREFIX_IS_INVALID", currentPrefix)); //$NON-NLS-1$
-        return false;
-      }
-    }
-
-    for (int i = 0; i < infoList.size(); i++)
-    {
-      NamespaceInfo info = (NamespaceInfo)infoList.get(i);
-      if (((String)checkedList.get(i)).equals("true")) //$NON-NLS-1$
-      {
-        String aPrefix = info.prefix.trim();
-        if (aPrefix.length() > 0)
-        {
-          if (!prefixList.contains(aPrefix))
-          {
-            if (validatePrefix(aPrefix))
-            {
-              prefixList.add(aPrefix);
-            }
-            else
-            {
-              setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_PREFIX_IS_INVALID", info.prefix)); //$NON-NLS-1$
-              test = false;
-              break;
-            }
-          }
-          else
-          {
-            setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_PREFIX_IS_A_DUPLICATE", info.prefix)); //$NON-NLS-1$
-            test = false;
-            break;
-          }
-        }
-        else
-        {
-          if (!isOneBlank)
-          {
-            isOneBlank = true;
-          }
-          else
-          {
-            setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_MORE_THAN_ONE_PREFIX_IS_BLANK")); //$NON-NLS-1$
-            test = false;
-            break;
-          }
-        }
-      }
-    }
-    return test;
-  }
-  */
+   * private boolean arePrefixesUniqueAndValid() { java.util.List infoList =
+   * namespaceInfo.getNamespaceInfoList(); java.util.List checkedList =
+   * namespaceInfo.getNamespaceCheckedList();
+   * 
+   * Vector prefixList = new Vector(); boolean test = true; boolean isOneBlank =
+   * false;
+   * 
+   * String currentPrefix = prefixText.getText().trim(); if
+   * (currentPrefix.length() == 0) { isOneBlank = true; } else { if
+   * (validatePrefix(currentPrefix)) { prefixList.add(currentPrefix); } else {
+   * setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_PREFIX_IS_INVALID",
+   * currentPrefix)); //$NON-NLS-1$ return false; } }
+   * 
+   * for (int i = 0; i < infoList.size(); i++) { NamespaceInfo info =
+   * (NamespaceInfo)infoList.get(i); if
+   * (((String)checkedList.get(i)).equals("true")) //$NON-NLS-1$ { String
+   * aPrefix = info.prefix.trim(); if (aPrefix.length() > 0) { if
+   * (!prefixList.contains(aPrefix)) { if (validatePrefix(aPrefix)) {
+   * prefixList.add(aPrefix); } else {
+   * setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_PREFIX_IS_INVALID",
+   * info.prefix)); //$NON-NLS-1$ test = false; break; } } else {
+   * setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_PREFIX_IS_A_DUPLICATE",
+   * info.prefix)); //$NON-NLS-1$ test = false; break; } } else { if
+   * (!isOneBlank) { isOneBlank = true; } else {
+   * setErrorMessage(WSDLEditorPlugin.getWSDLString("_UI_ERROR_MORE_THAN_ONE_PREFIX_IS_BLANK"));
+   * //$NON-NLS-1$ test = false; break; } } } } return test; }
+   */
 
   protected DelayedEvent delayedTask;
+
   protected void startDelayedEvent(ModifyEvent e)
   {
     if (delayedTask == null || delayedTask.getEvent() == null)
@@ -599,7 +658,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     {
       if (event != null)
       {
-        setPageComplete(isPageComplete());
+        setPageComplete(validatePage());
         event = null;
       }
     }
@@ -617,7 +676,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   public void widgetDefaultSelected(SelectionEvent e) {
   }
-  
+
   public void widgetSelected(SelectionEvent e) {
 	  if (e.widget == createSkeletonCheckBox) {
   	 	if (createSkeletonCheckBox.getSelection()) {
@@ -628,13 +687,14 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
   	 		wsdlSkeletonGroup.setVisible(false);
   	 		protocolPageBook.setVisible(false);
   	 	}
-  	 	setPageComplete(isPageComplete());
+  	 	setPageComplete(validatePage());
   	 }
   }
 
   Composite wsdlSkeletonGroup;
+
   Button createSkeletonCheckBox;
-  
+
   private Label createLabel(Composite comp, String labelString) {
     Label label = new Label(comp, SWT.LEFT);
     label.setText(labelString);
@@ -644,7 +704,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     
     return label;
   }
-  
+
   public Vector getNamespaceInfo() {
 		Vector namespaces = new Vector();
   		
@@ -661,15 +721,15 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
 		return namespaces;
   }
-  
+
   public boolean getCreateSkeletonBoolean() {
   	return createSkeletonCheckBox.getSelection();
   }
-  
+
   public String getProtocol() {
   	return protocolCombo.getText();
   }
-  
+
   public boolean isSoapDocLiteralProtocol() {
 	  // We need to revisit this....  Can we make this code more generic...
 	  // Wee need this method because the NewWSDLWizard needs to know if it should create the new
@@ -681,27 +741,36 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
 	  return false;
   }
-  
-//	TODO: when we really do need IProject, uncomment out below code
-//	/**
-//	 * Returns the project that contains the specified path
-//	 * 
-//	 * @param path the path which project is needed
-//	 * @return IProject object. If path is <code>null</code> the return value 
-//	 * 		   is also <code>null</code>. 
-//	 */
-//	private IProject getProjectFromPath(IPath path) {
-//		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-//		IProject project = null;
-//		
-//		if (path != null) {
-//			if (workspace.validatePath(path.toString(), IResource.PROJECT).isOK()) {
-//				project = workspace.getRoot().getProject(path.toString());
-//			} else {
-//				project = workspace.getRoot().getFile(path).getProject();
-//			}
-//		}
-//		
-//		return project;
-//	}
+
+  /**
+   * Returns the project the current containing project
+   * 
+   * @return IProject object. If path is <code>null</code> the return value is
+   *         also <code>null</code>.
+   */
+  public IProject getProject()
+  {
+    IPath path = newFileCreationPage.getContainerFullPath();
+    IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    IProject project = null;
+
+    if (path != null)
+    {
+      if (workspace.validatePath(path.toString(), IResource.PROJECT).isOK())
+      {
+        project = workspace.getRoot().getProject(path.toString());
+      }
+      else
+      {
+        project = workspace.getRoot().getFile(path).getProject();
+      }
+    }
+
+    return project;
   }
+
+  public IServicePolicy getServicePolicy()
+  {
+    return activeServicePolicy;
+  }
+}

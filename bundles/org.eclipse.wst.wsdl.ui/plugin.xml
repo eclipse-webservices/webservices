@@ -521,6 +521,7 @@
       <contentGeneratorUI
         name="SOAP"
         namespace="http://schemas.xmlsoap.org/wsdl/soap/"
+        label="%SOAP"
         portOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.AddressPortOptionsPage"
         bindingOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.SoapBindingOptionsPage">
       </contentGeneratorUI>
@@ -529,6 +530,7 @@
       <contentGeneratorUI
         name="HTTP"
         namespace="http://schemas.xmlsoap.org/wsdl/http/"
+        label="%HTTP"
         portOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.AddressPortOptionsPage"
         bindingOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.HttpBindingOptionsPage">
       </contentGeneratorUI>

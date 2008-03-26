@@ -37,6 +37,7 @@ import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.wizards.ContentGeneratorOptionsPage;
 
 public abstract class ProtocolComponentControl extends Composite implements SelectionListener, ModifyListener
@@ -154,7 +155,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
     componentNameField.setText(getDefaultName());
     updateRefNameCombo();
     updateProtocolCombo();
-    updatePageBook(generator.getProtocol());
+    updatePageBook(protocolCombo.getText());
   }
 
   public Text getComponentNameField()
@@ -202,7 +203,7 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
         int index = protocolCombo.getSelectionIndex();
         String protocol = (index != -1) ? protocolCombo.getItem(index) : null;
         
-        ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+        ContentGeneratorUIExtension ext = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForLabel(protocol);
         String namespace = ext.getNamespace();
   	    generator.setContentGenerator(BindingGenerator.getContentGenerator(namespace));
         updatePageBook(protocol);
@@ -269,14 +270,26 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
 
     List list = new ArrayList();
     list.add(UNSPECIFIED);
-    list.addAll(WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getBindingExtensionNames());
+    ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry(); 
+    list.addAll(registry.getBindingExtensionNames());
 	
     String protocolText = generator.getProtocol();
+    ContentGeneratorUIExtension extt = registry.getExtensionForName(protocolText);
+    if (extt != null)
+    {
+      protocolText = extt.getLabel();
+    }
 
     for (Iterator i = list.iterator(); i.hasNext();)
     {
       String protocol = (String) i.next();
-      protocolCombo.add(protocol);
+      ContentGeneratorUIExtension ext = registry.getExtensionForName(protocol);
+      if (ext != null)
+      {
+        String label = ext.getLabel();
+        if (label != null)
+          protocolCombo.add(label);
+      }
     }
 
     if (protocolText == null && protocolCombo.getItemCount() > 0)

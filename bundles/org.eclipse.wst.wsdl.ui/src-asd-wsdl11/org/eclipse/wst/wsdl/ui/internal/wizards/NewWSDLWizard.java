@@ -106,7 +106,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		String prefix = optionsPage.getPrefix();
 		String definitionName = optionsPage.getDefinitionName();
 
-		URI uri2 = URI.createPlatformResourceURI(file.getFullPath().toOSString());
+		URI uri2 = URI.createPlatformResourceURI(file.getFullPath().toOSString(), false);
 		ResourceSet resourceSet = new ResourceSetImpl();
 		WSDLResourceImpl resource = (WSDLResourceImpl) resourceSet.createResource(URI.createURI("*.wsdl")); //$NON-NLS-1$
 		resource.setURI(uri2);

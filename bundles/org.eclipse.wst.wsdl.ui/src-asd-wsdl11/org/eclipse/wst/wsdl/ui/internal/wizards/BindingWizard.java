@@ -284,7 +284,7 @@ public class BindingWizard extends Wizard
 
     public ContentGeneratorOptionsPage createContentGeneratorOptionsPage(String protocol)
     {
-      ContentGeneratorUIExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForName(protocol);
+      ContentGeneratorUIExtension extension = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry().getExtensionForLabel(protocol);
       if (extension != null) {
     	  return extension.getBindingContentGeneratorOptionsPage();
       }

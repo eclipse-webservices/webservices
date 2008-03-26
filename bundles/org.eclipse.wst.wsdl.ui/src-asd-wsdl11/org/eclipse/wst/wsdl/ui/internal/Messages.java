@@ -153,8 +153,8 @@ public class Messages {
 	public static String _WARN_NAME_INVALID_CHAR;
 	public static String _UI_LABEL_DEFAULT;
 	public static String _WSI_COMPLIANCE_LINK_TEXT;
-	public static String _WARN_WSI_COMPLIANCE_SOAP_PROTOCOL;
-	public static String _ERROR_WSI_COMPLIANCE_SOAP_PROTOCOL;
+	public static String _WARN_WSI_COMPLIANCE_PROTOCOL;
+	public static String _ERROR_WSI_COMPLIANCE_PROTOCOL;
 	public static String _WARN_WSI_COMPLIANCE_RPC_ENCODING;
 	public static String _ERROR_WSI_COMPLIANCE_RPC_ENCODING;
 	public static String _UI_LABEL_UNDEFINED_ARG1;

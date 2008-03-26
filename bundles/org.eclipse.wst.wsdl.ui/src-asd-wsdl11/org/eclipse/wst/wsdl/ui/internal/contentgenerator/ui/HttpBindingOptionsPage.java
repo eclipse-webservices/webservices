@@ -14,14 +14,12 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.wst.ws.internal.preferences.PersistentWSIContext;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibilityElement;
@@ -102,25 +100,4 @@ public class HttpBindingOptionsPage extends BaseContentGeneratorOptionsPage
 	  }
   }
   
-  public String getMessage() {
-	  if (getWSIPreferences().equals(PersistentWSIContext.STOP_NON_WSI)) {
-		  return Messages._ERROR_WSI_COMPLIANCE_SOAP_PROTOCOL;
-	  }
-	  else if (getWSIPreferences().equals(PersistentWSIContext.WARN_NON_WSI)) {
-		  return Messages._WARN_WSI_COMPLIANCE_SOAP_PROTOCOL;
-	  }
-	  
-	  return ""; //$NON-NLS-1$
-  }
-
-  public int getMessageType() {
-	  if (getWSIPreferences().equals(PersistentWSIContext.STOP_NON_WSI)) {
-		  return IMessageProvider.ERROR;
-	  }
-	  else if (getWSIPreferences().equals(PersistentWSIContext.WARN_NON_WSI)) {
-		  return IMessageProvider.WARNING;
-	  }
-	  
-	  return IMessageProvider.NONE;
-  }
 }
