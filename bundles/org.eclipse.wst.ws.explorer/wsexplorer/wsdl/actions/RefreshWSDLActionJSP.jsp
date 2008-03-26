@@ -22,50 +22,66 @@
 <html lang="<%=response.getLocale().getLanguage()%>">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>">
-</script>
-<jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
 <%
-// Prepare the action.
-RefreshWSDLAction action = new RefreshWSDLAction(controller);
+if (controller.getSessionId() == null) {
+%>
 
-// The action may be executed via program link.
-boolean paramsValid = action.populatePropertyTable(request);
-if (paramsValid) {
-  int nodeID = Integer.parseInt((String)action.getPropertyTable().get(ActionInputs.NODEID));
-  WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
-  NodeManager nodeManager = wsdlPerspective.getNodeManager();
-  Node wsdlNode = nodeManager.getNode(nodeID);
+ <script language="javascript">
+	    var perspectiveContent = top.frames["<%=FrameNames.PERSPECTIVE_CONTENT%>"];
+		perspectiveContent.location = "http://<%=request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/actions/SessionTimedOut.jsp";
+ </script>
+<%
+}
+else {
+%>	
+
+ <script language="javascript" src="<%=response.encodeURL(controller.getPathWithContext("scripts/browserdetect.js"))%>">
+ </script>
+ <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
+ <%
+  // Prepare the action.
+  RefreshWSDLAction action = new RefreshWSDLAction(controller);
+
+  // The action may be executed via program link.
+  boolean paramsValid = action.populatePropertyTable(request);
+  if (paramsValid) {
+    int nodeID = Integer.parseInt((String)action.getPropertyTable().get(ActionInputs.NODEID));
+    WSDLPerspective wsdlPerspective = controller.getWSDLPerspective();
+    NodeManager nodeManager = wsdlPerspective.getNodeManager();
+    Node wsdlNode = nodeManager.getNode(nodeID);
   
-  // Run the action.
-  boolean actionResult = action.execute();
+    // Run the action.
+    boolean actionResult = action.execute();
   
-  if (actionResult) {
-  %>
-  <script language="javascript">
-    if (isMicrosoftInternetExplorer()) {
-      wsdlNavigatorContent.location="<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_navigator_content.jsp"))%>";
-      wsdlPropertiesContainer.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_properties_container.jsp"))%>";
-      wsdlStatusContent.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_status_content.jsp"))%>";
-    }
-    else {
-      perspectiveContent.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_perspective_content.jsp"))%>";
-    }
-  </script>
-  <%
+    if (actionResult) {
+ 	%>
+	 <script language="javascript">
+    	if (isMicrosoftInternetExplorer()) {
+      	wsdlNavigatorContent.location="<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_navigator_content.jsp"))%>";
+      	wsdlPropertiesContainer.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_properties_container.jsp"))%>";
+      	wsdlStatusContent.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_status_content.jsp"))%>";
+    	}
+    	else {
+      	perspectiveContent.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_perspective_content.jsp"))%>";
+    	}
+  	</script>
+   <%
+   }
+   else {
+   %>
+    <script language="javascript">
+    	if (confirm("<%=HTMLUtils.JSMangle(wsdlPerspective.getMessage("MSG_QUESTION_REMOVE_WSDL_NODE", wsdlNode.getNodeName()))%>"))
+      	perspectiveWorkArea.location = "<%=response.encodeURL(controller.getPathWithContext(ClearWSDLAction.getActionLink(nodeID)))%>";
+    	else {
+      	wsdlPropertiesContainer.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_properties_container.jsp"))%>";
+      	wsdlStatusContent.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_status_content.jsp"))%>";
+    	}
+  	</script>
+   <%
   }
-  else {
-  %>
-  <script language="javascript">
-    if (confirm("<%=HTMLUtils.JSMangle(wsdlPerspective.getMessage("MSG_QUESTION_REMOVE_WSDL_NODE", wsdlNode.getNodeName()))%>"))
-      perspectiveWorkArea.location = "<%=response.encodeURL(controller.getPathWithContext(ClearWSDLAction.getActionLink(nodeID)))%>";
-    else {
-      wsdlPropertiesContainer.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_properties_container.jsp"))%>";
-      wsdlStatusContent.location = "<%=response.encodeURL(controller.getPathWithContext("wsdl/wsdl_status_content.jsp"))%>";
-    }
-  </script>
-  <%
-  }
+ }
+%>
+<%
 }
 %>
 </head>

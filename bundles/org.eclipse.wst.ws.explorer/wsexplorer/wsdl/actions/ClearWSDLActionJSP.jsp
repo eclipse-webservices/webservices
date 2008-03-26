@@ -12,10 +12,22 @@
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*,
+                                                        org.eclipse.wst.ws.internal.explorer.platform.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.ClearWSDLAction"%>
-
-<jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
 <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
+<%
+if (controller.getSessionId() == null) {
+%>
+
+ <script language="javascript">
+	    var perspectiveContent = top.frames["<%=FrameNames.PERSPECTIVE_CONTENT%>"];
+		perspectiveContent.location = "http://<%=request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/actions/SessionTimedOut.jsp";
+ </script>
+<%
+}
+else {
+%>
+<jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
 <%
 // Prepare the action.
 ClearWSDLAction action = new ClearWSDLAction(controller);
@@ -27,3 +39,6 @@ action.populatePropertyTable(request);
 boolean actionResult = action.execute();
 %>
 <%@ include file="/actions/ClearNodeAction.inc" %>
+<%
+}
+%>

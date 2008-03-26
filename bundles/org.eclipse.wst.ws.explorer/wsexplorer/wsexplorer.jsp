@@ -32,40 +32,48 @@
   String sessionId = session.getId();
   %>
   <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session">
-    <%
-    // Add the session to the application. This allows us to resurrect the session even if the browser chooses not to participate.
-    application.setAttribute(sessionId,session);
-
-    if (session.getMaxInactiveInterval() > 0)
-      session.setMaxInactiveInterval(-1);
-
-    // LaunchOptionManager (below) handles most options,
-    // but need to get state and install locations earlier,
-    // specifically before controller.init().
-    Enumeration paramNames = request.getParameterNames();
-    while (paramNames.hasMoreElements())
-    {
-      String paramName = (String)paramNames.nextElement();
-      String[] paramValues = request.getParameterValues(paramName);
-      if (paramValues != null && paramValues.length > 0)
-      {
-        String decodedParamName = URLUtils.decode(paramName);
-        if (decodedParamName.equals(LaunchOptions.DEFAULT_FAVORITES_LOCATION))
-        {
-          controller.setDefaultFavoritesLocation(paramValues[0]);
-        }
-        else if (decodedParamName.equals(LaunchOptions.STATE_LOCATION))
-        {
-          controller.setStateLocation(paramValues[0]);
-        }
-      }
+    <%!
+    private void resetController(ServletContext application,String sessionId,HttpSession session,HttpServletRequest request,Controller controller){
+	    // Add the session to the application. This allows us to resurrect the session even if the browser chooses not to participate.
+	    application.setAttribute(sessionId,session);
+    
+	    // Set Max inactivity time out value to 30mins.
+	    session.setMaxInactiveInterval(1800);
+	
+	    // LaunchOptionManager (below) handles most options,
+	    // but need to get state and install locations earlier,
+	    // specifically before controller.init().
+	    Enumeration paramNames = request.getParameterNames();
+	    while (paramNames.hasMoreElements())
+	    {
+	      String paramName = (String)paramNames.nextElement();
+	      String[] paramValues = request.getParameterValues(paramName);
+	      if (paramValues != null && paramValues.length > 0)
+	      {
+	        String decodedParamName = URLUtils.decode(paramName);
+	        if (decodedParamName.equals(LaunchOptions.DEFAULT_FAVORITES_LOCATION))
+	        {
+	          controller.setDefaultFavoritesLocation(paramValues[0]);
+	        }
+	        else if (decodedParamName.equals(LaunchOptions.STATE_LOCATION))
+	        {
+	          controller.setStateLocation(paramValues[0]);
+	        }
+	      }
+	    }
+	
+	    // controller.init()
+	    controller.init(sessionId,application,request.getContextPath());
     }
-
-    // controller.init()
-    controller.init(sessionId,application,request.getContextPath());
     %>
+    <%//resetController(application,sessionId,session,request,controller);%>
   </jsp:useBean>
   <%
+  // Check if session Controller needs to be re-initialized
+  if (controller.getSessionId()==null){
+	  resetController(application,sessionId,session,request,controller);
+  }
+ 
   // preload from LaunchOptionManager
   String key = request.getParameter(URLUtils.encode(WSExplorerContext.ID));
   if (key != null && key.length() > 0)
@@ -73,6 +81,7 @@
     LaunchOptionsManager manager = LaunchOptionsManager.getInstance();
     manager.manage(key, sessionId, application);
   }
+    
   %>
   <jsp:include page="/actionengine.jsp" flush="true"/>
   <title><%=controller.getMessage("TITLE_WSEXPLORER")%></title>
@@ -81,7 +90,7 @@
 // reset perspective content to blank
 controller.enablePerspectiveContentBlank(true);
 %>
-<frameset rows="0,35,*" border=0 onload="javascript:initWindowName('<%=FrameNames.WINDOW_NAME_WSEXPLORER_JSP%>')">
+<frameset rows="0,35,*" border=0 onload="initWindowName('<%=FrameNames.WINDOW_NAME_WSEXPLORER_JSP%>')">
   <frame name="<%=FrameNames.PERSPECTIVE_WORKAREA%>" title="<%=controller.getMessage("FRAME_TITLE_PERSPECTIVE_WORKAREA")%>" frameborder=0 noresize>
   <frame name="<%=FrameNames.PERSPECTIVE_TOOLBAR%>" title="<%=controller.getMessage("FRAME_TITLE_PERSPECTIVE_TOOLBAR")%>" src="<%=response.encodeURL(controller.getPathWithContext("perspective_toolbar.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=0 noresize>
   <frame name="<%=FrameNames.PERSPECTIVE_CONTENT%>" title="<%=controller.getMessage("FRAME_TITLE_PERSPECTIVE_CONTENT")%>" src="<%=response.encodeURL(controller.getPathWithContext("perspective_content.jsp"))%>" marginwidth=0 marginheight=0 scrolling="no" frameborder=0>

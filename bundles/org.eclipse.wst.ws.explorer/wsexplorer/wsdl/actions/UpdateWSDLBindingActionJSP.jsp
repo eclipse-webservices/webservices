@@ -15,6 +15,18 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.UpdateWSDLBindingAction"%>
 
 <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
+<%
+if (controller.getSessionId() == null) {
+%>
+
+ <script language="javascript">
+	    var perspectiveContent = top.frames["<%=FrameNames.PERSPECTIVE_CONTENT%>"];
+		perspectiveContent.location = "http://<%=request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/actions/SessionTimedOut.jsp";
+ </script>
+<%
+}
+else {
+%>
 <jsp:include page="/wsdl/scripts/wsdlpanes.jsp" flush="true"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html lang="<%=response.getLocale().getLanguage()%>">
@@ -33,3 +45,6 @@
   </script>
 </body>
 </html>
+<%
+}
+%>

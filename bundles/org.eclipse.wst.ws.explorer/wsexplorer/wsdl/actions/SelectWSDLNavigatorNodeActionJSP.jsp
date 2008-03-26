@@ -15,8 +15,19 @@
                                                         org.eclipse.wst.ws.internal.explorer.platform.perspective.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.*,
                                                         org.eclipse.wst.ws.internal.explorer.platform.wsdl.actions.SelectWSDLNavigatorNodeAction" %>
-
 <jsp:useBean id="controller" class="org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller" scope="session"/>
+<%
+if (controller.getSessionId() == null) {
+%>
+
+ <script language="javascript">
+	    var perspectiveContent = top.frames["<%=FrameNames.PERSPECTIVE_CONTENT%>"];
+		perspectiveContent.location = "http://<%=request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/actions/SessionTimedOut.jsp";
+ </script>
+<%
+}
+else {
+%>
 <%
 // Prepare the action.
 SelectWSDLNavigatorNodeAction action = new SelectWSDLNavigatorNodeAction(controller);
@@ -31,3 +42,6 @@ boolean actionResult = action.execute();
 boolean isAddedToHistory = action.isAddedToHistory();
 %>
 <%@ include file="/actions/SelectNodeAction.inc" %>
+<%
+}
+%>
