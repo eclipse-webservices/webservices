@@ -36,6 +36,7 @@
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080312   147442 trungha@ca.ibm.com - Trung Ha
  * 20080311   222103 trungha@ca.ibm.com - Trung, Changing service scale doesn't update completely non-UI part of client scale
+ * 20080327   224452 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -846,12 +847,12 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 		  value = ScenarioContext.WS_DEVELOP;
 		  setDevelopClient(true);
 	  }
-	
-	  // clientScaleSetting_ = value; commented out because setClientScale() below does it too (trung)
+
 	  setClientScale(value);
 	  	  
 	  setGraphics(value);
 	  showSummary(value < ScenarioContext.WS_NONE);
+	  updateFields(value);
   }
   
   public void setProject(IProject project)
@@ -1005,19 +1006,11 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 	{
 		public void widgetSelected(SelectionEvent e) {
 			    int oldClientScaleSetting = clientScaleSetting_;
-			    
-				// commented out as already called in setClientGeneration (trung)
-			    //setGraphics(((Scale)e.widget).getSelection());
-				
+			    				
 				int selection = clientScale_.getSelection();
-				setClientGeneration(selection);
-			    
-			    updateFields(selection);
 				
-				//disable the client settings if the client scenario setting isn't at least "DEVELOP"
-				//boolean generate = selection<=ScenarioContext.WS_DEVELOP;
-				//showSummary(generate);
-				// commented out 2 lines above as they are already done in setClientGeneration() 4 lines earlier (trung)
+				//WARNING: No scale change should be done after the line below, 'selection' might not have the correct value
+				setClientGeneration(selection);
 				
 				//When client slider moves out of the "WS_NONE" state, VALIDATE_ALL should be done. 
 				//Otherwise, VALIDATE_SCALE_CHANGES is sufficient.
