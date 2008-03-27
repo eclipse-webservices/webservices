@@ -54,6 +54,7 @@
         id="org.eclipse.jst.ws.axis.creation.java"
         serviceImplementationTypeId="org.eclipse.jst.ws.wsImpl.java"
         runtimeId="org.eclipse.jst.ws.axis.creation.axisWebServiceRT"
+        runtimeChecker="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntimeChecker"
         bottomUp="true"
         topDown="true"
         class="org.eclipse.jst.ws.internal.axis.creation.ui.wsrt.AxisWebServiceRuntime">

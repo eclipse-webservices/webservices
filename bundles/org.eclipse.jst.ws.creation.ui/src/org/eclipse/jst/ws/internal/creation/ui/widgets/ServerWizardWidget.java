@@ -53,6 +53,7 @@
  * 20080301   221034 kathy@ca.ibm.com - Kathy Chan
  * 20080312   147442 trungha@ca.ibm.com - Trung Ha
  * 20080318   213330 trungha@ca.ibm.com - Trung, Non-conventional Java naming prevents creating Web Services (client)
+ * 20080326   198439 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -128,6 +129,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntimeChecker;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class ServerWizardWidget extends SimpleWidgetDataContributor implements Runnable, IPackable {
@@ -1214,10 +1216,16 @@ private void handleTypeChange()
 					|| validationState_ == ValidationUtils.VALIDATE_PROJECT_CHANGES
 					|| clientValidationState == ValidationUtils.VALIDATE_ALL
 					|| clientValidationState == ValidationUtils.VALIDATE_PROJECT_CHANGES) {
-				String clientProjectName = clientWidget_.getClientProjectName();
-				if (clientProjectName.equalsIgnoreCase(projectName)) {
-					return StatusUtils
-							.errorStatus(ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_PROJECTS);
+				IWebServiceRuntimeChecker runtimeChecker = null;
+
+				String serviceRuntimeId = WebServiceRuntimeExtensionUtils2.getServiceRuntimeId(getServiceTypeRuntimeServer(), projectName, projectTypeId);	    		
+				runtimeChecker = WebServiceRuntimeExtensionUtils2.getServiceRuntimeChecker(serviceRuntimeId);
+
+				if (runtimeChecker != null) {
+					return runtimeChecker.checkServiceClientCompatibility(
+							getServiceNeedEAR(), getServiceEarProjectName(), getServiceProjectName(), 
+							clientWidget_.getClientNeedEAR(), clientWidget_.getClientEarProjectName(), 
+							clientWidget_.getClientProjectName());
 				}
 			}
 		}
@@ -1240,22 +1248,6 @@ private void handleTypeChange()
 			IStatus clientWarningStatus = clientWidget_.checkWarningStatus();
 			if (clientWarningStatus.getSeverity() == IStatus.WARNING) {
 				return clientWarningStatus;
-			}
-
-			// 3. Check for warnings that span service and client if client side
-			// is enabled.
-			int clientValidationState = clientWidget_.getValidationState();
-			if (validationState_ == ValidationUtils.VALIDATE_ALL
-					|| validationState_ == ValidationUtils.VALIDATE_PROJECT_CHANGES
-					|| clientValidationState == ValidationUtils.VALIDATE_ALL
-					|| clientValidationState == ValidationUtils.VALIDATE_PROJECT_CHANGES) {
-				if (getServiceNeedEAR() && clientWidget_.getClientNeedEAR()) {
-					if (getServiceEarProjectName().equals(clientWidget_.getClientEarProjectName())) {
-						return StatusUtils.warningStatus(NLS.bind(
-								ConsumptionUIMessages.MSG_SAME_CLIENT_AND_SERVICE_EARS,
-								new String[] { "EAR" }));
-					}
-				}
 			}
 
 		}
