@@ -64,6 +64,7 @@
             label="%WEBSERVICETYPE_NAME_EJB_TP"
             resourceTypeMetadata="EJBObject org.eclipse.jst.j2ee.ejb.EnterpriseBean org.eclipse.jst.javaee.ejb.EnterpriseBeans SessionImpl SessionBeanImpl"
             extensionMetadata=".java .class .SessionImpl .SessionBeanImpl"
+            mergerClass="org.eclipse.jst.ws.internal.consumption.common.JavaMerger" 
             objectSelectionWidget="org.eclipse.jst.ws.internal.consumption.ui.widgets.object.EJBSelectionWidget">
      </webServiceImpl>
     </extension>    
