@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.jst.ws.ui;bundle-version="[1.0.100,1.1.0)",
  org.eclipse.wst.command.env.core;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.wst.command.env;bundle-version="[1.0.101,1.1.0)",
- org.eclipse.wst.command.env.ui;bundle-version="[1.0.101,1.1.0)",
+ org.eclipse.wst.command.env.ui;bundle-version="[1.0.101,1.2.0)",
  org.eclipse.wst.common.frameworks;bundle-version="[1.1.0,1.2.0)",
  com.ibm.icu;bundle-version="[3.4.4,4.0.0)"
 Eclipse-LazyStart: true
