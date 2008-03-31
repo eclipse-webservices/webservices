@@ -51,7 +51,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 public class ProjectTopologyPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, SelectionListener
 {
   /*CONTEXT_ID PTPP0001 for the Project Topology Preference Page*/
-  private String INFOPOP_PTPP_PAGE = WebServiceUIPlugin.ID + ".PPTP0001";
+  private String INFOPOP_PTPP_PAGE = WebServiceUIPlugin.ID + ".PTPP0001";
 
   private TableViewer serviceTypeViewer_;
   private Button serviceMoveUp_;
