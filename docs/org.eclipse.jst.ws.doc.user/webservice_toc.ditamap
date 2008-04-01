@@ -23,13 +23,13 @@ navtitle="Relationship between UDDI and WSDL" scope="peer"></topicref>
 <topicref href="concepts/cjaxrpc.dita" navtitle="JAX-RPC"></topicref>
 <topicref href="concepts/cjsr109.dita" navtitle="JSR 109 and JSR 921"></topicref>
 </topicref>
+<topicref href="concepts/cwstopdown.dita" navtitle="Top-down Web services development"
+scope="local"></topicref>
+<topicref href="concepts/cwsbtmup.dita" navtitle="Bottom-up Web services development"
+scope="local"></topicref>
 <topicref navtitle="Workspace and tools">
 <topicref href="concepts/cwsinwsa.dita" navtitle="Tools for Web services development"
-scope="local">
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/caxistover.dita"
-navtitle="Creating Web services with the Apache Axis runtime environments"
-scope="peer"></topicref>
-</topicref>
+scope="local"></topicref>
 <topicref navtitle="Configuring your workspace">
 <topicref href="ref/rwspref.dita" navtitle="Setting Web services preferences"
 scope="local"></topicref>
@@ -45,36 +45,12 @@ navtitle="Creating an Apache Tomcat server and  Web project" scope="peer">
 </topicref>
 <topicref navtitle="Importing and creating resources used by Web services">
 <navref mapref="../org.eclipse.wst.wsdl.ui.doc.user/wswsdleditort_toc.ditamap"/>
-</topicref>
-<topicref href="tasks/toverws.dita" navtitle="Creating Web services">
-<topicref href="concepts/cwstopdown.dita" navtitle="Top-down Web services development"
-scope="local">
-<topicgroup>
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/tsklwsdla.dita"
-navtitle="Creating an Axis1 Web service from WSDL" scope="peer"></topicref>
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/taxis2td.dita"
-navtitle="Creating an Axis2 Web service from WSDL" scope="peer"></topicref>
-</topicgroup>
-</topicref>
-<topicref href="concepts/cwsbtmup.dita" navtitle="Bottom-up Web services development"
-scope="local">
-<topicgroup>
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/twsbeana.dita"
-navtitle="Creating an Axis1 Web service from a Java bean" scope="peer"></topicref>
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/taxis2bu.dita"
-navtitle="Creating an Axis2 Web service from a Java bean" scope="peer"></topicref>
-</topicgroup>
-</topicref>
-<topicref navtitle="Creating Web service clients">
 <topicref href="../org.eclipse.jst.ws.consumption.ui.doc.user/tasks/tdiscov.dita"
 navtitle="Discovering and importing a Web service" scope="peer"></topicref>
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/tsampappa.dita"
-navtitle="Generating a Java client proxy from a WSDL document using the Axis1 runtime"
-scope="peer"></topicref>
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/taxis2client.dita"
-navtitle="Generating a Java client proxy from a WSDL document using the Axis2 runtime"
-scope="peer"></topicref>
-<anchor id="extending_ws_client_creation"/></topicref>
+</topicref>
+<topicref href="tasks/toverws.dita" navtitle="Creating Web services">
+<navref mapref="../org.eclipse.jst.ws.axis.ui.doc.user/wsaxisbuild_toc.ditamap"/>
+<navref mapref="../org.eclipse.jst.ws.axis2.ui.doc.user/wsaxis2build_toc.ditamap"/>
 <navref mapref="../org.eclipse.wst.command.env.doc.user/wsaxisant_toc.ditamap"/>
 </topicref>
 <topicref navtitle="Testing and validating Web services">
