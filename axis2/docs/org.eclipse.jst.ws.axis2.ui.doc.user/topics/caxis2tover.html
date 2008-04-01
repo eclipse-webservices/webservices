@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 IBM Corporation and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: IBM Corporation - initial API and implementation" />
+<meta name="DC.rights.owner" content="(C) Copyright 2000, 2008" />
+<meta content="public" name="security" />
+<meta content="index,follow" name="Robots" />
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Creating Web services with the Apache Axis2 runtime environments" />
+<meta name="abstract" content="This runtime environment is for users who prefer to develop for the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web services tools." />
+<meta name="description" content="This runtime environment is for users who prefer to develop for the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web services tools." />
+<meta content="Axis runtime environment, Web services, overview" name="DC.subject" />
+<meta content="Axis runtime environment, Web services, overview" name="keywords" />
+<meta scheme="URI" name="DC.Relation" content="../topics/taxis2bu.html" />
+<meta scheme="URI" name="DC.Relation" content="../topics/taxis2td.html" />
+<meta scheme="URI" name="DC.Relation" content="../topics/taxis2client.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cws.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/concepts/cjaxrpc.html" />
+<meta scheme="URI" name="DC.Relation" content="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="axisoverview" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../org.eclipse.wst.doc.user/common.css" type="text/css" rel="stylesheet" />
+<title>Creating Web services with the Apache Axis2 runtime environments</title>
+</head>
+<body id="axisoverview"><a name="axisoverview"><!-- --></a>
+
+
+<h1 class="topictitle1">Creating Web services with the Apache Axis2 runtime environments</h1>
+
+
+
+<div><p>This runtime environment is for users who prefer to develop for
+the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web
+services tools.</p>
+
+<div class="section"><h4 class="sectiontitle">Apache Axis2 Overview</h4><p>Axis2 evolved from the Apache
+Axis1.x architecture and is more flexible, configurable, and efficient, while
+retaining the positive aspects of Apache Axis1.x architecture.</p>
+<div class="p">The Web
+service tools provided with this product support the following specifications
+when creating Apache Axis2 Web services and clients:<ul>
+<li>SOAP 1.1 and 1.2</li>
+
+<li>WSDL 1.1, including both SOAP and HTTP bindings </li>
+
+<li>HTTP transports</li>
+
+</ul>
+The levels of Axis2 currently supported by the tools is 1.2 and 1.3.
+Axis2 can be deployed to any server that supports Java™ Servlet 2.2 specification or higher,
+including IBM<sup>®</sup> WebSphere<sup>®</sup> Application
+Server 6.1, and Apache Tomcat server. For more information on Axis2, refer
+to <a href="http://ws.apache.org/axis2/" target="_blank">http://ws.apache.org/axis2</a>. </div>
+<p>The
+support for Apache Axis2 is limited to validation that the application is
+invoking the Axis2 emitters correctly. Support for other Axis2 issues should
+be directed to <a href="http://ws.apache.org/axis2/" target="_blank">http://ws.apache.org/axis2</a></p>
+</div>
+
+<div class="section"><h4 class="sectiontitle">Installing the Apache Axis2 runtime</h4><div class="p">Unlike creating
+Web services in the Apache Axis1.x runtime, before creating a Web service
+using Apache Axis2 you must download the Axis2 runtime and install it the
+workbench using the Web services Axis2 preferences page.<ol>
+<li>Download Apache Axis2 v1.2 or v1.3 from the following site: <a href="http://ws.apache.org/axis2/download.cgi" target="_blank">http://ws.apache.org/axis2/download.cgi</a>.</li>
+
+<li>Follow the instructions in the appropriate Apache Axis2 installation guide: <ul>
+<li>Apache Axis2 v1.2<a href="http://ws.apache.org/axis2/1_2/installationguide.html" target="_blank">http://ws.apache.org/axis2/1_2/installationguide.html</a></li>
+
+<li>Apache Axis2 v1.3<a href="http://ws.apache.org/axis2/1_3/installationguide.html" target="_blank">http://ws.apache.org/axis2/1_3/installationguide.html</a></li>
+
+</ul>
+</li>
+
+<li>Once the Apache Axis2 runtime is installed, you need to associate it with
+the workbench. In the workbench, open <span class="menucascade"><span class="uicontrol">Window</span>
+ &gt; <span class="uicontrol">Preferences</span> &gt; <span class="uicontrol">Web services</span> &gt; <span class="uicontrol">Axis2
+Preferences</span></span>. On the <span class="uicontrol">Axis2 Runtime</span> tab,
+browse to the location where you installed Apache Axis2. A message will display
+if the runtime is installed successfully.</li>
+
+</ol>
+</div>
+</div>
+
+<div class="section"><h4 class="sectiontitle">Creating projects for Axis2 Web services</h4><div class="p">The Web
+service wizards will automatically add the correct facets to a dynamic Web
+project. However if you want to manually create a dynamic Web project enabled
+for Axis2 Web service development complete the following:<ol>
+<li>Create the service Web project by clicking <span class="uicontrol">File &gt; New &gt; Project
+&gt; Dynamic Web project</span>. Enter the following information: <ol type="a">
+<li>Project Name: Type a project name</li>
+
+<li>If you are deploying to a Tomcat server, ensure that <span class="uicontrol">Add project
+to an EAR</span> is not selected. If you do not clear this checkbox you
+will be unable to select the Tomcat server. If you are deploying to WebSphere Application
+server you will need to add the project to an EAR.</li>
+
+<li>Target runtime: Select the version of the server to which you will deploy
+your Web service. If it is not listed, click <span class="uicontrol">New</span> and
+browse to the location where it is installed.</li>
+
+<li>Configurations: Select the default configuration for your server type.</li>
+
+<li>Click <span class="uicontrol">Finish</span>.</li>
+
+</ol>
+</li>
+
+<li>Add the Axis2 facet. Right-click your project and click <span class="menucascade">
+<span class="uicontrol">Properties</span> &gt; <span class="uicontrol">Project Facets</span> &gt; <span class="uicontrol">Modify
+project</span> &gt; <span class="uicontrol">Axis2 Web Services</span></span>,
+and click <span class="uicontrol">Finish</span>.</li>
+
+<li>If you have chosen to deploy to a server in which the Axis2 JAR files
+will reside on the server (such as WebSphere Application Server), you must
+change the classloading for the EAR from PARENT_FIRST to PARENT_LAST. Expand
+the EAR associated with your Axis2 project, and launch its deployment descriptor.
+On the <span class="uicontrol">Deployment</span> tab, expand the <span class="uicontrol">Application</span> section.
+Change the <span class="uicontrol">Classloader mode</span> field to PARENT_LAST and
+save your changes.</li>
+
+</ol>
+</div>
+</div>
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../topics/taxis2bu.html">Creating a Web service from a Java bean using the Apache Axis2 runtime environment</a></strong><br />
+The Web Service wizard assists you in creating a new Web service, configuring it for deployment, and deploying the Web service to a server. Once your Web service is deployed, the wizard assists you in generating the client proxy and sample application to test the Web service. When you have completed testing, you can publish your Web service to a UDDI Business Registry using the Export wizard.</li>
+<li class="ulchildlink"><strong><a href="../topics/taxis2td.html">Creating a Java bean skeleton from a WSDL document using the Apache Axis2 runtime environment</a></strong><br />
+The Web service wizard assists you in creating a skeleton bean from an existing WSDL document. The skeleton bean contains a set of methods that correspond to the operations described in the WSDL document. When the bean is created, each method has a trivial implementation that you replace by editing the bean.</li>
+<li class="ulchildlink"><strong><a href="../topics/taxis2client.html">Generating a Java client proxy and a sample application from a WSDL document using the Axis2 runtime environment</a></strong><br />
+The Web Service Client wizard assists you in generating a Java bean proxy and a sample application. The sample Web application demonstrates how to code a proxy file.</li>
+</ul>
+
+<div class="linklist"><strong>Related Concepts</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cws.html">Web services</a></div>
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cwsinwsa.html">Tools for Web services development</a></div>
+<div><a href="../../org.eclipse.jst.ws.doc.user/concepts/cjaxrpc.html">JAX-RPC</a></div></div>
+
+<div class="linklist"><strong>Related Tasks</strong><br />
+
+<div><a href="../../org.eclipse.jst.ws.doc.user/tasks/toverws.html"> Developing Web services</a></div></div>
+</div>
+
+</body>
+</html>

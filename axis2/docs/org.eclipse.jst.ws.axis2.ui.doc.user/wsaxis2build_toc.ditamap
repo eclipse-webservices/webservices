@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN"
+ "map.dtd">
+<map anchorref="../org.eclipse.jst.ws.doc.user/wscreationt1_toc.ditamap#wsaxis"
+id="wsaxis" title="wsaxis">
+<topicref href="topics/caxis2tover.dita" navtitle="Apache Axis2 runtime" toc="yes">
+<topicref href="topics/taxis2bu.dita" navtitle="Creating a Web service from a Java bean using the Apache Axis2 runtime environment"
+scope="local"></topicref>
+<topicref href="topics/taxis2td.dita" navtitle="Creating a Java bean skeleton from a WSDL document using the Apache Axis2 runtime environment"
+scope="local"></topicref>
+<topicref href="topics/taxis2client.dita" navtitle="Generating a Java client proxy and a sample application from a WSDL document using the Axis2 runtime environment"
+scope="local"></topicref>
+</topicref>
+</map>

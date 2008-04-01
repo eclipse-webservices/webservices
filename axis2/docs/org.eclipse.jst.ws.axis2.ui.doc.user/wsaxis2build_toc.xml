@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc link_to="../org.eclipse.jst.ws.doc.user/wscreationt1_toc.xml#wsaxis" label="wsaxis" topic="topics/caxis2tover.html">
+<topic label="Creating Web services with the Apache Axis2 runtime environments" href="topics/caxis2tover.html">
+<topic label="Creating a Web service from a Java bean using the Apache Axis2 runtime environment" href="topics/taxis2bu.html"/>
+<topic label="Creating a Java bean skeleton from a WSDL document using the Apache Axis2 runtime environment" href="topics/taxis2td.html"/>
+<topic label="Generating a Java client proxy and a sample application from a WSDL document using the Axis2 runtime environment" href="topics/taxis2client.html"/>
+</topic>
+</toc>
