@@ -32,12 +32,32 @@
    <requires>
       <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.help.appserver" version="3.1.100" match="equivalent"/>
       <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common" version="2.2.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore" version="2.2.0" match="compatible"/>
       <import plugin="org.eclipse.xsd" version="2.2.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.command.env" version="1.0.101" match="equivalent"/>
+      <import plugin="org.eclipse.wst.command.env.core" version="1.0.101" match="equivalent"/>
+      <import plugin="org.eclipse.wst.command.env.ui" version="1.0.101"/>
+      <import plugin="org.eclipse.wst.ws" version="1.0.100"/>
+      <import plugin="org.eclipse.wst.ws.parser" version="1.0.100" match="equivalent"/>
+      <import plugin="org.eclipse.wst.wsdl" version="1.1.0" match="equivalent"/>
+      <import plugin="javax.wsdl" version="1.4.0" match="equivalent"/>
+      <import plugin="org.apache.wsil4j" version="1.0.0" match="equivalent"/>
+      <import plugin="org.uddi4j" version="2.0.4" match="equivalent"/>
       <import plugin="org.apache.axis" version="1.4.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.common.frameworks" version="1.1.0" match="equivalent"/>
+      <import plugin="org.eclipse.wst.common.frameworks.ui" version="1.1.0" match="equivalent"/>
+      <import plugin="org.eclipse.wst.common.environment" version="1.0.100" match="equivalent"/>
+      <import plugin="org.eclipse.wst.common.uriresolver" version="1.1.0" match="equivalent"/>
       <import plugin="com.ibm.icu" version="3.4.4" match="compatible"/>
+      <import plugin="org.eclipse.wst.ws.ui" version="1.1.0" match="equivalent"/>
+      <import plugin="org.eclipse.equinox.http.jetty"/>
+      <import plugin="org.eclipse.equinox.jsp.jasper.registry"/>
+      <import plugin="org.eclipse.equinox.http.registry"/>
+      <import plugin="javax.servlet"/>
+      <import plugin="org.eclipse.osgi.services"/>
       <import plugin="org.eclipse.ui.ide" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.gef" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
@@ -45,61 +65,42 @@
       <import plugin="org.eclipse.ui.editors" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench.texteditor" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.sse.core" version="1.1.0" match="equivalent"/>
       <import plugin="org.eclipse.wst.sse.ui" version="1.0.101"/>
       <import plugin="org.eclipse.wst.common.uriresolver" version="1.1.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.common.ui" version="1.1.0" match="equivalent"/>
+      <import plugin="org.eclipse.wst.xml.core" version="1.1.0" match="equivalent"/>
+      <import plugin="org.eclipse.wst.xml.ui" version="1.0.100" match="equivalent"/>
       <import plugin="org.eclipse.wst.common.core" version="1.1.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.xsd.ui" version="1.2.0" match="equivalent"/>
       <import plugin="org.eclipse.emf.edit" version="2.2.0" match="compatible"/>
       <import plugin="org.eclipse.emf.edit.ui" version="2.2.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.validation" version="1.1.0" match="compatible"/>
       <import plugin="org.eclipse.wst.wsdl.validation" version="1.1.0" match="compatible"/>
       <import plugin="org.eclipse.ltk.core.refactoring" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ltk.ui.refactoring" version="3.2.0" match="compatible"/>
       <import plugin="org.apache.xerces" version="2.8.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views.properties.tabbed" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.command.env" version="1.0.102" match="equivalent"/>
       <import plugin="org.eclipse.wst.ws.ui" version="1.0.101"/>
       <import plugin="org.eclipse.search" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.debug.core" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.help.appserver" version="3.1.100" match="compatible"/>
-      <import plugin="org.eclipse.wst.command.env" version="1.0.101" match="compatible"/>
-      <import plugin="org.eclipse.wst.command.env.core" version="1.0.101" match="compatible"/>
-      <import plugin="org.eclipse.wst.command.env.ui" version="1.0.101" match="compatible"/>
-      <import plugin="org.eclipse.wst.ws" version="1.0.100" match="compatible"/>
-      <import plugin="org.eclipse.wst.ws.parser" version="1.0.100" match="compatible"/>
-      <import plugin="org.eclipse.wst.wsdl" version="1.1.0" match="compatible"/>
-      <import plugin="javax.wsdl" version="1.4.0" match="compatible"/>
-      <import plugin="org.apache.wsil4j" version="1.0.0" match="compatible"/>
-      <import plugin="org.uddi4j" version="2.0.4" match="compatible"/>
-      <import plugin="org.eclipse.wst.common.frameworks" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.common.frameworks.ui" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.common.environment" version="1.0.100" match="compatible"/>
-      <import plugin="org.eclipse.wst.common.uriresolver" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.ws.ui" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.http.jetty"/>
-      <import plugin="org.eclipse.equinox.jsp.jasper.registry"/>
-      <import plugin="org.eclipse.equinox.http.registry"/>
-      <import plugin="javax.servlet"/>
-      <import plugin="org.eclipse.osgi.services"/>
-      <import plugin="org.eclipse.core.resources" version="3.2.0"/>
-      <import plugin="org.eclipse.wst.sse.core" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.common.ui" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.xml.core" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.xml.ui" version="1.0.100" match="compatible"/>
-      <import plugin="org.eclipse.wst.xsd.ui" version="1.2.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.validation" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.command.env" version="1.0.102" match="compatible"/>
-      <import plugin="org.eclipse.wst.ws" version="1.0.101" match="compatible"/>
       <import plugin="org.eclipse.wst.ws.service.policy.ui" version="1.0.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.wsdl.validation" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.wsi" version="1.0.101" match="compatible"/>
-      <import plugin="org.eclipse.wst.internet.monitor.core" version="1.0.102" match="compatible"/>
-      <import plugin="org.eclipse.wst.internet.monitor.ui" version="1.0.102" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime" version="3.3.0" match="compatible"/>
+      <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="compatible"/>
       <import plugin="org.eclipse.wst.ws.service.policy" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.debug.core" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.wsdl.validation" version="1.1.0" match="equivalent"/>
+      <import plugin="org.eclipse.wst.wsi" version="1.0.101" match="equivalent"/>
+      <import plugin="org.eclipse.wst.internet.monitor.core" version="1.0.102" match="equivalent"/>
+      <import plugin="org.eclipse.wst.internet.monitor.ui" version="1.0.102" match="equivalent"/>
+      <import plugin="org.eclipse.core.runtime" version="3.3.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.ws.service.policy" version="1.0.0" match="equivalent"/>
       <import plugin="org.eclipse.swt" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.core.expressions" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.ui.forms" version="3.3.0" match="compatible"/>
+      <import plugin="org.eclipse.wst.ws" version="1.0.101" match="compatible"/>
    </requires>
 
    <plugin
