@@ -79,6 +79,8 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 	private WSDLNewFileOptionsPage optionsPage;
 	private IStructuredSelection selection;
 	private BindingGenerator generator;
+	private boolean fOpenEditorWhenFinished;
+	private IFile fNewFile = null;
 
 	/**
 	 * Constructor for NewWSDLWizard.
@@ -86,13 +88,19 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 	public NewWSDLWizard() {
 		super();
 		generator = new BindingGenerator(null, null);
+		fOpenEditorWhenFinished = true;
+	}
+	
+	public NewWSDLWizard(boolean openEditorWhenFinished) {
+		this();
+		fOpenEditorWhenFinished = openEditorWhenFinished;
 	}
 
 	/**
 	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
 	 */
 	public boolean performFinish() {
-		IFile file = newFilePage.createNewFile();
+		fNewFile = newFilePage.createNewFile();
 
 		Preferences preference = XMLCorePlugin.getDefault().getPluginPreferences();
 		String charSet = preference.getString(CommonEncodingPreferenceNames.OUTPUT_CODESET);
@@ -106,7 +114,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		String prefix = optionsPage.getPrefix();
 		String definitionName = optionsPage.getDefinitionName();
 
-		URI uri2 = URI.createPlatformResourceURI(file.getFullPath().toOSString(), false);
+		URI uri2 = URI.createPlatformResourceURI(fNewFile.getFullPath().toOSString(), false);
 		ResourceSet resourceSet = new ResourceSetImpl();
 		WSDLResourceImpl resource = (WSDLResourceImpl) resourceSet.createResource(URI.createURI("*.wsdl")); //$NON-NLS-1$
 		resource.setURI(uri2);
@@ -116,7 +124,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		resource.getContents().add(definition);
 		
 		definition.setTargetNamespace(optionsPage.getTargetNamespace());
-		definition.setLocation(file.getLocation().toString());
+		definition.setLocation(fNewFile.getLocation().toString());
 		definition.setEncoding(charSet);
 		definition.setQName(new QName(wsdlPrefix, definitionName));
 		definition.addNamespace(prefix, optionsPage.getTargetNamespace());
@@ -179,7 +187,9 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		 * Display.getCurrent().asyncExec (new Runnable() { public void run() {
 		 * ((ISetSelectionTarget)focusPart).selectReveal(selection); } }); } } }
 		 */
-		openEditor(file);
+		if (fOpenEditorWhenFinished) {
+			openEditor(fNewFile);
+		}
 
 		return true;
 	}
@@ -207,6 +217,10 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 	public IPath getNewFilePath() {
 		String fileName = newFilePage.getFileName();
 		return fileName != null ? new Path(fileName) : null;
+	}
+	
+	public IFile getNewFile() {
+		return fNewFile;
 	}
 
 	public boolean canFinish() {
