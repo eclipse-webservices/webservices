@@ -17,6 +17,7 @@
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
+ * 20080402   225378 makandre@ca.ibm.com - Andrew Mak, Client wizard runtime/server defaulting is not respecting the preference
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -812,6 +813,39 @@ public class WebServiceRuntimeExtensionUtils2
   }      
 
   /**
+   * Returns the id of a Web service client runtime that supports the given Web service client type.
+   *  
+   * @param typeId The client type ID. 
+   * 
+   * @return String id of a Web service client runtime that supports the given Web service client type. 
+   * Returns null if such a Web service client runtime cannot be found.
+   */
+  public static String getDefaultClientRuntimeValueFor(String typeId)
+  {
+    String[] crIds = getClientRuntimesByType(typeId);     	
+    if (crIds == null)
+    {
+      return null;
+    }
+    
+    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+    String preferredRuntimeId = context.getRuntimeId();
+    
+    String runtimeId;
+    
+    for (int i = 0; i < crIds.length; i++) {
+		runtimeId = getClientRuntimeDescriptorById(crIds[i]).getRuntime().getId();
+		if (runtimeId.equals(preferredRuntimeId)) {
+			return runtimeId;
+		}
+	}
+    
+    // The preferred runtime does not support typeId.  Just return the first service runtime that does support typeId.
+    ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(crIds[0]);
+    return desc.getRuntime().getId();
+  }
+  
+  /**
    * Returns the id of a server type that supports the given Web service type.
    * Returns the server type ID from the preference if it supports the typeId.
    *  
@@ -825,6 +859,32 @@ public class WebServiceRuntimeExtensionUtils2
   public static String getDefaultServerValueFor(String typeId)
   {
     String[] fIds = getServerFactoryIdsByServiceType(typeId);
+    if (fIds==null || fIds.length==0)
+      return null;
+    
+    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+    String preferredServerFactoryId = context.getServerFactoryId();
+    for (int i = 0; i < fIds.length; i++) {
+		String serverTypeId = fIds[i];
+		if (serverTypeId.equals(preferredServerFactoryId)) {
+			return serverTypeId;
+		}
+	}
+    return fIds[0];
+  }    
+ 
+  /**
+   * Returns the id of a server type that supports the given Web service client type.
+   * Returns the server type ID from the preference if it supports the typeId.
+   *  
+   * @param typeId The client type ID.
+   * 
+   * @return String id of a id of a server type that supports the given Web service client type. 
+   * Returns null if such a server type cannot be found.
+   */    
+  public static String getDefaultClientServerValueFor(String typeId)
+  {
+    String[] fIds = getServerFactoryIdsByClientType(typeId);
     if (fIds==null || fIds.length==0)
       return null;
     

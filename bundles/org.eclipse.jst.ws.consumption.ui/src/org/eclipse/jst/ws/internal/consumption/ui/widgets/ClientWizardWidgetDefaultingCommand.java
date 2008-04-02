@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20060728   150560 kathy@ca.ibm.com - Kathy Chan
  * 20060728   151078 kathy@ca.ibm.com - Kathy Chan
+ * 20080402   225378 makandre@ca.ibm.com - Andrew Mak, Client wizard runtime/server defaulting is not respecting the preference
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -93,24 +94,14 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
   // TODO Set client name defaults here.  
   public TypeRuntimeServer getClientTypeRuntimeServer()
   {
-    // rskreg
-		//WebServiceClientTypeRegistry registry = WebServiceClientTypeRegistry.getInstance();
-    String                       type     = getScenarioContext().getClientWebServiceType();
-    //String                       runtime  = registry.getAllClientRuntimes()[0];
-		String                       runtime  = WebServiceRuntimeExtensionUtils2.getAllRuntimesForClientSide()[0];
-    //String                       server   = registry.getAllClientServerFactoryIds()[0];
-        String[] servers = WebServiceRuntimeExtensionUtils2.getAllClientServerFactoryIds();
-        String server = null;
-        if (servers != null && servers.length>0)
-        {
-		  server   = servers[0];
-        }
-    TypeRuntimeServer            result   = new TypeRuntimeServer();
-		// rskreg
+    String type = getScenarioContext().getClientWebServiceType();
+	String runtime  = WebServiceRuntimeExtensionUtils2.getDefaultClientRuntimeValueFor(type);
+    String factoryID = WebServiceRuntimeExtensionUtils2.getDefaultClientServerValueFor(type);
+    TypeRuntimeServer result = new TypeRuntimeServer();
     
     result.setTypeId( type );
     result.setRuntimeId( runtime );
-    result.setServerId( server ); 
+    result.setServerId( factoryID ); 
     
     return result;  
   }
