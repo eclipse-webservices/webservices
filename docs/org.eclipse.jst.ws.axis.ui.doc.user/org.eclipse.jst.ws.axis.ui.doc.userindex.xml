@@ -32,17 +32,6 @@
     <entry keyword="creating an Apache Tomcat server">
       <topic href="topics/ttomcatserv.html#creatinganapachetomcatserver" title="Creating an Apache Tomcat server and Web project"/>
     </entry>
-    <entry keyword="Axis2 runtime environment">
-      <entry keyword="creating a Web service">
-        <topic href="topics/taxis2bu.html#twsbeana" title="Creating a Web service from a Java bean using the Apache Axis2 run-time environment"/>
-      </entry>
-      <entry keyword="skeleton Web services">
-        <topic href="topics/taxis2td.html#tsklwsdla" title="Creating a Java bean skeleton from a WSDL document using the Apache Axis2 runtime environment"/>
-      </entry>
-      <entry keyword="Web service clients">
-        <topic href="topics/taxis2client.html#tsampappa" title="Generating a Java client proxy and a sample application from a WSDL document using the Axis2 runtime environment"/>
-      </entry>
-    </entry>
   </entry>
   <entry keyword="Axis1 runtime environment">
     <entry keyword="Web services">
@@ -54,19 +43,6 @@
   <entry keyword="Tomcat server">
     <entry keyword="creating servers for Web services">
       <topic href="topics/ttomcatserv.html#creatinganapachetomcatserver" title="Creating an Apache Tomcat server and Web project"/>
-    </entry>
-  </entry>
-  <entry keyword="Axis2 runtime environment">
-    <entry keyword="Web services">
-      <entry keyword="Java beans">
-        <topic href="topics/taxis2bu.html#twsbeana" title="Creating a Web service from a Java bean using the Apache Axis2 run-time environment"/>
-      </entry>
-    </entry>
-    <entry keyword="skeleton Web services">
-      <topic href="topics/taxis2td.html#tsklwsdla" title="Creating a Java bean skeleton from a WSDL document using the Apache Axis2 runtime environment"/>
-    </entry>
-    <entry keyword="Web service clients">
-      <topic href="topics/taxis2client.html#tsampappa" title="Generating a Java client proxy and a sample application from a WSDL document using the Axis2 runtime environment"/>
     </entry>
   </entry>
 </index>
