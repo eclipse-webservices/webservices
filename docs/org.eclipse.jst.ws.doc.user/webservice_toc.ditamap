@@ -37,7 +37,7 @@ scope="local"></topicref>
 <topicref href="tasks/twsicomply.dita" navtitle="Setting the level of WS-I compliance"
 scope="local"></topicref>
 </topicref>
-<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/ttomcatserv.dita"
+<topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.dita"
 navtitle="Creating an Apache Tomcat server and  Web project" scope="peer">
 </topicref>
 </topicref>

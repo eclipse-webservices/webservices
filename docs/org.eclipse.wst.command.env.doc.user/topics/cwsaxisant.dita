@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
  "concept.dtd">
 <concept id="creatingawebservicefromajavabean" xml:lang="en-us">
@@ -20,7 +20,7 @@ it, and publish it as a business entity or business service.</shortdesc>
 <section><title>Prerequisites</title><p>Before you create a Web service or
 client using the Ant tasks, you need to complete a few prerequisites.</p><ul>
 <li>Install Apache Tomcat, create a server, and create a dynamic Web project
-associated with that server as described in <xref href="../../org.eclipse.jst.ws.axis.ui.doc.user/tasks/ttomcatserv.dita">Creating
+associated with that server as described in <xref href="../../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.dita">Creating
 an Apache Tomcat server and Web project</xref></li>
 <li>Import the required Ant files into your workspace:<ol>
 <li>Create a project.</li>

@@ -27,7 +27,7 @@
 <topic label="Web services interoperability (WS-I)" href="concepts/cwsiover.html">
 <topic label="Setting the level of WS-I compliance" href="tasks/twsicomply.html"/>
 </topic>
-<topic label="Creating an Apache Tomcat server and Web project" href="../org.eclipse.jst.ws.axis.ui.doc.user/tasks/ttomcatserv.html"/>
+<topic label="Creating an Apache Tomcat server and Web project" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.html"/>
 </topic>
 </topic>
 </topic>
