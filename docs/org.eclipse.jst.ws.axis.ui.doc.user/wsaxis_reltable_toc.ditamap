@@ -15,11 +15,11 @@
 </topicref>
 </relcell>
 <relcell>
-<topicref href="topics/taxis2bu.dita" navtitle="Creating an Axis2 Web service from a Java bean">
+<topicref href="topics/twsbeana.dita" navtitle="Creating an Axis1 Web service from a Java bean">
 </topicref>
-<topicref href="topics/taxis2td.dita" navtitle="Creating an Axis2 Web service from WSDL">
+<topicref href="topics/tsklwsdla.dita" navtitle="Creating an Axis1 Web service from WSDL">
 </topicref>
-<topicref href="topics/taxis2client.dita" navtitle="Creating an Axis2 Web service client">
+<topicref href="topics/tsampappa.dita" navtitle="Creating an Axis1 Web service client">
 </topicref>
 </relcell>
 <relcell></relcell>
