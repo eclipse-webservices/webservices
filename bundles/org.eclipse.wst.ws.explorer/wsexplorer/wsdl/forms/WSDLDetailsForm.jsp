@@ -87,7 +87,7 @@
     <table width="95%" height="100%" border=0 cellpadding=0 cellpadding=0>
       <tr>
         <td>
-          <iframe src="<%=response.encodeURL(controller.getPathWithContext("/wsdl/forms/WSDLDetailsSourceView.jsp"))%>" width="95%" height="100%"></iframe>
+          <iframe src="<%=response.encodeURL(controller.getPathWithContext("wsdl/forms/WSDLDetailsSourceView.jsp"))%>" width="95%" height="100%"></iframe>
         </td>
       </tr>
     </table>
