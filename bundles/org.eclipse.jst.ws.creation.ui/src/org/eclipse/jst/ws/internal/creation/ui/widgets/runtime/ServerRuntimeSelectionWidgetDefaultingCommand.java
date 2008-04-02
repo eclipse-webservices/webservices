@@ -23,6 +23,7 @@
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
+ * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -387,7 +388,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     	if (servers[j] != null && servers[j].getServerType() != null)
     	{
 	        String serverFactoryId = servers[j].getServerType().getId();
-	        if (serverFactoryId == preferredServerFactoryId)
+	        if (serverFactoryId.equals(preferredServerFactoryId))
 	        {
 	          if (WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(serviceRuntimeId_, serverFactoryId))
 	          {

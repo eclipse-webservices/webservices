@@ -13,6 +13,7 @@
  * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
+ * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -442,7 +443,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           if (servers[j] != null && servers[j].getServerType() != null)
           {
 	          String serverFactoryId = servers[j].getServerType().getId();
-	          if (serverFactoryId == preferredServerFactoryId)
+	          if (serverFactoryId.equals(preferredServerFactoryId))
 	          {
 	            if (WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(clientRuntimeId_, serverFactoryId))
 	            {
