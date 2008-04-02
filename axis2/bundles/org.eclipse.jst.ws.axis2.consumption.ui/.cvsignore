@@ -1,2 +1,4 @@
 build.xml
 javaCompiler...args
+@dot
+org.eclipse.jst.ws.axis2.consumption.ui_1.0.101.200804020204.jar
