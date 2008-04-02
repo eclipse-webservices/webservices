@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060401   128827 kathy@ca.ibm.com - Kathy Chan
+ * 20080402   224433 kathy@ca.ibm.com - Kathy Chan, Properties file change
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption;
 
@@ -35,6 +36,7 @@ public final class ConsumptionMessages extends NLS {
 	public static String MSG_WARN_JTS_PROXY_METHODS_OMITTED;
 	public static String MSG_ERROR_SAMPLE_CREATION_CANCELED;
 	public static String MSG_WARN_UNABLE_TO_FIND_PROXY;
+	public static String MSG_ERROR_PROXY_NOT_FOUND_IN_PROJECT;
 	public static String MSG_ERROR_JTS_JSP_GEN;
 	public static String FILTER_MSG_ERROR_NULL_OBJECT;
 	public static String FILTER_MSG_ERROR_NOT_FILE;
