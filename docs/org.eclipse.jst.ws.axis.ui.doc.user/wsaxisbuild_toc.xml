@@ -2,9 +2,4 @@
 
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc link_to="../org.eclipse.jst.ws.doc.user/wscreationt1_toc.xml#wsaxis" label="wsaxis" topic="topics/caxistover.html">
-<topic label="Creating an Apache Tomcat server and Web project" href="topics/ttomcatserv.html"/>
-<topic label="Creating a Web service from a Java bean using the Apache Axis2 run-time environment" href="topics/taxis2bu.html"/>
-<topic label="Creating a Java bean skeleton from a WSDL document using the Apache Axis2 runtime environment" href="topics/taxis2td.html"/>
-<topic label="Generating a Java client proxy and a sample application from a WSDL document using the Axis2 runtime environment" href="topics/taxis2client.html"/>
-</toc>
+<toc link_to="../org.eclipse.jst.ws.doc.user/wscreationt1_toc.xml#wsaxis" label="wsaxis" topic="topics/caxistover.html"/>
