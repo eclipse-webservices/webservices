@@ -16,6 +16,7 @@
  * 20070516   186233 gilberta@ca.ibm.com - Gilbert Andrews
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080331   224953 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -93,7 +94,7 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
 public class GenSampleWidgetBinding implements CommandWidgetBinding
 {  
 
-	public static String JAX_RPC="jax-rpc";
+	
 	
 /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#create()
@@ -109,6 +110,28 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
            };
   }
 
+  public SelectionList getLegitTestFacility()
+  {
+   	ScenarioContext scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
+  	String[] testTypes = scenarioContext.getWebServiceTestTypes();	  
+  	List newTestTypes = new ArrayList();
+		
+  	for(int i = 0;i<testTypes.length;i++){
+  		WebServiceTestExtension extension =
+  			(WebServiceTestExtension) WebServiceTestRegistry.getInstance()
+  			.getWebServiceExtensionsByName(testTypes[i]);
+		  
+  		if(extension.testJavaProxy()){
+  			boolean defaultJaxrpc = extension.isDefaultJAXRPC();
+  			if(defaultJaxrpc){
+  				newTestTypes.add(testTypes[i]); 
+    			}
+  		}
+  	}	
+  	String[] tempArray = new String[newTestTypes.size()];
+  	return new SelectionList((String[]) newTestTypes.toArray(tempArray), 0);
+  }
+  
   /* (non-Javadoc)
    * @see org.eclipse.wst.command.env.ui.widgets.CommandWidgetBinding#registerCanFinish(org.eclipse.wst.command.env.ui.widgets.CanFinishRegistry)
    */
@@ -300,32 +323,10 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     {
       return true;
     }
-    
+        
     public SelectionList getTestFacility()
     {
-    	return selectTestFacility();
-    }
-    
-    private SelectionList selectTestFacility()
-    {
-     	ScenarioContext scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
-    	String[] testTypes = scenarioContext.getWebServiceTestTypes();	  
-    	List newTestTypes = new ArrayList();
-  		
-    	for(int i = 0;i<testTypes.length;i++){
-    		WebServiceTestExtension extension =
-    			(WebServiceTestExtension) WebServiceTestRegistry.getInstance()
-    			.getWebServiceExtensionsByName(testTypes[i]);
-  		  
-    		if(extension.testJavaProxy()){
-    			boolean defaultJaxrpc = extension.isDefaultJAXRPC();
-    			if(defaultJaxrpc){
-    				newTestTypes.add(testTypes[i]); 
-      			}
-    		}
-    	}	
-    	String[] tempArray = new String[newTestTypes.size()];
-    	return new SelectionList((String[]) newTestTypes.toArray(tempArray), 0);
+    	return getLegitTestFacility();
     }
     
     
