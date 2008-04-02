@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060509   119296 pmoogk@ca.ibm.com - Peter Moogk
  * 20080221 146023 gilberta@ca.ibm.com - Gilbert Andrews 
+ * 20080402   222094 kathy@ca.ibm.com - Kathy Chan, Update properties file.
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui;
 
@@ -39,6 +40,7 @@ public final class EnvironmentUIMessages extends NLS {
 	public static String WIZARD_PAGE_DESC_ANT;
 	public static String MSG_STATUS_COPYING_ANT_FILES;
 	public static String MSG_ERR_COPYING_ANT_FILES;
+	public static String MSG_ERR_ANT_FILES_NOT_FOUND;
 	public static String MSG_WARNING_FILE_EXISTS;
 	public static String DIALOG_TITLE_OVERWRITE;
 	public static String MSG_ERROR_OPERATION_TIMED_OUT;
