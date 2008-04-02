@@ -54,6 +54,7 @@
  * 20080312   147442 trungha@ca.ibm.com - Trung Ha
  * 20080318   213330 trungha@ca.ibm.com - Trung, Non-conventional Java naming prevents creating Web Services (client)
  * 20080326   198439 kathy@ca.ibm.com - Kathy Chan
+ * 20080402   198439 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1081,7 +1082,7 @@ private void handleTypeChange()
 		}
 
 		IStatus possibleErrorStatus = checkErrorStatus();
-		if (possibleErrorStatus.getSeverity() == IStatus.ERROR) {
+		if (possibleErrorStatus.getSeverity() == IStatus.ERROR || possibleErrorStatus.getSeverity() == IStatus.WARNING) {
 			return possibleErrorStatus;
 		}
 
