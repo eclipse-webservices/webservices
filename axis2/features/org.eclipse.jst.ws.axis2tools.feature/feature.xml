@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.jst.ws.axis2tools"
+      id="org.eclipse.jst.ws.axis2tools.feature"
       label="Axis2 Tools"
       version="2.0.0">
 
