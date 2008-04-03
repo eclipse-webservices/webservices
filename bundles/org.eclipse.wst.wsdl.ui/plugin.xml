@@ -260,7 +260,7 @@
             enablesFor="1"
             style="pulldown"
             menubarPath="searchReferences-slot-temp"
-            label="References" 
+            label="%References" 
             class="org.eclipse.wst.wsdl.ui.internal.search.actions.WSDLSearchReferencesGroupActionDelegate"> 
          </action>          
       </objectContribution>               
