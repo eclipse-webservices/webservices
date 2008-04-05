@@ -2,3 +2,4 @@ build.xml
 javaCompiler...args
 @dot
 org.eclipse.jst.ws.axis2.creation.ui_1.0.102.200804020204.jar
+temp.folder
