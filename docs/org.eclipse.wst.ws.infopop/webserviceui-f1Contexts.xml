@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.contexts"?>
 <!-- /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,7 @@ You can select which types of WSDL files to run validation on:
 </description>
 </context>
 
-<context id="PWSI0010">
+<context id="PWSI00010">
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
@@ -80,14 +80,14 @@ You can select which types of WSDL files to run validation on:
 </description>
 </context>
 
-<context id="PWSI0012">
+<context id="PWSI00012">
 <!--desc-->
 <description>
 If you select to wait for WSDL validation to complete, the Web services wizards will prevent you from going forward and completing additional wizard pages once you have selected your WSDL file until that WSDL file has been validated. If the WSDL file is not valid, you will be given the option of exiting the wizard or continuing with the invalid WSDL file.
 </description>
 </context>
 
-<context id="PWRS00009">
+<context id="PWRS0009">
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
@@ -107,7 +107,7 @@ You can select which types of WSDL files to run validation on:
 </description>
 </context>
 
-<context id="PWRS00011">
+<context id="PWRS0011">
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
@@ -117,7 +117,7 @@ You can select which types of WSDL files to run validation on:
 </description>
 </context>
 
-<context id="PWRS00012">
+<context id="PWRS0012">
 <!--desc-->
 <description>
 You can select which types of WSDL files to run validation on:
@@ -127,11 +127,5 @@ You can select which types of WSDL files to run validation on:
 </description>
 </context>
 
-<context id="PWRS0013">
-<!--desc-->
-<description>
-If you select to wait for WSDL validation to complete, the Web services wizards will prevent you from going forward and completing additional wizard pages once you have selected your WSDL file until that WSDL file has been validated. If the WSDL file is not valid, you will be given the option of exiting the wizard or continuing with the invalid WSDL file.
-</description>
-</context>
 
 </contexts>
