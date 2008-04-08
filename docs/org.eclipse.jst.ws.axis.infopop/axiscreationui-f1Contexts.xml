@@ -11,40 +11,25 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ -->
 <contexts>
-<!--WebServiceAxisBeanClassPage.java-->
-
-<context id="PBCL0001">
-<!--Bean Selection Page-->
-<description>Use this page to select the Java bean from which you will create your Web service.</description>
-</context>
-
-<context id="PBCL0002">
-<!--Bean Selection field of the Bean Selection Page-->
-<description>Enter the name of the Java bean to be used to create the Web service. Defaults the selected Java bean. Click <b>Browse classes </b>to view the bean class of the selected Java bean. The bean class is a model or template (an abstract data type) that can be instantiated to create objects with a common definition and therefore, common properties, operations, and behavior. Click <b>Browse files </b>to select a Java bean from the project.</description>
-</context>
-
-<context id="PBCL0003">
-<!--Bean Class Browse button of the Bean Selection Page-->
-<description>Click to view the bean class of the selected Java bean.</description>
-</context>
-
-<context id="PBCL0004">
-<!--Bean Resource Browse button of the Bean Selection Page-->
-<description>Click this button to browse to a Java bean on your system to be used to create a Web service.</description>
-</context>
 
 <!--WebServiceAxisBeanConfigPage.java-->
 <context id="PBCF0001">
 <!--Bean Identity Page-->
-<description>On this page you can select the name of the WSDL file that will be generated, and the methods that will be included in the Web service.</description>
+<description>On this page you can select the name of the WSDL file that will be generated, and the methods that will be included in the Web service. You can also select the encoding style. RPC/Encoded is the recommended encoding style for the Axis runtime environment. This encoding method is not WS-I compliant.</description>
 </context>
-<context id="PBCF0002">
-<!--URI field of the Bean Config Page-->
-<description>This field contains the unique identifier of the Web service. It is read-only.</description>
+
+<context id="PBCF0006">
+<!--WSDL Folder field in the Bean Config Page-->
+<description>This field lists the location of the WSDL file being generated.</description>
 </context>
 <context id="PBCF0007">
 <!--WSDL File field of the Bean Config Page-->
 <description>This field contains the name of the WSDL file that will be generated. Accept the default or enter a new name.</description>
+</context>
+
+<context id="PBCF0016">
+<!--Show Mappings checkbox of the Bean Methods Page-->
+<description>Select this check box to customize the mappings between packages and namespaces.</description>
 </context>
 
 <context id="PBME0002">
@@ -60,10 +45,6 @@
 <description>Click this button to remove all listed methods from your Web service.</description>
 </context>
 
-<context id="PBCF0016">
-<!--Show Mappings checkbox of the Bean Methods Page-->
-<description>Select this check box to customize the mappings between packages and namespaces.</description>
-</context>
 
 
 <!--WebServiceSkeletonAxisConfigPage.java-->
@@ -72,29 +53,13 @@
 <!--Skeleton Config Page-->
 <description>Use this page to specify information about the Java bean skeleton being created.</description>
 </context>
-<context id="PBCF0002">
-<!--URI field of the Bean Config Page-->
-<description>This field lists the SOAP body namespace and unique identifier of the Web service being created.</description>
-</context>
-<context id="PBCF0006">
-<!--WSDL Folder field in the Bean Config Page-->
-<description>This field lists the location of the WSDL file being generated.</description>
-</context>
-<context id="PBCF0007">
-<!--WSDL File field of the Bean Config Page-->
-<description>Enter the name of the WSDL file being created, or accept the default.</description>
-</context>
 <context id="PBSC0004">
 <!--Skeleton Folder field of the Skeleton Config Page-->
 <description>Enter the location where the Java bean skeleton will be created, or accept the default.</description>
 </context>
-<context id="PBSC0005">
-<!--Skeleton Folder Browse button of the Skeleton Config Page-->
-<description>Use this button to browse to the location where you want the Java bean skeleton to be created.</description>
-</context>
-<context id="PBCF0016">
+<context id="PBSC0016">
 <!--Show Mappings checkbox of the Bean Methods Page-->
-<description>Select this check box to customize the mappings between packages and namespaces.</description>
+<description>Select this check box to customize the mappings between namespaces and packages.</description>
 </context>
 
 </contexts>
