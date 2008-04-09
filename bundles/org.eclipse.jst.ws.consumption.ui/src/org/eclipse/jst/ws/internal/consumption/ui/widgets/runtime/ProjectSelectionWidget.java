@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20060524   141024 joan@ca.ibm.com - Joan Haggarty
  * 20060829   145449 makandre@ca.ibm.com - Andrew Mak, Web service client project type dropdown disabled after selecting client project
  * 20060829   180833 ericdp@ca.ibm.com - Eric D. Peters,  New Web Service wizard service settings dialog has unlabelled enabled text fields
+ * 20080409   226047 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -88,18 +89,18 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
   private ModifyListener earProjectListener_;
 
   /*
-   * CONTEXT_ID PWRS0006 for the service-side Web project combo box of the
+   * CONTEXT_ID PWRS0016 for the service-side Web project combo box of the
    * runtime selection Page
    */
-  private String INFOPOP_PWRS_COMBO_PROJECT = pluginId_ + ".PWRS0006";
+  private String INFOPOP_PWRS_COMBO_PROJECT = pluginId_ + ".PWRS0016";
 
   //private Combo module_;
 
   /* CONTEXT_ID PWRS0018 for the client project type combo box of the runtime selection Page */
   private String INFOPOP_PWRS_COMBO_CLIENT_PROJECT_TYPE = pluginId_ + ".PWRS0018";
   
-  /* CONTEXT_ID PWRS0024 for the service project type combo box of the runtime selection Page */
-  private String INFOPOP_PWRS_COMBO_SERVICE_PROJECT_TYPE = pluginId_ + ".PWRS0018";    
+  /* CONTEXT_ID PWRS0020 for the service project type combo box of the runtime selection Page */
+  private String INFOPOP_PWRS_COMBO_SERVICE_PROJECT_TYPE = pluginId_ + ".PWRS0020";    
 
   //private Combo earModule_;
 
