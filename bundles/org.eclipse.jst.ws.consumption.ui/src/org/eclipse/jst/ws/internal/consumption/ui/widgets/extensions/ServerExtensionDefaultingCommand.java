@@ -15,6 +15,7 @@
  * 20060823   154938 pmoogk@ca.ibm.com - Peter Moogk
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
+ * 20080409   219121 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -388,6 +389,8 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
 	}
     if (noRuntimeInstalled){
         String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+        if (serverLabel == null) // Cannot translate from id to label, so let's just use the id
+        	serverLabel = serverId;
     	status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME_INSTALLED, new String[] {serverLabel}));
         env.getStatusHandler().reportError(status);
     }
