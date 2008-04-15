@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,22 +11,22 @@
  * -------- -------- -----------------------------------------------------------
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
  * 20061025   162288 makandre@ca.ibm.com - Andrew Mak, workspace paths with spaces break Java Editor Launch
+ * 20080411   226767 makandre@ca.ibm.com - Andrew Mak, UniversalPathTransformer does not handle paths w/ spaces that are encoded
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.command;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
+import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
@@ -38,9 +38,6 @@ import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
  */
 public class OpenEditorCommand extends AbstractDataModelOperation {
 
-	private final static String FILE_PROTOCOL     = "file:/";
-	private final static String PLATFORM_RESOURCE = "platform:/resource/";
-	
 	private IWebService webService;
 	private IContext	context;
  
@@ -82,23 +79,7 @@ public class OpenEditorCommand extends AbstractDataModelOperation {
 		for (int i = 0; i < implURLs.length; i++) {
 			try {    						
 				String implURL = implURLs[i];
-				file = null;
-				
-				// local filesystem path
-				if (implURL.startsWith(FILE_PROTOCOL)) {
-					implURL = implURL.substring(FILE_PROTOCOL.length());				
-					file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(implURL));
-				}
-				else {	
-					// platform path
-					if (implURL.startsWith(PLATFORM_RESOURCE))
-						implURL = implURL.substring(PLATFORM_RESOURCE.length());
-				
-					if (implURL.indexOf(':') != -1)
-						continue;
-					
-					file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(implURL));
-				}
+				file = UniversalPathTransformer.toFile(implURL);
 						
 				if (file == null || !file.exists())
 					continue;

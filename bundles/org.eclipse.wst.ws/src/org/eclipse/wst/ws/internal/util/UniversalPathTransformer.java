@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files 
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
+ * 20080411   226767 makandre@ca.ibm.com - Andrew Mak, UniversalPathTransformer does not handle paths w/ spaces that are encoded
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.util;
 
@@ -74,8 +75,7 @@ public class UniversalPathTransformer {
 			str = str.substring(PLATFORM_PREFIX.length() - 1);
 		}
 		else if (isPrefix(str, LOCATION_PREFIX)) {
-			String s = str.substring(LOCATION_PREFIX.length());
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(s));
+			IFile file = toFile(str);
 			if (file != null)
 				str = file.getFullPath().makeAbsolute().toString();
 		}
@@ -96,8 +96,7 @@ public class UniversalPathTransformer {
 			return str;		
 		
 		if (isPrefix(str, LOCATION_PREFIX)) {
-			String s = str.substring(LOCATION_PREFIX.length());
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(s));
+			IFile file = toFile(str);
 			if (file != null)
 				str = PLATFORM_PREFIX + file.getFullPath().makeRelative();
 		}			
@@ -148,8 +147,8 @@ public class UniversalPathTransformer {
 		IFile file = null;
 		
 		// local filesystem path
-		if (str.startsWith(LOCATION_PREFIX)) {
-			str = str.substring(LOCATION_PREFIX.length());				
+		if (isPrefix(str, LOCATION_PREFIX)) {
+			str = str.substring(LOCATION_PREFIX.length()).replaceAll("%20", " ");
 			file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(str));
 		}
 		else {	
@@ -157,7 +156,7 @@ public class UniversalPathTransformer {
 			if (str.startsWith(PLATFORM_PREFIX))
 				str = str.substring(PLATFORM_PREFIX.length());
 		
-			if (str.indexOf(':') == -1) {			
+			if (str.indexOf(PROTOCOL_MARKER) == -1) {			
 				file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(str));
 			}
 		}
