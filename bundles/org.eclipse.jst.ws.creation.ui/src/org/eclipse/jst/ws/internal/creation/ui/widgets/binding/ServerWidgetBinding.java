@@ -30,6 +30,7 @@
  * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
  * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -154,6 +155,8 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "DeployClient", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "StartClient", ServerWizardWidget.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "TestClient", ServerWizardWidget.class);
+    dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "InitialProject", ServerWizardWidget.class);
+    
 
     
     // After ServerWizardWidget

@@ -55,6 +55,7 @@
  * 20080318   213330 trungha@ca.ibm.com - Trung, Non-conventional Java naming prevents creating Web Services (client)
  * 20080326   198439 kathy@ca.ibm.com - Kathy Chan
  * 20080402   198439 kathy@ca.ibm.com - Kathy Chan
+ * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -168,6 +169,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	private TypeRuntimeServer ids_;
 	private LabelsAndIds labelIds_;
 	private String serviceProjectName_;
+	private IProject initialProject_;
 	private String serviceEarProjectName_;
 	private String serviceComponentType_;
 	private WebServicesParser parser_;
@@ -1198,7 +1200,7 @@ private void handleTypeChange()
 		String earProjectName = getServiceEarProjectName();
 		String projectTypeId = getServiceComponentType();
 		IStatus serviceSideErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId, 
-				serverInstanceId, projectName, needEar, earProjectName, projectTypeId, false);
+				serverInstanceId, projectName, initialProject_.getName(), needEar, earProjectName, projectTypeId, false);
 		if (serviceSideErrorStatus.getSeverity() == IStatus.ERROR) {
 			return serviceSideErrorStatus;
 		}
@@ -1302,6 +1304,11 @@ private void handleTypeChange()
 		hLinkServiceProject_.pack(true);
 		packSelf();	
 	  }
+	
+	public void setInitialProject(IProject project)
+	{
+		initialProject_ = project;
+	}
 	
 	 public void setServiceEarProjectName(String name)
 	  {	  

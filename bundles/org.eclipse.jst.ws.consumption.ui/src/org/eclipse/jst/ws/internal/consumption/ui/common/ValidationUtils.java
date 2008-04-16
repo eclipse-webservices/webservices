@@ -23,6 +23,7 @@
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
+ * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -79,9 +80,9 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
+import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntimeChecker;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
@@ -271,7 +272,7 @@ public class ValidationUtils
    * IStatus with severity IStatus.ERROR otherwise.
    */
   public IStatus checkErrorStatus(int validationState, String typeId, String runtimeId, String serverId,
-			String serverInstanceId, String projectName, boolean needEar, String earProjectName, String projectTypeId,
+			String serverInstanceId, String projectName, String initialProjectName, boolean needEar, String earProjectName, String projectTypeId,
 			boolean isClient) {
 	
 	  	// Ensure server, Web service runtime, and Web service type are
@@ -311,6 +312,18 @@ public class ValidationUtils
 					}
 				}
 			}
+	    	
+	    	if (serverId != null && !initialProjectName.equals(projectName) &&
+		    		(WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId) == WebServiceScenario.BOTTOMUP) &&
+		    		J2EEUtils.isJavaComponent(ProjectUtilities.getProject(initialProjectName))){
+		    		
+		    		Set javaSet = FacetUtils.getFacetsForProject(initialProjectName);
+		    		if(!doesServerSupportFacets(serverId,javaSet)){
+		    	    	return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_JAVAPROJECT,
+								new String[] { serverLabel, initialProjectName }));
+		  		    }
+		    	}
 		}
 	    
 		// If the project exists, ensure it supports the Web service type, Web
@@ -464,11 +477,10 @@ public class ValidationUtils
 	    		runtimeChecker = WebServiceRuntimeExtensionUtils2.getServiceRuntimeChecker(serviceRuntimeId);
 	    	}
 	    	if (runtimeChecker != null) {
-		    	return runtimeChecker.checkRuntimeCompatibility(serverId, serverInstanceId, projectName, projectTypeId, earProjectName);
+	    		return runtimeChecker.checkRuntimeCompatibility(serverId, serverInstanceId, projectName, projectTypeId, earProjectName);
 		    }
 	    }
-	    
-	    
+	    	    
 		return Status.OK_STATUS;
 
 	}

@@ -37,6 +37,7 @@
  * 20080312   147442 trungha@ca.ibm.com - Trung Ha
  * 20080311   222103 trungha@ca.ibm.com - Trung, Changing service scale doesn't update completely non-UI part of client scale
  * 20080327   224452 trungha@ca.ibm.com - Trung Ha
+ * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -987,8 +988,9 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 		boolean needEar = getClientNeedEAR();
 		String earProjectName = getClientEarProjectName();
 		String projectTypeId = getClientComponentType();
+		// Defect 215084 - no need to pass initial project for client scenario
 		IStatus possibleErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId,
-				serverInstanceId, projectName, needEar, earProjectName, projectTypeId, true);
+				serverInstanceId, projectName,"", needEar, earProjectName, projectTypeId, true);
 		return possibleErrorStatus;
 	}
 
