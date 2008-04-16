@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1980,8 +1980,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         if (getQName() != null)
           niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getQName().getLocalPart());
       if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getDefinition_TargetNamespace())
+      {
         if (getTargetNamespace() != null)
+        {
           niceSetAttribute(theElement, WSDLConstants.TARGETNAMESPACE_ATTRIBUTE, getTargetNamespace());
+          if (eAttribute != null && !isReconciling)
+          {
+            patchTargetNamespace();
+          }
+        }
+      }
     }
   }
 
@@ -2415,5 +2423,77 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       }
     }
   }  
-  
+
+  /**
+   * Propagates the change in the target namespace to all the top level named components.
+   */
+  private void patchTargetNamespace()
+  {
+    EList messages = getEMessages();
+    patchTargetNamespace(messages, WSDLConstants.MESSAGE);
+
+    EList portTypes = getEPortTypes();
+    patchTargetNamespace(portTypes, WSDLConstants.PORT_TYPE);
+
+    EList bindings = getEBindings();
+    patchTargetNamespace(bindings, WSDLConstants.BINDING);
+
+    EList services = getEServices();
+    patchTargetNamespace(services, WSDLConstants.SERVICE);
+  }
+
+  /**
+   * Iterates over the WSDL components in the list and updates their QName. Uses
+   * the component type to determine what type of object is in the list.
+   * 
+   * @param componentsList a list with WSDLElements: messages, port types, bindings or port types.
+   * @param componentType the associated component type as defined in {@link WSDLConstants}
+   */
+  private void patchTargetNamespace(EList componentsList, int componentType)
+  {
+    Iterator componentsIterator = componentsList.iterator();
+    while (componentsIterator.hasNext())
+    {
+      WSDLElement wsdlElement = (WSDLElement)componentsIterator.next();
+      Definition enclosingDefinition = wsdlElement.getEnclosingDefinition();
+      if (enclosingDefinition != null)
+      {
+        String targetNamespace = enclosingDefinition.getTargetNamespace();
+        
+        QName componentQName = getQNameForWSDLElement(componentType, wsdlElement);
+
+        if (componentQName != null)
+        {
+          String localPart = componentQName.getLocalPart();
+          QName newComponentQName = new QName(targetNamespace, localPart);
+          setQNameForWSDLElement(componentType, wsdlElement, newComponentQName);
+        }
+      }
+    }
+  }
+
+  /**
+   * Updates the QName for the given component and component type.
+   * @param type the component type. See {@link WSDLConstants}.
+   * @param wsdlElement the target WSDL element.
+   * @param qName the new component {@link QName}.
+   */
+  private void setQNameForWSDLElement(int type, WSDLElement wsdlElement, QName qName)
+  {
+    switch (type)
+    {
+      case WSDLConstants.MESSAGE:
+        ((Message)wsdlElement).setQName(qName);
+        break;
+      case WSDLConstants.PORT_TYPE:
+        ((PortType)wsdlElement).setQName(qName);
+        break;
+      case WSDLConstants.BINDING:
+        ((Binding)wsdlElement).setQName(qName);
+        break;
+      case WSDLConstants.SERVICE:
+        ((Service)wsdlElement).setQName(qName);
+        break;
+    }
+  }
 } //DefinitionImpl

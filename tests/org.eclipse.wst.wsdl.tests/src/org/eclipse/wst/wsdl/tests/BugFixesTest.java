@@ -240,7 +240,15 @@ public class BugFixesTest extends TestCase
         testInlineTypesFromImportsAreVisible();
       }
     });
-
+    
+    suite.addTest(new BugFixesTest("PropagatesTargetNamespaceChange") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testPropagatesTargetNamespaceChange();
+      }
+    });
+    
     return suite;
   }
 
@@ -1187,6 +1195,63 @@ public class BugFixesTest extends TestCase
       String namespace = typeDefinition.getTargetNamespace();
       assertEquals("http://B", namespace);
       assertEquals("BType", typeDefinition.getName());
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=194096
+   */
+  public void testPropagatesTargetNamespaceChange()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/TargetNamespace/TargetNamespace.wsdl", true); //$NON-NLS-1$
+      
+      String oldTargetNamespace = definition.getTargetNamespace();
+
+      QName messageQName = new QName(oldTargetNamespace, "NewOperationRequest");
+      javax.wsdl.Message message = definition.getMessage(messageQName);
+      assertNotNull(message);
+
+      QName portTypeQName = new QName(oldTargetNamespace, "TargetNamespace");
+      javax.wsdl.PortType portType = definition.getPortType(portTypeQName);
+      assertNotNull(portType);
+      
+      QName bindingQName = new QName(oldTargetNamespace, "TargetNamespaceSOAP");
+      javax.wsdl.Binding binding = definition.getBinding(bindingQName);
+      assertNotNull(binding);
+
+      QName serviceQName = new QName(oldTargetNamespace, "TargetNamespace");
+      javax.wsdl.Service service = definition.getService(serviceQName);
+      assertNotNull(service);
+
+      String newTargetNamespace = "http://www.example.org/NewTargetNamespace/"; 
+      definition.setTargetNamespace(newTargetNamespace);
+      Element definitionElement = definition.getElement();
+      Attr targetNamespaceNode = definitionElement.getAttributeNode(WSDLConstants.TARGETNAMESPACE_ATTRIBUTE);
+      assertNotNull(targetNamespaceNode);
+      assertEquals(newTargetNamespace, targetNamespaceNode.getValue());
+      
+      messageQName = new QName(newTargetNamespace, messageQName.getLocalPart());
+      message = definition.getMessage(messageQName);
+      assertNotNull(message);
+     
+      portTypeQName = new QName(newTargetNamespace, portTypeQName.getLocalPart());
+      portType = definition.getPortType(portTypeQName);
+      assertNotNull(portType);
+
+      bindingQName = new QName(newTargetNamespace, bindingQName.getLocalPart());
+      binding = definition.getBinding(bindingQName);
+      assertNotNull(binding);
+
+      serviceQName = new QName(newTargetNamespace, serviceQName.getLocalPart());
+      service = definition.getService(serviceQName);
+      assertNotNull(service);
     }
     catch (Exception e)
     {
