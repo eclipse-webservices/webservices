@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060217   113169 pmoogk@ca.ibm.com - Peter Moogk
  * 20060222   118711 pmoogk@ca.ibm.com - Peter Moogk
  * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
+ * 20080416   227359 makandre@ca.ibm.com - Andrew Mak, Test facilities do not respect default order in plugin customization
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.preferences;
 
@@ -24,6 +25,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jst.ws.internal.context.PersistentScenarioContext;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.context.ScenarioDefaults;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
@@ -193,11 +195,11 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
    */
   private void initializeDefaults()
   {
-    ScenarioDefaults defaults = new ScenarioDefaults();
-    //pgm launchSample.setSelection( defaults.getLaunchSampleDefault());
+    PersistentScenarioContext context = (PersistentScenarioContext) 
+    	WebServicePlugin.getInstance().getScenarioContext();
     
     webServiceTestTypes_.clear();
-    String[] types = defaults.getWebServiceTestIds();
+    String[] types = context.getDefaultWebServiceTestIds();
     for (int i = 0; i < types.length; i++)
       webServiceTestTypes_.add(types[i]);
     webServiceTestTypeViewer_.refresh();

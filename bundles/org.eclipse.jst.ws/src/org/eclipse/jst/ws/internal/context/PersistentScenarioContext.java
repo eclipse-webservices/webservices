@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
  * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
+ * 20080416   227359 makandre@ca.ibm.com - Andrew Mak, Test facilities do not respect default order in plugin customization
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.context;
@@ -95,10 +96,9 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
 	setValue(PREFERENCE_WEBSERVICE_TEST_TYPES, sb.toString());  
   }
   
-  public String[] getWebServiceTestIds()
+  private String[] getWebServiceTestIds(String value)
   {
-	StringTokenizer st = new StringTokenizer(
-	    getValueAsString(PREFERENCE_WEBSERVICE_TEST_TYPES), ",");
+	StringTokenizer st = new StringTokenizer(value, ",");
 	String[] s = new String[st.countTokens()];
 	for (int i = 0; i < s.length; i++) {
 	  // 154543: we have to continue to interpret the old label style preferences
@@ -106,6 +106,16 @@ public class PersistentScenarioContext extends PersistentContext implements Scen
 	}
 	return s;
   }
+
+  public String[] getWebServiceTestIds()
+  {
+	return getWebServiceTestIds(getValueAsString(PREFERENCE_WEBSERVICE_TEST_TYPES)); 
+  }  
+  
+  public String[] getDefaultWebServiceTestIds()
+  {
+	return getWebServiceTestIds(getDefaultString(PREFERENCE_WEBSERVICE_TEST_TYPES)); 
+  }	
   
   public void setWebServiceTestTypes(String[] ids)
   {
