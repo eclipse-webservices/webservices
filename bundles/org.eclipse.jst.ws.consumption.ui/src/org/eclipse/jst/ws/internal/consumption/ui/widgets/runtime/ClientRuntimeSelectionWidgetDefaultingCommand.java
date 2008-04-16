@@ -14,6 +14,7 @@
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
+ * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -70,7 +71,6 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
-import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
@@ -980,6 +980,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     //Split the array of service/client runtimes into one containing the preferred set and one containing the rest.
     PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
     String preferredRuntimeId = context.getRuntimeId();
+    String fallbackRuntimeId = context.getFallbackRuntimeId();
     ArrayList preferredRuntimeIdsList = new ArrayList();
     ArrayList otherRuntimeIdsList = new ArrayList();
     for (int k=0; k<runtimes.length; k++ )
@@ -999,6 +1000,10 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       if (descRuntimeId.equals(preferredRuntimeId))
       {
         preferredRuntimeIdsList.add(runtimes[k]);
+      }
+      else if (descRuntimeId.equals(fallbackRuntimeId)) 
+      {
+    	otherRuntimeIdsList.add(0, runtimes[k]);  // add to beginning of otherRuntimeIdsList
       }
       else
       {

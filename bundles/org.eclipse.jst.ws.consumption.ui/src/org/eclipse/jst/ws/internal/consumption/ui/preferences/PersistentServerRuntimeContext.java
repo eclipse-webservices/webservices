@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -22,6 +25,7 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 	
 	private String PREFERENCE_SERVER = "PREFERENCE_SERVER";
 	private String PREFERENCE_RUNTIME = "PREFERENCE_RUNTIME";
+	private String FALLBACK_RUNTIME = "FALLBACK_RUNTIME";  // Web service runtime to fallback to if preferred runtime is not suitable
 	//private String PREFERENCE_J2EE_VERSION = "PREFERENCE_J2EE_VERSION";
 	
 	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.50";
@@ -62,6 +66,11 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 		return getDefaultString(PREFERENCE_RUNTIME);
 	}
 
+	public String getFallbackRuntimeId()
+	{
+		return getDefaultString(FALLBACK_RUNTIME);
+	}
+	
 	public String getServerFactoryId()
 	{
 		String value = getValueAsString(PREFERENCE_SERVER); 
