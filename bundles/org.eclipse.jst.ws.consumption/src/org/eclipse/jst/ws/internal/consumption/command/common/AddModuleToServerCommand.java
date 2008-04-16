@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060921 [158210] kathy@ca.ibm.com - Kathy Chan, Calling incremental build on the project before adding to server
+ * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -53,8 +54,9 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
       IEnvironment env = getEnvironment();
       
 	    IStatus status = Status.OK_STATUS;	    
-	    
-	    IServer server = ServerCore.findServer(serverInstanceId);
+	    IServer server = null;
+	    if(!(serverInstanceId == null))
+	    	server = ServerCore.findServer(serverInstanceId);
 	    if (server == null)
 	    {
 	      status = StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_INSTANCE_NOT_FOUND );

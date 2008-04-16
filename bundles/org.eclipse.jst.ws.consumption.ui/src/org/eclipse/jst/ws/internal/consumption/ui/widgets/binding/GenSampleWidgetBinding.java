@@ -17,6 +17,7 @@
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080331   224953 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -260,7 +261,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  		canRunTestClient_ = false;
 	  		
 	  	
-		if (!earNull){
+		if (!earNull && clientInfo.getServerInstanceId() != null){
 	  		
 	  		AddModuleToServerCommand command = new AddModuleToServerCommand();
 	  		command.setServerInstanceId(clientInfo.getServerInstanceId());
