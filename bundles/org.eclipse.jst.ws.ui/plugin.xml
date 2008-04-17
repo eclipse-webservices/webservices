@@ -47,13 +47,13 @@
          </menu>
       </objectContribution>
       <objectContribution
-            objectClass="org.eclipse.jst.javaee.ejb.EnterpriseBeans"
+            objectClass="org.eclipse.jst.javaee.ejb.SessionBean"
             adaptable="true"
             id="org.eclipse.jst.ws.atk.ui.webservice.category.ejb3.popupMenu">
          <menu
                label="%LABEL_POPUP_CATEGORY_WEB_SERVICES"
                path="additions"
-               id="org.eclipse.jst.ws.atk.ui.webservice.category.ejb.popupMenu">
+               id="org.eclipse.jst.ws.atk.ui.webservice.category.ejb3.popupMenu">
             <separator
                   name="popupActions">
             </separator>
