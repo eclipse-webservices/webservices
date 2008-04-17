@@ -56,6 +56,7 @@
  * 20080326   198439 kathy@ca.ibm.com - Kathy Chan
  * 20080402   198439 kathy@ca.ibm.com - Kathy Chan
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1199,8 +1200,12 @@ private void handleTypeChange()
 		boolean needEar = getServiceNeedEAR();
 		String earProjectName = getServiceEarProjectName();
 		String projectTypeId = getServiceComponentType();
+		String initialProjectName = "";
+		if (initialProject_ != null) {
+			initialProjectName = initialProject_.getName();
+		} 
 		IStatus serviceSideErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId, 
-				serverInstanceId, projectName, initialProject_.getName(), needEar, earProjectName, projectTypeId, false);
+				serverInstanceId, projectName, initialProjectName, needEar, earProjectName, projectTypeId, false);
 		if (serviceSideErrorStatus.getSeverity() == IStatus.ERROR) {
 			return serviceSideErrorStatus;
 		}

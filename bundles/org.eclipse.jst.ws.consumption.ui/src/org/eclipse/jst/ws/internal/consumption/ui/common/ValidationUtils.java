@@ -24,6 +24,7 @@
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -310,20 +311,21 @@ public class ValidationUtils
 												new String[] { serverLabel,
 														runtimeLabel }));
 					}
+				
+					if (initialProjectName != "" && serverId != null && !projectName.equals(initialProjectName) &&
+				    		(WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId) == WebServiceScenario.BOTTOMUP) &&
+				    		J2EEUtils.isJavaComponent(ProjectUtilities.getProject(initialProjectName))){
+				    		
+				    		Set javaSet = FacetUtils.getFacetsForProject(initialProjectName);
+				    		if(!doesServerSupportFacets(serverId,javaSet)){
+				    	    	return StatusUtils.errorStatus(NLS.bind(
+										ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_JAVAPROJECT,
+										new String[] { serverLabel, initialProjectName }));
+				  		    }
+				    	}
 				}
 			}
 	    	
-	    	if (serverId != null && !initialProjectName.equals(projectName) &&
-		    		(WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId) == WebServiceScenario.BOTTOMUP) &&
-		    		J2EEUtils.isJavaComponent(ProjectUtilities.getProject(initialProjectName))){
-		    		
-		    		Set javaSet = FacetUtils.getFacetsForProject(initialProjectName);
-		    		if(!doesServerSupportFacets(serverId,javaSet)){
-		    	    	return StatusUtils.errorStatus(NLS.bind(
-								ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_JAVAPROJECT,
-								new String[] { serverLabel, initialProjectName }));
-		  		    }
-		    	}
 		}
 	    
 		// If the project exists, ensure it supports the Web service type, Web
