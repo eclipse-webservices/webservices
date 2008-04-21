@@ -15,6 +15,7 @@
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
  * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
+ * 20080421   228054 makandre@ca.ibm.com - Andrew Mak, NPE in ClientRuntimeSelectionWidgetDefaultingCommand
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -569,7 +570,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           {
             Set facetsClone = new HashSet();
             facetsClone.addAll(facets);            
-            if (facetMatcher.getFacetsToAdd() != null)
+            if (facetMatcher != null && facetMatcher.getFacetsToAdd() != null)
             {
               Iterator itr = facetMatcher.getFacetsToAdd().iterator();
               while (itr.hasNext())
