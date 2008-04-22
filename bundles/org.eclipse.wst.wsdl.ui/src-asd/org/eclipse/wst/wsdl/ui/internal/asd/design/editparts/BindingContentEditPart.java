@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,12 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
@@ -36,7 +38,15 @@ public class BindingContentEditPart extends BaseEditPart
   protected ASDSelectionEditPolicy selectionHandlesEditPolicy = new ASDSelectionEditPolicy();
   protected IFigure createFigure()
   {
-    Figure figure = new Figure();
+    Figure figure = new Figure()
+    {
+      public void paint(Graphics graphics) {
+        super.paint(graphics);
+        Rectangle r = getBounds();
+        // bug146932
+        paintFocusCursor(new Rectangle(r.x, r.y, r.width, r.height), graphics);
+      }
+    };
     figure.setOpaque(true);
     figure.setBackgroundColor(ColorConstants.tooltipBackground);
     ToolbarLayout toolbarLayout = new ToolbarLayout(true);

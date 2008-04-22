@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.directedit;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.GraphicalEditPart;
@@ -87,7 +86,7 @@ public class LabelEditManager extends DirectEditManager {
 			}
 			else {
 //				text.setBackground(ColorConstants.lightBlue);
-			    text.setBackground(ColorConstants.white);
+			    text.setBackground(DesignViewGraphicsConstants.defaultBackgroundColor);
 			}
 			
 			String initialLabelText = label.getText();

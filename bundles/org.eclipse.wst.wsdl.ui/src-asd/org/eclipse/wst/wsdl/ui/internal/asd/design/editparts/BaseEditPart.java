@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -195,4 +196,21 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
     }
     return false;
   }
+  
+  protected void paintFocusCursor(Rectangle r, Graphics graphics)
+  {
+    if (hasFocus())
+    {
+      try
+      {
+        graphics.pushState();
+        graphics.drawFocus(r.x, r.y + 1, r.width - 1, r.height - 2);
+      }
+      finally
+      {
+        graphics.popState();
+      }
+    }
+  }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -69,10 +69,13 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
         graphics.setForegroundColor(ColorConstants.lightGray);
         graphics.drawLine(x, r.y, x, r.y + r.height);
         graphics.popState();
+        
+        // bug146932
+        paintFocusCursor(new Rectangle(r.x + 1, r.y, r.width - 2, r.height), graphics);
       }
     };        
     //toolbarLayout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
-    figure.setForegroundColor(ColorConstants.black);
+    figure.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
     figure.setLayoutManager(rowLayout); 
     /*
     String x = "";
@@ -121,7 +124,7 @@ public class ParameterEditPart extends BaseEditPart implements IFeedbackHandler,
     }
     else
     {
-      parameterName.setForegroundColor(ColorConstants.black);
+      parameterName.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
     }
     
     return figure;

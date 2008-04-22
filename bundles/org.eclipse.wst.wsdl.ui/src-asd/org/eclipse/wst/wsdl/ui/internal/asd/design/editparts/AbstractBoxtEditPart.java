@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
@@ -22,6 +21,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelCellEditorLocator;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEditPolicy;
@@ -113,7 +113,7 @@ public abstract class AbstractBoxtEditPart extends BaseEditPart implements IName
   {
 	  LineBorder boxFigureLineBorder = (LineBorder) figure.getBorder();
 	  boxFigureLineBorder.setWidth(1);
-	  boxFigureLineBorder.setColor(ColorConstants.black);
+	  boxFigureLineBorder.setColor(DesignViewGraphicsConstants.defaultForegroundColor);
 	  figure.setSelected(false);
 	  figure.repaint();
   }

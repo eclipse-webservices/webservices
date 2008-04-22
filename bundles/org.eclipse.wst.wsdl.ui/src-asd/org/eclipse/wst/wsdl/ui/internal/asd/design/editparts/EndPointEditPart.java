@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
@@ -58,7 +59,14 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 
   protected IFigure createFigure()
   {
-    figure = new Panel();
+    figure = new Panel() {
+      public void paint(Graphics graphics) {
+        super.paint(graphics);
+        Rectangle r = getBounds();
+        // bug146932
+        paintFocusCursor(new Rectangle(r.x, r.y + 1, r.width, r.height - 1), graphics);
+      }
+    };
     figure.setBorder(new MarginBorder(4));
     ToolbarLayout layout = new ToolbarLayout(false);
     // layout.setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
@@ -94,7 +102,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     f1.add(addressBoxFigure);
     addressLabel = new Label();
 
-    addressLabel.setForegroundColor(ColorConstants.black);
+    addressLabel.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
     addressLabel.setBorder(new MarginBorder(2, 6, 2, 6));
     addressLabel.setLabelAlignment(Label.LEFT);
     addressBoxFigure.add(addressLabel);
@@ -109,8 +117,8 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     }
     else 
     {
-      nameLabel.setForegroundColor(DesignViewGraphicsConstants.labelColor);
-      addressLabel.setForegroundColor(DesignViewGraphicsConstants.labelColor);
+      nameLabel.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
+      addressLabel.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
     }
     
     return figure;

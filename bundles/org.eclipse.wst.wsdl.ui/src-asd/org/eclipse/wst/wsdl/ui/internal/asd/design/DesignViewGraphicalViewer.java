@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.SelectionManager;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -47,8 +48,24 @@ public class DesignViewGraphicalViewer extends ScrollingGraphicalViewer implemen
 	    addSelectionChangedListener(internalSelectionProvider);    
 	    internalSelectionProvider.addSelectionChangedListener(manager);
 	    manager.addSelectionChangedListener(this);  
-        
+
+	    // Workaround bug 227687 An edit part's focus state is not updated properly
+	    // Once this is bug is fixed, we can remove custom selection manager
+	    setSelectionManager(new CustomSelectionManager());
+
 	    setKeyHandler(new BaseGraphicalViewerKeyHandler(this));
+	  }
+	  
+	  // Workaround bug 227687 An edit part's focus state is not updated properly
+	  // Once this is bug is fixed, we can remove this class
+	  private class CustomSelectionManager extends SelectionManager
+	  {
+	    public void appendSelection(EditPart editpart)
+	    {
+	      if (editpart != getFocus())
+	        getViewer().setFocus(editpart);
+	      super.appendSelection(editpart);
+	    }
 	  }
 	  
 	  // this method is called when something changes in the selection manager

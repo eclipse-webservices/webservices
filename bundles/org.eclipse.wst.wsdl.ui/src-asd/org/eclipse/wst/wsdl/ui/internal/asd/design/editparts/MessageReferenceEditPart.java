@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
@@ -56,7 +57,15 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
 
     rowLayout = new RowLayout();
     figure.setLayoutManager(rowLayout); 
-    label = new Label();
+    label = new Label()
+    {
+      public void paint(Graphics graphics)
+      {
+        super.paint(graphics);
+        // bug146932
+        paintFocusCursor(getBounds(), graphics);
+      }
+    };
     label.setLabelAlignment(Label.LEFT);
     //label.setFont(DesignViewGraphicsConstants.mediumFont); 
     label.setBorder(new MarginBorder(2, 16, 2 ,10));
@@ -101,7 +110,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
     }
     else
     {
-      label.setForegroundColor(ColorConstants.black);
+      label.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
       label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
     }
     

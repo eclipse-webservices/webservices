@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
@@ -56,7 +57,14 @@ public class OperationEditPart extends BaseEditPart implements INamedEditPart
     toolbarLayout.setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
     figure.setLayoutManager(toolbarLayout);
     
-    labelHolder = new Panel();
+    labelHolder = new Panel() {
+      public void paint(Graphics graphics) {
+        super.paint(graphics);
+        Rectangle r = getBounds();
+        // bug146932
+        paintFocusCursor(new Rectangle(r.x, r.y, r.width, r.height), graphics);
+      }
+    };
     labelHolder.setBackgroundColor(DesignViewGraphicsConstants.tableOperationHeadingColor);
     labelHolder.setLayoutManager(new ToolbarLayout(true));
     figure.add(labelHolder);

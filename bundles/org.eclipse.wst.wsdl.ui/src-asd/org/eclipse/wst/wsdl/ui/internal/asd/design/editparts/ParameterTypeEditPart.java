@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
@@ -22,6 +23,7 @@ import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.MouseMotionListener.Stub;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -45,8 +47,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 import org.eclipse.wst.wsdl.ui.internal.asd.util.IOpenExternalEditorHelper;
 
-import org.eclipse.draw2d.MouseMotionListener.Stub;
-
 public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHandler, INamedEditPart
 {   
 	protected SimpleDirectEditPolicy simpleDirectEditPolicy = new SimpleDirectEditPolicy();
@@ -64,7 +64,14 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 	protected IFigure createFigure()
 	{
-		IFigure figure = new Panel();
+		IFigure figure = new Panel() {
+			public void paint(Graphics graphics) {
+				super.paint(graphics);
+				Rectangle r = getBounds();
+				// bug146932
+				paintFocusCursor(new Rectangle(r.x, r.y, r.width, r.height), graphics);
+			}
+		};
 		figure.setLayoutManager(rowLayout); 
 
 		parameterType = new Label();
@@ -81,7 +88,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 		}
 		else
 		{
-			parameterType.setForegroundColor(ColorConstants.black);
+			parameterType.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
 		}
 
 		return figure;
@@ -100,7 +107,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 			parameterType.setIcon(image);
 		}
 
-		parameterType.setForegroundColor(ColorConstants.black);
+		parameterType.setForegroundColor(DesignViewGraphicsConstants.defaultForegroundColor);
 
 		List diagnosticMessages = param.getDiagnosticMessages();
 		Iterator it = diagnosticMessages.iterator();
