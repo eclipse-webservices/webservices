@@ -1,8 +1,0 @@
-<maplist version="3.6.2">
-  <nav>
-    <map file="webservice_toc.ditamap"/>
-  </nav>
-  <link>
-    <map file="webservice_toc.ditamap"/>
-  </link>
-</maplist>
