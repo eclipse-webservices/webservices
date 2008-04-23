@@ -331,7 +331,7 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getBindingInput_Name())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.BINDING_INPUT__NAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getName());
     }
   }

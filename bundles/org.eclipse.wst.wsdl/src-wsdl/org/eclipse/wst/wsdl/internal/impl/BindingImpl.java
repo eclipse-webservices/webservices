@@ -571,7 +571,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getBinding_QName())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.BINDING__QNAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getQName().getLocalPart());
     }
   }
@@ -585,7 +585,7 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == WSDLPackage.eINSTANCE.getBinding_EPortType())
+      if (eReference == null || eReference == WSDLPackage.Literals.BINDING__EPORT_TYPE)
       {
         PortType portType = getEPortType();
         if (portType != null)

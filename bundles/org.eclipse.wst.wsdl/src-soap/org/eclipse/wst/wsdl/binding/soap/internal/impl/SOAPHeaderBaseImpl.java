@@ -619,18 +619,18 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_Use())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_HEADER_BASE__USE)
         niceSetAttribute(theElement, SOAPConstants.USE_ATTRIBUTE, getUse());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_NamespaceURI())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_HEADER_BASE__NAMESPACE_URI)
         niceSetAttribute(theElement, SOAPConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_Part())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_HEADER_BASE__PART)
         niceSetAttribute(theElement, SOAPConstants.PART_ATTRIBUTE, getPart());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_Message())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_HEADER_BASE__MESSAGE)
       {
         String uriList = message != null ? message.getNamespaceURI() + "#" + message.getLocalPart() : null;
         niceSetAttributeURIValue(theElement, SOAPConstants.MESSAGE_ATTRIBUTE, uriList);
       }
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPHeaderBase_EEncodingStyles())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_HEADER_BASE__EENCODING_STYLES)
       {
         List encodingStyleList = getEEncodingStyles();
         String encodingStyles = "";
@@ -657,7 +657,7 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPHeaderBase_EMessage())
+      if (eReference == null || eReference == SOAPPackage.Literals.SOAP_HEADER_BASE__EMESSAGE)
       {
         Message message = getEMessage();
         if (message != null)
@@ -667,7 +667,7 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
         }
       }
 
-      if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPHeaderBase_EPart())
+      if (eReference == null || eReference == SOAPPackage.Literals.SOAP_HEADER_BASE__EPART)
       {
         Part part = getEPart();
         if (part != null)

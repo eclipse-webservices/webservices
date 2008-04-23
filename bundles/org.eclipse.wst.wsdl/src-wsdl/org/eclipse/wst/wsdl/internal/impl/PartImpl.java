@@ -663,15 +663,15 @@ public class PartImpl extends ExtensibleElementImpl implements Part
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getPart_Name())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.PART__NAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getName());
 
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getPart_TypeName())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.PART__TYPE_NAME)
         if (getTypeName() != null)
           niceSetAttributeURIValue(theElement, WSDLConstants.TYPE_ATTRIBUTE, getTypeName().getNamespaceURI() + "#"
             + getTypeName().getLocalPart());
 
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getPart_ElementName())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.PART__ELEMENT_NAME)
         if (getElementName() != null)
           niceSetAttributeURIValue(theElement, WSDLConstants.ELEMENT_ATTRIBUTE, getElementName().getNamespaceURI() + "#"
             + getElementName().getLocalPart());
@@ -688,7 +688,7 @@ public class PartImpl extends ExtensibleElementImpl implements Part
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == WSDLPackage.eINSTANCE.getPart_TypeDefinition())
+      if (eReference == null || eReference == WSDLPackage.Literals.PART__TYPE_DEFINITION)
       {
         XSDTypeDefinition typeDefinition = getTypeDefinition();
         if (typeDefinition != null)
@@ -696,7 +696,7 @@ public class PartImpl extends ExtensibleElementImpl implements Part
           niceSetAttributeURIValue(theElement, WSDLConstants.TYPE_ATTRIBUTE, typeDefinition.getURI());
         }
       }
-      if (eReference == null || eReference == WSDLPackage.eINSTANCE.getPart_ElementDeclaration())
+      if (eReference == null || eReference == WSDLPackage.Literals.PART__ELEMENT_DECLARATION)
       {
         XSDElementDeclaration elementDecl = getElementDeclaration();
         if (elementDecl != null)

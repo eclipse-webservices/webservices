@@ -949,9 +949,9 @@ return opType;
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getOperation_Name())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.OPERATION__NAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getName());
-      if (eAttribute == WSDLPackage.eINSTANCE.getOperation_Style())
+      if (eAttribute == WSDLPackage.Literals.OPERATION__STYLE)
       {
         OperationType targetType = getStyle();
         OperationType currentType = deduceOperationType(theElement);
@@ -975,7 +975,7 @@ return opType;
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == WSDLPackage.eINSTANCE.getOperation_EParameterOrdering())
+      if (eReference == null || eReference == WSDLPackage.Literals.OPERATION__EPARAMETER_ORDERING)
       {
         // Build up a string of concatenated part names (parameterOrder) from eParameterOrdering.
 

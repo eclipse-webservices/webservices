@@ -211,7 +211,7 @@ public class HTTPAddressImpl extends ExtensibilityElementImpl implements HTTPAdd
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == HTTPPackage.eINSTANCE.getHTTPAddress_LocationURI())
+      if (eAttribute == null || eAttribute == HTTPPackage.Literals.HTTP_ADDRESS__LOCATION_URI)
         niceSetAttribute(theElement, HTTPConstants.LOCATION_URI_ATTRIBUTE, getLocationURI());
     }
   }

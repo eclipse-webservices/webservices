@@ -211,7 +211,7 @@ public class HTTPOperationImpl extends ExtensibilityElementImpl implements HTTPO
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == HTTPPackage.eINSTANCE.getHTTPOperation_LocationURI())
+      if (eAttribute == null || eAttribute == HTTPPackage.Literals.HTTP_OPERATION__LOCATION_URI)
         niceSetAttribute(theElement, HTTPConstants.LOCATION_URI_ATTRIBUTE, getLocationURI());
     }
   }

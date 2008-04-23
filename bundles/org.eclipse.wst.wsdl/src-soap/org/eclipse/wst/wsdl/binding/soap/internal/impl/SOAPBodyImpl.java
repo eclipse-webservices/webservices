@@ -457,11 +457,11 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBody_Use())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_BODY__USE)
         niceSetAttribute(theElement, SOAPConstants.USE_ATTRIBUTE, getUse());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBody_NamespaceURI())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_BODY__NAMESPACE_URI)
         niceSetAttribute(theElement, SOAPConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBody_EEncodingStyles())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_BODY__EENCODING_STYLES)
       {
         List encodingStyleList = getEncodingStyles();
         String encodingStyles = "";
@@ -491,7 +491,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == SOAPPackage.eINSTANCE.getSOAPBody_EParts())
+      if (eReference == null || eReference == SOAPPackage.Literals.SOAP_BODY__EPARTS)
       {
         // Used to be Bugzilla 108176, now it is Bugzilla 137990
 

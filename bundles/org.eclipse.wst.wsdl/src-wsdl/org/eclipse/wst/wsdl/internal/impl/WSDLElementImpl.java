@@ -1141,7 +1141,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     for (Iterator containments = eClass().getEAllContainments().iterator(); containments.hasNext();)
     {
       EReference eReference = (EReference)containments.next();
-      if (eReference == WSDLPackage.eINSTANCE.getXSDSchemaExtensibilityElement_Schema())
+      if (eReference == WSDLPackage.Literals.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA)
       {
         // TBD - This is an instance of XSDSchemaExtensibilityElement and
         // eRefernce is XSDSchema. What do we want to do for update?
@@ -1180,7 +1180,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
   protected void changeAttribute(EAttribute eAttribute)
   {
-    if (eAttribute == WSDLPackage.eINSTANCE.getWSDLElement_Element())
+    if (eAttribute == WSDLPackage.Literals.WSDL_ELEMENT__ELEMENT)
     {
       Element theElement = getElement();
       if (theElement != null && !isReconciling)

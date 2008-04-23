@@ -518,7 +518,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     // we need to set the schemaLocations for any inline schemaLocations.
     // If not yet attached to a resource, the schemaLocation's will be set via WSDLResourceImpl.attached(EObject o)
     //
-    if (msg.getFeature() == WSDLPackage.eINSTANCE.getDefinition_ETypes() && msg.getEventType() == Notification.SET)
+    if (msg.getFeature() == WSDLPackage.Literals.DEFINITION__ETYPES && msg.getEventType() == Notification.SET)
     {
       if (eResource() instanceof WSDLResourceImpl && getEnclosingDefinition() != null)
       {
@@ -1976,10 +1976,10 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       //if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getDefinition_Encoding())
       //  niceSetAttribute(theElement, WSDLConstants.ENCODING_ATTRIBUTE, getEncoding());
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getDefinition_QName())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.DEFINITION__QNAME)
         if (getQName() != null)
           niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getQName().getLocalPart());
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getDefinition_TargetNamespace())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.DEFINITION__TARGET_NAMESPACE)
       {
         if (getTargetNamespace() != null)
         {

@@ -124,7 +124,7 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
     // to a resource we need to set the schemaLocation for the inline schema.
     // If not yet attached to a resource, the schemaLocation's will be set via WSDLResourceImpl.attached(EObject o)
     //     
-    if (msg.getFeature() == WSDLPackage.eINSTANCE.getExtensibleElement_EExtensibilityElements() && msg.getEventType() == Notification.ADD)
+    if (msg.getFeature() == WSDLPackage.Literals.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS && msg.getEventType() == Notification.ADD)
     {
       if (msg.getNewValue() instanceof XSDSchemaExtensibilityElementImpl)
       {

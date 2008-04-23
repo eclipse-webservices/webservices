@@ -268,9 +268,9 @@ public class SOAPBindingImpl extends ExtensibilityElementImpl implements SOAPBin
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBinding_Style())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_BINDING__STYLE)
         niceSetAttribute(theElement, SOAPConstants.STYLE_ATTRIBUTE, getStyle());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPBinding_TransportURI())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_BINDING__TRANSPORT_URI)
         niceSetAttribute(theElement, SOAPConstants.TRANSPORT_ATTRIBUTE, getTransportURI());
     }
   }

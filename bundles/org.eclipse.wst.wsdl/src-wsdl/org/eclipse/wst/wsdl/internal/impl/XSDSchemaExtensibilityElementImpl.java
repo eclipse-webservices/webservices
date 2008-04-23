@@ -362,7 +362,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
 
     // TODO... revist this block of code
     //
-    if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getXSDSchemaExtensibilityElement_Schema())
+    if (eAttribute == null || eAttribute == WSDLPackage.Literals.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA)
     {
       // We got a new schema so re-parent it.
       // cs... are we really doing the right thing here?  this seems strange
@@ -377,7 +377,7 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
         }
       }
     }
-    else if (eAttribute == WSDLPackage.eINSTANCE.getWSDLElement_Element())
+    else if (eAttribute == WSDLPackage.Literals.WSDL_ELEMENT__ELEMENT)
     {
       setSchema(createSchema(element)); // element is not null
     }

@@ -211,7 +211,7 @@ public class HTTPBindingImpl extends ExtensibilityElementImpl implements HTTPBin
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == HTTPPackage.eINSTANCE.getHTTPBinding_Verb())
+      if (eAttribute == null || eAttribute == HTTPPackage.Literals.HTTP_BINDING__VERB)
         niceSetAttribute(theElement, HTTPConstants.VERB_ATTRIBUTE, getVerb());
     }
   }

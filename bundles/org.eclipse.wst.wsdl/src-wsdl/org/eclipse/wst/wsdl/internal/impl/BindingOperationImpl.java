@@ -736,7 +736,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getBindingOperation_Name())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.BINDING_OPERATION__NAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getName());
     }
   }

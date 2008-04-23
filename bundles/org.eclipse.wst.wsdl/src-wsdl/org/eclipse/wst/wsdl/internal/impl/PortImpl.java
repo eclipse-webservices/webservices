@@ -327,7 +327,7 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getPort_Name())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.PORT__NAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getName());
     }
   }
@@ -341,7 +341,7 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == WSDLPackage.eINSTANCE.getPort_EBinding())
+      if (eReference == null || eReference == WSDLPackage.Literals.PORT__EBINDING)
       {
         Binding binding = getEBinding();
         if (binding != null)

@@ -211,7 +211,7 @@ public class SOAPAddressImpl extends ExtensibilityElementImpl implements SOAPAdd
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPAddress_LocationURI())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_ADDRESS__LOCATION_URI)
         niceSetAttribute(theElement, SOAPConstants.LOCATION_ATTRIBUTE, getLocationURI());
     }
   }

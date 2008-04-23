@@ -268,9 +268,9 @@ public class SOAPOperationImpl extends ExtensibilityElementImpl implements SOAPO
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPOperation_SoapActionURI())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_OPERATION__SOAP_ACTION_URI)
         niceSetAttribute(theElement, SOAPConstants.SOAP_ACTION_ATTRIBUTE, getSoapActionURI());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPOperation_Style())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_OPERATION__STYLE)
         niceSetAttribute(theElement, SOAPConstants.STYLE_ATTRIBUTE, getStyle());
     }
   }

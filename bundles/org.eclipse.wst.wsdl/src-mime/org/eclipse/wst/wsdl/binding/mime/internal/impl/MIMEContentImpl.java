@@ -302,9 +302,9 @@ public class MIMEContentImpl extends ExtensibilityElementImpl implements MIMECon
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == MIMEPackage.eINSTANCE.getMIMEContent_EPart())
+      if (eAttribute == null || eAttribute == MIMEPackage.Literals.MIME_CONTENT__EPART)
         niceSetAttribute(theElement, MIMEConstants.PART_ATTRIBUTE, getPart());
-      if (eAttribute == null || eAttribute == MIMEPackage.eINSTANCE.getMIMEContent_Type())
+      if (eAttribute == null || eAttribute == MIMEPackage.Literals.MIME_CONTENT__TYPE)
         niceSetAttribute(theElement, MIMEConstants.TYPE_ATTRIBUTE, getType());
     }
   }

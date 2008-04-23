@@ -386,11 +386,11 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_NamespaceURI())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_FAULT__NAMESPACE_URI)
         niceSetAttribute(theElement, SOAPConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_Use())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_FAULT__USE)
         niceSetAttribute(theElement, SOAPConstants.USE_ATTRIBUTE, getUse());
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_EEncodingStyles())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_FAULT__EENCODING_STYLES)
       {
         List encodingStyleList = getEncodingStyles();
         String encodingStyles = "";
@@ -405,7 +405,7 @@ public class SOAPFaultImpl extends ExtensibilityElementImpl implements SOAPFault
         if (!encodingStyles.equals(""))
           niceSetAttribute(theElement, SOAPConstants.ENCODING_STYLE_ATTRIBUTE, encodingStyles);
       } // TBD - Is this the proper way to handle encodingStyles
-      if (eAttribute == null || eAttribute == SOAPPackage.eINSTANCE.getSOAPFault_Name())
+      if (eAttribute == null || eAttribute == SOAPPackage.Literals.SOAP_FAULT__NAME)
         niceSetAttribute(theElement, SOAPConstants.NAME_ATTRIBUTE, getName());
     }
   }

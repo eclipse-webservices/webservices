@@ -230,7 +230,7 @@ public class MIMEMimeXmlImpl extends ExtensibilityElementImpl implements MIMEMim
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == MIMEPackage.eINSTANCE.getMIMEContent_EPart())
+      if (eAttribute == null || eAttribute == MIMEPackage.Literals.MIME_CONTENT__EPART)
         niceSetAttribute(theElement, MIMEConstants.PART_ATTRIBUTE, getPart());
     }
   }

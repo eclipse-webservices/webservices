@@ -452,7 +452,7 @@ public class MessageImpl extends ExtensibleElementImpl implements Message
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getMessage_QName())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.MESSAGE__QNAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getQName().getLocalPart());
     }
   }

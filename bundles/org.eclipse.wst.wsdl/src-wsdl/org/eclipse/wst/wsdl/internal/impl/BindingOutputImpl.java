@@ -331,7 +331,7 @@ public class BindingOutputImpl extends ExtensibleElementImpl implements BindingO
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getBindingOutput_Name())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.BINDING_OUTPUT__NAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getName());
     }
   }

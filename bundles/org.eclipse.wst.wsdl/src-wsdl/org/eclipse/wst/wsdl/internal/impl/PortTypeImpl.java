@@ -482,7 +482,7 @@ public class PortTypeImpl extends ExtensibleElementImpl implements PortType
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getPortType_QName())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.PORT_TYPE__QNAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getQName().getLocalPart());
     }
   }

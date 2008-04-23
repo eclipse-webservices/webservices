@@ -284,7 +284,7 @@ public abstract class MessageReferenceImpl extends ExtensibleElementImpl impleme
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getMessageReference_Name())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.MESSAGE_REFERENCE__NAME)
         niceSetAttribute(theElement, WSDLConstants.NAME_ATTRIBUTE, getName());
     }
   }
@@ -298,7 +298,7 @@ public abstract class MessageReferenceImpl extends ExtensibleElementImpl impleme
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eReference == null || eReference == WSDLPackage.eINSTANCE.getMessageReference_EMessage())
+      if (eReference == null || eReference == WSDLPackage.Literals.MESSAGE_REFERENCE__EMESSAGE)
       {
         Message message = getEMessage();
         if (message != null)

@@ -450,10 +450,10 @@ public class ImportImpl extends ExtensibleElementImpl implements Import
     Element theElement = getElement();
     if (theElement != null)
     {
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getImport_NamespaceURI())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.IMPORT__NAMESPACE_URI)
         niceSetAttribute(theElement, WSDLConstants.NAMESPACE_ATTRIBUTE, getNamespaceURI());
 
-      if (eAttribute == null || eAttribute == WSDLPackage.eINSTANCE.getImport_LocationURI())
+      if (eAttribute == null || eAttribute == WSDLPackage.Literals.IMPORT__LOCATION_URI)
         niceSetAttribute(theElement, WSDLConstants.LOCATION_ATTRIBUTE, getLocationURI());
     }
   }
