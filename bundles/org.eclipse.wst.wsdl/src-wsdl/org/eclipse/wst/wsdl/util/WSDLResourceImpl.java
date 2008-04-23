@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,10 @@ package org.eclipse.wst.wsdl.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -31,6 +34,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -44,6 +48,9 @@ import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.internal.util.XSDSchemaLocatorAdapterFactory;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.DefaultJAXPConfiguration;
+import org.eclipse.xsd.util.JAXPConfiguration;
+import org.eclipse.xsd.util.JAXPPool;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -101,6 +108,22 @@ public class WSDLResourceImpl extends ResourceImpl
   public static final String TRACK_LOCATION = "TRACK_LOCATION"; //$NON-NLS-1$
 
   /**
+   * This option can be used as an option on Resource#load methods to specify JAXP pool to be used
+   * for loading and serializing XML Schemas.
+   * @see Resource#load(InputStream, Map)
+   * @see Resource#load(Map)
+   */
+  public static final String WSDL_JAXP_POOL = "WSDL_JAXP_POOL"; //$NON-NLS-1$
+  
+  /**
+   * This option can be used as an option on Resource#load methods to specify JAXP configuration
+   * that creates and configures SAX, DOM parsers and Transformer.
+   * @see Resource#load(InputStream, Map)
+   * @see Resource#load(Map)
+   */
+  public static final String WSDL_JAXP_CONFIG = "WSDL_JAXP_CONFIG"; //$NON-NLS-1$
+  
+  /**
    * Creates an instance of the resource. 
    * <!-- begin-user-doc --> 
    * <!-- end-user-doc -->
@@ -130,7 +153,7 @@ public class WSDLResourceImpl extends ResourceImpl
         ((DefinitionImpl)definition).updateElement();
       }
 
-      doSerialize(os, document, options == null ? null : (String)options.get(WSDL_ENCODING));
+      doSerialize(os, document, options);
     }
   }
 
@@ -146,28 +169,70 @@ public class WSDLResourceImpl extends ResourceImpl
   {
     try
     {
-      TransformerFactory transformerFactory = TransformerFactory.newInstance();
-      Transformer transformer = transformerFactory.newTransformer();
-
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
-      transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
-
-      // Unless a width is set, there will be only line breaks but no indentation.
-      // The IBM JDK and the Sun JDK don't agree on the property name,
-      // so we set them both.
-      //
-      transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2"); //$NON-NLS-1$ //$NON-NLS-2$
-      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2"); //$NON-NLS-1$ //$NON-NLS-2$
-      if (encoding != null)
-      {
-        transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
-      }
-
-      transformer.transform(new DOMSource(document), new StreamResult(outputStream));
+      Transformer transformer = new DefaultJAXPConfiguration().createTransformer(encoding);
+      // Be sure to use actual encoding of the transformer which might be non-null even if encoding started as null.
+      encoding = transformer.getOutputProperty(OutputKeys.ENCODING);
+      Writer writer = encoding == null ? new OutputStreamWriter(outputStream) : new OutputStreamWriter(outputStream, encoding);
+      transformer.transform(new DOMSource(document), new StreamResult(writer));
     }
-    catch (TransformerException exception)
+    catch (Exception exception)
     {
       WSDLPlugin.INSTANCE.log(exception);
+    }
+  }
+  
+  private static void doSerialize(OutputStream outputStream, Document document, Map options) throws IOException
+  {
+    JAXPPool jaxpPool = null;
+    JAXPConfiguration config = null;
+    String encoding = null;
+    
+    if (options != null)
+    {
+      jaxpPool = (JAXPPool)options.get(WSDL_JAXP_POOL);
+      config = (JAXPConfiguration)options.get(WSDL_JAXP_CONFIG);
+      encoding = (String)options.get(WSDL_ENCODING);
+    }
+    
+    if (jaxpPool == null)
+    {
+      if (config == null)
+      {
+        doSerialize(outputStream, document, encoding);
+      }
+      else
+      {
+        try
+        {
+          Transformer transformer = config.createTransformer(encoding);
+          // Be sure to use actual encoding of the transformer which might be non-null even if encoding started as null.
+          encoding = transformer.getOutputProperty(OutputKeys.ENCODING);
+          Writer writer = encoding == null ? new OutputStreamWriter(outputStream) : new OutputStreamWriter(outputStream, encoding);
+          transformer.transform(new DOMSource(document), new StreamResult(writer));
+        }
+        catch (TransformerException exception)
+        {
+          WSDLPlugin.getPlugin().log(exception);
+        }
+      }
+    }
+    else
+    {
+      Transformer transformer = null;
+      try
+      {
+        transformer = jaxpPool.getTransformer(encoding);
+        Writer writer = encoding == null ? new OutputStreamWriter(outputStream) : new OutputStreamWriter(outputStream, encoding);
+        transformer.transform(new DOMSource(document), new StreamResult(writer));
+      }
+      catch (TransformerException exception)
+      {
+        WSDLPlugin.INSTANCE.log(exception);
+      }
+      finally
+      {
+        jaxpPool.releaseTransformer(transformer);
+      }
     }
   }
 
@@ -207,12 +272,12 @@ public class WSDLResourceImpl extends ResourceImpl
 
       if (trackLocation)
       {
-        doc = getDocumentUsingSAX(inputSource);
+        doc = getDocumentUsingSAX(inputSource, options);
       }
       else
       {
         // Create a DOM document
-        doc = getDocument(inputSource, new InternalErrorHandler());
+        doc = getDocument(inputSource, new InternalErrorHandler(), options);
       }
 
       if (doc != null && doc.getDocumentElement() != null)
@@ -296,12 +361,13 @@ public class WSDLResourceImpl extends ResourceImpl
   /**
    * Use a custom SAX parser to allow us to track the source location of 
    * each node in the source XML document.
-   * @param inputSource the parsing source. Must not be null. 
+   * @param inputSource the parsing source. Must not be null.
+   * @param options the loading options. 
    * @return the DOM document created by parsing the input stream. 
    */
-  private Document getDocumentUsingSAX(InputSource inputSource)
+  private Document getDocumentUsingSAX(InputSource inputSource, Map options)
   {
-    WSDLParser wsdlParser = new WSDLParser();
+    WSDLParser wsdlParser = new WSDLParser(options);
     wsdlParser.parse(inputSource);
 
     Collection errors = wsdlParser.getDiagnostics();
@@ -332,6 +398,12 @@ public class WSDLResourceImpl extends ResourceImpl
     }
 
     Document doc = wsdlParser.getDocument();
+    
+    if (wsdlParser.getEncoding() != null)
+    {
+      getDefaultSaveOptions().put(WSDL_ENCODING, wsdlParser.getEncoding());
+    }
+    
     return doc;
   }
 
@@ -390,6 +462,74 @@ public class WSDLResourceImpl extends ResourceImpl
     finally
     {
       Thread.currentThread().setContextClassLoader(previousClassLoader);
+    }
+  }
+  
+  /**
+   * Builds DOM document using JAXP DocumentBuilder
+   * @see #WSDL_JAXP_POOL
+   * @see #WSDL_JAXP_CONFIG
+   * @param inputSource the content to parser
+   * @param errorHandler error handler for recording any loading errors
+   * @param options loading options
+   * @return document DOM document
+   * @throws IOException
+   */
+  private static Document getDocument(InputSource inputSource, ErrorHandler errorHandler, Map options) throws IOException
+  {
+    JAXPPool jaxpPool = null;
+    JAXPConfiguration config = null;
+    if (options != null)
+    {
+      jaxpPool = (JAXPPool)options.get(WSDL_JAXP_POOL);
+      config = (JAXPConfiguration)options.get(WSDL_JAXP_CONFIG);
+    }
+
+    if (jaxpPool == null)
+    {
+      if (config == null)
+      {
+        return getDocument(inputSource, errorHandler);
+      }
+      else
+      {
+        try
+        {
+          DocumentBuilder documentBuilder = config.createDocumentBuilder(errorHandler);
+          Document document = documentBuilder.parse(inputSource);
+          return document;
+        }
+        catch (ParserConfigurationException exception)
+        {
+          throw new IOWrappedException(exception);
+        }
+        catch (SAXException exception)
+        {
+          throw new IOWrappedException(exception);
+        }
+      }
+    }
+    else
+    {
+      DocumentBuilder documentBuilder = null;
+      try
+      {
+        documentBuilder = jaxpPool.getDocumentBuilder(errorHandler);
+        Document document = documentBuilder.parse(inputSource);
+        return document;
+      }
+      catch (ParserConfigurationException exception)
+      {
+        throw new IOWrappedException(exception);
+      }
+      catch (SAXException exception)
+      {
+        throw new IOWrappedException(exception);
+      }
+      finally
+      {
+        jaxpPool.releaseDocumentBuilder(documentBuilder);
+      }
     }
   }
 
@@ -539,4 +679,14 @@ public class WSDLResourceImpl extends ResourceImpl
    }        
    }      
    }*/
+
+  public Map getDefaultSaveOptions()
+  {
+    if (defaultSaveOptions == null)
+    {
+      defaultSaveOptions = new HashMap();
+    }
+
+    return defaultSaveOptions;
+  }
 } //WSDLResourceFactoryImpl

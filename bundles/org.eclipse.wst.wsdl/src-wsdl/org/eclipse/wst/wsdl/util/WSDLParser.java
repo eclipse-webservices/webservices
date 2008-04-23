@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.wst.wsdl.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,10 +28,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.eclipse.xsd.XSDPlugin;
+import org.eclipse.xsd.util.DefaultJAXPConfiguration;
+import org.eclipse.xsd.util.JAXPConfiguration;
+import org.eclipse.xsd.util.JAXPPool;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDParser;
 import org.w3c.dom.Comment;
@@ -190,12 +193,55 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
 
   protected Stack stack = new Stack();
 
+  protected JAXPPool jaxpPool;
+    
   /**
    * Default constructor.
    */
   public WSDLParser()
   {
-    saxParser = createSAXParser();
+    this(Collections.EMPTY_MAP);
+  }
+  
+  /**
+   * Constructs a WSDL parser given a set of parsing options.
+   * 
+   * @param options a Map of String to Object, passed along through the ResourceSet and Resource. 
+   */
+  public WSDLParser(Map options)
+  {
+    JAXPConfiguration config = null;
+    if (options != null)
+    {
+      jaxpPool = (JAXPPool)options.get(WSDLResourceImpl.WSDL_JAXP_POOL);
+      config = (JAXPConfiguration)options.get(WSDLResourceImpl.WSDL_JAXP_CONFIG);
+    }
+    try
+    {
+      if (jaxpPool == null)
+      {      
+        if (config != null)
+        {
+          saxParser = config.createSAXParser(this);
+        }
+        else
+        {
+          saxParser = new DefaultJAXPConfiguration().createSAXParser(this);
+        }
+      }
+      else
+      {
+        saxParser = jaxpPool.getSAXParser(this);
+      }
+    }
+    catch (SAXException exception)
+    {
+      fatalError(exception);
+    }
+    catch (ParserConfigurationException exception)
+    {
+      fatalError(exception);
+    }
   }
 
   /*
@@ -250,42 +296,6 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       WSDLPlugin.INSTANCE.log(exception);
       return null;
     }
-  }
-
-  /**
-   * Creates the SAXParser instance used for parsing the source WSDL XML
-   * document.
-   * 
-   * @return a configured SAXParser instance or null if an exception occurs.
-   *         Problems are reported through the diagnostics collection.
-   */
-  private SAXParser createSAXParser()
-  {
-    SAXParser saxParser = null;
-    try
-    {
-      SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-      saxParserFactory.setNamespaceAware(true);
-      saxParserFactory.setValidating(false);
-
-      saxParserFactory.setFeature("http://xml.org/sax/features/validation", false); //$NON-NLS-N$
-      saxParserFactory.setFeature("http://xml.org/sax/features/namespaces", true); //$NON-NLS-N$
-      saxParserFactory.setFeature("http://xml.org/sax/features/namespace-prefixes", true); //$NON-NLS-N$
-
-      saxParser = saxParserFactory.newSAXParser();
-
-      saxParser.setProperty("http://xml.org/sax/properties/lexical-handler", this); //$NON-NLS-N$
-    }
-    catch (SAXException exception)
-    {
-      fatalError(exception);
-    }
-    catch (ParserConfigurationException exception)
-    {
-      fatalError(exception);
-    }
-
-    return saxParser;
   }
 
   /*
@@ -459,6 +469,13 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
         fatalError(exception);
       }
     }
+    finally
+    {
+      if (jaxpPool != null)
+      {
+        jaxpPool.releaseSAXParser(saxParser);
+      }
+    }
   }
 
   /**
@@ -482,6 +499,13 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       if (diagnostics.isEmpty())
       {
         fatalError(exception);
+      }
+    }
+    finally
+    {
+      if (jaxpPool != null)
+      {
+        jaxpPool.releaseSAXParser(saxParser);
       }
     }
   }
@@ -549,15 +573,18 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   protected void saveLocation()
   {
-    line = locator.getLineNumber();
-    column = locator.getColumnNumber();
-
-    // The crimson parser seems to give poor coodinates and is 0-based for line
-    // count.
-
-    if (column == -1)
+    if (locator != null)
     {
-      column = 1;
+      line = locator.getLineNumber();
+      column = locator.getColumnNumber();
+      
+      // The crimson parser seems to give poor coordinates and is 0-based for line
+      // count.
+
+      if (column == -1)
+      {
+        column = 1;
+      }
     }
   }
 
@@ -689,5 +716,26 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
     diagnostic.setLine(exception.getLineNumber());
     diagnostic.setColumn(exception.getColumnNumber());
     diagnostics.add(diagnostic);
+  }
+
+  public String getEncoding()
+  {
+    if (locator != null)
+    {
+      try 
+      {
+        Method getEncodingMethod = locator.getClass().getMethod("getEncoding", new Class[]{});
+        if (getEncodingMethod != null)
+        {
+          encoding = (String)getEncodingMethod.invoke(locator, new Object[] {});
+        }
+      }
+      catch (Exception e) 
+      {
+        // If we can't find it, there's nothing we can do...
+      }
+    }
+
+    return encoding;
   }
 }
