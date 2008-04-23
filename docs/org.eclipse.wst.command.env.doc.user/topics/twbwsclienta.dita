@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="twsclienta" xml:lang="en-us">
@@ -10,6 +10,12 @@ using command line tools</searchtitle>
 </titlealts>
 <shortdesc>If you have a WSDL file you can use Ant through the Eclipse workspace
 to generate a Web service client using the Axis run-time environment.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Axis runtime environment<indexterm>Web services client<indexterm>creating
+with Ant tasks</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis
+runtime environment<indexterm>Web services client<indexterm>creating with
+Ant tasks</indexterm></indexterm></indexterm></indexterm></keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Before creating the Web service client you must:<ul>
 <li>complete the prerequisites listed in: <xref href="cwsaxisant.dita"></xref></li>
@@ -18,11 +24,12 @@ to generate a Web service client using the Axis run-time environment.</shortdesc
 <context>In order to create the Web service client you need to modify the
 Ant file and the Ant properties file.</context>
 <steps>
-<step><cmd>Edit the Ant file (<userinput>wsgen.xml</userinput>) that you imported
-in the prerequisite steps. Ensure that it points to the client Ant properties
-file: it should contain a line stating <userinput>&lt;property file="axisclient.properties"/></userinput>.</cmd>
-<info>Save any changes that you have made.</info></step>
-<step><cmd>Edit the <userinput>axisclient.properties</userinput> file that
+<step><cmd>Edit the Ant file (<userinput>axis_client.xml</userinput>) that
+you imported in the prerequisite steps. Ensure that it points to the client
+Ant properties file: it should contain a line stating <userinput>&lt;property
+file="axis_client.properties"/></userinput>.</cmd><info>Save any changes that
+you have made.</info></step>
+<step><cmd>Edit the <userinput>axis_client.properties</userinput> file that
 you imported in the prerequisite steps.</cmd>
 <substeps>
 <substep><cmd>Ensure that the scenarioType parameter is set to client.</cmd>
@@ -34,8 +41,9 @@ explicitly set. The default values for the remaining parameters will be retrieve
 from the dynamic project settings. For additional information on how to set
 these parameters refer to: <xref href="rwsclienta.dita"></xref></cmd></substep>
 </substeps>
-<info>Save the <userinput>axisclient.properties</userinput> file.</info></step>
-<step><cmd>Right-click <userinput>wsgen.xml</userinput> and select <menucascade>
+<info>Save the <userinput>axis_client.properties</userinput> file.</info>
+</step>
+<step><cmd>Right-click <userinput>axis_client.xml</userinput> and select <menucascade>
 <uicontrol>Run As</uicontrol><uicontrol>Ant Build...</uicontrol></menucascade></cmd>
 </step>
 <step><cmd>In the dialog that opens, select the <uicontrol>JRE</uicontrol> tab

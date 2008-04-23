@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
+ "reference.dtd">
+<reference id="servicepoliciespreferences" xml:lang="en-us">
+<title>WS-I compliance preferences</title>
+<shortdesc>The Service policies preferences page allows you to select your
+level of compliance with the WS-I Simple SOAP Binding Profile (SSBP) and WS-I
+Attachement Profile (AP). They can be found on the Service Policies preferences
+page.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>preferences<indexterm>Web services<indexterm>WS-I</indexterm></indexterm></indexterm>
+<indexterm>Web services<indexterm>preferences<indexterm>WS-I</indexterm></indexterm></indexterm>
+<indexterm>WS-I<indexterm>preferences</indexterm></indexterm></keywords>
+</metadata></prolog>
+<refbody>
+<section><title>Setting WS-I preferences</title><p>WS-I Basic Profile is a
+outline of requirements to which WSDL and Web service protocol (SOAP/HTTP)
+traffic must comply in order to claim WS-I conformance. The Web services WS-I
+validation tools currently support WS-I Simple SOAP Binding Profile 1.0 (WS-I
+SSBP) which builds on the WS-I Basic Profile, and the WS-I Attachments Profile
+1.0 (WS-I AP). To view the specifications, refer to the WS-I Web site, and
+under  <uicontrol>Deliverables</uicontrol> select  <uicontrol>Basic Profile</uicontrol>.</p><p>For
+more information on WS-I, refer to: <xref href="http://www.ws-i.org/" scope="external"></xref></p><p>WS-I
+preferences can be set at the workspace level by opening the Preferences notebook,
+or at the project level by right-clicking on a project and selecting Preferences.</p><p>You
+can select the WS-I AP 1.0 or WS-I BP 1.1 + SSBP 1.0 profiles and choose for
+the Web services tools to ignore, suggest, or require compliance. Suggest
+will generate a warning if you attempt to generate non-compliant code, whereas
+require will prevent you from generating non-compliant code.</p><note>If you
+change the level of WS-I compliance while WS-I incompliances are listed in
+the Task view, the Task view will not be automatically updated. The workspace
+must be revalidated before the warnings will be removed from the Task view.</note></section>
+</refbody>
+</reference>

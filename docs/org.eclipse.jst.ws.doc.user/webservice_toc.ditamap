@@ -22,6 +22,8 @@ navtitle="Relationship between UDDI and WSDL" scope="peer"></topicref>
 </topicref>
 <topicref href="concepts/cjaxrpc.dita" navtitle="JAX-RPC"></topicref>
 <topicref href="concepts/cjsr109.dita" navtitle="JSR 109 and JSR 921"></topicref>
+<topicref href="concepts/cwsiover.dita" navtitle="WS-I compliance" scope="local">
+</topicref>
 </topicref>
 <topicref href="concepts/cwstopdown.dita" navtitle="Top-down Web services development"
 scope="local"></topicref>
@@ -31,11 +33,14 @@ scope="local"></topicref>
 <topicref href="concepts/cwsinwsa.dita" navtitle="Tools for Web services development"
 scope="local"></topicref>
 <topicref navtitle="Configuring your workspace">
-<topicref href="ref/rwspref.dita" navtitle="Setting Web services preferences"
-scope="local"></topicref>
-<topicref href="concepts/cwsiover.dita" navtitle="WS-I compliance" scope="local">
-<topicref href="tasks/twsicomply.dita" navtitle="Setting the level of WS-I compliance"
-scope="local"></topicref>
+<topicref href="tasks/twspref.dita" navtitle="Setting Web services preferences"
+scope="local">
+<topicref href="ref/raxispref.dita" navtitle="Axis emitter preferences"></topicref>
+<topicref href="ref/rwswizpref.dita" navtitle="Web services wizards basic preferences">
+</topicref>
+<topicref href="ref/rwsdlpref.dita" navtitle="WSDL file preferences"></topicref>
+<topicref href="ref/rservpolpref.dita" navtitle="Service policies preferences">
+</topicref>
 </topicref>
 <topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.dita"
 navtitle="Creating an Apache Tomcat server and  Web project" scope="peer">

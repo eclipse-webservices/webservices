@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Arbortext, Inc., 1988-2006, v.4002-->
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
+ "reference.dtd">
+<reference id="webserviceswizardsbasicpreferences" xml:lang="en-us">
+<title>Web services wizards basic preferences</title>
+<shortdesc>The default behaviors of the Web services wizards can be set using
+the following preference panels. All preferences can be overridden in the
+wizard.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>preferences<indexterm>Web services<indexterm>wizards</indexterm></indexterm></indexterm>
+<indexterm>Web services<indexterm>preferences<indexterm>wizards</indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
+<refbody>
+<section><title>Popup Dialog Selection</title><p>The dialog preferences enable
+you to determine which dialog boxes that you want to see when running popup
+actions. If you have disabled any of the dialogs by selecting "Do not show
+this dialog again" on the first page of a Web services wizard, you can undo
+your change by clearing the check box beside the dialog that you have chosen
+to hide.</p></section>
+<section><title>Project Topology</title><dl><dlentry>
+<dt>Service project types:</dt>
+<dd>Select the default service project type that the Web services wizards
+will create when generating a Web service. You can also set the order in which
+the project types will be listed in the wizard. Note that this selection is
+simply a default and an alternate project type can be selected in the wizard.</dd>
+</dlentry><dlentry>
+<dt>Client project types:</dt>
+<dd>Select the default client project type that the Web services wizards will
+create when generating a Web service client. You can also set the order in
+which the client project types will be listed in the wizard. Note that this
+selection is simply a default and an alternate project type can be selected
+in the wizard.</dd>
+</dlentry><dlentry>
+<dt>Generate Web service and the Web service client in different EAR projects:</dt>
+<dd>Generating the service and client into different EAR projects can reduce
+the chance of conflicts that occur when both exist in a single EAR project,
+but uses more system resources.</dd>
+</dlentry></dl></section>
+<section><title>Resource Management</title><p>The Resource Management preferences
+enable you to determine the file and folder creation and overwriting defaults
+that you want to use when creating your Web service.<dl><dlentry>
+<dt>Overwrite files without warning:</dt>
+<dd>Selecting this will allow the wizards to overwrite any existing files
+in the workspace without prompting. If it is not selected you will be prompted
+each time a file needs to be overwritten.</dd>
+</dlentry><dlentry>
+<dt>Create folders when necessary:</dt>
+<dd>Selecting this enables the wizards to create any required folders.</dd>
+</dlentry><dlentry>
+<dt>Check out files without warning:</dt>
+<dd>Select to check out files without receiving a warning message asking for
+confirmation.</dd>
+</dlentry><dlentry>
+<dt>Merge generated skeleton file:</dt>
+<dd>This check box is disabled by default.  If this check box is enabled,
+when a skeleton file of the same name already exists in the workspace, the
+newly generated skeleton file will merge with the existing skeleton file.
+ Enable this to preserve code that you have already modified in the existing
+skeleton files.<note>When this preference is enabled, if you change the return
+type of an interface, the resulting skeleton file will have a method returning
+the type as defined in the new interface but would have a method body from
+the original skeleton file (which would be returning a different type).  This
+will result in an compilation error that the you will have to correct manually.</note></dd>
+</dlentry></dl></p></section>
+<section><title>Scenario Defaults</title><p>The Scenario Defaults preferences
+enable you to set the following scenario defaults that you want to use when
+creating your Web service:<ul>
+<li>which type of Web service and client you want to be selected by default.</li>
+<li>which phases of the Web service lifecycle you want to complete in the
+wizard.</li>
+<li>if you want the Web Services Explorer to launch by default so that you
+can publish your Web service to a UDDI registry.</li>
+<li>if you want the Web service SOAP traffic routed through a TCP/IP monitor
+so that you can monitor the SOAP packets and optionally test them for WS-I
+compliance.</li>
+</ul></p></section>
+<section><title>Server and Runtime</title><p>Select the server and Web service
+runtime environment that you want selected by default in the Web services
+wizard.</p></section>
+<section><title>Test Facility Defaults</title><p>You can select whether to
+have the wizard automatically launch a test facility, and you can select your
+preferred type of test facility.</p></section>
+<section><title>Wizard validation</title><p>The Wizard Validation preferences
+page allows you to select when WSDL validation is run against WSDL files consumed
+by wizards. You can select to turn off validiation, or to enable it for local
+or local and remote WSDL files.</p></section>
+</refbody>
+</reference>

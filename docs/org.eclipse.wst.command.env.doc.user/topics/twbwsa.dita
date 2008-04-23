@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="ttdwsa" xml:lang="en-us">
@@ -10,11 +10,17 @@
 <shortdesc>You can use Ant through the Eclipse workspace to generate a Web
 service using the Axis run-time environment. Both top-down and bottom-up Web
 services development is supported with the Ant tasks.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Axis runtime environment<indexterm>Web services<indexterm>creating
+with Ant tasks</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis
+runtime environment<indexterm>Web services<indexterm>creating with Ant tasks</indexterm></indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <taskbody>
 <prereq>Before creating the Web service you must:<ul>
 <li>complete the prerequisites listed in: <xref href="cwsaxisant.dita"></xref></li>
 <li>if you are creating a top-down Web service, create or import a WSDL file
-into the <userinput>WebConent</userinput> folder of the dynamic Web project
+into the <userinput>WebContent</userinput> folder of the dynamic Web project
 you created.</li>
 <li>If you are creating a bottom-up Web service, create or import a Java bean
 into the <userinput>src</userinput> folder of the dynamic Web project.</li>
@@ -22,12 +28,13 @@ into the <userinput>src</userinput> folder of the dynamic Web project.</li>
 <context>In order to create the Web service you need to modify the Ant file
 and the service Ant properties file.</context>
 <steps>
-<step><cmd>Edit the Ant file (<userinput>wsgen.xml</userinput>) that you imported
-in the prerequisite steps. Ensure that it points to the service Ant properties
-file: it should contain a line stating <userinput>&lt;property file="axisservice.properties"/></userinput>.</cmd>
+<step><cmd>Edit the Ant file (<userinput>axis_tdjava.xml</userinput> or <userinput>axis_bujava.xml</userinput>)
+that you imported in the prerequisite steps. Ensure that it points to the
+service Ant properties file: it should contain a line stating <userinput>&lt;property
+file="axis_tdjava.properties"/></userinput> or <userinput>&lt;property file="axis_bujava.properties"/></userinput>.</cmd>
 <info>Save any changes that you have made.</info></step>
-<step><cmd>Edit the <userinput>axisservice.properties</userinput> file that
-you imported in the prerequisite steps.</cmd>
+<step><cmd>Edit the properties file that you imported in the prerequisite
+steps.</cmd>
 <substeps>
 <substep><cmd>Ensure that the scenarioType parameter is set to service.</cmd>
 </substep>
@@ -41,11 +48,10 @@ on how to set these parameters refer to: </cmd><info><ul>
 <li><xref href="rbuwsa.dita"></xref></li>
 </ul></info></substep>
 </substeps>
-<info>Save the <userinput>axisservice.properties</userinput> file.</info>
-</step>
-<step><cmd>Right-click <userinput>wsgen.xml</userinput> and select <menucascade>
-<uicontrol>Run As</uicontrol><uicontrol>Ant Build...</uicontrol></menucascade></cmd>
-</step>
+<info>Save the properties file.</info></step>
+<step><cmd>Right-click <userinput>axis_tdjava.xml</userinput> or <userinput>axis_bujava.xml</userinput> and
+select <menucascade><uicontrol>Run As</uicontrol><uicontrol>Ant Build...</uicontrol>
+</menucascade></cmd></step>
 <step><cmd>In the dialog that opens, select the <uicontrol>JRE</uicontrol> tab
 and select <uicontrol>Run in the same JRE as the workspace</uicontrol>.</cmd>
 <info>Click <uicontrol>Apply</uicontrol> and then click <uicontrol>Run</uicontrol>.</info>

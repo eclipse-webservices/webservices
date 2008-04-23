@@ -16,16 +16,19 @@
 <topic label="Relationship between UDDI and WSIL" href="concepts/cwsilud.html"/>
 </topic>
 <topic label="JAX-RPC" href="concepts/cjaxrpc.html"/>
-<topic label="JSR 109 and JSR 921- Implementing Enterprise Web services" href="concepts/cjsr109.html"/>
+<topic label="JSR 109 - Implementing Enterprise Web services" href="concepts/cjsr109.html"/>
+<topic label="Web services interoperability (WS-I)" href="concepts/cwsiover.html"/>
 </topic>
 <topic label="Creating top-down Web services" href="concepts/cwstopdown.html"/>
 <topic label="Creating bottom-up Web services" href="concepts/cwsbtmup.html"/>
 <topic label="Workspace and tools">
 <topic label="Tools for Web services development" href="concepts/cwsinwsa.html"/>
 <topic label="Configuring your workspace">
-<topic label="Web services preferences" href="ref/rwspref.html"/>
-<topic label="Web services interoperability (WS-I)" href="concepts/cwsiover.html">
-<topic label="Setting the level of WS-I compliance" href="tasks/twsicomply.html"/>
+<topic label="Setting Web services preferences" href="tasks/twspref.html">
+<topic label="Axis emitter preferences" href="ref/raxispref.html"/>
+<topic label="Web services wizards basic preferences" href="ref/rwswizpref.html"/>
+<topic label="WSDL file preferences" href="ref/rwsdlpref.html"/>
+<topic label="WS-I compliance preferences" href="ref/rservpolpref.html"/>
 </topic>
 <topic label="Creating an Apache Tomcat server and Web project" href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.html"/>
 </topic>

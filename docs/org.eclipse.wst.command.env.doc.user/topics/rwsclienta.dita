@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
  "reference.dtd">
 <reference id="axiswebserviceclientcommandlinereference" xml:lang="en-us">
 <title>Axis Web service client Ant task properties file reference</title>
-<shortdesc>The <userinput>axisclient.properties</userinput> file is used to
-pass data to the Web services Ant tasks when creating an Axis Web service
+<shortdesc>The <userinput>axis_client.properties</userinput> file is used
+to pass data to the Web services Ant tasks when creating an Axis Web service
 client. This file shows the available options.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Axis runtime environment<indexterm>Web services client<indexterm>Ant
+task reference</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis
+runtime environment<indexterm>Web services client<indexterm>Ant task reference</indexterm></indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <refbody>
 <section><title>Parameters</title><parml><plentry>
 <pt>ScenarioType</pt>

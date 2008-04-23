@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
  "reference.dtd">
 <reference id="top-downaxiswebservicecommandlinereference" xml:lang="en-us">
 <title>Top-down Axis Web service Ant task properties file reference</title>
-<shortdesc>The <userinput>axisservice.properties</userinput> file is used
+<shortdesc>The <userinput>axis_tdjava.properties</userinput> file is used
 to pass data to the Web services Ant tasks when creating an Axis Web service
 . This file shows the available options.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Axis runtime environment<indexterm>skeleton Web services<indexterm>Ant
+task reference</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis
+runtime environment<indexterm>skeleton Web services<indexterm>Ant task reference</indexterm></indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <refbody>
 <section><title>Parameters</title><parml><plentry>
 <pt>ScenarioType</pt>
@@ -88,7 +94,7 @@ creates with the same name as an existing file. By default this is set to <codep
 </plentry><plentry>
 <pt>CreateFoldersEnabled</pt>
 <pd><synph> Options: <codeph>true</codeph> <codeph>false</codeph></synph></pd>
-<pd>Use this parameter to tell the Ant task to create any neccessary folders.
+<pd>Use this parameter to tell the Ant task to create any necessary folders.
 By default this is set to <codeph>true</codeph>.</pd>
 </plentry><plentry>
 <pt>CheckoutFilesEnabled</pt>

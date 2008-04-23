@@ -16,6 +16,12 @@ using <menucascade><uicontrol>Run As</uicontrol><uicontrol>Ant Build...</uicontr
 </menucascade>, or they can be run headless through the command line. Once
 you have created your Web service, you can then deploy it to a server, test
 it, and publish it as a business entity or business service.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Axis runtime environment<indexterm>Web services<indexterm>creating
+with Ant tasks</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis
+runtime environment<indexterm>creating with Ant tasks</indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <conbody>
 <section><title>Prerequisites</title><p>Before you create a Web service or
 client using the Ant tasks, you need to complete a few prerequisites.</p><ul>
@@ -27,15 +33,17 @@ an Apache Tomcat server and Web project</xref></li>
 <li>Import the required Ant files. Select <menucascade><uicontrol>File</uicontrol>
 <uicontrol>New</uicontrol><uicontrol>Other</uicontrol><uicontrol>Web Services</uicontrol>
 <uicontrol>Ant Files</uicontrol><uicontrol>Next</uicontrol></menucascade>.</li>
-<li>Select the project you created, and click <uicontrol>Finish</uicontrol>.</li>
-</ol>Three files will be imported into this project:<ul>
-<li>wsgen.xml - this is the Ant file.</li>
-<li>axisservice.properties - this is a sample Ant properties file referenced
-by the Ant file. You can modify the properties in this file to generate a
-Web service.</li>
-<li>axisclient.properties - this is a sample Ant properties file referenced
-by the Ant file. You can modify the properties in this file to generate a
-Web service client.</li>
+<li>Select the following:<ul>
+<li>Web service runtime</li>
+<li>Web service or client type</li>
+<li>Location into which the ant files will be generated</li>
+</ul>Click <uicontrol>Finish</uicontrol>.</li>
+</ol>Depending on the selections made on the previous panel, several files
+may be imported into this project:<ul>
+<li><i>runtime_servicetype</i>.xml - this is the Ant file.</li>
+<li><i>runtime_servicetype</i>.properties - this is a sample Ant properties
+file referenced by the Ant file. You can modify the properties in this file
+to generate a Web service.</li>
 </ul></li>
 <li>Create a dynamic Web project for the Web service or client.</li>
 </ul></section>

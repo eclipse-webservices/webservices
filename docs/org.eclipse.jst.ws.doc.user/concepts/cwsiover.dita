@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
  "concept.dtd">
 <concept id="cwsiover" xml:lang="en-us">
@@ -33,9 +33,4 @@ trademark="WebSphere">WebSphere</tm> run-time environments, the WSDL editor,
 and other Web services tools provided support and encourage the development
 of WS-I compliance services.</p>
 </conbody>
-<related-links>
-<linklist><title>Related Tasks</title>
-<link href="../tasks/twsicomply.dita"></link>
-</linklist>
-</related-links>
 </concept>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
  "concept.dtd">
 <concept id="webservicesstandards" xml:lang="en-us">
@@ -90,10 +90,10 @@ tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm> platform
 For more information refer to the <xref href="http://www.jcp.org/en/jsr/detail?id=101"
 scope="external">official specifications</xref>.</dd>
 </dlentry><dlentry>
-<dt>JSR-109 and JSR-921</dt>
-<dd>JSR-109 and JSR-921 (Implementing Enterprise Web Services) define the
-programming model and run-time architecture to deploy and look up Web services
-in the J2EE environment; more specifically, in the Web, EJB, and Client Application
+<dt>JSR-109</dt>
+<dd>JSR-109 (Implementing Enterprise Web Services) defines the programming
+model and run-time architecture to deploy and look up Web services in the
+Java EE environment; more specifically, in the Web, EJB, and Client Application
 containers. One of its main goals is to ensure vendors' implementations interoperate.
 For more information, refer to the official specifications: <ul>
 <li><xref href="http://www.jcp.org/en/jsr/detail?id=109" scope="external"
@@ -191,15 +191,11 @@ colwidth="104*"/>
 </row>
 <row>
 <entry colname="col1">JAX-RPC</entry>
-<entry colname="col2">v1.0 for J2EE 1.3, v1.1 for J2EE 1.4</entry>
+<entry colname="col2">v1.0 for J2EE 1.3, v1.1 for J2EE 1.4 and Java EE 1.5</entry>
 </row>
 <row>
 <entry colname="col1">JSR 109</entry>
-<entry colname="col2">J2EE 1.3</entry>
-</row>
-<row>
-<entry colname="col1">JSR 921</entry>
-<entry colname="col2">J2EE 1.4</entry>
+<entry colname="col2"></entry>
 </row>
 </tbody>
 </tgroup>

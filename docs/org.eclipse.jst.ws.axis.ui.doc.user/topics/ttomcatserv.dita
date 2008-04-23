@@ -44,12 +44,12 @@ view > Other > Server > Servers > Ok.</uicontrol> </stepresult></step>
 </steps>
 <example><p>To build a dynamic Web project that points to the Tomcat server
 that you have created:</p><ol>
-<li>Create the service Web project by selecting <uicontrol>New > Web > Dynamic
-Web project</uicontrol>. Enter the following information: <ul>
+<li>Create the service Web project by selecting <uicontrol>New > Dynamic Web
+project</uicontrol>. Enter the following information: <ul>
 <li>Project Name: enter a project name</li>
-<li>Target runtime: Tomcat server v3.x, 4.x or 5.x depending on the version
-you installed. If it is not listed, click New and browse to the location where
-it is installed.</li>
+<li>Target runtime: Tomcat server v3.x, 4.x, 5.x, or 6.0 depending on the
+version you installed. If it is not listed, click New and browse to the location
+where it is installed.</li>
 <li>Ensure that <uicontrol>Add project to an EAR</uicontrol> is <i>not</i> selected.</li>
 </ul></li>
 <li>Click <uicontrol>Finish</uicontrol>.</li>

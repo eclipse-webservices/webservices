@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
  "reference.dtd">
 <reference id="bottom-upaxiswebservicecommandlinereference" xml:lang="en-us">
 <title>Bottom-up Axis Web service Ant task properties file reference</title>
-<shortdesc>The <userinput>axisservice.properties</userinput> file is used
+<shortdesc>The <userinput>axis_bujava.properties</userinput> file is used
 to pass data to the Web services Ant tasks when creating an Axis Web service
 . This file shows the available options.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Axis runtime environment<indexterm>java bean Web services<indexterm>Ant
+task reference</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis
+runtime environment<indexterm>java bean Web services<indexterm>Ant task reference</indexterm></indexterm></indexterm></indexterm>
+</keywords>
+</metadata></prolog>
 <refbody>
 <section><title>Parameters</title><parml><plentry>
 <pt>ScenarioType</pt>
