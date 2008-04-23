@@ -41,8 +41,8 @@ package is.</li>
 <context>To create a Web service from a bean using the Apache Axis2 runtime
 environment:</context>
 <steps>
-<step><cmd>Switch to the J2EE perspective (<uicontrol>Window > Open Perspective
-> J2EE</uicontrol>).</cmd></step>
+<step><cmd>Switch to the Java EE perspective (<uicontrol>Window > Open Perspective
+> Java EE</uicontrol>).</cmd></step>
 <step><cmd>In the Project Explorer view, select the bean that you created
 or imported into the source folder of your Web project.</cmd></step>
 <step><cmd>Click  <uicontrol>File > New > Other</uicontrol>.</cmd><info>Select<uicontrol>Web

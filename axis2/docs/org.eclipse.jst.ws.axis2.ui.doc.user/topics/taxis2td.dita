@@ -2,8 +2,7 @@
 <!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "../../dtd/task.dtd">
-<?Pub Inc?>
-<task id="tsklwsdla" xml:lang="en-us"><?Pub Caret?>
+<task id="tsklwsdla" xml:lang="en-us">
 <title>Creating a <tm tmclass="special" tmowner="Sun Microsystems, Inc." tmtype="tm"
 trademark="Java">Java</tm> bean skeleton from a WSDL document using the Apache
 Axis2 runtime environment</title>
@@ -31,8 +30,8 @@ You can only use a WSDL file that contains a service element.</li>
 <context>To create a Web service from a WSDL file using the Apache Axis2 runtime
 environment:</context>
 <steps>
-<step><cmd>Switch to the J2EE perspective (<uicontrol>Window > Open Perspective
-> J2EE</uicontrol>).</cmd></step>
+<step><cmd>Switch to the Java EE perspective (<uicontrol>Window > Open Perspective
+> Java EE</uicontrol>).</cmd></step>
 <step><cmd>In the Project Explorer view, select the WSDL file that you created
 or imported into the Web Content folder of your Web project.</cmd></step>
 <step><cmd>Click  <uicontrol>File > New > Other</uicontrol>. Select  <uicontrol>Web
@@ -140,4 +139,3 @@ scope="peer"><linktext> Using the Web Services Explorer</linktext></link>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000007842?>

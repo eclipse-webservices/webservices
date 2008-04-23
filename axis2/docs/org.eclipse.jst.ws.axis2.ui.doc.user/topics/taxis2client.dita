@@ -2,7 +2,6 @@
 <!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
-<?Pub Inc?>
 <task id="tsampappa" xml:lang="en-us">
 <title>Generating a <tm tmclass="special" tmowner="Sun Microsystems, Inc."
 tmtype="tm" trademark="Java">Java</tm> client proxy and a sample application
@@ -22,7 +21,7 @@ service clients</indexterm></indexterm></indexterm></keywords>
 <taskbody>
 <prereq><p>Prerequisites:</p><ol>
 <li conref="taxis2bu.dita#twsbeana/installaxis2link"></li>
-<li conref="taxis2bu.dita#twsbeana/createtomcatlink"></li><?Pub Caret?>
+<li conref="taxis2bu.dita#twsbeana/createtomcatlink"></li>
 <li>Discover and import a WSDL document into the Web project. You can only
 use a WSDL file that contains a service element.</li>
 </ol></prereq>
@@ -30,8 +29,8 @@ use a WSDL file that contains a service element.</li>
 tmtype="tm" trademark="Java">Java</tm> client proxy and a sample application
 from a discovered WSDL document:</context>
 <steps>
-<step><cmd>Switch to the J2EE perspective (<uicontrol>Window > Open Perspective
-> J2EE</uicontrol>).</cmd></step>
+<step><cmd>Switch to the Java EE perspective (<uicontrol>Window > Open Perspective
+> Java EE</uicontrol>).</cmd></step>
 <step><cmd>In the Navigator view, select the Web project in which you want
 to generate a sample application.</cmd></step>
 <step><cmd>Click  <uicontrol>File > New > Other</uicontrol>. Select  <uicontrol>Web
@@ -143,4 +142,3 @@ scope="peer"><linktext> Using the Web Services Explorer</linktext></link>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000008334?>
