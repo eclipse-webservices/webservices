@@ -29,8 +29,8 @@ You can only use a WSDL file that contains a service element.</li>
 <context>To create a Web service from a WSDL file using the Apache Axis1 runtime
 environment:</context>
 <steps>
-<step><cmd>Switch to the J2EE perspective (<uicontrol>Window > Open Perspective
-> J2EE</uicontrol>).</cmd></step>
+<step><cmd>Switch to the Java EE perspective (<uicontrol>Window > Open Perspective
+> Java EE</uicontrol>).</cmd></step>
 <step><cmd>In the Project Explorer view, select the WSDL file that you created
 or imported into the Web Content folder of your Web project.</cmd></step>
 <step><cmd>Click  <uicontrol>File > New > Other</uicontrol>. Select  <uicontrol>Web
