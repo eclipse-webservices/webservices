@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN"
  "map.dtd">
 <map anchorref="../org.eclipse.jst.ws.doc.user/webservice_toc.ditamap#wsconsumptiont"
-title="wsconsumptiont">
+id="wsconsumptiont" title="wsconsumptiont">
 <topicref href="concepts/cuddi.dita" navtitle="Universal Description, Discovery, and Integration (UDDI)">
 </topicref>
 <topicref href="concepts/cwsdlud.dita" navtitle="Relationship between UDDI and WSDL">

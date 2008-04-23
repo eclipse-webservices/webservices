@@ -18,8 +18,8 @@ requests</indexterm></indexterm></keywords>
 EE environment, as well as the implementation and deployment of Web services
 to a Java EE application server. JSR 109 defines a set of XML-based deployment
 descriptors to standardize Web services and Web service client deployments
-in the J2EE environment. JSR 921 was a maintenance revision of JSR 109, and
-has since been replaced by the updated version of JSR 109.</p>
+in the Java EE environment. JSR 921 was a maintenance revision of JSR 109,
+and has since been replaced by the updated version of JSR 109.</p>
 <p>For more information, refer to:  <xref format="html" href="http://www.jcp.org/en/jsr/detail?id=109"
 scope="external">JSR 109, "Implementing Enterprise Web Services</xref> and <xref
 href="http://www.jcp.org/en/jsr/detail?id=921" scope="external">JSR 921: Implementing

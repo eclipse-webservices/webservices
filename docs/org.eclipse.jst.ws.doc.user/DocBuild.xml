@@ -45,7 +45,7 @@
 	<target name="eclipsehelp">
 		<ant antfile="${dita.ot.dir}${file.separator}conductor.xml" target="init" dir="${dita.ot.dir}">
 			<property name="args.copycss" value="no" />
-			<property name="args.csspath" value="org.eclipse.wst.doc.user" />
+			<property name="args.csspath" value="../org.eclipse.wst.doc.user" />
 			<property name="args.eclipse.provider" value="Eclipse.org" />
 			<property name="args.eclipse.version" value="3.3.0" />
 			<property name="args.input" location="webservice_toc.ditamap" /> 

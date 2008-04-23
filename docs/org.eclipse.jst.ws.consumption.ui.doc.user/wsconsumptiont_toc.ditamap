@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN"
  "map.dtd">
 <map anchorref="../org.eclipse.jst.ws.doc.user/webservice_toc.ditamap#wsconsumptiont"
-title="wsconsumptiont">
+id="wsconsumptiont" title="wsconsumptiont">
 <topicref href="tasks/tuddiexp.dita" navtitle="Publishing Web services and business entities">
 <topicref href="tasks/tstrtexp.dita" navtitle="Launching the Web Services Explorer">
 </topicref>

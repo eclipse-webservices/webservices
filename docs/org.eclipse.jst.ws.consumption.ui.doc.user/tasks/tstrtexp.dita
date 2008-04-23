@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tstrtexp" xml:lang="en-us">
@@ -15,11 +15,11 @@ in several ways.</shortdesc>
 </metadata></prolog>
 <taskbody>
 <context><ul>
-<li>From the main toolbar in the J2EE perspective.</li>
+<li>From the main toolbar in the Java EE perspective.</li>
 <li>By using the Web service wizards.</li>
 <li>By using the Import wizard.</li>
 <li>By using the Export wizard.</li>
-<li>From the Run menu in the J2EE perspective.</li>
+<li>From the Run menu in the Java EE perspective.</li>
 <li>From a WSDL file.</li>
 </ul></context>
 </taskbody>
@@ -27,7 +27,7 @@ in several ways.</shortdesc>
 <title>Launching the Web Services Explorer from the main toolbar</title>
 <taskbody>
 <context><p>To launch the Web Services Explorer from the main toolbar, ensure
-that you are in the J2EE perspective and click the  <b>Launch the Web Services
+that you are in the Java EE perspective and click the  <b>Launch the Web Services
 Explorer</b> icon  <image alt="Picture of the Launch Web Services Explorer icon."
 href="../images/uddiview.gif"></image>. The Web Services Explorer opens without
 any registries displayed in the Navigator pane. You can now  <xref href="taddreg.dita">add
@@ -84,10 +84,10 @@ will see the registry displayed in the Navigator pane.</p></result>
 <title>Launching the Web Services Explorer from the Run menu</title>
 <taskbody>
 <context><p>To launch the Web Services Explorer from the main menu, ensure
-that you are in the J2EE perspective and click  <b>Run > Launch the Web Services
-Explorer</b>. The Import wizard opens. The Web Services Explorer opens.&nbsp;
-The Web Services Explorer opens without any registries displayed in the Navigator
-pane.</p></context>
+that you are in the Java EE perspective and click  <b>Run > Launch the Web
+Services Explorer</b>. The Import wizard opens. The Web Services Explorer
+opens.&nbsp; The Web Services Explorer opens without any registries displayed
+in the Navigator pane.</p></context>
 </taskbody>
 </task>
 <task id="d0e134" xml:lang="en-us">
