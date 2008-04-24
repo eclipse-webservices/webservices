@@ -111,19 +111,19 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
         delegateMap = new HashMap();
         if (startLine != UNSET)
         {
-          delegateMap.put(START_LINE, Integer.valueOf(startLine));
+          delegateMap.put(START_LINE, new Integer(startLine));
         }
         if (startColumn != UNSET)
         {
-          delegateMap.put(START_COLUMN, Integer.valueOf(startColumn));
+          delegateMap.put(START_COLUMN, new Integer(startColumn));
         }
         if (endLine != UNSET)
         {
-          delegateMap.put(END_LINE, Integer.valueOf(endLine));
+          delegateMap.put(END_LINE, new Integer(endLine));
         }
         if (endColumn != UNSET)
         {
-          delegateMap.put(END_COLUMN, Integer.valueOf(endColumn));
+          delegateMap.put(END_COLUMN, new Integer(endColumn));
         }
       }
       return delegateMap;
@@ -136,7 +136,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
 
     protected Object intToObject(int value)
     {
-      return value == UNSET ? null : Integer.valueOf(value);
+      return value == UNSET ? null : new Integer(value);
     }
 
     public Object put(Object key, Object value)
@@ -189,7 +189,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       }
       else
       {
-        delegateMap.put(START_LINE, Integer.valueOf(startLine));
+        delegateMap.put(START_LINE, new Integer(startLine));
       }
     }
 
@@ -206,7 +206,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       }
       else
       {
-        delegateMap.put(START_COLUMN, Integer.valueOf(startColumn));
+        delegateMap.put(START_COLUMN, new Integer(startColumn));
       }
     }
 
@@ -223,7 +223,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       }
       else
       {
-        delegateMap.put(END_LINE, Integer.valueOf(endLine));
+        delegateMap.put(END_LINE, new Integer(endLine));
       }
     }
 
@@ -240,7 +240,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
       }
       else
       {
-        delegateMap.put(END_COLUMN, Integer.valueOf(endColumn));
+        delegateMap.put(END_COLUMN, new Integer(endColumn));
       }
     }
   }
@@ -503,8 +503,8 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
     if (inSchema)
     {
       Map userData = XSDParser.getUserData(element);
-      userData.put(END_LINE, Integer.valueOf(line));
-      userData.put(END_COLUMN, Integer.valueOf(column));
+      userData.put(END_LINE, new Integer(line));
+      userData.put(END_COLUMN, new Integer(column));
     }
     else
     {
@@ -843,8 +843,8 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
     if (inSchema)
     {
       Map userData = XSDParser.getUserData(element);
-      userData.put(START_LINE, Integer.valueOf(line));
-      userData.put(START_COLUMN, Integer.valueOf(column));
+      userData.put(START_LINE, new Integer(line));
+      userData.put(START_COLUMN, new Integer(column));
     }
     else
     {
