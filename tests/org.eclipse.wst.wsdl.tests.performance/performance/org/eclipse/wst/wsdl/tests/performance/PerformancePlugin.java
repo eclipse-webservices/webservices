@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ public class PerformancePlugin extends Plugin {
   // TODO: These two constants should really be pulled from the plugin which declares it.
   // This will avoid "magic string" dependencies which can be easily broken.
   public static final String WSDL_EDITOR_ID = "org.eclipse.wst.wsdl.ui.internal.WSDLEditor"; //$NON-NLS-1$
-  public static final String WSDL_VALIDATOR_ID = "org.eclipse.wst.wsdl.validation.internal.eclipse.WSDLDelegatingValidator"; //$NON-NLS-1$
+  public static final String WSDL_VALIDATOR_ID = "org.eclipse.wst.wsdl.validation.wsdl"; //$NON-NLS-1$
   
   public static final String BUNDLE_ID = "org.eclipse.wst.wsdl.tests.performance";	//$NON-NLS-1$
 	
