@@ -15,12 +15,14 @@ package org.eclipse.wst.wsdl.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.WeakHashMap;
 
@@ -88,6 +90,161 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   private static final String START_LINE = "startLine"; //$NON-NLS-1$
 
+  private static final class LocationMap extends AbstractMap
+  {
+    protected static final int UNSET = Integer.MAX_VALUE;
+    protected Map delegateMap;
+    private int startLine = UNSET;
+    private int startColumn = UNSET;
+    private int endLine = UNSET;
+    private int endColumn = UNSET;
+
+    public Set entrySet()
+    {
+      return getDelegateMap().entrySet();
+    }
+
+    protected Map getDelegateMap()
+    {
+      if (delegateMap == null)
+      {
+        delegateMap = new HashMap();
+        if (startLine != UNSET)
+        {
+          delegateMap.put(START_LINE, Integer.valueOf(startLine));
+        }
+        if (startColumn != UNSET)
+        {
+          delegateMap.put(START_COLUMN, Integer.valueOf(startColumn));
+        }
+        if (endLine != UNSET)
+        {
+          delegateMap.put(END_LINE, Integer.valueOf(endLine));
+        }
+        if (endColumn != UNSET)
+        {
+          delegateMap.put(END_COLUMN, Integer.valueOf(endColumn));
+        }
+      }
+      return delegateMap;
+    }
+
+    protected int objectToInt(Object value)
+    {
+      return value == null ? UNSET : ((Integer)value).intValue();
+    }
+
+    protected Object intToObject(int value)
+    {
+      return value == UNSET ? null : Integer.valueOf(value);
+    }
+
+    public Object put(Object key, Object value)
+    {
+      Object result;
+      if (delegateMap == null)
+      {
+        if (START_LINE.equals(key))
+        {
+          result = intToObject(startLine);
+          startLine  = objectToInt(value);
+        }
+        else if (END_LINE.equals(key))
+        {
+          result = intToObject(endLine);
+          endLine  = objectToInt(value);
+        }
+        else if (START_COLUMN.equals(key))
+        {
+          result = intToObject(startColumn);
+          startColumn  = objectToInt(value);
+        }
+        else if (END_COLUMN.equals(key))
+        {
+          result = intToObject(endColumn);
+          endColumn  = objectToInt(value);
+        }
+        else
+        {
+          result = getDelegateMap().put(key, value);
+        }
+      }
+      else
+      {
+        result = getDelegateMap().put(key, value);
+      }
+      return result;
+    }
+
+    public int getStartLine()
+    {
+      return delegateMap == null ? startLine : objectToInt(delegateMap.get(START_LINE));
+    }
+
+    public void setStartLine(int startLine)
+    {
+      if (delegateMap == null)
+      {
+        this.startLine = startLine;
+      }
+      else
+      {
+        delegateMap.put(START_LINE, Integer.valueOf(startLine));
+      }
+    }
+
+    public int getStartColumn()
+    {
+      return delegateMap == null ? startColumn : objectToInt(delegateMap.get(START_COLUMN));
+    }
+
+    public void setStartColumn(int startColumn)
+    {
+      if (delegateMap == null)
+      {
+        this.startColumn = startColumn;
+      }
+      else
+      {
+        delegateMap.put(START_COLUMN, Integer.valueOf(startColumn));
+      }
+    }
+
+    public int getEndLine()
+    {
+      return delegateMap == null ? endLine : objectToInt(delegateMap.get(END_LINE));
+    }
+
+    public void setEndLine(int endLine)
+    {
+      if (delegateMap == null)
+      {
+        this.endLine = endLine;
+      }
+      else
+      {
+        delegateMap.put(END_LINE, Integer.valueOf(endLine));
+      }
+    }
+
+    public int getEndColumn()
+    {
+      return delegateMap == null ? endColumn : objectToInt(delegateMap.get("endColumn"));
+    }
+
+    public void setEndColumn(int endColumn)
+    {
+      if (delegateMap == null)
+      {
+        this.endColumn = endColumn;
+      }
+      else
+      {
+        delegateMap.put(END_COLUMN, Integer.valueOf(endColumn));
+      }
+    }
+  }
+
   /**
    * Holds pairs Node -> Map with user data.
    * 
@@ -102,6 +259,17 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   protected static final Map userDataMap = Collections.synchronizedMap(new WeakHashMap());
 
+  private static LocationMap getLocationMap(Node node)
+  {
+    LocationMap result = (LocationMap)userDataMap.get(node);
+    if (result == null)
+    {
+      result = new LocationMap();
+      userDataMap.put(node, result);
+    }
+    return result;
+  }
+
   /**
    * Returns the column at which the given node ends.
    * 
@@ -111,8 +279,8 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getEndColumn(Node node)
   {
-    Integer result = (Integer)getUserData(node).get(END_COLUMN);
-    return result == null ? 1 : result.intValue();
+    int result = getLocationMap(node).getEndColumn();
+    return result == LocationMap.UNSET ? 1 : result;
   }
 
   /**
@@ -124,8 +292,8 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getEndLine(Node node)
   {
-    Integer result = (Integer)getUserData(node).get(END_LINE);
-    return result == null ? 1 : result.intValue();
+    int result = getLocationMap(node).getEndLine();
+    return result == LocationMap.UNSET ? 1 : result;
   }
 
   /**
@@ -137,8 +305,8 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getStartColumn(Node node)
   {
-    Integer result = (Integer)getUserData(node).get(START_COLUMN);
-    return result == null ? 1 : result.intValue();
+    int result = getLocationMap(node).getStartColumn();
+    return result == LocationMap.UNSET ? 1 : result;
   }
 
   /**
@@ -150,8 +318,8 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static int getStartLine(Node node)
   {
-    Integer result = (Integer)getUserData(node).get(START_LINE);
-    return result == null ? 1 : result.intValue();
+    int result = getLocationMap(node).getStartLine();
+    return result == LocationMap.UNSET ? 1 : result;
   }
 
   /**
@@ -164,13 +332,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public static Map getUserData(Node node)
   {
-    Map result = (Map)userDataMap.get(node);
-    if (result == null)
-    {
-      result = new HashMap();
-      userDataMap.put(node, result);
-    }
-    return result;
+    return getLocationMap(node);
   }
 
   protected int column;
@@ -338,19 +500,19 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     saveLocation();
 
-    Map extendedAttributes = null;
-
     if (inSchema)
     {
-      extendedAttributes = XSDParser.getUserData(element);
+      Map userData = XSDParser.getUserData(element);
+      userData.put(END_LINE, Integer.valueOf(line));
+      userData.put(END_COLUMN, Integer.valueOf(column));
     }
     else
     {
-      extendedAttributes = getUserData(element);
+      LocationMap locationMap = getLocationMap(element);
+      locationMap.setEndLine(line);
+      locationMap.setEndColumn(column);
     }
 
-    extendedAttributes.put(END_LINE, new Integer(line));
-    extendedAttributes.put(END_COLUMN, new Integer(column));
 
     if (isSchemaElement(uri, localName))
     {
@@ -678,18 +840,18 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
     // we are inside an inline schema. If not, they should go in the
     // WSDLParser's user data.
 
-    Map extendedAttributes = null;
-
     if (inSchema)
     {
-      extendedAttributes = XSDParser.getUserData(element);
+      Map userData = XSDParser.getUserData(element);
+      userData.put(START_LINE, Integer.valueOf(line));
+      userData.put(START_COLUMN, Integer.valueOf(column));
     }
     else
     {
-      extendedAttributes = getUserData(element);
+      LocationMap locationMap = getLocationMap(element);
+      locationMap.setStartLine(line);
+      locationMap.setStartColumn(column);
     }
-    extendedAttributes.put(START_LINE, new Integer(line));
-    extendedAttributes.put(START_COLUMN, new Integer(column));
 
     saveLocation();
   }
