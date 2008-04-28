@@ -1,15 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- * yyyymmdd   bug     Email and other contact information
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
+ * yyyymmdd   bug     Email and other contact information
  * 20060329   127016 andyzhai@ca.ibm.com - Andy Zhai    
+ * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.preferences;
 
@@ -51,19 +53,19 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
   //
   private Button allWanted;
   /*CONTEXT_ID PPAE0002 for the all wanted check box on the Axis Emitter Preference Page*/
-  private String INFOPOP_PPAE_CHECKBOX_ALL_WANTED = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0002";
+  private String INFOPOP_PPAE_CHECKBOX_ALL_WANTED = "PPAE0002";
   //
   private Button helperWanted;
   /*CONTEXT_ID PPAE0003 for helper wanted check box on the Axis Emitter Preference Page*/
-  private String INFOPOP_PPAE_CHECKBOX_HELPER_WANTED = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0003";
+  private String INFOPOP_PPAE_CHECKBOX_HELPER_WANTED = "PPAE0003";
   //
   private Button wrapArrays;
   /*CONTEXT_ID PPAE0004 for the wrap arrays check box on the Axis Emitter Preference Page*/
-  private String INFOPOP_PPAE_CHECKBOX_WRAP_ARRAYS = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0004";
+  private String INFOPOP_PPAE_CHECKBOX_WRAP_ARRAYS = "PPAE0004";
 
   private Combo deployScopeTypes;
   //*CONTEXT_ID PPAE0005 for the deploy scope type combo box on the Axis Emitter page*/
-  private String INFOPOP_PPAE_COMBO_DEPLOY_SCOPE = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0005";
+  private String INFOPOP_PPAE_COMBO_DEPLOY_SCOPE = "PPAE0005";
   
   private StackLayout timeOutSubCompositeStackLayout;
   
@@ -73,20 +75,20 @@ public class AxisEmitterPreferencePage extends PreferencePage implements IWorkbe
   
   private Text timeOutMsgText;
   /*CONTEXT_ID PPAE0006 for the time out field on the Axis Emitter Preference page*/
-  private String INFOPOP_PPAE_FIELD_TIME_OUT = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0006";
+  private String INFOPOP_PPAE_FIELD_TIME_OUT = "PPAE0006";
 
   private Button useInheritedMethods;
   /*CONTEXT_ID PPAE0007 for the use inherited methods check box on the Axis Emitter Preference page*/
-  private String INFOPOP_PPAE_CHECKBOX_USE_INHERITED_METHODS = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0007";
+  private String INFOPOP_PPAE_CHECKBOX_USE_INHERITED_METHODS = "PPAE0007";
 
   private Button validateAgainstJAXRPC;
   /*CONTEXT_ID PPAE0010 for the "validate against JAXRPC..." check box on the Axis Emitter Preference page*/
-  private String INFOPOP_PPAE_CHECKBOX_VALIDATE_AGAINST_JAXRPC = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0010";
+  private String INFOPOP_PPAE_CHECKBOX_VALIDATE_AGAINST_JAXRPC = "PPAE0010";
   
   /*CONTEXT_ID PPAE0008 for the wsdl2java group on the Axis Emitter Preference page*/
-  private String INFOPOP_PPAE_GROUP_WSDL2JAVA = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0008";
+  private String INFOPOP_PPAE_GROUP_WSDL2JAVA = "PPAE0008";
   /*CONTEXT_ID PPAE0009 for the java2wsdl group on the Axis Emitter Preference page*/
-  private String INFOPOP_PPAE_GROUP_JAVA2WSDL = WebServiceAxisConsumptionUIPlugin.ID + ".PPAE0009";
+  private String INFOPOP_PPAE_GROUP_JAVA2WSDL = "PPAE0009";
 /**
    * Creates preference page controls on demand.
    *   @param parent  the parent for the preference page

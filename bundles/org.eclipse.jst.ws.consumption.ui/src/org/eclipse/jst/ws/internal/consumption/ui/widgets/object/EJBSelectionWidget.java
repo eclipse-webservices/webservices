@@ -15,6 +15,7 @@
  * 20060825   135570 makandre@ca.ibm.com - Andrew Mak, Service implementation URL not displayed properly on first page
  * 20080212   208795 ericdp@ca.ibm.com - Eric Peters, WS wizard framework should support EJB 3.0
  * 20080229   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
+ * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -41,6 +42,7 @@ import org.eclipse.jst.javaee.ejb.EnterpriseBeans;
 import org.eclipse.jst.javaee.ejb.SessionBean;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -73,9 +75,9 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
   private Listener  statusListener_;
   private String displayString_ = "";
   /* CONTEXT_ID PEBD0001 for the EAR Projects drop-down box */
-  private String INFOPOP_PEBD_EAR_PROJECTS = "org.eclipse.jst.ws.consumption.ui.PEBD0001";
+  private String INFOPOP_PEBD_EAR_PROJECTS = "PEBD0001";
   /* CONTEXT_ID PEBD0002 for the table containing all of the bean names */
-  private String INFOPOP_PEBD_TABLE_BEAN_NAMES = "org.eclipse.jst.ws.consumption.ui.PEBD0002";
+  private String INFOPOP_PEBD_TABLE_BEAN_NAMES = "PEBD0002";
 
   public EJBSelectionWidget()
   {
@@ -104,7 +106,7 @@ public class EJBSelectionWidget extends AbstractObjectSelectionWidget implements
   public WidgetDataEvents addControls(Composite parent, Listener statusListener)
   {
     statusListener_  = statusListener;
-    UIUtils utils = new UIUtils(INFOPOP_PEBD_EAR_PROJECTS);
+    UIUtils utils = new UIUtils( WebServiceConsumptionUIPlugin.ID );
     
     Composite composite = utils.createComposite(parent, 1, 0, 0);
     

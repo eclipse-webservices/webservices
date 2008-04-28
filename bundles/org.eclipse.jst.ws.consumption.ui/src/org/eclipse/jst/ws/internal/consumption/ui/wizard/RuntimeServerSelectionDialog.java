@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
  * 20060802   148731 mahutch@ca.ibm.com - Mark Hutchinson
  * 20071129	  206080 zina@ca.ibm.com	- Zina Mostafia Service Deployment Config Dialog group name truncated in NL Testing
  * 20071129	  205583 zina@ca.ibm.com	- Zina Mostafia Selected Server or Server Type is not highlighted in Service Dep.Config
+ * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -81,11 +82,11 @@ public class RuntimeServerSelectionDialog extends Dialog {
 	/*
 	 * CONTEXT_ID PWRS0001 for the selection of runtime, server and project combination
 	 */
-	private String INFOPOP_PWRS_DIALOG = WebServiceConsumptionUIPlugin.ID + ".PWRS0001";
+	private String INFOPOP_PWRS_DIALOG = "PWRS0001";
 	/* CONTEXT_ID PWRS0002 for the runtime selection on in the dailog */
-	private String INFOPOP_PWRS_LIST_RUNTIMES = WebServiceConsumptionUIPlugin.ID + ".PWRS0002";
+	private String INFOPOP_PWRS_LIST_RUNTIMES = "PWRS0002";
 	/* CONTEXT_ID PWRS0003 for the server selection in the dialog */
-	private String INFOPOP_PWRS_LIST_SERVERS = WebServiceConsumptionUIPlugin.ID + ".PWRS0003";
+	private String INFOPOP_PWRS_LIST_SERVERS = "PWRS0003";
 	/*
 	 * CONTEXT_ID PWRS0004 for the EJB Project combo box of the runtime selection dialog
 	 */
@@ -94,15 +95,15 @@ public class RuntimeServerSelectionDialog extends Dialog {
 	/*
 	 * CONTEXT_ID PWRS0005 for the runtime view radio button of the runtime selection dialog
 	 */
-	private String INFOPOP_PWRS_RADIO_RUNTIME = WebServiceConsumptionUIPlugin.ID + ".PWRS0005";
+	private String INFOPOP_PWRS_RADIO_RUNTIME = "PWRS0005";
 	/*
 	 * CONTEXT_ID PWRS0006 for the server view radio button of the runtime selection dialog
 	 */
-	private String INFOPOP_PWRS_RADIO_SERVER = WebServiceConsumptionUIPlugin.ID + ".PWRS0006";
+	private String INFOPOP_PWRS_RADIO_SERVER = "PWRS0006";
 	/*
 	 * CONTEXT_ID PWRS0007 for the explore view radio button of the runtime selection dialog
 	 */
-	private String INFOPOP_PWRS_RADIO_EXPLORE = WebServiceConsumptionUIPlugin.ID + ".PWRS0007";
+	private String INFOPOP_PWRS_RADIO_EXPLORE = "PWRS0007";
 	private Hashtable<String, String> serverLabels_;
 	private Hashtable <String, IServer>existingServersTable_;
 	private String defaultServer_;
@@ -213,7 +214,7 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		else
 			thisShell.setText(ConsumptionUIMessages.PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION);
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-		helpSystem.setHelp(thisShell, INFOPOP_PWRS_DIALOG);
+		helpSystem.setHelp(thisShell, WebServiceConsumptionUIPlugin.ID + "." + INFOPOP_PWRS_DIALOG);
 
 		// Dialog description banner
 		messageBanner_ = new Text(composite, SWT.READ_ONLY | SWT.WRAP);

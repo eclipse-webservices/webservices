@@ -20,6 +20,7 @@
  * 20060829   145449 makandre@ca.ibm.com - Andrew Mak, Web service client project type dropdown disabled after selecting client project
  * 20060829   180833 ericdp@ca.ibm.com - Eric D. Peters,  New Web Service wizard service settings dialog has unlabelled enabled text fields
  * 20080409   226047 kathy@ca.ibm.com - Kathy Chan
+ * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -92,15 +93,15 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
    * CONTEXT_ID PWRS0016 for the service-side Web project combo box of the
    * runtime selection Page
    */
-  private String INFOPOP_PWRS_COMBO_PROJECT = pluginId_ + ".PWRS0016";
+  private String INFOPOP_PWRS_COMBO_PROJECT = "PWRS0016";
 
   //private Combo module_;
 
   /* CONTEXT_ID PWRS0018 for the client project type combo box of the runtime selection Page */
-  private String INFOPOP_PWRS_COMBO_CLIENT_PROJECT_TYPE = pluginId_ + ".PWRS0018";
+  private String INFOPOP_PWRS_COMBO_CLIENT_PROJECT_TYPE = "PWRS0018";
   
   /* CONTEXT_ID PWRS0020 for the service project type combo box of the runtime selection Page */
-  private String INFOPOP_PWRS_COMBO_SERVICE_PROJECT_TYPE = pluginId_ + ".PWRS0020";    
+  private String INFOPOP_PWRS_COMBO_SERVICE_PROJECT_TYPE = "PWRS0020";    
 
   //private Combo earModule_;
 

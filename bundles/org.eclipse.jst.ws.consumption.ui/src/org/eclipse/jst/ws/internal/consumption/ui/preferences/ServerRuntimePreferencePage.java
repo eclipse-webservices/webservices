@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060728	  151723 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070109   130965 kathy@ca.ibm.com - Kathy Chan
+ * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -44,11 +45,11 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	private String pluginId_= "org.eclipse.jst.ws.consumption.ui";
 	
 	/* CONTEXT_ID SRPF0001 for server preference on the server runtime preference page */
-	private String INFOPOP_SRPF_SERVER_PREF = pluginId_ + ".SRPF0001";
+	private String INFOPOP_SRPF_SERVER_PREF = "SRPF0001";
 	private Combo server_;
 
 	/* CONTEXT_ID SRPF0002 for runtime preference on the server runtime preference page */
-	private String INFOPOP_SRPF_RUNTIME_PREF = pluginId_ + ".SRPF0002";
+	private String INFOPOP_SRPF_RUNTIME_PREF = "SRPF0002";
 	private Combo runtime_;	
 
 	/* CONTEXT_ID SRPF0003 for J2EE version preference on the server runtime preference page */
