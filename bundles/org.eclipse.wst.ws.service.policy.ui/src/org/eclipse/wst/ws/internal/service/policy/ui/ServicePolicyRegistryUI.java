@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,12 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080428   227501 pmoogk@ca.ibm.com - Peter Moogk, Fixed toLowerCase Locale problem.
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
@@ -38,7 +40,7 @@ public class ServicePolicyRegistryUI
     
     for( IConfigurationElement element : elements )
     {
-      String elementName = element.getName().toLowerCase();
+      String elementName = element.getName().toLowerCase( Locale.ENGLISH );
       
       if( elementName.equals( "servicepolicyui") ) //$NON-NLS-1$
       {
@@ -46,7 +48,7 @@ public class ServicePolicyRegistryUI
         
         for( IConfigurationElement child : children )
         {
-          String name = child.getName().toLowerCase();
+          String name = child.getName().toLowerCase( Locale.ENGLISH );
           
           if( name.equals( "operation" ) ) //$NON-NLS-1$
           {
@@ -95,7 +97,7 @@ public class ServicePolicyRegistryUI
     
     for( IConfigurationElement child : children )
     {
-      String name = child.getName().toLowerCase();
+      String name = child.getName().toLowerCase( Locale.ENGLISH );
       
       if( name.equals( "descriptor" ) ) //$NON-NLS-1$
       {
@@ -138,7 +140,7 @@ public class ServicePolicyRegistryUI
       }
       else if( name.equals( "enabled" ) ) //$NON-NLS-1$
       {
-        String multiSelectValue = RegistryUtils.getAttribute( child, "multiselect" ).toLowerCase(); //$NON-NLS-1$
+        String multiSelectValue = RegistryUtils.getAttribute( child, "multiselect" ).toLowerCase( Locale.ENGLISH ); //$NON-NLS-1$
        
         if( multiSelectValue != null && multiSelectValue.equals( "true" )) //$NON-NLS-1$
         {

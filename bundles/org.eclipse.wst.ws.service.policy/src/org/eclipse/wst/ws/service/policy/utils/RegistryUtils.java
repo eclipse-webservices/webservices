@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,11 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080428   227501 pmoogk@ca.ibm.com - Peter Moogk, Fixed toLowerCase Locale problem.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.utils;
+
+import java.util.Locale;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.wst.ws.service.internal.policy.DescriptorImpl;
@@ -75,7 +78,7 @@ public class RegistryUtils
     
     for( String name : names )
     {
-      if( name.toLowerCase().equals( attribute ) )
+      if( name.toLowerCase( Locale.ENGLISH ).equals( attribute ) )
       {
         result = name;
         break;
@@ -92,7 +95,7 @@ public class RegistryUtils
     
     for( String name : names )
     {
-      if( name.toLowerCase().equals( attribute ) )
+      if( name.toLowerCase( Locale.ENGLISH ).equals( attribute ) )
       {
         value = element.getAttribute( name );
         break;

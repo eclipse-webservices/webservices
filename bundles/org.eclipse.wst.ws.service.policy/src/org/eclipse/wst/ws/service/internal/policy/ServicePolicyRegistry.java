@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,13 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080428   227501 pmoogk@ca.ibm.com - Peter Moogk, Fixed toLowerCase Locale problem.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
@@ -49,7 +51,7 @@ public class ServicePolicyRegistry
     
     for( IConfigurationElement element : elements )
     {
-      String elementName = element.getName().toLowerCase();
+      String elementName = element.getName().toLowerCase( Locale.ENGLISH );
       
       if( elementName.equals( "servicepolicy") ) //$NON-NLS-1$
       {
@@ -80,7 +82,7 @@ public class ServicePolicyRegistry
     
     for( IConfigurationElement child : childElements )
     {
-      String childName = child.getName().toLowerCase();
+      String childName = child.getName().toLowerCase( Locale.ENGLISH );
       
       if( childName.equals( "loadlistener" ) ) //$NON-NLS-1$
       {
@@ -136,7 +138,7 @@ public class ServicePolicyRegistry
     
     for( IConfigurationElement child : childElements )
     {
-      String childName = child.getName().toLowerCase();
+      String childName = child.getName().toLowerCase( Locale.ENGLISH );
       
       if( childName.equals( "item" ) ) //$NON-NLS-1$
       {
@@ -248,7 +250,7 @@ public class ServicePolicyRegistry
     {
       for( IConfigurationElement policyElement : policyElements )
       {
-        String name = policyElement.getName().toLowerCase();
+        String name = policyElement.getName().toLowerCase( Locale.ENGLISH );
       
         if( name.equals( "descriptor") ) //$NON-NLS-1$
         {
@@ -328,7 +330,7 @@ public class ServicePolicyRegistry
     
     for( IConfigurationElement child : children )
     {
-      String name = child.getName().toLowerCase();
+      String name = child.getName().toLowerCase( Locale.ENGLISH );
       
       if( name.equals( "targetpolicy" ) ) //$NON-NLS-1$
       {
