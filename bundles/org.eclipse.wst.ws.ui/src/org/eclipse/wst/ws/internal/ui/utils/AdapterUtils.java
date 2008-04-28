@@ -12,6 +12,7 @@
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20070716   191357 kathy@ca.ibm.com - Kathy Chan
  * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
+ * 20080421   227824 makandre@ca.ibm.com - Andrew Mak, AdapterUtils adapt to IFile before String
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.utils;
 
@@ -49,9 +50,9 @@ public class AdapterUtils {
 	public static Object getAdaptedObject (Object object) { 
 		if (object == null) 
 			return null;
-		Object adaptedObject = Platform.getAdapterManager().loadAdapter(object, "org.eclipse.core.resources.IFile");
+		Object adaptedObject = Platform.getAdapterManager().loadAdapter(object, "java.lang.String");
 		if (adaptedObject == null) {
-			adaptedObject = Platform.getAdapterManager().loadAdapter(object, "java.lang.String");
+			adaptedObject = Platform.getAdapterManager().loadAdapter(object, "org.eclipse.core.resources.IFile");
 		}
 		return adaptedObject;
 	}
