@@ -1,17 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation. and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IBM Corporation. - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
+ * IBM Corporation. - initial API and implementation
  * 20070523   158230 kathy@ca.ibm.com - Kathy Chan
  * 20071219   213356 kathy@ca.ibm.com - Kathy Chan
  * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
+ * 20080429   213730 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -1284,6 +1286,9 @@ public class FacetUtils
    */
   public static boolean doesRuntimeSupportFacets(IRuntime facetRuntime, Set projectFacetVersions)
   {
+  	if ( facetRuntime == null || projectFacetVersions == null)
+  		return false;
+  	
     Set runtimes = RuntimeManager.getRuntimes(projectFacetVersions);
     Iterator itr = runtimes.iterator();
     while (itr.hasNext())
@@ -1307,6 +1312,9 @@ public class FacetUtils
    */
   public static boolean greaterThan(String versionA, String versionB)
   {
+  	if (versionA == null || versionB == null)
+  		return false;
+  	
     StringTokenizer stA = new StringTokenizer(versionA, ".");
     StringTokenizer stB = new StringTokenizer(versionB, ".");
     
@@ -1341,7 +1349,7 @@ public class FacetUtils
    */
   public static boolean isJavaFacet(IProjectFacet pf)
   {
-    if (pf.getId().equals("jst.java"))
+    if (pf != null && pf.getId().equals("jst.java"))
       return true;
     else
       return false;
@@ -1356,6 +1364,9 @@ public class FacetUtils
    */
   public static boolean isJavaProject(IProject project)
   {
+	  if (project == null)
+	    return false;
+	  
     //Check if it's a faceted project
     try
     {
@@ -1405,7 +1416,7 @@ public class FacetUtils
    */
   public static boolean isUtilityTemplate(String templateId)
   {
-    if (ProjectFacetsManager.isTemplateDefined(templateId))
+    if (templateId != null && ProjectFacetsManager.isTemplateDefined(templateId))
     {
       if (templateId.equals("template.jst.utility"))
       {
