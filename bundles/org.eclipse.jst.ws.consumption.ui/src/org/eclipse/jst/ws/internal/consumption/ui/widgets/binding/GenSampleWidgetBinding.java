@@ -18,6 +18,7 @@
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080331   224953 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -154,6 +155,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR", ClientTestWidget.class );
     dataRegistry.addMapping(InitializeProxyCommand.class, "TestFacility",ClientTestWidget.class);
+    dataRegistry.addMapping(InitializeProxyCommand.class, "Popup",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Folder",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "JspFolder",ClientTestWidget.class);
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "Methods",ClientTestWidget.class);
@@ -169,6 +171,8 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientTestWidget.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientTestWidget.class, "TestID",FinishTestFragment.class);
     dataRegistry.addMapping(ClientTestWidget.class, "IsTestWidget",FinishTestFragment.class);
+    dataRegistry.addMapping(ClientTestWidget.class, "ServerInstanceId", FinishDefaultCommand.class);
+    dataRegistry.addMapping(ClientTestWidget.class, "ExistingServerId", FinishDefaultCommand.class);
   }
 
   /* (non-Javadoc)
@@ -278,7 +282,10 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  	return status;
   	}
 	
-		
+	public boolean getPopup(){
+		return true;
+	}
+	
 	public String getProxyBean()
     {
 		String proxyBean = "";

@@ -30,6 +30,7 @@
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -83,6 +84,7 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String LABEL_SUMMARY_NO_CLIENT;
 	public static String LABEL_RUNTIMES_LIST;
 	public static String LABEL_SERVERS_LIST;
+	public static String LABEL_SERVERS_INSTANCES;
 	public static String LABEL_EDIT_BUTTON;
 	public static String LABEL_SERVICE_EAR_MODULE;
 	public static String LABEL_CLIENT_EAR_MODULE;
@@ -295,6 +297,8 @@ public final class ConsumptionUIMessages extends NLS {
 	public static String TOOLTIP_PWSM_PAGE;
 	public static String TOOLTIP_PWSM_CHECKBOX_TEST;
 	public static String TOOLTIP_PWSM_COMBOBOX_TEST;
+	public static String TOOLTIP_PWSM_COMBOBOX_SERVER;
+	public static String TOOLTIP_PWSM_COMBOBOX_SERVER_INSTANCE;
 	public static String TOOLTIP_PWSM_CHECKBOX_LAUNCH;
 	public static String TOOLTIP_PWSM_TEXT_JSP_FOLDER;
 	public static String TOOLTIP_PWSM_BUTTON_JSP_FOLDER_BROWSE;

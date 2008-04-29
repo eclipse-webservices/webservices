@@ -13,8 +13,11 @@
  * 20060815   104870 makandre@ca.ibm.com - Andrew Mak, enable/disable test page controls base on settings in test facility extension
  * 20060815   153903 makandre@ca.ibm.com - Andrew Mak, Browse does not work in generate client test page
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
+
+import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -24,13 +27,15 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.LabelsAndIds;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -52,6 +57,9 @@ import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerType;
+import org.eclipse.wst.server.core.ServerCore;
 
 
 public class ClientTestWidget extends SimpleWidgetDataContributor
@@ -68,6 +76,14 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   private Combo testTypeCombo_;
    /*CONTEXT_ID PWSM0003 for the Test Type Combo box of the Sample Page*/
   private String INFOPOP_PWSM_COMBOBOX_TEST = "PWSM0003";
+  
+  private Combo serverTypeCombo_;
+  /*CONTEXT_ID PWSM0004 for the server type combo box of the Sample Page*/
+  private String INFOPOP_PWSM_COMBOBOX_SERVER = "PWSM0004";
+  
+  private Combo serverInstanceTypeCombo_;
+  /*CONTEXT_ID PWSM0005 for the server instance combo box of the Sample Page*/
+  private String INFOPOP_PWSM_COMBOBOX_SERVER_INSTANCE = "PWSM0005";
 
   private Text  jspFolderText_;
   /*CONTEXT_ID PWSM0008 for the JSP Folder field of the Sample Page*/
@@ -108,13 +124,19 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   private FolderResourceFilter folderFilter_ = new FolderResourceFilter();
   private IStructuredSelection initialSelection_;
   private boolean isTestWidget = false;
+  private boolean isPopup = false;
+  
+  private LabelsAndIds serverTypes_;
+  private LabelsAndIds serverInstances_;
   
   private IPath webContentPath_;
   private IResource webContent_;
     
   public WidgetDataEvents addControls( Composite parent, Listener statusListener )
   {
-    isTestWidget = true;
+    
+	  
+	isTestWidget = true;
     UIUtils      uiUtils  = new UIUtils( pluginId_ );
         
 	parent.setToolTipText( ConsumptionUIMessages.TOOLTIP_PWSM_PAGE );
@@ -145,6 +167,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     		}
     );    
     
+    
+    
     new Label( comboGroup_, SWT.NONE );
     
     projectCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_JSP_PROJECT_NAME,
@@ -168,6 +192,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     										ConsumptionUIMessages.TOOLTIP_PWSM_TEXT_SAMPLE_FOLDER,
                                             INFOPOP_PWSM_TEXT_SAMPLE_FOLDER,
                                             SWT.SINGLE | SWT.BORDER );
+    
+    
     
     sampleFolderText_.addModifyListener( new ModifyListener()
         {
@@ -194,6 +220,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
             INFOPOP_PWSM_TEXT_JSP_FOLDER,
             SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
     jspFolderText_.setEnabled( false );
+    
+    new Label( comboGroup_, SWT.NONE );
     
     Group methodsGroup = uiUtils.createGroup( parent, ConsumptionUIMessages.LABEL_METHODS,  
     				ConsumptionUIMessages.TOOLTIP_PWSM_TREE_METHODS, null );
@@ -350,6 +378,23 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	}
   } 
   
+  private void handleServerChange()
+  {
+	  int selection = serverTypeCombo_.getSelectionIndex();
+	  serverInstances_.clear();
+	  serverInstanceTypeCombo_.removeAll();
+	  IServer[] servers = org.eclipse.wst.server.core.ServerCore.getServers();
+	  for(int j =0; j<servers.length;j++){
+			String id = serverTypes_.getId(selection);
+			if(id.equals(servers[j].getServerType().getId())){
+				serverInstances_.add(servers[j].getId(), servers[j].getName());
+				serverInstanceTypeCombo_.add(servers[j].getName());
+			}
+	  }
+	  serverInstanceTypeCombo_.select(0);
+	 
+  }  
+  
   // Here are the getters and setters for this widget.
   public void setTestService( Boolean testService )
   {
@@ -398,6 +443,37 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  
 	  return project;
   }
+  
+  public void initServersTypes() 
+  {
+	if(serverTypes_  == null)
+		serverTypes_ = new LabelsAndIds();
+	IServer[] servers = org.eclipse.wst.server.core.ServerCore.getServers();
+	IServerType[] serverTypes = ServerCore.getServerTypes();
+	ValidationUtils vu = new ValidationUtils();
+	String projectName = projectCombo_.getText();
+	Set projectFacets = FacetUtils.getFacetsForProject(projectName);
+	for(int i = 0;i<serverTypes.length;i++){
+		if(vu.doesServerSupportFacets(serverTypes[i].getId(), projectFacets)){
+			serverTypes_.add(serverTypes[i].getId(), serverTypes[i].getName());
+			serverTypeCombo_.add( serverTypes[i].getName() );
+		}
+		serverTypeCombo_.select(0);
+	}
+	if(serverInstances_  == null)
+		serverInstances_ = new LabelsAndIds();
+	for(int j =0; j<servers.length;j++){
+		String id = serverTypes_.getId(0);
+		if(id.equals(servers[j].getServerType().getId())){
+			serverInstances_.add(servers[j].getId(), servers[j].getName());
+			serverInstanceTypeCombo_.add(servers[j].getName());
+		}
+	}
+	serverInstanceTypeCombo_.select(0);
+	serverInstanceTypeCombo_.setEnabled(canRunTestClient_);
+	serverTypeCombo_.setEnabled(canRunTestClient_);
+  }
+  
   
   public void setSampleProject(String clientProject) 
   {
@@ -462,9 +538,50 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  runTestCheckbox_.setEnabled(false);
   }
   
+  public void setPopup(boolean popup){
+	  isPopup = popup;
+	  if(isPopup){
+		  UIUtils      uiUtils  = new UIUtils( pluginId_ );
+		  serverTypeCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_SERVERS_LIST,
+					ConsumptionUIMessages.TOOLTIP_PWSM_COMBOBOX_SERVER,
+					INFOPOP_PWSM_COMBOBOX_SERVER,
+		              SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
+		    	serverTypeCombo_.addSelectionListener(
+		    		new SelectionAdapter() {
+		    			public void widgetSelected(SelectionEvent e) {
+		    				handleServerChange();
+		    			}
+		    		}
+		    	);    
+		    
+		  new Label( comboGroup_, SWT.NONE );
+		
+	  
+		  serverInstanceTypeCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_SERVERS_INSTANCES,
+					ConsumptionUIMessages.TOOLTIP_PWSM_COMBOBOX_SERVER_INSTANCE,
+					INFOPOP_PWSM_COMBOBOX_SERVER_INSTANCE,
+		              SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
+		    
+		  new Label( comboGroup_, SWT.NONE );
+		  initServersTypes();
+	  
+	  }
+  }
+  
   public boolean getCanRunTestClient()
   {
 	  return canRunTestClient_;
+  }
+  
+  public String getServerInstanceId(){
+	  int instanceLabel = serverInstanceTypeCombo_.getSelectionIndex();
+	  if(instanceLabel == -1) return null;
+	  return serverInstances_.getId(instanceLabel);
+  }
+  
+  public String getExistingServerId(){
+	  int instanceLabel = serverTypeCombo_.getSelectionIndex();
+	  return serverTypes_.getId(instanceLabel);
   }
   
   public BooleanSelection[] getMethods()
