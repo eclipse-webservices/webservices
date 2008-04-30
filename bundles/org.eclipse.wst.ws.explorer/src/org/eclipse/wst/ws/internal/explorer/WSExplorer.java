@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060802   150428 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20061219   168620 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on Linux
  * 20070220   168620 makandre@ca.ibm.com - Andrew Mak, WSE does not open in external browser on Linux (cont.)
+ * 20080430   229693 makandre@ca.ibm.com - Andrew Mak, WSE does not react to internal/external Web browser preference change
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer;
 
@@ -22,9 +23,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
@@ -123,7 +126,11 @@ public class WSExplorer {
 			IWorkbenchBrowserSupport browserSupport = ExplorerPlugin.getInstance().getWorkbench().getBrowserSupport();
 			IWebBrowser browser = null;
 			
-			if (forceLaunchOutsideIDE) {
+			IPreferencesService ps = Platform.getPreferencesService();
+			int browserChoice = ps.getInt("org.eclipse.ui.browser", "browser-choice", 0, null);
+			
+			// force external or browser choice is external
+			if (forceLaunchOutsideIDE || browserChoice == 1) {
 				
 				// external browser support uses swt Program.findProgram() to locate an appropriate browser for HTML files
 				// certain versions of swt Program class need to be run from the UI thread, otherwise findProgram() does not
