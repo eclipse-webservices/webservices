@@ -15,6 +15,7 @@
  * 20071217   187280 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20080207   217346 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20080313   126774 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080429   228945 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -97,7 +98,9 @@ public class ClientAxisTC50 extends WSWizardTomcat50Test {
    */
 	public void testClientAxisTC50() throws Exception
 	{	
-	  	
+		System.out.println();
+		System.out.println("BEGIN: ClientAxisTC50");
+		
 		JUnitUtils.enableProxyGeneration(true);
 		JUnitUtils.enableOverwrite(true);
         
@@ -113,38 +116,47 @@ public class ClientAxisTC50 extends WSWizardTomcat50Test {
    * @throws Exception
    */
 	private final void verifyOutput(IStatus[] status) throws Exception {
-        IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
-    
-        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
-        IFolder srcFolder = (IFolder)ResourceUtils.findResource(destPath);
-    
-		//IFolder srcFolder = JUnitUtils.getSourceFolderForWebProject(CLIENT_PROJECT_NAME);
-		IFolder folder = srcFolder.getFolder("foo");
-		if (!folder.exists()){
-			runEventLoop(3000);
-			System.out.println("Running event loop..");
-		}
-		assertTrue(folder.exists());
-		System.out.println("Client java package exists? = "+folder.exists());
 		
-		if (!(folder.members().length > 0)){
-			runEventLoop(3000);
-			System.out.println("Running event loop..");
-		}
-		System.out.println("Client Java files exists? = "+(folder.members().length > 0));
-		assertTrue(folder.members().length > 0);
-		
-		// Check status handler for errors
-		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
-		IStatus[] s = statusHandler.getErrorReports();
-		if (s.length > 0){
-			for (int i=0;i<s.length;i++){
-				logBadStatus(s[i]);
-				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
+		try {
+	        IProject webProject = ProjectUtilities.getProject(CLIENT_PROJECT_NAME);
+	    
+	        IPath destPath = ResourceUtils.getJavaSourceLocation(webProject);
+	        IFolder srcFolder = (IFolder)ResourceUtils.findResource(destPath);
+	    
+			//IFolder srcFolder = JUnitUtils.getSourceFolderForWebProject(CLIENT_PROJECT_NAME);
+			IFolder folder = srcFolder.getFolder("foo");
+			if (!folder.exists()){
+				runEventLoop(6000);
+				System.out.println("Running event loop while source package is created...");
 			}
-		}    
-		assertEquals("Client Unexpected number of client error reports", 0, s.length);
-
+			System.out.println("Assert client java package exists? = "+folder.exists());
+			assertTrue(folder.exists());
+	
+			
+			if (!(folder.members().length > 0)){
+				runEventLoop(6000);
+				System.out.println("Running event loop while contents of wsdl foler are created...");
+			}
+			System.out.println("Client Java files exists? = "+(folder.members().length > 0));
+			assertTrue(folder.members().length > 0);
+			
+			// Check status handler for errors
+			AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
+			IStatus[] s = statusHandler.getErrorReports();
+			assertEquals("Assert number of client error reports is zero", 0, s.length);
+	
+			System.out.println("END: ClientAxisTC50");
+		}
+		finally {
+			AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
+			IStatus[] s = statusHandler.getErrorReports();
+			if (s.length > 0){
+				for (int i=0;i<s.length;i++){
+					logBadStatus(s[i]);
+					System.out.println("Error message for report #"+i+": "+s[i].getMessage());
+				}
+			}   			
+		}
 	}
 	
   /**

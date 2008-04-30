@@ -15,6 +15,7 @@
  * 20071217   187280 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20080207   217346 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20080313   126774 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20080429   228945 sengpl@ca.ibm.com - Seng Phung-Lu
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.unittest;
 
@@ -95,6 +96,9 @@ public class TDJavaAxisTC50 extends WSWizardTomcat50Test {
    */  
 	public void testTDJavaAxisTC50() throws Exception {
 	  
+	  System.out.println();
+	  System.out.println("BEGIN: TDJavaAxisTC50");
+		
 	  IStatus[] status = JUnitUtils.launchCreationWizard(ScenarioConstants.WIZARDID_TOP_DOWN,ScenarioConstants.OBJECT_CLASS_ID_IFILE,initialSelection_);
 	  verifyOutput(status);
 
@@ -106,37 +110,45 @@ public class TDJavaAxisTC50 extends WSWizardTomcat50Test {
    */
 	private final void verifyOutput(IStatus[] status) throws Exception
 	{
-        IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
-        IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);    
-    
-		
-		IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
-        if (!wsdlFolder.exists()){
-        	runEventLoop(3000);
-        	System.out.println("Running event loop..");
-        }
-		assertTrue(wsdlFolder.exists());
-		System.out.println("TD wsdl folder exists? = "+wsdlFolder.exists());
-		
-		if (!(wsdlFolder.members().length > 0)){
-			runEventLoop(3000);
-			System.out.println("Running event loop..");
-		}
-		assertTrue(wsdlFolder.members().length > 0);
-		System.out.println("TD wsdl file exists? = " + (wsdlFolder.members().length > 0));
-
-		// Check status handler for errors
-		AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
-		IStatus[] s = statusHandler.getErrorReports();
-		//
-		if (s.length > 0){
-			for (int i=0;i<s.length;i++){
-				logBadStatus(s[i]);
-				System.out.println("Error message for report #"+i+": "+s[i].getMessage());
+		try {
+	        IProject webProject = ProjectUtilities.getProject(PROJECT_NAME);    
+	        IFolder webContentFolder = (IFolder)J2EEUtils.getWebContentContainer(webProject);    
+	    
+			
+			IFolder wsdlFolder = webContentFolder.getFolder("wsdl");
+	        if (!wsdlFolder.exists()){
+	        	runEventLoop(6000);
+	        	System.out.println("Running event loop while wsdl folder is created...");
+	        }
+	        System.out.println("Assert TD wsdl folder exists = "+wsdlFolder.exists());
+			assertTrue(wsdlFolder.exists());
+					
+			if (!(wsdlFolder.members().length > 0)){
+				runEventLoop(6000);
+				System.out.println("Running event loop while contents of wsdl foler are created...");
 			}
-		} 
-		assertEquals("TD Unexpected number of client error reports", 0, s.length);
-		
+			System.out.println("Assert TD wsdl file exists.  # of files = " + (wsdlFolder.members().length > 0));
+			assertTrue(wsdlFolder.members().length > 0);
+			
+	
+			// Check status handler for errors
+			AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
+			IStatus[] s = statusHandler.getErrorReports();
+			assertEquals("Assert number of error reports is zero", 0, s.length);
+			
+			System.out.println("END: TDJavaAxisTC50");
+		}
+		finally{
+			AccumulateStatusHandler statusHandler = new AccumulateStatusHandler(status);
+			IStatus[] s = statusHandler.getErrorReports();
+			//
+			if (s.length > 0){
+				for (int i=0;i<s.length;i++){
+					logBadStatus(s[i]);
+					System.out.println("Error message for report #"+i+": "+s[i].getMessage());
+				}
+			} 
+		}
 	}
 	
   /**
