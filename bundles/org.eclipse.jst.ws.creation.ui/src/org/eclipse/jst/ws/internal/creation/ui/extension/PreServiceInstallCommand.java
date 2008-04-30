@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20080425   220985  - Trung, Server is recreated when prev publish failed
+ * 20080429   220985 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -23,6 +25,8 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerC
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
 
@@ -43,23 +47,42 @@ public class PreServiceInstallCommand extends AbstractDataModelOperation
 			  			
 				if (webService_.getWebServiceInfo().getServerInstanceId()==null)
 				{
-					CreateServerCommand createServerCommand = new CreateServerCommand();
-					createServerCommand.setServerFactoryid(webService_.getWebServiceInfo().getServerFactoryId());
-					createServerCommand.setServerRuntimeId(webService_.getWebServiceInfo().getServerRuntimeId());
-	                createServerCommand.setEnvironment( environment );
-					IStatus createServerStatus = createServerCommand.execute( monitor, null);
-					if (createServerStatus.getSeverity()==Status.OK)
-					{
-						webService_.getWebServiceInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
-						webService_.getWebServiceInfo().setServerCreated(true);
+					// Attempt to find a server instance in the workspace matching
+					// the server id of the webService_
+					// If we can find one, we don't need to create a new server.
+					IServer[] allServers = ServerCore.getServers();
+					if (allServers != null && allServers.length > 0) {
+						for (int i = 0; i < allServers.length; i++) {
+							IServer oneServer = allServers[i];
+							if (oneServer.getServerType().getId().equals(
+									webService_.getWebServiceInfo().getServerFactoryId())) {
+								
+								webService_.getWebServiceInfo().setServerInstanceId(oneServer.getId());
+								webService_.getWebServiceInfo().setServerCreated(true);
+							}
+						}
 					}
-					else
-					{
-						if (createServerStatus.getSeverity()==Status.ERROR)
-						{
-							environment.getStatusHandler().reportError(createServerStatus);
-						}								
-						return createServerStatus;
+					// Cannot find an appropriate server, so we will create one
+					else {
+						CreateServerCommand createServerCommand = new CreateServerCommand();
+						createServerCommand.setServerFactoryid(webService_
+								.getWebServiceInfo().getServerFactoryId());
+						createServerCommand.setServerRuntimeId(webService_
+								.getWebServiceInfo().getServerRuntimeId());
+						createServerCommand.setEnvironment(environment);
+						IStatus createServerStatus = createServerCommand.execute(
+								monitor, null);
+						if (createServerStatus.getSeverity() == Status.OK) {
+							webService_.getWebServiceInfo().setServerInstanceId(
+									createServerCommand.getServerInstanceId());
+							webService_.getWebServiceInfo().setServerCreated(true);
+						} else {
+							if (createServerStatus.getSeverity() == Status.ERROR) {
+								environment.getStatusHandler().reportError(
+										createServerStatus);
+							}
+							return createServerStatus;
+						}
 					}
 				}
 				  
@@ -84,7 +107,7 @@ public class PreServiceInstallCommand extends AbstractDataModelOperation
 				{
 					environment.getStatusHandler().reportError(status);
 				}			
-			  return status;
+			    return status;
 		  }
 		  return Status.OK_STATUS;
 	  }

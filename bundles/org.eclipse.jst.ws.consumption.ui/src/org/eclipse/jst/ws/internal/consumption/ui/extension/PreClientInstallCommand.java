@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070815   199626 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
+ * 20080425   220985 trungha@ca.ibm.com - Trung Ha, Server is recreated when prev publish failed
+ * 20080429   220985 trungha@ca.ibm.com - Trung Ha
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -24,6 +26,8 @@ import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerC
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 
@@ -44,24 +48,42 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
 	      
 	      if (webServiceClient_.getWebServiceClientInfo().getServerInstanceId()==null)
 	      {
-	        CreateServerCommand createServerCommand = new CreateServerCommand();
-	        createServerCommand.setServerFactoryid(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
-	        createServerCommand.setServerRuntimeId(webServiceClient_.getWebServiceClientInfo().getServerRuntimeId());
-	        createServerCommand.setEnvironment( environment );
-	        IStatus createServerStatus = createServerCommand.execute(null, null);
-	        if (createServerStatus.getSeverity()==Status.OK)
-	        {
-	          webServiceClient_.getWebServiceClientInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
-	          webServiceClient_.getWebServiceClientInfo().setServerCreated(true);
-	        }
-	        else
-	        {
-	          if (createServerStatus.getSeverity()==Status.ERROR)
-	          {
-	            environment.getStatusHandler().reportError( createServerStatus );
-	          }               
-	          return createServerStatus;
-	        }
+    		// Attempt to find a server instance in the workspace matching
+			// the server id of the webService_
+			// If we can find one, we don't need to create a new server.
+			IServer[] allServers = ServerCore.getServers();
+			if (allServers != null && allServers.length > 0) {
+				for (int i = 0; i < allServers.length; i++) {
+					IServer oneServer = allServers[i];
+					if (oneServer.getServerType().getId().equals(
+							webServiceClient_.getWebServiceClientInfo().getServerFactoryId())) {
+						
+						webServiceClient_.getWebServiceClientInfo().setServerInstanceId(oneServer.getId());
+						webServiceClient_.getWebServiceClientInfo().setServerCreated(true);
+					}
+				}
+			}
+			// Cannot find an appropriate server, so we will create one
+			else{
+		        CreateServerCommand createServerCommand = new CreateServerCommand();
+		        createServerCommand.setServerFactoryid(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
+		        createServerCommand.setServerRuntimeId(webServiceClient_.getWebServiceClientInfo().getServerRuntimeId());
+		        createServerCommand.setEnvironment( environment );
+		        IStatus createServerStatus = createServerCommand.execute(null, null);
+		        if (createServerStatus.getSeverity()==Status.OK)
+		        {
+		          webServiceClient_.getWebServiceClientInfo().setServerInstanceId(createServerCommand.getServerInstanceId());
+		          webServiceClient_.getWebServiceClientInfo().setServerCreated(true);
+		        }
+		        else
+		        {
+		          if (createServerStatus.getSeverity()==Status.ERROR)
+		          {
+		            environment.getStatusHandler().reportError( createServerStatus );
+		          }               
+		          return createServerStatus;
+		        }
+			}
 	      }
 	      
 	      AddModuleToServerCommand command = new AddModuleToServerCommand();
