@@ -17,7 +17,6 @@
 package org.eclipse.wst.ws.internal.wsrt;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.wst.server.core.IRuntime;
 
 /*
  * The IWebServiceRuntimeChecker interface allow the extender to have a way to check the 

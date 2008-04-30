@@ -46,7 +46,7 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 	private AntExtensionCreation antExtC_;
 	private LabelsAndIds labelsAndIdsScenario_;
 	private LabelsAndIds labelsAndIdsRuntime_;
-	private int runtimeIdx_;
+//	private int runtimeIdx_;
 	private Listener statusListener_;
 	
 	public AntFileImportWizardPage(String pageName,
@@ -174,7 +174,7 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 		runtime_.setItems(runtimeLabels);
 	    //until the preferences are set up
 		setSelection(runtime_,runtimeLabels[0]);
-		runtimeIdx_ = 0;
+//		runtimeIdx_ = 0;
 		labelsAndIdsScenario_ = antExtC_.getScenarioLabelsByRuntime(labelsAndIdsRuntime_.getId(0));
 		setScenarioLabels(labelsAndIdsScenario_.getLabels());
 	}

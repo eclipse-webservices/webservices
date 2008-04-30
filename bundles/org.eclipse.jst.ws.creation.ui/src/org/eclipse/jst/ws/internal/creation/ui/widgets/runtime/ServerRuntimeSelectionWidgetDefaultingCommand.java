@@ -53,7 +53,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.FacetMatchCache;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
-import org.eclipse.jst.ws.internal.creation.ui.plugin.WebServiceCreationUIPlugin;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ui.WSUIPluginMessages;
 import org.eclipse.osgi.util.NLS;

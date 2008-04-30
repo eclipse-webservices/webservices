@@ -34,21 +34,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.j2ee.internal.J2EEVersionConstants;
-import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
-import org.eclipse.jst.j2ee.internal.servertarget.IServerTargetConstants;
-import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
-import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
-import org.eclipse.jst.ws.internal.consumption.ui.preferences.PersistentServerRuntimeContext;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLSelectionWidgetDefaultingCommand;
@@ -64,7 +57,6 @@ import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.FinishTestFragmen
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestDefaultingFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.TestWebServiceClient;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.test.WebServiceClientTestArrivalCommand;
-import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
@@ -86,8 +78,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetRegistry;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
-import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceState;
@@ -199,7 +189,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	private TypeRuntimeServer typeRuntimeServer_;
 	private String            project_;
 	private String            module_;
-	private String            earProject_;
+//	private String            earProject_;
 	private String            ear_;
 	private IWebServiceClient webServiceClient_;
 	private String            wsdlURI_;
@@ -222,7 +212,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	    {
 	    	int earIndex = ear_.indexOf("/");
 	    	if (earIndex!=-1) {
-	    		earProject_ = ear_.substring(0,earIndex);
+//	    		earProject_ = ear_.substring(0,earIndex);
 	    		ear_ = ear_.substring(earIndex+1);
 	    	}
 	    }    

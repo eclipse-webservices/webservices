@@ -40,7 +40,6 @@ import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParamete
 import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterContext;
 import org.eclipse.jst.ws.internal.axis.consumption.core.context.AxisEmitterDefaults;
 import org.eclipse.jst.ws.internal.axis.consumption.core.plugin.WebServiceAxisConsumptionCorePlugin;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
