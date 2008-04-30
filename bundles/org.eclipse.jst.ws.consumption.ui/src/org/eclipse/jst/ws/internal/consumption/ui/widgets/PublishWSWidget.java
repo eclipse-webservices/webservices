@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080430   214624 makandre@ca.ibm.com - Andrew Mak, Remove favourite UDDI registries from Web Service Publish page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -15,17 +18,11 @@ import java.util.Vector;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.wizard.PrivateUDDIRegistryTypeRegistry;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.PublicUDDIRegistryTypeRegistry;
-import org.eclipse.jst.ws.internal.consumption.ui.wizard.uddi.PublicUDDIRegistryType;
 import org.eclipse.jst.ws.internal.ui.uddi.PrivateUDDIRegistryType;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
@@ -43,8 +40,6 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
   private String INFOPOP_PWPB_CHECKBOX_WS_LAUNCH = WebServiceConsumptionUIPlugin.ID + ".PWPB0002";
   private Button launchUDDICheckbox_;
   private Button launchPrivateUDDICheckbox_;
-  private Label pubilcUDDIRegComboLabel_;
-  private Combo publicUDDIRegCombo_;
   private Listener statusListener;
   private Boolean publish;
 
@@ -82,41 +77,8 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
     launchUDDICheckbox_.setToolTipText(ConsumptionUIMessages.TOOLTIP_PWPB_CHECKBOX_WS_LAUNCH);
     launchUDDICheckbox_.addListener(SWT.Selection, selListener);
     helpSystem.setHelp(launchUDDICheckbox_, INFOPOP_PWPB_CHECKBOX_WS_LAUNCH);
-    Composite c = new Composite(parent, SWT.NONE);
-    GridLayout gl = new GridLayout();
-    gl.numColumns = 3;
-    gl.marginHeight = 0;
-    gl.marginWidth = 0;
-    c.setLayout(gl);
-    GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-    c.setLayoutData(gd);
-    new Label(c, SWT.WRAP);
-    pubilcUDDIRegComboLabel_ = new Label(c, SWT.WRAP);
-    pubilcUDDIRegComboLabel_.setText(ConsumptionUIMessages.LABEL_PUBLIC_UDDI_REGISTRIES);
-    publicUDDIRegCombo_ = new Combo(c, SWT.DROP_DOWN | SWT.READ_ONLY);
-    publicUDDIRegCombo_.setEnabled(false);
-    initPublicUDDI();
     initPrivateUDDI();
     return this;
-  }
-
-  private void initPublicUDDI()
-  {
-    PublicUDDIRegistryTypeRegistry reg = PublicUDDIRegistryTypeRegistry.getInstance();
-    PublicUDDIRegistryType[] types = reg.getAllPublicUDDIRegistryTypes();
-    for (int i = 0; i < types.length; i++)
-    {
-      if (publish.booleanValue())
-      {
-        // Ignore read-only registries.
-        String publishURL = types[i].getPublishURL();
-        if (publishURL == null || publishURL.indexOf("://") == -1)
-          continue;
-      }
-      publicUDDIRegCombo_.add(types[i].getName());
-    }
-    if (types.length > 0)
-      publicUDDIRegCombo_.setText(publicUDDIRegCombo_.getItem(0));
   }
 
   private void initPrivateUDDI()
@@ -127,15 +89,12 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
 
   private void handleSelectionEvent(Event event)
   {
-    if (launchUDDICheckbox_ == event.widget)
-      publicUDDIRegCombo_.setEnabled(launchUDDICheckbox_.getSelection());
     statusListener.handleEvent(event);
   }
 
   public void setPublishToPublicUDDI(boolean publish)
   {
     launchUDDICheckbox_.setSelection(publish);
-    publicUDDIRegCombo_.setEnabled(publish);
   }
 
   public void setPublishToPublicUDDI(Boolean publish)
@@ -173,16 +132,8 @@ public class PublishWSWidget extends SimpleWidgetDataContributor
     Vector launchOptionVector = new Vector();
     if (launchUDDICheckbox_.getSelection())
     {
-      PublicUDDIRegistryTypeRegistry reg = PublicUDDIRegistryTypeRegistry.getInstance();
-      int UDDIRegSelectionIndex = publicUDDIRegCombo_.getSelectionIndex();
-      if (UDDIRegSelectionIndex != -1)
-      {
-        String name = publicUDDIRegCombo_.getItem(UDDIRegSelectionIndex);
-        String id = reg.getPublicUDDIRegistryTypeIDByName(name);
-        PublicUDDIRegistryType type = reg.getPublicUDDIRegistryTypeByID(id);
-        launchOptionVector.add(new LaunchOption(LaunchOptions.INQUIRY_URL, type.getInquiryURL()));
-        launchOptionVector.add(new LaunchOption(LaunchOptions.PUBLISH_URL, type.getPublishURL()));
-      }
+      launchOptionVector.add(new LaunchOption(LaunchOptions.INQUIRY_URL, ""));
+      launchOptionVector.add(new LaunchOption(LaunchOptions.PUBLISH_URL, ""));
     }
     if (launchPrivateUDDICheckbox_.getSelection())
     {
