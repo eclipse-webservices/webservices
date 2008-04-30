@@ -13,6 +13,7 @@
  * 20071221   213492 pmoogk@ca.ibm.com - Peter Moogk
  * 20080109   214818 pmoogk@ca.ibm.com - Peter Moogk
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080430   221578 pmoogk@ca.ibm.com - Peter Moogk, Fixed commit problem.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -79,16 +80,25 @@ public class PolicyStateImpl implements IPolicyState
       
       if( value != null )
       {
-        // Temporarily remove the tableEntry value so that getValue will get the old value.
-        tableEntry.value = null;
-        String oldValue = getValue( key );
-        
-        // Restore the tableEntry value;
-        tableEntry.value = value;
+        String oldValue = tableEntry.lastCommittedValue;
        
-        if( !value.equals( oldValue ) ) 
+        // Always need to put the value in the backing store even if it is the same value
+        // since we delete all preferences before committing them.
+        preferences.put( storeKey, value );
+        tableEntry.lastCommittedValue = value;
+        
+        if( oldValue == null )
         {
-          preferences.put( storeKey, tableEntry.value );
+          // Temporarily remove the tableEntry value so that getValue will get the old value.
+          tableEntry.value = null;
+          oldValue = getValue( key );
+        
+          // Restore the tableEntry value;
+          tableEntry.value = value;
+        }
+        
+        if( !value.equals( oldValue ) ) 
+        {          
           firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );
         }
       }
@@ -320,6 +330,7 @@ public class PolicyStateImpl implements IPolicyState
   private class TableEntry
   {
     String value;
+    String lastCommittedValue;
     String defaultValue;
   }
 }
