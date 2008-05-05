@@ -4,7 +4,7 @@
  "map.dtd">
 <map anchorref="../org.eclipse.jst.ws.doc.user/wscreationt1_toc.ditamap#wsaxis"
 id="wsaxis" title="wsaxis">
-<topicref href="topics/caxistover.dita" navtitle="Apache Axis1 runtime" toc="no">
+<topicref href="topics/caxistover.dita" navtitle="Apache Axis1 runtime" toc="yes">
 <topicref href="topics/ttomcatserv.dita" navtitle="Installing and configuring Apache Tomcat">
 </topicref>
 <topicref href="topics/twsbeana.dita" navtitle="Creating a Web service from a Java bean">
