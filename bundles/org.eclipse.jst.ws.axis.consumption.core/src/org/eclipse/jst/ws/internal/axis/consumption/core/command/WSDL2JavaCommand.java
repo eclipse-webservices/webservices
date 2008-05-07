@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
  * 20070927   204649 kelvinhc@ca.ibm.com - Kelvin Cheung
+ * 20080505   225625 pmoogk@ca.ibm.com - Peter Moogk, Fixed null pointer problem, if user cancells out of overwrite resource.
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.axis.constants.Scope;
 import org.apache.axis.wsdl.toJava.Emitter;
@@ -282,7 +284,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 			
 			String javaFile;
 			String fullClassName = null;
-			String [] movedJavaFiles =  new String [javaFiles.size()];
+			Vector movedJavaFiles =  new Vector();;
 			iterator = javaFiles.iterator();
 			i = 0;
 			while (iterator.hasNext()) {
@@ -301,15 +303,19 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 									finStream,
 									monitor,
 									statusHandler);
-							file.setCharset("UTF-8", monitor);
-							movedJavaFiles[i++]= ResourceUtils.getWorkspaceRoot().getFileForLocation(targetPath).getLocation().toString();
+							
+							if( file != null )
+							{
+							  file.setCharset("UTF-8", monitor);
+							  movedJavaFiles.add( ResourceUtils.getWorkspaceRoot().getFileForLocation(targetPath).getLocation().toString() );
+							}
 						}
 					}
 					
 					finStream.close();
 				}
 			}
-			javaWSDLParam.setJavaFiles(movedJavaFiles);
+			javaWSDLParam.setJavaFiles( (String[])movedJavaFiles.toArray( new String[0] ) );
 			
 		} catch (Exception e) {
 			status = StatusUtils.errorStatus(NLS.bind(AxisConsumptionCoreMessages.MSG_ERROR_MOVE_RESOURCE,new String[]{e.getLocalizedMessage()}), e);
