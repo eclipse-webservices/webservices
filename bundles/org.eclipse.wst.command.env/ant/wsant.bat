@@ -1,3 +1,4 @@
+echo off
 rem *******************************************************************************
 rem  Copyright (c) 2005, 2007 IBM Corporation and others.
 rem  All rights reserved. This program and the accompanying materials
@@ -8,7 +9,6 @@ rem
 rem  Contributors:
 rem      IBM Corporation - initial API and implementation
 rem *******************************************************************************
-echo off
 setlocal
 
 REM *********** Local envars ***************************
