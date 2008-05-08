@@ -52,7 +52,7 @@
    else
      doubleClickColumnTitle = controller.getMessage("ALT_DOUBLE_CLICK_TO_MAXIMIZE");
 %>        
-        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" align="left" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_NAVIGATOR")%></td>
+        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_NAVIGATOR")%></td>
 <%
    String altRestore = favPerspective.getMessage("ALT_RESTORE_DEFAULT_FAVORITES");
    String altRemove = favPerspective.getMessage("ALT_REMOVE_FAVORITE");

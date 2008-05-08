@@ -56,7 +56,7 @@
    if (doubleClickColumnTitle == null)
      doubleClickColumnTitle = controller.getMessage("ALT_DOUBLE_CLICK_TO_MAXIMIZE");
 %>        
-        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" align="left" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_ACTIONS")%></td>
+        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_ACTIONS")%></td>
 <%
     NodeManager nodeManager = wsilPerspective.getNodeManager();
     Node selectedNode = nodeManager.getSelectedNode();

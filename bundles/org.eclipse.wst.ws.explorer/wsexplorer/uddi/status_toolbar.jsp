@@ -54,7 +54,7 @@
    if (doubleClickColumnTitle == null)
      doubleClickColumnTitle = controller.getMessage("ALT_DOUBLE_CLICK_TO_MAXIMIZE");
 %>        
-        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" align="left" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_STATUS")%></td>
+        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_STATUS")%></td>
 <%
    String altClear = controller.getMessage("ALT_CLEAR");
 %>           

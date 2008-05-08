@@ -46,7 +46,7 @@ hrefActionEngine.append(session.getId());
 <div id="globaltoolbar">
 <table width="100%" cellpadding=3 cellspacing=0 border=0>
   <tr>
-    <td class="text" nowrap valign="middle" align="left" width="100%" height=25><%=controller.getMessage("TITLE_WSEXPLORER")%></td>
+    <td class="text" nowrap valign="middle" width="100%" height=25><%=controller.getMessage("TITLE_WSEXPLORER")%></td>
     <%
     String altHistoryBack = controller.getMessage("ALT_BACK");
     String altHistoryForward = controller.getMessage("ALT_FORWARD");

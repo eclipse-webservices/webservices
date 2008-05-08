@@ -52,7 +52,7 @@
    else
      doubleClickColumnTitle = controller.getMessage("ALT_DOUBLE_CLICK_TO_MAXIMIZE");
 %>        
-        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" align="left" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_NAVIGATOR")%></td>
+        <td id="doubleclickcolumn" title="<%=doubleClickColumnTitle%>" valign="middle" width="*" height=25 nowrap class="text"><%=controller.getMessage("ALT_NAVIGATOR")%></td>
 <%
    String altRefresh = wsilPerspective.getMessage("ALT_REFRESH_WSIL");
    String altClear = wsilPerspective.getMessage("ALT_CLEAR_WSIL");
