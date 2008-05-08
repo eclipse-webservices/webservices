@@ -14,6 +14,7 @@
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
  * 20070410   181827 kathy@ca.ibm.com - Kathy Chan
  * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
+ * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -57,7 +58,7 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   	  {
   	    IFile ifile = (IFile)firstSel;
   	    String ext = ifile.getFileExtension();
-  	    if (ext != null && (ext.equals("wsdl") || ext.equals("wsil") || ext.equals("html")))
+  	    if (ext != null && (ext.equalsIgnoreCase("wsdl") || ext.equalsIgnoreCase("wsil") || ext.equalsIgnoreCase("html")))
   	    {
   	      uri_ = ifile.getFullPath().toString();
   	    }
@@ -102,7 +103,7 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   public String getWsilURI()
   {
   	String wsURI = getWebServiceURI();
-  	if (wsURI != null && wsURI.length() > 0 && wsURI.endsWith("wsdl"))
+  	if (wsURI != null && wsURI.length() > 0 && wsURI.toLowerCase().endsWith("wsdl"))
   	{
       StringBuffer sb = new StringBuffer(wsURI.substring(0, wsURI.length()-4));
       sb.append("wsil");

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060606   105045 mahutch@ca.ibm.com - Mark Hutchinson          
  * 20070328   172339 kathy@ca.ibm.com - Kathy Chan
+ * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
@@ -203,7 +204,7 @@ public class TypeSelectionFilter2
     {
       if (extensions[i]!=null)
       {
-        if (name.endsWith(extensions[i]))
+        if (name.toLowerCase().endsWith(extensions[i].toLowerCase()))
           return true;
       }
     }

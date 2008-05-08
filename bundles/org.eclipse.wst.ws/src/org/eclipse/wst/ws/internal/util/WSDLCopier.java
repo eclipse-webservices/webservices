@@ -13,6 +13,7 @@
  * 20070409   181635 makandre@ca.ibm.com - Andrew Mak, WSDLCopier utility should create target folder
  * 20071205   211262 ericdp@ca.ibm.com - Eric Peters, CopyWSDLTreeCommand fails to copy ?wsdl
  * 20080324   215552 makandre@ca.ibm.com - Andrew Mak, WSDLCopier expects not encoded URI
+ * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.util;
@@ -342,7 +343,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
 		        if (wsdlImportLocation != null && isRelative(wsdlImportLocation)) {
 
 		        	// bad form, importing xsd with wsdl:import, but need to handle
-		        	if (wsdlImportLocation.endsWith(XSD))
+		        	if (wsdlImportLocation.toLowerCase().endsWith(XSD))
 		        		analyzeXSD(uri.resolve(wsdlImportLocation));
 		        	else	
 		        		analyzeWSDL(uri.resolve(wsdlImportLocation), null);

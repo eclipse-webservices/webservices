@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -152,7 +155,7 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
 
   public IStatus getStatus()
   {
-    if (!wsil_.getText().endsWith(".wsil"))
+    if (!wsil_.getText().toLowerCase().endsWith(".wsil"))
       return StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_INVALID_WSIL_FILE_NAME );
     else
       return Status.OK_STATUS;
@@ -166,8 +169,16 @@ public class ImportWSILWidget extends SimpleWidgetDataContributor
       for (Iterator it = selection.iterator(); it.hasNext();)
       {
         Object object = it.next();
-        if ((object instanceof IFile) && ((IFile)object).getFileExtension() != null && ((IFile)object).getFileExtension().equals("wsdl"))
-          list.add(((IFile)object).getFullPath().toString());
+        if (object instanceof IFile) {
+          IFile file = (IFile) object;
+          String ext = file.getFileExtension();
+          if (ext != null) {
+	          if (ext.equalsIgnoreCase("wsdl"))
+	        	  list.add(file.getFullPath().toString());
+	          else if (ext.equalsIgnoreCase("wsil"))
+	        	  wsil_.setText(file.getFullPath().toString());
+          }
+        }
         if (object instanceof ServiceImpl)
           list.add(J2EEActionAdapterFactory.getWSILPath(((ServiceImpl)(object))));	
         if (object instanceof ServiceRef)
