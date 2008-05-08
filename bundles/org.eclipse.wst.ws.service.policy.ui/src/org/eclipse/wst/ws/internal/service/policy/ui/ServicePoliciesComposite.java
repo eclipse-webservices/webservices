@@ -15,6 +15,7 @@
  * 20080211   218520 pmoogk@ca.ibm.com - Peter Moogk
  * 20080324   222095 pmoogk@ca.ibm.com - Peter Moogk, UI now listens for state changes.
  * 20080324   223634 ericdp@ca.ibm.com - Eric D. Peters, Service Policies preference tree should be 3 level tree
+ * 20080506   219005 ericdp@ca.ibm.com - Eric D. Peters, Service policy preference page not restoring properly
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -478,22 +479,21 @@ public class ServicePoliciesComposite extends Composite implements
 	 */
 	public void performDefaults() {
 		initializeDefaults();
-		TreeItem selected = null;
-		IServicePolicy focusSP = null;
-		// fire selection event to tree that is associated with operation UI so
-		// operation UI gets updated
-		if (detailsPolicyTree.isVisible()
-				&& detailsPolicyTree.getSelection().length > 0) {
-			detailsPolicyTree.notifyListeners(SWT.Selection, new Event());
-			selected = detailsPolicyTree.getSelection()[0];
-			focusSP = (IServicePolicy) selected.getData();
-		} else if (masterPolicyTree.getSelection().length > 0) {
-			masterPolicyTree.notifyListeners(SWT.Selection, new Event());
-			selected = masterPolicyTree.getSelection()[0];
-			focusSP = (IServicePolicy) selected.getData();
+		List<IServicePolicy> policyList = platform.getRootServicePolicies(null);
+		
+		policyList = ServiceUtils.sortList( policyList );
+		masterPolicyTree.removeAll();
+		
+		for (IServicePolicy policy : policyList) {
+			addPolicy(policy, masterPolicyTree, true);
 		}
-
-		error = validateAllPolicies(focusSP);
+		TreeItem[] treeItems = masterPolicyTree.getItems();
+		if (treeItems.length > 0) {
+			//select the first item in the tree & fire event so UI is updated
+			masterPolicyTree.setSelection(treeItems[0]);
+			masterPolicyTree.notifyListeners(SWT.Selection, new Event());
+			validateAllPolicies((IServicePolicy)treeItems[0].getData());
+		}
 
 	}
 	private class ChildChangeEvent {
@@ -609,10 +609,7 @@ public class ServicePoliciesComposite extends Composite implements
 		int siblingsCount = (parentTreeItem == null) ? parentTree.getItemCount() -1 : parentTreeItem.getItemCount() -1;
 		boolean hasParent = (parentTreeItem == null) ? parentTree.getItemCount() == 0 : parentTreeItem.getItemCount() == 0;
 		deleteItem.dispose();
-		if (parentTreeItem == null) 
-			parentTree.redraw();
-		else
-			parentTree.redraw();
+		parentTree.redraw();
 		TreeItem selectItem = null;
 		if (siblingsCount == 0) {
 			if (hasParent) {
