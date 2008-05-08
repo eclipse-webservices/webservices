@@ -17,6 +17,7 @@
  * 20060830   151091 kathy@ca.ibm.com - Kathy Chan, Client side still enabled when there's only stub server
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -537,7 +538,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
   }
   
   public boolean getCanRunTestClient(){
-	  if(serviceServerInstanceId_ != null || clientIds_.getServerInstanceId() != null) return true;
+	  if(clientIds_.getServerInstanceId() != null) return true;
 	  
 	  return false;
   }

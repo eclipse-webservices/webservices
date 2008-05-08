@@ -14,6 +14,7 @@
  * 20060815   153903 makandre@ca.ibm.com - Andrew Mak, Browse does not work in generate client test page
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -534,8 +535,10 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   public void setCanRunTestClient(boolean canRunTestClient){
 	  canRunTestClient_ = canRunTestClient;
-	  if(!canRunTestClient_)
-	  runTestCheckbox_.setEnabled(false);
+	  if(!canRunTestClient_) {
+		  runTestCheckbox_.setSelection(false);
+		  runTestCheckbox_.setEnabled(false);
+	  }
   }
   
   public void setPopup(boolean popup){

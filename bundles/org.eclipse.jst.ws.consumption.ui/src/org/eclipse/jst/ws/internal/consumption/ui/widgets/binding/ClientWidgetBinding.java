@@ -28,6 +28,7 @@
  * 20070502   180304 gilberta@ca.ibm.com - Gilbert Andrews
  * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -392,6 +393,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientTypeRuntimeServer", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientServer", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "WsdlURI", ClientTestDelegateCommand.class);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "CanRunTestClient", ClientTestDelegateCommand.class );
       
       // Map ClientExtensionOutputCommand command.
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ProxyBean", WebServiceClientTestArrivalCommand.class);      
