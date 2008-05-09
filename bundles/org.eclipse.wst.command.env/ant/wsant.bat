@@ -1,6 +1,6 @@
 echo off
 rem *******************************************************************************
-rem  Copyright (c) 2005, 2007 IBM Corporation and others.
+rem  Copyright (c) 2005, 2008 IBM Corporation and others.
 rem  All rights reserved. This program and the accompanying materials
 rem  are made available under the terms of the Eclipse Public License v1.0
 rem  which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ if not exist %LAUNCHER_JAR% goto done
 
 :run
 @echo on
-%JAVAEXE% -jar %LAUNCHER_JAR% -install %INSTALL_DIRECTORY% -configuration %INSTALL_DIRECTORY%\configuration -application org.eclipse.ant.core.antRunner -data %WORKSPACE% -file wsgen.xml %* >wsgen.txt 2>&1
+%JAVAEXE% -jar %LAUNCHER_JAR% -install %INSTALL_DIRECTORY% -application org.eclipse.ant.core.antRunner -data %WORKSPACE% -file wsgen.xml %* >wsgen.txt 2>&1
 
 :done
 pause
