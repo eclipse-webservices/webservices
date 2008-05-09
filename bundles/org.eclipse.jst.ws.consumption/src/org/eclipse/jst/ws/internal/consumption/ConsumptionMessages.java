@@ -12,6 +12,7 @@
  * 20060217   126757 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060401   128827 kathy@ca.ibm.com - Kathy Chan
  * 20080402   224433 kathy@ca.ibm.com - Kathy Chan, Properties file change
+ * 20080505   182167 makandre@ca.ibm.com - Andrew Mak, Warning not issued when non-instantiable class is bypassed in sampe JSPs
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption;
 
@@ -38,6 +39,7 @@ public final class ConsumptionMessages extends NLS {
 	public static String MSG_WARN_UNABLE_TO_FIND_PROXY;
 	public static String MSG_ERROR_PROXY_NOT_FOUND_IN_PROJECT;
 	public static String MSG_ERROR_JTS_JSP_GEN;
+	public static String MSG_WARN_JTS_NON_INSTANTIABLE_TYPE;
 	public static String FILTER_MSG_ERROR_NULL_OBJECT;
 	public static String FILTER_MSG_ERROR_NOT_FILE;
 	public static String FILTER_MSG_ERROR_NOT_FOLDER;

@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080505   182167 makandre@ca.ibm.com - Andrew Mak, Warning not issued when non-instantiable class is bypassed in sampe JSPs
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitors;
@@ -134,8 +137,11 @@ public class JavaMofAttributeVisitor implements Visitor
     Enumeration spdEnum = spdMap.elements();
     while(spdEnum.hasMoreElements()){
       SamplePropertyDescriptor spd = (SamplePropertyDescriptor)spdEnum.nextElement();
-      if(spdCheck(spd))
+      if(spdCheck(spd)) {
         status = vAction.visit(spd);   
+        if (status.getSeverity() == IStatus.ERROR)
+    	  break;
+      }
     } 
    
     return status;

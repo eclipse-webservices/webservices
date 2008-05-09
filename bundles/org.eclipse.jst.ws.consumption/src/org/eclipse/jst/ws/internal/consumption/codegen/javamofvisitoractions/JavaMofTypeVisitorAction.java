@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070410   180952 makandre@ca.ibm.com - Andrew Mak, Sample JSP generator chokes on interfaces and abstract classes
+ * 20080505   182167 makandre@ca.ibm.com - Andrew Mak, Warning not issued when non-instantiable class is bypassed in sampe JSPs
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.codegen.javamofvisitoractions;
@@ -98,6 +99,8 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
 	    	
 	    	Element element = BeanModelElementsFactory.getBeanModelElement(typeNavigator,fParentElement);
 	    	element.setPropertyAsObject(TypeElement.NON_INSTANTIABLE, Boolean.TRUE);
+    		status = StatusUtils.warningStatus(
+    				ConsumptionMessages.bind(ConsumptionMessages.MSG_WARN_JTS_NON_INSTANTIABLE_TYPE, element.getName()));
 	    }
 	    else{
 	      JavaMofBeanVisitorAction beanVisitorAction = new JavaMofBeanVisitorAction(fParentElement,clientProject, env_);
@@ -122,7 +125,7 @@ public class JavaMofTypeVisitorAction extends JavaMofBeanVisitorAction
        	 //return an error status since the user canceled
        	  return StatusUtils.errorStatus( ConsumptionMessages.MSG_ERROR_SAMPLE_CREATION_CANCELED );
        }
-       	
+       status = Status.OK_STATUS; // user says it's OK
      }
      //
      return status;
