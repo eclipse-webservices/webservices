@@ -22,6 +22,17 @@
          </action>
       </objectContribution>
       <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.wsil"
+            id="org.eclipse.wst.ws.ui.action.WSDLFileMenu.file.wsil">
+         <action
+               label="%POPUP_TEST_WSDL"
+               class="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSIL"
+               menubarPath="org.eclipse.wst.ws.ui.webservice.category.popupMenu/popupActions"
+               id="org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSIL">
+         </action>
+      </objectContribution>
+      <objectContribution
             objectClass="org.eclipse.wst.wsdl.util.WSDLResourceImpl"
             nameFilter="*"
             id="org.eclipse.wst.ws.ui.action.WSDLFileMenu.wsdlres">

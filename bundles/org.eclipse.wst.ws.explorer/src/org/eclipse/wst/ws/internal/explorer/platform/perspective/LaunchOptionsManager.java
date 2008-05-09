@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080506   202945 pmoogk@ca.ibm.com - Peter Moogk, Allow WSE to be launched from a WSIL file.
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.eclipse.wst.ws.internal.explorer.LaunchOptions;
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
 
 public class LaunchOptionsManager
 {
@@ -74,6 +78,7 @@ public class LaunchOptionsManager
       String[] serviceNames = (String[])options.get(LaunchOptions.SERVICE_NAME);
       String[] serviceKeys = (String[])options.get(LaunchOptions.SERVICE_KEY);
       String[] wsdlURLs = (String[])options.get(LaunchOptions.WSDL_URL);
+      String[] wsilURLs = (String[])options.get(LaunchOptions.WSIL_URL);
       String[] endpoints = (String[])options.get(LaunchOptions.WEB_SERVICE_ENDPOINT);
       String[] serviceQNameStrings = (String[])options.get(LaunchOptions.SERVICE_QNAME_STRING);
       String[] bindingNameStrings = (String[])options.get(LaunchOptions.BINDING_NAME_STRING);
@@ -88,6 +93,9 @@ public class LaunchOptionsManager
       wsdlPerspective.preloadWSDL(wsdlURLs);
       wsdlPerspective.preloadEndpoints(wsdlURLs, endpoints);
       wsdlPerspective.preselectServiceOrBinding(wsdlURLs,serviceQNameStrings,bindingNameStrings);
+      
+      WSILPerspective wsilPerspective = controller.getWSILPerspective();
+      wsilPerspective.preloadWSIL( wsilURLs );
     }
   }
 }

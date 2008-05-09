@@ -1,15 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080506   202945 pmoogk@ca.ibm.com - Peter Moogk, Allow WSE to be launched from a WSIL file.
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective;
+
+import java.util.Hashtable;
 
 import javax.servlet.ServletContext;
 import org.eclipse.wst.ws.internal.datamodel.BasicModel;
@@ -19,7 +24,9 @@ import org.eclipse.wst.ws.internal.explorer.platform.perspective.Controller;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.Perspective;
 import org.eclipse.wst.ws.internal.explorer.platform.util.DirUtils;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.OpenWSILAction;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.actions.SwitchPerspectiveFromWSILAction;
+import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilActionInputs;
 
 public class WSILPerspective extends Perspective
 {
@@ -54,6 +61,26 @@ public class WSILPerspective extends Perspective
         savedActionsContainerFramesetRows_ = actionsContainerFramesetRows_;
     }
 
+    public final void preloadWSIL( String[] wsilURL )
+    {
+      if( wsilURL != null )
+      {
+        for( int index = 0; index < wsilURL.length; index++ )
+        {
+          OpenWSILAction action = new OpenWSILAction(controller_);
+          Hashtable table = action.getPropertyTable();
+          table.put(WsilActionInputs.WSIL_URL, wsilURL[index] );
+          table.put(WsilActionInputs.WSIL_INSPECTION_TYPE, String.valueOf(WsilActionInputs.WSIL_DETAILS));
+          action.run();
+        }
+        
+        if( wsilURL.length >0 )
+        {
+          controller_.setCurrentPerspective(ActionInputs.PERSPECTIVE_WSIL);          
+        }
+      }
+    }
+    
     public NodeManager getNodeManager() {
         return nodeManager_;
     }

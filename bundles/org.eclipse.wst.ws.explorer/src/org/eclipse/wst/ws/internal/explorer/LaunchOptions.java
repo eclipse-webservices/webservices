@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080506   202945 pmoogk@ca.ibm.com - Peter Moogk, Allow WSE to be launched from a WSIL file.
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer;
@@ -29,6 +32,8 @@ public class LaunchOptions {
 	// WSDL Page preload constants
 
 	public static final String WSDL_URL = "wsdl";
+	
+	public static final String WSIL_URL = "wsilurl";
 
 	public static final String WEB_SERVICE_ENDPOINT = "webServiceEndpoint";
 
