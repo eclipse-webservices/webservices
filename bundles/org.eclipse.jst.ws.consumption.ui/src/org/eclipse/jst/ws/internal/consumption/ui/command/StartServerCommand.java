@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070426   162287 makandre@ca.ibm.com - Andrew Mak, Server publish cancel button unavailable
+ * 20080509   165327 kathy@ca.ibm.com - Kathy Chan, Use API from IServer to call shouldPublish and shouldRestart
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.command;
@@ -32,7 +33,6 @@ import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.internal.Server;
 
 /**
  * (Re)Starts and publishes the server specifed by the serverInstanceId attribute.
@@ -76,7 +76,7 @@ public class StartServerCommand extends AbstractDataModelOperation
     int serverState = server.getServerState();
 
     //  Publish if required
-    if (((Server)server).shouldPublish()) {
+    if (server.shouldPublish()) {
     	if (server.canPublish().getSeverity() == IStatus.OK)
         {
           status = publish(server, IServer.PUBLISH_INCREMENTAL, monitor );
@@ -104,7 +104,7 @@ public class StartServerCommand extends AbstractDataModelOperation
         }
         break;
       case IServer.STATE_STARTED:    	
-    	boolean shouldRestart = ((Server)server).shouldRestart();    	
+    	boolean shouldRestart = server.shouldRestart();    	
     	
     	if (shouldRestart && server.canRestart(ILaunchManager.RUN_MODE).getSeverity()==IStatus.OK)
         {
