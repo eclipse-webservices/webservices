@@ -37,7 +37,6 @@ public final class ConsumptionMessages extends NLS {
 	public static String MSG_WARN_JTS_PROXY_METHODS_OMITTED;
 	public static String MSG_ERROR_SAMPLE_CREATION_CANCELED;
 	public static String MSG_WARN_UNABLE_TO_FIND_PROXY;
-	public static String MSG_ERROR_PROXY_NOT_FOUND_IN_PROJECT;
 	public static String MSG_ERROR_JTS_JSP_GEN;
 	public static String MSG_WARN_JTS_NON_INSTANTIABLE_TYPE;
 	public static String FILTER_MSG_ERROR_NULL_OBJECT;
