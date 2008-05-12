@@ -14,14 +14,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Binding;
-import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
@@ -44,6 +42,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IService;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 
 public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjectListener {
  
@@ -76,8 +75,8 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 			}
 
 			Port port = getPort();
-    		//wtp bug 221024 - namespace and prefixes are not added when add new port
-			addRequiredNamespaces(port.getEnclosingDefinition(), contentGenerator);
+			// go ahead and add required namespaces first before generating port content
+			CreateWSDLElementHelper.addRequiredNamespaces(contentGenerator, port.getEnclosingDefinition());
 			contentGenerator.generatePortContent(port);
 		}
 	}
@@ -226,52 +225,4 @@ public class W11EndPoint extends WSDLBaseAdapter implements IEndPoint, IASDObjec
 
 		return protocol;
 	}
-	
-	private void addRequiredNamespaces(Definition definition, ContentGenerator contentGenerator)
-	{
-	  if (contentGenerator != null)
-	  {
-	    String[] namespaceNames = contentGenerator.getRequiredNamespaces();
-	    String[] preferredPrefixes = new String [namespaceNames.length];
-	    for (int index = 0; index < namespaceNames.length; index++)
-	    {
-	      preferredPrefixes[index] = contentGenerator.getPreferredNamespacePrefix(namespaceNames[index]);
-	    }
-
-	    Map map = definition.getNamespaces();
-	    
-	    for (int i = 0; i < namespaceNames.length; i++)
-	    {
-	      String namespace = namespaceNames[i];
-	      if (!map.containsValue(namespace))
-	      {
-	        String prefix = (i < preferredPrefixes.length) ? preferredPrefixes[i] : "p0";
-	        if (map.containsKey(prefix))
-	        {
-	          prefix = computeUniquePrefix("p", map);
-	        }
-	        definition.addNamespace(prefix, namespace);
-	      }
-	    }
-	  }
-	}
-
-	private String computeUniquePrefix(String base, Map table)
-  {
-    int i = 0;
-    String prefix = base;
-    while (true)
-    {
-      if (!table.containsKey(prefix))
-      {
-        break;
-      }
-      else
-      {
-        prefix = base + i;
-        i++;
-      }
-    }
-    return prefix;
-  }
 }

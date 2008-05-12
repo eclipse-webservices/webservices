@@ -27,6 +27,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 
 public class PortWizard extends Wizard
@@ -71,6 +72,8 @@ public class PortWizard extends Wizard
 
   public boolean performFinish()
   {
+	// go ahead and add required namespaces first before generating port
+	CreateWSDLElementHelper.addRequiredNamespaces(portGenerator.getContentGenerator(), portGenerator.getDefinition());
     Object object = portGenerator.generatePort();
 
     try

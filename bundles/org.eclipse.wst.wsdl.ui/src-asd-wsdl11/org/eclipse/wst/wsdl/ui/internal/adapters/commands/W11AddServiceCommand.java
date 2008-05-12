@@ -32,6 +32,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
 import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
+import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.ServicePolicyHelper;
 
@@ -78,6 +79,8 @@ public class W11AddServiceCommand extends W11TopLevelElementCommand implements I
 			}
 			portGenerator.setContentGenerator(contentGenerator);
 			portGenerator.setName(NameUtil.buildUniquePortName(service, "NewPort")); //$NON-NLS-1$
+		    // go ahead and add required namespaces first before generating port
+			CreateWSDLElementHelper.addRequiredNamespaces(contentGenerator, definition);
 			portGenerator.generatePort();
 			
 			formatChild(service.getElement());

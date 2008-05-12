@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.wsdl.OperationType;
 
@@ -29,6 +30,7 @@ import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
+import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
 import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
@@ -46,10 +48,15 @@ import org.eclipse.wst.wsdl.ui.internal.commands.AddPortTypeCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddServiceCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddXSDElementDeclarationCommand;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.CMDocumentManager;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelqueryimpl.CMDocumentLoader;
+import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class CreateWSDLElementHelper {
@@ -72,6 +79,100 @@ public class CreateWSDLElementHelper {
 	public static String PART_TYPE_OR_DEFINITION = PART_INFO_TYPE_DEFINITION;
 	public static boolean CREATE_DOWN_TO_PART = true;
 		
+	/**
+	 * Adds additional namespaces required by contentGenerator to definition.
+	 * Also reloads the content model associated with definition if needed
+	 * after adding new namespaces.
+	 * 
+	 * @param contentGenerator
+	 * @param definition
+	 */
+	public static void addRequiredNamespaces(ContentGenerator contentGenerator, Definition definition) {
+		if (contentGenerator != null && definition != null) {
+			// flag indicating if content model needs to be reloaded
+			boolean reloadContentModel = false;
+
+			String[] namespaceNames = contentGenerator.getRequiredNamespaces();
+			String[] preferredPrefixes = new String[namespaceNames.length];
+			for (int index = 0; index < namespaceNames.length; index++) {
+				preferredPrefixes[index] = contentGenerator.getPreferredNamespacePrefix(namespaceNames[index]);
+			}
+
+			Map map = definition.getNamespaces();
+
+			for (int i = 0; i < namespaceNames.length; i++) {
+				String namespace = namespaceNames[i];
+				if (!map.containsValue(namespace)) {
+					String prefix = (i < preferredPrefixes.length) ? preferredPrefixes[i] : "p0"; //$NON-NLS-1$
+					if (map.containsKey(prefix)) {
+						prefix = computeUniquePrefix("p", map); //$NON-NLS-1$
+					}
+					definition.addNamespace(prefix, namespace);
+
+					// a namespace was added so update reloadContentModel flag
+					reloadContentModel = true;
+				}
+			}
+
+			if (reloadContentModel) {
+				reloadContentModel(definition);
+			}
+		}
+	}
+
+	/**
+	 * Reloads content model associated with the given definition
+	 * 
+	 * @param definition
+	 */
+	private static void reloadContentModel(Definition definition) {
+		Document document = definition.getDocument();
+		if (document != null) {
+			ModelQuery modelQuery = ModelQueryUtil.getModelQuery(document);
+			if (modelQuery != null) {
+				CMDocumentManager manager = modelQuery.getCMDocumentManager();
+				if (manager != null) {
+					// check if currently async loading
+					boolean oldValue = manager.getPropertyEnabled(CMDocumentManager.PROPERTY_ASYNC_LOAD);
+					// do not async to get immediate document loading
+					if (oldValue)
+						manager.setPropertyEnabled(CMDocumentManager.PROPERTY_ASYNC_LOAD, false);
+
+					// load content model again
+					CMDocumentLoader loader = new CMDocumentLoader(document, modelQuery);
+					loader.loadCMDocuments();
+
+					// reset back to old value just in case
+					if (oldValue)
+						manager.setPropertyEnabled(CMDocumentManager.PROPERTY_ASYNC_LOAD, oldValue);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Computes a unique prefix given the list of existing prefixes in table
+	 * and starting with a base prefix of base
+	 * 
+	 * @param base
+	 * @param table
+	 * @return
+	 */
+	private static String computeUniquePrefix(String base, Map table) {
+		int i = 0;
+		String prefix = base;
+		while (true) {
+			if (!table.containsKey(prefix)) {
+				break;
+			}
+			else {
+				prefix = base + i;
+				i++;
+			}
+		}
+		return prefix;
+	}
+	
 /*
  * The following methods creates the 'specified' (by calling a certain method) WSDLElement
  * and it's 'children' all the way to the PortType level.

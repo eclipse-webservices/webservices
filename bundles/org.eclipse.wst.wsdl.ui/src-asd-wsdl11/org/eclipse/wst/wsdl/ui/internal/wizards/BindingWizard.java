@@ -32,6 +32,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorCSHelpIds;
 import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.ProtocolComponentControl;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -167,6 +168,9 @@ public class BindingWizard extends Wizard
 	// Generate/re-generate the Binding
     try
     {
+      
+    	// go ahead and add required namespaces first before generating binding content
+    	CreateWSDLElementHelper.addRequiredNamespaces(bindingGenerator.getContentGenerator(), definition);
 		Binding binding = bindingGenerator.generateBinding();
 		
       if (binding != null)
