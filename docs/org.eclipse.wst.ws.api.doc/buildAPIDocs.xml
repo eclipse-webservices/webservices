@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    name="org.eclipse.wst.ws.api.doc"
+    default="build.update.jar"
+    basedir=".">
+
+    <target name="init">
+        <property
+            name="plugin"
+            value="org.eclipse.wst.ws.api.doc" />
+        <property
+            name="version.suffix"
+            value="1.0.0" />
+        <property
+            name="full.name"
+            value="${plugin}_${version.suffix}" />
+        <property
+            name="temp.folder"
+            value="${basedir}/temp.folder" />
+        <property
+            name="plugin.destination"
+            value="${basedir}/dest" />
+        <property
+            name="build.result.folder"
+            value="${basedir}/result" />
+        <property
+            name="buildDirectory"
+            value="${basedir}/../.." />
+    </target>
+
+    <target
+        name="build.update.jar"
+        depends="init"
+        description="Build the plug-in: org.eclipse.wst.ws.api.doc for an update site.">
+        <delete dir="${temp.folder}" />
+        <mkdir dir="${temp.folder}" />
+        <antcall target="build.jars" />
+        <antcall target="gather.bin.parts">
+            <param
+                name="destination.temp.folder"
+                value="${temp.folder}/" />
+        </antcall>
+        <delete dir="${temp.folder}" />
+    </target>
+
+    <target
+        name="build.jars"
+        depends="init"
+        description="Build all the jars for the plug-in: org.eclipse.wst.ws.api.doc.">
+    </target>
+
+    <target
+        name="build.sources"
+        depends="init">
+    </target>
+
+    <target
+        name="gather.bin.parts"
+        depends="init"
+        if="destination.temp.folder">
+        <ant
+            antfile="build/javadoc.xml"
+            dir="${basedir}" />
+            
+        <!--
+        <ant
+            antfile="build/buildExtDocs.xml"
+            dir="${basedir}" />
+        -->
+    </target>
+
+    <target
+        name="build.zips"
+        depends="init">
+    </target>
+
+    <target
+        name="gather.sources"
+        depends="init"
+        if="destination.temp.folder">
+    </target>
+
+    <target
+        name="gather.logs"
+        depends="init"
+        if="destination.temp.folder">
+    </target>
+
+    <target
+        name="clean"
+        depends="init"
+        description="Clean the plug-in: org.eclipse.jst.doc.isv of all the zips, jars and logs created.">
+        <delete file="${plugin.destination}/${full.name}.jar" />
+        <delete file="${plugin.destination}/${full.name}.zip" />
+        <delete dir="${temp.folder}" />
+    </target>
+
+    <target
+        name="refresh"
+        depends="init"
+        if="eclipse.running"
+        description="Refresh this folder.">
+        <eclipse.refreshLocal
+            resource="${plugin}"
+            depth="infinite" />
+    </target>
+
+    <target
+        name="zip.plugin"
+        depends="init"
+        description="Create a zip containing all the elements for the plug-in: org.eclipse.jst.doc.isv.">
+        <delete dir="${temp.folder}" />
+        <mkdir dir="${temp.folder}" />
+        <antcall target="build.jars" />
+        <antcall target="build.sources" />
+        <antcall target="gather.bin.parts">
+            <param
+                name="destination.temp.folder"
+                value="${temp.folder}/" />
+        </antcall>
+        <antcall target="gather.sources">
+            <param
+                name="destination.temp.folder"
+                value="${temp.folder}/" />
+        </antcall>
+        <delete>
+            <fileset
+                dir="${temp.folder}"
+                includes="**/*.bin.log" />
+        </delete>
+        <zip
+            zipfile="${plugin.destination}/${full.name}.zip"
+            basedir="${temp.folder}"
+            filesonly="true" />
+        <delete dir="${temp.folder}" />
+    </target>
+
+</project>
