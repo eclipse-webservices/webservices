@@ -8,8 +8,9 @@
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
- * 20080221 146023 gilberta@ca.ibm.com - Gilbert Andrews 
  * -------- -------- -----------------------------------------------------------
+ * 20080221   146023 gilberta@ca.ibm.com - Gilbert Andrews 
+ * 20080512   222094 makandre@ca.ibm.com - Andrew Mak, Error handling when Ant template cannot be found
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
@@ -187,6 +188,12 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.dialogs.WizardDataTransferPage#displayErrorDialog(java.lang.String)
+	 */
+	protected void displayErrorDialog(String message) {
+		super.displayErrorDialog(message);
+	}
 }
 
 

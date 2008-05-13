@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060315   128711 joan@ca.ibm.com - Joan Haggarty
  * 20080221   146023 gilberta@ca.ibm.com - Gilbert Andrews 
+ * 20080512   222094 makandre@ca.ibm.com - Andrew Mak, Error handling when Ant template cannot be found
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
@@ -37,6 +38,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
@@ -103,6 +105,12 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 			IPath propertyPath = new Path(antExt.getPath());
 			URL propertyURL = FileLocator.find( wsBundle, propertyPath, null);
 			
+			if (propertyURL == null) {
+				mainPage.displayErrorDialog(
+						NLS.bind(EnvironmentUIMessages.MSG_ERR_ANT_FILES_NOT_FOUND, antExt.getPath()));
+				return false;
+			}
+			
 			URLConnection conn;
 			InputStream isProperty = null;
 			try{
@@ -117,6 +125,12 @@ public class AntFileImportWizard extends Wizard implements INewWizard {
 		    
 		    IPath wsgenPath = new Path(antExt.getWSGenPath());
 			URL fileURL = FileLocator.find( wsBundle, wsgenPath, null);
+			
+			if (fileURL == null) {
+				mainPage.displayErrorDialog(
+						NLS.bind(EnvironmentUIMessages.MSG_ERR_ANT_FILES_NOT_FOUND, antExt.getWSGenPath()));				
+				return false;
+			}
 			
 			URLConnection connWSGen;
 			InputStream isWSGen = null;
