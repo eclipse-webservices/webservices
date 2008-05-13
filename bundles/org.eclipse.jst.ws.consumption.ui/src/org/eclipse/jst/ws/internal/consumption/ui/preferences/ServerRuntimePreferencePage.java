@@ -12,6 +12,7 @@
  * 20060728	  151723 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070109   130965 kathy@ca.ibm.com - Kathy Chan
  * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080512   180135 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -35,6 +36,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
+
+import com.ibm.icu.text.Collator;
 
 
 /**
@@ -233,7 +236,9 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 			  }
 			
 		  }
-		  String[] serverLabels = convertToStringArray(serverLabelsList.toArray()); 
+		  String[] serverLabels = convertToStringArray(serverLabelsList.toArray());
+		  Collator collator = Collator.getInstance();
+		  Arrays.sort(serverLabels, collator);
 		  server_.setItems(serverLabels);
 	  }
 		
@@ -251,7 +256,8 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 		}
 
 		//sort the labels (bug 151723)
-		Arrays.sort(runtimeLabels);
+		Collator collator = Collator.getInstance();
+		Arrays.sort(runtimeLabels, collator);
 		runtime_.setItems(runtimeLabels);
 	  }
 		
@@ -356,4 +362,5 @@ public class ServerRuntimePreferencePage extends PreferencePage implements IWork
 	  }
 	  return sa;
 	}	
+	
 }
