@@ -7,8 +7,10 @@
 <shortdesc>This runtime environments is for users who prefer to develop for
 the open Apache Axis platform.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Axis runtime environment<indexterm>Web services<indexterm>overview</indexterm></indexterm></indexterm>
-<indexterm>Web services<indexterm>Axis runtime environment</indexterm></indexterm>
+<keywords><indexterm keyref="caxistover|1|AxisruntimeenvironmentWebservicesoverview"
+status="unchanged">Axis runtime environment<indexterm>Web services<indexterm>overview</indexterm></indexterm></indexterm>
+<indexterm keyref="caxistover|2|WebservicesAxisruntimeenvironment" status="unchanged">Web
+services<indexterm>Axis runtime environment<indexterm>overview</indexterm></indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <conbody>

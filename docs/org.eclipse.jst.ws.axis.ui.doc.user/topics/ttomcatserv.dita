@@ -8,10 +8,13 @@
 as its server, Tomcat must be installed and a server created before you begin
 creating your Web service.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Axis runtime environment<indexterm>creating an Apache
-Tomcat server</indexterm></indexterm><indexterm>Tomcat server<indexterm>creating
-servers for Web services</indexterm></indexterm><indexterm>Web services<indexterm>creating
-an Apache Tomcat server</indexterm></indexterm></keywords>
+<keywords><indexterm keyref="ttomcatserv|1|AxisruntimeenvironmentcreatinganApacheTomcatserver"
+status="unchanged">Axis runtime environment<indexterm>Apache Tomcat</indexterm></indexterm>
+<indexterm keyref="ttomcatserv|2|TomcatservercreatingserversforWebservices"
+status="unchanged">Apache Tomcat<indexterm>servers for Web services</indexterm></indexterm>
+<indexterm keyref="ttomcatserv|3|WebservicescreatinganApacheTomcatserver"
+status="unchanged">Web services<indexterm>creating an Apache Tomcat server</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <taskbody>
 <prereq>Install Apache Jakarta Tomcat from this URL: <xref href="http://jakarta.apache.org/tomcat"

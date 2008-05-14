@@ -17,10 +17,11 @@ client proxy and sample application to test the Web service. When you have
 completed testing, you can publish your Web service to a UDDI Business Registry
 using the Export wizard.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Axis1 runtime environment<indexterm>Web services<indexterm>Java
-beans</indexterm></indexterm></indexterm><indexterm>Web services<indexterm>Axis
-runtime environment<indexterm>creating a Web service</indexterm></indexterm></indexterm>
-</keywords>
+<keywords><indexterm keyref="twsbeana|1|Axis1runtimeenvironmentWebservicesJavabeans"
+status="unchanged">Axis runtime environment<indexterm>Web services<indexterm>Java
+beans</indexterm></indexterm></indexterm><indexterm keyref="twsbeana|2|WebservicesAxisruntimeenvironmentcreatingaWebservice"
+status="unchanged">Web services<indexterm>Axis runtime environment<indexterm>creating
+a Web service</indexterm></indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <prereq><p>Prerequisites:<ol>
