@@ -5,12 +5,7 @@
   xmlns:uddi="urn:uddi-org:api">
   <abstract xml:lang="en-US">v5_0_1_0</abstract>
 
-   <link referencedNamespace="urn:uddi-org:api">
-    <abstract xml:lang="en-US"> </abstract>
-    <abstract xml:lang="en-US"> </abstract>
-    <abstract xml:lang="en-US"> </abstract>
-    <abstract xml:lang="en-US"> </abstract>
-  </link>
+   
 
  
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060224   122752 cbrealey@ca.ibm.com - Chris Brealey
+ * 20080513   231351 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective;
@@ -39,8 +40,11 @@ public class OpenRegistryTool extends FormTool
   {
     controller_ = toolManager_.getNode().getNodeManager().getController();
     UDDIPerspective uddiPerspective = controller_.getUDDIPerspective();
-    setProperty(UDDIActionInputs.REGISTRY_NAME,uddiPerspective.getDefaultUDDIRegistry().getName());
-    setProperty(UDDIActionInputs.INQUIRY_URL,uddiPerspective.getDefaultUDDIRegistry().getInquiryURL());
+   
+    if(uddiPerspective.getDefaultUDDIRegistry() != null){
+    	setProperty(UDDIActionInputs.REGISTRY_NAME,uddiPerspective.getDefaultUDDIRegistry().getName());
+    	setProperty(UDDIActionInputs.INQUIRY_URL,uddiPerspective.getDefaultUDDIRegistry().getInquiryURL());
+    }
   }
 
   public String getSelectToolActionHref(boolean forHistory)
