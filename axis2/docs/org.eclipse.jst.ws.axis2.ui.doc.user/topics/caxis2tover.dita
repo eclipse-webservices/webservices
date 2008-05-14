@@ -8,8 +8,10 @@
 the open Apache Axis platform. Both Axis1 and Axis2 are supported by the Web
 services tools.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Axis runtime environment<indexterm>Web services<indexterm>overview</indexterm></indexterm></indexterm>
-<indexterm>Web services<indexterm>Axis runtime environment</indexterm></indexterm>
+<keywords><indexterm keyref="caxis2tover|1|AxisruntimeenvironmentWebservicesoverview"
+status="unchanged">Axis2 runtime environment<indexterm>Web services<indexterm>overview</indexterm></indexterm></indexterm>
+<indexterm keyref="caxis2tover|2|WebservicesAxisruntimeenvironment" status="unchanged">Web
+services<indexterm>Axis2 runtime environment<indexterm>overview</indexterm></indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <conbody>

@@ -14,8 +14,10 @@ tmowner="Sun Microsystems, Inc." tmtype="tm" trademark="Java">Java</tm> bean
 proxy and a sample application. The sample Web application demonstrates how
 to code a proxy file.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Axis2 runtime environment<indexterm>Web service clients</indexterm></indexterm>
-<indexterm>Web services<indexterm>Axis2 runtime environment<indexterm>Web
+<keywords><indexterm keyref="taxis2client|1|Axis2runtimeenvironmentWebserviceclients"
+status="unchanged">Axis2 runtime environment<indexterm>Web services<indexterm>clients</indexterm></indexterm></indexterm>
+<indexterm keyref="taxis2client|2|WebservicesAxis2runtimeenvironmentWebserviceclients"
+status="unchanged">Web services<indexterm>Axis2 runtime environment<indexterm>Web
 service clients</indexterm></indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>

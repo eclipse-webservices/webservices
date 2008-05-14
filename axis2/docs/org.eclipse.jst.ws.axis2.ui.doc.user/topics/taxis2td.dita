@@ -16,8 +16,10 @@ that correspond to the operations described in the WSDL document. When the
 bean is created, each method has a trivial implementation that you replace
 by editing the bean.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Axis2 runtime environment<indexterm>skeleton Web services</indexterm></indexterm>
-<indexterm>Web services<indexterm>Axis2 runtime environment<indexterm>skeleton
+<keywords><indexterm keyref="taxis2td|1|Axis2runtimeenvironmentskeletonWebservices"
+status="unchanged">Axis2 runtime environment<indexterm>Web services<indexterm>skeleton</indexterm></indexterm></indexterm>
+<indexterm keyref="taxis2td|2|WebservicesAxis2runtimeenvironmentskeletonWebservices"
+status="unchanged">Web services<indexterm>Axis2 runtime environment<indexterm>skeleton
 Web services</indexterm></indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
