@@ -1486,8 +1486,11 @@ public class FacetUtils
 	    	} else {
 	    		return true;
 	    	}
+	    } catch (NoClassDefFoundError e1) {
+	    	return false;
 	    } catch (Exception e) {  // if the Display class cannot be loaded for whatever reason
 	    	return false;
-	    }
+	    
+	    } 
 	}
 }
