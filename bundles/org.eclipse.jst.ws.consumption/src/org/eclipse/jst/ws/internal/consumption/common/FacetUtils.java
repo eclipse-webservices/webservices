@@ -14,6 +14,7 @@
  * 20071219   213356 kathy@ca.ibm.com - Kathy Chan
  * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
  * 20080429   213730 trungha@ca.ibm.com - Trung Ha
+ * 20080507   229532 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -31,6 +32,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -68,6 +70,7 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action.Type;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
+import org.osgi.framework.Bundle;
 
 import com.ibm.icu.util.StringTokenizer;
 
@@ -780,8 +783,8 @@ public class FacetUtils
       }
     };    
         
-    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (Display.getCurrent() != null)
+    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)    
+    if (displayPresent())
     {    	
 	    try
 	    {
@@ -878,7 +881,7 @@ public class FacetUtils
     // Run the runnable in another thread unless there is no UI thread (Ant scenarios)    	  
       try
       {
-    	  if (Display.getCurrent() != null)
+    	  if (displayPresent())
     	  {
     		  PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);    		  
     	  }
@@ -940,7 +943,7 @@ public class FacetUtils
     };
 
     // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (Display.getCurrent() != null)
+    if (displayPresent())
     {
     	try
         {
@@ -1021,7 +1024,7 @@ public class FacetUtils
     };
 
     // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (Display.getCurrent() != null)
+    if (displayPresent())
     {
     	try
         {
@@ -1467,4 +1470,24 @@ public class FacetUtils
   		
   		return rfv;
   	}
+	
+	// Check to see if SWT is active and the Display is present or not
+	private static boolean displayPresent() {
+		Bundle b = Platform.getBundle("org.eclipse.swt");
+	    if (b==null) {
+	    	return false;
+	    }
+	    if ((b.getState() != Bundle.RESOLVED && b.getState() != Bundle.ACTIVE) ) {
+	    	return false;
+	    }
+	    try {
+	    	if (Display.getCurrent() == null) {
+	    		return false;
+	    	} else {
+	    		return true;
+	    	}
+	    } catch (Exception e) {  // if the Display class cannot be loaded for whatever reason
+	    	return false;
+	    }
+	}
 }
