@@ -8,7 +8,7 @@
 of related ports and specifies the location of the service.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>adding services to WSDL</indexterm></indexterm>
-<indexterm>WSDL<indexterm>services</indexterm></indexterm></keywords>
+<indexterm>WSDL files<indexterm>services</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>To create a new service, complete the following steps:</p></context>
@@ -21,10 +21,10 @@ it with a unique name amongst all the services defined within in the enclosing
 WSDL document.</info></step>
 <step><cmd>Type any information about the service you want the user to read
 in the <b>Documentation</b> pane.</cmd></step>
-<step><cmd>To manage extensions, click the <b>Extensions<?Pub Caret?></b> pane.
-You can either add, sort, or remove extensions.<draft-comment> Refer to the
-related tasks for more details. Add link to the XSD Editor plugin topic for
-"Adding extension components"</draft-comment></cmd></step>
+<step><cmd>To manage extensions, click the <b>Extensions</b> pane. You can
+either add, sort, or remove extensions.<draft-comment> Refer to the related
+tasks for more details. Add link to the XSD Editor plugin topic for "Adding
+extension components"</draft-comment></cmd></step>
 </steps>
 <result><p> <b>Tip</b>: You can also create a service using the Outline view
 by right-clicking the <b>Services</b> folder and clicking <b>Add Service</b>.</p><p>You
@@ -41,4 +41,3 @@ by specifying a single address for a binding.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002156?>

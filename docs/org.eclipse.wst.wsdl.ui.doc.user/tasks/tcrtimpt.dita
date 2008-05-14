@@ -13,7 +13,8 @@ service definitions, by separating the definitions according to their level
 of abstraction.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>adding WSDL import statements</indexterm></indexterm>
-<indexterm>WSDL<indexterm>import statements</indexterm></indexterm></keywords>
+<indexterm>WSDL files<indexterm>import statements</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>To create an import statement, complete the following steps:</p></context>
@@ -29,7 +30,7 @@ following:</cmd><info><ul>
 Files</uicontrol> section.</li>
 <li>Click <uicontrol>Import Files</uicontrol> and then <uicontrol>Browse</uicontrol> to
 find and select files outside the workspace. Click <uicontrol>Finish</uicontrol> after
-completing this Import wizard.<?Pub Caret?></li>
+completing this Import wizard.</li>
 </ul>Click <uicontrol>OK</uicontrol>.</info></step>
 <step><cmd>Type any information about the import statement you want the user
 to read in the <b>Documentation</b> pane.</cmd></step>
@@ -48,4 +49,3 @@ WSDL components may now be visible within the editor.</result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002584?>

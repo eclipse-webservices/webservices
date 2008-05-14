@@ -9,8 +9,8 @@
 <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
 <meta content="concept" name="DC.Type" />
 <meta name="DC.Title" content="Relationship between UDDI and WSIL" />
-<meta name="abstract" content="The Web Services Inspection Language (WSIL) and the Universal Description, Discovery, and Integration (UDDI) specification both address issues related to Web service discovery.  However, each specification takes a different approach to the discovery of Web services.  The two specifications can be used separately or jointly; searching with WSIL can result in finding items in UDDI." />
-<meta name="description" content="The Web Services Inspection Language (WSIL) and the Universal Description, Discovery, and Integration (UDDI) specification both address issues related to Web service discovery.  However, each specification takes a different approach to the discovery of Web services.  The two specifications can be used separately or jointly; searching with WSIL can result in finding items in UDDI." />
+<meta name="abstract" content="The Web Services Inspection Language (WSIL) and the Universal Description, Discovery, and Integration (UDDI) specification both address issues related to Web service discovery. However, each specification takes a different approach to the discovery of Web services. The two specifications can be used separately or jointly; searching with WSIL can result in finding items in UDDI." />
+<meta name="description" content="The Web Services Inspection Language (WSIL) and the Universal Description, Discovery, and Integration (UDDI) specification both address issues related to Web service discovery. However, each specification takes a different approach to the discovery of Web services. The two specifications can be used separately or jointly; searching with WSIL can result in finding items in UDDI." />
 <meta content="UDDI, relationship with WSIL, WSIL, relationship with UDDI" name="DC.subject" />
 <meta content="UDDI, relationship with WSIL, WSIL, relationship with UDDI" name="keywords" />
 <meta scheme="URI" name="DC.Relation" content="../concepts/cwsil.html" />
@@ -33,55 +33,54 @@
 
 <div><p>The Web Services Inspection Language (WSIL) and the Universal Description,
 Discovery, and Integration (UDDI) specification both address issues related
-to Web service discovery.  However, each specification takes a different
-approach to the discovery of Web services.  The two specifications can
-be used separately or jointly; searching with WSIL can result in finding items
-in UDDI.</p>
+to Web service discovery. However, each specification takes a different approach
+to the discovery of Web services. The two specifications can be used separately
+or jointly; searching with WSIL can result in finding items in UDDI.</p>
 
 <p>The UDDI specification addresses Web service discovery through the use
-of a centralized model.  One or more repositories are created to house
-information about businesses and the services they offer.  Requests and
-updates pertaining to the service and business related information are issued
-directly against the repositories.  In addition, UDDI prescribes a specific
-format for a portion of the stored description information and, to facilitate
-advanced (focused) searching, assumes that other description information will
-be stored and registered within the system as well.</p>
+of a centralized model. One or more repositories are created to house information
+about businesses and the services they offer. Requests and updates pertaining
+to the service and business related information are issued directly against
+the repositories. In addition, UDDI prescribes a specific format for a portion
+of the stored description information and, to facilitate advanced (focused)
+searching, assumes that other description information will be stored and registered
+within the system as well.</p>
 
 <p>UDDI systems facilitate focused discovery patterns since these systems
-are based on organized repositories that provide advanced searching capabilities. 
-This helps requestors locate potential communication partners.  In order
-to provide advanced functionality, however, UDDI requires the deployment and
+are based on organized repositories that provide advanced searching capabilities.
+This helps requestors locate potential communication partners. In order to
+provide advanced functionality, however, UDDI requires the deployment and
 maintenance of a certain amount of infrastructure, thus increasing the cost
-of operation.  In addition, unless the service descriptions are stored
-only within UDDI, there is a cost associated with keeping the different versions
+of operation. In addition, unless the service descriptions are stored only
+within UDDI, there is a cost associated with keeping the different versions
 synchronized.</p>
 
 <p>The WSIL specification relies on a completely distributed model for providing
-service-related information.  The service descriptions can be stored
-at any location, and requests to retrieve the information are generally made
-directly to the entities that are offering the services.  The WSIL specification
-does not stipulate any particular format for the service information. 
-It relies on other standards, including UDDI, to define the description formats. 
-The WSIL specification also relies on existing Web technologies and infrastructure
+service-related information. The service descriptions can be stored at any
+location, and requests to retrieve the information are generally made directly
+to the entities that are offering the services. The WSIL specification does
+not stipulate any particular format for the service information. It relies
+on other standards, including UDDI, to define the description formats. The
+WSIL specification also relies on existing Web technologies and infrastructure
 to provide mechanisms for publishing and retrieving its documents.</p>
 
 <p>WSIL provides the ability to disseminate service-related information through
-existing protocols directly from the point at which the service is being offered. 
+existing protocols directly from the point at which the service is being offered.
 This enables focused discovery to be performed on a single target; however,
 because of its decentralized and distributed model, WSIL is not a good mechanism
 for executing focused discovery if the communication partner is unknown.</p>
 
 <p>The UDDI and WSIL specifications should be viewed as complementary technologies
-to be used either together or separately depending on the situation. 
-For example, a UDDI repository could be populated based on the results found
-when performing a search for WSIL documents.  Likewise, a UDDI repository
-may itself be discovered when a requester retrieves a WSIL document that references
-an entry in the repository.  In environments where the advanced functionality
-afforded by UDDI is not required and where constraints do not allow for its
-deployment, the WSIL mechanism may provide all of the capabilities that are
-needed.  In situations where data needs to be centrally managed, a UDDI
-solution alone may provide the best fit.  The UDDI and WSIL specifications
-should not be viewed as mutually exclusive.</p>
+to be used either together or separately depending on the situation. For example,
+a UDDI repository could be populated based on the results found when performing
+a search for WSIL documents. Likewise, a UDDI repository may itself be discovered
+when a requester retrieves a WSIL document that references an entry in the
+repository. In environments where the advanced functionality afforded by UDDI
+is not required and where constraints do not allow for its deployment, the
+WSIL mechanism may provide all of the capabilities that are needed. In situations
+where data needs to be centrally managed, a UDDI solution alone may provide
+the best fit. The UDDI and WSIL specifications should not be viewed as mutually
+exclusive.</p>
 
 <div class="note"><span class="notetitle">Note:</span> Both UDDI and WSIL contain only references to WSDL - they do not contain
 the WSDL documents themselves.</div>

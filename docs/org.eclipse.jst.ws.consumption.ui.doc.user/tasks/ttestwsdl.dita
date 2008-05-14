@@ -13,8 +13,10 @@ applications can discover WSDL documents and bind with them to execute transacti
 or perform other business processes. The Web Services Explorer allows you
 to explore, import, and test WSDL documents.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>testing with the Web Services Explorer</indexterm></indexterm>
-<indexterm>Web services<indexterm>testing with the Web Services Explorer</indexterm></indexterm>
+<keywords><indexterm keyref="ttestwsdl|1|WSDLtestingwiththeWebServicesExplorer"
+status="unchanged">WSDL files<indexterm>testing with the Web Services Explorer</indexterm></indexterm>
+<indexterm keyref="ttestwsdl|2|WebservicestestingwiththeWebServicesExplorer"
+status="unchanged">Web services<indexterm>testing with the Web Services Explorer</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>

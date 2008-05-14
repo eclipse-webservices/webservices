@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tmonitor" xml:lang="en-us">
@@ -10,9 +10,11 @@
 <shortdesc>Once you have created your Web service and Web service client,
 you can monitor the Web service's SOAP traffic using the TCP/IP Monitor.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>TCP/IP Monitor<indexterm>testing Web services</indexterm></indexterm>
-<indexterm>Web services<indexterm>testing traffic</indexterm><indexterm>monitoring
-TCP/IP traffic</indexterm></indexterm></keywords>
+<keywords><indexterm keyref="tmonitor|1|TCP/IPMonitortestingWebservices" status="unchanged">TCP/IP
+Monitor<indexterm>testing Web services</indexterm></indexterm><indexterm keyref="tmonitor|2|Webservicestestingtraffic"
+status="unchanged">Web services<indexterm>testing traffic</indexterm></indexterm>
+<indexterm keyref="tmonitor|3|WebservicesmonitoringTCP/IPtraffic" status="unchanged">Web
+services<indexterm>monitoring TCP/IP traffic</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <prereq><p> Prerequisites: </p><ul>
@@ -53,13 +55,15 @@ the requests from the Web browser are modified so that the HTTP header points
 to the remote machine and separated if multiple HTTP requests are received
 in the same connection. If the TCP/IP option is selected, all the requests
 are sent byte for byte. </chdesc></chrow>
+<chrow><choption>Timeout</choption><chdesc>Specify how long you would like
+the monitor to wait before attempting to connect again.</chdesc></chrow>
 </choicetable>
 </step>
 <step><cmd>In order to route the Web service through the monitor, the endpoint
-of the Web service client needs to be changed. The TCP/IP Monitor listens
-on port 9081. In the Web browser window used in step 1, invoke the setEndPoint
-method, and change the endpoint so that it directs to port 9081. For example,
-the default would be: <codeph>http://localhost:9081/web_module_context_root/servlet/rpcrouter</codeph> Invoke
+of the Web service client must be changed. The TCP/IP Monitor listens on port
+9081. In the Web browser window used in step 1, invoke the setEndPoint method,
+and change the endpoint so that it directs to port 9081. For example, the
+default would be: <codeph>http://localhost:9081/web_module_context_root/servlet/rpcrouter</codeph> Invoke
 the getEndPoint method again to ensure that your change has been implemented.</cmd>
 </step>
 <step><cmd>Select a Web service method in the Methods pane. Invoke this method.</cmd>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="twsdlval" xml:lang="en-us">
@@ -12,8 +12,10 @@ the WSDL that is generated should be valid. However, if you have imported
 a WSDL file, or if you are creating a WSDL file, you should validate the WSDL
 to ensure it is valid.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>validating</indexterm></indexterm><indexterm>Web
-services<indexterm>validating WSDL</indexterm></indexterm></keywords>
+<keywords><indexterm keyref="twsdlval|1|WSDLvalidating" status="unchanged">WSDL
+files<indexterm>validating</indexterm></indexterm><indexterm keyref="twsdlval|2|WebservicesvalidatingWSDL"
+status="unchanged">Web services<indexterm>validating WSDL</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>If you have selected Require or Suggest WS-I Compliance on the

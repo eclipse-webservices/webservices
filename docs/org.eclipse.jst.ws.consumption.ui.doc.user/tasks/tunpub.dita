@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tunpub" xml:lang="en-us">
@@ -12,11 +12,14 @@ from a registry</searchtitle>
 <shortdesc>After you have published a business entity, Web service, or service
 interface, you can remove or unpublish it through the Web Services Explorer.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>removing from a UDDI registry</indexterm></indexterm>
-<indexterm>service interfaces<indexterm>removing from a UDDI registry</indexterm></indexterm>
-<indexterm>business entities<indexterm>removing from a UDDI registry</indexterm></indexterm>
-<indexterm>UDDI<indexterm>removing services from a registry</indexterm></indexterm>
-</keywords>
+<keywords><indexterm keyref="tunpub|1|WebservicesremovingfromaUDDIregistry"
+status="unchanged">Web services<indexterm>removing from a UDDI registry</indexterm></indexterm>
+<indexterm keyref="tunpub|2|serviceinterfacesremovingfromaUDDIregistry" status="unchanged">service
+interfaces<indexterm>removing from a UDDI registry</indexterm></indexterm>
+<indexterm keyref="tunpub|3|businessentitiesremovingfromaUDDIregistry" status="unchanged">business
+entities<indexterm>removing from a UDDI registry</indexterm></indexterm><indexterm
+keyref="tunpub|4|UDDIremovingservicesfromaregistry" status="unchanged">UDDI<indexterm>removing
+services from a registry</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>

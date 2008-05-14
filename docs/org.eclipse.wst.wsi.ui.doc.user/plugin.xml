@@ -18,8 +18,8 @@
 <plugin>
 
 <extension point="org.eclipse.help.toc">
-    <toc file="wswsitest_toc.xml"/>  
-       <index path="index/"/> 
+    <toc file="wswsitest_toc.xml"/> 
+       <index path="index/"/>  
 </extension>
 
 	<extension point="org.eclipse.help.index">

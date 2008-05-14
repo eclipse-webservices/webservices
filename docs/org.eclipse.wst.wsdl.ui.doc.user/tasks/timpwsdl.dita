@@ -11,8 +11,9 @@
 WSDL editor. Opening them in the WSDL editor provides you with an opportunity
 to have a structured viewing of the WSDL file.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>importing</indexterm></indexterm><indexterm>Web
-services<indexterm>importing WSDL</indexterm></indexterm></keywords>
+<keywords><indexterm>WSDL files<indexterm>importing</indexterm></indexterm>
+<indexterm>Web services<indexterm>importing WSDL files</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>The Web Service wizard assists you in creating a new Web service
@@ -33,7 +34,7 @@ System</uicontrol></menucascade> and click  <uicontrol>Next</uicontrol>.</cmd>
 </step>
 <step><cmd>Click <uicontrol>Browse</uicontrol> on the next page of the wizard
 to select the directories from which you would like to add the WSDL.</cmd>
-</step><?Pub Caret?>
+</step>
 <step><cmd>In the import selection panes, use the following methods to select
 exactly the resources you want to add:  </cmd><info><ul>
 <li>Expand the hierarchies in the left pane and select or clear the checkboxes
@@ -67,4 +68,3 @@ scope="peer"> Using the WSDL Explorer</xref>.  </p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000003678?>

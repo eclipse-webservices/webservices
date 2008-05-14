@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tgenwsil" xml:lang="en-us">
@@ -12,8 +12,8 @@ mechanism that is an alternative to UDDI as well as complementary to UDDI.
 WSIL can be generated at any point in the Web service development cycle once
 the WSDL file for the Web service has been created.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web services<indexterm>generating WSIL</indexterm></indexterm>
-<indexterm>WSIL<indexterm>generating</indexterm></indexterm></keywords>
+<keywords><indexterm>Web services<indexterm>generating WSIL files</indexterm></indexterm>
+<indexterm>WSIL files<indexterm>generating</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <prereq><b>Prerequisites:</b> In order to generate a WSIL file, you need to

@@ -7,8 +7,9 @@
 <shortdesc>You can create a new, empty WSDL file, then edit it using the WSDL
 editor.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>creating</indexterm></indexterm><indexterm>Web
-services<indexterm>creating WSDL</indexterm></indexterm></keywords>
+<keywords><indexterm>WSDL files<indexterm>creating</indexterm></indexterm>
+<indexterm>Web services<indexterm>creating WSDL files</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>To create a WSDL file, complete the following steps:</p></context>
@@ -43,7 +44,7 @@ messages. You can then modify these to meet the requirements of your Web service
 options you want to use in the <uicontrol>Protocol</uicontrol> drop down.
 The options are SOAP and HTTP. Use the SOAP protocol when you want to exchange
 structured and typed information. Use the HTTP protocol when you want your
-application client to just request or update information.</cmd></substep><?Pub Caret1?>
+application client to just request or update information.</cmd></substep>
 <substep><cmd></cmd><info>If you select SOAP you can then select the encoding
 style you want to use:<ul>
 <li><uicontrol>document literal</uicontrol>. Document style messages, literal
@@ -92,4 +93,3 @@ href="../images/httpskel.gif" placement="break"></image></p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000005363?>

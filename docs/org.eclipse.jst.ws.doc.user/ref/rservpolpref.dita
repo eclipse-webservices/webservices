@@ -9,9 +9,11 @@ level of compliance with the WS-I Simple SOAP Binding Profile (SSBP) and WS-I
 Attachement Profile (AP). They can be found on the Service Policies preferences
 page.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>preferences<indexterm>Web services<indexterm>WS-I</indexterm></indexterm></indexterm>
-<indexterm>Web services<indexterm>preferences<indexterm>WS-I</indexterm></indexterm></indexterm>
-<indexterm>WS-I<indexterm>preferences</indexterm></indexterm></keywords>
+<keywords><indexterm keyref="rservpolpref|1|preferencesWebservicesWS-I" status="new">preferences<indexterm>Web
+services<indexterm>WS-I</indexterm></indexterm></indexterm><indexterm keyref="rservpolpref|2|WebservicespreferencesWS-I"
+status="new">Web services<indexterm>preferences<indexterm>WS-I</indexterm></indexterm></indexterm>
+<indexterm keyref="rservpolpref|3|WS-Ipreferences" status="changed">Web services<indexterm>interoperability<indexterm>preferences</indexterm></indexterm
+></indexterm></keywords>
 </metadata></prolog>
 <refbody>
 <section><title>Setting WS-I preferences</title><p>WS-I Basic Profile is a

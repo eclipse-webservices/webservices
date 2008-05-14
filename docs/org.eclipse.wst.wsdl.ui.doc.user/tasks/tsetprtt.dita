@@ -10,7 +10,7 @@ A port type is referenced by a binding object. Each binding references exactly
 one port type. Since each port refers to exactly one binding, each port has
 exactly one port type.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>setting port types</indexterm></indexterm>
+<keywords><indexterm>WSDL files<indexterm>setting port types</indexterm></indexterm>
 <indexterm>Web services<indexterm>setting port types</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
@@ -89,10 +89,10 @@ to filter the list or leave the field blank to view all.</cmd></step>
 <choice><b>Workspace</b>: lists the port types available in your workspace.</choice>
 <choice><b>Enclosing Project</b>: lists the port types available in the project
 that contains your file.</choice>
-<choice><b>Working Sets</b>:<?Pub Caret?> lists the port types available in
-a specified set of files. To specify a working set, click <b>Choose</b>. You
-can select files from an existing working set or create a new working set.
-Once you have selected the files, click <b>OK</b>.</choice>
+<choice><b>Working Sets</b>: lists the port types available in a specified
+set of files. To specify a working set, click <b>Choose</b>. You can select
+files from an existing working set or create a new working set. Once you have
+selected the files, click <b>OK</b>.</choice>
 </choices>
 </step>
 <step><cmd>The port types will be listed. Select one and click <b>OK</b>.
@@ -112,4 +112,3 @@ you wish the user to read in the <b>Documentation</b> pane.</cmd></step>
 </related-links>
 </task>
 </task>
-<?Pub *0000005389?>

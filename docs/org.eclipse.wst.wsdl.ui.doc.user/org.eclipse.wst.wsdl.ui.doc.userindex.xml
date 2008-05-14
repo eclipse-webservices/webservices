@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <index>
-  <entry keyword="WSDL">
+  <entry keyword="WSDL files">
     <entry keyword="importing">
       <topic href="tasks/timpwsdl.html#timpwsdl" title="Importing a WSDL file"/>
     </entry>
@@ -26,7 +26,7 @@
       <topic href="tasks/taddoper.html#taddoper" title="Adding an operation"/>
     </entry>
     <entry keyword="messages">
-      <topic href="tasks/taddmess.html#taddmess" title="Adding a message"/>
+      <topic href="tasks/taddmess.html#addingamessage" title="Adding a message"/>
     </entry>
     <entry keyword="message parts">
       <topic href="tasks/taddpart.html#taddpart" title="Adding a part to a message"/>
@@ -39,13 +39,13 @@
     </entry>
   </entry>
   <entry keyword="Web services">
-    <entry keyword="importing WSDL">
+    <entry keyword="importing WSDL files">
       <topic href="tasks/timpwsdl.html#timpwsdl" title="Importing a WSDL file"/>
     </entry>
-    <entry keyword="creating WSDL">
+    <entry keyword="creating WSDL files">
       <topic href="tasks/tcrtwsdl.html#tcrtwsdl" title="Creating a new WSDL file"/>
     </entry>
-    <entry keyword="editing WSDL">
+    <entry keyword="editing WSDL files">
       <topic href="tasks/tedtwsdl.html#tedtwsdl" title="Editing WSDL files"/>
     </entry>
     <entry keyword="adding services to WSDL">
@@ -69,7 +69,7 @@
       <topic href="tasks/taddoper.html#taddoper" title="Adding an operation"/>
     </entry>
     <entry keyword="adding WSDL messages">
-      <topic href="tasks/taddmess.html#taddmess" title="Adding a message"/>
+      <topic href="tasks/taddmess.html#addingamessage" title="Adding a message"/>
     </entry>
     <entry keyword="adding WSDL message parts">
       <topic href="tasks/taddpart.html#taddpart" title="Adding a part to a message"/>

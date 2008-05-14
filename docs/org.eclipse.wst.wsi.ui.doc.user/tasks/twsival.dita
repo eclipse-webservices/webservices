@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="twsival" xml:lang="en-us">
@@ -11,9 +11,11 @@
 creation, you can validate WS-I compliance of the SOAP traffic a Web service
 produces through the TCP/IP Monitor.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WS-I<indexterm>validating</indexterm></indexterm><indexterm>Web
-services<indexterm>validating WS-I compliance<indexterm>interoperability<indexterm>validating</indexterm></indexterm></indexterm></indexterm>
-</keywords>
+<keywords><indexterm keyref="twsival|1|WS-Ivalidating" status="unchanged">Web
+services<indexterm>interoperability<indexterm>validating</indexterm></indexterm></indexterm>
+<indexterm keyref="twsival|2|WebservicesvalidatingWS-Icomplianceinteroperabilityvalidating"
+status="unchanged">Web services<indexterm>validating WS-I compliance<indexterm>interoperability<indexterm>validating</indexterm></indexterm></indexterm
+></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <prereq> Prerequisites: Before you can use the validation tool to ensure that

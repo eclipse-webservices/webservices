@@ -9,7 +9,7 @@ and outputs. The operation element may also contain a fault sub-element that
 describes any error data the operation may return.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>adding WSDL operations</indexterm></indexterm>
-<indexterm>WSDL<indexterm>operations</indexterm></indexterm></keywords>
+<indexterm>WSDL files<indexterm>operations</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <context>Using these, you can declare four transmission primitives that an
@@ -42,7 +42,7 @@ you wish the user to read in the  <b>Documentation</b> pane.</cmd></step>
 </steps>
 <result><p> <b>Tip</b>: You can also create a new operation for your port
 type using the Outline view. Right click on a port type in the <uicontrol>Port
-Type</uicontrol> folder and select <uicontrol>Add Operation<?Pub Caret?></uicontrol>.</p></result>
+Type</uicontrol> folder and select <uicontrol>Add Operation</uicontrol>.</p></result>
 </taskbody>
 <related-links>
 <linklist><title>Related concepts</title>
@@ -54,4 +54,3 @@ Type</uicontrol> folder and select <uicontrol>Add Operation<?Pub Caret?></uicont
 </linklist>
 </related-links>
 </task>
-<?Pub *0000002727?>

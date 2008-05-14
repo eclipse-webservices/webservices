@@ -8,8 +8,9 @@
 editor. You can also import WSDL files you have created into the workbench
 and edit them in the WSDL editor.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>editing</indexterm></indexterm><indexterm>Web
-services<indexterm>editing WSDL</indexterm></indexterm></keywords>
+<keywords><indexterm>WSDL files<indexterm>editing</indexterm></indexterm>
+<indexterm>Web services<indexterm>editing WSDL files</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>To open a WSDL file in the WSDL editor, double-click it in the
@@ -77,8 +78,8 @@ messages exchanged. You cannot edit any types directly using this folder.</li>
 <li> <b>Services</b>, which are used to aggregate a set of related ports.</li>
 <li> <b>Bindings</b>, which specify concrete protocol and data format specifications
 for the operations and messages defined by a particular port type.</li>
-<li> <b>Port Type</b>, which is <?Pub Caret?>a set of abstract operations.
-Each operation refers to an input message and output messages. </li>
+<li> <b>Port Type</b>, which is a set of abstract operations. Each operation
+refers to an input message and output messages. </li>
 <li> <b>Messages</b>, which represent an abstract definition of the data being
 transmitted. A message consists of logical parts, each of which is associated
 with a definition within some type system.</li>
@@ -97,4 +98,3 @@ with a definition within some type system.</li>
 </related-links>
 </task>
 </task>
-<?Pub *0000004969?>

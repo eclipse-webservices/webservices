@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tbkmrk" xml:lang="en-us">
@@ -13,7 +13,7 @@ interface, WSIL, or WSDL service to Favorites</searchtitle>
 interface, WSIL, or WSDL service to the Web Service Explorer Favorites if
 you plan to access them in the future.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>Web Service Explorer<indexterm>adding Favorites</indexterm></indexterm>
+<keywords><indexterm>Web Services Explorer<indexterm>adding Favorites</indexterm></indexterm>
 <indexterm>WSIL<indexterm>adding to Favorites</indexterm></indexterm><indexterm>WSDL<indexterm>adding
 to Favorites</indexterm></indexterm></keywords>
 </metadata></prolog>

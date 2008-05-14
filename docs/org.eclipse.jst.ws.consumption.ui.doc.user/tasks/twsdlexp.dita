@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="twsdlexp" xml:lang="en-us">
 <title>Exploring WSDL using the WSDL Explorer</title>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>exploring</indexterm></indexterm><indexterm>Web
-services<indexterm>exploring WSDL</indexterm></indexterm></keywords>
+<keywords><indexterm>WSDL files<indexterm>exploring</indexterm></indexterm>
+<indexterm>Web services<indexterm>exploring WSDL files</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <taskbody>
 <prereq>Prerequisites: To use the WSDL Explorer, you must have a valid URL

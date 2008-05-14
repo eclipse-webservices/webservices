@@ -9,7 +9,7 @@ WSDL is not tied exclusively to a specific typing system, but it uses the
 W3C XML Schema specification as its default choice.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>creating WSDL types</indexterm></indexterm>
-<indexterm>WSDL<indexterm>types</indexterm></indexterm></keywords>
+<indexterm>WSDL files<indexterm>types</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>WSDL allows type systems to be added via extensibility elements.
@@ -19,8 +19,7 @@ for the type definitions.</p><p>To add an XSD type or element to your WSDL
 file: </p></context>
 <steps-unordered>
 <step><cmd>In the Design view, click the arrow icon to the right of the port
-type object to open that operation in the XML <?Pub Caret?>schema editor.</cmd>
-</step>
+type object to open that operation in the XML schema editor.</cmd></step>
 </steps-unordered>
 <result><p>For more information about XML schemas, see the <xref format="html"
 href="/../../org.eclipse.wst.xsdeditor.doc.user/topics/cxmlsced.dita" scope="peer">XML
@@ -36,4 +35,3 @@ schema editor documentation</xref> for links to online resources.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000001777?>

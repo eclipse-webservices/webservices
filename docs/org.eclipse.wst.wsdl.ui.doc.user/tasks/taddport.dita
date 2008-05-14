@@ -9,7 +9,7 @@ for a binding. The port contains a 'binding' attribute that references a binding
 and an address element that provides a specification for the endpoint.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>adding WSDL ports</indexterm></indexterm>
-<indexterm>WSDL<indexterm>ports</indexterm></indexterm></keywords>
+<indexterm>WSDL files<indexterm>ports</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <context><p>Services are used to group sets of related ports together. Ports
@@ -37,11 +37,9 @@ the port in the service object. You can change the information you entered
 about this port any time in the <uicontrol>General</uicontrol> pane.</info>
 </step>
 <step><cmd>Type any information about the port you want the user to read in
-the <b>Documentation</b> pane of the Properties vie<?Pub Caret?>w.</cmd></step>
+the <b>Documentation</b> pane of the Properties view.</cmd></step>
 <step><cmd>To manage extensions, click the <b>Extensions</b> pane. You can
-either add, sort, or remove extensions. <draft-comment>Refer to the related
-tasks for more details. Add link to XSD Editor in related tasks section.</draft-comment></cmd>
-</step>
+either add, sort, or remove extensions. </cmd></step>
 </steps>
 <result><p>You can create a new binding for your port, re-use an existing
 one, or import one. A <b>Binding</b> defines the message format and protocol
@@ -62,4 +60,3 @@ in both the Design view and the Outline view.</p></result>
 </linklist>
 </related-links>
 </task>
-<?Pub *0000003562?>

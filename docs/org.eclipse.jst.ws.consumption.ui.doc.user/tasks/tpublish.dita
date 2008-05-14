@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tpublish" xml:lang="en-us">
@@ -11,8 +11,9 @@
 a Web service's endpoint and where its WSDL file resides. The WSDL file lists
 the operations that service provides.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>UDDI<indexterm>publishing a Web service</indexterm></indexterm>
-<indexterm>Web services<indexterm>publishing to a UDDI registry</indexterm></indexterm>
+<keywords><indexterm keyref="tpublish|1|UDDIpublishingaWebservice" status="unchanged">UDDI<indexterm>publishing
+a Web service</indexterm></indexterm><indexterm keyref="tpublish|2|WebservicespublishingtoaUDDIregistry"
+status="unchanged">Web services<indexterm>publishing<indexterm>UDDI registry</indexterm></indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>

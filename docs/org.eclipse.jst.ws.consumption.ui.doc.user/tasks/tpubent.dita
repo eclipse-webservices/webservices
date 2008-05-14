@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
  "task.dtd">
 <task id="tpubent" xml:lang="en-us">
@@ -8,10 +8,11 @@
 has published a service.&nbsp; Before you can publish a business service,
 you must publish a business entity.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>UDDI<indexterm>publishing a business entity</indexterm></indexterm>
-<indexterm>Web services<indexterm>publishing a business entity</indexterm></indexterm>
-<indexterm>business entities<indexterm>publishing to UDDI</indexterm></indexterm>
-</keywords>
+<keywords><indexterm keyref="tpubent|1|UDDIpublishingabusinessentity" status="unchanged">UDDI<indexterm>publishing
+a business entity</indexterm></indexterm><indexterm keyref="tpubent|2|Webservicespublishingabusinessentity"
+status="unchanged">Web services<indexterm>publishing<indexterm>business entities</indexterm></indexterm></indexterm>
+<indexterm keyref="tpubent|3|businessentitiespublishingtoUDDI" status="unchanged">business
+entities<indexterm>publishing to UDDI</indexterm></indexterm></keywords>
 </metadata></prolog>
 <taskbody>
 <prereq>Prerequisites:<ol>

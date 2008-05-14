@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
  "concept.dtd">
 <concept id="cwsdl" xml:lang="en-us">
@@ -9,8 +9,8 @@ for describing networked, XML-based services. It provides a simple way for
 service providers to describe the basic format of requests to their systems
 regardless of the underlying run-time implementation.</shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>overview</indexterm></indexterm><indexterm>Web
-services<indexterm>WSDL</indexterm></indexterm></keywords>
+<keywords><indexterm>WSDL files<indexterm>overview</indexterm></indexterm>
+<indexterm>Web services<indexterm>WSDL</indexterm></indexterm></keywords>
 </metadata></prolog>
 <conbody>
 <p>WSDL defines an XML format for describing network services as a set of

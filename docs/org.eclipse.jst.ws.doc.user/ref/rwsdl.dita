@@ -11,8 +11,10 @@ the reuse of abstract definitions: messages, which are abstract descriptions
 of the data being exchanged, and port types which are abstract collections
 of operations. </shortdesc>
 <prolog><metadata>
-<keywords><indexterm>WSDL<indexterm>reference</indexterm></indexterm><indexterm>Web
-services<indexterm>WSDL reference</indexterm></indexterm></keywords>
+<keywords><indexterm keyref="rwsdl|1|WSDLreference" status="changed">WSDL
+files<indexterm>reference</indexterm></indexterm><indexterm keyref="rwsdl|2|WebservicesWSDLreference"
+status="new">Web services<indexterm>WSDL reference</indexterm></indexterm>
+</keywords>
 </metadata></prolog>
 <refbody>
 <section><p>The concrete protocol and data format specifications for a particular

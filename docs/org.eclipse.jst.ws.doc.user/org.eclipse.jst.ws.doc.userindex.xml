@@ -36,6 +36,23 @@
     </entry>
     <entry keyword="preferences">
       <topic href="tasks/twspref.html#settingwebservicespreferences" title="Setting Web services preferences"/>
+      <entry keyword="Axis">
+        <topic href="ref/raxispref.html#axisemitterpreferences" title="Axis emitter preferences"/>
+      </entry>
+      <entry keyword="wizards">
+        <topic href="ref/rwswizpref.html#webserviceswizardsbasicpreferences" title="Web services wizards basic preferences"/>
+      </entry>
+      <entry keyword="WSDL">
+        <topic href="ref/rwsdlpref.html#wsdlfilespreferences" title="WSDL file preferences"/>
+      </entry>
+      <entry keyword="WS-I">
+        <topic href="ref/rservpolpref.html#servicepoliciespreferences" title="WS-I compliance preferences"/>
+      </entry>
+    </entry>
+    <entry keyword="interoperability">
+      <entry keyword="preferences">
+        <topic href="ref/rservpolpref.html#servicepoliciespreferences" title="WS-I compliance preferences"/>
+      </entry>
     </entry>
     <entry keyword="creating">
       <entry keyword="overview">
@@ -43,7 +60,7 @@
       </entry>
     </entry>
   </entry>
-  <entry keyword="WSDL">
+  <entry keyword="WSDL files">
     <entry keyword="overview">
       <topic href="concepts/cwsdl.html#cwsdl" title="Web Services Description Language (WSDL)"/>
     </entry>
@@ -56,16 +73,18 @@
       <topic href="concepts/csoap.html#csoap" title="SOAP"/>
     </entry>
   </entry>
-  <entry keyword="WSIL">
+  <entry keyword="WSIL files">
     <entry keyword="overview">
       <topic href="concepts/cwsil.html#cwsil" title="Web Services Inspection Language (WSIL)"/>
-    </entry>
-    <entry keyword="relationship with UDDI">
-      <topic href="concepts/cwsilud.html#cwsilud" title="Relationship between UDDI and WSIL"/>
     </entry>
   </entry>
   <entry keyword="UDDI">
     <entry keyword="relationship with WSIL">
+      <topic href="concepts/cwsilud.html#cwsilud" title="Relationship between UDDI and WSIL"/>
+    </entry>
+  </entry>
+  <entry keyword="WSIL">
+    <entry keyword="relationship with UDDI">
       <topic href="concepts/cwsilud.html#cwsilud" title="Relationship between UDDI and WSIL"/>
     </entry>
   </entry>
@@ -81,12 +100,10 @@
     <topic href="concepts/cjsr109.html#cjsr109" title="JSR 109 - Implementing Enterprise Web services"/>
   </entry>
   <entry keyword="Web services interoperability">
-    <entry keyword="traffic compliance">
-      <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
-    </entry>
+    <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
   </entry>
   <entry keyword="interoperability">
-    <entry keyword="Web service traffic compliance">
+    <entry keyword="Web services">
       <topic href="concepts/cwsiover.html#cwsiover" title="Web services interoperability (WS-I)"/>
     </entry>
   </entry>
@@ -103,6 +120,18 @@
   <entry keyword="preferences">
     <entry keyword="Web services">
       <topic href="tasks/twspref.html#settingwebservicespreferences" title="Setting Web services preferences"/>
+      <entry keyword="Axis">
+        <topic href="ref/raxispref.html#axisemitterpreferences" title="Axis emitter preferences"/>
+      </entry>
+      <entry keyword="wizards">
+        <topic href="ref/rwswizpref.html#webserviceswizardsbasicpreferences" title="Web services wizards basic preferences"/>
+      </entry>
+      <entry keyword="WSDL">
+        <topic href="ref/rwsdlpref.html#wsdlfilespreferences" title="WSDL file preferences"/>
+      </entry>
+      <entry keyword="WS-I">
+        <topic href="ref/rservpolpref.html#servicepoliciespreferences" title="WS-I compliance preferences"/>
+      </entry>
     </entry>
   </entry>
 </index>

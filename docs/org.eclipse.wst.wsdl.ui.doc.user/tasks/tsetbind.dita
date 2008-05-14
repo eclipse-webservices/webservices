@@ -12,7 +12,7 @@ closely to that of the port type. The binding contains extensibility elements
 Each port within a service references exactly one binding.</shortdesc>
 <prolog><metadata>
 <keywords><indexterm>Web services<indexterm>bindings<indexterm>creating</indexterm></indexterm><indexterm>setting
-WSDL bindings</indexterm></indexterm><indexterm>WSDL<indexterm>bindings</indexterm></indexterm>
+WSDL bindings</indexterm></indexterm><indexterm>WSDL files<indexterm>bindings</indexterm></indexterm>
 </keywords>
 </metadata></prolog>
 <taskbody>
@@ -62,8 +62,7 @@ want to use.</cmd></step>
 <context>To regenerate a binding, complete the following steps:</context>
 <steps>
 <step><cmd>Right-click the binding you want to regenerate.</cmd></step>
-<step><cmd>Select <uicontrol>Generate Binding Content</uicontrol>.</cmd><?Pub Caret1?>
-</step>
+<step><cmd>Select <uicontrol>Generate Binding Content</uicontrol>.</cmd></step>
 <step><cmd>Specify the required binding information. If you are modifying
 an existing binding, select the <uicontrol>Overwrite existing binding information</uicontrol> check
 box.</cmd></step>
@@ -110,4 +109,3 @@ you wish the user to read in the <b>Documentation</b> pane.</cmd></step>
 </related-links>
 </task>
 </task>
-<?Pub *0000005174?>

@@ -43,7 +43,7 @@
     <entry keyword="discovering">
       <topic href="tasks/tdiscov.html#tdiscov" title="Discovering Web Services"/>
     </entry>
-    <entry keyword="exploring WSDL">
+    <entry keyword="exploring WSDL files">
       <topic href="tasks/twsdlexp.html#twsdlexp" title="Exploring WSDL using the WSDL Explorer"/>
     </entry>
     <entry keyword="testing with the Web Services Explorer">
@@ -55,11 +55,13 @@
     <entry keyword="adding a registry to the Web Services Explorer">
       <topic href="tasks/taddreg.html#taddreg" title="Adding a Registry to the Web Services Explorer"/>
     </entry>
-    <entry keyword="publishing a business entity">
-      <topic href="tasks/tpubent.html#tpubent" title="Publishing a business entity"/>
-    </entry>
-    <entry keyword="publishing to a UDDI registry">
-      <topic href="tasks/tpublish.html#tpublish" title="Publishing a Web service"/>
+    <entry keyword="publishing">
+      <entry keyword="business entities">
+        <topic href="tasks/tpubent.html#tpubent" title="Publishing a business entity"/>
+      </entry>
+      <entry keyword="UDDI registry">
+        <topic href="tasks/tpublish.html#tpublish" title="Publishing a Web service"/>
+      </entry>
     </entry>
     <entry keyword="updating UDDI registries">
       <topic href="tasks/tupdate.html#tupdate" title="Updating a business entity, Web service, or service interface"/>
@@ -70,7 +72,7 @@
     <entry keyword="managing services">
       <topic href="tasks/tbusproj.html#tbusproj" title="Managing referenced services"/>
     </entry>
-    <entry keyword="generating WSIL">
+    <entry keyword="generating WSIL files">
       <topic href="tasks/tgenwsil.html#tgenwsil" title="Generating a WSIL file"/>
     </entry>
   </entry>
@@ -78,25 +80,24 @@
     <entry keyword="relationship with UDDI">
       <topic href="concepts/cwsdlud.html#cwsdlud" title="Relationship between UDDI and WSDL"/>
     </entry>
+    <entry keyword="adding to Favorites">
+      <topic href="tasks/tbkmrk.html#tbkmrk" title="Adding a registry, business entity, business service, service interface, WSIL, or WSDL service to Favorites"/>
+    </entry>
+  </entry>
+  <entry keyword="WSIL files">
+    <entry keyword="discovering Web services">
+      <topic href="tasks/tdiscov.html#tdiscov" title="Discovering Web Services"/>
+    </entry>
+    <entry keyword="generating">
+      <topic href="tasks/tgenwsil.html#tgenwsil" title="Generating a WSIL file"/>
+    </entry>
+  </entry>
+  <entry keyword="WSDL files">
     <entry keyword="exploring">
       <topic href="tasks/twsdlexp.html#twsdlexp" title="Exploring WSDL using the WSDL Explorer"/>
     </entry>
     <entry keyword="testing with the Web Services Explorer">
       <topic href="tasks/ttestwsdl.html#ttestwsdl" title="Testing WSDL documents and Web services using the WSDL Explorer"/>
-    </entry>
-    <entry keyword="adding to Favorites">
-      <topic href="tasks/tbkmrk.html#tbkmrk" title="Adding a registry, business entity, business service, service interface, WSIL, or WSDL service to Favorites"/>
-    </entry>
-  </entry>
-  <entry keyword="WSIL">
-    <entry keyword="discovering Web services">
-      <topic href="tasks/tdiscov.html#tdiscov" title="Discovering Web Services"/>
-    </entry>
-    <entry keyword="adding to Favorites">
-      <topic href="tasks/tbkmrk.html#tbkmrk" title="Adding a registry, business entity, business service, service interface, WSIL, or WSDL service to Favorites"/>
-    </entry>
-    <entry keyword="generating">
-      <topic href="tasks/tgenwsil.html#tgenwsil" title="Generating a WSIL file"/>
     </entry>
   </entry>
   <entry keyword="Web Services">
@@ -133,6 +134,9 @@
     <entry keyword="adding a registry">
       <topic href="tasks/taddreg.html#taddreg" title="Adding a Registry to the Web Services Explorer"/>
     </entry>
+    <entry keyword="adding Favorites">
+      <topic href="tasks/tbkmrk.html#tbkmrk" title="Adding a registry, business entity, business service, service interface, WSIL, or WSDL service to Favorites"/>
+    </entry>
   </entry>
   <entry keyword="registries">
     <entry keyword="adding to the Web Services Explorer">
@@ -152,8 +156,8 @@
       <topic href="tasks/tunpub.html#tunpub" title="Removing a business entity, Web service, or service interface from a registry"/>
     </entry>
   </entry>
-  <entry keyword="Web Service Explorer">
-    <entry keyword="adding Favorites">
+  <entry keyword="WSIL">
+    <entry keyword="adding to Favorites">
       <topic href="tasks/tbkmrk.html#tbkmrk" title="Adding a registry, business entity, business service, service interface, WSIL, or WSDL service to Favorites"/>
     </entry>
   </entry>
