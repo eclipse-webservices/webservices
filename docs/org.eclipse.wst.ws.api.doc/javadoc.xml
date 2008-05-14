@@ -3,7 +3,11 @@
 <project
     name="javadoc"
     default="main"
-    basedir="./build">
+    basedir=".">
+	
+    <property
+        name="buildDirectory"
+        value="${basedir}/../.." />
 
     <!-- = = = standard properties pattern = = = -->
     <!-- 
@@ -24,7 +28,7 @@
 
 
 
-    <property file="build/javadoc.properties" />
+    <property file="javadoc.properties" />
     <property
         name="outputDir"
         value="${basedir}" />
@@ -65,20 +69,9 @@
             failonerror="false">
         	
             <classpath>
-            <!--
-                <pathelement path="${J2SE-1.5}" /> -->
                 <fileset dir="${buildDirectory}/plugins">
                     <include name="**/*.jar" />
                 </fileset>
-            	<!--
-                <dirset dir="${buildDirectory}/plugins">
-                    <include name="*.jar" />
-                </dirset>
-        	
-                <dirset dir="${buildDirectory}">
-                    <include name="**/bin/**/*" />
-                </dirset>
-                -->
             </classpath>
             
 
