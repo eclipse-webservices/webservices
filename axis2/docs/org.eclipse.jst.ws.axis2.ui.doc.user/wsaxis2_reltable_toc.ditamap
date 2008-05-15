@@ -27,10 +27,10 @@
 <relrow>
 <relcell>
 <topicref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/caxistover.dita"
-navtitle="Creating Web services with the Apache Axis1 runtime environment">
-</topicref>
-<topicref href="topics/caxis2tover.dita" navtitle="Creating Web services with the Apache Axis2 runtime environment">
-</topicref>
+navtitle="Creating Web services with the Apache Axis1 runtime environment"
+scope="peer"></topicref>
+<topicref href="topics/caxis2tover.dita" navtitle="Creating Web services with the Apache Axis2 runtime environment"
+scope="local"></topicref>
 </relcell>
 <relcell></relcell>
 <relcell></relcell>

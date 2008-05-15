@@ -28,7 +28,7 @@ runtime environment<indexterm>creating a Web service</indexterm></indexterm></in
 environment as described in: <xref href="caxis2tover.dita" scope="local"></xref></li>
 <li id="createtomcatlink">If you are using the Apache Jakarta Tomcat servlet
 container as your server, you must install it, configure an instance of it,
-and create a Web project targeted to it as described in: <xref href="../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.dita"
+and create a Web project targeted to it as described in: <xref href="../../org.eclipse.jst.ws.axis.ui.doc.user/topics/ttomcatserv.dita"
 scope="peer">Creating an Apache Tomcat server and Web project</xref></li>
 <li>Create or import a bean into the <tm tmclass="special" tmowner="Sun Microsystems, Inc."
 tmtype="tm" trademark="Java">Java</tm> source folder of the Web project. To
