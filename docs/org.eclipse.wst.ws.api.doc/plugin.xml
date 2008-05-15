@@ -11,4 +11,8 @@
 	<extension point="org.eclipse.help.toc">
 		<toc file="topics_Reference.xml"/>
 	</extension>
+	
+	<extension point="org.eclipse.help.toc">
+		<toc file="topicsEnv_Reference.xml"/>
+	</extension>
 </plugin>
