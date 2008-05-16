@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
@@ -82,6 +83,12 @@ public class ServicePolicyActivatorUI extends Plugin implements IStartup {
 		return plugin;
 	}
 	
+	/**
+	 * Logs error message for this plugin.
+	 * 
+	 * @param message
+	 * @param exc
+	 */
   public static void logError( String message, Throwable exc )
   {
     IStatus status = new Status( IStatus.ERROR, PLUGIN_ID, 0, message, exc );
@@ -89,6 +96,9 @@ public class ServicePolicyActivatorUI extends Plugin implements IStartup {
     getDefault().getLog().log(status);
   }
 
+  /**
+   * Called by Eclipse when it starts up.
+   */
   public void earlyStartup()
   {
     // DO nothing.  All we want to do is get the plugin loaded at UI start time.

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
@@ -27,11 +28,14 @@ public interface IPolicyStateEnum
   
   /**
    * 
+   * Returns the enumeration id associated with this service policy.
+   * 
    * @return returns the enumeration id associated with this service policy.
    */
   public String getEnumId();
   
   /**
+   * Returns the default enum item for this enumeration.
    * 
    * @return returns the default enum item for this enumeration.
    */
@@ -45,6 +49,8 @@ public interface IPolicyStateEnum
   public void setCurrentItem( String itemId );
   
   /**
+   * 
+   * Returns the current enum item.
    * 
    * @return returns the current enum item.
    */

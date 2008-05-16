@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
@@ -39,6 +40,8 @@ public class ServicePolicyPlatform
   
   /**
    * 
+   * Returns a singleton instance of this service policy platform.
+   * 
    * @return returns a singleton instance of this service policy platform.
    */
   public static ServicePolicyPlatform getInstance()
@@ -53,6 +56,8 @@ public class ServicePolicyPlatform
   }
   
   /**
+   * Indicates if the property page for a project should be displayed in a popup
+   * menu or not.
    * 
    * @param object
    * @return returns true if this platform is enabled for specified object.  In most
@@ -106,6 +111,8 @@ public class ServicePolicyPlatform
   
   /**
    * 
+   * Returns all service policy IDs that are defined.
+   * 
    * @return returns all service policy IDs that are defined.
    */
   public Set<String> getAllPolicyIds()
@@ -114,6 +121,8 @@ public class ServicePolicyPlatform
   }
   
   /**
+   * 
+   * Returns the list of root policies for the platform given a filter.
    * 
    * @param filter a filter a the service policies.  This method may be null if
    * no filter is required.
@@ -129,6 +138,8 @@ public class ServicePolicyPlatform
   
   /**
    * 
+   * Returns a service policy given it's unique ID.
+   * 
    * @param id
    * @return returns a service policy given it's unique ID.
    */
@@ -138,6 +149,9 @@ public class ServicePolicyPlatform
   }
   
   /**
+   * 
+   * Returns if the particular project has been enabled or not on it's
+   * service policy property page.
    * 
    * @param project
    * @return returns true if the specified project has been enabled for
@@ -149,7 +163,7 @@ public class ServicePolicyPlatform
   }
   
   /**
-   * Sets whether project specific service policy preferences is enabled or not.
+   * Sets whether a project specific service policy preferences is enabled or not.
    * 
    * @param project
    * @param value
@@ -169,9 +183,9 @@ public class ServicePolicyPlatform
   }
   
   /**
+   * 
    * Restores the project level defaults.  Note: the state changes made by 
    * calling this method need to be committed or discarded by the platform.
-   *
    * 
    * @param project
    */
@@ -227,6 +241,14 @@ public class ServicePolicyPlatform
     platformImpl.addChildChangeListener( listener, onCommit );  
   }
   
+  /**
+   * Indicates whether child change listeners should be queued or not.  If
+   * they are queued then child change events will be queue up until this
+   * method is called with a false parameter.  When this happens the child
+   * change event listeners are noticed of add the events that have occurred.
+   * 
+   * @param queue
+   */
   public void queueChildChangeListeners( boolean queue )
   {
     platformImpl.queueChildChangeListeners( queue );

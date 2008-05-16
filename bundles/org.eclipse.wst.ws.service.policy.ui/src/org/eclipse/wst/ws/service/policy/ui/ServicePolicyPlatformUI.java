@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
@@ -38,6 +39,8 @@ public class ServicePolicyPlatformUI
   
   /**
    * 
+   * Returns an instance of this service policy platform UI object.
+   * 
    * @return returns an instance of this service policy platform UI object.
    */
   public static ServicePolicyPlatformUI getInstance()
@@ -52,6 +55,8 @@ public class ServicePolicyPlatformUI
   
   /**
    * 
+   * Returns all the operations for all known policies.
+   * 
    * @return returns all the operations for all known policies.
    */
   public List<IPolicyOperation> getAllOperations()
@@ -59,6 +64,14 @@ public class ServicePolicyPlatformUI
     return platformUI.getAllOperations();
   }
   
+  /**
+   * Returns an operation that is associated with a particular service policy
+   * and has the specified id.
+   * 
+   * @param policy the service policy
+   * @param id the operation id.
+   * @return returns the operation being searched for or null is not found. 
+   */
   public IPolicyOperation getOperation( IServicePolicy policy, String id )
   {
     List<IPolicyOperation> operations = getOperations( policy, true );
@@ -78,6 +91,8 @@ public class ServicePolicyPlatformUI
   
   /**
    * 
+   * Returns the list of operations for this policy.
+   * 
    * @param policy the policy
    * @param isWorkspace true if this is a preference page context
    * @return returns the list of operations for this policy.
@@ -88,6 +103,9 @@ public class ServicePolicyPlatformUI
   }
    
   /**
+   * 
+   * Returns a list of list policy operations which are associated with
+   * the specified service policies.
    * 
    * @param policies
    * @param isWorkspace
@@ -102,6 +120,8 @@ public class ServicePolicyPlatformUI
   }
   
   /**
+   * 
+   * Returns a list of quick fix info for the specified status object.
    * 
    * @param status
    * @return returns a list of quick fixes for this status object.  If

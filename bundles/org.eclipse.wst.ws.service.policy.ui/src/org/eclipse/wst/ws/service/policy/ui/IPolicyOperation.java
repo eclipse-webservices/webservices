@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
@@ -46,17 +47,23 @@ public interface IPolicyOperation
  
   /**
    * 
+   * Returns the unique ID associated with this service policy operation.
+   * 
    * @return returns the unique ID associated with this service policy operation.
    */
   public String getId();
   
   /**
    * 
+   * Returns the descriptor for this service policy operation.
+   * 
    * @return returns the descriptor for this service policy operation.
    */
   public IDescriptor getDescriptor();
   
   /**
+   * 
+   * Returns whether this is a workspace only operation or not.
    * 
    * @return returns true if this service policy operation should only appear
    * in the workspace service policy preference page.
@@ -65,11 +72,15 @@ public interface IPolicyOperation
   
   /**
    * 
+   * Returns the kind of service policy operation.
+   * 
    * @return returns the kind of service policy operation.
    */
   public OperationKind getOperationKind();
   
   /**
+   * 
+   * Returns the enum ID for this operation.
    * 
    * @return returns the enumeration ID if this service policy operation is
    * an enumeration.
@@ -77,6 +88,8 @@ public interface IPolicyOperation
   public String getEnumerationId();
   
   /**
+   * 
+   * Returns the default enumeration item for this operation.
    * 
    * @return returns if this is an enumeration it returns the default item for this
    * enumeration.
@@ -92,6 +105,8 @@ public interface IPolicyOperation
   
   /**
    * 
+   * Returns whether this operation should be enabled or not.
+   * 
    * @param selectedPolicies the selected service policies.
    * 
    * @return returns whether this operation should be enabled or not.
@@ -99,6 +114,8 @@ public interface IPolicyOperation
   public boolean isEnabled( List<IServicePolicy> selectedPolicies );
   
   /**
+   * 
+   * Returns the id pattern for this operation.
    * 
    * @return returns the regular expression pattern associated with this operation.
    * All service policy ID that match this regular expression will be associated
@@ -108,11 +125,16 @@ public interface IPolicyOperation
   
   /**
    * 
+   * Returns the service policy for this operation.
+   * 
    * @return returns the service policy for this operation.
    */
   public IServicePolicy getServicePolicy();
   
   /**
+   * 
+   * Returns the current enumeration item for this operation.
+   * 
    * @param project the project if this is project property page item.
    * For the preference page context null should be specified.
    * @return returns the current enumeration item for this operation.
@@ -121,6 +143,7 @@ public interface IPolicyOperation
   
   /**
    * Sets the current enumeration item for this operation.
+   * 
    * @param project the project if this is project property page item.
    * For the preference page context null should be specified.
    * @param stateItem the item.
@@ -128,6 +151,8 @@ public interface IPolicyOperation
   public void setStateItem( IProject project, String stateItem );
   
   /**
+   * 
+   * Returns whether this operation uses default state or not.
    * 
    * @return returns whether this operation uses default state or not.
    */

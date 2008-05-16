@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20080211   218520 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui.utils;
 
@@ -20,8 +21,19 @@ import java.util.Vector;
 
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 
+/**
+ * 
+ * This class contains utility method for service policies.
+ *
+ */
 public class ServiceUtils
 {
+  /**
+   * Sorts a list of service policies.
+   * 
+   * @param unsortedList an unsorted list
+   * @return returns a list of sorted service policies base not their long names.
+   */
   public static List<IServicePolicy> sortList( List<IServicePolicy> unsortedList )
   {
     TreeSet<IServicePolicy> sortedSet = new TreeSet<IServicePolicy>( new CompareServicePolicy() );

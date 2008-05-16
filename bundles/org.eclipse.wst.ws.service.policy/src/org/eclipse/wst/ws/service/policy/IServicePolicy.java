@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
@@ -20,9 +21,16 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 import org.eclipse.wst.ws.service.policy.listeners.IStatusChangeListener;
 
+/**
+ * 
+ * This interface encapsulates the idea of a service policy
+ *
+ */
 public interface IServicePolicy
 { 
   /**
+   * 
+   * Returns if this service policy is defined by an extension or not.
    * 
    * @return returns true if this Service policy is defined in plugin.xml 
    * meta data.  Otherwise, false is returned.
@@ -31,11 +39,15 @@ public interface IServicePolicy
   
   /**
    * 
+   * Returns the unique ID for this service policy.
+   * 
    * @return returns the unique ID for this service policy.
    */
   public String getId();
   
   /**
+   * 
+   * Returns the descriptor for this service policy.
    * 
    * @return returns the descriptor for this service policy.
    */
@@ -43,6 +55,8 @@ public interface IServicePolicy
   
   /**
    * 
+   * Returns a list of relationships to other IServicePolicy objects.
+   *   
    * @return returns a list of relationships to other IServicePolicy objects.  
    *  
    */
@@ -77,11 +91,15 @@ public interface IServicePolicy
   
   /**
    * 
+   * Returns the policy state for this service policy.
+   * 
    * @return returns the policy state for this service policy.
    */
   public IPolicyState getPolicyState();
   
   /**
+   * 
+   * Returns the IPolicyState for a particular project.
    * 
    * @param project the project.
    * @return The IPolicyState for a particular project.
@@ -89,6 +107,9 @@ public interface IServicePolicy
   public IPolicyState getPolicyState( IProject project );
   
   /**
+   * 
+   * Returns the policy state enumeration object.  Note: this is just
+   * a wrapper around the policy state object.
    * 
    * @return returns the state enumeration object for this service
    * policy.  If this policy is not associated with an enumeration
@@ -98,7 +119,10 @@ public interface IServicePolicy
   
   /**
    * 
-   * @param project
+   * Returns the policy state enumeration object for a particular project.  
+   * Note: this is just a wrapper around the policy state object.
+   * 
+   * @param project the project
    * @return returns the state enumeration for a particular project.  If
    * no state enumeration is associated with the service policy
    * null will be returned.
@@ -106,6 +130,8 @@ public interface IServicePolicy
   public IPolicyStateEnum getPolicyStateEnum( IProject project );
   
   /**
+   * 
+   * Returns the parent service policy object.
    * 
    * @return returns the parent policy for this service policy.  If this
    * service policy has no parent then null is returned.
@@ -158,6 +184,8 @@ public interface IServicePolicy
   public void removeStatusChangeListener( IStatusChangeListener listener );
   
   /**
+   * 
+   * Returns the status for this service policy.
    * 
    * @return returns the status for this service policy.
    */

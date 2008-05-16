@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
@@ -37,6 +38,8 @@ public interface IPolicyState
   public final static String DefaultValueKey = "default.value.key"; //$NON-NLS-1$
   
   /**
+   * 
+   * Returns whether the state of this policy is mutible or not.
    * 
    * @return returns true if the state of this policy is mutable.
    */
@@ -89,6 +92,7 @@ public interface IPolicyState
   
   /**
    * Removes a policy state change listener from this service policy.
+   * 
    * @param listener
    */
   public void removePolicyStateChangeListener( IPolicyStateChangeListener listener );

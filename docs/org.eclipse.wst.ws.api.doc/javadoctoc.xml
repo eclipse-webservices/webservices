@@ -3,6 +3,7 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 	 <toc label="Javadoc Packages Reference">
 <topic href="reference/api/org/eclipse/wst/ws/service/policy/package-summary.html" label="org.eclipse.wst.ws.service.policy"/>
+<topic href="reference/api/org/eclipse/wst/ws/service/policy/listeners/package-summary.html" label="org.eclipse.wst.ws.service.policy.listeners"/>
 <topic href="reference/api/org/eclipse/wst/ws/service/policy/ui/package-summary.html" label="org.eclipse.wst.ws.service.policy.ui"/>
 <topic href="reference/api/org/eclipse/wst/ws/service/policy/ui/utils/package-summary.html" label="org.eclipse.wst.ws.service.policy.ui.utils"/>
 <topic href="reference/api/org/eclipse/wst/ws/service/policy/utils/package-summary.html" label="org.eclipse.wst.ws.service.policy.utils"/>
