@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.jst.ws.axis2tools.feature"
-      label="Axis2 Tools"
+      label="%featureName"
       version="1.0.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="%providerName"
+      plugin="org.eclipse.jst"
+      image="eclipse_update_120.jpg">
 
    <description>
       %description
