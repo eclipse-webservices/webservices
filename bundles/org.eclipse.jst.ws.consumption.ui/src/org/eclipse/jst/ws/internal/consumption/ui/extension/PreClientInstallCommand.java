@@ -14,6 +14,7 @@
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080425   220985 trungha@ca.ibm.com - Trung Ha, Server is recreated when prev publish failed
  * 20080429   220985 trungha@ca.ibm.com - Trung Ha
+ * 20080520   233065 makandre@ca.ibm.com - Andrew Mak, Server not found error in Web service generation
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -64,7 +65,7 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
 				}
 			}
 			// Cannot find an appropriate server, so we will create one
-			else{
+			if (webServiceClient_.getWebServiceClientInfo().getServerInstanceId() == null) {
 		        CreateServerCommand createServerCommand = new CreateServerCommand();
 		        createServerCommand.setServerFactoryid(webServiceClient_.getWebServiceClientInfo().getServerFactoryId());
 		        createServerCommand.setServerRuntimeId(webServiceClient_.getWebServiceClientInfo().getServerRuntimeId());
