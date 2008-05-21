@@ -2,6 +2,6 @@
 
 <?NLS TYPE="org.eclipse.help.toc"?>
 	 	<toc label="Extension Points Reference">
-<topic label="org.eclipse.wst.ws.service.policy.servicepolicy" href="reference/api/org_eclipse_wst_ws_service_policy_servicepolicy.html"/>
-<topic label="org.eclipse.wst.ws.service.policy.ui.servicepolicyui" href="reference/api/org_eclipse_wst_ws_service_policy_ui_servicepolicyui.html"/>
+<topic label="org.eclipse.wst.ws.service.policy.servicepolicy" href="reference/ext/org_eclipse_wst_ws_service_policy_servicepolicy.html"/>
+<topic label="org.eclipse.wst.ws.service.policy.ui.servicepolicyui" href="reference/ext/org_eclipse_wst_ws_service_policy_ui_servicepolicyui.html"/>
 </toc>

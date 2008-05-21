@@ -9,5 +9,7 @@
 --> 
 	<extension point="org.eclipse.help.toc">
 		<toc file="topics_Reference.xml"/>
+		<toc file="javadoctoc.xml"/>
+		<toc file="topics_ExtPoint_Reference.xml"/>
 	</extension>
 </plugin>

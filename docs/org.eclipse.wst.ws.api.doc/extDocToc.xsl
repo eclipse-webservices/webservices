@@ -13,7 +13,7 @@
 	 		<xsl:for-each select="document(component/@file)/files/file">
 	 			<xsl:sort select="text()"/>
 	 			<!-- <xsl:if test="contains($listed-ext-points, translate(substring(text(), 0, string-length(text()) - 4),'_','.'))"> -->
-	 				<topic label="{translate(substring(text(), 0, string-length(text()) - 4),'_','.')}" href="reference/api/{text()}">
+	 				<topic label="{translate(substring(text(), 0, string-length(text()) - 4),'_','.')}" href="reference/ext/{text()}">
 	 				</topic>
 	 			<!-- </xsl:if> -->
 	 		</xsl:for-each>
