@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?NLS TYPE="org.eclipse.help.toc"?>
+	 <toc label="Javadoc Packages Reference">
+<topic href="reference/api/org/eclipse/wst/wsdl/package-summary.html" label="org.eclipse.wst.wsdl"/>
+<topic href="reference/api/org/eclipse/wst/wsdl/binding/http/package-summary.html" label="org.eclipse.wst.wsdl.binding.http"/>
+<topic href="reference/api/org/eclipse/wst/wsdl/binding/mime/package-summary.html" label="org.eclipse.wst.wsdl.binding.mime"/>
+<topic href="reference/api/org/eclipse/wst/wsdl/binding/soap/package-summary.html" label="org.eclipse.wst.wsdl.binding.soap"/>
+<topic href="reference/api/org/eclipse/wst/wsdl/util/package-summary.html" label="org.eclipse.wst.wsdl.util"/>
+</toc>

@@ -1,0 +1,5 @@
+org.eclipse.wst.wsdl
+org.eclipse.wst.wsdl.binding.http
+org.eclipse.wst.wsdl.binding.mime
+org.eclipse.wst.wsdl.binding.soap
+org.eclipse.wst.wsdl.util

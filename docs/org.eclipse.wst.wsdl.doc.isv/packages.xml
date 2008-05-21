@@ -1,0 +1,3 @@
+
+            <packages><package></package><package>org.eclipse.wst.wsdl</package><package>org.eclipse.wst.wsdl.binding.http</package><package>org.eclipse.wst.wsdl.binding.mime</package><package>org.eclipse.wst.wsdl.binding.soap</package><package>org.eclipse.wst.wsdl.util</package></packages>
+        
