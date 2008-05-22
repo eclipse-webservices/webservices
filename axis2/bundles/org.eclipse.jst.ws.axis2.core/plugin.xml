@@ -48,13 +48,8 @@
   		</project-facet-version>
   
 	</extension>
-	
-	<extension point="org.eclipse.wst.common.project.facet.ui.images">
-  		<image facet="axis2.core" path="icons/axis2-facet-add.gif"/>
-  		<image facet="axis2.ext" path="icons/axis2-facet-add.gif"/>
-  		<image category="axis2.category" path="icons/axis2-facet.ico"/>
-	</extension>
-	
+
+
 	<extension
        point="org.eclipse.wst.common.project.facet.core.runtimes">
     <supported>
