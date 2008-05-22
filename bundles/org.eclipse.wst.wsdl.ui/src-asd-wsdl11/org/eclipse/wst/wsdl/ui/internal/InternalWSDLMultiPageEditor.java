@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -36,13 +34,13 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
@@ -79,6 +77,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.W11OpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xsd.ui.internal.adt.design.IKeyboardDrag;
@@ -95,62 +94,63 @@ import org.w3c.dom.Node;
 
 
 public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
-{
-	ResourceSet resourceSet;
-	Resource wsdlResource;
-	
+{ 
 	protected WSDLEditorResourceChangeHandler resourceChangeHandler;
 	
+	/**
+	 * @deprecated call getexistingadapter on idomdocument instead
+	 */
 	protected WSDLModelAdapter modelAdapter;
 	protected SourceEditorSelectionListener fSourceEditorSelectionListener;
 	protected WSDLSelectionManagerSelectionListener fWSDLSelectionListener;
 
-  private IStructuredModel structuredModel;
-  private final static String WSDL_EDITOR_MODE_EXTENSION_ID = "org.eclipse.wst.wsdl.ui.editorModes"; //$NON-NLS-1$
-  
-  public IDescription buildModel(IEditorInput editorInput) {   
+	private final static String WSDL_EDITOR_MODE_EXTENSION_ID = "org.eclipse.wst.wsdl.ui.editorModes"; //$NON-NLS-1$
+
+	public IDescription buildModel(IEditorInput editorInput) {   
 	  try {
-		  // ISSUE: This code which deals with the structured model is similar to the one in the XSD editor. 
-		  // It could be refactored into the base class.
+	    // ISSUE: This code which deals with the structured model is similar to the one in the XSD editor. 
+	    // It could be refactored into the base class.
 
-		  Document document = null;
-		  IDocument doc = structuredTextEditor.getDocumentProvider().getDocument(editorInput);
-		  if (doc instanceof IStructuredDocument) {
-			  IStructuredModel model = StructuredModelManager.getModelManager().getExistingModelForEdit(doc);
-			  if (model == null) {
-				  model = StructuredModelManager.getModelManager().getModelForEdit((IStructuredDocument) doc);
-			  }
-			  structuredModel = model;
-			  document = ((IDOMModel) model).getDocument();
-		  }
-		  Assert.isNotNull(document);
-
-		  Object obj = null;
-
-		  if (document instanceof INodeNotifier) {
-			  INodeNotifier notifier = (INodeNotifier) document;
-			  modelAdapter = (WSDLModelAdapter) notifier.getAdapterFor(WSDLModelAdapter.class);
-			  if (modelAdapter == null) {
-				  modelAdapter = new WSDLModelAdapter();
-				  notifier.addAdapter(modelAdapter);
-				  obj = modelAdapter.createDefinition(document);
-			  }
-			  if (obj == null) {
-				  obj = modelAdapter.createDefinition(document);
-			  }
-		  }
-
-		  if (obj instanceof Definition) {
-			  Definition definition = (Definition) obj;
-			  model = (IDescription) WSDLAdapterFactoryHelper.getInstance().adapt(definition);
-		  }
+	    IDocument doc = structuredTextEditor.getDocumentProvider().getDocument(editorInput);
+	    createAndSetModel(doc);
 	  }
 	  catch (Exception e) {
-		  e.printStackTrace();
+	    e.printStackTrace();
 	  }    
 
 	  return model;
-  }
+	}
+
+	/**
+	 * Creates a WSDL model based on the given text document and sets 
+	 * the model for this editor.
+	 * @param textDocument
+	 */
+	private void createAndSetModel(IDocument textDocument) {
+	  /*
+	   * ISSUE: if model was not successfully created, model is not 
+	   * changed because there are numerous places that assume model 
+	   * is never null.
+	   */
+	  if (textDocument != null) {
+	    Document document = null;
+	    IStructuredModel structuredModel = StructuredModelManager.getModelManager().getExistingModelForRead(textDocument);
+	    try {
+	      if (structuredModel instanceof IDOMModel)
+	        document = ((IDOMModel)structuredModel).getDocument();
+	    }
+	    finally {
+	      if (structuredModel != null)
+	        structuredModel.releaseFromRead();
+	    }
+	    if (document instanceof INodeNotifier) {
+	      WSDLModelAdapter modelAdapter = WSDLModelAdapter.lookupOrCreateModelAdapter(document);
+	      Definition definition = modelAdapter.createDefinition(document);
+	      WSDLAdapterFactoryHelper helper = WSDLAdapterFactoryHelper.getInstance();
+	      model = (IDescription)helper.adapt(definition);
+	    }
+	  }
+	}
 	
 	private XSDSchema[] getInlineSchemas() {
 		List types = getModel().getTypes();
@@ -421,9 +421,6 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	}
 	
 	public void dispose() {
-		if (structuredModel != null) {
-			structuredModel.releaseFromEdit();      
-		}
 		if (resourceChangeHandler != null) {
 			resourceChangeHandler.dispose();
 		}
@@ -573,5 +570,146 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
   protected void storeCurrentModePreference(String id)
   {
     WSDLEditorPlugin.getInstance().getPreferenceStore().setValue(DEFAULT_EDITOR_MODE_ID, id);    
-  }  
+  }
+  
+  protected void setInputToGraphicalViewer(IDocument newDocument)
+  {
+    createAndSetModel(newDocument);
+    
+    // Update the design page
+    
+    if (graphicalViewer != null)
+    {
+      graphicalViewer.setContents(model);
+      graphicalViewer.getContents().refresh();
+    }
+    
+    // Update outline page
+    
+    if (getContentOutlinePage() instanceof ASDContentOutlinePage)
+    {
+      ASDContentOutlinePage outline = (ASDContentOutlinePage)getContentOutlinePage();
+      TreeViewer treeViewer = outline.getTreeViewer();
+      if (treeViewer != null)
+      {
+        outline.setModel(model);
+        treeViewer.setInput(model);
+        treeViewer.refresh();
+      } 
+    }
+  }
+
+  public void doSaveAs()
+  {
+    // When performing a save as, the document changes.   Our model state listeners should listen
+    // to the new document.
+
+    // First get the current (soon to be old) document
+    IDocument oldDocument = getDocument();
+    WSDLModelAdapter oldAdapter = null;
+    IDOMDocument doc = null;
+    if (oldDocument != null)
+    {
+      IStructuredModel structuredModel = StructuredModelManager.getModelManager().getExistingModelForRead(oldDocument);
+      try
+      {
+        if (structuredModel instanceof IDOMModel)
+        {
+          // Get the associated IDOMDocument model
+          doc = ((IDOMModel) structuredModel).getDocument();
+          // and now get our adapter that listens to DOM changes
+          if (doc != null)
+          {
+            oldAdapter = (WSDLModelAdapter) doc.getExistingAdapter(WSDLModelAdapter.class);
+            // Assert.isTrue(currentAdapter == modelAdapter);
+          }
+        }
+      }
+      finally
+      {
+        if (structuredModel != null)
+          structuredModel.releaseFromRead();
+      }
+    }
+
+    IEditorInput oldEditorInput = structuredTextEditor.getEditorInput();
+
+    // perform save as
+    structuredTextEditor.doSaveAs();
+    
+    IEditorInput newEditorInput = structuredTextEditor.getEditorInput();
+
+    // if saveAs cancelled then don't setInput because the input hasn't change
+    // See AbstractDecoratedTextEditor's performSaveAs
+    if (oldEditorInput != newEditorInput)
+    {
+      setInput(newEditorInput);
+      setPartName(newEditorInput.getName());
+
+      getCommandStack().markSaveLocation();
+
+      // Now do the clean up on the old document
+      if (oldAdapter != null)
+      {
+        // clear out model adapter
+        oldAdapter.clear();
+        oldAdapter = null;
+      }
+    }
+  }
+  
+  public void propertyChanged(Object source, int propId)
+  {
+    switch (propId)
+    {
+      // when refactor rename while file is open in editor, need to reset
+      // editor contents to reflect new document
+      case IEditorPart.PROP_INPUT:
+      {
+        Definition definition = (Definition)getAdapter(Definition.class);        
+        if (source == structuredTextEditor && definition != null)
+        {
+          IStructuredModel structuredModel = StructuredModelManager.getModelManager().getExistingModelForRead(getDocument());
+          try
+          {
+            if (structuredModel instanceof IDOMModel)
+            {
+              Document definitionDocument = definition.getDocument();
+              Document domModelDocument = ((IDOMModel)structuredModel).getDocument();
+              // if dom documents are not the same, they need to be reset
+              if (definitionDocument != domModelDocument)
+              {
+                WSDLModelAdapter oldModelAdapter = null;
+                if (definitionDocument instanceof IDOMDocument)
+                {
+                  // save this model adapter for cleanup later
+                  oldModelAdapter = (WSDLModelAdapter) ((IDOMDocument)definitionDocument).getExistingAdapter(WSDLModelAdapter.class);
+                }
+
+                // update multipage editor with new editor input
+                IEditorInput editorInput = structuredTextEditor.getEditorInput();
+                setInput(editorInput);
+                setPartName(editorInput.getName());
+                getCommandStack().markSaveLocation();
+
+                // Now do the clean up model adapter
+                if (oldModelAdapter != null)
+                {
+                  oldModelAdapter.clear();
+                  oldModelAdapter = null;
+                }
+              }
+            }
+          }
+          finally
+          {
+            if (structuredModel != null)
+              structuredModel.releaseFromRead();
+          }
+        }
+        break;
+      }
+    }
+    super.propertyChanged(source, propId);
+  }
 }

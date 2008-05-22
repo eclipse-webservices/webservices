@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.wst.wsdl.internal.util.WSDLResourceFactoryImpl;
 import org.eclipse.wst.wsdl.ui.internal.extensions.ExtensibleTypeSystemProvider;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xsd.ui.internal.util.ModelReconcileAdapter;
@@ -187,5 +188,20 @@ public class WSDLModelAdapter implements INodeAdapter
       } 
     }   
     return adapter;
-  }  
+  }
+  
+  public void clear()
+  {
+    if (definition != null) {
+      Document doc = definition.getDocument();
+      if (doc instanceof IDOMDocument) {
+          IDOMDocument domDocument = (IDOMDocument)doc;
+          domDocument.getModel().removeModelStateListener(getModelReconcileAdapter());
+          domDocument.removeAdapter(getModelReconcileAdapter());
+          domDocument.removeAdapter(this);        
+      }
+      definition = null;
+    }
+    resourceSet = null;
+  }
 }
