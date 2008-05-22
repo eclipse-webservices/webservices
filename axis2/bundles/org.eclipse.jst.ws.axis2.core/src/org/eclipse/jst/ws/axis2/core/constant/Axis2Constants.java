@@ -12,6 +12,7 @@
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20071011   205972 sandakith@wso2.com - Lahiru Sandakith, Axis2 Libraries License files fix
  * 20071029   206967 sandakith@wso2.com - Lahiru Sandakith
+ * 20080521   231098 sandakith@wso2.com - Lahiru Sandakith, Fix for Axis2 1.4 dependency chenge
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.constant;
 
@@ -77,6 +78,7 @@ public class Axis2Constants {
         "log4j",
         "neethi",
         "stax",
+        "geronimo-stax-api_1.0_spec",
         "wsdl4j",
         "wstx",
         "xbean",
