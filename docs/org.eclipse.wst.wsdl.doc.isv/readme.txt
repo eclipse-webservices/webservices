@@ -1,4 +1,4 @@
-To generate javadoc:
+To generate javadoc follow these steps:
 
 - make sure you have these plug-ins in the workspace
 	org.eclipse.wst.wsdl
