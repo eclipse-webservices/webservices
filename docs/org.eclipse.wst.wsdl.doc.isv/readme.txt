@@ -10,4 +10,4 @@ To generate javadoc:
 	select run an application
 	select org.eclipse.ant.core.antRunner as the application to run
 	add the following as the program arguments 
-		-buildfile {workspace_loc}\org.eclipse.wst.wsdl.doc.isv\build.xml
+		-buildfile {workspace_loc}\org.eclipse.wst.wsdl.doc.isv\buildDocs.xml
