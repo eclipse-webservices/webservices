@@ -12,6 +12,7 @@
  * 20060606   105045 mahutch@ca.ibm.com - Mark Hutchinson          
  * 20070328   172339 kathy@ca.ibm.com - Kathy Chan
  * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
+ * 20080523   233764 makandre@ca.ibm.com - Andrew Mak, Top down EJB preference not respected
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsdd.BeanLink;
 import org.eclipse.jst.j2ee.webservice.wsdd.ServiceImplBean;
@@ -107,7 +109,7 @@ public class TypeSelectionFilter2
           //TODO: Bug 179751 - Need to make checking for types recognized as bottom-up to be more extensible         
           
           if (supportedTypes.isEmpty()) {
-        	  if (initialObject instanceof BeanLink || initialObject instanceof ServiceImplBean) {
+        	  if (initialObject instanceof BeanLink || initialObject instanceof ServiceImplBean || initialObject instanceof IType) {
         		  supportedTypes.add(wst);
         	  }
           }
@@ -161,9 +163,9 @@ public class TypeSelectionFilter2
                 StringBuffer entrybuff = new StringBuffer();
                 entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
                 entrybuff.append("/");
-                entrybuff.append("org.eclipse.jst.ws.wsImpl.java");
-                String entry = entrybuff.toString();                
-                supportedTypes.add(entry);
+                
+                supportedTypes.add(entrybuff.toString() + "org.eclipse.jst.ws.wsImpl.java");
+                supportedTypes.add(entrybuff.toString() + "org.eclipse.jst.ws.wsImpl.ejb");
               }
             }
             

@@ -13,6 +13,7 @@
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
+ * 20080523   233764 makandre@ca.ibm.com - Andrew Mak, Top down EJB preference not respected
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -59,7 +60,14 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
 
     if (typeIds!=null && typeIds.length>0)
     {
-      typeRuntimeServer_.setTypeId(typeIds[0]);
+      String preferred = typeIds[0];	// default to first entry initially
+      for (String typeId : typeIds) {
+    	  if (typeId.equals(type)) {
+    		  preferred = typeId;
+    		  break;
+    	  }
+      }
+      typeRuntimeServer_.setTypeId(preferred);
   } else {
 	  if (initialSelection_ != null && !initialSelection_.isEmpty())
 	  { 
@@ -67,11 +75,16 @@ public class ServerWizardWidgetDefaultingCommand extends ClientWizardWidgetDefau
 		  // initialObject would not be null since !initialSelection_.isEmpty()
 		  boolean hasAdapter = AdapterUtils.hasAdapter(initialObject);
 		  if (hasAdapter) {
-			  StringBuffer entrybuff = new StringBuffer();
-			  entrybuff.append(String.valueOf(WebServiceScenario.TOPDOWN));
-			  entrybuff.append("/");
-			  entrybuff.append("org.eclipse.jst.ws.wsImpl.java");
-			  String entry = entrybuff.toString();     
+			  String entry = null;
+			  String prefix = WebServiceScenario.TOPDOWN + "/";
+			  if (type.startsWith(prefix))
+				  entry = type;
+			  else {
+				  StringBuffer entrybuff = new StringBuffer();
+				  entrybuff.append(prefix);
+				  entrybuff.append("org.eclipse.jst.ws.wsImpl.java");
+				  entry = entrybuff.toString();
+			  }
 			  typeRuntimeServer_.setTypeId(entry);
 		  }
 	  }
