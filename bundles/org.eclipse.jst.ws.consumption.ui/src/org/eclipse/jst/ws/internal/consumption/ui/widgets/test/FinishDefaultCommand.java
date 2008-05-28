@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080527   234169 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
@@ -54,7 +55,8 @@ public class FinishDefaultCommand extends AbstractDataModelOperation
   		createServer.setServerFactoryid(sampleServerTypeID);
   		createServer.execute(monitor, adaptable);
   		sampleServerInstanceId = createServer.getServerInstanceId();
-  		sampleExistingServer = ServerCore.findServer(sampleServerInstanceId);
+  		if(sampleServerInstanceId != null)
+  			sampleExistingServer = ServerCore.findServer(sampleServerInstanceId);
   	
   	}
     return status;

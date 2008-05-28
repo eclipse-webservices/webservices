@@ -15,6 +15,7 @@
  * 20071212	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080211   117924 trungha@ca.ibm.com - Trung Ha
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080527   234169 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
@@ -144,7 +145,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	  // 4. If server requires an EAR, and the sample EAR has not already been
 		// added to the server, add it.
 	  //   If no EAR is required, and sample project has not been added to the server add it.
-      if (serverNeedsEAR)
+      if (serverNeedsEAR && testInfo.getClientExistingServer() != null)
       {
     	//Add sampleEARIProject to the server if needed.
   		AddModuleToServerCommand modToServer = new AddModuleToServerCommand();
