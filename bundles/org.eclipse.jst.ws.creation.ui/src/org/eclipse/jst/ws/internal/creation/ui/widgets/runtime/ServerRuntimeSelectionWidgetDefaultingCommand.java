@@ -24,6 +24,7 @@
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
+ * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -130,7 +131,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     	 }
     	 else
     	 {
-    		 DefaultRuntimeTriplet drt = getDefaultServiceRuntimeForFixedRuntimeAndServer(initialProject_);  
+    		 DefaultRuntimeTriplet drt = getDefaultServiceRuntimeForFixedRuntimeAndServer(initialProject_, serviceIds_.getServerId());  
     	     serviceFacetMatcher_ = drt.getFacetMatcher();
     	     serviceProjectName_ = drt.getProjectName();
     	     serviceRuntimeId_ = drt.getRuntimeId();	 
@@ -509,9 +510,9 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
     
   }  
   
-  private DefaultRuntimeTriplet getDefaultServiceRuntimeForFixedRuntimeAndServer(IProject project)
+  private DefaultRuntimeTriplet getDefaultServiceRuntimeForFixedRuntimeAndServer(IProject project, String runtimePreferredServer)
   {
-    String[] serviceRuntimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(serviceIds_.getTypeId());
+    String[] serviceRuntimes = WebServiceRuntimeExtensionUtils2.getServiceRuntimesByServiceType(serviceIds_.getTypeId(), runtimePreferredServer);
     ArrayList<String> validServiceRuntimes = new ArrayList<String>();
     for (int i=0; i<serviceRuntimes.length; i++ )
     {

@@ -16,6 +16,7 @@
  * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
  * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
  * 20080421   228054 makandre@ca.ibm.com - Andrew Mak, NPE in ClientRuntimeSelectionWidgetDefaultingCommand
+ * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -205,7 +206,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       {
         // Set the clientRuntime based on the runtime, server, and initial
         // selection.
-        DefaultRuntimeTriplet drt = getDefaultClientRuntimeForFixedRuntimeAndServer(clientInitialProject_);
+        DefaultRuntimeTriplet drt = getDefaultClientRuntimeForFixedRuntimeAndServer(clientInitialProject_, clientIds_.getServerId());
         clientFacetMatcher_ = drt.getFacetMatcher();
         clientProjectName_ = drt.getProjectName();
         clientRuntimeId_ = drt.getRuntimeId();        
@@ -912,9 +913,9 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     
   }
   
-  private DefaultRuntimeTriplet getDefaultClientRuntimeForFixedRuntimeAndServer(IProject project)
+  private DefaultRuntimeTriplet getDefaultClientRuntimeForFixedRuntimeAndServer(IProject project, String runtimePreferredServer)
   {
-    String[] clientRuntimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(clientIds_.getTypeId());
+    String[] clientRuntimes = WebServiceRuntimeExtensionUtils2.getClientRuntimesByType(clientIds_.getTypeId(), runtimePreferredServer);
     ArrayList validClientRuntimes = new ArrayList();
     for (int i=0; i<clientRuntimes.length; i++ )
     {
