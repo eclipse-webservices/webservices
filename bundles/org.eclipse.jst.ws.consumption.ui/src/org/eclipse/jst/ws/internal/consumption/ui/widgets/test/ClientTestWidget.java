@@ -15,6 +15,7 @@
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
+ * 20080527   234192 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -94,7 +95,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWSM0009 for the JSP Folder Browse button of the Sample Page*/
   private String INFOPOP_PWSM_BUTTON_JSP_FOLDER_BROWSE = "PWSM0009";
 
-  private Combo projectCombo_;
+  private Text projectCombo_;
   /*CONTEXT_ID PWSM0010 for the Project combo box of the Sample Page*/
   private String INFOPOP_PWSM_COMBO_PROJECT = "PWSM0010";
 
@@ -116,7 +117,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWSM0015 for the run test check box of the Sample Page*/
   private String INFOPOP_PWSM_CHECKBOX_LAUNCH = "PWSM0015";
   //
-  private Combo earCombo_;
+  private Text earCombo_;
   /*CONTEXT_ID PWSM0016 for the EAR combo box of the Sample Page*/
   private String INFOPOP_PWSM_EAR_COMBO = "PWSM0016";
   
@@ -172,19 +173,19 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     
     new Label( comboGroup_, SWT.NONE );
     
-    projectCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_JSP_PROJECT_NAME,
+    projectCombo_ = uiUtils.createText( comboGroup_, ConsumptionUIMessages.LABEL_JSP_PROJECT_NAME,
     									ConsumptionUIMessages.TOOLTIP_PWSM_COMBO_PROJECT,
                                           INFOPOP_PWSM_COMBO_PROJECT,
                                           SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-    projectCombo_.setEnabled( false );
+    
     new Label( comboGroup_, SWT.NONE );
     
     
-    earCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_EAR_PROJECTS,
+    earCombo_ = uiUtils.createText( comboGroup_, ConsumptionUIMessages.LABEL_EAR_PROJECTS,
     								ConsumptionUIMessages.TOOLTIP_PWSM_EAR_PROJECT,
                                      INFOPOP_PWSM_EAR_COMBO,
                                      SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-    earCombo_.setEnabled( false );
+    
     new Label( comboGroup_, SWT.NONE );
     
     
@@ -220,7 +221,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     		ConsumptionUIMessages.TOOLTIP_PWSM_TEXT_JSP_FOLDER,
             INFOPOP_PWSM_TEXT_JSP_FOLDER,
             SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-    jspFolderText_.setEnabled( false );
+    
     
     new Label( comboGroup_, SWT.NONE );
     
@@ -478,14 +479,12 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   public void setSampleProject(String clientProject) 
   {
-	projectCombo_.setItems( new String[]{ extractProjectName(clientProject) } );
-	projectCombo_.select(0);
+	projectCombo_.setText(extractProjectName(clientProject));
   }
   
   public void setSampleProjectEAR(String clientProjectEAR) 
   {
-    earCombo_.setItems( new String[]{ extractProjectName(clientProjectEAR) } );
-    earCombo_.select(0);
+    earCombo_.setText(extractProjectName(clientProjectEAR));
   }
   
   public String getFolder()
