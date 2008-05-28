@@ -19,6 +19,7 @@
  * 20071129	  206080 zina@ca.ibm.com	- Zina Mostafia Service Deployment Config Dialog group name truncated in NL Testing
  * 20071129	  205583 zina@ca.ibm.com	- Zina Mostafia Selected Server or Server Type is not highlighted in Service Dep.Config
  * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080527   234225 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -609,9 +610,11 @@ public class RuntimeServerSelectionDialog extends Dialog {
 				existingServersTree[0].setImage(existingServersIcon);
 			}
 			for (int k = 0; k < serverIds.length; k++) {
-				String serverID = ((IServer) existingServersTable_.get(serverIds[k])).getServerType().getId();
-				IServerType serverType = ServerCore.findServerType(((IServer) existingServersTable_.get(serverIds[k])).getServerType().getId());
+			  IServer server = (IServer) existingServersTable_.get(serverIds[k]);
+			  if (server != null) {
+				  IServerType serverType = server.getServerType();
 				if (serverType != null) {
+					String serverID = serverType.getId();
 					existingServerItems[k] = new TreeItem(existingServersTree[0], SWT.NONE);
 					existingServerItems[k].setText(serverIds[k]);
 					if (serverID.equalsIgnoreCase(defaultServer_) && getIsExistingServer()) {
@@ -619,12 +622,13 @@ public class RuntimeServerSelectionDialog extends Dialog {
 						serverList.setSelection(new TreeItem[] { existingServerItems[k]});
 						existingServer = true;
 						RuntimeServerSelectionDialog.this.setIsExistingServer(true);
-						selectedServer_ = (IServer) existingServersTable_.get(serverIds[k]);
+						selectedServer_ = server;
 						selectedServerLabel_ = serverIds[k];
-						selectedServerFactoryID_ = selectedServer_.getServerType().getId();
+						selectedServerFactoryID_ = serverID;
 					}
 					existingServerItems[k].setImage(labelProvider_.getImage(serverType));
 				}
+			  }
 			}
 		}
 
