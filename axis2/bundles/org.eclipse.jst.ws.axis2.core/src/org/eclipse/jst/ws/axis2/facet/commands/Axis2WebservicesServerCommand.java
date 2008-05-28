@@ -18,6 +18,7 @@
  * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20071011   205972 sandakith@wso2.com - Lahiru Sandakith, Axis2 Libraries License files fix
+ * 20080528   186429 sandakith@wso2.com - Lahiru Sandakith, Axis2 webapp jsp's validation fix
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
@@ -46,7 +47,9 @@ import org.eclipse.jst.ws.axis2.core.utils.RuntimePropertyUtils;
 import org.eclipse.jst.ws.axis2.facet.utils.Axis2RuntimeUtils;
 import org.eclipse.jst.ws.axis2.facet.utils.Axis2WebappUtils;
 import org.eclipse.jst.ws.axis2.facet.utils.ContentCopyUtils;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.validation.ValidationFramework;
 
 public class Axis2WebservicesServerCommand extends
 AbstractDataModelOperation {
@@ -96,6 +99,14 @@ AbstractDataModelOperation {
 		List<String> ignoreList = new ArrayList<String>();
 		ignoreList.add(libPath.toOSString());
 		contentCopyUtils.updateCheckList(ignoreList);
+		
+		//Related issue 186429, Solution is to disable the validation of the Axis2 JSP container location.
+		ValidationFramework validationFrameworkInstance = ValidationFramework.getDefault();
+		String[] node = {Axis2Constants.DIR_AXIS2_WEB};
+		IPath pathForAxis2JSPContainer = new Path(
+				FileUtils.addNodesToPath(J2EEUtils.getWebContentPath(project).toOSString(),	node));
+		validationFrameworkInstance.disableValidation(
+				project.getWorkspace().getRoot().getFolder(pathForAxis2JSPContainer));
 		
 		status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
 				runtimeLocation, 
