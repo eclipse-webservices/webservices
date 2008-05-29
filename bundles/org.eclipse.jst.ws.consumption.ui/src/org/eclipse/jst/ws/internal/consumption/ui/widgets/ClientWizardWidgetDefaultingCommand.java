@@ -15,6 +15,7 @@
  * 20060728   150560 kathy@ca.ibm.com - Kathy Chan
  * 20060728   151078 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225378 makandre@ca.ibm.com - Andrew Mak, Client wizard runtime/server defaulting is not respecting the preference
+ * 20080528   234487 makandre@ca.ibm.com - Andrew Mak, Performance degradation in Web service client gen
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -41,6 +42,7 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
 	private boolean startClient_;
 	private boolean testClient_;
 	private boolean clientOnly_ = false;
+	private TypeRuntimeServer clientTypeRuntimeServer_;
 	  
 	public ClientWizardWidgetDefaultingCommand() {
 	}
@@ -94,16 +96,18 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
   // TODO Set client name defaults here.  
   public TypeRuntimeServer getClientTypeRuntimeServer()
   {
-    String type = getScenarioContext().getClientWebServiceType();
-	String runtime  = WebServiceRuntimeExtensionUtils2.getDefaultClientRuntimeValueFor(type);
-    String factoryID = WebServiceRuntimeExtensionUtils2.getDefaultClientServerValueFor(type);
-    TypeRuntimeServer result = new TypeRuntimeServer();
-    
-    result.setTypeId( type );
-    result.setRuntimeId( runtime );
-    result.setServerId( factoryID ); 
-    
-    return result;  
+	if (clientTypeRuntimeServer_ == null) {
+	    String type = getScenarioContext().getClientWebServiceType();
+	    String runtime  = WebServiceRuntimeExtensionUtils2.getDefaultClientRuntimeValueFor(type);
+	    String factoryID = WebServiceRuntimeExtensionUtils2.getDefaultClientServerValueFor(type);
+	    clientTypeRuntimeServer_ = new TypeRuntimeServer();
+	    
+	    clientTypeRuntimeServer_.setTypeId( type );
+	    clientTypeRuntimeServer_.setRuntimeId( runtime );
+	    clientTypeRuntimeServer_.setServerId( factoryID );
+	}
+	
+    return clientTypeRuntimeServer_;
   }
 
   public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException
