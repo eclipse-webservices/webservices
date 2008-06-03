@@ -16,6 +16,7 @@
  * 20080324   222095 pmoogk@ca.ibm.com - Peter Moogk, UI now listens for state changes.
  * 20080324   223634 ericdp@ca.ibm.com - Eric D. Peters, Service Policies preference tree should be 3 level tree
  * 20080506   219005 ericdp@ca.ibm.com - Eric D. Peters, Service policy preference page not restoring properly
+ * 20080530   234944 pmoogk@ca.ibm.com - Peter Moogk, Fixed focus problem for action controls
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -757,6 +758,8 @@ public class ServicePoliciesComposite extends Composite implements
 		} else {
 			// an action control fired a change event
 			Control actionControl = (Control) e.getSource();
+			Object  oldData       = actionControl.getData();
+			
 			updatePolicy(actionControl);
 			
 			if( lastSelectedSp != null )
@@ -772,11 +775,42 @@ public class ServicePoliciesComposite extends Composite implements
 			error = validateAllPolicies(changedSP);
 			//inform listeners that a control has changed, as composite may be in error now
 			listener.widgetSelected(e);
-
+			
+			setFocusForLastControl( oldData );
 		}
-
 	}
 
+	// The UI is continually recreating the action buttons, so the focus is
+	// is lost when an action button is selected.  This method attempts
+	// to find the newly created control that is associated with operation
+	// that was previously selected.  The focus is then reestablished for this 
+	// control.
+	private void setFocusForLastControl( Object oldData )
+	{
+	  if( oldData != null && oldData instanceof ActionControlData )
+	  {
+	    ActionControlData controlData       = (ActionControlData)oldData;
+	    IPolicyOperation  operation         = controlData.getPoList().get(0);
+	    Control[]         compositeControls = operationsComposite.getChildren();
+ 
+	    for( Control newControl : compositeControls )
+	    {
+	      Object newData = newControl.getData();
+	      
+	      if( newData != null && newData instanceof ActionControlData )
+	      {
+	        IPolicyOperation newOperation = ((ActionControlData)newData).poList.get(0);
+	        
+	        if( newOperation == operation )
+	        {
+	          newControl.setFocus();
+	          break;
+	        }
+	      }
+	    }
+	  }
+	}
+	
 	/**
 	 * Populate the details policy tree with sp and their children
 	 * @param sp a list of top level details tree service policies
