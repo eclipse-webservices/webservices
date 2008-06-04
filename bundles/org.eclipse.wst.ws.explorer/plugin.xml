@@ -105,6 +105,13 @@
                id="org.eclipse.wst.ws.explorer.explorer">
          </actionSet>
       </perspectiveExtension>
+      
+      <perspectiveExtension
+            targetID="org.eclipse.wst.web.ui.webDevPerspective">
+         <actionSet
+               id="org.eclipse.wst.ws.explorer.explorer">
+         </actionSet>
+      </perspectiveExtension>
    </extension>
    
    
