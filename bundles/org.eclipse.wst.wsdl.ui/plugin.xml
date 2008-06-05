@@ -20,7 +20,7 @@
 			name="%_UI_LABEL_NEW_CATEGORY_NAME_WS" />
 		<wizard
 			id="org.eclipse.wst.wsdl.ui"
-			name="WSDL"
+			name="%_UI_WIZARD_NEW_WSDL"
 			class="org.eclipse.wst.wsdl.ui.internal.wizards.NewWSDLWizard"
 			category="org.eclipse.jst.ws.ui.new"
 			icon="icons/wsdl_file_obj.gif">
@@ -42,14 +42,14 @@
 	<!-- constrain the extensiblity elements that are allowed at the 'wsdl' level -->
 	<extension-point
 		id="extensibilityElementFilter"
-		name="Extensiblity Element Filter"
+		name="%extensibilityElementFilter.name"
 		schema="schema/extensibilityElementFilter.exsd" />
 		
-	<extension-point id="internalEditorConfiguration" name="WSDLEditorExtensionConfiguration"/>    
+	<extension-point id="internalEditorConfiguration" name="%internalEditorConfiguration.name"/>    
     <extension-point id="editorModes" name="%WSDLEditorModes"/>
-	<extension-point id="extensionCategories" name="Extension Categories"/>		
-	<extension-point id="contentGeneratorUI" name="UI Port and Binding Content Generators" schema="schema/contentGeneratorUI.exsd"/>
-	<extension-point id="adapterFactory" name="Adapter Factory Extension" schema="schema/adapterFactory.exsd"/>
+	<extension-point id="extensionCategories" name="%extensionCategories.name"/>		
+	<extension-point id="contentGeneratorUI" name="%contentGeneratorUI.name" schema="schema/contentGeneratorUI.exsd"/>
+	<extension-point id="adapterFactory" name="%adapterFactory.name" schema="schema/adapterFactory.exsd"/>
 
 	<extension
 		point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
@@ -326,7 +326,7 @@
 	<extension
 		point="org.eclipse.ltk.core.refactoring.renameParticipants">
 		<renameParticipant
-			name="WSDL Rename Particpant"           
+			name="%renameParticipant.name"           
 			class="org.eclipse.wst.wsdl.ui.internal.refactor.WSDLComponentRenameParticipant"
 			id="org.eclipse.wst.wsdl.ui.refactoring.WSDLComponentRenameParticipant">
 			<enablement>
@@ -394,7 +394,7 @@
 				id="org.eclipse.wst.wsdl.ui.actions.ReloadDependenciesActionDelegate"
 				label="%_UI_RELOAD_DEPENDENCIES"
 				icon="icons/reloadgrammar.gif"
-				tooltip="Reload Dependencies"
+				tooltip="%_UI_RELOAD_DEPENDENCIES.tooltip"
 				menubarPath="WSDLEditor/group1"
 				class="org.eclipse.wst.wsdl.ui.internal.ReloadDependenciesActionDelegate">
 			</action>
