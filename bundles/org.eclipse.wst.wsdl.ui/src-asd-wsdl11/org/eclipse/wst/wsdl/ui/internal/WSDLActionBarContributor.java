@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
@@ -115,6 +116,8 @@ public class WSDLActionBarContributor extends MultiPageEditorActionBarContributo
         {
           ActionRegistry registry = (ActionRegistry) adapter;
           actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(), registry.getAction(ASDDeleteAction.ID));
+          actionBars.setGlobalActionHandler(GEFActionConstants.ZOOM_IN, registry.getAction(GEFActionConstants.ZOOM_IN));
+          actionBars.setGlobalActionHandler(GEFActionConstants.ZOOM_OUT, registry.getAction(GEFActionConstants.ZOOM_OUT));
           zoomInRetargetAction.setEnabled(true);
           zoomOutRetargetAction.setEnabled(true);
           captureScreenAction.setEnabled(true);
