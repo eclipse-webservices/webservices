@@ -120,7 +120,11 @@ project type for Axis clients is <kbd class="userinput">jst.web</kbd>.</p>
 <dd><p>Options: <kbd class="userinput">true</kbd> <kbd class="userinput">false</kbd></p>
 <p>Mappings
 are used to override the default namespace names in the generated WSDL. The
-content of the properties file must be of the format package = namespace</p>
+content of the properties file must be of the format namespace=package. You
+will need to escape some special characters in the properties files.  For
+example <samp class="codeph">http://someNamespace=somePackage</samp> should be <samp class="codeph">http\://someNamespace=somePackage</samp>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <samp class="codeph">http</samp> to <samp class="codeph">//someNamespace=somePackage</samp>.</p>
 </dd>
 
 

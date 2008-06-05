@@ -111,7 +111,11 @@ EAR project with a different name.</dd>
 <dd>Enter the workspace relative URI to a property file containing mappings.</dd>
 
 <dd class="ddexpand">Mappings are used to override the default namespace names in the generated
-WSDL. The content of the properties file must be of the format package = namespace </dd>
+WSDL. The content of the properties file must be of the format package=namespace.
+You will need to escape some special characters in the properties files. 
+For example <samp class="codeph">http://somePackage=someNamespace</samp> should be <samp class="codeph">http\://somePackage=someNamespace</samp>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <samp class="codeph">http</samp> to <samp class="codeph">//somePackage=someNamespace</samp>.</dd>
 
 
 <dt class="dlterm">JavaOutput</dt>

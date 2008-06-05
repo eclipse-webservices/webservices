@@ -57,18 +57,18 @@ You can only use a WSDL file that contains a service element.</li>
 environment:</div>
 
 <ol>
-<li><span>Switch to the Java EE perspective (<span class="uicontrol">Window &gt; Open Perspective
+<li class="stepexpand"><span>Switch to the Java EE perspective (<span class="uicontrol">Window &gt; Open Perspective
 &gt; Java EE</span>).</span></li>
 
-<li><span>In the Project Explorer view, select the WSDL file that you created
+<li class="stepexpand"><span>In the Project Explorer view, select the WSDL file that you created
 or imported into the Web Content folder of your Web project.</span></li>
 
-<li><span>Click  <span class="uicontrol">File &gt; New &gt; Other</span>. Select  <span class="uicontrol">Web
+<li class="stepexpand"><span>Click  <span class="uicontrol">File &gt; New &gt; Other</span>. Select  <span class="uicontrol">Web
 Services</span> in order to display the various Web service wizards.
 Select the  <span class="uicontrol">Web Service</span> wizard. Click  <span class="uicontrol">Next</span>.</span>
 </li>
 
-<li><span>Web Services page: select  <span class="uicontrol">Top down Java bean Web service</span> as
+<li class="stepexpand"><span>Web Services page: select  <span class="uicontrol">Top down Java bean Web service</span> as
 your Web service type, and select the artifact from which the service will
 be created.</span>
 <ol type="a">
@@ -125,33 +125,37 @@ you can manually set up a TCP/IP monitor as described in <a href="../../org.ecli
 
 </li>
 
-<li><span>Web Services Skeleton Java™ Bean Configuration page: Select the
+<li class="stepexpand"><span>Web Services Skeleton Java™ Bean Configuration page: Select the
 folder where the generated Java will be stored. If you want to review
 or edit the mappings between packages and namespaces, select the  <span class="uicontrol">Define
 custom mapping for namespace to package</span> check box. Click  <span class="uicontrol">Next</span>.</span>
 </li>
 
-<li><span>Web Service Namespace to Package Mappings page: if you selected
+<li class="stepexpand"><span>Web Service Namespace to Package Mappings page: if you selected
  <span class="uicontrol">Define custom mapping for package to namespace</span> on
 the previous panel, you can enter your custom mapping pairs on this panel
 by clicking  <span class="uicontrol">Add</span>. Alternately, you can click  <strong>Import</strong> to
 import custom mapping pairs from a  <tt class="sysout">.properties</tt> file.
-The content of the properties file must be of the format  <samp class="codeph"><var class="varname">namespace=package</var></samp>.
-Click  <span class="uicontrol">Next</span>.</span></li>
+The content of the properties file must be of the format  <samp class="codeph"><var class="varname">namespace=package</var></samp>.</span>
+ You will need to escape some special characters in the properties files.
+ For example <samp class="codeph">http://someNamespace=somePackage</samp> should be <samp class="codeph">http\://someNamespace=somePackage</samp>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <samp class="codeph">http</samp> to <samp class="codeph">//someNamespace=somePackage</samp>.
+</li>
 
-<li><span>Web Service Test page: If you selected to test the Web service,
+<li class="stepexpand"><span>Web Service Test page: If you selected to test the Web service,
 select the test facility for the generated Web service. This will open the
 Web service in the Web Services Explorer. Select the operation you want to
 test, enter the required information, and click  <span class="uicontrol">Go</span>.
 The result will display in the Status pane. Click  <span class="uicontrol">Next</span>.</span>
 </li>
 
-<li><span>Web Service Proxy page: If you have selected to generate a proxy,
+<li class="stepexpand"><span>Web Service Proxy page: If you have selected to generate a proxy,
 this page shows the options for the proxy. It lists the folder where the proxy
 will be generated, and you can optionally create custom mappings between namespaces
 and packages. Click  <span class="uicontrol">Next</span>.</span></li>
 
-<li><span>Web Service Client Test page: Use this page to select the following
+<li class="stepexpand"><span>Web Service Client Test page: Use this page to select the following
 options: </span>
 <ol type="a">
 <li><span>Select your test facility. You can test the generated proxy
@@ -169,7 +173,7 @@ server for you automatically.</span></li>
 
 </li>
 
-<li><span>Web Service Publication page: If you have selected to publish your
+<li class="stepexpand"><span>Web Service Publication page: If you have selected to publish your
 Web service to a UDDI registry, use this page to launch the Web Services Explorer
 and select the UDDI registry to which the Web service will be published. Click
  <span class="uicontrol">Finish</span>.</span></li>

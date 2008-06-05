@@ -86,6 +86,10 @@ the previous page, you can enter your custom mapping pairs on this page by
 clicking  <uicontrol>Add</uicontrol>. Alternately, you can click  <b>Import</b> to
 import custom mapping pairs from a  <systemoutput>.properties</systemoutput> file.
 The content of the properties file must be of the format  <codeph><varname>namespace=package</varname></codeph>.</cmd>
+<info>You will need to escape some special characters in the properties files.
+ For example <codeph>http://someNamespace=somePackage</codeph> should be <codeph>http\://someNamespace=somePackage</codeph>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <codeph>http</codeph> to <codeph>//someNamespace=somePackage</codeph>.</info>
 </step>
 <step><cmd>Web Service Client Test page: This page displays if you selected
 to test your client. Select the test facility that you will use to test the

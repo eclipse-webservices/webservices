@@ -102,7 +102,11 @@ for the Axis runtime environment. This encoding method is not WS-I compliant.</l
 the previous panel, you can enter your custom mapping pairs on this panel
 by clicking  <uicontrol>Add</uicontrol>. Alternately, you can click  <b>Import</b> to
 import custom mapping pairs from a  <systemoutput>.properties</systemoutput> file.
-The content of the properties file must be of the format  <codeph><varname>package=namespace</varname></codeph>.</cmd>
+The content of the properties file must be of the format  <codeph><varname>package=namespace</varname></codeph>. </cmd>
+<info>You will need to escape some special characters in the properties files.
+ For example <codeph>http://somePackage=someNamespace</codeph> should be <codeph>http\://somePackage=someNamespace</codeph>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <codeph>http</codeph> to <codeph>//somePackage=someNamespace</codeph>.</info>
 </step>
 <step><cmd>Web Service Test page: If you selected to test the Web service,
 select the test facility for the generated Web service.</cmd><info>This will

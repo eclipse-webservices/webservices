@@ -112,7 +112,10 @@ EAR project with a different name.</dd>
 
 <dd class="ddexpand">Mappings are used to override the default package names of the generated
 Java template classes. The content of the properties file must be of the format
-namespace=package </dd>
+namespace=package. You will need to escape some special characters in the
+properties files.  For example <samp class="codeph">http://someNamespace=somePackage</samp> should
+be <samp class="codeph">http\://someNamespace=somePackage</samp>.  Otherwise, the colon
+(:) would be treated as delimiter resulting in trying to map <samp class="codeph">http</samp> to <samp class="codeph">//someNamespace=somePackage</samp>.</dd>
 
 
 <dt class="dlterm">JavaOutput</dt>

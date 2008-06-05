@@ -67,7 +67,10 @@ EAR project with a different name.</pd>
 <pd>Enter the workspace relative URI to a property file containing mappings.</pd>
 <pd>Mappings are used to override the default package names of the generated
 Java template classes. The content of the properties file must be of the format
-namespace=package </pd>
+namespace=package. You will need to escape some special characters in the
+properties files.  For example <codeph>http://someNamespace=somePackage</codeph> should
+be <codeph>http\://someNamespace=somePackage</codeph>.  Otherwise, the colon
+(:) would be treated as delimiter resulting in trying to map <codeph>http</codeph> to <codeph>//someNamespace=somePackage</codeph>.</pd>
 </plentry><plentry>
 <pt>JavaOutput</pt>
 <pd>Enter the workspace relative URI to an existing Java source folder for

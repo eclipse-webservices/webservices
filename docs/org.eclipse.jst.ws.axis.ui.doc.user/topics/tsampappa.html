@@ -54,18 +54,18 @@ use a WSDL file that contains a service element.</li>
 from a discovered WSDL document:</div>
 
 <ol>
-<li><span>Switch to the Java EE perspective (<span class="uicontrol">Window &gt; Open Perspective
+<li class="stepexpand"><span>Switch to the Java EE perspective (<span class="uicontrol">Window &gt; Open Perspective
 &gt; Java EE</span>).</span></li>
 
-<li><span>In the Navigator view, select the Web project in which you want
+<li class="stepexpand"><span>In the Navigator view, select the Web project in which you want
 to generate a sample application.</span></li>
 
-<li><span>Click  <span class="uicontrol">File &gt; New &gt; Other</span>. Select  <span class="uicontrol">Web
+<li class="stepexpand"><span>Click  <span class="uicontrol">File &gt; New &gt; Other</span>. Select  <span class="uicontrol">Web
 Services</span> in order to display the various Web service wizards.
 Select the  <span class="uicontrol">Web Service Client</span> wizard. Click  <span class="uicontrol">Next</span>.</span>
 </li>
 
-<li><span>Web Services page: </span>
+<li class="stepexpand"><span>Web Services page: </span>
 <ol type="a">
 <li class="substepexpand"><span>Enter the URI to the WSDL, WSIL, or HTML file that will be used
 to generate the client.</span></li>
@@ -118,26 +118,30 @@ you can manually set up a TCP/IP monitor as described in <a href="../../org.ecli
 
 </li>
 
-<li><span>Web Service Proxy page: This panel shows the options for the proxy.
+<li class="stepexpand"><span>Web Service Proxy page: This panel shows the options for the proxy.
 It lists the folder where the proxy will be generated, and you can optionally
 create custom mappings between namespaces and packages.</span></li>
 
-<li><span>Web Service Namespace to Package Mappings page: if you selected
+<li class="stepexpand"><span>Web Service Namespace to Package Mappings page: if you selected
  <span class="uicontrol">Define custom mapping for namespace to package</span> on
 the previous page, you can enter your custom mapping pairs on this page by
 clicking  <span class="uicontrol">Add</span>. Alternately, you can click  <strong>Import</strong> to
 import custom mapping pairs from a  <tt class="sysout">.properties</tt> file.
 The content of the properties file must be of the format  <samp class="codeph"><var class="varname">namespace=package</var></samp>.</span>
+ You will need to escape some special characters in the properties files.
+ For example <samp class="codeph">http://someNamespace=somePackage</samp> should be <samp class="codeph">http\://someNamespace=somePackage</samp>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <samp class="codeph">http</samp> to <samp class="codeph">//someNamespace=somePackage</samp>.
 </li>
 
-<li><span>Web Service Client Test page: This page displays if you selected
+<li class="stepexpand"><span>Web Service Client Test page: This page displays if you selected
 to test your client. Select the test facility that you will use to test the
 proxy, and the methods that you want included in the proxy. Note that the
 Universal Test Client (UTC) is only compatible with Web service clients deployed
 on WebSphere<sup>®</sup> servers.</span>
 </li>
 
-<li><span>Click  <span class="uicontrol">Finish</span>. If you have selected to test
+<li class="stepexpand"><span>Click  <span class="uicontrol">Finish</span>. If you have selected to test
 the proxy, the test client will open in a browser window.</span></li>
 
 </ol>

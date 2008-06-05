@@ -66,7 +66,11 @@ EAR project with a different name.</pd>
 <pt>Mappings</pt>
 <pd>Enter the workspace relative URI to a property file containing mappings.</pd>
 <pd>Mappings are used to override the default namespace names in the generated
-WSDL. The content of the properties file must be of the format package = namespace </pd>
+WSDL. The content of the properties file must be of the format package=namespace.
+You will need to escape some special characters in the properties files. 
+For example <codeph>http://somePackage=someNamespace</codeph> should be <codeph>http\://somePackage=someNamespace</codeph>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <codeph>http</codeph> to <codeph>//somePackage=someNamespace</codeph>.</pd>
 </plentry><plentry>
 <pt>JavaOutput</pt>
 <pd>Enter the workspace relative URI to an existing Java source folder for

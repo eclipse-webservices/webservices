@@ -71,7 +71,11 @@ project type for Axis clients is <userinput>jst.web</userinput>.</p></pd>
 <pt>CustomizeClientMappings</pt>
 <pd><p>Options: <userinput>true</userinput> <userinput>false</userinput></p><p>Mappings
 are used to override the default namespace names in the generated WSDL. The
-content of the properties file must be of the format package = namespace</p></pd>
+content of the properties file must be of the format namespace=package. You
+will need to escape some special characters in the properties files.  For
+example <codeph>http://someNamespace=somePackage</codeph> should be <codeph>http\://someNamespace=somePackage</codeph>.
+ Otherwise, the colon (:) would be treated as delimiter resulting in trying
+to map <codeph>http</codeph> to <codeph>//someNamespace=somePackage</codeph>.</p></pd>
 </plentry><plentry>
 <pt>Mappings</pt>
 <pd>Enter the workspace relative URI to a property file containing mappings. </pd>
