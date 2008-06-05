@@ -18,6 +18,7 @@
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225378 makandre@ca.ibm.com - Andrew Mak, Client wizard runtime/server defaulting is not respecting the preference
+ * 20080530   234871 makandre@ca.ibm.com - Andrew Mak, Workbench has not been created yet error in cmdline Ant
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -42,6 +43,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wizard.TypeSelectionFilter2;
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
@@ -232,8 +234,12 @@ public class WebServiceRuntimeExtensionUtils2
     if (serverType == null)
       return null;
     
-    String serverLabel = ServerUICore.getLabelProvider().getText(serverType);   
-    return serverLabel;
+    if (PlatformUI.isWorkbenchRunning()) {
+      String serverLabel = ServerUICore.getLabelProvider().getText(serverType);   
+      return serverLabel;
+    }
+    else
+      return serverType.getName();
   }
   
   /**
