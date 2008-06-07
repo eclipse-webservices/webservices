@@ -30,11 +30,11 @@
 
    <includes
          id="org.eclipse.wst.ws_wsdl14.feature"
-         version="1.4.0.qualifier"/>
+         version="0.0.0"/>
 
    <includes
          id="org.eclipse.wst.ws_wsdl15.feature"
-         version="1.5.1.qualifier"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.wst.ws"
