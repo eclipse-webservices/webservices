@@ -148,9 +148,9 @@ by clicking  <span class="uicontrol">Add</span>. Alternately, you can click  <st
 import custom mapping pairs from a  <tt class="sysout">.properties</tt> file.
 The content of the properties file must be of the format  <samp class="codeph"><var class="varname">package=namespace</var></samp>. </span>
  You will need to escape some special characters in the properties files.
- For example <samp class="codeph">http://somePackage=someNamespace</samp> should be <samp class="codeph">http\://somePackage=someNamespace</samp>.
+ For example <samp class="codeph">somePackage=http://someNamespace</samp> should be <samp class="codeph">somePackage=http\://someNamespace</samp>.
  Otherwise, the colon (:) would be treated as delimiter resulting in trying
-to map <samp class="codeph">http</samp> to <samp class="codeph">//somePackage=someNamespace</samp>.
+to map <samp class="codeph">somePackage</samp> to <samp class="codeph">http</samp>.
 </li>
 
 <li class="stepexpand"><span>Web Service Test page: If you selected to test the Web service,

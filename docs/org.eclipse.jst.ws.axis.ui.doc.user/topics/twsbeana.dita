@@ -104,10 +104,9 @@ by clicking  <uicontrol>Add</uicontrol>. Alternately, you can click  <b>Import</
 import custom mapping pairs from a  <systemoutput>.properties</systemoutput> file.
 The content of the properties file must be of the format  <codeph><varname>package=namespace</varname></codeph>. </cmd>
 <info>You will need to escape some special characters in the properties files.
- For example <codeph>http://somePackage=someNamespace</codeph> should be <codeph>http\://somePackage=someNamespace</codeph>.
+ For example <codeph>somePackage=http://someNamespace</codeph> should be <codeph>somePackage=http\://someNamespace</codeph>.
  Otherwise, the colon (:) would be treated as delimiter resulting in trying
-to map <codeph>http</codeph> to <codeph>//somePackage=someNamespace</codeph>.</info>
-</step>
+to map <codeph>somepackage</codeph> to <codeph>http</codeph>.</info></step>
 <step><cmd>Web Service Test page: If you selected to test the Web service,
 select the test facility for the generated Web service.</cmd><info>This will
 open the Web service in the Web Services Explorer. Select the operation you
