@@ -16,6 +16,7 @@
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080527   234192 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -27,7 +28,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
@@ -59,9 +62,11 @@ import org.eclipse.wst.command.internal.env.core.selection.BooleanSelection;
 import org.eclipse.wst.command.internal.env.core.selection.SelectionList;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
+import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.internal.facets.FacetUtil;
 
 
 public class ClientTestWidget extends SimpleWidgetDataContributor
@@ -79,7 +84,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
    /*CONTEXT_ID PWSM0003 for the Test Type Combo box of the Sample Page*/
   private String INFOPOP_PWSM_COMBOBOX_TEST = "PWSM0003";
   
-  private Combo serverTypeCombo_;
+  private Combo runtimesCombo;
   /*CONTEXT_ID PWSM0004 for the server type combo box of the Sample Page*/
   private String INFOPOP_PWSM_COMBOBOX_SERVER = "PWSM0004";
   
@@ -128,7 +133,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   private boolean isTestWidget = false;
   private boolean isPopup = false;
   
-  private LabelsAndIds serverTypes_;
+  private LabelsAndIds runtimes_;
   private LabelsAndIds serverInstances_;
   
   private IPath webContentPath_;
@@ -269,8 +274,22 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     runTestCheckbox_ = uiUtils.createCheckbox( parent, ConsumptionUIMessages.BUTTON_RUN_TEST,
     										ConsumptionUIMessages.TOOLTIP_PWSM_CHECKBOX_LAUNCH,
                                                INFOPOP_PWSM_CHECKBOX_LAUNCH );
+    runTestCheckbox_.addSelectionListener( new SelectionAdapter() 
+    {
+        public void widgetSelected( SelectionEvent evt )
+        {
+          handleRunTestCheckBox();
+        }
+      });
     
     return this;
+  }
+  
+  private void handleRunTestCheckBox(){
+	  boolean enabled = runTestCheckbox_.getSelection();
+	  runtimesCombo.setEnabled(enabled);
+	  serverInstanceTypeCombo_.setEnabled(enabled);
+	  
   }
   
   private void handleFolderText()
@@ -342,6 +361,9 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     selectAllMethodsButton_.setEnabled( enabled );
     deselectAllMethodsButton_.setEnabled( enabled );
     sampleFolderBrowseButton_.setEnabled( enabled );
+    
+  
+  
   }
   
   private void handleTestFacilitySelection() {
@@ -382,14 +404,14 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   private void handleServerChange()
   {
-	  int selection = serverTypeCombo_.getSelectionIndex();
+	  int selection = runtimesCombo.getSelectionIndex();
 	  serverInstances_.clear();
 	  serverInstanceTypeCombo_.removeAll();
 	  IServer[] servers = org.eclipse.wst.server.core.ServerCore.getServers();
 	  for(int j =0; j<servers.length;j++){
-			String id = serverTypes_.getId(selection);
-			if(id.equals(servers[j].getServerType().getId())){
-				serverInstances_.add(servers[j].getId(), servers[j].getName());
+			String id = runtimes_.getId(selection);
+			if(id.equals(servers[j].getRuntime().getId())){
+				serverInstances_.add(servers[j].getRuntime().getId(), servers[j].getName());
 				serverInstanceTypeCombo_.add(servers[j].getName());
 			}
 	  }
@@ -446,35 +468,55 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  return project;
   }
   
+  
   public void initServersTypes() 
   {
-	if(serverTypes_  == null)
-		serverTypes_ = new LabelsAndIds();
+	if(runtimes_  == null)
+		runtimes_ = new LabelsAndIds();
 	IServer[] servers = org.eclipse.wst.server.core.ServerCore.getServers();
+	IRuntime[] runtimes = org.eclipse.wst.server.core.ServerCore.getRuntimes();
 	IServerType[] serverTypes = ServerCore.getServerTypes();
-	ValidationUtils vu = new ValidationUtils();
+	
+	
+	
 	String projectName = projectCombo_.getText();
+	boolean webProject = J2EEUtils.isWebComponent(ProjectUtilities.getProject(projectName));
+	
 	Set projectFacets = FacetUtils.getFacetsForProject(projectName);
-	for(int i = 0;i<serverTypes.length;i++){
-		if(vu.doesServerSupportFacets(serverTypes[i].getId(), projectFacets)){
-			serverTypes_.add(serverTypes[i].getId(), serverTypes[i].getName());
-			serverTypeCombo_.add( serverTypes[i].getName() );
+	for(int i = 0;i<runtimes.length;i++){
+		if(!runtimes[i].isStub()){
+			if(webProject){
+				org.eclipse.wst.common.project.facet.core.runtime.IRuntime runtime = FacetUtil.getRuntime(runtimes[i]);
+				if(FacetUtils.doesRuntimeSupportFacets(runtime, projectFacets)){
+					runtimes_.add(runtimes[i].getId(), runtimes[i].getName());
+					runtimesCombo.add( runtimes[i].getName() );
+				}
+			}
+			else{
+				runtimes_.add(runtimes[i].getId(), runtimes[i].getName());
+				runtimesCombo.add( runtimes[i].getName() );	
+			}
 		}
-		serverTypeCombo_.select(0);
 	}
+	runtimesCombo.select(0);
 	if(serverInstances_  == null)
 		serverInstances_ = new LabelsAndIds();
-	for(int j =0; j<servers.length;j++){
-		String id = serverTypes_.getId(0);
-		if(id.equals(servers[j].getServerType().getId())){
-			serverInstances_.add(servers[j].getId(), servers[j].getName());
-			serverInstanceTypeCombo_.add(servers[j].getName());
+	
+	
+	String id = runtimes_.getId(0);
+	for(int k =0; k<servers.length;k++){
+		if(id.equals(servers[k].getRuntime().getId())){
+			serverInstances_.add(servers[k].getId(), servers[k].getName());
+			serverInstanceTypeCombo_.add(servers[k].getName());
 		}
 	}
 	serverInstanceTypeCombo_.select(0);
-	serverInstanceTypeCombo_.setEnabled(canRunTestClient_);
-	serverTypeCombo_.setEnabled(canRunTestClient_);
+	
+	serverInstanceTypeCombo_.setEnabled(canRunTestClient_ && runTestCheckbox_.getSelection());
+	runtimesCombo.setEnabled(canRunTestClient_ && runTestCheckbox_.getSelection());
   }
+  
+  
   
   
   public void setSampleProject(String clientProject) 
@@ -544,11 +586,11 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  isPopup = popup;
 	  if(isPopup){
 		  UIUtils      uiUtils  = new UIUtils( pluginId_ );
-		  serverTypeCombo_ = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_SERVERS_LIST,
+		  runtimesCombo = uiUtils.createCombo( comboGroup_, ConsumptionUIMessages.LABEL_SERVERS_LIST,
 					ConsumptionUIMessages.TOOLTIP_PWSM_COMBOBOX_SERVER,
 					INFOPOP_PWSM_COMBOBOX_SERVER,
 		              SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
-		    	serverTypeCombo_.addSelectionListener(
+		    	runtimesCombo.addSelectionListener(
 		    		new SelectionAdapter() {
 		    			public void widgetSelected(SelectionEvent e) {
 		    				handleServerChange();
@@ -581,9 +623,11 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  return serverInstances_.getId(instanceLabel);
   }
   
+  
   public String getExistingServerId(){
-	  int instanceLabel = serverTypeCombo_.getSelectionIndex();
-	  return serverTypes_.getId(instanceLabel);
+	  int typeLabel = runtimesCombo.getSelectionIndex();
+	  if(typeLabel == -1) return null;
+	  return runtimes_.getId(typeLabel);
   }
   
   public BooleanSelection[] getMethods()
