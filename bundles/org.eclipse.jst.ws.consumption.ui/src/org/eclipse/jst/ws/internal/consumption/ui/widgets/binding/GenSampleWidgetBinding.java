@@ -19,6 +19,7 @@
  * 20080331   224953 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -35,6 +36,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
 import org.eclipse.jst.ws.internal.consumption.command.common.AddModuleToServerCommand;
@@ -217,6 +219,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	    	}
 	    }    
 	  
+	    IProject project = ProjectUtilities.getProject(project_);
 	    WebServiceClientInfo clientInfo = new WebServiceClientInfo();
 	    clientInfo.setImplURL(getProxyBean());
 	    //clientInfo.setJ2eeLevel(j2eeLevel_);
@@ -237,24 +240,27 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  			canRunTestClient_ = true;
 	  		}
 	  		else if (createServerStatus.getSeverity()==Status.ERROR){
-	  			canRunTestClient_ = false;
+	  			if(J2EEUtils.isWebComponent(project))
+	  				canRunTestClient_ = false;
+	  			else 
+	  				canRunTestClient_ = true;
 	  		}               
 	  	}
 	  	else {
 	  		canRunTestClient_ = true;
 	  	}
 	  	
-	  	IProject project = ProjectUtilities.getProject(project_);
+	  	
 	  	IProject[] earproject = J2EEProjectUtilities.getReferencingEARProjects(project);
 	  	boolean earNull = false;
 	  	if (earproject.length<1) earNull = true;
 	  		
 	  	boolean j2eeProject = J2EEProjectUtilities.isJEEProject(project);
+	  	  	
 	  	
 	  	if (j2eeProject && earNull)
 	  		canRunTestClient_ = false;
-	  		
-	  	
+	  		  	
 		if (!earNull && clientInfo.getServerInstanceId() != null){
 	  		
 	  		AddModuleToServerCommand command = new AddModuleToServerCommand();
