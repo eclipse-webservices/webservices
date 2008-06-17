@@ -12,16 +12,19 @@
  * 20060524   142635 gilberta@ca.ibm.com - Gilbert Andrews
  * 20060608   145529 kathy@ca.ibm.com - Kathy Chan
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080610   224433 makandre@ca.ibm.com - Andrew Mak, Need better error message in sample JSP generation when Java proxy bean does not exist (cont.)
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
@@ -86,9 +89,13 @@ public class ClientTestDelegateCommand extends AbstractDataModelOperation
 	//Get the webservice extension
 	
 	WebServiceTestExtension wscte = (WebServiceTestExtension)testRegistry.getWebServiceExtensionsByName(clientTestID);
-    IWebServiceTester iwst = (IWebServiceTester)wscte.getWebServiceExecutableExtension();
 	TestInfo testInfo = getTestInfo();
 	
+	if (wscte.isCodeGenNeeded() && testInfo.getProxyBean() == null)
+        return StatusUtils.errorStatus(ConsumptionUIMessages.MSG_ERROR_JTS_PROXY_NOT_COMPILED);
+	
+	IWebServiceTester iwst = (IWebServiceTester)wscte.getWebServiceExecutableExtension();		
+		
 	status = commandFactoryExecution(iwst.generate(testInfo),env, monitor );
 	if(status.getSeverity() == Status.ERROR){
 	  return status;	
