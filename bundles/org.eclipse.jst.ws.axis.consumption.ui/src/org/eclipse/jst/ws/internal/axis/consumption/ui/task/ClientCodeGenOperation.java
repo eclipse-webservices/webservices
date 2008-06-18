@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
+ * 20080603   235367 makandre@ca.ibm.com - Andrew Mak, "IWAB0014E Unexpected exception occurred" from ant task for web service client generation
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -126,7 +127,10 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 		
 	}
 
-
+	public JavaWSDLParameter getJavaWSDLParam() {
+		return javaWSDLParam;
+	}
+	
 	public void setJavaWSDLParam(JavaWSDLParameter javaWSDLParam) {
 		this.javaWSDLParam = javaWSDLParam;
 	}
