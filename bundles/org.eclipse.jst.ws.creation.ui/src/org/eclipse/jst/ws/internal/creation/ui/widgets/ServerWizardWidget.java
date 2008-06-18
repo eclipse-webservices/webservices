@@ -57,6 +57,7 @@
  * 20080402   198439 kathy@ca.ibm.com - Kathy Chan
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -104,6 +105,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
@@ -629,6 +631,11 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 					ConsumptionUIMessages.CHECKBOX_OVERWRITE_FILES, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_OVERWRITE_FILES, INFOPOP_WSWSCEN_CHECKBOX_OVERWRITE);
 			overwriteButton_.setSelection(getResourceContext()
 					.isOverwriteFilesEnabled());
+			overwriteButton_.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					getResourceContext().setOverwriteFilesEnabled(overwriteButton_.getSelection());
+				}
+			});
 		}
 
 		return this;

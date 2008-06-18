@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060223   129232 pmoogk@ca.ibm.com - Peter Moogk
  * 20060822   154750 pmoogk@ca.ibm.com - Peter Moogk
  * 20070529   187780 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.widgets;
 
@@ -35,6 +36,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.common.Condition;
+import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.command.internal.env.core.data.DataFlowManager;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistryImpl;
 import org.eclipse.wst.command.internal.env.core.fragment.CommandFragment;
@@ -229,7 +231,7 @@ public class DynamicWizard extends Wizard implements INewWizard, IExecutableExte
    */
   public void init ( IWorkbench workbench, IStructuredSelection selection )
   {    
-    PersistentResourceContext context        = PersistentResourceContext.getInstance();
+    ResourceContext           context        = PersistentResourceContext.getInstance().copy();
     EclipseStatusHandler      handler        = new EclipseStatusHandler();
     EclipseEnvironment        environment    = new EclipseEnvironment( null, context, handler );
     
