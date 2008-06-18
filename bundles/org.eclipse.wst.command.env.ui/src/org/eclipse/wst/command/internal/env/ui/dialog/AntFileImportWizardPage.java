@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20080221   146023 gilberta@ca.ibm.com - Gilbert Andrews 
  * 20080512   222094 makandre@ca.ibm.com - Andrew Mak, Error handling when Ant template cannot be found
+ * 20080618   237671 makandre@ca.ibm.com - Andrew Mak, Label on Ant files wizard is truncated
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
@@ -64,7 +65,7 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 	    
 	    if( labelName != null )
 	    {
-	      Label label = new Label( parent, SWT.WRAP);
+	      Label label = new Label( parent, SWT.NONE);
 	      label.setText( labelName );
 	      label.setToolTipText( tooltip );
 	    }
