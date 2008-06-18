@@ -16,6 +16,7 @@
  * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
  * 20070927   204649 kelvinhc@ca.ibm.com - Kelvin Cheung
  * 20080505   225625 pmoogk@ca.ibm.com - Peter Moogk, Fixed null pointer problem, if user cancells out of overwrite resource.
+ * 20080604   235648 makandre@ca.ibm.com - Andrew Mak, Errors in client proxy if using default namespace to package mapping
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.axis.constants.Scope;
@@ -219,6 +221,30 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
 					}
 				}	
 				javaFiles.removeAll(deployFiles);
+			}
+			
+			// update the name2package map with actual package values used by the emitter
+			// because emitter will prefix illegal package names with "_".  See bug
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=235648
+			if (!javaWSDLParam.isMetaInfOnly() && javaWSDLParam.getMappings() != null) {
+				
+				Map pkg2NsMap = wsdl2Java.getNamespaces().getPkg2NamespacesMap();
+				
+				Iterator iter = pkg2NsMap.entrySet().iterator();
+				while (iter.hasNext()) {
+					
+					Map.Entry entry = (Map.Entry) iter.next();
+					
+					String pkg = (String) entry.getKey();
+					List nsList = (List) entry.getValue();
+					
+					Iterator iter2 = nsList.iterator();
+					while (iter2.hasNext()) {
+						String ns = (String) iter2.next();
+						if (javaWSDLParam.getMappings().containsKey(ns))
+							javaWSDLParam.getMappings().put(ns, pkg);
+					}
+				}
 			}
 			
 			status = moveGeneratedFiles(environment, monitor);
