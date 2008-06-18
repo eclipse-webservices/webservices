@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
+ * 20080613   237116 makandre@ca.ibm.com - Andrew Mak, Web service monitoring fails on https endpoint
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -56,6 +57,8 @@ public class ComputeProxyEndpointCommand extends AbstractDataModelOperation
   		// Use the endpoint that matches with the proxy the extension passes to us if it is set
   		if (proxyEndpoint != null) {
   			String location = proxyEndpoint;
+  			if (location.startsWith("https://"))
+            	location = "http://" + location.substring(8);
   			try
 			{
   				URL url = new URL(location);
