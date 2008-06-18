@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060413   135581 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060802   148731 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20080603   234251 pmoogk@ca.ibm.com - Peter Moogk, Updated the size of project selection dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -51,7 +52,7 @@ public class ProjectSelectionDialog extends SimpleDialog {
 	
 	  protected Point getInitialSize()
 	  {
-	    return this.getShell().computeSize(250, SWT.DEFAULT, true); 
+	    return this.getShell().computeSize(325, SWT.DEFAULT, true); 
 	  }
 
 
