@@ -13,6 +13,7 @@
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
  * 20060524   142499 jeffliu@ca.ibm.com - Jeffrey Liu
  * 20070109   169553 makandre@ca.ibm.com - Andrew Mak
+ * 20080618   186456 makandre@ca.ibm.com - Andrew Mak
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.core.resources.*,
@@ -346,11 +347,11 @@
         <div id="workbench" >
           <table width="95%" border=0 cellpadding=3 cellspacing=0>
             <tr>
-              <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_CATEGORY")%></td>
+              <td height=30 valign="bottom" class="labels"><label for="<%=ActionInputs.CATEGORY%>"><%=controller.getMessage("FORM_LABEL_WSDL_CATEGORY")%></label></td>
             </tr>
             <tr>
               <td nowrap>
-                <select name="<%=ActionInputs.CATEGORY%>" onChange="fillWSDLFilesByCategory(this.value)" class="selectlist">
+                <select id="<%=ActionInputs.CATEGORY%>" name="<%=ActionInputs.CATEGORY%>" onChange="fillWSDLFilesByCategory(this.value)" class="selectlist">
                 </select>
                 <input type="button" value="<%=controller.getMessage("FORM_BUTTON_REFRESH")%>" onClick="document.location.reload()" class="button">
               </td>
@@ -359,11 +360,11 @@
           <div id="projects" style="display:none;">          
             <table width="95%" border=0 cellpadding=3 cellspacing=0>              
               <tr>
-                <td height=30 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_SOURCE_WEBPROJECTS")%></td>
+                <td height=30 valign="bottom" class="labels"><label for="project"><%=controller.getMessage("FORM_LABEL_WSDL_SOURCE_WEBPROJECTS")%></label></td>
               </tr>
               <tr>
                 <td nowrap>
-                  <select name="project" onChange="fillWSDLFiles(this.value)" class="selectlist">
+                  <select id="project" name="project" onChange="fillWSDLFiles(this.value)" class="selectlist">
                   </select>
                   <input type="button" value="<%=controller.getMessage("FORM_BUTTON_REFRESH")%>" onClick="document.location.reload()" class="button">
                 </td>
@@ -372,11 +373,11 @@
           </div>
           <table>
             <tr>
-              <td height=10 valign="bottom" class="labels"><%=controller.getMessage("FORM_LABEL_WSDL_URL")%></td>
+              <td height=10 valign="bottom" class="labels"><label for="<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>"><%=controller.getMessage("FORM_LABEL_WSDL_URL")%></label></td>
             </tr>
             <tr>
               <td>
-                <select name="<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>" class="selectlist">
+                <select id="<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>" name="<%=ActionInputs.QUERY_INPUT_WEBPROJECT_WSDL_URL%>" class="selectlist">
                 </select>
               </td>
             </tr>
