@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060612   146564 kathy@ca.ibm.com - Kathy Chan
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
+ * 20080613   237116 makandre@ca.ibm.com - Andrew Mak, Web service monitoring fails on https endpoint
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -113,7 +114,19 @@ public class GetMonitorCommand extends AbstractDataModelOperation
                   else if ("https".equalsIgnoreCase(protocol))
                     port = 443;
                 }
-                if (protocol != null && protocol.startsWith("http") && host != null && host.length() > 0 && port != -1)
+                if ("https".equalsIgnoreCase(protocol))
+                {
+                	IStatus warning = StatusUtils.warningStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[]{String.valueOf(port), endpoint}));
+                	try
+                    {
+                      if (env != null)
+                        env.getStatusHandler().report(warning);
+                    }
+                    catch (StatusException se)
+                    {
+                    }
+                }
+                else if (protocol != null && protocol.startsWith("http") && host != null && host.length() > 0 && port != -1)
                 {
                   IMonitor m = null;
                   IMonitor[] monitors = MonitorCore.getMonitors();

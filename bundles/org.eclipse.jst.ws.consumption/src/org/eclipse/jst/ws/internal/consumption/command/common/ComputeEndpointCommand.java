@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080613   237116 makandre@ca.ibm.com - Andrew Mak, Web service monitoring fails on https endpoint
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -85,6 +88,8 @@ public class ComputeEndpointCommand extends AbstractDataModelOperation
               if (ext instanceof SOAPAddress)
               {
                 String location = ((SOAPAddress)ext).getLocationURI();
+                if (location.startsWith("https://"))
+                	location = "http://" + location.substring(8);
                 try
                 {
                   URL url = new URL(location);
