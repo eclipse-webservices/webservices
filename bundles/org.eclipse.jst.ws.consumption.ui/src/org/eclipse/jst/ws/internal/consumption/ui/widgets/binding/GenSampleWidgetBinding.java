@@ -20,6 +20,7 @@
  * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -143,6 +144,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient", ClientTestWidget.class );
     dataRegistry.addMapping(InitializeProxyCommand.class, "CanRunTestClient", ClientTestWidget.class );
+    dataRegistry.addMapping(InitializeProxyCommand.class, "IsWebProject", ClientTestWidget.class );
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR", ClientTestWidget.class );
@@ -196,6 +198,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	private IWebServiceClient webServiceClient_;
 	private String            wsdlURI_;
 	private boolean canRunTestClient_;
+	private boolean isWebProject = false;
     
 	public IStatus execute( IProgressMonitor monitor, IAdaptable adaptable )
 	{    
@@ -256,7 +259,8 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  	if (earproject.length<1) earNull = true;
 	  		
 	  	boolean j2eeProject = J2EEProjectUtilities.isJEEProject(project);
-	  	  	
+	  	if(J2EEUtils.isWebComponent(project))
+	  		isWebProject = true;
 	  	
 	  	if (j2eeProject && earNull)
 	  		canRunTestClient_ = false;
@@ -333,6 +337,10 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
     	return getLegitTestFacility();
     }
     
+    public boolean getIsWebProject()
+    {
+    	return isWebProject;
+    }
     
 	public void setClientTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
 	{

@@ -17,6 +17,7 @@
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080527   234192 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -132,6 +133,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   private IStructuredSelection initialSelection_;
   private boolean isTestWidget = false;
   private boolean isPopup = false;
+  private boolean isWebProject = false;
   
   private LabelsAndIds runtimes_;
   private LabelsAndIds serverInstances_;
@@ -480,12 +482,24 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	
 	
 	String projectName = projectCombo_.getText();
-	boolean webProject = J2EEUtils.isWebComponent(ProjectUtilities.getProject(projectName));
 	
 	Set projectFacets = FacetUtils.getFacetsForProject(projectName);
 	for(int i = 0;i<runtimes.length;i++){
-		if(!runtimes[i].isStub()){
-			if(webProject){
+		boolean showServer = false;
+		
+		if(runtimes[i].isStub()){
+			for(int l =0; l<servers.length;l++){
+				if(servers[l].getRuntime() != null){
+					if(runtimes[i].getId().equals(servers[l].getRuntime().getId())){
+						showServer = true;
+					}
+				}
+			}
+		}
+		else showServer = true;
+		
+		if(showServer){	
+			if(isWebProject){
 				org.eclipse.wst.common.project.facet.core.runtime.IRuntime runtime = FacetUtil.getRuntime(runtimes[i]);
 				if(FacetUtils.doesRuntimeSupportFacets(runtime, projectFacets)){
 					runtimes_.add(runtimes[i].getId(), runtimes[i].getName());
@@ -498,20 +512,25 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 			}
 		}
 	}
+	
 	runtimesCombo.select(0);
 	if(serverInstances_  == null)
 		serverInstances_ = new LabelsAndIds();
 	
 	
 	String id = runtimes_.getId(0);
-	for(int k =0; k<servers.length;k++){
-		if(id.equals(servers[k].getRuntime().getId())){
-			serverInstances_.add(servers[k].getId(), servers[k].getName());
-			serverInstanceTypeCombo_.add(servers[k].getName());
+	if(id != null){
+		for(int k =0; k<servers.length;k++){
+			if(servers[k].getRuntime() != null){
+				if(id.equals(servers[k].getRuntime().getId())){
+					serverInstances_.add(servers[k].getId(), servers[k].getName());
+					serverInstanceTypeCombo_.add(servers[k].getName());
+				}
+			}
 		}
+		serverInstanceTypeCombo_.select(0);
 	}
-	serverInstanceTypeCombo_.select(0);
-	
+		
 	serverInstanceTypeCombo_.setEnabled(canRunTestClient_ && runTestCheckbox_.getSelection());
 	runtimesCombo.setEnabled(canRunTestClient_ && runTestCheckbox_.getSelection());
   }
@@ -570,6 +589,11 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   public void setRunTestClient( boolean value )
   {
 	  runTestCheckbox_.setSelection( value );
+  }
+  
+  public void setIsWebProject( boolean value )
+  {
+	  isWebProject = value;
   }
   
   private boolean canRunTestClient_;
