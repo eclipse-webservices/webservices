@@ -24,6 +24,7 @@
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20070827   188732 sandakith@wso2.com - Lahiru Sandakith, Restore defaults for preferences
  * 20071030	  207618 zina@ca.ibm.com - Zina Mostafia, Page GUI sequence using tab is not correct ( violates Accessibility)
+ * 20080522   233154 samindaw@wso2.com - Saminda Wijeratne, UI rendering problem where textboxes used as labels had white background
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -80,7 +81,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 		
 		TabFolder axis2PreferenceTab = new TabFolder(mainComp, SWT.WRAP);
 		axis2PreferenceTab.setLayoutData( new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_BOTH) );
-
+		axis2PreferenceTab.setBackground(mainComp.getBackground());
 		
 		//-----------------------------Axis2 Runtime Location Group------------------------------//
 		TabItem runtimeInstalLocationItem = new TabItem(axis2PreferenceTab, SWT.WRAP);
@@ -90,7 +91,8 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 		Composite runtimeTab = uiUtils.createComposite(axis2PreferenceTab, 1);
 		runtimeTab.setLayoutData( new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_BOTH ) );
 		Composite runtimeGroup = uiUtils.createComposite(runtimeTab, 3);
-
+		runtimeTab.setBackground(axis2PreferenceTab.getBackground());
+		 
 		runtimeInstalLocationItem.setControl(runtimeTab);
 		runtimeTab.setToolTipText(Axis2CoreUIMessages.AXIS2_RUNTIME_TOOLTIP);
 
@@ -112,6 +114,7 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 		new org.eclipse.swt.widgets.Label(runtimeTab, SWT.HORIZONTAL);  // Leave some vertical space.
 		statusLabel = new Text(runtimeTab, SWT.BACKGROUND | SWT.READ_ONLY | SWT.CENTER | SWT.WRAP | SWT.H_SCROLL);
 		statusLabel.setLayoutData( new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_BOTH) );
+		statusLabel.setBackground(axis2PreferenceTab.getBackground());
 
 		//--------------------------------Axis2 Runtime Preferences------------------------------//
 
@@ -122,7 +125,8 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 		Composite codegenGroup = uiUtils.createComposite(axis2PreferenceTab, 1);
 		codegenPreferencesItem.setControl(codegenGroup);
 		codegenGroup.setToolTipText(Axis2CoreUIMessages.AXIS2_PREFERENCES_TOOLTIP);
-
+		codegenGroup.setBackground(mainComp.getBackground());
+		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		//Service Codegen Options
@@ -130,7 +134,8 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 
 		Text serviceCodegenGroupLabel= new Text(serviceCodegenGroup, SWT.READ_ONLY |SWT.WRAP);
 		serviceCodegenGroupLabel.setText(Axis2CoreUIMessages.LABEL_WEB_SERVICE_CODEGEN);
-
+		serviceCodegenGroupLabel.setBackground(axis2PreferenceTab.getBackground());
+		
 		Composite dataBindComp = uiUtils.createComposite(serviceCodegenGroup, 2);
 		//Data binding
 		serviceDatabindingCombo = uiUtils.createCombo(dataBindComp, Axis2CoreUIMessages.LABEL_DATABINDING, null, null, SWT.READ_ONLY);
@@ -148,7 +153,8 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 		Composite clientCodegenGroup = uiUtils.createComposite(codegenGroup, 1);
 		Text clientCodegenGroupLabel= new Text(clientCodegenGroup, SWT.READ_ONLY);
 		clientCodegenGroupLabel.setText(Axis2CoreUIMessages.LABEL_WEB_SERVICE_CLIENT_CODEGEN);
-
+		clientCodegenGroupLabel.setBackground(axis2PreferenceTab.getBackground());
+		
 		Group clientModeRadioComp = uiUtils.createGroup(clientCodegenGroup, Axis2CoreUIMessages.LABEL_CLIENT_SIDE, null, null);
 
 		//client side buttons
@@ -175,7 +181,8 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 
 		Text arrGroupLabel= new Text(aarGroup, SWT.READ_ONLY);
 		arrGroupLabel.setText(Axis2CoreUIMessages.LABEL_WEB_SERVICE_AAR);
-
+		arrGroupLabel.setBackground(axis2PreferenceTab.getBackground());
+		
 		Composite aarExtGroup = uiUtils.createComposite(aarGroup,2);
 
 		//aar extention 

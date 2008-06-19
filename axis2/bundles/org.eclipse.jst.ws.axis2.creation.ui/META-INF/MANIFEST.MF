@@ -23,7 +23,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.ws.axis2.consumption.core,
  org.eclipse.jst.ws.axis2.core,
  org.eclipse.jst.ws.ui
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.bean,
  org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton,
  org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt

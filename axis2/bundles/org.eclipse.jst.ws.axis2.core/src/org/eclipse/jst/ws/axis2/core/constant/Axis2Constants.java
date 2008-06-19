@@ -13,6 +13,7 @@
  * 20071011   205972 sandakith@wso2.com - Lahiru Sandakith, Axis2 Libraries License files fix
  * 20071029   206967 sandakith@wso2.com - Lahiru Sandakith
  * 20080521   231098 sandakith@wso2.com - Lahiru Sandakith, Fix for Axis2 1.4 dependency chenge
+ * 20080604   193371 samindaw@wso2.com - Saminda Wijeratne, creating a function to validate services.xml
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.constant;
 
@@ -62,7 +63,9 @@ public class Axis2Constants {
 	public static final String DATA_BINDING_ADB="ADB";							//$NON-NLS-1$
 	public static final String DATA_BINDING_NONE="NONE";						//$NON-NLS-1$
 	public static final String SKELETON_SUFFIX="Skeleton.java";					//$NON-NLS-1$
-	
+	public static final String RESOURCE_FOLDER="resources";						//$NON-NLS-1$
+	public static final String SERVICES_XSD_SCHEMA_NAME="services.xsd";			//$NON-NLS-1$	
+	public static final String XML_SCHEMA="http://www.w3.org/2001/XMLSchema";	//$NON-NLS-1$
 	
 	//Axis2 Consumption Plugin Constants  
 	public static final String JUNIT_JAR="junit.jar";							//$NON-NLS-1$

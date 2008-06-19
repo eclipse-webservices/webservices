@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.ws.axis2.core,
  org.eclipse.jst.ws,
  org.eclipse.jst.ws.ui
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.jst.ws.axis2.ui.plugin,
  org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
