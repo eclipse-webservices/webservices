@@ -19,7 +19,8 @@
         <map
               key="CustomizeClientMappings"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.command.AxisClientDefaultingCommand"
-              property="CustomizeClientMappings"/>                                 
+              property="CustomizeClientMappings"
+              transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"/>                                 
  		<map
               key="Mappings"
               operation="org.eclipse.jst.ws.internal.axis.consumption.ui.task.ClientCodeGenOperation"
