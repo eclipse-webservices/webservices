@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20080227   119964 trungha@ca.ibm.com - Trung Ha
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.core.command;
 
@@ -31,11 +32,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.AxisConsumptionCoreMessages;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.ProgressUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -178,7 +179,7 @@ public class AxisDeployCommand extends AbstractDataModelOperation
 					.getWorkspace().getRoot().getProject(project_));
 		IPath relativeServerConfigPath = webInfPath.append(SERVER_CONFIG);
 		IStatusHandler statusHandler = getEnvironment().getStatusHandler();
-		ResourceContext context = WebServicePlugin.getInstance()
+		ResourceContext context = ((BaseEclipseEnvironment) getEnvironment())
 					.getResourceContext();
 		FileResourceUtils.createFile(context, relativeServerConfigPath,
 					new StringInputStream(config), monitor, statusHandler);

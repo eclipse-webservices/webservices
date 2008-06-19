@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@
  * 20060907   156211 makandre@ca.ibm.com - Andrew Mak, Selecting service definition invalidated project config when creating web service java client
  * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
  * 20060125   159911 kathy@ca.ibm.com - Kathy Chan, Remove unused method and imports
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -45,6 +46,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -179,6 +181,11 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 				INFOPOP_WSWSCEN_CHECKBOX_OVERWRITE);
 		overwriteButton_.setSelection(getResourceContext()
 				.isOverwriteFilesEnabled());
+		overwriteButton_.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				getResourceContext().setOverwriteFilesEnabled(overwriteButton_.getSelection());
+			}
+		});
 	}
     return this;
   }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060216   127138 pmoogk@ca.ibm.com - Peter Moogk
  * 20060517   141481 pmoogk@ca.ibm.com - Peter Moogk
  * 20070313   176580 makandre@ca.ibm.com - Andrew Mak, Generate a Client WS Proxy accepting URL
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -36,8 +37,9 @@ import org.eclipse.jem.java.JavaVisibilityKind;
 import org.eclipse.jem.java.Method;
 import org.eclipse.jst.ws.internal.common.JavaMOFUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import com.ibm.icu.util.StringTokenizer;
 
@@ -157,8 +159,10 @@ public class Stub2BeanInfo
       return javaHelpers.getQualifiedName();
   }
 
-  public void write(IProgressMonitor progressMonitor, IStatusHandler statusMonitor) throws CoreException, IOException
+  public void write(IEnvironment env, IProgressMonitor progressMonitor) throws CoreException, IOException
   {
+	IStatusHandler statusMonitor = env.getStatusHandler();
+	
     IPath        outputPath = new Path( outputFolder_ );
     IProject     project    = ResourceUtils.getProjectOf( outputPath );
     StringWriter sw         = new StringWriter(2048);
@@ -182,7 +186,7 @@ public class Stub2BeanInfo
     
     IPath newFilePath = new Path(outputFolder_).append( sb.toString() );
     
-    FileResourceUtils.createFile(WebServicePlugin.getInstance().getResourceContext(), newFilePath, bais, progressMonitor, statusMonitor);
+    FileResourceUtils.createFile(((BaseEclipseEnvironment) env).getResourceContext(), newFilePath, bais, progressMonitor, statusMonitor);
   }
 
   private void writePackage(Writer w) throws IOException

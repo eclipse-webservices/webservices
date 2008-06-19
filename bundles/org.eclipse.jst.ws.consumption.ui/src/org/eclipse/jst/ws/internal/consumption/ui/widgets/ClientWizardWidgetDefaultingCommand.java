@@ -16,6 +16,7 @@
  * 20060728   151078 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225378 makandre@ca.ibm.com - Andrew Mak, Client wizard runtime/server defaulting is not respecting the preference
  * 20080528   234487 makandre@ca.ibm.com - Andrew Mak, Performance degradation in Web service client gen
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -29,6 +30,7 @@ import org.eclipse.jst.ws.internal.context.ScenarioContext;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 
@@ -82,7 +84,7 @@ public class ClientWizardWidgetDefaultingCommand extends AbstractDataModelOperat
 
   public ResourceContext getResourceContext()
   { 
-    return WebServicePlugin.getInstance().getResourceContext();
+    return ((BaseEclipseEnvironment) getEnvironment()).getResourceContext();
   }
   
   // Current ScenarioContext is used to default the first page of the wizard.  The 

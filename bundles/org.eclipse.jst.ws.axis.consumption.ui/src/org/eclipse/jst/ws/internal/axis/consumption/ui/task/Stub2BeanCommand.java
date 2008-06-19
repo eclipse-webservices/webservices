@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060515   118315 mahutch@ca.ibm.com - Mark Hutchinson
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -194,7 +195,7 @@ public class Stub2BeanCommand extends AbstractDataModelOperation
             stub2BeanInfo.addSEI(portTypePkgName, portTypeClassName, servicePkgName, serviceClassName, jndiName, NameMappingUtils.getPortName(port.getName()));
             try
             {              
-              stub2BeanInfo.write( monitor, environment.getStatusHandler() );
+              stub2BeanInfo.write(environment, monitor);
               if (discoveredWsdlPortElementName != null)
               {
                 // The discovered port was processed. Ignore all other ports and services.
