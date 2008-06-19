@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080616   235648 makandre@ca.ibm.com - Andrew Mak, Errors in client proxy if using default namespace to package mapping
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.widgets;
 
@@ -44,8 +47,8 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
   public static final byte MODE_XML2EJB = (byte)3;
   public static final byte MODE_EJB2XML = (byte)4;
   
-  private final String DEFAULT_PACKAGE = "default.javapackage";
-  private final String DEFAULT_NAMESPACE = "http://default.namespace";
+  private final String DEFAULT_PACKAGE = "custom.javapackage";
+  private final String DEFAULT_NAMESPACE = "http://custom.namespace";
   
   /*CONTEXT_ID PWJM0001 for the WSDL to Java Mappings Page*/
   private String INFOPOP_PWJM_PAGE = "PWJM0001"; //$NON-NLS-1$
