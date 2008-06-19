@@ -12,6 +12,7 @@
  * 20080221 146023 gilberta@ca.ibm.com - Gilbert Andrews 
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 /**
  */
@@ -35,7 +36,7 @@ public class LabelsAndIds
   }
   
   public String getId(int index){
-	  if (index < 0 && index > ids_.size()) return null;
+	  if (index < 0 || index + 1 > ids_.size()) return null;
 	  return (String)ids_.get(index);
   }
   
