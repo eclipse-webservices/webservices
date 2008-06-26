@@ -12,6 +12,7 @@
  * 20060112   121199 jesper@selskabet.org - Jesper Møller
  * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
+ * 20080625   237129 makandre@ca.ibm.com - Andrew Mak, Error moving resource: null
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.common;
 
@@ -628,7 +629,17 @@ public final class FileResourceUtils
         }	
         
         //We have permission to overwrite so check if file is read-only
-        if( child.getResourceAttributes().isReadOnly() )
+        if( child.getResourceAttributes() == null )
+        {
+        	// resource is likely out-of-sync with filesystem
+        	throw new CoreException( 
+        	          new Status( IStatus.ERROR,
+        	                      "ResourceUtils",
+        	                      0, 
+        	                      child.getFullPath().toString(),
+        						  null ) );
+        }
+        else if( child.getResourceAttributes().isReadOnly() )
         {
           if( !resourceContext.isCheckoutFilesEnabled() ) 
           {            
