@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071030   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080626   238635 pmoogk@ca.ibm.com - Peter Moogk, Locally added service policy nodes meta data coliding with state data.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -32,7 +33,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 public class LocalUtils
 {
-  private static final String BASE_KEY      = "org.eclipse.wst."; //$NON-NLS-1$
+  private static final String BASE_KEY      = "org.eclipse.wst.local."; //$NON-NLS-1$
   private static final String LOCAL_IDS_KEY = "localIds"; //$NON-NLS-1$
   private static final String PARENT_KEY    = "parentId"; //$NON-NLS-1$
   private static final String MUTABLE_KEY   = "mutable"; //$NON-NLS-1$
