@@ -13,12 +13,14 @@
  * 20070425   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070815   187840 sandakith@wso2.com - Lahiru Sandakith
  * 20080129   209411 kathy@ca.ibm.com - Kathy Chan
+ * 20080620   192527 samindaw@wso2.com - Saminda Wijeratne, Update the model information with the axis2 preference settings
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.wsrt;
 
 import java.util.Vector;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jst.ws.axis2.core.context.PersistentAxis2EmitterContext;
 import org.eclipse.jst.ws.axis2.creation.core.command.Axis2BUCommand;
 import org.eclipse.jst.ws.axis2.creation.core.command.Axis2BUServiceCreationCommand;
 import org.eclipse.jst.ws.axis2.creation.core.command.Axis2BuildProjectCommand;
@@ -69,7 +71,7 @@ public class Axis2WebService extends AbstractWebService
 		//EclipseEnvironment environment = (EclipseEnvironment)env;
 
 		model.setWebProjectName(project);
-
+		setupDataModelDefaultPreferenceValues(model);
 		if (ctx.getScenario().getValue() == WebServiceScenario.BOTTOMUP)	{ 
 			commands.add(new Axis2DefaultingCommand( model,this, ctx.getScenario().getValue() ) );
 			commands.add(new Axis2BUCommand( model ) );
@@ -102,6 +104,12 @@ public class Axis2WebService extends AbstractWebService
 		return new SimpleCommandFactory(commands);
 	}
 
+	public void setupDataModelDefaultPreferenceValues(DataModel model){
+		PersistentAxis2EmitterContext axis2Pref = PersistentAxis2EmitterContext.getInstance();
+		model.setGenerateServerSideInterface(axis2Pref.isServiceInterfaceSkeleton());
+		model.setGenerateAllCheck(axis2Pref.isServiceGenerateAll());
+	}
+	
 	public ICommandFactory install(IEnvironment env, IContext ctx, ISelection sel,
 			String project, String earProject)
 	{
