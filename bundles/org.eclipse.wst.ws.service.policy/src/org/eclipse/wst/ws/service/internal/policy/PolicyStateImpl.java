@@ -14,6 +14,7 @@
  * 20080109   214818 pmoogk@ca.ibm.com - Peter Moogk
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  * 20080430   221578 pmoogk@ca.ibm.com - Peter Moogk, Fixed commit problem.
+ * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -45,10 +46,10 @@ public class PolicyStateImpl implements IPolicyState
   private Map<String,TableEntry>           table;
   private ServicePolicyPlatform            platform;
 
-  public PolicyStateImpl( IServicePolicy policy, IProject project)
+  public PolicyStateImpl( ServicePolicyPlatform platform, IServicePolicy policy, IProject project)
   {
     this.service              = Platform.getPreferencesService();
-    this.platform             = ServicePolicyPlatform.getInstance();
+    this.platform             = platform;
     this.project              = project;
     this.policy               = policy;
     this.mutable              = policy.isPredefined() ? false : true;

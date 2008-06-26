@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20080214   218996 pmoogk@ca.ibm.com - Peter Moogk, Concurrent exception fix
+ * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -65,7 +66,7 @@ public class ServicePolicyImpl implements IServicePolicy
     this.children                   = new Vector<IServicePolicy>();
     this.relationshipList           = new Vector<IPolicyRelationship>();
     this.unresolvedRelationshipList = new Vector<UnresolvedRelationship>();
-    this.policyState                = new PolicyStateImpl( this, null );
+    this.policyState                = new PolicyStateImpl( platform.getApiPlatform(), this, null );
     this.platform                   = platform;  
     this.childChangeListeners       = new Vector<IPolicyChildChangeListener>();
     this.projectPolicyStates        = new HashMap<IProject, PolicyStateImpl>();
@@ -178,7 +179,7 @@ public class ServicePolicyImpl implements IServicePolicy
     
     if( projectPolicyState == null )
     {
-      projectPolicyState = new PolicyStateImpl( this, project );
+      projectPolicyState = new PolicyStateImpl( platform.getApiPlatform(), this, project );
       projectPolicyState.internalSetMutable( policyState.isMutable() );
       projectPolicyStates.put( project, projectPolicyState );
     }
@@ -192,7 +193,7 @@ public class ServicePolicyImpl implements IServicePolicy
     
     if( enumListId != null )
     {
-      newEnum = new EnumerationStateImpl( enumListId, defaultEnumId, policyState );
+      newEnum = new EnumerationStateImpl( platform.getApiPlatform(), enumListId, defaultEnumId, policyState );
     }
     
     return newEnum;
@@ -204,7 +205,7 @@ public class ServicePolicyImpl implements IServicePolicy
     
     if( enumListId != null )
     {
-      newEnum = new EnumerationStateImpl( enumListId, defaultEnumId, getPolicyState( project ) );
+      newEnum = new EnumerationStateImpl( platform.getApiPlatform(), enumListId, defaultEnumId, getPolicyState( project ) );
     }
     
     return newEnum;

@@ -14,6 +14,7 @@
  * 20080111   214907 pmoogk@ca.ibm.com - Peter Moogk
  * 20080214   218996 pmoogk@ca.ibm.com - Peter Moogk, Concurrent exception fix
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -37,6 +38,7 @@ import org.eclipse.wst.ws.service.policy.IFilter;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
 import org.eclipse.wst.ws.service.policy.IStateEnumerationItem;
 import org.eclipse.wst.ws.service.policy.ServicePolicyActivator;
+import org.eclipse.wst.ws.service.policy.ServicePolicyPlatform;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyChildChangeListener;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformLoadListener;
 import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformProjectLoadListener;
@@ -59,9 +61,11 @@ public class ServicePolicyPlatformImpl
   private List<IServicePolicy>                     queuedChildChangePolicy;
   private List<Boolean>                            queuedChildChangeAdded;
   private List<IPolicyPlatformProjectLoadListener> projectPlatformListeners;
+  private ServicePolicyPlatform                    apiPlatform;
   
-  public ServicePolicyPlatformImpl()
+  public ServicePolicyPlatformImpl( ServicePolicyPlatform platform )
   {
+    apiPlatform = platform;
   }
   
   public void load()
@@ -98,11 +102,21 @@ public class ServicePolicyPlatformImpl
     for( String localPolicyId : localIds )
     {
       LocalUtils.loadLocalPolicy( localPolicyId, this );
-    }
-       
+    }       
+  }
+  
+  public void callLoadListeners()
+  {
     for( IPolicyPlatformLoadListener loadListener : loadListeners )
     {
-      loadListener.load();
+      try
+      {
+        loadListener.load();
+      }
+      catch( Exception exc )
+      {
+        ServicePolicyActivator.logError( "Error in load listener:" + loadListener.getClass().getName(), exc ); //$NON-NLS-1$
+      }
     }
     
     commitChanges( false );   
@@ -111,7 +125,12 @@ public class ServicePolicyPlatformImpl
     for( IProject project : enabledProjectMap.keySet() )
     {
       commitChanges( project );
-    }
+    }    
+  }
+  
+  public ServicePolicyPlatform getApiPlatform()
+  {
+    return apiPlatform;
   }
   
   public void addEnabledExpression( Expression expression )
