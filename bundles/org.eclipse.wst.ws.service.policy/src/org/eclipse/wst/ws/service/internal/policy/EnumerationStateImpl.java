@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -29,10 +30,8 @@ public class EnumerationStateImpl implements IPolicyStateEnum
   private IPolicyState                state;
   private String                      defaultId;
   
-  public EnumerationStateImpl( String enumId, String defaultId, IPolicyState state )
+  public EnumerationStateImpl( ServicePolicyPlatform platform, String enumId, String defaultId, IPolicyState state )
   {
-    ServicePolicyPlatform platform = ServicePolicyPlatform.getInstance();
-    
     this.enumId    = enumId;
     this.enumList  = platform.getStateEnumeration( enumId );
     this.state     = state;

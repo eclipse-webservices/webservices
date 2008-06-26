@@ -12,6 +12,7 @@
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
+ * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
@@ -30,12 +31,11 @@ import org.eclipse.wst.ws.service.policy.listeners.IPolicyPlatformProjectLoadLis
  */
 public class ServicePolicyPlatform
 {
-  private static ServicePolicyPlatform instance;
-  private ServicePolicyPlatformImpl platformImpl;
+  private static ServicePolicyPlatform instancePlatform = null;
+  private ServicePolicyPlatformImpl    platformImpl;
   
   private ServicePolicyPlatform()
   {
-    platformImpl = new ServicePolicyPlatformImpl();
   }
   
   /**
@@ -44,15 +44,17 @@ public class ServicePolicyPlatform
    * 
    * @return returns a singleton instance of this service policy platform.
    */
-  public static ServicePolicyPlatform getInstance()
+  public static synchronized ServicePolicyPlatform getInstance()
   {
-    if( instance == null )
+    if( instancePlatform == null )
     {
-      instance = new ServicePolicyPlatform();
-      instance.platformImpl.load();
+      instancePlatform              = new ServicePolicyPlatform();     
+      instancePlatform.platformImpl = new ServicePolicyPlatformImpl( instancePlatform );
+      instancePlatform.platformImpl.load();
+      instancePlatform.platformImpl.callLoadListeners();
     }
     
-    return instance;
+    return instancePlatform;
   }
   
   /**
@@ -74,7 +76,7 @@ public class ServicePolicyPlatform
    * the service policies.  The method only applies to state changes at the workspace
    * level.
    */
-  public void commitChanges()
+  public synchronized void commitChanges()
   {
     platformImpl.commitChanges( true );
   }
@@ -84,7 +86,7 @@ public class ServicePolicyPlatform
    * the service policies.  The method only applies to state changes at the workspace
    * level.
    */
-  public void discardChanges()
+  public synchronized void discardChanges()
   {
     platformImpl.discardChanges(); 
   }
@@ -94,7 +96,7 @@ public class ServicePolicyPlatform
    * the service policies for a particular project.  The method only applies to 
    * state changes at the project level.
    */
-  public void commitChanges( IProject project )
+  public synchronized void commitChanges( IProject project )
   {
     platformImpl.commitChanges( project );
   }
@@ -104,8 +106,8 @@ public class ServicePolicyPlatform
    * the service policies for a particular project.  The method only applies to 
    * state changes at the project level.
    */
-  public void discardChanges( IProject project )
-  {
+  public synchronized void discardChanges( IProject project )
+  { 
     platformImpl.discardChanges( project ); 
   }
   
@@ -168,7 +170,7 @@ public class ServicePolicyPlatform
    * @param project
    * @param value
    */
-  public void setProjectPreferencesEnabled( IProject project, boolean value )
+  public synchronized void setProjectPreferencesEnabled( IProject project, boolean value )
   {
     platformImpl.setProjectPreferencesEnabled( project, value ); 
   }
@@ -177,7 +179,7 @@ public class ServicePolicyPlatform
    * Restores the workspace level defaults.  Note: the state changes made by 
    * calling this method need to be committed or discarded by the platform.
    */
-  public void restoreDefaults()
+  public synchronized void restoreDefaults()
   {
     platformImpl.restoreDefaults();
   }
@@ -189,7 +191,7 @@ public class ServicePolicyPlatform
    * 
    * @param project
    */
-  public void restoreDefaults( IProject project )
+  public synchronized void restoreDefaults( IProject project )
   {
     platformImpl.restoreDefaults( project );
   }
@@ -212,7 +214,7 @@ public class ServicePolicyPlatform
    * should be used.
    * @return returns a service policy object.
    */
-  public IServicePolicy createServicePolicy( IServicePolicy parent, String id, String enumListId, String defaultEnumId )
+  public synchronized IServicePolicy createServicePolicy( IServicePolicy parent, String id, String enumListId, String defaultEnumId )
   {
     return platformImpl.createServicePolicy( parent, id, enumListId, defaultEnumId );
   }
@@ -222,7 +224,7 @@ public class ServicePolicyPlatform
    * 
    * @param policy the service policy
    */
-  public void removeServicePolicy( IServicePolicy policy )
+  public synchronized void removeServicePolicy( IServicePolicy policy )
   {
     platformImpl.removePlatformPolicy( policy );
   }
@@ -236,7 +238,7 @@ public class ServicePolicyPlatform
    * @param onCommit indicates whether this listener should be invoked when
    * the the platform changes are committed.
    */
-  public void addChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
+  public synchronized void addChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
   {
     platformImpl.addChildChangeListener( listener, onCommit );  
   }
@@ -249,7 +251,7 @@ public class ServicePolicyPlatform
    * 
    * @param queue
    */
-  public void queueChildChangeListeners( boolean queue )
+  public synchronized void queueChildChangeListeners( boolean queue )
   {
     platformImpl.queueChildChangeListeners( queue );
   }
@@ -261,7 +263,7 @@ public class ServicePolicyPlatform
    * @param onCommit indicates whether this change listener should be removed
    * from the onCommit list.
    */
-  public void removeChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
+  public synchronized void removeChildChangeListener( IPolicyChildChangeListener listener, boolean onCommit )
   {
     platformImpl.removeChildChangeListener( listener, onCommit );   
   }
@@ -273,7 +275,7 @@ public class ServicePolicyPlatform
    * 
    * @param listener the listener
    */
-  public void addProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
+  public synchronized void addProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
   {
     platformImpl.addProjectLoadListener( listener );
   }
@@ -283,7 +285,7 @@ public class ServicePolicyPlatform
    * 
    * @param listener the listener
    */
-  public void removeProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
+  public synchronized void removeProjectLoadListener( IPolicyPlatformProjectLoadListener listener )
   {
     platformImpl.removeProjectLoadListener( listener );    
   }
