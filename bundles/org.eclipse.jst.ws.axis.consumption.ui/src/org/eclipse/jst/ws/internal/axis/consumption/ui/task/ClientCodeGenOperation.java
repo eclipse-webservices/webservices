@@ -13,6 +13,7 @@
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060728   145426 kathy@ca.ibm.com - Kathy Chan
  * 20080603   235367 makandre@ca.ibm.com - Andrew Mak, "IWAB0014E Unexpected exception occurred" from ant task for web service client generation
+ * 20080626   229867 makandre@ca.ibm.com - Andrew Mak, Missing method in generated proxy class
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -24,6 +25,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.axis.consumption.core.command.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
+import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -101,6 +103,12 @@ public class ClientCodeGenOperation extends AbstractDataModelOperation {
 				if (status.getSeverity() == Status.ERROR) {
 					throw new CoreException(status);
 				}
+				
+				// BuildProjectCommand
+				BuildProjectCommand build = new BuildProjectCommand();
+				build.setProject(project);
+				build.setForceBuild(true);
+				build.execute(monitor, info);
 				
 				// Stub2BeanCommand
 				stub2BeanCommand.setEnvironment(env);
