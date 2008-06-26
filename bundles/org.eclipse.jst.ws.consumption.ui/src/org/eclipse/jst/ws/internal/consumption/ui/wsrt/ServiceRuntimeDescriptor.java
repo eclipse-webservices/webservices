@@ -13,6 +13,7 @@
  * 20071107   203826 kathy@ca.ibm.com - Kathy Chan
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
+ * 20080626   221364 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -82,25 +83,34 @@ public class ServiceRuntimeDescriptor
       IConfigurationElement[] facetElems = elem.getChildren("required-facet-version");
       for (int i = 0; i < facetElems.length; i++)
       {
-    	String facetID = facetElems[i].getAttribute("facet");
-    	if (ProjectFacetsManager.isProjectFacetDefined(facetID))
-    	{
+    	try {
+    	  String facetID = facetElems[i].getAttribute("facet");
+    	  if (ProjectFacetsManager.isProjectFacetDefined(facetID))
+    	  {
 	        RequiredFacetVersion rfv = new RequiredFacetVersion();
-	        IProjectFacet projectFacet = ProjectFacetsManager.getProjectFacet(facetID);        
-	        IProjectFacetVersion projectFacetVersion = projectFacet.getVersion(facetElems[i].getAttribute("version"));
-	        rfv.setProjectFacetVersion(projectFacetVersion);
-	        String allowNewerValue = facetElems[i].getAttribute("allow-newer");
-	        if (allowNewerValue == null)
-	        {
-	          rfv.setAllowNewer(false);
-	        }
-	        else
-	        {
-	          rfv.setAllowNewer(Boolean.valueOf(allowNewerValue).booleanValue());
-	        }
+	        IProjectFacet projectFacet = ProjectFacetsManager.getProjectFacet(facetID);
+	        if (projectFacet != null) {
+	        	IProjectFacetVersion projectFacetVersion = projectFacet.getVersion(facetElems[i].getAttribute("version"));
+	        	if (projectFacetVersion != null) {
+	        		rfv.setProjectFacetVersion(projectFacetVersion);
+	        		String allowNewerValue = facetElems[i].getAttribute("allow-newer");
+	        		if (allowNewerValue == null)
+	        		{
+	        			rfv.setAllowNewer(false);
+	        		}
+	        		else
+	        		{
+	        			rfv.setAllowNewer(Boolean.valueOf(allowNewerValue).booleanValue());
+	        		}
 	        
-	        requiredFacetVersionList.add(rfv);
-    	}    	
+	        		requiredFacetVersionList.add(rfv);
+	        	}
+	        }
+    	
+    	  } 
+        } catch (IllegalArgumentException e){
+        	// ignore the facet
+  	    }
       }
       
       requiredFacetVersions = (RequiredFacetVersion[])requiredFacetVersionList.toArray(new RequiredFacetVersion[]{});
