@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080709   237116 makandre@ca.ibm.com - Andrew Mak, Web service monitoring fails on https endpoint
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.monitor;
 
@@ -95,7 +98,7 @@ public class GetMonitorCommand extends AbstractDataModelOperation {
 									else if ("https".equalsIgnoreCase(protocol))
 										port = 443;
 								}
-								if (protocol != null && protocol.startsWith("http") && host != null && host.length() > 0 && port != -1) {
+								if (protocol != null && protocol.equalsIgnoreCase("http") && host != null && host.length() > 0 && port != -1) {
 									IMonitor m = null;
 									IMonitor[] monitors = MonitorCore.getMonitors();
 									for (int i = 0; i < monitors.length; i++) {
