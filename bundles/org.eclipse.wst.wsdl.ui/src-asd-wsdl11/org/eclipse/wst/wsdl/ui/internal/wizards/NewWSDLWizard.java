@@ -56,6 +56,9 @@ import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
 import org.eclipse.wst.wsdl.ui.internal.InternalWSDLMultiPageEditor;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtension;
+import org.eclipse.wst.wsdl.ui.internal.asd.contentgenerator.ui.extension.ContentGeneratorUIExtensionRegistry;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.CreateWSDLElementHelper;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -151,7 +154,17 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 				}
 
 				CreateWSDLElementHelper.serviceName = definitionName;
-				CreateWSDLElementHelper.portName = definitionName + optionsPage.getProtocol();
+				
+				// use protocol name (as opposed to protocol label) in port name
+				String protocolName = new String();
+				String protocol = optionsPage.getProtocol();
+			    ContentGeneratorUIExtensionRegistry registry = WSDLEditorPlugin.getInstance().getContentGeneratorUIExtensionRegistry();
+			    ContentGeneratorUIExtension extension = registry.getExtensionForLabel(protocol);
+			    if (extension != null) {
+					protocolName = extension.getName();
+			    }
+				CreateWSDLElementHelper.portName = definitionName + protocolName;
+			    
 				Service service = CreateWSDLElementHelper.createService(definition);
 
 				// Generate Binding
