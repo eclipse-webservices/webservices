@@ -5,6 +5,8 @@
 
    <!-- The following extension point is internal, though likely to be promoted for public use, possibly with changes, in a future release. -->
    <extension-point id="locator" name="%XP_WEB_SERVICE_LOCATOR" schema="schema/webServiceLocator.exsd"/>
+   
+   <extension-point id="ExtensibilityElementTransformer" name="%XP_EXTENSIBILITY_ELEMENT_TRANSFORMER" schema="schema/ExtensibilityElementTransformer.exsd"/>
 
    <!-- Extension providing workspace WSDL discovery -->   
    <extension
