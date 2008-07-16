@@ -17,6 +17,7 @@
  * 20080324   223634 ericdp@ca.ibm.com - Eric D. Peters, Service Policies preference tree should be 3 level tree
  * 20080506   219005 ericdp@ca.ibm.com - Eric D. Peters, Service policy preference page not restoring properly
  * 20080530   234944 pmoogk@ca.ibm.com - Peter Moogk, Fixed focus problem for action controls
+ * 20080716   239457 ericdp@ca.ibm.com - Eric D. Peters, Service Policy UI Restore defaults does not refresh validation error
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -493,7 +494,7 @@ public class ServicePoliciesComposite extends Composite implements
 			//select the first item in the tree & fire event so UI is updated
 			masterPolicyTree.setSelection(treeItems[0]);
 			masterPolicyTree.notifyListeners(SWT.Selection, new Event());
-			validateAllPolicies((IServicePolicy)treeItems[0].getData());
+			error = validateAllPolicies((IServicePolicy)treeItems[0].getData());
 		}
 
 	}
@@ -888,20 +889,21 @@ public class ServicePoliciesComposite extends Composite implements
 		for (IServicePolicy servicePolicyItem : servicePolicyList) {
 			validatePolicy(servicePolicyItem);
 		}
-		// define error message
+		// get the error for the selected/focusPolicy
 		IStatus error = (focusPolicy == null) ? null : allErrors
 				.get(focusPolicy.getId());
+		//if there was no error for the selected/focusPolicy, get the first error in the list of errors
 		if (error == null)
 			if (!allErrors.isEmpty())
 				error = allErrors.get(allErrors.keys().nextElement());
 
-		// update master policy tree
+		// update master policy tree nodes denoting node error status
 		TreeItem[] treeItems = masterPolicyTree.getItems();
 		for (int i = 0; i < treeItems.length; i++) {
 			updateValidStates(treeItems[i], false);
 		}
 		if (detailsPolicyTree.isVisible()) {
-			// update details preference tree
+			// update details preference tree nodes denoting node error status
 			treeItems = detailsPolicyTree.getItems();
 			for (int i = 0; i < treeItems.length; i++) {
 				updateValidStates(treeItems[i], false);
