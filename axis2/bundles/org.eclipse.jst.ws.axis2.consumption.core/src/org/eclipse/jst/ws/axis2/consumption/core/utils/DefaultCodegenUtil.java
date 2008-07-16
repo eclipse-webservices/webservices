@@ -12,6 +12,7 @@
  * 20070206   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -47,7 +48,7 @@ public class DefaultCodegenUtil {
 	public void populateModelParamsFromWSDL() {
 		status = Status.OK_STATUS;
 		if (reader == null)
-			reader = new WSDLPropertyReader();
+			reader = new WSDLPropertyReader(model);
 		try {
 			String lname = model.getWsdlURI();
 			if (!"".equals(lname.trim())) {

@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070213   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
+ * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.data;
 
@@ -23,6 +24,8 @@ public class Model {
 	private String portName;
 	private String serviceName;
 	private String packageText;
+	private Object wsdlDefinitionInstance=null;
+	private String wsdlLocation="";
 	
 	public String getPackageText() {
 		return packageText;
@@ -62,4 +65,18 @@ public class Model {
 		this.webProjectName = webProjectName;
 	}
 
+	public void setWsdlDefinitionInstance(Object wsdlDefinitionInstance, String wsdlLocation) {
+		if (wsdlDefinitionInstance!=null){
+			this.wsdlDefinitionInstance = wsdlDefinitionInstance;
+			this.wsdlLocation = wsdlLocation;
+		}
+	}
+
+	public Object getWsdlDefinitionInstance() {
+		return wsdlDefinitionInstance;
+	}
+
+	public boolean isWsdlAlreadyLoaded(String filepath) {
+		return wsdlLocation.equalsIgnoreCase(filepath);
+	}
 }

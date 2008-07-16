@@ -13,6 +13,7 @@
  * 20070608        191055 sandakith@wso2.com - Lahiru Sandakith, Duplicate classpath entry fix
  * 20070824        200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to separate file
  * 20071121        205227 sandakith@wso2.com - Lahiru Sandakith, jUnit problem with project export
+ * 20080616        237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -133,7 +134,7 @@ public class Axis2ClientTestCaseIntegrateCommand extends AbstractDataModelOperat
     														relativeWebInfJunitFile.toString()));
     	IEnvironment environment = getEnvironment();
 		IStatusHandler statusHandler = environment.getStatusHandler();	
-    	ContentCopyUtils contentCopyUtils = new ContentCopyUtils();
+    	ContentCopyUtils contentCopyUtils = new ContentCopyUtils(getEnvironment());
     	contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
     			getFrameworkJunitFile().getAbsolutePath(),
     			obsaluteWebInfJunitFile.getAbsolutePath(), 

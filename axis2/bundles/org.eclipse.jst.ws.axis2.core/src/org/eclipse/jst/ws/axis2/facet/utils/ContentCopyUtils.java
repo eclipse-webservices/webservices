@@ -17,6 +17,7 @@
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
  * 20070808   194906 sandakith@wso2.com - Lahiru Sandakith, Fixing 194906 Runtime lib issue
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
+ * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -46,6 +47,8 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
+import org.eclipse.wst.common.environment.IEnvironment;
 
 public class ContentCopyUtils {
 
@@ -54,7 +57,11 @@ public class ContentCopyUtils {
 	private List fileAndDirectoriesList = new ArrayList();
 	FileInputStream finStream = null;		
 	private List checkList = null;
+	private IEnvironment environment;
 
+	public ContentCopyUtils(IEnvironment env){
+		environment = env;
+	}
 	/**
 	 * This method will copy the source directory into the eclipse workspace 
 	 * according to the Eclipse Framework API
@@ -82,8 +89,12 @@ public class ContentCopyUtils {
 		try {
 
 			//Import the axis2 dependency plugin according to the Resources API of eclipse 
-			ResourceContext context = WebServicePlugin.getInstance().getResourceContext();	
-
+			ResourceContext context;
+			if (environment==null)
+				context = WebServicePlugin.getInstance().getResourceContext();
+			else
+				context = ((BaseEclipseEnvironment) environment).getResourceContext();	
+			
 			IPath outputPath = new Path (destinationDir);
 
 			String fileName;

@@ -17,6 +17,7 @@
  * 20070823   200413 sandakith@wso2.com - Lahiru Sandakith, Namespace to Package table fix
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20080319   207616 makandre@ca.ibm.com - Andrew Mak, Table in Axis2 Web Service Skeleton Java Bean Configuration Page not Accessible
+ * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton;
 
@@ -385,7 +386,7 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 	 */
 	public void populateParamsFromWSDL() {
 		if (reader == null)
-			reader = new WSDLPropertyReader();
+			reader = new WSDLPropertyReader(model);
 		try {
 			String lname = model.getWsdlURI();
 			if (!"".equals(lname.trim())) {

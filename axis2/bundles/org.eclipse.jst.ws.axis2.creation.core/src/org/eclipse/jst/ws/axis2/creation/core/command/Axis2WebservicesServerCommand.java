@@ -14,6 +14,7 @@
  * 20070510   172926 sandakith@wso2.com - Lahiru Sandakith, Fix 172926 Use Util Classes
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -54,7 +55,7 @@ public class Axis2WebservicesServerCommand extends AbstractDataModelOperation {
 		String webContainerDirString = FacetContainerUtils.pathToWebProjectContainer(
 				model.getWebProjectName());
 
-		ContentCopyUtils contentCopyUtils = new ContentCopyUtils();
+		ContentCopyUtils contentCopyUtils = new ContentCopyUtils(getEnvironment());
 		
 		//Check for the server status
 		if (model.getServerStatus()){

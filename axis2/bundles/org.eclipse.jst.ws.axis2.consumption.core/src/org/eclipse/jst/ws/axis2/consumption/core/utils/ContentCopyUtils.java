@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070118   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -32,13 +33,19 @@ import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.eclipse.BaseEclipseEnvironment;
+import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.IStatusHandler;
 
 public class ContentCopyUtils {
 
 	private List fileAndDirectoriesList = new ArrayList();
+	private IEnvironment environment;
 	FileInputStream finStream = null;		
 
+	public  ContentCopyUtils(IEnvironment env){
+		environment= env ;
+	}
 	/**
 	 * This method will copy the source directory into the eclipse workspace according 
 	 * to the Eclipse Framework API
@@ -62,8 +69,12 @@ public class ContentCopyUtils {
 		try {
 
 			//Import the axis2 dependency plugin according to the Resources API of eclipse 
-			ResourceContext context = WebServicePlugin.getInstance().getResourceContext();	
-
+			ResourceContext context;
+			if (environment==null)
+				context = WebServicePlugin.getInstance().getResourceContext();
+			else
+				context = ((BaseEclipseEnvironment) environment).getResourceContext();	
+			
 			IPath outputPath = new Path (destinationDir);
 
 			String fileName;

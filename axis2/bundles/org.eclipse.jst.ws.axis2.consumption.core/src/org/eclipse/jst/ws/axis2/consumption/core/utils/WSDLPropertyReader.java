@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
+ * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
  *******************************************************************************/
 
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
@@ -24,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jst.ws.axis2.consumption.core.data.Model;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
 
 
@@ -44,7 +46,12 @@ public class WSDLPropertyReader {
 	private Object DefinitionInstance = null;
 	private Class DefinitionClass = null;
 	private Class ServiceClass = null;
+	private Model model;
 
+	public WSDLPropertyReader(Model model){
+		this.model=model;
+	}
+	
 	public void readWSDL(String projectName, String filepath) throws Exception {
 		
 		ClassLoadingUtil.init(projectName);
@@ -54,19 +61,23 @@ public class WSDLPropertyReader {
 		//		WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
 		//		wsdlDefinition = reader.readWSDL(filepath); 
 
-		Class WSDLFactoryClass = ClassLoadingUtil
-				.loadClassFromAntClassLoader("javax.wsdl.factory.WSDLFactory");
-		Method newInstanceMethod = WSDLFactoryClass.getMethod("newInstance", null);
-		Object WSDLFactoryObject = newInstanceMethod.invoke(null, null);
-		Class WSDLFactoryImplClass = ClassLoadingUtil
-				.loadClassFromAntClassLoader(WSDLFactoryObject.getClass().getName());
-		Method newWSDLReaderMethod = WSDLFactoryImplClass.getMethod("newWSDLReader", null);
-		Object WSDLReaderObject = newWSDLReaderMethod.invoke(WSDLFactoryObject, null);
-		Class WSDLReaderClass = ClassLoadingUtil
-				.loadClassFromAntClassLoader(WSDLReaderObject.getClass().getName());
-		Method readWSDLMethod = WSDLReaderClass.getMethod("readWSDL", new Class[]{String.class});
-		DefinitionInstance = readWSDLMethod.invoke(WSDLReaderObject, new Object[]{filepath});
-
+		if (!model.isWsdlAlreadyLoaded(filepath)){
+			Class WSDLFactoryClass = ClassLoadingUtil
+					.loadClassFromAntClassLoader("javax.wsdl.factory.WSDLFactory");
+			Method newInstanceMethod = WSDLFactoryClass.getMethod("newInstance", null);
+			Object WSDLFactoryObject = newInstanceMethod.invoke(null, null);
+			Class WSDLFactoryImplClass = ClassLoadingUtil
+					.loadClassFromAntClassLoader(WSDLFactoryObject.getClass().getName());
+			Method newWSDLReaderMethod = WSDLFactoryImplClass.getMethod("newWSDLReader", null);
+			Object WSDLReaderObject = newWSDLReaderMethod.invoke(WSDLFactoryObject, null);
+			Class WSDLReaderClass = ClassLoadingUtil
+					.loadClassFromAntClassLoader(WSDLReaderObject.getClass().getName());
+			Method readWSDLMethod = WSDLReaderClass.getMethod("readWSDL", new Class[]{String.class});
+			model.setWsdlDefinitionInstance(
+					readWSDLMethod.invoke(WSDLReaderObject, new Object[]{filepath}),filepath);
+		}
+		
+		DefinitionInstance = model.getWsdlDefinitionInstance();
 	}
 
 	/**
