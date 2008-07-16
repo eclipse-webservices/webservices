@@ -29,10 +29,10 @@
  * 20071031   140518 joan@ca.ibm.com - Joan Haggarty
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
+ * 20080715   240722 makandre@ca.ibm.com - Andrew Mak, Cannot setup TCP/IP Monitor for soap12 endpoints
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
-import org.eclipse.jst.ws.internal.consumption.command.common.GetMonitorCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.CheckForServiceProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
@@ -71,6 +71,7 @@ import org.eclipse.wst.ws.internal.extensions.DeployClientFragment;
 import org.eclipse.wst.ws.internal.extensions.DevelopClientFragment;
 import org.eclipse.wst.ws.internal.extensions.InstallClientFragment;
 import org.eclipse.wst.ws.internal.extensions.RunClientFragment;
+import org.eclipse.wst.ws.internal.monitor.GetMonitorCommand;
 
 
 public class ClientWidgetBinding implements CommandWidgetBinding
@@ -343,7 +344,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WsdlURI", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", ClientExtensionDefaultingCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WsdlURI", GetMonitorCommand.class);
-      dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", GetMonitorCommand.class);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "WebServicesParser", GetMonitorCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WsdlURI", CheckForServiceProjectCommand.class);
       dataRegistry.addMapping(ClientWizardWidgetOutputCommand.class, "WebServicesParser", CheckForServiceProjectCommand.class);
 

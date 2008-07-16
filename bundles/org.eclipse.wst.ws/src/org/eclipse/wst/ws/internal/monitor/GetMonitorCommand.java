@@ -1,12 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080709   237116 makandre@ca.ibm.com - Andrew Mak, Web service monitoring fails on https endpoint
+ * 20080715   240722 makandre@ca.ibm.com - Andrew Mak, Cannot setup TCP/IP Monitor for soap12 endpoints
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.monitor;
 
@@ -50,6 +54,8 @@ public class GetMonitorCommand extends AbstractDataModelOperation {
 	private String wsdlURI;
 
 	private List endpoints;
+	
+	private String proxyEndpoint;
 
 	public GetMonitorCommand() {
 		monitorService = true;
@@ -78,6 +84,8 @@ public class GetMonitorCommand extends AbstractDataModelOperation {
 								endpoint = ((SOAPAddress) extElement).getLocationURI();
 							else if (extElement instanceof HTTPAddress)
 								endpoint = ((HTTPAddress) extElement).getLocationURI();
+							else
+								endpoint = ExtensibilityElementTransformerRegistry.INSTANCE.transform(extElement);
 							if (endpoint != null) {
 								try {
 									endpointURL = new URL(endpoint);
@@ -95,7 +103,19 @@ public class GetMonitorCommand extends AbstractDataModelOperation {
 									else if ("https".equalsIgnoreCase(protocol))
 										port = 443;
 								}
-								if (protocol != null && protocol.startsWith("http") && host != null && host.length() > 0 && port != -1) {
+								if ("https".equalsIgnoreCase(protocol))
+				                {
+				                	IStatus warning = StatusUtils.warningStatus( NLS.bind(WstWSPluginMessages.MSG_ERROR_UNABLE_TO_START_MONITOR, new Object[]{String.valueOf(port), endpoint}));
+				                	try
+				                    {
+				                      if (env != null)
+				                        env.getStatusHandler().report(warning);
+				                    }
+				                    catch (StatusException se)
+				                    {
+				                    }
+				                }
+				                else if (protocol != null && protocol.equalsIgnoreCase("http") && host != null && host.length() > 0 && port != -1) {
 									IMonitor m = null;
 									IMonitor[] monitors = MonitorCore.getMonitors();
 									for (int i = 0; i < monitors.length; i++) {
@@ -128,6 +148,15 @@ public class GetMonitorCommand extends AbstractDataModelOperation {
 										try {
 											if (!m.isRunning())
 												m.start();
+											// Use the endpoint that matches with the proxy the extension passes to us if it is set
+				                      		if (proxyEndpoint != null) {
+				                      			try {
+				                      				endpointURL = new URL(proxyEndpoint);
+				                      			} catch (MalformedURLException murle)
+				    			                { 
+				                      				// ignore proxy endpoint 
+				    			                }
+				                      		}
 											StringBuffer sb = new StringBuffer(endpointURL.getProtocol());
 											sb.append("://localhost:");
 											sb.append(String.valueOf(m.getLocalPort()));
@@ -175,5 +204,12 @@ public class GetMonitorCommand extends AbstractDataModelOperation {
 
 	public List getEndpoints() {
 		return endpoints;
+	}
+	
+	/**
+	 * @param proxyEndpoint The proxyEndpoint to set.
+	 */
+	public void setProxyEndpoint(String proxyEndpoint) {
+	  	this.proxyEndpoint = proxyEndpoint;
 	}
 }
