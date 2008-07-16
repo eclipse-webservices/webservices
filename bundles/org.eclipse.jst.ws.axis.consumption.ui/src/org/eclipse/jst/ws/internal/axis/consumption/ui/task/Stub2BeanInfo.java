@@ -14,6 +14,7 @@
  * 20060517   141481 pmoogk@ca.ibm.com - Peter Moogk
  * 20070313   176580 makandre@ca.ibm.com - Andrew Mak, Generate a Client WS Proxy accepting URL
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
+ * 20080709   240225 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
@@ -26,9 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaHelpers;
@@ -472,14 +475,31 @@ public class Stub2BeanInfo
     newLine(w);
     //WebServiceElement wse = WebServiceElement.getWebServiceElement(model_);
     if (clientProject_ == null) return;//wse.getProxyProject();
+    boolean buildProjectCalled = false;
     StringTokenizer st = new StringTokenizer(seis_.toString(), ";");
     while (st.hasMoreTokens())
     {
       String sei = st.nextToken();
       JavaClass javaClass = JavaMOFUtils.getJavaClass(getPackageName(sei), getClassName(sei), clientProject_);
+      if (javaClass == null) { // build the project if build project has not been called yet and try again
+    	  if (!buildProjectCalled) {
+      		clientProject_.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+      		buildProjectCalled = true;
+      		javaClass = JavaMOFUtils.getJavaClass(getPackageName(sei), getClassName(sei), clientProject_);
+      	}
+      }
       if (javaClass != null)
       {
         List methods = javaClass.getMethods();
+        if (methods.isEmpty()) {
+        	if (!buildProjectCalled) { // build the project if build project has not been called yet and try again
+        		clientProject_.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+        		buildProjectCalled = true;
+        		javaClass = JavaMOFUtils.getJavaClass(getPackageName(sei), getClassName(sei), clientProject_);
+        		if (javaClass != null)
+        			methods = javaClass.getMethods();
+        	}    	
+        }
         for (Iterator it = methods.iterator(); it.hasNext();)
         {
           Method method = (Method)it.next();
