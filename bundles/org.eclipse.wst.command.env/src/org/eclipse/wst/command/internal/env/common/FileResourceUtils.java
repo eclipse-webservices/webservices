@@ -13,6 +13,7 @@
  * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  * 20080625   237129 makandre@ca.ibm.com - Andrew Mak, Error moving resource: null
+ * 20080711   240408 rkklai@ca.ibm.com - Raymond Lai, support case-insensitive platform makeFile when a file with variant case exists
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.common;
 
@@ -27,6 +28,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceStatus;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -603,102 +605,121 @@ public final class FileResourceUtils
  
     throws CoreException
   {
-    IResource child  = parent.findMember(fileName);
+	 IFile file = parent.getFile( new Path(fileName) );
+
+	 // create the file if it doesn't exist
+	 if (!file.exists()) {
+		 try {
+			 file.create( inputStream, true, null);    
+			 return file;
+		 } catch (CoreException coreException) {
+			 // this error only happens in a case-insensitive file system; so ignore the cases.
+			 if (coreException.getStatus().getCode() == IResourceStatus.CASE_VARIANT_EXISTS) {
+				 boolean foundIgnoringCase = false;
+
+				 for (IResource resource : parent.members()) {
+					 if (resource.getName().equalsIgnoreCase(fileName)) {
+						 // found the file
+						 foundIgnoringCase = true;
+						 fileName = resource.getName();
+						 file = parent.getFile( new Path(fileName));
+						 break;
+					 }
+				 }
+
+				 // can't find the file causing the CASE_VARIANT_EXISTS exception; throw the exception
+				 if (!foundIgnoringCase)
+					 throw coreException;
+			 } else {
+				 // throw other exceptions
+				 throw coreException;
+			 }
+		 }
+	 }
+
+	 
     Choice    result = null;
     
-    if( child != null )
+
+    if( file.getType() == IResource.FILE )
     {
-      if( child.getType() == IResource.FILE )
+      if( !resourceContext.isOverwriteFilesEnabled() )   
       {
-        if( !resourceContext.isOverwriteFilesEnabled() )   
+        result = statusHandler.report( 
+              StatusUtils.warningStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_OVERWRITE_DISABLED,
+                                         new Object[] {parent.getFullPath().toString(),fileName}) ),					  		    
+              getThreeStateFileOptions() );
+        
+        if( result == null || result.getShortcut() == 'C' )
         {
+          return null;
+        }
+        else if( result.getShortcut() == 'A' )
+        {
+          resourceContext.setOverwriteFilesEnabled(true);
+          PersistentResourceContext.getInstance().setOverwriteFilesEnabled(true);
+        }
+      }	
+        
+      //We have permission to overwrite so check if file is read-only
+      if( file.getResourceAttributes() == null )
+      {
+      	// resource is likely out-of-sync with filesystem
+      	throw new CoreException( 
+      	          new Status( IStatus.ERROR,
+      	                      "ResourceUtils",
+      	                      0, 
+      	                      file.getFullPath().toString(),
+      						  null ) );
+      }
+      else if( file.getResourceAttributes().isReadOnly() )
+      {
+        if( !resourceContext.isCheckoutFilesEnabled() ) 
+        {            
           result = statusHandler.report( 
-                StatusUtils.warningStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_OVERWRITE_DISABLED,
-                                           new Object[] {parent.getFullPath().toString(),fileName}) ),					  		    
-                getThreeStateFileOptions() );
+                       StatusUtils.errorStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_CHECKOUT_DISABLED,
+                                                new Object[]{ parent.getFullPath().toString(),fileName} ) ), 
+                       getThreeStateFileOptions() );
           
           if( result == null || result.getShortcut() == 'C' )
           {
             return null;
-          }
+		  }
           else if( result.getShortcut() == 'A' )
           {
-            resourceContext.setOverwriteFilesEnabled(true);
-            PersistentResourceContext.getInstance().setOverwriteFilesEnabled(true);
-          }
-        }	
-        
-        //We have permission to overwrite so check if file is read-only
-        if( child.getResourceAttributes() == null )
-        {
-        	// resource is likely out-of-sync with filesystem
-        	throw new CoreException( 
-        	          new Status( IStatus.ERROR,
-        	                      "ResourceUtils",
-        	                      0, 
-        	                      child.getFullPath().toString(),
-        						  null ) );
-        }
-        else if( child.getResourceAttributes().isReadOnly() )
-        {
-          if( !resourceContext.isCheckoutFilesEnabled() ) 
-          {            
-            result = statusHandler.report( 
-                         StatusUtils.errorStatus( NLS.bind(EnvironmentMessages.MSG_ERROR_FILE_CHECKOUT_DISABLED,
-                                                  new Object[]{ parent.getFullPath().toString(),fileName} ) ), 
-                         getThreeStateFileOptions() );
-            
-		    if( result == null || result.getShortcut() == 'C' )
-		    {
-              return null;
-		    }
-            else if( result.getShortcut() == 'A' )
-            {
-              resourceContext.setCheckoutFilesEnabled(true);
-              PersistentResourceContext.getInstance().setCheckoutFilesEnabled(true);
-            }
-          }
-
-          IFile[] files = new IFile[1];
-          files[0] = (IFile)child;
-          
-          IStatus status = getWorkspace().validateEdit(files,null);
-          
-          try
-          {
-            statusHandler.report( status );
-          }
-          catch( StatusException exc )
-          {
-            return null;
+            resourceContext.setCheckoutFilesEnabled(true);
+            PersistentResourceContext.getInstance().setCheckoutFilesEnabled(true);
           }
         }
 
-        //Change the contents of the existing file.
-        IFile file = parent.getFile( new Path(fileName) );
-        file.setContents( inputStream, true, true, null );
+        IFile[] files = new IFile[1];
+        files[0] = (IFile)file;
+          
+        IStatus status = getWorkspace().validateEdit(files,null);
         
-        return file;
+        try
+        {
+          statusHandler.report( status );
+        }
+        catch( StatusException exc )
+        {
+          return null;
+        }
+      }
+      file.setContents( inputStream, true, true, null );
+        
+      return file;
       
-      }
-      else
-      {
-        throw new CoreException( 
-          new Status( IStatus.ERROR,
-                      "ResourceUtils",
-                      0, 
-                      NLS.bind(EnvironmentMessages.MSG_ERROR_RESOURCE_NOT_FILE,
-				                       new Object[] {parent.getFullPath().append(fileName)}),
-					  null ) );
-      }
     }
     else
     {
-      //Create a new file.
-      IFile file = parent.getFile( new Path(fileName) );
-      file.create( inputStream, true, null);
-      
-      return file;
+      throw new CoreException( 
+        new Status( IStatus.ERROR,
+                    "ResourceUtils",
+                    0, 
+                    NLS.bind(EnvironmentMessages.MSG_ERROR_RESOURCE_NOT_FILE,
+		                       new Object[] {parent.getFullPath().append(fileName)}),
+		                       null ) );
     }
   }
 
