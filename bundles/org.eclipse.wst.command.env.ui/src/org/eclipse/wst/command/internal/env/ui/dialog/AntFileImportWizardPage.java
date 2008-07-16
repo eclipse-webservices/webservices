@@ -12,6 +12,7 @@
  * 20080221   146023 gilberta@ca.ibm.com - Gilbert Andrews 
  * 20080512   222094 makandre@ca.ibm.com - Andrew Mak, Error handling when Ant template cannot be found
  * 20080618   237671 makandre@ca.ibm.com - Andrew Mak, Label on Ant files wizard is truncated
+ * 20080716   238059 makandre@ca.ibm.com - Andrew Mak, New ant files wizard not working
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
@@ -120,6 +121,10 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 		iniatialize();
 	}
 	
+	protected boolean validateSourceGroup() {
+		return runtime_.getItemCount() > 0;
+	}
+
 	protected ITreeContentProvider getFolderProvider() {
 		 return null;
 	}
@@ -151,7 +156,8 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 	private void iniatialize(){
 		antExtC_ = AntExtensionCreation.getInstance();
 		labelsAndIdsRuntime_ = antExtC_.getRuntimeLabelsAndIds();
-		setRuntimeLabels(labelsAndIdsRuntime_.getLabels());
+		if (labelsAndIdsRuntime_.getLabels().length > 0)
+			setRuntimeLabels(labelsAndIdsRuntime_.getLabels());
 	}
 	
 	public String getScenario(){
