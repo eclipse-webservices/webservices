@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?NLS TYPE="org.eclipse.help.toc"?>
-	 	<toc label="Extension Points Reference">
-<topic href="reference/extension-points/org_eclipse_wst_wsdl_extensibilityElementFactories.html" label="org.eclipse.wst.wsdl.extensibilityElementFactories"/>
-</toc>
