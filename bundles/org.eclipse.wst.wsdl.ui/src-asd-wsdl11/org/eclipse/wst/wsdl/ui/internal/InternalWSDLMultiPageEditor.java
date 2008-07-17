@@ -22,6 +22,7 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.PrintAction;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
@@ -485,6 +486,9 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
 	    action = new W11SetExistingElementAction(this);
 	    action.setSelectionProvider(getSelectionManager());
 	    registry.registerAction(action);
+	    
+	    PrintAction printAction = new PrintAction(this);
+	    registry.registerAction(printAction);
 	    
       ASDDirectEditAction directEditAction = new ASDDirectEditAction(this);
       directEditAction.setSelectionProvider(getSelectionManager());
