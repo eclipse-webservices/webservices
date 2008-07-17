@@ -38,6 +38,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.ASDCCombo;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.TypeReferenceDirectEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BaseLinkIconFigure;
@@ -238,8 +239,15 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 
 				public boolean canExecute()
 				{
-					return true;
-				}
+                  // dont execute if name is not changing
+                  IParameter parameter = (IParameter)getModel();
+                  Object newValue = ((ASDCCombo)request.getCellEditor().getControl()).getText();
+                  if (newValue instanceof String)
+                  {
+                      return !newValue.equals(parameter.getComponentName());
+                  }
+                  return true;
+			    }
 			};
 		}
 
