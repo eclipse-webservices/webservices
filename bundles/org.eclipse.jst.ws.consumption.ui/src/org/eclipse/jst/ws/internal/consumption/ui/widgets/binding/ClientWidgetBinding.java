@@ -30,6 +30,8 @@
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080715   240722 makandre@ca.ibm.com - Andrew Mak, Cannot setup TCP/IP Monitor for soap12 endpoints
+ * 20080722   240231 gilberta@ca.ibm.com - Gilbert Andrews
+ * 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -40,6 +42,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.common.FinishFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ScenarioCleanupCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.ClientRootFragment;
 import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientDevelopCommand;
+import org.eclipse.jst.ws.internal.consumption.ui.extension.PreClientInstallCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidget;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.ClientWizardWidgetOutputCommand;
@@ -170,7 +173,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService",FinishTestFragment.class);
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestWidget.class );
     dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "RunTestClient", ClientTestWidget.class );
-    dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "CanRunTestClient", ClientTestWidget.class );
+    dataRegistry.addMapping(PreClientInstallCommand.class, "CanRunTestClient", ClientTestWidget.class );
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProject", ClientTestWidget.class );
     dataRegistry.addMapping(WebServiceClientTestArrivalCommand.class, "SampleProjectEAR", ClientTestWidget.class );
@@ -405,6 +408,7 @@ public class ClientWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "SetEndpointMethod", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ServerInstanceId", FinishDefaultCommand.class);
 
+	  dataRegistry.addMapping(PreClientInstallCommand.class, "CanRunTestClient", ClientTestDelegateCommand.class );
 	  
       // GetMonitorCommand
       dataRegistry.addMapping(GetMonitorCommand.class, "Endpoints", ClientTestDelegateCommand.class);
