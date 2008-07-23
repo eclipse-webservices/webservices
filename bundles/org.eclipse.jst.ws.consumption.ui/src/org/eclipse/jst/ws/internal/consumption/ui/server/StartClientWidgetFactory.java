@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060529   141422 kathy@ca.ibm.com - Kathy Chan
+ * 20080722   240231 gilberta@ca.ibm.com - Gilbert Andrews
+ * 
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.server;
@@ -32,7 +34,7 @@ public class StartClientWidgetFactory implements INamedWidgetContributorFactory
   {
     IServer server = null;
     
-    if( webserviceClient_ != null  && context_.getRun())
+    if( webserviceClient_ != null && webserviceClient_.getWebServiceClientInfo().getServerInstanceId() != null  && context_.getRun())
     {
       server = ServerCore.findServer(webserviceClient_.getWebServiceClientInfo().getServerInstanceId() );
     }

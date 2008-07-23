@@ -15,6 +15,8 @@
  * 20080425   220985 trungha@ca.ibm.com - Trung Ha, Server is recreated when prev publish failed
  * 20080429   220985 trungha@ca.ibm.com - Trung Ha
  * 20080520   233065 makandre@ca.ibm.com - Andrew Mak, Server not found error in Web service generation
+ * 20080722   240231 gilberta@ca.ibm.com - Gilbert Andrews
+ * 
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -116,6 +118,12 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
       project_ = project;
     }
       
+    public boolean getCanRunTestClient(){
+  	  if(webServiceClient_.getWebServiceClientInfo().getServerInstanceId() != null) return true;
+  	  
+  	  return false;
+    }
+    
     public void setModule( String module )
     {
       module_ = module;
