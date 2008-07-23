@@ -22,7 +22,7 @@ file: </p></context>
 type object to open that operation in the XML schema editor.</cmd></step>
 </steps-unordered>
 <result><p>For more information about XML schemas, see the <xref format="html"
-href="/../../org.eclipse.wst.xsdeditor.doc.user/topics/cxmlsced.dita" scope="peer">XML
+href="../../org.eclipse.wst.xsdeditor.doc.user/topics/cxmlsced.dita" scope="peer">XML
 schema editor documentation</xref> for links to online resources.</p></result>
 </taskbody>
 <related-links>
