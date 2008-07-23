@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -79,6 +79,11 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
 	String showGenerateDialogLabel = Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE; //$NON-NLS-1$
 	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(showGenerateDialogLabel, showGenerateDialogLabel, parent);
 	addField(showGenerateDialog);
+	
+	String unusedImportLabel = Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP; //$NON-NLS-1$
+	BooleanFieldEditor removeUnusedImports = new BooleanFieldEditor(unusedImportLabel, unusedImportLabel, parent);
+	addField(removeUnusedImports);
+  PlatformUI.getWorkbench().getHelpSystem().setHelp(removeUnusedImports.getLabelControl(composite), ASDEditorCSHelpIds.WSDL_PREF_ENABLE_AUTO_IMPORT_CLEANUP);
 
     /* Do we need this preference below?  If so, change WSDLEditorPlugin.java and use this preference in:
        HttpContentGenerator.java

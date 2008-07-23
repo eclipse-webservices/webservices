@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -188,4 +188,5 @@ public class ASDEditorCSHelpIds {
 	public static String WSDL_PREF_DEFAULT_TNS = pluginId + "wsdlu0200"; //$NON-NLS-1$
 	public static String WSDL_PREF_REGEN_ON_SAVE = pluginId + "wsdlu0201"; //$NON-NLS-1$
 	public static String WSDL_PREF_PROMPT_REGEN_ON_SAVE = pluginId + "wsdlu0202"; //$NON-NLS-1$
+  public static String WSDL_PREF_ENABLE_AUTO_IMPORT_CLEANUP = pluginId + "wsdlu0205"; //$NON-NLS-1$
 }

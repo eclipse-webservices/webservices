@@ -308,6 +308,7 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     store.setDefault(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE, DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
     store.setDefault(Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING, false); //$NON-NLS-1$
     store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false); //$NON-NLS-1$
+    store.setDefault(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP, false); //$NON-NLS-1$
     // Do we need this preference below?  Look at WSDLPreferencePage.java
 //    store.setDefault("Defualt Location:", "http://www.example.com");
   }
@@ -332,6 +333,11 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   {
     //return getPreferenceStore().getInt(DEPENDECIES_CHANGED_POLICY);
     return dependenciesChangedPolicy;
+  }
+  
+  public boolean getRemoveImportSetting()
+  {
+    return getPreferenceStore().getBoolean(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP); //$NON-NLS-1$)
   }
   
   

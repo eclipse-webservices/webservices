@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11BrowseComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.dialogs.W11NewComponentDialog;
 import org.eclipse.wst.wsdl.ui.internal.search.IWSDLSearchConstants;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLImportManager;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLSetComponentHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.IComponentDialog;
@@ -71,6 +72,7 @@ public class W11InterfaceReferenceEditManager implements ComponentReferenceEditM
 			Command command = w11Binding.getSetInterfaceCommand(interfaze);
 			CommandStack stack = (CommandStack) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getAdapter(CommandStack.class);
 			stack.execute(command);
+			WSDLImportManager.removeUnusedImports(getDefinition());
 		}
 	}
 
