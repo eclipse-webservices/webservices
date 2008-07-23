@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
@@ -77,6 +78,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.W11OpenExternalEditorHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLImportManager;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLResourceUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
@@ -602,6 +604,15 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
       } 
     }
   }
+  
+  /* (non-Javadoc)
+   * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+   */
+  public void doSave(IProgressMonitor monitor)
+  {
+    WSDLImportManager.removeUnusedImports((Definition)getAdapter(Definition.class));
+    super.doSave(monitor);
+  }
 
   public void doSaveAs()
   {
@@ -649,7 +660,7 @@ public class InternalWSDLMultiPageEditor extends ASDMultiPageEditor
     {
       setInput(newEditorInput);
       setPartName(newEditorInput.getName());
-
+      
       getCommandStack().markSaveLocation();
 
       // Now do the clean up on the old document

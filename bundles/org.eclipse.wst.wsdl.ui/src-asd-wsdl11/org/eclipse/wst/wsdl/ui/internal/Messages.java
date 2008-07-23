@@ -64,6 +64,7 @@ public class Messages {
 	public static String _UI_LABEL_NAMESPACE_URIS_TO_BE_INCLUDED;
 	public static String _UI_PREF_PAGE_AUTO_REGENERATE_BINDING;
 	public static String _UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE;
+	public static String _UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP;
 	public static String _UI_EDIT_NAMESPACES;
 	public static String _UI_ACTION_ADD_IMPORT;
 	public static String _UI_ACTION_ADD_BINDING;
