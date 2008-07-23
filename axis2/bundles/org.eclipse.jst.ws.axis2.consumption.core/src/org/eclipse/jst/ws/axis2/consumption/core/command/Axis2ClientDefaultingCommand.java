@@ -16,6 +16,7 @@
  * 20070612   192047 sandakith@wso2.com - Lahiru Sandakith, 192047
  * 20070612   192047 kathy@ca.ibm.com   - Kathy Chan
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20080622   241170 samindaw@wso2.com - Saminda Wijeratne, Axis2 preferences respected when click finish in 1st page
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -47,10 +48,6 @@ public class Axis2ClientDefaultingCommand extends AbstractDataModelOperation {
 
 		String wsdlURL = ws.getWebServiceClientInfo().getWsdlURL();
 		model.setWsdlURI(wsdlURL);
-		
-		model.setDatabindingType(Axis2Constants.DATA_BINDING_ADB);
-		model.setASync(false);
-		model.setSync(false);
 		
 		DefaultCodegenUtil defaultCodegenUtil = new DefaultCodegenUtil(model);
 		defaultCodegenUtil.populateModelParamsFromWSDL();

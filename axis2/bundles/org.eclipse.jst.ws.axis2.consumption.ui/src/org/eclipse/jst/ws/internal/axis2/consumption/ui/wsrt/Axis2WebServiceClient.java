@@ -15,6 +15,7 @@
  * 20080620   192527 samindaw@wso2.com - Saminda Wijeratne, Update the model information with the axis2 preference settings
  * 20080621   210817 samindaw@wso2.com - Saminda Wijeratne, Setting the proxyBean and proxyEndPoint values
  * 20080625   210817 samindaw@wso2.com - Saminda Wijeratne, Setting the proxyBean and proxyEndPoint values - Refactoring
+ * 20080622   241170 samindaw@wso2.com - Saminda Wijeratne, Axis2 preferences respected when click finish in 1st page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.wsrt;
 
@@ -27,6 +28,7 @@ import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2ClientOutputComman
 import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2ClientTestCaseIntegrateCommand;
 import org.eclipse.jst.ws.axis2.consumption.core.command.Axis2WebservicesServerCommand;
 import org.eclipse.jst.ws.axis2.consumption.core.data.DataModel;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.PersistentAxis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.internal.axis2.consumption.ui.task.DefaultsForHTTPBasicAuthCommand;
@@ -82,6 +84,10 @@ public class Axis2WebServiceClient extends AbstractWebServiceClient {
 		model.setSync(axis2Pref.isSync());
 		model.setTestCaseCheck(axis2Pref.isClientTestCase());
 		model.setGenerateAllCheck(axis2Pref.isClientGenerateAll());
+		if ((axis2Pref.getServiceDatabinding()==null) || (axis2Pref.getServiceDatabinding().equalsIgnoreCase("")))
+			model.setDatabindingType(Axis2Constants.DATA_BINDING_ADB);
+		else
+			model.setDatabindingType(axis2Pref.getServiceDatabinding());
 	}
 	
 
