@@ -25,6 +25,7 @@
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
+ * 20080717   241283 ericdp@ca.ibm.com - Eric D. Peters, Class version error when invoking sample JSP on Tomcat 5.5 when Java project is Java 6
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -315,8 +316,7 @@ public class ValidationUtils
 				    		(WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId) == WebServiceScenario.BOTTOMUP) &&
 				    		J2EEUtils.isJavaComponent(ProjectUtilities.getProject(initialProjectName))){
 				    		
-				    		Set javaSet = FacetUtils.getFacetsForProject(initialProjectName);
-				    		if(!doesServerSupportFacets(serverId,javaSet)){
+				    		if(!doesServerSupportProject(serverId,initialProjectName)){
 				    	    	return StatusUtils.errorStatus(NLS.bind(
 										ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_JAVAPROJECT,
 										new String[] { serverLabel, initialProjectName }));
@@ -549,45 +549,15 @@ public class ValidationUtils
    * Returns whether or not the provided server type supports the facet versions on the provided project
    * @param serverFactoryId server type id
    * @param projectName name of a project that may or may not exist.
-   * @return boolean <code>true</code>
-   * <ul> 
-   * <li>if the server type supports the facet versions on the project or</li>
-   * <li>if the project is not a faceted project or</li>
-   * <li>if the project does not exist.</li>
-   * </ul>
-   * Returns <code>false</code> otherwise.
-   */
+   * @return boolean <code>true</code> if the server type supports the facet versions on the project (facets versions are inferred from a Java project), 
+   * <code>false</code> if the server type does not support the facet versions or facet versions on the project cannot be determined.   */
   public boolean doesServerSupportProject(String serverFactoryId, String projectName)
   {
-    IProject project = ProjectUtilities.getProject(projectName);
-    IFacetedProject fProject = null;
-    if (project.exists())
-    {
-      try
-      {
-        fProject = ProjectFacetsManager.create(project);
-      } catch (CoreException ce)
-      {
-
-      }
-      
-      if (fProject != null)
-      {
-        Set facets = fProject.getProjectFacets();
-        return doesServerSupportFacets(serverFactoryId, facets);
-      }
-      else
-      {
-        //If it's not a faceted project, we have nothing to compare to - assume it's good.
-        return true;
-      }
-    }
-    else
-    {
-      //If the project doesn't exist, we have nothing to compare to - assume it's good.
-      return true;      
-    }
-    
+	Set facets = FacetUtils.getFacetsForProject(projectName);
+	if (facets == null)
+		return true;
+	else 
+		return doesServerSupportFacets(serverFactoryId, facets); 
   }
 
   /**
