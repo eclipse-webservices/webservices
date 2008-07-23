@@ -33,6 +33,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -380,7 +381,14 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     	  protocolPageBook.showPage(page.getControl());
     	  protocolPageBook.layout();
     	  protocolPageBook.getParent().layout();
-		
+    	  
+    	  // resize the wizard dialog if necessary for the updated page
+    	  Point size = protocolPageBook.getShell().getSize();
+    	  Point minSize = protocolPageBook.getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+    	  int newX = Math.max(size.x, minSize.x);
+    	  int newY = Math.max(size.y, minSize.y);
+    	  protocolPageBook.getShell().setSize(newX, newY);
+    	  
     	  page.setOptionsOnGenerator();
       }
     }
