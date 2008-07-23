@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/Main/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Main008"
+	xmlns="http://UNUSED-NULL"
+	xmlns:used01="http://XSDUsedWSDLUnused"
+	xmlns:wsdlUsed="http://WSDLUsed"
+	targetNamespace="http://www.example.org/Main/">
+    <wsdl:import namespace="http://WSDLUsed" location="./abc.wsdl"></wsdl:import>
+    <wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/Main/"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="NewOperation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.example.org/Main01/">
+            <xsd:element name="ss" type="xsd:byte"></xsd:element>
+            <xsd:complexType name="ct">
+               <xsd:sequence>
+                  <xsd:element name="aaa"></xsd:element>
+               </xsd:sequence>
+            </xsd:complexType>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.example.org/Main02/"
+          xmlns="http://www.example.org/Main02/"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.example.org/Main03/"
+          xmlns="http://www.example.org/UnusedAAA/"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.example.org/Main04/"
+          xmlns:unused01="http://www.example.org/Unused/"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.example.org/Main05/"
+          xmlns:used01="http://www.example.org/Main01/"
+          xmlns:unused01="http://www.example.org/Unused/"          
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <xsd:element name="aaa" type="xsd:byte">
+             <xsd:annotation>
+                <xsd:appinfo>
+                   <used01:dummyElem/>
+                </xsd:appinfo>
+             </xsd:annotation>
+          </xsd:element>
+		</xsd:schema>
+
+	</wsdl:types>
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part element="tns:NewOperation" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="Main008">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest" />
+			<wsdl:output message="tns:NewOperationResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="Main008SOAP" type="tns:Main008">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="NewOperation">
+			<soap:operation
+				soapAction="http://www.example.org/Main/NewOperation" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Main008">
+		<wsdl:port binding="tns:Main008SOAP" name="Main008SOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

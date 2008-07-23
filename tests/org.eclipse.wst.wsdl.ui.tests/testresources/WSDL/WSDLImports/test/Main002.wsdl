@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/Main002/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Main002"
+	xmlns:wsdl1="http://www.example.org/Import001/"
+	xmlns:wsdl2="http://www.example.org/Import002/"
+	xmlns:xsd1="http://www.example.org/Import"
+    xmlns:xsd2="http://www.example.org/Import6"
+	targetNamespace="http://www.example.org/Main002/">
+
+    <wsdl:import namespace="http://www.example.org/Import001/" location="Import001.wsdl"></wsdl:import>
+    <wsdl:import namespace="http://www.example.org/Import002/" location="Import002.wsdl"></wsdl:import>
+    <wsdl:import namespace="http://www.example.org/Import" location="../../../XSD/Unused/Import1.xsd"></wsdl:import>
+    <wsdl:import namespace="http://www.example.org/Import6" location="../../../XSD/Unused/Import6.xsd"></wsdl:import>
+    
+    <wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/Main002/"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="NewOperation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part element="tns:NewOperation" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="Main002">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest" />
+			<wsdl:output message="tns:NewOperationResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="Main002SOAP" type="tns:Main002">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="NewOperation">
+			<soap:operation
+				soapAction="http://www.example.org/Main002/NewOperation" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Main002">
+		<wsdl:port binding="tns:Main002SOAP" name="Main002SOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
