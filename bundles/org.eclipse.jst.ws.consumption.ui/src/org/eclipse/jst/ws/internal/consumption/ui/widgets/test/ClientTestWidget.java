@@ -18,6 +18,7 @@
  * 20080527   234192 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080723   241303 gilberta@ca.ibm.com - Gilbert Andrews
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -498,7 +499,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 		}
 		else showServer = true;
 		
-		if(showServer){	
+		if(showServer && canRunTestClient_){	
 			if(isWebProject){
 				org.eclipse.wst.common.project.facet.core.runtime.IRuntime runtime = FacetUtil.getRuntime(runtimes[i]);
 				if(FacetUtils.doesRuntimeSupportFacets(runtime, projectFacets)){
@@ -522,7 +523,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	if(id != null){
 		for(int k =0; k<servers.length;k++){
 			if(servers[k].getRuntime() != null){
-				if(id.equals(servers[k].getRuntime().getId())){
+				if(id.equals(servers[k].getRuntime().getId())&& canRunTestClient_){
 					serverInstances_.add(servers[k].getId(), servers[k].getName());
 					serverInstanceTypeCombo_.add(servers[k].getName());
 				}
