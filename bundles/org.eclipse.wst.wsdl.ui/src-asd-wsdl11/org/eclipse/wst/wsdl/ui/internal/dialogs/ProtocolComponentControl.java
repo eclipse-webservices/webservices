@@ -20,6 +20,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -245,6 +246,13 @@ public abstract class ProtocolComponentControl extends Composite implements Sele
         pageBook.showPage(page.getControl());
         pageBook.layout();
         pageBook.getParent().layout();
+        
+        // resize the wizard dialog if necessary for the updated page
+        Point size = pageBook.getShell().getSize();
+        Point minSize = pageBook.getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+        int newX = Math.max(size.x, minSize.x);
+        int newY = Math.max(size.y, minSize.y);
+        pageBook.getShell().setSize(newX, newY);
 		
 		page.setOptionsOnGenerator();
       }
