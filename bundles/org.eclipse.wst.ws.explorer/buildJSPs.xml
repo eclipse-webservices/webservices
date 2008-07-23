@@ -10,7 +10,7 @@
 	<target name="build">
 
 		<!-- Construct the full classpath -->
-		<path id="explorer.jar.classpath" >
+		<path id="@dot.classpath" >
 			<pathelement path="${target.folder}"/>
 			<dirset dir="${workspace_loc}">
 				<patternset>
@@ -33,7 +33,7 @@
 
 		<!-- Compile the JSPs -->
 		<antcall target="compile">
-			<reference refid="explorer.jar.classpath"/>
+			<reference refid="@dot.classpath"/>
 		</antcall>
 		
 	</target>
@@ -48,16 +48,18 @@
 		<!-- Invoke Jasper compiler -->
 		<java
 			classname="org.apache.jasper.JspC"
-			classpathref="explorer.jar.classpath"
+			classpathref="@dot.classpath"
 			fork="true"
 			failonerror="true">
 			<arg value="-compile"/>
 			<arg value="-d"/>
-			<arg value="${wsexplorerDir}" />
+			<arg value="${wsexplorerDir}/WEB-INF/classes"/>
 			<arg value="-p"/>
 			<arg value="org.eclipse.wst.ws.explorer.jsp"/>
 			<arg value="-webapp"/>
 			<arg value="${wsexplorerDir}"/>
+			<arg value="-webxml"/>
+			<arg value="${wsexplorerDir}/WEB-INF/web.xml"/>						
 			<arg value="-die"/>
 			<classpath>
 				<pathelement path="${target.folder}"/>
@@ -113,7 +115,7 @@
 	<!--   <name>.classpath : name = name of the compilation target. A         -->
 	<!--                      reference to the classpath structure.            -->
 	<!-- ===================================================================== -->
-	<target name="pre.explorer.jar">
+	<target name="pre.@dot">
 	</target>
 
 	<!-- ===================================================================== -->
@@ -126,16 +128,16 @@
 	<!--   <name>.classpath : name = name of the compilation target. A         -->
 	<!--                      reference to the classpath structure.            -->
 	<!-- ===================================================================== -->
-	<target name="post.compile.explorer.jar">
+	<target name="post.compile.@dot">
 		
 		<!-- Compile the JSPs -->
 		<antcall target="compile">
-			<reference refid="explorer.jar.classpath"/>
+			<reference refid="@dot.classpath"/>
 		</antcall>
 		
 		<!-- JspC always generates .java files; delete them -->
 		<delete>
-			<fileset dir="${target.folder}" includes="**/*.java"/>
+			<fileset dir="${wsexplorerDir}" includes="**/*.java"/>
 		</delete>
 
 	</target>
@@ -148,7 +150,7 @@
 	<!--   <name>.classpath : name = name of the compilation target. A         -->
 	<!--                      reference to the classpath structure.            -->
 	<!-- ===================================================================== -->
-	<target name="post.explorer.jar">
+	<target name="post.@dot">
 	</target>
 	
 	<!-- ===================================================================== -->
@@ -216,7 +218,9 @@
 	<!--   build.result.folder - results of the compilation                    -->
 	<!--   temp.folder - temporary folder                                      -->
 	<!-- ===================================================================== -->
-	<target name="post.clean">             
+	<target name="post.clean">
+		<delete dir="${wsexplorerDir}/WEB-INF/classes/org"/>
+		<delete file="${wsexplorerDir}/WEB-INF/web.xml"/>
 	</target>
 
 	<target name="pre.wsexplorer-properties.jar">              
