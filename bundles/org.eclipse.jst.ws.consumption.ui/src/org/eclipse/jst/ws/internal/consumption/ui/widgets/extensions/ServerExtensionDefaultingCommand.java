@@ -16,6 +16,7 @@
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  * 20080409   219121 trungha@ca.ibm.com - Trung Ha
+ * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -27,7 +28,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -38,6 +41,7 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.ws.internal.parser.discovery.WebServicesParserExt;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 
 public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
@@ -47,6 +51,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
 	private boolean           deployService_;
 
   private Boolean              installService;
+  private IProject			initialProject_;
   private Boolean              startService;
   private Boolean              testService;
   private Boolean              publishService;
@@ -230,7 +235,15 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
   {
     return startService;
   }
-  
+  public void setInitialProject(IProject initialProject)
+  {
+	  initialProject_ = initialProject;  
+  }	
+    
+  public IProject getInitialProject()
+  {
+	  return initialProject_;  
+  }	
   /**
    * @param startService
    *            The startService to set.
@@ -354,7 +367,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
       if (!serviceProject.exists())        
       {
         String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
-        status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{ runtimeLabel } ) );
+        status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_PROJECT_MUST_EXIST, new String[]{ serviceProjectName_, runtimeLabel } ) );
         env.getStatusHandler().reportError(status);
       }
       else
@@ -379,8 +392,10 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
     }
     
     // If the server is non-null, ensure there is an installed server with ID the same as 'serverID' registered in Eclipse
+	boolean noRuntimeInstalled = true;
+	if (serverId != null) {
     String[] runtimes = WebServiceRuntimeExtensionUtils2.getAllServerFactoryIdsWithRuntimes();
-    boolean noRuntimeInstalled = true;
+
     for (int i = 0; i < runtimes.length; i++) {
 		if (runtimes[i].equals(serverId)){
 			noRuntimeInstalled = false;
@@ -394,6 +409,7 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
     	status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME_INSTALLED, new String[] {serverLabel}));
         env.getStatusHandler().reportError(status);
     }
+	}
     
     //If the server is non-null and is installed in Eclipse, ensure the server, runtime, and type are compatible
     if (!noRuntimeInstalled && serverId != null && serverId.length() > 0)
@@ -406,7 +422,19 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
             runtimeLabel }));
         env.getStatusHandler().reportError(status);
       }
-
+      //If the project exists, ensure it supports the Web service type, Web service runtime, and server.
+      if (getInitialProject() != null && getInitialProject().getName() != null && ProjectUtilities.getProject(getInitialProject().getName()).exists()) {
+		if (WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId) == WebServiceScenario.BOTTOMUP &&
+	    		FacetUtils.isJavaProject(getInitialProject())){
+	    		ValidationUtils valUtils = new ValidationUtils();
+	    		if(!valUtils.doesServerSupportProject(serverId,getInitialProject().getName())){
+	    	    	status  = StatusUtils.errorStatus(NLS.bind(
+							ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_JAVAPROJECT,
+							new String[] { WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId), getInitialProject().getName() }));
+	    	    	env.getStatusHandler().reportError(status);
+	  		    }
+	    		}
+	  }
       // Determine if the selected server type has only stub runtimes associated
       // with it and if a server instance is not selected.
       // If so, set install, run, and test to false in the context.

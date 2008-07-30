@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20060222   128564 jesper@selskabet.org - Jesper S Moller
  * 20060823    99034 makandre@ca.ibm.com - Andrew Mak, WSE support for basic-authenticating firewalls
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20080728   242091 makandre@ca.ibm.com - Andrew Mak, Web services explorer inserts spurious CRLF in a long authentication header
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
@@ -209,6 +210,10 @@ public class HTTPTransport
       return EMPTY_STRING;
   }
   
+  private String stripNewLine(String input) {
+	  return input.replaceAll(System.getProperty("line.separator"), "");
+  }
+  
   private String getWWWAuthentication()
   {
     if (httpBasicAuthUsername != null && httpBasicAuthPassword != null)
@@ -224,7 +229,7 @@ public class HTTPTransport
       sb.append(SPACE);
       sb.append(BASIC);
       sb.append(SPACE);
-      sb.append(encodedUserNamePassword);
+      sb.append(stripNewLine(encodedUserNamePassword));
       sb.append(NEW_LINE);
       return sb.toString();
     }
@@ -249,7 +254,7 @@ public class HTTPTransport
       sb.append(SPACE);
       sb.append(BASIC);
       sb.append(SPACE);
-      sb.append(encodedUserNamePassword);
+      sb.append(stripNewLine(encodedUserNamePassword));
       sb.append(NEW_LINE);
       return sb.toString();
     }

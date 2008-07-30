@@ -32,6 +32,7 @@
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
+ * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -547,6 +548,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "Publish", PublishToPrivateUDDICommandFragment.class);      
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer",WSDLTestLaunchCommand.class);
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", ClientTestDelegateCommand.class);
+      dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "Project", ServerExtensionDefaultingCommand.class, "InitialProject", null);
 	  
 	    // Setup the PreServiceDevelopCommand.
       dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "DevelopService", PreServiceDevelopCommand.class);

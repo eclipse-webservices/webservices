@@ -18,6 +18,7 @@
  * 20080205   170141 kathy@ca.ibm.com - Kathy Chan
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
+ * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -30,6 +31,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.RuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
@@ -572,7 +574,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
       if (!clientProject.exists())
       {
         String runtimeLabel = WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeId);
-        status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME, new String[]{runtimeLabel } ) );
+        status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_PROJECT_MUST_EXIST, new String[]{clientProjectName_, runtimeLabel } ) );
         env.getStatusHandler().reportError(status);
       }
       else
@@ -598,8 +600,10 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     }
     
     // If the server is non-null, ensure there is an installed server with ID the same as 'serverID' registered in Eclipse
+	boolean noRuntimeInstalled = true;
+	if (serverId != null) {
+    // If the server is non-null, ensure there is an installed server with ID the same as 'serverID' registered in Eclipse
     String[] runtimes = WebServiceRuntimeExtensionUtils2.getAllServerFactoryIdsWithRuntimes();
-    boolean noRuntimeInstalled = true;
     for (int i = 0; i < runtimes.length; i++) {
 		if (runtimes[i].equals(serverId)){
 			noRuntimeInstalled = false;
@@ -611,6 +615,7 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
     	status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME_INSTALLED, new String[] {serverLabel}));
         env.getStatusHandler().reportError(status);
     }
+	}
     
     //If the server is non-null and is installed in Eclipse, ensure the server, runtime, and type are compatible
     if (!noRuntimeInstalled && serverId != null && serverId.length() > 0)
@@ -623,7 +628,16 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
             runtimeLabel }));
         env.getStatusHandler().reportError(status);
       }
-
+      //If the project exists, ensure it supports the Web service type, Web service runtime, and server.
+      if (clientProjectName_ != null && ProjectUtilities.getProject(clientProjectName_).exists()) {
+    	  ValidationUtils vUtil = new ValidationUtils();
+          if (!vUtil.doesServerSupportProject(serverId,clientProjectName_)) {
+    	  status = StatusUtils.errorStatus(NLS.bind(
+					ConsumptionUIMessages.MSG_CLIENT_SERVER_DOES_NOT_SUPPORT_PROJECT,
+					new String[] { WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId),clientProjectName_ }));
+    	  env.getStatusHandler().reportError(status);
+          }
+      }
       // Determine if the selected server type has only stub runtimes associated
       // with it and if a server instance is not selected.
       // If so, set install and test to false in the context.
