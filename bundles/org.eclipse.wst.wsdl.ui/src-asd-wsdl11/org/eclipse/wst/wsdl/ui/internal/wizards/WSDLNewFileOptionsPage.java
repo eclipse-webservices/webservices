@@ -270,6 +270,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
     PlatformUI.getWorkbench().getHelpSystem().setHelp(base, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
 
+    base.layout();
     setControl(base);
 
   }
