@@ -265,11 +265,12 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     });
 
     WSIPreferenceLink.setLayoutData(new GridData(GridData.GRAB_VERTICAL | GridData.VERTICAL_ALIGN_END));
-
+    
     createSkeletonCheckBox.addSelectionListener(this);
 
     PlatformUI.getWorkbench().getHelpSystem().setHelp(base, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
 
+    base.layout();
     setControl(base);
 
   }
