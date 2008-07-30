@@ -25,6 +25,7 @@
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
  * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
+ * 20080730   242611 zhang@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -63,6 +64,7 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
 public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntimeSelectionWidgetDefaultingCommand
 {	
@@ -141,6 +143,12 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      {
        // Set the runtime based on the initial selection
        DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false, serviceIds_.getServerId());
+       if (drt.getProjectName() == null && initialProject_ != null
+    	   && WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(serviceIds_.getTypeId()) == WebServiceScenario.BOTTOMUP
+    	   && WebServiceRuntimeExtensionUtils2.getWebServiceImplIdFromTypeId(serviceIds_.getTypeId()).equals("org.eclipse.jst.ws.wsImpl.ejb") )
+       {
+    	   drt.setProjectName(initialProject_.getName());
+       }
        serviceFacetMatcher_ = drt.getFacetMatcher();
        serviceProjectName_ = drt.getProjectName();
        serviceRuntimeId_ = drt.getRuntimeId();       
