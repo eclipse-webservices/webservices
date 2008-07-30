@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20060825   155114 pmoogk@ca.ibm.com - Peter Moogk
  * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  * 20070501   178129 makandre@ca.ibm.com - Andrew Mak, workspace reports "crash detected" after running WS ant task (cmdline)
+ * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
@@ -82,6 +83,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ComponentName", ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialComponentName", null);
     dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "ComponentName", ServerRuntimeSelectionWidgetDefaultingCommand.class, "ClientInitialComponentName", null);      
     dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "WebServicesParser", ServerExtensionDefaultingCommand.class );    
+    dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "Project", ServerExtensionDefaultingCommand.class, "InitialProject", null);
 	
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ClientTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);
     dataRegistry.addMapping(ServerWizardWidgetDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerWizardWidgetOutputCommand.class);

@@ -16,6 +16,7 @@
  * 20070123   167487 makandre@ca.ibm.com - Andrew Mak
  * 20070403   173654 kathy@ca.ibm.com - Kathy Chan
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
+ * 20080724   241275 pmoogk@ca.ibm.com - Peter Moogk, Validate WSDL before doing major Web service processing.
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.extension;
@@ -29,13 +30,19 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
+import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
+import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.TimedWSDLSelectionConditionCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.environment.ILog;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.common.HTTPUtility;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
+import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
@@ -105,7 +112,27 @@ public class PreClientDevelopCommand extends AbstractDataModelOperation
 		  
 		  // check for redirection in the wsdl
 		  HTTPUtility httpUtil = new HTTPUtility();		  
-		  wsInfo.setWsdlURL(httpUtil.handleRedirect(wsdlURI_));
+      String      newWsdlURL  = httpUtil.handleRedirect(wsdlURI_);
+      
+      wsInfo.setWsdlURL( newWsdlURL );   
+      
+      // Validate the url before proceeding.
+      TimedWSDLSelectionConditionCommand timedCmd = new TimedWSDLSelectionConditionCommand();
+      WebServicesParser                  parser   = WSDLParserFactory.getWSDLParser();
+      
+      timedCmd.setWebServicesParser( parser );
+      timedCmd.setWebServiceURI( newWsdlURL );
+      timedCmd.execute( null, null );
+      
+      WebServiceEntity entity = parser.getWebServiceEntityByURI( newWsdlURL );
+      
+      if( entity == null || entity.getType() != WebServiceEntity.TYPE_WSDL )
+      {
+        // This isn't a wsdl file
+        status = StatusUtils.errorStatus( ConsumptionUIMessages.PAGE_MSG_SELECTION_MUST_BE_WSDL );
+        environment.getStatusHandler().reportError( status );
+        return status;
+      }
 
 		  webServiceClient_ = wsrt.getWebServiceClient(wsInfo);
 		  WebServiceScenario scenario = WebServiceScenario.CLIENT_LITERAL;
