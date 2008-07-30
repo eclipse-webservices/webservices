@@ -83,7 +83,6 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
 	String unusedImportLabel = Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP; //$NON-NLS-1$
 	BooleanFieldEditor removeUnusedImports = new BooleanFieldEditor(unusedImportLabel, unusedImportLabel, parent);
 	addField(removeUnusedImports);
-  PlatformUI.getWorkbench().getHelpSystem().setHelp(removeUnusedImports.getLabelControl(composite), ASDEditorCSHelpIds.WSDL_PREF_ENABLE_AUTO_IMPORT_CLEANUP);
 
     /* Do we need this preference below?  If so, change WSDLEditorPlugin.java and use this preference in:
        HttpContentGenerator.java
