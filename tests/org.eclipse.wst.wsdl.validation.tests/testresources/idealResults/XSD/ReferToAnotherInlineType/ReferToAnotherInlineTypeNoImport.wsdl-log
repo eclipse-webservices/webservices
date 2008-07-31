@@ -1,9 +1,0 @@
-number of errors      : 2
-number of warnings    : 0
-
-------------error list-------------------------------------------
-src-resolve.4.2: Error resolving component 'two:NewSimpleType'. It was detected that 'two:NewSimpleType' is in namespace 'http://tempuri.org/ReferToAnotherInlineType2/', but components from this namespace are not referenceable from schema document 'testresources/samples/XSD/ReferToAnotherInlineType/ReferToAnotherInlineTypeNoImport.wsdl'. If this is the incorrect namespace, perhaps the prefix of 'two:NewSimpleType' needs to be changed. If this is the correct namespace, then an appropriate 'import' tag should be added to 'testresources/samples/XSD/ReferToAnotherInlineType/ReferToAnotherInlineTypeNoImport.wsdl'. [13, 67]
-src-resolve.4.2: Error resolving component 'one:NewSimpleType'. It was detected that 'one:NewSimpleType' is in namespace 'http://tempuri.org/ReferToAnotherInlineType1/', but components from this namespace are not referenceable from schema document 'testresources/samples/XSD/ReferToAnotherInlineType/ReferToAnotherInlineTypeNoImport.wsdl'. If this is the incorrect namespace, perhaps the prefix of 'one:NewSimpleType' needs to be changed. If this is the correct namespace, then an appropriate 'import' tag should be added to 'testresources/samples/XSD/ReferToAnotherInlineType/ReferToAnotherInlineTypeNoImport.wsdl'. [24, 67]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
