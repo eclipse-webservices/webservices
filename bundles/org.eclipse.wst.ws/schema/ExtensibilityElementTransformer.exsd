@@ -6,8 +6,7 @@
          <meta.schema plugin="org.eclipse.wst.ws" id="ExtensibilityElementTransformer" name="Extensibility Element Transformer"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
-
+         This extension point is provided for adding TCP/IP monitor support for non-standard endpoints.
       </documentation>
    </annotation>
 
@@ -53,7 +52,7 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The fully qualified class name of the transformer class which extends IExtensibilityElementTransformer.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.wst.ws.internal.monitor.IExtensibilityElementTransformer"/>
@@ -86,7 +85,7 @@
          <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-         [Enter API information here.]
+         Extenders should implement &lt;code&gt;/org.eclipse.wst.ws/src/org/eclipse/wst/ws/internal/monitor/IExtensibilityElementTransformer&lt;/code&gt;.
       </documentation>
    </annotation>
 
@@ -99,5 +98,17 @@
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2008 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made 
+available under the terms of the Eclipse Public License v1.0 which accompanies 
+this distribution, and is available at &lt;a
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
 
 </schema>

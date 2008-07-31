@@ -16,7 +16,18 @@ package org.eclipse.wst.ws.internal.monitor;
 
 import javax.wsdl.extensions.ExtensibilityElement;
 
+/**
+ * A transformer that takes an endpoint extensibility element and returns
+ * the endpoint location URL as a String.
+ */
 public interface IExtensibilityElementTransformer {
 
+	/**
+	 * Given an endpoint in the form of a WSDL extensibility element, returns
+	 * the endpoint location URL as a String.
+	 * 
+	 * @param element An endpoint extensibility element.
+	 * @return The endpoint location URL.
+	 */
 	public String transform(ExtensibilityElement element);
 }
