@@ -13,6 +13,7 @@
  * 20060222   118711 pmoogk@ca.ibm.com - Peter Moogk
  * 20070314   154543 makandre@ca.ibm.com - Andrew Mak, WebServiceTestRegistry is tracking extensions using label attribute instead of ID
  * 20080416   227359 makandre@ca.ibm.com - Andrew Mak, Test facilities do not respect default order in plugin customization
+ * 20080805   242775 mahutch@ca.ibm.com - Mark Hutchinson, Test facility ID showing up even if no test facility extension exists
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.preferences;
 
@@ -200,8 +201,13 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     
     webServiceTestTypes_.clear();
     String[] types = context.getDefaultWebServiceTestIds();
-    for (int i = 0; i < types.length; i++)
-      webServiceTestTypes_.add(types[i]);
+    for (int i = 0; i < types.length; i++) {
+      //mh: check that the test facility extension exists before adding it to the list (bug 242775)
+      if ( WebServiceTestRegistry.getInstance().getWebServiceExtensionsById(types[i]) != null) 
+      {
+    	  webServiceTestTypes_.add(types[i]);
+      }
+    }
     webServiceTestTypeViewer_.refresh();
   }
 
@@ -216,17 +222,27 @@ public class TestFacilityDefaultsPreferencePage extends PreferencePage implement
     launchSample.setSelection( context.isLaunchSampleEnabled());
         
     String[] types = context.getWebServiceTestIds();
-    for (int i = 0; i < types.length; i++)
-      webServiceTestTypes_.add(types[i]);
+    
+    for (int i = 0; i < types.length; i++) {
+      //mh: check that the test facility extension exists before adding it to the list (bug 242775)
+      if ( WebServiceTestRegistry.getInstance().getWebServiceExtensionsById(types[i]) != null) 
+      {
+    	  webServiceTestTypes_.add(types[i]);
+      }
+    }
     // check whether we missed any types from the default list
     boolean missed = false;
     types = defaults.getWebServiceTestIds();
     for (int i = 0; i < types.length; i++)
     {
       if (webServiceTestTypes_.indexOf(types[i]) == -1)
-      {
-        webServiceTestTypes_.add(types[i]);
-        missed = true;
+      {   	
+    	  //mh: check that the test facility extension exists before adding it to the list (bug 242775)
+          if ( WebServiceTestRegistry.getInstance().getWebServiceExtensionsById(types[i]) != null) 
+          {
+    		webServiceTestTypes_.add(types[i]);
+    		missed = true;
+          }
       }
     }
     if (missed)
