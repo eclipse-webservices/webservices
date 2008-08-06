@@ -17,6 +17,7 @@
  * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
  * 20080421   228054 makandre@ca.ibm.com - Andrew Mak, NPE in ClientRuntimeSelectionWidgetDefaultingCommand
  * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
+ * 20080731   242721 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -1203,7 +1204,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       return drt;      
     }
       
-    if (runtimes.length > 0)
+    if (otherRuntimeIds.length > 0)
     {
       DefaultRuntimeTriplet drt = new DefaultRuntimeTriplet();
       drt.setFacetMatcher(null);
@@ -1218,7 +1219,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       {
         drt.setProjectName(project.getName());
       }
-      drt.setRuntimeId(runtimes[0]);
+      drt.setRuntimeId(otherRuntimeIds[0]);
       return drt;
     }
     else
