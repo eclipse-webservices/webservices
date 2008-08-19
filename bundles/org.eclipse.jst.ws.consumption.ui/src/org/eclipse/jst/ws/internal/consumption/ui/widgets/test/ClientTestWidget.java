@@ -19,6 +19,7 @@
  * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080723   241303 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080808   243602 rkklai@ca.ibm.com   - Raymond Lai, fix NPE when changing runtime (the server combo)
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -414,7 +415,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  for(int j =0; j<servers.length;j++){
 			String id = runtimes_.getId(selection);
 			if(id.equals(servers[j].getRuntime().getId())){
-				serverInstances_.add(servers[j].getRuntime().getId(), servers[j].getName());
+				serverInstances_.add(servers[j].getId(), servers[j].getName());
 				serverInstanceTypeCombo_.add(servers[j].getName());
 			}
 	  }
