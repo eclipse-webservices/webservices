@@ -19,6 +19,7 @@
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225378 makandre@ca.ibm.com - Andrew Mak, Client wizard runtime/server defaulting is not respecting the preference
  * 20080530   234871 makandre@ca.ibm.com - Andrew Mak, Workbench has not been created yet error in cmdline Ant
+ * 20080808   243623 mahutch@ca.ibm.com - Mark Hutchinson, Improve server defaulting performance
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -882,29 +883,39 @@ public class WebServiceRuntimeExtensionUtils2
   /**
    * Returns the id of a server type that supports the given Web service client type.
    * Returns the server type ID from the preference if it supports the typeId.
-   *  
+   *   
    * @param typeId The client type ID.
    * 
    * @return String id of a id of a server type that supports the given Web service client type. 
    * Returns null if such a server type cannot be found.
    */    
-  public static String getDefaultClientServerValueFor(String typeId)
-  {
-    String[] fIds = getServerFactoryIdsByClientType(typeId);
-    if (fIds==null || fIds.length==0)
-      return null;
-    
-    PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
-    String preferredServerFactoryId = context.getServerFactoryId();
-    for (int i = 0; i < fIds.length; i++) {
-		String serverTypeId = fIds[i];
-		if (serverTypeId.equals(preferredServerFactoryId)) {
-			return serverTypeId;
-		}
-	}
-    return fIds[0];
+	public static String getDefaultClientServerValueFor(String typeId)	{		
+		PersistentServerRuntimeContext context = WebServiceConsumptionUIPlugin.getInstance().getServerRuntimeContext();
+		String preferredServerFactoryId = context.getServerFactoryId();
+		String first = null;//the first server found	  
+	    String[] crts = getClientRuntimesByType(typeId);
+
+	    if (crts != null)
+	    {
+	      for (int i = 0; i < crts.length; i++)
+	      {
+	        //Get the runtimes that work for the facets required for this serviceRuntime        
+	    	String[] fIds = getServerFactoryIdsByClientRuntime(crts[i]);
+	        for (int j=0; j<fIds.length; j++)
+	        {
+	          if (first == null) {
+	        	  first = fIds[j];
+	          }
+	          if (preferredServerFactoryId.equals(fIds[j])) {
+	        	  return fIds[j];//found the preferred one, stop searching and return it
+	          }
+	        }
+	      }    
+	    }
+	    return first;
   }    
   
+
   /**
    * Returns whether or not the given combination of server type, Web service runtime, and Web service type is
    * supported. Used for validation.
