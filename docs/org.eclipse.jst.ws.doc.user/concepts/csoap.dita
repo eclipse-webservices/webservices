@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Arbortext, Inc., 1988-2005, v.4002-->
+<!--Arbortext, Inc., 1988-2006, v.4002-->
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
  "concept.dtd">
 <concept id="csoap" xml:lang="en-us">
@@ -9,9 +9,8 @@ protocol for the exchange of information in a decentralized, distributed environ
 A SOAP message is a transmission of information from a sender to a receiver.
 SOAP messages can be combined to perform request/response patterns. </shortdesc>
 <prolog><metadata>
-<keywords><indexterm>SOAP<indexterm>overview</indexterm></indexterm>
-<indexterm>Web services<indexterm>SOAP</indexterm></indexterm>
-</keywords>
+<keywords><indexterm>SOAP<indexterm>overview</indexterm></indexterm><indexterm>Web
+services<indexterm>SOAP</indexterm></indexterm></keywords>
 </metadata></prolog>
 <conbody>
 <p>SOAP is transport independent but is most commonly carried over HTTP in
@@ -76,14 +75,12 @@ data types. The elements of the SOAP specification are defined in  <xref format=
 href="http://schemas.xmlsoap.org/soap/envelope/" scope="external">http://schemas.xmlsoap.org/soap/envelope/</xref> and
  <xref format="html" href="http://schemas.xmlsoap.org/soap/encoding/" scope="external">http://schemas.xmlsoap.org/soap/encoding/</xref></p></section>
 <section><title>SOAP implementations</title><p>Different implementations of
-the SOAP protocol are available today.&nbsp; For example, the Apache Foundation
+the SOAP protocol are available today. For example, the Apache Foundation
 provides Apache SOAP, which grew out of an <tm tmclass="ibm" tmowner="IBM Corporation"
 tmtype="reg" trademark="IBM">IBM</tm> project called SOAP4J, as well as Apache
 Axis and the <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> <tm
-tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="WebSphere">WebSphere</tm> run-time
-environment. The provided Web services tools support Apache SOAP 2.3, Axis
-1.3, and <tm tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="IBM">IBM</tm> <tm
-tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="WebSphere">WebSphere</tm> implementations.</p></section>
+tmclass="ibm" tmowner="IBM Corporation" tmtype="reg" trademark="WebSphere">WebSphere</tm> runtime
+environments.</p></section>
 <section><title>Mappings</title><p>A mapping defines an association between
 a qualified XML element name, a <tm tmclass="special" tmowner="Sun Microsystems, Inc."
 tmtype="tm" trademark="Java">Java</tm> class name, and an encoding style.&nbsp;
