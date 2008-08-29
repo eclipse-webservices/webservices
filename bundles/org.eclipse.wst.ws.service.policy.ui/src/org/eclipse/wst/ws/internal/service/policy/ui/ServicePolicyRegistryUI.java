@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20080428   227501 pmoogk@ca.ibm.com - Peter Moogk, Fixed toLowerCase Locale problem.
+ * 20080829   245754 pmoogk@ca.ibm.com - Peter Moogk, Added defaulting for selection operations.
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -22,6 +23,7 @@ import java.util.Vector;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.ws.service.policy.IDescriptor;
+import org.eclipse.wst.ws.service.policy.IPolicyStateEnum;
 import org.eclipse.wst.ws.service.policy.ui.IQuickFixActionInfo;
 import org.eclipse.wst.ws.service.policy.ui.ServicePolicyActivatorUI;
 import org.eclipse.wst.ws.service.policy.utils.RegistryUtils;
@@ -29,11 +31,7 @@ import org.eclipse.wst.ws.service.policy.utils.RegistryUtils;
 public class ServicePolicyRegistryUI
 {
   private final String SERVICE_POLICY_ID = ServicePolicyActivatorUI.PLUGIN_ID + ".servicepolicyui"; //$NON-NLS-1$
-  
-  public ServicePolicyRegistryUI()
-  {
-  }
-  
+    
   public void load( Map<String, BaseOperationImpl> operationMap, Map<String, List<IQuickFixActionInfo>> quickFixes )
   {
     IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(SERVICE_POLICY_ID);
@@ -124,7 +122,18 @@ public class ServicePolicyRegistryUI
         {
           icon = true;
           useDefaultData = true;
-        }        
+        }   
+        
+        defaultItem = RegistryUtils.getAttribute( child, "defaultitem" ); //$NON-NLS-1$
+        
+        // If the defaultItem
+        if( defaultItem != null && 
+        	!defaultItem.equals( IPolicyStateEnum.FALSE_ENUM) && 
+        	!defaultItem.equals( IPolicyStateEnum.TRUE_ENUM ) )
+        {
+          error( "The defaultItem attribute of a selection element must be: " + IPolicyStateEnum.TRUE_ENUM + " or " + IPolicyStateEnum.FALSE_ENUM + "." ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          error = true;
+        }
       }
       else if( name.equals( "complex" ) ) //$NON-NLS-1$
       {
