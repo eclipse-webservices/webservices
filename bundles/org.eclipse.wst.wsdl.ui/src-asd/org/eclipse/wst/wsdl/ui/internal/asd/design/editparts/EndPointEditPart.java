@@ -55,6 +55,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
   protected Figure addressBoxFigure;
   protected ComponentReferenceConnection connectionFigure;
+  private ComponentReferenceConnection connectionFeedbackFigure;
   protected final static int MAX_ADDRESS_WIDTH = 150;
 
   protected IFigure createFigure()
@@ -228,14 +229,13 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   protected void deactivateConnection()
   {
     if (connectionFigure != null)
-    {
-      boolean removed = false;
-      removed = removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
-      
-      if (!removed) {
-    	  removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
-      }
-    }
+	{
+	  removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
+	}
+	if (connectionFeedbackFigure != null)
+	{
+	  removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
+	}
   }
   
   private boolean removeConnectionFigure(IFigure parent) {
@@ -334,9 +334,15 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(DesignViewGraphicsConstants.tableCellSelectionColor);
     
-    if (connectionFigure != null) {
-    	connectionFigure.setHighlight(true);
-    	getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFigure);
+    if (connectionFigure != null) 
+    {
+      connectionFigure.setHighlight(true);
+    	
+      connectionFeedbackFigure = new ComponentReferenceConnection();
+      connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
+      connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
+      connectionFeedbackFigure.setHighlight(true);
+      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
     }
   }
 
@@ -344,11 +350,16 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   {
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(figure.getParent().getBackgroundColor());
-    
-    if (connectionFigure != null) {
-    	connectionFigure.setHighlight(false);
-    	getLayer(LayerConstants.CONNECTION_LAYER).add(connectionFigure);
+
+    if (connectionFeedbackFigure != null)
+    {
+      connectionFeedbackFigure.setHighlight(false);
+      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
+      connectionFeedbackFigure = null;
     }
+    
+    if (connectionFigure != null)
+      connectionFigure.setHighlight(false);
   }
 
   // TODO: rmah: VERY UGLY HACK.... I don't see any other way to solve this

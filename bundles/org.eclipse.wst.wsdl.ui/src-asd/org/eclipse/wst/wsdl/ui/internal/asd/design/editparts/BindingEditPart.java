@@ -42,6 +42,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 public class BindingEditPart extends BaseEditPart
 {
   protected ComponentReferenceConnection connectionFigure;
+  private ComponentReferenceConnection connectionFeedbackFigure;
   protected BoxComponentFigure figure;
   protected boolean isExpanded = false;
   private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
@@ -94,7 +95,12 @@ public class BindingEditPart extends BaseEditPart
     if (connectionFigure != null)
     {
       connectionFigure.setHighlight(true);
-      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFigure);
+      
+      connectionFeedbackFigure = new ComponentReferenceConnection();
+      connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
+      connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
+      connectionFeedbackFigure.setHighlight(true);
+      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
     }
   }
 
@@ -106,10 +112,16 @@ public class BindingEditPart extends BaseEditPart
     boxFigureLineBorder.setColor(DesignViewGraphicsConstants.defaultForegroundColor);
     figure.setSelected(false);
     figure.repaint();
+    
+    if (connectionFeedbackFigure != null)
+    {
+      connectionFeedbackFigure.setHighlight(false);
+      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
+      connectionFeedbackFigure = null;
+    }
     if (connectionFigure != null)
     {
       connectionFigure.setHighlight(false);
-      getLayer(LayerConstants.CONNECTION_LAYER).add(connectionFigure);
     }
   }
 
@@ -133,12 +145,11 @@ public class BindingEditPart extends BaseEditPart
   {
     if (connectionFigure != null)
     {
-      boolean removed = false;
-      removed = removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
-      if (!removed)
-      {
-        removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
-      }
+      removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
+    }
+    if (connectionFeedbackFigure != null)
+    {
+      removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
     }
   }
   
