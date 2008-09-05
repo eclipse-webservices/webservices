@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080827   245439 ericdp@ca.ibm.com - Eric D. Peters, Usability issue with the compliance warning dialog
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.preferences;
@@ -65,8 +68,11 @@ public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] stat
   			Choice cancelChoice = new Choice('C', WstWSPluginMessages.CANCEL_LABEL, WstWSPluginMessages.CANCEL_DESCRIPTION);
   			Choice result = monitor.report(status_, new Choice[]{ignoreChoice, ignoreAllChoice, cancelChoice});
   			
-  			// if the user closes the message box or selects ignore continue
-  			if (result == null || (result.getLabel().equals(ignoreChoice.getLabel())))
+  			// if the user selects to cancel, or closes/escapes the message box, do not continue with the command
+        	if (result == null || result.getLabel().equals(cancelChoice.getLabel()))
+					return false;
+  			// if the user selects ignore, continue
+  			else if (result.getLabel().equals(ignoreChoice.getLabel()))
         			return true;
   			// if the user selects ignore all, change the preference
 	        else  if (result.getLabel().equals(ignoreAllChoice.getLabel()))
@@ -74,9 +80,7 @@ public static boolean checkWSICompliance ( IStatusHandler monitor, Status[] stat
 	        		context.updateProjectWSICompliances(project, PersistentWSIContext.IGNORE_NON_WSI);
 	        		return true;
 	        	}
-			// if the user selects to cancel , do not continue with the command
-        	else if (result.getLabel().equals(cancelChoice.getLabel()))
-						return false;
+			
   		}
   return true;
   }
