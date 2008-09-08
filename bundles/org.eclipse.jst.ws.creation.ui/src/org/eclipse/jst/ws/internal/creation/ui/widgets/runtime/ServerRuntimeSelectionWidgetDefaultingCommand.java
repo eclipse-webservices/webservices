@@ -25,7 +25,7 @@
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
  * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
- * 20080730   242611 zhang@ca.ibm.com - Allan Zhang
+ * 20080730   242611 zhang@ca.ibm.com - Peter Moogk
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
