@@ -13,6 +13,7 @@
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
  * 20080428   227501 pmoogk@ca.ibm.com - Peter Moogk, Fixed toLowerCase Locale problem.
  * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
+ * 20080905   246428 pmoogk@ca.ibm.com - Peter Moogk, Added iconBundleId parsing.
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.utils;
 
@@ -64,9 +65,20 @@ public class RegistryUtils
     descriptor.setContextHelpId( contextHelp );
     
     if( iconPath != null )
-    {
-      descriptor.setIconPath( iconPath );
-      descriptor.setIconBundleId( element.getContributor().getName() );
+    {  	
+      String iconBundleId = element.getContributor().getName();
+      String pluginPrefix = "plugin://"; //$NON-NLS-1$
+      
+      if( iconPath.startsWith( pluginPrefix ) && iconPath.length() > pluginPrefix.length() ) 
+      {
+    	 int pluginSlash = iconPath.indexOf( '/', pluginPrefix.length() );
+    	 
+    	 iconBundleId = iconPath.substring( pluginPrefix.length(), pluginSlash );
+    	 iconPath     = iconPath.substring( pluginSlash + 1 );        
+      }
+      
+      descriptor.setIconPath( iconPath );      
+      descriptor.setIconBundleId( iconBundleId );
     }
     
     descriptor.resetHasChanged();
