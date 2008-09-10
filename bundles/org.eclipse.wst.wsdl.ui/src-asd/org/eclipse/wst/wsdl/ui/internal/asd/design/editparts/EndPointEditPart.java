@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
@@ -230,30 +228,13 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   {
     if (connectionFigure != null)
 	{
-	  removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
+	  getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
 	}
-	if (connectionFeedbackFigure != null)
-	{
-	  removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
-	}
-  }
-  
-  private boolean removeConnectionFigure(IFigure parent) {
-	  boolean contains = false;
-	  Iterator it = parent.getChildren().iterator();
-	  while (it.hasNext()) {
-		  IFigure fig = (IFigure) it.next();
-		  if (fig.equals(connectionFigure)) {
-			  contains = true;
-			  break;
-		  }
-	  }
-	  
-	  if (contains) {
-		  parent.remove(connectionFigure);
-	  }
-	  
-	  return contains;
+    if (connectionFeedbackFigure != null)
+    {
+      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
+      connectionFeedbackFigure = null;
+    }
   }
 
   protected boolean shouldDrawConnection()
@@ -334,7 +315,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(DesignViewGraphicsConstants.tableCellSelectionColor);
     
-    if (connectionFigure != null) 
+    if (connectionFigure != null && connectionFigure.isVisible()) 
     {
       connectionFigure.setHighlight(true);
     	
