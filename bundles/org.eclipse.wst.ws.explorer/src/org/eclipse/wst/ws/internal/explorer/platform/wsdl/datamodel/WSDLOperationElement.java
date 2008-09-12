@@ -13,6 +13,7 @@
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  * 20071024   206556 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080905   246265 mahutch@ca.ibm.com  - Mark Hutchinson
+ * 20080911   247096 kathy@ca.ibm.com  - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -33,6 +34,7 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap.SOAPBody;
 import javax.wsdl.extensions.soap.SOAPOperation;
+import javax.xml.namespace.QName;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.TransportProviderRegistry;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.BindingTypes;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
@@ -339,11 +341,17 @@ public class WSDLOperationElement extends WSDLCommonElement
       config.setPartEncoding(FragmentConstants.ENCODING_URL);
 
     //bug 246265: for usability, if the type is a soap encoded string then we do not want to display or send the optional "id" or "href" attributes
-    if ("string".equals(part.getTypeName().getLocalPart()) && "http://schemas.xmlsoap.org/soap/encoding/".equals(part.getTypeName().getNamespaceURI()) ) {
-    	if (config.getXSDComponent() instanceof XSDComplexTypeDefinition) {
-    		XSDComplexTypeDefinition xsd = (XSDComplexTypeDefinition)config.getXSDComponent();
-    		xsd.getAttributeUses().clear();
-    		xsd.getAttributeContents().clear();
+    QName typeName = part.getTypeName();
+    if (typeName != null) {
+    	String localPart = typeName.getLocalPart();
+    	String namespaceURI = typeName.getNamespaceURI();
+
+    	if ("string".equals(localPart) && "http://schemas.xmlsoap.org/soap/encoding/".equals(namespaceURI) ) {
+    		if (config.getXSDComponent() instanceof XSDComplexTypeDefinition) {
+    			XSDComplexTypeDefinition xsd = (XSDComplexTypeDefinition)config.getXSDComponent();
+    			xsd.getAttributeUses().clear();
+    			xsd.getAttributeContents().clear();
+    		}
     	}
     }
   
