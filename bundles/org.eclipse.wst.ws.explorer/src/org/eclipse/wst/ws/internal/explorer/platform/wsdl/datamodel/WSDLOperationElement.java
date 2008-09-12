@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2007 IBM Corporation and others.
+ * Copyright (c) 2002, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  * 20071024   206556 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20080905   246265 mahutch@ca.ibm.com  - Mark Hutchinson
+ * 20080911   247096 kathy@ca.ibm.com  - Kathy Chan
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -32,6 +34,7 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap.SOAPBody;
 import javax.wsdl.extensions.soap.SOAPOperation;
+import javax.xml.namespace.QName;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.TransportProviderRegistry;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.BindingTypes;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
@@ -43,6 +46,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.wsdl.xsd.WSDLPartsToXSDType
 import org.eclipse.wst.ws.internal.explorer.transport.ISOAPTransportProvider;
 import org.eclipse.wst.ws.internal.explorer.transport.MessageContext;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeader;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDNamedComponent;
 
 public class WSDLOperationElement extends WSDLCommonElement
@@ -335,6 +339,22 @@ public class WSDLOperationElement extends WSDLCommonElement
     }
     else
       config.setPartEncoding(FragmentConstants.ENCODING_URL);
+
+    //bug 246265: for usability, if the type is a soap encoded string then we do not want to display or send the optional "id" or "href" attributes
+    QName typeName = part.getTypeName();
+    if (typeName != null) {
+    	String localPart = typeName.getLocalPart();
+    	String namespaceURI = typeName.getNamespaceURI();
+
+    	if ("string".equals(localPart) && "http://schemas.xmlsoap.org/soap/encoding/".equals(namespaceURI) ) {
+    		if (config.getXSDComponent() instanceof XSDComplexTypeDefinition) {
+    			XSDComplexTypeDefinition xsd = (XSDComplexTypeDefinition)config.getXSDComponent();
+    			xsd.getAttributeUses().clear();
+    			xsd.getAttributeContents().clear();
+    		}
+    	}
+    }
+  
     IXSDFragment fragment = getXSDToFragmentController().getFragment(config, id.toString(), part.getName());
      
     // let's see if there's a corresponding wrapper for this fragment

@@ -11,7 +11,6 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -92,7 +91,7 @@ public class BindingEditPart extends BaseEditPart
 //    boxFigureLineBorder.setColor(ColorConstants.darkBlue);
     figure.setSelected(true);
     figure.repaint();
-    if (connectionFigure != null)
+    if (connectionFigure != null && connectionFigure.isVisible())
     {
       connectionFigure.setHighlight(true);
       
@@ -145,33 +144,13 @@ public class BindingEditPart extends BaseEditPart
   {
     if (connectionFigure != null)
     {
-      removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
+      getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
     }
     if (connectionFeedbackFigure != null)
     {
-      removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
+      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
+      connectionFeedbackFigure = null;
     }
-  }
-  
-
-  private boolean removeConnectionFigure(IFigure parent)
-  {
-    boolean contains = false;
-    Iterator it = parent.getChildren().iterator();
-    while (it.hasNext())
-    {
-      IFigure fig = (IFigure) it.next();
-      if (fig.equals(connectionFigure))
-      {
-        contains = true;
-        break;
-      }
-    }
-    if (contains)
-    {
-      parent.remove(connectionFigure);
-    }
-    return contains;
   }
 
   public ComponentReferenceConnection createConnectionFigure()
