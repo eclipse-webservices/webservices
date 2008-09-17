@@ -15,6 +15,7 @@
  * 20060823    99034 makandre@ca.ibm.com - Andrew Mak, WSE support for basic-authenticating firewalls
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  * 20080728   242091 makandre@ca.ibm.com - Andrew Mak, Web services explorer inserts spurious CRLF in a long authentication header
+ * 20080908   121120 mahutch@ca.ibm.com - Mark Hutchinson, Class sun.misc.BASE64Encoder is missing
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
@@ -35,7 +36,7 @@ import javax.net.ssl.SSLSocketFactory;
 import org.eclipse.wst.ws.internal.explorer.platform.util.XMLUtils;
 import org.eclipse.wst.ws.internal.explorer.transport.HTTPTransportException;
 import org.w3c.dom.Element;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 public class HTTPTransport
 {
@@ -221,8 +222,8 @@ public class HTTPTransport
       StringBuffer sb = new StringBuffer(httpBasicAuthUsername);
       sb.append(COLON);
       sb.append(httpBasicAuthPassword);
-      BASE64Encoder encoder = new BASE64Encoder();
-      String encodedUserNamePassword = encoder.encode(sb.toString().getBytes());
+      Base64 encoder = new Base64();
+      String encodedUserNamePassword = new String(encoder.encode(sb.toString().getBytes()));
       sb.setLength(0);
       sb.append(HTTP_HEADER_AUTH);
       sb.append(COLON);
@@ -246,8 +247,8 @@ public class HTTPTransport
       StringBuffer sb = new StringBuffer(proxyUserName);
       sb.append(COLON);
       sb.append(proxyPassword);
-      BASE64Encoder encoder = new BASE64Encoder();
-      String encodedUserNamePassword = encoder.encode(sb.toString().getBytes());
+      Base64 encoder = new Base64();
+      String encodedUserNamePassword = new String(encoder.encode(sb.toString().getBytes()));
       sb.setLength(0);
       sb.append(HTTP_HEADER_PROXY_AUTH);
       sb.append(COLON);

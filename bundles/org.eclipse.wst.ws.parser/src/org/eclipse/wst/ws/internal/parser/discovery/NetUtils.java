@@ -17,7 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 public final class NetUtils
 {
@@ -40,8 +40,8 @@ public final class NetUtils
       {
         StringBuffer userNamePassword = new StringBuffer(proxyUserName);
         userNamePassword.append(':').append(proxyPassword);
-        BASE64Encoder encoder = new BASE64Encoder();
-        String encoding = encoder.encode(userNamePassword.toString().getBytes());
+        Base64 encoder = new Base64();
+        String encoding = new String(encoder.encode(userNamePassword.toString().getBytes()));
         userNamePassword.setLength(0);
         userNamePassword.append("Basic ").append(encoding);
         uc.setRequestProperty("Proxy-authorization",userNamePassword.toString());

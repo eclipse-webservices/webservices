@@ -34,6 +34,8 @@ import javax.wsdl.xml.WSDLReader;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.wsil.Abstract;
 import org.apache.wsil.Description;
 import org.apache.wsil.Inspection;
@@ -56,7 +58,6 @@ import org.eclipse.wst.ws.internal.parser.disco.DISCOReference;
 import org.eclipse.wst.wsdl.WSDLPlugin;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import sun.misc.BASE64Encoder;
 
 public class WebServicesParser
 {
@@ -530,8 +531,8 @@ public class WebServicesParser
     {
       StringBuffer userNamePassword = new StringBuffer(proxyUserName);
       userNamePassword.append(':').append(proxyPassword);
-      BASE64Encoder encoder = new BASE64Encoder();
-      String encoding = encoder.encode(userNamePassword.toString().getBytes());
+      Base64 encoder = new Base64();
+      String encoding = new String(encoder.encode(userNamePassword.toString().getBytes()));
       userNamePassword.setLength(0);
       userNamePassword.append("Basic ").append(encoding);
       conn.setRequestProperty("Proxy-authorization", userNamePassword.toString());
@@ -541,8 +542,8 @@ public class WebServicesParser
     {
       StringBuffer sb = new StringBuffer(httpBasicAuthUsername_);
       sb.append(':').append(httpBasicAuthPassword_);
-      BASE64Encoder encoder = new BASE64Encoder();
-      String encoding = encoder.encode(sb.toString().getBytes());
+      Base64 encoder = new Base64();
+      String encoding = new String(encoder.encode(sb.toString().getBytes()));
       sb.setLength(0);
       sb.append("Basic ").append(encoding);
       conn.setRequestProperty("Authorization", sb.toString());
