@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,10 +63,13 @@ public class WSDLUtil extends WSDLConstants
   {
     int result = -1;
 
-    Integer integer = (Integer) elementNameToTypeMap.get(element.getLocalName());
-    if (integer != null)
+    if (WSDLConstants.isWSDLNamespace(element.getNamespaceURI()))
     {
-      result = integer.intValue();
+      Integer integer = (Integer) elementNameToTypeMap.get(element.getLocalName());
+      if (integer != null)
+      {
+        result = integer.intValue();
+      }
     }
     return result;
   }

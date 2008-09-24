@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions name="ImportMe" targetNamespace="http://www.example.org/ImportMe/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/ImportMe/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/ImportMe/">
+      <xsd:element name="NewOperation">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="in" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperationResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="out" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperationResponse1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ImportMeMessageRequest">
+    <wsdl:part element="tns:NewOperation" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ImportMeMessageResponse">
+    <wsdl:part element="tns:NewOperationResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ImportMeMessageExtra">
+  	<wsdl:part name="NewPart" type="xsd:string"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NewOperationRequest">
+  	<wsdl:part name="parameters" element="tns:NewOperation"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NewOperationResponse">
+  	<wsdl:part name="parameters" element="tns:NewOperationResponse1"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ImportMe">
+    <wsdl:operation name="NewOperation">
+      <wsdl:input message="tns:ImportMeMessageRequest"/>
+      <wsdl:output message="tns:ImportMeMessageResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ImportPortTypeExtra">
+  	<wsdl:operation name="NewOperation">
+  		<wsdl:input message="tns:NewOperationRequest"></wsdl:input>
+  		<wsdl:output message="tns:NewOperationResponse"></wsdl:output>
+  	</wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ImportMeSOAP" type="tns:ImportMe">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="NewOperation">
+      <soap:operation soapAction="http://www.example.org/ImportMe/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ImportBindingExtra"
+  	type="tns:ImportPortTypeExtra">
+  	<soap:binding style="document"
+  		transport="http://schemas.xmlsoap.org/soap/http" />
+  	<wsdl:operation name="NewOperation">
+  		<soap:operation
+  			soapAction="http://www.example.org/ImportMe/NewOperation" />
+  		<wsdl:input>
+  			<soap:body use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+  			<soap:body use="literal" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ImportMe">
+    <wsdl:port binding="tns:ImportMeSOAP" name="ImportMeSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+  <wsdl:service name="ImportServiceExtra">
+  	<wsdl:port name="ImportPortExtra" binding="tns:ImportBindingExtra">
+  		<soap:address location="http://www.example.org/" />
+  	</wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

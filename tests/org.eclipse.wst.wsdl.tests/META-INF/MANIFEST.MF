@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WSDL JUnit Test
-Bundle-SymbolicName: org.eclipse.wst.wsdl.tests
-Bundle-Version: 1.0.1
+Bundle-SymbolicName: org.eclipse.wst.wsdl.tests;singleton:=true
+Bundle-Version: 1.0.2
 Bundle-ClassPath: wsdl.tests.jar
 Bundle-Activator: org.eclipse.wst.wsdl.tests.WSDLTestsPlugin
 Bundle-Localization: plugin
