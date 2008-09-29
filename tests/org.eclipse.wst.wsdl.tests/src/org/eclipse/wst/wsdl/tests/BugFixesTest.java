@@ -249,6 +249,38 @@ public class BugFixesTest extends TestCase
       }
     });
     
+    suite.addTest(new BugFixesTest("RemoveBinding") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testRemoveBinding();
+      }
+    });
+    
+    suite.addTest(new BugFixesTest("RemoveMessage") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testRemoveMessage();
+      }
+    });
+    
+    suite.addTest(new BugFixesTest("RemovePortType") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testRemovePortType();
+      }
+    });
+    
+    suite.addTest(new BugFixesTest("RemoveService") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testRemoveService();
+      }
+    });
+    
     return suite;
   }
 
@@ -577,7 +609,263 @@ public class BugFixesTest extends TestCase
 
     assertSame(typesElement, secondChild);
   }
-
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=245263
+   */
+  public void testRemoveMessage()
+  {
+    try
+    {
+      // load a wsdl that imports another wsdl
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/WSDL4JRemove/RemoveViaWSDL4J.wsdl", true); //$NON-NLS-1$
+      String targetNamespace = definition.getTargetNamespace();
+      String importedTargetNamespace = "http://www.example.org/ImportMe/"; //$NON-NLS-1$
+      int totalMessages = 5;
+      definition.updateElement();
+      
+      // make sure wsdl was loaded properly
+      assertEquals("Initial messages were not properly loaded (checked via definition.getMessages())", totalMessages, definition.getMessages().size()); //$NON-NLS-1$
+      assertEquals("Initial messages were not properly loaded (checked via definition.getEMessages())", totalMessages, definition.getEMessages().size()); //$NON-NLS-1$
+      Element definitionElement = definition.getElement();
+      NodeList messageElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.MESSAGE_ELEMENT_TAG);
+      assertEquals("Initial messages were not properly loaded (checked via DOM)", totalMessages, messageElements.getLength()); //$NON-NLS-1$
+      
+      // make sure message we're going to remove currently exists
+      QName messageQName = new QName(targetNamespace, "RemoveViaWSDL4JMessageExtra"); //$NON-NLS-1$
+      javax.wsdl.Message message = definition.getMessage(messageQName);
+      assertNotNull("Unable to find RemoveViaWSDL4JMessageExtra", message); //$NON-NLS-1$
+      
+      // remove the message
+      javax.wsdl.Message removedMessage = definition.removeMessage(messageQName);
+      assertEquals("Incorrect message removed", message, removedMessage); //$NON-NLS-1$
+      
+      // make sure message is gone
+      javax.wsdl.Message nonexistMessage = definition.getMessage(messageQName);
+      assertNull("RemoveViaWSDL4JMessageExtra still exists in model", nonexistMessage); //$NON-NLS-1$
+      
+      // make sure there is now 1 less message
+      assertEquals("Message was not removed (checked via definition.getMessages())", totalMessages-1, definition.getMessages().size()); //$NON-NLS-1$
+      assertEquals("Message was not removed (checked via definition.getEMessages())", totalMessages-1, definition.getEMessages().size()); //$NON-NLS-1$
+      definitionElement = definition.getElement();
+      messageElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.MESSAGE_ELEMENT_TAG);
+      assertEquals("Message was not removed (checked via DOM)", totalMessages-1, messageElements.getLength()); //$NON-NLS-1$
+      
+      // make sure imported message we're going to remove currently exists
+      messageQName = new QName(importedTargetNamespace, "ImportMeMessageExtra"); //$NON-NLS-1$
+      message = definition.getMessage(messageQName);
+      assertNotNull("Unable to find ImportMeMessageExtra", message); //$NON-NLS-1$
+      
+      // attempt to remove the imported message
+      removedMessage = definition.removeMessage(messageQName);
+      assertNull("ImportMeMessageExtra was incorrectly removed", removedMessage); //$NON-NLS-1$
+      
+      // make sure imported message still exists
+      message = definition.getMessage(messageQName);
+      assertNotNull("ImportMeMessageExtra no longer exists", message); //$NON-NLS-1$
+      
+      nonexistMessage = definition.removeMessage(new QName(targetNamespace, "doesntexist")); //$NON-NLS-1$
+      assertNull("A non-existing message was removed", nonexistMessage); //$NON-NLS-1$
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=245263
+   */
+  public void testRemoveService()
+  {
+    try
+    {
+      // load a wsdl that imports another wsdl
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/WSDL4JRemove/RemoveViaWSDL4J.wsdl", true); //$NON-NLS-1$
+      String targetNamespace = definition.getTargetNamespace();
+      String importedTargetNamespace = "http://www.example.org/ImportMe/"; //$NON-NLS-1$
+      int totalServices = 2;
+      definition.updateElement();
+      
+      // make sure wsdl was loaded properly
+      assertEquals("Initial services were not properly loaded (checked via definition.getServices())", totalServices, definition.getServices().size()); //$NON-NLS-1$
+      assertEquals("Initial services were not properly loaded (checked via definition.getEServices())", totalServices, definition.getEServices().size()); //$NON-NLS-1$
+      Element definitionElement = definition.getElement();
+      NodeList serviceElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.SERVICE_ELEMENT_TAG);
+      assertEquals("Initial services were not properly loaded (checked via DOM)", totalServices, serviceElements.getLength()); //$NON-NLS-1$
+      
+      // make sure service we're going to remove currently exists
+      QName serviceQName = new QName(targetNamespace, "MainServiceExtra"); //$NON-NLS-1$
+      javax.wsdl.Service service = definition.getService(serviceQName);
+      assertNotNull("Unable to find MainServiceExtra", service); //$NON-NLS-1$
+      
+      // remove the service
+      javax.wsdl.Service removedService = definition.removeService(serviceQName);
+      assertEquals("Incorrect service removed", service, removedService); //$NON-NLS-1$
+      
+      // make sure service is gone
+      javax.wsdl.Service nonexistService = definition.getService(serviceQName);
+      assertNull("MainServiceExtra still exists in model", nonexistService); //$NON-NLS-1$
+      
+      // make sure there is now 1 less service
+      assertEquals("Service was not removed (checked via definition.getServices())", totalServices-1, definition.getServices().size()); //$NON-NLS-1$
+      assertEquals("Service was not removed (checked via definition.getEServices())", totalServices-1, definition.getEServices().size()); //$NON-NLS-1$
+      definitionElement = definition.getElement();
+      serviceElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.SERVICE_ELEMENT_TAG);
+      assertEquals("Service was not removed (checked via DOM)", totalServices-1, serviceElements.getLength()); //$NON-NLS-1$
+      
+      // make sure imported service we're going to remove currently exists
+      serviceQName = new QName(importedTargetNamespace, "ImportServiceExtra"); //$NON-NLS-1$
+      service = definition.getService(serviceQName);
+      assertNotNull("Unable to find ImportServiceExtra", service); //$NON-NLS-1$
+      
+      // attempt to remove the imported service
+      removedService = definition.removeService(serviceQName);
+      assertNull("ImportServiceExtra was incorrectly removed", removedService); //$NON-NLS-1$
+      
+      // make sure imported service still exists
+      service = definition.getService(serviceQName);
+      assertNotNull("ImportServiceExtra no longer exists", service); //$NON-NLS-1$
+      
+      nonexistService = definition.removeService(new QName(targetNamespace, "doesntexist")); //$NON-NLS-1$
+      assertNull("A non-existing service was removed", nonexistService); //$NON-NLS-1$
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=245263
+   */
+  public void testRemoveBinding()
+  {
+    try
+    {
+      // load a wsdl that imports another wsdl
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/WSDL4JRemove/RemoveViaWSDL4J.wsdl", true); //$NON-NLS-1$
+      String targetNamespace = definition.getTargetNamespace();
+      String importedTargetNamespace = "http://www.example.org/ImportMe/"; //$NON-NLS-1$
+      int totalBindings = 2;
+      definition.updateElement();
+      
+      // make sure wsdl was loaded properly
+      assertEquals("Initial bindings were not properly loaded (checked via definition.getBindings())", totalBindings, definition.getBindings().size()); //$NON-NLS-1$
+      assertEquals("Initial bindings were not properly loaded (checked via definition.getEBindings())", totalBindings, definition.getEBindings().size()); //$NON-NLS-1$
+      Element definitionElement = definition.getElement();
+      NodeList bindingElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.BINDING_ELEMENT_TAG);
+      assertEquals("Initial bindings were not properly loaded (checked via DOM)", totalBindings, bindingElements.getLength()); //$NON-NLS-1$
+      
+      // make sure binding we're going to remove currently exists
+      QName bindingQName = new QName(targetNamespace, "MainBindingExtra"); //$NON-NLS-1$
+      javax.wsdl.Binding binding = definition.getBinding(bindingQName);
+      assertNotNull("Unable to find MainBindingExtra", binding); //$NON-NLS-1$
+      
+      // remove the binding
+      javax.wsdl.Binding removedBinding = definition.removeBinding(bindingQName);
+      assertEquals("Incorrect binding removed", binding, removedBinding); //$NON-NLS-1$
+      
+      // make sure binding is gone
+      javax.wsdl.Binding nonexistBinding = definition.getBinding(bindingQName);
+      assertNull("MainBindingExtra still exists in model", nonexistBinding); //$NON-NLS-1$
+      
+      // make sure there is now 1 less binding
+      assertEquals("Binding was not removed (checked via definition.getBindings())", totalBindings-1, definition.getBindings().size()); //$NON-NLS-1$
+      assertEquals("Binding was not removed (checked via definition.getEBindings())", totalBindings-1, definition.getEBindings().size()); //$NON-NLS-1$
+      definitionElement = definition.getElement();
+      bindingElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.BINDING_ELEMENT_TAG);
+      assertEquals("Binding was not removed (checked via DOM)", totalBindings-1, bindingElements.getLength()); //$NON-NLS-1$
+      
+      // make sure imported binding we're going to remove currently exists
+      bindingQName = new QName(importedTargetNamespace, "ImportBindingExtra"); //$NON-NLS-1$
+      binding = definition.getBinding(bindingQName);
+      assertNotNull("Unable to find ImportBindingExtra", binding); //$NON-NLS-1$
+      
+      // attempt to remove the imported binding
+      removedBinding = definition.removeBinding(bindingQName);
+      assertNull("ImportBindingExtra was incorrectly removed", removedBinding); //$NON-NLS-1$
+      
+      // make sure imported binding still exists
+      binding = definition.getBinding(bindingQName);
+      assertNotNull("ImportBindingExtra no longer exists", binding); //$NON-NLS-1$
+      
+      nonexistBinding = definition.removeBinding(new QName(targetNamespace, "doesntexist")); //$NON-NLS-1$
+      assertNull("A non-existing binding was removed", nonexistBinding); //$NON-NLS-1$
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=245263
+   */
+  public void testRemovePortType()
+  {
+    try
+    {
+      // load a wsdl that imports another wsdl
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/WSDL4JRemove/RemoveViaWSDL4J.wsdl", true); //$NON-NLS-1$
+      String targetNamespace = definition.getTargetNamespace();
+      String importedTargetNamespace = "http://www.example.org/ImportMe/"; //$NON-NLS-1$
+      int totalPortTypes = 2;
+      definition.updateElement();
+      
+      // make sure wsdl was loaded properly
+      assertEquals("Initial port types were not properly loaded (checked via definition.getPortTypes())", totalPortTypes, definition.getPortTypes().size()); //$NON-NLS-1$
+      assertEquals("Initial port types were not properly loaded (checked via definition.getEPortTypes())", totalPortTypes, definition.getEPortTypes().size()); //$NON-NLS-1$
+      Element definitionElement = definition.getElement();
+      NodeList portTypeElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.PORT_TYPE_ELEMENT_TAG);
+      assertEquals("Initial port types were not properly loaded (checked via DOM)", totalPortTypes, portTypeElements.getLength()); //$NON-NLS-1$
+      
+      // make sure port type we're going to remove currently exists
+      QName portTypeQName = new QName(targetNamespace, "MainPortTypeExtra"); //$NON-NLS-1$
+      javax.wsdl.PortType portType = definition.getPortType(portTypeQName);
+      assertNotNull("Unable to find MainPortTypeExtra", portType); //$NON-NLS-1$
+      
+      // remove the portType
+      javax.wsdl.PortType removedPortType = definition.removePortType(portTypeQName);
+      assertEquals("Incorrect portType removed", portType, removedPortType); //$NON-NLS-1$
+      
+      // make sure portType is gone
+      javax.wsdl.PortType nonexistPortType = definition.getPortType(portTypeQName);
+      assertNull("MainPortTypeExtra still exists in model", nonexistPortType); //$NON-NLS-1$
+      
+      // make sure there is now 1 less portType
+      assertEquals("PortType was not removed (checked via definition.getPortTypes())", totalPortTypes-1, definition.getPortTypes().size()); //$NON-NLS-1$
+      assertEquals("PortType was not removed (checked via definition.getEPortTypes())", totalPortTypes-1, definition.getEPortTypes().size()); //$NON-NLS-1$
+      definitionElement = definition.getElement();
+      portTypeElements = definitionElement.getElementsByTagNameNS(WSDLConstants.WSDL_NAMESPACE_URI, WSDLConstants.PORT_TYPE_ELEMENT_TAG);
+      assertEquals("PortType was not removed (checked via DOM)", totalPortTypes-1, portTypeElements.getLength()); //$NON-NLS-1$
+      
+      // make sure imported portType we're going to remove currently exists
+      portTypeQName = new QName(importedTargetNamespace, "ImportPortTypeExtra"); //$NON-NLS-1$
+      portType = definition.getPortType(portTypeQName);
+      assertNotNull("Unable to find ImportPortTypeExtra", portType); //$NON-NLS-1$
+      
+      // attempt to remove the imported portType
+      removedPortType = definition.removePortType(portTypeQName);
+      assertNull("ImportPortTypeExtra was incorrectly removed", removedPortType); //$NON-NLS-1$
+      
+      // make sure imported portType still exists
+      portType = definition.getPortType(portTypeQName);
+      assertNotNull("ImportPortTypeExtra no longer exists", portType); //$NON-NLS-1$
+      
+      nonexistPortType = definition.removePortType(new QName(targetNamespace, "doesntexist")); //$NON-NLS-1$
+      assertNull("A non-existing portType was removed", nonexistPortType); //$NON-NLS-1$
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
+  }
+  
   /**
    * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=150553
    */
