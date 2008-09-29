@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.wsdl.OperationType;
 import javax.wsdl.Port;
@@ -63,6 +64,7 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPBody;
 import org.eclipse.wst.wsdl.binding.soap.SOAPFactory;
 import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
 import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
+import org.eclipse.wst.wsdl.internal.util.WSDLUtil;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -281,6 +283,21 @@ public class BugFixesTest extends TestCase
       }
     });
     
+    suite.addTest(new BugFixesTest("GetWSDLType") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testGetWSDLType();
+      }
+    });
+    
+    suite.addTest(new BugFixesTest("InvalidXSDImports") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testInvalidXSDImports();
+      }
+    });
     return suite;
   }
 
@@ -1540,6 +1557,113 @@ public class BugFixesTest extends TestCase
       serviceQName = new QName(newTargetNamespace, serviceQName.getLocalPart());
       service = definition.getService(serviceQName);
       assertNotNull(service);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=247296
+   */
+  public void testGetWSDLType()
+  {
+    try
+    {
+      // load a wsdl
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/GetWSDLType/BadImport.wsdl", true); //$NON-NLS-1$
+      definition.updateElement();
+
+      // test all direct child elements of definition to make sure they are expected type
+      Element definitionElement = definition.getElement();
+      int type = WSDLUtil.getInstance().getWSDLType(definitionElement);
+      assertEquals("Definition type incorrectly identified", WSDLConstants.DEFINITION, type);  //$NON-NLS-1$
+
+      NodeList childNodes = definitionElement.getChildNodes();
+      Node n = childNodes.item(0);
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("Import type incorrectly identified", WSDLConstants.IMPORT, type);  //$NON-NLS-1$
+      
+      n = n.getNextSibling();
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("xsd:import type incorrectly identified", -1, type);  //$NON-NLS-1$
+      
+      n = n.getNextSibling();
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("Types type incorrectly identified", WSDLConstants.TYPES, type); //$NON-NLS-1$
+      
+      n = n.getNextSibling();
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("Message type incorrectly identified", WSDLConstants.MESSAGE, type); //$NON-NLS-1$
+      n = n.getNextSibling();
+      
+      n = n.getNextSibling();
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("Message type incorrectly identified", WSDLConstants.MESSAGE, type); //$NON-NLS-1$
+      
+      n = n.getNextSibling();
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("Port type type incorrectly identified", WSDLConstants.PORT_TYPE, type); //$NON-NLS-1$
+      
+      n = n.getNextSibling();
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("Binding type incorrectly identified", WSDLConstants.BINDING, type); //$NON-NLS-1$
+      
+      n = n.getNextSibling();
+      // skip over text node
+      if (n.getNodeType() != Node.ELEMENT_NODE)
+        n = n.getNextSibling();
+      type = WSDLUtil.getInstance().getWSDLType((Element)n);
+      assertEquals("Service type incorrectly identified", WSDLConstants.SERVICE, type); //$NON-NLS-1$
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=247296
+   */
+  public void testInvalidXSDImports()
+  {
+    try
+    {
+      // load a wsdl that contains an xsd:import outside of wsdl:types
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/GetWSDLType/BadImport.wsdl", true); //$NON-NLS-1$
+      String targetNamespace = definition.getTargetNamespace();
+      
+      // there should only be one valid wsdl:import
+      Map imports = definition.getImports();
+      assertEquals("Incorrect number of imports", 1, imports.size()); //$NON-NLS-1$
+      
+      // the bad xsd:import should be considered an extensibility element
+      List extElements = definition.getExtensibilityElements();
+      assertEquals("Incorrect number of extensibility elements", 1, extElements.size());  //$NON-NLS-1$
     }
     catch (Exception e)
     {
