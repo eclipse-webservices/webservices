@@ -1153,7 +1153,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Service removeService(QName name)
   {
-    return (javax.wsdl.Service)getServices().remove(name);
+    WSDLElement wsdlElement = resolveWSDLElement(WSDLConstants.SERVICE, name);
+    boolean removed = false;
+    if (wsdlElement instanceof Service)
+      removed = getEServices().remove(wsdlElement);
+    if (!removed)
+      wsdlElement = null;
+    return (Service)wsdlElement;
   }
 
   /**
@@ -1163,7 +1169,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Binding removeBinding(QName name)
   {
-    return (javax.wsdl.Binding)getBindings().remove(name);
+    WSDLElement wsdlElement = resolveWSDLElement(WSDLConstants.BINDING, name);
+    boolean removed = false;
+    if (wsdlElement instanceof Binding)
+      removed = getEBindings().remove(wsdlElement);
+    if (!removed)
+      wsdlElement = null;
+    return (Binding)wsdlElement;
   }
 
   /**
@@ -1173,7 +1185,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.PortType removePortType(QName name)
   {
-    return (javax.wsdl.PortType)getPortTypes().remove(name);
+    WSDLElement wsdlElement = resolveWSDLElement(WSDLConstants.PORT_TYPE, name);
+    boolean removed = false;
+    if (wsdlElement instanceof PortType)
+      removed = getEPortTypes().remove(wsdlElement);
+    if (!removed)
+      wsdlElement = null;
+    return (PortType)wsdlElement;
   }
 
   /**
@@ -1183,7 +1201,13 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    */
   public javax.wsdl.Message removeMessage(QName name)
   {
-    return (javax.wsdl.Message)getMessages().remove(name);
+    WSDLElement wsdlElement = resolveWSDLElement(WSDLConstants.MESSAGE, name);
+    boolean removed = false;
+    if (wsdlElement instanceof Message)
+      removed = getEMessages().remove(wsdlElement);
+    if (!removed)
+      wsdlElement = null;
+    return (Message)wsdlElement;
   }
 
   /**
