@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,10 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20060131 121071   rsinha@ca.ibm.com - Rupam Kuehner (initial creation)
+ * 20060131   121071 rsinha@ca.ibm.com - Rupam Kuehner (initial creation)
  * 20060426   138051 kathy@ca.ibm.com - Kathy Chan
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20080923   247525 mahutch@ca.ibm.com - Mark Hutchinson, cache not updated properly when project facet versions changed
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
@@ -42,7 +43,7 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
  * and clientRuntimes.
  * 
  * <br/><br/>
- * Teminology used in the javadoc in this class:
+ * Terminology used in the javadoc in this class:
  * <ul>
  * <li><b>serviceRuntime</b>: extension to org.eclipse.jst.ws.consumption.ui.serviceRuntimes.
  * The Java representation of this is org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor</li>
@@ -301,7 +302,7 @@ public class FacetMatchCache implements IResourceChangeListener
       rfvs = desc.getRequiredFacetVersions();
     }
     
-    Set facetVersions = FacetUtils.getFacetsForProject(projectName);
+    Set facetVersions = new HashSet(FacetUtils.getFacetsForProject(projectName));
     if (facetVersions == null)
     {
       fm = new FacetMatcher();
