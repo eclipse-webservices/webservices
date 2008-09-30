@@ -17,6 +17,7 @@
  * 20061011   159283 makandre@ca.ibm.com - Andrew Mak, project not associated to EAR when using ant on command-line
  * 20070501   178129 makandre@ca.ibm.com - Andrew Mak, workspace reports "crash detected" after running WS ant task (cmdline)
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
+ * 20080925   242312 ericdp@ca.ibm.com - Eric D. Peters, Cannot create BUJB WS from Bean in Java project using ANT tasks
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.ant;
 
@@ -125,6 +126,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
     
     // Map ServerExtensionDefaultingCommand
     dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", ServerExtensionFragment.class);
+    dataRegistry.addMapping(ObjectSelectionOutputCommand.class, "Project", ServerExtensionDefaultingCommand.class, "InitialProject", null);
     	  
 	// Setup the PreServiceDevelopCommand.	
     dataRegistry.addMapping( ServerWizardWidgetOutputCommand.class, "StartService", PreServiceDevelopCommand.class);
@@ -134,6 +136,7 @@ public class AntServiceRootCommandFragment extends SequenceFragment
 	dataRegistry.addMapping( ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", PreServiceDevelopCommand.class, "ModuleType", null);
 	dataRegistry.addMapping( ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceComponentType", ServerExtensionDefaultingCommand.class );
     dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "ServiceRuntimeId", ServerExtensionDefaultingCommand.class);
+    dataRegistry.addMapping(ServerRuntimeSelectionWidgetDefaultingCommand.class, "InitialProject", PreServiceDevelopCommand.class );
 	dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceTypeRuntimeServer", PreServiceDevelopCommand.class );
 	dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceRuntimeId", PreServiceDevelopCommand.class );
     dataRegistry.addMapping( ServerExtensionDefaultingCommand.class, "ServiceJ2EEVersion", PreServiceDevelopCommand.class);

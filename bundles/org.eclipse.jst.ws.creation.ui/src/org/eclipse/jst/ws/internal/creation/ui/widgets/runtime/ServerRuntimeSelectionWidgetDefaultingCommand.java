@@ -26,6 +26,7 @@
  * 20080402   225032 makandre@ca.ibm.com - Andrew Mak
  * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
  * 20080730   242611 zhang@ca.ibm.com - Peter Moogk
+ * 20080925   242312 ericdp@ca.ibm.com - Eric D. Peters, Cannot create BUJB WS from Bean in Java project using ANT tasks
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -116,13 +117,23 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
      {
        //Set the serviceRuntime based on the runtime and server.
        //If user set a service project use that as initial project otherwise default from initial selection.
+       //(above is true for all scenarios except BUJ from Java Project- for BUJ from Java Project need to create a dependancy in downstream commands
+       //between the initial project and the service project so don't use as the initial selection        
     	 if (serviceProjectName_ != null) 
     	 {
-    		 initialProject_ = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
-    		 
-    		 DefaultRuntimeTriplet drt = getDefaultRuntime(initialProject_, serviceIds_.getTypeId(), false, serviceIds_.getServerId());
-             serviceFacetMatcher_ = drt.getFacetMatcher();
-    	     serviceProjectName_ = drt.getProjectName();
+    	 	 IProject serviceProject = ResourcesPlugin.getWorkspace().getRoot().getProject(serviceProjectName_);
+    	 	 //use the user provided service project to define the runtime triplet (if user provided service project is not valid for
+    	 	 //the web service type, the runtime triplet will contain a suitable project if one exists)
+    	 	 DefaultRuntimeTriplet drt = getDefaultRuntime(serviceProject, serviceIds_.getTypeId(), false, serviceIds_.getServerId());
+    		 if (!(WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(serviceIds_.getTypeId()) == WebServiceScenario.BOTTOMUP &&
+    		    		FacetUtils.isJavaProject(initialProject_))){
+    		     //user set a service project, use as initial project
+    			 //initialProject_ is the project where the selected object resides, set to be the service project for now for all scenarios except BUJ from Java Project (for 
+    			 //BUJ from Java Project need to create a dependancy in downstream commands between the initial project and the service project)
+    			 initialProject_ = serviceProject;
+    		 }
+    		 serviceFacetMatcher_ = drt.getFacetMatcher();
+   			 serviceProjectName_ = drt.getProjectName(); //a suitable service project for the web service type, or null if a suitable project does not exist
     	     serviceRuntimeId_ = drt.getRuntimeId();       
 
     	       if (serviceRuntimeId_ != null)
