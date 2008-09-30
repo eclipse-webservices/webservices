@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
+ * 20080918   247537 mahutch@ca.ibm.com - Mark Hutchinson, Update default server runtime to Tomcat 6
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -28,7 +29,7 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 	private String FALLBACK_RUNTIME = "FALLBACK_RUNTIME";  // Web service runtime to fallback to if preferred runtime is not suitable
 	//private String PREFERENCE_J2EE_VERSION = "PREFERENCE_J2EE_VERSION";
 	
-	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.50";
+	private String SERVER_FACTORY_ID_DEFAULT = "org.eclipse.jst.server.tomcat.60";
 	private String RUNTIME_ID_DEFAULT = "org.eclipse.jst.ws.axis.creation.axisWebServiceRT";
 	
 	public PersistentServerRuntimeContext()
