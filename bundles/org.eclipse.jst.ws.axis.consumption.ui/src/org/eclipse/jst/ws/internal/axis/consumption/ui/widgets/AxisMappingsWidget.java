@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20080616   235648 makandre@ca.ibm.com - Andrew Mak, Errors in client proxy if using default namespace to package mapping
+ * 20080917   247561 mahutch@ca.ibm.com - Mark Hutchinson, Error if whitespace entered in mapping page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.widgets;
 
@@ -108,7 +109,7 @@ public class AxisMappingsWidget extends SimpleWidgetDataContributor
   	  HashMap map = new HashMap();
   	  for (int i=0; i<pairs.length; i++)
   	  {
-  		map.put(pairs[i].getText(0),pairs[i].getText(1));
+  		map.put(pairs[i].getText(0).trim(),pairs[i].getText(1).trim());
   	  }
   	  javaParameter_.setMappings(map);
   	  
