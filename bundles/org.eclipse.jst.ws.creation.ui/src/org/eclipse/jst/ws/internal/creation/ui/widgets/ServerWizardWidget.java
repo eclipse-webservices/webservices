@@ -58,6 +58,7 @@
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
+ * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -394,7 +395,8 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			serviceLabel_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
 
 			serviceImpl_ = new Text(typeComposite, SWT.LEFT | SWT.BORDER );
-			GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);		    
+			GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+			griddata.widthHint = 225;
 			serviceImpl_.setLayoutData( griddata );
 			serviceImpl_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
 			utils_.createInfoPop(serviceImpl_, INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL);

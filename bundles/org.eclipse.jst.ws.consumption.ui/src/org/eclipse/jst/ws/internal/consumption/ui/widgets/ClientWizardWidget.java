@@ -27,6 +27,7 @@
  * 20061212   159911 makandre@ca.ibm.com - Andrew Mak, changing service definition resets some configuration fields
  * 20060125   159911 kathy@ca.ibm.com - Kathy Chan, Remove unused method and imports
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
+ * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -49,6 +50,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -126,6 +128,11 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEDEF, 
 			ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL,
 			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER );
+	
+	Object layoutData = serviceImpl_.getLayoutData();
+	if (layoutData instanceof GridData) {
+		((GridData)layoutData).widthHint = 225;
+	}
 	
 	objectModifyListener_ = new ModifyListener(){
 		public void modifyText(ModifyEvent e) {
