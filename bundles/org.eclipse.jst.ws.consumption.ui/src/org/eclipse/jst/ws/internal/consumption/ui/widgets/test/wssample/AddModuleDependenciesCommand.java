@@ -16,6 +16,7 @@
  * 20080211   117924 trungha@ca.ibm.com - Trung Ha
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080527   234169 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
@@ -72,6 +73,16 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	  //1. Create a Web project for the sample if one does not already exist.
 	  sampleIProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
 	  boolean createdSampleProject = false;
+      ValidationUtils vu = new ValidationUtils();
+      boolean serverNeedsEAR = vu.serverNeedsEAR(testInfo.getClientServerTypeID());
+      if (serverNeedsEAR) {
+		if (testInfo.getClientEARProject() == null
+				|| testInfo.getClientEARProject().length() == 0) {
+			sampleEARProject = testInfo.getGenerationProject() + DEFAULT_SAMPLE_EAR_PROJECT_EXT;
+		} else {
+			sampleEARProject = testInfo.getClientEARProject();
+		}
+      }
       if (!sampleIProject.exists())
       {    	
           CreateFacetedProjectCommand command = new CreateFacetedProjectCommand();
@@ -82,6 +93,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
           command.setRequiredFacetVersions(new RequiredFacetVersion[0]);           
           command.setServerFactoryId(testInfo.getClientServerTypeID());
           command.setServerInstanceId(testInfo.getClientExistingServer().getId());
+          command.setEarProjectName(sampleEARProject);
           IStatus status = command.execute( monitor, adaptable );
           if (status.getSeverity() == Status.ERROR)
           {
@@ -93,15 +105,7 @@ public class AddModuleDependenciesCommand extends AbstractDataModelOperation
 	  
 	  //2. If the selected server requires an EAR and no EAR name
 	  //has been provided, choose an EAR name and create it if it doesn't exist.
-      ValidationUtils vu = new ValidationUtils();
-      boolean serverNeedsEAR = vu.serverNeedsEAR(testInfo.getClientServerTypeID());
       if (serverNeedsEAR) {
-			if (testInfo.getClientEARProject() == null
-					|| testInfo.getClientEARProject().length() == 0) {
-				sampleEARProject = testInfo.getGenerationProject() + DEFAULT_SAMPLE_EAR_PROJECT_EXT;
-			} else {
-				sampleEARProject = testInfo.getClientEARProject();
-			}
 			sampleEARIProject  = ProjectUtilities.getProject(sampleEARProject);
 			if (sampleEARIProject == null || !sampleEARIProject.exists())
 			{

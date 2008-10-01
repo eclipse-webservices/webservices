@@ -26,6 +26,7 @@
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
  * 20080717   241283 ericdp@ca.ibm.com - Eric D. Peters, Class version error when invoking sample JSP on Tomcat 5.5 when Java project is Java 6
+ * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -52,6 +53,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.model.internal.validation.EARValidationMessageResourceHandler;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WSDLPort;
@@ -441,20 +443,13 @@ public class ValidationUtils
 			
 				if (project.exists() && ep.exists()) {
 					if (!J2EEUtils.isComponentAssociated(ep, project)) {
-						IStatus associateStatus = J2EEUtils.canAssociateProjectToEAR(project, ep);
-						if (associateStatus.getSeverity() == IStatus.ERROR) {
-							if (isClient) {
-								return StatusUtils.errorStatus(NLS.bind(
-										ConsumptionUIMessages.MSG_CLIENT_CANNOT_ASSOCIATE,
+						boolean associateStatus = J2EEUtils.canAssociateProjectToEARWithoutWarning(project, ep);
+						
+						if (!associateStatus) {
+								return StatusUtils.warningStatus(NLS.bind(
+										EARValidationMessageResourceHandler.MESSAGE_INCOMPATIBLE_SPEC_WARNING_,
 										new String[] { projectName, ep.getName(),
-												associateStatus.getMessage() }));
-							} else {
-								return StatusUtils.errorStatus(NLS.bind(
-										ConsumptionUIMessages.MSG_SERVICE_CANNOT_ASSOCIATE,
-										new String[] { projectName, ep.getName(),
-												associateStatus.getMessage() }));
-							}
-
+												}));
 						}
 					}
 				}

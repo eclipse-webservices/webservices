@@ -19,6 +19,7 @@
  * 20070123   216345 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080212   208795 ericdp@ca.ibm.com - Eric Peters, WS wizard framework should support EJB 3.0
  * 20080229   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
+ * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -65,6 +66,7 @@ import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
+import org.eclipse.jst.j2ee.project.EarUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJavaProjectMigrationDataModelProperties;
 import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationDataModelProvider;
 import org.eclipse.jst.javaee.ejb.EnterpriseBeans;
@@ -1025,8 +1027,92 @@ public final class J2EEUtils {
 		}
             
 	}
-    
-    /*
+	 /**
+     * Determines whether project can be associated with earProject safely.
+     * @returns true if the project is a Web project, EJB project, or AppClient
+     * project that can safely be associated with the EAR project. 
+     * Returns false if the project is a Web project, 
+     * EJB project, or AppClient project that cannot be associated safely with the EAR project, and
+     * true if project is not recognized as a Web, EJB, or
+     * AppClient project, and ture if earProject is not recognized as an EAR project.
+     */
+	public static boolean canAssociateProjectToEARWithoutWarning(IProject project, IProject earProject) {
+		  boolean toReturn = true;
+	      boolean isWeb = isWebComponent(project);
+	      boolean isEJB = isEJBComponent(project);
+	      boolean isAppClient = isAppClientComponent(project);
+	      boolean isEAR = isEARComponent(earProject);
+	      if ((isWeb || isEJB || isAppClient) && isEAR)
+	      {        
+	        try
+	        {
+	          IFacetedProject fProject = ProjectFacetsManager.create(project);
+	          IFacetedProject fEarProject = ProjectFacetsManager.create(earProject);
+	          
+	          IProjectFacet earPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EAR_MODULE);
+	          IProjectFacetVersion earPfv = fEarProject.getInstalledVersion(earPf);
+	          String compareVersion;
+	          List<IProjectFacetVersion> supportedFacetVersionList = new ArrayList<IProjectFacetVersion>();
+	          if (isWeb)
+	          {
+	            IProjectFacet webPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_WEB_MODULE);
+	            IProjectFacetVersion webPfv = fProject.getInstalledVersion(webPf);
+	            supportedFacetVersionList = EarUtilities.getSupportedFacets(earPfv, webPf);
+	            toReturn = false;
+	            for (IProjectFacetVersion supportedFacetVersion : supportedFacetVersionList ) {
+	            	IProjectFacetVersion next = supportedFacetVersion;
+	            	compareVersion = webPfv.getVersionString();
+	            	if (next!= null && compareVersion!=null && compareVersion.compareTo(next.getVersionString()) == 0) { 
+	            		toReturn = true;
+	            		break;
+	            	}
+	            }
+	            
+	          }
+	          else if (isEJB)            
+	          {
+	            IProjectFacet ejbPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EJB_MODULE);
+	            IProjectFacetVersion ejbPfv = fProject.getInstalledVersion(ejbPf);
+	            supportedFacetVersionList = EarUtilities.getSupportedFacets(earPfv, ejbPf);
+	            toReturn = false;
+	            for (IProjectFacetVersion supportedFacetVersion : supportedFacetVersionList ) {
+	            	IProjectFacetVersion next = supportedFacetVersion;
+	            	compareVersion = ejbPfv.getVersionString();
+	            	if (next!= null && compareVersion!=null && compareVersion.compareTo(next.getVersionString()) == 0) { 
+	            		toReturn = true;
+	            		break;
+	            	}
+	            }
+	            
+	          }
+	          else if (isAppClient)
+	          {
+	            IProjectFacet acPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_APPCLIENT_MODULE);
+	            IProjectFacetVersion acPfv = fProject.getInstalledVersion(acPf);
+	            supportedFacetVersionList = EarUtilities.getSupportedFacets(earPfv, acPf);
+	            toReturn = false;
+	            for (IProjectFacetVersion supportedFacetVersion : supportedFacetVersionList ) {
+	            	IProjectFacetVersion next = supportedFacetVersion;
+	            	compareVersion = acPfv.getVersionString();
+	            	if (next!= null && compareVersion!=null && compareVersion.compareTo(next.getVersionString()) == 0) { 
+	            		toReturn = true;
+	            		break;
+	            	}
+	            }
+
+	          } 
+	          
+	        } catch (Exception e)
+	        {
+	          //not much we can do here, return what we've calculated thus far
+	        }         
+	      }
+
+		
+		return toReturn;
+		
+	}
+    /**
      * Determines whether project can be associated with earProject.
      * @returns IStatus of OK if the project is a Web project, EJB project, or AppClient
      * project that can be associated with the EAR project. 
@@ -1036,6 +1122,7 @@ public final class J2EEUtils {
      * lowest J2EE level that this project requires on an EAR.
      * Returns an IStatus with severity OK if project is not recognized as a Web, EJB, or
      * AppClient project or if earProject is not recognized as an EAR project.
+     * @deprecated use canAssociateProjectToEARWithoutWarning(IProject project, IProject earProject)
      */
     public static IStatus canAssociateProjectToEAR(IProject project, IProject earProject)
     {
@@ -1535,5 +1622,67 @@ public final class J2EEUtils {
 			  jm.join(J2EEComponentClasspathUpdater.MODULE_UPDATE_JOB_NAME, null);
 		  }catch(Exception exc){}
 	  }
-
+	 /**
+     * Determines the IJ2EEModuleConstants.JST_WEB_MODULE facet version that
+     * matches the IJ2EEModuleConstants.JST_EAR_MODULE facet version
+     * @returns the version String for IJ2EEModuleConstants.JST_WEB_MODULE facet, if there is problem
+     * trying to determine the version, either the default version or the latest supported version
+     * will be returned
+     */
+	public static String getWebJ2EEVersionFromEARJ2EEVersion(IProject earProject) {
+		String returnVersion = EarUtilities.DYNAMIC_WEB_FACET.getDefaultVersion().getVersionString();
+		try {
+		returnVersion = EarUtilities.DYNAMIC_WEB_FACET.getLatestVersion().getVersionString();
+	    IFacetedProject fEarProject = ProjectFacetsManager.create(earProject);
+	    IProjectFacet earPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EAR_MODULE);
+	    IProjectFacetVersion earPfv = fEarProject.getInstalledVersion(earPf);
+	    IProjectFacet webPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_WEB_MODULE);
+	    returnVersion= EarUtilities.getSupportedFacets(earPfv, webPf).get(0).getVersionString();
+		} catch (Exception e) {
+			//nothing we can do here, return what we have calculated thus far
+		}
+	    return returnVersion;
+	}
+	 /**
+     * Determines the IJ2EEModuleConstants.JST_APPCLIENT_MODULE facet version that
+     * matches the IJ2EEModuleConstants.JST_EAR_MODULE facet version
+     * @returns the version String for IJ2EEModuleConstants.JST_APPCLIENT_MODULE facet, if there is problem
+     * trying to determine the version, either the default version or the latest supported version
+     * will be returned
+     */
+	public static String getAppClientJ2EEVersionFromEARJ2EEVersion(IProject earProject) {
+		String returnVersion = EarUtilities.APPLICATION_CLIENT_FACET.getDefaultVersion().getVersionString();
+		try {
+		returnVersion = EarUtilities.APPLICATION_CLIENT_FACET.getLatestVersion().getVersionString();
+	    IFacetedProject fEarProject = ProjectFacetsManager.create(earProject);
+	    IProjectFacet earPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EAR_MODULE);
+	    IProjectFacetVersion earPfv = fEarProject.getInstalledVersion(earPf);
+	    IProjectFacet acPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_APPCLIENT_MODULE);
+	    returnVersion= EarUtilities.getSupportedFacets(earPfv, acPf).get(0).getVersionString();
+		} catch (Exception e) {
+			//nothing we can do here, return what we have calculated thus far
+		}
+	    return returnVersion;
+	}
+	 /**
+     * Determines the IJ2EEModuleConstants.JST_EJB_MODULE facet version that
+     * matches the IJ2EEModuleConstants.JST_EAR_MODULE facet version
+     * @returns the version String for IJ2EEModuleConstants.JST_EJB_MODULE facet, if there is problem
+     * trying to determine the version, either the default version or the latest supported version
+     * will be returned
+     */
+	public static String getEJBJ2EEVersionFromEARJ2EEVersion(IProject earProject) {
+		String returnVersion = EarUtilities.EJB_FACET.getDefaultVersion().getVersionString();
+		try {
+		returnVersion = EarUtilities.EJB_FACET.getLatestVersion().getVersionString();
+	    IFacetedProject fEarProject = ProjectFacetsManager.create(earProject);
+	    IProjectFacet earPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EAR_MODULE);
+	    IProjectFacetVersion earPfv = fEarProject.getInstalledVersion(earPf);
+	    IProjectFacet ejbPf = ProjectFacetsManager.getProjectFacet(IJ2EEModuleConstants.JST_EJB_MODULE);
+	    returnVersion= EarUtilities.getSupportedFacets(earPfv, ejbPf).get(0).getVersionString();
+		} catch (Exception e) {
+			//nothing we can do here, return what we have calculated thus far
+		}
+	    return returnVersion;
+	}
 }

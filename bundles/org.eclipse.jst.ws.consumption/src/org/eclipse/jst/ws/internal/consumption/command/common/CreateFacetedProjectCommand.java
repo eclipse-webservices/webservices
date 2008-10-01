@@ -20,6 +20,7 @@
  * 20080305   220371 kathy@ca.ibm.com - Kathy Chan
  * 20080305   220371 kathy@ca.ibm.com - Kathy Chan - reverting previous change to 220371
  * 20080326   220371 kathy@ca.ibm.com - Kathy Chan - re-applying 220371
+ * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -36,6 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.server.core.FacetUtil;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
@@ -44,8 +46,11 @@ import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.RequiredFacetVersion;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IRuntime;
@@ -58,6 +63,9 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
 
   //name of the project to be created
   private String   projectName; 
+
+  //name of the EAR project associated with projectName
+  private String   earProjectName; 
 
   //id of the IFacetedProjectTemplate to be used to create this project.
   private String   templateId;
@@ -199,8 +207,8 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
   
   /**
    * Returns the set of facets to install on the new project. The set will consist
-   * of the highest version of each of the template's fixed facets that satifies
-   * both the required facet versions and the facet runtime.
+   * of the highest version of each of the template's fixed facets that satisfies
+   * the required facet versions, the facet runtime, and the EAR project J2EE level.
    * @return Set a Set containing elements of type IProjectFacetVersion.
    */
   private Set getFacetsToAdd()
@@ -217,14 +225,14 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
       //Walk the facet version combinations in order of descending version numbers.
       for (int i=n-1; i>=0; i--)
       {
-        //Check this template combination to see if it is compatible with both the 
-        //required facet versions and the server runtime. If it is, choose it.
+        //Check this template combination to see if it is compatible with the 
+        //required facet versions, the server runtime, and the EAR. If it is, choose it.
         Set combination = allCombinations[i];
         FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combination);
         if (fm.isMatch())
         {
-          //Check against Runtime
-          if (FacetUtils.doesRuntimeSupportFacets(facetRuntime, combination))
+          //Check against Runtime & EAR
+          if (FacetUtils.doesRuntimeSupportFacets(facetRuntime, combination)  && doesEARSupportFacets(combination) )
           {
             //We have a match. Use this combination of facet versions for project creation.
             facets = combination;
@@ -252,10 +260,10 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
     }
    
     //Unlikely to get to this point in the code, but if we do, choose the highest version
-    //of each fixed facet in the template.
+    //of each fixed facet in the template that is supported by the server runtime
     if (facets == null)
     {
-      facets = FacetUtils.getInitialFacetVersionsFromTemplate(templateId);
+      facets = getHighestFacetVersionsFromTemplateAndServer();
     }
      
     return facets;
@@ -328,8 +336,101 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
   {
     this.serverInstanceId = serverInstanceId;
   }
-
+  public void setEarProjectName(String earProject) {
+	  this.earProjectName = earProject;
+  }
   
-  
+	private RequiredFacetVersion[] getRequiredWebFacets() {
+		return new RequiredFacetVersion[] { getRequiredFacetVersion(
+				IModuleConstants.JST_WEB_MODULE,
+				J2EEUtils.getWebJ2EEVersionFromEARJ2EEVersion(ProjectUtilities.getProject(earProjectName))) };
+	}
 
+	private RequiredFacetVersion[] getRequiredAppClientFacets() {
+		return new RequiredFacetVersion[] { getRequiredFacetVersion(
+				IModuleConstants.JST_APPCLIENT_MODULE,
+				J2EEUtils.getAppClientJ2EEVersionFromEARJ2EEVersion(ProjectUtilities.getProject(earProjectName))) };
+	}
+
+	private RequiredFacetVersion[] getRequiredEJBFacets() {
+		return new RequiredFacetVersion[] { getRequiredFacetVersion(
+				IModuleConstants.JST_EJB_MODULE,
+				J2EEUtils.getEJBJ2EEVersionFromEARJ2EEVersion(ProjectUtilities.getProject(earProjectName))) };
+	}
+
+	private boolean doesEARSupportFacets(Set combination) {
+		try {
+
+			if (earProjectName == null || earProjectName.length() == 0
+					|| !ProjectUtilities.getProject(earProjectName).exists())
+				// the ear does not exist or the project type template is
+				// undefined
+				return true;
+			else {
+				if (combinationContainsFacet(combination, IModuleConstants.JST_WEB_MODULE))
+					return FacetUtils
+							.match(getRequiredWebFacets(), combination)
+							.isMatch();
+				else if (combinationContainsFacet(combination, IModuleConstants.JST_EJB_MODULE))
+					return FacetUtils
+							.match(getRequiredEJBFacets(), combination)
+							.isMatch();
+				else if (combinationContainsFacet(combination, IModuleConstants.JST_APPCLIENT_MODULE))
+					return FacetUtils.match(getRequiredAppClientFacets(),
+							combination).isMatch();
+				else
+					return true;
+			}
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+	private boolean combinationContainsFacet(Set combination, String facetName) {
+		if (combination == null || facetName == null || facetName.length() == 0)
+			return false;
+        for (Iterator iter = combination.iterator(); iter.hasNext();) {
+        	IProjectFacetVersion nextFacetVersion = (IProjectFacetVersion) iter.next();
+        	if (facetName.equals(nextFacetVersion.getProjectFacet().getId()))
+        			return true;
+		}
+        return false;
+	}
+
+	private RequiredFacetVersion getRequiredFacetVersion(String facetName,
+			String facetVersion) {
+		IProjectFacet projectFacet = ProjectFacetsManager
+				.getProjectFacet(facetName);
+		IProjectFacetVersion projFacetVersion = projectFacet
+				.getVersion(facetVersion);
+		RequiredFacetVersion reqFacetVersion = new RequiredFacetVersion();
+		reqFacetVersion.setAllowNewer(false);
+		reqFacetVersion.setProjectFacetVersion(projFacetVersion);
+		return reqFacetVersion;
+	}
+
+	  private Set getHighestFacetVersionsFromTemplateAndServer()
+	  {
+	    IFacetedProjectTemplate template = ProjectFacetsManager.getTemplate(templateId);
+	    Set fixedFacets = template.getFixedProjectFacets(); 
+	    HashSet initial = new HashSet(); 
+	    for (Iterator itr = fixedFacets.iterator(); itr.hasNext(); ) 
+	    { 
+	      IProjectFacet facet = (IProjectFacet) itr.next(); 
+	      IProjectFacetVersion highestFacetVersion = null;
+	      try {
+	    	  highestFacetVersion = facet.getLatestSupportedVersion(facetRuntime);
+	      } catch (CoreException e) {
+	    	  try {
+	    		  highestFacetVersion = facet.getLatestVersion();
+	    	  } catch (CoreException e2) {
+	    		  //not much we can do here
+	    	  }
+	    	  
+	      }
+	      initial.add(highestFacetVersion); 
+	    }             
+	    
+	    return initial;
+	  }
 }

@@ -21,6 +21,7 @@
  * 20060829   180833 ericdp@ca.ibm.com - Eric D. Peters,  New Web Service wizard service settings dialog has unlabelled enabled text fields
  * 20080409   226047 kathy@ca.ibm.com - Kathy Chan
  * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
+ * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -28,6 +29,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.model.internal.validation.EARValidationMessageResourceHandler;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -597,17 +599,11 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
       {
         if (!J2EEUtils.isComponentAssociated(ep,p))
         {
-          IStatus associateStatus = J2EEUtils.canAssociateProjectToEAR(p, ep);
-          if (associateStatus.getSeverity() == IStatus.ERROR)
+          boolean associateStatus = J2EEUtils.canAssociateProjectToEARWithoutWarning(p, ep);
+          if (!associateStatus)
           {
-            if (isClient_)
-            {
-              return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_CANNOT_ASSOCIATE, new String[]{p.getName(), ep.getName(), associateStatus.getMessage()} ) );
-            }
-            else
-            {
-              return StatusUtils.errorStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_CANNOT_ASSOCIATE, new String[]{p.getName(), ep.getName(), associateStatus.getMessage()} ) );
-            }                  
+              return StatusUtils.warningStatus( NLS.bind(EARValidationMessageResourceHandler.MESSAGE_INCOMPATIBLE_SPEC_WARNING_, new String[]{p.getName(), ep.getName(), } ) );
+                  
           }
         }
       }
