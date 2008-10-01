@@ -66,8 +66,8 @@ public class DefaultingUtils {
 			        for (int i=0; i < allEarComps.length; i++)
 			        {
 			          IProject earProject = allEarComps[i].getProject();
-			          IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(proj, earProject);
-			          if (associationStatus.getSeverity()==IStatus.OK)
+			          boolean canAssociate = J2EEUtils.canAssociateProjectToEARWithoutWarning(proj, earProject);
+			          if (canAssociate)
 			          {
 			            return allEarComps[i].getName(); 
 			          }

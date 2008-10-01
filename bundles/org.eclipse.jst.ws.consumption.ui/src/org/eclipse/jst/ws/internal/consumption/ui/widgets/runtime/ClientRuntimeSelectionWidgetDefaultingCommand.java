@@ -1416,8 +1416,8 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
       IProject earProject = ProjectUtilities.getProject(earProjectName);
       if (!clientProject.exists() && serviceProject.exists())
       {
-        IStatus associationStatus = J2EEUtils.canAssociateProjectToEAR(serviceProject, earProject);
-        goodJ2EELevel = (associationStatus.getSeverity() == IStatus.OK);
+        boolean canAssociate = J2EEUtils.canAssociateProjectToEARWithoutWarning(serviceProject, earProject);
+        goodJ2EELevel = (canAssociate);
       }
     }
     

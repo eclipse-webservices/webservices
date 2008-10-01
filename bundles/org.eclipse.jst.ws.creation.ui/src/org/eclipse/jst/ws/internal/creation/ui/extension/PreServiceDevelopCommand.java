@@ -20,6 +20,7 @@
  * 20071220   213640 kathy@ca.ibm.com - Kathy Chan
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080724   241275 pmoogk@ca.ibm.com - Peter Moogk, Validate WSDL before doing major Web service processing.
+ * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -186,6 +187,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 				  command.setRequiredFacetVersions(rfv);
 				  command.setServerFactoryId(typeRuntimeServer_.getServerId());
 				  command.setServerInstanceId(typeRuntimeServer_.getServerInstanceId());
+				  command.setEarProjectName(earProject_);
 				  status = command.execute( monitor, adaptable );
 				  if (status.getSeverity() == Status.ERROR)
 				  {
