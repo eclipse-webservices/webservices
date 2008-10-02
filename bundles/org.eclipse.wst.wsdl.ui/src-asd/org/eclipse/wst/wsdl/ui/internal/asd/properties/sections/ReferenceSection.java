@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ public abstract class ReferenceSection extends NameSection {
 	public static String NEW_STRING = Messages._UI_BUTTON_NEW; //$NON-NLS-1$
 	protected CCombo combo;
 	protected CLabel comboLabel;
+	private boolean isTraversing = false;
 	
 	protected List itemsInCombo = new ArrayList();
 
@@ -59,17 +60,24 @@ public abstract class ReferenceSection extends NameSection {
 		data.top = new FormAttachment(nameText, +ITabbedPropertyConstants.VSPACE);
 		combo.setLayoutData(data);
 		
-		combo.addListener(SWT.Modify, this);
+        combo.addListener(SWT.Modify, this);
+        combo.addListener(SWT.DefaultSelection, this);
+        combo.addListener(SWT.Traverse, this);
 	}
 	
 	public void handleEvent(Event event)
 	{
 		if (event.widget == combo) {
-			if (isListenerEnabled() && !isInDoHandle) 
-			{
-				isInDoHandle = true;
-				startDelayedEvent(event);
-				isInDoHandle = false;
+			if (isListenerEnabled() && !isInDoHandle) {
+				if (event.type == SWT.Traverse) {
+					if (event.detail == SWT.TRAVERSE_ARROW_NEXT || event.detail == SWT.TRAVERSE_ARROW_PREVIOUS)
+						isTraversing = true;
+				}
+				else {
+					isInDoHandle = true;
+					startDelayedEvent(event);
+					isInDoHandle = false;
+				}
 			}
 		}
 		else {
@@ -82,6 +90,8 @@ public abstract class ReferenceSection extends NameSection {
 	 */
 	public void refresh() {
 		combo.removeListener(SWT.Modify, this);
+		combo.removeListener(SWT.DefaultSelection, this);
+		combo.removeListener(SWT.Traverse, this);
 		
 		super.refresh();
 		
@@ -114,6 +124,8 @@ public abstract class ReferenceSection extends NameSection {
 		
 		setControlForegroundColor(combo);
 		combo.addListener(SWT.Modify, this);
+		combo.addListener(SWT.DefaultSelection, this);
+		combo.addListener(SWT.Traverse, this);
 	}
 	
 	protected abstract List getComboItems();
@@ -131,8 +143,50 @@ public abstract class ReferenceSection extends NameSection {
 	  super.doHandleEvent(event);
 	  if (event.widget == combo && !combo.isDisposed()) {
 		  int selectionIndex = combo.getSelectionIndex();
-		  performComboSelection(itemsInCombo.get(selectionIndex));
-		  refresh();
+		  Object selectedItem = itemsInCombo.get(selectionIndex);
+		  
+		  if (shouldPerformComboSelection(event, selectedItem))
+		  {
+		    performComboSelection(selectedItem);
+		    refresh();
+		  }
 	  }
+  }
+  
+  private boolean shouldPerformComboSelection(Event event, Object selectedItem)
+  {
+    // if traversing through combobox, don't automatically pop up
+    // the browse and new dialog boxes
+    boolean wasTraversing = isTraversing;
+    if (isTraversing)
+      isTraversing = false;
+      
+    // we only care about default selecting (hitting enter in combobox)
+    // for browse.. and new..
+    if (event.type == SWT.DefaultSelection)
+    {
+      if (!(selectedItem instanceof String))
+        return false;
+      if (!(BROWSE_STRING.equals(selectedItem) || NEW_STRING.equals(selectedItem)))
+        return false;
+    }
+    
+    if (wasTraversing && selectedItem instanceof String)
+    {
+      if (BROWSE_STRING.equals(selectedItem) || NEW_STRING.equals(selectedItem))
+        return false;
+    }
+    return true;
+  }
+  
+  public void dispose()
+  {
+  	if (combo != null && !combo.isDisposed())
+  	{
+		combo.removeListener(SWT.Modify, this);
+		combo.removeListener(SWT.DefaultSelection, this);
+		combo.removeListener(SWT.Traverse, this);
+	}
+	super.dispose();
   }
 }

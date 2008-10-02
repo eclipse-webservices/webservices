@@ -408,7 +408,7 @@ public void deselectAll () {
 }
 void dropDown (boolean drop) {
 	if (drop == isDropped ()) return;
-	if (!drop) {
+	if (!drop && !isDisposed()) {
 		popup.setVisible (false);
 		text.selectAll();
 		if (!isDisposed ()&& arrow.isFocusControl()) {
