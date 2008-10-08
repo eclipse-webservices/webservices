@@ -32,10 +32,8 @@ scope="external"> www.ibm.com/developerworks/webservices/library/ws-wsilspec.htm
  .</p><p>You can discover a Web service in two ways using the Web Services
 Explorer:</p></context>
 <result><ul>
-<li> <xref href="#tdiscov/discover_from_uddi">Discovering a Web service from
-a UDDI registry</xref> </li>
-<li> <xref href="#tdiscov/discover_from_wsil">Discovering a Web service from
-a WSIL document</xref> </li>
+<li> Discovering a Web service from a UDDI registry </li>
+<li> Discovering a Web service from a WSIL document </li>
 </ul></result>
 </taskbody>
 <task id="discover_from_uddi" xml:lang="en-us">
