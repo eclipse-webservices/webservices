@@ -15,6 +15,7 @@
  * 20070501   180284 sandakith@wso2.com - Lahiru Sandakith
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20080625   210817 samindaw@wso2.com - Saminda Wijeratne, Setting the proxyBean and proxyEndPoint values - Refactoring
+ * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -25,13 +26,23 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -197,4 +208,39 @@ public class Axis2CoreUtils {
 		}
 		return doc;
 	}
+	
+	
+	public static String getSourceFolder(String projectName){
+		String src=Axis2Constants.DIR_SRC;
+		try {
+			String[] javaProjectSourceDirectories = getJavaProjectSourceDirectories(projectName);
+			src=javaProjectSourceDirectories[0];
+		} catch (JavaModelException e) {
+		} catch (CoreException e) {
+		}
+		return src;
+	}
+	
+	public static String[] getJavaProjectSourceDirectories (String projectName) throws CoreException, JavaModelException{
+	    ArrayList paths = new ArrayList();
+	    
+	    IProject project =ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+	    if (project.isOpen() && JavaProject.hasJavaNature(project)) {
+	      IJavaProject javaProject = JavaCore.create(project);
+	    
+	      IClasspathEntry[] classpathEntries = null;
+	      classpathEntries = javaProject.getResolvedClasspath(true);
+	      
+	      for (int i = 0; i<classpathEntries.length;i++){         
+	      	IClasspathEntry entry = classpathEntries[i];
+	        if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE)
+	        {
+	          IPath path = entry.getPath();
+	          String srcPath = path.segments()[path.segmentCount()-1];
+	          paths.add(srcPath);
+	        }
+	      }
+	    }
+	    return (String[])paths.toArray(new String[0]);
+	  } 
 }

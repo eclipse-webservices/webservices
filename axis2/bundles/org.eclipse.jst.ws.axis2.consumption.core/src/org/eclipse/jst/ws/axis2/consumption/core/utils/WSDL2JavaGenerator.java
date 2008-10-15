@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
+ * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -59,6 +60,7 @@ public class WSDL2JavaGenerator {
             		  String packageName,
             		  String selectedLanguage,
             		  String outputLocation,
+            		  String sourceFolder,
             		  String namespace2packageList,
             		  boolean isServerSideInterface
             		  ){
@@ -261,6 +263,16 @@ public class WSDL2JavaGenerator {
     				CommandLineOptionConstructor.newInstance(
     					new Object[]{(String)NAME_SPACE_TO_PACKAGE_OPTION_FIELD.get(String.class),
     					getStringArray(namespace2packageList)}));
+       }
+       
+
+       if (namespace2packageList!= null){
+    	   Field SOURCE_FOLDER_NAME_OPTION = CommandLineOptionConstantsClass
+			.getField("SOURCE_FOLDER_NAME_OPTION");
+    	   optionMap.put((String)SOURCE_FOLDER_NAME_OPTION.get(String.class),
+    			   CommandLineOptionConstructor.newInstance(
+    					   new Object[]{(String)SOURCE_FOLDER_NAME_OPTION.get(String.class),
+    							   getStringArray(sourceFolder)}));
        }
        
        //server side interface  mapping

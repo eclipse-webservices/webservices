@@ -20,6 +20,7 @@
  * 20080213   218910 kathy@ca.ibm.com - Kathy Chan
  * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
  * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
+ * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -36,6 +37,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDL2JavaGenerator;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.WSDLPropertyReader;
+import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
@@ -114,6 +116,7 @@ public class Axis2WSDL2JavaCommand extends AbstractDataModelOperation {
             (model.getPackageText()!=null)?model.getPackageText():null,
             "java",
             tempCodegenOutputLocation,
+            Axis2CoreUtils.getSourceFolder(model.getWebProjectName()),
             model.getNamespaseToPackageMapping(),
             model.isGenerateServerSideInterface()
           );

@@ -13,6 +13,7 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
 
@@ -27,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
+import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
 import org.eclipse.jst.ws.axis2.creation.core.messages.Axis2CreationUIMessages;
@@ -59,7 +61,7 @@ public class Axis2SkelImplCommand extends AbstractDataModelOperation {
 													   model.getWebProjectName());
 		String projectSrcDir =  FileUtils.addAnotherNodeToPath(
 											currentDynamicWebProjectDir, 
-											Axis2Constants.DIR_SRC);
+											Axis2CoreUtils.getSourceFolder(model.getWebProjectName()));
 
 		String packagePath = CommonUtils.packgeName2PathName(model.getPackageText());
 		String packageDir = FileUtils.addAnotherNodeToPath(projectSrcDir, packagePath);
