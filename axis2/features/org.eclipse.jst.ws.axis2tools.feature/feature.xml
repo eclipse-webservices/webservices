@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.axis2tools.feature"
       label="%featureName"
-      version="1.0.0.qualifier"
+      version="1.0.2.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jst"
       image="eclipse_update_120.jpg">
@@ -23,7 +23,6 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates"/>
       <discovery label="Web Tools Platform (WTP) Updates" url="http://download.eclipse.org/webtools/updates"/>
    </url>
-
 
    <plugin
          id="org.eclipse.jst.ws.axis2.core"
@@ -73,5 +72,5 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-    
+
 </feature>
