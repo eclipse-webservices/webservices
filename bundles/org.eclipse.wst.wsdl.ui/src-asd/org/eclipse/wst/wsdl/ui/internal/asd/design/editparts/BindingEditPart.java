@@ -95,6 +95,13 @@ public class BindingEditPart extends BaseEditPart
     {
       connectionFigure.setHighlight(true);
       
+      // remove any preexisting connection feedback figures first
+      if (connectionFeedbackFigure != null)
+      {
+        connectionFeedbackFigure.setHighlight(false);
+        getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
+        connectionFeedbackFigure = null;
+      }
       connectionFeedbackFigure = new ComponentReferenceConnection();
       connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
       connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
