@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20081020   251269 mahutch@ca.ibm.com - Mark Hutchinson, WSE Sends Wrong Namespace for child elements of the SOAP body
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
@@ -76,8 +77,9 @@ public class SOAPMessageProcessor implements ISerializer, IDeserializer {
 	/*
 	 * Retrieves the encoding information from the binding for the selected operation.
 	 * This method is called only for RPC style bindings.  Two pieces of information are returned:  
-	 * If the use is encoded, this method returns the encoding namespace in element [0] and the 
-	 * encoding style(s) in element [1].  If the use is literal, then both values will be null.
+	 * This method returns the encoding namespace in element [0] 
+	 * If the use is encoded then the encoding style(s) is returned in element [1].  If the use is literal, 
+	 * then element[1] is returned null.
 	 */
 	private String[] getEncodingInfo(MessageContext context) {
 		
@@ -94,9 +96,9 @@ public class SOAPMessageProcessor implements ISerializer, IDeserializer {
 			
 			SOAPBody soapBody = (SOAPBody) e;
 			
+			info[0] = soapBody.getNamespaceURI();
 			// use="encoded"
 			if (!LITERAL.equals(soapBody.getUse())) {
-				info[0] = soapBody.getNamespaceURI();
 				info[1] = joinEncodingStyles(soapBody.getEncodingStyles());
 			}
 					
