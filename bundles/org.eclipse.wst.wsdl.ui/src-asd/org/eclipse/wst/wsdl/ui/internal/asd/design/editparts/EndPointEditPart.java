@@ -230,11 +230,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	{
 	  getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
 	}
-    if (connectionFeedbackFigure != null)
-    {
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
+    removeConnectionFeedbackFigure();
   }
 
   protected boolean shouldDrawConnection()
@@ -295,6 +291,11 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	          connectionFigure.setTargetAnchor(new CenteredConnectionAnchor(targetFigure, CenteredConnectionAnchor.HEADER_LEFT, 0, 10));
 	          connectionFigure.setHighlight(false);
 	          connectionFigure.setVisible(true);
+	          
+	          if (connectionFeedbackFigure != null)
+	          {
+	            addConnectionFeedbackFigure();
+	          }
 		  }
 		  else {
 			  activateConnection();
@@ -319,18 +320,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     {
       connectionFigure.setHighlight(true);
 
-      // remove any preexisting connection feedback figures first
-      if (connectionFeedbackFigure != null)
-      {
-        connectionFeedbackFigure.setHighlight(false);
-        getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-        connectionFeedbackFigure = null;
-      }
-      connectionFeedbackFigure = new ComponentReferenceConnection();
-      connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
-      connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
-      connectionFeedbackFigure.setHighlight(true);
-      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
+      addConnectionFeedbackFigure();
     }
   }
 
@@ -339,12 +329,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(figure.getParent().getBackgroundColor());
 
-    if (connectionFeedbackFigure != null)
-    {
-      connectionFeedbackFigure.setHighlight(false);
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
+    removeConnectionFeedbackFigure();
     
     if (connectionFigure != null)
       connectionFigure.setHighlight(false);
@@ -389,4 +374,25 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 
     return super.getRelativeEditPart(direction);
   }  
+  
+  private void addConnectionFeedbackFigure()
+  {
+    removeConnectionFeedbackFigure();
+    
+    connectionFeedbackFigure = new ComponentReferenceConnection();
+    connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
+    connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
+    connectionFeedbackFigure.setHighlight(true);
+    getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
+  }
+  
+  private void removeConnectionFeedbackFigure()
+  {
+    if (connectionFeedbackFigure != null)
+    {
+      connectionFeedbackFigure.setHighlight(false);
+      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
+      connectionFeedbackFigure = null;
+    }
+  }
 }

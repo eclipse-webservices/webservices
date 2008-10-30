@@ -95,18 +95,7 @@ public class BindingEditPart extends BaseEditPart
     {
       connectionFigure.setHighlight(true);
       
-      // remove any preexisting connection feedback figures first
-      if (connectionFeedbackFigure != null)
-      {
-        connectionFeedbackFigure.setHighlight(false);
-        getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-        connectionFeedbackFigure = null;
-      }
-      connectionFeedbackFigure = new ComponentReferenceConnection();
-      connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
-      connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
-      connectionFeedbackFigure.setHighlight(true);
-      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
+      addConnectionFeedbackFigure();
     }
   }
 
@@ -119,12 +108,8 @@ public class BindingEditPart extends BaseEditPart
     figure.setSelected(false);
     figure.repaint();
     
-    if (connectionFeedbackFigure != null)
-    {
-      connectionFeedbackFigure.setHighlight(false);
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
+    removeConnectionFeedbackFigure();
+    
     if (connectionFigure != null)
     {
       connectionFigure.setHighlight(false);
@@ -153,11 +138,7 @@ public class BindingEditPart extends BaseEditPart
     {
       getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
     }
-    if (connectionFeedbackFigure != null)
-    {
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
+    removeConnectionFeedbackFigure();
   }
 
   public ComponentReferenceConnection createConnectionFigure()
@@ -246,6 +227,11 @@ public class BindingEditPart extends BaseEditPart
         connectionFigure.setTargetAnchor(new CenteredConnectionAnchor(refFigure, CenteredConnectionAnchor.HEADER_LEFT, 0, 11));
         connectionFigure.setHighlight(false);
         connectionFigure.setVisible(true);
+
+        if (connectionFeedbackFigure != null)
+        {
+          addConnectionFeedbackFigure();
+        }
       }
       else
       {
@@ -301,5 +287,26 @@ public class BindingEditPart extends BaseEditPart
       return EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);
     }      
     return super.getRelativeEditPart(direction);
+  }
+  
+  private void addConnectionFeedbackFigure()
+  {
+    // remove any preexisting connection feedback figures first
+    removeConnectionFeedbackFigure();
+
+    connectionFeedbackFigure = new ComponentReferenceConnection();
+    connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
+    connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
+    connectionFeedbackFigure.setHighlight(true);
+    getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
+  }
+  
+  private void removeConnectionFeedbackFigure() {
+    if (connectionFeedbackFigure != null)
+    {
+      connectionFeedbackFigure.setHighlight(false);
+      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
+      connectionFeedbackFigure = null;
+    }
   }
 }
