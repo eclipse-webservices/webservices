@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension point="org.eclipse.wst.ws.locator">
+      <webServiceLocatorCategory
+         id="ws.locator.category.cxf"
+         label="%WEB_SERVICE_LOCATOR_CATEGORY_CXF"/>
+
+      <webServiceLocator
+         class="org.eclipse.jst.ws.internal.cxf.consumption.core.locator.CXFWebServiceLocator"
+         id="ws.locator.cxf"
+         category="ws.locator.category.cxf"
+         label="WEB_SERVICE_LOCATOR_CXF">
+      </webServiceLocator>
+   </extension>
+
+</plugin>

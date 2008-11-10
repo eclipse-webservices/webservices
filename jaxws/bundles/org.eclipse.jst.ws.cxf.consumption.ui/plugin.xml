@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+  <extension point="org.eclipse.jst.ws.consumption.ui.wsImpl">
+    <webServiceImpl
+            id="org.eclipse.jst.ws.cxf.wsImpl.java"
+            label="%JAXWS_WEBSERVICETYPE"
+            resourceTypeMetadata="File IResource CompilationUnit"
+            extensionMetadata=".java .class"
+            objectSelectionWidget="org.eclipse.jst.ws.cxf.consumption.ui.widgets.object.CXFJAXWSSelectionWidget"
+            mergerClass="org.eclipse.jst.ws.internal.consumption.common.JavaMerger">
+    </webServiceImpl>
+   </extension>
+   
+   <!--<extension point="org.eclipse.jst.ws.consumption.ui.wsClientImpl">
+      <webServiceClientImpl
+            id="org.eclipse.jst.ws.cxf.client.type.java"
+            label="%JAXWS_CLIENT">
+      </webServiceClientImpl>
+   </extension>-->
+   
+   <extension point="org.eclipse.jst.ws.consumption.ui.objectSelectionWidget">
+      <objectSelectionWidget
+            class=" org.eclipse.jst.ws.internal.cxf.consumption.ui.widgets.CXFJAXWSSelectionLaunchable"
+            external_modify="true"
+            id=" org.eclipse.jst.ws.cxf.consumption.ui.widgets.object.CXFJAXWSSelectionWidget"
+            transformer="org.eclipse.jst.ws.internal.cxf.consumption.ui.widgets.object.JAXWSSelectionTransformer">
+      </objectSelectionWidget>
+   </extension>
+   
+   <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.consumption.ui.widgets.WSDL2JavaClientConfigWidgetFactory"
+             id="WSDL2JavaClientConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.consumption.core.commands.WSDL2JavaClientCommand">
+       </widgetFactory>
+   </extension>
+   
+  </plugin>

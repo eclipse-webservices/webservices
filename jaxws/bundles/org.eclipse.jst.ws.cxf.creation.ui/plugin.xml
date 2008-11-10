@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension point="org.eclipse.jst.ws.consumption.ui.runtimes">
+      <runtime
+        id="org.eclipse.jst.ws.cxf.cxfWebServiceRT"
+        label="%CXF_WS_RUNTIME_LABEL"
+        serverRequired="false"/>
+    </extension>
+
+	<!-- define support for CXF JAX-WS Java First and WSDL First in web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.serviceRuntimes">
+      <serviceRuntime
+        id="org.eclipse.jst.ws.cxf.creation.java" 
+        serviceImplementationTypeId="org.eclipse.jst.ws.cxf.wsImpl.java"
+        runtimeId="org.eclipse.jst.ws.cxf.cxfWebServiceRT"
+        bottomUp="true"
+        topDown="true"
+        class="org.eclipse.jst.ws.internal.cxf.creation.ui.wsrt.CXFWebServiceRuntime">
+
+        <required-facet-version facet="jst.web" version="2.4" allow-newer="true"/>
+        <required-facet-version facet="jst.java" version="5.0" allow-newer="true"/>
+        <required-facet-version facet="cxf.core" version="1.0" allow-newer="true"/>
+      </serviceRuntime>
+    </extension>
+
+    <!-- define support for CXF Java clients in Web projects -->
+    <extension point="org.eclipse.jst.ws.consumption.ui.clientRuntimes">
+       <clientRuntime
+          id="org.eclipse.jst.ws.cxf.consumption.web"
+          clientImplementationTypeId="org.eclipse.jst.ws.client.type.java"
+          runtimeId="org.eclipse.jst.ws.cxf.cxfWebServiceRT"
+          class="org.eclipse.jst.ws.internal.cxf.creation.ui.wsrt.CXFWebServiceRuntime">
+
+          <required-facet-version facet="jst.web" version="2.4" allow-newer="true"/>
+          <required-facet-version facet="jst.java" version="5.0" allow-newer="true"/>
+          <required-facet-version facet="cxf.core" version="1.0" allow-newer="true"/>
+       </clientRuntime>
+    </extension> 
+    
+    <!-- bugs #243286 #243290 -->
+	<extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.WSDL2JavaProjectSelectionWidgetFactory"
+             id="ProjectSelectionConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaProjectSelectionCommand"/>
+    </extension> 
+
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.Java2WSSelectSEIWidgetFactory"
+             id="Java2WSPreCheckConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSSelectSEICommand">
+       </widgetFactory>
+    </extension>
+    
+   <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.JAXWSAnnotateWidgetFactory"
+             id="JAXWSAnnotateConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.JAXWSAnnotateJavaCommand">
+       </widgetFactory>
+    </extension>
+ 
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.Java2WSConfigWidgetFactory"
+             id="Java2WSConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand">
+       </widgetFactory>
+    </extension>
+    
+    <extension point="org.eclipse.wst.command.env.ui.widgetRegistry">
+       <widgetFactory
+             class="org.eclipse.jst.ws.internal.cxf.creation.ui.widgets.WSDL2JavaConfigWidgetFactory"
+             id="WSDL2JavaConfig"
+             insertBeforeCommandId="org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand">
+       </widgetFactory>
+    </extension>
+   
+ </plugin>

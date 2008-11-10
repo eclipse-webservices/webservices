@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+    <extension point="org.eclipse.emf.ecore.generated_package">
+       <package 
+          uri = "http:///org/eclipse/jst/ws/internal/cxf/core/model.ecore" 
+          class = "org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage"
+          genModel = "model/CXF.genmodel" /> 
+    </extension>
+    
+	<extension point="org.eclipse.wst.common.project.facet.core.facets">
+       <project-facet id="cxf.core">
+          <label>%CXF_FACET_CORE_LABEL</label>
+	      <description>%CXF_FACET_CORE_DISCRIPTION</description>
+	   </project-facet>
+       
+	   <project-facet-version facet="cxf.core" version="1.0">
+	      <constraint>
+		     <and>
+      	        <requires facet="jst.web" version="[2.4"/>
+      	        <requires facet="jst.java" version="[5.0"/>
+                <conflicts facet="axis2.core" version="[1.0"/>
+                <conflicts facet="axis2.ext" version="[1.0"/>
+             </and>
+          </constraint>
+          
+          <action id="cxf.core.install" type="INSTALL">
+      	     <delegate class="org.eclipse.jst.ws.internal.cxf.facet.CXFFacetInstallDelegate"/>
+    	  </action>
+          
+          <action id="cxf.core.uninstall" type="UNINSTALL">
+             <delegate class="org.eclipse.jst.ws.internal.cxf.facet.CXFFacetUninstallDelegate"/>
+          </action>
+  	   </project-facet-version>
+       <template id="template.cxf.core">
+          <label>%CXF_CORE_TEMPLATE_LABEL</label>
+          <fixed
+               facet="cxf.core">
+          </fixed>
+          <fixed
+               facet="jst.web">
+          </fixed>
+          <fixed
+               facet="jst.java">
+          </fixed>
+          <preset
+             id="cxf.jst.web24.preset">
+          </preset>
+       </template>
+	</extension>
+	
+	<extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+       <supported>
+          <runtime-component any="true"/>
+          <facet
+             id="cxf.core"
+             version="1.0"/>
+       </supported>
+    </extension>
+
+    <extension point="org.eclipse.wst.common.project.facet.core.presets">
+       <static-preset id="cxf.jst.web24.preset">
+          <label>%CXF_FACET_JST_WEB24_PRESET_LABEL</label>
+          <description>%CXF_FACET_JST_WEB24_PRESET_DESCRIPTION</description>
+          <facet
+             id="cxf.core"
+             version="1.0">
+          </facet>
+          <facet
+             id="jst.web"
+             version="2.4">
+          </facet>
+          <facet
+             id="jst.java"
+             version="5.0">
+          </facet>
+       </static-preset>
+       <static-preset id="cxf.jst.web25.preset">
+          <label>%CXF_FACET_JST_WEB25_PRESET_LABEL</label>
+          <description>%CXF_FACET_JST_WEB25_PRESET_DESCRIPTION</description>
+          <facet
+             id="cxf.core"
+             version="1.0">
+          </facet>
+          <facet
+             id="jst.web"
+             version="2.5">
+          </facet>
+          <facet
+             id="jst.java"
+             version="5.0">
+          </facet>
+       </static-preset>
+    </extension>
+</plugin>

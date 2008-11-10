@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Merge rules used by JMerger -->
+<merge:options 
+	xmlns:merge="http://www.eclipse.org/org/eclipse/emf/codegen/jmerge/Options">
+	
+	<!-- if target is generated, transfer -->
+    <!-- change to sourceMarkup if the source is the standard -->
+    <merge:pull 
+        sourceGet="Method/getBody"
+        sourceTransfer="(\s*//\s*begin-user-code.*?//\s*end-user-code\s*)\n"
+        targetPut="Method/setBody"/>
+	
+	<merge:pull 
+		sourceGet="Method/getReturnType" 
+		targetPut="Method/setReturnType"/>
+	<merge:pull 
+		sourceGet="Method/getExceptions" 
+		targetPut="Method/addException"/>
+	
+    <merge:pull
+      sourceGet="Member/getComment"
+      targetPut="Member/setComment"/>
+    <merge:pull
+       sourceGet="Import/getName"
+       targetPut="Import/setName"/>
+    <merge:pull
+       sourceGet="CompilationUnit/getHeader"
+       targetPut="CompilationUnit/setHeader"/>
+
+<!-- Merge rules to handle annotation:
+	- With this pull rule, annotations in the target is replaced by annotations of the 
+	same name in the source.
+	- With this sweep rule, any annotation in the target that is not available in the 
+  	source is commented out. 
+  	- By default, any annotation in the source that is not in the target are pulled into the target.
+-->
+
+	<merge:pull 
+    	sourceGet="Annotation/getContents"
+    	targetPut="Annotation/setContents"/>
+   
+  	<merge:sweep select="Annotation" action="comment"/>
+		
+</merge:options>
