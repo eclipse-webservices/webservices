@@ -20,6 +20,7 @@
  * 20060810   135395 makandre@ca.ibm.com - Andrew Mak, Enable WTP Web service framework opening Java editor
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  * 20080227   119964 trungha@ca.ibm.com - Trung Ha
+ * 20081111   252062 mahutch@ca.ibm.com - Mark Hutchinson, Don't depend on AutoBuild to compile bean
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.axis.creation.ui.wsrt;
@@ -48,9 +49,9 @@ import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BUAxisDefaultin
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.AxisSkeletonDefaultingCommand;
 import org.eclipse.jst.ws.internal.axis.creation.ui.widgets.skeleton.SkeletonConfigWidgetDefaultingCommand;
 import org.eclipse.jst.ws.internal.common.StringToIProjectTransformer;
+import org.eclipse.jst.ws.internal.consumption.command.common.BuildBeanCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.ProjectName2IProjectTransformer;
-import org.eclipse.wst.command.internal.env.common.WaitForAutoBuildCommand;
 import org.eclipse.wst.command.internal.env.core.ICommandFactory;
 import org.eclipse.wst.command.internal.env.core.SimpleCommandFactory;
 import org.eclipse.wst.command.internal.env.core.data.DataMappingRegistry;
@@ -104,7 +105,8 @@ public class AxisWebService extends AbstractWebService
 			// commands.add(new SimpleFragment( "AxisServiceBeanMapping" ));
 			commands.add(new BUConfigCommand());
 			commands.add(new ValidateWSIComplianceCommand());
-			commands.add(new WaitForAutoBuildCommand());
+			//commands.add(new WaitForAutoBuildCommand());
+			commands.add(new BuildBeanCommand());
 			commands.add(new BUCodeGenOperation());
 //			commands.add(new RefreshProjectCommand());
 			commands.add(new BuildProjectCommand());
@@ -209,6 +211,9 @@ public class AxisWebService extends AbstractWebService
 	    
 	    //UpdateWEBXMLCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BUCodeGenOperation.class, "ServiceProject", new StringToIProjectTransformer());
+	    
+	    //BuildBeanCommand
+	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BuildBeanCommand.class, "Project", new StringToIProjectTransformer());
 	    
 	    //BuildProjectCommand
 	    registry.addMapping(BUAxisInputCommand.class, "ServerProject", BuildProjectCommand.class, "Project", new StringToIProjectTransformer());

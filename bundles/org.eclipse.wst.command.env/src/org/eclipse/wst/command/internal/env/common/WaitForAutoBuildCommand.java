@@ -18,7 +18,13 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
-
+/**
+ * @deprecated We should not depend on the auto build to build projects, since auto build might be off.
+ * Try using BuildBeanCommand or BuildProjectCommand to build the project instead. Also, the join() call 
+ * can lead to deadlock in some situations.
+ * @see org.eclipse.jst.ws.internal.consumption.command.common.BuildBeanCommand
+ * @see org.eclipse.jst.ws.internal.consumption.command.common.BuildProjectCommand
+*/ 
 public class WaitForAutoBuildCommand extends AbstractDataModelOperation
 {
   public IStatus execute( IProgressMonitor montitor, IAdaptable adaptable ) 
