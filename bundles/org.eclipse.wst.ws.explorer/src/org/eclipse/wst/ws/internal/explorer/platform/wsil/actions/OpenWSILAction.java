@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20081119   255374 mahutch@ca.ibm.com - Mark Hutchinson, WSE does not handle utf-8 characters in URLs
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsil.actions;
@@ -27,6 +30,7 @@ import org.eclipse.wst.ws.internal.explorer.platform.perspective.NodeManager;
 import org.eclipse.wst.ws.internal.explorer.platform.perspective.ToolManager;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataException;
 import org.eclipse.wst.ws.internal.explorer.platform.util.MultipartFormDataParser;
+import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.constants.WsilModelConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.datamodel.WsilElement;
@@ -64,6 +68,7 @@ public class OpenWSILAction extends FormAction
   public boolean run()
   {
     String wsilURL = (String)propertyTable_.get(WsilActionInputs.WSIL_URL);
+    wsilURL = URLUtils.encodeURLString(wsilURL);    
     int inspectionType = Integer.parseInt((String)propertyTable_.get(WsilActionInputs.WSIL_INSPECTION_TYPE));
     WSILPerspective wsilPerspective = controller_.getWSILPerspective();
     MessageQueue msgQueue = wsilPerspective.getMessageQueue();
