@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20081114   254672 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.fragment.impl;
@@ -227,12 +228,13 @@ public class SOAPHeaderWrapperFragment extends XSDDelegationFragment {
 		String prefix = getPrefixFromNamespaceURI(FragmentConstants.NS_URI_SOAP_ENV, namespaceTable) + FragmentConstants.COLON;
 		 
 		for (int i = 0; i < elements.length; i++) {			 			 				 
-			
-			if (mustUnderstand)
-				elements[i].setAttribute(prefix + MUST_UNDERSTAND, "1");
 
-			if (actor.length() > 0)
-				elements[i].setAttribute(prefix + ACTOR, actor);
+			if (mustUnderstand){
+				elements[i].setAttributeNS(FragmentConstants.NS_URI_SOAP_ENV, prefix + MUST_UNDERSTAND, "1");
+			}
+			if (actor.length() > 0){
+				elements[i].setAttributeNS(FragmentConstants.NS_URI_SOAP_ENV,prefix + ACTOR, actor);
+			}
 		}
 		 
 		return elements;
