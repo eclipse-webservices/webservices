@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060717   146707 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070124   167487 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080115   214955 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20081119   255374 mahutch@ca.ibm.com - Mark Hutchinson, WSE does not handle utf-8 characters in URLs
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -43,6 +44,7 @@ import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 import org.eclipse.wst.ws.internal.common.HTTPUtility;
 import org.eclipse.wst.ws.internal.datamodel.Model;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ModelConstants;
+import org.eclipse.wst.ws.internal.explorer.platform.util.URLUtils;
 import org.eclipse.wst.ws.internal.explorer.platform.util.Validator;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.FragmentConstants;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.constants.WSDLModelConstants;
@@ -109,7 +111,7 @@ public class WSDLElement extends WSDLCommonElement
 
   public void setWsdlUrl(String wsdlUrl) {
 	  HTTPUtility http = new HTTPUtility();
-	  wsdlUrl_ = http.handleRedirect(wsdlUrl);
+	  wsdlUrl_ = http.handleRedirect(URLUtils.encodeURLString(wsdlUrl));
   }
 
   public String getWsdlUrl() {
@@ -264,15 +266,18 @@ public class WSDLElement extends WSDLCommonElement
             }
           }
           xsdSchemaDirectiveURL.append(xsdSchemaDirectiveLocation);
+
+          //encode the URL so that Schemas with non-ASCII filenames can be resolved
+          String xsdSchemaDirectiveURLString = URLUtils.encodeURLString(xsdSchemaDirectiveURL.toString());      
           // resolve schema directive
           XSDSchema resolvedSchema = xsdSchemaDirective.getResolvedSchema();
-          if (resolvedSchema == null && xsdSchemaDirectiveURL.length() > 0)
-            resolvedSchema = getSchema(xsdSchemaDirectiveURL.toString());
+          if (resolvedSchema == null && xsdSchemaDirectiveURLString.length() > 0)
+            resolvedSchema = getSchema(xsdSchemaDirectiveURLString);
           if (resolvedSchema != null)
           {
-			if(!checkSchemaURI(xsdSchemaDirectiveURL.toString())){
+			if(!checkSchemaURI(xsdSchemaDirectiveURLString)){
 				schemaList_.addElement(resolvedSchema);
-				gatherSchemaDirective(resolvedSchema, xsdSchemaDirectiveURL.toString());
+				gatherSchemaDirective(resolvedSchema, xsdSchemaDirectiveURLString);
       		}
       	  }
         }
@@ -367,6 +372,7 @@ public class WSDLElement extends WSDLCommonElement
 
   private final XSDSchema getSchema(String locURI)
   {
+    locURI = URLUtils.encodeURLString(locURI);
     XSDSchema xsdSchema = XSDSchemaImpl.getSchemaForSchema(locURI);
     if (xsdSchema == null)
     {
