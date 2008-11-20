@@ -13,6 +13,7 @@
  * 20080512   222094 makandre@ca.ibm.com - Andrew Mak, Error handling when Ant template cannot be found
  * 20080618   237671 makandre@ca.ibm.com - Andrew Mak, Label on Ant files wizard is truncated
  * 20080716   238059 makandre@ca.ibm.com - Andrew Mak, New ant files wizard not working
+ * 20081023   251911 ericdp@ca.ibm.com   - Eric D. Peters, NPE in .log when choosing ant files to import
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.ui.dialog;
 
@@ -50,7 +51,6 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 	private LabelsAndIds labelsAndIdsScenario_;
 	private LabelsAndIds labelsAndIdsRuntime_;
 //	private int runtimeIdx_;
-	private Listener statusListener_;
 	
 	public AntFileImportWizardPage(String pageName,
 	            IStructuredSelection selection) {
@@ -109,7 +109,6 @@ public class AntFileImportWizardPage extends WizardResourceImportPage{
 			
 			public void widgetSelected(SelectionEvent e) {
 				handleRuntimeSelected();					
-				statusListener_.handleEvent(null);			   
 			}
 		});
 	
