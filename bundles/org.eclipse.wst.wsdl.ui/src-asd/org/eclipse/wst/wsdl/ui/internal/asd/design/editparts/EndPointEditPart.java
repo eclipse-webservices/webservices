@@ -28,7 +28,6 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
@@ -42,18 +41,15 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelCellEditorLoc
 import org.eclipse.wst.wsdl.ui.internal.asd.design.directedit.LabelEditManager;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDLabelDirectEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
-import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ComponentReferenceConnection;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IEndPoint;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
-public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, INamedEditPart
+public class EndPointEditPart extends BaseConnectedEditPart implements IFeedbackHandler, INamedEditPart
 {
   protected Label nameLabel;
   protected Label addressLabel;
   private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
   protected Figure addressBoxFigure;
-  protected ComponentReferenceConnection connectionFigure;
-  private ComponentReferenceConnection connectionFeedbackFigure;
   protected final static int MAX_ADDRESS_WIDTH = 150;
 
   protected IFigure createFigure()
@@ -204,81 +200,11 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     super.refreshVisuals();
   }
 
-  public void activate()
-  {
-    super.activate();
-    activateConnection();
-  }
-  
-  public void deactivate()
-  {
-	  super.deactivate();
-	  deactivateConnection();
-  }
-
-  protected void activateConnection()
-  {
-    if (createConnectionFigure() != null)
-    {
-      getLayer(LayerConstants.CONNECTION_LAYER).add(connectionFigure);
-    }
-  }
-
-  protected void deactivateConnection()
-  {
-    if (connectionFigure != null)
-	{
-	  getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
-	}
-    if (connectionFeedbackFigure != null)
-    {
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
-  }
-
-  protected boolean shouldDrawConnection()
-  {
-	  Object typeBeingRef = getReferencedModel();
-      if (typeBeingRef != null)
-      {
-        AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
-        if (referenceTypePart != null)
-        {
-        	return true;
-        }
-      }
-      
-      return false;
-  }
-  
-
-  public ComponentReferenceConnection createConnectionFigure()
-  {
-	  if (connectionFigure == null && shouldDrawConnection())
-	    {
-	      Object typeBeingRef = getReferencedModel();
-	      if (typeBeingRef != null)
-	      {
-	        AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
-	        if (referenceTypePart != null)
-	        {
-	          // We do reference another Type. Build a connection. We can make
-	          // assumptions about anchor positioning since an attribute can only
-	          // have a "reference" relationship, no "inheritance", no
-	          // "is-referenced-by"
-	          connectionFigure = new ComponentReferenceConnection();
-	          refreshConnections();
-	        }
-	      }
-	    }
-	    return connectionFigure;
-  }
-
-  EditPart getConnectionTargetEditPart()
+  protected AbstractGraphicalEditPart getConnectionTargetEditPart()
   {
     Object typeBeingRef = getReferencedModel();
-    if (connectionFigure != null) {
+    if (typeBeingRef != null)
+    {
       AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
       return referenceTypePart;
     }
@@ -287,14 +213,16 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   
   public void refreshConnections() {
 	  if (shouldDrawConnection()) {
-		  Object typeBeingRef = getReferencedModel();
 		  if (connectionFigure != null) {
-			  AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
+			  AbstractGraphicalEditPart referenceTypePart = getConnectionTargetEditPart();
 	          connectionFigure.setSourceAnchor(new CenteredConnectionAnchor(addressBoxFigure, CenteredConnectionAnchor.RIGHT, 0, 0));
 	          IFigure targetFigure = referenceTypePart.getFigure();
 	          connectionFigure.setTargetAnchor(new CenteredConnectionAnchor(targetFigure, CenteredConnectionAnchor.HEADER_LEFT, 0, 10));
 	          connectionFigure.setHighlight(false);
 	          connectionFigure.setVisible(true);
+	          
+	          if (connectionFeedbackFigure != null)
+	            addConnectionFeedbackFigure();
 		  }
 		  else {
 			  activateConnection();
@@ -302,6 +230,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	  }
 	  else if (connectionFigure != null){
 		  connectionFigure.setVisible(false);
+      removeConnectionFeedbackFigure();
 	  }
   }
 
@@ -315,23 +244,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(DesignViewGraphicsConstants.tableCellSelectionColor);
     
-    if (connectionFigure != null && connectionFigure.isVisible()) 
-    {
-      connectionFigure.setHighlight(true);
-
-      // remove any preexisting connection feedback figures first
-      if (connectionFeedbackFigure != null)
-      {
-        connectionFeedbackFigure.setHighlight(false);
-        getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-        connectionFeedbackFigure = null;
-      }
-      connectionFeedbackFigure = new ComponentReferenceConnection();
-      connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
-      connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
-      connectionFeedbackFigure.setHighlight(true);
-      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
-    }
+    super.addFeedback();
   }
 
   public void removeFeedback()
@@ -339,15 +252,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(figure.getParent().getBackgroundColor());
 
-    if (connectionFeedbackFigure != null)
-    {
-      connectionFeedbackFigure.setHighlight(false);
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
-    
-    if (connectionFigure != null)
-      connectionFigure.setHighlight(false);
+    super.removeFeedback();
   }
 
   // TODO: rmah: VERY UGLY HACK.... I don't see any other way to solve this
@@ -379,7 +284,14 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     if (direction == PositionConstants.EAST)
     {      
       // navigate forward along the connection (to the right)
-      return getConnectionTargetEditPart();
+      if (connectionFigure != null)
+      {
+        return getConnectionTargetEditPart();
+      }
+      else
+      {
+          return null;
+      }
     }
     
     if (direction == PositionConstants.SOUTH)

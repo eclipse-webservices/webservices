@@ -22,7 +22,6 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
@@ -31,17 +30,14 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.connections.CenteredConnectionAnchor;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.BoxComponentFigure;
-import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ComponentReferenceConnection;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingColumnLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingContentLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.layouts.BindingLayout;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
-public class BindingEditPart extends BaseEditPart
+public class BindingEditPart extends BaseConnectedEditPart
 {
-  protected ComponentReferenceConnection connectionFigure;
-  private ComponentReferenceConnection connectionFeedbackFigure;
   protected BoxComponentFigure figure;
   protected boolean isExpanded = false;
   private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
@@ -71,112 +67,26 @@ public class BindingEditPart extends BaseEditPart
     return isExpanded ? binding.getBindingContentList() : Collections.EMPTY_LIST;
   }
 
-  public void activate()
-  {
-    super.activate();
-    activateConnection();
-  }
-
-  public void deactivate()
-  {
-    super.deactivate();
-    deactivateConnection();
-  }
-
   public void addFeedback()
   {
-    super.addFeedback();
     LineBorder boxFigureLineBorder = (LineBorder) figure.getBorder();
     boxFigureLineBorder.setWidth(2);
 //    boxFigureLineBorder.setColor(ColorConstants.darkBlue);
     figure.setSelected(true);
     figure.repaint();
-    if (connectionFigure != null && connectionFigure.isVisible())
-    {
-      connectionFigure.setHighlight(true);
-      
-      // remove any preexisting connection feedback figures first
-      if (connectionFeedbackFigure != null)
-      {
-        connectionFeedbackFigure.setHighlight(false);
-        getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-        connectionFeedbackFigure = null;
-      }
-      connectionFeedbackFigure = new ComponentReferenceConnection();
-      connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
-      connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
-      connectionFeedbackFigure.setHighlight(true);
-      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
-    }
+    
+    super.addFeedback();
   }
 
   public void removeFeedback()
   {
-    super.removeFeedback();
     LineBorder boxFigureLineBorder = (LineBorder) figure.getBorder();
     boxFigureLineBorder.setWidth(1);
     boxFigureLineBorder.setColor(DesignViewGraphicsConstants.defaultForegroundColor);
     figure.setSelected(false);
     figure.repaint();
     
-    if (connectionFeedbackFigure != null)
-    {
-      connectionFeedbackFigure.setHighlight(false);
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
-    if (connectionFigure != null)
-    {
-      connectionFigure.setHighlight(false);
-    }
-  }
-
-
-  protected void activateConnection()
-  {
-    // If appropriate, create our connectionFigure and add it to the appropriate
-    // layer
-    if (createConnectionFigure() != null)
-    {
-      // Add our editpolicy as a listener on the connection, so it can stay in
-      // synch
-      // connectionFigure.addPropertyChangeListener((AttributeSelectionFeedbackPolicy)
-      // getEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE));
-      // connectionFigure.addMouseListener(this);
-      getLayer(LayerConstants.CONNECTION_LAYER).add(connectionFigure);
-    }
-  }
-
-  protected void deactivateConnection()
-  {
-    if (connectionFigure != null)
-    {
-      getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
-    }
-    if (connectionFeedbackFigure != null)
-    {
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
-  }
-
-  public ComponentReferenceConnection createConnectionFigure()
-  {
-    if (connectionFigure == null && shouldDrawConnection())
-    {
-      IBinding binding = (IBinding) getModel();
-      Object typeBeingRef = binding.getInterface();
-      if (typeBeingRef != null)
-      {
-        AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
-        if (referenceTypePart != null)
-        {
-          connectionFigure = new ComponentReferenceConnection();
-          refreshConnections();
-        }
-      }
-    }
-    return connectionFigure;
+    super.removeFeedback();
   }
 
   protected boolean shouldDrawConnection()
@@ -184,20 +94,10 @@ public class BindingEditPart extends BaseEditPart
     if (isExpanded)
     {  
       return false;
-    }  
-    IBinding binding = (IBinding) getModel();
-    Object typeBeingRef = binding.getInterface();
-    if (typeBeingRef != null)
-    {
-      AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
-      if (referenceTypePart != null)
-      {
-        return true;
-      }
     }
-    return false;
+    return super.shouldDrawConnection();
   }
-
+  
   protected void refreshVisuals()
   {
     refreshConnections();
@@ -224,7 +124,7 @@ public class BindingEditPart extends BaseEditPart
   {
     IBinding binding = (IBinding) getModel();
     Object typeBeingRef = binding.getInterface();
-    if (connectionFigure != null)
+    if (typeBeingRef != null)
     {
       AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
       return referenceTypePart;
@@ -236,16 +136,17 @@ public class BindingEditPart extends BaseEditPart
   {
     if (shouldDrawConnection())
     {
-      IBinding binding = (IBinding) getModel();
-      Object typeBeingRef = binding.getInterface();
       if (connectionFigure != null)
       {
-        AbstractGraphicalEditPart referenceTypePart = (AbstractGraphicalEditPart) getViewer().getEditPartRegistry().get(typeBeingRef);
+        AbstractGraphicalEditPart referenceTypePart = getConnectionTargetEditPart();
         IFigure refFigure= referenceTypePart.getFigure();
         connectionFigure.setSourceAnchor(new CenteredConnectionAnchor(getFigure(), CenteredConnectionAnchor.RIGHT, 0));
         connectionFigure.setTargetAnchor(new CenteredConnectionAnchor(refFigure, CenteredConnectionAnchor.HEADER_LEFT, 0, 11));
         connectionFigure.setHighlight(false);
         connectionFigure.setVisible(true);
+
+        if (connectionFeedbackFigure != null)
+          addConnectionFeedbackFigure();
       }
       else
       {
@@ -255,6 +156,7 @@ public class BindingEditPart extends BaseEditPart
     else if (connectionFigure != null)
     {
       connectionFigure.setVisible(false);
+      removeConnectionFeedbackFigure();
     }
   }
 
@@ -293,7 +195,14 @@ public class BindingEditPart extends BaseEditPart
     if (direction == PositionConstants.EAST)
     {
       // navigate forward along the connection (to the right)
-      return getConnectionTargetEditPart();
+      if (connectionFigure != null)
+      {
+        return getConnectionTargetEditPart();
+      }
+      else
+      {
+    	  return null;
+      }
     }  
     else if (direction == PositionConstants.WEST)
     {
