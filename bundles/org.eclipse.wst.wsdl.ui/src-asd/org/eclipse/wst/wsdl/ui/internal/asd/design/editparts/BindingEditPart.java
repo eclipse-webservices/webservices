@@ -241,6 +241,7 @@ public class BindingEditPart extends BaseEditPart
     else if (connectionFigure != null)
     {
       connectionFigure.setVisible(false);
+      removeConnectionFeedbackFigure();
     }
   }
 

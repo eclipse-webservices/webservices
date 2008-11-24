@@ -303,6 +303,7 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	  }
 	  else if (connectionFigure != null){
 		  connectionFigure.setVisible(false);
+		  removeConnectionFeedbackFigure();
 	  }
   }
 
