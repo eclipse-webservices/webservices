@@ -12,6 +12,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060512   121210 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers 
+ * 20080825   158366 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.*,
@@ -145,7 +146,7 @@
       	}
 		if (hasInput || !operElement.getSOAPHeaders().isEmpty())
 		{
-			out.print(wsdlPerspective.getMessage("FORM_LABEL_INVOKE_WSDL_OPERATION_DESC"));
+			out.print(wsdlPerspective.getMessage("FORM_LABEL_INVOKE_WSDL_OPERATION_DESC", operationName));
 		}
 		else
 		{
