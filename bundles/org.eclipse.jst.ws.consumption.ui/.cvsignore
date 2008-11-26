@@ -5,3 +5,4 @@ wsc-ui.jar
 @dot
 src.zip
 javaCompiler...args
+org.eclipse.jst.ws.consumption.ui_*.jar

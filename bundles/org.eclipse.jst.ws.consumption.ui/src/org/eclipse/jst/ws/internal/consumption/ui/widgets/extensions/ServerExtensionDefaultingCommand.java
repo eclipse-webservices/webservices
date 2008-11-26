@@ -17,6 +17,7 @@
  * 20080326   171705 trungha@ca.ibm.com - Trung, improve AntTask errors report
  * 20080409   219121 trungha@ca.ibm.com - Trung Ha
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
+ * 20081028   248625 ericdp@ca.ibm.com - Eric D. Peters, Exceptions running ANT tasks using inappropriate projects
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -424,16 +425,24 @@ public class ServerExtensionDefaultingCommand extends AbstractDataModelOperation
       }
       //If the project exists, ensure it supports the Web service type, Web service runtime, and server.
       if (getInitialProject() != null && getInitialProject().getName() != null && ProjectUtilities.getProject(getInitialProject().getName()).exists()) {
+    	ValidationUtils valUtils = new ValidationUtils();
+    	
 		if (WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId) == WebServiceScenario.BOTTOMUP &&
 	    		FacetUtils.isJavaProject(getInitialProject())){
-	    		ValidationUtils valUtils = new ValidationUtils();
 	    		if(!valUtils.doesServerSupportProject(serverId,getInitialProject().getName())){
 	    	    	status  = StatusUtils.errorStatus(NLS.bind(
 							ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_JAVAPROJECT,
 							new String[] { WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId), getInitialProject().getName() }));
 	    	    	env.getStatusHandler().reportError(status);
 	  		    }
-	    		}
+		} 
+		if (!valUtils.doesServerSupportProject(serverId, serviceProjectName_)) {
+			status = StatusUtils.errorStatus(NLS.bind(
+					ConsumptionUIMessages.MSG_SERVICE_SERVER_DOES_NOT_SUPPORT_PROJECT,
+					new String[] { WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId),
+							serviceProjectName_ }));
+			env.getStatusHandler().reportError(status);
+		}
 	  }
       // Determine if the selected server type has only stub runtimes associated
       // with it and if a server instance is not selected.
