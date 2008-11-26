@@ -133,7 +133,7 @@
          <attribute name="iconPath" type="string">
             <annotation>
                <documentation>
-                  A plugin relative path to some icon file for this service policy.
+                  A plugin relative path to some icon file for this service policy, or alternatively, a complete plugin path to the icon file, in format plugin://pluginName/pluginRelativePath (example plugin://com.mycompany.myplugin/icons/icon.gif)
                </documentation>
             </annotation>
          </attribute>
