@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,7 +25,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter;
 import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
@@ -86,12 +87,12 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         javaInterfaceType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaInterfaceName());
 
-        CompilationUnitChange compilationUnitChange = new CompilationUnitChange("Annotating Interface", 
-                javaInterfaceType.getCompilationUnit());
+        TextFileChange textFileChange = new TextFileChange("Annotating Interface", 
+                (IFile)javaInterfaceType.getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
-        compilationUnitChange.setEdit(multiTextEdit);
+        textFileChange.setEdit(multiTextEdit);
 
-        AnnotationUtils.getWebServiceAnnotationChange(javaInterfaceType, model, compilationUnitChange);
+        AnnotationUtils.getWebServiceAnnotationChange(javaInterfaceType, model, textFileChange);
 
         IMethod[] typeMethods = javaInterfaceType.getMethods();
         for (int i = 0; i < typeMethods.length; i++) {
@@ -99,30 +100,30 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
             if (methodAnnotationMap.get(AnnotationUtils.WEB_METHOD)) {
                 AnnotationUtils.getWebMethodAnnotationChange(javaInterfaceType, method, 
-                        compilationUnitChange);
+                		textFileChange);
             }
             if (methodAnnotationMap.get(AnnotationUtils.REQUEST_WRAPPER)) {
                 AnnotationUtils.getRequestWrapperAnnotationChange(javaInterfaceType, method, 
-                        compilationUnitChange);
+                		textFileChange);
             }
             if (methodAnnotationMap.get(AnnotationUtils.RESPONSE_WRAPPER)) {
                 AnnotationUtils.getResponseWrapperAnnotationChange(javaInterfaceType, method, 
-                        compilationUnitChange);
+                		textFileChange);
             }
             if (methodAnnotationMap.get(AnnotationUtils.WEB_PARAM)) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
                         javaInterfaceType, method);
                 for (SingleVariableDeclaration parameter : parameters) {
                     AnnotationUtils.getWebParamAnnotationChange(javaInterfaceType, method, parameter, 
-                            compilationUnitChange);
+                    		textFileChange);
                 }
             } 
         }
         
         AnnotationUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model, 
-                compilationUnitChange, false);
+        		textFileChange, false);
         
-        executeChange(monitor, compilationUnitChange, interfaceUndoChanges);
+        executeChange(monitor, textFileChange, interfaceUndoChanges);
     }
     
     private void annotateClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
@@ -130,42 +131,42 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         javaClassType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaClassName());
 
-        CompilationUnitChange compilationUnitChange = new CompilationUnitChange("Annotating Class", 
-                javaClassType.getCompilationUnit());
+        TextFileChange textFileChange = new TextFileChange("Annotating Class", 
+                (IFile)javaClassType.getCompilationUnit().getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
-        compilationUnitChange.setEdit(multiTextEdit);
+        textFileChange.setEdit(multiTextEdit);
         
-        AnnotationUtils.getWebServiceAnnotationChange(javaClassType, model, compilationUnitChange);
+        AnnotationUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
 
         IMethod[] typeMethods = javaClassType.getMethods();
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
             if (methodAnnotationMap.get(AnnotationUtils.WEB_METHOD)) {
-                AnnotationUtils.getWebMethodAnnotationChange(javaClassType, method, compilationUnitChange);
+                AnnotationUtils.getWebMethodAnnotationChange(javaClassType, method, textFileChange);
             }
             if (methodAnnotationMap.get(AnnotationUtils.REQUEST_WRAPPER)) {
                 AnnotationUtils.getRequestWrapperAnnotationChange(javaClassType, method, 
-                        compilationUnitChange);
+                		textFileChange);
             }
             if (methodAnnotationMap.get(AnnotationUtils.RESPONSE_WRAPPER)) {
                 AnnotationUtils.getResponseWrapperAnnotationChange(javaClassType, method, 
-                        compilationUnitChange);
+                		textFileChange);
             }
             if (methodAnnotationMap.get(AnnotationUtils.WEB_PARAM)) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
                         javaClassType, method);
                 for (SingleVariableDeclaration parameter : parameters) {
                     AnnotationUtils.getWebParamAnnotationChange(javaClassType, method, parameter, 
-                            compilationUnitChange);
+                    		textFileChange);
                 }
             } 
         }
         
         AnnotationUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
-                compilationUnitChange, false);
+        		textFileChange, false);
         
-        executeChange(monitor, compilationUnitChange, classUndoChanges);
+        executeChange(monitor, textFileChange, classUndoChanges);
     }
     
     private void annotateSEIClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
@@ -173,17 +174,17 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         javaClassType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaClassName());
 
-        CompilationUnitChange compilationUnitChange = new CompilationUnitChange("Annotation Changes",
-                javaClassType.getCompilationUnit());
+        TextFileChange textFileChange = new TextFileChange("Annotation Changes",
+                (IFile)javaClassType.getCompilationUnit().getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
-        compilationUnitChange.setEdit(multiTextEdit);
+        textFileChange.setEdit(multiTextEdit);
 
-        AnnotationUtils.getWebServiceAnnotationChange(javaClassType, model, compilationUnitChange);
+        AnnotationUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
         
         AnnotationUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
-                compilationUnitChange, true);
+        		textFileChange, true);
 
-        executeChange(monitor, compilationUnitChange, classUndoChanges);
+        executeChange(monitor, textFileChange, classUndoChanges);
     }
     
     private void executeChange(IProgressMonitor monitor, Change change, Stack<Change> undoChanges) 

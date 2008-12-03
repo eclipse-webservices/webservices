@@ -51,7 +51,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
-import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
@@ -65,7 +65,6 @@ import org.eclipse.text.edits.TextEditGroup;
  * @author sclarke
  * 
  */
-@SuppressWarnings("restriction")
 public final class AnnotationUtils {
     public static final String WEB_SERVICE = "WebService"; //$NON-NLS-1$
     public static final String WEB_METHOD = "WebMethod"; //$NON-NLS-1$
@@ -99,7 +98,7 @@ public final class AnnotationUtils {
     }
     
     public static TextChange getWebServiceAnnotationChange(IType type, Java2WSDataModel model, 
-            CompilationUnitChange compilationUnitChange) throws CoreException {
+    		TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
 
         CompilationUnit compilationUnit = getASTParser(source);
@@ -153,11 +152,11 @@ public final class AnnotationUtils {
 
         Annotation annotation = JAXWSAnnotations.getAnnotation(ast, WebService.class, memberValuePairs);
         return AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation, 
-                compilationUnitChange);
+        		textFileChange);
     }
 
     public static TextChange getWebMethodAnnotationChange(IType type, IMethod method, 
-            CompilationUnitChange compilationUnitChange) throws CoreException {
+    		TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = getASTParser(source);
 
@@ -174,7 +173,7 @@ public final class AnnotationUtils {
         Annotation annotation = JAXWSAnnotations.getAnnotation(ast, WebMethod.class, memberValuePairs);
 
         return AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
-                annotation, compilationUnitChange);
+                annotation, textFileChange);
     }
 
     @SuppressWarnings("unchecked")
@@ -196,7 +195,7 @@ public final class AnnotationUtils {
     }
     
     public static TextChange getWebParamAnnotationChange(IType type, final IMethod method, 
-            SingleVariableDeclaration parameter, CompilationUnitChange compilationUnitChange) 
+            SingleVariableDeclaration parameter, TextFileChange textFileChange) 
             throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = getASTParser(source);
@@ -211,11 +210,11 @@ public final class AnnotationUtils {
         Annotation annotation = JAXWSAnnotations.getAnnotation(ast, WebParam.class, memberValuePairs);
  
         return AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, 
-                rewriter, parameter, method, annotation, compilationUnitChange);
+                rewriter, parameter, method, annotation, textFileChange);
     }
 
     public static TextChange getRequestWrapperAnnotationChange(IType type, IMethod method, 
-            CompilationUnitChange compilationUnitChange) throws CoreException {
+    		TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = getASTParser(source);
 
@@ -249,11 +248,11 @@ public final class AnnotationUtils {
         Annotation annotation = JAXWSAnnotations.getAnnotation(ast, RequestWrapper.class, memberValuePairs);
 
         return AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method, 
-                annotation, compilationUnitChange);
+                annotation, textFileChange);
     }
 
     public static TextChange getResponseWrapperAnnotationChange(IType type, IMethod method,
-            CompilationUnitChange compilationUnitChange) throws CoreException {
+    		TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = getASTParser(source);
 
@@ -288,12 +287,12 @@ public final class AnnotationUtils {
         Annotation annotation = JAXWSAnnotations.getAnnotation(ast, ResponseWrapper.class, memberValuePairs);
 
         return AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method, 
-                annotation, compilationUnitChange);
+                annotation, textFileChange);
     }
 
     
     public static void getImportsChange(ICompilationUnit compilationUnit, Java2WSDataModel model, 
-            CompilationUnitChange compilationUnitChange, boolean classOnly) {
+    		TextFileChange textFileChange, boolean classOnly) {
         try {
         
             ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
@@ -315,7 +314,7 @@ public final class AnnotationUtils {
             }
             if (importRewrite.hasRecordedChanges()) {
                     TextEdit importTextEdit = importRewrite.rewriteImports(null);
-                    compilationUnitChange.addEdit(importTextEdit);
+                    textFileChange.addEdit(importTextEdit);
             }
         } catch (CoreException ce) {
             CXFCorePlugin.log(ce.getStatus());
@@ -325,7 +324,7 @@ public final class AnnotationUtils {
     @SuppressWarnings("unchecked")
     private static TextChange createTypeAnnotationChange(ICompilationUnit source, CompilationUnit 
             compilationUnit, ASTRewrite rewriter, Annotation annotation, 
-            CompilationUnitChange compilationUnitChange) throws CoreException {
+            TextFileChange textFileChange) throws CoreException {
         IProgressMonitor monitor = new NullProgressMonitor();
         IPath path = source.getResource().getFullPath();
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -347,12 +346,12 @@ public final class AnnotationUtils {
                     TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
                             .getOptions(true));
                     
-                    compilationUnitChange.addEdit(annotationTextEdit);
+                    textFileChange.addEdit(annotationTextEdit);
 
-                    compilationUnitChange.addTextEditGroup(new TextEditGroup("AA", new  //$NON-NLS-1$
+                    textFileChange.addTextEditGroup(new TextEditGroup("AA", new  //$NON-NLS-1$
                             TextEdit[] {annotationTextEdit}));
                     
-                    return compilationUnitChange;
+                    return textFileChange;
                 }
             }
         } catch (CoreException ce) {
@@ -366,7 +365,7 @@ public final class AnnotationUtils {
     @SuppressWarnings("unchecked")
     private static TextChange createMethodAnnotationChange(ICompilationUnit source, CompilationUnit 
             compilationUnit, ASTRewrite rewriter, IMethod method, Annotation annotation, 
-            CompilationUnitChange compilationUnitChange) throws CoreException {
+            TextFileChange textFileChange) throws CoreException {
         IProgressMonitor monitor = new NullProgressMonitor();
         IPath path = source.getResource().getFullPath();
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -392,11 +391,11 @@ public final class AnnotationUtils {
                             TextEdit annotationTextEdit = rewriter.rewriteAST(document, source
                                     .getJavaProject().getOptions(true));
                             
-                            compilationUnitChange.addEdit(annotationTextEdit);
-                            compilationUnitChange.addTextEditGroup(new TextEditGroup("AA", new  //$NON-NLS-1$
+                            textFileChange.addEdit(annotationTextEdit);
+                            textFileChange.addTextEditGroup(new TextEditGroup("AA", new  //$NON-NLS-1$
                                     TextEdit[] {annotationTextEdit}));
                             
-                            return compilationUnitChange;
+                            return textFileChange;
                         }
                     }
                 }
@@ -412,7 +411,7 @@ public final class AnnotationUtils {
     @SuppressWarnings("unchecked")
     private static TextChange createMethodParameterAnnotationChange(ICompilationUnit source, CompilationUnit 
             compilationUnit, ASTRewrite rewriter, SingleVariableDeclaration singleVariableDeclaration, 
-            IMethod method, Annotation annotation, CompilationUnitChange compilationUnitChange) 
+            IMethod method, Annotation annotation, TextFileChange textFileChange) 
             throws CoreException {
         IProgressMonitor monitor = new NullProgressMonitor();
         IPath path = source.getResource().getFullPath();
@@ -443,12 +442,12 @@ public final class AnnotationUtils {
                                     TextEdit annotationTextEdit = rewriter.rewriteAST(document, source
                                             .getJavaProject().getOptions(true));
                                     
-                                    compilationUnitChange.addEdit(annotationTextEdit);
+                                    textFileChange.addEdit(annotationTextEdit);
                                     
-                                    compilationUnitChange.addTextEditGroup(new TextEditGroup("AA", new  //$NON-NLS-1$
+                                    textFileChange.addTextEditGroup(new TextEditGroup("AA", new  //$NON-NLS-1$
                                             TextEdit[] {annotationTextEdit}));
                                     
-                                    return compilationUnitChange;
+                                    return textFileChange;
                                 }
                             }
                         }

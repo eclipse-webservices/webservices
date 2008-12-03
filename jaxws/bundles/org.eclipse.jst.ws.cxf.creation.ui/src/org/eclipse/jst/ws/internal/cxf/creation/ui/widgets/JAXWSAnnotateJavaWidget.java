@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,7 +26,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.jdt.internal.core.SourceMethod;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
@@ -354,39 +355,39 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             ICompilationUnit compilationUnit = type.getCompilationUnit();
             IProgressMonitor monitor =  new NullProgressMonitor();
             
-            CompilationUnitChange compilationUnitChange = new CompilationUnitChange("Annotation Changes", 
-                    compilationUnit.getPrimary());
+            TextFileChange textFileChange = new TextFileChange("Annotation Changes", 
+                    (IFile)compilationUnit.getResource());
             MultiTextEdit multiTextEdit = new MultiTextEdit();
-            compilationUnitChange.setEdit(multiTextEdit);
-            compilationUnitChange.setKeepPreviewEdits(true);
+            textFileChange.setEdit(multiTextEdit);
+            textFileChange.setKeepPreviewEdits(true);
 //            compositeChange.setSaveMode(TextFileChange.FORCE_SAVE);
 
-            AnnotationUtils.getWebServiceAnnotationChange(type, model, compilationUnitChange);
+            AnnotationUtils.getWebServiceAnnotationChange(type, model, textFileChange);
 
             IMethod[] typeMethods = type.getMethods();
             for (int i = 0; i < typeMethods.length; i++) {
                 IMethod method = typeMethods[i];
                 Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
                 if (methodAnnotationMap.get(AnnotationUtils.WEB_METHOD)) {
-                    AnnotationUtils.getWebMethodAnnotationChange(type, method, compilationUnitChange);
+                    AnnotationUtils.getWebMethodAnnotationChange(type, method, textFileChange);
                 }
                 if (methodAnnotationMap.get(AnnotationUtils.REQUEST_WRAPPER)) {
-                    AnnotationUtils.getRequestWrapperAnnotationChange(type, method, compilationUnitChange);
+                    AnnotationUtils.getRequestWrapperAnnotationChange(type, method, textFileChange);
                 }
                 if (methodAnnotationMap.get(AnnotationUtils.RESPONSE_WRAPPER)) {
-                    AnnotationUtils.getResponseWrapperAnnotationChange(type, method, compilationUnitChange);
+                    AnnotationUtils.getResponseWrapperAnnotationChange(type, method, textFileChange);
                 }
                 if (methodAnnotationMap.get(AnnotationUtils.WEB_PARAM)) {
                     List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
                             type, method);
                     for (SingleVariableDeclaration parameter : parameters) {
-                        AnnotationUtils.getWebParamAnnotationChange(type, method, parameter, compilationUnitChange);
+                        AnnotationUtils.getWebParamAnnotationChange(type, method, parameter, textFileChange);
                     }
                 } 
             }
             
-            AnnotationUtils.getImportsChange(compilationUnit, model, compilationUnitChange, false);
-            annotationPreviewViewer.getDocument().set(compilationUnitChange.getPreviewContent(monitor));
+            AnnotationUtils.getImportsChange(compilationUnit, model, textFileChange, false);
+            annotationPreviewViewer.getDocument().set(textFileChange.getPreviewContent(monitor));
 
             annotationPreviewViewer.setRedraw(true);
 
