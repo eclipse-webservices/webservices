@@ -1258,10 +1258,14 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
       for (Iterator contents = remainingModelObjects.iterator(); contents.hasNext();)
       {
         Object modelObject = (Object)contents.next();
-        if (((WSDLElement)modelObject).getElement() == child)
+
+        if (modelObject instanceof WSDLElement)
         {
-          contents.remove(); // removes the 'child' Node from the remainingModelObjects list
-          continue LOOP;
+          if (((WSDLElement)modelObject).getElement() == child)
+          {
+            contents.remove(); // removes the 'child' Node from the remainingModelObjects list
+            continue LOOP;
+          }
         }
       }
 

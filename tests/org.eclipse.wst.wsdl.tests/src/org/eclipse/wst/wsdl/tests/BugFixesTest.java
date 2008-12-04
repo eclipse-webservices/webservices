@@ -73,6 +73,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -298,6 +299,15 @@ public class BugFixesTest extends TestCase
         testInvalidXSDImports();
       }
     });
+    
+    suite.addTest(new BugFixesTest("ReconcileNonWSDLElements") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testReconcileNonWSDLElements();
+      }
+    });        
+    
     return suite;
   }
 
@@ -1670,5 +1680,59 @@ public class BugFixesTest extends TestCase
       e.printStackTrace();
       fail();
     }      
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/attachment.cgi?bugid=257279
+   */
+  public void testReconcileNonWSDLElements()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + 
+        "samples/BugFixes/ReconcileNonWSDLElements/ReconcileNonWSDLElements.wsdl", true); //$NON-NLS-1$
+            
+      Definition newDefinition = WSDLFactory.eINSTANCE.createDefinition();
+      assertNotNull("The new definition cannot be null",newDefinition);
+      
+      // The namespace in the WSDL definition is not instances of WSDLElement, it is an
+      // instances of NamespaceImpl
+      newDefinition.addNamespace("wsdl", "http://example.org"); //$NON-NLS-1$ //$NON-NLS-2$
+      newDefinition.updateElement();
+      
+      Document newDocument = newDefinition.getDocument();
+      assertNotNull("The new definition's document cannot be null",newDocument); //$NON-NLS-1$
+      Types types = (Types)definition.getTypes();
+      assertNotNull("The definition must have Types",types); //$NON-NLS-1$
+      Node typesNode = (types.getElement());
+      assertNotNull("The Types element cannot be null",typesNode); //$NON-NLS-1$
+      Node toImport = newDocument.importNode(typesNode, true);
+      
+      // Append child will call org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl.elementContentsChanged(Element)
+      // which changes isReconciling to true and calls 
+      // org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl.reconcileContents(Element) and changes isReconciling to
+      // false after.  However, due to a ClassCast exception in reconcileContents, isReconciling is never changed to
+      // false.  The result is newly added WSDL elements not showing up in the EMF model.       
+      newDefinition.getElement().appendChild(toImport);
+      
+      // The bug would have set isReconciling to true and so messages will not be reconciled
+      assertNotNull("The definition must have messages",definition.getMessages()); //$NON-NLS-1$
+      
+      Message messageToAdd = ((Message)definition.getMessage(
+        new QName("http://www.example.com/ReconcileNonWSDLElements/","NewOperationRequest"))); //$NON-NLS-1$ //$NON-NLS-2$
+      Node messageNode = messageToAdd.getElement();
+      assertNotNull("The message to add to the new definition cannot be null",messageNode); //$NON-NLS-1$
+      Node toImport2 = newDefinition.getDocument().importNode(messageNode,false);
+      
+      assertTrue("No messages should exist",newDefinition.getEMessages().size() == 0); //$NON-NLS-1$
+      newDefinition.getElement().appendChild(toImport2);
+      // The bug causes the message to be added
+      assertTrue("A message should have been added", newDefinition.getEMessages().size() == 1); //$NON-NLS-1$      
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }
   }
 }
