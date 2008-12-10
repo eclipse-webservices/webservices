@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,6 @@ import org.eclipse.wst.wsdl.ui.internal.util.ReferenceEditManagerHelper;
 import org.eclipse.wst.xsd.ui.internal.adt.edit.ComponentReferenceEditManager;
 
 public class ParameterSection extends NameSection {
-	protected static String NEW_STRING = Messages._UI_BUTTON_NEW; //$NON-NLS-1$
-	protected static String BROWSE_STRING = Messages._UI_BUTTON_BROWSE; //$NON-NLS-1$
 	protected CLabel comboLabel; 
 	protected CCombo combo;
 	protected boolean handleTypeScenario = true;
@@ -50,7 +48,8 @@ public class ParameterSection extends NameSection {
 		combo = getWidgetFactory().createCCombo(composite);
 		combo.setBackground(composite.getBackground());
 		combo.addListener(SWT.Modify, this);
-		combo.addSelectionListener(this);
+		combo.addListener(SWT.DefaultSelection, this);
+		combo.addListener(SWT.Traverse, this);
 		
 		comboLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_TYPE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		data = new FormData();
@@ -168,9 +167,16 @@ public class ParameterSection extends NameSection {
 		if (event.widget == combo) {
 			if (isListenerEnabled() && !isInDoHandle) 
 			{
-				isInDoHandle = true;
-				startDelayedEvent(event);
-				isInDoHandle = false;
+				if (event.type == SWT.Traverse) {
+					if (event.detail == SWT.TRAVERSE_ARROW_NEXT || event.detail == SWT.TRAVERSE_ARROW_PREVIOUS) {
+						isTraversing = true;
+					}
+				}
+				else {
+					isInDoHandle = true;
+					startDelayedEvent(event);
+					isInDoHandle = false;
+				}
 			}
 		}
 		else {
@@ -181,9 +187,13 @@ public class ParameterSection extends NameSection {
 	public void doHandleEvent(Event event)
 	{
 		super.doHandleEvent(event);
-		if (event.widget == combo && handleTypeScenario) {
-			handleComboSelection();
-			refresh();
+		if (event.widget == combo && !combo.isDisposed()) {
+			String selectedItem = combo.getItem(combo.getSelectionIndex());
+			if (shouldPerformComboSelection(event, selectedItem))
+			{
+				handleComboSelection();
+				refresh();
+			}
 		}
 	}
 	
@@ -257,5 +267,16 @@ public class ParameterSection extends NameSection {
 			}
 		}
 		return null;
+	}
+	
+	public void dispose()
+	{
+		if (combo != null && !combo.isDisposed())
+		{
+			combo.removeListener(SWT.Modify, this);
+			combo.removeListener(SWT.DefaultSelection, this);
+			combo.removeListener(SWT.Traverse, this);
+		}
+		super.dispose();
 	}
 }

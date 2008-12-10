@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,9 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.INamedObject;
 import org.eclipse.wst.wsdl.ui.internal.refactor.actions.RenameComponentAction;
 
 public class NameSection extends ASDAbstractSection implements IHyperlinkListener {
+	protected static final String NEW_STRING = Messages._UI_BUTTON_NEW; //$NON-NLS-1$
+	protected static final String BROWSE_STRING = Messages._UI_BUTTON_BROWSE; //$NON-NLS-1$
+	protected boolean isTraversing = false;
 	CLabel nameLabel;
 	protected Text nameText;
   /**
@@ -239,5 +242,31 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
    */
   public void linkExited(HyperlinkEvent e)
   {
+  }
+  
+  protected boolean shouldPerformComboSelection(Event event, Object selectedItem)
+  {
+    // if traversing through combobox, don't automatically pop up
+    // the browse and new dialog boxes
+    boolean wasTraversing = isTraversing;
+    if (isTraversing)
+      isTraversing = false;
+      
+    // we only care about default selecting (hitting enter in combobox)
+    // for browse.. and new..
+    if (event.type == SWT.DefaultSelection)
+    {
+      if (!(selectedItem instanceof String))
+        return false;
+      if (!(BROWSE_STRING.equals(selectedItem) || NEW_STRING.equals(selectedItem)))
+        return false;
+    }
+    
+    if (wasTraversing && selectedItem instanceof String)
+    {
+      if (BROWSE_STRING.equals(selectedItem) || NEW_STRING.equals(selectedItem))
+        return false;
+    }
+    return true;
   }
 }
