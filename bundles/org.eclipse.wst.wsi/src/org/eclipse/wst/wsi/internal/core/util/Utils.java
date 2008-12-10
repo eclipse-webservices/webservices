@@ -1,6 +1,6 @@
 /*******************************************************************************
  *
- * Copyright (c) 2002-2003 IBM Corporation, Beacon Information Technology Inc. and others.
+ * Copyright (c) 2002, 2008 IBM Corporation, Beacon Information Technology Inc. and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,9 +32,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
-import com.ibm.icu.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.commons.codec.binary.Base64;
 import org.eclipse.wst.wsi.internal.WSITestToolsPlugin;
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
@@ -48,6 +48,7 @@ import org.eclipse.wst.wsi.internal.core.report.Reporter;
 import org.eclipse.wst.wsi.internal.core.xml.XMLUtils;
 
 import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.util.StringTokenizer;
 import com.ibm.icu.util.TimeZone;
 
 /**
@@ -1264,8 +1265,8 @@ public final class Utils
   {
   	try
   	{
-    	sun.misc.BASE64Decoder decoder =  new sun.misc.BASE64Decoder();
-  	    return decoder.decodeBuffer(str);
+    	Base64 decoder = new Base64();
+  	    return decoder.decode(str.getBytes());
   	}
   	catch (Exception e)
   	{
@@ -1278,8 +1279,8 @@ public final class Utils
    */
   public static String encodeBase64(byte[] buffer)
   {    
-  	sun.misc.BASE64Encoder encoder =  new sun.misc.BASE64Encoder();
-  	return encoder.encodeBuffer(buffer);  
+  	Base64 encoder = new Base64();
+  	return new String(encoder.encode(buffer));
   }
 
   public static MimeParts parseMultipartRelatedMessage(String message, String httpHeaders, String encoding)
