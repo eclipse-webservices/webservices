@@ -12,6 +12,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060427   127443 jesper@selskabet.org - Jesper S Moller
  * 20081106   254516 mahutch@ca.ibm.com - Mark Hutchinson, fix compilation error, remove duplicate variable declaration
+ * 20081217   259140 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.*,
@@ -642,7 +643,9 @@
 <%
    String titleImagePath = "uddi/images/find_highlighted.gif";
    String title;
-   subQueryKey = subQueryKeyProperty.getSubQueryKey();
+   //The JSP validator claims this subQueryKey variable declaration is
+   //invalid, but removing it causes the JSP not to compile on Jetty.
+   String subQueryKey = subQueryKeyProperty.getSubQueryKey();
    if (subQueryKey != null && subQueryKey.length() > 0)
    {
      int queryItem = Integer.parseInt((String)formToolPI.getProperty(UDDIActionInputs.QUERY_ITEM));
