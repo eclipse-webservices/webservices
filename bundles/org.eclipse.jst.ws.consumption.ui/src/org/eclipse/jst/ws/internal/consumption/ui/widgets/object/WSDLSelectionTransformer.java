@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20070116   159618 makandre@ca.ibm.com - Andrew Mak, Project and EAR not defaulted properly when wizard launched from JSR-109 Web services branch in J2EE Project Explorer
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20070713   191357 kathy@ca.ibm.com - Kathy Chan
+ * 20081208   257618 mahutch@ca.ibm.com - Mark Hutchinson, Add Mechanism for Adopters to map Services to WSDL URLs
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -20,6 +21,7 @@ import java.net.MalformedURLException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -30,6 +32,7 @@ import org.eclipse.jst.j2ee.webservice.wsdd.ServiceImplBean;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLURLStringWrapper;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
@@ -54,6 +57,11 @@ public class WSDLSelectionTransformer implements Transformer
         catch (MalformedURLException murle)
         {
         }
+      }
+      else if (Platform.getAdapterManager().hasAdapter(sel, WSDLURLStringWrapper.class.getName())) {
+    	Object adaptedObject = Platform.getAdapterManager().loadAdapter(sel, WSDLURLStringWrapper.class.getName());
+    	WSDLURLStringWrapper wrapper = (WSDLURLStringWrapper)adaptedObject;
+    	return new StructuredSelection(wrapper.getWSDLURLString());  		
       }
       else if (sel instanceof ServiceImpl)
       {
