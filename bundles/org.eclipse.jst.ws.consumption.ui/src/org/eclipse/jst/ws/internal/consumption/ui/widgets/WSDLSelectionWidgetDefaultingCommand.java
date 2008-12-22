@@ -15,6 +15,7 @@
  * 20070410   181827 kathy@ca.ibm.com - Kathy Chan
  * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
  * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
+ * 20081208   257618 mahutch@ca.ibm.com - Mark Hutchinson, Add Mechanism for Adopters to map Services to WSDL URLs
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -27,6 +28,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
@@ -62,7 +64,13 @@ public class WSDLSelectionWidgetDefaultingCommand extends AbstractDataModelOpera
   	    {
   	      uri_ = ifile.getFullPath().toString();
   	    }
-  	  } else if (firstSel instanceof ServiceImpl)
+  	  } 
+  	  else if (Platform.getAdapterManager().hasAdapter(firstSel, WSDLURLStringWrapper.class.getName())) {
+		Object adaptedObject = Platform.getAdapterManager().loadAdapter(firstSel, WSDLURLStringWrapper.class.getName());
+  		WSDLURLStringWrapper wrapper = (WSDLURLStringWrapper)adaptedObject;
+  		uri_ = wrapper.getWSDLURLString();  		
+  	  }
+  	  else if (firstSel instanceof ServiceImpl)
       {
         ServiceImpl serviceImpl = (ServiceImpl)firstSel;
         uri_ = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
