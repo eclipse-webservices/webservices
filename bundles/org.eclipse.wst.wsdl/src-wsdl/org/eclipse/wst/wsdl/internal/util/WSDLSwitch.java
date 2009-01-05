@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -431,13 +431,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -447,13 +447,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Port Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Port Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Port Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Port Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -463,13 +463,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Operation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Operation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Operation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Operation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -479,13 +479,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Message</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Message</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Message</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Message</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -495,13 +495,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Part</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Part</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Part</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Part</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -511,13 +511,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Binding</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Binding</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Binding</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Binding</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -527,13 +527,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Binding Operation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Binding Operation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Binding Operation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Binding Operation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -543,13 +543,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Service</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Service</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Service</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Service</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -559,13 +559,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Port</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Port</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Port</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Port</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -575,13 +575,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -591,13 +591,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Definition</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Definition</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Definition</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Definition</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -607,13 +607,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Import</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Import</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Import</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Import</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -623,13 +623,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Extensible Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Extensible Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Extensible Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Extensible Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -639,13 +639,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Input</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Input</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Input</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Input</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -655,13 +655,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Output</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Output</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Output</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Output</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -671,13 +671,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Fault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Fault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Fault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Fault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -687,13 +687,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Binding Input</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Binding Input</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Binding Input</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Binding Input</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -703,13 +703,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Binding Output</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Binding Output</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Binding Output</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Binding Output</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -719,13 +719,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Binding Fault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Binding Fault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Binding Fault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Binding Fault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -735,13 +735,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Namespace</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Namespace</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Namespace</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Namespace</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -751,13 +751,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IPort Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IPort Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IPort Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IPort Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -767,13 +767,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IOperation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IOperation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IOperation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IOperation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -783,13 +783,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IInput</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IInput</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IInput</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IInput</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -799,13 +799,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IOutput</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IOutput</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IOutput</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IOutput</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -815,13 +815,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IFault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IFault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IFault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IFault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -831,13 +831,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IMessage</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IMessage</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IMessage</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IMessage</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -847,13 +847,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IPart</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IPart</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IPart</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IPart</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -863,13 +863,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IService</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IService</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IService</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IService</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -879,13 +879,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IPort</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IPort</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IPort</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IPort</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -895,13 +895,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IBinding</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IBinding</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IBinding</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IBinding</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -911,13 +911,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IBinding Operation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IBinding Operation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IBinding Operation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IBinding Operation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -927,13 +927,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IBinding Input</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IBinding Input</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IBinding Input</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IBinding Input</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -943,13 +943,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IBinding Output</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IBinding Output</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IBinding Output</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IBinding Output</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -959,13 +959,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IBinding Fault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IBinding Fault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IBinding Fault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IBinding Fault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -975,13 +975,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -991,13 +991,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IDefinition</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IDefinition</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IDefinition</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IDefinition</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1007,13 +1007,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IImport</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IImport</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IImport</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IImport</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1023,13 +1023,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IList</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IList</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IList</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IList</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1039,13 +1039,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IMap</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IMap</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IMap</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IMap</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1055,13 +1055,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IURL</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IURL</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IURL</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IURL</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1071,13 +1071,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IExtension Registry</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IExtension Registry</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IExtension Registry</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IExtension Registry</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1087,13 +1087,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Types</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Types</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Types</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Types</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1103,13 +1103,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IIterator</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IIterator</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IIterator</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IIterator</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1119,13 +1119,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ITypes</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ITypes</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ITypes</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ITypes</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1135,13 +1135,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Unknown Extensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Unknown Extensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Unknown Extensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Unknown Extensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1151,13 +1151,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>XSD Schema Extensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>XSD Schema Extensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>XSD Schema Extensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>XSD Schema Extensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1167,13 +1167,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Message Reference</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Message Reference</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Message Reference</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Message Reference</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -1183,13 +1183,13 @@ public class WSDLSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch, but this is the last case anyway.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject)
    * @generated
    */

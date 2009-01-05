@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -237,13 +237,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Binding</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Binding</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Binding</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Binding</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -253,13 +253,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Body</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Body</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Body</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Body</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -269,13 +269,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Header Base</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Header Base</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Header Base</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Header Base</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -285,13 +285,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Fault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Fault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Fault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Fault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -301,13 +301,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Operation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Operation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Operation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Operation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -317,13 +317,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Address</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Address</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Address</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Address</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -333,13 +333,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Header Fault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Header Fault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Header Fault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Header Fault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -349,13 +349,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Header</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Header</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Header</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Header</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -365,13 +365,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ISOAP Binding</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ISOAP Binding</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ISOAP Binding</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ISOAP Binding</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -381,13 +381,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ISOAP Address</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ISOAP Address</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ISOAP Address</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ISOAP Address</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -397,13 +397,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ISOAP Body</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ISOAP Body</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ISOAP Body</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ISOAP Body</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -413,13 +413,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ISOAP Fault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ISOAP Fault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ISOAP Fault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ISOAP Fault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -429,13 +429,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ISOAP Operation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ISOAP Operation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ISOAP Operation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ISOAP Operation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -445,13 +445,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ISOAP Header Fault</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ISOAP Header Fault</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ISOAP Header Fault</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ISOAP Header Fault</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -461,13 +461,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>ISOAP Header</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>ISOAP Header</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>ISOAP Header</em>'.
+   * @return the result of interpreting the object as an instance of '<em>ISOAP Header</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -477,13 +477,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -493,13 +493,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -509,13 +509,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -525,13 +525,13 @@ public class SOAPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch, but this is the last case anyway.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject)
    * @generated
    */

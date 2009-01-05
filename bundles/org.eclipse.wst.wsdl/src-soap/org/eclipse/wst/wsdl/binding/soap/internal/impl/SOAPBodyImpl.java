@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -112,7 +112,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * @generated
    * @ordered
    */
-  protected EList eEncodingStyles = null;
+  protected EList eEncodingStyles;
 
   /**
    * The cached value of the '{@link #getEParts() <em>EParts</em>}' reference list.
@@ -122,7 +122,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * @generated
    * @ordered
    */
-  protected EList eParts = null;
+  protected EList eParts;
 
   /**
    * The cached value of the '{@link #getParts() <em>Parts</em>}' reference list.
@@ -132,7 +132,7 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
    * @generated NOT
    * @ordered
    */
-  protected List parts = null;
+  protected List parts;
 
   /**
    * <!-- begin-user-doc -->

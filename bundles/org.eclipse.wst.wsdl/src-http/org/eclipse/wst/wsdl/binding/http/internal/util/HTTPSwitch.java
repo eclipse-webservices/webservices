@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -187,13 +187,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Binding</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Binding</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Binding</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Binding</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -203,13 +203,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Operation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Operation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Operation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Operation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -219,13 +219,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Url Replacement</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Url Replacement</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Url Replacement</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Url Replacement</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -235,13 +235,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Url Encoded</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Url Encoded</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Url Encoded</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Url Encoded</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -251,13 +251,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Address</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Address</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Address</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Address</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -267,13 +267,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IHTTP Address</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IHTTP Address</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IHTTP Address</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IHTTP Address</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -283,13 +283,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IHTTP Binding</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IHTTP Binding</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IHTTP Binding</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IHTTP Binding</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -299,13 +299,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IHTTP Operation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IHTTP Operation</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IHTTP Operation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IHTTP Operation</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -315,13 +315,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IHTTP Url Encoded</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IHTTP Url Encoded</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IHTTP Url Encoded</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IHTTP Url Encoded</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -331,13 +331,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IHTTP Url Replacement</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IHTTP Url Replacement</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IHTTP Url Replacement</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IHTTP Url Replacement</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -347,13 +347,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -363,13 +363,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>IExtensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IExtensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -379,13 +379,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>Extensibility Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Extensibility Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
@@ -395,13 +395,13 @@ public class HTTPSwitch
   }
 
   /**
-   * Returns the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch, but this is the last case anyway.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpretting the object as an instance of '<em>EObject</em>'.
+   * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject)
    * @generated
    */

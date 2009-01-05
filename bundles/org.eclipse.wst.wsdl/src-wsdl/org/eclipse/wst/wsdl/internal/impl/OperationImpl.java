@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -143,7 +143,7 @@ public class OperationImpl extends ExtensibleElementImpl implements Operation
    * @generated
    * @ordered
    */
-  protected Input eInput = null;
+  protected Input eInput;
 
   /**
    * The cached value of the '{@link #getEOutput() <em>EOutput</em>}' containment reference.
@@ -153,7 +153,7 @@ public class OperationImpl extends ExtensibleElementImpl implements Operation
    * @generated
    * @ordered
    */
-  protected Output eOutput = null;
+  protected Output eOutput;
 
   /**
    * The cached value of the '{@link #getEFaults() <em>EFaults</em>}' containment reference list.
@@ -163,7 +163,7 @@ public class OperationImpl extends ExtensibleElementImpl implements Operation
    * @generated
    * @ordered
    */
-  protected EList eFaults = null;
+  protected EList eFaults;
 
   /**
    * The cached value of the '{@link #getEParameterOrdering() <em>EParameter Ordering</em>}' reference list.
@@ -173,7 +173,7 @@ public class OperationImpl extends ExtensibleElementImpl implements Operation
    * @generated
    * @ordered
    */
-  protected EList eParameterOrdering = null; // a list of parts (EMF)
+  protected EList eParameterOrdering; // a list of parts (EMF)
 
   private List parameterOrdering = null; // a list of part names (WSDL4J)
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -207,7 +207,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated
    * @ordered
    */
-  protected EList eImports = null;
+  protected EList eImports;
 
   /**
    * The cached value of the '{@link #getETypes() <em>ETypes</em>}' containment reference.
@@ -217,7 +217,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated
    * @ordered
    */
-  protected Types eTypes = null;
+  protected Types eTypes;
 
   /**
    * The cached value of the '{@link #getEMessages() <em>EMessages</em>}' containment reference list.
@@ -227,7 +227,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated
    * @ordered
    */
-  protected EList eMessages = null;
+  protected EList eMessages;
 
   /**
    * The cached value of the '{@link #getEPortTypes() <em>EPort Types</em>}' containment reference list.
@@ -237,7 +237,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated
    * @ordered
    */
-  protected EList ePortTypes = null;
+  protected EList ePortTypes;
 
   /**
    * The cached value of the '{@link #getEBindings() <em>EBindings</em>}' containment reference list.
@@ -247,7 +247,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated
    * @ordered
    */
-  protected EList eBindings = null;
+  protected EList eBindings;
 
   /**
    * The cached value of the '{@link #getEServices() <em>EServices</em>}' containment reference list.
@@ -257,7 +257,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated
    * @ordered
    */
-  protected EList eServices = null;
+  protected EList eServices;
 
   /**
    * The cached value of the '{@link #getENamespaces() <em>ENamespaces</em>}' containment reference list.
@@ -267,7 +267,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
    * @generated
    * @ordered
    */
-  protected EList eNamespaces = null;
+  protected EList eNamespaces;
 
   private ExtensionRegistry extensionRegistry;
 
@@ -2320,14 +2320,14 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     if (types != null)
     {
       Iterator iterator = types.getEExtensibilityElements().iterator();
-      while(iterator.hasNext())
+      while (iterator.hasNext())
       {
         ExtensibilityElement extensibilityElement = (ExtensibilityElement)iterator.next();
         if (!(extensibilityElement instanceof XSDSchemaExtensibilityElement))
         {
           continue;
         }
-        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement) extensibilityElement;
+        XSDSchemaExtensibilityElement el = (XSDSchemaExtensibilityElement)extensibilityElement;
         XSDSchema schema = el.getSchema();
         if (schema != null)
         {
@@ -2347,7 +2347,6 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     }
   }
 
-
   /** 
    *  This method will collect the schemas matching the namespace
    *  that are inlined directly within this definition.
@@ -2362,11 +2361,11 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       List schemas = types.getSchemas();
       Iterator schemasIterator = schemas.iterator();
-      while(schemasIterator.hasNext())
+      while (schemasIterator.hasNext())
       {
         XSDSchema schema = (XSDSchema)schemasIterator.next();
         String targetNamespace = schema.getTargetNamespace();
-        
+
         if (WSDLConstants.isMatchingNamespace(namespace, targetNamespace))
         {
           list.add(schema);
@@ -2374,7 +2373,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
 
         EList schemaContents = schema.getContents();
         Iterator schemaContentsIterator = schemaContents.iterator();
-        
+
         while (schemaContentsIterator.hasNext())
         {
           Object component = schemaContentsIterator.next();
@@ -2412,12 +2411,12 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     {
       Import theImport = (Import)importsIterator.next();
       String importNamespaceURI = theImport.getNamespaceURI();
-      
+
       if (WSDLConstants.isMatchingNamespace(importNamespaceURI, namespace))
       {
         ((ImportImpl)theImport).importDefinitionOrSchema();
         XSDSchema schema = theImport.getESchema();
-        
+
         if (schema != null && WSDLConstants.isMatchingNamespace(schema.getTargetNamespace(), namespace))
         {
           list.add(schema);
@@ -2446,7 +2445,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
         importedDefinition.collectInlinedSchemas(namespace, list);
       }
     }
-  }  
+  }
 
   /**
    * Propagates the change in the target namespace to all the top level named components.
@@ -2483,7 +2482,7 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
       if (enclosingDefinition != null)
       {
         String targetNamespace = enclosingDefinition.getTargetNamespace();
-        
+
         QName componentQName = getQNameForWSDLElement(componentType, wsdlElement);
 
         if (componentQName != null)
@@ -2507,16 +2506,16 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
     switch (type)
     {
       case WSDLConstants.MESSAGE:
-        ((Message)wsdlElement).setQName(qName);
+      ((Message)wsdlElement).setQName(qName);
         break;
       case WSDLConstants.PORT_TYPE:
-        ((PortType)wsdlElement).setQName(qName);
+      ((PortType)wsdlElement).setQName(qName);
         break;
       case WSDLConstants.BINDING:
-        ((Binding)wsdlElement).setQName(qName);
+      ((Binding)wsdlElement).setQName(qName);
         break;
       case WSDLConstants.SERVICE:
-        ((Service)wsdlElement).setQName(qName);
+      ((Service)wsdlElement).setQName(qName);
         break;
     }
   }

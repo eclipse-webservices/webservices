@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public interface ExtensibleElement extends WSDLElement
    * @return the value of the '<em>EFault</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model kind="operation" many="false"
+   * @model kind="operation" type="org.eclipse.wst.wsdl.IList" many="false"
    * @generated
    */
   List getExtensibilityElements();
@@ -76,7 +76,7 @@ public interface ExtensibleElement extends WSDLElement
    * @param extElement An ExtensibilityElement to be added.
    * @ignore
    * <!-- end-user-doc -->
-   * @model
+   * @model extElementType="org.eclipse.wst.wsdl.IExtensibilityElement"
    * @generated
    */
   void addExtensibilityElement(ExtensibilityElement extElement);

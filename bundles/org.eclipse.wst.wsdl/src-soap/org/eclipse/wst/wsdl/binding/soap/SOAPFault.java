@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.wst.wsdl.ExtensibilityElement;
  *
  * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPFault()
  * @model features="eEncodingStyles" 
- *        eEncodingStylesType="java.lang.String" eEncodingStylesDataType="org.eclipse.wst.wsdl.binding.soap.IString" eEncodingStylesMany="true" eEncodingStylesSuppressedGetVisibility="true"
+ *        eEncodingStylesDataType="org.eclipse.wst.wsdl.binding.soap.IString" eEncodingStylesMany="true" eEncodingStylesSuppressedGetVisibility="true" superTypes="org.eclipse.wst.wsdl.ExtensibilityElement org.eclipse.wst.wsdl.binding.soap.ISOAPFault"
  * @generated
  */
 public interface SOAPFault extends ExtensibilityElement, javax.wsdl.extensions.soap.SOAPFault

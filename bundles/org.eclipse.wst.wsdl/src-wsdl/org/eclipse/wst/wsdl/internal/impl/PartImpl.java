@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -128,7 +128,7 @@ public class PartImpl extends ExtensibleElementImpl implements Part
    * @generated
    * @ordered
    */
-  protected XSDTypeDefinition typeDefinition = null;
+  protected XSDTypeDefinition typeDefinition;
 
   /**
    * The cached value of the '{@link #getElementDeclaration() <em>Element Declaration</em>}' reference.
@@ -138,7 +138,7 @@ public class PartImpl extends ExtensibleElementImpl implements Part
    * @generated
    * @ordered
    */
-  protected XSDElementDeclaration elementDeclaration = null;
+  protected XSDElementDeclaration elementDeclaration;
 
   /**
    * The cached value of the '{@link #getEMessage() <em>EMessage</em>}' reference.
@@ -148,7 +148,7 @@ public class PartImpl extends ExtensibleElementImpl implements Part
    * @generated
    * @ordered
    */
-  protected Message eMessage = null;
+  protected Message eMessage;
 
   public static final String NS_URI_PART_EXTENSIONS = "http://schemas.xmlsoap.org/wsdl/part-extensions/";
 

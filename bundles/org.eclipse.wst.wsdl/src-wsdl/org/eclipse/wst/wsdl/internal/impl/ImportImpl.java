@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -110,7 +110,7 @@ public class ImportImpl extends ExtensibleElementImpl implements Import
    * @generated
    * @ordered
    */
-  protected Definition eDefinition = null;
+  protected Definition eDefinition;
 
   /**
    * The cached value of the '{@link #getESchema() <em>ESchema</em>}' reference.
@@ -120,7 +120,7 @@ public class ImportImpl extends ExtensibleElementImpl implements Import
    * @generated
    * @ordered
    */
-  protected XSDSchema eSchema = null;
+  protected XSDSchema eSchema;
 
   /**
    * <!-- begin-user-doc -->

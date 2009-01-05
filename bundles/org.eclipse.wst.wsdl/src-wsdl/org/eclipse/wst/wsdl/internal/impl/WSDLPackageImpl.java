@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1955,9 +1955,9 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       this.getDOMElement(),
       "element", null, 0, 1, WSDLElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    EOperation op = addEOperation(wsdlElementEClass, this.getDefinition(), "getEnclosingDefinition", 0, 1); //$NON-NLS-1$
+    addEOperation(wsdlElementEClass, this.getDefinition(), "getEnclosingDefinition", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(wsdlElementEClass, null, "setEnclosingDefinition"); //$NON-NLS-1$
+    EOperation op = addEOperation(wsdlElementEClass, null, "setEnclosingDefinition"); //$NON-NLS-1$
     addEParameter(op, this.getDefinition(), "definition", 0, 1); //$NON-NLS-1$
 
     initEClass(portTypeEClass, PortType.class, "PortType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -2191,7 +2191,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       null,
       "eNamespaces", null, 0, -1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(definitionEClass, this.getDOMDocument(), "getDocument", 0, 1); //$NON-NLS-1$
+    addEOperation(definitionEClass, this.getDOMDocument(), "getDocument", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(definitionEClass, null, "setDocument"); //$NON-NLS-1$
     addEParameter(op, this.getDOMDocument(), "document", 0, 1); //$NON-NLS-1$
@@ -2216,7 +2216,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       null,
       "eSchema", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(importEClass, theXSDPackage.getXSDSchema(), "getSchema", 0, 1); //$NON-NLS-1$
+    addEOperation(importEClass, theXSDPackage.getXSDSchema(), "getSchema", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(importEClass, null, "setSchema"); //$NON-NLS-1$
     addEParameter(op, theXSDPackage.getXSDSchema(), "schema", 0, 1); //$NON-NLS-1$
@@ -2231,7 +2231,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       null,
       "eExtensibilityElements", null, 0, -1, ExtensibleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(extensibleElementEClass, this.getIList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
+    addEOperation(extensibleElementEClass, this.getIList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(extensibleElementEClass, null, "addExtensibilityElement"); //$NON-NLS-1$
     addEParameter(op, this.getIExtensibilityElement(), "extElement", 0, 1); //$NON-NLS-1$
@@ -2253,7 +2253,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       null,
       "eInput", null, 1, 1, BindingInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(bindingInputEClass, this.getIInput(), "getInput", 0, 1); //$NON-NLS-1$
+    addEOperation(bindingInputEClass, this.getIInput(), "getInput", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(bindingInputEClass, null, "setInput"); //$NON-NLS-1$
     addEParameter(op, this.getIInput(), "input", 0, 1); //$NON-NLS-1$
@@ -2269,7 +2269,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       null,
       "eOutput", null, 1, 1, BindingOutput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(bindingOutputEClass, this.getIOutput(), "getOutput", 0, 1); //$NON-NLS-1$
+    addEOperation(bindingOutputEClass, this.getIOutput(), "getOutput", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(bindingOutputEClass, null, "setOutput"); //$NON-NLS-1$
     addEParameter(op, this.getIOutput(), "output", 0, 1); //$NON-NLS-1$
@@ -2285,7 +2285,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       null,
       "eFault", null, 1, 1, BindingFault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    op = addEOperation(bindingFaultEClass, this.getIFault(), "getFault", 0, 1); //$NON-NLS-1$
+    addEOperation(bindingFaultEClass, this.getIFault(), "getFault", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(bindingFaultEClass, null, "setFault"); //$NON-NLS-1$
     addEParameter(op, this.getIFault(), "fault", 0, 1); //$NON-NLS-1$
@@ -2310,7 +2310,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, ecorePackage.getEString(), "inputName", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "outputName", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iPortTypeEClass, this.getIList(), "getOperations", 0, 1); //$NON-NLS-1$
+    addEOperation(iPortTypeEClass, this.getIList(), "getOperations", 0, 1); //$NON-NLS-1$
 
     initEClass(iOperationEClass, javax.wsdl.Operation.class, "IOperation", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
@@ -2320,40 +2320,40 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iOperationEClass, this.getIFault(), "getFault", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIMap(), "getFaults", 0, 1); //$NON-NLS-1$
+    addEOperation(iOperationEClass, this.getIMap(), "getFaults", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIList(), "getParameterOrdering", 0, 1); //$NON-NLS-1$
+    addEOperation(iOperationEClass, this.getIList(), "getParameterOrdering", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iOperationEClass, null, "setParameterOrdering"); //$NON-NLS-1$
     addEParameter(op, this.getIList(), "parameterOrder", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIInput(), "getInput", 0, 1); //$NON-NLS-1$
+    addEOperation(iOperationEClass, this.getIInput(), "getInput", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iOperationEClass, null, "setInput"); //$NON-NLS-1$
     addEParameter(op, this.getIInput(), "input", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iOperationEClass, this.getIOutput(), "getOutput", 0, 1); //$NON-NLS-1$
+    addEOperation(iOperationEClass, this.getIOutput(), "getOutput", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iOperationEClass, null, "setOutput"); //$NON-NLS-1$
     addEParameter(op, this.getIOutput(), "output", 0, 1); //$NON-NLS-1$
 
     initEClass(iInputEClass, javax.wsdl.Input.class, "IInput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iInputEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
+    addEOperation(iInputEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iInputEClass, null, "setMessage"); //$NON-NLS-1$
     addEParameter(op, this.getIMessage(), "message", 0, 1); //$NON-NLS-1$
 
     initEClass(iOutputEClass, javax.wsdl.Output.class, "IOutput", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iOutputEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
+    addEOperation(iOutputEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iOutputEClass, null, "setMessage"); //$NON-NLS-1$
     addEParameter(op, this.getIMessage(), "message", 0, 1); //$NON-NLS-1$
 
     initEClass(iFaultEClass, javax.wsdl.Fault.class, "IFault", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iFaultEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
+    addEOperation(iFaultEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iFaultEClass, null, "setMessage"); //$NON-NLS-1$
     addEParameter(op, this.getIMessage(), "message", 0, 1); //$NON-NLS-1$
@@ -2366,7 +2366,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iMessageEClass, this.getIPart(), "getPart", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iMessageEClass, this.getIMap(), "getParts", 0, 1); //$NON-NLS-1$
+    addEOperation(iMessageEClass, this.getIMap(), "getParts", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iMessageEClass, this.getIList(), "getOrderedParts", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getIList(), "partOrder", 0, 1); //$NON-NLS-1$
@@ -2378,7 +2378,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, this.getQName(), "value", 0, 1); //$NON-NLS-1$
     addEException(op, this.getWSDLException());
 
-    op = addEOperation(iPartEClass, this.getIIterator(), "getExtensionAttributeNames", 0, 1); //$NON-NLS-1$
+    addEOperation(iPartEClass, this.getIIterator(), "getExtensionAttributeNames", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iPartEClass, this.getQName(), "getExtensionAttribute", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
@@ -2388,14 +2388,14 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iServiceEClass, null, "addPort"); //$NON-NLS-1$
     addEParameter(op, this.getIPort(), "port", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iServiceEClass, this.getIMap(), "getPorts", 0, 1); //$NON-NLS-1$
+    addEOperation(iServiceEClass, this.getIMap(), "getPorts", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iServiceEClass, this.getIPort(), "getPort", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
     initEClass(iPortEClass, javax.wsdl.Port.class, "IPort", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(iPortEClass, this.getIBinding(), "getBinding", 0, 1); //$NON-NLS-1$
+    addEOperation(iPortEClass, this.getIBinding(), "getBinding", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iPortEClass, null, "setBinding"); //$NON-NLS-1$
     addEParameter(op, this.getIBinding(), "binding", 0, 1); //$NON-NLS-1$
@@ -2410,9 +2410,9 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, ecorePackage.getEString(), "inputName", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "outputName", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingEClass, this.getIList(), "getBindingOperations", 0, 1); //$NON-NLS-1$
+    addEOperation(iBindingEClass, this.getIList(), "getBindingOperations", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingEClass, this.getIPortType(), "getPortType", 0, 1); //$NON-NLS-1$
+    addEOperation(iBindingEClass, this.getIPortType(), "getPortType", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iBindingEClass, null, "setPortType"); //$NON-NLS-1$
     addEParameter(op, this.getIPortType(), "portType", 0, 1); //$NON-NLS-1$
@@ -2428,19 +2428,19 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iBindingOperationEClass, this.getIBindingFault(), "getBindingFault", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIMap(), "getBindingFaults", 0, 1); //$NON-NLS-1$
+    addEOperation(iBindingOperationEClass, this.getIMap(), "getBindingFaults", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIOperation(), "getOperation", 0, 1); //$NON-NLS-1$
+    addEOperation(iBindingOperationEClass, this.getIOperation(), "getOperation", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iBindingOperationEClass, null, "setOperation"); //$NON-NLS-1$
     addEParameter(op, this.getIOperation(), "operation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIBindingInput(), "getBindingInput", 0, 1); //$NON-NLS-1$
+    addEOperation(iBindingOperationEClass, this.getIBindingInput(), "getBindingInput", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iBindingOperationEClass, null, "setBindingInput"); //$NON-NLS-1$
     addEParameter(op, this.getIBindingInput(), "bindingInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iBindingOperationEClass, this.getIBindingOutput(), "getBindingOutput", 0, 1); //$NON-NLS-1$
+    addEOperation(iBindingOperationEClass, this.getIBindingOutput(), "getBindingOutput", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iBindingOperationEClass, null, "setBindingOutput"); //$NON-NLS-1$
     addEParameter(op, this.getIBindingOutput(), "bindingOutput", 0, 1); //$NON-NLS-1$
@@ -2480,42 +2480,42 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iDefinitionEClass, null, "addService"); //$NON-NLS-1$
     addEParameter(op, this.getIService(), "service", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingFault(), "createBindingFault", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIBindingFault(), "createBindingFault", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingInput(), "createBindingInput", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIBindingInput(), "createBindingInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingOutput(), "createBindingOutput", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIBindingOutput(), "createBindingOutput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBindingOperation(), "createBindingOperation", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIBindingOperation(), "createBindingOperation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIBinding(), "createBinding", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIBinding(), "createBinding", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIFault(), "createFault", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIFault(), "createFault", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIImport(), "createImport", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIImport(), "createImport", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIInput(), "createInput", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIInput(), "createInput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMessage(), "createMessage", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIMessage(), "createMessage", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIOperation(), "createOperation", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIOperation(), "createOperation", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIOutput(), "createOutput", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIOutput(), "createOutput", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPart(), "createPart", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIPart(), "createPart", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPort(), "createPort", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIPort(), "createPort", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIPortType(), "createPortType", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIPortType(), "createPortType", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIService(), "createService", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIService(), "createService", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, this.getIBinding(), "getBinding", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getBindings", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIMap(), "getBindings", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getImports", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIMap(), "getImports", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, this.getIList(), "getImports", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1); //$NON-NLS-1$
@@ -2523,17 +2523,17 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iDefinitionEClass, this.getIMessage(), "getMessage", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getMessages", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIMap(), "getMessages", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getNamespace", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "prefix", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getNamespaces", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIMap(), "getNamespaces", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, this.getIPortType(), "getPortType", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getPortTypes", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIMap(), "getPortTypes", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getPrefix", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1); //$NON-NLS-1$
@@ -2541,19 +2541,19 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iDefinitionEClass, this.getIService(), "getService", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIMap(), "getServices", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIMap(), "getServices", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getIExtensionRegistry(), "getExtensionRegistry", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getIExtensionRegistry(), "getExtensionRegistry", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, null, "setExtensionRegistry"); //$NON-NLS-1$
     addEParameter(op, this.getIExtensionRegistry(), "extensionRegistry", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getDocumentBaseURI", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, ecorePackage.getEString(), "getDocumentBaseURI", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, null, "setDocumentBaseURI"); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "documentBase", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getITypes(), "createTypes", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getITypes(), "createTypes", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, this.getIService(), "removeService", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
@@ -2567,7 +2567,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     op = addEOperation(iDefinitionEClass, this.getIMessage(), "removeMessage", 0, 1); //$NON-NLS-1$
     addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(iDefinitionEClass, this.getITypes(), "getTypes", 0, 1); //$NON-NLS-1$
+    addEOperation(iDefinitionEClass, this.getITypes(), "getTypes", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(iDefinitionEClass, null, "setTypes"); //$NON-NLS-1$
     addEParameter(op, this.getITypes(), "types", 0, 1); //$NON-NLS-1$
@@ -2587,7 +2587,7 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
 
     initEClass(typesEClass, Types.class, "Types", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(typesEClass, this.getIList(), "getSchemas", 0, 1); //$NON-NLS-1$
+    addEOperation(typesEClass, this.getIList(), "getSchemas", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(typesEClass, this.getIList(), "getSchemas", 0, 1); //$NON-NLS-1$
     addEParameter(op, ecorePackage.getEString(), "namespaceURI", 0, 1); //$NON-NLS-1$

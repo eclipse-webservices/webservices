@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ package org.eclipse.wst.wsdl;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingOutput()
- * @model
+ * @model superTypes="org.eclipse.wst.wsdl.ExtensibleElement org.eclipse.wst.wsdl.IBindingOutput"
  * @generated
  */
 public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutput
@@ -95,7 +95,7 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * @return the value of the '<em>EOutput</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model kind="operation"
+   * @model kind="operation" type="org.eclipse.wst.wsdl.IOutput"
    * @generated
    */
   javax.wsdl.Output getOutput();
@@ -107,7 +107,7 @@ public interface BindingOutput extends ExtensibleElement, javax.wsdl.BindingOutp
    * @param output the new value of the '<em>EOutput</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model
+   * @model outputType="org.eclipse.wst.wsdl.IOutput"
    * @generated
    */
   void setOutput(javax.wsdl.Output output);

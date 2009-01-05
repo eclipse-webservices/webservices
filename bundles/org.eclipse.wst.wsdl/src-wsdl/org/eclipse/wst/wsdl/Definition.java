@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ import org.w3c.dom.Document;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getDefinition()
- * @model
+ * @model superTypes="org.eclipse.wst.wsdl.ExtensibleElement org.eclipse.wst.wsdl.IDefinition"
  * @generated
  */
 public interface Definition extends ExtensibleElement, javax.wsdl.Definition

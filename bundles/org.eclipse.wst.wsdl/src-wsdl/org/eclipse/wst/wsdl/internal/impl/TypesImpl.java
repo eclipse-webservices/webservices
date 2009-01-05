@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -84,7 +85,7 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
       {
         continue;
       }
-      XSDSchemaExtensibilityElement xsdee = (XSDSchemaExtensibilityElement) extensibilityElement;
+      XSDSchemaExtensibilityElement xsdee = (XSDSchemaExtensibilityElement)extensibilityElement;
       if (xsdee.getSchema() != null)
       {
         arrayList.add(xsdee.getSchema());

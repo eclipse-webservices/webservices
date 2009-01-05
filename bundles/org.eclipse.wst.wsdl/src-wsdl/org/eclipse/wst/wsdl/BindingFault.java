@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ package org.eclipse.wst.wsdl;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getBindingFault()
- * @model
+ * @model superTypes="org.eclipse.wst.wsdl.ExtensibleElement org.eclipse.wst.wsdl.IBindingFault"
  * @generated
  */
 public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
@@ -94,7 +94,7 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
    * @return the value of the '<em>EFault</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model kind="operation"
+   * @model kind="operation" type="org.eclipse.wst.wsdl.IFault"
    * @generated
    */
   javax.wsdl.Fault getFault();
@@ -106,7 +106,7 @@ public interface BindingFault extends ExtensibleElement, javax.wsdl.BindingFault
    * @param fault the new value of the '<em>EFault</em>' reference.
    * @ignore
    * <!-- end-user-doc -->
-   * @model
+   * @model faultType="org.eclipse.wst.wsdl.IFault"
    * @generated
    */
   void setFault(javax.wsdl.Fault fault);

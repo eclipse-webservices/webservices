@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -97,7 +97,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * @generated
    * @ordered
    */
-  protected Operation eOperation = null;
+  protected Operation eOperation;
 
   /**
    * The cached value of the '{@link #getEBindingInput() <em>EBinding Input</em>}' containment reference.
@@ -107,7 +107,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * @generated
    * @ordered
    */
-  protected BindingInput eBindingInput = null;
+  protected BindingInput eBindingInput;
 
   /**
    * The cached value of the '{@link #getEBindingOutput() <em>EBinding Output</em>}' containment reference.
@@ -117,7 +117,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * @generated
    * @ordered
    */
-  protected BindingOutput eBindingOutput = null;
+  protected BindingOutput eBindingOutput;
 
   /**
    * The cached value of the '{@link #getEBindingFaults() <em>EBinding Faults</em>}' containment reference list.
@@ -127,7 +127,7 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
    * @generated
    * @ordered
    */
-  protected EList eBindingFaults = null;
+  protected EList eBindingFaults;
 
   /**
    * <!-- begin-user-doc -->

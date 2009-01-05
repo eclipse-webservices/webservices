@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import java.util.List;
  *
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getTypes()
- * @model
+ * @model superTypes="org.eclipse.wst.wsdl.ExtensibleElement org.eclipse.wst.wsdl.ITypes"
  * @generated
  */
 public interface Types extends ExtensibleElement, javax.wsdl.Types
@@ -39,7 +39,7 @@ public interface Types extends ExtensibleElement, javax.wsdl.Types
    * @see org.eclipse.xsd.XSDSchema
    * @ignore
    * <!-- end-user-doc -->
-   * @model kind="operation" many="false"
+   * @model kind="operation" type="org.eclipse.wst.wsdl.IList" many="false"
    * @generated
    */
   List getSchemas();
@@ -53,7 +53,7 @@ public interface Types extends ExtensibleElement, javax.wsdl.Types
    * @see org.eclipse.xsd.XSDSchema
    * @ignore
    * <!-- end-user-doc -->
-   * @model many="false"
+   * @model type="org.eclipse.wst.wsdl.IList" many="false"
    * @generated
    */
   List getSchemas(String namespaceURI);

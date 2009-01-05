@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -106,7 +106,7 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
    * @generated
    * @ordered
    */
-  protected EList eEncodingStyles = null;
+  protected EList eEncodingStyles;
 
   /**
    * The default value of the '{@link #getMessage() <em>Message</em>}' attribute.
@@ -156,7 +156,7 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
    * @generated
    * @ordered
    */
-  protected Message eMessage = null;
+  protected Message eMessage;
 
   /**
    * The cached value of the '{@link #getEPart() <em>EPart</em>}' reference.
@@ -166,7 +166,7 @@ public class SOAPHeaderBaseImpl extends ExtensibilityElementImpl implements SOAP
    * @generated
    * @ordered
    */
-  protected Part ePart = null;
+  protected Part ePart;
 
   /**
    * <!-- begin-user-doc -->

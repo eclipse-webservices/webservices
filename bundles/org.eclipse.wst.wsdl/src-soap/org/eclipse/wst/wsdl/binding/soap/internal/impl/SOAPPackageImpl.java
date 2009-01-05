@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,6 @@ import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderBase;
 import org.eclipse.wst.wsdl.binding.soap.SOAPHeaderFault;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
 import org.eclipse.wst.wsdl.binding.soap.SOAPPackage;
-import org.eclipse.xsd.XSDPackage;
 
 
 /**
@@ -214,7 +213,6 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
 
     // Initialize simple dependencies
     WSDLPackage.eINSTANCE.eClass();
-    XSDPackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
     theSOAPPackage.createPackageContents();
@@ -791,9 +789,9 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       null,
       "ePart", null, 1, 1, SOAPHeaderBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    EOperation op = addEOperation(soapHeaderBaseEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1); //$NON-NLS-1$
+    addEOperation(soapHeaderBaseEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(soapHeaderBaseEClass, null, "setEncodingStyles"); //$NON-NLS-1$
+    EOperation op = addEOperation(soapHeaderBaseEClass, null, "setEncodingStyles"); //$NON-NLS-1$
     addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1); //$NON-NLS-1$
 
     initEClass(soapFaultEClass, SOAPFault.class, "SOAPFault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -854,12 +852,12 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       javax.wsdl.extensions.soap.SOAPBody.class,
       "ISOAPBody", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1); //$NON-NLS-1$
+    addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getEncodingStyles", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(isoapBodyEClass, null, "setEncodingStyles"); //$NON-NLS-1$
     addEParameter(op, theWSDLPackage.getIList(), "encodingStyles", 0, 1); //$NON-NLS-1$
 
-    op = addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getParts", 0, 1); //$NON-NLS-1$
+    addEOperation(isoapBodyEClass, theWSDLPackage.getIList(), "getParts", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(isoapBodyEClass, null, "setParts"); //$NON-NLS-1$
     addEParameter(op, theWSDLPackage.getIList(), "parts", 0, 1); //$NON-NLS-1$
@@ -884,7 +882,7 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage
       javax.wsdl.extensions.soap.SOAPHeader.class,
       "ISOAPHeader", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-    op = addEOperation(isoapHeaderEClass, theWSDLPackage.getIList(), "getSOAPHeaderFaults", 0, 1); //$NON-NLS-1$
+    addEOperation(isoapHeaderEClass, theWSDLPackage.getIList(), "getSOAPHeaderFaults", 0, 1); //$NON-NLS-1$
 
     op = addEOperation(isoapHeaderEClass, null, "addSOAPHeaderFault"); //$NON-NLS-1$
     addEParameter(op, this.getISOAPHeaderFault(), "soapHeaderFault", 0, 1); //$NON-NLS-1$

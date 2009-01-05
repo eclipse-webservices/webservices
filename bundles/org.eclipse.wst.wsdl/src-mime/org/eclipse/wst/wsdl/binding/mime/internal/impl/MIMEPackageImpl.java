@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import org.eclipse.wst.wsdl.binding.mime.MIMEMimeXml;
 import org.eclipse.wst.wsdl.binding.mime.MIMEMultipartRelated;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPackage;
 import org.eclipse.wst.wsdl.binding.mime.MIMEPart;
-import org.eclipse.xsd.XSDPackage;
 
 
 /**
@@ -163,7 +162,6 @@ public class MIMEPackageImpl extends EPackageImpl implements MIMEPackage
 
     // Initialize simple dependencies
     WSDLPackage.eINSTANCE.eClass();
-    XSDPackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
     theMIMEPackage.createPackageContents();

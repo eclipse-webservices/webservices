@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -108,7 +108,7 @@ public interface SOAPHeaderBase extends ExtensibilityElement
    * <!-- end-user-doc -->
    * @return the value of the '<em>EEncoding Styles</em>' attribute list.
    * @see org.eclipse.wst.wsdl.binding.soap.SOAPPackage#getSOAPHeaderBase_EEncodingStyles()
-   * @model type="java.lang.String" dataType="org.eclipse.wst.wsdl.binding.soap.IString"
+   * @model dataType="org.eclipse.wst.wsdl.binding.soap.IString"
    * @generated
    */
   EList getEEncodingStyles();
@@ -212,7 +212,7 @@ public interface SOAPHeaderBase extends ExtensibilityElement
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model kind="operation" many="false"
+   * @model kind="operation" type="org.eclipse.wst.wsdl.IList" many="false"
    * @generated
    */
   List getEncodingStyles();
@@ -220,7 +220,7 @@ public interface SOAPHeaderBase extends ExtensibilityElement
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model encodingStylesMany="false"
+   * @model encodingStylesType="org.eclipse.wst.wsdl.IList" encodingStylesMany="false"
    * @generated
    */
   void setEncodingStyles(List encodingStyles);

@@ -146,7 +146,7 @@
 
 
 	<!-- define a wsdl content type -->
-	<extension point="org.eclipse.core.runtime.contentTypes">
+	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type
 			priority="high"
 			name="%xpWSDLContentType"

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 IBM Corporation and others.
+ * Copyright (c) 2006, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1665,7 +1665,6 @@ public class BugFixesTest extends TestCase
     {
       // load a wsdl that contains an xsd:import outside of wsdl:types
       Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/GetWSDLType/BadImport.wsdl", true); //$NON-NLS-1$
-      String targetNamespace = definition.getTargetNamespace();
       
       // there should only be one valid wsdl:import
       Map imports = definition.getImports();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -739,11 +739,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     if (!isAttached)
     {
       // If we're dealing with a documentation element we need to put it first in the list
-      
+
       if (referencedElement == null && WSDLConstants.nodeType(childElement) == WSDLConstants.DOCUMENTATION && !eReference.isMany())
       {
         // Here we find the first element node in the list, the documentation element needs to go before this element
-        
+
         for (Node child = adoptionParent.getFirstChild(); child != null; child = child.getNextSibling())
         {
           if (child.getNodeType() == Node.ELEMENT_NODE)
@@ -1006,7 +1006,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     return createQName(definition, prefixedName, element, false);
   }
-  
+
   /**
    * Creates a QName from a prefixed name. Takes into account locally defined
    * namespace prefixes. Selectively allows null namespace URIs.
@@ -1591,7 +1591,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
   {
     String name = element.getTagName();
     int index = name.indexOf(":"); //$NON-NLS-1$
-    String nsPrefix  = null;
+    String nsPrefix = null;
     if (index != -1)
     {
       nsPrefix = name.substring(0, index);
@@ -1605,7 +1605,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
 
     // First try to locate the namespace URI in the definition's prefix to namespace map.
     // This will provide backward compatibility for existing clients.
-    
+
     Definition enclosingDefinition = getEnclosingDefinition();
     if (enclosingDefinition != null)
     {

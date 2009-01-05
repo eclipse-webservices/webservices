@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import org.eclipse.wst.wsdl.binding.http.HTTPOperation;
 import org.eclipse.wst.wsdl.binding.http.HTTPPackage;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlEncoded;
 import org.eclipse.wst.wsdl.binding.http.HTTPUrlReplacement;
-import org.eclipse.xsd.XSDPackage;
 
 
 /**
@@ -166,7 +165,6 @@ public class HTTPPackageImpl extends EPackageImpl implements HTTPPackage
 
     // Initialize simple dependencies
     WSDLPackage.eINSTANCE.eClass();
-    XSDPackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
     theHTTPPackage.createPackageContents();
