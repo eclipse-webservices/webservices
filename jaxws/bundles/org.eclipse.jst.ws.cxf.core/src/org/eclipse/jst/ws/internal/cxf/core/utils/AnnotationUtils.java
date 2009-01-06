@@ -591,7 +591,7 @@ public final class AnnotationUtils {
         try {
             IMethod[] methods = type.getMethods();
             for (IMethod method : methods) {
-                if (JDTUtils.isPublicSMethod(method)) {
+                if (JDTUtils.isPublicMethod(method)) {
                     methodMap.put(method, getAnnotationMap(model));
                 }
             }
