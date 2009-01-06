@@ -94,7 +94,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
 
         AnnotationUtils.getWebServiceAnnotationChange(javaInterfaceType, model, textFileChange);
 
-        IMethod[] typeMethods = javaInterfaceType.getMethods();
+        IMethod[] typeMethods = JDTUtils.getPublicMethods(javaInterfaceType);
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
@@ -138,7 +138,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         
         AnnotationUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
 
-        IMethod[] typeMethods = javaClassType.getMethods();
+        IMethod[] typeMethods = JDTUtils.getPublicMethods(javaClassType);
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);

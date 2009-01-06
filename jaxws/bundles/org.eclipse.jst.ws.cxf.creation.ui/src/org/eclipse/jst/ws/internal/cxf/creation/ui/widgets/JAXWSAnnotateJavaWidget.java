@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
@@ -117,11 +116,10 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         Label outlineLabel = new Label(javaTreecomposite, SWT.NONE);
         outlineLabel.setText(CXFCreationUIMessages.JAXWS_ANNOTATE_JJAVA_WIDGET_SELECT_METHOD_TO_ANNOTATE);
 
-        Tree annotationTree = new Tree(javaTreecomposite, SWT.FULL_SELECTION | SWT.BORDER | SWT.V_SCROLL
+        Tree javaTree = new Tree(javaTreecomposite, SWT.FULL_SELECTION | SWT.BORDER | SWT.V_SCROLL
                 | SWT.H_SCROLL);
-        javaTreeViewer = new TreeViewer(annotationTree);
+        javaTreeViewer = new TreeViewer(javaTree);
 
-        Tree javaTree = javaTreeViewer.getTree();
         javaTree.setHeaderVisible(true);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         gridData.heightHint = 10;
@@ -170,8 +168,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                         List<IMethod> publicMethods = new ArrayList<IMethod>();
                         IMethod[] methods = sourceType.getMethods();
                         for (IMethod method : methods) {
-                            if (Flags.isPublic(method.getFlags()) && !method.isConstructor()
-                                    && !method.isMainMethod()) {
+                            if (JDTUtils.isPublicMethod(method)) {
                                 publicMethods.add(method);
                             }
                         }
@@ -364,7 +361,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
 
             AnnotationUtils.getWebServiceAnnotationChange(type, model, textFileChange);
 
-            IMethod[] typeMethods = type.getMethods();
+            IMethod[] typeMethods = JDTUtils.getPublicMethods(type);
             for (int i = 0; i < typeMethods.length; i++) {
                 IMethod method = typeMethods[i];
                 Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
