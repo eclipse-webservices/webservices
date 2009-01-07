@@ -11,7 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20081208   257618 mahutch@ca.ibm.com - Mark Hutchinson, Add Mechanism for Adopters to map Services to WSDL URLs
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.consumption.ui.widgets;
+package org.eclipse.wst.ws.internal.wsfinder;
 
 public class WSDLURLStringWrapper {
 
