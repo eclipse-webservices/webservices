@@ -32,9 +32,9 @@ import org.eclipse.jst.j2ee.webservice.wsdd.ServiceImplBean;
 import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
-import org.eclipse.jst.ws.internal.consumption.ui.widgets.WSDLURLStringWrapper;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
+import org.eclipse.wst.ws.internal.wsfinder.WSDLURLStringWrapper;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 

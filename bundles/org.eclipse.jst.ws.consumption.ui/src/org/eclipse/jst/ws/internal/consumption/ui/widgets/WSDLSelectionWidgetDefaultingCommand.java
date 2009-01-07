@@ -38,6 +38,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
 import org.eclipse.wst.ws.internal.util.UniversalPathTransformer;
+import org.eclipse.wst.ws.internal.wsfinder.WSDLURLStringWrapper;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 
