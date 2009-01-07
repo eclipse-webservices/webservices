@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.eclipse.wst.wsi.ui.internal.actions.WSIValidateAction;
 //import org.eclipse.wst.wsi.internal.core.report.impl.DefaultReporter;
+import org.eclipse.wst.xml.core.internal.validation.core.Helper;
 
 /**
  * A Validator that performs validation on a WS-I Message Log file. 
@@ -54,6 +55,12 @@ public void cleanup(IReporter reporter) {
 
 public void validate(IValidationContext helper, IReporter reporter) throws ValidationException
  {
-	// TODO Auto-generated method stub
+	Helper hel = (Helper)helper;
+	String[] uris = hel.getURIs();
+	for(int i = 0;i < uris.length;i++){
+		IFile file = hel.getFile(uris[i]);
+		if(file != null && file.exists())
+			validate(file);
+	}
  }
 }
