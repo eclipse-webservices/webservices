@@ -577,7 +577,7 @@ public final class AnnotationUtils {
         annotationdMap.put(AnnotationUtils.WEB_METHOD, model.isGenerateWebMethodAnnotation());
         annotationdMap.put(AnnotationUtils.WEB_PARAM, model.isGenerateWebParamAnnotation());
         annotationdMap.put(AnnotationUtils.REQUEST_WRAPPER, model.isGenerateRequestWrapperAnnotation());
-        annotationdMap.put(AnnotationUtils.RESPONSE_WRAPPER, model.isGenerateWebParamAnnotation());
+        annotationdMap.put(AnnotationUtils.RESPONSE_WRAPPER, model.isGenerateResponseWrapperAnnotation());
         return annotationdMap;
     }
     
