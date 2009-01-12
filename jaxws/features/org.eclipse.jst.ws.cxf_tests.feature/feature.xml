@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.jst.ws.cxf_sdk.feature"
+      id="org.eclipse.jst.ws.cxf_tests.feature"
       label="%featureName"
       version="0.3.2.qualifier"
       provider-name="%featureProvider"
@@ -22,13 +22,5 @@
    <url>
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates"/>
    </url>
-
-   <includes
-         id="org.eclipse.jst.ws.cxf.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jst.ws.cxf.feature.source"
-         version="0.0.0"/>
 
 </feature>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.cxf.consumption.core;singleton:=true
-Bundle-Version: 0.3.2.200810071455
+Bundle-Version: 0.3.2.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.cxf.consumption.core.CXFConsumptionCorePlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
