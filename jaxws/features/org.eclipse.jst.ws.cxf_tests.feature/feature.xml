@@ -23,4 +23,8 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates"/>
    </url>
 
+   <plugin
+         id="org.eclipse.jst.ws.cfx.tests"
+         version="0.0.0"/>
+
 </feature>
