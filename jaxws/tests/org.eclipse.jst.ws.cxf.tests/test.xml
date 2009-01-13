@@ -14,10 +14,10 @@
     
     <property
         name="plugin-name"
-        value="org.eclipse.jst.cfx.tests" />
+        value="org.eclipse.jst.ws.cfx.tests" />
     <property
         name="classname"
-        value="org.eclipse.jst.cfx.tests.AllTestsSuite" />
+        value="org.eclipse.jst.ws.cfx.tests.AllTestsSuite" />
     <property
         name="testType"
         value="ui-test" />

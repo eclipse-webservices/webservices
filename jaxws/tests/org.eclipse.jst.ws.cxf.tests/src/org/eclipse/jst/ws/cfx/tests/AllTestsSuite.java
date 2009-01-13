@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.cfx.tests;
+package org.eclipse.jst.ws.cfx.tests;
 
 import junit.framework.TestSuite;
 
@@ -22,6 +22,7 @@ public class AllTestsSuite extends TestSuite {
 
 	public AllTestsSuite() {
 		super("All JAXWS Test Suites");
+		addTestSuite(EasyTest.class);
 	}
 
 	/**
