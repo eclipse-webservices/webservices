@@ -24,6 +24,20 @@
    </url>
 
    <plugin
+         id="javax.jws"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="javax.xml.ws"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="org.jdom"
+         version="0.0.0"
+         unpack="false"/>
+
+
+   <plugin
          id="org.eclipse.jst.ws.cxf.consumption.core"
          download-size="20"
          install-size="0"
