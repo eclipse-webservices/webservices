@@ -1,4 +1,4 @@
-/* Copyright (c) 2001, 2004 IBM Corporation and others.
+/* Copyright (c) 2001, 2009 IBM Corporation and others.
 * All rights reserved. This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v1.0
 * which accompanies this distribution, and is available at
@@ -57,8 +57,8 @@ public class WSDLConformanceSSBPTest extends CoreWSDLConformanceTest
   public void test_2011_1() { runTest("redundant", "2011-1", TAD_ID_SSBP); } 
   public void test_2011_2() { runTest("redundant", "2011-2", TAD_ID_SSBP); } 
   public void test_2011_3() { runTest("redundant", "2011-3", TAD_ID_SSBP); } 
-  public void test_2011_4() { runTest("redundant", "2011-4", TAD_ID_SSBP); } 
-  //public void test_2011_5() { runTest("redundant", "2011-5", TAD_ID_SSBP); } 
+  //public void test_2011_4() { runTest("redundant", "2011-4", TAD_ID_SSBP); } 
+  //public void test_2011_5() { runTest("redundant", "2011-5", TAD_ID_SSBP); }
   public void test_2021_1() { runTest("redundant", "2021-1", TAD_ID_SSBP); } 
   public void test_2021_2() { runTest("redundant", "2021-2", TAD_ID_SSBP); } 
   public void test_2021_3() { runTest("redundant", "2021-3", TAD_ID_SSBP); } 

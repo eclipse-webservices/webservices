@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.wsdl.Types;
 import javax.wsdl.extensions.ExtensibilityElement;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
 import org.eclipse.wst.wsi.internal.core.WSITag;
@@ -67,7 +67,7 @@ public class BP2122 extends AssertionProcess
       {
         // If it is an unknown ext. element and it is a schema, then check it
         if ((extElement = (ExtensibilityElement) extElements.get(i))
-          instanceof UnknownExtensibilityElement)
+          instanceof Schema)
         {
           if (!extElement.getElementType().equals(WSITag.ELEM_XSD_SCHEMA))
           {

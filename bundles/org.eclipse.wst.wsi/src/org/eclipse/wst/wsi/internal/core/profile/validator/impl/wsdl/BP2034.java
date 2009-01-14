@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.wsdl.Definition;
 import javax.wsdl.Types;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 
 import org.eclipse.wst.wsi.internal.core.WSIConstants;
 import org.eclipse.wst.wsi.internal.core.WSIException;
@@ -70,8 +70,8 @@ public class BP2034 extends AssertionProcess
       for (int i = 0; i < extElems.size(); i++)
       {
         // Getting wsdl:schema element
-        UnknownExtensibilityElement schema =
-          (UnknownExtensibilityElement) extElems.get(i);
+        Schema schema =
+          (Schema) extElems.get(i);
         // Getting a value of the attribute xmlns:xml
         String attrValue = schema.getElement().getAttributeNS(
           WSIConstants.NS_URI_XMLNS, "xml");

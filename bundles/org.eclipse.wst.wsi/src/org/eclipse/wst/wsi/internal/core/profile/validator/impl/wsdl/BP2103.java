@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.wst.wsi.internal.core.profile.validator.impl.wsdl;
 
 import javax.wsdl.Definition;
 import javax.wsdl.extensions.ExtensibilityElement;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 import javax.xml.namespace.QName;
 
 import org.eclipse.wst.wsi.internal.core.WSIException;
@@ -60,8 +60,8 @@ public class BP2103 extends AssertionProcessVisitor implements WSITag
     Object parent,
     WSDLTraversalContext ctx)
   {
-    if (el instanceof UnknownExtensibilityElement)
-      searchForImport(((UnknownExtensibilityElement) el).getElement());
+    if (el instanceof Schema)
+      searchForImport(((Schema) el).getElement());
   }
 
   /* Validates the test assertion.

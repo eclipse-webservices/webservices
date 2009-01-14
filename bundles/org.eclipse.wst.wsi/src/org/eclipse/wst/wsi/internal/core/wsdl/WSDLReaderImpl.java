@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 import com.ibm.wsdl.util.StringUtils;
 import com.ibm.wsdl.util.xml.DOMUtils;
 import com.ibm.wsdl.util.xml.QNameUtils;
@@ -234,7 +235,7 @@ catch (Exception e)
             else
             {
               QName qname = QNameUtils.newQName(element2);
-              if (Constants.XSD_QNAME_LIST.contains(qname))
+              if (SchemaConstants.XSD_QNAME_LIST.contains(qname))
               {
                 WSDLFactory wsdlfactory =
                   factoryImplName == null
@@ -445,7 +446,8 @@ catch (Exception e)
           partEl,
           Constants.ATTR_ELEMENT,
           Constants.ELEM_MESSAGE,
-          false);
+          false,
+          def);
     }
 
     catch (WSDLException we)
@@ -463,7 +465,8 @@ catch (Exception e)
         partEl,
         Constants.ATTR_TYPE,
         Constants.ELEM_MESSAGE,
-        false);
+        false,
+        def);
 
     if (name != null)
     {
@@ -496,9 +499,9 @@ catch (Exception e)
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    Map extensionAttributes = part.getExtensionAttributes();
-
-    extensionAttributes.putAll(getPartAttributes(partEl, def));
+    parseExtensibilityAttributes(partEl, Part.class, part, def);
+//    Map extensionAttributes = part.getExtensionAttributes();
+//    extensionAttributes.putAll(getPartAttributes(partEl, def));
 
     // Need to do something here to locate part definition.
 
@@ -797,5 +800,14 @@ catch (Exception e)
 
     return bindingOperation;
   }
+  
+ protected ExtensibilityElement parseSchema(Class ccc, Element elem, Definition def) throws WSDLException
+{
+   ExtensibilityElement extElem = null;
+   extElem = super.parseSchema(ccc, elem, def);
 
+   // Try to add element to list
+   addElementToList(elem, extElem);
+  return extElem;
+ }
 }

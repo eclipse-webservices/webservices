@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,13 +19,14 @@ import java.util.Vector;
 
 import javax.wsdl.Definition;
 import javax.wsdl.Types;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 
 /**
  * Plugin validator for the WSDL Validation framework. Validates inline schema found in a WSDL document.
@@ -40,7 +41,7 @@ public class InlineSchemaValidator
   public Map validate(Object element, List parents, String filename) throws Exception
   {
   	elements = new Vector();
-    UnknownExtensibilityElement elem = (UnknownExtensibilityElement) element;
+  	Schema elem = (Schema) element;
     Definition wsdlDefinition = (Definition) parents.get(parents.size() - 1);
     // Add in the namespaces defined in the doc already that aren't defined locally in this schema.
     // There is no need to check for namespaces other then in the defintions and types elements as
@@ -63,7 +64,7 @@ public class InlineSchemaValidator
 
     // If the namespace given is one of the old schema namespaces produce a warning.
     String namespace = w3celement.getNamespaceURI();
-    if(namespace.equals(Constants.NS_URI_XSD_1999) || namespace.equals(Constants.NS_URI_XSD_2000))
+    if(namespace.equals(SchemaConstants.NS_URI_XSD_1999) || namespace.equals(SchemaConstants.NS_URI_XSD_2000))
     {
       throw new Exception("An old version of the schema namespace is specified.");
     }
@@ -132,7 +133,7 @@ public class InlineSchemaValidator
       Iterator iSchemas = schemas.iterator();
       while (iSchemas.hasNext())
       {
-        UnknownExtensibilityElement extElem = (UnknownExtensibilityElement) iSchemas.next();
+    	Schema extElem = (Schema) iSchemas.next();
         String thisNamespace = extElem.getElement().getAttribute(Constants.ATTR_TARGET_NAMESPACE);
         if (thisNamespace != null && !thisNamespace.equalsIgnoreCase(targetNamespace))
         {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2003 IBM Corporation, Parasoft and others.
+ * Copyright (c) 2002, 2009 IBM Corporation, Parasoft and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import com.ibm.icu.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.wsdl.Binding;
@@ -77,6 +76,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.ibm.icu.util.StringTokenizer;
 import com.ibm.wsdl.Constants;
 import com.ibm.wsdl.util.xml.DOM2Writer;
 import com.ibm.wsdl.util.xml.DOMUtils;
@@ -1651,7 +1651,7 @@ public abstract class BaseMessageValidator
                 {
                   if (attr != null)
                     xsiType =
-                      DOMUtils.getQName(attr.getNodeValue(), (Element) m);
+                      DOMUtils.getQName(attr.getNodeValue(), (Element) m, wsdlDocument.getDefinitions());
                 }
                 catch (javax.wsdl.WSDLException we)
                 {

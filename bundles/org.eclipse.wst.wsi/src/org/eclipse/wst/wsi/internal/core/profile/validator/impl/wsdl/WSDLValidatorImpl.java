@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ import javax.wsdl.PortType;
 import javax.wsdl.Service;
 import javax.wsdl.Types;
 import javax.wsdl.extensions.ExtensibilityElement;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap.SOAPBody;
 import javax.wsdl.extensions.soap.SOAPFault;
@@ -1665,14 +1665,14 @@ public class WSDLValidatorImpl
         extElement = (ExtensibilityElement) iterator.next();
         // If this is an unknown ext. element, then see if it is a schema element
         TargetNamespaceProcessor tnsProcessor = null;
-        if (extElement instanceof UnknownExtensibilityElement)
+        if (extElement instanceof Schema)
         {
           tnsProcessor = new TargetNamespaceProcessor(definition.getDocumentBaseURI());
 
 
           if ((nextList =
             tnsProcessor.processAllSchema(
-              ((UnknownExtensibilityElement) extElement).getElement()))
+              ((Schema) extElement).getElement()))
             != null)
             if (list == null)
               list = new Vector();

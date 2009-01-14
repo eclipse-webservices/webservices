@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ import javax.wsdl.PortType;
 import javax.wsdl.Service;
 import javax.wsdl.Types;
 import javax.wsdl.extensions.ExtensibilityElement;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap.SOAPBody;
 import javax.wsdl.extensions.soap.SOAPFault;
@@ -398,9 +398,9 @@ public final class TypesRegistry implements WSITag, WSDLVisitor
       while (it.hasNext())
       {
         ExtensibilityElement el = (ExtensibilityElement) it.next();
-        if (el instanceof UnknownExtensibilityElement)
+        if (el instanceof Schema)
           searchForSchema(
-            ((UnknownExtensibilityElement) el).getElement(),
+            ((Schema) el).getElement(),
             context);
       }
     }
