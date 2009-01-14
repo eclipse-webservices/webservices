@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 
 /**
  * Tests for org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.InlineSchemaGenerator.
@@ -92,17 +93,17 @@ public class InlineSchemaGeneratorTest extends TestCase
   public void testGetNSResolver() 
   {
     Document doc = new DocumentImpl();
-	Element rootElem = doc.createElementNS(Constants.NS_URI_XSD_2001, "schema");
+	Element rootElem = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "schema");
 
 	// Check that the resolver is empty.
 	Hashtable resolver = generator.getNSResolver(rootElem);
 	assertTrue("The resolver is not empty.", resolver.isEmpty());
 	
 	// Check the resolver contains one value.
-	rootElem.setAttribute("xmlns", Constants.NS_URI_XSD_2001);
+	rootElem.setAttribute("xmlns", SchemaConstants.NS_URI_XSD_2001);
 	resolver = generator.getNSResolver(rootElem);
 	assertTrue("The resolver does not contain the empty namespace.", resolver.containsKey(""));
-	assertEquals("The resolver does not contain the correct value for the empty namespace.", Constants.NS_URI_XSD_2001, resolver.get(""));
+	assertEquals("The resolver does not contain the correct value for the empty namespace.", SchemaConstants.NS_URI_XSD_2001, resolver.get(""));
 	
 	// Check the resolver contains two values.
 	rootElem.setAttribute("xmlns:other", "http://othernamespace");
@@ -112,7 +113,7 @@ public class InlineSchemaGeneratorTest extends TestCase
 	
 	// Check the resolver still contains the empty namespace.
 	assertTrue("The resolver does not contain the empty namespace after adding a second namespace.", resolver.containsKey(""));
-	assertEquals("The resolver does not contain the correct value for the empty namespace after adding a second namespace.", Constants.NS_URI_XSD_2001, resolver.get(""));
+	assertEquals("The resolver does not contain the correct value for the empty namespace after adding a second namespace.", SchemaConstants.NS_URI_XSD_2001, resolver.get(""));
 	
 	// Check the resolver doesn't contain non-xmlns attribute value.
 	rootElem.setAttribute("type:other2", "other2:type");
@@ -127,8 +128,8 @@ public class InlineSchemaGeneratorTest extends TestCase
   {
 	// Check document that contains no required namespaces and no prefix.
 	Document doc = new DocumentImpl();
-	Element rootElem = doc.createElementNS(Constants.NS_URI_XSD_2001, "schema");
-	rootElem.setAttribute("xmlns",Constants.NS_URI_XSD_2001);
+	Element rootElem = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "schema");
+	rootElem.setAttribute("xmlns",SchemaConstants.NS_URI_XSD_2001);
 	//doc.appendChild(rootElem);
 	
 	List reqNSs = generator.getNamespacePrefixes(rootElem);
@@ -136,24 +137,24 @@ public class InlineSchemaGeneratorTest extends TestCase
 	assertEquals("The required namespace list does not contain one empty string.", "", reqNSs.get(0));
 	
 	// Check document that contains no required namespaces and the xsd prefix.
-	Element rootElem2 = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:schema");
-	rootElem2.setAttribute("xmlns:xsd",Constants.NS_URI_XSD_2001);
+	Element rootElem2 = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:schema");
+	rootElem2.setAttribute("xmlns:xsd",SchemaConstants.NS_URI_XSD_2001);
 	List reqNSs2 = generator.getNamespacePrefixes(rootElem2);
 	assertEquals("The required namespace list does not contain the one string 'xsd'.", 1, reqNSs2.size());
 	assertEquals("The required namespace list does not contain the one string 'xsd'.", "xsd", reqNSs2.get(0));
 	
 	// Check document that contains an element with a required namespace.
-	Element rootElem4 = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:schema");
-	rootElem2.setAttribute("xmlns:xsd",Constants.NS_URI_XSD_2001);
+	Element rootElem4 = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:schema");
+	rootElem2.setAttribute("xmlns:xsd",SchemaConstants.NS_URI_XSD_2001);
 	Element diffNSElem = doc.createElementNS("http://othernamespace", "other:element");
 	rootElem4.appendChild(diffNSElem);
 	List reqNSs4 = generator.getNamespacePrefixes(rootElem4);
 	assertTrue("The required namespace list does not contain the prefix 'other' when the namespace is specified for an element.", reqNSs4.contains("other"));
 	
 	// Check document that contains a type with a required namespace.
-	Element rootElem5 = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:schema");
-	rootElem5.setAttribute("xmlns:xsd",Constants.NS_URI_XSD_2001);
-	Element otherElem = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:element");
+	Element rootElem5 = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:schema");
+	rootElem5.setAttribute("xmlns:xsd",SchemaConstants.NS_URI_XSD_2001);
+	Element otherElem = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:element");
 	otherElem.setAttribute("type", "other:type");
 	rootElem5.appendChild(otherElem);
 	List reqNSs5 = generator.getNamespacePrefixes(rootElem5);
@@ -161,9 +162,9 @@ public class InlineSchemaGeneratorTest extends TestCase
 	
 	// Check document that contains an import. Import elements should be ignored.
 	// This is a contrived example as it contains a type attribute for the import element.
-	Element rootElem6 = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:schema");
-	rootElem6.setAttribute("xmlns:xsd",Constants.NS_URI_XSD_2001);
-	Element importElem = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:import");
+	Element rootElem6 = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:schema");
+	rootElem6.setAttribute("xmlns:xsd",SchemaConstants.NS_URI_XSD_2001);
+	Element importElem = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:import");
 	importElem.setAttribute("type", "other:type");
 	rootElem6.appendChild(importElem);
 	List reqNSs6 = generator.getNamespacePrefixes(rootElem6);
@@ -172,9 +173,9 @@ public class InlineSchemaGeneratorTest extends TestCase
 	
     // Check document that contains an include. Include elements should be ignored.
     // This is a contrived example as it contains a type attribute for the include element.
-	Element rootElem7 = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:schema");
-	rootElem7.setAttribute("xmlns:xsd",Constants.NS_URI_XSD_2001);
-	Element includeElem = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:include");
+	Element rootElem7 = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:schema");
+	rootElem7.setAttribute("xmlns:xsd",SchemaConstants.NS_URI_XSD_2001);
+	Element includeElem = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:include");
 	includeElem.setAttribute("type", "other:type");
 	rootElem7.appendChild(includeElem);
 	List reqNSs7 = generator.getNamespacePrefixes(rootElem6);
@@ -182,9 +183,9 @@ public class InlineSchemaGeneratorTest extends TestCase
 	assertEquals("The required namespace list does not contain the one string 'xsd' when an import element is used.", "xsd", reqNSs7.get(0));
 	
 	// Check document that contains attribute with a required namespace.
-	Element rootElem3 = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:schema");
-	rootElem3.setAttribute("xmlns:xsd",Constants.NS_URI_XSD_2001);
-	Element wsdlAttElem = doc.createElementNS(Constants.NS_URI_XSD_2001, "xsd:element");
+	Element rootElem3 = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:schema");
+	rootElem3.setAttribute("xmlns:xsd",SchemaConstants.NS_URI_XSD_2001);
+	Element wsdlAttElem = doc.createElementNS(SchemaConstants.NS_URI_XSD_2001, "xsd:element");
 	wsdlAttElem.setAttributeNS(Constants.NS_URI_WSDL, "wsdl:arrayType", "sometype[]");
 	rootElem3.appendChild(wsdlAttElem);
 	List reqNSs3 = generator.getNamespacePrefixes(rootElem3);

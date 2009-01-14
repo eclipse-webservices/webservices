@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,7 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.ExtensionDeserializer;
 import javax.wsdl.extensions.ExtensionRegistry;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.factory.WSDLFactory;
 import javax.xml.namespace.QName;
 
@@ -513,7 +514,7 @@ public class WSDLDocument
     QName portTypeName;
     try
     {
-      portTypeName = DOMUtils.getQualifiedAttributeValue(bindingEl, Constants.ATTR_TYPE, Constants.ELEM_BINDING, false);
+      portTypeName = DOMUtils.getQualifiedAttributeValue(bindingEl, Constants.ATTR_TYPE, Constants.ELEM_BINDING, false, def);
     }
     catch (Exception e)
     {
@@ -962,8 +963,8 @@ public class WSDLDocument
       }
       else
       {
-        // XML Validation will catch this
-        DOMUtils.throwWSDLException(tempEl);
+        // message allows extensibility elements
+        msg.addExtensibilityElement(parseExtensibilityElement(Message.class, tempEl, def));
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -991,7 +992,7 @@ public class WSDLDocument
     QName elementName;
     try
     {
-      elementName = DOMUtils.getQualifiedAttributeValue(partEl, Constants.ATTR_ELEMENT, Constants.ELEM_MESSAGE, false);
+      elementName = DOMUtils.getQualifiedAttributeValue(partEl, Constants.ATTR_ELEMENT, Constants.ELEM_MESSAGE, false, def);
     }
     catch (Exception e)
     {
@@ -1004,7 +1005,7 @@ public class WSDLDocument
     {
       typeName = DOMUtils.getQualifiedAttributeValue(partEl, Constants.ATTR_TYPE,
         // Corrected - was ATTR_ELEMENT
-  Constants.ELEM_MESSAGE, false);
+  Constants.ELEM_MESSAGE, false, def);
     }
     catch (Exception e)
     {
@@ -1087,7 +1088,7 @@ public class WSDLDocument
 
           try
           {
-            qValue = DOMUtils.getQName(strValue, el);
+            qValue = DOMUtils.getQName(strValue, el, def);
           }
           catch (WSDLException e)
           {
@@ -1232,6 +1233,7 @@ public class WSDLDocument
     Input input = null;
     Output output = null;
     List faults = new Vector();
+    List extElements = new ArrayList();
 
     while (tempEl != null)
     {
@@ -1255,9 +1257,8 @@ public class WSDLDocument
       }
       else
       {
-        // invalid element in the operation
-        // XML check will catch this
-        DOMUtils.throwWSDLException(tempEl);
+        // operation allows extensibility elements
+        extElements.add(parseExtensibilityElement(Operation.class, tempEl, def));
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -1450,6 +1451,15 @@ public class WSDLDocument
         }
       }
     }
+    
+    if (extElements.size() > 0)
+    {
+      Iterator extElementsIterator = extElements.iterator();
+      while (extElementsIterator.hasNext())
+      {
+          op.addExtensibilityElement((ExtensibilityElement)extElementsIterator.next());
+      }
+    }
 
     OperationType style = null;
 
@@ -1555,7 +1565,7 @@ public class WSDLDocument
     QName bindingStr;
     try
     {
-      bindingStr = DOMUtils.getQualifiedAttributeValue(portEl, Constants.ATTR_BINDING, Constants.ELEM_PORT, false);
+      bindingStr = DOMUtils.getQualifiedAttributeValue(portEl, Constants.ATTR_BINDING, Constants.ELEM_PORT, false, def);
     }
     catch (Exception e)
     {
@@ -1676,7 +1686,7 @@ public class WSDLDocument
     QName messageName = null;
     try
     {
-      messageName = DOMUtils.getQualifiedAttributeValue(inputEl, Constants.ATTR_MESSAGE, Constants.ELEM_INPUT, false);
+      messageName = DOMUtils.getQualifiedAttributeValue(inputEl, Constants.ATTR_MESSAGE, Constants.ELEM_INPUT, false, def);
     }
     catch (Exception e)
     {
@@ -1741,7 +1751,7 @@ public class WSDLDocument
     QName messageName = null;
     try
     {
-      messageName = DOMUtils.getQualifiedAttributeValue(outputEl, Constants.ATTR_MESSAGE, Constants.ELEM_OUTPUT, false);
+      messageName = DOMUtils.getQualifiedAttributeValue(outputEl, Constants.ATTR_MESSAGE, Constants.ELEM_OUTPUT, false, def);
     }
     catch (Exception e)
     {
@@ -1806,7 +1816,7 @@ public class WSDLDocument
     QName messageName = null;
     try
     {
-      messageName = DOMUtils.getQualifiedAttributeValue(faultEl, Constants.ATTR_MESSAGE, Constants.ELEM_INPUT, false);
+      messageName = DOMUtils.getQualifiedAttributeValue(faultEl, Constants.ATTR_MESSAGE, Constants.ELEM_INPUT, false, def);
     }
     catch (Exception e)
     {
@@ -1929,6 +1939,10 @@ public class WSDLDocument
     {
       Element elem = ((UnknownExtensibilityElement)extElem).getElement();
       registerChildElementsRecursively(elem);
+    } else if (extElem instanceof Schema)
+    {
+        Element elem = ((Schema)extElem).getElement();
+        registerChildElementsRecursively(elem);
     }
   }
 

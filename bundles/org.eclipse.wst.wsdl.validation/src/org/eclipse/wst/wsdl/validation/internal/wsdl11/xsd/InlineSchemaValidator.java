@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import java.util.TreeSet;
 
 import javax.wsdl.Definition;
 import javax.wsdl.Types;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.wst.wsdl.validation.internal.util.ErrorMessage;
@@ -33,6 +33,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 
 /**
  * Plugin validator for the WSDL Validation framework. Validates inline schema found in a WSDL document.
@@ -67,7 +68,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
   public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
   	List elements = new ArrayList();
-    UnknownExtensibilityElement elem = (UnknownExtensibilityElement) element;
+  	Schema elem = (Schema) element;
     Definition wsdlDefinition = (Definition) parents.get(parents.size() - 1);
     String baseLocation = wsdlDefinition.getDocumentBaseURI();
     // Add in the namespaces defined in the doc already that aren't defined locally in this schema.
@@ -89,10 +90,10 @@ public class InlineSchemaValidator implements IWSDL11Validator
 	
     // If the namespace given is one of the old schema namespaces produce a warning.
 	String namespace = w3celement.getNamespaceURI();
-	if(namespace.equals(Constants.NS_URI_XSD_1999) || namespace.equals(Constants.NS_URI_XSD_2000))
+	if(namespace.equals(SchemaConstants.NS_URI_XSD_1999) || namespace.equals(SchemaConstants.NS_URI_XSD_2000))
 	 {
 	  valInfo.addWarning(
-	      messagegenerator.getString(_WARN_OLD_SCHEMA_NAMESPACE, QUOTE + Constants.NS_URI_XSD_2001 + QUOTE), element);
+	      messagegenerator.getString(_WARN_OLD_SCHEMA_NAMESPACE, QUOTE + SchemaConstants.NS_URI_XSD_2001 + QUOTE), element);
 	}
 	
     // now create and call the validator for the inline schema
@@ -182,7 +183,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
 	  Set namespaces = new TreeSet(); 
       while (iSchemas.hasNext()) 
       { 
-        UnknownExtensibilityElement extElem = (UnknownExtensibilityElement) iSchemas.next(); 
+        Schema extElem = (Schema) iSchemas.next(); 
         String thisNamespace = extElem.getElement().getAttribute(Constants.ATTR_TARGET_NAMESPACE); 
         if(thisNamespace != null) 
         { 
@@ -193,7 +194,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
 
       while (iSchemas.hasNext())
       {
-        UnknownExtensibilityElement extElem = (UnknownExtensibilityElement) iSchemas.next();
+    	  Schema extElem = (Schema) iSchemas.next();
         String thisNamespace = extElem.getElement().getAttribute(Constants.ATTR_TARGET_NAMESPACE);
         if (thisNamespace != null && !thisNamespace.equalsIgnoreCase(targetNamespace))
         {
@@ -302,7 +303,7 @@ public class InlineSchemaValidator implements IWSDL11Validator
    */
   private String replaceNamespace(String message, String namespace)
    {
-     String xsd2001 = Constants.NS_URI_XSD_2001;
+     String xsd2001 = SchemaConstants.NS_URI_XSD_2001;
      int start = message.indexOf(xsd2001);
      int end = start + xsd2001.length();
      if(start < 0)

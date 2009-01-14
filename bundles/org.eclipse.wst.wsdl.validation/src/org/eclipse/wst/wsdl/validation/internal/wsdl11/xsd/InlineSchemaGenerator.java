@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 
 /**
  * Generate a String representation of a schema for an inline schema. Will add imports for unresolved
@@ -54,7 +54,7 @@ public class InlineSchemaGenerator
   protected static final String TYPE = "type";
   protected static final String NAME = "name";
   protected static final String[] ignoreNamespaces =
-    { Constants.NS_URI_XSD_1999, Constants.NS_URI_XSD_2000, Constants.NS_URI_XSD_2001 };
+    { SchemaConstants.NS_URI_XSD_1999, SchemaConstants.NS_URI_XSD_2000, SchemaConstants.NS_URI_XSD_2001 };
 
   protected static InlineSchemaGenerator instance = null;
 
@@ -252,9 +252,9 @@ public class InlineSchemaGenerator
           }
         }
         // Replace old schema namespaces with the new schema namespace.
-        if(nodeValue.equals(Constants.NS_URI_XSD_1999) || nodeValue.equals(Constants.NS_URI_XSD_2000))
+        if(nodeValue.equals(SchemaConstants.NS_URI_XSD_1999) || nodeValue.equals(SchemaConstants.NS_URI_XSD_2000))
          {
-          nodeValue = Constants.NS_URI_XSD_2001;
+          nodeValue = SchemaConstants.NS_URI_XSD_2001;
         }
         xsdString.append(nodeValue).append("\"");
       }
@@ -271,9 +271,9 @@ public class InlineSchemaGenerator
       {
         String key = (String)keys.nextElement();
         String declNS = (String)reqNSDecl.get(key);
-        if(declNS.equals(Constants.NS_URI_XSD_1999) || declNS.equals(Constants.NS_URI_XSD_2000))
+        if(declNS.equals(SchemaConstants.NS_URI_XSD_1999) || declNS.equals(SchemaConstants.NS_URI_XSD_2000))
          {
-          declNS = Constants.NS_URI_XSD_2001;
+          declNS = SchemaConstants.NS_URI_XSD_2001;
         }
         xsdString.append(" ").append(key).append("=\"").append(declNS).append("\"");
       }

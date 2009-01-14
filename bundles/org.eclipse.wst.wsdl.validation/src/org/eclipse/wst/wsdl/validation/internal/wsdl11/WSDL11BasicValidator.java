@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ import org.eclipse.wst.wsdl.validation.internal.util.MessageGenerator;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.SchemaAttributeTable;
 import org.eclipse.wst.wsdl.validation.internal.wsdl11.xsd.XSDValidator;
 
-import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 /**
  * Validate the elements defined in a WSDL 1.1 Document.
  */
@@ -605,9 +605,9 @@ public class WSDL11BasicValidator implements IWSDL11Validator
     boolean partvalid = false;
     // First take care of the situation where it's from the schema namespace.
     // The 1999, 2000 and 2001 schema namespaces are all accepted.
-    if (namespace.equals(Constants.NS_URI_XSD_2001)
-      || namespace.equals(Constants.NS_URI_XSD_1999)
-      || namespace.equals(Constants.NS_URI_XSD_2000))
+    if (namespace.equals(SchemaConstants.NS_URI_XSD_2001)
+      || namespace.equals(SchemaConstants.NS_URI_XSD_1999)
+      || namespace.equals(SchemaConstants.NS_URI_XSD_2000))
     {
       SchemaAttributeTable xsdTable = new SchemaAttributeTable();
       if (xsdTable.containsSymbol(name))

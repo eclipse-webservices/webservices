@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
-import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 
 /**
  * A DOM parser that will register location information with the elements in the model.
@@ -107,7 +107,7 @@ public class LineNumberDOMParser extends DOMParser
     // For elements from the Schema namespace we want to preserve them
     // the way they were entered. Revert the values to the non-normalized values.
     String ns = arg0.uri;
-    if(ns != null && (ns.equals(Constants.NS_URI_XSD_2001) || ns.equals(Constants.NS_URI_XSD_1999) || ns.equals(Constants.NS_URI_XSD_2000)))
+    if(ns != null && (ns.equals(SchemaConstants.NS_URI_XSD_2001) || ns.equals(SchemaConstants.NS_URI_XSD_1999) || ns.equals(SchemaConstants.NS_URI_XSD_2000)))
     {
       int numatts = arg1.getLength();
       for(int i = 0; i < numatts; i++)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
 
 package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -346,7 +346,7 @@ public class WSDLReaderImpl
     {
       URL contextURL = (contextURI != null) ? StringUtils.getURL(null, contextURI) : null;
       URL url = StringUtils.getURL(contextURL, wsdlURI);
-      Reader reader = StringUtils.getContentAsReader(url);
+      InputStream reader = StringUtils.getContentAsInputStream(url);
       InputSource inputSource = new InputSource(reader);
       Document doc = getDocument(inputSource, wsdlURI);
       reader.close();

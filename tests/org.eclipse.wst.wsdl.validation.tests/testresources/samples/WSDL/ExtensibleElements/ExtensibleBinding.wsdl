@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ExtensibleBinding"
+	targetNamespace="http://www.example.org/ExtensibleBinding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/ExtensibleBinding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/ExtensibleBinding/">
+			<xsd:element name="NewOperation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationResponse1">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="out" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part element="tns:NewOperation" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part element="tns:NewOperationResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse1">
+		<wsdl:part name="parameters" element="tns:NewOperationResponse1"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ExtensibleBinding">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest" />
+			<wsdl:output message="tns:NewOperationResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="ExtensibleBindingSOAP"
+		type="tns:ExtensibleBinding">
+		<xsd:annotation></xsd:annotation>
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="NewOperation">
+			<soap:operation
+				soapAction="http://www.example.org/ExtensibleBinding/NewOperation" />
+			<xsd:annotation></xsd:annotation>
+			<wsdl:input>
+				<xsd:annotation></xsd:annotation>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<xsd:annotation></xsd:annotation>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="myfault">
+				<xsd:annotation></xsd:annotation>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="ExtensibleBinding">
+		<wsdl:port binding="tns:ExtensibleBindingSOAP" name="ExtensibleBindingSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.wst.wsdl.validation.internal.wsdl11;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +39,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 import com.ibm.wsdl.util.StringUtils;
 import com.ibm.wsdl.util.xml.DOMUtils;
 import com.ibm.wsdl.util.xml.QNameUtils;
@@ -143,7 +144,7 @@ public class ImportHolder implements Comparable
         }
       }
       // Handle schema imports.
-      else if (QNameUtils.matches(Constants.Q_ELEM_XSD_2001, documentElement))
+      else if (QNameUtils.matches(SchemaConstants.Q_ELEM_XSD_2001, documentElement))
       {
         createXSDImport();
       }
@@ -273,7 +274,7 @@ public class ImportHolder implements Comparable
 //      locationURI = classpathURI;
 //      contextURI = null;
 //    }
-    Reader reader = null;
+    InputStream reader = null;
     if (locationURI != null)
     {
         try
@@ -321,7 +322,7 @@ public class ImportHolder implements Comparable
 			{
 			  try
 			  {
-                reader = StringUtils.getContentAsReader(url);
+                reader = StringUtils.getContentAsInputStream(url);
 			  }
 			  catch(IOException e)
 			  {

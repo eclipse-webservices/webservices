@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.ibm.wsdl.Constants;
+import com.ibm.wsdl.extensions.schema.SchemaConstants;
 
 /**
  * The default implementation of IXMLValidator.
@@ -81,9 +82,9 @@ public class DefaultXMLValidator implements IXMLValidator
   {
     super();
     
-    ignoredNamespaceList.add(Constants.NS_URI_XSD_1999);
-    ignoredNamespaceList.add(Constants.NS_URI_XSD_2000);
-    ignoredNamespaceList.add(Constants.NS_URI_XSD_2001);
+    ignoredNamespaceList.add(SchemaConstants.NS_URI_XSD_1999);
+    ignoredNamespaceList.add(SchemaConstants.NS_URI_XSD_2000);
+    ignoredNamespaceList.add(SchemaConstants.NS_URI_XSD_2001);
     
     adjustLocationErrorKeySet.add("cvc-complex-type.2.4.b");
     adjustLocationErrorKeySet.add("cvc-complex-type.2.3");
@@ -265,7 +266,7 @@ public class DefaultXMLValidator implements IXMLValidator
 	 */
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		if(localName.equals("documentation") && (uri.equals(Constants.NS_URI_WSDL) || uri.equals(Constants.NS_URI_XSD_2001)|| uri.equals(Constants.NS_URI_XSD_1999) || uri.equals(Constants.NS_URI_XSD_2000)))
+		if(localName.equals("documentation") && (uri.equals(Constants.NS_URI_WSDL) || uri.equals(SchemaConstants.NS_URI_XSD_2001)|| uri.equals(SchemaConstants.NS_URI_XSD_1999) || uri.equals(SchemaConstants.NS_URI_XSD_2000)))
 		{
 		  isChildOfDoc = false;
 		}
@@ -278,7 +279,7 @@ public class DefaultXMLValidator implements IXMLValidator
 	public void startElement(String uri, String localName, String qName,
 			Attributes atts) throws SAXException {
 		startElementLocations.push(new LocationCoordinate(locator.getLineNumber(), locator.getColumnNumber()));
-		if(localName.equals("documentation") && (uri.equals(Constants.NS_URI_WSDL) || uri.equals(Constants.NS_URI_XSD_2001)|| uri.equals(Constants.NS_URI_XSD_1999) || uri.equals(Constants.NS_URI_XSD_2000)))
+		if(localName.equals("documentation") && (uri.equals(Constants.NS_URI_WSDL) || uri.equals(SchemaConstants.NS_URI_XSD_2001)|| uri.equals(SchemaConstants.NS_URI_XSD_1999) || uri.equals(SchemaConstants.NS_URI_XSD_2000)))
 		{
 		  isChildOfDoc = true;
 		}
