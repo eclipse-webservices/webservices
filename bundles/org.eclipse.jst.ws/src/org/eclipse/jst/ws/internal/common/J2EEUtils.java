@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2008, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@
  * 20080212   208795 ericdp@ca.ibm.com - Eric Peters, WS wizard framework should support EJB 3.0
  * 20080229   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
+ * 20090114   261087 ericdp@ca.ibm.com - Eric D. Peters, No way to get meta-inf path for a project
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -1275,7 +1276,31 @@ public final class J2EEUtils {
 		}		
 		return modulePath;
 	}
-	
+
+	/**
+	   * @param project
+	   * @return
+	   */
+		public static IPath getMetaInfPath(IProject project){
+			
+			IVirtualComponent component = ComponentCore.createComponent(project);
+			
+			//should META-INF location be pulled in from the .component file rather than hardcoded here?
+			IVirtualFolder metaInfDir = component.getRootFolder().getFolder(new Path("/META-INF"));
+			IPath modulePath = metaInfDir.getWorkspaceRelativePath();
+			
+			if (!metaInfDir.exists())
+			{	
+				try 
+				{	
+					metaInfDir.create(0,null);				
+				}
+				catch (CoreException e)
+				{}
+			}		
+			return modulePath;
+		}
+
 	
 	/**
 	 * 
