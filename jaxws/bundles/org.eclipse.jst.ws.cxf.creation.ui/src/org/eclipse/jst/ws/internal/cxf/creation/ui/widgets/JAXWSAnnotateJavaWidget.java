@@ -24,6 +24,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.jdt.internal.core.SourceMethod;
@@ -194,29 +195,59 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                     Object firstElement = treeSelection.getFirstElement();
                     
                     IDocument document = annotationPreviewViewer.getDocument();
-                    FindReplaceDocumentAdapter findReplaceDocumentAdapter = new FindReplaceDocumentAdapter(document);
+                    FindReplaceDocumentAdapter findReplaceDocumentAdapter = 
+                    	new FindReplaceDocumentAdapter(document);
                     try {
                         if (firstElement instanceof SourceType) {
                             SourceType sourceType = (SourceType) firstElement;
                             String elementName = sourceType.getElementName();
                             
                             String regex = "\\bpublic\\W+(?:\\w+\\W+){1,3}?" + elementName + "\\b";
-                            IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, true);
+                            IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, 
+                            		true);
 
                             annotationPreviewViewer.setSelectedRange(region.getOffset(), region.getLength());
                             annotationPreviewViewer.revealRange(region.getOffset(), region.getLength());
                         } else if (firstElement instanceof SourceMethod) {
                             SourceMethod sourceMethod = (SourceMethod) firstElement;
                             String elementName = sourceMethod.getElementName();
+                            
+                           	String regex = "\\bpublic\\W+(?:\\w+\\W+){1,3}?" + elementName + "\\s*+\\(.*";
 
-                            String regex = "\\bpublic\\W+(?:\\w+\\W+){1,3}?" + elementName + "\\b";
-                            IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, true);
-                            annotationPreviewViewer.setSelectedRange(region.getOffset(), region.getLength());
-                            annotationPreviewViewer.revealRange(region.getOffset(), region.getLength());
+                            String[] parameterTypes = sourceMethod.getParameterTypes();
+                            String[] paramterNames = sourceMethod.getParameterNames();
+                            
+                            for (int i = 0; i < parameterTypes.length; i++) {
+                            	String typeName = Signature.toString(Signature.getTypeErasure(
+                            			parameterTypes[i]));
+                            	regex += typeName;
+                            	regex += "\\s*+";
+                            	regex += paramterNames[i];
+                            	if (i < parameterTypes.length - 1) {
+                            		regex += "\\s*+,.*";
+                            	}
+							}
+                        	regex += "\\s*+\\)";
+                            
+                            IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, 
+                            		true);
+                            
+                            if (region != null) {
+                                IRegion elementNameRegion = findReplaceDocumentAdapter.find(
+                                		region.getOffset(), elementName, true, true, true, false);
+                                if (elementNameRegion != null) {
+                                	annotationPreviewViewer.setSelectedRange(elementNameRegion.getOffset(), 
+                                    		elementNameRegion.getLength());
+                                    annotationPreviewViewer.revealRange(elementNameRegion.getOffset(), 
+                                    		elementNameRegion.getLength());
+                                }
+                            }
                         }
                     } catch (BadLocationException ble) {
                         CXFCreationUIPlugin.log(ble);
-                    }
+                    } catch (JavaModelException jme) {
+						jme.printStackTrace();
+					}
                 }
             }
         });

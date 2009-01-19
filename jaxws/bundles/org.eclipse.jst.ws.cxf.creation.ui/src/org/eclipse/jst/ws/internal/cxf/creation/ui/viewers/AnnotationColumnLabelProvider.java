@@ -61,7 +61,9 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
 
             IMethod method = (SourceMethod) element;
             if (model.getJavaStartingPoint().equals(type.getFullyQualifiedName())) {
-                if (AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], annotationKey)) {
+                if (AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], annotationKey)
+                		|| (annotationKey == AnnotationUtils.WEB_PARAM && 
+                				AnnotationUtils.getMethodParameters(type, method).size() == 0)) {
                     return disabled;
                 }
             }

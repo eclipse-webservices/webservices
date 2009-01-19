@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.cxf.core.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +36,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -77,7 +79,7 @@ public final class AnnotationUtils {
     static {
         ANNOTATION_TYPENAME_MAP.put("ServiceMode", "javax.xml.ws.ServiceMode"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebFault", "javax.xml.ws.WebFault"); //$NON-NLS-1$ //$NON-NLS-2$
-        ANNOTATION_TYPENAME_MAP.put(REQUEST_WRAPPER, "javax.xml.ws.RequestWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
+        ANNOTATION_TYPENAME_MAP.put(REQUEST_WRAPPER, "javax.xml.ws.RequestWrapper"); //$NON-NLS-1$
         ANNOTATION_TYPENAME_MAP.put(RESPONSE_WRAPPER, "javax.xml.ws.ResponseWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebServiceClient", "javax.xml.ws.WebServiceClient"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebEndpoint", "javax.xml.ws.WebEndpoint"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -85,10 +87,10 @@ public final class AnnotationUtils {
         ANNOTATION_TYPENAME_MAP.put("BindingType", "javax.xml.ws.BindingType"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebServiceRef", "javax.xml.ws.WebServiceRef"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebServiceRefs", "javax.xml.ws.WebServiceRefs"); //$NON-NLS-1$ //$NON-NLS-2$
-        ANNOTATION_TYPENAME_MAP.put(WEB_SERVICE, "javax.jws.WebService"); //$NON-NLS-1$ //$NON-NLS-2$
-        ANNOTATION_TYPENAME_MAP.put(WEB_METHOD, "javax.jws.WebMethod"); //$NON-NLS-1$ //$NON-NLS-2$
+        ANNOTATION_TYPENAME_MAP.put(WEB_SERVICE, "javax.jws.WebService"); //$NON-NLS-1$
+        ANNOTATION_TYPENAME_MAP.put(WEB_METHOD, "javax.jws.WebMethod"); //$NON-NLS-1$
         ANNOTATION_TYPENAME_MAP.put("Oneway", "javax.jws.OneWay"); //$NON-NLS-1$ //$NON-NLS-2$
-        ANNOTATION_TYPENAME_MAP.put(WEB_PARAM, "javax.jws.WebParam"); //$NON-NLS-1$ //$NON-NLS-2$
+        ANNOTATION_TYPENAME_MAP.put(WEB_PARAM, "javax.jws.WebParam"); //$NON-NLS-1$
         ANNOTATION_TYPENAME_MAP.put("WebResult", "javax.jws.WebResult"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("SOAPBinding", "javax.jws.SOAPBinding"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("HandlerChain", "javax.jws.HandlerChain"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -166,7 +168,7 @@ public final class AnnotationUtils {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         MemberValuePair operationValuePair = JAXWSAnnotations.getOperationNameValuePair(compilationUnit,
-                method.getElementName());
+                method.getElementName() + accountForOverloadedMethods(type, method));
 
         memberValuePairs.add(operationValuePair);
 
@@ -174,24 +176,6 @@ public final class AnnotationUtils {
 
         return AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                 annotation, textFileChange);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static List<SingleVariableDeclaration> getMethodParameters(IType type, final IMethod method) {
-        ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = getASTParser(source);
-        final List<SingleVariableDeclaration> parameters = new ArrayList();
-        compilationUnit.accept(new ASTVisitor() {
-            @Override
-            public boolean visit(MethodDeclaration methodDeclaration) {
-                if (methodDeclaration.getName().getIdentifier().equals(method.getElementName())) {
-                    parameters.addAll(methodDeclaration.parameters());
-                }
-                return super.visit(methodDeclaration);
-            }
-        });
-        
-        return parameters;
     }
     
     public static TextChange getWebParamAnnotationChange(IType type, final IMethod method, 
@@ -232,11 +216,14 @@ public final class AnnotationUtils {
 
         String className = packageName + methodName.substring(0, 1).toUpperCase(Locale.getDefault())
                 + methodName.substring(1);
+        
+        String overloadedSuffix = accountForOverloadedMethods(type, method);
+        
         MemberValuePair classNameValuePair = JAXWSAnnotations.getClassNameValuePair(compilationUnit,
-                className);
+                className + overloadedSuffix);
 
         MemberValuePair localNameValuePair = JAXWSAnnotations.getLocalNameValuePair(compilationUnit,
-                methodName);
+                methodName + overloadedSuffix);
 
         MemberValuePair targetNamespace = JAXWSAnnotations.getTargetNamespaceValuePair(compilationUnit,
                 JDTUtils.getTargetNamespaceFromPackageName(packageName));
@@ -271,11 +258,13 @@ public final class AnnotationUtils {
         String className = packageName + methodName.substring(0, 1).toUpperCase(Locale.getDefault())
                 + methodName.substring(1);
 
+        String overloadedSuffix = accountForOverloadedMethods(type, method);
+
         MemberValuePair classNameValuePair = JAXWSAnnotations.getClassNameValuePair(compilationUnit,
-                className);
+                className + overloadedSuffix);
 
         MemberValuePair localNameValuePair = JAXWSAnnotations.getLocalNameValuePair(compilationUnit,
-                methodName);
+                methodName + overloadedSuffix);
 
         MemberValuePair targetNamespace = JAXWSAnnotations.getTargetNamespaceValuePair(compilationUnit,
                 JDTUtils.getTargetNamespaceFromPackageName(packageName));
@@ -374,11 +363,10 @@ public final class AnnotationUtils {
             List<TypeDeclaration> types = compilationUnit.types();
             for (TypeDeclaration typeDeclaration : types) {
                 if (typeDeclaration.getName().getIdentifier().equals(type.getElementName())) {
-                    String methodToAnnotateName = method.getElementName();
                     MethodDeclaration[] methodDeclarations = typeDeclaration.getMethods();
                     for (int i = 0; i < methodDeclarations.length; i++) {
                         MethodDeclaration methodDeclaration = methodDeclarations[i];
-                        if (methodDeclaration.getName().getIdentifier().equals(methodToAnnotateName)
+                        if (compareMethods(methodDeclaration, method)
                                 && !isAnnotationPresent(methodDeclaration, annotation)) {
                             bufferManager.connect(path, LocationKind.IFILE, monitor);
                             IDocument document = bufferManager.getTextFileBuffer(path, 
@@ -421,11 +409,10 @@ public final class AnnotationUtils {
             List<TypeDeclaration> types = compilationUnit.types();
             for (TypeDeclaration typeDeclaration : types) {
                 if (typeDeclaration.getName().getIdentifier().equals(type.getElementName())) {
-                    String methodToAnnotateName = method.getElementName();
                     MethodDeclaration[] methodDeclarations = typeDeclaration.getMethods();
                     for (int i = 0; i < methodDeclarations.length; i++) {
                         MethodDeclaration methodDeclaration = methodDeclarations[i];
-                        if (methodDeclaration.getName().getIdentifier().equals(methodToAnnotateName)) {
+                        if (compareMethods(methodDeclaration, method)) {
                             List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
                             for (SingleVariableDeclaration parameter : parameters) {
                                 if (compareMethodParameters(parameter, singleVariableDeclaration)
@@ -458,8 +445,7 @@ public final class AnnotationUtils {
             CXFCorePlugin.log(ce.getStatus());
         } finally {
             bufferManager.disconnect(path, LocationKind.IFILE, monitor);
-        }
-        
+        }        
         return null;
     }
 
@@ -472,6 +458,24 @@ public final class AnnotationUtils {
         return compilationUnit;
     }
 
+    @SuppressWarnings("unchecked")
+    public static List<SingleVariableDeclaration> getMethodParameters(IType type, final IMethod method) {
+        ICompilationUnit source = type.getCompilationUnit();
+        CompilationUnit compilationUnit = getASTParser(source);
+        final List<SingleVariableDeclaration> parameters = new ArrayList();
+        compilationUnit.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(MethodDeclaration methodDeclaration) {
+                if (compareMethods(methodDeclaration, method)) {
+                    parameters.addAll(methodDeclaration.parameters());
+                }
+                return super.visit(methodDeclaration);
+            }
+        });
+        
+        return parameters;
+    }
+
     private static String getAnnotationName(Annotation annotation) {
         Name annotationTypeName = annotation.getTypeName();
         String annotationName = annotationTypeName.getFullyQualifiedName();
@@ -480,7 +484,40 @@ public final class AnnotationUtils {
         }
         return annotationName;
     }
+    
+    @SuppressWarnings("unchecked")
+    public static boolean compareMethods(MethodDeclaration methodDeclaration, IMethod method) {
+    	if (methodDeclaration.getName().getIdentifier().equals(method.getElementName())) {
+	    	String[] parametetNames = method.getParameterTypes();
+	    	List<SingleVariableDeclaration> methodDeclarationParameters = methodDeclaration.parameters();
+	    	if (parametetNames.length == methodDeclarationParameters.size()) {
+		    	for (int i = 0; i < parametetNames.length; i++) {
+					String simpleName1 = Signature.getSimpleName(Signature.toString(Signature
+							.getTypeErasure(parametetNames[i])));
+					String simpleName2 = methodDeclarationParameters.get(i).getType().toString();
+					if (!simpleName1.equals(simpleName2)) {
+						return false;
+					}
+				}
+		    	return true;
+	    	}
+    	}
+    	return false;
+	}
 
+    private static String accountForOverloadedMethods(IType type, IMethod method) throws JavaModelException {
+    	List<IMethod> methods =  Arrays.asList(type.getMethods());
+    	List<IMethod> similarMethods = new ArrayList<IMethod>();
+    	for (IMethod methodToTest : methods) {
+    		if (!method.equals(methodToTest) && method.getElementName().equalsIgnoreCase(
+    				methodToTest.getElementName()) && methodToTest.getSourceRange().getOffset() < 
+    				method.getSourceRange().getOffset()) {
+    			similarMethods.add(methodToTest);
+			}
+		}
+    	return similarMethods.size() > 0 ? Integer.toString(similarMethods.size()) : "";
+    }
+    
     private static boolean compareAnnotations(Annotation newAnnotation, Annotation existingAnnotation) {
         return AnnotationUtils.getAnnotationName(existingAnnotation).equals(
                 AnnotationUtils.getAnnotationName(newAnnotation));
