@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2007 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070305   117034 makandre@ca.ibm.com - Andrew Mak, Web Services Explorer should support SOAP Headers
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
+ * 20090119   261397 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.util;
@@ -57,7 +58,7 @@ public class SoapHelper
   
   public static final Element createSoapEnvelopeElement(Document doc,Hashtable soapEnvelopeNamespaceTable)
   {
-    Element soapEnvelopeElement = doc.createElement("soapenv:Envelope");
+	Element soapEnvelopeElement = doc.createElementNS(Constants.URI_SOAP11_ENV, Constants.NS_PREFIX_SOAP_ENV + ":Envelope");
     Enumeration e = soapEnvelopeNamespaceTable.keys();
     while (e.hasMoreElements())
     {
