@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://www.example.org/Main001/"
+	name="Main001"
+	targetNamespace="http://www.example.org/Main001/"
+	xmlns:wsdl1="http://www.example.org/Import001/">
+	
+	<!-- Unused Import -->
+	
+	<wsdl:import namespace="http://www.example.org/Import001/"
+		location="Import001.wsdl">
+	</wsdl:import>
+</wsdl:definitions>
