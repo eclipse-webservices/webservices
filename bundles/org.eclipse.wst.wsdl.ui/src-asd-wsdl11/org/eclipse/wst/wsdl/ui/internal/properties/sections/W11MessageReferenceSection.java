@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,6 @@ public class W11MessageReferenceSection extends NameSection {
 	protected CLabel comboLabel; 
 	protected CCombo combo;
 	protected ComponentReferenceEditManager refManager;
-	private boolean isTraversing = false;
 
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory)
 	{
@@ -54,9 +53,8 @@ public class W11MessageReferenceSection extends NameSection {
 		
 		combo = getWidgetFactory().createCCombo(composite);
 		combo.setBackground(composite.getBackground());
-        combo.addListener(SWT.Modify, this);
-        combo.addListener(SWT.DefaultSelection, this);
-        combo.addListener(SWT.Traverse, this);
+		combo.addListener(SWT.Modify, this);
+		combo.addSelectionListener(this);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, ASDEditorCSHelpIds.PROPERTIES_MESSAGE_REF_MESSAGE_COMBO);
 		
 		comboLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_MESSAGE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -121,6 +119,7 @@ public class W11MessageReferenceSection extends NameSection {
 		setControlForegroundColor(combo);
 		setListenerEnabled(true);
 
+
 //		MessageReference messageRef = (MessageReference) ((W11MessageReference) getModel()).getTarget();
 //		Iterator it = messageRef.getEnclosingDefinition().getEMessages().iterator();
 //		while (it.hasNext()) {
@@ -148,16 +147,11 @@ public class W11MessageReferenceSection extends NameSection {
 	public void handleEvent(Event event)
 	{
 		if (event.widget == combo) {
-			if (isListenerEnabled() && !isInDoHandle) {
-				if (event.type == SWT.Traverse) {
-					if (event.detail == SWT.TRAVERSE_ARROW_NEXT || event.detail == SWT.TRAVERSE_ARROW_PREVIOUS)
-						isTraversing = true;
-				}
-				else {
-					isInDoHandle = true;
-					startDelayedEvent(event);
-					isInDoHandle = false;
-				}
+			if (isListenerEnabled() && !isInDoHandle) 
+			{
+				isInDoHandle = true;
+				startDelayedEvent(event);
+				isInDoHandle = false;
 			}
 		}
 		else {
@@ -168,39 +162,40 @@ public class W11MessageReferenceSection extends NameSection {
 	public void doHandleEvent(Event event)
 	{
 		super.doHandleEvent(event);
-		if (event.widget == combo) {		  
+		if (event.widget == combo) {
 			String value = ""; //$NON-NLS-1$
 			if (combo.getSelectionIndex() != -1) {
 				value = combo.getItem(combo.getSelectionIndex());
 			}
-			if (shouldPerformComboSelection(event, value)) {
-    			ComponentSpecification spec = null;
-    			int continueApply = Window.OK;
-    			IMessageReference messageRef = (IMessageReference) this.getModel();
-    			
-    			if (value.equals(NEW_STRING)) {
-    				ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
-    				IComponentDialog dialog = editManager.getNewDialog();
-    				continueApply = dialog.createAndOpen();
-    				spec = dialog.getSelectedComponent();
-    			}
-    			else if (value.equals(BROWSE_STRING)) {
-    				ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
-    				IComponentDialog dialog = editManager.getBrowseDialog();
-    				continueApply = dialog.createAndOpen();
-    				spec = dialog.getSelectedComponent();				
-    			}
-    			else {
-    				spec = getComponentSpecificationForValue((String)value);
-    			}
-    			
-    			if (continueApply == Window.OK) {
-    				ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
-    				if (spec != null) {
-    					editManager.modifyComponentReference(messageRef, spec);
-    				}
-    			}
-	        }
+			
+			ComponentSpecification spec = null;
+			int continueApply = Window.OK;
+			IMessageReference messageRef = (IMessageReference) this.getModel();
+			
+			if (value.equals(NEW_STRING)) {
+				ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
+				IComponentDialog dialog = editManager.getNewDialog();
+				continueApply = dialog.createAndOpen();
+				spec = dialog.getSelectedComponent();
+			}
+			else if (value.equals(BROWSE_STRING)) {
+				ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
+				IComponentDialog dialog = editManager.getBrowseDialog();
+				continueApply = dialog.createAndOpen();
+				spec = dialog.getSelectedComponent();				
+			}
+			else {
+				spec = getComponentSpecificationForValue((String)value);
+			}
+			
+			if (continueApply == Window.OK) {
+				ComponentReferenceEditManager editManager = getComponentReferenceEditManager();
+				if (spec != null) {
+					editManager.modifyComponentReference(messageRef, spec);
+				}
+			}
+			
+			
 		}
 	}
 	
@@ -235,44 +230,5 @@ public class W11MessageReferenceSection extends NameSection {
 			}
 		}
 		return null;
-	}
-	
-	private boolean shouldPerformComboSelection(Event event, Object selectedItem)
-	{
-		// if traversing through combobox, don't automatically pop up
-		// the browse and new dialog boxes
-		boolean wasTraversing = isTraversing;
-		if (isTraversing)
-		{
-			isTraversing = false;
-		}
-		
-		// we only care about default selecting (hitting enter in combobox)
-		// for browse.. and new..
-		if (event.type == SWT.DefaultSelection)
-		{
-			if (!(selectedItem instanceof String))
-				return false;
-			if (!(BROWSE_STRING.equals(selectedItem) || NEW_STRING.equals(selectedItem)))
-				return false;
-		}
-		
-		if (wasTraversing && selectedItem instanceof String)
-		{
-			if (BROWSE_STRING.equals(selectedItem) || NEW_STRING.equals(selectedItem))
-				return false;
-		}
-		return true;
-	}
-	
-	public void dispose()
-	{
-		if (combo != null && !combo.isDisposed())
-		{
-			combo.removeListener(SWT.Modify, this);
-			combo.removeListener(SWT.DefaultSelection, this);
-			combo.removeListener(SWT.Traverse, this);
-		}
-		super.dispose();
 	}
 }

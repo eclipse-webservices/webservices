@@ -11,6 +11,7 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -41,7 +42,6 @@ import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 public class BindingEditPart extends BaseEditPart
 {
   protected ComponentReferenceConnection connectionFigure;
-  private ComponentReferenceConnection connectionFeedbackFigure;
   protected BoxComponentFigure figure;
   protected boolean isExpanded = false;
   private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
@@ -91,11 +91,10 @@ public class BindingEditPart extends BaseEditPart
 //    boxFigureLineBorder.setColor(ColorConstants.darkBlue);
     figure.setSelected(true);
     figure.repaint();
-    if (connectionFigure != null && connectionFigure.isVisible())
+    if (connectionFigure != null)
     {
       connectionFigure.setHighlight(true);
-      
-      addConnectionFeedbackFigure();
+      getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFigure);
     }
   }
 
@@ -107,12 +106,10 @@ public class BindingEditPart extends BaseEditPart
     boxFigureLineBorder.setColor(DesignViewGraphicsConstants.defaultForegroundColor);
     figure.setSelected(false);
     figure.repaint();
-    
-    removeConnectionFeedbackFigure();
-    
     if (connectionFigure != null)
     {
       connectionFigure.setHighlight(false);
+      getLayer(LayerConstants.CONNECTION_LAYER).add(connectionFigure);
     }
   }
 
@@ -136,9 +133,34 @@ public class BindingEditPart extends BaseEditPart
   {
     if (connectionFigure != null)
     {
-      getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
+      boolean removed = false;
+      removed = removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
+      if (!removed)
+      {
+        removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
+      }
     }
-    removeConnectionFeedbackFigure();
+  }
+  
+
+  private boolean removeConnectionFigure(IFigure parent)
+  {
+    boolean contains = false;
+    Iterator it = parent.getChildren().iterator();
+    while (it.hasNext())
+    {
+      IFigure fig = (IFigure) it.next();
+      if (fig.equals(connectionFigure))
+      {
+        contains = true;
+        break;
+      }
+    }
+    if (contains)
+    {
+      parent.remove(connectionFigure);
+    }
+    return contains;
   }
 
   public ComponentReferenceConnection createConnectionFigure()
@@ -227,11 +249,6 @@ public class BindingEditPart extends BaseEditPart
         connectionFigure.setTargetAnchor(new CenteredConnectionAnchor(refFigure, CenteredConnectionAnchor.HEADER_LEFT, 0, 11));
         connectionFigure.setHighlight(false);
         connectionFigure.setVisible(true);
-
-        if (connectionFeedbackFigure != null)
-        {
-          addConnectionFeedbackFigure();
-        }
       }
       else
       {
@@ -241,7 +258,6 @@ public class BindingEditPart extends BaseEditPart
     else if (connectionFigure != null)
     {
       connectionFigure.setVisible(false);
-      removeConnectionFeedbackFigure();
     }
   }
 
@@ -288,26 +304,5 @@ public class BindingEditPart extends BaseEditPart
       return EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);
     }      
     return super.getRelativeEditPart(direction);
-  }
-  
-  private void addConnectionFeedbackFigure()
-  {
-    // remove any preexisting connection feedback figures first
-    removeConnectionFeedbackFigure();
-
-    connectionFeedbackFigure = new ComponentReferenceConnection();
-    connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
-    connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
-    connectionFeedbackFigure.setHighlight(true);
-    getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
-  }
-  
-  private void removeConnectionFeedbackFigure() {
-    if (connectionFeedbackFigure != null)
-    {
-      connectionFeedbackFigure.setHighlight(false);
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
   }
 }

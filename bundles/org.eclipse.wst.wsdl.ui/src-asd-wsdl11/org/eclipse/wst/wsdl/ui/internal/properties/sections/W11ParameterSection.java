@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
@@ -86,33 +87,34 @@ public class W11ParameterSection extends ParameterSection {
 		}
 	}
 	
-	protected void handleComboSelection()
-	{
-		if (elementRadio.getSelection()) {
-			// Handle Element selection
-			String value = combo.getItem(combo.getSelectionIndex());
-
-			W11ParameterForPart parameter = (W11ParameterForPart) this.getModel();
-
-			if (value.equals(NEW_STRING)) {
-				Command command = parameter.getSetElementCommand(IParameter.SET_NEW_ACTION_ID);
-				command.execute();
-			}
-			else if (value.equals(BROWSE_STRING)) {
-				Command command = parameter.getSetElementCommand(IParameter.SELECT_EXISTING_ACTION_ID);
-				command.execute();
-			}
-			else {
-				ComponentReferenceEditManager editManager = getElementComponentReferenceEditManager();
-				ComponentSpecification spec = getComponentSpecificationForValue((String)value);
-				if (spec != null) {
-					editManager.modifyComponentReference(parameter, spec);
+	public void doHandleEvent(Event event) {
+		if (event.widget == combo) {
+			if (elementRadio.getSelection()) {
+				// Handle Element selection
+				String value = combo.getItem(combo.getSelectionIndex());
+				
+				W11ParameterForPart parameter = (W11ParameterForPart) this.getModel();
+				
+				if (value.equals(NEW_STRING)) {
+					Command command = parameter.getSetElementCommand(IParameter.SET_NEW_ACTION_ID);
+					command.execute();
+				}
+				else if (value.equals(BROWSE_STRING)) {
+					Command command = parameter.getSetElementCommand(IParameter.SELECT_EXISTING_ACTION_ID);
+					command.execute();
+				}
+				else {
+					ComponentReferenceEditManager editManager = getElementComponentReferenceEditManager();
+					ComponentSpecification spec = getComponentSpecificationForValue((String)value);
+					if (spec != null) {
+						editManager.modifyComponentReference(parameter, spec);
+					}
 				}
 			}
 		}
-		else if (handleTypeScenario) {
-			super.handleComboSelection();
-		}
+		
+		super.doHandleEvent(event);
+		refresh();
 	}
 	
 	protected void refreshElementCombo() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,9 +55,6 @@ public class ASDComboBoxCellEditor extends CellEditor {
     private Object selectedValue;
     private ComponentReferenceEditManager componentReferenceEditManager;
     private int textIndent = 5;
-    private boolean isTraversing = false;
-    // This prevents the cell editor from being deactivated while handling the New or Browse selection.
-    private boolean isHandlingSelection = false;
 
     /**
      * Default ComboBoxCellEditor style
@@ -135,10 +132,6 @@ public class ASDComboBoxCellEditor extends CellEditor {
                 if (e.detail == SWT.TRAVERSE_ESCAPE
                         || e.detail == SWT.TRAVERSE_RETURN) {
                     e.doit = false;
-                }
-                if (e.detail == SWT.TRAVERSE_ARROW_NEXT || e.detail == SWT.TRAVERSE_ARROW_PREVIOUS)
-                {
-                  isTraversing = true;
                 }
             }
         });
@@ -261,7 +254,7 @@ public class ASDComboBoxCellEditor extends CellEditor {
      * @see org.eclipse.jface.viewers.CellEditor#focusLost()
      */
     protected void focusLost() {
-        if (isActivated() && !isHandlingSelection) {
+        if (isActivated()) {
             applyEditorValueAndDeactivate();
         }
     }
@@ -284,28 +277,17 @@ public class ASDComboBoxCellEditor extends CellEditor {
     
     
     public void selectionMade() {
-        isHandlingSelection = true;
     	Object newValue = null;
-    	try {
-	    	selection = comboBox.getSelectionIndex();
-	        if (isTraversing)
-	        {
-	          isTraversing = false;
-	          return;
-	        }
-	    	String stringSelection = items[selection];
-	    	
-	    	if (stringSelection.equals(Messages._UI_BUTTON_BROWSE)) { //$NON-NLS-1$
-	    		newValue = invokeDialog(componentReferenceEditManager.getBrowseDialog());
-	    	}
-	    	else if (stringSelection.equals(Messages._UI_BUTTON_NEW)) { //$NON-NLS-1$
-	    		newValue = invokeDialog(componentReferenceEditManager.getNewDialog());
-	    	}
+    	selection = comboBox.getSelectionIndex();
+    	String stringSelection = items[selection];
+    	
+    	if (stringSelection.equals(Messages._UI_BUTTON_BROWSE)) { //$NON-NLS-1$
+    		newValue = invokeDialog(componentReferenceEditManager.getBrowseDialog());
     	}
-        finally
-        {
-          isHandlingSelection = false;
-        }
+    	else if (stringSelection.equals(Messages._UI_BUTTON_NEW)) { //$NON-NLS-1$
+    		newValue = invokeDialog(componentReferenceEditManager.getNewDialog());
+    	}
+
     	if (newValue == null) {
     		int index = comboBox.getSelectionIndex();              
     		if (index != -1) {

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.editparts;
 
+import java.util.Iterator;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
@@ -53,7 +55,6 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   private Label hoverHelpLabel = new Label(""); //$NON-NLS-1$
   protected Figure addressBoxFigure;
   protected ComponentReferenceConnection connectionFigure;
-  private ComponentReferenceConnection connectionFeedbackFigure;
   protected final static int MAX_ADDRESS_WIDTH = 150;
 
   protected IFigure createFigure()
@@ -227,10 +228,32 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   protected void deactivateConnection()
   {
     if (connectionFigure != null)
-	{
-	  getLayer(LayerConstants.CONNECTION_LAYER).remove(connectionFigure);
-	}
-    removeConnectionFeedbackFigure();
+    {
+      boolean removed = false;
+      removed = removeConnectionFigure(getLayer(LayerConstants.CONNECTION_LAYER));
+      
+      if (!removed) {
+    	  removeConnectionFigure(getLayer(LayerConstants.FEEDBACK_LAYER));
+      }
+    }
+  }
+  
+  private boolean removeConnectionFigure(IFigure parent) {
+	  boolean contains = false;
+	  Iterator it = parent.getChildren().iterator();
+	  while (it.hasNext()) {
+		  IFigure fig = (IFigure) it.next();
+		  if (fig.equals(connectionFigure)) {
+			  contains = true;
+			  break;
+		  }
+	  }
+	  
+	  if (contains) {
+		  parent.remove(connectionFigure);
+	  }
+	  
+	  return contains;
   }
 
   protected boolean shouldDrawConnection()
@@ -291,11 +314,6 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	          connectionFigure.setTargetAnchor(new CenteredConnectionAnchor(targetFigure, CenteredConnectionAnchor.HEADER_LEFT, 0, 10));
 	          connectionFigure.setHighlight(false);
 	          connectionFigure.setVisible(true);
-	          
-	          if (connectionFeedbackFigure != null)
-	          {
-	            addConnectionFeedbackFigure();
-	          }
 		  }
 		  else {
 			  activateConnection();
@@ -303,7 +321,6 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 	  }
 	  else if (connectionFigure != null){
 		  connectionFigure.setVisible(false);
-		  removeConnectionFeedbackFigure();
 	  }
   }
 
@@ -317,11 +334,9 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(DesignViewGraphicsConstants.tableCellSelectionColor);
     
-    if (connectionFigure != null && connectionFigure.isVisible()) 
-    {
-      connectionFigure.setHighlight(true);
-
-      addConnectionFeedbackFigure();
+    if (connectionFigure != null) {
+    	connectionFigure.setHighlight(true);
+    	getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFigure);
     }
   }
 
@@ -329,11 +344,11 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
   {
     IFigure figure = getFigureForFeedback();
     figure.setBackgroundColor(figure.getParent().getBackgroundColor());
-
-    removeConnectionFeedbackFigure();
     
-    if (connectionFigure != null)
-      connectionFigure.setHighlight(false);
+    if (connectionFigure != null) {
+    	connectionFigure.setHighlight(false);
+    	getLayer(LayerConstants.CONNECTION_LAYER).add(connectionFigure);
+    }
   }
 
   // TODO: rmah: VERY UGLY HACK.... I don't see any other way to solve this
@@ -375,25 +390,4 @@ public class EndPointEditPart extends BaseEditPart implements IFeedbackHandler, 
 
     return super.getRelativeEditPart(direction);
   }  
-  
-  private void addConnectionFeedbackFigure()
-  {
-    removeConnectionFeedbackFigure();
-    
-    connectionFeedbackFigure = new ComponentReferenceConnection();
-    connectionFeedbackFigure.setSourceAnchor(connectionFigure.getSourceAnchor());
-    connectionFeedbackFigure.setTargetAnchor(connectionFigure.getTargetAnchor());
-    connectionFeedbackFigure.setHighlight(true);
-    getLayer(LayerConstants.FEEDBACK_LAYER).add(connectionFeedbackFigure);
-  }
-  
-  private void removeConnectionFeedbackFigure()
-  {
-    if (connectionFeedbackFigure != null)
-    {
-      connectionFeedbackFigure.setHighlight(false);
-      getLayer(LayerConstants.FEEDBACK_LAYER).remove(connectionFeedbackFigure);
-      connectionFeedbackFigure = null;
-    }
-  }
 }
