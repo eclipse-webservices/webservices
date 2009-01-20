@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
 package org.eclipse.wst.wsdl.ui.internal.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +27,10 @@ import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.impl.XSDImportImpl;
+import org.eclipse.xsd.impl.XSDSchemaImpl;
+import org.eclipse.xsd.util.XSDConstants;
 
 public class XSDTypeSystemProvider implements ITypeSystemProvider
 {
@@ -154,25 +159,42 @@ public class XSDTypeSystemProvider implements ITypeSystemProvider
         return keepTypes;
     }
 
-    public java.util.List getBuiltInTypeNamesList(Definition definition)
+    /**
+     * Provides a list with XML schema built in type names. The names are
+     * prefixed if the the definition provides a prefix for the XML schema
+     * namespace.
+     * 
+     * @param definition
+     *          a WSDL {@link Definition}. Must not be null.
+     * @return a {@link List} of {@link String} representing the XML Schema built in type names,
+     *         or an empty list if the definition is null.
+     */
+    public List getBuiltInTypeNamesList(Definition definition)
     {
-        List items = new ArrayList();
-//        if (definition != null)
-//        {
-//            List prefixes = getPrefixes(definition, WSDLConstants.XSD_NAMESPACE_URI);
-//            for (Iterator i = prefixes.iterator(); i.hasNext();)
-//            {
-//                String prefix = (String) i.next();
-//                for (int j = 0; j < XSDDOMHelper.dataType.length; j++)
-//                {
-//                    String localName = XSDDOMHelper.dataType[j][0];
-//                    String name = (prefix != null && prefix.length() > 0) ? prefix + ":" + localName : localName;
-//                    items.add(name);
-//                }
-//            }
-//        }
-        return items;
+      if (definition == null)
+      {
+        return Collections.EMPTY_LIST;
+      }
+      
+      List builtInTypeNames = new ArrayList();
+
+      XSDSchema schemaForSchema = XSDSchemaImpl.getSchemaForSchema(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001);
+      Map simpleTypeIdMap = schemaForSchema.getSimpleTypeIdMap();
+      Collection builtInTypes = simpleTypeIdMap.values();
+      Iterator iterator = builtInTypes.iterator();
+      String xsdPrefix = definition.getPrefix(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001);
+
+      while (iterator.hasNext())
+      {
+        XSDTypeDefinition typeDefinition = (XSDTypeDefinition) iterator.next();  
+        String localName = typeDefinition.getName();
+        String prefixedName = (xsdPrefix != null && xsdPrefix.length() > 0) ? xsdPrefix + ":" + localName : localName; //$NON-NLS-1$
+        builtInTypeNames.add(prefixedName);        
+      }
+      
+      return builtInTypeNames;
     }
+    
     public List getAvailableElementNames(Definition definition)
     {
         List list = new ArrayList();
