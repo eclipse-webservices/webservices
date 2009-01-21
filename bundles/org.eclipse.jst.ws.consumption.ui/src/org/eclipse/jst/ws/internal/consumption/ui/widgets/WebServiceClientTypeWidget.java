@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@
  * 20080311   222103 trungha@ca.ibm.com - Trung, Changing service scale doesn't update completely non-UI part of client scale
  * 20080327   224452 trungha@ca.ibm.com - Trung Ha
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -980,18 +981,13 @@ public class WebServiceClientTypeWidget extends SimpleWidgetDataContributor impl
 	public IStatus checkErrorStatus() {
 
 		ValidationUtils valUtils = new ValidationUtils();
-		String runtimeId = getTypeRuntimeServer().getRuntimeId();
-		String serverId = getTypeRuntimeServer().getServerId();
-		String serverInstanceId = getTypeRuntimeServer().getServerInstanceId();
-		String typeId = getTypeRuntimeServer().getTypeId();
 		String projectName = getClientProjectName();
 		boolean needEar = getClientNeedEAR();
 		String earProjectName = getClientEarProjectName();
 		String projectTypeId = getClientComponentType();
 		// Defect 215084 - no need to pass initial project for client scenario
-		IStatus possibleErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId,
-				serverInstanceId, projectName,"", needEar, earProjectName, projectTypeId, true);
-		return possibleErrorStatus;
+		IStatus possibleErrorStatus = valUtils.checkErrorStatus(validationState_, getTypeRuntimeServer(), projectName,"", needEar, earProjectName, projectTypeId, true);
+			return possibleErrorStatus;
 	}
 
 	public IStatus checkWarningStatus() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,7 @@
  * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
+ * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -95,7 +96,6 @@ import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.Accessible;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
@@ -1201,10 +1201,6 @@ private void handleTypeChange()
 		ValidationUtils valUtils = new ValidationUtils();
 
 		// 1. Check for errors on service side
-		String runtimeId = getServiceTypeRuntimeServer().getRuntimeId();
-		String serverId = getServiceTypeRuntimeServer().getServerId();
-		String serverInstanceId = getServiceTypeRuntimeServer().getServerInstanceId();
-		String typeId = getServiceTypeRuntimeServer().getTypeId();
 		String projectName = getServiceProjectName();
 		boolean needEar = getServiceNeedEAR();
 		String earProjectName = getServiceEarProjectName();
@@ -1213,8 +1209,7 @@ private void handleTypeChange()
 		if (initialProject_ != null) {
 			initialProjectName = initialProject_.getName();
 		} 
-		IStatus serviceSideErrorStatus = valUtils.checkErrorStatus(validationState_, typeId, runtimeId, serverId, 
-				serverInstanceId, projectName, initialProjectName, needEar, earProjectName, projectTypeId, false);
+		IStatus serviceSideErrorStatus = valUtils.checkErrorStatus(validationState_, getServiceTypeRuntimeServer(), projectName, initialProjectName, needEar, earProjectName, projectTypeId, false);
 		if (serviceSideErrorStatus.getSeverity() == IStatus.ERROR) {
 			return serviceSideErrorStatus;
 		}
