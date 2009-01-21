@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@
  * 20080417   227599 kathy@ca.ibm.com - Kathy Chan
  * 20080717   241283 ericdp@ca.ibm.com - Eric D. Peters, Class version error when invoking sample JSP on Tomcat 5.5 when Java project is Java 6
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
+ * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -76,7 +77,6 @@ import org.eclipse.wst.command.internal.env.core.selection.SelectionListChoices;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -261,10 +261,7 @@ public class ValidationUtils
    * Returns IStatus resulting from checking for errors. Used for validation of page 1 of the
    * Web service/client wizards.
    * @param validationState one of VALIDATE_NONE, VALIDATE_ALL, VALIDATE_SERVER_RUNTIME_CHANGES, VALIDATE_PROJECT_CHANGES, VALIDATE_SCALE_CHANGES
-   * @param typeId Web service type id (isClient=false) or Web service client implementation type id (isClient=true)
-   * @param runtimeId Web service runtime id
-   * @param serverId server type id
-   * @param serverInstanceId server instance id
+   * @param typeRuntimeServer Web service runtime, type and server 
    * @param projectName name of project
    * @param needEar boolean <code>true</code> if EAR is required, <code>false</code> if not.
    * @param earProjectName name of EAR project
@@ -274,12 +271,16 @@ public class ValidationUtils
    * @return IStatus with severity IStatus.OK if no errors are present,
    * IStatus with severity IStatus.ERROR otherwise.
    */
-  public IStatus checkErrorStatus(int validationState, String typeId, String runtimeId, String serverId,
-			String serverInstanceId, String projectName, String initialProjectName, boolean needEar, String earProjectName, String projectTypeId,
+  public IStatus checkErrorStatus(int validationState, TypeRuntimeServer typeRuntimeServer, String projectName, String initialProjectName, boolean needEar, String earProjectName, String projectTypeId,
 			boolean isClient) {
 	
 	  	// Ensure server, Web service runtime, and Web service type are
 		// compatible
+
+		String typeId = typeRuntimeServer.getTypeId();
+		String runtimeId = typeRuntimeServer.getRuntimeId();
+		String serverId = typeRuntimeServer.getServerId();
+		String serverInstanceId = typeRuntimeServer.getServerInstanceId();
 
 		// Labels
 	    String serverLabel = "";
@@ -403,6 +404,13 @@ public class ValidationUtils
 					  }
 					}
 
+				    if (WebServiceRuntimeExtensionUtils2.getClientRuntimeId(typeRuntimeServer, projectName, projectTypeId) == "")
+				    {
+				    	return StatusUtils.errorStatus(NLS.bind(
+								ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE,
+								new String[] { runtimeLabel, templateLabel }));
+				    }
+					
 				} else {
 					// Check if the runtime supports it.
 					if (!WebServiceRuntimeExtensionUtils2.doesServiceTypeAndRuntimeSupportTemplate(
@@ -455,7 +463,7 @@ public class ValidationUtils
 				}
 			}
 		}		
-
+	        	
 	    // Defect 203826 - Give extender a way to veto server, project, project type and EAR choices
 	    if (validationState == VALIDATE_ALL || validationState == VALIDATE_SERVER_RUNTIME_CHANGES
 				|| validationState == VALIDATE_PROJECT_CHANGES) {	
