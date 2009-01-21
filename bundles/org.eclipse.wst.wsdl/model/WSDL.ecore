@@ -153,14 +153,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="eDefinition" eType="#//Definition"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eSchema" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDSchema"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ExtensibleElement" abstract="true" eSuperTypes="#//WSDLElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ExtensibleElement" abstract="true" eSuperTypes="#//WSDLElement #//IElementExtensible #//IAttributeExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value=" WSDL allows elements representing a specific technology (referred to here as extensibility elements) under various elements defined by WSDL. This class represents a WSDL point of extensibility."/>
     </eAnnotations>
-    <eOperations name="getExtensibilityElements" eType="#//IList"/>
-    <eOperations name="addExtensibilityElement">
-      <eParameters name="extElement" eType="#//IExtensibilityElement"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eExtensibilityElements"
         upperBound="-1" eType="#//ExtensibilityElement" containment="true"/>
   </eClassifiers>
@@ -233,7 +229,7 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IPortType" instanceClassName="javax.wsdl.PortType"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IAttributeExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.PortType non-MOF interface."/>
     </eAnnotations>
@@ -248,7 +244,7 @@
     <eOperations name="getOperations" eType="#//IList"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IOperation" instanceClassName="javax.wsdl.Operation"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Operation non-MOF interface."/>
     </eAnnotations>
@@ -273,7 +269,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IInput" instanceClassName="javax.wsdl.Input"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IAttributeExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Input non-MOF interface."/>
     </eAnnotations>
@@ -283,7 +279,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IOutput" instanceClassName="javax.wsdl.Output"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IAttributeExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Output non-MOF interface."/>
     </eAnnotations>
@@ -293,7 +289,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IFault" instanceClassName="javax.wsdl.Fault"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IAttributeExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Fault non-MOF interface."/>
     </eAnnotations>
@@ -303,7 +299,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IMessage" instanceClassName="javax.wsdl.Message"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Message non-MOF interface"/>
     </eAnnotations>
@@ -319,21 +315,13 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IPart" instanceClassName="javax.wsdl.Part"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IAttributeExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Part non-MOF interface"/>
     </eAnnotations>
-    <eOperations name="setExtensionAttribute" eExceptions="#//WSDLException">
-      <eParameters name="name" eType="#//QName"/>
-      <eParameters name="value" eType="#//QName"/>
-    </eOperations>
-    <eOperations name="getExtensionAttributeNames" eType="#//IIterator"/>
-    <eOperations name="getExtensionAttribute" eType="#//QName">
-      <eParameters name="name" eType="#//QName"/>
-    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IService" instanceClassName="javax.wsdl.Service"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Service non-MOF interface."/>
     </eAnnotations>
@@ -346,7 +334,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IPort" instanceClassName="javax.wsdl.Port"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Port non-MOF interface."/>
     </eAnnotations>
@@ -356,7 +344,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IBinding" instanceClassName="javax.wsdl.Binding"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Binding non-MOF interface."/>
     </eAnnotations>
@@ -375,7 +363,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IBindingOperation" instanceClassName="javax.wsdl.BindingOperation"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.BindingOperation non-MOF interface."/>
     </eAnnotations>
@@ -400,19 +388,19 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IBindingInput" instanceClassName="javax.wsdl.BindingInput"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.BindingInput non-MOF interface."/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IBindingOutput" instanceClassName="javax.wsdl.BindingOutput"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.BindingOutput non-MOF interface."/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IBindingFault" instanceClassName="javax.wsdl.BindingFault"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.BindingFault non-MOF interface."/>
     </eAnnotations>
@@ -429,7 +417,7 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IDefinition" instanceClassName="javax.wsdl.Definition"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IElementExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Definition non-MOF interface."/>
     </eAnnotations>
@@ -521,7 +509,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IImport" instanceClassName="javax.wsdl.Import"
-      abstract="true" interface="true">
+      abstract="true" interface="true" eSuperTypes="#//IAttributeExtensible">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This class represents the javax.wsdl.Import non-MOF interface."/>
     </eAnnotations>
@@ -580,7 +568,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
         eType="#//UnknownExtensibilityElement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XSDSchemaExtensibilityElement" eSuperTypes="#//ExtensibilityElement">
+  <eClassifiers xsi:type="ecore:EClass" name="XSDSchemaExtensibilityElement" eSuperTypes="#//ExtensibilityElement #//ISchema">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentBaseURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="schema" eType="ecore:EClass platform:/plugin/org.eclipse.xsd/model/XSD.ecore#//XSDSchema"
         containment="true"/>
   </eClassifiers>
@@ -594,4 +583,27 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="eMessage" lowerBound="1"
         eType="#//Message"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IElementExtensible" instanceClassName="javax.wsdl.extensions.ElementExtensible"
+      abstract="true" interface="true">
+    <eOperations name="getExtensibilityElements" eType="#//IList"/>
+    <eOperations name="addExtensibilityElement">
+      <eParameters name="extElement" eType="#//IExtensibilityElement"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IAttributeExtensible" instanceClassName="javax.wsdl.extensions.AttributeExtensible"
+      abstract="true" interface="true">
+    <eOperations name="getExtensionAttribute" eType="#//IObject">
+      <eParameters name="name" eType="#//QName"/>
+    </eOperations>
+    <eOperations name="setExtensionAttribute">
+      <eParameters name="name" eType="#//QName"/>
+      <eParameters name="value" eType="#//IObject"/>
+    </eOperations>
+    <eOperations name="getExtensionAttributes" eType="#//IMap"/>
+    <eOperations name="getNativeAttributeNames" eType="#//IList"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IObject" instanceClassName="java.lang.Object"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ISchema" instanceClassName="javax.wsdl.extensions.schema.Schema"
+      abstract="true" interface="true" eSuperTypes="#//IExtensibilityElement"/>
 </ecore:EPackage>

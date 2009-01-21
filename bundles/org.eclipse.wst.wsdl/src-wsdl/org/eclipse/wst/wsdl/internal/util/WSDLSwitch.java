@@ -16,8 +16,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.wsdl.extensions.AttributeExtensible;
+import javax.wsdl.extensions.ElementExtensible;
 import javax.wsdl.extensions.ExtensionRegistry;
 
+import javax.wsdl.extensions.schema.Schema;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.*;
@@ -122,6 +125,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(portType);
         if (result == null)
+          result = caseIElementExtensible(portType);
+        if (result == null)
+          result = caseIAttributeExtensible(portType);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -135,6 +142,10 @@ public class WSDLSwitch
           result = caseIOperation(operation);
         if (result == null)
           result = caseWSDLElement(operation);
+        if (result == null)
+          result = caseIElementExtensible(operation);
+        if (result == null)
+          result = caseIAttributeExtensible(operation);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -150,6 +161,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(message);
         if (result == null)
+          result = caseIElementExtensible(message);
+        if (result == null)
+          result = caseIAttributeExtensible(message);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -163,6 +178,10 @@ public class WSDLSwitch
           result = caseIPart(part);
         if (result == null)
           result = caseWSDLElement(part);
+        if (result == null)
+          result = caseIElementExtensible(part);
+        if (result == null)
+          result = caseIAttributeExtensible(part);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -178,6 +197,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(binding);
         if (result == null)
+          result = caseIElementExtensible(binding);
+        if (result == null)
+          result = caseIAttributeExtensible(binding);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -191,6 +214,10 @@ public class WSDLSwitch
           result = caseIBindingOperation(bindingOperation);
         if (result == null)
           result = caseWSDLElement(bindingOperation);
+        if (result == null)
+          result = caseIElementExtensible(bindingOperation);
+        if (result == null)
+          result = caseIAttributeExtensible(bindingOperation);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -206,6 +233,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(service);
         if (result == null)
+          result = caseIElementExtensible(service);
+        if (result == null)
+          result = caseIAttributeExtensible(service);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -219,6 +250,10 @@ public class WSDLSwitch
           result = caseIPort(port);
         if (result == null)
           result = caseWSDLElement(port);
+        if (result == null)
+          result = caseIElementExtensible(port);
+        if (result == null)
+          result = caseIAttributeExtensible(port);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -246,6 +281,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(definition);
         if (result == null)
+          result = caseIElementExtensible(definition);
+        if (result == null)
+          result = caseIAttributeExtensible(definition);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -260,6 +299,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(import_);
         if (result == null)
+          result = caseIElementExtensible(import_);
+        if (result == null)
+          result = caseIAttributeExtensible(import_);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -269,6 +312,10 @@ public class WSDLSwitch
         Object result = caseExtensibleElement(extensibleElement);
         if (result == null)
           result = caseWSDLElement(extensibleElement);
+        if (result == null)
+          result = caseIElementExtensible(extensibleElement);
+        if (result == null)
+          result = caseIAttributeExtensible(extensibleElement);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -284,7 +331,11 @@ public class WSDLSwitch
         if (result == null)
           result = caseExtensibleElement(input);
         if (result == null)
+          result = caseIAttributeExtensible(input);
+        if (result == null)
           result = caseWSDLElement(input);
+        if (result == null)
+          result = caseIElementExtensible(input);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -300,7 +351,11 @@ public class WSDLSwitch
         if (result == null)
           result = caseExtensibleElement(output);
         if (result == null)
+          result = caseIAttributeExtensible(output);
+        if (result == null)
           result = caseWSDLElement(output);
+        if (result == null)
+          result = caseIElementExtensible(output);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -316,7 +371,11 @@ public class WSDLSwitch
         if (result == null)
           result = caseExtensibleElement(fault);
         if (result == null)
+          result = caseIAttributeExtensible(fault);
+        if (result == null)
           result = caseWSDLElement(fault);
+        if (result == null)
+          result = caseIElementExtensible(fault);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -332,6 +391,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(bindingInput);
         if (result == null)
+          result = caseIElementExtensible(bindingInput);
+        if (result == null)
+          result = caseIAttributeExtensible(bindingInput);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -346,6 +409,10 @@ public class WSDLSwitch
         if (result == null)
           result = caseWSDLElement(bindingOutput);
         if (result == null)
+          result = caseIElementExtensible(bindingOutput);
+        if (result == null)
+          result = caseIAttributeExtensible(bindingOutput);
+        if (result == null)
           result = defaultCase(theEObject);
         return result;
       }
@@ -359,6 +426,10 @@ public class WSDLSwitch
           result = caseIBindingFault(bindingFault);
         if (result == null)
           result = caseWSDLElement(bindingFault);
+        if (result == null)
+          result = caseIElementExtensible(bindingFault);
+        if (result == null)
+          result = caseIAttributeExtensible(bindingFault);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -381,6 +452,10 @@ public class WSDLSwitch
           result = caseITypes(types);
         if (result == null)
           result = caseWSDLElement(types);
+        if (result == null)
+          result = caseIElementExtensible(types);
+        if (result == null)
+          result = caseIAttributeExtensible(types);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -406,6 +481,8 @@ public class WSDLSwitch
         if (result == null)
           result = caseExtensibilityElement(xsdSchemaExtensibilityElement);
         if (result == null)
+          result = caseISchema(xsdSchemaExtensibilityElement);
+        if (result == null)
           result = caseWSDLElement(xsdSchemaExtensibilityElement);
         if (result == null)
           result = caseIExtensibilityElement(xsdSchemaExtensibilityElement);
@@ -421,6 +498,10 @@ public class WSDLSwitch
           result = caseExtensibleElement(messageReference);
         if (result == null)
           result = caseWSDLElement(messageReference);
+        if (result == null)
+          result = caseIElementExtensible(messageReference);
+        if (result == null)
+          result = caseIAttributeExtensible(messageReference);
         if (result == null)
           result = defaultCase(theEObject);
         return result;
@@ -1178,6 +1259,70 @@ public class WSDLSwitch
    * @generated
    */
   public Object caseMessageReference(MessageReference object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>IElement Extensible</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>IElement Extensible</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public Object caseIElementExtensible(ElementExtensible object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>IAttribute Extensible</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>IAttribute Extensible</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public Object caseIAttributeExtensible(AttributeExtensible object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>IObject</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>IObject</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public Object caseIObject(Object object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>ISchema</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>ISchema</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public Object caseISchema(Schema object)
   {
     return null;
   }

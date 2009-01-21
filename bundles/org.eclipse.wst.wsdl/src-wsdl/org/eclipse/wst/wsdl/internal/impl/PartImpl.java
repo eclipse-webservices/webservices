@@ -12,7 +12,7 @@ package org.eclipse.wst.wsdl.internal.impl;
 
 
 import java.util.HashMap;
-import java.util.Iterator; // import javax.wsdl.WSDLException;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -425,7 +425,7 @@ public class PartImpl extends ExtensibleElementImpl implements Part
    * <!-- end-user-doc -->
    * @generated NOT
    */
-  public QName getExtensionAttribute(QName name)
+  public Object getExtensionAttribute(QName name)
   {
     if (name.equals(new QName(NS_URI_PART_EXTENSIONS, ATTR_MESSAGE)))
       return getMessage() != null ? getMessage().getQName() : null;

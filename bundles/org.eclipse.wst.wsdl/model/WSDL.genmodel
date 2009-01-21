@@ -106,10 +106,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="WSDL.ecore#//ExtensibleElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//ExtensibleElement/eExtensibilityElements"/>
-      <genOperations ecoreOperation="WSDL.ecore#//ExtensibleElement/getExtensibilityElements"/>
-      <genOperations ecoreOperation="WSDL.ecore#//ExtensibleElement/addExtensibilityElement">
-        <genParameters ecoreParameter="WSDL.ecore#//ExtensibleElement/addExtensibilityElement/extElement"/>
-      </genOperations>
     </genClasses>
     <genClasses ecoreClass="WSDL.ecore#//Input"/>
     <genClasses ecoreClass="WSDL.ecore#//Output"/>
@@ -204,16 +200,7 @@
         <genParameters ecoreParameter="WSDL.ecore#//IMessage/getOrderedParts/partOrder"/>
       </genOperations>
     </genClasses>
-    <genClasses image="false" ecoreClass="WSDL.ecore#//IPart">
-      <genOperations ecoreOperation="WSDL.ecore#//IPart/setExtensionAttribute">
-        <genParameters ecoreParameter="WSDL.ecore#//IPart/setExtensionAttribute/name"/>
-        <genParameters ecoreParameter="WSDL.ecore#//IPart/setExtensionAttribute/value"/>
-      </genOperations>
-      <genOperations ecoreOperation="WSDL.ecore#//IPart/getExtensionAttributeNames"/>
-      <genOperations ecoreOperation="WSDL.ecore#//IPart/getExtensionAttribute">
-        <genParameters ecoreParameter="WSDL.ecore#//IPart/getExtensionAttribute/name"/>
-      </genOperations>
-    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IPart"/>
     <genClasses image="false" ecoreClass="WSDL.ecore#//IService">
       <genOperations ecoreOperation="WSDL.ecore#//IService/addPort">
         <genParameters ecoreParameter="WSDL.ecore#//IService/addPort/port"/>
@@ -374,11 +361,31 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//UnknownExtensibilityElement/children"/>
     </genClasses>
     <genClasses ecoreClass="WSDL.ecore#//XSDSchemaExtensibilityElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//XSDSchemaExtensibilityElement/documentBaseURI"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//XSDSchemaExtensibilityElement/schema"/>
     </genClasses>
     <genClasses image="false" ecoreClass="WSDL.ecore#//MessageReference">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//MessageReference/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//MessageReference/eMessage"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IElementExtensible">
+      <genOperations ecoreOperation="WSDL.ecore#//IElementExtensible/getExtensibilityElements"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IElementExtensible/addExtensibilityElement">
+        <genParameters ecoreParameter="WSDL.ecore#//IElementExtensible/addExtensibilityElement/extElement"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IAttributeExtensible">
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/getExtensionAttribute">
+        <genParameters ecoreParameter="WSDL.ecore#//IAttributeExtensible/getExtensionAttribute/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/setExtensionAttribute">
+        <genParameters ecoreParameter="WSDL.ecore#//IAttributeExtensible/setExtensionAttribute/name"/>
+        <genParameters ecoreParameter="WSDL.ecore#//IAttributeExtensible/setExtensionAttribute/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/getExtensionAttributes"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/getNativeAttributeNames"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IObject"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//ISchema"/>
   </genPackages>
 </genmodel:GenModel>

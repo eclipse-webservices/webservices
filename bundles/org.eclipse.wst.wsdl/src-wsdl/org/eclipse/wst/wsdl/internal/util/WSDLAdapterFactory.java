@@ -16,8 +16,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.wsdl.extensions.AttributeExtensible;
+import javax.wsdl.extensions.ElementExtensible;
 import javax.wsdl.extensions.ExtensionRegistry;
 
+import javax.wsdl.extensions.schema.Schema;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
@@ -319,6 +322,26 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
       public Object caseMessageReference(MessageReference object)
       {
         return createMessageReferenceAdapter();
+      }
+
+      public Object caseIElementExtensible(ElementExtensible object)
+      {
+        return createIElementExtensibleAdapter();
+      }
+
+      public Object caseIAttributeExtensible(AttributeExtensible object)
+      {
+        return createIAttributeExtensibleAdapter();
+      }
+
+      public Object caseIObject(Object object)
+      {
+        return createIObjectAdapter();
+      }
+
+      public Object caseISchema(Schema object)
+      {
+        return createISchemaAdapter();
       }
 
       public Object defaultCase(EObject object)
@@ -1041,6 +1064,66 @@ public class WSDLAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMessageReferenceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.ElementExtensible <em>IElement Extensible</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.ElementExtensible
+   * @generated
+   */
+  public Adapter createIElementExtensibleAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.AttributeExtensible <em>IAttribute Extensible</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.AttributeExtensible
+   * @generated
+   */
+  public Adapter createIAttributeExtensibleAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link java.lang.Object <em>IObject</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see java.lang.Object
+   * @generated
+   */
+  public Adapter createIObjectAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link javax.wsdl.extensions.schema.Schema <em>ISchema</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see javax.wsdl.extensions.schema.Schema
+   * @generated
+   */
+  public Adapter createISchemaAdapter()
   {
     return null;
   }

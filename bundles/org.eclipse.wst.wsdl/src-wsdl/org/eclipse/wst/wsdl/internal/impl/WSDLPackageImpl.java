@@ -18,7 +18,10 @@ import java.util.Map;
 
 import javax.wsdl.OperationType;
 import javax.wsdl.WSDLException;
+import javax.wsdl.extensions.AttributeExtensible;
+import javax.wsdl.extensions.ElementExtensible;
 import javax.wsdl.extensions.ExtensionRegistry;
+import javax.wsdl.extensions.schema.Schema;
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -395,6 +398,34 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
    * @generated
    */
   private EClass messageReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass iElementExtensibleEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass iAttributeExtensibleEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass iObjectEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass iSchemaEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1591,9 +1622,19 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getXSDSchemaExtensibilityElement_DocumentBaseURI()
+  {
+    return (EAttribute)xsdSchemaExtensibilityElementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getXSDSchemaExtensibilityElement_Schema()
   {
-    return (EReference)xsdSchemaExtensibilityElementEClass.getEStructuralFeatures().get(0);
+    return (EReference)xsdSchemaExtensibilityElementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1624,6 +1665,46 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
   public EReference getMessageReference_EMessage()
   {
     return (EReference)messageReferenceEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIElementExtensible()
+  {
+    return iElementExtensibleEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIAttributeExtensible()
+  {
+    return iAttributeExtensibleEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIObject()
+  {
+    return iObjectEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getISchema()
+  {
+    return iSchemaEClass;
   }
 
   /**
@@ -1860,11 +1941,20 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     createEReference(unknownExtensibilityElementEClass, UNKNOWN_EXTENSIBILITY_ELEMENT__CHILDREN);
 
     xsdSchemaExtensibilityElementEClass = createEClass(XSD_SCHEMA_EXTENSIBILITY_ELEMENT);
+    createEAttribute(xsdSchemaExtensibilityElementEClass, XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENT_BASE_URI);
     createEReference(xsdSchemaExtensibilityElementEClass, XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA);
 
     messageReferenceEClass = createEClass(MESSAGE_REFERENCE);
     createEAttribute(messageReferenceEClass, MESSAGE_REFERENCE__NAME);
     createEReference(messageReferenceEClass, MESSAGE_REFERENCE__EMESSAGE);
+
+    iElementExtensibleEClass = createEClass(IELEMENT_EXTENSIBLE);
+
+    iAttributeExtensibleEClass = createEClass(IATTRIBUTE_EXTENSIBLE);
+
+    iObjectEClass = createEClass(IOBJECT);
+
+    iSchemaEClass = createEClass(ISCHEMA);
 
     // Create data types
     qNameEDataType = createEDataType(QNAME);
@@ -1926,6 +2016,8 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     importEClass.getESuperTypes().add(this.getExtensibleElement());
     importEClass.getESuperTypes().add(this.getIImport());
     extensibleElementEClass.getESuperTypes().add(this.getWSDLElement());
+    extensibleElementEClass.getESuperTypes().add(this.getIElementExtensible());
+    extensibleElementEClass.getESuperTypes().add(this.getIAttributeExtensible());
     inputEClass.getESuperTypes().add(this.getMessageReference());
     inputEClass.getESuperTypes().add(this.getIInput());
     outputEClass.getESuperTypes().add(this.getMessageReference());
@@ -1938,11 +2030,29 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     bindingOutputEClass.getESuperTypes().add(this.getIBindingOutput());
     bindingFaultEClass.getESuperTypes().add(this.getExtensibleElement());
     bindingFaultEClass.getESuperTypes().add(this.getIBindingFault());
+    iPortTypeEClass.getESuperTypes().add(this.getIAttributeExtensible());
+    iOperationEClass.getESuperTypes().add(this.getIElementExtensible());
+    iInputEClass.getESuperTypes().add(this.getIAttributeExtensible());
+    iOutputEClass.getESuperTypes().add(this.getIAttributeExtensible());
+    iFaultEClass.getESuperTypes().add(this.getIAttributeExtensible());
+    iMessageEClass.getESuperTypes().add(this.getIElementExtensible());
+    iPartEClass.getESuperTypes().add(this.getIAttributeExtensible());
+    iServiceEClass.getESuperTypes().add(this.getIElementExtensible());
+    iPortEClass.getESuperTypes().add(this.getIElementExtensible());
+    iBindingEClass.getESuperTypes().add(this.getIElementExtensible());
+    iBindingOperationEClass.getESuperTypes().add(this.getIElementExtensible());
+    iBindingInputEClass.getESuperTypes().add(this.getIElementExtensible());
+    iBindingOutputEClass.getESuperTypes().add(this.getIElementExtensible());
+    iBindingFaultEClass.getESuperTypes().add(this.getIElementExtensible());
+    iDefinitionEClass.getESuperTypes().add(this.getIElementExtensible());
+    iImportEClass.getESuperTypes().add(this.getIAttributeExtensible());
     typesEClass.getESuperTypes().add(this.getExtensibleElement());
     typesEClass.getESuperTypes().add(this.getITypes());
     unknownExtensibilityElementEClass.getESuperTypes().add(this.getExtensibilityElement());
     xsdSchemaExtensibilityElementEClass.getESuperTypes().add(this.getExtensibilityElement());
+    xsdSchemaExtensibilityElementEClass.getESuperTypes().add(this.getISchema());
     messageReferenceEClass.getESuperTypes().add(this.getExtensibleElement());
+    iSchemaEClass.getESuperTypes().add(this.getIExtensibilityElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(wsdlElementEClass, WSDLElement.class, "WSDLElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -2231,11 +2341,6 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       null,
       "eExtensibilityElements", null, 0, -1, ExtensibleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-    addEOperation(extensibleElementEClass, this.getIList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
-
-    op = addEOperation(extensibleElementEClass, null, "addExtensibilityElement"); //$NON-NLS-1$
-    addEParameter(op, this.getIExtensibilityElement(), "extElement", 0, 1); //$NON-NLS-1$
-
     initEClass(inputEClass, Input.class, "Input", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     initEClass(outputEClass, Output.class, "Output", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -2372,16 +2477,6 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
     addEParameter(op, this.getIList(), "partOrder", 0, 1); //$NON-NLS-1$
 
     initEClass(iPartEClass, javax.wsdl.Part.class, "IPart", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-
-    op = addEOperation(iPartEClass, null, "setExtensionAttribute"); //$NON-NLS-1$
-    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
-    addEParameter(op, this.getQName(), "value", 0, 1); //$NON-NLS-1$
-    addEException(op, this.getWSDLException());
-
-    addEOperation(iPartEClass, this.getIIterator(), "getExtensionAttributeNames", 0, 1); //$NON-NLS-1$
-
-    op = addEOperation(iPartEClass, this.getQName(), "getExtensionAttribute", 0, 1); //$NON-NLS-1$
-    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
 
     initEClass(iServiceEClass, javax.wsdl.Service.class, "IService", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
@@ -2610,6 +2705,10 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       xsdSchemaExtensibilityElementEClass,
       XSDSchemaExtensibilityElement.class,
       "XSDSchemaExtensibilityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+    initEAttribute(
+      getXSDSchemaExtensibilityElement_DocumentBaseURI(),
+      ecorePackage.getEString(),
+      "documentBaseURI", null, 0, 1, XSDSchemaExtensibilityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
     initEReference(
       getXSDSchemaExtensibilityElement_Schema(),
       theXSDPackage.getXSDSchema(),
@@ -2626,6 +2725,36 @@ public class WSDLPackageImpl extends EPackageImpl implements WSDLPackage
       this.getMessage(),
       null,
       "eMessage", null, 1, 1, MessageReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+    initEClass(
+      iElementExtensibleEClass,
+      ElementExtensible.class,
+      "IElementExtensible", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+    addEOperation(iElementExtensibleEClass, this.getIList(), "getExtensibilityElements", 0, 1); //$NON-NLS-1$
+
+    op = addEOperation(iElementExtensibleEClass, null, "addExtensibilityElement"); //$NON-NLS-1$
+    addEParameter(op, this.getIExtensibilityElement(), "extElement", 0, 1); //$NON-NLS-1$
+
+    initEClass(
+      iAttributeExtensibleEClass,
+      AttributeExtensible.class,
+      "IAttributeExtensible", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+    op = addEOperation(iAttributeExtensibleEClass, this.getIObject(), "getExtensionAttribute", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
+
+    op = addEOperation(iAttributeExtensibleEClass, null, "setExtensionAttribute"); //$NON-NLS-1$
+    addEParameter(op, this.getQName(), "name", 0, 1); //$NON-NLS-1$
+    addEParameter(op, this.getIObject(), "value", 0, 1); //$NON-NLS-1$
+
+    addEOperation(iAttributeExtensibleEClass, this.getIMap(), "getExtensionAttributes", 0, 1); //$NON-NLS-1$
+
+    addEOperation(iAttributeExtensibleEClass, this.getIList(), "getNativeAttributeNames", 0, 1); //$NON-NLS-1$
+
+    initEClass(iObjectEClass, Object.class, "IObject", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+    initEClass(iSchemaEClass, Schema.class, "ISchema", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
     // Initialize data types
     initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$

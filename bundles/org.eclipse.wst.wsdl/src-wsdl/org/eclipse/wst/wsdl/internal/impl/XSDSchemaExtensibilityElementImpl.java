@@ -11,6 +11,11 @@
 package org.eclipse.wst.wsdl.internal.impl;
 
 
+import java.util.List;
+import java.util.Map;
+
+import javax.wsdl.extensions.schema.SchemaImport;
+import javax.wsdl.extensions.schema.SchemaReference;
 import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -37,6 +42,7 @@ import org.w3c.dom.Element;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl#getDocumentBaseURI <em>Document Base URI</em>}</li>
  *   <li>{@link org.eclipse.wst.wsdl.internal.impl.XSDSchemaExtensibilityElementImpl#getSchema <em>Schema</em>}</li>
  * </ul>
  * </p>
@@ -45,6 +51,33 @@ import org.w3c.dom.Element;
  */
 public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl implements XSDSchemaExtensibilityElement
 {
+  /**
+   * This class is not intended to be serialized.
+   * serialVersionUID is assigned with 1L to avoid
+   * compiler warning messages.
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
+   * The default value of the '{@link #getDocumentBaseURI() <em>Document Base URI</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getDocumentBaseURI()
+   * @generated
+   * @ordered
+   */
+  protected static final String DOCUMENT_BASE_URI_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getDocumentBaseURI() <em>Document Base URI</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getDocumentBaseURI()
+   * @generated
+   * @ordered
+   */
+  protected String documentBaseURI = DOCUMENT_BASE_URI_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getSchema() <em>Schema</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -73,6 +106,34 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   protected EClass eStaticClass()
   {
     return WSDLPackage.Literals.XSD_SCHEMA_EXTENSIBILITY_ELEMENT;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getDocumentBaseURI()
+  {
+    return documentBaseURI;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setDocumentBaseURI(String newDocumentBaseURI)
+  {
+    String oldDocumentBaseURI = documentBaseURI;
+    documentBaseURI = newDocumentBaseURI;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(
+        this,
+        Notification.SET,
+        WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENT_BASE_URI,
+        oldDocumentBaseURI,
+        documentBaseURI));
   }
 
   /**
@@ -143,6 +204,114 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public void addImport(SchemaImport importSchema)
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public void addInclude(SchemaReference includeSchema)
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public void addRedefine(SchemaReference redefineSchema)
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public SchemaImport createImport()
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public SchemaReference createInclude()
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public SchemaReference createRedefine()
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public List getIncludes()
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public List getRedefines()
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated NOT
+   */
+  public Map getImports()
+  {
+    // TODO: implement this method
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
@@ -164,6 +333,8 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   {
     switch (featureID)
     {
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENT_BASE_URI:
+      return getDocumentBaseURI();
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
       return getSchema();
     }
@@ -179,6 +350,9 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   {
     switch (featureID)
     {
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENT_BASE_URI:
+      setDocumentBaseURI((String)newValue);
+      return;
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
       setSchema((XSDSchema)newValue);
       return;
@@ -195,6 +369,9 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   {
     switch (featureID)
     {
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENT_BASE_URI:
+      setDocumentBaseURI(DOCUMENT_BASE_URI_EDEFAULT);
+      return;
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
       setSchema((XSDSchema)null);
       return;
@@ -211,10 +388,29 @@ public class XSDSchemaExtensibilityElementImpl extends ExtensibilityElementImpl 
   {
     switch (featureID)
     {
+      case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__DOCUMENT_BASE_URI:
+      return DOCUMENT_BASE_URI_EDEFAULT == null ? documentBaseURI != null : !DOCUMENT_BASE_URI_EDEFAULT.equals(documentBaseURI);
       case WSDLPackage.XSD_SCHEMA_EXTENSIBILITY_ELEMENT__SCHEMA:
       return schema != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String toString()
+  {
+    if (eIsProxy())
+      return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (documentBaseURI: "); //$NON-NLS-1$
+    result.append(documentBaseURI);
+    result.append(')');
+    return result.toString();
   }
 
   /* (non-Javadoc)

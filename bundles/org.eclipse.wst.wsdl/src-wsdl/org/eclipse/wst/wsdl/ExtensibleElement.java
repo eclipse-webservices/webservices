@@ -11,9 +11,8 @@
 package org.eclipse.wst.wsdl;
 
 
-import java.util.List;
-
-import javax.wsdl.extensions.ExtensibilityElement;
+import javax.wsdl.extensions.AttributeExtensible;
+import javax.wsdl.extensions.ElementExtensible;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -37,10 +36,10 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see org.eclipse.wst.wsdl.WSDLPackage#getExtensibleElement()
- * @model abstract="true"
+ * @model abstract="true" superTypes="org.eclipse.wst.wsdl.WSDLElement org.eclipse.wst.wsdl.IElementExtensible org.eclipse.wst.wsdl.IAttributeExtensible"
  * @generated
  */
-public interface ExtensibleElement extends WSDLElement
+public interface ExtensibleElement extends WSDLElement, ElementExtensible, AttributeExtensible
 {
   /**
    * Returns the value of the '<em><b>EExtensibility Elements</b></em>' containment reference list.
@@ -57,28 +56,5 @@ public interface ExtensibleElement extends WSDLElement
    * @generated
    */
   EList getEExtensibilityElements();
-
-  /**
-   * <!-- begin-user-doc -->
-   * This method is same as getEExtensibilityElements() and compatible with the JWSDL API.
-   * @see #getEExtensibilityElements()
-   * @return the value of the '<em>EFault</em>' reference.
-   * @ignore
-   * <!-- end-user-doc -->
-   * @model kind="operation" type="org.eclipse.wst.wsdl.IList" many="false"
-   * @generated
-   */
-  List getExtensibilityElements();
-
-  /**
-   * <!-- begin-user-doc -->
-   * Adds an ExtensibilityElement to the '<em>EExtensibility Elements</em>' containment reference list.
-   * @param extElement An ExtensibilityElement to be added.
-   * @ignore
-   * <!-- end-user-doc -->
-   * @model extElementType="org.eclipse.wst.wsdl.IExtensibilityElement"
-   * @generated
-   */
-  void addExtensibilityElement(ExtensibilityElement extElement);
 
 } // ExtensibleElement
