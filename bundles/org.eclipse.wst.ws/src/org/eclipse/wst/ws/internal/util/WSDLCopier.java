@@ -36,6 +36,7 @@ import javax.wsdl.Types;
 import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLWriter;
 import javax.xml.transform.OutputKeys;
@@ -371,6 +372,8 @@ public class WSDLCopier implements IWorkspaceRunnable {
     			element = ((UnknownExtensibilityElement) extElement).getElement();
    			else if (extElement instanceof XSDSchemaExtensibilityElement)
    				element = ((XSDSchemaExtensibilityElement) extElement).getElement();
+   			else if (extElement instanceof Schema)
+   				element = ((Schema) extElement).getElement();
    			else
    				continue;
     			    			

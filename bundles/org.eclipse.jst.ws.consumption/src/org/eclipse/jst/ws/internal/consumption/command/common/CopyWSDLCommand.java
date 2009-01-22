@@ -28,6 +28,7 @@ import javax.wsdl.Types;
 import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
+import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLWriter;
 import javax.xml.transform.OutputKeys;
@@ -202,7 +203,23 @@ public class CopyWSDLCommand extends AbstractDataModelOperation
           }
           copyXMLSchema(env, xsdSchema, baseURI, destURI);
         }
+        if (extElement instanceof Schema)
+        {
+          Schema schemaElement = (Schema)extElement;
+          XSDSchema xsdSchema = null;
+          try
+          {
+            xsdSchema = XSDSchemaImpl.createSchema(schemaElement.getElement());
+          }
+          catch (Throwable t)
+          {
+            // ignore any extensibility elements that cannot be parsed into a
+            // XSDSchema instance
+          }
+          copyXMLSchema(env, xsdSchema, baseURI, destURI);
+        }
       }
+      
     }
   }
 
