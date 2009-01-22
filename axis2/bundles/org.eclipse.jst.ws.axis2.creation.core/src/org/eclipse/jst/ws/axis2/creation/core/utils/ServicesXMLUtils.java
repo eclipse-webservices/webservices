@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2009 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20080604   193371 samindaw@wso2.com - Saminda Wijeratne, creating a function to validate services.xml
+ * 20090120   248023 samindaw@wso2.com - Saminda Wijeratne, the xsd resource path string was not valid for windows
  *******************************************************************************/
 
 package org.eclipse.jst.ws.axis2.creation.core.utils;
@@ -39,8 +40,7 @@ public class ServicesXMLUtils {
             SchemaFactory.newInstance(Axis2Constants.XML_SCHEMA);
         
         try {
-        	String resourcePath=FileUtils.addAnotherNodeToPath(
-        			Axis2Constants.RESOURCE_FOLDER, Axis2Constants.SERVICES_XSD_SCHEMA_NAME);
+        	String resourcePath=Axis2Constants.RESOURCE_FOLDER+"/"+Axis2Constants.SERVICES_XSD_SCHEMA_NAME;
             Schema schema = factory.newSchema(
             		WebServiceAxis2CorePlugin.getInstance().getBundle().getResource(resourcePath));
             Validator validator = schema.newValidator();
