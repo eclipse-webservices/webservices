@@ -249,12 +249,7 @@ public final class Java2WSWidgetFactory {
             for (int i = 0; i < allInterfaces.length; i++) {
                 IType itype = allInterfaces[i];
                 if (!itype.isBinary() && itype.getResource().getProject().equals(javaProject.getProject())) {
-                    String packageName = itype.getPackageFragment().getElementName();
-                    if (packageName.trim().length() > 0) {
-                        packageName += "."; //$NON-NLS-1$
-                    }
-                    String qualifiedName = packageName + itype.getPrimaryElement().getElementName();
-                    seiCombo.add(qualifiedName);
+                    seiCombo.add(itype.getFullyQualifiedName());
                 }
             }
         } catch (JavaModelException jme) {

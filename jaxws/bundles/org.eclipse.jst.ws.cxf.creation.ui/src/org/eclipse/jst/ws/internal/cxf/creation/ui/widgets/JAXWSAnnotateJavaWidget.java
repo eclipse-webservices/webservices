@@ -307,6 +307,8 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             type = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                     .getJavaStartingPoint());
         }
+        
+        model.setMethodMap(AnnotationUtils.getMethodMap(type, model));
 
         return type;
     }
@@ -418,7 +420,6 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             annotationPreviewViewer.getDocument().set(textFileChange.getPreviewContent(monitor));
 
             annotationPreviewViewer.setRedraw(true);
-
         } catch (CoreException ce) {
             CXFCreationUIPlugin.log(ce.getStatus());
         } catch (MalformedTreeException mte) {

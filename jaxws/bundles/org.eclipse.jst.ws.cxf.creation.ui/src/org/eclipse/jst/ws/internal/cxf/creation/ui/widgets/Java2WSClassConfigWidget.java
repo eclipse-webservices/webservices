@@ -126,6 +126,9 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             public void widgetSelected(SelectionEvent event) {
                 enableSelectSEIControls(selectSEIButton.getSelection());
                 enableExtractSEIControls(!selectSEIButton.getSelection());
+                if (selectSEIButton.getSelection() && selectSEICombo.getSelectionIndex() != -1) {
+                    model.setFullyQualifiedJavaInterfaceName(selectSEICombo.getText());
+                }
                 updateSEISelectionStatus();
                 statusListener.handleEvent(null);
             }
@@ -354,6 +357,8 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
 
         } else {
             SEI_SELECTION_STATUS = Status.OK_STATUS;
+            JAVA_TYPE_NAME_STATUS = Status.OK_STATUS;
+            JAVA_TYPE_EXISTS_STATUS = Status.OK_STATUS;
         }
     }
 
