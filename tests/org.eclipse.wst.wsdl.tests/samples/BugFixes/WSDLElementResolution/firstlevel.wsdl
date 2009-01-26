@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.example.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.com">
-    <import location="secondlevel.wsdl" namespace="http://www.example.com"/>
-	<message name="testINPUTmessage">
-		<part name="testINpart" type="xsd:string"/>
-	</message>
-</definitions>
