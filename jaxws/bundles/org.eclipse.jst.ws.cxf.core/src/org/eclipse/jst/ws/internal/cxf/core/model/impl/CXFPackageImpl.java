@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackageImpl.java,v 1.1 2008/11/10 20:37:42 david_williams Exp $
+ * $Id: CXFPackageImpl.java,v 1.2 2009/01/26 15:28:16 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -294,6 +294,15 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      */
     public EAttribute getCXFContext_UseSpringApplicationContext() {
         return (EAttribute)cxfContextEClass.getEStructuralFeatures().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCXFContext_ExportCXFClasspathContainer() {
+        return (EAttribute)cxfContextEClass.getEStructuralFeatures().get(10);
     }
 
     /**
@@ -920,6 +929,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         createEAttribute(cxfContextEClass, CXF_CONTEXT__DATABINDING);
         createEAttribute(cxfContextEClass, CXF_CONTEXT__FRONTEND);
         createEAttribute(cxfContextEClass, CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT);
+        createEAttribute(cxfContextEClass, CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER);
 
         cxfDataModelEClass = createEClass(CXF_DATA_MODEL);
         createEAttribute(cxfDataModelEClass, CXF_DATA_MODEL__PROJECT_NAME);
@@ -1046,6 +1056,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         initEAttribute(getCXFContext_Databinding(), this.getDataBinding(), "databinding", "jaxb", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_Frontend(), this.getFrontend(), "frontend", "jaxws", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_UseSpringApplicationContext(), ecorePackage.getEBoolean(), "useSpringApplicationContext", "true", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCXFContext_ExportCXFClasspathContainer(), ecorePackage.getEBoolean(), "exportCXFClasspathContainer", "false", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(cxfDataModelEClass, CXFDataModel.class, "CXFDataModel", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getCXFDataModel_ProjectName(), ecorePackage.getEString(), "projectName", null, 0, 1, CXFDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

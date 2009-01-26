@@ -64,6 +64,8 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
     private Text cxfHomeDirText;
 
     private Label cxfToolVersionLabel;
+    
+    private Button exportCXFClasspathContainerButton;
 
     private CXFContext context;
 
@@ -183,11 +185,34 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
 
         cxfToolVersionLabel = new Label(runtimeGroup, SWT.NONE);
         gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
+        gridData.horizontalSpan = 2;
         cxfToolVersionLabel.setLayoutData(gridData);
-        if (context.getCxfRuntimeVersion() != null) {
+        
+        Label paddingLabel = new Label(runtimeGroup, SWT.NONE);
+        gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
+        gridData.horizontalSpan = 3;
+        paddingLabel.setLayoutData(gridData);
+        
+        exportCXFClasspathContainerButton = new Button(runtimeGroup, SWT.CHECK);
+        exportCXFClasspathContainerButton.setText(
+                CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_EXPORT_CXF_CLASSPATH_CONTAINER);
+        exportCXFClasspathContainerButton.setSelection(context.isExportCXFClasspathContainer());
+        exportCXFClasspathContainerButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                context.setExportCXFClasspathContainer(((Button) e.widget).getSelection());
+            }
+        });
+        gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
+        gridData.horizontalSpan = 3;
+        exportCXFClasspathContainerButton.setLayoutData(gridData);
+        
+        if (context.getCxfRuntimeVersion().length() > 0) {
             cxfToolVersionLabel.setText(context.getCxfRuntimeEdition() + " " + context.getCxfRuntimeVersion()); //$NON-NLS-1$
+            exportCXFClasspathContainerButton.setEnabled(true);
+        } else {
+            exportCXFClasspathContainerButton.setEnabled(false);
         }
-         
+        
         //Java2WS
         TabItem java2WSTabItem = new TabItem(cxfPreferenceTab, SWT.NONE);
         java2WSTabItem.setText(CXFUIMessages.JAVA2WS_PREFERENCES_TAB_NAME);
@@ -333,6 +358,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
                     IStatus toolVersionStatus = getToolVersion(cxfLibPath);
                     processToolVersion(toolVersionStatus);
                     CXF_LOCATION_STATUS = OK_STATUS;
+                    exportCXFClasspathContainerButton.setEnabled(true);
                     return CXF_LOCATION_STATUS;
                 }
             }
@@ -340,6 +366,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
         context.setCxfRuntimeLocation(""); //$NON-NLS-1$
         context.setCxfRuntimeVersion(""); //$NON-NLS-1$
         cxfToolVersionLabel.setText(""); //$NON-NLS-1$
+        exportCXFClasspathContainerButton.setEnabled(false);
         CXF_LOCATION_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID,
                 CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_RUNTIME_NOT_SET);
         return CXF_LOCATION_STATUS;

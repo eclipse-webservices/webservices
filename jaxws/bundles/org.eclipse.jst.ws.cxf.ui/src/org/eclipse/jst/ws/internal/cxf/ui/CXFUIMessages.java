@@ -23,6 +23,7 @@ public class CXFUIMessages extends NLS {
     public static String CXF_RUNTIME_PREFERENCE_PAGE_RUNTIME_NOT_SET;
     public static String CXF_RUNTIME_PREFERENCE_PAGE_BROWSE_BUTTON_LABEL;
     public static String CXF_RUNTIME_PREFERENCE_PAGE_CXF_VERSON_LABEL;
+    public static String CXF_RUNTIME_PREFERENCE_PAGE_EXPORT_CXF_CLASSPATH_CONTAINER;
     
     public static String JAVA2WS_PREFERENCES_TAB_NAME;
     public static String JAVA2WS_PREFERENCES_TAB_TOOLTIP;

@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackage.java,v 1.1 2008/11/10 20:37:43 david_williams Exp $
+ * $Id: CXFPackage.java,v 1.2 2009/01/26 15:28:21 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model;
 
@@ -167,13 +167,22 @@ public interface CXFPackage extends EPackage {
     int CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT = 9;
 
     /**
+     * The feature id for the '<em><b>Export CXF Classpath Container</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = 10;
+
+    /**
      * The number of structural features of the '<em>Context</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_CONTEXT_FEATURE_COUNT = 10;
+    int CXF_CONTEXT_FEATURE_COUNT = 11;
 
     /**
      * The meta object id for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl <em>Data Model</em>}' class.
@@ -274,6 +283,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT = CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT;
+
+    /**
+     * The feature id for the '<em><b>Export CXF Classpath Container</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER;
 
     /**
      * The feature id for the '<em><b>Project Name</b></em>' attribute.
@@ -511,6 +529,15 @@ public interface CXFPackage extends EPackage {
     int JAVA2_WS_CONTEXT__USE_SPRING_APPLICATION_CONTEXT = CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT;
 
     /**
+     * The feature id for the '<em><b>Export CXF Classpath Container</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int JAVA2_WS_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER;
+
+    /**
      * The feature id for the '<em><b>Soap12 Binding</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -699,6 +726,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int JAVA2_WS_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT = CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT;
+
+    /**
+     * The feature id for the '<em><b>Export CXF Classpath Container</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int JAVA2_WS_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER;
 
     /**
      * The feature id for the '<em><b>Project Name</b></em>' attribute.
@@ -1098,6 +1134,15 @@ public interface CXFPackage extends EPackage {
     int WSDL2_JAVA_CONTEXT__USE_SPRING_APPLICATION_CONTEXT = CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT;
 
     /**
+     * The feature id for the '<em><b>Export CXF Classpath Container</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int WSDL2_JAVA_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER;
+
+    /**
      * The feature id for the '<em><b>Generate Implementation</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1358,6 +1403,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int WSDL2_JAVA_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT = CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT;
+
+    /**
+     * The feature id for the '<em><b>Export CXF Classpath Container</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int WSDL2_JAVA_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER;
 
     /**
      * The feature id for the '<em><b>Project Name</b></em>' attribute.
@@ -1872,6 +1926,17 @@ public interface CXFPackage extends EPackage {
      * @generated
      */
     EAttribute getCXFContext_UseSpringApplicationContext();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#isExportCXFClasspathContainer <em>Export CXF Classpath Container</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Export CXF Classpath Container</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#isExportCXFClasspathContainer()
+     * @see #getCXFContext()
+     * @generated
+     */
+    EAttribute getCXFContext_ExportCXFClasspathContainer();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel <em>Data Model</em>}'.
@@ -2692,6 +2757,14 @@ public interface CXFPackage extends EPackage {
          * @generated
          */
         EAttribute CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT = eINSTANCE.getCXFContext_UseSpringApplicationContext();
+
+        /**
+         * The meta object literal for the '<em><b>Export CXF Classpath Container</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = eINSTANCE.getCXFContext_ExportCXFClasspathContainer();
 
         /**
          * The meta object literal for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl <em>Data Model</em>}' class.

@@ -196,4 +196,31 @@ public interface CXFContext {
      * @generated
      */
     void setUseSpringApplicationContext(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Export CXF Classpath Container</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Export CXF Classpath Container</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Export CXF Classpath Container</em>' attribute.
+     * @see #setExportCXFClasspathContainer(boolean)
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage#getCXFContext_ExportCXFClasspathContainer()
+     * @model default="false"
+     * @generated
+     */
+    boolean isExportCXFClasspathContainer();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#isExportCXFClasspathContainer <em>Export CXF Classpath Container</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Export CXF Classpath Container</em>' attribute.
+     * @see #isExportCXFClasspathContainer()
+     * @generated
+     */
+    void setExportCXFClasspathContainer(boolean value);
 }

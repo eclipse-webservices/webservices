@@ -93,4 +93,11 @@
           </facet>
        </static-preset>
     </extension>
+    
+    <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+       <classpathContainerInitializer
+             class="org.eclipse.jst.ws.internal.cxf.core.CXFClasspathContainerInitializer"
+             id="org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER">
+       </classpathContainerInitializer>
+    </extension>
 </plugin>

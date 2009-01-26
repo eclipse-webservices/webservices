@@ -38,6 +38,8 @@ public abstract class CXFPersistentContext extends PersistentContext implements 
      * the plugins local preferences store.
      */
     private static final String PREFERENCE_CXF_RUNTIME_VERSION = "cxfRuntimeVersion"; //$NON-NLS-1$
+    
+    private static final String PREFERENCE_EXPORT_CXF_CLASSPATH_CONTAINER = "exportCXFClasspathContainer"; //$NON-NLS-1$
 
     private static final String PREFERENCE_CXF_VERBOSE = "cxfVerbose"; //$NON-NLS-1$
 
@@ -51,6 +53,8 @@ public abstract class CXFPersistentContext extends PersistentContext implements 
         setDefault(PREFERENCE_CXF_RUNTIME_LOCATION, ""); //$NON-NLS-1$
         setDefault(PREFERENCE_CXF_RUNTIME_EDITION, ""); //$NON-NLS-1$
         setDefault(PREFERENCE_CXF_RUNTIME_VERSION, ""); //$NON-NLS-1$
+        setDefault(PREFERENCE_EXPORT_CXF_CLASSPATH_CONTAINER, Boolean.parseBoolean(CXFPackage.eINSTANCE
+                .getCXFContext_ExportCXFClasspathContainer().getDefaultValueLiteral()));
         setDefault(PREFERENCE_CXF_VERBOSE, Boolean.parseBoolean(CXFPackage.eINSTANCE.getCXFContext_Verbose()
                 .getDefaultValueLiteral()));
         setDefault(PREFERENCE_CXF_USE_SPRING_APP_CONTEXT, Boolean.parseBoolean(CXFPackage.eINSTANCE
@@ -79,6 +83,14 @@ public abstract class CXFPersistentContext extends PersistentContext implements 
 
     public void setCxfRuntimeVersion(String runtimeVersion) {
         setValue(PREFERENCE_CXF_RUNTIME_VERSION, runtimeVersion);
+    }
+    
+    public boolean isExportCXFClasspathContainer() {
+        return getValueAsBoolean(PREFERENCE_EXPORT_CXF_CLASSPATH_CONTAINER);
+    }
+
+    public void setExportCXFClasspathContainer(boolean exportCXFClasspathContainer) {
+        setValue(PREFERENCE_EXPORT_CXF_CLASSPATH_CONTAINER, exportCXFClasspathContainer);
     }
 
     public boolean isVerbose() {

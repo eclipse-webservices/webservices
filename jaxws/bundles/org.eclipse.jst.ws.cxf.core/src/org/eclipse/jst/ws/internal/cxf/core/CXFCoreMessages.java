@@ -36,6 +36,8 @@ public class CXFCoreMessages extends NLS {
     public static String WEBSERVICE_ANNOTATION_PROCESSOR_WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHOS_ERROR_MESSAGE;
     public static String WEBSERVICE_ANNOTATION_PROCESSOR_WEBSERVICE_WEBSERVICEPROVIDER_ERROR_MESSAGE;
 
+    public static String CXF_CONTAINER_LIBRARY;
+    
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, CXFCoreMessages.class);

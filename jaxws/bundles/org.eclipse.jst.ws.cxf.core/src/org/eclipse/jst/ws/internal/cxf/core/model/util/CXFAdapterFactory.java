@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFAdapterFactory.java,v 1.1 2008/11/10 20:37:45 david_williams Exp $
+ * $Id: CXFAdapterFactory.java,v 1.2 2009/01/26 15:28:14 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.util;
 
@@ -70,7 +70,7 @@ public class CXFAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * The switch the delegates to the <code>createXXX</code> methods.
+     * The switch that delegates to the <code>createXXX</code> methods.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

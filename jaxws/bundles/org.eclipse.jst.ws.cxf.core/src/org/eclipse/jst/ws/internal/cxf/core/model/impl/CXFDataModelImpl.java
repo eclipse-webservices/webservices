@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFDataModelImpl.java,v 1.1 2008/11/10 20:37:42 david_williams Exp $
+ * $Id: CXFDataModelImpl.java,v 1.2 2009/01/26 15:28:16 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -45,6 +45,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getDatabinding <em>Databinding</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getFrontend <em>Frontend</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#isUseSpringApplicationContext <em>Use Spring Application Context</em>}</li>
+ *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#isExportCXFClasspathContainer <em>Export CXF Classpath Container</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getProjectName <em>Project Name</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getResourceDirectory <em>Resource Directory</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getClassDirectory <em>Class Directory</em>}</li>
@@ -264,6 +265,26 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * @ordered
      */
     protected boolean useSpringApplicationContext = USE_SPRING_APPLICATION_CONTEXT_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isExportCXFClasspathContainer() <em>Export CXF Classpath Container</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isExportCXFClasspathContainer()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isExportCXFClasspathContainer() <em>Export CXF Classpath Container</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isExportCXFClasspathContainer()
+     * @generated
+     * @ordered
+     */
+    protected boolean exportCXFClasspathContainer = EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT;
 
     /**
      * The default value of the '{@link #getProjectName() <em>Project Name</em>}' attribute.
@@ -779,6 +800,27 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isExportCXFClasspathContainer() {
+        return exportCXFClasspathContainer;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setExportCXFClasspathContainer(boolean newExportCXFClasspathContainer) {
+        boolean oldExportCXFClasspathContainer = exportCXFClasspathContainer;
+        exportCXFClasspathContainer = newExportCXFClasspathContainer;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER, oldExportCXFClasspathContainer, exportCXFClasspathContainer));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public String getProjectName() {
         return projectName;
     }
@@ -1096,6 +1138,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
                 return getFrontend();
             case CXFPackage.CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT:
                 return isUseSpringApplicationContext() ? Boolean.TRUE : Boolean.FALSE;
+            case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
+                return isExportCXFClasspathContainer() ? Boolean.TRUE : Boolean.FALSE;
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 return getProjectName();
             case CXFPackage.CXF_DATA_MODEL__RESOURCE_DIRECTORY:
@@ -1165,6 +1209,9 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
                 return;
             case CXFPackage.CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT:
                 setUseSpringApplicationContext(((Boolean)newValue).booleanValue());
+                return;
+            case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
+                setExportCXFClasspathContainer(((Boolean)newValue).booleanValue());
                 return;
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 setProjectName((String)newValue);
@@ -1250,6 +1297,9 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
             case CXFPackage.CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT:
                 setUseSpringApplicationContext(USE_SPRING_APPLICATION_CONTEXT_EDEFAULT);
                 return;
+            case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
+                setExportCXFClasspathContainer(EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT);
+                return;
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 setProjectName(PROJECT_NAME_EDEFAULT);
                 return;
@@ -1324,6 +1374,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
                 return frontend != FRONTEND_EDEFAULT;
             case CXFPackage.CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT:
                 return useSpringApplicationContext != USE_SPRING_APPLICATION_CONTEXT_EDEFAULT;
+            case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
+                return exportCXFClasspathContainer != EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT;
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 return PROJECT_NAME_EDEFAULT == null ? projectName != null : !PROJECT_NAME_EDEFAULT.equals(projectName);
             case CXFPackage.CXF_DATA_MODEL__RESOURCE_DIRECTORY:
@@ -1386,6 +1438,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
         result.append(frontend);
         result.append(", useSpringApplicationContext: ");
         result.append(useSpringApplicationContext);
+        result.append(", exportCXFClasspathContainer: ");
+        result.append(exportCXFClasspathContainer);
         result.append(", projectName: ");
         result.append(projectName);
         result.append(", resourceDirectory: ");

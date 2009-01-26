@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.facet;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -21,6 +20,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.apt.core.util.AptConfig;
+import org.eclipse.jdt.core.IAccessRule;
+import org.eclipse.jdt.core.IClasspathAttribute;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jem.java.JavaRefFactory;
@@ -40,10 +42,9 @@ import org.eclipse.jst.javaee.web.Servlet;
 import org.eclipse.jst.javaee.web.ServletMapping;
 import org.eclipse.jst.javaee.web.SessionConfig;
 import org.eclipse.jst.javaee.web.WebFactory;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCoreMessages;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
-import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
+import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -57,7 +58,6 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * 
  * @author sclarke
  */
-@SuppressWarnings("restriction")
 public class CXFFacetInstallDelegate implements IDelegate {
 
     public void execute(final IProject project, IProjectFacetVersion fv, Object config,
@@ -68,26 +68,23 @@ public class CXFFacetInstallDelegate implements IDelegate {
                     CXFCoreMessages.CXF_FACET_INSTALL_DELEGATE_RUNTIME_LOCATION_NOT_SET));
         }
 
-        // Copy all the Jar files (for now) from [CXF_INSTALL_LOCATION]/lib to
-        // the Web projects web content WEB-INF/lib directory.
-        IPath webContentPath = J2EEUtils.getWebContentPath(project);
-        if (!webContentPath.hasTrailingSeparator()) {
-            webContentPath = webContentPath.addTrailingSeparator();
-            webContentPath = webContentPath.append(new Path("/WEB-INF/lib")); //$NON-NLS-1$
-        }
-
         IPath cxfLibPath = new Path(CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeLocation());
         if (!cxfLibPath.hasTrailingSeparator()) {
             cxfLibPath = cxfLibPath.addTrailingSeparator();
         }
         cxfLibPath = cxfLibPath.append("lib"); //$NON-NLS-1$
 
-        try {
-            FileUtils.copyFiles(cxfLibPath, webContentPath, ".jar"); //$NON-NLS-1$
-        } catch (IOException ioe) {
-            CXFCorePlugin.log(ioe);
-        }
-
+        IClasspathAttribute jstComponentDependency = 
+            JavaCore.newClasspathAttribute("org.eclipse.jst.component.dependency", "/WEB-INF/lib"); //$NON-NLS-1$
+        IClasspathEntry cxfClasspathContainer = 
+            JavaCore.newContainerEntry(new Path("org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER"), //$NON-NLS-1$
+            new IAccessRule[0],
+            CXFCorePlugin.getDefault().getJava2WSContext().isExportCXFClasspathContainer() 
+            ? new IClasspathAttribute[]{jstComponentDependency} : new IClasspathAttribute[]{},
+            true);
+        
+        JDTUtils.addToClasspath(JavaCore.create(project), cxfClasspathContainer);
+        
         // Add CXF Servlet, Servlet Mapping and Session Config to web.xml
         final IModelProvider provider = ModelProviderManager.getModelProvider(project);
         provider.modify(new Runnable() {
