@@ -25,6 +25,7 @@ Export-Package: org.eclipse.jst.ws.internal.consumption;x-internal:=true,
  org.eclipse.jst.ws.internal.consumption.sampleapp.common;x-internal:=true,
  org.eclipse.jst.ws.internal.consumption.wsfinder;x-internal:=true,
  org.eclipse.jst.ws.util
+Import-Package: com.ibm.icu.util; version="3.8"
 Require-Bundle: org.eclipse.jem;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jem.workbench;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.emf.common;bundle-version="[2.2.0,3.0.0)",
@@ -55,7 +56,6 @@ Require-Bundle: org.eclipse.jem;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.wst.common.environment;bundle-version="[1.0.100,1.1.0)",
  org.eclipse.wst.common.project.facet.core;bundle-version="[1.1.0,2.0.0)",
  org.eclipse.jst.server.core;bundle-version="[1.0.102,2.0.0)",
- com.ibm.icu;bundle-version="[3.4.4,4.0.0)",
  org.eclipse.ui;bundle-version="[3.2.0,4.0.0)";resolution:=optional,
  org.eclipse.emf.codegen;bundle-version="[2.2.0,3.0.0)"
 Eclipse-LazyStart: true
