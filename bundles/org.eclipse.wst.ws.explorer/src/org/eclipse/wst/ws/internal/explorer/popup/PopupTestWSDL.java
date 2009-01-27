@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2008 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060803   152790 mahutch@ca.ibm.com - Mark Hutchinson
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20080123   216372 kathy@ca.ibm.com - Kathy Chan
+ * 20090122   257618 mahutch@ca.ibm.com - Mark Hutchinson, Add Mechanism for Adopters to map Services to WSDL URLs
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.popup;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,6 +37,7 @@ import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.ws.internal.monitor.GetMonitorCommand;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
+import org.eclipse.wst.ws.internal.wsfinder.WSDLURLStringWrapper;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -72,7 +75,13 @@ public class PopupTestWSDL extends Action implements IActionDelegate
         	{
         		wsdlURL = wsdlFile.toString();
         	}
-        } else if (object instanceof ServiceImpl)
+        }
+        else if (Platform.getAdapterManager().hasAdapter(object, WSDLURLStringWrapper.class.getName())) {
+        	Object adaptedObject = Platform.getAdapterManager().loadAdapter(object, WSDLURLStringWrapper.class.getName());
+        	WSDLURLStringWrapper wrapper = (WSDLURLStringWrapper)adaptedObject;
+        	wsdlURL =wrapper.getWSDLURLString();  		
+        }        
+        else if (object instanceof ServiceImpl)
         {
         	ServiceImpl serviceImpl = (ServiceImpl)object;          
         	Definition definition = serviceImpl.getEnclosingDefinition();        

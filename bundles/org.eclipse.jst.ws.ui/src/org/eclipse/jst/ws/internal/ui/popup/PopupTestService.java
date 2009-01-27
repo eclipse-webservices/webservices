@@ -12,12 +12,14 @@
  * 20060803   152790 mahutch@ca.ibm.com - Mark Hutchinson (created class)
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20080123   216372 kathy@ca.ibm.com - Kathy Chan
+ * 20090127	  257618 mahutch@ca.ibm.com - Mark Hutchinson
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.popup;
 
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.wst.ws.internal.explorer.LaunchOption;
@@ -25,6 +27,7 @@ import org.eclipse.wst.ws.internal.explorer.WSExplorerLauncherCommand;
 import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 import org.eclipse.wst.ws.internal.explorer.popup.PopupTestWSDL;
 import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
+import org.eclipse.wst.ws.internal.wsfinder.WSDLURLStringWrapper;
 
 
 public class PopupTestService extends PopupTestWSDL
@@ -48,7 +51,12 @@ public class PopupTestService extends PopupTestWSDL
         String wsdlURL = null;
         Object object = it.next();
         
-        if (object instanceof ServiceRef)
+        if (Platform.getAdapterManager().hasAdapter(object, WSDLURLStringWrapper.class.getName())) {
+        	Object adaptedObject = Platform.getAdapterManager().loadAdapter(object, WSDLURLStringWrapper.class.getName());
+        	WSDLURLStringWrapper wrapper = (WSDLURLStringWrapper)adaptedObject;
+        	wsdlURL =wrapper.getWSDLURLString();  		
+        }
+        else if (object instanceof ServiceRef)
         {
           ServiceRef serviceImpl = (ServiceRef)object;
           wsdlURL = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
