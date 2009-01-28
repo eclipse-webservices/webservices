@@ -13,6 +13,7 @@
    <extension point="org.eclipse.ui.preferencePages">
       <page name="%PREFERENCE_SERVICEPOLICIES"
       		class="org.eclipse.wst.ws.internal.service.policy.ui.preferences.ServicePoliciesPreferencePage"
+            category="org.eclipse.ui.preferencePages.Workbench"
             id="org.eclipse.wst.ws.internal.ui.wsi.preferences.WSICompliancePreferencePage">
       </page>
    </extension>
