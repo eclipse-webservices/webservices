@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20071205   211262 ericdp@ca.ibm.com - Eric Peters, CopyWSDLTreeCommand fails to copy ?wsdl
  * 20080324   215552 makandre@ca.ibm.com - Andrew Mak, WSDLCopier expects not encoded URI
  * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
+ * 20090128   262639 ericdp@ca.ibm.com - Eric D. Peters, WSDLCopier gives NPE in projects with spaces
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.util;
@@ -514,18 +515,23 @@ public class WSDLCopier implements IWorkspaceRunnable {
 
 	/*
 	 * Compares the 2 uris and see if they point to the same file. 
-	 * We need to convert both uris to filesystem uris in order to compare.
+	 * We need to convert both uris to file: protocal uris in order to compare.
 	 */	
 	private boolean isSameLocation(String uri1, String uri2) {
 
 		// if either uri is null, we cannot make any meaningful comparison
 		if (uri1 == null || uri2 == null)
 			return false;
-		
-		uri1 = UniversalPathTransformer.toLocation(uri1);
-		uri2 = UniversalPathTransformer.toLocation(uri2);
-		
-		return uri1.equals(uri2);
+		try {
+			//we have an encoded URI and want to compare if they resolve to the same file on the file system
+			uri1 = UniversalPathTransformer.uriToLocation(uri1);
+			uri2 = UniversalPathTransformer.uriToLocation(uri2);
+			if (uri1 == null || uri2 == null || uri1.length() == 0 || uri2.length() == 0)
+				return false;
+			return uri1.equals(uri2);
+		} catch (Exception e) {
+			return false;
+		}
 	}
 	
 	/**
