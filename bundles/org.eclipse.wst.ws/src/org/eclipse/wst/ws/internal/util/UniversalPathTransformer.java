@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 IBM Corporation and others.
+ * Copyright (c) 2006, 2008, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,17 @@
  * 20070125   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files 
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  * 20080411   226767 makandre@ca.ibm.com - Andrew Mak, UniversalPathTransformer does not handle paths w/ spaces that are encoded
+ * 20090128   262639 ericdp@ca.ibm.com - Eric D. Peters, WSDLCopier gives NPE in projects with spaces
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.util;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.wst.common.uriresolver.internal.util.URIEncoder;
 
 /**
  * <p>A utility class for transforming a path to and from the following formats:</p>
@@ -182,5 +187,50 @@ public class UniversalPathTransformer {
 			}
 		}
 		return files;
+	}
+
+	/**
+	 * Transform the given encoded URI to a file: protocol URI.  The URI must be a valid
+	 * eclipse resource.
+	 * 
+	 * @param str The URI to transform.
+	 * @return Returns a file: protocol URI equivalent of the given URI.
+	 */
+	public static String uriToLocation(String str) {
+		
+		if (str == null || str.length() == 0)
+			return str;
+		
+		String s = str;
+		if (isPrefix(s, PLATFORM_PREFIX))
+			s = UniversalPathTransformer.toPath(s);
+		
+		if (s.indexOf(PROTOCOL_MARKER) == -1) {		
+			try {
+			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(URLDecoder.decode(s, "UTF-8")));
+			if (file != null) 
+				str = uriCreate(URLDecoder.decode(file.getLocationURI().toString(), "UTF-8")).toString();
+			} catch (Exception e) {
+					//nothing to do here, just return same string
+			}
+		}
+				
+		return str;
+	}
+
+	private static java.net.URI uriCreate(String uri) {
+		if (uri != null)
+			uri = uri.replace('\\', '/');
+		try {
+			try {
+				return java.net.URI.create(uri);
+			}
+			catch (IllegalArgumentException e) {				
+				return java.net.URI.create(URIEncoder.encode(uri, "UTF-8"));
+			}
+		}
+		catch (UnsupportedEncodingException e) {
+			return java.net.URI.create("");
+		}	
 	}	
 }
