@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFDataModelImpl.java,v 1.2 2009/01/26 15:28:16 sclarke Exp $
+ * $Id: CXFDataModelImpl.java,v 1.3 2009/01/29 21:46:59 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -274,7 +274,7 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * @generated
      * @ordered
      */
-    protected static final boolean EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT = false;
+    protected static final boolean EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT = true;
 
     /**
      * The cached value of the '{@link #isExportCXFClasspathContainer() <em>Export CXF Classpath Container</em>}' attribute.

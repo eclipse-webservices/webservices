@@ -21,18 +21,15 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 
 public class CXFClasspathContainer implements IClasspathContainer {
 
 	private IPath path;
-	private IJavaProject javaProject;
 	private List<IClasspathEntry> classpathEntries = new ArrayList<IClasspathEntry>();
 	private String cxfLibraryVersion;
 	
 	public CXFClasspathContainer(IPath path, IJavaProject javaProject) {
 		this.path = path;
-		this.javaProject = javaProject;
 		cxfLibraryVersion = CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeVersion();
 	}
 	

@@ -22,7 +22,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="useSpringApplicationContext"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="exportCXFClasspathContainer"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CXFDataModel" abstract="true" eSuperTypes="#//CXFContext">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="projectName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

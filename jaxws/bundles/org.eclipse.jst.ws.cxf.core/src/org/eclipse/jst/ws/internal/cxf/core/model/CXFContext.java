@@ -199,7 +199,7 @@ public interface CXFContext {
 
     /**
      * Returns the value of the '<em><b>Export CXF Classpath Container</b></em>' attribute.
-     * The default value is <code>"false"</code>.
+     * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Export CXF Classpath Container</em>' attribute isn't clear,
@@ -209,7 +209,7 @@ public interface CXFContext {
      * @return the value of the '<em>Export CXF Classpath Container</em>' attribute.
      * @see #setExportCXFClasspathContainer(boolean)
      * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage#getCXFContext_ExportCXFClasspathContainer()
-     * @model default="false"
+     * @model default="true"
      * @generated
      */
     boolean isExportCXFClasspathContainer();

@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackageImpl.java,v 1.2 2009/01/26 15:28:16 sclarke Exp $
+ * $Id: CXFPackageImpl.java,v 1.3 2009/01/29 21:46:59 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -1056,7 +1056,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         initEAttribute(getCXFContext_Databinding(), this.getDataBinding(), "databinding", "jaxb", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_Frontend(), this.getFrontend(), "frontend", "jaxws", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_UseSpringApplicationContext(), ecorePackage.getEBoolean(), "useSpringApplicationContext", "true", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getCXFContext_ExportCXFClasspathContainer(), ecorePackage.getEBoolean(), "exportCXFClasspathContainer", "false", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCXFContext_ExportCXFClasspathContainer(), ecorePackage.getEBoolean(), "exportCXFClasspathContainer", "true", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(cxfDataModelEClass, CXFDataModel.class, "CXFDataModel", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getCXFDataModel_ProjectName(), ecorePackage.getEString(), "projectName", null, 0, 1, CXFDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
