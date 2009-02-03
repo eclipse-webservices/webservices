@@ -26,11 +26,13 @@ public class CXFClasspathContainer implements IClasspathContainer {
 
 	private IPath path;
 	private List<IClasspathEntry> classpathEntries = new ArrayList<IClasspathEntry>();
+	private String cxfLibraryEdition;
 	private String cxfLibraryVersion;
 	
 	public CXFClasspathContainer(IPath path, IJavaProject javaProject) {
 		this.path = path;
 		cxfLibraryVersion = CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeVersion();
+		cxfLibraryEdition = CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeEdition();
 	}
 	
 	public IClasspathEntry[] getClasspathEntries() {
@@ -61,7 +63,8 @@ public class CXFClasspathContainer implements IClasspathContainer {
 	}
 
 	public String getDescription() {
-		return  MessageFormat.format(CXFCoreMessages.CXF_CONTAINER_LIBRARY, cxfLibraryVersion);
+		return  MessageFormat.format(CXFCoreMessages.CXF_CONTAINER_LIBRARY, cxfLibraryEdition, 
+		        cxfLibraryVersion);
 	}
 
 	public int getKind() {

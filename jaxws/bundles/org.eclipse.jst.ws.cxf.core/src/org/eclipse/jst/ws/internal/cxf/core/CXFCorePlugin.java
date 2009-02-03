@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.cxf.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.ws.internal.cxf.core.context.CXFPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.context.WSDL2JavaPersistentContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -28,8 +27,6 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     // The plug-in ID
     public static final String PLUGIN_ID = "org.eclipse.jst.ws.cxf.core"; //$NON-NLS-1$
 
-    private static final String CXF_EDITION = "CXF"; //$NON-NLS-1$
-    
     public static final String CXF_VERSION_2_0 = "2.0"; //$NON-NLS-1$
 
     public static final String CXF_VERSION_2_1 = "2.1"; //$NON-NLS-1$
@@ -37,7 +34,6 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     // The shared instance
     private static CXFCorePlugin plugin;
 
-    private CXFPersistentContext cxfContext;
     private Java2WSPersistentContext java2WSContext;
     private WSDL2JavaPersistentContext wsdl2JavaContext;
 
@@ -93,7 +89,7 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     }
     
     public static String getEdition() {
-        return CXF_EDITION;
+        return CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeEdition();
     }
 
     public static void logMessage(int severity, String message) {
