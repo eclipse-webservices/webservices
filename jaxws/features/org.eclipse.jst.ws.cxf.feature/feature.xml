@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.cxf.feature"
       label="%featureName"
-      version="0.3.2.qualifier"
+      version="0.4.0.qualifier"
       provider-name="%featureProvider"
       plugin="org.eclipse.jst.ws.cxf.core"
       image="eclipse_update_120.jpg">
@@ -25,17 +25,24 @@
 
    <plugin
          id="javax.jws"
-         version="0.0.0"
-         unpack="false"/>
-   <plugin
-         id="javax.xml.ws"
-         version="0.0.0"
-         unpack="false"/>
-   <plugin
-         id="org.jdom"
+         download-size="20"
+         install-size="0"
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="javax.xml.ws"
+         download-size="40"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jdom"
+         download-size="156"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.jst.ws.cxf.consumption.core"
