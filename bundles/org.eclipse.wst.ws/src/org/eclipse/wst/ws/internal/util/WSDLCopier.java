@@ -15,6 +15,7 @@
  * 20080324   215552 makandre@ca.ibm.com - Andrew Mak, WSDLCopier expects not encoded URI
  * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
  * 20090128   262639 ericdp@ca.ibm.com - Eric D. Peters, WSDLCopier gives NPE in projects with spaces
+ * 20090204   262913 ericdp@ca.ibm.com - Eric D. Peters, Top-down WS fails when .wsdl imports .xsd or .wsdl which resides in folder containing URI encoded chars like " ", ")"
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.util;
@@ -345,9 +346,9 @@ public class WSDLCopier implements IWorkspaceRunnable {
 
 		        	// bad form, importing xsd with wsdl:import, but need to handle
 		        	if (wsdlImportLocation.toLowerCase().endsWith(XSD))
-		        		analyzeXSD(uri.resolve(wsdlImportLocation));
+		        		analyzeXSD(uri.resolve(uriCreate(wsdlImportLocation)));
 		        	else	
-		        		analyzeWSDL(uri.resolve(wsdlImportLocation), null);
+		        		analyzeWSDL(uri.resolve(uriCreate(wsdlImportLocation)), null);
 		        }
 	    	}
 	    }
@@ -413,7 +414,11 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	          
 			// analyze any relative imports and includes we find
 			if (xsdSchemaDirectiveLocation != null && isRelative(xsdSchemaDirectiveLocation))
-				analyzeXSD(uri.resolve(xsdSchemaDirectiveLocation));
+				try {
+					analyzeXSD(uri.resolve(uriCreate(xsdSchemaDirectiveLocation)));
+				} catch (Exception e) {
+					// ignore any xsd's we cannot resolve
+				}
 		}
 	}
 	
@@ -590,5 +595,21 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	 */
 	public IPath getRelativePath() {
 		return wsdlRelPath;
+	}
+
+	private static java.net.URI uriCreate(String uri) {
+		if (uri != null)
+			uri = uri.replace('\\', '/');
+		try {
+			try {
+				return java.net.URI.create(uri);
+			}
+			catch (IllegalArgumentException e) {				
+				return java.net.URI.create(URIEncoder.encode(uri, "UTF-8"));
+			}
+		}
+		catch (UnsupportedEncodingException e) {
+			return java.net.URI.create("");
+		}	
 	}
 }
