@@ -15,6 +15,6 @@ Require-Bundle: org.eclipse.wst.wsi,
  org.eclipse.core.runtime,
  org.eclipse.wst.command.env,
  org.eclipse.wst.command.env.core
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.wst.wsi.tests.internal
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

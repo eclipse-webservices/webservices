@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2003 IBM Corporation, Parasoft, Beacon Information Technology Inc. and others.
+ * Copyright (c) 2002, 2009 IBM Corporation, Parasoft, Beacon Information Technology Inc. and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -203,6 +203,7 @@ public class BasicProfileAnalyzer extends Analyzer
     this.analyzerContext =
       new AnalyzerContext(new ServiceReference(getAnalyzerConfig()));
 
+    ReportWriter reportWriter = null;
     try
     {
       this.profileAssertions = WSITestToolsProperties.getProfileAssertions(
@@ -227,7 +228,7 @@ public class BasicProfileAnalyzer extends Analyzer
       report.setReportContext(reportContext);
 
       // Create report writer
-      ReportWriter reportWriter = documentFactory.newReportWriter();
+      reportWriter = documentFactory.newReportWriter();
       // I18N: 2003.02.26 modified by K.Nakagome@BeaconIT 
       //reportWriter.setWriter(new FileWriter(analyzerConfig.getReportLocation()));
       reportWriter.setWriter(getAnalyzerConfig().getReportLocation());
@@ -282,7 +283,6 @@ public class BasicProfileAnalyzer extends Analyzer
       // Finish the conformance report
       reporter.finishReport();
     }
-
     catch (Exception e)
     {
       StringWriter sw = new StringWriter();
@@ -308,6 +308,13 @@ public class BasicProfileAnalyzer extends Analyzer
         throw (WSIException) e;
       else
         throw new WSIException(message, e);
+    }
+    finally 
+    {
+      if (reportWriter != null)
+      {
+        reportWriter.close();
+      }
     }
 
     if (report != null)

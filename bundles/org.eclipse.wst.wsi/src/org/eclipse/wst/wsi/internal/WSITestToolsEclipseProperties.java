@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal;
 
+import java.net.URI;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
@@ -40,10 +41,10 @@ public class WSITestToolsEclipseProperties extends WSITestToolsProperties
     PersistentWSIContext APcontext = WSPlugin.getInstance().getWSIAPContext();
     PersistentWSIContext SSBPcontext = WSPlugin.getInstance().getWSISSBPContext();
     
-    IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(new Path(uriStr));
+    IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(URI.create(uriStr));
     if (files != null && files.length == 1)
     {
-      //check project level conpliance
+      //check project level compliance
       IProject project = files[0].getProject();
       
       if (APcontext.projectStopNonWSICompliances(project))
