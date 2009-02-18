@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.wsi.internal;
 
-import java.net.URI;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
@@ -41,7 +40,7 @@ public class WSITestToolsEclipseProperties extends WSITestToolsProperties
     PersistentWSIContext APcontext = WSPlugin.getInstance().getWSIAPContext();
     PersistentWSIContext SSBPcontext = WSPlugin.getInstance().getWSISSBPContext();
     
-    IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(URI.create(uriStr));
+    IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(new Path(uriStr));
     if (files != null && files.length == 1)
     {
       //check project level compliance
