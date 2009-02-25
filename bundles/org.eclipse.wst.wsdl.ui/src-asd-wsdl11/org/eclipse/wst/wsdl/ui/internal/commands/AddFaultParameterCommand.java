@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -116,7 +116,7 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 
 	protected String getAnonymousXSDElementBaseName() {
 		if (newAnonymousXSDElementName == null) {
-			newAnonymousXSDElementName = operation.getName() + "_" + getFaultName();  //$NON-NLS-1$
+			newAnonymousXSDElementName = operation.getName() + NameUtil.buildFirstCharUppercaseName(faultName);
 		}
 		
 		return newAnonymousXSDElementName;
@@ -124,7 +124,7 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getNewXSDElementBaseName() {
 		if (newXSDElementName == null) {
-			newXSDElementName = operation.getName() + "_" + getFaultName(); //$NON-NLS-1$
+			newXSDElementName = operation.getName() + NameUtil.buildFirstCharUppercaseName(faultName);
 		}
 		
 		return newXSDElementName;
@@ -132,7 +132,7 @@ public class AddFaultParameterCommand extends AddBaseParameterCommand {
 	
 	protected String getWSDLMessageName() {
 		if (newWSDLMessageName == null) {
-			newWSDLMessageName = operation.getName() + "_" + getFaultName() + "Msg"; //$NON-NLS-1$ //$NON-NLS-2$
+			newWSDLMessageName = operation.getName() + NameUtil.buildFirstCharUppercaseName(faultName);
 			List usedNames = NameUtil.getUsedMessageNames(operation.getEnclosingDefinition());
 			newWSDLMessageName = NameUtil.getUniqueNameHelper(newWSDLMessageName, usedNames);
 		}

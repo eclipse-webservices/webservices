@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.binding.soap.SOAPOperation;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
+import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Node;
@@ -216,7 +217,7 @@ public class SmartRenameAction extends BaseNodeAction implements Runnable {
 					if (msg != null) {
 						oldMessageName = msg.getQName().getLocalPart();
 						
-						if (isMessageNameGenerated(oldMessageName, oldName, fault.getName())) {
+						if (isMessageNameGenerated(oldMessageName, oldName, NameUtil.buildFirstCharUppercaseName(fault.getName()))) {
 							renameMessageHelper(msg, computeNewMessageName(msg, oldName, newName));
 							
 							if (msg.getEParts() != null)
