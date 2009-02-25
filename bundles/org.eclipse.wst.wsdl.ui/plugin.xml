@@ -413,7 +413,7 @@
 
 		</editorContribution>
         <editorContribution
-            targetID="org.eclipse.wst.wsdl.wsdlsource.source"
+            targetID="org.eclipse.wst.wsdl.ui.internal.WSDLEditor"
             id="org.eclipse.wst.wsdl.wsdlsource.ruler.actions">
          <action
                label="%AddBookmark.label"
