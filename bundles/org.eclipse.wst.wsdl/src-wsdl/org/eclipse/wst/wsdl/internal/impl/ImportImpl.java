@@ -498,6 +498,11 @@ public class ImportImpl extends ExtensibleElementImpl implements Import
 
             String resolvedLocation = resolveLocation(definition, namespace, location);
 
+            if (resolvedLocation == null)
+            {
+              return;
+            }
+            
             URI uri = URI.createURI(resolvedLocation);
             Resource resolvedResource = resourceSet.getResource(uri, false);
             if (resolvedResource == null)

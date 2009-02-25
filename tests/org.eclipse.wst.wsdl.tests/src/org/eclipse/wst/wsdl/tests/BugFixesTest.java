@@ -308,6 +308,14 @@ public class BugFixesTest extends TestCase
       }
     });        
     
+    suite.addTest(new BugFixesTest("ReconcilesImportsWithNoLocation") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testReconcilesImportsWithNoLocation();
+      }
+    });        
+
     return suite;
   }
 
@@ -1727,6 +1735,28 @@ public class BugFixesTest extends TestCase
       newDefinition.getElement().appendChild(toImport2);
       // The bug causes the message to be added
       assertTrue("A message should have been added", newDefinition.getEMessages().size() == 1); //$NON-NLS-1$      
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }
+  }
+
+  /**
+   * See https://bugs.eclipse.org/bugs/attachment.cgi?bugid=257279
+   */
+  public void testReconcilesImportsWithNoLocation()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + 
+        "samples/BugFixes/ReconcilesImportsWithNoLocation/Main.wsdl", true); //$NON-NLS-1$
+      assertNotNull(definition);
+      String targetNamespace = "http://www.example.org/B/";
+      QName serviceQName = new QName(targetNamespace, "B");
+      javax.wsdl.Service service = definition.getService(serviceQName);
+      assertNotNull(service);
     }
     catch (Exception e)
     {

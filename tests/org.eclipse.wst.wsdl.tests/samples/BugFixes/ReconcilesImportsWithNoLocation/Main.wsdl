@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://www.example.org/B/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="B"
+	targetNamespace="http://www.example.org/B/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl1="http://www.example.org/A/">
+	<wsdl:import namespace="http://www.example.org/A/" />
+	<wsdl:service name="B">
+		<wsdl:port name="NewPort" binding="wsdl1:ASOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
