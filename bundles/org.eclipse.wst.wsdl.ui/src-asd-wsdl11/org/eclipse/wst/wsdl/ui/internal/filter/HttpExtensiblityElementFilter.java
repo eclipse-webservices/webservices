@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,42 +10,41 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.filter;
 
+import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
+import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 
-public class HttpExtensiblityElementFilter implements ExtensiblityElementFilter
+public class HttpExtensiblityElementFilter extends AbstractExtensibilityElementFilter
 {  
-  public HttpExtensiblityElementFilter()
-  {
-  }  	
-	
   public boolean isValidContext(Element parentElement, String localName)
   {
-  	boolean result = true;   
+  	boolean result = false;   
     
-    String parentElementName = parentElement.getLocalName();
-	if (parentElementName.equals("binding")) //$NON-NLS-1$
-	{
-	  result = localName.equals("binding"); 	   //$NON-NLS-1$
-	}	  
-	else if (parentElementName.equals("operation")) //$NON-NLS-1$
-	{
-	  result = localName.equals("operation");  //$NON-NLS-1$
-	}
-	else if (parentElementName.equals("input") ||  //$NON-NLS-1$
-	         parentElementName.equals("output")) //$NON-NLS-1$
-	{
-	  result = localName.equals("body") ||  //$NON-NLS-1$
-	           localName.equals("header"); 	   //$NON-NLS-1$
-	}	
-	else if (parentElementName.equals("fault")) //$NON-NLS-1$
-	{
-	  result = localName.equals("fault"); 	   //$NON-NLS-1$
-	}
-	else if (parentElementName.equals("port")) //$NON-NLS-1$
-	{
-	  result = localName.equals("address"); 	   //$NON-NLS-1$
-	}	    
+    if (parentElement != null && WSDLConstants.WSDL_NAMESPACE_URI.equals(parentElement.getNamespaceURI()))
+    { 
+      String parentElementName = parentElement.getLocalName();
+      if (WSDLConstants.BINDING_ELEMENT_TAG.equals(parentElementName)) 
+      {
+        result = HTTPConstants.BINDING_ELEMENT_TAG.equals(localName); 	   
+      }	  
+      else if (isWSDLBindingOperation(parentElement))
+      {
+        result = HTTPConstants.OPERATION_ELEMENT_TAG.equals(localName); 
+      }
+      else if (isWSDLBindingOperation(parentElement.getParentNode())) 
+      {
+        if (WSDLConstants.INPUT_ELEMENT_TAG.equals(parentElementName))
+        {	   	   	  
+          result = HTTPConstants.URL_ENCODED_ELEMENT_TAG.equals(localName) ||
+          HTTPConstants.URL_REPLACEMENT_ELEMENT_TAG.equals(localName);	  
+        }	
+      }
+      else if (WSDLConstants.PORT_ELEMENT_TAG.equals(parentElementName))
+      {
+        result = HTTPConstants.ADDRESS_ELEMENT_TAG.equals(localName);
+      }
+    }
     return result;
   }     
 }

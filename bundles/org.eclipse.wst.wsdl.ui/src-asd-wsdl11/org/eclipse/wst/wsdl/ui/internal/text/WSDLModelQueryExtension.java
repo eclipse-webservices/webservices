@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@ import java.util.Map;
 
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.binding.http.internal.util.HTTPConstants;
+import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.filter.ExtensiblityElementFilter;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
@@ -26,6 +28,7 @@ import org.eclipse.wst.xsd.ui.internal.text.XSDModelQueryExtension;
 import org.eclipse.wst.xsd.ui.internal.util.TypesHelper;
 import org.eclipse.xsd.XSDConcreteComponent;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,12 +41,18 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
 
   protected boolean isParentElementMessageReference(String parentElementName)
   {
-    return parentElementName.equals("input") || parentElementName.equals("output") || parentElementName.equals("fault"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return WSDLConstants.INPUT_ELEMENT_TAG.equals(parentElementName) ||
+        WSDLConstants.OUTPUT_ELEMENT_TAG.equals(parentElementName) ||
+        WSDLConstants.FAULT_ELEMENT_TAG.equals(parentElementName);
   }
 
   protected boolean isMessageReference(String elementName)
   {
-    return elementName.equals("body") || elementName.equals("header") || elementName.equals("fault") || elementName.equals("urlReplacement") || elementName.equals("urlEncoded"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    return SOAPConstants.BODY_ELEMENT_TAG.equals(elementName) ||
+      SOAPConstants.HEADER_ELEMENT_TAG.equals(elementName) ||
+      SOAPConstants.FAULT_ELEMENT_TAG.equals(elementName) ||
+      HTTPConstants.URL_REPLACEMENT_ELEMENT_TAG.equals(elementName) ||
+      HTTPConstants.URL_ENCODED_ELEMENT_TAG.equals(elementName);
   }
   
   
@@ -75,8 +84,8 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
             }
             else if (namespace.equals(WSDLConstants.XSD_NAMESPACE_URI))
             {
-              // eclipse all schema elements, except for 'schema' withing wsdl types elements 
-              result = parentElementName.equals("types") && name.equals("schema"); //$NON-NLS-1$ //$NON-NLS-2$
+              // eclipse all schema elements, except for 'schema' within wsdl types elements 
+              result = WSDLConstants.TYPES_ELEMENT_TAG.equals(parentElementName) && XSDConstants.SCHEMA_ELEMENT_TAG.equals(name);
             }
             else if (namespace.equals(WSDLConstants.WSDL_NAMESPACE_URI))
             {
@@ -118,28 +127,28 @@ public class WSDLModelQueryExtension extends XSDModelQueryExtension
       List list = new ArrayList();
       ComponentReferenceUtil util = new ComponentReferenceUtil(lookupOrCreateDefinition(element.getOwnerDocument()));
       String currentElementName = element.getLocalName();
-      if (checkName(name, "message")) //$NON-NLS-1$
+      if (checkName(name, WSDLConstants.MESSAGE_ATTRIBUTE))
       {
         list.addAll(util.getMessageNames());
       }
-      else if (checkName(name, "binding")) //$NON-NLS-1$
+      else if (checkName(name, WSDLConstants.BINDING_ATTRIBUTE))
       {
         list.addAll(util.getBindingNames());
       }
-      else if (checkName(name, "type")) //$NON-NLS-1$
+      else if (checkName(name, WSDLConstants.TYPE_ATTRIBUTE))
       {
-        if (checkName(currentElementName, "binding")) //$NON-NLS-1$
+        if (checkName(currentElementName, WSDLConstants.BINDING_ELEMENT_TAG))
         {
           list.addAll(util.getPortTypeNames());
         }
-        else if (checkName(currentElementName, "part")) //$NON-NLS-1$
+        else if (checkName(currentElementName, WSDLConstants.PART_ELEMENT_TAG))
         {
           list.addAll(util.getComponentNameList(true));
         }
       }
-      else if (checkName(name, "element")) //$NON-NLS-1$
+      else if (checkName(name, WSDLConstants.ELEMENT_ATTRIBUTE))
       {
-        if (checkName(currentElementName, "part")) //$NON-NLS-1$
+        if (checkName(currentElementName, WSDLConstants.PART_ELEMENT_TAG))
         {
           list.addAll(util.getComponentNameList(false));
         }

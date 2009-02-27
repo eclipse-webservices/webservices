@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,36 +10,46 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.filter;
 
+import org.eclipse.wst.wsdl.binding.mime.internal.util.MIMEConstants;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.w3c.dom.Element;
 
 
-public class MimeExtensiblityElementFilter implements ExtensiblityElementFilter
+public class MimeExtensiblityElementFilter extends AbstractExtensibilityElementFilter
 {   
-  private static final String MIME_NAMESPACE_URI="http://schemas.xmlsoap.org/wsdl/mime/"; //$NON-NLS-1$
-  public MimeExtensiblityElementFilter()
-  {
-  }  	
-	
   public boolean isValidContext(Element parentElement, String localName)
   {
   	boolean result = false;
 
-    String parentElementName = parentElement.getLocalName();
-    String parentElementNamespace = parentElement.getNamespaceURI();
-
-  	if (WSDLConstants.WSDL_NAMESPACE_URI.equals(parentElementNamespace))
+  	if (parentElement != null)
   	{
-    	if (parentElementName.equals("input") || parentElementName.equals("output")) //$NON-NLS-1$ //$NON-NLS-2$
-    	{
-    	  	result = localName.equals("content") || //$NON-NLS-1$
-				     localName.equals("multipartRelated") || //$NON-NLS-1$
-				     localName.equals("mimeXml");    	  	 //$NON-NLS-1$
-    	}
-  	}
-  	else if (MIME_NAMESPACE_URI.equals(parentElementNamespace))
-  	{
-		result = true;				
+  	  String parentElementNamespace = parentElement.getNamespaceURI();
+      String parentElementName = parentElement.getLocalName();
+      
+  	  if (WSDLConstants.WSDL_NAMESPACE_URI.equals(parentElementNamespace))
+  	  {
+  	    if (isWSDLBindingOperation(parentElement.getParentNode()))
+  	    {
+  	      if (WSDLConstants.INPUT_ELEMENT_TAG.equals(parentElementName) ||
+  	          WSDLConstants.OUTPUT_ELEMENT_TAG.equals(parentElementName))
+  	      {
+  	        result = MIMEConstants.CONTENT_ELEMENT_TAG.equals(localName) ||
+  	        MIMEConstants.MULTIPART_RELATED_ELEMENT_TAG.equals(localName) ||
+  	        MIMEConstants.MIME_XML_ELEMENT_TAG.equals(localName);
+  	      }
+  	    }
+  	  }
+  	  else if (MIMEConstants.MIME_NAMESPACE_URI.equals(parentElementNamespace))
+  	  {
+        if (MIMEConstants.MULTIPART_RELATED_ELEMENT_TAG.equals(parentElementName))
+        {
+          result = MIMEConstants.PART_ELEMENT_TAG.equals(localName);
+        }
+        else if (MIMEConstants.PART_ELEMENT_TAG.equals(parentElementName))
+        {
+          result = MIMEConstants.CONTENT_ELEMENT_TAG.equals(localName);
+        }
+  	  }
   	}
     return result;
   }     
