@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -216,6 +216,19 @@ public class XSDTest extends BaseTestCase
     String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "InlineSchemaNoNamespace/" + testname + ".wsdl";
     String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "InlineSchemaNoNamespace/" + testname + ".wsdl-log";
     String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "InlineSchemaNoNamespace/" + testname + ".wsdl-log";
+    
+    runTest(testfile, loglocation, idealloglocation);
+  }
+  
+  /**
+   * Test /XSD/ImportNoSchemaLocation/ImportNoSchemaLocation.wsdl
+   */
+  public void testImportNoSchemaLocation()
+  {
+    String testname = "ImportNoSchemaLocation";
+    String testfile = FILE_PROTOCOL + PLUGIN_ABSOLUTE_PATH + SAMPLES_DIR + XSD_DIR + "ImportNoSchemaLocation/" + testname + ".wsdl";
+    String loglocation = PLUGIN_ABSOLUTE_PATH + GENERATED_RESULTS_DIR + XSD_DIR + "ImportNoSchemaLocation/" + testname + ".wsdl-log";
+    String idealloglocation = PLUGIN_ABSOLUTE_PATH + IDEAL_RESULTS_DIR + XSD_DIR + "ImportNoSchemaLocation/" + testname + ".wsdl-log";
     
     runTest(testfile, loglocation, idealloglocation);
   }

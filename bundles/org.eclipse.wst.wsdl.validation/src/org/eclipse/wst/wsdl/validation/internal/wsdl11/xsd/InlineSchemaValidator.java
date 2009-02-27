@@ -135,20 +135,44 @@ public class InlineSchemaValidator implements IWSDL11Validator
         int line = err.getErrorLine();
         String errmess = err.getErrorMessage();
         errmess = replaceNamespace(errmess, namespace);
+        int severity = err.getSeverity();
         if(line > 0)
         {
           if(uri == null || uri.equals(valInfo.getFileURI()))
           {
-			valInfo.addError(errmess, getObjectAtLine(line - 1, elements));
+            Object objectAtLine = getObjectAtLine(line - 1, elements);
+            if (severity == DOMError.SEVERITY_WARNING)
+            {
+              valInfo.addWarning(errmess, objectAtLine);
+            }
+            else
+            {
+              valInfo.addError(errmess, objectAtLine);
+            }
           }
 		  else if(!inlineEntityResolver.isInlineSchema(uri) && !uri.equals(valInfo.getFileURI() + InlineXSDResolver.INLINE_SCHEMA_ID))
           {
-            valInfo.addError(errmess, line, err.getErrorColumn(), uri);
+            int errorColumn = err.getErrorColumn();
+            if (severity == DOMError.SEVERITY_WARNING)
+            {
+              valInfo.addWarning(errmess, line, errorColumn, uri);
+            }
+            else
+            {
+              valInfo.addError(errmess, line, errorColumn, uri);
+            }
           }
         }
 		else if(uri != null && !inlineEntityResolver.isInlineSchema(uri) && !uri.equals(valInfo.getFileURI() + InlineXSDResolver.INLINE_SCHEMA_ID))
         {
-	      valInfo.addError(errmess, 0,0, uri);
+		  if (severity == DOMError.SEVERITY_WARNING)
+		  {
+	        valInfo.addWarning(errmess, 0,0, uri);
+		  }
+		  else
+		  {
+            valInfo.addError(errmess, 0,0, uri);
+		  }
         }
       }
     }

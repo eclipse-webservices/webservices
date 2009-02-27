@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/ImportNoSchemaLocation/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ImportNoSchemaLocation"
+	targetNamespace="http://www.example.org/ImportNoSchemaLocation/">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/ImportNoSchemaLocation/"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://tempuri.org/DocLiteral/" />
+		</xsd:schema>
+	</wsdl:types>
+</wsdl:definitions>
