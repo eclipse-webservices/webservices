@@ -759,5 +759,10 @@
               property="ListServers"
               transform="org.eclipse.wst.command.internal.env.ant.String2BooleanTransformer"
               />  	
-      </extension> 
+      </extension>
+      
+     <extension
+           point="org.eclipse.jst.ws.consumption.internalFacetOperationDelegate">
+  			<FacetOperationDelegate class="org.eclipse.jst.ws.internal.consumption.ui.common.FacetOperationDelegate" />
+     </extension> 
 </plugin>

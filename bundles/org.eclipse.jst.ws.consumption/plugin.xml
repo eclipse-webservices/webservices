@@ -17,6 +17,11 @@
    <extension-point
       id="serverDefaulter"
       name="%XP_SERVER_DEFAULTER"/>
+      
+   <!-- The following extension point is internal and likely to be removed in a future release. -->
+   <extension-point id="internalFacetOperationDelegate"
+   		name="%XP_FACET_OP_DELEGATE"
+   		schema="schema/facetOperationDelegate.exsd"/>
 
    
    <extension

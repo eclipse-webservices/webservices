@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,11 @@
  * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
  * 20080429   213730 trungha@ca.ibm.com - Trung Ha
  * 20080507   229532 kathy@ca.ibm.com - Kathy Chan
+ * 20090303   242635 mahutch@ca.ibm.com - Mark Hutchinson, Remove unnecessary UI dependencies from org.eclipse.jst.ws.consumption
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,6 +30,10 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -37,7 +41,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.EjbFacetInstallDataModelProvider;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.IEjbFacetInstallDataModelProperties;
@@ -54,8 +57,6 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -70,7 +71,6 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action.Type;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
-import org.osgi.framework.Bundle;
 
 import com.ibm.icu.util.StringTokenizer;
 
@@ -92,6 +92,8 @@ import com.ibm.icu.util.StringTokenizer;
 public class FacetUtils
 {
 
+  private static IFacetOperationDelegate delegate; //if a delegate is plugged in, delegate some operations to it
+  private static boolean failedToLoadDelegate = false;
   /**
    * Returns an array of valid projects. Valid projects include projects with the facets nature or
    * projects with the Java nature.
@@ -768,34 +770,9 @@ public class FacetUtils
     status[0] = Status.OK_STATUS;
     final Set actions = getInstallActions(projectFacetVersions);
     
-    // Create a runnable that applies the install actions to the faceted project
-    IRunnableWithProgress runnable = new IRunnableWithProgress()
-    {
-      public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
-      {
-        try
-        {
-          fproject.modify(actions, shellMonitor);
-        } catch (CoreException e)
-        {
-          status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
-        }
-      }
-    };    
-        
-    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)    
-    if (displayPresent())
-    {    	
-	    try
-	    {
-	      PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
-	    } catch (InvocationTargetException ite)
-	    {
-	      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ite);
-	    } catch (InterruptedException ie)
-	    {
-	      status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, ie);
-	    }
+    if (isExtensionPresent())
+    {    
+    	status[0] = delegate.addFacetsToProject(fproject, projectFacetVersions);
 	}
 	else
 	{
@@ -857,57 +834,29 @@ public class FacetUtils
     final IStatus[] status = new IStatus[1];
     status[0] = Status.OK_STATUS;
     IProject project = ProjectUtilities.getProject(projectName);
+    
     if (!project.exists())
     {
-      // Create a runnable that creates a new faceted project.
-      IRunnableWithProgress runnable = new IRunnableWithProgress()
-      {
-        public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
-        {
-          try
-          {
-            IFacetedProject fProject = ProjectFacetsManager.create(projectName, null, shellMonitor);
-            if (fProject == null)
-            {
-              status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }));
-            }
-          } catch (CoreException e)
-          {
-            status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), e);
-          }
-        }
-      };
-
-    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)    	  
-      try
-      {
-    	  if (displayPresent())
-    	  {
-    		  PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);    		  
-    	  }
-    	  else
-    	  {
-    		  try
+		if (isExtensionPresent())
+		{
+		  status[0] = delegate.createNewFacetedProject(projectName);
+	  	}
+	  	else
+	  	{
+  		  try
+  		  {
+              IFacetedProject fProject = ProjectFacetsManager.create(projectName, null, null);
+              if (fProject == null)
               {
-                IFacetedProject fProject = ProjectFacetsManager.create(projectName, null, null);
-                if (fProject == null)
-                {
-                  status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }));
-                }
-              } catch (CoreException e)
-              {
-                status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), e);
-              }  
-    	  }        
-      } catch (InvocationTargetException ite)
-      {
-        status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), ite);
-      } catch (InterruptedException ie)
-      {
-        status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), ie);
-      }
+                status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }));
+              }
+  		  } 
+  		  catch (CoreException e)
+  		  {
+              status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_PROJECT_CREATION, new String[] { projectName }), e);
+  		  }  
+	  	}        
     }
-
     return status[0];
   }
   
@@ -927,34 +876,9 @@ public class FacetUtils
     final IStatus[] status = new IStatus[1];
     status[0] = Status.OK_STATUS;
 
-    //Create a runnable that sets the fixed facets on the faceted project
-    IRunnableWithProgress runnable = new IRunnableWithProgress()
+    if (isExtensionPresent())
     {
-      public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
-      {
-        try
-        {
-          fProject.setFixedProjectFacets(fixedFacets);
-        } catch (CoreException e)
-        {
-          status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, e);
-        }
-      }
-    };
-
-    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (displayPresent())
-    {
-    	try
-        {
-          PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
-        } catch (InvocationTargetException ite)
-        {
-          status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ite);
-        } catch (InterruptedException ie)
-        {
-          status[0] = getErrorStatusForSettingFixedFacets(fProject.getProject().getName(), fixedFacets, ie);
-        }	
+    	status[0] = delegate.setFixedFacetsOnProject(fProject, fixedFacets);
     }
     else
     {
@@ -1008,34 +932,9 @@ public class FacetUtils
     final IStatus[] status = new IStatus[1];
     status[0] = Status.OK_STATUS;
 
-    //Create a runnable that sets the facet runtime on the faceted project
-    IRunnableWithProgress runnable = new IRunnableWithProgress()
+    if (isExtensionPresent())
     {
-      public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException
-      {
-        try
-        {
-        	fProject.setTargetedRuntimes(Collections.singleton(fRuntime), shellMonitor);
-        } catch (CoreException e)
-        {
-          status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
-        }
-      }
-    };
-
-    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (displayPresent())
-    {
-    	try
-        {
-          PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);
-        } catch (InvocationTargetException ite)
-        {
-          status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ite);
-        } catch (InterruptedException ie)
-        {
-          status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), ie);
-        }	
+    	status[0] = delegate.setFacetRuntimeOnProject(fProject, fRuntime);
     }
     else 
     {
@@ -1046,9 +945,7 @@ public class FacetUtils
         {
           status[0] = StatusUtils.errorStatus(NLS.bind(ConsumptionMessages.MSG_ERROR_SETTING_RUNTIME, new String[] { fProject.getProject().getName(), fRuntime.getName() }), e);
         }
-    }
-        
-    
+    }    
     return status[0];
   }
   
@@ -1471,26 +1368,34 @@ public class FacetUtils
   		return rfv;
   	}
 	
-	// Check to see if SWT is active and the Display is present or not
-	private static boolean displayPresent() {
-		Bundle b = Platform.getBundle("org.eclipse.swt");
-	    if (b==null) {
-	    	return false;
-	    }
-	    if ((b.getState() != Bundle.RESOLVED && b.getState() != Bundle.ACTIVE) ) {
-	    	return false;
-	    }
-	    try {
-	    	if (Display.getCurrent() == null) {
-	    		return false;
-	    	} else {
-	    		return true;
-	    	}
-	    } catch (NoClassDefFoundError e1) {
-	    	return false;
-	    } catch (Exception e) {  // if the Display class cannot be loaded for whatever reason
-	    	return false;
-	    
-	    } 
+	private static boolean isExtensionPresent() {
+		
+		if (failedToLoadDelegate) {
+			return false;
+		} if (delegate != null) {
+			return true;
+		}
+		IExtensionRegistry registry = Platform.getExtensionRegistry();  
+		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.jst.ws.consumption.internalFacetOperationDelegate");
+		if (point == null) {
+			failedToLoadDelegate = true;
+			return false;
+		}
+		IExtension[] extensions = point.getExtensions();
+
+		//this extension point is internal, we know there will only be zero or one plugged in
+		if (extensions.length > 0 && extensions[0] != null) {
+			IConfigurationElement[] elements = extensions[0].getConfigurationElements();
+			if (elements.length > 0 && elements[0] != null) {
+				try {
+					delegate = (IFacetOperationDelegate)elements[0].createExecutableExtension("class");
+					return true;
+				} catch (CoreException e) {
+					//do nothing, just report that we failed to load the extension
+				}
+			}
+		}
+		failedToLoadDelegate = true;//set this so we don't try to load it again
+		return false;
 	}
 }
