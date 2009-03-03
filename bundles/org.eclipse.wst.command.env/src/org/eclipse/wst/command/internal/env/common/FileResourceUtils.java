@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060112   121199 jesper@selskabet.org - Jesper Møller
  * 20070813   188999 pmoogk@ca.ibm.com - Peter Moogk
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 package org.eclipse.wst.command.internal.env.common;
 
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.EnvironmentMessages;
+import org.eclipse.wst.command.internal.env.context.PersistentResourceContext;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.Choice;
@@ -245,7 +247,10 @@ public final class FileResourceUtils
         
         if( choice.getShortcut() == 'C' ) return false;
         
-        if( choice.getShortcut() == 'A' ) resourceContext.setOverwriteFilesEnabled(true);
+        if( choice.getShortcut() == 'A' ) {
+        	resourceContext.setOverwriteFilesEnabled(true);
+        	PersistentResourceContext.getInstance().setOverwriteFilesEnabled(true);
+        }
       }
       
       //We have permission to overwrite so check if file is read-only
@@ -262,7 +267,10 @@ public final class FileResourceUtils
           
           if( choice.getShortcut() == 'C' ) return false;
           
-          if( choice.getShortcut() == 'A' ) resourceContext.setCheckoutFilesEnabled(true);          
+          if( choice.getShortcut() == 'A' ) {
+        	  resourceContext.setCheckoutFilesEnabled(true);
+        	  PersistentResourceContext.getInstance().setCheckoutFilesEnabled(true);
+          }
         }
         
         IFile[] files = new IFile[1];
@@ -556,6 +564,7 @@ public final class FileResourceUtils
         else if( result.getShortcut() == 'A' )
         {
           resourceContext.setCreateFoldersEnabled(true);
+          PersistentResourceContext.getInstance().setCreateFoldersEnabled(true);
         }
       }
       
@@ -614,6 +623,7 @@ public final class FileResourceUtils
           else if( result.getShortcut() == 'A' )
           {
             resourceContext.setOverwriteFilesEnabled(true);
+            PersistentResourceContext.getInstance().setOverwriteFilesEnabled(true);
           }
         }	
         
@@ -634,6 +644,7 @@ public final class FileResourceUtils
             else if( result.getShortcut() == 'A' )
             {
               resourceContext.setCheckoutFilesEnabled(true);
+              PersistentResourceContext.getInstance().setCheckoutFilesEnabled(true);
             }
           }
 

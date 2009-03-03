@@ -38,9 +38,9 @@ in the <b>Documentation</b> pane.</cmd></step>
 <result><note>A <b>PortType</b> is a named set of abstract operations and
 the abstract messages involved. You can either create a new port type for
 your binding, reuse an existing one, or import one. For more information,
-see <xref format="html" href="../tasks/tsetprtt.dita" scope="peer">Setting
-a Port Type</xref>.</note><note type="tip">You can also create a new binding
-for your port using the Outline view. Right click on the <uicontrol>Bindings</uicontrol> folder
+see <xref format="dita" href="tsetprtt.dita" scope="local">Setting a Port
+Type</xref>.</note><note type="tip">You can also create a new binding for
+your port using the Outline view. Right click on the <uicontrol>Bindings</uicontrol> folder
 and select <uicontrol>Add Binding</uicontrol>.</note></result>
 </taskbody>
 </task>

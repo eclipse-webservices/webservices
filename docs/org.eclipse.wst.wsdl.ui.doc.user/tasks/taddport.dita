@@ -44,7 +44,7 @@ either add, sort, or remove extensions. </cmd></step>
 <result><p>You can create a new binding for your port, re-use an existing
 one, or import one. A <b>Binding</b> defines the message format and protocol
 details for operations and messages defined by a particular port type. For
-more information, see <xref format="html" href="../tasks/tsetbind.dita" scope="peer">Setting
+more information, see <xref format="dita" href="tsetbind.dita" scope="local">Setting
 a binding</xref> .</p><p>You can also create a port using the Outline view
 by right-clicking your service under the <b>Services</b> folder and clicking <b>Add
 Port</b>. Your port (regardless of which view you create it in) will appear

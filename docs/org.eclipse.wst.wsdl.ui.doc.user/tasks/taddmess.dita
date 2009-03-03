@@ -92,8 +92,8 @@ the files, click <b>OK</b>.</li>
 </steps>
 <postreq>You can now add parts to your message. Parts are a flexible mechanism
 for describing the logical abstract content of a message. For more information,
-see <xref format="html" href="../tasks/taddpart.dita" scope="peer">Adding
-a part to a message</xref>.</postreq>
+see <xref format="dita" href="taddpart.dita" scope="local">Adding a part to
+a message</xref>.</postreq>
 </taskbody>
 <related-links>
 <linklist><title>Related concepts</title>

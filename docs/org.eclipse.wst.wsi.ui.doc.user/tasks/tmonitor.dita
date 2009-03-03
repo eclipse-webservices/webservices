@@ -90,7 +90,7 @@ the log file in an XML editor to examine its contents.</result>
 <linktext>WS-I</linktext></link>
 </linklist>
 <linklist><title>Related Tasks</title>
-<link href="../../org.eclipse.jst.ws.doc.user/tasks/twsicomply.dita" scope="peer">
+<link href="../../org.eclipse.jst.ws.doc.user/ref/rservpolpref.dita" scope="peer">
 <linktext>Setting the level of WS-I compliance</linktext></link>
 </linklist>
 </related-links>
