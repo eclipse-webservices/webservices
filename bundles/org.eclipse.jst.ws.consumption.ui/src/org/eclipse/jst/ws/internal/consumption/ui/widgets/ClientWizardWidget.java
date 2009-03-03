@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@
  * 20060125   159911 kathy@ca.ibm.com - Kathy Chan, Remove unused method and imports
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
+ * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -39,6 +40,7 @@ import org.eclipse.jst.ws.internal.consumption.common.WSDLParserFactory;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.data.EclipseIPath2URLStringTransformer;
 import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.widgets.object.Timer;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
@@ -56,7 +58,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
@@ -67,6 +68,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 
 
 public class ClientWizardWidget extends SimpleWidgetDataContributor implements Runnable
@@ -75,7 +77,7 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
   private Button overwriteButton_;
   private Button monitorService_;
 
-  private Text serviceImpl_;
+  private ComboWithHistory serviceImpl_;
   private Button browseButton_;
   private WSDLSelectionDialog wsdlDialog_;
   private String componentName_;
@@ -125,9 +127,9 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	validationState_ = ValidationUtils.VALIDATE_ALL;
   	// Create text field and browse for service selection
   	Composite typeComposite = utils.createComposite(parent, 3);
-	serviceImpl_ = utils.createText(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEDEF, 
+	serviceImpl_ = utils.createComboWithHistory(typeComposite, ConsumptionUIMessages.LABEL_WEBSERVICEDEF, 
 			ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL,
-			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER );
+			INFOPOP_WSWSCEN_TEXT_SERVICE_IMPL, SWT.LEFT | SWT.BORDER, WebServiceConsumptionUIPlugin.getInstance().getDialogSettings() );
 	
 	Object layoutData = serviceImpl_.getLayoutData();
 	if (layoutData instanceof GridData) {
@@ -265,14 +267,22 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
  {
      webServiceURI_ = uri;    
  }
- 
+	public void externalize() {
+		super.externalize();
+				if (getClientTypeRuntimeServer() != null ) {
+				    serviceImpl_.storeWidgetHistory(getClientTypeRuntimeServer().getTypeId());
+			}
+	}
 public void internalize() {		
 
 	if (webServiceURI_ == null || webServiceURI_.length() == 0)
 		return;
 
 	serviceImpl_.removeModifyListener(objectModifyListener_);
-	serviceImpl_.setText(webServiceURI_);    	 
+	serviceImpl_.setText(webServiceURI_);   
+	if (getClientTypeRuntimeServer() != null ) {
+	   serviceImpl_.restoreWidgetHistory(getClientTypeRuntimeServer().getTypeId());
+	}
 	serviceImpl_.addModifyListener(objectModifyListener_);
 		
 	EclipseIPath2URLStringTransformer transformer = new EclipseIPath2URLStringTransformer();

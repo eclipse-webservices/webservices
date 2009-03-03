@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060321   128827 joan - Joan Haggarty, remove redundant wsdl URI, folder and file controls
  * 20060524   128601 andyzhai@ca.ibm.com - Andy Zhai
+ * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean;
 
@@ -23,7 +24,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.axis.consumption.core.common.JavaWSDLParameter;
 import org.eclipse.jst.ws.internal.axis.creation.ui.AxisCreationUIMessages;
+import org.eclipse.jst.ws.internal.axis.creation.ui.plugin.WebServiceAxisCreationUIPlugin;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -33,7 +36,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
@@ -58,7 +60,7 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
 	
   private String wsdlFolder_;
   
-  private Text wsdlFileText_;
+  private ComboWithHistory wsdlFileText_;
   /* CONTEXT_ID PBCF0007 for the WSDL File field of the Bean Config Page */
   private final String INFOPOP_PBCF_TEXT_WSDL_FILE = "PBCF0007"; //$NON-NLS-1$
 	
@@ -91,10 +93,10 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
     
     Composite configGroup = uiUtils.createComposite( parent, 2 );    
     
-    wsdlFileText_ = uiUtils.createText( configGroup, AxisCreationUIMessages.LABEL_OUTPUT_FILE_NAME,
+    wsdlFileText_ = uiUtils.createComboWithHistory(configGroup, AxisCreationUIMessages.LABEL_OUTPUT_FILE_NAME,
     		AxisCreationUIMessages.TOOLTIP_PBCF_TEXT_WSDL_FILE,
                                         INFOPOP_PBCF_TEXT_WSDL_FILE,
-                                        SWT.SINGLE | SWT.BORDER  );
+                                        SWT.SINGLE | SWT.BORDER  , WebServiceAxisCreationUIPlugin.getInstance().getDialogSettings());
     wsdlFileText_.addListener( SWT.Modify, statusListener );
     
     // TODO this group has no TOOLTIP or INFOPOP.
@@ -298,4 +300,16 @@ public class BeanConfigWidget extends SimpleWidgetDataContributor
     
     return result;
   }
+
+public void externalize() {
+	super.externalize();
+	wsdlFileText_.storeWidgetHistory("org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget.wsdlFileText_");
+}
+
+public void internalize() {		
+	
+	wsdlFileText_.removeListener(SWT.Modify, statusListener_);
+	wsdlFileText_.restoreWidgetHistory("org.eclipse.jst.ws.internal.axis.creation.ui.widgets.bean.BeanConfigWidget.wsdlFileText_");
+    wsdlFileText_.addListener(SWT.Modify, statusListener_);
+}
 }

@@ -60,6 +60,7 @@
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
  * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
+ * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -95,6 +96,7 @@ import org.eclipse.jst.ws.internal.creation.ui.widgets.runtime.ServerRuntimeSele
 import org.eclipse.jst.ws.internal.data.LabelsAndIds;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
+import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.Accessible;
@@ -119,7 +121,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.HyperlinkGroup;
@@ -135,6 +136,7 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
+import org.eclipse.wst.ws.internal.ui.plugin.WSUIPlugin;
 import org.eclipse.wst.ws.internal.wsrt.IWebServiceRuntimeChecker;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceScenario;
 
@@ -196,7 +198,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 	private WebServiceClientTypeWidget clientWidget_;
     private Label serviceLabel_;
 	private Combo webserviceType_;
-	private Text serviceImpl_;
+	private ComboWithHistory serviceImpl_;
 	private Scale serviceScale_;
 	private Label topologySpot_;
 	private Button browseButton_;
@@ -377,7 +379,22 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 							setObjectSelection(null);
 							serviceImpl_.addModifyListener(objectModifyListener_);
 						}						   
-					}					
+					}	
+					//restore widget values, serviceImpl may be null if on the preferences page
+					if (serviceImpl_ != null) {
+						String webServiceTypeID= null;
+						   if (ids_ != null)
+							   webServiceTypeID = ids_.getTypeId();
+							serviceImpl_.removeModifyListener(objectModifyListener_);
+							String currentlySelectedValue = serviceImpl_.getText();
+							serviceImpl_.removeAll();
+							if (currentlySelectedValue != null)
+								serviceImpl_.setText(currentlySelectedValue);
+							serviceImpl_.restoreWidgetHistory(webServiceTypeID);
+							serviceImpl_.addModifyListener(objectModifyListener_);
+
+					}
+
 			   validationState_ = ValidationUtils.VALIDATE_ALL;
 			   statusListener_.handleEvent(null);			   
 					
@@ -394,7 +411,7 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			serviceLabel_.setText(ConsumptionUIMessages.LABEL_WEBSERVICEIMPL);
 			serviceLabel_.setToolTipText(ConsumptionUIMessages.TOOLTIP_WSWSCEN_TEXT_IMPL);
 
-			serviceImpl_ = new Text(typeComposite, SWT.LEFT | SWT.BORDER );
+			serviceImpl_ = new ComboWithHistory(typeComposite, SWT.LEFT | SWT.BORDER, WSUIPlugin.getInstance().getDialogSettings());
 			GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
 			griddata.widthHint = 225;
 			serviceImpl_.setLayoutData( griddata );
@@ -413,7 +430,15 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			};
 			
 			serviceImpl_.addModifyListener(objectModifyListener_);
-
+			serviceImpl_.addSelectionListener(	new SelectionAdapter()
+			{
+					public void widgetSelected(SelectionEvent e) {
+						int index = serviceImpl_.getSelectionIndex();
+						serviceImpl_.removeModifyListener(objectModifyListener_);
+				       	serviceImpl_.setText(serviceImpl_.getItem(index));
+				        serviceImpl_.addModifyListener(objectModifyListener_);
+				}
+			});
 			browseButton_ = utils_.createPushButton(typeComposite,
 					ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 
@@ -1046,6 +1071,15 @@ private void handleTypeChange()
 		parser_ = parser;
 		clientWidget_.setWebServicesParser(parser);
 	}
+	public void externalize() {
+		super.externalize();
+		if (!preferencesPage_) {
+			   String webServiceTypeID= null;
+			   if (ids_ != null)
+				   webServiceTypeID = ids_.getTypeId();
+			   serviceImpl_.storeWidgetHistory(webServiceTypeID);
+			}
+	}
 	
 	public void internalize() {		
 		
@@ -1074,6 +1108,10 @@ private void handleTypeChange()
 			
 		serviceImpl_.removeModifyListener(objectModifyListener_);
 		serviceImpl_.setText(displayable);
+		String webServiceTypeID = null;
+		   if (ids_ != null)
+			   webServiceTypeID = ids_.getTypeId();
+		   serviceImpl_.restoreWidgetHistory(webServiceTypeID);
 		serviceImpl_.addModifyListener(objectModifyListener_);
 	}
 
@@ -1454,7 +1492,7 @@ private void handleTypeChange()
         ObjectSelectionRegistry registry = ObjectSelectionRegistry.getInstance();
         boolean editable = registry.getExternalModify( objectSelectionWidgetId );
                 
-        serviceImpl_.setEditable( editable );
+        serviceImpl_.setEnabled( editable );
         result = registry.getSelectionWidget( objectSelectionWidgetId );
       }
       

@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
+ * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.common;
 
@@ -28,6 +29,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 
 
 public class UIUtils 
@@ -74,26 +77,34 @@ public class UIUtils
   
   public Combo createCombo( Composite parent, String labelName, String tooltip, String infopop, int style )
   {    
-    tooltip = tooltip == null ? labelName : tooltip;
-    
-    if( labelName != null )
-    {
-      Label label = new Label( parent, SWT.WRAP);
-      label.setText( labelName );
-      label.setToolTipText( tooltip );
-    }
-    
-    Combo combo = new Combo( parent, style );
-    GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-     
-    combo.setLayoutData( griddata );
-    combo.setToolTipText( tooltip );
-    
-    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( combo, infoPopid_ + "." + infopop );
-    
-    return combo;      
+	  return createCombo(parent, labelName, tooltip, infopop, style, null);
   }
-  
+  public Combo createCombo( Composite parent, String labelName, String tooltip, String infopop, int style, IDialogSettings settings ) {
+	    tooltip = tooltip == null ? labelName : tooltip;
+	    Combo combo;
+	    if( labelName != null )
+	    {
+	      Label label = new Label( parent, SWT.WRAP);
+	      label.setText( labelName );
+	      label.setToolTipText( tooltip );
+	    }
+	    if (settings == null)
+	    	combo = new Combo( parent, style );
+	    else
+	    	combo = new ComboWithHistory(parent, style, settings);
+	    GridData griddata = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+	     
+	    combo.setLayoutData( griddata );
+	    combo.setToolTipText( tooltip );
+	    
+	    if( infopop != null ) PlatformUI.getWorkbench().getHelpSystem().setHelp( combo, infoPopid_ + "." + infopop );
+	    
+	    return combo;      
+
+  }
+  public ComboWithHistory createComboWithHistory(Composite parent, String labelName, String tooltip, String infopop, int style, IDialogSettings settings ) {
+	  return (ComboWithHistory)createCombo(parent, labelName, tooltip, infopop, style, settings);
+  }
   public Text createText( Composite parent, String labelName, String tooltip, String infopop, int style )
   {    
     tooltip = tooltip == null ? labelName : tooltip;

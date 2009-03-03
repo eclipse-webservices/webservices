@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@
  * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080723   241303 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080808   243602 rkklai@ca.ibm.com   - Raymond Lai, fix NPE when changing runtime (the server combo)
+ * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -31,17 +32,16 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.FolderResourceFilter;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.common.LabelsAndIds;
-import org.eclipse.jst.ws.internal.consumption.ui.common.ValidationUtils;
+import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestExtension;
 import org.eclipse.jst.ws.internal.ext.test.WebServiceTestRegistry;
+import org.eclipse.jst.ws.internal.ui.common.ComboWithHistory;
 import org.eclipse.jst.ws.internal.ui.common.UIUtils;
 import org.eclipse.jst.ws.internal.ui.dialog.DialogUtils;
 import org.eclipse.swt.SWT;
@@ -117,9 +117,11 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   /*CONTEXT_ID PWSM0007 for the Deselect All button of the Sample Page*/
   private String INFOPOP_PWSM_BUTTON_DESELECT_ALL = "PWSM0007";
 
-  private Text sampleFolderText_;
+  private ComboWithHistory sampleFolderText_;
   /*CONTEXT_ID PWSM0014 for the Folder field of the Sample Page*/   
   private String INFOPOP_PWSM_TEXT_SAMPLE_FOLDER = "PWSM0014";
+  private ModifyListener sampleFolderTextModifyListener;
+
   //
   private Button runTestCheckbox_;  
   /*CONTEXT_ID PWSM0015 for the run test check box of the Sample Page*/
@@ -199,21 +201,21 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
     
     
     
-    sampleFolderText_ = uiUtils.createText( comboGroup_, ConsumptionUIMessages.LABEL_FOLDER_NAME,
+    sampleFolderText_ = uiUtils.createComboWithHistory(comboGroup_, ConsumptionUIMessages.LABEL_FOLDER_NAME,
     										ConsumptionUIMessages.TOOLTIP_PWSM_TEXT_SAMPLE_FOLDER,
                                             INFOPOP_PWSM_TEXT_SAMPLE_FOLDER,
-                                            SWT.SINGLE | SWT.BORDER );
+                                            SWT.SINGLE | SWT.BORDER , WebServiceConsumptionUIPlugin.getInstance().getDialogSettings());
     
     
-    
-    sampleFolderText_.addModifyListener( new ModifyListener()
-        {
-        public void modifyText( ModifyEvent evt )
-        {
-          handleFolderText(); 
-        }
-      });
-    
+	sampleFolderTextModifyListener = new ModifyListener() 
+			{
+			public void modifyText(ModifyEvent evt) {
+				handleFolderText();
+			}
+
+			};
+		
+    sampleFolderText_.addModifyListener(sampleFolderTextModifyListener);
        
     sampleFolderBrowseButton_ = uiUtils.createPushButton( comboGroup_, ConsumptionUIMessages.BUTTON_BROWSE, 
     											ConsumptionUIMessages.TOOLTIP_PWSM_BUTTON_JSP_FOLDER_BROWSE,
@@ -226,7 +228,7 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
                                                       }
                                                     });
     
-    jspFolderText_ = uiUtils.createText( comboGroup_, ConsumptionUIMessages.LABEL_JSP_FOLDER_NAME,
+    jspFolderText_ = uiUtils.createText(comboGroup_, ConsumptionUIMessages.LABEL_JSP_FOLDER_NAME,
     		ConsumptionUIMessages.TOOLTIP_PWSM_TEXT_JSP_FOLDER,
             INFOPOP_PWSM_TEXT_JSP_FOLDER,
             SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY );
@@ -693,4 +695,15 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
 	  return  Status.OK_STATUS;
   }
+
+public void externalize() {
+	super.externalize();
+	sampleFolderText_.storeWidgetHistory("org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestWidget.sampleFolderText_");
+}
+
+public void internalize() {		
+	sampleFolderText_.removeModifyListener(sampleFolderTextModifyListener);
+	sampleFolderText_.restoreWidgetHistory("org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestWidget.sampleFolderText_");
+	sampleFolderText_.addModifyListener(sampleFolderTextModifyListener);
+}
 }
