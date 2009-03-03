@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@
  * 20071129	  205583 zina@ca.ibm.com	- Zina Mostafia Selected Server or Server Type is not highlighted in Service Dep.Config
  * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  * 20080527   234225 kathy@ca.ibm.com - Kathy Chan
+ * 20090226	  266063 zina@ca.ibm.com - Zina Mostafia Error message truncated in the Service Deployment configuration dialog 
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -28,7 +29,11 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -49,25 +54,24 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.ui.ServerUICore;
 
-public class RuntimeServerSelectionDialog extends Dialog {
+public class RuntimeServerSelectionDialog extends TitleAreaDialog {
 
 	private Shell thisShell;
-	private Text messageBanner_;
+	private String messageBanner_;
 	private Composite primaryGroup_;
 	private Group runtimesGroup_;
 	private Group serversGroup_;
@@ -128,6 +132,9 @@ public class RuntimeServerSelectionDialog extends Dialog {
 
 	public RuntimeServerSelectionDialog(Shell shell, byte mode, TypeRuntimeServer ids, String j2eeVersion) {
 		super(shell);
+		messageBanner_ = ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION;
+		setShellStyle(SWT.CLOSE | SWT.TITLE | SWT.BORDER
+				| SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
 		selectionMode_ = mode;
 		typeId_ = ids.getTypeId();
 		defaultRuntime_ = ids.getRuntimeId();
@@ -195,11 +202,6 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		return comp;
 	} 
 
-	protected void setShellStyle(int newShellStyle)
-	{
-		super.setShellStyle( newShellStyle | SWT.RESIZE );  
-	}
-
 	protected Control createDialogArea(Composite parent) {
 		validateOn_ = false;
 		thisShell = parent.getShell();
@@ -207,20 +209,19 @@ public class RuntimeServerSelectionDialog extends Dialog {
 			thisShell = createShell();
 		}
 		Composite composite = (Composite) super.createDialogArea(parent);
-
+		setMessage(messageBanner_);
 		UIUtils uiUtils = new UIUtils(WebServiceConsumptionUIPlugin.ID);
 		// Window title
-		if (selectionMode_ == MODE_SERVICE)
+		if (selectionMode_ == MODE_SERVICE) {
 			thisShell.setText(ConsumptionUIMessages.PAGE_TITLE_WS_RUNTIME_SELECTION);
-		else
+			setTitle(ConsumptionUIMessages.PAGE_TITLE_WS_RUNTIME_SELECTION);
+		}
+		else {
 			thisShell.setText(ConsumptionUIMessages.PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION);
+			setTitle(ConsumptionUIMessages.PAGE_TITLE_WS_CLIENT_RUNTIME_SELECTION);
+		}
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		helpSystem.setHelp(thisShell, WebServiceConsumptionUIPlugin.ID + "." + INFOPOP_PWRS_DIALOG);
-
-		// Dialog description banner
-		messageBanner_ = new Text(composite, SWT.READ_ONLY | SWT.WRAP);
-		messageBanner_.setText(ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION + "\n" + "      "); // reserves a second line for message display
-		messageBanner_.setToolTipText(ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION);
 
 		//  -----------------------------------------------------------------------//
 		new Label(composite, SWT.HORIZONTAL);
@@ -238,7 +239,6 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		viewSelectionByServerButton_.addSelectionListener(new SelectionAdapter () {
 			public void widgetSelected(SelectionEvent e) {
 				if (!validateOn_)	      return;
-				enableOKButton();
 				handleServerViewSelectionEvent();
 			}	
 		});
@@ -248,7 +248,6 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		viewSelectionByRuntimeButton_.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (!validateOn_)	      return;
-				enableOKButton();
 				handleRuntimeViewSelectionEvent();
 			}
 		});
@@ -258,7 +257,6 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		viewSelectionByExploreButton_.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (!validateOn_)	      return;
-				enableOKButton();
 				handleExploreViewSelectionEvent();
 				super.widgetSelected(e);
 			}
@@ -273,7 +271,6 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		runtimesList_.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (!validateOn_)	      return;
-				enableOKButton();
 				TreeItem[] runtimeSel = runtimesList_.getSelection();
 				processRuntimeListSelection(runtimeSel[0].getText());
 				validateServerRuntimeSelection();
@@ -290,7 +287,6 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		serverList_.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (!validateOn_)	      return;
-				enableOKButton();
 				processServerListSelection();
 				validateServerRuntimeSelection();
 			}	
@@ -307,9 +303,7 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		return composite;
 	}
 
-
-	private void validateServerRuntimeSelection() {
-
+	protected IStatus getStatus() {
 		if (selectionMode_ == MODE_SERVICE) {
 			if (selectedServerFactoryID_ != null && selectedRuntime_ != null) 
 			{
@@ -317,15 +311,13 @@ public class RuntimeServerSelectionDialog extends Dialog {
 				if (WebServiceRuntimeExtensionUtils2.isServerRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_.getId(),
 						typeId_))
 				{
-					setOKStatusMessage();
+					return Status.OK_STATUS;
 				} else
 				{
 					String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(selectedServerFactoryID_);
 					String runtimeLabel = selectedRuntime_.getLabel();
-					setERRORStatusMessage(NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] { serverLabel,
+					return StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] { serverLabel,
 							runtimeLabel }));
-					// Found an error - so return.
-					return;
 				}
 			}
 		}
@@ -337,85 +329,60 @@ public class RuntimeServerSelectionDialog extends Dialog {
 				if (WebServiceRuntimeExtensionUtils2.isServerClientRuntimeTypeSupported(selectedServerFactoryID_, selectedRuntime_
 						.getId(), clientId))
 				{
-					setOKStatusMessage();
+					return Status.OK_STATUS;
 				} else
 				{
 					String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(selectedServerFactoryID_);
 					String runtimeLabel = selectedRuntime_.getLabel();
-					setERRORStatusMessage(NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] { serverLabel,
+					return StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_INVALID_SRT_SELECTIONS, new String[] { serverLabel,
 							runtimeLabel }));
-					// Found an error - so return.
-					return;
 				}
 			}
 		}
 		// Disable OK button if the runtime selection is invalid
 		TreeItem[] runtimeSel = runtimesList_.getSelection();
 		if (runtimeSel == null || runtimeSel.length <= 0 || runtimeSel[0].getText().length() == 0) {
-			disableOKButton();
+			return StatusUtils.infoStatus(messageBanner_);
 		}
 		// Disable OK button if server selection is invalid
 		TreeItem[] serverSel = serverList_.getSelection();
 		String currentSelection = (serverSel != null && serverSel.length > 0) ? serverSel[0].getText() : "";
 		if (serverSel == null || currentSelection.length() == 0) {
-			disableOKButton();
+			return StatusUtils.infoStatus(messageBanner_);
 		}
 		if (!serverLabels_.containsKey(currentSelection) || !existingServersTable_.containsKey(currentSelection)) {
-			disableOKButton();
-			setOKStatusMessage();
+			return StatusUtils.infoStatus(messageBanner_);
 		}
 		// Disable OK button if category is selected rather than a server
 		if (serverSel.length > 0 && serverSel[0].getItemCount()!=0) {
-			disableOKButton();
+			return StatusUtils.infoStatus(messageBanner_);
 		}
 		else {
-			enableOKButton();
+			return Status.OK_STATUS;
 		}
 
 	}
 
-	private void setOKStatusMessage() {
-		messageBanner_.setText(ConsumptionUIMessages.PAGE_DESC_WS_RUNTIME_SELECTION);
-		messageBanner_.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-		enableOKButton();
-	}
-
-	private void setERRORStatusMessage(String message) {
-		messageBanner_.setText(message);
-		messageBanner_.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-		disableOKButton();
-	}
-
-	private void disableOKButton() {
-		if (getButton(0) != null)
-			getButton(0).setEnabled(false);
-	}
-
-	private void enableOKButton() {
-		if (getButton(0) != null)
-			getButton(0).setEnabled(true);
-	}
-
-	protected void okPressed() {
-		if (labelProvider_!=null)
-			labelProvider_.dispose();
-		if (existingServersIcon!=null)
-			existingServersIcon.dispose();
-		if (serverTypesIcon!=null)
-			serverTypesIcon.dispose();
-		setReturnCode(OK);
-		close();
-	}
-
-	protected void cancelPressed() {
-		if (labelProvider_!=null)
-			labelProvider_.dispose();
-		if (existingServersIcon!=null)
-			existingServersIcon.dispose();
-		if (serverTypesIcon!=null)
-			serverTypesIcon.dispose();	
-		setReturnCode(CANCEL);
-		close();
+	public void validateServerRuntimeSelection() {
+		IStatus status = getStatus();
+		String message = new String(messageBanner_);
+		message = new String(status.getMessage());
+		if (status.getSeverity() == Status.ERROR) {
+			setMessage(message,IMessageProvider.ERROR);
+			getButton(IDialogConstants.OK_ID).setEnabled(false);
+		}
+		if (status.getSeverity() == Status.WARNING) {
+			setMessage(message, IMessageProvider.WARNING);
+			getButton(IDialogConstants.OK_ID).setEnabled(true);
+		}
+		if (status.getSeverity() == Status.INFO) {
+			setMessage(message, IMessageProvider.INFORMATION);
+			getButton(IDialogConstants.OK_ID).setEnabled(false);
+		}
+		if (status.getSeverity() == Status.OK) { 
+			setMessage(messageBanner_);
+			getButton(IDialogConstants.OK_ID).setEnabled(true);
+		}
 	}
 
 	private void handleRuntimeViewSelectionEvent() {
@@ -514,9 +481,9 @@ public class RuntimeServerSelectionDialog extends Dialog {
 		}
 	}
 
-//	private static String getMessage(String key) {
-//	return WebServiceConsumptionUIPlugin.getMessage(key);
-//	}
+	//	private static String getMessage(String key) {
+	//	return WebServiceConsumptionUIPlugin.getMessage(key);
+	//	}
 
 	private void setRuntimesGroup() {
 		runtimesList_.removeAll();
@@ -610,25 +577,25 @@ public class RuntimeServerSelectionDialog extends Dialog {
 				existingServersTree[0].setImage(existingServersIcon);
 			}
 			for (int k = 0; k < serverIds.length; k++) {
-			  IServer server = (IServer) existingServersTable_.get(serverIds[k]);
-			  if (server != null) {
-				  IServerType serverType = server.getServerType();
-				if (serverType != null) {
-					String serverID = serverType.getId();
-					existingServerItems[k] = new TreeItem(existingServersTree[0], SWT.NONE);
-					existingServerItems[k].setText(serverIds[k]);
-					if (serverID.equalsIgnoreCase(defaultServer_) && getIsExistingServer()) {
-						existingServersTree[0].setExpanded(true);
-						serverList.setSelection(new TreeItem[] { existingServerItems[k]});
-						existingServer = true;
-						RuntimeServerSelectionDialog.this.setIsExistingServer(true);
-						selectedServer_ = server;
-						selectedServerLabel_ = serverIds[k];
-						selectedServerFactoryID_ = serverID;
+				IServer server = (IServer) existingServersTable_.get(serverIds[k]);
+				if (server != null) {
+					IServerType serverType = server.getServerType();
+					if (serverType != null) {
+						String serverID = serverType.getId();
+						existingServerItems[k] = new TreeItem(existingServersTree[0], SWT.NONE);
+						existingServerItems[k].setText(serverIds[k]);
+						if (serverID.equalsIgnoreCase(defaultServer_) && getIsExistingServer()) {
+							existingServersTree[0].setExpanded(true);
+							serverList.setSelection(new TreeItem[] { existingServerItems[k]});
+							existingServer = true;
+							RuntimeServerSelectionDialog.this.setIsExistingServer(true);
+							selectedServer_ = server;
+							selectedServerLabel_ = serverIds[k];
+							selectedServerFactoryID_ = serverID;
+						}
+						existingServerItems[k].setImage(labelProvider_.getImage(serverType));
 					}
-					existingServerItems[k].setImage(labelProvider_.getImage(serverType));
 				}
-			  }
 			}
 		}
 
