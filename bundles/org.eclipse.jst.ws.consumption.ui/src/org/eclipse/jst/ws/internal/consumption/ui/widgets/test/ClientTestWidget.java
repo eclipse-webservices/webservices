@@ -335,17 +335,24 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
       selectedPath = resource.getFullPath();   
     
       int webModuleSegments = selectedPath.matchingFirstSegments(webContentPath_);
+  	  
+      sampleFolderText_.removeModifyListener(sampleFolderTextModifyListener);
+      sampleFolderText_.removeAll();
       
       if ( webModuleSegments < webContentPath_.segmentCount() )
       {
-        sampleFolderText_.setText("");
+    	sampleFolderText_.add("", 0);
         handleFolderText();
       }
       else
       {
-        sampleFolderText_.setText(selectedPath.removeFirstSegments(webModuleSegments).toString());
+        sampleFolderText_.add(selectedPath.removeFirstSegments(webModuleSegments).toString(), 0);
         handleFolderText();
       }
+      sampleFolderText_.select(0);
+      sampleFolderText_.restoreWidgetHistory("org.eclipse.jst.ws.internal.consumption.ui.widgets.test.ClientTestWidget.sampleFolderText_");
+      sampleFolderText_.addModifyListener(sampleFolderTextModifyListener);
+
     }
   }
   
@@ -559,7 +566,12 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
   
   public void setFolder( String folder )
   {
-    sampleFolderText_.setText( folder );
+    sampleFolderText_.removeModifyListener(sampleFolderTextModifyListener);
+    sampleFolderText_.removeAll();
+    sampleFolderText_.add( folder);
+    sampleFolderText_.select(0);
+    sampleFolderText_.addModifyListener(sampleFolderTextModifyListener);
+    
   }
   
   public boolean getIsTestWidget()
