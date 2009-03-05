@@ -28,6 +28,7 @@
  * 20080717   241283 ericdp@ca.ibm.com - Eric D. Peters, Class version error when invoking sample JSP on Tomcat 5.5 when Java project is Java 6
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
+ * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -452,12 +453,16 @@ public class ValidationUtils
 				if (project.exists() && ep.exists()) {
 					if (!J2EEUtils.isComponentAssociated(ep, project)) {
 						boolean associateStatus = J2EEUtils.canAssociateProjectToEARWithoutWarning(project, ep);
-						
 						if (!associateStatus) {
+							if (isClient) {
 								return StatusUtils.warningStatus(NLS.bind(
-										EARValidationMessageResourceHandler.MESSAGE_INCOMPATIBLE_SPEC_WARNING_,
-										new String[] { projectName, ep.getName(),
-												}));
+										ConsumptionUIMessages.MSG_CLIENT_CANNOT_ASSOCIATE,
+										new String[] { projectName, ep.getName()}));
+							} else {
+								return StatusUtils.warningStatus(NLS.bind(
+										ConsumptionUIMessages.MSG_SERVICE_CANNOT_ASSOCIATE,
+										new String[] { projectName, ep.getName()}));
+							}
 						}
 					}
 				}

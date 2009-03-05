@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2008, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20080409   226047 kathy@ca.ibm.com - Kathy Chan
  * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
+ * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -602,8 +603,14 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
           boolean associateStatus = J2EEUtils.canAssociateProjectToEARWithoutWarning(p, ep);
           if (!associateStatus)
           {
-              return StatusUtils.warningStatus( NLS.bind(EARValidationMessageResourceHandler.MESSAGE_INCOMPATIBLE_SPEC_WARNING_, new String[]{p.getName(), ep.getName(), } ) );
-                  
+            if (isClient_)
+            {
+              return StatusUtils.warningStatus( NLS.bind(ConsumptionUIMessages.MSG_CLIENT_CANNOT_ASSOCIATE, new String[]{p.getName(), ep.getName()} ) );
+            }
+            else
+            {
+              return StatusUtils.warningStatus( NLS.bind(ConsumptionUIMessages.MSG_SERVICE_CANNOT_ASSOCIATE, new String[]{p.getName(), ep.getName()} ) );
+            }                  
           }
         }
       }
