@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension point="org.eclipse.ui.views">
+      <category
+            name="%ANNOTATIONS_VIEW_CATEGORY_NAME"
+            id="org.eclipse.jst.ws.jwst.ui">
+      </category>
+      <view
+            name="%ANNOTATIONS_VIEW_NAME"
+            icon="icons/eview16/prop_ps.gif"
+            category="org.eclipse.jst.ws.jwst.ui"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.views.AnnotationsView"
+            id="org.eclipse.jst.ws.jaxws.ui.views.AnnotationsView">
+      </view>
+   </extension>
+   
+ <!--  <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               relative="org.eclipse.ui.views.ProblemView"
+               relationship="stack"
+               id="org.eclipse.jst.ws.jaxws.ui.views.AnnotationsView">
+         </view>
+      </perspectiveExtension>
+   </extension> -->
+   
+</plugin>
