@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20071107 196997   ericdp@ca.ibm.com - Eric Peters
  * 20071120   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
  * 20071212   209858 ericdp@ca.ibm.com - Eric Peters, Enhancing service policy framework and UI
+ * 20090306   224632 ericdp@ca.ibm.com - Eric D. Peters, Fix Service Policies preference page UI
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -40,6 +41,7 @@ public final class WstSPUIPluginMessages extends NLS {
 	public static String LABEL_QFLINK;
 	public static String TEXT_QFIX_NOSUG;
 	public static String TEXT_DETAILS;
+	public static String LABEL_SERVICEPOLICIES_PAGE_DESCRIPTION;
 
 
 	static {

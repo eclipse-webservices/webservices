@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
  * 20080506   219005 ericdp@ca.ibm.com - Eric D. Peters, Service policy preference page not restoring properly
  * 20080530   234944 pmoogk@ca.ibm.com - Peter Moogk, Fixed focus problem for action controls
  * 20080716   239457 ericdp@ca.ibm.com - Eric D. Peters, Service Policy UI Restore defaults does not refresh validation error
+ * 20090306   224632 ericdp@ca.ibm.com - Eric D. Peters, Fix Service Policies preference page UI
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.service.policy.ui;
 
@@ -107,6 +108,8 @@ public class ServicePoliciesComposite extends Composite implements
 	private boolean                    stateChangeEnabled   = true;
 	private HashSet<IServicePolicy>    stateChangePolicySet = new HashSet<IServicePolicy>();
 	private List<IServicePolicy>       lastSelectedSp       = null;
+	/*CONTEXT_ID PTPP0001 for the Service Policies Preference & Property Page*/
+    private String INFOPOP_SPPP_PAGE = ServicePolicyActivatorUI.PLUGIN_ID + ".SPPP0001";
 
 	/**
 	 * Creates an expandable composite
@@ -240,34 +243,49 @@ public class ServicePoliciesComposite extends Composite implements
 		makeScrollableCompositeAware(detailsPolicyTree);
 		
 		createPolicyOperationsComposite(composite);
+		Composite descriptionAndDetailsComposite = new Composite(composite, SWT.NONE);
+		descriptionAndDetailsComposite.setFont(composite.getFont());
+		GridLayout layout = new GridLayout(nColumns, false);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
 
-		label_DetailsPanel_description = new Label(composite, SWT.NONE);
-
+		
+		descriptionAndDetailsComposite.setLayout(layout);
+		GridData detailsGD4 = new GridData(SWT.FILL, SWT.END, true, true);
+		
+		descriptionAndDetailsComposite.setLayoutData(detailsGD4);
+		makeScrollableCompositeAware(descriptionAndDetailsComposite);
+		label_DetailsPanel_description = new Label(descriptionAndDetailsComposite, SWT.NONE);
+		GridData detailsGD2 = new GridData(SWT.FILL, SWT.END, true, true);
+		label_DetailsPanel_description.setLayoutData(detailsGD2);
 		label_DetailsPanel_description
 				.setText(WstSPUIPluginMessages.LABEL_SERVICEPOLICIES_DESCRIPTION);
 		makeScrollableCompositeAware(label_DetailsPanel_description);
-		text_DetailsPanel_description = new Text(composite, SWT.WRAP
+		text_DetailsPanel_description = new Text(descriptionAndDetailsComposite, SWT.WRAP
 				| SWT.BORDER | SWT.V_SCROLL | SWT.READ_ONLY);
-		GridData detailsGD = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.GRAB_HORIZONTAL);
-		detailsGD.heightHint = 50;
-		detailsGD.widthHint = 400;
+		GridData detailsGD = new GridData(SWT.FILL, SWT.END, true, true);
+		detailsGD.heightHint = 75;
+		detailsGD.widthHint = 220;
 		text_DetailsPanel_description.setLayoutData(detailsGD);
 		text_DetailsPanel_description.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_DESCRIPTION);
 
 		makeScrollableCompositeAware(text_DetailsPanel_description);
-		label_detailsPanel_dependancies = new Label(composite, SWT.NONE);
+		label_detailsPanel_dependancies = new Label(descriptionAndDetailsComposite, SWT.NONE);
+		GridData detailsGD3 = new GridData(SWT.FILL, SWT.END, true, true);
+		label_detailsPanel_dependancies.setLayoutData(detailsGD3);
 		makeScrollableCompositeAware(label_detailsPanel_dependancies);
 		label_detailsPanel_dependancies
 				.setText(WstSPUIPluginMessages.LABEL_SERVICEPOLICIES_DEPENDENCIES);
-		text_DetailsPanel_dependencies = new Text(composite, SWT.WRAP
+		text_DetailsPanel_dependencies = new Text(descriptionAndDetailsComposite, SWT.WRAP
 				| SWT.BORDER | SWT.V_SCROLL | SWT.READ_ONLY);
 		text_DetailsPanel_dependencies.setToolTipText(WstSPUIPluginMessages.TOOLTIP_PSP_DEPENDENCIES);
 		makeScrollableCompositeAware(text_DetailsPanel_dependencies);
-		GridData dependenciesGD = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.GRAB_HORIZONTAL);
-		dependenciesGD.heightHint = 100;
-		dependenciesGD.widthHint = 400;
+		
+
+		composite.setLayout(pageContLayout);
+		GridData dependenciesGD = new GridData(SWT.FILL, SWT.END, true, true);
+		dependenciesGD.heightHint = 75;
+		dependenciesGD.widthHint = 220;
 		text_DetailsPanel_dependencies.setLayoutData(dependenciesGD);
 
 		return pageContent;
@@ -284,18 +302,15 @@ public class ServicePoliciesComposite extends Composite implements
 		operationsScrolledComposite.setExpandVertical(true);
 		GridData operationsScrolledCompositeGD = new GridData(
 				GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-		operationsScrolledCompositeGD.heightHint =60;
+		operationsScrolledCompositeGD.heightHint =75;
 		operationsScrolledComposite.setLayoutData(operationsScrolledCompositeGD);
 		operationsComposite = new Composite(operationsScrolledComposite,
 				SWT.NONE);
 		operationsScrolledComposite.setContent(operationsComposite);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
+		
 		operationsComposite.setLayout(layout);
-//		GridData operationsCompositeGD = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-//		operationsCompositeGD.heightHint = 1000;
-//		operationsCompositeGD.widthHint = 1000;
-//		operationsComposite.setLayoutData(operationsCompositeGD);
 		operationsScrolledComposite.setMinSize(operationsComposite.computeSize(
 				400, 100));
 		makeScrollableCompositeAware(operationsScrolledComposite);
@@ -313,8 +328,13 @@ public class ServicePoliciesComposite extends Composite implements
 		GridLayout parentLayout = new GridLayout();
 		parentLayout.numColumns = 2;
 		parentLayout.horizontalSpacing = 0;
+		
 		this.setLayout(parentLayout);
 		this.setLayoutData(new GridData(GridData.FILL_BOTH));
+		Label description = new Label(this, SWT.NONE);
+		description.setText(WstSPUIPluginMessages.LABEL_SERVICEPOLICIES_PAGE_DESCRIPTION);
+		GridData descGD = new GridData(SWT.BEGINNING, SWT.TOP, false, false, 2,1  );
+		description.setLayoutData(descGD);
 		masterComposite = new Composite(this, SWT.NONE);
 
 		GridLayout masterLayout = new GridLayout();
@@ -868,6 +888,8 @@ public class ServicePoliciesComposite extends Composite implements
 			CSH_ID = (parentSP.getDescriptor() == null) ? null : parentSP
 					.getDescriptor().getContextHelpId();
 		}
+		if (CSH_ID == null)
+			CSH_ID = INFOPOP_SPPP_PAGE;
 		helpSystem.setHelp(this, CSH_ID);
 	}
 
@@ -1459,8 +1481,11 @@ public class ServicePoliciesComposite extends Composite implements
 		if (po0.getOperationKind() == IPolicyOperation.OperationKind.enumeration) {
 			Label l = new Label(operationsComposite, SWT.NONE);
 			l.setText(d.getLongName() + ":"); //$NON-NLS-1$
+			GridData comboGD = new GridData(SWT.FILL, SWT.FILL, true, false);
+
 			Combo cb = new Combo(operationsComposite, SWT.DROP_DOWN
 					| SWT.READ_ONLY);
+			cb.setLayoutData(comboGD);
 			selectionControl = cb;
 			cb.addSelectionListener(this);
 			List<IStateEnumerationItem> enumItemList = ServicePolicyPlatform
