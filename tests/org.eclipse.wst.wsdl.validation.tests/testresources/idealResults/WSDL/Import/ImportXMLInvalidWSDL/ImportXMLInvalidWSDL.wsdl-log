@@ -1,9 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-Referenced file contains errors (testresources/samples/WSDL/Import/ImportXMLInvalidWSDL/XMLInvalidWSDL.wsdl).  [1, 0]
--> Element type "wsdl:definitions" must be followed by either attribute specifications, ">" or "/>". [4, 3]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
