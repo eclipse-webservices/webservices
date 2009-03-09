@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -305,12 +305,14 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     store.setDefault(DEFAULT_PAGE, DESIGN_PAGE);
     
     // WSDLPreferencePage prefs
-    store.setDefault(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE, DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
-    store.setDefault(Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING, false); //$NON-NLS-1$
-    store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false); //$NON-NLS-1$
-    store.setDefault(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP, false); //$NON-NLS-1$
-    // Do we need this preference below?  Look at WSDLPreferencePage.java
-//    store.setDefault("Defualt Location:", "http://www.example.com");
+    // vb Why is the editor using the translated preferences labels as preferences keys?
+    // This makes the preferences non-portable between different locales.
+    // Opened https://bugs.eclipse.org/bugs/show_bug.cgi?id=267471
+    store.setDefault(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE, DEFAULT_TARGET_NAMESPACE);
+    store.setDefault(Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING, false);
+    store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false);
+    store.setDefault(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP, false);
+    store.setDefault(Messages._UI_PREF_PAGE_ENABLE_AUTO_OPEN_IMPORT_DIALOG, false);
   }
   
   /**
@@ -337,9 +339,13 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   
   public boolean getRemoveImportSetting()
   {
-    return getPreferenceStore().getBoolean(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP); //$NON-NLS-1$)
+    return getPreferenceStore().getBoolean(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP);
   }
   
+  public boolean getAutoOpenImportLocationDialogSetting()
+  {
+    return getPreferenceStore().getBoolean(Messages._UI_PREF_PAGE_ENABLE_AUTO_OPEN_IMPORT_DIALOG);
+  } 
   
   private static final String PRODUCT_CUSTOMIZATION_PROVIDER_PLUGIN_ID = "org.eclipse.wst.wsdl.ui.productCustomizationProviderPluginId"; //$NON-NLS-1$
   private static final String PRODUCT_CUSTOMIZATION_PROVIDER_CLASS_NAME = "org.eclipse.wst.wsdl.ui.productCustomizationProviderClassName"; //$NON-NLS-1$

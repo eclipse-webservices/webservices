@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.adapters.basic;
 
+import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 import org.eclipse.wst.wsdl.ui.internal.adapters.actions.W11OpenImportAction;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11UpdateImportCommand;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ASDDeleteAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IDescription;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
@@ -73,4 +75,8 @@ public class W11Import extends WSDLBaseAdapter implements IImport {
 	public ITreeElement getParent() {
 		return null;
 	}
+	
+    public Command getUpdateCommand(String location, String namespaceURI, String prefix) {
+      return new W11UpdateImportCommand((Import)target, location, namespaceURI, prefix);
+    }
 }

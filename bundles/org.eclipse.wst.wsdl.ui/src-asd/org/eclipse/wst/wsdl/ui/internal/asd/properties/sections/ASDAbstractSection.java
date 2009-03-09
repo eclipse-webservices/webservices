@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,15 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.action.SubContributionManager;
+import org.eclipse.jface.action.SubStatusLineManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,7 +35,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -40,14 +46,16 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorActionBarContributor;
+import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.ISection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IASDObjectListener;
 
-public class ASDAbstractSection implements ISection, IASDObjectListener, Listener, SelectionListener
+public class ASDAbstractSection extends AbstractPropertySection implements ISection, IASDObjectListener, Listener, SelectionListener
 {
 	private TabbedPropertySheetWidgetFactory factory;
 	private Object elementModel;
@@ -56,8 +64,11 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 	protected int rightMarginSpace;
 	protected int tableMinimumWidth = 50;
 	protected CustomListener customListener = new CustomListener();
+	private IStatusLineManager statusLine;
 	
 	protected List listeners = new ArrayList();
+
+	public static final Image ICON_ERROR = WSDLEditorPlugin.getInstance().getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 	
 	public void createControls(Composite parent, TabbedPropertySheetPage tabbedPropertySheetPage)
 	{
@@ -81,39 +92,40 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
 	 */
 	public void setInput(IWorkbenchPart part, ISelection selection)
 	{
-		Assert.isTrue(selection instanceof IStructuredSelection);
-		Object input = ((IStructuredSelection)selection).getFirstElement();
-		elementModel = input;
-		attachListener(elementModel);
-		
-		if (input instanceof IASDObject) {
-			isReadOnly = ((IASDObject) input).isReadOnly();
-		}
+	  super.setInput(part, selection);
+	  Assert.isTrue(selection instanceof IStructuredSelection);
+	  Object input = ((IStructuredSelection)selection).getFirstElement();
+	  elementModel = input;
+	  attachListener(elementModel);
 
-		IEditorPart owningEditor = null;
-    if (part!=null) {
-      if (part instanceof IEditorPart) {
-        owningEditor = (IEditorPart)part;
-      } else {
-        IWorkbench workbench = PlatformUI.getWorkbench();
-        if (workbench != null) {
-          IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-          if (window != null) {
-            IWorkbenchPage page = window.getActivePage();
-            if (page != null) {
-              owningEditor = page.getActiveEditor();
-            }
-          }
-        }
-      }
-    }
-    if (owningEditor != null) {
-      IEditorInput editorInput = owningEditor.getEditorInput();
-      if (!(editorInput instanceof IFileEditorInput || editorInput instanceof FileStoreEditorInput)) {
-        isReadOnly = true;
-      }
-    }
-		refresh();
+	  if (input instanceof IASDObject) {
+	    isReadOnly = ((IASDObject) input).isReadOnly();
+	  }
+
+	  IEditorPart owningEditor = null;
+	  if (part!=null) {
+	    if (part instanceof IEditorPart) {
+	      owningEditor = (IEditorPart)part;
+	    } else {
+	      IWorkbench workbench = PlatformUI.getWorkbench();
+	      if (workbench != null) {
+	        IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+	        if (window != null) {
+	          IWorkbenchPage page = window.getActivePage();
+	          if (page != null) {
+	            owningEditor = page.getActiveEditor();
+	          }
+	        }
+	      }
+	    }
+	  }
+	  if (owningEditor != null) {
+	    IEditorInput editorInput = owningEditor.getEditorInput();
+	    if (!(editorInput instanceof IFileEditorInput || editorInput instanceof FileStoreEditorInput)) {
+	      isReadOnly = true;
+	    }
+	  }
+	  refresh();
 	}
 	
 	/* (non-Javadoc)
@@ -434,5 +446,54 @@ public class ASDAbstractSection implements ISection, IASDObjectListener, Listene
         else {
             command.execute();
         }
+    }
+
+    /**
+     * Display an error message in the status line.
+     * Call setErrorMessage(null) to clear the status line.
+     * @param text 
+     */
+    public void setErrorMessage(String text)
+    {
+      IStatusLineManager statusLine = getStatusLineManager();
+
+      if (statusLine!=null)
+      {
+        if (text==null || text.length()<1)
+          statusLine.setErrorMessage(null);
+        else
+          statusLine.setErrorMessage(ICON_ERROR, text);
+
+        // ensure our message gets displayed
+        if (statusLine instanceof SubContributionManager)
+          ((SubContributionManager)statusLine).setVisible(true);
+        
+        statusLine.update(true);
+      }
+    }
+    
+    /**
+     * Intended to display error messages.
+     * @return
+     */
+    private IStatusLineManager getStatusLineManager()
+    {
+      if (statusLine==null && getPart()!=null)
+      {
+        if(getPart().getSite() instanceof IEditorSite)
+          statusLine = ((IEditorSite)getPart().getSite()).getActionBars().getStatusLineManager();
+        else if (getPart().getSite() instanceof IViewSite)
+          statusLine = ((IViewSite)getPart().getSite()).getActionBars().getStatusLineManager();
+        
+        /* 
+         * We must manually set the visibility of the status line since the action bars are from the editor
+         * which means the status line only shows up when the editor is in focus (by default).
+         * Note only a SubStatusLineManager can set the visibility.
+         */
+        if (statusLine instanceof SubStatusLineManager)
+          ((SubStatusLineManager)statusLine).setVisible(true);
+      }
+      
+      return statusLine;
     }
 }

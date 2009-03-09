@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.wst.wsdl.ui.internal.asd.properties.sections;
 
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -23,23 +23,18 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
-import org.eclipse.wst.common.ui.internal.dialogs.SelectSingleFileDialog;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
-import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.adapters.basic.W11Import;
+import org.eclipse.wst.wsdl.ui.internal.adapters.commands.W11UpdateImportCommand;
+import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
+import org.eclipse.wst.wsdl.ui.internal.asd.dialogs.ImportSelectionDialog;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IImport;
-import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
-import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
-import org.eclipse.emf.common.util.URI;
 import org.w3c.dom.Element;
 
 public class ImportSection extends ASDAbstractSection
@@ -47,7 +42,9 @@ public class ImportSection extends ASDAbstractSection
 	protected Text namespaceText, prefixText, locationText;
 	private String oldPrefixValue;
 	Button button;
-	// TODO: Remove: IEditorPart editorPart
+	/**
+	 * @deprecated
+	 */
 	IEditorPart editorPart;
 
 	/**
@@ -181,141 +178,64 @@ public class ImportSection extends ASDAbstractSection
 
 	public void doHandleEvent(Event event) {
 		// TODO: We have some WSDL11 Impl specific knowledge below... We should try to remove this...
+	    setErrorMessage(null);
 		if (event.widget == prefixText && locationText.getText().length() > 0 && namespaceText.getText().length() > 0 && getModel() instanceof W11Import) {
-			if (oldPrefixValue.equals(prefixText.getText()))
-			  return;
+		  String newPrefix = prefixText.getText();
+		  if (oldPrefixValue.equals(newPrefix)) {
+		    return;
+		  }
 			
-			W11Import w11Import = (W11Import) getModel();
-			Import importObj = (Import) w11Import.getTarget();
-//			org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
-			Map namespacesMap = importObj.getEnclosingDefinition().getNamespaces();
+		  W11Import w11Import = (W11Import) getModel();
+		  Import importObj = (Import) w11Import.getTarget();
+		  Definition definition = importObj.getEnclosingDefinition();
+		  Map namespacesMap = definition.getNamespaces();
 
-			if (namespacesMap.containsKey(prefixText.getText())) {
-				// We should add error messages.........
-				//           setErrorMessage(XSDEditorPlugin.getXSDString("_ERROR_LABEL_PREFIX_EXISTS"));
-			}
-			else {
-				Element definitionElement = importObj.getEnclosingDefinition().getElement();
-				definitionElement.removeAttribute("xmlns:"+oldPrefixValue); //$NON-NLS-1$
-				definitionElement.setAttribute("xmlns:" + prefixText.getText(), namespaceText.getText()); //$NON-NLS-1$
-
-//				clearErrorMessage();
-				oldPrefixValue = prefixText.getText();
-			}
+		  if (namespacesMap.containsKey(newPrefix)) {
+		    setErrorMessage(Messages._ERROR_LABEL_PREFIX_EXISTS);
+		  }
+		  else {
+            Element definitionElement = definition.getElement();
+            definitionElement.removeAttribute("xmlns:"+oldPrefixValue); //$NON-NLS-1$
+            definitionElement.setAttribute("xmlns:" + newPrefix, namespaceText.getText()); //$NON-NLS-1$
+		    oldPrefixValue = newPrefix;
+		  }
 		}
 	}
 
 	public void widgetSelected(SelectionEvent e)
 	{
-		// TODO: We have some WSDL11 Impl specific knowledge below... We should try to remove this...
-		if (e.widget == button && getModel() instanceof W11Import)
-		{
-			W11Import w11Import = (W11Import) getModel();
+	  // TODO: We have some WSDL11 Impl specific knowledge below... We should try to remove this...
+	  if (e.widget == button && getModel() instanceof W11Import)
+	  {
+	    W11Import w11Import = (W11Import) getModel();
+	    Import importObj = (Import) w11Import.getTarget();
 
-			IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-			
-      SelectSingleFileDialog dialog = new SelectSingleFileDialog(WSDLEditorPlugin.getShell(), null, true);
-      
-      IFile currentWSDLFile = null;
-      IEditorInput editorInput = editor.getEditorInput();
-      String [] filters = { "xsd", "wsdl" }; //$NON-NLS-1$ //$NON-NLS-2$
-      
-      if (editorInput instanceof IFileEditorInput)
-      {
-        currentWSDLFile = ((IFileEditorInput)editorInput).getFile();
-        IFile [] excludedFiles = { currentWSDLFile };
-        dialog.addFilterExtensions(filters, excludedFiles);
-      }
-      else
-      {
-        IFile [] excludedFiles = { };
-        dialog.addFilterExtensions(filters, excludedFiles);
-      }
-		
-			dialog.create();
-			dialog.getShell().setText(org.eclipse.wst.wsdl.ui.internal.Messages._UI_TITLE_SELECT); //$NON-NLS-1$
-			dialog.setTitle(org.eclipse.wst.wsdl.ui.internal.Messages._UI_TITLE_SELECT_FILE); //$NON-NLS-1$
-			dialog.setMessage(org.eclipse.wst.wsdl.ui.internal.Messages._UI_DESCRIPTION_SELECT_WSDL_OR_XSD); //$NON-NLS-1$
-			int rc = dialog.open();
-			if (rc == IDialogConstants.OK_ID)
-			{
-				IFile selectedFile = dialog.getFile();
+	    ImportSelectionDialog dialog = new ImportSelectionDialog(WSDLEditorPlugin.getShell(), null, true);
+	    dialog.create();
+	    int rc = dialog.open();
+	    if (IDialogConstants.OK_ID == rc)
+	    {
+	      String locationURI = dialog.getImportLocation();
+	      String namespaceURI = dialog.getImportNamespace();
 
-				//if (selectedFile.getLocation().toOSString().equals(currentWSDLFile.getLocation().toOSString()))
-				//{
-				//  System.out.println("SAME FILE:" + currentWSDLFile.getLocation());
-				//}
+	      String prefix = prefixText.getText();           
+	      CommandStack stack = (CommandStack) ASDEditorPlugin.getActiveEditor().getAdapter(CommandStack.class);
+	      W11UpdateImportCommand updateImportCommand = new W11UpdateImportCommand(importObj, locationURI, namespaceURI, prefix);
+	      stack.execute(updateImportCommand);
 
-				String location = ComponentReferenceUtil.computeRelativeURI(selectedFile, currentWSDLFile, true);
-
-				Import importObj = (Import) w11Import.getTarget();
-//				org.w3c.dom.Element importElement = WSDLEditorUtil.getInstance().getElementForObject(importObj);
-				Definition definition = importObj.getEnclosingDefinition();
-				org.w3c.dom.Element definitionElement = WSDLEditorUtil.getInstance().getElementForObject(definition);
-
-				String importTargetNamespace = ""; //$NON-NLS-1$
-				String prefix = prefixText.getText();
-				String uniquePrefix = ""; //$NON-NLS-1$
-
-				URI uri = URI.createPlatformResourceURI(selectedFile.getFullPath().toString());      
-
-				// note that the getTargetNamespaceURIForSchema works for both schema and wsdl files
-				// I should change the name of this convenience method
-				importTargetNamespace =  WSDLEditorUtil.getTargetNamespaceURIForSchema(uri.toString());
-
-				if (prefix.trim().equals("")) //$NON-NLS-1$
-				{
-					uniquePrefix = getUniquePrefix(definition, uri.fileExtension());
-				}
-				else
-				{
-					uniquePrefix = prefix; 
-				}
-
-
-				if (importTargetNamespace == null ||
-						(importTargetNamespace != null && importTargetNamespace.trim().length() == 0))
-				{
-					return;  // what to do with no namespace docs?
-				}
-
-				importObj.setLocationURI(location);
-				importObj.setNamespaceURI(importTargetNamespace);
-				((ImportImpl) importObj).importDefinitionOrSchema();
-
-				definitionElement.setAttribute("xmlns:" + uniquePrefix, importTargetNamespace); //$NON-NLS-1$
-
-				namespaceText.setText(importTargetNamespace);
-				locationText.setText(location);
-				prefixText.setText(uniquePrefix);
-			}
-			refresh();
-		}
+	      Definition definition = importObj.getEnclosingDefinition();
+	      String actualPrefix = definition.getPrefix(namespaceURI);
+	      namespaceText.setText(namespaceURI);
+	      locationText.setText(locationURI);
+	      prefixText.setText(actualPrefix);
+	    }
+	    refresh();
+	  }
 	}
 
-	private String getUniquePrefix(Definition definition, String initPrefix)
-	{
-		String uniquePrefix;
-		Map map = definition.getNamespaces();
-
-		if (definition.getNamespace(initPrefix) == null)
-		{
-			uniquePrefix = initPrefix;
-		}
-		else // if used, then try to create a unique one
-		{
-			String tempPrefix = initPrefix;
-			int i = 1;
-			while(map.containsKey(tempPrefix + i))
-			{
-				i++;
-			}
-			uniquePrefix = tempPrefix + i;
-		}
-		return uniquePrefix;    
-	}
-
-	// TODO: Remove metod setEditorPart() below
+	/**
+	 * @deprecated
+	 */
 	public void setEditorPart(IEditorPart editorPart)
 	{
 		this.editorPart = editorPart;

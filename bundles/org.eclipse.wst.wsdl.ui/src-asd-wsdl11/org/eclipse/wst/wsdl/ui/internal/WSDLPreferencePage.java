@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     layout.marginWidth = 0;
     layout.numColumns = 2;
     group.setLayout(layout);
-    group.setText(Messages._UI_PREF_PAGE_CREATING_FILES); //$NON-NLS-1$
+    group.setText(Messages._UI_PREF_PAGE_CREATING_FILES);
 
     GridData data = new GridData();
     data.verticalAlignment = GridData.FILL;
@@ -64,7 +64,7 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     data1.grabExcessHorizontalSpace = true;
     composite.setLayoutData(data1);
 	
-	String namespaceLabel = Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE;  //$NON-NLS-1$
+	String namespaceLabel = Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE;
     StringFieldEditor targetNamespace = new StringFieldEditor(namespaceLabel, namespaceLabel, composite);
     GridLayout compositeLayout = (GridLayout)composite.getLayout();
     compositeLayout.marginWidth = 5;   // Default value
@@ -72,25 +72,21 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     addField(targetNamespace);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(targetNamespace.getTextControl(composite), ASDEditorCSHelpIds.WSDL_PREF_DEFAULT_TNS);
 	
-	String generateLabel = Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING; //$NON-NLS-1$
+	String generateLabel = Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING;
 	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(generateLabel, generateLabel, parent);
 	addField(generateBindingOnSave);
     
-	String showGenerateDialogLabel = Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE; //$NON-NLS-1$
+	String showGenerateDialogLabel = Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE;
 	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(showGenerateDialogLabel, showGenerateDialogLabel, parent);
 	addField(showGenerateDialog);
 	
-	String unusedImportLabel = Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP; //$NON-NLS-1$
+	String unusedImportLabel = Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP;
 	BooleanFieldEditor removeUnusedImports = new BooleanFieldEditor(unusedImportLabel, unusedImportLabel, parent);
 	addField(removeUnusedImports);
-
-    /* Do we need this preference below?  If so, change WSDLEditorPlugin.java and use this preference in:
-       HttpContentGenerator.java
-       SoapContentGenerator.java
-       SoapPortOptionsPage.java
-    */
-//    HttpPortOptionsPage.java    StringFieldEditor location = new StringFieldEditor("Defualt Location:", "Default Location:", editorGroup1); // Externalize
-//    addField(location); 
+	
+    String openImportDialogLabel = Messages._UI_PREF_PAGE_ENABLE_AUTO_OPEN_IMPORT_DIALOG;
+    BooleanFieldEditor openImportDialog = new BooleanFieldEditor(openImportDialogLabel, openImportDialogLabel, parent);
+    addField(openImportDialog);
 	
 	applyDialogFont(parent);
     

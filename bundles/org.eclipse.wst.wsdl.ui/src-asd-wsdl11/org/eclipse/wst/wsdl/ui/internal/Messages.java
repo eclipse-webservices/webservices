@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,7 @@ public class Messages {
 	public static String _UI_PREF_PAGE_AUTO_REGENERATE_BINDING;
 	public static String _UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE;
 	public static String _UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP;
+	public static String _UI_PREF_PAGE_ENABLE_AUTO_OPEN_IMPORT_DIALOG;
 	public static String _UI_EDIT_NAMESPACES;
 	public static String _UI_ACTION_ADD_IMPORT;
 	public static String _UI_ACTION_ADD_BINDING;

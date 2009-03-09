@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.IASDAddCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddImportCommand;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLAdapterFactoryHelper;
 
 public class W11AddImportCommand extends W11TopLevelElementCommand implements IASDAddCommand {
 	private Object component;
@@ -32,7 +33,7 @@ public class W11AddImportCommand extends W11TopLevelElementCommand implements IA
 			AddImportCommand command = new AddImportCommand(definition, namespace, location);
 			command.run();
 			formatChild(command.getWSDLElement().getElement());
-			component = command.getWSDLElement();
+			component = WSDLAdapterFactoryHelper.getInstance().adapt(command.getWSDLElement());
 		}
 		finally {
 			endRecording(definition.getElement());
