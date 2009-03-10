@@ -22,10 +22,6 @@
    </url>
 
    <includes
-         id="org.eclipse.wst.ws_wsdl14.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.wst.ws_wsdl15.feature"
          version="0.0.0"/>
 
