@@ -1,5 +1,4 @@
 Manifest-Version: 1.0
-Bundle-ClassPath: env.jar
 Bundle-ManifestVersion: 2
 Bundle-Name: %PLUGIN_NAME
 Bundle-SymbolicName: org.eclipse.wst.command.env; singleton:=true

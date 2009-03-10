@@ -113,25 +113,29 @@
          id="org.apache.commons.discovery"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="javax.xml.rpc"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="javax.xml.soap"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.apache.axis"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="javax.mail"
