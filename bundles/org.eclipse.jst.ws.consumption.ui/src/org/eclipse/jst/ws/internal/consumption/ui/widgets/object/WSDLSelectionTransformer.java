@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,11 +13,13 @@
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20070713   191357 kathy@ca.ibm.com - Kathy Chan
  * 20081208   257618 mahutch@ca.ibm.com - Mark Hutchinson, Add Mechanism for Adopters to map Services to WSDL URLs
+ * 20090310   242440 yenlu@ca.ibm.com - Yen Lu, Pluggable IFile to URI Converter
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
 import java.net.MalformedURLException;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
@@ -33,6 +35,8 @@ import org.eclipse.jst.j2ee.webservice.wsdd.WebServiceDescription;
 import org.eclipse.jst.ws.internal.common.J2EEActionAdapterFactory;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
+import org.eclipse.wst.ws.internal.converter.IIFile2UriConverter;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.ui.utils.AdapterUtils;
 import org.eclipse.wst.ws.internal.wsfinder.WSDLURLStringWrapper;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
@@ -52,6 +56,17 @@ public class WSDLSelectionTransformer implements Transformer
       {
         try
         {
+          if (sel instanceof IFile)
+          {
+        	IFile file = (IFile)sel;
+        	IIFile2UriConverter converter = WSPlugin.getInstance().getIFile2UriConverter();
+        	if (converter != null)
+        	{
+        	  String wsdlUrl = converter.convert(file);
+        	  if (wsdlUrl != null || !converter.allowBaseConversionOnFailure())
+        	    return wsdlUrl;
+        	}
+          }
           return new StructuredSelection(((IResource)sel).getLocation().toFile().toURL().toString());
         }
         catch (MalformedURLException murle)

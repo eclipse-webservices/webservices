@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20070716   191357 kathy@ca.ibm.com - Kathy Chan
  * 20080220   219537 makandre@ca.ibm.com - Andrew Mak
  * 20080421   227824 makandre@ca.ibm.com - Andrew Mak, AdapterUtils adapt to IFile before String
+ * 20090310   242440 yenlu@ca.ibm.com - Yen Lu
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.ui.utils;
 
@@ -20,6 +21,8 @@ import java.net.URI;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.wst.ws.internal.converter.IIFile2UriConverter;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 
 /**
  * The AdapterUtils class provides utility methods to get objects from the Platform's adapter extension.
@@ -67,11 +70,21 @@ public class AdapterUtils {
 		  if ( adaptedObject != null) {
 			  if (adaptedObject instanceof IFile)
 			  {
-				  URI uri = ((IFile)adaptedObject).getLocationURI();
-				  if (uri != null) {
-					  wsdlURI = uri.toString();
+				  IFile file = (IFile)adaptedObject;
+				  boolean allowBaseConversionOnFailure = true;
+				  IIFile2UriConverter converter = WSPlugin.getInstance().getIFile2UriConverter();
+				  if (converter != null)
+				  {
+					  wsdlURI = converter.convert(file);
+					  allowBaseConversionOnFailure = converter.allowBaseConversionOnFailure();
 				  }
-				  
+				  if (wsdlURI == null && allowBaseConversionOnFailure)
+				  {
+				    URI uri = file.getLocationURI();
+				    if (uri != null) {
+					  wsdlURI = uri.toString();
+				    }
+				  }
 			  } else if (adaptedObject instanceof String) {
 				  wsdlURI = (String) adaptedObject;
 			  }

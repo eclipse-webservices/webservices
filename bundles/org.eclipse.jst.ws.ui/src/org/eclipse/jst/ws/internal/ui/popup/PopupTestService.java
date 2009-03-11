@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2008 IBM Corporation and others.
+ * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20070327   172339 kathy@ca.ibm.com - Kathy Chan
  * 20080123   216372 kathy@ca.ibm.com - Kathy Chan
  * 20090127	  257618 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20090310   242440 yenlu@ca.ibm.com - Yen Lu, Pluggable IFile to URI Converter
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.popup;
 
@@ -58,8 +59,8 @@ public class PopupTestService extends PopupTestWSDL
         }
         else if (object instanceof ServiceRef)
         {
-          ServiceRef serviceImpl = (ServiceRef)object;
-          wsdlURL = J2EEActionAdapterFactory.getWSDLURI(serviceImpl);
+          ServiceRef serviceRef = (ServiceRef)object;
+          wsdlURL = J2EEActionAdapterFactory.getWSDLURI(serviceRef);
         } else if (object instanceof String) {
         	wsdlURL = (String) object;
         } else {

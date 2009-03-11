@@ -8,6 +8,7 @@ Bundle-Vendor: %PLUGIN_PROVIDER
 Bundle-Localization: plugin
 Export-Package: org.eclipse.wst.ws.internal;x-internal:=true,
  org.eclipse.wst.ws.internal.common;x-internal:=true,
+ org.eclipse.wst.ws.internal.converter,
  org.eclipse.wst.ws.internal.data;x-internal:=true,
  org.eclipse.wst.ws.internal.datamodel;x-internal:=true,
  org.eclipse.wst.ws.internal.ext;x-internal:=true,

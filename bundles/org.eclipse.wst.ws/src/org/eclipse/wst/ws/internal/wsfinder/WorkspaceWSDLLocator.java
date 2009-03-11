@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060317   127456 cbrealey@ca.ibm.com - Chris Brealey
  * 20060620   147862 cbrealey@ca.ibm.com - Chris Brealey
+ * 20090310   242440 yenlu@ca.ibm.com - Yen Lu, Pluggable IFile to URI Converter
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.wsfinder;
@@ -18,6 +19,7 @@ package org.eclipse.wst.ws.internal.wsfinder;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
@@ -25,6 +27,8 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.wst.ws.internal.converter.IIFile2UriConverter;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
 /**
@@ -124,14 +128,27 @@ public class WorkspaceWSDLLocator extends AbstractWebServiceLocator
 		public boolean visit(IResource resource)
 		{
 			if (resource.getType() == IResource.FILE)
-			{        
-				String ext = resource.getFileExtension();
-				if (ext != null && ext.equalsIgnoreCase(WSDL_EXT))
+			{
+				String wsdlURL = null;
+				IIFile2UriConverter converter = WSPlugin.getInstance().getIFile2UriConverter();
+				boolean allowBaseConversionOnFailure = true;
+				if (converter != null)
 				{
-					String urlString = PLATFORM_RES + resource.getFullPath().toString();
-					WebServiceInfo wsInfo = new WebServiceInfo();
-					wsInfo.setWsdlURL(urlString);           
-					wsdl.add(wsInfo);
+				  wsdlURL = converter.convert((IFile)resource);
+				  if (wsdlURL == null)
+					allowBaseConversionOnFailure = converter.allowBaseConversionOnFailure();
+				}
+				if (wsdlURL == null && allowBaseConversionOnFailure)
+				{
+				  String ext = resource.getFileExtension();
+				  if (ext != null && ext.equalsIgnoreCase(WSDL_EXT))
+					wsdlURL = PLATFORM_RES + resource.getFullPath().toString();
+				}
+				if (wsdlURL != null)
+				{
+				  WebServiceInfo wsInfo = new WebServiceInfo();
+				  wsInfo.setWsdlURL(wsdlURL);           
+				  wsdl.add(wsInfo);
 				}
 			}
 			return true;
