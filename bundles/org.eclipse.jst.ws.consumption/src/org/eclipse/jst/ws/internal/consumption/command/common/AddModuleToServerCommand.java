@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,18 +11,17 @@
  * -------- -------- -----------------------------------------------------------
  * 20060921 [158210] kathy@ca.ibm.com - Kathy Chan, Calling incremental build on the project before adding to server
  * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20090311 250984   mahutch@ca.ibm.com - Mark Hutchinson, Use another mechanism to wait for build to be completed
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -77,15 +76,6 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    	if (imodule == null) {
 	    	    // calling incremental build on the project before trying again
 	    		iproject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,null);
-	    		// wait for the incremental build to complete before trying again
-	    		try 
-	    		{
-	    			Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
-	    		} 
-	    		catch( InterruptedException exc ) 
-	    		{
-	    			// Assuming that the autobuilder has actually completed.	
-	    		}
 	    		imodule = ServerUtils.getModule(iproject);
 	    		if (imodule == null) {  
 	    			// return error if module is still null after 1 retry
