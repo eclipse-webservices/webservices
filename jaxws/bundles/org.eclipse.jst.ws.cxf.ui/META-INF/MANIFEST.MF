@@ -2,12 +2,23 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.cxf.ui;singleton:=true
-Bundle-Version: 0.3.2.qualifier
+Bundle-Version: 0.3.3.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.cxf.ui.CXFUIPlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jst.ws.internal.cxf.ui,org.eclipse.jst.ws.internal.cxf.ui.dialogs,org.eclipse.jst.ws.internal.cxf.ui.viewers,org.eclipse.jst.ws.internal.cxf.ui.widgets
-Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.jst.ws.cxf.core,org.eclipse.core.resources,org.eclipse.ui.ide,org.eclipse.jdt.core,javax.wsdl,org.eclipse.jdt.ui,org.eclipse.wst.command.env,org.eclipse.wst.command.env.core,org.eclipse.emf.ecore
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jst.ws.cxf.core,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide,
+ org.eclipse.jdt.core,
+ javax.wsdl,
+ org.eclipse.jdt.ui,
+ org.eclipse.wst.command.env,
+ org.eclipse.wst.command.env.core,
+ org.eclipse.emf.ecore,
+ org.eclipse.jst.ws.jaxws.core
 Ant-Version: Apache Ant 1.7.0
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Created-By: 1.5.0_14-b03 (Sun Microsystems Inc.)
