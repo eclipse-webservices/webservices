@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +18,15 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
+public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
     @Override
     public String getPackageName() {
         return "com.example";
@@ -48,30 +46,27 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
     @Override
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        MemberValuePair nameValuePair = AnnotationsCore.getStringMemberValuePair(ast, "name", "i");
-        memberValuePairs.add(nameValuePair);
-        return AnnotationsCore.getAnnotation(ast, javax.jws.WebParam.class, memberValuePairs);
+        MemberValuePair operationValuePair = AnnotationsCore.createStringMemberValuePair(ast, "operationName",
+            "add");
+        memberValuePairs.add(operationValuePair);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, memberValuePairs);
     }
-    
-    public void testAddAnnotationToMethodParameter() {
+
+    public void testAddAnnotationToMethod() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebParam", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
             
             IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
             assertNotNull(method);
-            
-            SingleVariableDeclaration parameter = JDTUtils.getMethodParameter(method, 44);
         
-            AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, rewriter, 
-                    parameter, method, annotation, textFileChange);
+            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+                    annotation, textFileChange);
             
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
             
-            //refresh
-            parameter = JDTUtils.getMethodParameter(method, 44);
-            
-            assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
+            assertTrue(AnnotationUtils.isAnnotationPresent(method,
+                    AnnotationUtils.getAnnotationName(annotation)));
         } catch (CoreException ce) {
             ce.printStackTrace();
         }

@@ -8,23 +8,26 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationTest {
+public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
     @Override
     public String getPackageName() {
         return "com.example";
@@ -37,16 +40,19 @@ public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationT
     
     @Override
     public String getClassContents() {
-        return "public class Calculator {\n\n\tpublic int add(@WebParam(name=\"i\")int i, int k) {" +
+        return "public class Calculator {\n\n\tpublic int add(int i, int k) {" +
             "\n\t\treturn i + k;\n\t}\n}";
     }
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.getAnnotation(ast, javax.jws.WebParam.class, null);
+        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+        MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "name", "i");
+        memberValuePairs.add(nameValuePair);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, memberValuePairs);
     }
     
-    public void testRemoveAnnotationFromMethodParameter() {
+    public void testAddAnnotationToMethodParameter() {
         try {
             assertNotNull(annotation);
             assertEquals("WebParam", AnnotationUtils.getAnnotationName(annotation));
@@ -54,19 +60,17 @@ public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationT
             IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
             assertNotNull(method);
             
-            SingleVariableDeclaration parameter = JDTUtils.getMethodParameter(method, 44);
-            
-            assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
-
-            AnnotationUtils.removeAnnotationFromMethodParameter(source, rewriter, parameter, annotation, 
-                    textFileChange);
+            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(method, 44);
+        
+            AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, rewriter, 
+                    parameter, method, annotation, textFileChange);
             
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-
+            
             //refresh
-            parameter = JDTUtils.getMethodParameter(method, 44);
-
-            assertFalse(AnnotationUtils.isAnnotationPresent(parameter, annotation));
+            parameter = AnnotationUtils.getMethodParameter(method, 44);
+            
+            assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
         } catch (CoreException ce) {
             ce.printStackTrace();
         }

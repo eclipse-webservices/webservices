@@ -8,25 +8,25 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
+public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
     @Override
     public String getPackageName() {
         return "com.example";
@@ -34,38 +34,38 @@ public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
 
     @Override
     public String getClassName() {
-        return "Calculator.java";
+        return "CalculatorClient.java";
     }
     
     @Override
     public String getClassContents() {
-        return "public class Calculator {\n\n\tpublic int add(int i, int k) {" +
-            "\n\t\treturn i + k;\n\t}\n}";
+        return "public class CalculatorClient {\n\nstatic CalculatorService service;\n\n}";
     }
 
     @Override
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        MemberValuePair operationValuePair = AnnotationsCore.getStringMemberValuePair(ast, "operationName",
-            "add");
-        memberValuePairs.add(operationValuePair);
-        return AnnotationsCore.getAnnotation(ast, javax.jws.WebMethod.class, memberValuePairs);
+        MemberValuePair wsdlLocationValuePair = AnnotationsCore.createStringMemberValuePair(ast, "wsdlLocation", 
+                "http://localhost:8083/Calculator/servives/CalculatorService?WSDL");
+        memberValuePairs.add(wsdlLocationValuePair);
+
+        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class, memberValuePairs);
     }
 
-    public void testAddAnnotationToMethod() {
+    public void testAddAnnotationToField() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals("WebServiceRef", AnnotationUtils.getAnnotationName(annotation));
             
-            IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
-            assertNotNull(method);
+            IField field = source.findPrimaryType().getField("service");
+            assertNotNull(field);
         
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            AnnotationUtils.createFiedlAnnotationChange(source, compilationUnit, rewriter, field, annotation,
+                    textFileChange);
             
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
             
-            assertTrue(AnnotationUtils.isAnnotationPresent(method,
+            assertTrue(AnnotationUtils.isAnnotationPresent(field,
                     AnnotationUtils.getAnnotationName(annotation)));
         } catch (CoreException ce) {
             ce.printStackTrace();

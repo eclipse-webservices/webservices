@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 /**
  * 
@@ -48,15 +48,15 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
-        MemberValuePair nameValuePair = AnnotationsCore.getStringMemberValuePair(ast, "name", "Calculator");
+        MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "name", "Calculator");
 
-        MemberValuePair targetNamespaceValuePair = AnnotationsCore.getStringMemberValuePair(ast, 
+        MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
                 "targetNamespace", JDTUtils.getTargetNamespaceFromPackageName(getPackageName()));
 
-        MemberValuePair portNameValuePair = AnnotationsCore.getStringMemberValuePair(ast, "portName",
+        MemberValuePair portNameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "portName",
                 "CalculatorPort");
 
-        MemberValuePair serviceNameValuePair = AnnotationsCore.getStringMemberValuePair(ast, "serviceName",
+        MemberValuePair serviceNameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "serviceName",
                 "CalculatorService");
 
         memberValuePairs.add(nameValuePair);
@@ -64,7 +64,7 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
         memberValuePairs.add(portNameValuePair);
         memberValuePairs.add(serviceNameValuePair);
 
-        return AnnotationsCore.getAnnotation(ast, javax.jws.WebService.class, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, memberValuePairs);
     }
 
     public void testAddAnnotationToType() {

@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import junit.framework.TestSuite;
 

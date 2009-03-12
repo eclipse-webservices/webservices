@@ -8,13 +8,13 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 /**
  * 
@@ -40,7 +40,7 @@ public class RemoveAnnotationFromTypeTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.getAnnotation(ast, javax.jws.WebService.class, null);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, null);
     }
 
     public void testRemoveAnnotationFromType() {

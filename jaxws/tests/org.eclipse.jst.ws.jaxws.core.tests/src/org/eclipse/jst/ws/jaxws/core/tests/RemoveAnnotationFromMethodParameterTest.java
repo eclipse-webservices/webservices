@@ -8,21 +8,22 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
+public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationTest {
     @Override
     public String getPackageName() {
         return "com.example";
@@ -35,33 +36,36 @@ public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
     
     @Override
     public String getClassContents() {
-        return "public class Calculator {\n\n\t@WebMethod\npublic int add(int i, int k) {" +
+        return "public class Calculator {\n\n\tpublic int add(@WebParam(name=\"i\")int i, int k) {" +
             "\n\t\treturn i + k;\n\t}\n}";
     }
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.getAnnotation(ast, javax.jws.WebMethod.class, null);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, null);
     }
-
-    public void testRemoveAnnotationFromMethod() {
+    
+    public void testRemoveAnnotationFromMethodParameter() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals("WebParam", AnnotationUtils.getAnnotationName(annotation));
             
             IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
             assertNotNull(method);
-        
-            assertTrue(AnnotationUtils.isAnnotationPresent(method,
-                    AnnotationUtils.getAnnotationName(annotation)));
+            
+            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(method, 44);
+            
+            assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
 
-            AnnotationUtils.removeAnnotationFromMethod(source, compilationUnit, rewriter, method, annotation,
+            AnnotationUtils.removeAnnotationFromMethodParameter(source, rewriter, parameter, annotation, 
                     textFileChange);
             
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
-            assertFalse(AnnotationUtils.isAnnotationPresent(method,
-                    AnnotationUtils.getAnnotationName(annotation)));
+
+            //refresh
+            parameter = AnnotationUtils.getMethodParameter(method, 44);
+
+            assertFalse(AnnotationUtils.isAnnotationPresent(parameter, annotation));
         } catch (CoreException ce) {
             ce.printStackTrace();
         }

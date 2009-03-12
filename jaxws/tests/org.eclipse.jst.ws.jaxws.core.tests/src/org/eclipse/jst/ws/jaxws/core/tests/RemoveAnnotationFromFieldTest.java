@@ -8,25 +8,21 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
+public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
     @Override
     public String getPackageName() {
         return "com.example";
@@ -39,33 +35,31 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
     
     @Override
     public String getClassContents() {
-        return "public class CalculatorClient {\n\nstatic CalculatorService service;\n\n}";
+        return "public class CalculatorClient {\n\n@WebServiceRef()\nstatic CalculatorService service;\n\n}";
     }
 
     @Override
     public Annotation getAnnotation() {
-        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        MemberValuePair wsdlLocationValuePair = AnnotationsCore.getStringMemberValuePair(ast, "wsdlLocation", 
-                "http://localhost:8083/Calculator/servives/CalculatorService?WSDL");
-        memberValuePairs.add(wsdlLocationValuePair);
-
-        return AnnotationsCore.getAnnotation(ast, javax.xml.ws.WebServiceRef.class, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class, null);
     }
 
-    public void testAddAnnotationToField() {
+    public void testRemoveAnnotationFromField() {
         try {
             assertNotNull(annotation);
             assertEquals("WebServiceRef", AnnotationUtils.getAnnotationName(annotation));
-            
+
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);
+
+            assertTrue(AnnotationUtils.isAnnotationPresent(field,
+                    AnnotationUtils.getAnnotationName(annotation)));
         
-            AnnotationUtils.createFiedlAnnotationChange(source, compilationUnit, rewriter, field, annotation,
+            AnnotationUtils.removeAnnotationFromField(source, compilationUnit, rewriter, field, annotation,
                     textFileChange);
             
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
             
-            assertTrue(AnnotationUtils.isAnnotationPresent(field,
+            assertFalse(AnnotationUtils.isAnnotationPresent(field,
                     AnnotationUtils.getAnnotationName(annotation)));
         } catch (CoreException ce) {
             ce.printStackTrace();

@@ -29,7 +29,7 @@
         value="org.eclipse.jst.ws.jaxws.core.tests"/>
     <property
         name="classname"
-        value="org.eclipse.jst.ws.internal.jaxws.core.tests.AllTestsSuite"/>
+        value="org.eclipse.jst.ws.jaxws.core.tests.AllTestsSuite"/>
     <property
         name="testType"
         value="ui-test"/>

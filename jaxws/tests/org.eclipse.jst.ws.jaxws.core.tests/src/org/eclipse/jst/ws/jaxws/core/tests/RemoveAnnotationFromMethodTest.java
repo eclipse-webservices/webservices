@@ -8,21 +8,21 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.tests;
+package org.eclipse.jst.ws.jaxws.core.tests;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
+public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
     @Override
     public String getPackageName() {
         return "com.example";
@@ -30,36 +30,37 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
 
     @Override
     public String getClassName() {
-        return "CalculatorClient.java";
+        return "Calculator.java";
     }
     
     @Override
     public String getClassContents() {
-        return "public class CalculatorClient {\n\n@WebServiceRef()\nstatic CalculatorService service;\n\n}";
+        return "public class Calculator {\n\n\t@WebMethod\npublic int add(int i, int k) {" +
+            "\n\t\treturn i + k;\n\t}\n}";
     }
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.getAnnotation(ast, javax.xml.ws.WebServiceRef.class, null);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, null);
     }
 
-    public void testRemoveAnnotationFromField() {
+    public void testRemoveAnnotationFromMethod() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebServiceRef", AnnotationUtils.getAnnotationName(annotation));
-
-            IField field = source.findPrimaryType().getField("service");
-            assertNotNull(field);
-
-            assertTrue(AnnotationUtils.isAnnotationPresent(field,
-                    AnnotationUtils.getAnnotationName(annotation)));
+            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            
+            IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
+            assertNotNull(method);
         
-            AnnotationUtils.removeAnnotationFromField(source, compilationUnit, rewriter, field, annotation,
+            assertTrue(AnnotationUtils.isAnnotationPresent(method,
+                    AnnotationUtils.getAnnotationName(annotation)));
+
+            AnnotationUtils.removeAnnotationFromMethod(source, compilationUnit, rewriter, method, annotation,
                     textFileChange);
             
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
             
-            assertFalse(AnnotationUtils.isAnnotationPresent(field,
+            assertFalse(AnnotationUtils.isAnnotationPresent(method,
                     AnnotationUtils.getAnnotationName(annotation)));
         } catch (CoreException ce) {
             ce.printStackTrace();
