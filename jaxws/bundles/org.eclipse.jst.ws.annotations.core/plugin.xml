@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="annotationCategory" name="Annotation Category" schema="schema/annotationCategory.exsd"/>
+   <extension-point id="annotationDefinition" name="Annotation Definition" schema="schema/annotationDefinition.exsd"/>
+   <extension-point id="annotationInitializer" name="Annotation Initializer" schema="schema/annotationInitializer.exsd"/>
+   <extension-point id="annotationProcessor" name="Annotation Processor" schema="schema/annotationProcessor.exsd"/>
+   
+   <extension point="org.eclipse.jdt.apt.core.annotationProcessorFactory">
+      <factories enableDefault="true">
+         <factory
+            class="org.eclipse.jst.ws.internal.annotations.core.processor.AnnotationsCoreProcessorFactory">
+         </factory>
+      </factories>
+   </extension>
+   
+</plugin>

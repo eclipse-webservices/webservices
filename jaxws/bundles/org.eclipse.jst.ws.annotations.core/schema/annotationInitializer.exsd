@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jst.ws.annotations.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.jst.ws.annotations.core" id="annotationInitializer" name="Annotation Initializer"/>
+      </appinfo>
+      <documentation>
+         This extension point allows clients to associate an annotation initializer with a contribute annotation definition.
+
+The annotation initializers role is to construct values for the annotations member value pairs.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="initializer" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="initializer">
+      <complexType>
+         <attribute name="annotation" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the class name of the annotation definition that this initializers handles.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.jst.ws.annotations.core.annotationDefinition/annotation/@class"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the class that implements the contributed initializer. The
+class must be a public and extend
+&lt;code&gt;org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer&lt;/code&gt; with a public 0-argument constructor.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         The following is an example of an annotation initializer contribution:
+
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.jst.ws.annotations.core.annotationInitializer&quot;&gt;
+      &lt;initializer
+            annotation=&quot;javax.jws.WebService&quot;
+            class=&quot;org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.WebServiceAttributeInitializer&quot;&gt;
+      &lt;/initializer&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2009 Shane Clarke. &lt;br&gt;
+All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at &lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>
