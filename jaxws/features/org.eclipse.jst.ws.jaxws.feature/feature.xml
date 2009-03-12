@@ -3,7 +3,9 @@
       id="org.eclipse.jst.ws.jaxws.feature"
       label="%featureName"
       version="0.5.0.qualifier"
-      provider-name="%featureProvider">
+      provider-name="%featureProvider"
+      plugin="org.eclipse.jst.ws.jaxws.core"
+      image="eclipse_update_120.jpg">
 
    <description>
       %description
@@ -44,6 +46,27 @@
 
    <plugin
          id="javax.jws"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jst.ws.annotations.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.xml.bind"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.xml.stream"
          download-size="0"
          install-size="0"
          version="0.0.0"
