@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.utils;
+package org.eclipse.jst.ws.jaxws.core.utils;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -42,18 +42,18 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
 /**
+ * JDT Utility class.
+ * <p>
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under 
+ * development and expected to change significantly before reaching stability. It is being made available at 
+ * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
+ * this API will almost certainly be broken (repeatedly) as the API evolves.
+ * </p>
  * @author sclarke
  */
 public final class JDTUtils {
@@ -290,7 +290,7 @@ public final class JDTUtils {
         String complianceLevel = javaProject.getOption(JavaCore.COMPILER_COMPLIANCE, true);
         return JavaConventions.validatePackageName(packageName, sourceLevel, complianceLevel);
     }
-    
+
 	public static ICompilationUnit getCompilationUnitFromFile(IFile file) {
 		IProject project = file.getProject();
 		try {
@@ -330,53 +330,4 @@ public final class JDTUtils {
         
         return compilationUnit;
     }
-    
-    @SuppressWarnings("unchecked")
-    public static SingleVariableDeclaration getMethodParameter(IMethod method, int offset) {
-        CompilationUnit compilationUnit = JDTUtils.getCompilationUnit(method.getCompilationUnit());
-        IType type = method.getDeclaringType();
-        List<AbstractTypeDeclaration> types = compilationUnit.types();
-        for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-            if (abstractTypeDeclaration.getName().getIdentifier().equals(type.getElementName())) {
-                String methodToAnnotateName = method.getElementName();
-                List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(abstractTypeDeclaration);
-                for (BodyDeclaration bodyDeclaration : bodyDeclarations) {
-                    if (bodyDeclaration instanceof MethodDeclaration) {
-                        MethodDeclaration methodDeclaration = (MethodDeclaration) bodyDeclaration;
-                        if (methodDeclaration.getName().getIdentifier().equals(methodToAnnotateName)) {
-                            List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
-                            for (SingleVariableDeclaration parameter : parameters) {
-                                int parameterStartPosition = parameter.getStartPosition();
-                                int parameterLength = parameter.getLength();
-                                if (offset >= parameterStartPosition
-                                        && offset <= parameterStartPosition + parameterLength) {
-                                    return parameter;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static List<BodyDeclaration> getBodyDeclarationsForType(
-            AbstractTypeDeclaration abstractTypeDeclaration) {
-        if (abstractTypeDeclaration instanceof TypeDeclaration) {
-            TypeDeclaration typeDeclaration = (TypeDeclaration) abstractTypeDeclaration;
-            return typeDeclaration.bodyDeclarations();
-        }
-        if (abstractTypeDeclaration instanceof EnumDeclaration) {
-            EnumDeclaration enumDeclaration = (EnumDeclaration) abstractTypeDeclaration;
-            return enumDeclaration.bodyDeclarations();
-        }
-        if (abstractTypeDeclaration instanceof AnnotationTypeDeclaration) {
-            AnnotationTypeDeclaration annotationTypeDeclaration = 
-                (AnnotationTypeDeclaration) abstractTypeDeclaration;
-            return annotationTypeDeclaration.bodyDeclarations();
-        }
-        return Collections.emptyList();
-    }  
 }
