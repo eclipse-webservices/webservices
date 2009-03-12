@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.cxf_sdk.feature"
       label="%featureName"
-      version="0.4.0.qualifier"
+      version="0.4.1.qualifier"
       provider-name="%featureProvider"
       plugin="org.eclipse.jst.ws.cxf.core"
       image="eclipse_update_120.jpg">
