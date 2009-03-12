@@ -32,11 +32,11 @@ import org.eclipse.jst.ws.internal.cxf.core.resources.JavaResourceChangeListener
 import org.eclipse.jst.ws.internal.cxf.core.resources.WebContentChangeListener;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CommandLineUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.LaunchUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.SpringUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -83,7 +83,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
         String[] progArgs = CommandLineUtils.getJava2WSProgramArguments(model);
 
         try {
-        	IProject project = FileUtils.getProject(projectName);
+            IProject project = FileUtils.getProject(projectName);
             IJavaProject javaProject = JDTUtils.getJavaProject(project);
             LaunchUtils.launch(javaProject, CXF_TOOL_CLASS_NAME, progArgs);
             FileUtils.copyJ2WFilesFromTmp(model);
@@ -96,16 +96,17 @@ public class Java2WSCommand extends AbstractDataModelOperation {
                 SpringUtils.createJAXWSEndpoint(model);
             }
             
-            FileUtils.refreshProject(project, monitor);
         } catch (CoreException ce) {
             status = ce.getStatus();
             CXFCreationCorePlugin.log(status);
         } catch (IOException ioe) {
             status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, ioe.getLocalizedMessage());
             CXFCreationCorePlugin.log(status);
-        } 
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(javaResourceChangeListener);
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
+        } finally {
+            ResourcesPlugin.getWorkspace().removeResourceChangeListener(javaResourceChangeListener);
+            ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
+            FileUtils.refreshProject(projectName, monitor);
+        }
 
         return status;
     }

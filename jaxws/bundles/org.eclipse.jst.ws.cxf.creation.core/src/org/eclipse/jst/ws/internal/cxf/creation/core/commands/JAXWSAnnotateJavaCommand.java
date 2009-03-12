@@ -29,9 +29,10 @@ import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter;
 import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
 import org.eclipse.ltk.ui.refactoring.RefactoringUI;
@@ -92,35 +93,35 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
 
-        AnnotationUtils.getWebServiceAnnotationChange(javaInterfaceType, model, textFileChange);
+        CXFModelUtils.getWebServiceAnnotationChange(javaInterfaceType, model, textFileChange);
 
         IMethod[] typeMethods = JDTUtils.getPublicMethods(javaInterfaceType);
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
-            if (methodAnnotationMap.get(AnnotationUtils.WEB_METHOD)) {
-                AnnotationUtils.getWebMethodAnnotationChange(javaInterfaceType, method, 
+            if (methodAnnotationMap.get(CXFModelUtils.WEB_METHOD)) {
+                CXFModelUtils.getWebMethodAnnotationChange(javaInterfaceType, method, 
                 		textFileChange);
             }
-            if (methodAnnotationMap.get(AnnotationUtils.REQUEST_WRAPPER)) {
-                AnnotationUtils.getRequestWrapperAnnotationChange(javaInterfaceType, method, 
+            if (methodAnnotationMap.get(CXFModelUtils.REQUEST_WRAPPER)) {
+                CXFModelUtils.getRequestWrapperAnnotationChange(javaInterfaceType, method, 
                 		textFileChange);
             }
-            if (methodAnnotationMap.get(AnnotationUtils.RESPONSE_WRAPPER)) {
-                AnnotationUtils.getResponseWrapperAnnotationChange(javaInterfaceType, method, 
+            if (methodAnnotationMap.get(CXFModelUtils.RESPONSE_WRAPPER)) {
+                CXFModelUtils.getResponseWrapperAnnotationChange(javaInterfaceType, method, 
                 		textFileChange);
             }
-            if (methodAnnotationMap.get(AnnotationUtils.WEB_PARAM)) {
+            if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
                         javaInterfaceType, method);
                 for (SingleVariableDeclaration parameter : parameters) {
-                    AnnotationUtils.getWebParamAnnotationChange(javaInterfaceType, method, parameter, 
+                    CXFModelUtils.getWebParamAnnotationChange(javaInterfaceType, method, parameter, 
                     		textFileChange);
                 }
             } 
         }
         
-        AnnotationUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model, 
+        CXFModelUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model, 
         		textFileChange, false);
         
         executeChange(monitor, textFileChange, interfaceUndoChanges);
@@ -136,34 +137,34 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
         
-        AnnotationUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
+        CXFModelUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
 
         IMethod[] typeMethods = JDTUtils.getPublicMethods(javaClassType);
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
-            if (methodAnnotationMap.get(AnnotationUtils.WEB_METHOD)) {
-                AnnotationUtils.getWebMethodAnnotationChange(javaClassType, method, textFileChange);
+            if (methodAnnotationMap.get(CXFModelUtils.WEB_METHOD)) {
+                CXFModelUtils.getWebMethodAnnotationChange(javaClassType, method, textFileChange);
             }
-            if (methodAnnotationMap.get(AnnotationUtils.REQUEST_WRAPPER)) {
-                AnnotationUtils.getRequestWrapperAnnotationChange(javaClassType, method, 
+            if (methodAnnotationMap.get(CXFModelUtils.REQUEST_WRAPPER)) {
+                CXFModelUtils.getRequestWrapperAnnotationChange(javaClassType, method, 
                 		textFileChange);
             }
-            if (methodAnnotationMap.get(AnnotationUtils.RESPONSE_WRAPPER)) {
-                AnnotationUtils.getResponseWrapperAnnotationChange(javaClassType, method, 
+            if (methodAnnotationMap.get(CXFModelUtils.RESPONSE_WRAPPER)) {
+                CXFModelUtils.getResponseWrapperAnnotationChange(javaClassType, method, 
                 		textFileChange);
             }
-            if (methodAnnotationMap.get(AnnotationUtils.WEB_PARAM)) {
+            if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
                         javaClassType, method);
                 for (SingleVariableDeclaration parameter : parameters) {
-                    AnnotationUtils.getWebParamAnnotationChange(javaClassType, method, parameter, 
+                    CXFModelUtils.getWebParamAnnotationChange(javaClassType, method, parameter, 
                     		textFileChange);
                 }
             } 
         }
         
-        AnnotationUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
+        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
         		textFileChange, false);
         
         executeChange(monitor, textFileChange, classUndoChanges);
@@ -179,9 +180,9 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
 
-        AnnotationUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
+        CXFModelUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
         
-        AnnotationUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
+        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
         		textFileChange, true);
 
         executeChange(monitor, textFileChange, classUndoChanges);

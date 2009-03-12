@@ -28,9 +28,9 @@ import org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter;
 import org.eclipse.jdt.internal.ui.preferences.JavaPreferencesSettings;
 import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CheckConditionsOperation;
 import org.eclipse.ltk.core.refactoring.CreateChangeOperation;
@@ -123,7 +123,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
                 }
                 String fullyQualifiedJavaInterfaceName = packageName + extractInterfaceProcessor.getTypeName();
                 model.setFullyQualifiedJavaInterfaceName(fullyQualifiedJavaInterfaceName);
-                model.setMethodMap(AnnotationUtils.getMethodMap(JDTUtils.getType(model.getProjectName(), 
+                model.setMethodMap(CXFModelUtils.getMethodMap(JDTUtils.getType(model.getProjectName(), 
                         fullyQualifiedJavaInterfaceName), model));
                 
                 undoExtractInterfaceChange = performChangeOperation.getUndoChange();
@@ -153,7 +153,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
                     startingPointType.getCompilationUnit().makeConsistent(monitor);
                 }
                 model.setFullyQualifiedJavaInterfaceName(null);
-                model.setMethodMap(AnnotationUtils.getMethodMap(startingPointType, model));
+                model.setMethodMap(CXFModelUtils.getMethodMap(startingPointType, model));
 
             } catch (JavaModelException jme) {
                 status = jme.getStatus();

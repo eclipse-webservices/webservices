@@ -24,9 +24,9 @@ import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -58,8 +58,8 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
             model.setGenerateWebParamAnnotation(context.isGenerateWebParamAnnotation());
             model.setGenerateRequestWrapperAnnotation(context.isGenerateRequestWrapperAnnotation());
             model.setGenerateResponseWrapperAnnotation(context.isGenerateResponseWrapperAnnotation());
-            model.setAnnotationMap(AnnotationUtils.getAnnotationMap(model));
-            model.setMethodMap(AnnotationUtils.getMethodMap(startingPointType, model));
+            model.setAnnotationMap(CXFModelUtils.getAnnotationMap(model));
+            model.setMethodMap(CXFModelUtils.getMethodMap(startingPointType, model));
             
             model.setGenerateXSDImports(context.isGenerateXSDImports());
             model.setDatabinding(context.getDatabinding());

@@ -30,10 +30,10 @@ import org.eclipse.jst.ws.internal.cxf.core.resources.JavaResourceChangeListener
 import org.eclipse.jst.ws.internal.cxf.core.resources.WebContentChangeListener;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CommandLineUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.LaunchUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.SpringUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
 
@@ -84,17 +84,17 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
                 SpringUtils.createConfigurationFromWSDL(model);
             }
 
-            FileUtils.refreshProject(projectName, monitor);
         } catch (CoreException ce) {
             status = ce.getStatus();
             CXFCreationCorePlugin.log(status);
         } catch (IOException ioe) {
             status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, ioe.getLocalizedMessage());
             CXFCreationCorePlugin.log(status);  
+        } finally {
+            ResourcesPlugin.getWorkspace().removeResourceChangeListener(javaResourceChangeListener);
+            ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
+            FileUtils.refreshProject(projectName, monitor);
         }
-
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(javaResourceChangeListener);
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
 
         return status;
     }
