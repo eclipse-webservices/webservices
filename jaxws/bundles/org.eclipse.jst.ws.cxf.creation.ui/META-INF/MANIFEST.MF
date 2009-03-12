@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.cxf.creation.ui;singleton:=true
-Bundle-Version: 0.3.4.qualifier
+Bundle-Version: 0.3.5.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin
 Bundle-Vendor: %pluginProvider
@@ -14,7 +14,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.command.env.core,
  org.eclipse.core.resources,
  org.eclipse.jdt.core,
- org.eclipse.jdt.core.manipulation,
  org.eclipse.jst.ws.cxf.core,
  org.eclipse.jst.ws.cxf.creation.core,
  org.eclipse.wst.ws,
@@ -28,6 +27,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.ws.creation.ui,
  org.eclipse.jst.ws,
  org.eclipse.ltk.core.refactoring,
+ org.eclipse.jst.ws.annotations.core,
+ org.eclipse.jst.ws.jaxws.core,
  org.eclipse.emf.common,
  javax.wsdl,
  org.eclipse.ui.editors

@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.creation.ui.viewers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.internal.core.SourceMethod;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -60,10 +63,21 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
             }
 
             IMethod method = (SourceMethod) element;
+            
             if (model.getJavaStartingPoint().equals(type.getFullyQualifiedName())) {
-                if (AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], annotationKey)
-                		|| (annotationKey == AnnotationUtils.WEB_PARAM && 
-                				AnnotationUtils.getMethodParameters(type, method).size() == 0)) {
+
+                if (annotationKey == CXFModelUtils.WEB_PARAM) {
+                   List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(type, 
+                           method);
+                   if (parameters.size() == 0) {
+                       return disabled;
+                   }
+                   for (SingleVariableDeclaration parameter : parameters) {
+                       if (AnnotationUtils.isAnnotationPresent(parameter, annotationKey)) {
+                           return disabled;
+                       }
+                   }
+                } else if (AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], annotationKey)) {
                     return disabled;
                 }
             }

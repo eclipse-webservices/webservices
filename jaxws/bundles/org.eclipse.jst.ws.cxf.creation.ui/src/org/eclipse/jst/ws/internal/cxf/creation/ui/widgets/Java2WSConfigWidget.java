@@ -88,6 +88,13 @@ public class Java2WSConfigWidget extends SimpleWidgetDataContributor {
     
             // Gen Server
             Java2WSWidgetFactory.createGenerateServerButton(java2wsGroup, model);
+//            generateServer.setToolTipText(
+//                    "Generate a server mainline using JAX-WS APIs\n" + 
+//                    ".....\n" + 
+//        "Object implementor = new com.example.MyImplementation();\n" +
+//        "String address = \"http://localhost:9090/MyImplementationPort\";\n" + 
+//        "javax.xml.ws.Endpoint.publish(address, implementor);\n"
+//        + ".....\n");
     
             // Gen Wrapper and Fault Bean
             Java2WSWidgetFactory.createGenerateWrapperFaultBeanButton(java2wsGroup, model);

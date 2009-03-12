@@ -56,11 +56,12 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIMessages;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.viewers.AnnotationColumnLabelProvider;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Font;
@@ -308,7 +309,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                     .getJavaStartingPoint());
         }
         
-        model.setMethodMap(AnnotationUtils.getMethodMap(type, model));
+        model.setMethodMap(CXFModelUtils.getMethodMap(type, model));
 
         return type;
     }
@@ -316,66 +317,66 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
     private TreeViewerColumn createWebMethodViewerColumn(TreeViewer treeViewer) {
         webMethodViewerColumn = new TreeViewerColumn(treeViewer, SWT.CENTER);
         TreeColumn webMethodColumn = webMethodViewerColumn.getColumn();
-        webMethodColumn.setText("@" + AnnotationUtils.WEB_METHOD); //$NON-NLS-1$
+        webMethodColumn.setText("@" + CXFModelUtils.WEB_METHOD); //$NON-NLS-1$
         webMethodColumn.setWidth(100);
         webMethodColumn.setAlignment(SWT.CENTER);
         webMethodColumn.setMoveable(false);
         webMethodViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.WEB_METHOD, getType()));
+                CXFModelUtils.WEB_METHOD, getType()));
         webMethodViewerColumn.setEditingSupport(new AnnotationEditingSupport(treeViewer,
-                AnnotationUtils.WEB_METHOD));
+                CXFModelUtils.WEB_METHOD));
         return webMethodViewerColumn;
     }
 
     private TreeViewerColumn createWebParamViewerColumn(TreeViewer treeViewer) {
         webParamViewerColumn = new TreeViewerColumn(treeViewer, SWT.CENTER);
         TreeColumn webParamColumn = webParamViewerColumn.getColumn();
-        webParamColumn.setText("@" + AnnotationUtils.WEB_PARAM); //$NON-NLS-1$
+        webParamColumn.setText("@" + CXFModelUtils.WEB_PARAM); //$NON-NLS-1$
         webParamColumn.setWidth(100);
         webParamColumn.setAlignment(SWT.CENTER);
         webParamColumn.setMoveable(false);
         webParamViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.WEB_PARAM, getType()));
+                CXFModelUtils.WEB_PARAM, getType()));
         webParamViewerColumn.setEditingSupport(new AnnotationEditingSupport(treeViewer,
-                AnnotationUtils.WEB_PARAM));
+                CXFModelUtils.WEB_PARAM));
         return webParamViewerColumn;
     }
 
     private TreeViewerColumn createRequestWrapperViewerColumn(TreeViewer treeViewer) {
         requestWrapperViewerColumn = new TreeViewerColumn(treeViewer, SWT.CENTER);
         TreeColumn createRequestWrapperColumn = requestWrapperViewerColumn.getColumn();
-        createRequestWrapperColumn.setText("@" + AnnotationUtils.REQUEST_WRAPPER); //$NON-NLS-1$
+        createRequestWrapperColumn.setText("@" + CXFModelUtils.REQUEST_WRAPPER); //$NON-NLS-1$
         createRequestWrapperColumn.setWidth(100);
         createRequestWrapperColumn.setMoveable(false);
         requestWrapperViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.REQUEST_WRAPPER, getType()));
+                CXFModelUtils.REQUEST_WRAPPER, getType()));
         requestWrapperViewerColumn.setEditingSupport(new AnnotationEditingSupport(treeViewer, 
-                AnnotationUtils.REQUEST_WRAPPER));
+                CXFModelUtils.REQUEST_WRAPPER));
         return requestWrapperViewerColumn;
     }
 
     private TreeViewerColumn createResponseWrapperViewerColumn(TreeViewer treeViewer) {
         responceWrapperViewerColumn = new TreeViewerColumn(treeViewer, SWT.CENTER);
         TreeColumn responceWrapperColumn = responceWrapperViewerColumn.getColumn();
-        responceWrapperColumn.setText("@" + AnnotationUtils.RESPONSE_WRAPPER); //$NON-NLS-1$
+        responceWrapperColumn.setText("@" + CXFModelUtils.RESPONSE_WRAPPER); //$NON-NLS-1$
         responceWrapperColumn.setWidth(100);
         responceWrapperColumn.setMoveable(false);
         responceWrapperViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.RESPONSE_WRAPPER, getType()));
+                CXFModelUtils.RESPONSE_WRAPPER, getType()));
         responceWrapperViewerColumn.setEditingSupport(new AnnotationEditingSupport(treeViewer,
-                AnnotationUtils.RESPONSE_WRAPPER));
+                CXFModelUtils.RESPONSE_WRAPPER));
         return responceWrapperViewerColumn;
     }
     
     private void updateLabelProviders() {
         webMethodViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.WEB_METHOD, getType()));
+                CXFModelUtils.WEB_METHOD, getType()));
         webParamViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.WEB_PARAM, getType()));
+                CXFModelUtils.WEB_PARAM, getType()));
         requestWrapperViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.REQUEST_WRAPPER, getType()));
+                CXFModelUtils.REQUEST_WRAPPER, getType()));
         responceWrapperViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
-                AnnotationUtils.RESPONSE_WRAPPER, getType()));
+                CXFModelUtils.RESPONSE_WRAPPER, getType()));
     }
     
     private void handleAnnotation(IType type) {
@@ -392,31 +393,31 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             textFileChange.setKeepPreviewEdits(true);
 //            compositeChange.setSaveMode(TextFileChange.FORCE_SAVE);
 
-            AnnotationUtils.getWebServiceAnnotationChange(type, model, textFileChange);
+            CXFModelUtils.getWebServiceAnnotationChange(type, model, textFileChange);
 
             IMethod[] typeMethods = JDTUtils.getPublicMethods(type);
             for (int i = 0; i < typeMethods.length; i++) {
                 IMethod method = typeMethods[i];
                 Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
-                if (methodAnnotationMap.get(AnnotationUtils.WEB_METHOD)) {
-                    AnnotationUtils.getWebMethodAnnotationChange(type, method, textFileChange);
+                if (methodAnnotationMap.get(CXFModelUtils.WEB_METHOD)) {
+                    CXFModelUtils.getWebMethodAnnotationChange(type, method, textFileChange);
                 }
-                if (methodAnnotationMap.get(AnnotationUtils.REQUEST_WRAPPER)) {
-                    AnnotationUtils.getRequestWrapperAnnotationChange(type, method, textFileChange);
+                if (methodAnnotationMap.get(CXFModelUtils.REQUEST_WRAPPER)) {
+                    CXFModelUtils.getRequestWrapperAnnotationChange(type, method, textFileChange);
                 }
-                if (methodAnnotationMap.get(AnnotationUtils.RESPONSE_WRAPPER)) {
-                    AnnotationUtils.getResponseWrapperAnnotationChange(type, method, textFileChange);
+                if (methodAnnotationMap.get(CXFModelUtils.RESPONSE_WRAPPER)) {
+                    CXFModelUtils.getResponseWrapperAnnotationChange(type, method, textFileChange);
                 }
-                if (methodAnnotationMap.get(AnnotationUtils.WEB_PARAM)) {
+                if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
                     List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
                             type, method);
                     for (SingleVariableDeclaration parameter : parameters) {
-                        AnnotationUtils.getWebParamAnnotationChange(type, method, parameter, textFileChange);
+                        CXFModelUtils.getWebParamAnnotationChange(type, method, parameter, textFileChange);
                     }
                 } 
             }
             
-            AnnotationUtils.getImportsChange(compilationUnit, model, textFileChange, false);
+            CXFModelUtils.getImportsChange(compilationUnit, model, textFileChange, false);
             annotationPreviewViewer.getDocument().set(textFileChange.getPreviewContent(monitor));
 
             annotationPreviewViewer.setRedraw(true);
