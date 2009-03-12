@@ -16,8 +16,8 @@ import java.util.List;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationDefinition;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsManager;
+import org.eclipse.jst.ws.annotations.core.AnnotationDefinition;
+import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.ui.IMemento;
 
 /**

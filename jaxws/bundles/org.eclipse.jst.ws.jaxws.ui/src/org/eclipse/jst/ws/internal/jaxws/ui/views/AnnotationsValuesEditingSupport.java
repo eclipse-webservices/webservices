@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -53,13 +54,13 @@ import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsCore;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsManager;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.IAnnotationAttributeInitializer;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
+import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
@@ -413,11 +414,10 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         AST ast = pkgDeclaration.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-
-        List<MemberValuePair> memberValueParis = annotationAttributeInitializer.getMemberValuePairs(
+        List<MemberValuePair> memberValueParis = getMemberValuePairs(annotationAttributeInitializer, 
                 pkgDeclaration, ast, annotationClass);
 
-        Annotation annotation = AnnotationsCore.getAnnotation(ast, annotationClass, memberValueParis);
+        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass, memberValueParis);
 
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
 
@@ -434,7 +434,6 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         executeChange(new NullProgressMonitor(), textFileChange);
     }
 
-
     private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass,
             Boolean annotate, IMember member, IAnnotationAttributeInitializer annotationAttributeInitializer) 
                 throws CoreException {
@@ -443,10 +442,10 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        List<MemberValuePair> memberValueParis = annotationAttributeInitializer
-                .getMemberValuePairs(member, ast, annotationClass);
+        List<MemberValuePair> memberValueParis = getMemberValuePairs(annotationAttributeInitializer, member,
+                ast, annotationClass);
 
-        Annotation annotation = AnnotationsCore.getAnnotation(ast, annotationClass,
+        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass,
                 memberValueParis);
 
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
@@ -495,10 +494,10 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         AST ast = parameter.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        List<MemberValuePair> memberValueParis = annotationAttributeInitializer.getMemberValuePairs(
+        List<MemberValuePair> memberValueParis = getMemberValuePairs(annotationAttributeInitializer, 
                 parameter, ast, annotationClass);
 
-        Annotation annotation = AnnotationsCore.getAnnotation(ast, annotationClass, memberValueParis);
+        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass, memberValueParis);
 
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
 
@@ -514,6 +513,25 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         executeChange(new NullProgressMonitor(), textFileChange);
     }
     
+    private List<MemberValuePair> getMemberValuePairs(
+            IAnnotationAttributeInitializer annotationAttributeInitializer, ASTNode astNode, AST ast, 
+            Class<?extends java.lang.annotation.Annotation> annotationClass) {
+        if (annotationAttributeInitializer != null) {
+            return annotationAttributeInitializer.getMemberValuePairs(astNode, ast, annotationClass);
+        }
+        return Collections.emptyList();
+    }
+    
+    private List<MemberValuePair> getMemberValuePairs(
+            IAnnotationAttributeInitializer annotationAttributeInitializer, IJavaElement javaElement, AST ast, 
+            Class<?extends java.lang.annotation.Annotation> annotationClass) {
+        if (annotationAttributeInitializer != null) {
+            return annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
+        }
+        return Collections.emptyList();
+    }
+
+
     private void setValueForMethod(Method method, Object value) throws CoreException {
         if (((Boolean) getValue(method.getDeclaringClass())).booleanValue()) {
             Object viewerInput = treeViewer.getInput();
@@ -638,29 +656,29 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
     private ASTNode getMemberValuePairValue(AST ast, Method method, Object value) {
         Class<?> returnType = method.getReturnType();
         if (returnType.equals(String.class)) {
-            return AnnotationsCore.getStringLiteral(ast, value.toString());
+            return AnnotationsCore.createStringLiteral(ast, value.toString());
         }
         if (returnType.equals(Boolean.TYPE)) {
-            return AnnotationsCore.getBooleanLiteral(ast, ((Boolean) value).booleanValue());
+            return AnnotationsCore.createBooleanLiteral(ast, ((Boolean) value).booleanValue());
         }
         if (returnType.isPrimitive()
                 && (returnType.equals(Byte.TYPE) || returnType.equals(Short.TYPE)
                         || returnType.equals(Integer.TYPE) || returnType.equals(Long.TYPE)
                         || returnType.equals(Float.TYPE) || returnType.equals(Double.TYPE))) {
-            return AnnotationsCore.getNumberLiteral(ast, value.toString());
+            return AnnotationsCore.createNumberLiteral(ast, value.toString());
         }
         if (returnType.isArray()) {
-            return AnnotationsCore.getArrayValueLiteral(ast, method, (Object[]) value);
+            return AnnotationsCore.createArrayValueLiteral(ast, method, (Object[]) value);
         }
         
         if (returnType.equals(Class.class)) {
-            return AnnotationsCore.getTypeLiteral(ast, value.toString());
+            return AnnotationsCore.createTypeLiteral(ast, value.toString());
         }
         
         if (returnType.isEnum()) {
             int selected = ((Integer) value).intValue();
             if (selected != -1) {
-                return AnnotationsCore.getEnumLiteral(ast, method.getDeclaringClass().getCanonicalName(),
+                return AnnotationsCore.createEnumLiteral(ast, method.getDeclaringClass().getCanonicalName(),
                         method.getReturnType().getEnumConstants()[selected]);
             }
         }
@@ -670,29 +688,29 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
     private ASTNode getMemberValuePair(AST ast, Method method, Object value) {
         Class<?> returnType = method.getReturnType();
         if (returnType.equals(String.class)) {
-            return AnnotationsCore.getStringMemberValuePair(ast, method.getName(), value);
+            return AnnotationsCore.createStringMemberValuePair(ast, method.getName(), value);
         }
         if (returnType.equals(Boolean.TYPE)) {
-            return AnnotationsCore.getBooleanMemberValuePair(ast, method.getName(), value);
+            return AnnotationsCore.createBooleanMemberValuePair(ast, method.getName(), value);
         }
         if (returnType.isPrimitive()
                 && (returnType.equals(Byte.TYPE) || returnType.equals(Short.TYPE)
                         || returnType.equals(Integer.TYPE) || returnType.equals(Long.TYPE)
                         || returnType.equals(Float.TYPE) || returnType.equals(Double.TYPE))) {
-            return AnnotationsCore.getNumberMemberValuePair(ast, method.getName(), value.toString());
+            return AnnotationsCore.createNumberMemberValuePair(ast, method.getName(), value.toString());
         }
         if (returnType.isArray()) {
-            return AnnotationsCore.getArrayMemberValuePair(ast, method, (Object[]) value);
+            return AnnotationsCore.createArrayMemberValuePair(ast, method, (Object[]) value);
         }
         
         if (returnType.equals(Class.class)) {
-            return AnnotationsCore.getTypeMemberVaulePair(ast, method.getName(), value.toString());
+            return AnnotationsCore.createTypeMemberVaulePair(ast, method.getName(), value.toString());
         }
 
         if (returnType.isEnum()) {
             int selected = ((Integer) value).intValue();
             if (selected != -1) {
-                return AnnotationsCore.getEnumMemberValuePair(ast, 
+                return AnnotationsCore.createEnumMemberValuePair(ast, 
                        method.getDeclaringClass().getCanonicalName(), method.getName(), method.getReturnType()
                         .getEnumConstants()[selected]);
             }

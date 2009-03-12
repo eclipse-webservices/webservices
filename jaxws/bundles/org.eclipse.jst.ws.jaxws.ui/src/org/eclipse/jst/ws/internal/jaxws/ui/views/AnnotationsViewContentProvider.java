@@ -12,7 +12,7 @@ package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsManager;
+import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 
 /**
  * 

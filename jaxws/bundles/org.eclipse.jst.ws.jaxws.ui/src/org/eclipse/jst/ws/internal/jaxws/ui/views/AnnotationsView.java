@@ -35,13 +35,14 @@ import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationDefinition;
-import org.eclipse.jst.ws.internal.jaxws.core.annotations.AnnotationsManager;
-import org.eclipse.jst.ws.internal.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.annotations.core.AnnotationDefinition;
+import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.internal.jaxws.ui.actions.AnnotationsViewFilterAction;
 import org.eclipse.jst.ws.internal.jaxws.ui.widgets.ClasspathComposite;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -231,7 +232,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
 
             if (javaElement.getElementType() == IJavaElement.METHOD) {
                 IMethod method = (IMethod) javaElement;
-                SingleVariableDeclaration parameter = JDTUtils
+                SingleVariableDeclaration parameter = AnnotationUtils
                         .getMethodParameter(method, offset);
                 if (parameter != null) {
                     annotationTreeViewer.setInput(parameter);

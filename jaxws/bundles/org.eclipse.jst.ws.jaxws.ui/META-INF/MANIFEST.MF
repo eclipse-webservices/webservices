@@ -19,6 +19,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring,
  org.eclipse.ui.editors,
- org.eclipse.jdt.launching
+ org.eclipse.jdt.launching,
+ org.eclipse.jst.ws.annotations.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

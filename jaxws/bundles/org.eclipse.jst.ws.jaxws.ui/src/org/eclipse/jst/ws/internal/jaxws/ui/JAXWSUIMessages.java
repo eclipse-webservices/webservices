@@ -16,7 +16,7 @@ import org.eclipse.osgi.util.NLS;
  * @author sclarke
  */
 public class JAXWSUIMessages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUImessages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages"; //$NON-NLS-1$
     
     public static String ANNOTATION_ARRAY_CELL_EDITOR_ADD_LABEL;
     public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL;
