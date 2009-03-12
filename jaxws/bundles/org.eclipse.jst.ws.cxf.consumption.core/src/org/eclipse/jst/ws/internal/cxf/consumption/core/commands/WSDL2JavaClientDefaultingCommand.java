@@ -26,8 +26,8 @@ import org.eclipse.jst.ws.internal.cxf.consumption.core.CXFConsumptionCorePlugin
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.WSDL2JavaPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**

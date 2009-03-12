@@ -28,8 +28,8 @@ import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.resources.JavaResourceChangeListener;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CommandLineUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.LaunchUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
