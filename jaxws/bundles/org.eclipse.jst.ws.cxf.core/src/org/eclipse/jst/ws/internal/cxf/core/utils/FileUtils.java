@@ -39,6 +39,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.sse.ui.internal.FormatProcessorsExtensionReader;
 
@@ -290,12 +291,16 @@ public final class FileUtils {
         }
     }
     
-    public static void refreshProject(String projectName, IProgressMonitor monitor) throws CoreException {
+    public static void refreshProject(String projectName, IProgressMonitor monitor) {
         IProject project = FileUtils.getProject(projectName);
         FileUtils.refreshProject(project, monitor);
     }
 
-    public static void refreshProject(IProject project, IProgressMonitor monitor) throws CoreException {
-        project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+    public static void refreshProject(IProject project, IProgressMonitor monitor) {
+        try {
+            project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        } catch (CoreException ce) {
+            CXFCorePlugin.log(ce.getStatus());
+        }
     }
 }

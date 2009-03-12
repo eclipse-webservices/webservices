@@ -44,7 +44,7 @@ import org.eclipse.jst.javaee.web.SessionConfig;
 import org.eclipse.jst.javaee.web.WebFactory;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCoreMessages;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
-import org.eclipse.jst.ws.internal.cxf.core.utils.JDTUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
