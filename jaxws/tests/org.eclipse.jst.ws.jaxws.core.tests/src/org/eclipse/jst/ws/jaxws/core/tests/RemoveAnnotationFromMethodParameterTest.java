@@ -53,7 +53,8 @@ public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationT
             IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
             assertNotNull(method);
             
-            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(method, 44);
+            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method, 
+                    44);
             
             assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
 
@@ -63,7 +64,8 @@ public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationT
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             //refresh
-            parameter = AnnotationUtils.getMethodParameter(method, 44);
+            parameter = AnnotationUtils.getMethodParameter(
+                    AnnotationUtils.getASTParser(method.getCompilationUnit()), method, 44);
 
             assertFalse(AnnotationUtils.isAnnotationPresent(parameter, annotation));
         } catch (CoreException ce) {

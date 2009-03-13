@@ -91,7 +91,7 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
                 }
                 
                 if (elementType == IJavaElement.METHOD) {
-                    SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(
+                    SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit,
                             (IMethod)javaElement, tokenStart);
                     if (parameter != null) {
                         return getCompletionProposalsForASTNode(parameter.modifiers(), parameter, tokenStart);

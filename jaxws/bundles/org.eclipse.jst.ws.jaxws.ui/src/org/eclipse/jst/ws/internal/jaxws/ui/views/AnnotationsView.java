@@ -233,7 +233,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
             if (javaElement.getElementType() == IJavaElement.METHOD) {
                 IMethod method = (IMethod) javaElement;
                 SingleVariableDeclaration parameter = AnnotationUtils
-                        .getMethodParameter(method, offset);
+                        .getMethodParameter(null, method, offset);
                 if (parameter != null) {
                     annotationTreeViewer.setInput(parameter);
                 } else {

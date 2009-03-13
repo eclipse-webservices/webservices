@@ -1105,8 +1105,11 @@ public final class AnnotationUtils {
     }
     
     @SuppressWarnings("unchecked")
-    public static SingleVariableDeclaration getMethodParameter(IMethod method, int offset) {
-        CompilationUnit compilationUnit = getASTParser(method.getCompilationUnit());
+    public static SingleVariableDeclaration getMethodParameter(CompilationUnit compilationUnit, 
+                IMethod method, int offset) {
+        if (compilationUnit == null) {
+          compilationUnit = getASTParser(method.getCompilationUnit());                
+        }
         IType type = method.getDeclaringType();
         List<AbstractTypeDeclaration> types = compilationUnit.types();
         for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
