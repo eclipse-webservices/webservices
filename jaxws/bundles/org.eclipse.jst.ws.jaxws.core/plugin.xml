@@ -88,14 +88,30 @@
       </annotation>
       <annotation
             category="jaxws.category"
-            class="javax.xml.ws.RespectBinding"
-            name="RespectBinding"
+            class="javax.xml.ws.BindingType"
+            name="BindingType"
             restrictedTo="CLASS_ONLY">
       </annotation>
       <annotation
             category="jaxws.category"
-            class="javax.xml.ws.BindingType"
-            name="BindingType"
+            class="javax.xml.ws.RequestWrapper"
+            name="RequestWrapper">
+      </annotation>
+      <annotation
+            category="jaxws.category"
+            class="javax.xml.ws.ResponseWrapper"
+            name="ResponseWrapper">
+      </annotation>
+      <annotation
+            category="jaxws.category"
+            class="javax.xml.ws.WebEndpoint"
+            name="WebEndpoint"
+            restrictedTo="CLASS_ONLY">
+    <!--  </annotation>
+            <annotation
+            category="jaxws.category"
+            class="javax.xml.ws.RespectBinding"
+            name="RespectBinding"
             restrictedTo="CLASS_ONLY">
       </annotation>
       <annotation
@@ -115,29 +131,13 @@
       </annotation>
       <annotation
             category="jaxws.category"
-            class="javax.xml.ws.RequestWrapper"
-            name="RequestWrapper">
-      </annotation>
-      <annotation
-            category="jaxws.category"
-            class="javax.xml.ws.ResponseWrapper"
-            name="ResponseWrapper">
-      </annotation>
-      <annotation
-            category="jaxws.category"
-            class="javax.xml.ws.WebEndpoint"
-            name="WebEndpoint"
-            restrictedTo="CLASS_ONLY">
-      </annotation>
-      <annotation
-            category="jaxws.category"
             class="javax.xml.ws.Action"
             name="Action">
       </annotation>
       <annotation
             category="jaxws.category"
             class="javax.xml.ws.spi.WebServiceFeatureAnnotation"
-            name="WebServiceFeatureAnnotation">
+            name="WebServiceFeatureAnnotation"> -->
       </annotation>
    </extension>
    
