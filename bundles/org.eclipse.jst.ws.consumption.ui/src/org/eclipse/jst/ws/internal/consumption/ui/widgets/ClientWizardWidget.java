@@ -29,6 +29,7 @@
  * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
+ * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -274,12 +275,9 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 			}
 	}
 public void internalize() {		
-
-	if (webServiceURI_ == null || webServiceURI_.length() == 0)
-		return;
-
 	serviceImpl_.removeModifyListener(objectModifyListener_);
-	serviceImpl_.setText(webServiceURI_);   
+	if (webServiceURI_ != null && webServiceURI_.length() != 0)
+		serviceImpl_.setText(webServiceURI_);  
 	if (getClientTypeRuntimeServer() != null ) {
 	   serviceImpl_.restoreWidgetHistory(getClientTypeRuntimeServer().getTypeId());
 	}

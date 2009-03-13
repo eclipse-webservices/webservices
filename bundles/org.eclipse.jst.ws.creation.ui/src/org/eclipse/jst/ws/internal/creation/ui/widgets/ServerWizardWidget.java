@@ -61,6 +61,7 @@
  * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
  * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
+ * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1102,17 +1103,17 @@ private void handleTypeChange()
 			selectionWidget.setInitialSelection(objectSelection_);
 		    displayable = selectionWidget.getObjectSelectionDisplayableString();
 		}
-		
-		if (displayable == null || displayable.length() == 0)
-			return;
-			
+
 		serviceImpl_.removeModifyListener(objectModifyListener_);
-		serviceImpl_.setText(displayable);
+		if (displayable != null && displayable.length() != 0)
+			serviceImpl_.setText(displayable);
 		String webServiceTypeID = null;
-		   if (ids_ != null)
-			   webServiceTypeID = ids_.getTypeId();
-		   serviceImpl_.restoreWidgetHistory(webServiceTypeID);
+		if (ids_ != null)
+			webServiceTypeID = ids_.getTypeId();
+		serviceImpl_.restoreWidgetHistory(webServiceTypeID);
 		serviceImpl_.addModifyListener(objectModifyListener_);
+
+			
 	}
 
 	public IStatus getStatus() {
