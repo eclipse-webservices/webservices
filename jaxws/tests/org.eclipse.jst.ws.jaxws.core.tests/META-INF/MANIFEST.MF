@@ -14,7 +14,7 @@ Require-Bundle: org.junit;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.jdt.launching,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring,
- org.eclipse.jst.ws.annotations.core;bundle-version="0.5.0",
- javax.xml.ws;bundle-version="[2.0.0,2.0.1)"
-Import-Package: javax.jws
+ org.eclipse.jst.ws.annotations.core;bundle-version="0.5.0"
+Import-Package: javax.jws,
+ javax.xml.ws
 Export-Package: org.eclipse.jst.ws.jaxws.core.tests
