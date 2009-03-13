@@ -10,16 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.tests;
 
+import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/**
- * This class specifies all the bundles of this component that provide a test
- * suite to run during automated testing.
- */
+public class JAXWSCoreTestSuite extends TestSuite {
 
-public class AllTestsSuite extends TestSuite {
-
-    public AllTestsSuite() {
+    public static Test suite() {
+        return new JAXWSCoreTestSuite();
+    }
+    
+    public JAXWSCoreTestSuite() {
         super("JAX-WS Core Tests");
         addTestSuite(AddAnnotationToTypeTest.class);
         addTestSuite(RemoveAnnotationFromTypeTest.class);
@@ -31,14 +31,4 @@ public class AllTestsSuite extends TestSuite {
         addTestSuite(RemoveAnnotationFromMethodParameterTest.class);        
     }
     
-    /**
-     * This is just need to run in a development environment workbench.
-     */
-    public void testAll() {
-        // this method needs to exist, but doesn't really do anything
-        // other than to signal to create an instance of this class.
-        // The rest it automatic from the tests added in constructor.
-
-    }
-
 }

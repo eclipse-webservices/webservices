@@ -22,7 +22,8 @@ public class AllTestsSuite extends TestSuite {
 
 	public AllTestsSuite() {
 		super("All JAXWS Test Suites");
-		addTestSuite(EasyTest.class);
+		addTest(org.eclipse.jst.ws.jaxws.core.tests.JAXWSCoreTestSuite.suite());
+		//addTestSuite(EasyTest.class);
 	}
 
 	/**
