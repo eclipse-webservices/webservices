@@ -40,7 +40,10 @@ public class AnnotationsViewContentProvider implements ITreeContentProvider {
 	}
 
 	public Object[] getElements(Object inputElement) {
-	    return AnnotationsManager.getAnnotations(inputElement);
+	    if (inputElement != null) {
+	        return AnnotationsManager.getAnnotations(inputElement);
+	    }
+	    return new Object[] {};
 	}
 	
 	public void dispose() {

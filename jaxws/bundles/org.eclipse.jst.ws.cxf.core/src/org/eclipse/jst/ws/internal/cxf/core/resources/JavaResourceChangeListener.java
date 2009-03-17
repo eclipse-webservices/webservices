@@ -82,9 +82,6 @@ public class JavaResourceChangeListener implements IResourceChangeListener {
     }
     
     public List<IResource> getChangedResources() {
-        for (IResource resource : changedResources) {
-            System.out.println(resource);
-        }
         return changedResources;
     }
 

@@ -226,21 +226,35 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
             }
             
             if (javaElement.getElementType() == IJavaElement.TYPE) {
-                annotationTreeViewer.setInput((IType) javaElement);
+                IType type = (IType)javaElement;
+                if (!type.isMember()) {
+                    annotationTreeViewer.setInput(type);
+                } else {
+                    annotationTreeViewer.setInput(null);
+                }
             }
     
             if (javaElement.getElementType() == IJavaElement.FIELD) {
-                annotationTreeViewer.setInput((IField) javaElement);
+                IField field = (IField)javaElement;
+                if (!field.getDeclaringType().isMember()) {
+                    annotationTreeViewer.setInput(field);
+                } else {
+                    annotationTreeViewer.setInput(null);
+                }
             }
 
             if (javaElement.getElementType() == IJavaElement.METHOD) {
                 IMethod method = (IMethod) javaElement;
-                SingleVariableDeclaration parameter = AnnotationUtils
-                        .getMethodParameter(null, method, offset);
-                if (parameter != null) {
-                    annotationTreeViewer.setInput(parameter);
+                if (!method.getDeclaringType().isMember()) {
+                    SingleVariableDeclaration parameter = AnnotationUtils
+                            .getMethodParameter(null, method, offset);
+                    if (parameter != null) {
+                        annotationTreeViewer.setInput(parameter);
+                    } else {
+                        annotationTreeViewer.setInput(method);
+                    }
                 } else {
-                    annotationTreeViewer.setInput(method);
+                    annotationTreeViewer.setInput(null);
                 }
             }
             annotationTreeViewer.refresh();

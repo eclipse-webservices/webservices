@@ -63,6 +63,8 @@ public class ClassDialogCellEditor extends DialogCellEditor {
     protected void updateContents(Object value) {
         if (value != null) {
             getDefaultLabel().setText(value.toString() + ".class"); 
+        } else {
+            getDefaultLabel().setText("");
         }
     }
 }
