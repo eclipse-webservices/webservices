@@ -42,7 +42,8 @@ public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationT
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, null);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class,
+                javax.jws.WebParam.class.getSimpleName(), null);
     }
     
     public void testRemoveAnnotationFromMethodParameter() {

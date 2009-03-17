@@ -202,20 +202,23 @@ public final class FileUtils {
         IJavaElement javaElement = type.getPackageFragment().getParent();
         IResource javaElementResource = javaElement.getResource();
         if (javaElementResource instanceof IFolder) {
-            IFolder srcDirectory = (IFolder) javaElementResource;
-            FileUtils.copyFolder(getTmpFolder(project) + "/src", srcDirectory.getLocation().toOSString()); //$NON-NLS-1$
-            if (model.isGenerateWSDL()) {
-                IFolder wsdlFolder = WSDLUtils.getWSDLFolder(projectName);
-                FileUtils.copyFolder(getTmpFolder(project) + "/wsdl", wsdlFolder.getLocation() //$NON-NLS-1$
-                        .toOSString());
-                model.setConfigWsdlLocation(wsdlFolder.getName() + "/"  //$NON-NLS-1$
-                        + model.getWsdlFileName());
-                try {
+            try {
+                IFolder srcDirectory = (IFolder) javaElementResource;
+                FileUtils.copyFolder(getTmpFolder(project) + "/src", srcDirectory.getLocation().toOSString()); //$NON-NLS-1$
+                srcDirectory.refreshLocal(IResource.DEPTH_INFINITE,  new NullProgressMonitor());
+                
+                if (model.isGenerateWSDL()) {
+                    IFolder wsdlFolder = WSDLUtils.getWSDLFolder(projectName);
+                    FileUtils.copyFolder(getTmpFolder(project) + "/wsdl", wsdlFolder.getLocation() //$NON-NLS-1$
+                            .toOSString());
+                    model.setConfigWsdlLocation(wsdlFolder.getName() + "/"  //$NON-NLS-1$
+                            + model.getWsdlFileName());
                     wsdlFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-                } catch (CoreException ce) {
-                    CXFCorePlugin.log(ce.getStatus());
                 }
+            } catch (CoreException ce) {
+                CXFCorePlugin.log(ce.getStatus());
             }
+
         }
         deleteTmpFolder(project);
     }

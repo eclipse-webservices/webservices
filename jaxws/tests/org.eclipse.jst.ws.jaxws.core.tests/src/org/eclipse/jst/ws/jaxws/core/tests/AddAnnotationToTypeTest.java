@@ -64,7 +64,8 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
         memberValuePairs.add(portNameValuePair);
         memberValuePairs.add(serviceNameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class,
+                javax.jws.WebService.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToType() {

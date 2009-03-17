@@ -41,7 +41,8 @@ public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, null);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class,
+                javax.jws.WebMethod.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromMethod() {

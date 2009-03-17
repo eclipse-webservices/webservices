@@ -726,6 +726,7 @@ public final class AnnotationUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static void updateMemberVaulePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, IJavaElement javaElement, IAnnotation annotation, IMemberValuePair memberValuePair,
             ASTNode value, TextFileChange textFileChange) throws CoreException {
@@ -738,7 +739,6 @@ public final class AnnotationUtils {
                 if (extendedModifier instanceof NormalAnnotation) {
                     NormalAnnotation existingAnnotation = (NormalAnnotation) extendedModifier;
                     if (AnnotationUtils.compareAnnotations(annotation, existingAnnotation)) {
-                        @SuppressWarnings("unchecked")
                         List<MemberValuePair> memberVaulePairs = existingAnnotation.values();
                         for (MemberValuePair memberValuePairDOM : memberVaulePairs) {
                             if (memberValuePairDOM.getName().toString().equals(
@@ -751,8 +751,11 @@ public final class AnnotationUtils {
 
                                 rewriter.set(memberValuePairDOM, MemberValuePair.VALUE_PROPERTY, value, null);
 
-                                TextEdit annotationTextEdit = rewriter.rewriteAST(document, source
-                                        .getJavaProject().getOptions(true));
+                                Map options = source.getJavaProject().getOptions(true);
+                                options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
+                                options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
+
+                                TextEdit annotationTextEdit = rewriter.rewriteAST(document, options);
 
                                 textFileChange.addEdit(annotationTextEdit);
 
@@ -770,6 +773,7 @@ public final class AnnotationUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static void updateMemberVaulePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, NormalAnnotation annotation, MemberValuePair memberValuePair,
             ASTNode value, TextFileChange textFileChange) throws CoreException {
@@ -784,8 +788,11 @@ public final class AnnotationUtils {
 
             rewriter.set(memberValuePair, MemberValuePair.VALUE_PROPERTY, value, null);
 
-            TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject().getOptions(
-                    true));
+            Map options = source.getJavaProject().getOptions(true);
+            options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
+            options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
+
+            TextEdit annotationTextEdit = rewriter.rewriteAST(document, options);
 
             textFileChange.addEdit(annotationTextEdit);
 
@@ -858,11 +865,7 @@ public final class AnnotationUtils {
 
     public static String getAnnotationName(Annotation annotation) {
         Name annotationTypeName = annotation.getTypeName();
-        String annotationName = annotationTypeName.getFullyQualifiedName();
-        if (annotationTypeName.isQualifiedName()) {
-            annotationName = ((QualifiedName) annotationTypeName).getName().getFullyQualifiedName();
-        }
-        return annotationName;
+        return annotationTypeName.getFullyQualifiedName();
     }
     
     public static boolean compareTypes(AbstractTypeDeclaration abstractTypeDeclaration, IType type) {

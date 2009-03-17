@@ -83,21 +83,29 @@ public final class CXFModelUtils {
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
         
-        IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager.getAnnotationDefinitionForClass(WebService.class).getAnnotationAttributeInitializer();
-        List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast, WebService.class);
+        IAnnotationAttributeInitializer annotationAttributeInitializer = 
+            AnnotationsManager.getAnnotationDefinitionForClass(WebService.class).
+                getAnnotationAttributeInitializer();
+        
+        List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast,
+                WebService.class);
         
         if (model.isUseServiceEndpointInterface() && type.isClass()) {
             MemberValuePair endpointInterfaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
                     "endpointInterface", model.getFullyQualifiedJavaInterfaceName());
             memberValuePairs.add(1, endpointInterfaceValuePair);
         }
-        Annotation annotation = AnnotationsCore.createAnnotation(ast, WebService.class, memberValuePairs);
+        
+        Annotation annotation = AnnotationsCore.createAnnotation(ast, WebService.class,
+                WebService.class.getSimpleName(), memberValuePairs);
+        
         AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation, 
                 textFileChange);
     }
 
-    public static void createMethodAnnotationChange(IType type, IMethod method, Class<? extends java.lang.annotation.Annotation> annotationClass,
-            TextFileChange textFileChange) throws CoreException {
+    public static void createMethodAnnotationChange(IType type, IMethod method, 
+            Class<? extends java.lang.annotation.Annotation> annotationClass, TextFileChange textFileChange) 
+                throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source);
 
@@ -176,7 +184,8 @@ public final class CXFModelUtils {
         List<MemberValuePair> memberValuePairs = 
                 annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
         
-        return AnnotationsCore.createAnnotation(ast, annotationClass, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, annotationClass, annotationClass.getSimpleName(),
+                memberValuePairs);
     }
 
     private static Annotation getAnnotation(ASTNode astNode, AST ast, 
@@ -188,7 +197,8 @@ public final class CXFModelUtils {
         List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(astNode, 
                 ast, annotationClass);
         
-        return AnnotationsCore.createAnnotation(ast, annotationClass, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, annotationClass, annotationClass.getSimpleName(),
+                memberValuePairs);
     }
     
     public static void getImportsChange(ICompilationUnit compilationUnit, Java2WSDataModel model, 

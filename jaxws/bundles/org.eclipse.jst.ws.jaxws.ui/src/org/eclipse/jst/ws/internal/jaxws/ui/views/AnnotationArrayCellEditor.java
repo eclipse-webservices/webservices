@@ -368,21 +368,28 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                 public void selectionChanged(SelectionChangedEvent event) {
                     int index = arrayValuesTable.getSelectionIndex();
                     int itemCount = arrayValuesTable.getItemCount();
-                    if (index > 1) {
-                        upButton.setEnabled(false);
-                        downButton.setEnabled(true);
-                    } else if (index == values.length -1) {
-                        upButton.setEnabled(true);
-                        downButton.setEnabled(false);
-                    } else {
-                        upButton.setEnabled(true);
-                        downButton.setEnabled(true);
-                    }
-                    if (itemCount <=  1) {
+                    
+                    if (index == 0 && itemCount <= 1) {
                         upButton.setEnabled(false);
                         downButton.setEnabled(false);
                     }
-                    if (itemCount > 0) {
+                    
+                    if (index == 0 && itemCount > 1) {
+                        upButton.setEnabled(false);
+                        downButton.setEnabled(true);
+                    }
+                    
+                    if (index > 0 && index < itemCount - 1) {
+                        upButton.setEnabled(true);
+                        downButton.setEnabled(true);
+                    }
+                    
+                    if (index > 0 && index == itemCount - 1) {
+                        upButton.setEnabled(true);
+                        downButton.setEnabled(false);
+                    }
+                    
+                    if (index != -1) {
                         removeButton.setEnabled(true);
                     } else {
                         removeButton.setEnabled(false);

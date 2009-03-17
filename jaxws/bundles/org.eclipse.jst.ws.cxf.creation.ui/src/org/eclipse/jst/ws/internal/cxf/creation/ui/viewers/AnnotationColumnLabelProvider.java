@@ -64,22 +64,19 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
 
             IMethod method = (SourceMethod) element;
             
-            if (model.getJavaStartingPoint().equals(type.getFullyQualifiedName())) {
-
-                if (annotationKey == CXFModelUtils.WEB_PARAM) {
-                   List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(type, 
-                           method);
-                   if (parameters.size() == 0) {
-                       return disabled;
-                   }
-                   for (SingleVariableDeclaration parameter : parameters) {
-                       if (AnnotationUtils.isAnnotationPresent(parameter, annotationKey)) {
-                           return disabled;
-                       }
-                   }
-                } else if (AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], annotationKey)) {
+            if (annotationKey == CXFModelUtils.WEB_PARAM) {
+                List<SingleVariableDeclaration> parameters = AnnotationUtils
+                        .getMethodParameters(type, method);
+                if (parameters.size() == 0) {
                     return disabled;
                 }
+                for (SingleVariableDeclaration parameter : parameters) {
+                    if (AnnotationUtils.isAnnotationPresent(parameter, annotationKey)) {
+                        return disabled;
+                    }
+                }
+            } else if (AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], annotationKey)) {
+                return disabled;
             }
             if (methodMap.get(method) != null) {
                 Boolean addAnnotation =  methodMap.get(method).get(annotationKey);

@@ -52,7 +52,6 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
@@ -96,6 +95,10 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
     @Override
     protected boolean canEdit(Object element) {
+        if (element instanceof Method) {
+            Method method = (Method)element;
+            return (Boolean) getValue(method.getDeclaringClass());
+        }
         return true;
     }
 
@@ -365,7 +368,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         if (value == null) {
             return;
         }
-        TreePath[] expandedTreePaths = treeViewer.getExpandedTreePaths();
+
         try {
             if (element instanceof Class) {
                 Class<? extends java.lang.annotation.Annotation> annotationClass = 
@@ -381,7 +384,6 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         } catch (CoreException ce) {
             JAXWSUIPlugin.log(ce.getStatus());
         } 
-        treeViewer.setExpandedTreePaths(expandedTreePaths);
     }
     
     private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass, 
@@ -417,7 +419,8 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         List<MemberValuePair> memberValueParis = getMemberValuePairs(annotationAttributeInitializer, 
                 pkgDeclaration, ast, annotationClass);
 
-        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass, memberValueParis);
+        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass, 
+                annotationClass.getSimpleName(), memberValueParis);
 
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
 
@@ -446,7 +449,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                 ast, annotationClass);
 
         Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass,
-                memberValueParis);
+                annotationClass.getSimpleName(), memberValueParis);
 
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
 
@@ -497,7 +500,8 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         List<MemberValuePair> memberValueParis = getMemberValuePairs(annotationAttributeInitializer, 
                 parameter, ast, annotationClass);
 
-        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass, memberValueParis);
+        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass,
+                annotationClass.getSimpleName(), memberValueParis);
 
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
 

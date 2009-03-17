@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.jaxws.feature"
       label="%featureName"
-      version="0.5.0.qualifier"
+      version="0.5.1.qualifier"
       provider-name="%featureProvider"
       plugin="org.eclipse.jst.ws.jaxws.core"
       image="eclipse_update_120.jpg">

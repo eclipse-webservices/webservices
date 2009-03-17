@@ -49,7 +49,8 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
         MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "name", "i");
         memberValuePairs.add(nameValuePair);
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class,
+                javax.jws.WebParam.class.getSimpleName(), memberValuePairs);
     }
     
     public void testAddAnnotationToMethodParameter() {

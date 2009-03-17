@@ -40,7 +40,8 @@ public class RemoveAnnotationFromTypeTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, null);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class,
+                javax.jws.WebService.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromType() {

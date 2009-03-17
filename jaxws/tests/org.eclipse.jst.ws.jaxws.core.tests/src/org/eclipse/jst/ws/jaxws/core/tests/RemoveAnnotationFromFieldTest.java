@@ -40,7 +40,8 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class, null);
+        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class,
+                javax.xml.ws.WebServiceRef.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromField() {

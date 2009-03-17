@@ -49,7 +49,8 @@ public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
         MemberValuePair operationValuePair = AnnotationsCore.createStringMemberValuePair(ast, "operationName",
             "add");
         memberValuePairs.add(operationValuePair);
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, 
+                javax.jws.WebMethod.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToMethod() {

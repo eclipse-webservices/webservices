@@ -49,7 +49,8 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
                 "http://localhost:8083/Calculator/servives/CalculatorService?WSDL");
         memberValuePairs.add(wsdlLocationValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class, memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class, 
+                javax.xml.ws.WebServiceRef.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToField() {

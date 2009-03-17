@@ -47,18 +47,20 @@ public final class AnnotationsCore {
     private AnnotationsCore() {
     }
     
-    @SuppressWarnings("unchecked")
     public static Annotation createAnnotation(AST ast,
             Class<? extends java.lang.annotation.Annotation> annotationClass,
+            String annotationName,
             List<MemberValuePair> memberValuePairs) {
 
         NormalAnnotation annotation = ast.newNormalAnnotation();
-        Name annotationTypeName = ast.newName(annotationClass.getSimpleName());
-        //Name annotationTypeName = ast.newName(annotationClass.getCanonicalName());
+        
+        Name annotationTypeName = ast.newName(annotationName);
+        
         annotation.setTypeName(annotationTypeName);
 
         if (memberValuePairs != null) {
             for (MemberValuePair memberValuePair : memberValuePairs) {
+                @SuppressWarnings("unchecked")
                 List<MemberValuePair> annotationValues = annotation.values();
                 annotationValues.add(memberValuePair);
             }
@@ -164,7 +166,8 @@ public final class AnnotationsCore {
                         }
                     }
                 }
-                arrayInitializer.expressions().add(createAnnotation(ast, annotationClass, memberValuePairs));
+                arrayInitializer.expressions().add(createAnnotation(ast, annotationClass,
+                        annotationClass.getCanonicalName(), memberValuePairs));
             }
             if (value.equals(Class.class)) {
                 arrayInitializer.expressions().add(createTypeLiteral(ast, value.toString()));

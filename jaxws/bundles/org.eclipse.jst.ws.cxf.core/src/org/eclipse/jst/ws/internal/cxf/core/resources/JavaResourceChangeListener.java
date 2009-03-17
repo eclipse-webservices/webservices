@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 
@@ -52,8 +53,12 @@ public class JavaResourceChangeListener implements IResourceChangeListener {
 
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         IFolder srcFolder = workspaceRoot.getFolder(new Path(sourceDirectoryPath));
+        IPath srcFolderPath = srcFolder.getFullPath();
+        if (!srcFolderPath.hasTrailingSeparator()) {
+            srcFolderPath = srcFolderPath.addTrailingSeparator();
+        }
 
-        IResourceDelta javaResourceDelta = rootDelta.findMember(srcFolder.getFullPath());
+        IResourceDelta javaResourceDelta = rootDelta.findMember(srcFolderPath);
 
         if (javaResourceDelta == null) {
             return;
@@ -77,6 +82,9 @@ public class JavaResourceChangeListener implements IResourceChangeListener {
     }
     
     public List<IResource> getChangedResources() {
+        for (IResource resource : changedResources) {
+            System.out.println(resource);
+        }
         return changedResources;
     }
 

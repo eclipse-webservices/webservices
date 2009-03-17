@@ -30,6 +30,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -188,6 +189,8 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
     }
 
 	public void updateView(IJavaElement javaElement, ITextSelection textSelection) {
+        TreePath[] expandedTreePaths = annotationTreeViewer.getExpandedTreePaths();
+
         IJavaProject javaProject = javaElement.getJavaProject();
 
         if (!checkClasspath(javaProject)) {
@@ -244,6 +247,8 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }
+        
+        annotationTreeViewer.setExpandedTreePaths(expandedTreePaths);
 	}
     
     private boolean checkClasspath(IJavaProject javaProject) {
@@ -281,7 +286,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         if (partRef.getId().equals(JavaUI.ID_CU_EDITOR)) {
             javaEditorActivated((IEditorPart) workbenchPart);
         } else if (partRef.getId().equals(getViewSite().getId())) {
-            //annotationsViewActivated();
+            annotationsViewActivated();
         } else {
             clearAnnotationsView();
         }
