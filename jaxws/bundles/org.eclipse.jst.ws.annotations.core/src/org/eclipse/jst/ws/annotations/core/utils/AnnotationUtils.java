@@ -56,7 +56,6 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
-import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -198,8 +197,7 @@ public final class AnnotationUtils {
 
                 listRewrite.insertFirst(annotation, null);
 
-                TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                        .getOptions(true));
+                TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                 textFileChange.addEdit(annotationTextEdit);
 
@@ -236,8 +234,7 @@ public final class AnnotationUtils {
                     }
                 }
 
-                TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                        .getOptions(true));
+                TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                 textFileChange.addEdit(annotationTextEdit);
 
@@ -274,8 +271,7 @@ public final class AnnotationUtils {
                     
                     listRewrite.insertFirst(annotation, null);
 
-                    TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                            .getOptions(true));
+                    TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                     textFileChange.addEdit(annotationTextEdit);
 
@@ -321,8 +317,7 @@ public final class AnnotationUtils {
                         }
                     }
                     
-                    TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                            .getOptions(true));
+                    TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
                      
                     textFileChange.addEdit(annotationTextEdit);
 
@@ -363,8 +358,7 @@ public final class AnnotationUtils {
                                 getChildListPropertyDescriptorForMethod(bodyDeclaration));
                         listRewrite.insertAt(annotation, 0, null);
 
-                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                                .getOptions(true));
+                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                         textFileChange.addEdit(annotationTextEdit);
                         textFileChange.addTextEditGroup(new TextEditGroup("AA", new //$NON-NLS-1$
@@ -413,8 +407,7 @@ public final class AnnotationUtils {
                             }
                         }
 
-                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                                .getOptions(true));
+                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                         textFileChange.addEdit(annotationTextEdit);
                         textFileChange.addTextEditGroup(new TextEditGroup("AA", new //$NON-NLS-1$
@@ -456,8 +449,7 @@ public final class AnnotationUtils {
                                 FieldDeclaration.MODIFIERS2_PROPERTY);
                         listRewrite.insertAt(annotation, 0, null);
 
-                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                                .getOptions(true));
+                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                         textFileChange.addEdit(annotationTextEdit);
                         textFileChange.addTextEditGroup(new TextEditGroup("AA", new //$NON-NLS-1$
@@ -508,8 +500,7 @@ public final class AnnotationUtils {
                             }
                         }
 
-                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                                .getOptions(true));
+                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                         textFileChange.addEdit(annotationTextEdit);
                         textFileChange.addTextEditGroup(new TextEditGroup("AA", new //$NON-NLS-1$
@@ -557,8 +548,7 @@ public final class AnnotationUtils {
 
                             listRewrite.insertAt(annotation, -1, null);
 
-                            TextEdit annotationTextEdit = rewriter.rewriteAST(document, source
-                                    .getJavaProject().getOptions(true));
+                            TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                             textFileChange.addEdit(annotationTextEdit);
 
@@ -593,8 +583,7 @@ public final class AnnotationUtils {
 
                 listRewrite.insertAt(annotation, -1, null);
 
-                TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                        .getOptions(true));
+                TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                 textFileChange.addEdit(annotationTextEdit);
 
@@ -632,8 +621,7 @@ public final class AnnotationUtils {
                     }
                 }
 
-                TextEdit annotationTextEdit = rewriter.rewriteAST(document, source.getJavaProject()
-                        .getOptions(true));
+                TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                 textFileChange.addEdit(annotationTextEdit);
 
@@ -647,7 +635,6 @@ public final class AnnotationUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void createMemberVaulePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, IJavaElement javaElement, IAnnotation annotation, ASTNode memberValuePair,
             TextFileChange textFileChange) throws CoreException {
@@ -671,11 +658,7 @@ public final class AnnotationUtils {
 
                         listRewrite.insertLast(memberValuePair, null);
 
-                        Map options = source.getJavaProject().getOptions(true);
-                        options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-                        options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-
-                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, options);
+                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
                         textFileChange.addEdit(annotationTextEdit);
 
@@ -691,7 +674,6 @@ public final class AnnotationUtils {
         }
     }
     
-    @SuppressWarnings("unchecked")
     public static void createMemberVaulePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, NormalAnnotation annotation, ASTNode memberValuePair,
             TextFileChange textFileChange) throws CoreException {
@@ -709,11 +691,7 @@ public final class AnnotationUtils {
 
             listRewrite.insertLast(memberValuePair, null);
 
-            Map options = source.getJavaProject().getOptions(true);
-            options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-            options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-
-            TextEdit annotationTextEdit = rewriter.rewriteAST(document, options);
+            TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
             textFileChange.addEdit(annotationTextEdit);
 
@@ -726,7 +704,6 @@ public final class AnnotationUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void updateMemberVaulePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, IJavaElement javaElement, IAnnotation annotation, IMemberValuePair memberValuePair,
             ASTNode value, TextFileChange textFileChange) throws CoreException {
@@ -739,6 +716,7 @@ public final class AnnotationUtils {
                 if (extendedModifier instanceof NormalAnnotation) {
                     NormalAnnotation existingAnnotation = (NormalAnnotation) extendedModifier;
                     if (AnnotationUtils.compareAnnotations(annotation, existingAnnotation)) {
+                        @SuppressWarnings("unchecked")
                         List<MemberValuePair> memberVaulePairs = existingAnnotation.values();
                         for (MemberValuePair memberValuePairDOM : memberVaulePairs) {
                             if (memberValuePairDOM.getName().toString().equals(
@@ -751,11 +729,8 @@ public final class AnnotationUtils {
 
                                 rewriter.set(memberValuePairDOM, MemberValuePair.VALUE_PROPERTY, value, null);
 
-                                Map options = source.getJavaProject().getOptions(true);
-                                options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-                                options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-
-                                TextEdit annotationTextEdit = rewriter.rewriteAST(document, options);
+                                TextEdit annotationTextEdit = rewriter.rewriteAST(document,
+                                        getOptions(source));
 
                                 textFileChange.addEdit(annotationTextEdit);
 
@@ -773,7 +748,6 @@ public final class AnnotationUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void updateMemberVaulePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, NormalAnnotation annotation, MemberValuePair memberValuePair,
             ASTNode value, TextFileChange textFileChange) throws CoreException {
@@ -788,11 +762,7 @@ public final class AnnotationUtils {
 
             rewriter.set(memberValuePair, MemberValuePair.VALUE_PROPERTY, value, null);
 
-            Map options = source.getJavaProject().getOptions(true);
-            options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-            options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-
-            TextEdit annotationTextEdit = rewriter.rewriteAST(document, options);
+            TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
 
             textFileChange.addEdit(annotationTextEdit);
 
@@ -803,6 +773,14 @@ public final class AnnotationUtils {
                 bufferManager.disconnect(path, LocationKind.IFILE, null);
             }
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static Map getOptions(ICompilationUnit source) {
+        Map options = source.getJavaProject().getOptions(true);
+        options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
+        options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
+        return options;
     }
     
     private static ChildListPropertyDescriptor getChildListPropertyDescriptorForType(AbstractTypeDeclaration 
