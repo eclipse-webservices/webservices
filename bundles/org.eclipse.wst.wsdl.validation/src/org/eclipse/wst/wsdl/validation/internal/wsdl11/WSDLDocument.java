@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -960,11 +960,6 @@ public class WSDLDocument
       {
         msg.addPart(parsePart(tempEl, def));
       }
-      else
-      {
-        // XML Validation will catch this
-        DOMUtils.throwWSDLException(tempEl);
-      }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
@@ -1034,11 +1029,6 @@ public class WSDLDocument
       if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         part.setDocumentationElement(tempEl);
-      }
-      else
-      {
-        // XML Validation will catch this
-        DOMUtils.throwWSDLException(tempEl);
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -1252,12 +1242,6 @@ public class WSDLDocument
       else if (QNameUtils.matches(Constants.Q_ELEM_FAULT, tempEl))
       {
         faults.add(parseFault(tempEl, def));
-      }
-      else
-      {
-        // invalid element in the operation
-        // XML check will catch this
-        DOMUtils.throwWSDLException(tempEl);
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -1711,11 +1695,6 @@ public class WSDLDocument
       {
         input.setDocumentationElement(tempEl);
       }
-      else
-      {
-        // XML Validation will catch this
-        DOMUtils.throwWSDLException(tempEl);
-      }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
@@ -1776,11 +1755,6 @@ public class WSDLDocument
       {
         output.setDocumentationElement(tempEl);
       }
-      else
-      {
-        // XML Validation will catch this
-        DOMUtils.throwWSDLException(tempEl);
-      }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
@@ -1840,11 +1814,6 @@ public class WSDLDocument
       if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         fault.setDocumentationElement(tempEl);
-      }
-      else
-      {
-        // XML Validation will catch this
-        DOMUtils.throwWSDLException(tempEl);
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
