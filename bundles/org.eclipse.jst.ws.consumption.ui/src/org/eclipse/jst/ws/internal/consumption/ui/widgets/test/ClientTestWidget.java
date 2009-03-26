@@ -21,6 +21,7 @@
  * 20080723   241303 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080808   243602 rkklai@ca.ibm.com   - Raymond Lai, fix NPE when changing runtime (the server combo)
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
+ * 20090324   247535 mahutch@ca.ibm.com - Mark Hutchinson, Wrong server instance(s) is chosen during JAX-RPC sample generation
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test;
 
@@ -423,13 +424,14 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  IServer[] servers = org.eclipse.wst.server.core.ServerCore.getServers();
 	  for(int j =0; j<servers.length;j++){
 			String id = runtimes_.getId(selection);
-			if(id.equals(servers[j].getRuntime().getId())){
+			if(id.equals(servers[j].getServerType().getId())){
 				serverInstances_.add(servers[j].getId(), servers[j].getName());
 				serverInstanceTypeCombo_.add(servers[j].getName());
 			}
 	  }
 	  serverInstanceTypeCombo_.select(0);
-	 
+	  
+	  serverInstanceTypeCombo_.setEnabled(serverInstances_.size() > 0 );
   }  
   
   // Here are the getters and setters for this widget.
@@ -481,6 +483,16 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	  return project;
   }
   
+  private String getServerTypeIdForRuntime(IRuntime rt) {
+	  IServerType[] serverTypes = ServerCore.getServerTypes();
+	  for (IServerType sType : serverTypes) {
+		  if (sType.getRuntimeType() == rt.getRuntimeType() ){
+			  return sType.getId();
+
+		  }
+	  }
+	  return null;
+  }
   
   public void initServersTypes() 
   {
@@ -488,9 +500,6 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 		runtimes_ = new LabelsAndIds();
 	IServer[] servers = org.eclipse.wst.server.core.ServerCore.getServers();
 	IRuntime[] runtimes = org.eclipse.wst.server.core.ServerCore.getRuntimes();
-	IServerType[] serverTypes = ServerCore.getServerTypes();
-	
-	
 	
 	String projectName = projectCombo_.getText();
 	
@@ -513,12 +522,12 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 			if(isWebProject){
 				org.eclipse.wst.common.project.facet.core.runtime.IRuntime runtime = FacetUtil.getRuntime(runtimes[i]);
 				if(FacetUtils.doesRuntimeSupportFacets(runtime, projectFacets)){
-					runtimes_.add(runtimes[i].getId(), runtimes[i].getName());
+					runtimes_.add(getServerTypeIdForRuntime(runtimes[i]), runtimes[i].getName());
 					runtimesCombo.add( runtimes[i].getName() );
 				}
 			}
 			else{
-				runtimes_.add(runtimes[i].getId(), runtimes[i].getName());
+				runtimes_.add(getServerTypeIdForRuntime(runtimes[i]), runtimes[i].getName());
 				runtimesCombo.add( runtimes[i].getName() );	
 			}
 		}
@@ -532,8 +541,8 @@ public class ClientTestWidget extends SimpleWidgetDataContributor
 	String id = runtimes_.getId(0);
 	if(id != null){
 		for(int k =0; k<servers.length;k++){
-			if(servers[k].getRuntime() != null){
-				if(id.equals(servers[k].getRuntime().getId())&& canRunTestClient_){
+			if(servers[k].getServerType() != null){
+				if(id.equals(servers[k].getServerType().getId())&& canRunTestClient_){
 					serverInstances_.add(servers[k].getId(), servers[k].getName());
 					serverInstanceTypeCombo_.add(servers[k].getName());
 				}

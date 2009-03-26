@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20090324   247535 mahutch@ca.ibm.com - Mark Hutchinson, Wrong server instance(s) is chosen during JAX-RPC sample generation
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -204,7 +205,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	{    
 		IEnvironment env = getEnvironment();
 	    IStatus status = Status.OK_STATUS;	
-	  
+
 	    // Split up the project and module
 	    int index = module_.indexOf("/");
 	    if (index!=-1){
@@ -231,6 +232,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  	clientInfo.setState(WebServiceState.UNKNOWN_LITERAL);
 	  	clientInfo.setWebServiceRuntimeId(typeRuntimeServer_.getRuntimeId());
 	  	clientInfo.setWsdlURL(wsdlURI_);
+	  	/*
 	  	if (clientInfo.getServerInstanceId()==null)
 	  	{
 	  		CreateServerCommand createServerCommand = new CreateServerCommand();
@@ -251,9 +253,9 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  	}
 	  	else {
 	  		canRunTestClient_ = true;
-	  	}
+	  	}*/
 	  	
-	  	
+	  	canRunTestClient_ = true;
 	  	IProject[] earproject = J2EEProjectUtilities.getReferencingEARProjects(project);
 	  	boolean earNull = false;
 	  	if (earproject.length<1) earNull = true;
@@ -264,7 +266,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  	
 	  	if (j2eeProject && earNull)
 	  		canRunTestClient_ = false;
-	  		  	
+	  /*		  	
 		if (!earNull && clientInfo.getServerInstanceId() != null){
 	  		
 	  		AddModuleToServerCommand command = new AddModuleToServerCommand();
@@ -277,7 +279,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  		{
 	  			env.getStatusHandler().reportError(status);
 	  		}     
-	  	}
+	  	}*/
 	  	webServiceClient_ = new TestWebServiceClient(clientInfo);
 	  	return status;
   	}
