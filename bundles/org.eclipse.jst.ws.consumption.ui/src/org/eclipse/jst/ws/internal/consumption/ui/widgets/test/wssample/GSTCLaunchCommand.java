@@ -67,7 +67,7 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
     
     setJSPFolder();
     
-	  return launchSample(env, monitor);
+	return launchSample(env, monitor);
   }
   private void setJSPFolder(){
 	    //if the client is not a webcomponent then the 
