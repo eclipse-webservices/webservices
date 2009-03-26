@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060418   134322 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   124368 kathy@ca.ibm.com - Kathy Chan
+ * 20090312	  250984 mahutch@ca.ibm.com - Mark Hutchinson, Use another mechanism to wait for build to be completed
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
@@ -20,18 +21,18 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
+import org.eclipse.jst.ws.internal.consumption.command.common.BuildBeanCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.ConsumptionUIMessages;
 import org.eclipse.jst.ws.internal.consumption.ui.command.StartServerCommand;
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
@@ -93,16 +94,19 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
     IStatus status = Status.OK_STATUS;
 	IPath fDestinationFolderPath = new Path(jspfolder);
 	fDestinationFolderPath = fDestinationFolderPath.makeAbsolute();    
-	 try 
-	 {
-	   Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
-	 } 
-	 catch( InterruptedException exc ) 
-	 {
-	   // UISynchronizer.syncExec seems to interrupt the UI tread when the autobuilder is done.  Not sure, why.
-	   // I'm assuming here that the autobuilder has actually completed its stuff. 
-	 }
 
+	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
+	
+	BuildBeanCommand buildCommand = new BuildBeanCommand();
+	buildCommand.setEnvironment(env);
+	buildCommand.setProject(sampleProject);
+	try {
+		//ensure the sample project is built
+		buildCommand.execute(monitor, null);
+	} catch (ExecutionException e2) {
+		//just ignore and see if we can move on
+	}
+	 
 	StartServerCommand serverCommand = new StartServerCommand( true );
 	serverCommand.setServerInstanceId( testInfo.getClientExistingServer().getId() );
 	serverCommand.setEnvironment( env );
@@ -110,7 +114,6 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	status = serverCommand.execute(monitor, null);
 	if (status.getSeverity() == Status.ERROR) return status;
 	
-	IProject sampleProject = ProjectUtilities.getProject(testInfo.getGenerationProject());
 	String   newPath = ServerUtils.getWebComponentURL(sampleProject, testInfo.getClientServerTypeID(),testInfo.getClientExistingServer());
 	int count = J2EEUtils.getWebContentPath(sampleProject).segmentCount();
 	
