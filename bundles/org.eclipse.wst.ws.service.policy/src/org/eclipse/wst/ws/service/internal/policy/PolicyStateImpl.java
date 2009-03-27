@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  * 20080430   221578 pmoogk@ca.ibm.com - Peter Moogk, Fixed commit problem.
  * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
+ * 20090327   270283 mahutch@ca.ibm.com - Mark Hutchinson, IPolicyStateChangeListener not notified first time change is made
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -89,7 +90,10 @@ public class PolicyStateImpl implements IPolicyState
         tableEntry.lastCommittedValue = value;
         
         if( oldValue == null )
-        {
+        { 
+          //if the old value is null, and the new value is not null, need to fire a change
+          firePolicyStateChange( stateChangeListenersOnlyOnCommit, key, oldValue, value );
+        	
           // Temporarily remove the tableEntry value so that getValue will get the old value.
           tableEntry.value = null;
           oldValue = getValue( key );
