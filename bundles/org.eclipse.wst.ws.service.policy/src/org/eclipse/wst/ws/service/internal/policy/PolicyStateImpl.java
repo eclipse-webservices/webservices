@@ -117,9 +117,11 @@ public class PolicyStateImpl implements IPolicyState
     }
   }
 
-private boolean projectPreferencesGotDisabled() {
-	return project !=null && !ServicePolicyPlatform.getInstance().isProjectPreferencesEnabled(project);
-}
+	private boolean projectPreferencesGotDisabled() {
+		return project != null
+				&& !ServicePolicyPlatform.getInstance()
+						.isProjectPreferencesEnabled(project);
+	}
   
   private IEclipsePreferences[] getNodes()
   {
