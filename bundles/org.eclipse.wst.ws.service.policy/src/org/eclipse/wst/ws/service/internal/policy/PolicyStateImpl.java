@@ -16,6 +16,7 @@
  * 20080430   221578 pmoogk@ca.ibm.com - Peter Moogk, Fixed commit problem.
  * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
  * 20090327   270283 mahutch@ca.ibm.com - Mark Hutchinson, IPolicyStateChangeListener not notified first time change is made
+ * 20090401   258858 ericdp@ca.ibm.com - Eric D. Peters, Service Policies Framework: IPolicyStateChangeListener not notified when project specific settings enabled/disabled
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -64,8 +65,9 @@ public class PolicyStateImpl implements IPolicyState
     
     IEclipsePreferences preferences = null;
     
-    if( project == null )
+    if( project == null  || projectPreferencesGotDisabled())
     {
+      //the project preferences are disabled, so use workspace preferences
       preferences = new InstanceScope().getNode( ServicePolicyActivator.PLUGIN_ID );
     }
     else
@@ -78,8 +80,13 @@ public class PolicyStateImpl implements IPolicyState
       String     key        = entry.getKey();
       String     storeKey   = makeStoreKey( key );
       TableEntry tableEntry = entry.getValue();
-      String     value      = tableEntry.value;
-      
+      String     value;
+      if (projectPreferencesGotDisabled())
+    	  //the project preferences are disabled, so use value from workspace preferences
+    	  value = preferences.get(storeKey, "");
+      else
+    	  value = tableEntry.value;
+
       if( value != null )
       {
         String oldValue = tableEntry.lastCommittedValue;
@@ -109,6 +116,10 @@ public class PolicyStateImpl implements IPolicyState
       }
     }
   }
+
+private boolean projectPreferencesGotDisabled() {
+	return project !=null && !ServicePolicyPlatform.getInstance().isProjectPreferencesEnabled(project);
+}
   
   private IEclipsePreferences[] getNodes()
   {
