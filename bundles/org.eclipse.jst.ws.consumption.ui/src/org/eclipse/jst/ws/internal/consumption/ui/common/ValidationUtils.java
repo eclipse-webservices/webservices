@@ -29,6 +29,7 @@
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
  * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
+ * 20090401   269994 ericdp@ca.ibm.com - Eric D. Peters, NLS- Validation messages unclear when servers don't support runtime/project combo
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -348,7 +349,7 @@ public class ValidationUtils
 							typeId, runtimeId, projectName)) {
 						return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_PROJECT,
-								new String[] { runtimeLabel, projectName }));
+								new String[] { runtimeLabel, serverLabel, projectName }));
 					}
 
 					// Check if the server supports it.
@@ -365,7 +366,7 @@ public class ValidationUtils
 							typeId, runtimeId, projectName)) {
 						return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_PROJECT,
-								new String[] { runtimeLabel, projectName }));
+								new String[] { runtimeLabel, serverLabel, projectName }));
 					}
 
 					// Check if the server supports it.
@@ -392,7 +393,7 @@ public class ValidationUtils
 
 						return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE,
-								new String[] { runtimeLabel, templateLabel }));
+								new String[] { runtimeLabel, serverLabel, templateLabel }));
 					}
 
 					// Check if the server supports it.
@@ -409,7 +410,7 @@ public class ValidationUtils
 				    {
 				    	return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE,
-								new String[] { runtimeLabel, templateLabel }));
+								new String[] { runtimeLabel, serverLabel, templateLabel }));
 				    }
 					
 				} else {
@@ -420,7 +421,7 @@ public class ValidationUtils
 								.errorStatus(NLS
 										.bind(
 												ConsumptionUIMessages.MSG_SERVICE_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE,
-												new String[] { runtimeLabel, templateLabel }));
+												new String[] { runtimeLabel, serverLabel, templateLabel }));
 					}
 
 					// Check if the server supports it.
