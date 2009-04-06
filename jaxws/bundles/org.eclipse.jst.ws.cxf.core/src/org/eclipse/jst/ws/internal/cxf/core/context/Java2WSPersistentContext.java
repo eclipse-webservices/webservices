@@ -15,6 +15,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
 import org.eclipse.jst.ws.internal.cxf.core.model.DataBinding;
 import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSContext;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 
 /**
  * @author sclarke
@@ -115,31 +116,45 @@ public class Java2WSPersistentContext extends CXFPersistentContext implements Ja
 
     public void load() {
         super.load();
-        setDefault(PREFERENCE_J2WS_SOAP12_BINDING, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getJava2WSContext_Soap12Binding().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_J2WS_GENERATE_XSD_IMPORTS, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getJava2WSContext_GenerateXSDImports().getDefaultValueLiteral()));
+        setDefault(PREFERENCE_J2WS_SOAP12_BINDING, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__SOAP12_BINDING));
+
+        setDefault(PREFERENCE_J2WS_GENERATE_XSD_IMPORTS, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__GENERATE_XSD_IMPORTS));
+
         setDefault(PREFERENCE_J2WS_DEFAULT_DATABINDING, DataBinding.JAXB.getLiteral());
+
         setDefault(PREFERENCE_J2WS_DEFAULT_FRONTEND, Frontend.JAXWS.getLiteral());
-        setDefault(PREFERENCE_J2WS_GENERATE_CLIENT,  Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getCXFContext_GenerateClient().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_J2WS_GENERATE_SERVER, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getCXFContext_GenerateServer().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_J2WS_GENERATE_WRAPPER_FAULT_BEANS, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getJava2WSContext_GenerateWrapperFaultBeans().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_J2WS_GENERATE_WSDL, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getJava2WSContext_GenerateWSDL().getDefaultValueLiteral()));
-        
-        setDefault(PREFERENCE_J2WS_ENABLE_ANNOTATION_PROCESSING, Boolean.parseBoolean(CXFPackage.eINSTANCE
-                .getJava2WSContext_AnnotationProcessingEnabled().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_GENERATE_WEB_METHOD_ANNOTATION, Boolean.parseBoolean(CXFPackage.eINSTANCE
-                .getJava2WSContext_GenerateWebMethodAnnotation().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_GENERATE_WEB_PARAM_ANNOTATION, Boolean.parseBoolean(CXFPackage.eINSTANCE
-                .getJava2WSContext_GenerateWebParamAnnotation().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_GENERATE_REQUEST_WRAPPER_ANNOTATION, Boolean.parseBoolean(CXFPackage.eINSTANCE
-                .getJava2WSContext_GenerateRequestWrapperAnnotation().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_GENERATE_RESPONSE_WRAPPER_ANNOTATION, Boolean.parseBoolean(CXFPackage.eINSTANCE
-                .getJava2WSContext_GenerateResponseWrapperAnnotation().getDefaultValueLiteral()));
+
+        setDefault(PREFERENCE_J2WS_GENERATE_CLIENT, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__GENERATE_CLIENT));
+
+        setDefault(PREFERENCE_J2WS_GENERATE_SERVER, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__GENERATE_SERVER));
+
+        setDefault(PREFERENCE_J2WS_GENERATE_WRAPPER_FAULT_BEANS, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WRAPPER_FAULT_BEANS));
+
+        setDefault(PREFERENCE_J2WS_GENERATE_WSDL, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WSDL));
+
+        setDefault(PREFERENCE_J2WS_ENABLE_ANNOTATION_PROCESSING, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__ANNOTATION_PROCESSING_ENABLED));
+
+        //TODO MOVE THE FOLLOWING 4
+        setDefault(PREFERENCE_GENERATE_WEB_METHOD_ANNOTATION, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_METHOD_ANNOTATION));
+
+        setDefault(PREFERENCE_GENERATE_WEB_PARAM_ANNOTATION, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_PARAM_ANNOTATION));
+
+        setDefault(PREFERENCE_GENERATE_REQUEST_WRAPPER_ANNOTATION, CXFModelUtils
+                .getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
+                        CXFPackage.JAVA2_WS_CONTEXT__GENERATE_REQUEST_WRAPPER_ANNOTATION));
+
+        setDefault(PREFERENCE_GENERATE_RESPONSE_WRAPPER_ANNOTATION, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__GENERATE_RESPONSE_WRAPPER_ANNOTATION));
     }
 
     public boolean isSoap12Binding() {

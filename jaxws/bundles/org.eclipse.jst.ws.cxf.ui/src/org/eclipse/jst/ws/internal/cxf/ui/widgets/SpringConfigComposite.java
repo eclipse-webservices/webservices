@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.cxf.ui.widgets;
 
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFContext;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -78,8 +80,13 @@ public class SpringConfigComposite extends Composite {
     }
     
     public void setDefaults() {
-        useSpringAppContextButton.setSelection(true);
-        useCXFServletButton.setSelection(false);
+        boolean useSpringAppcontext = CXFModelUtils.getDefaultBooleanValue(CXFPackage.CXF_CONTEXT,
+                CXFPackage.CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT);
+        useSpringAppContextButton.setSelection(useSpringAppcontext);
+        useCXFServletButton.setSelection(!useSpringAppcontext);
     }
-
+    
+    public void storeValues() {
+        context.setUseSpringApplicationContext(useSpringAppContextButton.getSelection());
+    }
 }

@@ -105,6 +105,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
         model.setLoadDefaultExcludesNamepsaceMapping(context.isLoadDefaultExcludesNamepsaceMapping());
         model.setLoadDefaultNamespacePackageNameMapping(context.isLoadDefaultNamespacePackageNameMapping());
         model.setUseDefaultValues(context.isUseDefaultValues());
+        model.setAutoNameResolution(context.isAutoNameResolution());
         model.setNoAddressBinding(context.isNoAddressBinding());
         model.setUseSpringApplicationContext(context.isUseSpringApplicationContext());
         model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()));

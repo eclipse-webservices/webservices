@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: WSDL2JavaDataModelImpl.java,v 1.1 2008/11/10 20:37:42 david_williams Exp $
+ * $Id: WSDL2JavaDataModelImpl.java,v 1.2 2009/04/06 21:33:14 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -53,6 +53,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl#isXjcSyncMethods <em>Xjc Sync Methods</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl#isXjcMarkGenerated <em>Xjc Mark Generated</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl#getXjcEpisodeFile <em>Xjc Episode File</em>}</li>
+ *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl#isAutoNameResolution <em>Auto Name Resolution</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl#getIncludedNamespaces <em>Included Namespaces</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl#getBindingFiles <em>Binding Files</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl#getExcludedNamespaces <em>Excluded Namespaces</em>}</li>
@@ -403,6 +404,26 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
      * @ordered
      */
     protected String xjcEpisodeFile = XJC_EPISODE_FILE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isAutoNameResolution() <em>Auto Name Resolution</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isAutoNameResolution()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean AUTO_NAME_RESOLUTION_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isAutoNameResolution() <em>Auto Name Resolution</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isAutoNameResolution()
+     * @generated
+     * @ordered
+     */
+    protected boolean autoNameResolution = AUTO_NAME_RESOLUTION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getIncludedNamespaces() <em>Included Namespaces</em>}' attribute.
@@ -855,6 +876,27 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isAutoNameResolution() {
+        return autoNameResolution;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setAutoNameResolution(boolean newAutoNameResolution) {
+        boolean oldAutoNameResolution = autoNameResolution;
+        autoNameResolution = newAutoNameResolution;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION, oldAutoNameResolution, autoNameResolution));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public Map<String, String> getIncludedNamespaces() {
         return includedNamespaces;
     }
@@ -988,6 +1030,8 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
                 return isXjcMarkGenerated() ? Boolean.TRUE : Boolean.FALSE;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE:
                 return getXjcEpisodeFile();
+            case CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION:
+                return isAutoNameResolution() ? Boolean.TRUE : Boolean.FALSE;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES:
                 return getIncludedNamespaces();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__BINDING_FILES:
@@ -1061,6 +1105,9 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE:
                 setXjcEpisodeFile((String)newValue);
+                return;
+            case CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION:
+                setAutoNameResolution(((Boolean)newValue).booleanValue());
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES:
                 setIncludedNamespaces((Map<String, String>)newValue);
@@ -1141,6 +1188,9 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE:
                 setXjcEpisodeFile(XJC_EPISODE_FILE_EDEFAULT);
                 return;
+            case CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION:
+                setAutoNameResolution(AUTO_NAME_RESOLUTION_EDEFAULT);
+                return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES:
                 setIncludedNamespaces((Map<String, String>)null);
                 return;
@@ -1202,6 +1252,8 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
                 return xjcMarkGenerated != XJC_MARK_GENERATED_EDEFAULT;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE:
                 return XJC_EPISODE_FILE_EDEFAULT == null ? xjcEpisodeFile != null : !XJC_EPISODE_FILE_EDEFAULT.equals(xjcEpisodeFile);
+            case CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION:
+                return autoNameResolution != AUTO_NAME_RESOLUTION_EDEFAULT;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES:
                 return includedNamespaces != null;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__BINDING_FILES:
@@ -1242,6 +1294,7 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
                 case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_SYNC_METHODS: return CXFPackage.WSDL2_JAVA_CONTEXT__XJC_SYNC_METHODS;
                 case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_MARK_GENERATED: return CXFPackage.WSDL2_JAVA_CONTEXT__XJC_MARK_GENERATED;
                 case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE: return CXFPackage.WSDL2_JAVA_CONTEXT__XJC_EPISODE_FILE;
+                case CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION: return CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION;
                 default: return -1;
             }
         }
@@ -1274,6 +1327,7 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
                 case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_SYNC_METHODS: return CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_SYNC_METHODS;
                 case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_MARK_GENERATED: return CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_MARK_GENERATED;
                 case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_EPISODE_FILE: return CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE;
+                case CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION: return CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION;
                 default: return -1;
             }
         }
@@ -1324,6 +1378,8 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
         result.append(xjcMarkGenerated);
         result.append(", xjcEpisodeFile: ");
         result.append(xjcEpisodeFile);
+        result.append(", autoNameResolution: ");
+        result.append(autoNameResolution);
         result.append(", includedNamespaces: ");
         result.append(includedNamespaces);
         result.append(", bindingFiles: ");

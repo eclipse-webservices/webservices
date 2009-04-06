@@ -92,7 +92,8 @@ public class Java2WSCommand extends AbstractDataModelOperation {
                 WSDLUtils.loadSpringConfigInformationFromWSDL((model));
             }
             
-            if (model.getFullyQualifiedJavaClassName().trim().length() > 0) {
+            if (model.getFullyQualifiedJavaClassName() != null && 
+                    model.getFullyQualifiedJavaClassName().trim().length() > 0) {
                 SpringUtils.createJAXWSEndpoint(model);
             }
             

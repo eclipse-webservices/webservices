@@ -32,6 +32,7 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
@@ -259,4 +260,138 @@ public final class CXFModelUtils {
         annotationdMap.put(CXFModelUtils.RESPONSE_WRAPPER, model.isGenerateResponseWrapperAnnotation());
         return annotationdMap;
     }
+    
+    public static boolean getDefaultBooleanValue(int classifierID, int featureID) {
+        Object defaultValue = null;
+
+        if (classifierID == CXFPackage.CXF_CONTEXT) {
+            switch (featureID) {
+            case CXFPackage.CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER:
+                defaultValue = CXFPackage.eINSTANCE.getCXFContext_ExportCXFClasspathContainer()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.CXF_CONTEXT__VERBOSE:
+                defaultValue = CXFPackage.eINSTANCE.getCXFContext_Verbose().getDefaultValue();
+                break;
+            case CXFPackage.CXF_CONTEXT__GENERATE_ANT_BUILD_FILE:
+                defaultValue = CXFPackage.eINSTANCE.getCXFContext_GenerateAntBuildFile().getDefaultValue();
+                break;
+            case CXFPackage.CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT:
+                defaultValue = CXFPackage.eINSTANCE.getCXFContext_UseSpringApplicationContext()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.CXF_CONTEXT__GENERATE_CLIENT:
+                defaultValue = CXFPackage.eINSTANCE.getCXFContext_GenerateClient().getDefaultValue();
+                break;
+            case CXFPackage.CXF_CONTEXT__GENERATE_SERVER:
+                defaultValue = CXFPackage.eINSTANCE.getCXFContext_GenerateServer().getDefaultValue();
+                break;
+            }
+        }
+
+        if (classifierID == CXFPackage.JAVA2_WS_CONTEXT) {
+            switch (featureID) {
+            case CXFPackage.JAVA2_WS_CONTEXT__ANNOTATION_PROCESSING_ENABLED:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_AnnotationProcessingEnabled()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__SOAP12_BINDING:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_Soap12Binding().getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_XSD_IMPORTS:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateXSDImports().getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WRAPPER_FAULT_BEANS:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWrapperFaultBeans()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WSDL:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWSDL().getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_METHOD_ANNOTATION:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWebMethodAnnotation()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_PARAM_ANNOTATION:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWebParamAnnotation()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_REQUEST_WRAPPER_ANNOTATION:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateRequestWrapperAnnotation()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_RESPONSE_WRAPPER_ANNOTATION:
+                defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateResponseWrapperAnnotation()
+                        .getDefaultValue();
+                break;
+            }
+        }
+
+        if (classifierID == CXFPackage.WSDL2_JAVA_CONTEXT) {
+            switch (featureID) {
+            case CXFPackage.WSDL2_JAVA_CONTEXT__NO_ADDRESS_BINDING:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_NoAddressBinding().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__USE_DEFAULT_VALUES:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_UseDefaultValues().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_AutoNameResolution()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__GENERATE_IMPLEMENTATION:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_GenerateImplementation()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__PROCESS_SOAP_HEADERS:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_ProcessSOAPHeaders()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__GENERATE_ANT_BUILD_FILE:
+                defaultValue = CXFPackage.eINSTANCE.getCXFContext_GenerateAntBuildFile().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__VALIDATE:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_Validate().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_NAMESPACE_PACKAGE_NAME_MAPPING:
+                defaultValue = CXFPackage.eINSTANCE
+                        .getWSDL2JavaContext_LoadDefaultNamespacePackageNameMapping().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_LoadDefaultExcludesNamepsaceMapping()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_USE_DEFAULT_VALUES:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcUseDefaultValues()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToString().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_MULTI_LINE:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToStringMultiLine()
+                        .getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_SIMPLE:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToStringSimple().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_LOCATOR:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcLocator().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_SYNC_METHODS:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcSyncMethods().getDefaultValue();
+                break;
+            case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_MARK_GENERATED:
+                defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcMarkGenerated().getDefaultValue();
+                break;
+            }
+        }
+
+        if (defaultValue != null && defaultValue instanceof Boolean) {
+            return ((Boolean) defaultValue).booleanValue();
+        }
+
+        return false;
+    }
+
 }

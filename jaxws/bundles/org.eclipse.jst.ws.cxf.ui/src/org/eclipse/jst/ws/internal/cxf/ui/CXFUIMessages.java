@@ -124,6 +124,8 @@ public class CXFUIMessages extends NLS {
     public static String WSDL2JAVA_WSDL_LOCATION_TOOLTIP;
     public static String WSDL2JAVA_NO_ADDRESS_BINDING;
     public static String WSDL2JAVA_NO_ADDRESS_BINDING_TOOLTIP;
+    public static String WSDL2JAVA_AUTO_NAME_RESOLUTION;
+    public static String WSDL2JAVA_AUTO_NAME_RESOLUTION_TOOLTIP;
     public static String WSDL2JAVA_XML_CATALOG_TOOLTIP;
     public static String WSDL2JAVA_XJC_ARGS_TOOLTIP;
     public static String WSDL2JAVA_XJC_ARG_GROUP_TITLE;

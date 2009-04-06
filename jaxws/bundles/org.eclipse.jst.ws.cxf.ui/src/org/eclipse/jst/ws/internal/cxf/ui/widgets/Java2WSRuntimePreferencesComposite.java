@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.cxf.ui.widgets;
 
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,20 +30,21 @@ import org.eclipse.swt.widgets.TabFolder;
 /**
  * @author sclarke
  */
-public class Java2WSRuntimePreferencesComposite extends Java2WSDLRuntimePreferencesComposite {
+public class Java2WSRuntimePreferencesComposite extends Composite {
     private Java2WSPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
     
+    private Combo soapBindingCombo;
+    private Button createXSDImportsButton;
+
     private Button generateClientButton;
     private Button generateServerButton;
     private Button generateWrapperFaultBeanButton;
     private Button generateWSDLButton;
     
-    private Combo soapBindingCombo;
-    private Button createXSDImports;
     private TabFolder tabFolder;
     
     public Java2WSRuntimePreferencesComposite(Composite parent, int style, TabFolder tabFolder) {
-        super(parent, style, tabFolder);
+        super(parent, style);
         this.tabFolder = tabFolder;
     }
 
@@ -116,10 +119,10 @@ public class Java2WSRuntimePreferencesComposite extends Java2WSDLRuntimePreferen
         gridData = new GridData(GridData.FILL_HORIZONTAL);
         soapBindingCombo.setLayoutData(gridData);
 
-        createXSDImports = Java2WSWidgetFactory.createXSDImportsButton(wsdlGroup, context);
+        createXSDImportsButton = Java2WSWidgetFactory.createXSDImportsButton(wsdlGroup, context);
         gridData = new GridData(GridData.FILL_HORIZONTAL);
         gridData.horizontalSpan = 2;
-        createXSDImports.setLayoutData(gridData);
+        createXSDImportsButton.setLayoutData(gridData);
         
         Link link = new Link(this, SWT.NONE);
         link.setText(CXFUIMessages.ANNOTATIONS_PREFERENCES_LINK);
@@ -133,16 +136,58 @@ public class Java2WSRuntimePreferencesComposite extends Java2WSDLRuntimePreferen
 
     protected void enableWSDLGroup(boolean enable) {
         soapBindingCombo.setEnabled(enable);
-        createXSDImports.setEnabled(enable);
+        createXSDImportsButton.setEnabled(enable);
     }
     
-    @Override
     public void setDefaults() {
-        soapBindingCombo.setText("SOAP 1.1"); //$NON-NLS-1$
-        createXSDImports.setSelection(true);
-        generateClientButton.setSelection(false);
-        generateServerButton.setSelection(false);
-        generateWrapperFaultBeanButton.setSelection(true);
-        generateWSDLButton.setSelection(true);
+        if (CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__SOAP12_BINDING)) {
+            soapBindingCombo.setText("SOAP 1.2"); //$NON-NLS-1$
+        } else {
+            soapBindingCombo.setText("SOAP 1.1"); //$NON-NLS-1$
+        }
+        
+        createXSDImportsButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__GENERATE_XSD_IMPORTS));
+
+        generateClientButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.CXF_CONTEXT,
+                CXFPackage.CXF_CONTEXT__GENERATE_CLIENT));
+        
+        generateServerButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.CXF_CONTEXT,
+                CXFPackage.CXF_CONTEXT__GENERATE_SERVER));
+        
+        generateWrapperFaultBeanButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WRAPPER_FAULT_BEANS));
+        
+        generateWSDLButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WSDL));
+    }
+    
+    public void refresh() {
+        if (context.isSoap12Binding()) {
+            soapBindingCombo.setText("SOAP 1.2"); //$NON-NLS-1$    
+        } else {
+            soapBindingCombo.setText("SOAP 1.1"); //$NON-NLS-1$            
+        }
+
+        createXSDImportsButton.setSelection(context.isGenerateXSDImports());
+        generateClientButton.setSelection(context.isGenerateClient());
+        generateServerButton.setSelection(context.isGenerateServer());
+        generateWrapperFaultBeanButton.setSelection(context.isGenerateWrapperFaultBeans());
+        generateWSDLButton.setSelection(context.isGenerateWSDL());
+    }
+    
+    public void storeValues() {
+        if (soapBindingCombo.getText().equals("SOAP 1.2")) {
+            context.setSoap12Binding(true);
+        } else {
+            context.setSoap12Binding(false);
+        }
+
+        context.setGenerateXSDImports(createXSDImportsButton.getSelection());
+        context.setGenerateClient(generateClientButton.getSelection());
+        context.setGenerateServer(generateServerButton.getSelection());
+        context.setGenerateWrapperFaultBeans(generateWrapperFaultBeanButton.getSelection());
+        context.setGenerateWSDL(generateWSDLButton.getSelection());
     }
 }

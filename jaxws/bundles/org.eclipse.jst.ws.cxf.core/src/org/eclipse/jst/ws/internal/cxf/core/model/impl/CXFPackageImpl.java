@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackageImpl.java,v 1.3 2009/01/29 21:46:59 sclarke Exp $
+ * $Id: CXFPackageImpl.java,v 1.4 2009/04/06 21:33:14 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -787,6 +787,15 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getWSDL2JavaContext_AutoNameResolution() {
+        return (EAttribute)wsdl2JavaContextEClass.getEStructuralFeatures().get(17);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getWSDL2JavaDataModel() {
         return wsdl2JavaDataModelEClass;
     }
@@ -987,6 +996,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         createEAttribute(wsdl2JavaContextEClass, WSDL2_JAVA_CONTEXT__XJC_SYNC_METHODS);
         createEAttribute(wsdl2JavaContextEClass, WSDL2_JAVA_CONTEXT__XJC_MARK_GENERATED);
         createEAttribute(wsdl2JavaContextEClass, WSDL2_JAVA_CONTEXT__XJC_EPISODE_FILE);
+        createEAttribute(wsdl2JavaContextEClass, WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION);
 
         wsdl2JavaDataModelEClass = createEClass(WSDL2_JAVA_DATA_MODEL);
         createEAttribute(wsdl2JavaDataModelEClass, WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES);
@@ -1119,15 +1129,16 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         initEAttribute(getWSDL2JavaContext_WsdlVersion(), ecorePackage.getEString(), "wsdlVersion", "1.1", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getWSDL2JavaContext_UseDefaultValues(), ecorePackage.getEBoolean(), "useDefaultValues", "true", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getWSDL2JavaContext_XjcArgs(), ecorePackage.getEString(), "xjcArgs", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_NoAddressBinding(), ecorePackage.getEBoolean(), "noAddressBinding", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_XjcUseDefaultValues(), ecorePackage.getEBoolean(), "xjcUseDefaultValues", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_XjcToString(), ecorePackage.getEBoolean(), "xjcToString", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_XjcToStringMultiLine(), ecorePackage.getEBoolean(), "xjcToStringMultiLine", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_XjcToStringSimple(), ecorePackage.getEBoolean(), "xjcToStringSimple", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_XjcLocator(), ecorePackage.getEBoolean(), "xjcLocator", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_XjcSyncMethods(), ecorePackage.getEBoolean(), "xjcSyncMethods", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDL2JavaContext_XjcMarkGenerated(), ecorePackage.getEBoolean(), "xjcMarkGenerated", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_NoAddressBinding(), ecorePackage.getEBoolean(), "noAddressBinding", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_XjcUseDefaultValues(), ecorePackage.getEBoolean(), "xjcUseDefaultValues", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_XjcToString(), ecorePackage.getEBoolean(), "xjcToString", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_XjcToStringMultiLine(), ecorePackage.getEBoolean(), "xjcToStringMultiLine", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_XjcToStringSimple(), ecorePackage.getEBoolean(), "xjcToStringSimple", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_XjcLocator(), ecorePackage.getEBoolean(), "xjcLocator", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_XjcSyncMethods(), ecorePackage.getEBoolean(), "xjcSyncMethods", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_XjcMarkGenerated(), ecorePackage.getEBoolean(), "xjcMarkGenerated", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getWSDL2JavaContext_XjcEpisodeFile(), ecorePackage.getEString(), "xjcEpisodeFile", null, 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDL2JavaContext_AutoNameResolution(), ecorePackage.getEBoolean(), "autoNameResolution", "false", 0, 1, WSDL2JavaContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(wsdl2JavaDataModelEClass, WSDL2JavaDataModel.class, "WSDL2JavaDataModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         g1 = createEGenericType(this.getMap());

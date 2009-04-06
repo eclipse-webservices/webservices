@@ -170,6 +170,22 @@ public final class WSDL2JavaWidgetFactory {
         return noAddressBindingButton;
     }
 
+    public static Button createAutoNameResolutionButton(Composite parent, final WSDL2JavaContext model) {
+        final Button autoNameResolutionButton = new Button(parent, SWT.CHECK);
+        autoNameResolutionButton.setText(CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION,
+                CXFCorePlugin.getEdition()));
+        autoNameResolutionButton.setToolTipText(
+                CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION_TOOLTIP, 
+                        CXFCorePlugin.getEdition()));
+        autoNameResolutionButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                model.setAutoNameResolution(autoNameResolutionButton.getSelection());
+            }
+        });
+        autoNameResolutionButton.setSelection(model.isAutoNameResolution());
+        return autoNameResolutionButton;
+    }
+    
     public static TableItem createXJCDefaultValuesTableItem(Table xjcArgsTable, final WSDL2JavaContext model) {
         TableItem xjcDefaultValuesItem = new TableItem(xjcArgsTable, SWT.NONE);
         xjcDefaultValuesItem.setText(0, XJC_DV_ARG);

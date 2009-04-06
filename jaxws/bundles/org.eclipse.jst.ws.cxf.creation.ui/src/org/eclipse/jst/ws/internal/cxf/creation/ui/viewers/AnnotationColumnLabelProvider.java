@@ -22,6 +22,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -63,6 +64,11 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
             }
 
             IMethod method = (SourceMethod) element;
+ 
+            if (model.isUseServiceEndpointInterface()) {
+                type = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
+                        .getFullyQualifiedJavaInterfaceName());
+            }
             
             if (annotationKey == CXFModelUtils.WEB_PARAM) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils
@@ -93,6 +99,10 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
     @Override
     public void dispose() {
         super.dispose();
+        this.model = null;
+        this.methodMap = null;
+        this.annotationKey = null;
+        this.type = null;
         addAnnotationImage.dispose();
         removeAnnotationImage.dispose();
         disabled.dispose();

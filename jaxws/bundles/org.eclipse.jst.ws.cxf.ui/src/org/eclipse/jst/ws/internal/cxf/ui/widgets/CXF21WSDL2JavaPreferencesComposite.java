@@ -11,31 +11,49 @@
 package org.eclipse.jst.ws.internal.cxf.ui.widgets;
 
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaContext;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 
 /**
  * @author sclarke
  */
-public class CXF21WSDL2JavaPreferencesComposite extends CXF20WSDL2JavaPreferencesComposite {
+public class CXF21WSDL2JavaPreferencesComposite extends Composite {
     WSDL2JavaContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
+
+    protected Button generateServerButton;
+    protected Button generateImplementationButton;
+    protected Button processSOAPHeadersButton;
+    protected Button namespacePackageMappingButton;
+    protected Button excludesNamespaceMappingButton;
+
+    protected Table xjcArgsTable;
+
+    protected TableItem xjcDefaultValuesTableItem;
+    protected TableItem xjcToStringTableItem;
+    protected TableItem xjcToStringMultiLineTableItem;
+    protected TableItem xjcToStringSimpleTableItem;
+    protected TableItem xjcLocatorTableItem;
+    protected TableItem xjcSyncMethodsTableItem;
+    protected TableItem xjcMarkGeneratedTableItem;
 
     protected Button useDefaultValuesButton;
     protected Button noAddressBindingButton;
+    protected Button autoNameResolutionButton;
 
     public CXF21WSDL2JavaPreferencesComposite(Composite parent, int style) {
         super(parent, style);
-        addPaintListener(this);
     }
 
-    @Override
     public void addControls() {
         GridLayout preflayout = new GridLayout(1, true);
         this.setLayout(preflayout);
@@ -107,11 +125,16 @@ public class CXF21WSDL2JavaPreferencesComposite extends CXF20WSDL2JavaPreference
         gridData.horizontalSpan = 2;
         excludesNamespaceMappingButton.setLayoutData(gridData);
 
+        autoNameResolutionButton = WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, context);
+        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData.horizontalSpan = 2;
+        autoNameResolutionButton.setLayoutData(gridData);
+
         noAddressBindingButton = WSDL2JavaWidgetFactory.createNoAddressBindingButton(wsdl2javaGroup, context);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 2;
         noAddressBindingButton.setLayoutData(gridData);
-            
+        
         Group xjcArgGroup = new Group(this, SWT.SHADOW_IN);
         xjcArgGroup.setText(CXFUIMessages.WSDL2JAVA_XJC_ARG_GROUP_TITLE);
         GridLayout xjcArgLayout = new GridLayout(1, true);
@@ -137,34 +160,94 @@ public class CXF21WSDL2JavaPreferencesComposite extends CXF20WSDL2JavaPreference
         xjcMarkGeneratedTableItem = WSDL2JavaWidgetFactory.createXJCMarkGeneratedTableItem(xjcArgsTable,
                 context);
     }
-    
-    @Override
-    public void paintControl(PaintEvent event) {
-        super.paintControl(event);
-        if (useDefaultValuesButton != null && noAddressBindingButton != null) {
-            useDefaultValuesButton.setSelection(context.isUseDefaultValues());
-            noAddressBindingButton.setSelection(context.isNoAddressBinding());
-        }
+
+    public void setDefaults() {
+        useDefaultValuesButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__USE_DEFAULT_VALUES));
+        
+        noAddressBindingButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__NO_ADDRESS_BINDING));
+
+        generateServerButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.CXF_CONTEXT,
+                CXFPackage.CXF_CONTEXT__GENERATE_SERVER));
+        
+        generateImplementationButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__GENERATE_IMPLEMENTATION));
+        
+        processSOAPHeadersButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__PROCESS_SOAP_HEADERS));
+        
+        namespacePackageMappingButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_NAMESPACE_PACKAGE_NAME_MAPPING));
+        
+        excludesNamespaceMappingButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING));
+
+        autoNameResolutionButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION));
+
+        xjcDefaultValuesTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_USE_DEFAULT_VALUES));
+        
+        xjcToStringTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING));
+        
+        xjcToStringMultiLineTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_MULTI_LINE));
+        
+        xjcToStringSimpleTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_SIMPLE));
+        
+        xjcLocatorTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_LOCATOR));
+        
+        xjcSyncMethodsTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_SYNC_METHODS));
+        
+        xjcMarkGeneratedTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_MARK_GENERATED));
     }
     
-    @Override
-    public void setDefaults() {
-        useDefaultValuesButton.setSelection(true);
-        noAddressBindingButton.setSelection(false);
-        
-        generateServerButton.setSelection(false);
-        generateImplementationButton.setSelection(true);
-        processSOAPHeadersButton.setSelection(false);
-        namespacePackageMappingButton.setSelection(true);
-        excludesNamespaceMappingButton.setSelection(true);
+    public void refresh() {
+        useDefaultValuesButton.setSelection(context.isUseDefaultValues());
+        noAddressBindingButton.setSelection(context.isNoAddressBinding());
+        autoNameResolutionButton.setSelection(context.isAutoNameResolution());
 
-        xjcDefaultValuesTableItem.setChecked(false);
-        xjcToStringTableItem.setChecked(false);
-        xjcToStringMultiLineTableItem.setChecked(false);
-        xjcToStringSimpleTableItem.setChecked(false);
-        xjcLocatorTableItem.setChecked(false);
-        xjcSyncMethodsTableItem.setChecked(false);
-        xjcMarkGeneratedTableItem.setChecked(false);
+        generateServerButton.setSelection(context.isGenerateServer());
+        generateImplementationButton.setSelection(context.isGenerateImplementation());
+        processSOAPHeadersButton.setSelection(context.isProcessSOAPHeaders());
+        namespacePackageMappingButton.setSelection(context.isLoadDefaultNamespacePackageNameMapping());
+        excludesNamespaceMappingButton.setSelection(context.isLoadDefaultExcludesNamepsaceMapping());
+
+        xjcDefaultValuesTableItem.setChecked(context.isXjcUseDefaultValues());
+        xjcToStringTableItem.setChecked(context.isXjcToString());
+        xjcToStringMultiLineTableItem.setChecked(context.isXjcToStringMultiLine());
+        xjcToStringSimpleTableItem.setChecked(context.isXjcToStringSimple());
+        xjcLocatorTableItem.setChecked(context.isXjcLocator());
+        xjcSyncMethodsTableItem.setChecked(context.isXjcSyncMethods());
+        xjcMarkGeneratedTableItem.setChecked(context.isXjcMarkGenerated());
+    }
+    
+    public void storeValues() {
+        context.setUseDefaultValues(useDefaultValuesButton.getSelection());
+        context.setNoAddressBinding(noAddressBindingButton.getSelection());
+        context.setAutoNameResolution(autoNameResolutionButton.getSelection());
+
+        context.setGenerateServer(generateServerButton.getSelection());
+        context.setGenerateImplementation(generateImplementationButton.getSelection());
+        context.setProcessSOAPHeaders(processSOAPHeadersButton.getSelection());
+        context.setLoadDefaultNamespacePackageNameMapping(namespacePackageMappingButton.getSelection());
+        context.setLoadDefaultExcludesNamepsaceMapping(excludesNamespaceMappingButton.getSelection());
+
+        context.setXjcUseDefaultValues(xjcDefaultValuesTableItem.getChecked());
+        context.setXjcToString(xjcToStringTableItem.getChecked());
+        context.setXjcToStringMultiLine(xjcToStringMultiLineTableItem.getChecked());
+        context.setXjcToStringSimple(xjcToStringSimpleTableItem.getChecked());
+        context.setXjcLocator(xjcLocatorTableItem.getChecked());
+        context.setXjcSyncMethods(xjcSyncMethodsTableItem.getChecked());
+        context.setXjcMarkGenerated(xjcMarkGeneratedTableItem.getChecked());
     }
 
 }

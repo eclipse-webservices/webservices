@@ -322,4 +322,31 @@ public interface WSDL2JavaContext extends CXFContext {
      * @generated
      */
     void setXjcEpisodeFile(String value);
+
+    /**
+     * Returns the value of the '<em><b>Auto Name Resolution</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Auto Name Resolution</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Auto Name Resolution</em>' attribute.
+     * @see #setAutoNameResolution(boolean)
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage#getWSDL2JavaContext_AutoNameResolution()
+     * @model default="false"
+     * @generated
+     */
+    boolean isAutoNameResolution();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaContext#isAutoNameResolution <em>Auto Name Resolution</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Auto Name Resolution</em>' attribute.
+     * @see #isAutoNameResolution()
+     * @generated
+     */
+    void setAutoNameResolution(boolean value);
 }

@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackage.java,v 1.2 2009/01/26 15:28:21 sclarke Exp $
+ * $Id: CXFPackage.java,v 1.3 2009/04/06 21:33:14 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model;
 
@@ -1296,13 +1296,22 @@ public interface CXFPackage extends EPackage {
     int WSDL2_JAVA_CONTEXT__XJC_EPISODE_FILE = CXF_CONTEXT_FEATURE_COUNT + 16;
 
     /**
+     * The feature id for the '<em><b>Auto Name Resolution</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION = CXF_CONTEXT_FEATURE_COUNT + 17;
+
+    /**
      * The number of structural features of the '<em>WSDL2 Java Context</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_CONTEXT_FEATURE_COUNT = CXF_CONTEXT_FEATURE_COUNT + 17;
+    int WSDL2_JAVA_CONTEXT_FEATURE_COUNT = CXF_CONTEXT_FEATURE_COUNT + 18;
 
     /**
      * The meta object id for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl <em>WSDL2 Java Data Model</em>}' class.
@@ -1693,13 +1702,22 @@ public interface CXFPackage extends EPackage {
     int WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE = CXF_DATA_MODEL_FEATURE_COUNT + 16;
 
     /**
+     * The feature id for the '<em><b>Auto Name Resolution</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION = CXF_DATA_MODEL_FEATURE_COUNT + 17;
+
+    /**
      * The feature id for the '<em><b>Included Namespaces</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES = CXF_DATA_MODEL_FEATURE_COUNT + 17;
+    int WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES = CXF_DATA_MODEL_FEATURE_COUNT + 18;
 
     /**
      * The feature id for the '<em><b>Binding Files</b></em>' attribute list.
@@ -1708,7 +1726,7 @@ public interface CXFPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__BINDING_FILES = CXF_DATA_MODEL_FEATURE_COUNT + 18;
+    int WSDL2_JAVA_DATA_MODEL__BINDING_FILES = CXF_DATA_MODEL_FEATURE_COUNT + 19;
 
     /**
      * The feature id for the '<em><b>Excluded Namespaces</b></em>' attribute.
@@ -1717,7 +1735,7 @@ public interface CXFPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__EXCLUDED_NAMESPACES = CXF_DATA_MODEL_FEATURE_COUNT + 19;
+    int WSDL2_JAVA_DATA_MODEL__EXCLUDED_NAMESPACES = CXF_DATA_MODEL_FEATURE_COUNT + 20;
 
     /**
      * The feature id for the '<em><b>Catalog File</b></em>' attribute.
@@ -1726,7 +1744,7 @@ public interface CXFPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__CATALOG_FILE = CXF_DATA_MODEL_FEATURE_COUNT + 20;
+    int WSDL2_JAVA_DATA_MODEL__CATALOG_FILE = CXF_DATA_MODEL_FEATURE_COUNT + 21;
 
     /**
      * The feature id for the '<em><b>Java Source Folder</b></em>' attribute.
@@ -1735,7 +1753,7 @@ public interface CXFPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__JAVA_SOURCE_FOLDER = CXF_DATA_MODEL_FEATURE_COUNT + 21;
+    int WSDL2_JAVA_DATA_MODEL__JAVA_SOURCE_FOLDER = CXF_DATA_MODEL_FEATURE_COUNT + 22;
 
     /**
      * The number of structural features of the '<em>WSDL2 Java Data Model</em>' class.
@@ -1744,7 +1762,7 @@ public interface CXFPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL_FEATURE_COUNT = CXF_DATA_MODEL_FEATURE_COUNT + 22;
+    int WSDL2_JAVA_DATA_MODEL_FEATURE_COUNT = CXF_DATA_MODEL_FEATURE_COUNT + 23;
 
     /**
      * The meta object id for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.Frontend <em>Frontend</em>}' enum.
@@ -2518,6 +2536,17 @@ public interface CXFPackage extends EPackage {
     EAttribute getWSDL2JavaContext_XjcEpisodeFile();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaContext#isAutoNameResolution <em>Auto Name Resolution</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Auto Name Resolution</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaContext#isAutoNameResolution()
+     * @see #getWSDL2JavaContext()
+     * @generated
+     */
+    EAttribute getWSDL2JavaContext_AutoNameResolution();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel <em>WSDL2 Java Data Model</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3197,6 +3226,14 @@ public interface CXFPackage extends EPackage {
          * @generated
          */
         EAttribute WSDL2_JAVA_CONTEXT__XJC_EPISODE_FILE = eINSTANCE.getWSDL2JavaContext_XjcEpisodeFile();
+
+        /**
+         * The meta object literal for the '<em><b>Auto Name Resolution</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION = eINSTANCE.getWSDL2JavaContext_AutoNameResolution();
 
         /**
          * The meta object literal for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.WSDL2JavaDataModelImpl <em>WSDL2 Java Data Model</em>}' class.

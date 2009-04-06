@@ -63,6 +63,7 @@ public final class CommandLineUtils {
     private static String W2J_GEN_ALL = "-all"; //$NON-NLS-1$
     private static String W2J_NO_OVERWRITE = "-keep"; //$NON-NLS-1$
     private static String W2J_DEFAULT_VALUES = "-defaultValues"; //$NON-NLS-1$
+    private static String W2J_AUTO_NAME_RESOLUTION = "-autoNameResolution"; //$NON-NLS-1$
     private static String W2J_EXCLUDE_NAMESPACE = "-nexclude"; //$NON-NLS-1$
     private static String W2J_EXT_SOAP_HEADER = "-exsh"; //$NON-NLS-1$
     private static String W2J_DEFAULT_NAMESPACE = "-dns"; //$NON-NLS-1$
@@ -192,6 +193,10 @@ public final class CommandLineUtils {
 
                 if (model.isUseDefaultValues()) {
                     progArgs.add(W2J_DEFAULT_VALUES);
+                }
+                
+                if (model.isAutoNameResolution()) {
+                    progArgs.add(W2J_AUTO_NAME_RESOLUTION);
                 }
                 
                 if (model.isNoAddressBinding()) {

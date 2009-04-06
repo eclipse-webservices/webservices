@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 /**
@@ -53,12 +54,15 @@ public abstract class CXFPersistentContext extends PersistentContext implements 
         setDefault(PREFERENCE_CXF_RUNTIME_LOCATION, ""); //$NON-NLS-1$
         setDefault(PREFERENCE_CXF_RUNTIME_EDITION, ""); //$NON-NLS-1$
         setDefault(PREFERENCE_CXF_RUNTIME_VERSION, ""); //$NON-NLS-1$
-        setDefault(PREFERENCE_EXPORT_CXF_CLASSPATH_CONTAINER, Boolean.parseBoolean(CXFPackage.eINSTANCE
-                .getCXFContext_ExportCXFClasspathContainer().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_CXF_VERBOSE, Boolean.parseBoolean(CXFPackage.eINSTANCE.getCXFContext_Verbose()
-                .getDefaultValueLiteral()));
-        setDefault(PREFERENCE_CXF_USE_SPRING_APP_CONTEXT, Boolean.parseBoolean(CXFPackage.eINSTANCE
-                .getCXFContext_UseSpringApplicationContext().getDefaultValueLiteral()));
+        
+        setDefault(PREFERENCE_EXPORT_CXF_CLASSPATH_CONTAINER, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER));
+
+        setDefault(PREFERENCE_CXF_VERBOSE, CXFModelUtils.getDefaultBooleanValue(CXFPackage.CXF_CONTEXT,
+                CXFPackage.CXF_CONTEXT__VERBOSE));
+
+        setDefault(PREFERENCE_CXF_USE_SPRING_APP_CONTEXT, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT));
     }
 
     public String getCxfRuntimeLocation() {

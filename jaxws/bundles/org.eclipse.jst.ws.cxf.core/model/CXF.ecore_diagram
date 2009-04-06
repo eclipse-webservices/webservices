@@ -131,6 +131,78 @@
   <children xmi:type="notation:Node" xmi:id="_zKAU9OukEd2pfImT1jT7vQ" type="2001">
     <children xmi:type="notation:Node" xmi:id="_zKAU9-ukEd2pfImT1jT7vQ" type="5001"/>
     <children xmi:type="notation:Node" xmi:id="_zKAU-OukEd2pfImT1jT7vQ" type="7001">
+      <children xmi:type="notation:Node" xmi:id="_cwezIB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/generateImplementation"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwezIR92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwezIh92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/processSOAPHeaders"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwfaMB92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwfaMR92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/loadDefaultNamespacePackageNameMapping"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwfaMh92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwfaMx92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/loadDefaultExcludesNamepsaceMapping"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwfaNB92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwfaNR92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/validate"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwgBQB92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwgBQR92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/wsdlVersion"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwgBQh92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwgBQx92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/useDefaultValues"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwgBRB92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwgBRR92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcArgs"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwgBRh92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwgoUB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/noAddressBinding"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwgoUR92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwgoUh92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcUseDefaultValues"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwgoUx92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwhPYB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcToString"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwhPYR92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwhPYh92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcToStringMultiLine"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwhPYx92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwhPZB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcToStringSimple"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwhPZR92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwh2cB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcLocator"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwh2cR92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwh2ch92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcSyncMethods"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwh2cx92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwh2dB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcMarkGenerated"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwh2dR92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_cwidgB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/xjcEpisodeFile"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cwidgR92Ed6I5swlrsn37g"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_jVh0gB92Ed6I5swlrsn37g" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CXF.ecore#//WSDL2JavaContext/autoNameResolution"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_jVh0gR92Ed6I5swlrsn37g"/>
+      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_zKAU-eukEd2pfImT1jT7vQ"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_zKAU-uukEd2pfImT1jT7vQ"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_zKAU--ukEd2pfImT1jT7vQ"/>

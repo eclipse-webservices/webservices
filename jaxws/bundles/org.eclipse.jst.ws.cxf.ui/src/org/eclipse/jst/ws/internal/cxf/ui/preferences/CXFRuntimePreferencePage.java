@@ -22,6 +22,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFContext;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.LaunchUtils;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIPlugin;
@@ -316,7 +318,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
         springConfigTabItem.setControl(springConfigPreferncesGroup);
 
         handlePreferenceControls();
-        
+
         return composite;
     }
 
@@ -341,6 +343,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
         wsdl2JavaPreferencesGroup.layout();
         jaxwsPreferencesGroup.layout();
         springConfigPreferncesGroup.layout();
+        refresh();
     }
 
     private IStatus checkRuntimeExist(String path) {
@@ -428,6 +431,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
             }
             
             cxfToolVersionLabel.setText(cxfRuntimeEdition + " " + cxfRuntimeVersion); //$NON-NLS-1$
+
             context.setCxfRuntimeVersion(cxfRuntimeVersion);
             context.setCxfRuntimeEdition(cxfRuntimeEdition);
         }
@@ -454,12 +458,39 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
     }
 
     private void setDefaults() {
+        exportCXFClasspathContainerButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER));
+        
         java2WSDLRuntimePreferencesComposite.setDefaults();
         java2WSRuntimePreferencesComposite.setDefaults();
         cxf20WSDL2JavaPreferencesComposite.setDefaults();
         cxf21WSDL2JavaPreferencesComposite.setDefaults();
         annotationsComposite.setDefaults();
         springConfigComposite.setDefaults();
+    }
+    
+    private void refresh() {
+        if (context.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
+            java2WSRuntimePreferencesComposite.refresh();
+            cxf21WSDL2JavaPreferencesComposite.refresh();
+        } else {
+            java2WSDLRuntimePreferencesComposite.refresh();
+            cxf20WSDL2JavaPreferencesComposite.refresh();
+        }
+    }
+    
+    private void storeValues() {
+        context.setExportCXFClasspathContainer(exportCXFClasspathContainerButton.getSelection());
+        
+        if (context.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
+            java2WSRuntimePreferencesComposite.storeValues();
+            cxf21WSDL2JavaPreferencesComposite.storeValues();
+        } else {
+            java2WSDLRuntimePreferencesComposite.storeValues();
+            cxf20WSDL2JavaPreferencesComposite.storeValues();
+        }
+        annotationsComposite.storeValues();
+        springConfigComposite.storeValues();
     }
     
     @Override
@@ -480,6 +511,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
 
     @Override
     public boolean performOk() {
-        return super.performOk();
+        storeValues();
+        return true;
     }
 }

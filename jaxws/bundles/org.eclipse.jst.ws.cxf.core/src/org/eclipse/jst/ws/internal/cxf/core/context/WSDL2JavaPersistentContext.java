@@ -15,6 +15,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
 import org.eclipse.jst.ws.internal.cxf.core.model.DataBinding;
 import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaContext;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 
 /**
  * @author sclarke
@@ -40,6 +41,7 @@ public class WSDL2JavaPersistentContext extends CXFPersistentContext implements 
     public static final String PREFERENCE_W2J_XJC_ARGS = "cxfW2JXJCArgs"; //$NON-NLS-1$
     public static final String PREFERENCE_W2J_NO_ADDRESS_BINDING = "cxfW2JNoAddressBinding"; //$NON-NLS-1$
     public static final String PREFERENCE_W2J_USE_DEFAULT_VALUES = "cxfW2JUseDefaultValues"; //$NON-NLS-1$
+    public static final String PREFERENCE_W2J_AUTO_NAME_RESOLUTION = "cxfW2JAutoNameResolution"; //$NON-NLS-1$
 
     public static final String XJC_USE_DEFAULT_VALUES = "xjcUseDefaultValues"; //$NON-NLS-1$
     public static final String XJC_TO_STRING = "xjcToString"; //$NON-NLS-1$
@@ -56,47 +58,71 @@ public class WSDL2JavaPersistentContext extends CXFPersistentContext implements 
 
     public void load() {
         super.load();
-        setDefault(PREFERENCE_W2J_GENERATE_CLIENT, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getCXFContext_GenerateClient().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_W2J_GENERATE_SERVER, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getCXFContext_GenerateServer().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_W2J_GENERATE_IMPLEMENTATION, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_GenerateImplementation().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_W2J_GENERATE_ANT_BUILD_FILE, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getCXFContext_GenerateAntBuildFile().getDefaultValueLiteral()));
+        setDefault(PREFERENCE_W2J_GENERATE_CLIENT, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__GENERATE_CLIENT));
+
+        setDefault(PREFERENCE_W2J_GENERATE_SERVER, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__GENERATE_SERVER));
+
+        setDefault(PREFERENCE_W2J_GENERATE_IMPLEMENTATION, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__GENERATE_IMPLEMENTATION));
+
+        setDefault(PREFERENCE_W2J_GENERATE_ANT_BUILD_FILE, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.CXF_CONTEXT, CXFPackage.CXF_CONTEXT__GENERATE_ANT_BUILD_FILE));
+
         setDefault(PREFERENCE_W2J_XJC_ARGS, ""); //$NON-NLS-1$
-        setDefault(PREFERENCE_W2J_PROCESS_SOAP_HEADERS, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_ProcessSOAPHeaders().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_W2J_LOAD_DEFAULT_NAMESPACE_PACKAGENAME_MAPPING, Boolean.parseBoolean(CXFPackage.
-            eINSTANCE.getWSDL2JavaContext_LoadDefaultNamespacePackageNameMapping().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_W2J_LOAD_DEFAULT_EXCLUDES_NAMESPACE_MAPPING, Boolean.parseBoolean(CXFPackage.
-                eINSTANCE.getWSDL2JavaContext_LoadDefaultExcludesNamepsaceMapping().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_W2J_VALIDATE_WSDL, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_Validate().getDefaultValueLiteral()));
+
+        setDefault(PREFERENCE_W2J_PROCESS_SOAP_HEADERS, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__PROCESS_SOAP_HEADERS));
+
+        setDefault(PREFERENCE_W2J_LOAD_DEFAULT_NAMESPACE_PACKAGENAME_MAPPING, CXFModelUtils
+                .getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                        CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_NAMESPACE_PACKAGE_NAME_MAPPING));
+
+        setDefault(PREFERENCE_W2J_LOAD_DEFAULT_EXCLUDES_NAMESPACE_MAPPING, CXFModelUtils
+                .getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                        CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING));
+
+        setDefault(PREFERENCE_W2J_VALIDATE_WSDL, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__VALIDATE));
 
         setDefault(PREFERENCE_W2J_DATABINDING, DataBinding.JAXB.getLiteral());
+
         setDefault(PREFERENCE_W2J_FRONTEND, Frontend.JAXWS.getLiteral());
+
         setDefault(PREFERENCE_W2J_WSDL_VERSION, CXFPackage.eINSTANCE.getWSDL2JavaContext_WsdlVersion()
                 .getDefaultValueLiteral());
-        setDefault(PREFERENCE_W2J_NO_ADDRESS_BINDING, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_NoAddressBinding().getDefaultValueLiteral()));
-        setDefault(PREFERENCE_W2J_USE_DEFAULT_VALUES, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_UseDefaultValues().getDefaultValueLiteral()));
 
-        setDefault(XJC_USE_DEFAULT_VALUES, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcUseDefaultValues().getDefaultValueLiteral()));
-        setDefault(XJC_TO_STRING, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToString().getDefaultValueLiteral()));
-        setDefault(XJC_TO_STRING_MULTI, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToStringMultiLine().getDefaultValueLiteral()));
-        setDefault(XJC_TO_STRING_SIMPLE, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToStringSimple().getDefaultValueLiteral()));
-        setDefault(XJC_LOCATOR, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcLocator().getDefaultValueLiteral()));
-        setDefault(XJC_SYNC_METHODS, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcSyncMethods().getDefaultValueLiteral()));
-        setDefault(XJC_MARK_GENERATED, Boolean.parseBoolean(
-                CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcMarkGenerated().getDefaultValueLiteral()));
+        setDefault(PREFERENCE_W2J_NO_ADDRESS_BINDING, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__NO_ADDRESS_BINDING));
+
+        setDefault(PREFERENCE_W2J_USE_DEFAULT_VALUES, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__USE_DEFAULT_VALUES));
+
+        setDefault(PREFERENCE_W2J_AUTO_NAME_RESOLUTION, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION));
+
+        setDefault(XJC_USE_DEFAULT_VALUES, CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_USE_DEFAULT_VALUES));
+
+        setDefault(XJC_TO_STRING, CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING));
+
+        setDefault(XJC_TO_STRING_MULTI, CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_MULTI_LINE));
+
+        setDefault(XJC_TO_STRING_SIMPLE, CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_SIMPLE));
+
+        setDefault(XJC_LOCATOR, CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_LOCATOR));
+
+        setDefault(XJC_SYNC_METHODS, CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_SYNC_METHODS));
+
+        setDefault(XJC_MARK_GENERATED, CXFModelUtils.getDefaultBooleanValue(CXFPackage.WSDL2_JAVA_CONTEXT,
+                CXFPackage.WSDL2_JAVA_CONTEXT__XJC_MARK_GENERATED));
+
         setDefault(XJC_EPISODE_FILE, ""); //$NON-NLS-1$
     }
 
@@ -204,6 +230,14 @@ public class WSDL2JavaPersistentContext extends CXFPersistentContext implements 
     public void setNoAddressBinding(boolean noAddressBinding) {
         setValue(PREFERENCE_W2J_NO_ADDRESS_BINDING, noAddressBinding);
     }
+    
+    public boolean isAutoNameResolution() {
+        return getValueAsBoolean(PREFERENCE_W2J_AUTO_NAME_RESOLUTION);
+    }
+
+    public void setAutoNameResolution(boolean autoNameResolution) {
+        setValue(PREFERENCE_W2J_AUTO_NAME_RESOLUTION, autoNameResolution);
+    }
 
     public boolean isUseDefaultValues() {
         return getValueAsBoolean(PREFERENCE_W2J_USE_DEFAULT_VALUES);
@@ -213,6 +247,7 @@ public class WSDL2JavaPersistentContext extends CXFPersistentContext implements 
         setValue(PREFERENCE_W2J_USE_DEFAULT_VALUES, useDefaultValues);
     }
 
+    
     public boolean isXjcUseDefaultValues() {
         return getValueAsBoolean(XJC_USE_DEFAULT_VALUES);
     }

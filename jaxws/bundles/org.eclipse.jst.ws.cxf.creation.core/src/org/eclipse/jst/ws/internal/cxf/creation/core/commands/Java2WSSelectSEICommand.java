@@ -112,7 +112,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
             
             PerformChangeOperation performChangeOperation = new PerformChangeOperation(createChangeOperation);
             
-            WorkbenchRunnableAdapter adapter= new WorkbenchRunnableAdapter(performChangeOperation);
+            WorkbenchRunnableAdapter adapter = new WorkbenchRunnableAdapter(performChangeOperation);
             PlatformUI.getWorkbench().getProgressService().runInUI(
                 new BusyIndicatorRunnableContext(), adapter, adapter.getSchedulingRule());
 

@@ -63,7 +63,9 @@ public class WSDL2JavaDefaultsConfigWidget extends SimpleWidgetDataContributor {
         WSDL2JavaWidgetFactory.createNamespacePackageMappingButton(wsdl2javaGroup, model);
 
         WSDL2JavaWidgetFactory.createExcludesNamespaceMappingButton(wsdl2javaGroup, model);
-
+        
+        WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, model);
+        
         if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
             WSDL2JavaWidgetFactory.createNoAddressBindingButton(wsdl2javaGroup, model);
         }

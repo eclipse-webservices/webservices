@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.cxf.ui.widgets;
 
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -118,11 +120,29 @@ public class AnnotationsComposite extends Composite {
     }
 
     public void setDefaults() {
-        generateWebMethodButton.setSelection(true);
-        generateWebParamButton.setSelection(true);
-        generateRequestWrapperButton.setSelection(true);
-        generateResponseWrapperButton.setSelection(true);
-        enableAPTButton.setSelection(false);
+        generateWebMethodButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_METHOD_ANNOTATION));
+        
+        generateWebParamButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_PARAM_ANNOTATION));
+        
+        generateRequestWrapperButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT, 
+                CXFPackage.JAVA2_WS_CONTEXT__GENERATE_REQUEST_WRAPPER_ANNOTATION));
+        
+        generateResponseWrapperButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__GENERATE_RESPONSE_WRAPPER_ANNOTATION));
+        
+        enableAPTButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
+                CXFPackage.JAVA2_WS_CONTEXT__ANNOTATION_PROCESSING_ENABLED));
     }
     
+    public void storeValues() {
+        context.setGenerateWebMethodAnnotation(generateWebMethodButton.getSelection());
+        context.setGenerateWebParamAnnotation(generateWebParamButton.getSelection());
+        context.setGenerateRequestWrapperAnnotation(generateRequestWrapperButton.getSelection());
+        context.setGenerateResponseWrapperAnnotation(generateResponseWrapperButton.getSelection());
+        context.setAnnotationProcessingEnabled(enableAPTButton.getSelection());
+    }
 }

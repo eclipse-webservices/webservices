@@ -28,7 +28,9 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFContext;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -125,13 +127,17 @@ public final class LaunchUtils {
     private static void logStream(String outputStream) {
         try {
             MessageConsole cxfConsole = getCXFConsole();
-            IWorkbenchPage workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            String console_view_id = IConsoleConstants.ID_CONSOLE_VIEW;
-            IConsoleView consoleView = (IConsoleView) workbenchPage.showView(console_view_id);
-            consoleView.display(cxfConsole);
-            IOConsoleOutputStream consoleOutputStream = cxfConsole.newOutputStream();
-            consoleOutputStream.write(outputStream);
-            consoleOutputStream.close();
+            IWorkbench workbench = PlatformUI.getWorkbench();
+            IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
+            if (workbenchWindow != null) {
+                IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
+                String console_view_id = IConsoleConstants.ID_CONSOLE_VIEW;
+                IConsoleView consoleView = (IConsoleView) workbenchPage.showView(console_view_id);
+                consoleView.display(cxfConsole);
+                IOConsoleOutputStream consoleOutputStream = cxfConsole.newOutputStream();
+                consoleOutputStream.write(outputStream);
+                consoleOutputStream.close();
+            }
         } catch (PartInitException pie) {
             CXFCorePlugin.log(pie);
         } catch (IOException ioe) {
