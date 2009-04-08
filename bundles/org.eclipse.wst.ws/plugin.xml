@@ -7,6 +7,7 @@
    <extension-point id="locator" name="%XP_WEB_SERVICE_LOCATOR" schema="schema/webServiceLocator.exsd"/>
    
    <extension-point id="ExtensibilityElementTransformer" name="%XP_EXTENSIBILITY_ELEMENT_TRANSFORMER" schema="schema/ExtensibilityElementTransformer.exsd"/>
+   <extension-point id="ifile2uriconverter" name="%XP_IFILE_2_URI_CONVERTER" schema="schema/ifile2uriconverter.exsd"/>
 
    <!-- Extension providing workspace WSDL discovery -->   
    <extension

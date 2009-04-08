@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@
  * 20061211   161589 makandre@ca.ibm.com - Andrew Mak, NPE in service generation after opening and cancelling from browse dialog
  * 20070131   168786 makandre@ca.ibm.com - Andrew Mak, wsdl url on web service wizard page 1 is not reflected in browse dialog
  * 20070326   171071 makandre@ca.ibm.com - Andrew Mak, Create public utility method for copying WSDL files
+ * 20090310   242440 yenlu@ca.ibm.com - Yen Lu, Pluggable IFile to URI Converter
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -74,6 +75,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.ws.internal.converter.IIFile2UriConverter;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServiceEntity;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
@@ -510,15 +512,28 @@ public class WSDLSelectionWidget extends AbstractObjectSelectionWidget implement
   
   private String iFile2URI(IFile file)
   {
-  	File f = file.getLocation().toFile();
-    try
-    {
-      return f.toURL().toString();
-    }
-    catch (MalformedURLException murle)
-    {
-    }
-    return f.toString();
+	String uri = null;
+	IIFile2UriConverter converter = WSPlugin.getInstance().getIFile2UriConverter();
+	boolean allowBaseConversionOnFailure = true;	
+	if (converter != null)
+	{
+		uri = converter.convert(file);
+		if (uri == null)
+			allowBaseConversionOnFailure = converter.allowBaseConversionOnFailure();
+	}
+	if (uri == null && allowBaseConversionOnFailure)
+	{
+  	  File f = file.getLocation().toFile();
+      try
+      {
+        uri = f.toURL().toString();
+      }
+      catch (MalformedURLException murle)
+      {
+    	uri = f.toString();
+      }
+	}
+    return uri;
   }
 
   public void setInitialSelection(IStructuredSelection initialSelection)
