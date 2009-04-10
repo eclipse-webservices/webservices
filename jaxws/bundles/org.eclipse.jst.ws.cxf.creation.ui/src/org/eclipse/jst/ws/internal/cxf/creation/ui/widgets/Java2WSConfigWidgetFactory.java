@@ -30,8 +30,8 @@ public class Java2WSConfigWidgetFactory implements INamedWidgetContributorFactor
 
     private SimpleWidgetContributor java2WSWidgetContributor;
 
-    private Java2WSDataModel model;
-
+    private Java2WSConfigWidget java2WSConfigWidget = new Java2WSConfigWidget();
+    
     public Java2WSConfigWidgetFactory() {
 
     }
@@ -53,11 +53,10 @@ public class Java2WSConfigWidgetFactory implements INamedWidgetContributorFactor
     }
 
     public void setJava2WSDataModel(Java2WSDataModel model) {
-        this.model = model;
+        java2WSConfigWidget.setJava2WSDataModel(model);
     }
 
     private void init() {
-        final Java2WSConfigWidget java2WSConfigWidget = new Java2WSConfigWidget(model);
         java2WSWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String title = CXFCreationUIMessages.bind(

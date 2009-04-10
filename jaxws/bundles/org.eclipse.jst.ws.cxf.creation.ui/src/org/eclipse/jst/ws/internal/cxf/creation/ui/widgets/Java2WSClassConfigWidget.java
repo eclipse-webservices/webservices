@@ -62,6 +62,8 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
 
     private Combo selectSEICombo;
     private Text seiInterfaceNameText;
+    
+    private CheckboxTableViewer seiMembersToExtractTableViewer;
     private Table seiMembersToExtractTable;
     private Button selectAllButton;
     private Button deselectAllButton;
@@ -69,9 +71,29 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
     private Java2WSDataModel model;
     private IType startingPointType;
 
-    public Java2WSClassConfigWidget(Java2WSDataModel model, IType startingPointType) {
+    public Java2WSClassConfigWidget() {
+    }
+
+    public void setJava2WSDataModel(Java2WSDataModel model) {
         this.model = model;
+    }
+
+    public void setJavaStartingPointType(IType startingPointType) {
         this.startingPointType = startingPointType;
+    }
+
+    @Override
+    public void internalize() {
+        useSEIButton.setSelection(false);
+        selectSEIButton.setSelection(false);
+        selectSEIButton.setEnabled(false);
+        enableSelectSEIControls(false);
+        extractSEIButton.setSelection(false);
+        extractSEIButton.setEnabled(false);
+        enableExtractSEIControls(false);
+        seiInterfaceNameText.setText("");
+        seiMembersToExtractTableViewer.setAllChecked(false);
+        NUMBER_OF_CHECKED_METHODS = 0;
     }
 
     @Override
@@ -200,7 +222,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         Java2WSWidgetFactory.createPaddingLabel(composite);
         Java2WSWidgetFactory.createPaddingLabel(composite);
 
-        final CheckboxTableViewer seiMembersToExtractTableViewer = Java2WSWidgetFactory
+        seiMembersToExtractTableViewer = Java2WSWidgetFactory
                 .createSEIMembersToExtractTableViewer(composite);
         seiMembersToExtractTable = seiMembersToExtractTableViewer.getTable();
         seiMembersToExtractTableViewer.addCheckStateListener(new ICheckStateListener() {

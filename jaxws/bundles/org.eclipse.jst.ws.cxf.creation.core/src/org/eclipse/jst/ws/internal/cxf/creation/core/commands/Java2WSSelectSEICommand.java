@@ -152,7 +152,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
                 if (!startingPointType.getCompilationUnit().isConsistent()) {
                     startingPointType.getCompilationUnit().makeConsistent(monitor);
                 }
-                model.setFullyQualifiedJavaInterfaceName(null);
+
                 model.setMethodMap(CXFModelUtils.getMethodMap(startingPointType, model));
 
             } catch (JavaModelException jme) {

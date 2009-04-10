@@ -34,8 +34,10 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFactory {
     private SimpleWidgetContributor classWidgetContributor;
     private SimpleWidgetContributor interfaceWidgetContributor;
+    
+    private Java2WSClassConfigWidget java2WSClassConfigWidget = new Java2WSClassConfigWidget();
+    private Java2WSInterfaceConfigWidget java2WSInterfaceConfigWidget = new Java2WSInterfaceConfigWidget();
 
-    private Java2WSDataModel model;
     private IType startingPointType;
 
     public INamedWidgetContributor getFirstNamedWidget() {
@@ -68,16 +70,17 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
     }
 
     public void setJava2WSDataModel(Java2WSDataModel model) {
-        this.model = model;
+        java2WSClassConfigWidget.setJava2WSDataModel(model);
+        java2WSInterfaceConfigWidget.setJava2WSDataModel(model);
     }
 
     public void setJavaStartingPointType(IType startingPointType) {
         this.startingPointType = startingPointType;
+        java2WSClassConfigWidget.setJavaStartingPointType(startingPointType);
+        java2WSInterfaceConfigWidget.setJavaStartingPointType(startingPointType);
     }
 
     private void init() {
-        final Java2WSClassConfigWidget java2WSClassConfigWidget = new Java2WSClassConfigWidget(model,
-                startingPointType);
         classWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String classConfigTitle = CXFCreationUIMessages.bind(
@@ -92,8 +95,6 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
             }
         });
 
-        final Java2WSInterfaceConfigWidget java2WSInterfaceConfigWidget = new Java2WSInterfaceConfigWidget(
-                model, startingPointType);
         interfaceWidgetContributor = new SimpleWidgetContributor();
         String interfaceConfigTitle = CXFCreationUIMessages.bind(
                 CXFCreationUIMessages.JAVA2WS_INTERFACE_CONFIG_PAGE_TITLE,

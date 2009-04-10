@@ -29,8 +29,8 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 public class JAXWSAnnotateWidgetFactory implements INamedWidgetContributorFactory {
     private SimpleWidgetContributor jaxwsAnnotateWidgetContributor;
 
-    private Java2WSDataModel model;
-
+    private JAXWSAnnotateJavaWidget jaxwsAnnotateJavaWidget = new JAXWSAnnotateJavaWidget();
+    
     public INamedWidgetContributor getFirstNamedWidget() {
         if (jaxwsAnnotateWidgetContributor == null) {
             init();
@@ -48,11 +48,10 @@ public class JAXWSAnnotateWidgetFactory implements INamedWidgetContributorFactor
     }
 
     public void setJava2WSDataModel(Java2WSDataModel model) {
-        this.model = model;
+        jaxwsAnnotateJavaWidget.setJava2WSDataModel(model);
     }
 
     private void init() {
-        final JAXWSAnnotateJavaWidget jaxwsAnnotateJavaWidget = new JAXWSAnnotateJavaWidget(model);
         jaxwsAnnotateWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String title = CXFCreationUIMessages.bind(

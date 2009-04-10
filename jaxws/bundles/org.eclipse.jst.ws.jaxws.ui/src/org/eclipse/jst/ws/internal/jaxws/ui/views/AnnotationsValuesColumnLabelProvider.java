@@ -78,6 +78,9 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
                         || annotation.getElementName().equals(declaringClass.getCanonicalName())) {
                     IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
                     for (IMemberValuePair memberValuePair : memberValuePairs) {
+                        if (memberValuePair.getValue() == null) {
+                            break;
+                        }
                         if (memberValuePair.getMemberName().equals(method.getName())) {
                             if (returnType.equals(String.class)) {
                                 return memberValuePair.getValue().toString();

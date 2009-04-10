@@ -43,13 +43,37 @@ public class Java2WSConfigWidget extends SimpleWidgetDataContributor {
     private IStatus WSDL_FILENAME_ERROR_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
             CXFCreationUIMessages.JAVA2WS_ENTER_VALID_WSDL_NAME);
 
+    private Button generateClientButton;
+    private Button generateServerButton;
+    private Button generateWraperFaultBeansButton;
+    private Button generateWSDLButton;
     private Combo soapBindingCombo;
     private Button createXSDImports;
     private Text wsdlFileText;
     private Java2WSDataModel model;
 
-    public Java2WSConfigWidget(Java2WSDataModel model) {
+    public Java2WSConfigWidget() {
+    }
+
+    public void setJava2WSDataModel(Java2WSDataModel model) {
         this.model = model;
+    }
+    
+    @Override
+    public void internalize() {
+        if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
+            generateClientButton.setSelection(model.isGenerateClient());
+            generateServerButton.setSelection(model.isGenerateServer());
+            generateWraperFaultBeansButton.setSelection(model.isGenerateWrapperFaultBeans());
+            generateWSDLButton.setSelection(model.isGenerateWSDL());
+            enableWSDLGroup(model.isGenerateWSDL());
+        }
+        if (model.isSoap12Binding()) {
+            soapBindingCombo.setText("SOAP 1.2"); //$NON-NLS-1$
+        } else {
+            soapBindingCombo.setText("SOAP 1.1"); //$NON-NLS-1$
+        }
+        createXSDImports.setSelection(model.isGenerateXSDImports());
     }
 
     @Override
@@ -84,24 +108,25 @@ public class Java2WSConfigWidget extends SimpleWidgetDataContributor {
             java2wsGroup.setLayoutData(gridData);
     
             // Gen Client
-            Java2WSWidgetFactory.createGenerateClientButton(java2wsGroup, model);
+            generateClientButton = Java2WSWidgetFactory.createGenerateClientButton(java2wsGroup, model);
 
             // Gen Server
-            Java2WSWidgetFactory.createGenerateServerButton(java2wsGroup, model);
+            generateServerButton = Java2WSWidgetFactory.createGenerateServerButton(java2wsGroup, model);
     
             // Gen Wrapper and Fault Bean
-            Java2WSWidgetFactory.createGenerateWrapperFaultBeanButton(java2wsGroup, model);
+            generateWraperFaultBeansButton = Java2WSWidgetFactory.createGenerateWrapperFaultBeanButton(
+                    java2wsGroup, model);
     
             // Gen WSDL
-            final Button genWSDLButton = Java2WSWidgetFactory.createGenerateWSDLButton(java2wsGroup, model);
-            genWSDLButton.addSelectionListener(new SelectionAdapter() {
+            generateWSDLButton = Java2WSWidgetFactory.createGenerateWSDLButton(java2wsGroup, model);
+            generateWSDLButton.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
-                    enableWSDLGroup(genWSDLButton.getSelection());
+                    enableWSDLGroup(generateWSDLButton.getSelection());
                 }
             });
             gridData = new GridData(GridData.FILL_HORIZONTAL);
             gridData.horizontalSpan = 3;
-            genWSDLButton.setLayoutData(gridData);
+            generateWSDLButton.setLayoutData(gridData);
         }
         
         Group wsdlGroup = new Group(java2wsGroup == null ? composite : java2wsGroup, SWT.SHADOW_ETCHED_IN);

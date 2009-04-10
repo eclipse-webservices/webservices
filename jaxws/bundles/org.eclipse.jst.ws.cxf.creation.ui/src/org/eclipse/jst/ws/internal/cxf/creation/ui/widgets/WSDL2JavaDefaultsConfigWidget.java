@@ -30,11 +30,14 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 @SuppressWarnings("restriction")
 public class WSDL2JavaDefaultsConfigWidget extends SimpleWidgetDataContributor {
     private WSDL2JavaDataModel model;
-
-    public WSDL2JavaDefaultsConfigWidget(WSDL2JavaDataModel model) {
+    
+    public WSDL2JavaDefaultsConfigWidget() {
+    }
+    
+    public void setWSDL2JavaDataModel(WSDL2JavaDataModel model) {
         this.model = model;
     }
-
+    
     @Override
     public WidgetDataEvents addControls(final Composite parent, final Listener statusListener) {
         final Composite mainComposite = new Composite(parent, SWT.NONE);

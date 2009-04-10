@@ -31,11 +31,11 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
     private SimpleWidgetContributor wsdl2JavaWidgetContributor;
     private SimpleWidgetContributor wsdl2JavaDefaultsWidgetContributor;
 
-    private WSDL2JavaDataModel model;
-
+    private WSDL2JavaConfigWidget wsdl2JavaConfigWidget = new WSDL2JavaConfigWidget();
+    private WSDL2JavaDefaultsConfigWidget wsdl2JavaDefaultsConfigWidget = new WSDL2JavaDefaultsConfigWidget();
+    
     public INamedWidgetContributor getFirstNamedWidget() {
-        if ((model != null) && (wsdl2JavaWidgetContributor == null || 
-        		wsdl2JavaDefaultsWidgetContributor == null)) {
+        if ((wsdl2JavaWidgetContributor == null || wsdl2JavaDefaultsWidgetContributor == null)) {
             init();
         }
         return wsdl2JavaWidgetContributor;
@@ -54,15 +54,11 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
     }
 
     public void setWSDL2JavaDataModel(WSDL2JavaDataModel model) {
-        this.model = model;
-        if ((model != null) && (wsdl2JavaWidgetContributor == null || 
-        		wsdl2JavaDefaultsWidgetContributor == null)) {
-            init();
-        }
+        wsdl2JavaConfigWidget.setWSDL2JavaDataModel(model);
+        wsdl2JavaDefaultsConfigWidget.setWSDL2JavaDataModel(model);
     }
 
     private void init() {
-        final WSDL2JavaConfigWidget wsdl2JavaConfigWidget = new WSDL2JavaConfigWidget(model);
         wsdl2JavaWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         String wsdl2JavaPageTitle = CXFCreationUIMessages.bind(
@@ -77,8 +73,6 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
             }
         });
 
-        final WSDL2JavaDefaultsConfigWidget wsdl2JavaDefaultsConfigWidget = new WSDL2JavaDefaultsConfigWidget(
-                model);
         wsdl2JavaDefaultsWidgetContributor = new SimpleWidgetContributor();
         String wsdl2JavaDefaultsPageTitle = CXFCreationUIMessages.bind(
                 CXFCreationUIMessages.WSDL2JAVA_DEFAULTS_PAGE_TITLE, new Object[]{

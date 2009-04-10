@@ -32,8 +32,14 @@ public class Java2WSInterfaceConfigWidget extends SimpleWidgetDataContributor {
     private Java2WSDataModel model;
     private IType startingPointType;
 
-    public Java2WSInterfaceConfigWidget(Java2WSDataModel model, IType startingPointType) {
+    public Java2WSInterfaceConfigWidget() {
+    }
+
+    public void setJava2WSDataModel(Java2WSDataModel model) {
         this.model = model;
+    }
+
+    public void setJavaStartingPointType(IType startingPointType) {
         this.startingPointType = startingPointType;
     }
 

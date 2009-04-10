@@ -46,7 +46,7 @@ public class JAXWSSelectionTransformer implements Transformer {
                 }
             }
         }
-        return value;
+        return StructuredSelection.EMPTY;
     }
 
     private String getFullyQualifiedJavaName(IFile resource) {

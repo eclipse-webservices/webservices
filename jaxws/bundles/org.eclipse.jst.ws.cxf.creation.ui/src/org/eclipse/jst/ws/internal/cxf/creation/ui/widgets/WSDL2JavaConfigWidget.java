@@ -51,20 +51,46 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 @SuppressWarnings("restriction")
 public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
     private IStatus status = Status.OK_STATUS;
+    private Composite parent;
     private Listener statusListener;
 
     private WSDL2JavaDataModel model;
-
+    
+    private Combo outputDirCombo;
+    private Text packageNameText;
+    private Button namespaceMappingButton;
+    private TableViewer packageNameTableViewer;
+    private Combo serviceNameCombo;
+    private List bindingFilesList;
+    
     private Composite namespaceCompositeHolder;
     private Composite namespaceComposite;
     private int namespaceCompositeHeight = -1;
 
-    public WSDL2JavaConfigWidget(WSDL2JavaDataModel model) {
+    public WSDL2JavaConfigWidget() {
+    }
+    
+    public void setWSDL2JavaDataModel(WSDL2JavaDataModel model) {
         this.model = model;
+    }
+    
+    @Override
+    public void internalize() {
+        WSDL2JavaWidgetFactory.populateOutputDirectoryCombo(outputDirCombo, model.getProjectName());
+        packageNameText.setText(model.getIncludedNamespaces().get(model.getTargetNamespace()));
+        namespaceMappingButton.setSelection(false);
+        expandNamespaceComposite(false);
+        if (packageNameTableViewer != null && packageNameTableViewer.getContentProvider() != null) {
+            packageNameTableViewer.setInput(model.getWsdlDefinition());
+        }
+        WSDL2JavaWidgetFactory.populateServiceNameCombo(serviceNameCombo, model);
+
+        bindingFilesList.removeAll();
     }
 
     @Override
     public WidgetDataEvents addControls(final Composite parent, final Listener statusListener) {
+        this.parent = parent;
         this.statusListener = statusListener;
 
         final Composite mainComposite = new Composite(parent, SWT.NONE);
@@ -77,7 +103,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         // Output Dir
         WSDL2JavaWidgetFactory.createOutputDirectoryLabel(mainComposite);
 
-        Combo outputDirCombo = WSDL2JavaWidgetFactory.createOutputDirectoryCombo(mainComposite, model);
+        outputDirCombo = WSDL2JavaWidgetFactory.createOutputDirectoryCombo(mainComposite, model);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 2;
         outputDirCombo.setLayoutData(gridData);
@@ -85,7 +111,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         // Package Name:
         WSDL2JavaWidgetFactory.createPackageNameLabel(mainComposite);
 
-        final Text packageNameText = WSDL2JavaWidgetFactory.createPackageNameText(mainComposite, model);
+        packageNameText = WSDL2JavaWidgetFactory.createPackageNameText(mainComposite, model);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 2;
         packageNameText.setLayoutData(gridData);
@@ -98,7 +124,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
             }
         });
 
-        final Button namespaceMappingButton = WSDL2JavaWidgetFactory
+        namespaceMappingButton = WSDL2JavaWidgetFactory
                 .createNamespacePackageMappingButton(mainComposite);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 3;
@@ -106,39 +132,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         namespaceMappingButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (namespaceMappingButton.getSelection()) {
-                    if (namespaceComposite == null) {
-                        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-                        gridData.horizontalSpan = 3;
-                        gridData.verticalSpan = 7;
-                        namespaceCompositeHolder.setLayoutData(gridData);
-                        namespaceCompositeHolder.pack();
-
-                        namespaceComposite = getNamespaceMappingComposite(namespaceCompositeHolder);
-                        if (namespaceCompositeHeight == -1) {
-                            Point groupSize = namespaceComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
-                            namespaceCompositeHeight = groupSize.y;
-                        }
-                        Shell shell = parent.getShell();
-                        Point shellSize = shell.getSize();
-                        shell.setSize(shellSize.x, shellSize.y + namespaceCompositeHeight);
-
-                        namespaceCompositeHolder.layout();
-                    }
-                } else {
-                    if (namespaceComposite != null) {
-                        GridData gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
-                        gridData.horizontalSpan = 3;
-                        namespaceCompositeHolder.setLayoutData(gridData);
-                        namespaceCompositeHolder.pack();
-                        namespaceComposite.dispose();
-                        namespaceComposite = null;
-                        namespaceCompositeHolder.layout();
-                        Shell shell = parent.getShell();
-                        Point shellSize = shell.getSize();
-                        shell.setSize(shellSize.x, shellSize.y - namespaceCompositeHeight);
-                    }
-                }
+                expandNamespaceComposite(namespaceMappingButton.getSelection());
             }
         });
 
@@ -152,7 +146,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         // Service Name:
         WSDL2JavaWidgetFactory.createServiceNameLabel(mainComposite);
 
-        Combo serviceNameCombo = WSDL2JavaWidgetFactory.createServiceNameCombo(mainComposite, model);
+        serviceNameCombo = WSDL2JavaWidgetFactory.createServiceNameCombo(mainComposite, model);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 2;
         serviceNameCombo.setLayoutData(gridData);
@@ -162,7 +156,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         gridData.verticalSpan = 3;
         bindingFilesLabel.setLayoutData(gridData);
 
-        List bindingFilesList = WSDL2JavaWidgetFactory.createBindingFilesList(mainComposite);
+        bindingFilesList = WSDL2JavaWidgetFactory.createBindingFilesList(mainComposite);
 
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.verticalSpan = 3;
@@ -192,11 +186,64 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         return this;
     }
 
-    public Table createNamespaceMappingTable(Composite parent) {
-        TableViewer packageNameTableViewer = new TableViewer(parent, SWT.CHECK | SWT.MULTI | SWT.BORDER
+    private void expandNamespaceComposite(boolean expand) {
+        if (expand) {
+            if (namespaceComposite == null) {
+                GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+                gridData.horizontalSpan = 3;
+                gridData.verticalSpan = 7;
+                namespaceCompositeHolder.setLayoutData(gridData);
+                namespaceCompositeHolder.pack();
+
+                namespaceComposite = getNamespaceMappingComposite(namespaceCompositeHolder);
+                if (namespaceCompositeHeight == -1) {
+                    Point groupSize = namespaceComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+                    namespaceCompositeHeight = groupSize.y;
+                }
+                Shell shell = parent.getShell();
+                Point shellSize = shell.getSize();
+                shell.setSize(shellSize.x, shellSize.y + namespaceCompositeHeight);
+
+                namespaceCompositeHolder.layout();
+            }
+        } else {
+            if (namespaceComposite != null) {
+                GridData gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
+                gridData.horizontalSpan = 3;
+                namespaceCompositeHolder.setLayoutData(gridData);
+                namespaceCompositeHolder.pack();
+                namespaceComposite.dispose();
+                namespaceComposite = null;
+                namespaceCompositeHolder.layout();
+                Shell shell = parent.getShell();
+                Point shellSize = shell.getSize();
+                shell.setSize(shellSize.x, shellSize.y - namespaceCompositeHeight);
+            }
+        }
+    }
+    
+    private Composite getNamespaceMappingComposite(Composite parent) {
+        namespaceComposite = new Composite(parent, SWT.NONE);
+        GridLayout gridLayout = new GridLayout(1, true);
+        namespaceComposite.setLayout(gridLayout);
+        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        namespaceComposite.setLayoutData(gridData);
+
+        Table packageNameTable = createNamespaceMappingTable(namespaceComposite);
+
+        gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        gridData.horizontalSpan = 3;
+        gridData.verticalSpan = 6;
+        packageNameTable.setLayoutData(gridData);
+
+        return namespaceComposite;
+    }
+
+    private Table createNamespaceMappingTable(Composite parent) {
+        packageNameTableViewer = new TableViewer(parent, SWT.CHECK | SWT.MULTI | SWT.BORDER
                 | SWT.FULL_SELECTION);
 
-        final Table packageNameTable = packageNameTableViewer.getTable();
+        Table packageNameTable = packageNameTableViewer.getTable();
         packageNameTable.setLinesVisible(true);
         packageNameTable.setHeaderVisible(true);
 
@@ -220,7 +267,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         packageNameTableViewer.setContentProvider(new PackageNameTableContentProvider());
         packageNameTableViewer.setInput(model.getWsdlDefinition());
 
-        TableItem[] tableItems = packageNameTableViewer.getTable().getItems();
+        TableItem[] tableItems = packageNameTable.getItems();
         for (int i = 0; i < tableItems.length; i++) {
             TableItem tableItem = tableItems[i];
             if (model.getIncludedNamespaces().containsKey(tableItem.getText(0))) {
@@ -228,23 +275,6 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
             }
         }
         return packageNameTable;
-    }
-
-    private Composite getNamespaceMappingComposite(Composite parent) {
-        namespaceComposite = new Composite(parent, SWT.NONE);
-        GridLayout gridLayout = new GridLayout(1, true);
-        namespaceComposite.setLayout(gridLayout);
-        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        namespaceComposite.setLayoutData(gridData);
-
-        Table packageNameTable = createNamespaceMappingTable(namespaceComposite);
-
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        gridData.horizontalSpan = 3;
-        gridData.verticalSpan = 6;
-        packageNameTable.setLayoutData(gridData);
-
-        return namespaceComposite;
     }
 
     @Override

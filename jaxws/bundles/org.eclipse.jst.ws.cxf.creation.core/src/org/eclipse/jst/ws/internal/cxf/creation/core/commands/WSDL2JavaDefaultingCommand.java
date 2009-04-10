@@ -63,8 +63,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     
     private WebContentChangeListener webContentChangeListener;
     
-    public WSDL2JavaDefaultingCommand(WSDL2JavaDataModel model, String projectName, 
-    		String inputURL) {
+    public WSDL2JavaDefaultingCommand(WSDL2JavaDataModel model, String projectName, String inputURL) {
         this.model = model;
         this.projectName = projectName;
         this.inputURL = inputURL;
@@ -133,11 +132,8 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
         		}
             	definition = WSDLUtils.readWSDL(model.getWsdlURL());
             	if (definition != null) {
-            		String targetNamespace = definition.getTargetNamespace();
-            		String packageName = WSDLUtils.getPackageNameFromNamespace(targetNamespace);
-            		model.setTargetNamespace(targetNamespace);
-            		model.getIncludedNamespaces().put(targetNamespace, packageName);
-            		
+            	    setTNSOnModel(definition);
+           		
                     SOAPAddress soapAddress = WSDLUtils.getEndpointAddress(definition);
                     if (soapAddress != null) {
                         String address = soapAddress.getLocationURI();
@@ -154,6 +150,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
         		if (definition != null) {
                     Map servicesMap = definition.getServices();
                     Set<Map.Entry> servicesSet = servicesMap.entrySet();
+                    setTNSOnModel(definition);
                     for (Map.Entry serviceEntry : servicesSet) {
                         Service service = (Service) serviceEntry.getValue();
                         Map portsMap = service.getPorts();
@@ -170,7 +167,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
         		IPath wsdlFolderPath = WSDLUtils.getWSDLFolder(project).getLocation();
             	WSDLCopier copier = new WSDLCopier();
             	copier.setSourceURI(wsdlUrl.toExternalForm());
-            	copier.setTargetFolderURI(wsdlFolderPath.toFile().toString());
+            	copier.setTargetFolderURI(wsdlFolderPath.toFile().toURI().toString());
             	copier.setTargetFilename(filename);
             	workspace.run(copier, monitor);
             	
@@ -202,6 +199,13 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
         return status;
     }
+    
+    private void setTNSOnModel(Definition definition) {
+        String targetNamespace = definition.getTargetNamespace();
+        String packageName = WSDLUtils.getPackageNameFromNamespace(targetNamespace);
+        model.setTargetNamespace(targetNamespace);
+        model.getIncludedNamespaces().put(targetNamespace, packageName);
+    }
 
     public WSDL2JavaDataModel getWSDL2JavaDataModel() {
         return model;
@@ -222,6 +226,10 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
                 }
             }
         }
+        
+        model.getBindingFiles().clear();
+        model.getIncludedNamespaces().clear();
+       
         return status;
     }
 }

@@ -95,10 +95,13 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
     private TreeViewerColumn requestWrapperViewerColumn;
     private TreeViewerColumn responceWrapperViewerColumn;
     
-    public JAXWSAnnotateJavaWidget(Java2WSDataModel model) {
-        this.model = model;
+    public JAXWSAnnotateJavaWidget() {
     }
 
+    public void setJava2WSDataModel(Java2WSDataModel model) {
+        this.model = model;
+    }
+    
     @Override
     public WidgetDataEvents addControls(Composite parent, Listener statusListener) {
         SashForm sashForm = new SashForm(parent, SWT.VERTICAL | SWT.SMOOTH);
@@ -286,8 +289,8 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
     @Override
     public void internalize() {
         type = null;
-        javaTreeViewer.setInput(getType().getTypeRoot());
         updateLabelProviders();
+        javaTreeViewer.setInput(getType().getTypeRoot());
         javaTreeViewer.refresh();
         handleAnnotation(getType());
     }
@@ -442,6 +445,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         Font font = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
         annotationPreviewViewer.getTextWidget().setFont(font);
         annotationPreviewViewer.setEditable(false);
+
 
         String source = JDTUtils.getSourceFromType(getType());
         IDocument document = new Document(source);

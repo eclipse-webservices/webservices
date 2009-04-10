@@ -41,8 +41,7 @@ public class WSDL2JavaProjectSelectionCommand extends AbstractDataModelOperation
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
-		
-		
+
 		if (currentProject == null && initialProject == null && serverProject != null) {
 			status = Status.OK_STATUS;
 			model.setProjectName(serverProject.getName());
@@ -53,9 +52,16 @@ public class WSDL2JavaProjectSelectionCommand extends AbstractDataModelOperation
 			status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
 					CXFCreationCoreMessages.WSDL2JAVA_PROJECT_SELECTION_ERROR, new Object[]{
 							serverProject.getName(), initialProject.getName()}));
-		} else {
-			model.setProjectName(currentProject == null ? initialProject.getProject().getName() :
-				currentProject.getProject().getName());
+		} else if (initialProject == null && currentProject != null && !currentProject.equals(serverProject)) { 
+            status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
+                    CXFCreationCoreMessages.WSDL2JAVA_PROJECT_SELECTION_ERROR, new Object[]{
+                            serverProject.getName(), currentProject.getName()}));
+		} else if (initialProject != null && currentProject != null && !currentProject.equals(serverProject)) {
+            status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
+                    CXFCreationCoreMessages.WSDL2JAVA_PROJECT_SELECTION_ERROR, new Object[]{
+                            serverProject.getName(), currentProject.getName()}));
+		} else { 
+		    model.setProjectName(serverProject.getProject().getName());
 			status = Status.OK_STATUS;
 		}
 		return status;
@@ -79,7 +85,7 @@ public class WSDL2JavaProjectSelectionCommand extends AbstractDataModelOperation
 	 * type to another then we had to check.
 	 */
 	public void setInitialProject(IProject project) {
-		initialProject = project;
+		this.initialProject = project;
 	}
 	
 	/*

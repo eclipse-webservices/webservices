@@ -22,7 +22,6 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin;
-import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -34,13 +33,11 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
     private Image removeAnnotationImage;
     private Image disabled;
 
-    private Java2WSDataModel model;
     private Map<IMethod, Map<String, Boolean>> methodMap;
     private String annotationKey;
     private IType type;
 
     public AnnotationColumnLabelProvider(Java2WSDataModel model, String annotationKey, IType type) {
-        this.model = model;
         this.methodMap = model.getMethodMap();
         this.annotationKey = annotationKey;
         this.type = type;
@@ -64,15 +61,11 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
             }
 
             IMethod method = (SourceMethod) element;
- 
-            if (model.isUseServiceEndpointInterface()) {
-                type = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
-                        .getFullyQualifiedJavaInterfaceName());
-            }
-            
+
             if (annotationKey == CXFModelUtils.WEB_PARAM) {
-                List<SingleVariableDeclaration> parameters = AnnotationUtils
-                        .getMethodParameters(type, method);
+                List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(type,
+                        method);
+
                 if (parameters.size() == 0) {
                     return disabled;
                 }
@@ -81,9 +74,12 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
                         return disabled;
                     }
                 }
-            } else if (AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], annotationKey)) {
+            }
+            
+            if (AnnotationUtils.isAnnotationPresent(method, annotationKey)) {
                 return disabled;
             }
+            
             if (methodMap.get(method) != null) {
                 Boolean addAnnotation =  methodMap.get(method).get(annotationKey);
                 if (addAnnotation) {
@@ -99,10 +95,6 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
     @Override
     public void dispose() {
         super.dispose();
-        this.model = null;
-        this.methodMap = null;
-        this.annotationKey = null;
-        this.type = null;
         addAnnotationImage.dispose();
         removeAnnotationImage.dispose();
         disabled.dispose();

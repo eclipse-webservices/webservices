@@ -393,8 +393,15 @@ public final class WSDL2JavaWidgetFactory {
             }
         });
 
+        populateOutputDirectoryCombo(outputDirCombo, model.getProjectName());
+        
+        return outputDirCombo;
+    }
+
+    public static void populateOutputDirectoryCombo(Combo outputDirCombo, String projectName) {
+        outputDirCombo.removeAll();
         try {
-            IPackageFragmentRoot[] packageFragmentRoots = JDTUtils.getJavaProject(model.getProjectName())
+            IPackageFragmentRoot[] packageFragmentRoots = JDTUtils.getJavaProject(projectName)
                     .getAllPackageFragmentRoots();
             for (int i = 0; i < packageFragmentRoots.length; i++) {
                 IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[i];
@@ -406,10 +413,8 @@ public final class WSDL2JavaWidgetFactory {
         } catch (JavaModelException jme) {
             CXFUIPlugin.log(jme.getStatus());
         }
-
-        return outputDirCombo;
     }
-
+    
     public static Label createPackageNameLabel(Composite parent) {
         Label packageNameLabel = new Label(parent, SWT.NONE);
         packageNameLabel.setText(CXFUIMessages.WSDL2JAVA_PACKAGE_NAME);
@@ -472,7 +477,6 @@ public final class WSDL2JavaWidgetFactory {
         return serviceNameLabel;
     }
 
-    @SuppressWarnings("unchecked")
     public static Combo createServiceNameCombo(Composite parent, final WSDL2JavaDataModel model) {
         final Combo serviceNameCombo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
         serviceNameCombo.setToolTipText(CXFUIMessages.WSDL2JAVA_SERVICE_NAME_TOOLTIP);
@@ -484,6 +488,14 @@ public final class WSDL2JavaWidgetFactory {
             }
         });
 
+        populateServiceNameCombo(serviceNameCombo, model);
+
+        return serviceNameCombo;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static void populateServiceNameCombo(Combo serviceNameCombo, WSDL2JavaDataModel model) {
+        serviceNameCombo.removeAll();
         Definition definition = model.getWsdlDefinition();
         if (definition != null) {
             Map servicesMap = definition.getServices();
@@ -499,8 +511,6 @@ public final class WSDL2JavaWidgetFactory {
                 serviceNameCombo.select(-1);
             }
         }
-
-        return serviceNameCombo;
     }
 
     public static Label createBindingFilesLabel(Composite parent) {

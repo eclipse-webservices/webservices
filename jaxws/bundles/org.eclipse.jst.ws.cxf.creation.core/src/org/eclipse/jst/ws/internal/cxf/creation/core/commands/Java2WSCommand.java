@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
+import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.resources.JavaResourceChangeListener;
@@ -128,6 +129,13 @@ public class Java2WSCommand extends AbstractDataModelOperation {
                 }
             }
         }
+        Java2WSPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
+        model.setGenerateClient(context.isGenerateClient());
+        model.setGenerateServer(context.isGenerateServer());
+        model.setGenerateWrapperFaultBeans(context.isGenerateWrapperFaultBeans());
+        model.setGenerateWSDL(context.isGenerateWSDL());
+        model.setSoap12Binding(context.isSoap12Binding());
+        model.setGenerateXSDImports(context.isGenerateXSDImports());
         return status;
     }
     
