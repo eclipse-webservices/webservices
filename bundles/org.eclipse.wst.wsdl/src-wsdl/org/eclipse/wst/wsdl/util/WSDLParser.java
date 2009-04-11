@@ -38,6 +38,7 @@ import org.eclipse.xsd.util.JAXPConfiguration;
 import org.eclipse.xsd.util.JAXPPool;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDParser;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -90,6 +91,16 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   private static final String START_LINE = "startLine"; //$NON-NLS-1$
 
+  /**
+   * Accumulates text content.
+   */
+  protected StringBuilder cdata;
+
+  /**
+   * Current CDATA section.
+   */
+  protected CDATASection cdataSection;
+  
   private static final class LocationMap extends AbstractMap
   {
     protected static final int UNSET = Integer.MAX_VALUE;
@@ -413,9 +424,58 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public void characters(char[] characters, int start, int length) throws SAXException
   {
-    Text textNode = document.createTextNode(new String(characters, start, length));
-    element.appendChild(textNode);
-    saveLocation();
+    if (cdata != null)
+    {
+      cdata.append(characters, start, length);
+    }
+    else
+    {
+      int lineFeed = 0;
+      int carriageReturn = 0;
+      for (int i = 0; i < length; ++i)
+      {
+        char character = characters[start + i];
+        if (character == '\n')
+        {
+          ++lineFeed;
+          column = 1;
+        }
+        else if (character == '\r')
+        {
+          ++carriageReturn;
+          column = 1;
+        }
+        else if (character == ' ' && character == '\t')
+        {
+          ++column;
+        }
+        else
+        {
+          // Put the leading whitespace in its own text node.
+          if (i != 0)
+          {
+            Text textNode = document.createTextNode(new String(characters, start, i));
+            element.appendChild(textNode);
+          }
+          
+          // Create a next node that starts with the non-whitespace.
+          //
+          line += Math.max(lineFeed, carriageReturn);
+          Text textNode = document.createTextNode(new String(characters, start + i, length - i));
+          element.appendChild(textNode);
+          LocationMap extendedAttributes = getLocationMap(textNode);
+          extendedAttributes.setStartLine(line);
+          extendedAttributes.setStartColumn(column);
+          saveLocation();
+          extendedAttributes.setEndLine(line);
+          extendedAttributes.setEndColumn(column);
+          return;
+        }
+      }
+      Text textNode = document.createTextNode(new String(characters, start, length));
+      element.appendChild(textNode);
+      saveLocation();
+    }
   }
 
   /*
@@ -467,6 +527,13 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public void endCDATA()
   {
+    cdataSection.setData(cdata.toString());
+    element.appendChild(cdataSection);
+    LocationMap extendedAttributes = getLocationMap(cdataSection);
+    cdata = null;
+    saveLocation();
+    extendedAttributes.setEndLine(line);
+    extendedAttributes.setEndColumn(column);
   }
 
   /*
@@ -535,7 +602,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.ERROR_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object []{ exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object []{ exception.getMessage() })); //$NON-NLS-1$
     diagnostic.setLine(exception.getLineNumber());
     diagnostic.setColumn(exception.getColumnNumber());
     diagnostics.add(diagnostic);
@@ -545,7 +612,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object []{ exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_IOError_message", new Object []{ exception.getMessage() })); //$NON-NLS-1$
     diagnostics.add(diagnostic);
   }
 
@@ -553,7 +620,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() })); //$NON-NLS-1$
     diagnostics.add(diagnostic);
   }
 
@@ -561,7 +628,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() })); //$NON-NLS-1$
     diagnostics.add(diagnostic);
   }
 
@@ -569,7 +636,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.FATAL_LITERAL);
-    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() }));
+    diagnostic.setMessage(WSDLPlugin.INSTANCE.getString("_UI_ParserError_message", new Object []{ exception.getMessage() })); //$NON-NLS-1$
     diagnostic.setLine(exception.getLineNumber());
     diagnostic.setColumn(exception.getColumnNumber());
     diagnostics.add(diagnostic);
@@ -701,12 +768,12 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   public InputSource resolveEntity(String publicId, String systemId) throws SAXException
   {
     InputSource inputSource;
-    if ("-//W3C//DTD XMLSCHEMA 200102//EN".equalsIgnoreCase(publicId))
+    if ("-//W3C//DTD XMLSCHEMA 200102//EN".equalsIgnoreCase(publicId)) //$NON-NLS-1$
     {
-      inputSource = new InputSource(XSDPlugin.INSTANCE.getBaseURL() + "cache/www.w3.org/2001/XMLSchema.dtd");
+      inputSource = new InputSource(XSDPlugin.INSTANCE.getBaseURL() + "cache/www.w3.org/2001/XMLSchema.dtd"); //$NON-NLS-1$
       inputSource.setPublicId(publicId);
     }
-    else if (systemId != null && systemId.startsWith("file://bundleentry:"))
+    else if (systemId != null && systemId.startsWith("file://bundleentry:")) //$NON-NLS-1$
     {
       inputSource = new InputSource(systemId.substring(7));
       inputSource.setPublicId(publicId);
@@ -764,6 +831,11 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public void startCDATA()
   {
+    cdata = new StringBuilder();
+    cdataSection = document.createCDATASection(""); //$NON-NLS-1$
+    LocationMap extendedAttributes = getLocationMap(cdataSection);
+    extendedAttributes.setStartLine(line);
+    extendedAttributes.setStartColumn(column);
   }
 
   /*
@@ -870,7 +942,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   {
     WSDLDiagnosticImpl diagnostic = new WSDLDiagnosticImpl();
     diagnostic.setSeverity(WSDLDiagnosticSeverity.WARNING_LITERAL);
-    diagnostic.setMessage("DOM:" + exception.getMessage());
+    diagnostic.setMessage("DOM:" + exception.getMessage());  //$NON-NLS-1$
     diagnostic.setLine(exception.getLineNumber());
     diagnostic.setColumn(exception.getColumnNumber());
     diagnostics.add(diagnostic);
