@@ -48,7 +48,7 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
 
     protected Button useDefaultValuesButton;
     protected Button noAddressBindingButton;
-    protected Button autoNameResolutionButton;
+    //protected Button autoNameResolutionButton;
 
     public CXF21WSDL2JavaPreferencesComposite(Composite parent, int style) {
         super(parent, style);
@@ -125,10 +125,10 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
         gridData.horizontalSpan = 2;
         excludesNamespaceMappingButton.setLayoutData(gridData);
 
-        autoNameResolutionButton = WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, context);
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-        gridData.horizontalSpan = 2;
-        autoNameResolutionButton.setLayoutData(gridData);
+//        autoNameResolutionButton = WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, context);
+//        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+//        gridData.horizontalSpan = 2;
+//        autoNameResolutionButton.setLayoutData(gridData);
 
         noAddressBindingButton = WSDL2JavaWidgetFactory.createNoAddressBindingButton(wsdl2javaGroup, context);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -185,8 +185,8 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
                 CXFPackage.WSDL2_JAVA_CONTEXT,
                 CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING));
 
-        autoNameResolutionButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
-                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION));
+//        autoNameResolutionButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+//                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION));
 
         xjcDefaultValuesTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
                 CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_USE_DEFAULT_VALUES));
@@ -213,7 +213,7 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
     public void refresh() {
         useDefaultValuesButton.setSelection(context.isUseDefaultValues());
         noAddressBindingButton.setSelection(context.isNoAddressBinding());
-        autoNameResolutionButton.setSelection(context.isAutoNameResolution());
+        //autoNameResolutionButton.setSelection(context.isAutoNameResolution());
 
         generateServerButton.setSelection(context.isGenerateServer());
         generateImplementationButton.setSelection(context.isGenerateImplementation());
@@ -233,7 +233,7 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
     public void storeValues() {
         context.setUseDefaultValues(useDefaultValuesButton.getSelection());
         context.setNoAddressBinding(noAddressBindingButton.getSelection());
-        context.setAutoNameResolution(autoNameResolutionButton.getSelection());
+        //context.setAutoNameResolution(autoNameResolutionButton.getSelection());
 
         context.setGenerateServer(generateServerButton.getSelection());
         context.setGenerateImplementation(generateImplementationButton.getSelection());

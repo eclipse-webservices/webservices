@@ -191,12 +191,12 @@ public final class CommandLineUtils {
                 progArgs.add(W2J_WSDL_VERSION);
                 progArgs.add(model.getWsdlVersion());
 
+//                if (model.isAutoNameResolution()) {
+//                    progArgs.add(W2J_AUTO_NAME_RESOLUTION);
+//                }
+                
                 if (model.isUseDefaultValues()) {
                     progArgs.add(W2J_DEFAULT_VALUES);
-                }
-                
-                if (model.isAutoNameResolution()) {
-                    progArgs.add(W2J_AUTO_NAME_RESOLUTION);
                 }
                 
                 if (model.isNoAddressBinding()) {
@@ -216,8 +216,7 @@ public final class CommandLineUtils {
         IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectName);
         if (project != null && project.exists() && JDTUtils.isJavaProject(project)) {
             // Add Standard args
-            progArgs.addAll(Arrays.asList(CommandLineUtils.getStandardWSDL2JavaProgramArguments(model,
-                    projectName)));
+            progArgs.addAll(Arrays.asList(CommandLineUtils.getWSDL2JavaProgramArguments(model)));
             
             progArgs.add(GEN_CLIENT);
             progArgs.add(model.getWsdlURL().toExternalForm());
