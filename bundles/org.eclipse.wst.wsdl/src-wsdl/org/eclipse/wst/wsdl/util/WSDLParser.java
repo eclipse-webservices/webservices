@@ -94,7 +94,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
   /**
    * Accumulates text content.
    */
-  protected StringBuilder cdata;
+  protected StringBuffer cdata;
 
   /**
    * Current CDATA section.
@@ -831,7 +831,7 @@ public class WSDLParser extends DefaultHandler implements LexicalHandler
    */
   public void startCDATA()
   {
-    cdata = new StringBuilder();
+    cdata = new StringBuffer();
     cdataSection = document.createCDATASection(""); //$NON-NLS-1$
     LocationMap extendedAttributes = getLocationMap(cdataSection);
     extendedAttributes.setStartLine(line);
