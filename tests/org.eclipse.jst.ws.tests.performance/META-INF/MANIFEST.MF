@@ -28,7 +28,6 @@ Require-Bundle: org.eclipse.jst.ws,
  org.eclipse.emf.ecore,
  org.eclipse.jst.ws.consumption,
  org.eclipse.wst.common.frameworks,
- org.eclipse.wst.command.env,
- org.eclipse.jst.ws.axis2.core
+ org.eclipse.wst.command.env
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
