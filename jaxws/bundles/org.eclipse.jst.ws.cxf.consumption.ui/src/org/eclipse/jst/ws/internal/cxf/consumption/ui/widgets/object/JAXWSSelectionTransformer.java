@@ -45,6 +45,9 @@ public class JAXWSSelectionTransformer implements Transformer {
                     return new StructuredSelection(fullyQualifiedJavaName);
                 }
             }
+            if (selection instanceof String) {
+                return structuredSelection;
+            }
         }
         return StructuredSelection.EMPTY;
     }
