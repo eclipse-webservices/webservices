@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IOperation;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IParameter;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
+import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.ui.internal.visitor.WSDLVisitorForParameters;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.ProductCustomizationProvider;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -246,19 +247,24 @@ public class W11MessageReference extends WSDLBaseAdapter implements IMessageRefe
   }  
   
 	public Image getImage() {
+	    boolean isRightToLeft = WSDLEditorUtil.isOrientationRightToLeft();
+	    String imagePath = null;
 	    if (getKind() == KIND_INPUT)
-	    {
-	    	return WSDLEditorPlugin.getInstance().getImage("icons/input_obj.gif"); //$NON-NLS-1$
+	    {	    	
+	        imagePath = isRightToLeft ? "icons/input_obj_rtl.gif" : "icons/input_obj.gif"; //$NON-NLS-1$ //$NON-NLS-2$  
 	    }
 	    else if (getKind() == KIND_OUTPUT)
 	    {
-	    	return WSDLEditorPlugin.getInstance().getImage("icons/output_obj.gif"); //$NON-NLS-1$
+	        imagePath = isRightToLeft ? "icons/output_obj_rtl.gif" : "icons/output_obj.gif"; //$NON-NLS-1$ //$NON-NLS-2$  
 	    }
 	    else if (getKind() == KIND_FAULT)
 	    {
-	    	return WSDLEditorPlugin.getInstance().getImage("icons/fault_obj.gif"); //$NON-NLS-1$
+	    	imagePath = "icons/fault_obj.gif"; //$NON-NLS-1$
 	    }
-	    return null;
+	            
+	    WSDLEditorPlugin plugin = WSDLEditorPlugin.getInstance();
+	    Image image = imagePath != null ? plugin.getImage(imagePath) : null;
+	    return image;
 	}
 	
 	public String getText() {
