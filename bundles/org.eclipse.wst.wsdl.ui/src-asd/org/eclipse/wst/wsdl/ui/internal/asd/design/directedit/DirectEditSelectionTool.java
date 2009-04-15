@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,13 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.gef.tools.SelectionTool;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.INamedEditPart;
 
 /**
@@ -56,5 +61,25 @@ public class DirectEditSelectionTool extends SelectionTool {
 		FigureCanvas canvas = (FigureCanvas)getCurrentViewer().getControl();
 		Point viewLocation = canvas.getViewport().getViewLocation();
 		return new Point(mouseLocation.x + viewLocation.x,mouseLocation.y + viewLocation.y);
+	}
+
+	protected boolean handleKeyUp(KeyEvent e) {
+		boolean result = super.handleKeyUp(e);
+		
+		EditPartViewer currentViewer = getCurrentViewer();
+		if((e.keyCode == SWT.CR || e.keyCode == SWT.KEYPAD_CR) && currentViewer != null) {
+			EditPart editPart = currentViewer.getFocusEditPart();
+			if (editPart == null)
+			{
+			  return result;
+			}
+			
+			SelectionRequest request = new SelectionRequest();
+			request.setLocation(getLocation());
+			request.setType(RequestConstants.REQ_OPEN);
+			editPart.performRequest(request);
+			return true;
+		}
+		return result;
 	}
 }
