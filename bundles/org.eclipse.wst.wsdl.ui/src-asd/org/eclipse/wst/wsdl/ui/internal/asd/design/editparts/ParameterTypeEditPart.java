@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.draw2d.MouseMotionListener.Stub;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
@@ -58,10 +59,15 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 		  if (req.getType().equals(RequestConstants.REQ_DIRECT_EDIT)) {
 			  performDirectEdit(null);
 		  }
+		  
+		  if (req.getType().equals(RequestConstants.REQ_OPEN)) {
+			  showPreviewDialog(null);
+		  }
 	  }
 	  
 	protected MyMouseEventListener mouseEventListener;
 	private BaseLinkIconFigure linkIconFigure;
+	private EditPartListener editPartListener;
 
 	protected IFigure createFigure()
 	{
@@ -189,6 +195,52 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 		mouseEventListener = new MyMouseEventListener();
 		primaryLayer.addMouseMotionListener(mouseEventListener);
 		primaryLayer.addMouseListener(mouseEventListener);
+		
+		editPartListener = new EditPartListener() {
+
+			public void childAdded(EditPart child, int index) {
+				// do nothing
+			}
+
+			public void partActivated(EditPart editpart) {
+				// do nothing
+			}
+
+			public void partDeactivated(EditPart editpart) {
+				// do nothing
+			}
+
+			public void removingChild(EditPart child, int index) {
+				// do nothing
+			}
+
+			public void selectedStateChanged(EditPart editpart) {
+				IOpenExternalEditorHelper openHelper = getExternalEditorOpener();
+				if (openHelper != null && openHelper.linkApplicable()) {
+					if (!figureContainsLinkFigure(getInterfaceEditPart().getLinkIconColumn())) {
+						linkIconFigure = new BaseLinkIconFigure(ParameterTypeEditPart.this);
+						getInterfaceEditPart().getLinkIconColumn().add(linkIconFigure);
+					}
+
+					if (openHelper.isValid()) {
+						linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.VALID_SCHEMA_LINK_STYLE);
+						if (editpart.getSelected() == EditPart.SELECTED_NONE)
+							unemphasizeLinkFigure();
+						else
+							emphasizeLinkFigure();
+					}
+					else {
+						linkIconFigure.setLinkIconStyle(BaseLinkIconFigure.INVALID_SCHEMA_LINK_STYLE);
+					}
+				}
+				else {
+					if (containsLinkFigure()) {
+						getInterfaceEditPart().getLinkIconColumn().remove(linkIconFigure);
+					}
+				}
+			}};
+			
+		addEditPartListener(editPartListener);		
 	}
 
 	public void deactivate() {
@@ -198,6 +250,10 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 			primaryLayer.removeMouseListener(mouseEventListener);
 		}
 
+		if (editPartListener != null) {
+			removeEditPartListener(editPartListener);
+		}
+		
 		InterfaceEditPart ep = getInterfaceEditPart();
 		if (ep != null && linkIconFigure != null) {
 			IFigure fig = ep.getLinkIconColumn();
@@ -312,6 +368,10 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	}
 
 	private boolean pointerInRange(Rectangle figBounds, Point pointer) {
+		if (pointer == null) {
+		  return true;
+		}
+		
 		Rectangle linkBounds = getLinkFigureBounds();
 
 		int entireX = figBounds.x;
