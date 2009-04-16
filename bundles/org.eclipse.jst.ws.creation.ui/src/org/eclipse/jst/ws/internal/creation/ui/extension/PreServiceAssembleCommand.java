@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,12 @@
  * 20071218	  200193 gilberta@ca.ibm.com - Gilbert Andrews
  * 20071220   213640 kathy@ca.ibm.com - Kathy Chan
  * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
+ * 20090415   264683 danail.branekov@sap.com - Danail Branekov
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
+
+import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -27,11 +30,14 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.AssociateModuleWithEARCommand;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
@@ -116,12 +122,36 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 		  
 		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)) {
 			  IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProject_);
-			  J2EEUtils.addJavaProjectAsUtilityJar(initialProject_, earProject, monitor);
+			  addJavaProjectAsUtilityInModalCtx(initialProject_, earProject, monitor);
 		  }		 
 	  
 	  }
 	  return status;	  
   }
+  
+  private void addJavaProjectAsUtilityInModalCtx(final IProject projectToAdd, final IProject earProject, final IProgressMonitor monitor)
+	{
+		final IRunnableWithProgress addRunnable = new IRunnableWithProgress()
+		{
+			public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+			{
+				J2EEUtils.addJavaProjectAsUtilityJar(projectToAdd, earProject, monitor);
+			}
+		};
+
+		try
+		{
+			ModalContext.run(addRunnable, true, monitor, PlatformUI.getWorkbench().getDisplay());
+		} catch (InvocationTargetException e)
+		{
+			// The executed runnable does not throw checked exceptions therefore if this happens, this is a runtime exception
+			throw new RuntimeException(e);
+		} catch (InterruptedException e)
+		{
+			// The executed runnable does not support cancellation and this should never happen
+			throw new IllegalStateException(e);
+		}
+	}
 	
   public void setInitialProject(IProject initialProject)
   {

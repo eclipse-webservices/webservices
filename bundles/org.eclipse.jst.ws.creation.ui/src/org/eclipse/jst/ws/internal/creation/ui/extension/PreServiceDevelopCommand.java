@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,13 @@
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080724   241275 pmoogk@ca.ibm.com - Peter Moogk, Validate WSDL before doing major Web service processing.
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
+ * 20090415   264683 danail.branekov@sap.com - Danail Branekov
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -34,6 +36,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.command.common.CreateFacetedProjectCommand;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
@@ -45,6 +49,7 @@ import org.eclipse.jst.ws.internal.consumption.ui.wsrt.ServiceRuntimeDescriptor;
 import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.jst.ws.internal.data.TypeRuntimeServer;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
 import org.eclipse.wst.common.environment.IEnvironment;
@@ -209,10 +214,8 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 	  
 	  
 		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)){
-			  J2EEUtils.addJavaProjectAsUtilityJar(initialProject_, project, monitor);
 			  try{
-		  		String uri = initialProject_.getName() + ".jar";
-		  		J2EEUtils.addJAROrModuleDependency(project, uri);
+				addJavaProjectAsUtilityInModalCtx(initialProject_, project, monitor);
 			  } catch (CoreException ce){
 				  String errorMessage = NLS.bind(ConsumptionUIMessages.MSG_ERROR_MODULE_DEPENDENCY, new String[]{project.getName(), initialProject_.getName()});
 				  IStatus errorStatus = StatusUtils.errorStatus(errorMessage);
@@ -227,6 +230,55 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 	  return status;
 
   }
+  
+  /**
+   * Adds the projectToAdd as utility to the ear project specified. The operation is executed in a modal context in order to avoid locking the workspace root in the UI thread 
+   */
+  private void addJavaProjectAsUtilityInModalCtx(final IProject projectToAdd, final IProject earProject, final IProgressMonitor monitor) throws IOException, CoreException
+	{
+		final IRunnableWithProgress addRunnable = new IRunnableWithProgress()
+		{
+			public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+			{
+				J2EEUtils.addJavaProjectAsUtilityJar(projectToAdd, earProject, monitor);
+				try
+				{
+					final String uri = projectToAdd.getName() + ".jar";
+					J2EEUtils.addJAROrModuleDependency(earProject, uri);
+				} catch (IOException e)
+				{
+					throw new InvocationTargetException(e);
+				} catch (CoreException e)
+				{
+					throw new InvocationTargetException(e);
+				}
+			}
+		};
+		
+		try
+		{
+			ModalContext.run(addRunnable, true, monitor, PlatformUI.getWorkbench().getDisplay());
+		} catch (InvocationTargetException e)
+		{
+			final Throwable cause = e.getCause();
+			// IOExcetpion and CoreException thrown by J2EEUtils.addJAROrModuleDependency
+			if(cause instanceof IOException)
+			{
+				throw (IOException)cause;
+			}
+			if(cause instanceof CoreException)
+			{
+				throw (CoreException)cause;
+			}
+			
+			// Other unexpected exception has occurred, rethrow it as a runtime exception
+			throw new RuntimeException(e);
+		} catch (InterruptedException e)
+		{
+			// The executed runnable does not support cancellation and therefore this can never happen
+			throw new IllegalStateException(e);
+		}
+	}
   
   public void setServiceTypeRuntimeServer( TypeRuntimeServer typeRuntimeServer )
   {
