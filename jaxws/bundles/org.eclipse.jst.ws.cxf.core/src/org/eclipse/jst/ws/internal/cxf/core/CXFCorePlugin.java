@@ -90,15 +90,18 @@ public class CXFCorePlugin extends AbstractUIPlugin {
         }
         return wsdl2JavaContext;
     }
-    
+
     public Version getCurrentRuntimeVersion() {
         if (currentRuntimeVersion == null) {
-            this.currentRuntimeVersion = new Version(CXFCorePlugin.getDefault().getJava2WSContext()
-                    .getCxfRuntimeVersion());
+            String cxfRuntimeVersion = CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeVersion();
+            if (cxfRuntimeVersion.length() == 0) {
+                cxfRuntimeVersion = "0.0.0";
+            }
+            this.currentRuntimeVersion = new Version(cxfRuntimeVersion);
         }
         return currentRuntimeVersion;
     }
-    
+
     public void setCurrentRuntimeVersion(Version version) {
         this.currentRuntimeVersion = version;
     }

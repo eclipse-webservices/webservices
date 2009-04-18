@@ -47,6 +47,7 @@ import org.osgi.framework.Version;
  *
  */
 public final class CXFModelUtils {
+    private static final Version v_0_0_0 = new Version("0.0.0");
     private static final Version v_2_1 = new Version(CXFCorePlugin.CXF_VERSION_2_1);
     private static final Version v_2_0_7 = new Version("2.0.7");
     private static final Version v_2_1_1 = new Version("2.1.1");
@@ -277,6 +278,11 @@ public final class CXFModelUtils {
      */
     public static boolean isAutoNameResolutionPermitted() {
         Version currentVersion = CXFCorePlugin.getDefault().getCurrentRuntimeVersion();
+        //On startup with clean workspace show by default.
+        if (currentVersion.compareTo(v_0_0_0) == 0) {
+            return true;
+        }
+
         if (currentVersion.compareTo(CXFModelUtils.v_2_1_1) >= 0) {
             return true;
         }
