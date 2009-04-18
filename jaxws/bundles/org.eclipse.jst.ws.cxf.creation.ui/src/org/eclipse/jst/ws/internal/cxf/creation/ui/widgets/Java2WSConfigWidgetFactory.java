@@ -60,7 +60,7 @@ public class Java2WSConfigWidgetFactory implements INamedWidgetContributorFactor
         java2WSWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String title = CXFCreationUIMessages.bind(
-                CXFCreationUIMessages.JAVA2WS_PAGE_TITLE, new Object[]{CXFCorePlugin.getEdition(), 
+                CXFCreationUIMessages.JAVA2WS_PAGE_TITLE, new Object[]{context.getCxfRuntimeEdition(), 
                         context.getCxfRuntimeVersion()});
 
         java2WSWidgetContributor.setTitle(title);

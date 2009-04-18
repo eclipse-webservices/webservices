@@ -157,10 +157,10 @@ public final class WSDL2JavaWidgetFactory {
     public static Button createNoAddressBindingButton(Composite parent, final WSDL2JavaContext model) {
         final Button noAddressBindingButton = new Button(parent, SWT.CHECK);
         noAddressBindingButton.setText(CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_NO_ADDRESS_BINDING,
-                CXFCorePlugin.getEdition()));
+                model.getCxfRuntimeEdition()));
         noAddressBindingButton.setToolTipText(
                 CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_NO_ADDRESS_BINDING_TOOLTIP, 
-                        CXFCorePlugin.getEdition()));
+                        model.getCxfRuntimeEdition()));
         noAddressBindingButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 model.setNoAddressBinding(noAddressBindingButton.getSelection());
@@ -172,11 +172,8 @@ public final class WSDL2JavaWidgetFactory {
 
     public static Button createAutoNameResolutionButton(Composite parent, final WSDL2JavaContext model) {
         final Button autoNameResolutionButton = new Button(parent, SWT.CHECK);
-        autoNameResolutionButton.setText(CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION,
-                CXFCorePlugin.getEdition()));
-        autoNameResolutionButton.setToolTipText(
-                CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION_TOOLTIP, 
-                        CXFCorePlugin.getEdition()));
+        autoNameResolutionButton.setText(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION);
+        autoNameResolutionButton.setToolTipText(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION_TOOLTIP);
         autoNameResolutionButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 model.setAutoNameResolution(autoNameResolutionButton.getSelection());
@@ -521,7 +518,7 @@ public final class WSDL2JavaWidgetFactory {
     }
 
     public static List createBindingFilesList(Composite parent) {
-        final List bindingFilesList = new List(parent, SWT.MULTI | SWT.BORDER);
+        final List bindingFilesList = new List(parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         bindingFilesList.setToolTipText(CXFUIMessages.WSDL2JAVA_BINDING_NAME_TOOLTIP);
         return bindingFilesList;
     }

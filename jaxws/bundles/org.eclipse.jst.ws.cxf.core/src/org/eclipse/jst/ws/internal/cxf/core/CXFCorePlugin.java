@@ -16,6 +16,7 @@ import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.context.WSDL2JavaPersistentContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -37,6 +38,8 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     private Java2WSPersistentContext java2WSContext;
     private WSDL2JavaPersistentContext wsdl2JavaContext;
 
+    private Version currentRuntimeVersion;
+    
     /**
      * The constructor
      */
@@ -88,10 +91,18 @@ public class CXFCorePlugin extends AbstractUIPlugin {
         return wsdl2JavaContext;
     }
     
-    public static String getEdition() {
-        return CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeEdition();
+    public Version getCurrentRuntimeVersion() {
+        if (currentRuntimeVersion == null) {
+            this.currentRuntimeVersion = new Version(CXFCorePlugin.getDefault().getJava2WSContext()
+                    .getCxfRuntimeVersion());
+        }
+        return currentRuntimeVersion;
     }
-
+    
+    public void setCurrentRuntimeVersion(Version version) {
+        this.currentRuntimeVersion = version;
+    }
+    
     public static void logMessage(int severity, String message) {
         CXFCorePlugin.log(new Status(severity, CXFCorePlugin.PLUGIN_ID, message));
     }

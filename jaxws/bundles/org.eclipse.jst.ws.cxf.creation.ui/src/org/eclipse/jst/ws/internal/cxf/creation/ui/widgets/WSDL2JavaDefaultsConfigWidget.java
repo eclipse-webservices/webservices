@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.cxf.creation.ui.widgets;
 
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
+import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIMessages;
 import org.eclipse.jst.ws.internal.cxf.ui.widgets.WSDL2JavaWidgetFactory;
 import org.eclipse.swt.SWT;
@@ -57,9 +58,7 @@ public class WSDL2JavaDefaultsConfigWidget extends SimpleWidgetDataContributor {
         WSDL2JavaWidgetFactory.createGenerateServerButton(wsdl2javaGroup, model);
         WSDL2JavaWidgetFactory.createGenerateImplementationButton(wsdl2javaGroup, model);
 
-        if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
-            WSDL2JavaWidgetFactory.createDefaultValuesButton(wsdl2javaGroup, model);
-        }
+        WSDL2JavaWidgetFactory.createDefaultValuesButton(wsdl2javaGroup, model);
 
         WSDL2JavaWidgetFactory.createProcessSOAPHeadersButton(wsdl2javaGroup, model);
 
@@ -67,7 +66,9 @@ public class WSDL2JavaDefaultsConfigWidget extends SimpleWidgetDataContributor {
 
         WSDL2JavaWidgetFactory.createExcludesNamespaceMappingButton(wsdl2javaGroup, model);
 
-        // WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, model);
+        if (CXFModelUtils.isAutoNameResolutionPermitted()) {
+            WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, model);
+        }
 
         if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
             WSDL2JavaWidgetFactory.createNoAddressBindingButton(wsdl2javaGroup, model);
@@ -96,5 +97,4 @@ public class WSDL2JavaDefaultsConfigWidget extends SimpleWidgetDataContributor {
 
         return this;
     }
-
 }

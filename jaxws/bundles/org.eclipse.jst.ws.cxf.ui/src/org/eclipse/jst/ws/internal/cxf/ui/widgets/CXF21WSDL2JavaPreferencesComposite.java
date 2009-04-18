@@ -30,25 +30,25 @@ import org.eclipse.swt.widgets.TableItem;
 public class CXF21WSDL2JavaPreferencesComposite extends Composite {
     WSDL2JavaContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
 
-    protected Button generateServerButton;
-    protected Button generateImplementationButton;
-    protected Button processSOAPHeadersButton;
-    protected Button namespacePackageMappingButton;
-    protected Button excludesNamespaceMappingButton;
+    private Button generateServerButton;
+    private Button generateImplementationButton;
+    private Button processSOAPHeadersButton;
+    private Button namespacePackageMappingButton;
+    private Button excludesNamespaceMappingButton;
 
-    protected Table xjcArgsTable;
+    private Table xjcArgsTable;
 
-    protected TableItem xjcDefaultValuesTableItem;
-    protected TableItem xjcToStringTableItem;
-    protected TableItem xjcToStringMultiLineTableItem;
-    protected TableItem xjcToStringSimpleTableItem;
-    protected TableItem xjcLocatorTableItem;
-    protected TableItem xjcSyncMethodsTableItem;
-    protected TableItem xjcMarkGeneratedTableItem;
+    private TableItem xjcDefaultValuesTableItem;
+    private TableItem xjcToStringTableItem;
+    private TableItem xjcToStringMultiLineTableItem;
+    private TableItem xjcToStringSimpleTableItem;
+    private TableItem xjcLocatorTableItem;
+    private TableItem xjcSyncMethodsTableItem;
+    private TableItem xjcMarkGeneratedTableItem;
 
-    protected Button useDefaultValuesButton;
-    protected Button noAddressBindingButton;
-    //protected Button autoNameResolutionButton;
+    private Button useDefaultValuesButton;
+    private Button noAddressBindingButton;
+    private Button autoNameResolutionButton;
 
     public CXF21WSDL2JavaPreferencesComposite(Composite parent, int style) {
         super(parent, style);
@@ -106,7 +106,7 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 2;
         useDefaultValuesButton.setLayoutData(gridData);
-
+        
         processSOAPHeadersButton = WSDL2JavaWidgetFactory.createProcessSOAPHeadersButton(wsdl2javaGroup,
                 context);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -125,11 +125,13 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
         gridData.horizontalSpan = 2;
         excludesNamespaceMappingButton.setLayoutData(gridData);
 
-//        autoNameResolutionButton = WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, context);
-//        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-//        gridData.horizontalSpan = 2;
-//        autoNameResolutionButton.setLayoutData(gridData);
-
+        if (CXFModelUtils.isAutoNameResolutionPermitted()) {
+            autoNameResolutionButton = WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, context);
+            gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+            gridData.horizontalSpan = 2;
+            autoNameResolutionButton.setLayoutData(gridData);
+        }
+        
         noAddressBindingButton = WSDL2JavaWidgetFactory.createNoAddressBindingButton(wsdl2javaGroup, context);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 2;
@@ -185,9 +187,11 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
                 CXFPackage.WSDL2_JAVA_CONTEXT,
                 CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING));
 
-//        autoNameResolutionButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
-//                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION));
-
+        if (canUpdateAutoNameResolution()) {
+            autoNameResolutionButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION));
+        }
+        
         xjcDefaultValuesTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
                 CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_USE_DEFAULT_VALUES));
         
@@ -213,8 +217,11 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
     public void refresh() {
         useDefaultValuesButton.setSelection(context.isUseDefaultValues());
         noAddressBindingButton.setSelection(context.isNoAddressBinding());
-        //autoNameResolutionButton.setSelection(context.isAutoNameResolution());
-
+        
+        if (canUpdateAutoNameResolution()) {
+            autoNameResolutionButton.setSelection(context.isAutoNameResolution());
+        }
+        
         generateServerButton.setSelection(context.isGenerateServer());
         generateImplementationButton.setSelection(context.isGenerateImplementation());
         processSOAPHeadersButton.setSelection(context.isProcessSOAPHeaders());
@@ -233,8 +240,11 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
     public void storeValues() {
         context.setUseDefaultValues(useDefaultValuesButton.getSelection());
         context.setNoAddressBinding(noAddressBindingButton.getSelection());
-        //context.setAutoNameResolution(autoNameResolutionButton.getSelection());
-
+        
+        if (canUpdateAutoNameResolution()) {
+            context.setAutoNameResolution(autoNameResolutionButton.getSelection());
+        }
+        
         context.setGenerateServer(generateServerButton.getSelection());
         context.setGenerateImplementation(generateImplementationButton.getSelection());
         context.setProcessSOAPHeaders(processSOAPHeadersButton.getSelection());
@@ -248,6 +258,10 @@ public class CXF21WSDL2JavaPreferencesComposite extends Composite {
         context.setXjcLocator(xjcLocatorTableItem.getChecked());
         context.setXjcSyncMethods(xjcSyncMethodsTableItem.getChecked());
         context.setXjcMarkGenerated(xjcMarkGeneratedTableItem.getChecked());
+    }
+    
+    private boolean canUpdateAutoNameResolution() {
+        return autoNameResolutionButton != null && CXFModelUtils.isAutoNameResolutionPermitted();
     }
 
 }

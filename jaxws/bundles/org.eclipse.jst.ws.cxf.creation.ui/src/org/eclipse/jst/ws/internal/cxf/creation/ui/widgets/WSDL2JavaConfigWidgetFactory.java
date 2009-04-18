@@ -62,7 +62,7 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
         wsdl2JavaWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         String wsdl2JavaPageTitle = CXFCreationUIMessages.bind(
-                CXFCreationUIMessages.WSDL2JAVA_PAGE_TITLE, new Object[]{CXFCorePlugin.getEdition(),
+                CXFCreationUIMessages.WSDL2JAVA_PAGE_TITLE, new Object[]{context.getCxfRuntimeEdition(),
                         context.getCxfRuntimeVersion()});
         wsdl2JavaWidgetContributor.setTitle(wsdl2JavaPageTitle);
         wsdl2JavaWidgetContributor
@@ -76,7 +76,7 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
         wsdl2JavaDefaultsWidgetContributor = new SimpleWidgetContributor();
         String wsdl2JavaDefaultsPageTitle = CXFCreationUIMessages.bind(
                 CXFCreationUIMessages.WSDL2JAVA_DEFAULTS_PAGE_TITLE, new Object[]{
-                        CXFCorePlugin.getEdition(), context.getCxfRuntimeVersion()});
+                        context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
         wsdl2JavaDefaultsWidgetContributor.setTitle(wsdl2JavaDefaultsPageTitle);
         wsdl2JavaDefaultsWidgetContributor
                 .setDescription(CXFCreationUIMessages.WSDL2JAVA_DEFAULTS_PAGE_DESCRIPTION);

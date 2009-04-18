@@ -157,7 +157,6 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         bindingFilesLabel.setLayoutData(gridData);
 
         bindingFilesList = WSDL2JavaWidgetFactory.createBindingFilesList(mainComposite);
-
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.verticalSpan = 3;
         bindingFilesList.setLayoutData(gridData);

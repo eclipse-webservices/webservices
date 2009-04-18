@@ -22,29 +22,37 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+/**
+ * 
+ * @author sclarke
+ *
+ */
 public class CXFClasspathContainer implements IClasspathContainer {
 
 	private IPath path;
-	private List<IClasspathEntry> classpathEntries = new ArrayList<IClasspathEntry>();
+	private List<IClasspathEntry> classpathEntries;
 	private String cxfLibraryEdition;
 	private String cxfLibraryVersion;
+	private String cxfLibraryLocation;
 	
 	public CXFClasspathContainer(IPath path, IJavaProject javaProject) {
 		this.path = path;
-		cxfLibraryVersion = CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeVersion();
-		cxfLibraryEdition = CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeEdition();
+		classpathEntries =  new ArrayList<IClasspathEntry>();
+		cxfLibraryLocation = getCxfRuntimeLocation();
+		cxfLibraryVersion = getCxfRuntimeVersion();
+		cxfLibraryEdition = getCxfRuntimeEdition();
 	}
 	
 	public IClasspathEntry[] getClasspathEntries() {
-		if (classpathEntries.size() == 0) {
-	        IPath cxfLibPath = new Path(CXFCorePlugin.getDefault().getJava2WSContext()
-	                .getCxfRuntimeLocation());
-	        if (!cxfLibPath.hasTrailingSeparator()) {
-	            cxfLibPath = cxfLibPath.addTrailingSeparator();
-	        }
-	        cxfLibPath = cxfLibPath.append("lib"); //$NON-NLS-1$
-	        
-	        File cxfLibDirectory = new File(cxfLibPath.toOSString());
+        if (cxfLibraryVersion != getCxfRuntimeVersion()) {
+            classpathEntries = new ArrayList<IClasspathEntry>();
+            cxfLibraryLocation = getCxfRuntimeLocation();
+            cxfLibraryVersion = getCxfRuntimeVersion();
+            cxfLibraryEdition = getCxfRuntimeEdition();
+        }
+
+	    if (classpathEntries.size() == 0) {
+	        File cxfLibDirectory = getCXFLibraryDirectory();
 	        if (cxfLibDirectory.exists() && cxfLibDirectory.isDirectory()) {
 	            String[] files = cxfLibDirectory.list();
 	            for (int i = 0; i < files.length; i++) {
@@ -61,7 +69,15 @@ public class CXFClasspathContainer implements IClasspathContainer {
 		}
 		return classpathEntries.toArray(new IClasspathEntry[classpathEntries.size()]);
 	}
-
+	
+	public boolean isValid() {
+	    if (getCxfRuntimeLocation().length() > 0) {
+            File cxfLibDirectory = getCXFLibraryDirectory();
+            return cxfLibDirectory.exists() && cxfLibDirectory.isDirectory();
+	    }
+	    return false;
+	}
+	
 	public String getDescription() {
 		return  MessageFormat.format(CXFCoreMessages.CXF_CONTAINER_LIBRARY, cxfLibraryEdition, 
 		        cxfLibraryVersion);
@@ -74,5 +90,27 @@ public class CXFClasspathContainer implements IClasspathContainer {
 	public IPath getPath() {
 		return path;
 	}
+	
+	private String getCxfRuntimeLocation() {
+	    return CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeLocation();
+    }
 
+    private String getCxfRuntimeVersion() {
+        return CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeVersion();
+    }
+
+    private String getCxfRuntimeEdition() {
+        return CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeEdition();
+    }
+
+	private File getCXFLibraryDirectory() {
+        IPath cxfLibPath = new Path(cxfLibraryLocation);
+        if (!cxfLibPath.hasTrailingSeparator()) {
+            cxfLibPath = cxfLibPath.addTrailingSeparator();
+        }
+        cxfLibPath = cxfLibPath.append("lib"); //$NON-NLS-1$
+
+        File cxfLibDirectory = new File(cxfLibPath.toOSString());
+        return cxfLibDirectory;
+    }
 }

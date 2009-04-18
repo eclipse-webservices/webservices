@@ -66,7 +66,7 @@ public class WSDL2JavaClientConfigWidgetFactory implements INamedWidgetContribut
         CXFContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         String wsdl2JavaClientPageTitle = CXFConsumptionUIMessages.bind(
                 CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_PAGE_TITLE, new Object[]{
-                        CXFCorePlugin.getEdition(), context.getCxfRuntimeVersion()});
+                        context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
         wsdl2JavaClientWidgetContributor.setTitle(wsdl2JavaClientPageTitle);
         wsdl2JavaClientWidgetContributor
                 .setDescription(CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_PAGE_DESCRIPTION);
@@ -81,7 +81,7 @@ public class WSDL2JavaClientConfigWidgetFactory implements INamedWidgetContribut
         wsdl2JavaClientDefaultsWidgetContributor = new SimpleWidgetContributor();
         String wsdl2JavaClientDefaultsPageTitle = CXFConsumptionUIMessages.bind(
         CXFConsumptionUIMessages.WSDL2JAVA_ClIENT_DEFAULTS_PAGE_TITLE, new Object[] {
-                CXFCorePlugin.getEdition(), context.getCxfRuntimeVersion()});
+                context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
         wsdl2JavaClientDefaultsWidgetContributor.setTitle(wsdl2JavaClientDefaultsPageTitle);
         wsdl2JavaClientDefaultsWidgetContributor
                 .setDescription(CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_DEFAULTS_PAGE_DESCRIPTION);

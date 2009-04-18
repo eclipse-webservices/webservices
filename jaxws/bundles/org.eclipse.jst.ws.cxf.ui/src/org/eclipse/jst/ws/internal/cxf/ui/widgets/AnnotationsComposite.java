@@ -102,7 +102,8 @@ public class AnnotationsComposite extends Composite {
         Group annotationProcessingGroup = new Group(this, SWT.SHADOW_IN);
         annotationProcessingGroup.setText(CXFUIMessages.JAXWS_ANNOTATIONS_PROCESSING_GROUP_LABEL);
         annotationProcessingGroup.setToolTipText(CXFUIMessages.bind(
-                CXFUIMessages.JAXWS_ENABLE_ANNOTATION_PROCESSING_TOOLTIP, CXFCorePlugin.getEdition()));
+                CXFUIMessages.JAXWS_ENABLE_ANNOTATION_PROCESSING_TOOLTIP, 
+                context.getCxfRuntimeEdition()));
         gridLayout = new GridLayout(1, true);
         annotationProcessingGroup.setLayout(gridLayout);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);

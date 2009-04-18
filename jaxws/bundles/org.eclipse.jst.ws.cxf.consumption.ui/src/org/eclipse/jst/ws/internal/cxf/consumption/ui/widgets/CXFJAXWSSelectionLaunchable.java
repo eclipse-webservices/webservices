@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
@@ -49,11 +48,12 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
  */
 @SuppressWarnings("restriction")
 public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchable {
-
+    private IStatus validationStatus = Status.OK_STATUS;
+    
     private IProject project;
     private String serverComponentName;
     private String className;
-
+    
     @Override
     public void setInitialSelection(IStructuredSelection initialSelection) {
         if (initialSelection != null && !initialSelection.isEmpty()) {
@@ -124,13 +124,6 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
                 .getSelectionService();
             ISelection selection = selectionService.getSelection();
             
-//            ISelection selection = selectionService.getSelection("org.eclipse.jdt.ui.PackageExplorer");
-//            if (selection == null) {
-//                selection = selectionService.getSelection("org.eclipse.ui.navigator.ProjectExplorer");
-//            }
-//            if (selection == null) {
-//                selection = selectionService.getSelection("org.eclipse.ui.views.ResourceNavigator");
-//            }
             if (selection != null && !selection.isEmpty() && selection instanceof TreeSelection) {
                 TreeSelection treeSelection = (TreeSelection) selection;
                 Object firstElement = treeSelection.getFirstElement();
@@ -144,7 +137,7 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
 
     @Override
     public IStatus validateSelection(IStructuredSelection objectSelection) {
-        return Status.OK_STATUS;
+        return validationStatus;
     }
 
     @Override
@@ -154,24 +147,24 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
 
     @Override
     public boolean validate(String stringToValidate) {
-//        IPath pathToValidate = new Path(stringToValidate);
-//        String fileExtension = pathToValidate.getFileExtension();
-//        if (fileExtension == null || !fileExtension.equals("java")) {
-//            return false;
-//        }
-        
         className = stringToValidate;
 
-        IProject proj = getProject();
-        if (proj != null) {
-            IType type = JDTUtils.getType(proj, className);
-            if (type == null || !type.exists()) {
-                return false;
-            }
-            String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
-            String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
-            return JavaConventions.validateJavaTypeName(className, sourceLevel, complianceLevel).isOK();
+        IProject project = getProject();
+        if (project != null) {
+            validationStatus = JDTUtils.validateJavaTypeName(project.getName(), className);
+            return validationStatus.isOK();
         }
+
+//        IProject project = getProject();
+//        if (project != null) {
+//            IType type = JDTUtils.getType(project, className);
+//            if (type == null || !type.exists()) {
+//                validationStatus = new Status(IStatus.ERROR, CXFConsumptionUIPlugin.PLUGIN_ID, "");
+//            } else {
+//                validationStatus = JDTUtils.validateJavaTypeName(project.getName(), className);
+//            }
+//            return validationStatus.isOK();
+//        }
         return false;
     }
     

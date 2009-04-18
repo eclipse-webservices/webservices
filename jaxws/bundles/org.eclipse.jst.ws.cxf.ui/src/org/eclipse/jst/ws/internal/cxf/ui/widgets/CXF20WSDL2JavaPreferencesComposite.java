@@ -30,21 +30,24 @@ import org.eclipse.swt.widgets.TableItem;
 public class CXF20WSDL2JavaPreferencesComposite extends Composite {
     WSDL2JavaContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
 
-    protected Button generateServerButton;
-    protected Button generateImplementationButton;
-    protected Button processSOAPHeadersButton;
-    protected Button namespacePackageMappingButton;
-    protected Button excludesNamespaceMappingButton;
+    private Button generateServerButton;
+    private Button generateImplementationButton;
+    private Button processSOAPHeadersButton;
+    private Button namespacePackageMappingButton;
+    private Button excludesNamespaceMappingButton;
 
-    protected Table xjcArgsTable;
+    private Button useDefaultValuesButton;
+    private Button autoNameResolutionButton;
 
-    protected TableItem xjcDefaultValuesTableItem;
-    protected TableItem xjcToStringTableItem;
-    protected TableItem xjcToStringMultiLineTableItem;
-    protected TableItem xjcToStringSimpleTableItem;
-    protected TableItem xjcLocatorTableItem;
-    protected TableItem xjcSyncMethodsTableItem;
-    protected TableItem xjcMarkGeneratedTableItem;
+    private Table xjcArgsTable;
+
+    private TableItem xjcDefaultValuesTableItem;
+    private TableItem xjcToStringTableItem;
+    private TableItem xjcToStringMultiLineTableItem;
+    private TableItem xjcToStringSimpleTableItem;
+    private TableItem xjcLocatorTableItem;
+    private TableItem xjcSyncMethodsTableItem;
+    private TableItem xjcMarkGeneratedTableItem;
 
     public CXF20WSDL2JavaPreferencesComposite(Composite parent, int style) {
         super(parent, style);
@@ -67,6 +70,8 @@ public class CXF20WSDL2JavaPreferencesComposite extends Composite {
         generateServerButton = WSDL2JavaWidgetFactory.createGenerateServerButton(wsdl2javaGroup, context);
         generateImplementationButton = WSDL2JavaWidgetFactory.createGenerateImplementationButton(
                 wsdl2javaGroup, context);
+        
+        useDefaultValuesButton = WSDL2JavaWidgetFactory.createDefaultValuesButton(wsdl2javaGroup, context);
 
         processSOAPHeadersButton = WSDL2JavaWidgetFactory.createProcessSOAPHeadersButton(wsdl2javaGroup,
                 context);
@@ -76,6 +81,11 @@ public class CXF20WSDL2JavaPreferencesComposite extends Composite {
 
         excludesNamespaceMappingButton = WSDL2JavaWidgetFactory.createExcludesNamespaceMappingButton(
                 wsdl2javaGroup, context);
+        
+        if (CXFModelUtils.isAutoNameResolutionPermitted()) {
+            autoNameResolutionButton = WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup,
+                    context);
+        }
 
         Group xjcArgGroup = new Group(this, SWT.SHADOW_IN);
         xjcArgGroup.setText(CXFUIMessages.WSDL2JAVA_XJC_ARG_GROUP_TITLE);
@@ -104,6 +114,9 @@ public class CXF20WSDL2JavaPreferencesComposite extends Composite {
     }
 
     public void setDefaults() {
+        useDefaultValuesButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__USE_DEFAULT_VALUES));
+
         generateServerButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.CXF_CONTEXT,
                 CXFPackage.CXF_CONTEXT__GENERATE_SERVER));
         generateImplementationButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
@@ -116,6 +129,11 @@ public class CXF20WSDL2JavaPreferencesComposite extends Composite {
         excludesNamespaceMappingButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
                 CXFPackage.WSDL2_JAVA_CONTEXT,
                 CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING));
+
+        if (canUpdateAutoNameResolution()) {
+            autoNameResolutionButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
+                CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION));
+        }
 
         xjcDefaultValuesTableItem.setChecked(CXFModelUtils.getDefaultBooleanValue(
                 CXFPackage.WSDL2_JAVA_CONTEXT, CXFPackage.WSDL2_JAVA_CONTEXT__XJC_USE_DEFAULT_VALUES));
@@ -134,12 +152,17 @@ public class CXF20WSDL2JavaPreferencesComposite extends Composite {
     }
     
     public void refresh() {
+        useDefaultValuesButton.setSelection(context.isUseDefaultValues());
         generateServerButton.setSelection(context.isGenerateServer());
         generateImplementationButton.setSelection(context.isGenerateImplementation());
         processSOAPHeadersButton.setSelection(context.isProcessSOAPHeaders());
         namespacePackageMappingButton.setSelection(context.isLoadDefaultNamespacePackageNameMapping());
         excludesNamespaceMappingButton.setSelection(context.isLoadDefaultExcludesNamepsaceMapping());
-
+        
+        if (canUpdateAutoNameResolution()) {
+            autoNameResolutionButton.setSelection(context.isAutoNameResolution());
+        }
+        
         xjcDefaultValuesTableItem.setChecked(context.isXjcUseDefaultValues());
         xjcToStringTableItem.setChecked(context.isXjcToString());
         xjcToStringMultiLineTableItem.setChecked(context.isXjcToStringMultiLine());
@@ -150,12 +173,17 @@ public class CXF20WSDL2JavaPreferencesComposite extends Composite {
     }
     
     public void storeValues() {
+        context.setUseDefaultValues(useDefaultValuesButton.getSelection());
         context.setGenerateServer(generateServerButton.getSelection());
         context.setGenerateImplementation(generateImplementationButton.getSelection());
         context.setProcessSOAPHeaders(processSOAPHeadersButton.getSelection());
         context.setLoadDefaultNamespacePackageNameMapping(namespacePackageMappingButton.getSelection());
         context.setLoadDefaultExcludesNamepsaceMapping(excludesNamespaceMappingButton.getSelection());
-
+        
+        if (canUpdateAutoNameResolution()) {
+            context.setAutoNameResolution(autoNameResolutionButton.getSelection());
+        }
+        
         context.setXjcUseDefaultValues(xjcDefaultValuesTableItem.getChecked());
         context.setXjcToString(xjcToStringTableItem.getChecked());
         context.setXjcToStringMultiLine(xjcToStringMultiLineTableItem.getChecked());
@@ -163,6 +191,10 @@ public class CXF20WSDL2JavaPreferencesComposite extends Composite {
         context.setXjcLocator(xjcLocatorTableItem.getChecked());
         context.setXjcSyncMethods(xjcSyncMethodsTableItem.getChecked());
         context.setXjcMarkGenerated(xjcMarkGeneratedTableItem.getChecked());
+    }
+    
+    private boolean canUpdateAutoNameResolution() {
+        return autoNameResolutionButton != null && CXFModelUtils.isAutoNameResolutionPermitted();
     }
 
 }

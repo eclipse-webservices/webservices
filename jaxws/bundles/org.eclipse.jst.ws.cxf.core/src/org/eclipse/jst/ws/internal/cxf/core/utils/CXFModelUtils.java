@@ -37,13 +37,20 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.TextEdit;
+import org.osgi.framework.Version;
 
 /**
- * Interim class to aid in refactoring core utilities into jaxws core.
+ * Provides utility methods for working with the CXF model.
+ * Also serving as an interim class to aid in refactoring core utilities into jaxws core.
+ * 
  * @author sclarke
  *
  */
 public final class CXFModelUtils {
+    private static final Version v_2_1 = new Version(CXFCorePlugin.CXF_VERSION_2_1);
+    private static final Version v_2_0_7 = new Version("2.0.7");
+    private static final Version v_2_1_1 = new Version("2.1.1");
+
     public static final String WEB_SERVICE = "WebService"; //$NON-NLS-1$
     public static final String WEB_METHOD = "WebMethod"; //$NON-NLS-1$
     public static final String WEB_PARAM = "WebParam"; //$NON-NLS-1$
@@ -259,6 +266,26 @@ public final class CXFModelUtils {
         annotationdMap.put(CXFModelUtils.REQUEST_WRAPPER, model.isGenerateRequestWrapperAnnotation());
         annotationdMap.put(CXFModelUtils.RESPONSE_WRAPPER, model.isGenerateResponseWrapperAnnotation());
         return annotationdMap;
+    }
+    
+    /**
+     * CXF wsdl2java -autoNameResolution is supported in the CXF 2.0 stream from 2.0.7
+     * and in the CXF 2.1 stream from 2.1.1 up.
+     * 
+     * @param cxfRuntimeVersion
+     * @return
+     */
+    public static boolean isAutoNameResolutionPermitted() {
+        Version currentVersion = CXFCorePlugin.getDefault().getCurrentRuntimeVersion();
+        if (currentVersion.compareTo(CXFModelUtils.v_2_1_1) >= 0) {
+            return true;
+        }
+
+        if (currentVersion.compareTo(CXFModelUtils.v_2_0_7) >= 0
+                && currentVersion.compareTo(CXFModelUtils.v_2_1) < 0) {
+            return true;
+        }
+        return false;
     }
     
     public static boolean getDefaultBooleanValue(int classifierID, int featureID) {

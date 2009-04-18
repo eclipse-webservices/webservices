@@ -181,6 +181,10 @@ public final class CommandLineUtils {
                 progArgs.add(serviceName);
             }
             
+            if (model.isUseDefaultValues()) {
+                progArgs.add(W2J_DEFAULT_VALUES);
+            }
+            
             if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
                 progArgs.add(W2J_FRONTEND);
                 progArgs.add(model.getFrontend().getLiteral());
@@ -190,10 +194,6 @@ public final class CommandLineUtils {
 
                 progArgs.add(W2J_WSDL_VERSION);
                 progArgs.add(model.getWsdlVersion());
-                
-                if (model.isUseDefaultValues()) {
-                    progArgs.add(W2J_DEFAULT_VALUES);
-                }
                 
                 if (model.isNoAddressBinding()) {
                     progArgs.add(W2J_NO_ADDRESS_BINDING);
@@ -211,11 +211,10 @@ public final class CommandLineUtils {
 
         IProject project = ResourceUtils.getWorkspaceRoot().getProject(projectName);
         if (project != null && project.exists() && JDTUtils.isJavaProject(project)) {
-            // Add Standard args
-            progArgs.addAll(Arrays.asList(CommandLineUtils.getStandardWSDL2JavaProgramArguments(model, projectName)));
-            
             progArgs.add(GEN_CLIENT);
-            progArgs.add(model.getWsdlURL().toExternalForm());
+
+            // Add WSLD2Java args
+            progArgs.addAll(Arrays.asList(CommandLineUtils.getWSDL2JavaProgramArguments(model)));
         }
         return (String[]) progArgs.toArray(new String[progArgs.size()]);
     }
@@ -268,9 +267,9 @@ public final class CommandLineUtils {
         progArgs.add(W2J_DEFAULT_EXCLUDE_NS);
         progArgs.add(Boolean.toString(model.isLoadDefaultExcludesNamepsaceMapping()));
 
-//        if (model.isAutoNameResolution()) {
-//            progArgs.add(W2J_AUTO_NAME_RESOLUTION);
-//        }
+        if (model.isAutoNameResolution() && CXFModelUtils.isAutoNameResolutionPermitted()) {
+            progArgs.add(W2J_AUTO_NAME_RESOLUTION);
+        }
 
         String xjcArgs = CommandLineUtils.getXJCArgs(model);
         if (xjcArgs.trim().length() > 0) {

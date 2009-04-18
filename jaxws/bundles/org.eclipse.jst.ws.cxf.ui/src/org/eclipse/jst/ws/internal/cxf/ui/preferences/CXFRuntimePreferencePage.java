@@ -52,6 +52,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.osgi.framework.Version;
 
 /**
  * @author sclarke
@@ -434,6 +435,8 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
 
             context.setCxfRuntimeVersion(cxfRuntimeVersion);
             context.setCxfRuntimeEdition(cxfRuntimeEdition);
+            
+            CXFCorePlugin.getDefault().setCurrentRuntimeVersion(new Version(cxfRuntimeVersion));
         }
     }
 

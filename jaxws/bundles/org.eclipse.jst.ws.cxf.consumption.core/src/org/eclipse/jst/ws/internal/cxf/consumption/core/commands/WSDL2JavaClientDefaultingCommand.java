@@ -58,6 +58,7 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
     	IStatus status = Status.OK_STATUS;
         WSDL2JavaPersistentContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         model.setCxfRuntimeVersion(context.getCxfRuntimeVersion());
+        model.setCxfRuntimeEdition(context.getCxfRuntimeEdition());
         model.setProjectName(projectName);
 
         model.setIncludedNamespaces(new HashMap<String, String>());
@@ -78,7 +79,8 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
         model.setLoadDefaultNamespacePackageNameMapping(context.isLoadDefaultNamespacePackageNameMapping());
         model.setUseDefaultValues(context.isUseDefaultValues());
         model.setNoAddressBinding(context.isNoAddressBinding());
-
+        model.setAutoNameResolution(context.isAutoNameResolution());
+        
         model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()));
 
     	try {

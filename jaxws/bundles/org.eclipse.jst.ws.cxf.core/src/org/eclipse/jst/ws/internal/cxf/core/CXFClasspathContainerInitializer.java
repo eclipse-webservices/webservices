@@ -17,13 +17,20 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+/**
+ * 
+ * @author sclarke
+ *
+ */
 public class CXFClasspathContainerInitializer extends ClasspathContainerInitializer {
 
 	@Override
 	public void initialize(IPath containerPath, IJavaProject javaProject) throws CoreException {
-		CXFClasspathContainer cxfClasspathContainer = new CXFClasspathContainer(containerPath, javaProject);
-		
-		JavaCore.setClasspathContainer(containerPath, new IJavaProject[] {javaProject}, 
-				new IClasspathContainer[] {cxfClasspathContainer}, null);  
-	}	
+	    CXFClasspathContainer cxfClasspathContainer = new CXFClasspathContainer(containerPath, javaProject);
+	    
+	    if (cxfClasspathContainer.isValid()) {
+	        JavaCore.setClasspathContainer(containerPath, new IJavaProject[] {javaProject}, 
+				new IClasspathContainer[] {cxfClasspathContainer}, null);
+	    }
+	}
 }

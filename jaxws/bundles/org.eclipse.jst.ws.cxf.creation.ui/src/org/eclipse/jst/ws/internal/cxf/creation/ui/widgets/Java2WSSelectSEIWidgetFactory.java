@@ -85,7 +85,7 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String classConfigTitle = CXFCreationUIMessages.bind(
                 CXFCreationUIMessages.JAVA2WS_CLASS_CONFIG_PAGE_TITLE, 
-                new Object[]{CXFCorePlugin.getEdition(), context.getCxfRuntimeVersion()});
+                new Object[]{context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
         classWidgetContributor.setTitle(classConfigTitle);
         classWidgetContributor
                 .setDescription(CXFCreationUIMessages.JAVA2WS_CLASS_CONFIG_PAGE_DESCRIPTION);
@@ -98,7 +98,7 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
         interfaceWidgetContributor = new SimpleWidgetContributor();
         String interfaceConfigTitle = CXFCreationUIMessages.bind(
                 CXFCreationUIMessages.JAVA2WS_INTERFACE_CONFIG_PAGE_TITLE,
-                new Object[]{CXFCorePlugin.getEdition(), context.getCxfRuntimeVersion()});
+                new Object[]{context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
         interfaceWidgetContributor.setTitle(interfaceConfigTitle);
         interfaceWidgetContributor
                 .setDescription(CXFCreationUIMessages.JAVA2WS_INTERFACE_CONFIG_PAGE_DESCRIPTION);

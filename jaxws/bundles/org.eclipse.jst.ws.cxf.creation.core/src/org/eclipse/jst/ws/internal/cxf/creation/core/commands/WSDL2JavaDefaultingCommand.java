@@ -80,6 +80,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     	
         WSDL2JavaPersistentContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         model.setCxfRuntimeVersion(context.getCxfRuntimeVersion());
+        model.setCxfRuntimeEdition(context.getCxfRuntimeEdition());
         //
         model.setGenerateImplementation(context.isGenerateImplementation());
         model.setGenerateServer(context.isGenerateServer());

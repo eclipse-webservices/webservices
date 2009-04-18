@@ -56,7 +56,7 @@ public class JAXWSAnnotateWidgetFactory implements INamedWidgetContributorFactor
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String title = CXFCreationUIMessages.bind(
                 CXFCreationUIMessages.JAVA2WS_JAXWS_ANNOTATE_PAGE_TITLE, 
-                new Object[]{CXFCorePlugin.getEdition(), context.getCxfRuntimeVersion()});
+                new Object[]{context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
         jaxwsAnnotateWidgetContributor.setTitle(title);
         jaxwsAnnotateWidgetContributor
                 .setDescription(CXFCreationUIMessages.JAVA2WS_JAXWS_ANNOTATE_PAGE_DESCRIPTION);
