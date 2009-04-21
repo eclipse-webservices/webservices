@@ -62,6 +62,7 @@
  * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
+ * 20090326   269097 kchong@ca.ibm.com - Keith Chong, [Accessibility] Web services wizard dialog should be selected after canceling the Browse for class dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -122,6 +123,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.HyperlinkGroup;
@@ -443,16 +445,6 @@ public class ServerWizardWidget extends SimpleWidgetDataContributor implements R
 			browseButton_ = utils_.createPushButton(typeComposite,
 					ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 
-			IWorkbench workbench = PlatformUI.getWorkbench();
-			browseDialog_ = new ServiceImplSelectionDialog(workbench.getActiveWorkbenchWindow().getShell(), 
-					new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
-							new WidgetContributorFactory()
-					{	
-						public WidgetContributor create()
-						{	  						 
-							return new ObjectSelectionWidget();
-						}
-					}));		
 			browseButton_.addSelectionListener(new ServiceImplBrowseListener());
 		}
 		// Service Lifecycle section - scales for service & client, graphic
@@ -1690,12 +1682,16 @@ private void handleTypeChange()
 			   String componentName="";
 			   int result=Dialog.CANCEL;
 			   
+			   // This should be the Web Service Wizard Dialog's shell, and should be non-null.
+			   Shell shell = Display.getCurrent().getActiveShell();
+			   
 			   if (objectSelectionWidget_ instanceof IObjectSelectionLaunchable)
 		       {      	
 				 IObjectSelectionLaunchable launchable = ((IObjectSelectionLaunchable)objectSelectionWidget_);
 				 launchable.setInitialSelection(getObjectSelection());
-				 IWorkbench workbench = PlatformUI.getWorkbench();
-		         result = launchable.launch(workbench.getActiveWorkbenchWindow().getShell());
+
+				 // Bug 269097 - Use the Web Service's dialog shell, not the platform workbench's shell
+		         result = launchable.launch(shell);
 		         if (result == Dialog.OK)
 		         {
 		        	 serviceImpl_.removeModifyListener(objectModifyListener_);
@@ -1708,6 +1704,17 @@ private void handleTypeChange()
 		       }
 			   else
 			   {
+					// bug 269097 -  - Use the Web Service's dialog shell, not the platform workbench's shell.
+					browseDialog_ = new ServiceImplSelectionDialog(shell, 
+							new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
+									new WidgetContributorFactory()
+							{	
+								public WidgetContributor create()
+								{	  						 
+									return new ObjectSelectionWidget();
+								}
+							}));		
+
 				   browseDialog_.setTypeRuntimeServer(getServiceTypeRuntimeServer());
 				   browseDialog_.setInitialSelection(getObjectSelection());
 			       result = browseDialog_.open();
@@ -1720,6 +1727,7 @@ private void handleTypeChange()
 				       project = browseDialog_.getProject();
 				       componentName= browseDialog_.getComponentName();			       
 			       }
+			       browseDialog_ = null;
 			   }
 			   
 			   // call ObjectSelectionOutputCommand to carry out any transformation on the objectSelection

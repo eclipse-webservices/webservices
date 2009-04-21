@@ -30,6 +30,7 @@
  * 20090926   248448 mahutch@ca.ibm.com - Mark Hutchinson, Should not resize WS Wizard for long WSDL file names
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
+ * 20090326   269097 kchong@ca.ibm.com - Keith Chong, [Accessibility] Web services wizard dialog should be selected after canceling the Browse for class dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets;
 
@@ -153,16 +154,6 @@ public class ClientWizardWidget extends SimpleWidgetDataContributor implements R
 	browseButton_ = utils.createPushButton(typeComposite,
 			ConsumptionUIMessages.BUTTON_BROWSE, ConsumptionUIMessages.TOOLTIP_WSWSCEN_BUTTON_BROWSE_IMPL, null);
 	
-	IWorkbench workbench = PlatformUI.getWorkbench();
-    wsdlDialog_ = new WSDLSelectionDialog(workbench.getActiveWorkbenchWindow().getShell(), 
-		  						new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
-		                        new WidgetContributorFactory()
-		  						{	
-		  							public WidgetContributor create()
-		  							{	  						 
-		  							   return new WSDLSelectionWidgetWrapper();
-		  							}
-		  						}));		
 	browseButton_.addSelectionListener(new WSDLBrowseListener());
 	
 	utils.createHorizontalSeparator(parent, 1);
@@ -517,6 +508,17 @@ public void internalize() {
 	}
 	  public void widgetSelected(SelectionEvent e) {
 		  
+			// bug 269097 - Use the Web Service Client's dialog shell, not the platform workbench's shell.
+			wsdlDialog_ = new WSDLSelectionDialog(Display.getCurrent().getActiveShell(), 
+				  						new PageInfo(ConsumptionUIMessages.DIALOG_TITILE_SERVICE_IMPL_SELECTION, "", 
+				                        new WidgetContributorFactory()
+				  						{	
+				  							public WidgetContributor create()
+				  							{	  						 
+				  							   return new WSDLSelectionWidgetWrapper();
+				  							}
+				  						}));
+
 		   wsdlDialog_.setComponentName(getComponentName());
 		   wsdlDialog_.setProject(getProject());
 		   wsdlDialog_.setWebServiceURI( serviceImpl_.getText() );		
@@ -537,6 +539,7 @@ public void internalize() {
 		       clientWidget_.setValidationState(ValidationUtils.VALIDATE_ALL);
 		       statusListener_.handleEvent(null); //validate the page
 		   }
+		   wsdlDialog_ = null;
 	  }
 	}
 }
