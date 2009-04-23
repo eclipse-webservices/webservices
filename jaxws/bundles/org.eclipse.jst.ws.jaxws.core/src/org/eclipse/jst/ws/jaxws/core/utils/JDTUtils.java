@@ -277,6 +277,12 @@ public final class JDTUtils {
         return false;
     }
 
+    public static IStatus validateJavaTypeName(String compilationUnitName) {
+        String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
+        String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
+        return JavaConventions.validateJavaTypeName(compilationUnitName, sourceLevel, complianceLevel);
+    }
+
     public static IStatus validateJavaTypeName(String projectName, String compilationUnitName) {
         IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
         String sourceLevel = javaProject.getOption(JavaCore.COMPILER_SOURCE, true);
