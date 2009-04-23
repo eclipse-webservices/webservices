@@ -168,8 +168,8 @@ public class CXFFacetInstallDelegate implements IDelegate {
 
         List listeners = webapp.getListeners();
         for (int i = 0; i < listeners.size(); i++) {
-            org.eclipse.jst.javaee.core.Listener contextLoaderListener = (org.eclipse.jst.javaee.core.Listener) listeners
-                    .get(i);
+            org.eclipse.jst.javaee.core.Listener contextLoaderListener = 
+                (org.eclipse.jst.javaee.core.Listener) listeners.get(i);
             if (contextLoaderListener.getListenerClass().equals(
                     "org.springframework.web.context.ContextLoaderListener")) { //$NON-NLS-1$
                 return;

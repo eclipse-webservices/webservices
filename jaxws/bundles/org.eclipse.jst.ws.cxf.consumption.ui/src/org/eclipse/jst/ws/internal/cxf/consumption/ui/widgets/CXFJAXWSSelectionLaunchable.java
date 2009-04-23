@@ -52,7 +52,7 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
     
     private IProject project;
     private String serverComponentName;
-    private String className;
+    private String className = "";
     
     @Override
     public void setInitialSelection(IStructuredSelection initialSelection) {
@@ -108,11 +108,7 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
 
     @Override
     public IStructuredSelection getObjectSelection() {
-        if (className != null) {
-            IStructuredSelection objectSelection = new StructuredSelection(className);
-            return objectSelection;
-        }
-        return super.getObjectSelection();
+        return new StructuredSelection(className);
     }
 
     public String getComponentName() {
@@ -152,7 +148,8 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
         IProject project = getProject();
         if (project != null) {
             validationStatus = JDTUtils.validateJavaTypeName(project.getName(), className);
-            return validationStatus.isOK();
+        } else {
+            validationStatus = JDTUtils.validateJavaTypeName(className);
         }
 
 //        IProject project = getProject();
@@ -165,7 +162,7 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
 //            }
 //            return validationStatus.isOK();
 //        }
-        return false;
+        return validationStatus.isOK();
     }
     
     private static class JavaViewerFilter extends ViewerFilter {

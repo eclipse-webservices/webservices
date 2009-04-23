@@ -22,6 +22,8 @@ public class CXFCreationCoreMessages extends NLS {
         "org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCoreMessages"; //$NON-NLS-1$
     public static String WSDL2JAVA_PROJECT_SELECTION_ERROR;
     public static String WSDL2JAVA_VALID_PORTTYPE_MESSAGE;
+    
+    public static String JAVA2WS_SERVICE_IMPL_NOT_FOUND;
 
     static {
         // initialize resource bundle

@@ -41,6 +41,10 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
     private IType startingPointType;
 
     public INamedWidgetContributor getFirstNamedWidget() {
+        if (startingPointType == null) {
+            return null;
+        }
+        
         if (interfaceWidgetContributor == null || classWidgetContributor == null) {
             init();
         }

@@ -21,6 +21,7 @@ import org.eclipse.jst.ws.internal.cxf.creation.core.commands.JAXWSAnnotateJavaC
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSDefaultingCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSSelectSEICommand;
+import org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSValidateInputCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaDefaultingCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.WSDL2JavaProjectSelectionCommand;
@@ -70,6 +71,7 @@ public class CXFWebService extends AbstractWebService {
             Java2WSDataModel java2WSDataModel = CXFFactory.eINSTANCE.createJava2WSDataModel();
             java2WSDataModel.setProjectName(projectName);
             java2WSDataModel.setJavaStartingPoint(this.getWebServiceInfo().getImplURL());
+            commands.add(new Java2WSValidateInputCommand(java2WSDataModel));
             commands.add(new Java2WSDefaultingCommand(java2WSDataModel));
             commands.add(new Java2WSSelectSEICommand(java2WSDataModel));
             commands.add(new JAXWSAnnotateJavaCommand(java2WSDataModel));
