@@ -25,4 +25,10 @@ Export-Package: org.eclipse.jst.ws.internal.jaxws.core.annotations.initializatio
  org.eclipse.jst.ws.jaxws.core.utils
 Import-Package: javax.jws,
  javax.jws.soap,
- javax.xml.ws
+ javax.xml.ws;version="2.1.0",
+ javax.xml.ws.handler;version="2.1.0",
+ javax.xml.ws.handler.soap;version="2.1.0",
+ javax.xml.ws.http;version="2.1.0",
+ javax.xml.ws.soap;version="2.1.0",
+ javax.xml.ws.spi;version="2.1.0",
+ javax.xml.ws.wsaddressing;version="2.1.0"

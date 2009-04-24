@@ -79,7 +79,8 @@
       <annotation
             category="jaxws.category"
             class="javax.xml.ws.ServiceMode"
-            name="ServiceMode">
+            name="ServiceMode"
+            restrictedTo="CLASS_ONLY">
       </annotation>
       <annotation
             category="jaxws.category"
@@ -107,8 +108,8 @@
             class="javax.xml.ws.WebEndpoint"
             name="WebEndpoint"
             restrictedTo="CLASS_ONLY">
-    <!--  </annotation>
-            <annotation
+      </annotation>
+      <annotation
             category="jaxws.category"
             class="javax.xml.ws.RespectBinding"
             name="RespectBinding"
@@ -137,7 +138,7 @@
       <annotation
             category="jaxws.category"
             class="javax.xml.ws.spi.WebServiceFeatureAnnotation"
-            name="WebServiceFeatureAnnotation"> -->
+            name="WebServiceFeatureAnnotation">
       </annotation>
    </extension>
    
