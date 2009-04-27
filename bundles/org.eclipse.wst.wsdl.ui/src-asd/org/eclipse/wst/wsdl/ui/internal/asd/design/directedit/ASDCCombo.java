@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Peter Liu - Seneca College https://bugs.eclipse.org/bugs/show_bug.cgi?id=256185
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.design.directedit;
 
@@ -410,7 +411,11 @@ void dropDown (boolean drop) {
 	if (drop == isDropped ()) return;
 	if (!drop && !isDisposed()) {
 		popup.setVisible (false);
-		text.selectAll();
+
+		if (text != null) {
+		  text.selectAll();
+		}
+
 		if (!isDisposed ()&& arrow.isFocusControl()) {
 			text.setFocus();
 		}
