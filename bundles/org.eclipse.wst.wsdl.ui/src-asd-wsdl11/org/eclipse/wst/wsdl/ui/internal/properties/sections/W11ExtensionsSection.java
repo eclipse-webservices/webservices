@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Jesse Valianes - Seneca College - https://bugs.eclipse.org/bugs/show_bug.cgi?id=209289
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.properties.sections;
 
@@ -103,9 +104,7 @@ public class W11ExtensionsSection extends AbstractExtensionsSection
         modelAdapter = WSDLModelAdapter.lookupOrCreateModelAdapter(element.getOwnerDocument());
         modelAdapter.getModelReconcileAdapter().addListener(internalNodeAdapter);
       }         
-    }       
-    addButton.setEnabled(!isReadOnly);
-    removeButton.setEnabled(!isReadOnly);         
+    }         
   }
   
   public void dispose()
