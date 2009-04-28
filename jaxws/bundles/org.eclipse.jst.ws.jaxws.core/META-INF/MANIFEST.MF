@@ -3,23 +3,23 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.core;singleton:=true
 Bundle-Vendor: %pluginProvider
-Bundle-Version: 0.5.1.qualifier
+Bundle-Version: 0.5.2.qualifier
 Bundle-ClassPath: .
 Bundle-Localization: plugin
 Eclipse-RegisterBuddy: org.eclipse.jst.ws.annotations.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Activator: org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.jdt.core,
- org.eclipse.core.resources,
- org.eclipse.jdt.apt.core,
- org.eclipse.core.filesystem,
- org.eclipse.core.filebuffers,
- org.eclipse.jdt.ui,
- org.eclipse.jface.text,
- org.eclipse.ltk.core.refactoring,
- org.eclipse.ui,
- org.eclipse.jst.ws.annotations.core
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jdt.apt.core;bundle-version="[3.3.100,4.0.0)",
+ org.eclipse.core.filesystem;bundle-version="[1.2.0,2.0.0)",
+ org.eclipse.core.filebuffers;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jdt.ui;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jface.text;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.ltk.core.refactoring;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jst.ws.annotations.core;bundle-version="0.5.0"
 Export-Package: org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;x-friends:="org.eclipse.jst.ws.annotations.core",
  org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;x-friends:="org.eclipse.jst.ws.annotations.core",
  org.eclipse.jst.ws.jaxws.core.utils
@@ -32,3 +32,4 @@ Import-Package: javax.jws,
  javax.xml.ws.soap;version="2.1.0",
  javax.xml.ws.spi;version="2.1.0",
  javax.xml.ws.wsaddressing;version="2.1.0"
+Bundle-ActivationPolicy: lazy

@@ -75,6 +75,6 @@ public class CXFConsumptionCorePlugin extends AbstractUIPlugin {
 
     public static void log(Throwable exception) {
         CXFConsumptionCorePlugin.log(new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID, 
-            exception.getLocalizedMessage(), exception));
+            exception.toString(), exception));
     }
 }

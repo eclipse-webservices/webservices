@@ -25,7 +25,6 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;

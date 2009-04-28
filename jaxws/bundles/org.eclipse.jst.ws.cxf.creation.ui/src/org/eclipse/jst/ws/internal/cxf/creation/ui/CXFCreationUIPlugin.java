@@ -86,6 +86,6 @@ public class CXFCreationUIPlugin extends AbstractUIPlugin {
     
     public static void log(Throwable exception) {
         CXFCreationUIPlugin.log(new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-            exception.getLocalizedMessage(), exception));
+            exception.toString(), exception));
     }
 }

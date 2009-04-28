@@ -103,12 +103,14 @@ public class AnnotationDefinition {
     
     public List<ElementType> getTargets() {
         if (targets == null) {
+        	targets = Collections.emptyList();
+        	
             Class<? extends java.lang.annotation.Annotation> annotation = getAnnotationClass();
-            Target target = annotation.getAnnotation(Target.class);
-            if (target != null) {
-                targets = Arrays.asList(target.value());
-            } else {
-                targets = Collections.emptyList();
+            if (annotation != null) {
+            	Target target = annotation.getAnnotation(Target.class);
+            	if (target != null) {
+            		targets = Arrays.asList(target.value());
+            	} 
             }
         }
         return targets;

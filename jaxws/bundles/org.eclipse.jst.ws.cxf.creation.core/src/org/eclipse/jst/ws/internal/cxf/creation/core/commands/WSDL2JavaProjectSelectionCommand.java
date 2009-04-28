@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCoreMessages;
+import org.eclipse.wst.common.environment.StatusException;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -49,20 +50,28 @@ public class WSDL2JavaProjectSelectionCommand extends AbstractDataModelOperation
 		}
 		
 		if (currentProject == null && initialProject != null && !initialProject.equals(serverProject)) {
-			status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
+			status = new Status(IStatus.WARNING, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
 					CXFCreationCoreMessages.WSDL2JAVA_PROJECT_SELECTION_ERROR, new Object[]{
 							serverProject.getName(), initialProject.getName()}));
 		} else if (initialProject == null && currentProject != null && !currentProject.equals(serverProject)) { 
-            status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
+            status = new Status(IStatus.WARNING, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
                     CXFCreationCoreMessages.WSDL2JAVA_PROJECT_SELECTION_ERROR, new Object[]{
                             serverProject.getName(), currentProject.getName()}));
 		} else if (initialProject != null && currentProject != null && !currentProject.equals(serverProject)) {
-            status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
+            status = new Status(IStatus.WARNING, CXFCorePlugin.PLUGIN_ID, CXFCreationCoreMessages.bind(
                     CXFCreationCoreMessages.WSDL2JAVA_PROJECT_SELECTION_ERROR, new Object[]{
                             serverProject.getName(), currentProject.getName()}));
 		} else { 
 		    model.setProjectName(serverProject.getProject().getName());
 			status = Status.OK_STATUS;
+		}
+		
+		if (!status.isOK()) {
+			try {
+				getEnvironment().getStatusHandler().report(status);
+			} catch (StatusException e) {
+				return new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, 0, "", null);
+			}
 		}
 		return status;
 	}

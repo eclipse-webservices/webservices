@@ -78,6 +78,7 @@ public class CXFWebService extends AbstractWebService {
             commands.add(new Java2WSCommand(java2WSDataModel));
         } else if (ctx.getScenario().getValue() == WebServiceScenario.TOPDOWN) {
             WSDL2JavaDataModel wsdl2JavaDataModel = CXFFactory.eINSTANCE.createWSDL2JavaDataModel();
+            wsdl2JavaDataModel.setProjectName(projectName);
             commands.add(new WSDL2JavaProjectSelectionCommand(wsdl2JavaDataModel));
             commands.add(new WSDL2JavaDefaultingCommand(wsdl2JavaDataModel, projectName, 
             		getWebServiceInfo().getWsdlURL()));

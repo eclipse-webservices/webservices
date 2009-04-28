@@ -116,6 +116,6 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     
     public static void log(Throwable exception) {
         CXFCorePlugin.log(new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, 
-                exception.getLocalizedMessage(), exception));
+                exception.toString(), exception));
     }
 }

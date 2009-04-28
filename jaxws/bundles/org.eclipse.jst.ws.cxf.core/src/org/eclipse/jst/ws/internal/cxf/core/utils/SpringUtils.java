@@ -283,11 +283,28 @@ public final class SpringUtils {
                 PortType portType = port.getBinding().getPortType();
                 QName qName = portType.getQName();
                 String portTypeName = qName.getLocalPart();
-                String fullyQualifiedClassName = packageName + "." + portTypeName + "Impl"; //$NON-NLS-1$ //$NON-NLS-2$
+                String fullyQualifiedClassName = packageName + "." + //$NON-NLS-1$
+                	convertPortTypeName(portTypeName) + "Impl"; //$NON-NLS-1$
                 model.setFullyQualifiedJavaClassName(fullyQualifiedClassName);
                 SpringUtils.createJAXWSEndpoint(model);
              }
          }
+    }
+
+    private static String convertPortTypeName(String portTypeName) {
+    	String[] segments = portTypeName.split("[\\-\\.\\:\\_\\u00b7\\u0387\\u06dd\\u06de]");
+    	StringBuilder stringBuilder =  new StringBuilder();
+    	for (String segment : segments) {
+    		if (segment.length() == 0) {
+    			continue;
+    		}
+    		char firstCharacter = segment.charAt(0);
+    		if (!Character.isDigit(firstCharacter) && !Character.isUpperCase(firstCharacter)) {
+    			segment = segment.substring(0, 1).toUpperCase(Locale.getDefault()) + segment.substring(1);
+    		}
+    		stringBuilder.append(segment);
+		}
+    	return stringBuilder.toString();
     }
 
     public static void createJAXWSEndpoint(CXFDataModel model) throws IOException {

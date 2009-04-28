@@ -6,18 +6,18 @@ Bundle-Version: 0.3.4.qualifier
 Bundle-Activator: org.eclipse.jst.ws.internal.cxf.consumption.core.CXFConsumptionCorePlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jst.ws.internal.cxf.consumption.core.commands
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.wst.ws,
- org.eclipse.core.resources,
- org.eclipse.jst.ws,
- org.eclipse.wst.common.frameworks,
- org.eclipse.jst.ws.cxf.core,
- org.eclipse.jdt.core,
- javax.wsdl,
- org.eclipse.wst.common.modulecore,
- org.eclipse.jst.ws.jaxws.core
+Export-Package: org.eclipse.jst.ws.internal.cxf.consumption.core.commands;x-friends:="org.eclipse.jst.ws.cxf.consumption.ui"
+Require-Bundle: org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.wst.ws;bundle-version="[1.1.0,1.2.0)",
+ org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jst.ws;bundle-version="[1.0.304,1.1.0)",
+ org.eclipse.wst.common.frameworks;bundle-version="[1.1.200,1.2.0)",
+ org.eclipse.jst.ws.cxf.core;bundle-version="0.4.3",
+ org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
+ javax.wsdl;bundle-version="[1.5.0,1.6.0)",
+ org.eclipse.wst.common.modulecore;bundle-version="[1.1.0,1.2.0)",
+ org.eclipse.jst.ws.jaxws.core;bundle-version="0.5.0"
 Ant-Version: Apache Ant 1.7.0
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Created-By: 1.5.0_14-b03 (Sun Microsystems Inc.)

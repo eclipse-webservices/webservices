@@ -80,7 +80,7 @@ public class JAXWSUIPlugin extends AbstractUIPlugin {
     }
 
     public static void log(Throwable exception) {
-        JAXWSUIPlugin.log(new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID, exception.getLocalizedMessage(),
-                exception));
+        JAXWSUIPlugin.log(new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID, 
+        		exception.toString(), exception));
     }
 }

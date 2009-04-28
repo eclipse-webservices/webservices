@@ -73,6 +73,6 @@ public class CXFUIPlugin extends AbstractUIPlugin {
     
     public static void log(Throwable exception) {
         CXFUIPlugin.log(new Status(IStatus.ERROR, CXFUIPlugin.PLUGIN_ID, 
-            exception.getLocalizedMessage(), exception));
+            exception.toString(), exception));
     }
 }
