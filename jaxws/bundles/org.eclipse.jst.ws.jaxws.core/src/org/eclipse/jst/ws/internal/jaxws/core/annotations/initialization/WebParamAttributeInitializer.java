@@ -22,6 +22,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+
 /**
  * 
  * @author sclarke
@@ -36,26 +37,30 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
     @Override
     public List<MemberValuePair> getMemberValuePairs(ASTNode astNode, AST ast,
             Class<? extends Annotation> annotationClass) {
-        
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, NAME, 
+    	
+    	if (astNode instanceof SingleVariableDeclaration) {
+    		MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, NAME, 
                 getName((SingleVariableDeclaration)astNode));
-        memberValuePairs.add(nameValuePair);
-
+    		memberValuePairs.add(nameValuePair);
+    	}
         return memberValuePairs;
     }
     
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(ASTNode astNode,
             MemberValuePair memberValuePair) {
+    	
         List<ICompletionProposal> completionProposals = new ArrayList<ICompletionProposal>();
 
-        String memberValuePairName = memberValuePair.getName().getIdentifier();
+    	if (astNode instanceof SingleVariableDeclaration) {
+    		String memberValuePairName = memberValuePair.getName().getIdentifier();
 
-        if (memberValuePairName.equals(NAME)) {
-            completionProposals.add(AnnotationUtils.createCompletionProposal(
+    		if (memberValuePairName.equals(NAME)) {
+    			completionProposals.add(AnnotationUtils.createCompletionProposal(
                     getName((SingleVariableDeclaration)astNode), memberValuePair.getValue()));
-        }
-        return completionProposals;
+    		}
+    	}
+    	return completionProposals;
     }
     
     private String getName(SingleVariableDeclaration parameter) {

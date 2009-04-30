@@ -60,7 +60,7 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
 	@SuppressWarnings("unchecked")
 	private List<ICompletionProposal> computeCompletionProposals(JavaContentAssistInvocationContext context) {
         CompletionContext completionContext = context.getCoreContext();
-	    int tokenStart = completionContext.getTokenStart();
+        int tokenStart = completionContext.getOffset();
 	    
 	    ICompilationUnit source = context.getCompilationUnit();
 		try {

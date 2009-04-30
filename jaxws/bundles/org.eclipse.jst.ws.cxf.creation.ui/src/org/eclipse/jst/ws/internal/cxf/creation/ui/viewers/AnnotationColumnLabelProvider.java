@@ -62,7 +62,7 @@ public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
 
             IMethod method = (SourceMethod) element;
 
-            if (annotationKey == CXFModelUtils.WEB_PARAM) {
+            if (annotationKey.equals(CXFModelUtils.WEB_PARAM)) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(type,
                         method);
 

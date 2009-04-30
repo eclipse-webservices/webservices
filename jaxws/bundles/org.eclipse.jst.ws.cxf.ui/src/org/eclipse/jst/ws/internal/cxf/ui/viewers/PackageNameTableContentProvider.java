@@ -12,21 +12,22 @@ package org.eclipse.jst.ws.internal.cxf.ui.viewers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.wsdl.Definition;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.Viewer;
 
 /**
  * @author sclarke
  */
-public class PackageNameTableContentProvider extends ArrayContentProvider {
+public class PackageNameTableContentProvider implements IStructuredContentProvider {
 
-    @Override
     @SuppressWarnings("unchecked")
     public Object[] getElements(Object inputElement) {
-        java.util.List<Object> elements = new ArrayList<Object>();
+        List<Object> elements = new ArrayList<Object>();
         if (inputElement instanceof Definition) {
             Definition definition = (Definition) inputElement;
             Map namespaces = definition.getNamespaces();
@@ -40,5 +41,11 @@ public class PackageNameTableContentProvider extends ArrayContentProvider {
         }
         return elements.toArray(new Object[elements.size()]);
     }
+
+	public void dispose() {
+	}
+
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+	}
 
 }

@@ -321,7 +321,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
             arrayValuesTableViewer.setLabelProvider(new LabelProvider() {
                 @Override
                 public String getText(Object element) {
-                    if (element instanceof List) {
+                    if (element instanceof List<?>) {
                         String annotationName = method.getReturnType().getComponentType().getSimpleName();
                         annotationName += "("; //$NON-NLS-1$
                         List<Map<String, Object>> valuesList = (List<Map<String, Object>>)element;

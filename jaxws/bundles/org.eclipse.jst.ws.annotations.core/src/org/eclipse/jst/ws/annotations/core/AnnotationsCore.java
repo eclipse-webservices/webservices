@@ -236,11 +236,11 @@ public final class AnnotationsCore {
     public static TypeLiteral createTypeLiteral(AST ast, String value) {
         TypeLiteral typeLiteral = ast.newTypeLiteral();
 
-        if (value.toString().indexOf(".") == -1) { //$NON-NLS-1$
-            typeLiteral.setType(ast.newSimpleType(ast.newSimpleName(value.toString())));
+        if (value.indexOf(".") == -1) { //$NON-NLS-1$
+            typeLiteral.setType(ast.newSimpleType(ast.newSimpleName(value)));
         } else {
-            String qualifier = value.toString().substring(0, value.toString().lastIndexOf(".")); //$NON-NLS-1$
-            String identifier = value.toString().substring(value.toString().lastIndexOf(".") + 1); //$NON-NLS-1$
+            String qualifier = value.substring(0, value.lastIndexOf(".")); //$NON-NLS-1$
+            String identifier = value.substring(value.lastIndexOf(".") + 1); //$NON-NLS-1$
             if (qualifier.equals("java.lang")) { //$NON-NLS-1$
                 typeLiteral.setType(ast.newSimpleType(ast.newSimpleName(identifier)));
             } else {

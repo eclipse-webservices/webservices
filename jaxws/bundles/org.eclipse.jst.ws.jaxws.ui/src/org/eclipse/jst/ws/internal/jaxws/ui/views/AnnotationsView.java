@@ -140,7 +140,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
 		annotationTreeViewer.setComparator(new ViewerComparator() {
             @Override
             public int compare(Viewer viewer, Object obj1, Object obj2) {
-                if (obj1 instanceof Class) {
+                if (obj1 instanceof Class<?>) {
                   return AnnotationsManager.getAnnotationDefinitionForClass(obj1).getAnnotationClassName().
                       compareTo(AnnotationsManager.getAnnotationDefinitionForClass(obj2).
                               getAnnotationClassName());

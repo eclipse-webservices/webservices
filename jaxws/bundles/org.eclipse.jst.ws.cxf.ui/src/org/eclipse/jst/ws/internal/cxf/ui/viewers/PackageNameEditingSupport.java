@@ -52,8 +52,8 @@ public class PackageNameEditingSupport extends EditingSupport implements Selecti
 
     @Override
     protected Object getValue(Object element) {
-        if (includedNamespaces.containsKey(element)) {
-            return includedNamespaces.get(element);
+        if (includedNamespaces.containsKey(element.toString())) {
+            return includedNamespaces.get(element.toString());
         }
         return WSDLUtils.getPackageNameFromNamespace(element.toString());
     }

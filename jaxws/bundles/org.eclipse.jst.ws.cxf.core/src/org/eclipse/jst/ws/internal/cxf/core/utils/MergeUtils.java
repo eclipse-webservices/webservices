@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.cxf.core.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,37 +47,50 @@ public final class MergeUtils {
         return jmerger;
     }
 
-    public static void merge(File sourceFile, File targetFile) throws IOException {
+    public static void merge(File sourceFile, File targetFile) {
         JMerger merger = getJMerger();
 
-        // set source
-        FileInputStream sourceInputStream = new FileInputStream(sourceFile);
-        JCompilationUnit inputCompilationUnit = merger
-                .createCompilationUnitForInputStream(sourceInputStream);
-        merger.setSourceCompilationUnit(inputCompilationUnit);
+        FileInputStream sourceInputStream = null;
+        FileInputStream targetInputStream = null;
+        OutputStream targetOutputStream = null;
+        try {
+            // set source
+            sourceInputStream = new FileInputStream(sourceFile);
+            JCompilationUnit inputCompilationUnit = merger
+                    .createCompilationUnitForInputStream(sourceInputStream);
+            merger.setSourceCompilationUnit(inputCompilationUnit);
 
-        // set target
-        FileInputStream targetInputStream = new FileInputStream(targetFile);
-        JCompilationUnit targetCompilationUnit = merger
-                .createCompilationUnitForInputStream(targetInputStream);
-        merger.setTargetCompilationUnit(targetCompilationUnit);
+            // set target
+            targetInputStream = new FileInputStream(targetFile);
+            JCompilationUnit targetCompilationUnit = merger
+                    .createCompilationUnitForInputStream(targetInputStream);
+            merger.setTargetCompilationUnit(targetCompilationUnit);
 
-        // merge source and target
-        merger.merge();
+            // merge source and target
+            merger.merge();
 
-        // extract merged contents
-        // InputStream mergedContents = new ByteArrayInputStream(
-        // merger.getTargetCompilationUnit().getContents().getBytes());
-
-        OutputStream targetOutputStream = new FileOutputStream(targetFile);
-        byte[] bytes = merger.getTargetCompilationUnit().getContents().getBytes();
-        targetOutputStream.write(bytes, 0, bytes.length);
-
-        // overwrite the target with the merged contents
-        // targetFile.setContents(mergedContents, true, false, new
-        // NullProgressMonitor());
-        sourceInputStream.close();
-        targetInputStream.close();
-        targetOutputStream.close();
+            // write merged contents
+            targetOutputStream = new FileOutputStream(targetFile);
+            byte[] bytes = merger.getTargetCompilationUnit().getContents().getBytes();
+            targetOutputStream.write(bytes, 0, bytes.length);
+        } catch (FileNotFoundException fnfe) {
+            CXFCorePlugin.log(fnfe);
+        } catch (IOException ioe) {
+            CXFCorePlugin.log(ioe);
+        } finally {
+            try {
+                if (sourceInputStream != null) {
+                    sourceInputStream.close();
+                }
+                if (targetInputStream != null) {
+                    targetInputStream.close();
+                }
+                if (targetOutputStream != null) {
+                    targetOutputStream.close();
+                }
+            } catch (IOException ioe) {
+                CXFCorePlugin.log(ioe);
+            }
+        }
     }
 }

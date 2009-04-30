@@ -44,7 +44,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
 	}
 	
 	public IClasspathEntry[] getClasspathEntries() {
-        if (cxfLibraryVersion != getCxfRuntimeVersion()) {
+        if (!cxfLibraryVersion.equals(getCxfRuntimeVersion())) {
             classpathEntries = new ArrayList<IClasspathEntry>();
             cxfLibraryLocation = getCxfRuntimeLocation();
             cxfLibraryVersion = getCxfRuntimeVersion();

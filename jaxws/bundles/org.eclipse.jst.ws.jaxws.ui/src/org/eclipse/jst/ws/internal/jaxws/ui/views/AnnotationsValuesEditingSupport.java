@@ -317,10 +317,11 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                                 QualifiedName enumValue = (QualifiedName) memberValuePair
                                         .getValue();
                                 SimpleName literal = enumValue.getName();
+                                
                                 Object[] enumConstants = method.getReturnType()
                                         .getEnumConstants();
                                 for (int i = 0; i < enumConstants.length; i++) {
-                                    if (enumConstants[i].toString().equals(literal)) {
+                                    if (enumConstants[i].toString().equals(literal.getIdentifier())) {
                                         return i;
                                     }
                                 }

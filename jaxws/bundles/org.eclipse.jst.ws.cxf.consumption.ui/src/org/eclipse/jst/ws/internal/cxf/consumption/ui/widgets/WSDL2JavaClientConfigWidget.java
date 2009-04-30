@@ -210,8 +210,33 @@ public class WSDL2JavaClientConfigWidget extends SimpleWidgetDataContributor {
         TableViewerColumn packageNameViewerColumn = WSDL2JavaWidgetFactory.createPackageNameColumn(
                 packageNameTableViewer, model);
 
+        TextCellEditor textCellEditor = new TextCellEditor(packageNameTableViewer.getTable());
+        textCellEditor.addListener( new ICellEditorListener() {
+		
+			public void editorValueChanged(boolean oldValidState, boolean newValidState) {
+				statusListener.handleEvent(null);				
+			}
+		
+			public void cancelEditor() {
+			}
+		
+			public void applyEditorValue() {
+			}
+		});
+        
+        textCellEditor.setValidator(new ICellEditorValidator() {
+		
+			public String isValid(Object packageName) {
+	            status = JDTUtils.validatePackageName(model.getProjectName(), packageName.toString());
+	            if (status.getSeverity() == IStatus.OK) {
+	                return null;
+	            }
+	            return status.getMessage();
+			}
+		});
+
         packageNameViewerColumn.setEditingSupport(new PackageNameEditingSupport(packageNameTableViewer,
-                new PackageNameTextCellEditor(packageNameTableViewer.getTable()), model));
+        		textCellEditor, model));
 
         columnWeightData = new ColumnWeightData(100, 100, true);
         tableLayout.addColumnData(columnWeightData);
@@ -250,34 +275,5 @@ public class WSDL2JavaClientConfigWidget extends SimpleWidgetDataContributor {
     public IStatus getStatus() {
         return status;
     }
-
-    private class PackageNameTextCellEditor extends TextCellEditor implements ICellEditorListener,
-            ICellEditorValidator {
-
-        public PackageNameTextCellEditor(Composite parent) {
-            super(parent);
-            addListener(this);
-            setValidator(this);
-        }
-
-        public void applyEditorValue() {
-        }
-
-        public void cancelEditor() {
-        }
-
-        public void editorValueChanged(boolean oldValidState, boolean newValidState) {
-            statusListener.handleEvent(null);
-        }
-
-        public String isValid(Object packageName) {
-            status = JDTUtils.validatePackageName(model.getProjectName(), packageName.toString());
-            if (status.getSeverity() == IStatus.OK) {
-                return null;
-            }
-            return status.getMessage();
-        }
-    }
-
 
 }

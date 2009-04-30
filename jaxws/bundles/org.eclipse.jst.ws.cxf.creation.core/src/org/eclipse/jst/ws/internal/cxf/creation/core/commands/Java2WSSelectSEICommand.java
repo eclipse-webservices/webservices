@@ -39,7 +39,6 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
-import org.eclipse.ltk.ui.refactoring.RefactoringUI;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
@@ -142,8 +141,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
         IStatus status = Status.OK_STATUS;
         if (undoExtractInterfaceChange != null) {
             try {
-                PerformChangeOperation changeOperation = RefactoringUI
-                .createUIAwareChangeOperation(undoExtractInterfaceChange);
+            	PerformChangeOperation changeOperation = new PerformChangeOperation(undoExtractInterfaceChange);
             
                 WorkbenchRunnableAdapter adapter= new WorkbenchRunnableAdapter(changeOperation);
                 PlatformUI.getWorkbench().getProgressService().runInUI(

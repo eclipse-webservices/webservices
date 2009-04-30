@@ -28,8 +28,8 @@ public class PackageNameColumnLabelProvider extends ColumnLabelProvider {
 
     @Override
     public String getText(Object element) {
-        if (includedNamespaces.containsKey(element)) {
-            return includedNamespaces.get(element);
+        if (includedNamespaces.containsKey(element.toString())) {
+            return includedNamespaces.get(element.toString());
         }
         return WSDLUtils.getPackageNameFromNamespace(element.toString());
     }

@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.cxf.core.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,11 +68,7 @@ public final class FileUtils {
             if (file.isDirectory()) {
                 copyFolder(source, destination, files[i]);
             } else {
-                try {
-                    copyFile(source, destination, files[i]);
-                } catch (IOException ioe) {
-                    CXFCorePlugin.log(ioe);
-                }
+                copyFile(source, destination, files[i]);
             }
         }
     }
@@ -84,61 +81,45 @@ public final class FileUtils {
         copyFolder(sourceFolder + File.separator + name, targetFolder + File.separator + name);
     }
 
-    public static void copyFile(String sourceFolder, String targetFolder, String fileName) 
-            throws IOException {
+    public static void copyFile(String sourceFolder, String targetFolder, String fileName) {
         File sourceFile = new File(sourceFolder + File.separator + fileName);
         File targetFile = new File(targetFolder + File.separator + fileName);
         if (!targetFile.exists()) {
-            InputStream inputStream = new FileInputStream(sourceFile);
-            OutputStream outputStream = new FileOutputStream(targetFile);
-            byte[] buffer = new byte[102400];
-            while (true) {
-                int numberOfBytes = inputStream.read(buffer);
-                if (numberOfBytes < 0) {
-                    break;
+        	InputStream inputStream = null;
+            OutputStream outputStream = null;
+            try {
+		        inputStream = new FileInputStream(sourceFile);
+                outputStream = new FileOutputStream(targetFile);
+                byte[] buffer = new byte[102400];
+                while (true) {
+                    int numberOfBytes = inputStream.read(buffer);
+                    if (numberOfBytes < 0) {
+                        break;
+                    }
+                    outputStream.write(buffer, 0, numberOfBytes);
                 }
-                outputStream.write(buffer, 0, numberOfBytes);
-            }
-            inputStream.close();
-            outputStream.close();
+
+            } catch (FileNotFoundException fnfe) {
+                CXFCorePlugin.log(fnfe);
+		    } catch (IOException ioe) {
+                CXFCorePlugin.log(ioe);
+			} finally {
+				try {
+				    if (inputStream != null) {
+				        inputStream.close();    
+				    }
+				    if (outputStream != null) {
+				        outputStream.close();    
+				    }
+				} catch(IOException ioe) {
+                    CXFCorePlugin.log(ioe);
+				}
+			}
         } else {
             if (sourceFile.getName().indexOf(".java") != -1) { //$NON-NLS-1$
                 MergeUtils.merge(sourceFile, targetFile);
             }
         }
-    }
-
-    public static IStatus copyFiles(IPath fromDiretoryPath, IPath toDirectPath, String fileExtension) 
-            throws IOException {
-        IStatus status = Status.OK_STATUS;
-
-        File fromDirectory = new File(fromDiretoryPath.toOSString());
-        if (fromDirectory.exists() && fromDirectory.isDirectory()) {
-            String[] files = fromDirectory.list();
-            for (int i = 0; i < files.length; i++) {
-                File file = new File(fromDirectory.getPath() + File.separator + files[i]);
-                String fileName = file.getName();
-                InputStream fileInputStream = new FileInputStream(file);
-
-                if (fileName.indexOf(".") != -1
-                        && fileName.substring(fileName.lastIndexOf("."), fileName.length()).equals(
-                                fileExtension)) {
-                    try {
-                        IFolder toFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(toDirectPath);
-                        IFile fileCopy = toFolder.getFile(fileName);
-                        if (!fileCopy.exists()) {
-                            fileCopy.create(fileInputStream, true, new NullProgressMonitor());
-                        }
-                    } catch (CoreException ce) {
-                        status = ce.getStatus();
-                        CXFCorePlugin.log(status);
-                    } finally {
-                        fileInputStream.close();
-                    }
-                }
-            }
-        }
-        return status;
     }
 
     public static String getTmpFolderName() {

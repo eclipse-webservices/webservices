@@ -857,8 +857,7 @@ public final class AnnotationUtils {
 	    	List<SingleVariableDeclaration> methodDeclarationParameters = methodDeclaration.parameters();
 	    	if (parametetNames.length == methodDeclarationParameters.size()) {
 		    	for (int i = 0; i < parametetNames.length; i++) {
-					String simpleName1 = Signature.getSimpleName(Signature.toString(Signature
-							.getTypeErasure(parametetNames[i])));
+	                String simpleName1 = Signature.toString(parametetNames[i]);
 					String simpleName2 = methodDeclarationParameters.get(i).getType().toString();
 					if (!simpleName1.equals(simpleName2)) {
 						return false;
@@ -998,10 +997,9 @@ public final class AnnotationUtils {
 
     private static boolean isAnnotationPresent(CompilationUnit compilationUnit, IJavaElement javaElement,
             String annotationName) {
-
         List<IExtendedModifier> modifiers = getExtendedModifiers(compilationUnit, javaElement);
         for (IExtendedModifier extendedModifier : modifiers) {
-            if (extendedModifier instanceof Annotation) {
+            if (extendedModifier.isAnnotation()) {
                 Annotation existingAnnotation = (Annotation) extendedModifier;
                 if (AnnotationUtils.getAnnotationName(existingAnnotation).equals(annotationName)) {
                     return true;
@@ -1030,7 +1028,7 @@ public final class AnnotationUtils {
                 }
                 if (javaElement.getElementType() == IJavaElement.FIELD) {
                     bodyDeclaration = getFieldDeclaration(bodyDeclarations, (IField) javaElement);
-                }   
+                }
 
                 return bodyDeclaration != null ? bodyDeclaration.modifiers() : Collections.emptyList();
             }

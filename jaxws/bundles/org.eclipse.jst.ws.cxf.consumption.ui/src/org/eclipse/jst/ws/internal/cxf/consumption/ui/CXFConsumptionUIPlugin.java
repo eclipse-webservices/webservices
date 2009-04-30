@@ -42,7 +42,7 @@ public class CXFConsumptionUIPlugin extends AbstractUIPlugin {
     @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);
-        CXFConsumptionUIPlugin.plugin = this;
+        plugin = this;
     }
 
     /*
@@ -52,7 +52,7 @@ public class CXFConsumptionUIPlugin extends AbstractUIPlugin {
      */
     @Override
     public void stop(BundleContext context) throws Exception {
-        CXFConsumptionUIPlugin.plugin = null;
+        plugin = null;
         super.stop(context);
     }
 
@@ -62,7 +62,7 @@ public class CXFConsumptionUIPlugin extends AbstractUIPlugin {
      * @return the shared instance
      */
     public static CXFConsumptionUIPlugin getDefault() {
-        return CXFConsumptionUIPlugin.plugin;
+        return plugin;
     }
 
     public static void logMessage(int severity, String message) {
