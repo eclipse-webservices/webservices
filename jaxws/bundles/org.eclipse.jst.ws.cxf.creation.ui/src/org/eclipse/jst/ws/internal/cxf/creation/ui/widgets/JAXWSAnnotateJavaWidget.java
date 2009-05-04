@@ -51,6 +51,7 @@ import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -194,8 +195,8 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         javaTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             public void selectionChanged(SelectionChangedEvent event) {
-                if (event.getSelection() instanceof TreeSelection) {
-                    TreeSelection treeSelection = (TreeSelection) event.getSelection();
+                if (event.getSelection() instanceof ITreeSelection) {
+                    ITreeSelection treeSelection = (TreeSelection) event.getSelection();
                     Object firstElement = treeSelection.getFirstElement();
                     
                     IDocument document = annotationPreviewViewer.getDocument();
@@ -216,24 +217,25 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                             SourceMethod sourceMethod = (SourceMethod) firstElement;
                             String elementName = sourceMethod.getElementName();
                             
-                           	String regex = "\\bpublic\\W+(?:\\w+\\W+){1,3}?" + elementName + "\\s*+\\(.*";
-
+                           	String regex = "\\bpublic\\W+(?:\\w+\\W+){1,3}?" + elementName + "\\s*?\\(\\s*?.*?";
+                           	
                             String[] parameterTypes = sourceMethod.getParameterTypes();
                             String[] paramterNames = sourceMethod.getParameterNames();
                             
                             for (int i = 0; i < parameterTypes.length; i++) {
-                            	String typeName = Signature.toString(Signature.getTypeErasure(
+                                regex += "\\s*?";
+                                String typeName = Signature.toString(Signature.getTypeErasure(
                             			parameterTypes[i]));
                             	regex += typeName;
-                            	regex += "\\s*+";
+                            	regex += "\\s*?";
                             	regex += paramterNames[i];
                             	if (i < parameterTypes.length - 1) {
-                            		regex += "\\s*+,.*";
+                            		regex += "\\s*?,\\s*?.*?";
                             	}
 							}
-                        	regex += "\\s*+\\)";
-                            
-                            IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, 
+                        	regex += "\\s*?\\)";
+
+                        	IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, 
                             		true);
                             
                             if (region != null) {
