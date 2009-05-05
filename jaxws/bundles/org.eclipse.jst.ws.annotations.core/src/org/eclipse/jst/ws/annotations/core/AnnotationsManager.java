@@ -58,10 +58,9 @@ public final class AnnotationsManager {
     private static Map<String, IConfigurationElement> annotationInitializerCache = null;
     private static Map<String, List<IConfigurationElement>> annotationProcessorCache = null;
     private static Map<String, List<AnnotationDefinition>> annotationsByCategoryMap = null;
-    private static Map<Class<? extends Annotation>, AnnotationDefinition> annotationClassToDefinitionMap;
+    private static Map<String, AnnotationDefinition> annotationClassNameToDefinitionMap;
     private static Map<String, AnnotationDefinition> annotationSimpleNameToDefinitionMap;
     private static Map<String, AnnotationDefinition> annotationQualifiedNameToDefinitionMap;
-
 
     private static final String ATT_ID = "id"; //$NON-NLS-1$
     private static final String ATT_NAME = "name"; //$NON-NLS-1$
@@ -108,20 +107,20 @@ public final class AnnotationsManager {
         return annotations.toArray();     
     }
     
-    private static synchronized Map<Class<? extends Annotation>, AnnotationDefinition> 
-            getAnnotationToClassDefinitionMap() {
-
-        if (annotationClassToDefinitionMap == null) {
+    private static synchronized Map<String, AnnotationDefinition> 
+            getAnnotationToClassNameDefinitionMap() {
+            
+        if (annotationClassNameToDefinitionMap == null) {
             List<AnnotationDefinition> annotationDefinitions = getAnnotations();
 
-            annotationClassToDefinitionMap = new HashMap<Class<? extends Annotation>, AnnotationDefinition>();
+            annotationClassNameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
 
             for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
-                annotationClassToDefinitionMap.put(annotationDefinition.getAnnotationClass(),
-                        annotationDefinition);
+            	annotationClassNameToDefinitionMap.put(annotationDefinition.getAnnotationClass()
+						.getCanonicalName(), annotationDefinition);
             }
         }
-        return annotationClassToDefinitionMap;
+        return annotationClassNameToDefinitionMap;
     }
     
     private static synchronized Map<String, AnnotationDefinition> getSimpleNameToDefinitionMap() {
@@ -154,7 +153,8 @@ public final class AnnotationsManager {
     @SuppressWarnings("unchecked")
     public static AnnotationDefinition getAnnotationDefinitionForClass(Object element) {
         if (element instanceof Class && ((Class<?>)element).isAnnotation()) {
-            return getAnnotationToClassDefinitionMap().get((Class<? extends Annotation>)element);
+			return getAnnotationToClassNameDefinitionMap().get(
+					((Class<? extends Annotation>) element).getCanonicalName());
         }
         return null;
     }
@@ -174,7 +174,7 @@ public final class AnnotationsManager {
     
     public static AnnotationDefinition getAnnotationDefinitionForClass(Class<? extends Annotation> 
             annotationClass) {
-        return getAnnotationToClassDefinitionMap().get(annotationClass);
+        return getAnnotationToClassNameDefinitionMap().get(annotationClass.getCanonicalName());
     }
     
     public static synchronized List<AnnotationDefinition> getAnnotationsByCategory(String categoryName) {
@@ -188,7 +188,8 @@ public final class AnnotationsManager {
                 if (annotationDefinitionList == null) {
                     annotationDefinitionList = new ArrayList<AnnotationDefinition>();
                     annotationDefinitionList.add(annotationDefinition);
-                    annotationsByCategoryMap.put(annotationDefinition.getCategory(), annotationDefinitionList);
+                    annotationsByCategoryMap.put(annotationDefinition.getCategory(), 
+                    		annotationDefinitionList);
                     continue;
                 }
                 annotationDefinitionList.add(annotationDefinition);
@@ -258,7 +259,8 @@ public final class AnnotationsManager {
                     IConfigurationElement element = elements[i];
                     if (element.getName().equalsIgnoreCase("processor")) {
                         String annotationKey = getAttributeValue(element, ANNOTATION);
-                        List<IConfigurationElement> configurationElements = annotationProcessorCache.get(annotationKey); 
+                        List<IConfigurationElement> configurationElements = annotationProcessorCache.get(
+                        		annotationKey); 
                         if (configurationElements == null) {
                             configurationElements = new ArrayList<IConfigurationElement>();
                             configurationElements.add(element);
@@ -376,8 +378,8 @@ public final class AnnotationsManager {
         }
     }
     
-    private static boolean isClassRestricted(IJavaElement javaElement, AnnotationDefinition annotationDefinition) 
-            throws JavaModelException {
+    private static boolean isClassRestricted(IJavaElement javaElement,
+    		AnnotationDefinition annotationDefinition) throws JavaModelException {
         if (javaElement.getElementType() == IJavaElement.TYPE) {
             return !((IType)javaElement).isClass() && annotationDefinition.isClassOnly();
         }
@@ -392,8 +394,8 @@ public final class AnnotationsManager {
         return false;
     }
     
-    private static boolean isInterfaceRestricted(IJavaElement javaElement, AnnotationDefinition annotationDefinition) 
-            throws JavaModelException {
+    private static boolean isInterfaceRestricted(IJavaElement javaElement,
+    		AnnotationDefinition annotationDefinition) throws JavaModelException {
         if (javaElement.getElementType() == IJavaElement.TYPE) {
             return !((IType)javaElement).isInterface() && annotationDefinition.isInterfaceOnly();
         }
@@ -408,8 +410,8 @@ public final class AnnotationsManager {
         return false;
     }
     
-    private static boolean isEnumRestricted(IJavaElement javaElement, AnnotationDefinition annotationDefinition) 
-            throws JavaModelException {
+    private static boolean isEnumRestricted(IJavaElement javaElement,
+    		AnnotationDefinition annotationDefinition) throws JavaModelException {
         if (javaElement.getElementType() == IJavaElement.TYPE) {
             return !((IType)javaElement).isEnum() && annotationDefinition.isEnumOnly();            
         }
