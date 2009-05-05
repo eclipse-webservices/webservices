@@ -134,7 +134,7 @@ public final class SpringUtils {
 
         Attribute schemaLocation = new Attribute(
                 "schemaLocation", //$NON-NLS-1$
-                "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd " //$NON-NLS-1$
+                "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd " //$NON-NLS-1$
                         + "http://cxf.apache.org/bindings/soap http://cxf.apache.org/schemas/configuration/soap.xsd " //$NON-NLS-1$
                         + "http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd", XMLNS_XSI); //$NON-NLS-1$
 
@@ -151,7 +151,7 @@ public final class SpringUtils {
 
         Attribute schemaLocation = new Attribute(
                 "schemaLocation", //$NON-NLS-1$
-                "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd " //$NON-NLS-1$
+                "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd " //$NON-NLS-1$
                         + "http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd", XMLNS_XSI); //$NON-NLS-1$
 
         beans.setAttribute(schemaLocation);
