@@ -11,8 +11,11 @@
 package org.eclipse.jst.ws.jaxws.core.tests;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.apt.core.util.AptConfig;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
@@ -20,6 +23,9 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.IVMInstall2;
+import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
 
 /**
@@ -34,14 +40,54 @@ public class TestJavaProject extends TestProject {
         super(projectName);
         javaProject = JavaCore.create(getProject());
         addProjectNature(getProject(), JavaCore.NATURE_ID);
-        
+
         javaProject.setRawClasspath(new IClasspathEntry[0], null);
 
         createSourceFolder();
-        addToClasspath(javaProject, JavaRuntime.getDefaultJREContainerEntry());
+        addToClasspath(javaProject, getJREContainerEntry());
         createOutputFolder();
     }
     
+    public void setAutoBuilding(boolean autoBuild) throws CoreException {
+        IWorkspaceDescription description = ResourcesPlugin.getWorkspace().getDescription();
+        description.setAutoBuilding(autoBuild);
+        ResourcesPlugin.getWorkspace().setDescription(description);
+    }
+    
+    public void enableAnnotationProcessing(boolean enable) {
+        AptConfig.setEnabled(javaProject, enable);
+    }
+    
+    private IClasspathEntry getJREContainerEntry() {
+        IVMInstall defaultVMInstall = JavaRuntime.getDefaultVMInstall();
+        if (defaultVMInstall != null && isJava6OrGreaterJRE(defaultVMInstall)) {
+            return JavaRuntime.getDefaultJREContainerEntry();
+        }
+        
+        IVMInstallType[] installTypes = JavaRuntime.getVMInstallTypes();
+        for (IVMInstallType installType : installTypes) {
+            IVMInstall[] vmInstalls = installType.getVMInstalls();
+            for (IVMInstall vmInstall : vmInstalls) {
+                if (isJava6OrGreaterJRE(vmInstall)) {
+                    return JavaCore.newContainerEntry(JavaRuntime.newJREContainerPath(installType.getId(),
+                            vmInstall.getName()));
+                }
+            }
+        }
+        
+        return JavaRuntime.getDefaultJREContainerEntry();
+    }
+    
+    private boolean isJava6OrGreaterJRE(IVMInstall vmInstall) {
+        if (vmInstall instanceof IVMInstall2) {
+            IVMInstall2 vmInstall2 = (IVMInstall2) vmInstall;
+            if (vmInstall2.getJavaVersion().compareTo(JavaCore.VERSION_1_6) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public ICompilationUnit createCompilationUnit(String packageName, String name, String contents) throws JavaModelException {
         return getPackageFragment(packageName).createCompilationUnit(name, contents, false, monitor);
     }

@@ -42,21 +42,30 @@ public abstract class AbstractAnnotationTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         testJavaProject = new TestJavaProject("JavaProject");
-        
+        testJavaProject.setAutoBuilding(isAutoBuildingEnabled());
+        testJavaProject.enableAnnotationProcessing(isAnnotationProcessingEnabled());
+
         source = testJavaProject.createCompilationUnit(getPackageName(), getClassName(), getClassContents());
 
         compilationUnit = AnnotationUtils.getASTParser(source);
         ast = compilationUnit.getAST();
         rewriter = ASTRewrite.create(ast);
         annotation = getAnnotation();
-        textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source
-                .getResource());
+        textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
     }
     
-    public abstract String getPackageName();
-    public abstract String getClassName();
-    public abstract String getClassContents();
-    public abstract Annotation getAnnotation();
+    protected boolean isAutoBuildingEnabled() {
+        return false;
+    }
+
+    protected boolean isAnnotationProcessingEnabled() {
+        return false;
+    }
+
+    protected abstract String getPackageName();
+    protected abstract String getClassName();
+    protected abstract String getClassContents();
+    protected abstract Annotation getAnnotation();
     
     protected boolean executeChange(IProgressMonitor monitor, Change change) {
         if (change == null) {

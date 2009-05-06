@@ -24,7 +24,7 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
 public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
     @Override
@@ -36,20 +36,20 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
     public String getClassName() {
         return "CalculatorClient.java";
     }
-    
+
     @Override
     public String getClassContents() {
-        return "public class CalculatorClient {\n\nstatic CalculatorService service;\n\n}";
+        return "package com.example;\n\n public class CalculatorClient {\n\nstatic String service;\n\n}";
     }
 
     @Override
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        MemberValuePair wsdlLocationValuePair = AnnotationsCore.createStringMemberValuePair(ast, "wsdlLocation", 
-                "http://localhost:8083/Calculator/servives/CalculatorService?WSDL");
+        MemberValuePair wsdlLocationValuePair = AnnotationsCore.createStringMemberValuePair(ast,
+                "wsdlLocation", "http://localhost:8083/Calculator/servives/CalculatorService?WSDL");
         memberValuePairs.add(wsdlLocationValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class, 
+        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class,
                 javax.xml.ws.WebServiceRef.class.getSimpleName(), memberValuePairs);
     }
 
@@ -57,19 +57,22 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
         try {
             assertNotNull(annotation);
             assertEquals("WebServiceRef", AnnotationUtils.getAnnotationName(annotation));
-            
+
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);
-        
+
+            AnnotationUtils.getImportChange(compilationUnit, javax.xml.ws.WebServiceRef.class,
+                    textFileChange, true);
+
             AnnotationUtils.createFiedlAnnotationChange(source, compilationUnit, rewriter, field, annotation,
                     textFileChange);
-            
+
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
-            assertTrue(AnnotationUtils.isAnnotationPresent(field,
-                    AnnotationUtils.getAnnotationName(annotation)));
+
+            assertTrue(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils
+                    .getAnnotationName(annotation)));
         } catch (CoreException ce) {
-            ce.printStackTrace();
+            fail(ce.getLocalizedMessage());
         }
     }
 }

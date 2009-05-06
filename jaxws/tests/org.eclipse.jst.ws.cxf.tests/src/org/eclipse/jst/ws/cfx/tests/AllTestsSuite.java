@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.cfx.tests;
 
 import junit.framework.TestSuite;
 
+import org.eclipse.jst.ws.jaxws.core.annotation.validation.tests.JAXWSAnnotationValidationTestSuite;
+import org.eclipse.jst.ws.jaxws.core.tests.JAXWSCoreTestSuite;
 
 /**
  * This class specifies all the bundles of this component that provide a test
@@ -22,8 +24,8 @@ public class AllTestsSuite extends TestSuite {
 
 	public AllTestsSuite() {
 		super("All JAXWS Test Suites");
-		addTest(org.eclipse.jst.ws.jaxws.core.tests.JAXWSCoreTestSuite.suite());
-		//addTestSuite(EasyTest.class);
+		addTest(JAXWSCoreTestSuite.suite());
+		addTest(JAXWSAnnotationValidationTestSuite.suite());
 	}
 
 	/**
