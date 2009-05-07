@@ -24,7 +24,7 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
 public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
 
@@ -37,35 +37,38 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
     public String getClassName() {
         return "Calculator.java";
     }
-    
+
     @Override
     public String getClassContents() {
-        return "public class Calculator {\n\n\tpublic int add(int i, int k) {" +
-            "\n\t\treturn i + k;\n\t}\n}";
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("public class Calculator {\n\n\tpublic int add(int i, int k) {");
+        classContents.append("\n\t\treturn i + k;\n\t}\n}");
+        return classContents.toString();
     }
 
     @Override
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
-        MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "name", "Calculator");
+        MemberValuePair nameValuePair = AnnotationsCore
+                .createStringMemberValuePair(ast, "name", "Calculator");
 
-        MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
+        MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast,
                 "targetNamespace", JDTUtils.getTargetNamespaceFromPackageName(getPackageName()));
 
         MemberValuePair portNameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "portName",
                 "CalculatorPort");
 
-        MemberValuePair serviceNameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "serviceName",
-                "CalculatorService");
+        MemberValuePair serviceNameValuePair = AnnotationsCore.createStringMemberValuePair(ast,
+                "serviceName", "CalculatorService");
 
         memberValuePairs.add(nameValuePair);
         memberValuePairs.add(targetNamespaceValuePair);
         memberValuePairs.add(portNameValuePair);
         memberValuePairs.add(serviceNameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class,
-                javax.jws.WebService.class.getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, javax.jws.WebService.class
+                .getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToType() {
@@ -73,15 +76,18 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
             assertNotNull(annotation);
             assertEquals("WebService", AnnotationUtils.getAnnotationName(annotation));
 
+            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebService.class, textFileChange,
+                    true);
+
             AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation,
                     textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
-            assertTrue(AnnotationUtils.isAnnotationPresent(source,
-                    AnnotationUtils.getAnnotationName(annotation)));
+
+            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
+                    .getAnnotationName(annotation)));
         } catch (CoreException ce) {
-            ce.printStackTrace();
+            fail(ce.getLocalizedMessage());
         }
     }
 }

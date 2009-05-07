@@ -25,9 +25,10 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
 public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
+
     @Override
     public String getPackageName() {
         return "com.example";
@@ -37,45 +38,52 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
     public String getClassName() {
         return "Calculator.java";
     }
-    
+
     @Override
     public String getClassContents() {
-        return "public class Calculator {\n\n\tpublic int add(int i, int k) {" +
-            "\n\t\treturn i + k;\n\t}\n}";
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("public class Calculator {\n\n\tpublic int add(int i, int k) {");
+        classContents.append("\n\t\treturn i + k;\n\t}\n}");
+        return classContents.toString();
     }
 
     @Override
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+
         MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "name", "i");
+
         memberValuePairs.add(nameValuePair);
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class,
-                javax.jws.WebParam.class.getSimpleName(), memberValuePairs);
+
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, javax.jws.WebParam.class
+                .getSimpleName(), memberValuePairs);
     }
-    
+
     public void testAddAnnotationToMethodParameter() {
         try {
             assertNotNull(annotation);
             assertEquals("WebParam", AnnotationUtils.getAnnotationName(annotation));
-            
-            IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
+
+            IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);
-            
-            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method, 
-                    44);
-        
-            AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, rewriter, 
+
+            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebParam.class, textFileChange, true);
+
+            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
+                    65);
+
+            AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, rewriter,
                     parameter, method, annotation, textFileChange);
-            
+
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
-            //refresh
-            parameter = AnnotationUtils.getMethodParameter(
-                    AnnotationUtils.getASTParser(method.getCompilationUnit()), method, 44);
-            
+
+            // refresh
+            parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
+                    .getCompilationUnit()), method, 93);
+
             assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
         } catch (CoreException ce) {
-            ce.printStackTrace();
+            fail(ce.getLocalizedMessage());
         }
     }
 }

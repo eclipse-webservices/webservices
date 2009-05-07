@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
@@ -26,51 +25,54 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
-public class OnewayNoReturnValueRuleTest extends AbstractAnnotationValidationTest {
+public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotationValidationTest {
 
-	@Override
-	public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.Oneway.class, 
-    		  javax.jws.Oneway.class.getSimpleName(), null);
-	}
+    @Override
+    protected Annotation getAnnotation() {
+        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceProvider.class,
+                javax.xml.ws.WebServiceProvider.class.getSimpleName(), null);
+    }
 
-	@Override
-	public String getClassContents() {
-	    StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-	    classContents.append("public class MyClass {\n\n\tpublic int myMethod() {\n\t\treturn 0;\n\t}\n}");
+    @Override
+    protected String getClassContents() {
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("import javax.jws.WebService;\n\n");
+        classContents.append("@WebService(name=\"MyClass\", endpointInterface=\"MyInterface\", ");
+        classContents.append("targetNamespace=\"http://example.com/\", portName=\"MyClassPort\", ");
+        classContents.append("serviceName=\"MyClassService\")\n");
+        classContents.append("public class MyClass {\n\n");
+        classContents.append("\tpublic String myMethod() {" + "\n\t\treturn \"txt\";\n\t}\n\n}");
         return classContents.toString();
-	}
+    }
 
-	@Override
-	public String getClassName() {
+    @Override
+    protected String getClassName() {
         return "MyClass.java";
-	}
+    }
 
-	@Override
-	public String getPackageName() {
+    @Override
+    protected String getPackageName() {
         return "com.example";
-	}
-	
-    public void testOnewayNoReturnValueRule() {
+    }
+
+    public void testWebServiceWebServiceProviderCoExistRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("Oneway", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals("WebServiceProvider", AnnotationUtils.getAnnotationName(annotation));
 
-            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
-            assertNotNull(method);
+            AnnotationUtils.getImportChange(compilationUnit, javax.xml.ws.WebServiceProvider.class,
+                    textFileChange, true);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.Oneway.class, textFileChange, true);
-
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation,
+                    textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
+            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
                     .getAnnotationName(annotation)));
-            
+
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
@@ -81,7 +83,8 @@ public class OnewayNoReturnValueRuleTest extends AbstractAnnotationValidationTes
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.ONEWAY_ANNOTATION_PROCESSOR_NO_RETURN_VALUE_ERROR_MESSAGE,
+            assertEquals(
+                    JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_WEBSERVICE_WEBSERVICEPROVIDER_ERROR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

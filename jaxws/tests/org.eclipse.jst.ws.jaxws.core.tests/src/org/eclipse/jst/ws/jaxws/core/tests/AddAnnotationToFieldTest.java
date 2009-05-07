@@ -27,6 +27,7 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
  * 
  */
 public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
+
     @Override
     public String getPackageName() {
         return "com.example";
@@ -34,19 +35,21 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
 
     @Override
     public String getClassName() {
-        return "CalculatorClient.java";
+        return "MyClass.java";
     }
 
     @Override
     public String getClassContents() {
-        return "package com.example;\n\n public class CalculatorClient {\n\nstatic String service;\n\n}";
+        return "package com.example;\n\npublic class MyClass {\n\n\tstatic String service;\n\n}";
     }
 
     @Override
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+
         MemberValuePair wsdlLocationValuePair = AnnotationsCore.createStringMemberValuePair(ast,
-                "wsdlLocation", "http://localhost:8083/Calculator/servives/CalculatorService?WSDL");
+                "wsdlLocation", "http://localhost:8083/ServiceProject/servives/MyService?WSDL");
+
         memberValuePairs.add(wsdlLocationValuePair);
 
         return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class,
@@ -75,4 +78,5 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
             fail(ce.getLocalizedMessage());
         }
     }
+    
 }

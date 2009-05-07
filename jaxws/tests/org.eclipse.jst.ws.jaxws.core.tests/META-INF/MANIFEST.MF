@@ -17,6 +17,7 @@ Require-Bundle: org.junit;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.jst.ws.annotations.core;bundle-version="0.5.0",
  org.eclipse.jdt.apt.core;bundle-version="[3.3.100,4.0.0)"
 Import-Package: javax.jws,
+ javax.jws.soap,
  javax.xml.ws;version="2.1.0"
 Export-Package: org.eclipse.jst.ws.jaxws.core.annotation.validation.tests,
  org.eclipse.jst.ws.jaxws.core.tests

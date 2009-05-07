@@ -24,9 +24,10 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
 public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
+
     @Override
     public String getPackageName() {
         return "com.example";
@@ -36,40 +37,47 @@ public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
     public String getClassName() {
         return "Calculator.java";
     }
-    
+
     @Override
     public String getClassContents() {
-        return "public class Calculator {\n\n\tpublic int add(int i, int k) {" +
-            "\n\t\treturn i + k;\n\t}\n}";
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("public class Calculator {\n\n\tpublic int add(int i, int k) {");
+        classContents.append("\n\t\treturn i + k;\n\t}\n}");
+        return classContents.toString();
     }
 
     @Override
     public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        MemberValuePair operationValuePair = AnnotationsCore.createStringMemberValuePair(ast, "operationName",
-            "add");
+
+        MemberValuePair operationValuePair = AnnotationsCore.createStringMemberValuePair(ast,
+                "operationName", "add");
+
         memberValuePairs.add(operationValuePair);
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, 
-                javax.jws.WebMethod.class.getSimpleName(), memberValuePairs);
+
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
+                .getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToMethod() {
         try {
             assertNotNull(annotation);
             assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
-            
-            IMethod method = source.findPrimaryType().getMethod("add", new String[] {"I", "I"});
+
+            IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);
-        
+
+            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
+
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
-            
+
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
-            assertTrue(AnnotationUtils.isAnnotationPresent(method,
-                    AnnotationUtils.getAnnotationName(annotation)));
+
+            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
+                    .getAnnotationName(annotation)));
         } catch (CoreException ce) {
-            ce.printStackTrace();
+            fail(ce.getLocalizedMessage());
         }
     }
 }

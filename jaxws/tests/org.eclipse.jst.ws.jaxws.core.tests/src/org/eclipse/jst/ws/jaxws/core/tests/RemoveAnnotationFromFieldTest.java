@@ -20,9 +20,10 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
 public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
+
     @Override
     public String getPackageName() {
         return "com.example";
@@ -30,12 +31,15 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
 
     @Override
     public String getClassName() {
-        return "CalculatorClient.java";
+        return "MyClass.java";
     }
-    
+
     @Override
     public String getClassContents() {
-        return "public class CalculatorClient {\n\n@WebServiceRef()\nstatic CalculatorService service;\n\n}";
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("import javax.xml.ws.WebServiceRef;\n\n");
+        classContents.append("public class MyClass {\n\n\t@WebServiceRef()\n\tstatic String service;\n\n}");
+        return classContents.toString();
     }
 
     @Override
@@ -52,18 +56,18 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(field,
-                    AnnotationUtils.getAnnotationName(annotation)));
-        
+            assertTrue(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils
+                    .getAnnotationName(annotation)));
+
             AnnotationUtils.removeAnnotationFromField(source, compilationUnit, rewriter, field, annotation,
                     textFileChange);
-            
+
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
-            assertFalse(AnnotationUtils.isAnnotationPresent(field,
-                    AnnotationUtils.getAnnotationName(annotation)));
+
+            assertFalse(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils
+                    .getAnnotationName(annotation)));
         } catch (CoreException ce) {
-            ce.printStackTrace();
+            fail(ce.getLocalizedMessage());
         }
     }
 }

@@ -26,42 +26,47 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
-public class OnewayNoReturnValueRuleTest extends AbstractAnnotationValidationTest {
+public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationValidationTest {
 
-	@Override
-	public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.Oneway.class, 
-    		  javax.jws.Oneway.class.getSimpleName(), null);
-	}
+    @Override
+    protected Annotation getAnnotation() {
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
+                .getSimpleName(), null);
+    }
 
-	@Override
-	public String getClassContents() {
-	    StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-	    classContents.append("public class MyClass {\n\n\tpublic int myMethod() {\n\t\treturn 0;\n\t}\n}");
+    @Override
+    protected String getClassContents() {
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("import javax.jws.WebService;\n\n");
+        classContents.append("@WebService(name=\"MyClass\", endpointInterface=\"MyInterface\", ");
+        classContents.append("targetNamespace=\"http://example.com/\", portName=\"MyClassPort\", ");
+        classContents.append("serviceName=\"MyClassService\")\n");
+        classContents.append("public class MyClass {\n\n");
+        classContents.append("\tpublic String myMethod() {" + "\n\t\treturn \"txt\";\n\t}\n\n}");
         return classContents.toString();
-	}
+    }
 
-	@Override
-	public String getClassName() {
+    @Override
+    protected String getClassName() {
         return "MyClass.java";
-	}
+    }
 
-	@Override
-	public String getPackageName() {
+    @Override
+    protected String getPackageName() {
         return "com.example";
-	}
-	
-    public void testOnewayNoReturnValueRule() {
+    }
+
+    public void testWebServiceSEIPresentNoWebMethodRuleTest() {
         try {
             assertNotNull(annotation);
-            assertEquals("Oneway", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.Oneway.class, textFileChange, true);
+            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -70,7 +75,7 @@ public class OnewayNoReturnValueRuleTest extends AbstractAnnotationValidationTes
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
-            
+
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
@@ -81,7 +86,8 @@ public class OnewayNoReturnValueRuleTest extends AbstractAnnotationValidationTes
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.ONEWAY_ANNOTATION_PROCESSOR_NO_RETURN_VALUE_ERROR_MESSAGE,
+            assertEquals(
+                    JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHOS_ERROR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

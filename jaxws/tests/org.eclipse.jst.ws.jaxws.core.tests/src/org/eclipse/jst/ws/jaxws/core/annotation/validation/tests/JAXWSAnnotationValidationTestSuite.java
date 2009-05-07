@@ -16,17 +16,31 @@ import junit.framework.TestSuite;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
 public class JAXWSAnnotationValidationTestSuite extends TestSuite {
-    
+
     public static Test suite() {
         return new JAXWSAnnotationValidationTestSuite();
     }
-    
+
     public JAXWSAnnotationValidationTestSuite() {
         super("JAX-WS Annotation Validation Tests");
         addTestSuite(OnewayNoReturnValueRuleTest.class);
+        addTestSuite(SOAPBindingMethodStyleDocumentRuleTest.class);
+        addTestSuite(SOAPBindingMethodUseRuleTest.class);
+        addTestSuite(WebMethodCheckForWebServiceRuleTest.class);
+        addTestSuite(WebMethodExcludeRuleOnSEITest.class);
+        addTestSuite(WebMethodExcludeRuleOnImplTest.class);
+        addTestSuite(WebMethodPublicMethodsOnlyRuleTest.class);
+        addTestSuite(WebServiceNoFinalizeMethodRuleTest.class);
+        addTestSuite(WebServiceNoFinalModiferRuleTest.class);
+        addTestSuite(WebServiceNoAbstractModifierRuleTest.class);
+        addTestSuite(WebServiceSEINoServiceNameRuleTest.class);
+        addTestSuite(WebServiceSEINoEndpointInterfaceRuleTest.class);
+        addTestSuite(WebServiceSEINoPortNameRuleTest.class);
+        addTestSuite(WebServiceSEIPresentNoWebMethodRuleTest.class);
+        addTestSuite(WebServiceWebServiceProviderCoExistRuleTest.class);
     }
 
 }

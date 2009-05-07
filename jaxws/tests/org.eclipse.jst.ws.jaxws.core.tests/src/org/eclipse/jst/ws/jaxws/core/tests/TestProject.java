@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.jaxws.core.tests;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -35,11 +34,6 @@ public class TestProject {
         testProject = workspaceRoot.getProject(projectName);
         testProject.create(monitor);
         testProject.open(monitor);
-        
-        IWorkspaceDescription description = ResourcesPlugin.getWorkspace().getDescription();
-        description.setAutoBuilding(false);
-        ResourcesPlugin.getWorkspace().setDescription(description);
-
     }
     
     public IProject getProject() {

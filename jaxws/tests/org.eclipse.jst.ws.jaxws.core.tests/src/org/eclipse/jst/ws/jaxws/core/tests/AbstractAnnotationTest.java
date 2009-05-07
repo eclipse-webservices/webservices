@@ -24,7 +24,7 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.ltk.ui.refactoring.RefactoringUI;
+
 /**
  * 
  * @author sclarke
@@ -74,7 +74,8 @@ public abstract class AbstractAnnotationTest extends TestCase {
 
         change.initializeValidationData(monitor);
 
-        PerformChangeOperation changeOperation = RefactoringUI.createUIAwareChangeOperation(change);
+        PerformChangeOperation changeOperation = new PerformChangeOperation(change);
+
         try {
             changeOperation.run(monitor);
         } catch (CoreException ce) {
