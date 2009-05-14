@@ -40,7 +40,9 @@ public class SOAPBindingMethodUseRule extends AbstractAnnotationProcessor {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
                 .getTypeDeclaration("javax.jws.soap.SOAPBinding"); //$NON-NLS-1$
 
-        Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(annotationDeclaration);
+        Collection<Declaration> annotatedTypes = environment
+                .getDeclarationsAnnotatedWith(annotationDeclaration);
+        
         boolean methodUseEncoded = false;
         boolean methodParameterStylePresent = false;
         
@@ -74,8 +76,8 @@ public class SOAPBindingMethodUseRule extends AbstractAnnotationProcessor {
                         }
                         
                         if (methodParameterStylePresent && methodUseEncoded) {
-                        	messager.printError(mirror.getPosition(), JAXWSCoreMessages.
-                        			SOAPBINDING_ANNOTATION_PROCESSOR_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE); 
+                            messager.printError(mirror.getPosition(),
+                                    JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE);
                         	return;
                         }
                     }

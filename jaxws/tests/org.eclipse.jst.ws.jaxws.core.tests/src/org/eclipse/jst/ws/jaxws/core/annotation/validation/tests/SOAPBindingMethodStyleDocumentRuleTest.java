@@ -106,14 +106,12 @@ public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationVa
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(
-                    JAXWSCoreMessages.SOAPBINDING_ANNOTATION_PROCESSOR_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE,
+            assertEquals(JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }

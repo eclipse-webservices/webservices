@@ -173,9 +173,13 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                         SourceType sourceType = (SourceType) element;
                         List<IMethod> publicMethods = new ArrayList<IMethod>();
                         IMethod[] methods = sourceType.getMethods();
-                        for (IMethod method : methods) {
-                            if (JDTUtils.isPublicMethod(method)) {
-                                publicMethods.add(method);
+                        if (sourceType.isInterface()) {
+                            return methods;
+                        } else if (sourceType.isClass()) {
+                            for (IMethod method : methods) {
+                                if (JDTUtils.isPublicMethod(method)) {
+                                    publicMethods.add(method);
+                                }
                             }
                         }
                         return publicMethods.toArray(new Object[publicMethods.size()]);
@@ -207,36 +211,48 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                             SourceType sourceType = (SourceType) firstElement;
                             String elementName = sourceType.getElementName();
                             
-                            String regex = "\\bpublic\\W+(?:\\w+\\W+){1,3}?" + elementName + "\\b";
-                            IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, 
-                            		true);
+                            StringBuilder regex = new StringBuilder("\\bpublic\\W+(?:\\w+\\W+){1,3}?");
+                            regex.append(elementName);
+                            regex.append("\\b");
+                            IRegion region = findReplaceDocumentAdapter.find(0, regex.toString(), true, true,
+                                    false, true);
 
                             annotationPreviewViewer.setSelectedRange(region.getOffset(), region.getLength());
                             annotationPreviewViewer.revealRange(region.getOffset(), region.getLength());
                         } else if (firstElement instanceof SourceMethod) {
                             SourceMethod sourceMethod = (SourceMethod) firstElement;
+                            SourceType sourceType = (SourceType) sourceMethod.getParent();
+                            
                             String elementName = sourceMethod.getElementName();
                             
-                           	String regex = "\\bpublic\\W+(?:\\w+\\W+){1,3}?" + elementName + "\\s*?\\(\\s*?.*?";
+                            StringBuilder regex = new StringBuilder();
+                            
+                            if (sourceType.isClass()) {
+                                regex.append("\\bpublic");
+                            }
+                           	
+                            regex.append("\\W+(?:\\w+\\W+){1,3}?");
+                            regex.append(elementName);
+                            regex.append("\\s*?\\(\\s*?.*?");
                            	
                             String[] parameterTypes = sourceMethod.getParameterTypes();
                             String[] paramterNames = sourceMethod.getParameterNames();
                             
                             for (int i = 0; i < parameterTypes.length; i++) {
-                                regex += "\\s*?";
+                                regex.append("\\s*?");
                                 String typeName = Signature.toString(Signature.getTypeErasure(
                             			parameterTypes[i]));
-                            	regex += typeName;
-                            	regex += "\\s*?";
-                            	regex += paramterNames[i];
+                                regex.append(typeName);
+                                regex.append("\\s*?");
+                                regex.append(paramterNames[i]);
                             	if (i < parameterTypes.length - 1) {
-                            		regex += "\\s*?,\\s*?.*?";
+                            	    regex.append("\\s*?,\\s*?.*?");
                             	}
 							}
-                        	regex += "\\s*?\\)";
+                            regex.append("\\s*?\\)");
 
-                        	IRegion region = findReplaceDocumentAdapter.find(0, regex, true, true, false, 
-                            		true);
+                        	IRegion region = findReplaceDocumentAdapter.find(0, regex.toString(), true, true,
+                        	        false, true);
                             
                             if (region != null) {
                                 IRegion elementNameRegion = findReplaceDocumentAdapter.find(
@@ -252,7 +268,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                     } catch (BadLocationException ble) {
                         CXFCreationUIPlugin.log(ble);
                     } catch (JavaModelException jme) {
-						jme.printStackTrace();
+                        CXFCreationUIPlugin.log(jme);
 					}
                 }
             }

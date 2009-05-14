@@ -29,9 +29,9 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 /**
  * 
  * @author sclarke
- * 
+ *
  */
-public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends AbstractAnnotationValidationTest {
+public class WebServiceDefaultPublicConstructorRuleTest extends AbstractAnnotationValidationTest {
 
     @Override
     protected Annotation getAnnotation() {
@@ -58,6 +58,13 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
     }
 
     @Override
+    protected String getClassContents() {
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("public class MyClass {\n\n\tpublic MyClass(String arg) {\n\t}\n}");
+        return classContents.toString();
+    }
+
+    @Override
     protected String getClassName() {
         return "MyClass.java";
     }
@@ -67,7 +74,7 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
         return "com.example";
     }
 
-    public void testWebServicePublicAbstractFinalRule() {
+    public void testWebServiceDefaultPublicConstructorRule() {
         try {
             assertNotNull(annotation);
             assertEquals("WebService", AnnotationUtils.getAnnotationName(annotation));
@@ -93,7 +100,7 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

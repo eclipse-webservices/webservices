@@ -100,13 +100,12 @@ public class WebServiceNoFinalizeMethodRuleTest extends AbstractAnnotationValida
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_OVERRIDE_FINALIZE_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_OVERRIDE_FINALIZE_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }

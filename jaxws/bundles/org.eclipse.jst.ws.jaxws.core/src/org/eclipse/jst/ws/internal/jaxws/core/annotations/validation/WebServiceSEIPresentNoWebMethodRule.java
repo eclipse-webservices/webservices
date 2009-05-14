@@ -76,7 +76,7 @@ public class WebServiceSEIPresentNoWebMethodRule extends AbstractAnnotationProce
                 if (mirror.getAnnotationType().toString().equals(webMethodDeclaration
                         .getQualifiedName())) {
                     messager.printError(mirror.getPosition(), JAXWSCoreMessages
-                     .WEBSERVICE_ANNOTATION_PROCESSOR_WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHOS_ERROR_MESSAGE); 
+                     .WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHOS_ERROR_MESSAGE); 
                 }
             }
         }

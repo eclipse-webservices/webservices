@@ -39,14 +39,15 @@ public class WebServiceNoFinalizeMethodRule extends AbstractAnnotationProcessor 
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
                 .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
 
-        Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(annotationDeclaration);
+        Collection<Declaration> annotatedTypes = environment
+                .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
             Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (isFinalizeDefined(declaration)) {
                     messager.printError(mirror.getPosition(), 
-                                JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_OVERRIDE_FINALIZE_MESSAGE);
+                                JAXWSCoreMessages.WEBSERVICE_OVERRIDE_FINALIZE_MESSAGE);
                 }
             }
         }

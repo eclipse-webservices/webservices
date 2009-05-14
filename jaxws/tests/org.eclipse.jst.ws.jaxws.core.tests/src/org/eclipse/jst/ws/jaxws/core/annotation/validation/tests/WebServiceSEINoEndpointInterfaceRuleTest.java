@@ -96,13 +96,12 @@ public class WebServiceSEINoEndpointInterfaceRuleTest extends AbstractAnnotation
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_ENDPOINTINTERFACE_SEI_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_ENDPOINTINTERFACE_SEI_ERROR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }

@@ -250,7 +250,9 @@ public final class CXFModelUtils {
         try {
             IMethod[] methods = type.getMethods();
             for (IMethod method : methods) {
-                if (JDTUtils.isPublicMethod(method)) {
+                if (type.isInterface()) {
+                    methodMap.put(method, getAnnotationMap(model));                 
+                } else if (type.isClass() && JDTUtils.isPublicMethod(method)) {
                     methodMap.put(method, getAnnotationMap(model));
                 }
             }

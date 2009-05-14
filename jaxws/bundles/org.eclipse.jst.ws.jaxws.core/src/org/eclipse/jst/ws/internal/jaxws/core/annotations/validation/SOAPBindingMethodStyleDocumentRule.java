@@ -65,8 +65,8 @@ public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProces
                                     (EnumConstantDeclaration) annotationValue.getValue();
                                 if (!enumConstantDeclaration.getSimpleName().equals(
                                         javax.jws.soap.SOAPBinding.Style.DOCUMENT.name())) {
-                                    messager.printError(mirror.getPosition(), JAXWSCoreMessages.
-                                      SOAPBINDING_ANNOTATION_PROCESSOR_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE); 
+                                    messager.printError(mirror.getPosition(), 
+                                        JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE); 
                                 }
                             }
                         }

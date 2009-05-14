@@ -52,7 +52,7 @@ public class WebServiceWebServiceProviderCoExistRule extends AbstractAnnotationP
     private void checkWebServiceProvider(AnnotationMirror mirror, Messager messager) {
         if (mirror.getAnnotationType().toString().equals("javax.xml.ws.WebServiceProvider")) { //$NON-NLS-1$
             messager.printError(mirror.getPosition(), JAXWSCoreMessages
-                    .WEBSERVICE_ANNOTATION_PROCESSOR_WEBSERVICE_WEBSERVICEPROVIDER_ERROR_MESSAGE);
+                    .WEBSERVICE_WEBSERVICEPROVIDER_COMBINATION_ERROR_MESSAGE);
         }
     }
 }

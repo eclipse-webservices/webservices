@@ -56,13 +56,13 @@ public class WebServiceSEIAllowedAttributesRule extends AbstractAnnotationProces
                     if (declaration instanceof InterfaceDeclaration) {
                         if (annotationKeyValue.getKey().getSimpleName().equals("serviceName")) { //$NON-NLS-1$
                             messager.printError(mirror.getPosition(), JAXWSCoreMessages
-                                    .WEBSERVICE_ANNOTATION_PROCESSOR_SERVICENAME_SEI_ERROR_MESSAGE);
+                                    .WEBSERVICE_SERVICENAME_SEI_ERROR_MESSAGE);
                         } else if (annotationKeyValue.getKey().getSimpleName().equals("endpointInterface")) { //$NON-NLS-1$
                             messager.printError(mirror.getPosition(), JAXWSCoreMessages
-                                    .WEBSERVICE_ANNOTATION_PROCESSOR_ENDPOINTINTERFACE_SEI_ERROR_MESSAGE);
+                                    .WEBSERVICE_ENDPOINTINTERFACE_SEI_ERROR_MESSAGE);
                         } else if (annotationKeyValue.getKey().getSimpleName().equals("portName")) { //$NON-NLS-1$
                             messager.printError(mirror.getPosition(), JAXWSCoreMessages
-                                    .WEBSERVICE_ANNOTATION_PROCESSOR_PORTNAME_SEI_ERROR_MESSAGE);
+                                    .WEBSERVICE_PORTNAME_SEI_ERROR_MESSAGE);
                         }
                     }
                 }

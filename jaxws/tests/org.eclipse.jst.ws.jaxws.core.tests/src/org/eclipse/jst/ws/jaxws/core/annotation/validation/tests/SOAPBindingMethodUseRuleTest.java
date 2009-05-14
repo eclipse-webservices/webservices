@@ -106,14 +106,12 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(
-                    JAXWSCoreMessages.SOAPBINDING_ANNOTATION_PROCESSOR_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE,
+            assertEquals(JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }

@@ -21,14 +21,13 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 /**
  * 
  * @author sclarke
  * 
  */
-public class WebMethodPublicMethodsOnlyRuleTest extends AbstractAnnotationValidationTest {
+public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends AbstractAnnotationValidationTest {
 
     @Override
     protected Annotation getAnnotation() {
@@ -42,9 +41,12 @@ public class WebMethodPublicMethodsOnlyRuleTest extends AbstractAnnotationValida
         classContents.append("import javax.jws.WebService;\n\n");
         classContents.append("@WebService(name=\"MyClass\")\n");
         classContents.append("public class MyClass {\n\n");
+        classContents.append("\tString myPackagePrivateMethod() {\n\t\treturn \"package-private\";\n\t}\n\n");
         classContents.append("\tprivate String myPrivateMethod() {\n\t\treturn \"private\";\n\t}\n\n");
         classContents.append("\tprotected String myProtectedMethod() {\n\t\tmyPrivateMethod();\n");
-        classContents.append("\t\treturn \"protected\";\n\t}\n}");
+        classContents.append("\t\treturn \"protected\";\n\t}\n");
+        classContents.append("\tpublic static String myStaticMethod() {\n\t\treturn \"static\";\n\t}\n\n");
+        classContents.append("\tpublic final String myFinalMethod() {\n\t\treturn \"final\";\n\t}\n\n}");
         return classContents.toString();
     }
 
@@ -57,13 +59,16 @@ public class WebMethodPublicMethodsOnlyRuleTest extends AbstractAnnotationValida
     protected String getPackageName() {
         return "com.example";
     }
+    
+    public abstract IMethod getMethodToTeset();
+    public abstract String getErrorMessage();
 
-    public void testWebMethodCheckForWebServiceRuleOnPrivateMethod() {
+    public void testWebMethodRestriction() {
         try {
             assertNotNull(annotation);
             assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
 
-            IMethod method = source.findPrimaryType().getMethod("myPrivateMethod", new String[0]);
+            IMethod method = getMethodToTeset();
             assertNotNull(method);
 
             AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
@@ -86,53 +91,11 @@ public class WebMethodPublicMethodsOnlyRuleTest extends AbstractAnnotationValida
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBMETHOD_ANNOTATION_PROCESSOR_ONLY_ON_PUBLIC_METHODS_MESSAGE,
-                    annotationProblemMarker.getAttribute(IMarker.MESSAGE));
+            assertEquals(getErrorMessage(), annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
-        } catch (InterruptedException ie) {
-            fail(ie.getLocalizedMessage());
-        }
-    }
-
-    public void testWebMethodCheckForWebServiceRuleOnProtectedMethod() {
-        try {
-            assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
-
-            IMethod method = source.findPrimaryType().getMethod("myProtectedMethod", new String[0]);
-            assertNotNull(method);
-
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
-
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
-
-            assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-
-            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
-                    .getAnnotationName(annotation)));
-
-            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
-
-            IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
-                    IResource.DEPTH_INFINITE);
-
-            assertEquals(1, allmarkers.length);
-
-            IMarker annotationProblemMarker = allmarkers[0];
-
-            assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBMETHOD_ANNOTATION_PROCESSOR_ONLY_ON_PUBLIC_METHODS_MESSAGE,
-                    annotationProblemMarker.getAttribute(IMarker.MESSAGE));
-        } catch (CoreException ce) {
-            fail(ce.getLocalizedMessage());
-        } catch (OperationCanceledException oce) {
-            fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }

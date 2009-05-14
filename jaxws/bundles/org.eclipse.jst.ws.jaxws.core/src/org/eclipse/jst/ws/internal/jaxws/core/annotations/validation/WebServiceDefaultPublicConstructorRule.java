@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2008 IONA Technologies PLC
+ * Copyright (c) 2009 Shane Clarke.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IONA Technologies PLC - initial API and implementation
+ *    Shane Clarke - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
@@ -18,44 +18,58 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
+import com.sun.mirror.declaration.ClassDeclaration;
+import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.Declaration;
-import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.declaration.Modifier;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class OnewayNoReturnValueRule extends AbstractAnnotationProcessor {
-    
-    public OnewayNoReturnValueRule() {
+public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationProcessor {
+
+    public WebServiceDefaultPublicConstructorRule() {
+
     }
-    
+
     @Override
     public void process() {
         Messager messager = environment.getMessager();
 
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.Oneway"); //$NON-NLS-1$
+                .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-            
-            if (declaration instanceof MethodDeclaration) {
-                MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
-                if (!methodDeclaration.getReturnType().equals(environment.getTypeUtils()
-                        .getVoidType())) {
-                    Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
-                    for (AnnotationMirror mirror : annotationMirrors) {
-                        if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
-                              .getQualifiedName())) {
-                            messager.printError(mirror.getPosition(), JAXWSCoreMessages
-                                    .ONEWAY_NO_RETURN_VALUE_ERROR_MESSAGE); 
+            if (declaration instanceof ClassDeclaration) {
+                boolean hasDefaultConstructor = false;
+                ClassDeclaration classDeclaration = (ClassDeclaration) declaration;
+                Collection<ConstructorDeclaration> constructors = classDeclaration.getConstructors();
+                if (constructors.size() == 0) {
+                    hasDefaultConstructor = true;
+                } else {
+                    for (ConstructorDeclaration constructorDeclaration : constructors) {
+                        if (constructorDeclaration.getModifiers().contains(Modifier.PUBLIC) && 
+                                constructorDeclaration.getParameters().size() == 0) {
+                            hasDefaultConstructor = true;
+                            break;
                         }
                     }
                 }
+                if (!hasDefaultConstructor) {
+                    Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
+                    for (AnnotationMirror mirror : annotationMirrors) {
+                        if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
+                                .getQualifiedName())) {
+                            messager.printError(mirror.getPosition(),
+                                    JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR_MESSAGE); 
+                        }
+                    }
+                }                
             }
         }
     }

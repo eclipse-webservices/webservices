@@ -61,7 +61,7 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
                             MethodDeclaration methodDeclaration = (MethodDeclaration)declaration;
                             if (methodDeclaration.getDeclaringType() instanceof InterfaceDeclaration) {
                                 messager.printError(mirror.getPosition(),
-                                        JAXWSCoreMessages.WEBMETHOD_ANNOTATION_PROCESSOR_EXCLUDE_NOT_ALLOWED_ON_SEI);
+                                        JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
                                 break;
                             }
                         }
@@ -69,8 +69,8 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
                         if (annotationKeyValue.getValue() != null) {
                             AnnotationValue annotationValue = annotationKeyValue.getValue();
                             if (annotationValue.getValue().toString().equals("true") && valueMap.size() > 1) {
-                              messager.printError(mirror.getPosition(), JAXWSCoreMessages.
-                        WEBMETHOD_ANNOTATION_PROCESSOR_EXCLUDE_SPECIFEID_NO_OTHER_ATTRIBUTES_ALLOWED_MESSAGE);
+                              messager.printError(mirror.getPosition(), 
+                                  JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFEID_NO_OTHER_ATTRIBUTES_ALLOWED_MESSAGE);
                             }
                         }
                     }

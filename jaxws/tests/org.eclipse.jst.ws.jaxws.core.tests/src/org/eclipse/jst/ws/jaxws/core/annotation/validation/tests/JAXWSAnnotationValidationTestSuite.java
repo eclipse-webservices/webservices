@@ -32,7 +32,12 @@ public class JAXWSAnnotationValidationTestSuite extends TestSuite {
         addTestSuite(WebMethodCheckForWebServiceRuleTest.class);
         addTestSuite(WebMethodExcludeRuleOnSEITest.class);
         addTestSuite(WebMethodExcludeRuleOnImplTest.class);
-        addTestSuite(WebMethodPublicMethodsOnlyRuleTest.class);
+        addTestSuite(WebMethodNoPackagePrivateMethodRuleTest.class);
+        addTestSuite(WebMethodNoPrivateMethodRuleTest.class);
+        addTestSuite(WebMethodNoProtectedMethodRuleTest.class);
+        addTestSuite(WebMethodNoFinalModifierRuleTest.class);
+        addTestSuite(WebMethodNoStaticModifierRuleTest.class);
+        addTestSuite(WebServiceDefaultPublicConstructorRuleTest.class);
         addTestSuite(WebServiceNoFinalizeMethodRuleTest.class);
         addTestSuite(WebServiceNoFinalModiferRuleTest.class);
         addTestSuite(WebServiceNoAbstractModifierRuleTest.class);

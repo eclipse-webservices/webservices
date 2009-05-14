@@ -35,7 +35,6 @@ import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
-import org.eclipse.ltk.ui.refactoring.RefactoringUI;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -169,7 +168,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         
         executeChange(monitor, textFileChange, classUndoChanges);
     }
-    
+
     private void annotateSEIClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
             InterruptedException {
         javaClassType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
@@ -197,8 +196,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         
         change.initializeValidationData(monitor);
 
-        PerformChangeOperation changeOperation = RefactoringUI
-                .createUIAwareChangeOperation(change);
+        PerformChangeOperation changeOperation = new PerformChangeOperation(change);
 
         WorkbenchRunnableAdapter adapter = new WorkbenchRunnableAdapter(changeOperation);
         PlatformUI.getWorkbench().getProgressService().runInUI(new BusyIndicatorRunnableContext(), adapter,

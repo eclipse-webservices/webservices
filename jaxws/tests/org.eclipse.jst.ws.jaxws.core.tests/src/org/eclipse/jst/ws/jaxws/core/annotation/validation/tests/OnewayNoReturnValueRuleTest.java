@@ -81,13 +81,12 @@ public class OnewayNoReturnValueRuleTest extends AbstractAnnotationValidationTes
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.ONEWAY_ANNOTATION_PROCESSOR_NO_RETURN_VALUE_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.ONEWAY_NO_RETURN_VALUE_ERROR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }

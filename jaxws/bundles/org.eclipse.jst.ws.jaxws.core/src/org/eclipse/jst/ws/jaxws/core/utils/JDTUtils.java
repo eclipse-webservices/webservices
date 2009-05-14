@@ -195,10 +195,23 @@ public final class JDTUtils {
                 .getPackageNameFromClass(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName);
     }
 
+    
+    /**
+     * If the given <code>IType</code> is an interface all methods declared in that interface are returned.
+     * <p>
+     * Alternatively if the given given <code>IType</code> is a class only methods that are explicitly marked
+     * public are returned.
+     * 
+     * @param type the type
+     * @return the public methods declared in this type
+     */
     public static IMethod[] getPublicMethods(IType type) {
         List<IMethod> publicMethods = new ArrayList<IMethod>();
         try {
             IMethod[] allMethods = type.getMethods();
+            if (type.isInterface()) {
+                return allMethods;
+            }
             for (int i = 0; i < allMethods.length; i++) {
                 IMethod method = allMethods[i];
                 if (Flags.isPublic(method.getFlags()) && !method.isConstructor() && !method.isMainMethod()) {
@@ -210,7 +223,7 @@ public final class JDTUtils {
         }
         return publicMethods.toArray(new IMethod[publicMethods.size()]);
     }
-
+    
     public static String getSourceFromType(IType type) {
         try {
             return type.getCompilationUnit().getBuffer().getContents();

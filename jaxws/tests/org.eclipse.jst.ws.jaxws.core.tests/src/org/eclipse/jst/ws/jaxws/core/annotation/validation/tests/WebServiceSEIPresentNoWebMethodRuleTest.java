@@ -58,7 +58,7 @@ public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationV
         return "com.example";
     }
 
-    public void testWebServiceSEIPresentNoWebMethodRuleTest() {
+    public void testWebServiceSEIPresentNoWebMethodRule() {
         try {
             assertNotNull(annotation);
             assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
@@ -86,14 +86,12 @@ public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationV
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(
-                    JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHOS_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHOS_ERROR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
-            oce.printStackTrace();
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }

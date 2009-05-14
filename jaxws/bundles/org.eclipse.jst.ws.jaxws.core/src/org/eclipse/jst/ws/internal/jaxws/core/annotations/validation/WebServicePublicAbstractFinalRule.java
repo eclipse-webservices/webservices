@@ -39,7 +39,8 @@ public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcess
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
                 .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
 
-        Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(annotationDeclaration);
+        Collection<Declaration> annotatedTypes = environment
+                .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof TypeDeclaration) {
@@ -51,7 +52,7 @@ public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcess
                         if (mirror.getAnnotationType().toString()
                             .equals(annotationDeclaration.getQualifiedName())) {
                             messager.printError(mirror.getPosition(), 
-                            JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_PUBLIC_ABSTRACT_FINAL_MESSAGE);
+                            JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE);
                         }
                     }
                 }
@@ -70,7 +71,7 @@ public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcess
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (mirror.getAnnotationType().toString().equals(annotationDeclaration.getQualifiedName())) {
                     messager.printError(mirror.getPosition(),
-                            JAXWSCoreMessages.WEBSERVICE_ANNOTATION_PROCESSOR_PUBLIC_ABSTRACT_FINAL_MESSAGE);
+                            JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE);
                 }
             }
         }
