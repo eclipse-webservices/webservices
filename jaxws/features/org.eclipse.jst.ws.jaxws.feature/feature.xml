@@ -62,7 +62,7 @@
          id="javax.xml.bind"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="2.1.9.qualifier"
          unpack="false"/>
 
    <plugin
