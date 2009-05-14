@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.wsdl.Definition;
+import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.soap.SOAPAddress;
+import javax.wsdl.extensions.soap12.SOAP12Address;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
@@ -97,10 +99,16 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
                 webService.getWebServiceInfo().setWsdlURL(wsdlURL);
                 
                 Definition definition = model.getWsdlDefinition();
-                SOAPAddress soapAddress = WSDLUtils.getEndpointAddress(definition);
-                if (soapAddress != null) {
-                   soapAddress.setLocationURI(wsdlAddress);
-                   WSDLUtils.writeWSDL(model);
+                ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
+                if (extensibilityElement != null) {
+                    if (extensibilityElement instanceof SOAPAddress) {
+                        ((SOAPAddress) extensibilityElement).setLocationURI(wsdlAddress);
+                    }
+                    if (extensibilityElement instanceof SOAP12Address) {
+                        ((SOAP12Address) extensibilityElement).setLocationURI(wsdlAddress);
+
+                    }
+                    WSDLUtils.writeWSDL(model);
                 }              
             }
         } catch (IOException ioe) {
@@ -110,7 +118,6 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
             status = ce.getStatus();
             CXFCreationCorePlugin.log(status);
         }
-    
         return status;
     }
     

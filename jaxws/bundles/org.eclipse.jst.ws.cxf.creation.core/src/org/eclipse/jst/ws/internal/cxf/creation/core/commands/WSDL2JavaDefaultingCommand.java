@@ -24,7 +24,6 @@ import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.PortType;
 import javax.wsdl.Service;
-import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.xml.namespace.QName;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -134,16 +133,11 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
             	definition = WSDLUtils.readWSDL(model.getWsdlURL());
             	if (definition != null) {
             	    setTNSOnModel(definition);
-           		
-                    SOAPAddress soapAddress = WSDLUtils.getEndpointAddress(definition);
-                    if (soapAddress != null) {
-                        String address = soapAddress.getLocationURI();
-                        URL endpointURL = new URL(address);
-                        if (endpointURL.getQuery() == null) {
-                            address += "?wsdl"; //$NON-NLS-1$
-                        }
-                        model.setWsdlLocation(address);
-                    }
+            	    
+            	    String wsdlLocation = WSDLUtils.getWSDLLocation(definition);
+            	    if (wsdlLocation != null) {
+                        model.setWsdlLocation(wsdlLocation);
+            	    }
             	}
         	} else {
                	String filename = ""; //$NON-NLS-1$

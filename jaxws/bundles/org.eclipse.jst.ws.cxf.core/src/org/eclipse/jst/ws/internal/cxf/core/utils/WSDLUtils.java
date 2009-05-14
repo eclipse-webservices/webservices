@@ -30,7 +30,9 @@ import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
 import javax.wsdl.WSDLException;
+import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.soap.SOAPAddress;
+import javax.wsdl.extensions.soap12.SOAP12Address;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.wsdl.xml.WSDLWriter;
@@ -162,9 +164,13 @@ public final class WSDLUtils {
         }
         return wsdlFolder;
     }
-
+    
+    /**
+     * will return one of: 
+     * <li>SOAPAddress<li>SOAP12Address<li>null if it can not find a soap address
+     */
     @SuppressWarnings("unchecked")
-    public static SOAPAddress getEndpointAddress(Definition definition) {
+    public static ExtensibilityElement getEndpointAddress(Definition definition) {
         if (definition != null) {
             Map servicesMap = definition.getServices();
             Set<Map.Entry> servicesSet = servicesMap.entrySet();
@@ -176,15 +182,39 @@ public final class WSDLUtils {
                     Port port = (Port) portEntry.getValue();
                     List extensibilityElements = port.getExtensibilityElements();
                     for (Object object : extensibilityElements) {
-                        if (object instanceof SOAPAddress) {
-                            SOAPAddress address = (SOAPAddress) object;
-                            return address;      
+                        if (object instanceof SOAPAddress || object instanceof SOAP12Address) {
+                            return (ExtensibilityElement) object;      
                         }
                     }
                  }
             }
         }
         return null;
+    }
+    
+    public static String getWSDLLocation(Definition definition) throws MalformedURLException {
+		ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
+		if (extensibilityElement != null) {
+	        String locationURI = getLocationURI(extensibilityElement);
+	        if (locationURI.length() > 0) {
+	            URL endpointURL = new URL(locationURI);
+	            if (endpointURL.getQuery() == null) {
+	                locationURI += "?wsdl"; //$NON-NLS-1$
+	                return locationURI;
+	            }
+	        }
+		}
+	    return null;
+    }
+    
+    private static String getLocationURI(ExtensibilityElement extensibilityElement) {
+	    if (extensibilityElement instanceof SOAPAddress) {
+            return ((SOAPAddress) extensibilityElement).getLocationURI();
+        }
+        if (extensibilityElement instanceof SOAP12Address) {
+            return ((SOAP12Address) extensibilityElement).getLocationURI();
+        }
+		return "";
     }
     
     public static String getPackageNameFromNamespace(String namespace) {

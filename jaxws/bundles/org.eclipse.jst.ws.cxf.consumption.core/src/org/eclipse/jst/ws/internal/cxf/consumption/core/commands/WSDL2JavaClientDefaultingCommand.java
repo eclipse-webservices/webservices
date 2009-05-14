@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.HashMap;
 
 import javax.wsdl.Definition;
-import javax.wsdl.extensions.soap.SOAPAddress;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -95,16 +94,11 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
         		model.getIncludedNamespaces().put(targetNamespace, packageName);
 
         		if (wsdlUrl.getProtocol().equals("file")) { //$NON-NLS-1$
-                    SOAPAddress soapAddress = WSDLUtils.getEndpointAddress(definition);
-                    if (soapAddress != null) {
-                        String address = soapAddress.getLocationURI();
-                        URL endpointURL = new URL(address);
-                        if (endpointURL.getQuery() == null) {
-                            address += "?wsdl"; //$NON-NLS-1$
-                        }
-                        model.setWsdlLocation(address);
+                    String wsdlLocation = WSDLUtils.getWSDLLocation(definition);
+                    if (wsdlLocation != null) {
+                        model.setWsdlLocation(wsdlLocation);
                     }
-        		}
+                }
         		
         		model.setWsdlDefinition(definition);
         	}
@@ -117,7 +111,7 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
 
         return status;
     }
-
+    
     public WSDL2JavaDataModel getWSDL2JavaDataModel() {
         return model;
     }
