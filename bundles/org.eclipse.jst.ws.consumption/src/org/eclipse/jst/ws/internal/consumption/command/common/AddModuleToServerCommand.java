@@ -12,6 +12,8 @@
  * 20060921 [158210] kathy@ca.ibm.com - Kathy Chan, Calling incremental build on the project before adding to server
  * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
  * 20090311 250984   mahutch@ca.ibm.com - Mark Hutchinson, Use another mechanism to wait for build to be completed
+ * 20090518 [252077] tangg@emc.com - Gary Tang, Fail to deploy an EAR project if it contains a module
+ *                   kchong@ca.ibm.com - Keith Chong, (updated patch)
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -71,7 +73,9 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    IProject iproject = ProjectUtilities.getProject(project);
 	    if (!J2EEUtils.isJavaComponent(iproject))
 	    {      
-	    	IModule imodule = ServerUtils.getModule(iproject);
+        // Get the IModule as specified by the module name
+        IModule imodule = ServerUtils.getModule(iproject, module);
+
 	    	// TODO:  This workaround for 156768 should be removed once the defect is fixed
 	    	if (imodule == null) {
 	    	    // calling incremental build on the project before trying again
@@ -134,6 +138,4 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	{
 		this.serverInstanceId = serverInstanceId;
 	}	
-
-	
 }
