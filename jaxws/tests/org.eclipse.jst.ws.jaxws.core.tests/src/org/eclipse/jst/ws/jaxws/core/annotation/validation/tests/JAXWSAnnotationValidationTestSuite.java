@@ -26,7 +26,13 @@ public class JAXWSAnnotationValidationTestSuite extends TestSuite {
 
     public JAXWSAnnotationValidationTestSuite() {
         super("JAX-WS Annotation Validation Tests");
+        addTestSuite(DocBareNonVoidNoOutParametersRuleTest.class);
+        addTestSuite(DocBareOneNonHeaderINParameterRuleTest.class);
+        addTestSuite(DocBareVoidOneINOneOutParameterRuleTest.class);
         addTestSuite(OnewayNoReturnValueRuleTest.class);
+        addTestSuite(OnewayNoCheckedExceptionsRuleTest.class);
+        addTestSuite(OnewayNoOutParametersRuleTest.class);
+        addTestSuite(OnewayNoInOutParametersRuleTest.class);
         addTestSuite(SOAPBindingMethodStyleDocumentRuleTest.class);
         addTestSuite(SOAPBindingMethodUseRuleTest.class);
         addTestSuite(WebMethodCheckForWebServiceRuleTest.class);
@@ -37,6 +43,7 @@ public class JAXWSAnnotationValidationTestSuite extends TestSuite {
         addTestSuite(WebMethodNoProtectedMethodRuleTest.class);
         addTestSuite(WebMethodNoFinalModifierRuleTest.class);
         addTestSuite(WebMethodNoStaticModifierRuleTest.class);
+        addTestSuite(WebParamModeHolderTypeRuleTest.class);
         addTestSuite(WebServiceDefaultPublicConstructorRuleTest.class);
         addTestSuite(WebServiceNoFinalizeMethodRuleTest.class);
         addTestSuite(WebServiceNoFinalModiferRuleTest.class);

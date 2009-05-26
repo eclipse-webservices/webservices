@@ -240,8 +240,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                             
                             for (int i = 0; i < parameterTypes.length; i++) {
                                 regex.append("\\s*?");
-                                String typeName = Signature.toString(Signature.getTypeErasure(
-                            			parameterTypes[i]));
+                                String typeName = Signature.toString(parameterTypes[i]);
                                 regex.append(typeName);
                                 regex.append("\\s*?");
                                 regex.append(paramterNames[i]);

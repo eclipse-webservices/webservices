@@ -180,6 +180,13 @@
    <extension point="org.eclipse.jst.ws.annotations.core.annotationProcessor">
       <processor
             annotation="javax.jws.WebService"
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.HolderTypeParametersRule">
+         <description>
+            %HOLDER_TYPES_PARAMETERS_RULE
+         </description>
+      </processor>
+      <processor
+            annotation="javax.jws.WebService"
             class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.WebServiceDefaultPublicConstructorRule">
          <description>
             %WEBSERVICE_CLASS_DEFAULT_PUBLIC_CONSTRUCTOR_RULE
@@ -243,7 +250,7 @@
       </processor>
       <processor
             annotation="javax.jws.Oneway"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.OnewayNoReturnValueRule">
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.OnewayRules">
          <description>
             %ONEWAY_NO_RETURN_VALUE
          </description>
@@ -262,6 +269,13 @@
             %SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_RULE
          </description>
       </processor>
+      <processor
+            annotation="javax.jws.soap.SOAPBinding"
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.SOAPBindingDocumentBareRules">
+         <description>
+            %SOAPBINDING_DOCUMENT_BARE_RULES
+         </description>
+      </processor>     
    </extension>
 
 </plugin>

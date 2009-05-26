@@ -26,7 +26,21 @@ public class JAXWSCoreMessages extends NLS {
     public static String TYPE_WITH_NAME_ALREADY_EXISTS;
     
     public static String ONEWAY_NO_RETURN_VALUE_ERROR_MESSAGE;
-
+    public static String ONEWAY_NO_CHECKED_EXCEPTIONS_ERROR_MESSAGE;
+    public static String ONEWAY_NO_OUT_PARAMETERS;
+    public static String ONEWAY_NO_INOUT_PARAMETERS;
+    
+    public static String HOLDER_TYPE_PARAMETER_ERROR_MESSAGE;
+    public static String WEBPARAM_MODE_OUT_INOUT_HOLDER_TYPE_ERROR_MESSAGE;
+        
+//    public static String DOC_BARE_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE;
+    public static String DOC_BARE_NON_VOID_RETURN_NO_INOUT_OUT_PARAMETER;
+    public static String DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE;
+    public static String DOC_BARE_VOID_RETURN_ONE_IN_PARAMETER;
+    public static String DOC_BARE_VOID_RETURN_ONE_OUT_PARAMETER;
+    
+    public static String WEBPARAM_NAME_REQUIRED_WHEN_DOC_BARE_OUT_INOUT;
+    
     public static String WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE_MESSAGE;
     public static String WEBMETHOD_ONLY_ON_PUBLIC_METHODS_MESSAGE;
     public static String WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED_MESSAGE;

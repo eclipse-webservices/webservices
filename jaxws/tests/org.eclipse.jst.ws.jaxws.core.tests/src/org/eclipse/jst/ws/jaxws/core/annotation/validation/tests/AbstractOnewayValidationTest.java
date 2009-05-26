@@ -10,13 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jws.soap.SOAPBinding.ParameterStyle;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.jws.soap.SOAPBinding.Use;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -26,67 +19,43 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 /**
  * 
  * @author sclarke
- * 
+ *
  */
-public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTest {
+public abstract class AbstractOnewayValidationTest extends AbstractAnnotationValidationTest {
 
     @Override
-    protected Annotation getAnnotation() {
-        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-
-        MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "style", Style.DOCUMENT);
-
-        MemberValuePair useValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "use", Use.ENCODED);
-
-        MemberValuePair parameterStyleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "parameterStyle", ParameterStyle.BARE);
-
-        memberValuePairs.add(styleValuePair);
-        memberValuePairs.add(useValuePair);
-        memberValuePairs.add(parameterStyleValuePair);
-
-        return AnnotationsCore.createAnnotation(ast, javax.jws.soap.SOAPBinding.class,
-                javax.jws.soap.SOAPBinding.class.getSimpleName(), memberValuePairs);
+    public Annotation getAnnotation() {
+        return AnnotationsCore.createAnnotation(ast, javax.jws.Oneway.class, 
+              javax.jws.Oneway.class.getSimpleName(), null);
     }
 
     @Override
-    protected String getClassContents() {
-        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("public class MyClass {\n\n\tpublic String myMethod(String in) {");
-        classContents.append("\n\t\treturn \"txt\";\n\t}\n\n}");
-        return classContents.toString();
-    }
-
-    @Override
-    protected String getClassName() {
+    public String getClassName() {
         return "MyClass.java";
     }
 
     @Override
-    protected String getPackageName() {
+    public String getPackageName() {
         return "com.example";
     }
-
-    public void testSOAPBindingMethodUseRule() {
+    
+    public abstract String getErrorMessage();
+    
+    public void testOnewayRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
-            
-            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
-            assertNotNull(method);
+            assertEquals("Oneway", AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.soap.SOAPBinding.class,
-                    textFileChange, true);
+            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[]{"I"});
+            assertNotNull(method);
+            
+            AnnotationUtils.getImportChange(compilationUnit, javax.jws.Oneway.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -95,7 +64,7 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
-
+            
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
@@ -106,8 +75,7 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE,
-                    annotationProblemMarker.getAttribute(IMarker.MESSAGE));
+            assertEquals(getErrorMessage(), annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         } catch (OperationCanceledException oce) {
@@ -116,4 +84,5 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
             fail(ie.getLocalizedMessage());
         }
     }
+
 }

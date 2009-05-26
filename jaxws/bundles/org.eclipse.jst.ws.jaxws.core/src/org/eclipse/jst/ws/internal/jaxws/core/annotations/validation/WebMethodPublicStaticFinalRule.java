@@ -74,6 +74,5 @@ public class WebMethodPublicStaticFinalRule extends AbstractAnnotationProcessor 
                 messager.printError(mirror.getPosition(), errorMessage); 
             }
         }
-
     }
 }

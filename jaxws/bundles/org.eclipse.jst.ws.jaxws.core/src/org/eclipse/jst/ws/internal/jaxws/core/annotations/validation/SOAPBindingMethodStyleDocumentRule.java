@@ -11,19 +11,15 @@
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
-import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
-import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
-import com.sun.mirror.declaration.EnumConstantDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 
 /**
@@ -32,7 +28,8 @@ import com.sun.mirror.declaration.MethodDeclaration;
  *
  */
 public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProcessor {
-
+    private static final String STYLE = "style";
+    
     public SOAPBindingMethodStyleDocumentRule() {
     }
 
@@ -43,7 +40,8 @@ public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProces
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
                 .getTypeDeclaration("javax.jws.soap.SOAPBinding"); //$NON-NLS-1$
 
-        Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(annotationDeclaration);
+        Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(
+                annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof MethodDeclaration) {
@@ -51,24 +49,11 @@ public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProces
                 Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
     
                 for (AnnotationMirror mirror : annotationMirrors) {
-                    Map<AnnotationTypeElementDeclaration, AnnotationValue> valueMap = mirror
-                            .getElementValues();
-                    Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> valueSet = valueMap
-                            .entrySet();
-                    for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> annotationKeyValue : 
-                            valueSet) {
-
-                        if (annotationKeyValue.getKey().getSimpleName().equals("style")) { //$NON-NLS-1$
-                            if (annotationKeyValue.getValue() != null) {
-                                AnnotationValue annotationValue = annotationKeyValue.getValue();
-                                EnumConstantDeclaration enumConstantDeclaration = 
-                                    (EnumConstantDeclaration) annotationValue.getValue();
-                                if (!enumConstantDeclaration.getSimpleName().equals(
-                                        javax.jws.soap.SOAPBinding.Style.DOCUMENT.name())) {
-                                    messager.printError(mirror.getPosition(), 
-                                        JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE); 
-                                }
-                            }
+                    if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)) {
+                        String style = AnnotationUtils.findAnnotationValue(mirror, STYLE);
+                        if (!style.equals(javax.jws.soap.SOAPBinding.Style.DOCUMENT.toString())) {
+                            messager.printError(mirror.getPosition(), 
+                              JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE); 
                         }
                     }
                 }

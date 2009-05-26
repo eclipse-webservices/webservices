@@ -13,9 +13,7 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jws.soap.SOAPBinding.ParameterStyle;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.jws.soap.SOAPBinding.Use;
+import javax.jws.WebParam.Mode;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -27,6 +25,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -34,68 +33,67 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 /**
  * 
  * @author sclarke
- * 
+ *
  */
-public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTest {
+public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidationTest {
 
     @Override
-    protected Annotation getAnnotation() {
+    public Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
-        MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "style", Style.DOCUMENT);
+        MemberValuePair modeValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
+                "javax.jws.WebParam", "mode", Mode.OUT);
 
-        MemberValuePair useValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "use", Use.ENCODED);
-
-        MemberValuePair parameterStyleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "parameterStyle", ParameterStyle.BARE);
-
-        memberValuePairs.add(styleValuePair);
-        memberValuePairs.add(useValuePair);
-        memberValuePairs.add(parameterStyleValuePair);
-
-        return AnnotationsCore.createAnnotation(ast, javax.jws.soap.SOAPBinding.class,
-                javax.jws.soap.SOAPBinding.class.getSimpleName(), memberValuePairs);
+        memberValuePairs.add(modeValuePair);
+        
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, javax.jws.WebParam.class
+                .getSimpleName(), memberValuePairs);
     }
 
     @Override
-    protected String getClassContents() {
-        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("public class MyClass {\n\n\tpublic String myMethod(String in) {");
-        classContents.append("\n\t\treturn \"txt\";\n\t}\n\n}");
-        return classContents.toString();
+    public String getPackageName() {
+        return "com.example";
     }
 
     @Override
-    protected String getClassName() {
+    public String getClassName() {
         return "MyClass.java";
     }
 
     @Override
-    protected String getPackageName() {
-        return "com.example";
+    public String getClassContents() {
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("import javax.jws.WebService;\n\n");
+        classContents.append("@WebService(name=\"MyClass\")\n");
+        classContents.append("public class MyClass {\n\n\tpublic String myMethod(String param) {");
+        classContents.append("\n\t\treturn \"txt\";\n\t}\n}");
+        return classContents.toString();
     }
 
-    public void testSOAPBindingMethodUseRule() {
+    public void testWebParamModeHolderTypeRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals("WebParam", AnnotationUtils.getAnnotationName(annotation));
             
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.soap.SOAPBinding.class,
-                    textFileChange, true);
+            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebParam.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
+                    128);
+
+            AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, rewriter,
+                    parameter, method, annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
-                    .getAnnotationName(annotation)));
+            // refresh
+            parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
+                    .getCompilationUnit()), method, 156);
 
+            assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
+            
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
@@ -106,11 +104,11 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBPARAM_MODE_OUT_INOUT_HOLDER_TYPE_ERROR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
-        } catch (OperationCanceledException oce) {
+        }catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());

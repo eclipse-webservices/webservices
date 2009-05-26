@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
@@ -71,6 +72,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.text.edits.TextEditGroup;
+
+import com.sun.mirror.declaration.AnnotationMirror;
+import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
+import com.sun.mirror.declaration.AnnotationValue;
 
 /**
  * Utility class for adding, removing and updating annotations and member value pairs.
@@ -1144,4 +1149,26 @@ public final class AnnotationUtils {
                 image, proposal, null, null);
     }
     
+    /**
+     * Searches the passed <code>AnnotationMirror</code> for an <code>AnnotationTypeElementDeclaration</code>
+     * that matches the elementName. If a match is made the string representation of the 
+     * <code>AnnotationValue</code> value object is returned. If no match is made a zero length String is 
+     * returned.
+     * @param mirror
+     * @param elementName
+     * @return
+     */
+    public static String findAnnotationValue(AnnotationMirror mirror, String elementName) {
+        Map<AnnotationTypeElementDeclaration, AnnotationValue> values = mirror.getElementValues();
+        Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> entrySet = values.entrySet();
+        for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> entry : entrySet) {
+            AnnotationTypeElementDeclaration element = entry.getKey();
+            if (element.getSimpleName().equals(elementName)) {
+                AnnotationValue annotationValue = entry.getValue();
+                return annotationValue.getValue().toString();
+            }
+        }
+        return "";
+    }            
+
 }

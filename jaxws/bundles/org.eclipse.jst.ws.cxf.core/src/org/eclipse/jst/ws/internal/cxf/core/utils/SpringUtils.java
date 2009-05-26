@@ -16,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -292,19 +291,30 @@ public final class SpringUtils {
     }
 
     private static String convertPortTypeName(String portTypeName) {
-    	String[] segments = portTypeName.split("[\\-\\.\\:\\_\\u00b7\\u0387\\u06dd\\u06de]");
-    	StringBuilder stringBuilder =  new StringBuilder();
-    	for (String segment : segments) {
-    		if (segment.length() == 0) {
-    			continue;
-    		}
-    		char firstCharacter = segment.charAt(0);
-    		if (!Character.isDigit(firstCharacter) && !Character.isUpperCase(firstCharacter)) {
-    			segment = segment.substring(0, 1).toUpperCase(Locale.getDefault()) + segment.substring(1);
-    		}
-    		stringBuilder.append(segment);
-		}
-    	return stringBuilder.toString();
+        String[] segments = portTypeName.split("[\\-\\.\\:\\_\\u00b7\\u0387\\u06dd\\u06de]");
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String segment : segments) {
+            if (segment.length() == 0) {
+                continue;
+            }
+            char firstCharacter = segment.charAt(0);
+            if (!Character.isDigit(firstCharacter) && Character.isLowerCase(firstCharacter)) {
+                segment = segment.substring(0, 1).toUpperCase() + segment.substring(1);
+            }
+
+            for (int i = 1; i < segment.length(); i++) {
+                char currentChar = segment.charAt(i);
+                char precedingChar = segment.charAt(i - 1);
+                if (Character.isLetter(currentChar) && Character.isDigit(precedingChar)
+                        && Character.isLowerCase(currentChar)) {
+                    segment = segment.substring(0, i) + segment.substring(i, i + 1).toUpperCase()
+                            + segment.substring(i + 1, segment.length());
+                }
+            }
+            stringBuilder.append(segment);
+        }
+        return stringBuilder.toString();
     }
 
     public static void createJAXWSEndpoint(CXFDataModel model) throws IOException {
@@ -372,25 +382,16 @@ public final class SpringUtils {
     }
 
     private static String getJAXWSEndpointID(CXFDataModel model) {
-        String id = ""; //$NON-NLS-1$
-        String implementor =  model.getFullyQualifiedJavaClassName();
+        String implementor = model.getFullyQualifiedJavaClassName();
         if (implementor.indexOf(".") != -1) { //$NON-NLS-1$
-            if (implementor.indexOf("Impl") != -1) { //$NON-NLS-1$
-                id = implementor.substring(implementor.lastIndexOf(".") + 1,  //$NON-NLS-1$
-                        implementor.lastIndexOf("Impl")).toLowerCase(Locale.getDefault()); //$NON-NLS-1$
-            } else {
-                id = implementor.substring(implementor.lastIndexOf(".") + 1) //$NON-NLS-1$
-                    .toLowerCase(Locale.getDefault());
-            }
-        } else {
-            if (implementor.indexOf("Impl") != -1) { //$NON-NLS-1$
-                id = implementor.substring(0, implementor.lastIndexOf("Impl")).toLowerCase( //$NON-NLS-1$
-                        Locale.getDefault());
-            } else {
-                id = implementor.toLowerCase(Locale.getDefault());
-            }
+            implementor = implementor.substring(implementor.lastIndexOf(".") + 1, implementor.length());
         }
-        return id;
+        if (!implementor.startsWith("Impl") && implementor.indexOf("Impl") != -1) {
+            implementor = implementor.substring(0, implementor.indexOf("Impl")).toLowerCase(); //$NON-NLS-1$;
+        } else {
+            implementor = implementor.toLowerCase();
+        }
+        return implementor;
     }
     
     private static void writeConfig(Document document, IFile springConfigFile) throws IOException {

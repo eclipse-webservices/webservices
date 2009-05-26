@@ -17,17 +17,19 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
  * @author sclarke
  *
  */
-public class OnewayNoReturnValueRuleTest extends AbstractOnewayValidationTest {
+public class OnewayNoInOutParametersRuleTest extends AbstractOnewayValidationTest {
 
-	@Override
-	public String getClassContents() {
-	    StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-	    classContents.append("public class MyClass {\n\n\tpublic int myMethod(int i) {\n\t\treturn 0;\n\t}\n}");
+    @Override
+    protected String getClassContents() {
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("import javax.jws.WebParam;\n\n");
+        classContents.append("public class MyClass {\n\n\tpublic void myMethod(@WebParam(");
+        classContents.append("mode=WebParam.Mode.INOUT) int i) {\n\t}\n}");
         return classContents.toString();
-	}
-
-    public String getErrorMessage() {
-        return JAXWSCoreMessages.ONEWAY_NO_RETURN_VALUE_ERROR_MESSAGE;
     }
-    
+
+    @Override
+    public String getErrorMessage() {
+        return JAXWSCoreMessages.ONEWAY_NO_INOUT_PARAMETERS;
+    }
 }
