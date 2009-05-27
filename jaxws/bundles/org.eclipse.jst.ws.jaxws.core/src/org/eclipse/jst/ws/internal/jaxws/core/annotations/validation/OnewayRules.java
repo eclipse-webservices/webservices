@@ -12,10 +12,9 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
-import javax.jws.WebParam;
+import javax.xml.ws.Holder;
 
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
-import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.apt.Messager;
@@ -24,6 +23,7 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
+import com.sun.mirror.type.TypeMirror;
 
 /**
  * 
@@ -54,30 +54,19 @@ public class OnewayRules extends AbstractAnnotationProcessor {
                     printError(annotationDeclaration, methodDeclaration,
                             JAXWSCoreMessages.ONEWAY_NO_CHECKED_EXCEPTIONS_ERROR_MESSAGE); 
                 }
-                checkParameters(methodDeclaration);
+                checkParameters(methodDeclaration, annotationDeclaration);
             }
         }
     }
     
-    private void checkParameters(MethodDeclaration methodDeclaration) {
+    private void checkParameters(MethodDeclaration methodDeclaration,
+            AnnotationTypeDeclaration annotationDeclaration) {
         Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
         for (ParameterDeclaration parameter : parameters) {
-            Collection<AnnotationMirror> annotatinMirrors = parameter.getAnnotationMirrors();
-            for (AnnotationMirror mirror : annotatinMirrors) {
-                AnnotationTypeDeclaration annotationTypeDeclaration = mirror.getAnnotationType()
-                        .getDeclaration();
-                if (annotationTypeDeclaration.getQualifiedName().equals(WebParam.class.getCanonicalName())) {
-                    String mode = AnnotationUtils.findAnnotationValue(mirror, "mode");  //$NON-NLS-1$
-                    if (mode.equals(WebParam.Mode.OUT.toString())) {
-                        environment.getMessager().printError(mirror.getPosition(),
-                                JAXWSCoreMessages.ONEWAY_NO_OUT_PARAMETERS);
-                    }
-                    if (mode.equals(WebParam.Mode.INOUT.toString())) {
-                        environment.getMessager().printError(mirror.getPosition(),
-                                JAXWSCoreMessages.ONEWAY_NO_INOUT_PARAMETERS);
-                    }
-
-                }
+            TypeMirror typeMirror = environment.getTypeUtils().getErasure(parameter.getType());
+            if (typeMirror.toString().equals(Holder.class.getCanonicalName())) {
+                printError(annotationDeclaration, methodDeclaration,
+                        JAXWSCoreMessages.ONEWAY_NO_HOLDER_PARAMETERS);
             }
         }
     }
@@ -94,6 +83,4 @@ public class OnewayRules extends AbstractAnnotationProcessor {
             }
         }
     }
-
-
 }

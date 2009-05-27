@@ -47,14 +47,16 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
     
     public abstract String getErrorMessage();
     
+    public abstract IMethod getMethodToTest();
+    
     public void testOnewayRule() {
         try {
             assertNotNull(annotation);
             assertEquals("Oneway", AnnotationUtils.getAnnotationName(annotation));
 
-            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[]{"I"});
+            IMethod method = getMethodToTest();
             assertNotNull(method);
-            
+
             AnnotationUtils.getImportChange(compilationUnit, javax.jws.Oneway.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,

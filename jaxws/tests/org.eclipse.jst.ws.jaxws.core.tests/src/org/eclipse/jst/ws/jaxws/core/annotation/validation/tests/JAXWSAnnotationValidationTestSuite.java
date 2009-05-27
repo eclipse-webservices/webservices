@@ -31,8 +31,8 @@ public class JAXWSAnnotationValidationTestSuite extends TestSuite {
         addTestSuite(DocBareVoidOneINOneOutParameterRuleTest.class);
         addTestSuite(OnewayNoReturnValueRuleTest.class);
         addTestSuite(OnewayNoCheckedExceptionsRuleTest.class);
-        addTestSuite(OnewayNoOutParametersRuleTest.class);
-        addTestSuite(OnewayNoInOutParametersRuleTest.class);
+        addTestSuite(HolderTypeParameterRuleTest.class);
+        addTestSuite(OnewayNoHolderParametersRuleTest.class);
         addTestSuite(SOAPBindingMethodStyleDocumentRuleTest.class);
         addTestSuite(SOAPBindingMethodUseRuleTest.class);
         addTestSuite(WebMethodCheckForWebServiceRuleTest.class);

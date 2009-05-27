@@ -38,7 +38,7 @@ public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBar
         classContents.append("String inTwo) {\n\n\t}\n\n\t");
         classContents.append("public void oneOut(@WebParam(name=\"outOne\", mode=WebParam.Mode.INOUT) ");
         classContents.append("Holder<String> outOne, @WebParam(name=\"outTwo\", mode=WebParam.Mode.OUT) ");
-        classContents.append("String outTwo) {\n\n\t}\n\n}");
+        classContents.append("Holder<String> outTwo) {\n\n\t}\n\n}");
         return classContents.toString();
     }
 
@@ -48,7 +48,7 @@ public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBar
             assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("oneIn", new String[] { "QHolder<QString;>;",
-                    "QString; "});
+                    "QString;"});
             
             assertNotNull(method);
 
@@ -90,7 +90,7 @@ public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBar
             assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("oneOut", new String[] { "QHolder<QString;>;",
-                    "QString; "});
+                    "QHolder<QString;>;"});
             
             assertNotNull(method);
 

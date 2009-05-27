@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
@@ -26,54 +25,50 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 /**
  * 
  * @author sclarke
- * 
+ *
  */
-public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationValidationTest {
+public class HolderTypeParameterRuleTest extends AbstractAnnotationValidationTest {
 
     @Override
-    protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
+    public Annotation getAnnotation() {
+        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, javax.jws.WebService.class
                 .getSimpleName(), null);
     }
 
     @Override
-    protected String getClassContents() {
-        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("import javax.jws.WebService;\n\n");
-        classContents.append("@WebService(name=\"MyClass\", endpointInterface=\"MyInterface\", ");
-        classContents.append("targetNamespace=\"http://example.com/\", portName=\"MyClassPort\", ");
-        classContents.append("serviceName=\"MyClassService\")\n");
-        classContents.append("public class MyClass {\n\n");
-        classContents.append("\tpublic String myMethod() {" + "\n\t\treturn \"txt\";\n\t}\n\n}");
-        return classContents.toString();
+    public String getPackageName() {
+        return "com.example";
     }
 
     @Override
-    protected String getClassName() {
+    public String getClassName() {
         return "MyClass.java";
     }
 
     @Override
-    protected String getPackageName() {
-        return "com.example";
+    public String getClassContents() {
+        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
+        classContents.append("import javax.jws.WebParam;\n");
+        classContents.append("import javax.xml.ws.Holder;\n\n");
+        classContents.append("public class MyClass {\n\n\tpublic void myMethod(");
+        classContents.append("@WebParam(mode=WebParam.Mode.IN) Holder<java.lang.String> param) {\n\n\t}\n}");
+        return classContents.toString();
     }
 
-    public void testWebServiceSEIPresentNoWebMethodRule() {
+    public void testHolderTypeParameterRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals("WebService", AnnotationUtils.getAnnotationName(annotation));
+            
+            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebService.class, textFileChange,
+                    true);
 
-            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
-            assertNotNull(method);
-
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
-
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation,
+                    textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
+            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
                     .getAnnotationName(annotation)));
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
@@ -86,15 +81,14 @@ public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationV
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHODS_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.HOLDER_TYPE_MUST_BE_OUT_INOUT_ERROR_MESSAGE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
-        } catch (OperationCanceledException oce) {
+        }catch (OperationCanceledException oce) {
             fail(oce.getLocalizedMessage());
         } catch (InterruptedException ie) {
             fail(ie.getLocalizedMessage());
         }
     }
-
 }

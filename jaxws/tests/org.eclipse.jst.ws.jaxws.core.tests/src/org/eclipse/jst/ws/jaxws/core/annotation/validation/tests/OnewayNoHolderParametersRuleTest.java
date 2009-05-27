@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 /**
@@ -17,19 +18,25 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
  * @author sclarke
  *
  */
-public class OnewayNoInOutParametersRuleTest extends AbstractOnewayValidationTest {
+public class OnewayNoHolderParametersRuleTest extends AbstractOnewayValidationTest {
 
     @Override
     protected String getClassContents() {
         StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("import javax.jws.WebParam;\n\n");
-        classContents.append("public class MyClass {\n\n\tpublic void myMethod(@WebParam(");
-        classContents.append("mode=WebParam.Mode.INOUT) int i) {\n\t}\n}");
+        classContents.append("import javax.xml.ws.Holder;\n\n");
+        classContents.append("public class MyClass {\n\n\tpublic void myMethod(");
+        classContents.append("Holder<String> in) {\n\t}\n}");
         return classContents.toString();
     }
 
     @Override
     public String getErrorMessage() {
-        return JAXWSCoreMessages.ONEWAY_NO_INOUT_PARAMETERS;
+        return JAXWSCoreMessages.ONEWAY_NO_HOLDER_PARAMETERS;
     }
+
+    @Override
+    public IMethod getMethodToTest() {
+        return source.findPrimaryType().getMethod("myMethod", new String[]{"QHolder<QString;>;"});
+    }
+
 }

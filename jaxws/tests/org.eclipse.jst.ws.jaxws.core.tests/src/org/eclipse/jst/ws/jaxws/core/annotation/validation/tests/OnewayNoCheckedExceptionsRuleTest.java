@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 /**
@@ -29,6 +30,11 @@ public class OnewayNoCheckedExceptionsRuleTest extends AbstractOnewayValidationT
     @Override
     public String getErrorMessage() {
         return JAXWSCoreMessages.ONEWAY_NO_CHECKED_EXCEPTIONS_ERROR_MESSAGE;
+    }
+
+    @Override
+    public IMethod getMethodToTest() {
+        return source.findPrimaryType().getMethod("myMethod", new String[]{"I"});
     }
 
 }

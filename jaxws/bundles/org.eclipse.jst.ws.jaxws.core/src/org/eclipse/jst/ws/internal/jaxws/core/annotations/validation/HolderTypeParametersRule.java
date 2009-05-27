@@ -48,22 +48,21 @@ public class HolderTypeParametersRule extends AbstractAnnotationProcessor {
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-            if (declaration instanceof ClassDeclaration) {
-                Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
-                for (AnnotationMirror mirror : annotationMirrors) {
-                    if (AnnotationUtils.findAnnotationValue(mirror, "endpointInterface").length() > 0) {
-                        break;
-                     } else {
-                         validateParameters((ClassDeclaration)declaration);
-                     }
-                }
-             } 
-             if (declaration instanceof InterfaceDeclaration) {
-                 validateParameters((InterfaceDeclaration) declaration);
+//            if (declaration instanceof ClassDeclaration) {
+//                Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
+//                for (AnnotationMirror mirror : annotationMirrors) {
+//                    if (AnnotationUtils.findAnnotationValue(mirror, "endpointInterface").length() > 0) {
+//                        break;
+//                     } else {
+//                         validateParameters((ClassDeclaration)declaration);
+//                     }
+//                }
+//             } 
+             if (declaration instanceof TypeDeclaration) {
+                 validateParameters((TypeDeclaration) declaration);
              }
         }
     }
-    
     
     private void validateParameters(TypeDeclaration typeDeclaration) {
         Messager messager = environment.getMessager();
@@ -72,22 +71,33 @@ public class HolderTypeParametersRule extends AbstractAnnotationProcessor {
             Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
             for (ParameterDeclaration parameter : parameters) {
                 TypeMirror typeMirror = environment.getTypeUtils().getErasure(parameter.getType());
-                if (hasWebParamModeOutOrInOut(parameter)) {
-                    if (!typeMirror.toString().equals(Holder.class.getCanonicalName())) {
-                        messager.printError(parameter.getPosition(), 
+                boolean isHolderParameter = typeMirror.toString().equals(Holder.class.getCanonicalName());
+                if (isWebParamOutInoutMode(parameter) && !isHolderParameter) {
+                    messager.printError(parameter.getPosition(), 
                                 JAXWSCoreMessages.WEBPARAM_MODE_OUT_INOUT_HOLDER_TYPE_ERROR_MESSAGE);
-                    }
-                } else {
-//                    if (typeMirror.toString().equals(Holder.class.getCanonicalName())) {
-//                        messager.printError(parameter.getPosition(),
-//                                JAXWSCoreMessages.HOLDER_TYPE_PARAMETER_ERROR_MESSAGE);
-//                    }
+                } else if (isHolderParameter && isWebParamInMode(parameter)){
+                    messager.printError(parameter.getPosition(),
+                            JAXWSCoreMessages.HOLDER_TYPE_MUST_BE_OUT_INOUT_ERROR_MESSAGE);
                 }
             }
         }
-
     }
-    private boolean hasWebParamModeOutOrInOut(ParameterDeclaration parameter) {
+    
+    private boolean isWebParamInMode(ParameterDeclaration parameter) {
+        Collection<AnnotationMirror> annotatinMirrors = parameter.getAnnotationMirrors();
+        for (AnnotationMirror mirror : annotatinMirrors) {
+            AnnotationTypeDeclaration annotationTypeDeclaration = mirror.getAnnotationType().getDeclaration();
+            if (annotationTypeDeclaration.getQualifiedName().equals(WebParam.class.getCanonicalName())) {
+                String mode = AnnotationUtils.findAnnotationValue(mirror, MODE); //$NON-NLS-1$
+                if (mode.equals(WebParam.Mode.IN.toString())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isWebParamOutInoutMode(ParameterDeclaration parameter) {
         Collection<AnnotationMirror> annotatinMirrors = parameter.getAnnotationMirrors();
         for (AnnotationMirror mirror : annotatinMirrors) {
             AnnotationTypeDeclaration annotationTypeDeclaration = mirror.getAnnotationType().getDeclaration();
