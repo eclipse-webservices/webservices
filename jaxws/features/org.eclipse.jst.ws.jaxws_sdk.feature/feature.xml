@@ -4,7 +4,6 @@
       label="%featureName"
       version="0.5.2.qualifier"
       provider-name="%featureProvider"
-      plugin="org.eclipse.jst.ws.jaxws.core"
       image="eclipse_update_120.jpg">
 
    <description>
