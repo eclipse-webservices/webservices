@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 import java.util.Collection;
 
 import javax.jws.WebParam;
+import javax.jws.WebService;
 import javax.xml.ws.Holder;
 
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
@@ -22,9 +23,7 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
-import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
-import com.sun.mirror.declaration.InterfaceDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
@@ -37,27 +36,17 @@ import com.sun.mirror.type.TypeMirror;
  */
 public class HolderTypeParametersRule extends AbstractAnnotationProcessor {
     
-    private static final String MODE = "mode";
+    private static final String MODE = "mode"; //$NON-NLS-1$
     
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
+                .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-//            if (declaration instanceof ClassDeclaration) {
-//                Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
-//                for (AnnotationMirror mirror : annotationMirrors) {
-//                    if (AnnotationUtils.findAnnotationValue(mirror, "endpointInterface").length() > 0) {
-//                        break;
-//                     } else {
-//                         validateParameters((ClassDeclaration)declaration);
-//                     }
-//                }
-//             } 
              if (declaration instanceof TypeDeclaration) {
                  validateParameters((TypeDeclaration) declaration);
              }

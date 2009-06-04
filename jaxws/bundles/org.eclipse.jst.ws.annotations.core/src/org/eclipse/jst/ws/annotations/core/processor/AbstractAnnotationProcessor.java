@@ -10,8 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.annotations.core.processor;
 
+import java.util.Collection;
+
+import org.eclipse.jdt.apt.core.util.EclipseMessager;
+
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
+import com.sun.mirror.declaration.AnnotationMirror;
+import com.sun.mirror.declaration.AnnotationTypeDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.util.SourcePosition;
 
 /**
  * Abstract base class for processors contributed to the
@@ -34,5 +42,44 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     }
     
     public abstract void process();
+    
+    protected void printError(AnnotationTypeDeclaration annotationDeclaration ,
+            MethodDeclaration methodDeclaration, String errorMessage) {
+
+        Collection<AnnotationMirror> annotationMirrors = methodDeclaration.getAnnotationMirrors();
+        for (AnnotationMirror mirror : annotationMirrors) {
+            if (mirror.getAnnotationType().toString().equals(annotationDeclaration.getQualifiedName())) {
+                environment.getMessager().printError(mirror.getPosition(), errorMessage); 
+            }
+        }
+    }
+    
+    protected void printError(SourcePosition position, String message) {
+        environment.getMessager().printError(position, message);        
+    }
+
+    protected void printWarning(SourcePosition position, String message) {
+        environment.getMessager().printWarning(position, message);        
+    }
+
+    protected void printNotice(SourcePosition position, String message) {
+        environment.getMessager().printNotice(position, message);        
+    }
+
+    protected void printFixableError(SourcePosition position, String message, String pluginId, String errorId) {
+        EclipseMessager messager = (EclipseMessager) environment.getMessager();
+        messager.printFixableError(position, message, pluginId, errorId);
+    }
+
+    protected void printFixableWarning(SourcePosition position, String message, String pluginId,
+            String errorId) {
+        EclipseMessager messager = (EclipseMessager) environment.getMessager();
+        messager.printFixableWarning(position, message, pluginId, errorId);
+    }
+
+    protected void printFixableNotice(SourcePosition position, String message, String pluginId, String errorId) {
+        EclipseMessager messager = (EclipseMessager) environment.getMessager();
+        messager.printFixableNotice(position, message, pluginId, errorId);
+    }
 
 }

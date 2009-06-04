@@ -14,10 +14,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
@@ -31,16 +33,16 @@ import com.sun.mirror.declaration.Declaration;
  *
  */
 public class WebServiceSEIPresentNoWebMethodRule extends AbstractAnnotationProcessor {
-
+    
+    private static final String ENDPOINT_INTERFACE = "endpointInterface"; //$NON-NLS-1$
+    
     public WebServiceSEIPresentNoWebMethodRule() {
     }
     
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
+                .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -54,8 +56,8 @@ public class WebServiceSEIPresentNoWebMethodRule extends AbstractAnnotationProce
                     Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> valueSet = valueMap
                             .entrySet();
                     for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> annotationKeyValue : valueSet) {
-                        if (annotationKeyValue.getKey().getSimpleName().equals("endpointInterface")) { //$NON-NLS-1$
-                            checkWebMethods(messager);
+                        if (annotationKeyValue.getKey().getSimpleName().equals(ENDPOINT_INTERFACE)) {
+                            checkWebMethods();
                         }
                     }
                 }
@@ -63,9 +65,9 @@ public class WebServiceSEIPresentNoWebMethodRule extends AbstractAnnotationProce
         }
     }
     
-    private void checkWebMethods(Messager messager) {
+    private void checkWebMethods() {
         AnnotationTypeDeclaration webMethodDeclaration = (AnnotationTypeDeclaration) environment
-            .getTypeDeclaration("javax.jws.WebMethod"); //$NON-NLS-1$
+            .getTypeDeclaration(WebMethod.class.getName());
 
         Collection<Declaration> webMethodAnnotatedTypes = environment
             .getDeclarationsAnnotatedWith(webMethodDeclaration);
@@ -75,7 +77,7 @@ public class WebServiceSEIPresentNoWebMethodRule extends AbstractAnnotationProce
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (mirror.getAnnotationType().toString().equals(webMethodDeclaration
                         .getQualifiedName())) {
-                    messager.printError(mirror.getPosition(), JAXWSCoreMessages
+                    printError(mirror.getPosition(), JAXWSCoreMessages
                      .WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHODS_ERROR_MESSAGE); 
                 }
             }

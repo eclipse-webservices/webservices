@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.soap.SOAPBinding;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -28,7 +30,8 @@ import com.sun.mirror.declaration.MethodDeclaration;
  *
  */
 public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProcessor {
-    private static final String STYLE = "style";
+    
+    private static final String STYLE = "style"; //$NON-NLS-1$
     
     public SOAPBindingMethodStyleDocumentRule() {
     }
@@ -38,7 +41,7 @@ public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProces
         Messager messager = environment.getMessager();
 
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.soap.SOAPBinding"); //$NON-NLS-1$
+                .getTypeDeclaration(SOAPBinding.class.getName());
 
         Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(
                 annotationDeclaration);

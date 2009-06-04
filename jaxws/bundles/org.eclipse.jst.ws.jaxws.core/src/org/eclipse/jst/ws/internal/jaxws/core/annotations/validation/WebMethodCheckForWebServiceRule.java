@@ -12,10 +12,12 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
@@ -28,18 +30,14 @@ import com.sun.mirror.declaration.TypeDeclaration;
  *
  */
 public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor {
-    private static final String WEB_METHOD = "javax.jws.WebMethod";
-    private static final String WEB_SERVICE = "javax.jws.WebService";
-    
+
     public WebMethodCheckForWebServiceRule() {
     }
 
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
-        AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(WEB_METHOD); //$NON-NLS-1$
+         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
+                .getTypeDeclaration(WebMethod.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -47,9 +45,9 @@ public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor
         for (Declaration declaration : annotatedTypes) {
             Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
             for (AnnotationMirror mirror : annotationMirrors) {
-                if (mirror.getAnnotationType().getDeclaration().getQualifiedName().equals(WEB_METHOD)
+                if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)
                  && !checkForWebServiceAnnotation(((MethodDeclaration)declaration).getDeclaringType())) {
-                    messager.printError(mirror.getPosition(), JAXWSCoreMessages
+                    printError(mirror.getPosition(), JAXWSCoreMessages
                            .WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE_MESSAGE);
                 }
             }
@@ -59,7 +57,7 @@ public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor
     private boolean checkForWebServiceAnnotation(TypeDeclaration typeDeclaration) {
         Collection<AnnotationMirror> annotationMirrors = typeDeclaration.getAnnotationMirrors();
         for (AnnotationMirror mirror : annotationMirrors) {
-            if (mirror.getAnnotationType().toString().equals(WEB_SERVICE)) { //$NON-NLS-1$
+            if (mirror.getAnnotationType().toString().equals(WebService.class.getName())) {
                 return true;
             }
         }

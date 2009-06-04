@@ -12,10 +12,11 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.WebService;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.ClassDeclaration;
@@ -36,10 +37,8 @@ public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationPr
 
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
+                .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -65,7 +64,7 @@ public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationPr
                     for (AnnotationMirror mirror : annotationMirrors) {
                         if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
                                 .getQualifiedName())) {
-                            messager.printError(mirror.getPosition(),
+                            printError(mirror.getPosition(),
                                     JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR_MESSAGE); 
                         }
                     }

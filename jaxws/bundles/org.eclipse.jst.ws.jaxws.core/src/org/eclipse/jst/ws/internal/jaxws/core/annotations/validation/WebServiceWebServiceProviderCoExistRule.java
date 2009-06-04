@@ -12,10 +12,12 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.WebService;
+import javax.xml.ws.WebServiceProvider;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
@@ -32,10 +34,8 @@ public class WebServiceWebServiceProviderCoExistRule extends AbstractAnnotationP
     
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
+                .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -44,14 +44,14 @@ public class WebServiceWebServiceProviderCoExistRule extends AbstractAnnotationP
             Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
 
             for (AnnotationMirror mirror : annotationMirrors) {
-                checkWebServiceProvider(mirror, messager);
+                checkWebServiceProvider(mirror);
             }
         }
     }
 
-    private void checkWebServiceProvider(AnnotationMirror mirror, Messager messager) {
-        if (mirror.getAnnotationType().toString().equals("javax.xml.ws.WebServiceProvider")) { //$NON-NLS-1$
-            messager.printError(mirror.getPosition(), JAXWSCoreMessages
+    private void checkWebServiceProvider(AnnotationMirror mirror) {
+        if (mirror.getAnnotationType().toString().equals(WebServiceProvider.class.getName())) {
+            printError(mirror.getPosition(), JAXWSCoreMessages
                     .WEBSERVICE_WEBSERVICEPROVIDER_COMBINATION_ERROR_MESSAGE);
         }
     }

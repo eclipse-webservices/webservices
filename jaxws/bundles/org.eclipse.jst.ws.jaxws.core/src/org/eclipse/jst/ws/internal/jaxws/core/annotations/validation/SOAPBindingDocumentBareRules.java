@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
@@ -37,24 +38,24 @@ import com.sun.mirror.type.TypeMirror;
  */
 public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
     
-    private static final String SOAP_BINDING_STYLE = "style";
-    private static final String SOAP_BINDING_USE = "use";
-    private static final String SOAP_BINDING_PARAMETER_STYLE = "parameterStyle";
+    private static final String SOAP_BINDING_STYLE = "style"; //$NON-NLS-1$
+    private static final String SOAP_BINDING_USE = "use"; //$NON-NLS-1$
+    private static final String SOAP_BINDING_PARAMETER_STYLE = "parameterStyle"; //$NON-NLS-1$
     
-    private static final String WEB_PARAM_MODE = "mode";
-    private static final String WEB_PARAM_MODE_IN = "IN";
-    private static final String WEB_PARAM_MODE_OUT = "OUT";
-    private static final String WEB_PARAM_MODE_INOUT = "INOUT";
+    private static final String WEB_PARAM_MODE = "mode"; //$NON-NLS-1$
+    private static final String WEB_PARAM_MODE_IN = "IN"; //$NON-NLS-1$
+    private static final String WEB_PARAM_MODE_OUT = "OUT"; //$NON-NLS-1$
+    private static final String WEB_PARAM_MODE_INOUT = "INOUT"; //$NON-NLS-1$
     
-    private static final String WEB_PARAM_HEADER = "header";
+    private static final String WEB_PARAM_HEADER = "header"; //$NON-NLS-1$
     
-    private static final String WEBPARAM = "javax.jws.WebParam";
-    private static final String ONEWAY = "javax.jws.Oneway";
+    private static final String WEBPARAM = "javax.jws.WebParam"; //$NON-NLS-1$
+    private static final String ONEWAY = "javax.jws.Oneway"; //$NON-NLS-1$
     
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-        .getTypeDeclaration("javax.jws.soap.SOAPBinding"); //$NON-NLS-1$
+        .getTypeDeclaration(SOAPBinding.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -86,31 +87,29 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
     }
 
     public void processMethod(MethodDeclaration methodDeclaration) {
-        Messager messager = environment.getMessager();
-
         Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
         
         //@Oneway operations
         if (isOneway(methodDeclaration) && !isSingleNonHeaderINParameter(parameters)) {
-            messager.printError(methodDeclaration.getPosition(), 
+            printError(methodDeclaration.getPosition(), 
                 JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE);                                
         } else {
             if (isVoidReturnType(methodDeclaration)) {
                 if (countINParameters(parameters) > 1) {
-                    messager.printError(methodDeclaration.getPosition(), 
+                    printError(methodDeclaration.getPosition(), 
                             JAXWSCoreMessages.DOC_BARE_VOID_RETURN_ONE_IN_PARAMETER);                                                                        
                 }
                 if (countOUTParameters(parameters) > 1) {
-                    messager.printError(methodDeclaration.getPosition(), 
+                    printError(methodDeclaration.getPosition(), 
                             JAXWSCoreMessages.DOC_BARE_VOID_RETURN_ONE_OUT_PARAMETER);                                                                                            
                 }
             } else {
                 if (countINParameters(parameters) > 1) {
-                    messager.printError(methodDeclaration.getPosition(), 
+                    printError(methodDeclaration.getPosition(), 
                         JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE);                                                                        
                 } 
                 if (countOUTParameters(parameters) > 0) {
-                    messager.printError(methodDeclaration.getPosition(), 
+                    printError(methodDeclaration.getPosition(), 
                         JAXWSCoreMessages.DOC_BARE_NON_VOID_RETURN_NO_INOUT_OUT_PARAMETER);
                 }
             }
@@ -124,7 +123,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
                     String mode = getWebParamMode(annotationMirror, parameterDeclaration);
                     String name = AnnotationUtils.findAnnotationValue(annotationMirror, "name");
                     if (name.length() == 0 && (mode.equals(WEB_PARAM_MODE_OUT) || mode.equals(WEB_PARAM_MODE_INOUT))) {
-                        messager.printError(annotationMirror.getPosition(), 
+                        printError(annotationMirror.getPosition(), 
                            JAXWSCoreMessages.WEBPARAM_NAME_REQUIRED_WHEN_DOC_BARE_OUT_INOUT);
                     }
                 }
@@ -247,7 +246,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
     private boolean isHeader(AnnotationMirror annotationMirror) {
         String header = AnnotationUtils.findAnnotationValue(annotationMirror, WEB_PARAM_HEADER);
         if (header.length() == 0) {
-           header = "false";
+           header = "false"; //$NON-NLS-1$
         }
         return Boolean.valueOf(header);
     }

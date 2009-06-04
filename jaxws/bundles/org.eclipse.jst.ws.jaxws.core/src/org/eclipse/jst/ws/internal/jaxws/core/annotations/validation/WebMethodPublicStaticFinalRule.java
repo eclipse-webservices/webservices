@@ -12,11 +12,11 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.WebMethod;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
-import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
@@ -36,7 +36,7 @@ public class WebMethodPublicStaticFinalRule extends AbstractAnnotationProcessor 
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebMethod"); //$NON-NLS-1$
+                .getTypeDeclaration(WebMethod.class.getName());
 
         Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(
                 annotationDeclaration);
@@ -62,17 +62,4 @@ public class WebMethodPublicStaticFinalRule extends AbstractAnnotationProcessor 
         	}
         }
 	}
-    
-    private void printError(AnnotationTypeDeclaration annotationDeclaration ,
-            MethodDeclaration methodDeclaration, String errorMessage) {
-        Messager messager = environment.getMessager();
-
-        Collection<AnnotationMirror> annotationMirrors = methodDeclaration.getAnnotationMirrors();
-        for (AnnotationMirror mirror : annotationMirrors) {
-            if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
-                    .getQualifiedName())) {
-                messager.printError(mirror.getPosition(), errorMessage); 
-            }
-        }
-    }
 }

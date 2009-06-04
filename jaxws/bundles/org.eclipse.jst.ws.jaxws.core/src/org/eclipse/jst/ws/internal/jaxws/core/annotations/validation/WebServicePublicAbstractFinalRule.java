@@ -12,10 +12,11 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.WebService;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
@@ -34,10 +35,8 @@ public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcess
 
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
+                .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -51,26 +50,26 @@ public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcess
                     for (AnnotationMirror mirror : annotationMirrors) {
                         if (mirror.getAnnotationType().toString()
                             .equals(annotationDeclaration.getQualifiedName())) {
-                            messager.printError(mirror.getPosition(), 
-                            JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE);
+                            printError(mirror.getPosition(), 
+                                JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE);
                         }
                     }
                 }
                 TypeDeclaration typeDeclaration = (TypeDeclaration)declaration;
                 if (typeDeclaration.getNestedTypes().size() > 0) {
-                    testNestedTypes(typeDeclaration.getNestedTypes(), annotationDeclaration, messager);
+                    testNestedTypes(typeDeclaration.getNestedTypes(), annotationDeclaration);
                 }
             }
         }
     }
     
     private void testNestedTypes(Collection<TypeDeclaration> nestedTypes, 
-            AnnotationTypeDeclaration annotationDeclaration, Messager messager) {
+            AnnotationTypeDeclaration annotationDeclaration) {
         for (TypeDeclaration nestedDeclaration : nestedTypes) {
             Collection<AnnotationMirror> annotationMirrors = nestedDeclaration.getAnnotationMirrors();
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (mirror.getAnnotationType().toString().equals(annotationDeclaration.getQualifiedName())) {
-                    messager.printError(mirror.getPosition(),
+                    printError(mirror.getPosition(),
                             JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE);
                 }
             }

@@ -12,13 +12,12 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.Oneway;
 import javax.xml.ws.Holder;
 
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
-import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.MethodDeclaration;
@@ -38,7 +37,7 @@ public class OnewayRules extends AbstractAnnotationProcessor {
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.Oneway"); //$NON-NLS-1$
+                .getTypeDeclaration(Oneway.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -69,18 +68,5 @@ public class OnewayRules extends AbstractAnnotationProcessor {
                         JAXWSCoreMessages.ONEWAY_NO_HOLDER_PARAMETERS);
             }
         }
-    }
-    
-    private void printError(AnnotationTypeDeclaration annotationDeclaration ,
-            MethodDeclaration methodDeclaration, String errorMessage) {
-        Messager messager = environment.getMessager();
-
-        Collection<AnnotationMirror> annotationMirrors = methodDeclaration.getAnnotationMirrors();
-        for (AnnotationMirror mirror : annotationMirrors) {
-            if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
-                    .getQualifiedName())) {
-                messager.printError(mirror.getPosition(), errorMessage); 
-            }
-        }
-    }
+    }    
 }

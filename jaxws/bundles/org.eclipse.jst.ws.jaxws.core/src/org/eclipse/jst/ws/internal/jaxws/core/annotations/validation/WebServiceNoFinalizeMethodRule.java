@@ -12,6 +12,8 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
 
+import javax.jws.WebService;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
@@ -29,15 +31,15 @@ import com.sun.mirror.declaration.TypeDeclaration;
  */
 public class WebServiceNoFinalizeMethodRule extends AbstractAnnotationProcessor {
 
+    private static final String FINALIZE = "finalize"; //$NON-NLS-1$
+    
     public WebServiceNoFinalizeMethodRule() {
     }
 
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebService"); //$NON-NLS-1$
+                .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -46,7 +48,7 @@ public class WebServiceNoFinalizeMethodRule extends AbstractAnnotationProcessor 
             Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (isFinalizeDefined(declaration)) {
-                    messager.printError(mirror.getPosition(), 
+                    printError(mirror.getPosition(), 
                                 JAXWSCoreMessages.WEBSERVICE_OVERRIDE_FINALIZE_MESSAGE);
                 }
             }
@@ -58,7 +60,7 @@ public class WebServiceNoFinalizeMethodRule extends AbstractAnnotationProcessor 
             TypeDeclaration typeDeclaration = (TypeDeclaration)declaration;
             Collection<? extends MethodDeclaration> methodDeclarations = typeDeclaration.getMethods();
             for (MethodDeclaration methodDeclaration : methodDeclarations) {
-                if (methodDeclaration.getSimpleName().equals("finalize") 
+                if (methodDeclaration.getSimpleName().equals(FINALIZE) 
                         && methodDeclaration.getParameters().size() == 0) {
                     return true;
                 }

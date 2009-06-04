@@ -14,10 +14,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebMethod;
+
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
@@ -33,15 +35,16 @@ import com.sun.mirror.declaration.MethodDeclaration;
  */
 public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
 
+    private static final String EXCLUDE = "exclude"; //$NON-NLS-1$
+    private static final String TRUE = "true"; //$NON-NLS-1$
+
     public WebMethodExcludeRules() {
     }
 
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.WebMethod"); //$NON-NLS-1$
+                .getTypeDeclaration(WebMethod.class.getName());
 
         Collection<Declaration> annotatedTypes = environment.getDeclarationsAnnotatedWith(
                 annotationDeclaration);
@@ -56,11 +59,11 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
                 for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> annotationKeyValue : 
                         valueSet) {
                     
-                    if (annotationKeyValue.getKey().getSimpleName().equals("exclude")) { //$NON-NLS-1$
+                    if (annotationKeyValue.getKey().getSimpleName().equals(EXCLUDE)) {
                         if (declaration instanceof MethodDeclaration) {
                             MethodDeclaration methodDeclaration = (MethodDeclaration)declaration;
                             if (methodDeclaration.getDeclaringType() instanceof InterfaceDeclaration) {
-                                messager.printError(mirror.getPosition(),
+                                printError(mirror.getPosition(),
                                         JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
                                 break;
                             }
@@ -68,8 +71,8 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
 
                         if (annotationKeyValue.getValue() != null) {
                             AnnotationValue annotationValue = annotationKeyValue.getValue();
-                            if (annotationValue.getValue().toString().equals("true") && valueMap.size() > 1) {
-                              messager.printError(mirror.getPosition(), 
+                            if (annotationValue.getValue().toString().equals(TRUE) && valueMap.size() > 1) {
+                                printError(mirror.getPosition(), 
                                   JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFEID_NO_OTHER_ATTRIBUTES_ALLOWED_MESSAGE);
                             }
                         }
