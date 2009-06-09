@@ -40,7 +40,7 @@ public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationV
     protected String getClassContents() {
         StringBuilder classContents = new StringBuilder("package com.example;\n\n");
         classContents.append("import javax.jws.WebService;\n\n");
-        classContents.append("@WebService(name=\"MyClass\", endpointInterface=\"MyInterface\", ");
+        classContents.append("@WebService(endpointInterface=\"MyInterface\", ");
         classContents.append("targetNamespace=\"http://example.com/\", portName=\"MyClassPort\", ");
         classContents.append("serviceName=\"MyClassService\")\n");
         classContents.append("public class MyClass {\n\n");

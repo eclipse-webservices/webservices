@@ -15,7 +15,7 @@ import java.util.Collection;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
@@ -29,10 +29,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
  * @author sclarke
  *
  */
-public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor {
-
-    public WebMethodCheckForWebServiceRule() {
-    }
+public class WebMethodCheckForWebServiceRule extends AbstractJAXWSAnnotationProcessor {
 
     @Override
     public void process() {
@@ -46,21 +43,15 @@ public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor
             Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)
-                 && !checkForWebServiceAnnotation(((MethodDeclaration)declaration).getDeclaringType())) {
-                    printError(mirror.getPosition(), JAXWSCoreMessages
-                           .WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE_MESSAGE);
+                        && !checkForWebServiceAnnotation(((MethodDeclaration) declaration).getDeclaringType())) {
+                    printError(mirror.getPosition(),
+                            JAXWSCoreMessages.WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE_MESSAGE);
                 }
             }
         }
     }
     
     private boolean checkForWebServiceAnnotation(TypeDeclaration typeDeclaration) {
-        Collection<AnnotationMirror> annotationMirrors = typeDeclaration.getAnnotationMirrors();
-        for (AnnotationMirror mirror : annotationMirrors) {
-            if (mirror.getAnnotationType().toString().equals(WebService.class.getName())) {
-                return true;
-            }
-        }
-        return false;
+        return AnnotationUtils.getAnnotation(typeDeclaration, WebService.class) != null;
     }
 }

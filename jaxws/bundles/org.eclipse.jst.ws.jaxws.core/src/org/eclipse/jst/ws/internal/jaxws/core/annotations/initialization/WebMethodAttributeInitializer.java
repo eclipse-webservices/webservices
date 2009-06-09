@@ -23,7 +23,6 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
-import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
@@ -32,12 +31,7 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
  * @author sclarke
  *
  */
-public class WebMethodAttributeInitializer extends AnnotationAttributeInitializer {
-    private static final String OPERATION_NAME = "operationName";
-    private static final String ACTION = "action";
-    
-    public WebMethodAttributeInitializer() {     
-    }
+public class WebMethodAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
     
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,

@@ -13,8 +13,8 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 import java.util.Collection;
 
 import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
@@ -29,13 +29,8 @@ import com.sun.mirror.declaration.MethodDeclaration;
  * @author sclarke
  *
  */
-public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProcessor {
+public class SOAPBindingMethodStyleDocumentRule extends AbstractJAXWSAnnotationProcessor {
     
-    private static final String STYLE = "style"; //$NON-NLS-1$
-    
-    public SOAPBindingMethodStyleDocumentRule() {
-    }
-
     @Override
     public void process() {
         Messager messager = environment.getMessager();
@@ -53,8 +48,8 @@ public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProces
     
                 for (AnnotationMirror mirror : annotationMirrors) {
                     if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)) {
-                        String style = AnnotationUtils.findAnnotationValue(mirror, STYLE);
-                        if (!style.equals(javax.jws.soap.SOAPBinding.Style.DOCUMENT.toString())) {
+                        String style = AnnotationUtils.getStringValue(mirror, STYLE);
+                        if (style != null && style.equals(Style.RPC.toString())) {
                             messager.printError(mirror.getPosition(), 
                               JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE); 
                         }

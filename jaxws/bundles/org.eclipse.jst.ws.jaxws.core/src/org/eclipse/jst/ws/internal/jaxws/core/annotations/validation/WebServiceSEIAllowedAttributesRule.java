@@ -11,18 +11,14 @@
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 import javax.jws.WebService;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
-import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
-import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.InterfaceDeclaration;
 
@@ -31,16 +27,8 @@ import com.sun.mirror.declaration.InterfaceDeclaration;
  * @author sclarke
  *
  */
-public class WebServiceSEIAllowedAttributesRule extends AbstractAnnotationProcessor {
+public class WebServiceSEIAllowedAttributesRule extends AbstractJAXWSAnnotationProcessor {
 
-    private static final String SERVICE_NAME = "serviceName"; //$NON-NLS-1$
-    private static final String ENDPOINT_INTERFACE = "endpointInterface"; //$NON-NLS-1$
-    private static final String PORT_NAME = "portName"; //$NON-NLS-1$
-
-    
-    public WebServiceSEIAllowedAttributesRule() {
-    }
-    
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
@@ -50,28 +38,29 @@ public class WebServiceSEIAllowedAttributesRule extends AbstractAnnotationProces
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-            Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
+            if (declaration instanceof InterfaceDeclaration) {
+                Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
 
-            for (AnnotationMirror mirror : annotationMirrors) {
-                Map<AnnotationTypeElementDeclaration, AnnotationValue> valueMap = mirror.getElementValues();
-                Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> valueSet = valueMap
-                        .entrySet();
-                for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> annotationKeyValue : valueSet) {
-                    if (declaration instanceof InterfaceDeclaration) {
-                        if (annotationKeyValue.getKey().getSimpleName().equals(SERVICE_NAME)) {
-                            printError(mirror.getPosition(), JAXWSCoreMessages
-                                    .WEBSERVICE_SERVICENAME_SEI_ERROR_MESSAGE);
-                        } else if (annotationKeyValue.getKey().getSimpleName().equals(ENDPOINT_INTERFACE)) {
-                            printError(mirror.getPosition(), JAXWSCoreMessages
-                                    .WEBSERVICE_ENDPOINTINTERFACE_SEI_ERROR_MESSAGE);
-                        } else if (annotationKeyValue.getKey().getSimpleName().equals(PORT_NAME)) {
-                            printError(mirror.getPosition(), JAXWSCoreMessages
-                                    .WEBSERVICE_PORTNAME_SEI_ERROR_MESSAGE);
-                        }
+                for (AnnotationMirror mirror : annotationMirrors) {
+                    String serviceName = AnnotationUtils.getStringValue(mirror, SERVICE_NAME);
+                    if (serviceName != null) {
+                        printError(mirror.getPosition(),
+                                JAXWSCoreMessages.WEBSERVICE_SERVICENAME_SEI_ERROR_MESSAGE);
+                    }
+
+                    String endpointInterface = AnnotationUtils.getStringValue(mirror, ENDPOINT_INTERFACE);
+                    if (endpointInterface != null) {
+                        printError(mirror.getPosition(),
+                                JAXWSCoreMessages.WEBSERVICE_ENDPOINTINTERFACE_SEI_ERROR_MESSAGE);
+                    }
+                    String portName = AnnotationUtils.getStringValue(mirror, PORT_NAME);
+                    if (portName != null) {
+                        printError(mirror.getPosition(),
+                                JAXWSCoreMessages.WEBSERVICE_PORTNAME_SEI_ERROR_MESSAGE);
                     }
                 }
             }
         }
     }
-    
+   
 }

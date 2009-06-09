@@ -14,7 +14,6 @@ import java.util.Collection;
 
 import javax.jws.WebMethod;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -28,11 +27,8 @@ import com.sun.mirror.declaration.Modifier;
  * @author sclarke
  * 
  */
-public class WebMethodPublicStaticFinalRule extends AbstractAnnotationProcessor {
+public class WebMethodPublicStaticFinalRule extends AbstractJAXWSAnnotationProcessor {
 	
-    public WebMethodPublicStaticFinalRule() {
-    }
-    
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment

@@ -11,35 +11,27 @@
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 import javax.jws.WebMethod;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
-import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
 import com.sun.mirror.declaration.AnnotationValue;
+import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.InterfaceDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.declaration.TypeDeclaration;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
-
-    private static final String EXCLUDE = "exclude"; //$NON-NLS-1$
-    private static final String TRUE = "true"; //$NON-NLS-1$
-
-    public WebMethodExcludeRules() {
-    }
+public class WebMethodExcludeRules extends AbstractJAXWSAnnotationProcessor {
 
     @Override
     public void process() {
@@ -51,31 +43,23 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
 
         for (Declaration declaration : annotatedTypes) {
             Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
-
-            for (AnnotationMirror mirror : annotationMirrors) {
-                Map<AnnotationTypeElementDeclaration, AnnotationValue> valueMap = mirror.getElementValues();
-                Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> valueSet = valueMap
-                        .entrySet();
-                for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> annotationKeyValue : 
-                        valueSet) {
+            for (AnnotationMirror annotationMirror : annotationMirrors) {
+                AnnotationValue excludeAttribute = AnnotationUtils.getAnnotationValue(annotationMirror,
+                        EXCLUDE);
+                if (excludeAttribute != null) {
+                    MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
+                    TypeDeclaration typeDeclaration = methodDeclaration.getDeclaringType();
                     
-                    if (annotationKeyValue.getKey().getSimpleName().equals(EXCLUDE)) {
-                        if (declaration instanceof MethodDeclaration) {
-                            MethodDeclaration methodDeclaration = (MethodDeclaration)declaration;
-                            if (methodDeclaration.getDeclaringType() instanceof InterfaceDeclaration) {
-                                printError(mirror.getPosition(),
-                                        JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
-                                break;
-                            }
-                        }
+                    if (typeDeclaration instanceof InterfaceDeclaration) {
+                        printError(excludeAttribute.getPosition(),
+                                JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
+                    }
 
-                        if (annotationKeyValue.getValue() != null) {
-                            AnnotationValue annotationValue = annotationKeyValue.getValue();
-                            if (annotationValue.getValue().toString().equals(TRUE) && valueMap.size() > 1) {
-                                printError(mirror.getPosition(), 
-                                  JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFEID_NO_OTHER_ATTRIBUTES_ALLOWED_MESSAGE);
-                            }
-                        }
+                    if (typeDeclaration instanceof ClassDeclaration
+                            && Boolean.valueOf(excludeAttribute.getValue().toString()).booleanValue()) {
+                        printError(
+                                excludeAttribute.getPosition(),
+                                JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFEID_NO_OTHER_ATTRIBUTES_ALLOWED_MESSAGE);
                     }
                 }
             }

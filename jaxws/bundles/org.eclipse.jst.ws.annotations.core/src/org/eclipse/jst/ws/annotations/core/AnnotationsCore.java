@@ -75,7 +75,6 @@ public final class AnnotationsCore {
         return memberValuePair;
     }
 
-
     public static MemberValuePair createStringMemberValuePair(AST ast, String name, Object value) {
         MemberValuePair stringMemberValuePair = AnnotationsCore.createMemberValuePair(ast, name,
                 AnnotationsCore.createStringLiteral(ast, value.toString()));

@@ -15,7 +15,6 @@ import java.util.Collection;
 import javax.jws.Oneway;
 import javax.xml.ws.Holder;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -29,10 +28,7 @@ import com.sun.mirror.type.TypeMirror;
  * @author sclarke
  *
  */
-public class OnewayRules extends AbstractAnnotationProcessor {
-    
-    public OnewayRules() {
-    }
+public class OnewayRules extends AbstractJAXWSAnnotationProcessor {
     
     @Override
     public void process() {

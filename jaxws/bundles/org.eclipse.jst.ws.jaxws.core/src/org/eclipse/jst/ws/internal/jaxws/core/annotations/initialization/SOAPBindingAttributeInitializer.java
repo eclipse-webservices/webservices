@@ -22,21 +22,14 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
-import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class SOAPBindingAttributeInitializer extends AnnotationAttributeInitializer {
-    private static final String STYLE = "style";
-    private static final String USE = "use";
-    private static final String PARAMETER_STYLE = "parameterStyle";
+public class SOAPBindingAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
 
-    public SOAPBindingAttributeInitializer() {
-    }
-    
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends Annotation> annotationClass) {

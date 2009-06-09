@@ -14,10 +14,8 @@ import java.util.Collection;
 
 import javax.jws.WebService;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
@@ -29,12 +27,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
  * @author sclarke
  *
  */
-public class WebServiceNoFinalizeMethodRule extends AbstractAnnotationProcessor {
-
-    private static final String FINALIZE = "finalize"; //$NON-NLS-1$
-    
-    public WebServiceNoFinalizeMethodRule() {
-    }
+public class WebServiceNoFinalizeMethodRule extends AbstractJAXWSAnnotationProcessor {
 
     @Override
     public void process() {

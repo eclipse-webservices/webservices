@@ -14,7 +14,6 @@ import java.util.Collection;
 
 import javax.jws.WebService;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
@@ -29,11 +28,7 @@ import com.sun.mirror.declaration.Modifier;
  * @author sclarke
  *
  */
-public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationProcessor {
-
-    public WebServiceDefaultPublicConstructorRule() {
-
-    }
+public class WebServiceDefaultPublicConstructorRule extends AbstractJAXWSAnnotationProcessor {
 
     @Override
     public void process() {

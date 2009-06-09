@@ -14,6 +14,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -46,6 +48,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
@@ -57,7 +60,9 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -66,7 +71,6 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
-import org.eclipse.jst.ws.annotations.core.AnnotationsCorePlugin;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.text.edits.MultiTextEdit;
@@ -76,6 +80,7 @@ import org.eclipse.text.edits.TextEditGroup;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
 import com.sun.mirror.declaration.AnnotationValue;
+import com.sun.mirror.declaration.Declaration;
 
 /**
  * Utility class for adding, removing and updating annotations and member value pairs.
@@ -101,74 +106,71 @@ public final class AnnotationUtils {
     @SuppressWarnings("unchecked")
     public static void getImportChange(CompilationUnit compilationUnit, 
             Class<? extends java.lang.annotation.Annotation> annotation, TextFileChange textFileChange, 
-            boolean annotate) {
-        try {
-            String qualifiedName = annotation.getCanonicalName();
-            ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
+            boolean annotate) throws CoreException {
+        String qualifiedName = annotation.getCanonicalName();
+        ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
 
-            if (annotate) {
-                importRewrite.addImport(qualifiedName);
-            } else {
-                final String annotationSimpleName = annotation.getSimpleName();
-                final List<String> occurences = new ArrayList<String>();
-                Target target = annotation.getAnnotation(Target.class);
-                List<ElementType> elementTypes = Arrays.asList(target.value());
-                for (ElementType elementType : elementTypes) {
-                    //TODO Handle package annotation imports
-                    if (elementType == ElementType.TYPE) {
-                        compilationUnit.accept(new ASTVisitor() {
-                            @Override
-                            public boolean visit(TypeDeclaration typeDeclaration) {
-                                countAnnotationOccurences(typeDeclaration.modifiers(), annotationSimpleName,
-                                        occurences);
-                                return super.visit(typeDeclaration);
-                            }
-                        });
-                    }
-                    if (elementType == ElementType.FIELD) {
-                        compilationUnit.accept(new ASTVisitor() {
-                            @Override
-                            public boolean visit(FieldDeclaration fieldDeclaration) {
-                                countAnnotationOccurences(fieldDeclaration.modifiers(), annotationSimpleName,
-                                        occurences);
-                                return super.visit(fieldDeclaration);
-                            }
-                        });
-                    }
-                    if (elementType == ElementType.METHOD) {
-                        compilationUnit.accept(new ASTVisitor() {
-                            @Override
-                            public boolean visit(MethodDeclaration methodDeclaration) {
-                                countAnnotationOccurences(methodDeclaration.modifiers(), annotationSimpleName,
-                                        occurences);                              
-                                return super.visit(methodDeclaration);
-                            }
-                        });
-                    }
-                    if (elementType == ElementType.PARAMETER) {
-                        compilationUnit.accept(new ASTVisitor() {
-                            @Override
-                            public boolean visit(SingleVariableDeclaration singleVariableDeclaration) {
-                                countAnnotationOccurences(singleVariableDeclaration.modifiers(),
-                                        annotationSimpleName, occurences);
-                                return super.visit(singleVariableDeclaration);
-                            }
-                        });
-                    }
+        if (annotate) {
+            importRewrite.addImport(qualifiedName);
+        } else {
+            final String annotationSimpleName = annotation.getSimpleName();
+            final List<String> occurences = new ArrayList<String>();
+            Target target = annotation.getAnnotation(Target.class);
+            List<ElementType> elementTypes = Arrays.asList(target.value());
+            for (ElementType elementType : elementTypes) {
+                // TODO Handle package annotation imports
+                if (elementType == ElementType.TYPE) {
+                    compilationUnit.accept(new ASTVisitor() {
+                        @Override
+                        public boolean visit(TypeDeclaration typeDeclaration) {
+                            countAnnotationOccurences(typeDeclaration.modifiers(), annotationSimpleName,
+                                    occurences);
+                            return super.visit(typeDeclaration);
+                        }
+                    });
                 }
-                if (occurences.size() == 1) {
-                    importRewrite.removeImport(qualifiedName);   
+                if (elementType == ElementType.FIELD) {
+                    compilationUnit.accept(new ASTVisitor() {
+                        @Override
+                        public boolean visit(FieldDeclaration fieldDeclaration) {
+                            countAnnotationOccurences(fieldDeclaration.modifiers(), annotationSimpleName,
+                                    occurences);
+                            return super.visit(fieldDeclaration);
+                        }
+                    });
+                }
+                if (elementType == ElementType.METHOD) {
+                    compilationUnit.accept(new ASTVisitor() {
+                        @Override
+                        public boolean visit(MethodDeclaration methodDeclaration) {
+                            countAnnotationOccurences(methodDeclaration.modifiers(), annotationSimpleName,
+                                    occurences);
+                            return super.visit(methodDeclaration);
+                        }
+                    });
+                }
+                if (elementType == ElementType.PARAMETER) {
+                    compilationUnit.accept(new ASTVisitor() {
+                        @Override
+                        public boolean visit(SingleVariableDeclaration singleVariableDeclaration) {
+                            countAnnotationOccurences(singleVariableDeclaration.modifiers(),
+                                    annotationSimpleName, occurences);
+                            return super.visit(singleVariableDeclaration);
+                        }
+                    });
                 }
             }
-            if (importRewrite.hasRecordedChanges()) {
-                //TODO Cleanup imports
-                // Repeatedly adding and removing an import where none existed before will
-                // insert a new line on each insert.
-                TextEdit importTextEdit = importRewrite.rewriteImports(null);
-                textFileChange.addEdit(importTextEdit);
+            if (occurences.size() == 1) {
+                importRewrite.removeImport(qualifiedName);
             }
-        } catch (CoreException ce) {
-            AnnotationsCorePlugin.log(ce.getStatus());
+        }
+        if (importRewrite.hasRecordedChanges()) {
+            // TODO Cleanup imports
+            // Repeatedly adding and removing an import where none existed
+            // before will
+            // insert a new line on each insert.
+            TextEdit importTextEdit = importRewrite.rewriteImports(null);
+            textFileChange.addEdit(importTextEdit);
         }
     }
     
@@ -1149,26 +1151,167 @@ public final class AnnotationUtils {
                 image, proposal, null, null);
     }
     
-    /**
-     * Searches the passed <code>AnnotationMirror</code> for an <code>AnnotationTypeElementDeclaration</code>
-     * that matches the elementName. If a match is made the string representation of the 
-     * <code>AnnotationValue</code> value object is returned. If no match is made a zero length String is 
-     * returned.
-     * @param mirror
-     * @param elementName
-     * @return
-     */
-    public static String findAnnotationValue(AnnotationMirror mirror, String elementName) {
+    public static String getStringValue(AnnotationMirror mirror, String attributeName) {
+        AnnotationValue annotationValue = getAnnotationValue(mirror, attributeName);
+        if (annotationValue != null) {
+            return annotationValue.getValue().toString();
+        }
+        return null;
+    }
+    
+    public static Boolean getBooleanValue(AnnotationMirror mirror, String attributeName) {
+        String value = getStringValue(mirror, attributeName);
+        if (value != null) {
+            return Boolean.valueOf(value);
+        }
+        return null;
+    }
+    
+    public static AnnotationValue getAnnotationValue(AnnotationMirror mirror, String attributeName) {
         Map<AnnotationTypeElementDeclaration, AnnotationValue> values = mirror.getElementValues();
         Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> entrySet = values.entrySet();
         for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> entry : entrySet) {
             AnnotationTypeElementDeclaration element = entry.getKey();
-            if (element.getSimpleName().equals(elementName)) {
-                AnnotationValue annotationValue = entry.getValue();
-                return annotationValue.getValue().toString();
+            if (element.getSimpleName().equals(attributeName)) {
+                return entry.getValue();
             }
         }
-        return "";
-    }            
+        return null;
+    }
 
+    public static AnnotationMirror getAnnotation(Declaration declaration, Class<? extends java.lang.annotation.Annotation> annotation) {
+        Collection<AnnotationMirror> aannotationMirrors = declaration.getAnnotationMirrors();
+        
+        for (AnnotationMirror annotationMirror : aannotationMirrors) {
+            String annotationName = annotationMirror.getAnnotationType().getDeclaration().getQualifiedName();
+            if (annotationName.equals(annotation.getCanonicalName())) {
+                return annotationMirror;
+            }
+        }
+        return null;
+    }
+    
+    public static String getStringValue(Annotation annotation, String attributeName) {
+        if (annotation instanceof NormalAnnotation) {
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            if (expression != null && expression instanceof StringLiteral) {
+                return ((StringLiteral) expression).getLiteralValue();
+            }
+        }
+        return null;
+    }
+    
+    public static String getEnumValue(Annotation annotation, String attributeName) {
+        if (annotation instanceof NormalAnnotation) {
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            if (expression != null && expression instanceof QualifiedName) {
+                return ((QualifiedName) expression).getName().getIdentifier();
+            }
+        }
+        return null;
+    }
+
+    public static Boolean getBooleanValue(Annotation annotation, String attributeName) {
+        if (annotation instanceof NormalAnnotation) {
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            if (expression != null && expression instanceof BooleanLiteral) {
+                return Boolean.valueOf(((BooleanLiteral) expression).booleanValue());
+            }
+        }
+        return null;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static Expression getAnnotationValue(NormalAnnotation normalAnnotation, String attributeName) {
+        List<MemberValuePair> memberValuePairs = normalAnnotation.values();
+        for (MemberValuePair memberValuePair : memberValuePairs) {
+            if (memberValuePair.getName().getIdentifier().equals(attributeName)) {
+                return memberValuePair.getValue();
+            }
+        }
+        return null;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static Annotation getAnnotation(BodyDeclaration bodyDeclaration,
+            Class<? extends java.lang.annotation.Annotation> annotation) {
+        
+        return getAnnotation(bodyDeclaration.modifiers(), annotation);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Annotation getAnnotation(SingleVariableDeclaration parameter,
+            Class<? extends java.lang.annotation.Annotation> annotation) {
+        
+        return getAnnotation(parameter.modifiers(), annotation);
+    }
+    
+    private static Annotation getAnnotation(List<IExtendedModifier> modifiers, 
+            Class<? extends java.lang.annotation.Annotation> annotation) {
+        if (modifiers != null) {
+            for (IExtendedModifier extendedModifier : modifiers) {
+                if (extendedModifier instanceof Annotation) {
+                    Annotation astAnnotation = (Annotation) extendedModifier;
+                    String typeName = astAnnotation.getTypeName().getFullyQualifiedName();
+                    if (typeName.equals(annotation.getCanonicalName())
+                            || typeName.equals(annotation.getSimpleName())) {
+                        return astAnnotation;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getStringValue(IAnnotation annotation, String attributeName)
+            throws JavaModelException {
+        Object value = AnnotationUtils.getAnnotationValue(annotation, attributeName);
+        if (value != null) {
+            return value.toString();
+        }
+        return null;
+    }
+    
+    public static String getEnumValue(IAnnotation annotation, String attributeName) throws JavaModelException {
+        String value = AnnotationUtils.getStringValue(annotation, attributeName);
+        if (value != null && value.indexOf(".") != -1) {
+            return value.substring(value.lastIndexOf(".") + 1);
+        }
+        return null;
+    }
+    
+    public static Boolean getBooleanValue(IAnnotation annotation, String attributeName) throws JavaModelException {
+        String value = AnnotationUtils.getStringValue(annotation, attributeName);
+        if (value != null) {
+            return Boolean.valueOf(value);
+        }
+        return null;
+    }
+
+    public static Object getAnnotationValue(IAnnotation annotation, String attributeName)
+            throws JavaModelException {
+        IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
+        if (memberValuePairs.length > 0) {
+            for (IMemberValuePair memberValuePair : memberValuePairs) {
+                if (memberValuePair.getMemberName().equals(attributeName)) {
+                    return memberValuePair.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static IAnnotation getAnnotation(IAnnotatable annotatable,
+            Class<? extends java.lang.annotation.Annotation> annotation) throws JavaModelException {
+        IAnnotation[] annotations = annotatable.getAnnotations();
+        for (IAnnotation jdtAnnotation : annotations) {
+            String annotationName = jdtAnnotation.getElementName();
+            if (annotationName.equals(annotation.getCanonicalName())
+                    || annotationName.equals(annotation.getSimpleName())) {
+                return jdtAnnotation;
+            }
+        }
+        return null;
+    }
+   
 }

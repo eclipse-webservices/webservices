@@ -11,10 +11,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
+import javax.jws.soap.SOAPBinding;
+
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-import com.sun.mirror.apt.Messager;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
@@ -28,17 +28,12 @@ import com.sun.mirror.declaration.MethodDeclaration;
  * @author ohurley
  *
  */
-public class SOAPBindingMethodUseRule extends AbstractAnnotationProcessor {
-
-    public SOAPBindingMethodUseRule() {
-    }
+public class SOAPBindingMethodUseRule extends AbstractJAXWSAnnotationProcessor {
 
     @Override
     public void process() {
-        Messager messager = environment.getMessager();
-
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration("javax.jws.soap.SOAPBinding"); //$NON-NLS-1$
+                .getTypeDeclaration(SOAPBinding.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
@@ -59,7 +54,7 @@ public class SOAPBindingMethodUseRule extends AbstractAnnotationProcessor {
                     for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> annotationKeyValue : 
                             valueSet) {
 
-                        if (annotationKeyValue.getKey().getSimpleName().equals("use")) { //$NON-NLS-1$
+                        if (annotationKeyValue.getKey().getSimpleName().equals(USE)) {
                             if (annotationKeyValue.getValue() != null) {
                                 AnnotationValue annotationValue = annotationKeyValue.getValue();
                                 EnumConstantDeclaration enumConstantDeclaration = 
@@ -70,13 +65,13 @@ public class SOAPBindingMethodUseRule extends AbstractAnnotationProcessor {
                                 }
                             }
                         } else {
-                        	if (annotationKeyValue.getKey().getSimpleName().equals("parameterStyle")) { //$NON-NLS-1$
+                        	if (annotationKeyValue.getKey().getSimpleName().equals(PARAMETER_STYLE)) {
                         		methodParameterStylePresent = true;
                         	}
                         }
                         
                         if (methodParameterStylePresent && methodUseEncoded) {
-                            messager.printError(mirror.getPosition(),
+                            printError(mirror.getPosition(),
                                     JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE);
                         	return;
                         }

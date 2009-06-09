@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
@@ -23,7 +27,6 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
-import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
@@ -33,14 +36,8 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
  * @author sclarke
  *
  */
-public class RequestWrapperAttributeInitializer extends AnnotationAttributeInitializer {
-    private static final String CLASS_NAME = "className";
-    private static final String LOCAL_NAME = "localName";
-    private static final String TARGET_NAMESPACE = "targetNamespace";
+public class RequestWrapperAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
 
-    public RequestWrapperAttributeInitializer() {
-    }
-    
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends Annotation> annotationClass) {
@@ -91,15 +88,17 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
         return completionProposals;
     }
     
-    private String getPackageName(IType type) {
-        String packageName = type.getPackageFragment().getElementName();
-        if (packageName == null || packageName.length() == 0) {
-            packageName = "default_package"; //$NON-NLS-1$
+    protected String getPackageName(IType type) {
+        StringBuilder packageName = new StringBuilder(type.getPackageFragment().getElementName());
+        if (packageName.length() > 0) {
+            packageName.append(DOT_CHARACTER);               
         }
-        return packageName += "."; //$NON-NLS-1$
+        packageName.append(JAXWS_SUBPACKAGE);
+        packageName.append(DOT_CHARACTER);
+        return packageName.toString();
     }
     
-    private String getClassName(IType type, IMethod method) {
+    protected String getClassName(IType type, IMethod method) {
         try {
             String methodName = method.getElementName();
             return getPackageName(type) + methodName.substring(0, 1).toUpperCase(Locale.getDefault())
@@ -110,8 +109,15 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
         return "";
     }
     
-    private String getLocalName(IType type, IMethod method) {
+    protected String getLocalName(IType type, IMethod method) {
         try {
+            IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebMethod.class);
+            if (annotation != null) {
+                String operationName = AnnotationUtils.getStringValue(annotation, OPERATION_NAME);
+                if (operationName != null) {
+                    return operationName;
+                }
+            }
             return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
@@ -119,7 +125,20 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
         return "";
     }
     
-    private String getTargetNamespace(IType type) {
-        return JDTUtils.getTargetNamespaceFromPackageName(getPackageName(type));
+    protected String getTargetNamespace(IType type) {
+        try {
+            IAnnotation annotation = AnnotationUtils.getAnnotation(type, WebService.class);
+            if (annotation != null) {
+                String targetNamespace = AnnotationUtils.getStringValue(annotation, TARGET_NAMESPACE);
+                if (targetNamespace != null && targetNamespace.length() > 0) {
+                    return targetNamespace;
+                }
+            }
+            return JDTUtils.getTargetNamespaceFromPackageName(type.getPackageFragment().getElementName());
+        } catch (JavaModelException jme) {
+            JAXWSCorePlugin.log(jme.getStatus());
+        }
+        return "";
     }
+
 }
