@@ -16,9 +16,6 @@ import javax.jws.Oneway;
 import javax.jws.WebParam;
 import javax.jws.WebParam.Mode;
 import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.ParameterStyle;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.jws.soap.SOAPBinding.Use;
 import javax.xml.ws.Holder;
 
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
@@ -215,7 +212,7 @@ public class SOAPBindingDocumentBareRules extends AbstractJAXWSAnnotationProcess
     private boolean isHeader(AnnotationMirror annotationMirror) {
         Boolean header = AnnotationUtils.getBooleanValue(annotationMirror, HEADER);
         if (header != null) {
-           header.booleanValue();
+           return header.booleanValue();
         }
         return false;
     }
