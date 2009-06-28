@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import javax.jws.soap.SOAPBinding;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -85,15 +87,14 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
     public void testOnlyOneNonHeaderINParameterRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("onlyOneIN", new String[] { "QString;", 
                     "QString;" });
             
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.soap.SOAPBinding.class,
-                    textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -113,7 +114,7 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
@@ -127,15 +128,14 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
     public void testOnlyOneNonHeaderINParameterWithWebParamsRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("oneMore", new String[] { "QString;", 
                     "QString;" });
             
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.soap.SOAPBinding.class,
-                    textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -155,7 +155,7 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

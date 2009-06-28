@@ -81,6 +81,7 @@ import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeElementDeclaration;
 import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
+import com.sun.mirror.declaration.ParameterDeclaration;
 
 /**
  * Utility class for adding, removing and updating annotations and member value pairs.
@@ -104,7 +105,7 @@ public final class AnnotationUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static void getImportChange(CompilationUnit compilationUnit, 
+    public static void addImportChange(CompilationUnit compilationUnit, 
             Class<? extends java.lang.annotation.Annotation> annotation, TextFileChange textFileChange, 
             boolean annotate) throws CoreException {
         String qualifiedName = annotation.getCanonicalName();
@@ -123,7 +124,7 @@ public final class AnnotationUtils {
                     compilationUnit.accept(new ASTVisitor() {
                         @Override
                         public boolean visit(TypeDeclaration typeDeclaration) {
-                            countAnnotationOccurences(typeDeclaration.modifiers(), annotationSimpleName,
+                            countAnnotationOccurrences(typeDeclaration.modifiers(), annotationSimpleName,
                                     occurences);
                             return super.visit(typeDeclaration);
                         }
@@ -133,7 +134,7 @@ public final class AnnotationUtils {
                     compilationUnit.accept(new ASTVisitor() {
                         @Override
                         public boolean visit(FieldDeclaration fieldDeclaration) {
-                            countAnnotationOccurences(fieldDeclaration.modifiers(), annotationSimpleName,
+                            countAnnotationOccurrences(fieldDeclaration.modifiers(), annotationSimpleName,
                                     occurences);
                             return super.visit(fieldDeclaration);
                         }
@@ -143,7 +144,7 @@ public final class AnnotationUtils {
                     compilationUnit.accept(new ASTVisitor() {
                         @Override
                         public boolean visit(MethodDeclaration methodDeclaration) {
-                            countAnnotationOccurences(methodDeclaration.modifiers(), annotationSimpleName,
+                            countAnnotationOccurrences(methodDeclaration.modifiers(), annotationSimpleName,
                                     occurences);
                             return super.visit(methodDeclaration);
                         }
@@ -153,7 +154,7 @@ public final class AnnotationUtils {
                     compilationUnit.accept(new ASTVisitor() {
                         @Override
                         public boolean visit(SingleVariableDeclaration singleVariableDeclaration) {
-                            countAnnotationOccurences(singleVariableDeclaration.modifiers(),
+                            countAnnotationOccurrences(singleVariableDeclaration.modifiers(),
                                     annotationSimpleName, occurences);
                             return super.visit(singleVariableDeclaration);
                         }
@@ -174,7 +175,7 @@ public final class AnnotationUtils {
         }
     }
     
-    private static void countAnnotationOccurences(List<IExtendedModifier> modifiers, String annotationSimpleName, 
+    private static void countAnnotationOccurrences(List<IExtendedModifier> modifiers, String annotationSimpleName, 
             List<String> occurences) {
         for (IExtendedModifier extendedModifier : modifiers) {
             if (extendedModifier instanceof Annotation) {
@@ -236,7 +237,7 @@ public final class AnnotationUtils {
                 @SuppressWarnings("unchecked")
                 List originalList = listRewrite.getOriginalList();
                 for (Object object : originalList) {
-                    if (object instanceof Annotation && compareAnnotations((Annotation) object, annotation)) {
+                    if (object instanceof Annotation && compareAnnotationNames((Annotation) object, annotation)) {
                         listRewrite.remove((Annotation) object, null);
                     }
                 }
@@ -256,17 +257,16 @@ public final class AnnotationUtils {
     }
     
     public static void createTypeAnnotationChange(ICompilationUnit source, CompilationUnit 
-            compilationUnit, ASTRewrite rewriter, Annotation annotation, 
+            compilationUnit, ASTRewrite rewriter, IType type, Annotation annotation, 
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
         try {
-            IType type = compilationUnit.getTypeRoot().findPrimaryType();
             @SuppressWarnings("unchecked")
             List<TypeDeclaration> types = compilationUnit.types();
             for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-                if (compareTypes(abstractTypeDeclaration, type)
+                if (compareTypeNames(abstractTypeDeclaration, type)
                         && !isAnnotationPresent(abstractTypeDeclaration, annotation)) {
                     bufferManager.connect(path, LocationKind.IFILE, null);
                     connected = true;
@@ -294,17 +294,16 @@ public final class AnnotationUtils {
     }
 
     public static void removeAnnotationFromType(ICompilationUnit source, CompilationUnit 
-            compilationUnit, ASTRewrite rewriter, Annotation annotation, 
+            compilationUnit, ASTRewrite rewriter, IType type, Annotation annotation, 
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
         try {
-            IType type = compilationUnit.getTypeRoot().findPrimaryType();
             @SuppressWarnings("unchecked")
             List<TypeDeclaration> types = compilationUnit.types();
             for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-                if (compareTypes(abstractTypeDeclaration, type) 
+                if (compareTypeNames(abstractTypeDeclaration, type) 
                         && isAnnotationPresent(abstractTypeDeclaration, annotation)) {
                     bufferManager.connect(path, LocationKind.IFILE, null);
                     connected = true;
@@ -318,7 +317,7 @@ public final class AnnotationUtils {
                     @SuppressWarnings("unchecked")
                     List originalList = listRewrite.getOriginalList();
                     for (Object object : originalList) {
-                        if (object instanceof Annotation && compareAnnotations((Annotation)object, 
+                        if (object instanceof Annotation && compareAnnotationNames((Annotation)object, 
                                 annotation)) {
                             listRewrite.remove((Annotation)object, null);
                         }
@@ -350,7 +349,7 @@ public final class AnnotationUtils {
             @SuppressWarnings("unchecked")
             List<AbstractTypeDeclaration> types = compilationUnit.types();
             for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-                if (compareTypes(abstractTypeDeclaration, type)) {
+                if (compareTypeNames(abstractTypeDeclaration, type)) {
                     List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(
                             abstractTypeDeclaration);
                     BodyDeclaration bodyDeclaration = getMethodDeclaration(bodyDeclarations, method);
@@ -391,7 +390,7 @@ public final class AnnotationUtils {
             @SuppressWarnings("unchecked")
             List<AbstractTypeDeclaration> types = compilationUnit.types();
             for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-                if (compareTypes(abstractTypeDeclaration, type)) {
+                if (compareTypeNames(abstractTypeDeclaration, type)) {
                     List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(
                             abstractTypeDeclaration);
                     BodyDeclaration bodyDeclaration = getMethodDeclaration(bodyDeclarations, method);
@@ -409,7 +408,7 @@ public final class AnnotationUtils {
                         List originalList = listRewrite.getOriginalList();
                         for (Object object : originalList) {
                             if (object instanceof Annotation
-                                    && compareAnnotations((Annotation) object, annotation)) {
+                                    && compareAnnotationNames((Annotation) object, annotation)) {
                                 listRewrite.remove((Annotation) object, null);
                             }
                         }
@@ -429,7 +428,7 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void createFiedlAnnotationChange(ICompilationUnit source, CompilationUnit 
+    public static void createFieldAnnotationChange(ICompilationUnit source, CompilationUnit 
             compilationUnit, ASTRewrite rewriter, IField field, Annotation annotation, 
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -440,7 +439,7 @@ public final class AnnotationUtils {
             @SuppressWarnings("unchecked")
             List<AbstractTypeDeclaration> types = compilationUnit.types();
             for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-                if (compareTypes(abstractTypeDeclaration, type)) {
+                if (compareTypeNames(abstractTypeDeclaration, type)) {
                     List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(
                             abstractTypeDeclaration);
                     FieldDeclaration fieldDeclaration = (FieldDeclaration) getFieldDeclaration(
@@ -482,7 +481,7 @@ public final class AnnotationUtils {
             @SuppressWarnings("unchecked")
             List<AbstractTypeDeclaration> types = compilationUnit.types();
             for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-                if (compareTypes(abstractTypeDeclaration, type)) {
+                if (compareTypeNames(abstractTypeDeclaration, type)) {
                     List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(
                             abstractTypeDeclaration);
                     FieldDeclaration fieldDeclaration = (FieldDeclaration) getFieldDeclaration(
@@ -502,7 +501,7 @@ public final class AnnotationUtils {
                         List originalList = listRewrite.getOriginalList();
                         for (Object object : originalList) {
                             if (object instanceof Annotation
-                                    && compareAnnotations((Annotation) object, annotation)) {
+                                    && compareAnnotationNames((Annotation) object, annotation)) {
                                 listRewrite.remove((Annotation) object, null);
                             }
                         }
@@ -534,7 +533,7 @@ public final class AnnotationUtils {
             @SuppressWarnings("unchecked")
             List<AbstractTypeDeclaration> types = compilationUnit.types();
             for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-                if (compareTypes(abstractTypeDeclaration, type)) {
+                if (compareTypeNames(abstractTypeDeclaration, type)) {
                     List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(abstractTypeDeclaration);
                     MethodDeclaration methodDeclaration = (MethodDeclaration) getMethodDeclaration(
                             bodyDeclarations, method);
@@ -623,7 +622,7 @@ public final class AnnotationUtils {
                 @SuppressWarnings("unchecked")
                 List originalList = listRewrite.getOriginalList();
                 for (Object object : originalList) {
-                    if (object instanceof Annotation && compareAnnotations((Annotation)object, annotation)) {
+                    if (object instanceof Annotation && compareAnnotationNames((Annotation)object, annotation)) {
                         listRewrite.remove((Annotation)object, null);
                     }
                 }
@@ -642,7 +641,7 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void createMemberVaulePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
+    public static void createMemberValuePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, IJavaElement javaElement, IAnnotation annotation, ASTNode memberValuePair,
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -653,7 +652,7 @@ public final class AnnotationUtils {
             for (IExtendedModifier extendedModifier : modifiers) {
                 if (extendedModifier instanceof NormalAnnotation) {
                     NormalAnnotation existingAnnotation = (NormalAnnotation) extendedModifier;
-                    if (AnnotationUtils.compareAnnotations(annotation, existingAnnotation)) {
+                    if (AnnotationUtils.compareAnnotationNames(annotation, existingAnnotation)) {
                         bufferManager.connect(path, LocationKind.IFILE, null);
                         connected = true;
 
@@ -681,7 +680,7 @@ public final class AnnotationUtils {
         }
     }
     
-    public static void createMemberVaulePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
+    public static void createMemberValuePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, NormalAnnotation annotation, ASTNode memberValuePair,
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -711,7 +710,7 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void updateMemberVaulePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
+    public static void updateMemberValuePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, IJavaElement javaElement, IAnnotation annotation, IMemberValuePair memberValuePair,
             ASTNode value, TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -722,10 +721,10 @@ public final class AnnotationUtils {
             for (IExtendedModifier extendedModifier : modifiers) {
                 if (extendedModifier instanceof NormalAnnotation) {
                     NormalAnnotation existingAnnotation = (NormalAnnotation) extendedModifier;
-                    if (AnnotationUtils.compareAnnotations(annotation, existingAnnotation)) {
+                    if (AnnotationUtils.compareAnnotationNames(annotation, existingAnnotation)) {
                         @SuppressWarnings("unchecked")
-                        List<MemberValuePair> memberVaulePairs = existingAnnotation.values();
-                        for (MemberValuePair memberValuePairDOM : memberVaulePairs) {
+                        List<MemberValuePair> memberValuePairs = existingAnnotation.values();
+                        for (MemberValuePair memberValuePairDOM : memberValuePairs) {
                             if (memberValuePairDOM.getName().toString().equals(
                                     memberValuePair.getMemberName())) {
                                 bufferManager.connect(path, LocationKind.IFILE, null);
@@ -755,7 +754,7 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void updateMemberVaulePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
+    public static void updateMemberValuePairValue(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, NormalAnnotation annotation, MemberValuePair memberValuePair,
             ASTNode value, TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -853,18 +852,18 @@ public final class AnnotationUtils {
         return annotationTypeName.getFullyQualifiedName();
     }
     
-    public static boolean compareTypes(AbstractTypeDeclaration abstractTypeDeclaration, IType type) {
+    public static boolean compareTypeNames(AbstractTypeDeclaration abstractTypeDeclaration, IType type) {
         return abstractTypeDeclaration.getName().getIdentifier().equals(type.getElementName());
     }
     
     @SuppressWarnings("unchecked")
     public static boolean compareMethods(MethodDeclaration methodDeclaration, IMethod method) {
     	if (methodDeclaration.getName().getIdentifier().equals(method.getElementName())) {
-	    	String[] parametetNames = method.getParameterTypes();
+	    	String[] parametetTypes = method.getParameterTypes();
 	    	List<SingleVariableDeclaration> methodDeclarationParameters = methodDeclaration.parameters();
-	    	if (parametetNames.length == methodDeclarationParameters.size()) {
-		    	for (int i = 0; i < parametetNames.length; i++) {
-	                String simpleName1 = Signature.toString(parametetNames[i]);
+	    	if (parametetTypes.length == methodDeclarationParameters.size()) {
+		    	for (int i = 0; i < parametetTypes.length; i++) {
+	                String simpleName1 = Signature.toString(parametetTypes[i]);
 					String simpleName2 = methodDeclarationParameters.get(i).getType().toString();
 					if (!simpleName1.equals(simpleName2)) {
 						return false;
@@ -875,8 +874,44 @@ public final class AnnotationUtils {
     	}
     	return false;
 	}
-    
-    public static boolean compareMethods(AnnotationTypeMemberDeclaration memmberDeclaration, IMethod method) {
+
+    public static boolean compareMethods(com.sun.mirror.declaration.MethodDeclaration methodOne,
+            com.sun.mirror.declaration.MethodDeclaration methodTwo) {
+        return compareMethodNames(methodOne, methodTwo) && compareMethodReturnTypes(methodOne, methodTwo)
+                && compareMethodParameterTypes(methodOne, methodTwo);
+    }
+
+    private static boolean compareMethodNames(com.sun.mirror.declaration.MethodDeclaration methodOne,
+            com.sun.mirror.declaration.MethodDeclaration methodTwo) {
+        return methodOne.getSimpleName().equals(methodTwo.getSimpleName());
+    }
+
+    private static boolean compareMethodReturnTypes(com.sun.mirror.declaration.MethodDeclaration methodOne,
+            com.sun.mirror.declaration.MethodDeclaration methodTwo) {
+        return methodOne.getReturnType().equals(methodTwo.getReturnType());
+
+    }
+
+    private static boolean compareMethodParameterTypes(com.sun.mirror.declaration.MethodDeclaration methodOne,
+            com.sun.mirror.declaration.MethodDeclaration methodTwo) {
+        int numberOfParametersOne = methodOne.getParameters().size();
+        int numberOfParametersTwo = methodTwo.getParameters().size();
+
+        if (numberOfParametersOne == numberOfParametersTwo) {
+            List<ParameterDeclaration> parametersOne = (List<ParameterDeclaration>) methodOne.getParameters();
+            List<ParameterDeclaration> parametersTwo = (List<ParameterDeclaration>) methodTwo.getParameters();
+            for (int i = 0; i < parametersOne.size(); i++) {
+                if (!parametersOne.get(i).getType().equals(parametersTwo.get(i).getType())) {
+                    return false;
+                }
+            }
+            return true;
+
+        }
+        return false;
+    }
+     
+    public static boolean compareMethodNames(AnnotationTypeMemberDeclaration memmberDeclaration, IMethod method) {
         if (memmberDeclaration.getName().getIdentifier().equals(method.getElementName())) {
                 return true;
         }
@@ -884,7 +919,7 @@ public final class AnnotationUtils {
     }
     
     @SuppressWarnings("unchecked")
-    public static boolean compareFields(FieldDeclaration fieldDeclaration, IField field) {
+    public static boolean compareFieldNames(FieldDeclaration fieldDeclaration, IField field) {
         List<VariableDeclarationFragment> fragments = fieldDeclaration.fragments();
         for (VariableDeclarationFragment variableDeclarationFragment : fragments) {
            if (variableDeclarationFragment.getName().getIdentifier().equals(field.getElementName())) {
@@ -907,12 +942,12 @@ public final class AnnotationUtils {
     	return similarMethods.size() > 0 ? Integer.toString(similarMethods.size()) : ""; //$NON-NLS-1$
     }
     
-    private static boolean compareAnnotations(Annotation newAnnotation, Annotation existingAnnotation) {
+    private static boolean compareAnnotationNames(Annotation newAnnotation, Annotation existingAnnotation) {
         return AnnotationUtils.getAnnotationName(existingAnnotation).equals(
                 AnnotationUtils.getAnnotationName(newAnnotation));
     }
     
-    private static boolean compareAnnotations(IAnnotation newAnnotation, Annotation existingAnnotation) {
+    private static boolean compareAnnotationNames(IAnnotation newAnnotation, Annotation existingAnnotation) {
         return AnnotationUtils.getAnnotationName(existingAnnotation).equals(newAnnotation.getElementName());
     }
     
@@ -938,7 +973,7 @@ public final class AnnotationUtils {
         for (IExtendedModifier extendedModifier : modifiers) {
             if (extendedModifier instanceof Annotation) {
                 Annotation existingAnnotation = (Annotation) extendedModifier;
-                if (compareAnnotations(annatotationToAdd, existingAnnotation)) {
+                if (compareAnnotationNames(annatotationToAdd, existingAnnotation)) {
                     return true;
                 }
             }
@@ -980,7 +1015,7 @@ public final class AnnotationUtils {
     public static boolean isAnnotationPresent(PackageDeclaration packageDeclaration, Annotation annotation) {
         List<Annotation> annotations = packageDeclaration.annotations();
         for (Annotation existingAnnotation : annotations) {
-            if (compareAnnotations(annotation, existingAnnotation)) {
+            if (compareAnnotationNames(annotation, existingAnnotation)) {
                 return true;
             }
         }
@@ -994,7 +1029,7 @@ public final class AnnotationUtils {
         for (IExtendedModifier extendedModifier : modifiers) {
             if (extendedModifier instanceof Annotation) {
                 Annotation existingAnnotation = (Annotation) extendedModifier;
-                if (compareAnnotations(annatotationToAdd, existingAnnotation)) {
+                if (compareAnnotationNames(annatotationToAdd, existingAnnotation)) {
                     return true;
                 }
             }
@@ -1022,7 +1057,7 @@ public final class AnnotationUtils {
         IType type = compilationUnit.getTypeRoot().findPrimaryType();
         List<AbstractTypeDeclaration> types = compilationUnit.types();
         for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-            if (compareTypes(abstractTypeDeclaration, type)) {
+            if (compareTypeNames(abstractTypeDeclaration, type)) {
                 List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(abstractTypeDeclaration);
                 
                 BodyDeclaration bodyDeclaration = null;
@@ -1071,7 +1106,7 @@ public final class AnnotationUtils {
                 }
             }
             if (bodyDeclaration instanceof AnnotationTypeMemberDeclaration) {
-                if (compareMethods((AnnotationTypeMemberDeclaration)bodyDeclaration, method)) {
+                if (compareMethodNames((AnnotationTypeMemberDeclaration)bodyDeclaration, method)) {
                     return bodyDeclaration;
                 }
             }
@@ -1082,7 +1117,7 @@ public final class AnnotationUtils {
     private static BodyDeclaration getFieldDeclaration(List<BodyDeclaration> bodyDeclarations, IField field) {
         for (BodyDeclaration bodyDeclaration : bodyDeclarations) {
             if (bodyDeclaration instanceof FieldDeclaration) {
-                if (compareFields((FieldDeclaration)bodyDeclaration, field)) {
+                if (compareFieldNames((FieldDeclaration)bodyDeclaration, field)) {
                     return bodyDeclaration;
                 }
             }
@@ -1179,12 +1214,15 @@ public final class AnnotationUtils {
         return null;
     }
 
-    public static AnnotationMirror getAnnotation(Declaration declaration, Class<? extends java.lang.annotation.Annotation> annotation) {
+    public static AnnotationMirror getAnnotation(Declaration declaration,
+            Class<? extends java.lang.annotation.Annotation> annotation) {
         Collection<AnnotationMirror> aannotationMirrors = declaration.getAnnotationMirrors();
-        
+
         for (AnnotationMirror annotationMirror : aannotationMirrors) {
-            String annotationName = annotationMirror.getAnnotationType().getDeclaration().getQualifiedName();
-            if (annotationName.equals(annotation.getCanonicalName())) {
+            com.sun.mirror.declaration.AnnotationTypeDeclaration annotationTypeDeclaration = annotationMirror
+                    .getAnnotationType().getDeclaration();
+            if (annotationTypeDeclaration != null
+                    && annotationTypeDeclaration.getQualifiedName().equals(annotation.getCanonicalName())) {
                 return annotationMirror;
             }
         }

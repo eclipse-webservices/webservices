@@ -15,6 +15,7 @@ import java.util.Collection;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceProvider;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
@@ -26,7 +27,7 @@ import com.sun.mirror.declaration.Declaration;
  * @author sclarke
  *
  */
-public class WebServiceWebServiceProviderCoExistRule extends AbstractJAXWSAnnotationProcessor {
+public class WebServiceWebServiceProviderCoExistRule extends AbstractAnnotationProcessor {
     
     @Override
     public void process() {
@@ -48,7 +49,7 @@ public class WebServiceWebServiceProviderCoExistRule extends AbstractJAXWSAnnota
     private void checkWebServiceProvider(AnnotationMirror mirror) {
         if (mirror.getAnnotationType().toString().equals(WebServiceProvider.class.getName())) {
             printError(mirror.getPosition(), JAXWSCoreMessages
-                    .WEBSERVICE_WEBSERVICEPROVIDER_COMBINATION_ERROR_MESSAGE);
+                    .WEBSERVICE_WEBSERVICEPROVIDER_COMBINATION);
         }
     }
 }

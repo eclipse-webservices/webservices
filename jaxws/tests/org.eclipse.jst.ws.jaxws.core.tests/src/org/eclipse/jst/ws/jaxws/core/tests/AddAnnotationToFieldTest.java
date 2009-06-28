@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.jaxws.core.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.ws.WebServiceRef;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IField;
@@ -52,22 +54,21 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
 
         memberValuePairs.add(wsdlLocationValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class,
-                javax.xml.ws.WebServiceRef.class.getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, WebServiceRef.class, WebServiceRef.class.getSimpleName(),
+                memberValuePairs);
     }
 
     public void testAddAnnotationToField() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebServiceRef", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebServiceRef.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.xml.ws.WebServiceRef.class,
-                    textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, WebServiceRef.class, textFileChange, true);
 
-            AnnotationUtils.createFiedlAnnotationChange(source, compilationUnit, rewriter, field, annotation,
+            AnnotationUtils.createFieldAnnotationChange(source, compilationUnit, rewriter, field, annotation,
                     textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.EXCLUDE;
+
 import java.util.Collection;
 
 import javax.jws.WebMethod;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
@@ -31,7 +34,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
  * @author sclarke
  *
  */
-public class WebMethodExcludeRules extends AbstractJAXWSAnnotationProcessor {
+public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
 
     @Override
     public void process() {
@@ -59,7 +62,7 @@ public class WebMethodExcludeRules extends AbstractJAXWSAnnotationProcessor {
                             && Boolean.valueOf(excludeAttribute.getValue().toString()).booleanValue()) {
                         printError(
                                 excludeAttribute.getPosition(),
-                                JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFEID_NO_OTHER_ATTRIBUTES_ALLOWED_MESSAGE);
+                                JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFIED_NO_OTHER_ATTRIBUTES_ALLOWED);
                     }
                 }
             }

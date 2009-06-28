@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.tests;
 
+import javax.xml.ws.WebServiceRef;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IField;
@@ -44,14 +46,14 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.xml.ws.WebServiceRef.class,
-                javax.xml.ws.WebServiceRef.class.getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, WebServiceRef.class, WebServiceRef.class.getSimpleName(),
+                null);
     }
 
     public void testRemoveAnnotationFromField() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebServiceRef", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebServiceRef.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);

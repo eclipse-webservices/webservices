@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.MODE;
+
 import java.util.Collection;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.ws.Holder;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
@@ -32,7 +35,7 @@ import com.sun.mirror.type.TypeMirror;
  * @author sclarke
  *
  */
-public class HolderTypeParametersRule extends AbstractJAXWSAnnotationProcessor {
+public class HolderTypeParametersRule extends AbstractAnnotationProcessor {
     
     @Override
     public void process() {
@@ -58,10 +61,10 @@ public class HolderTypeParametersRule extends AbstractJAXWSAnnotationProcessor {
                 boolean isHolderParameter = typeMirror.toString().equals(Holder.class.getCanonicalName());
                 if (isWebParamOutInoutMode(parameter) && !isHolderParameter) {
                     printError(parameter.getPosition(), 
-                                JAXWSCoreMessages.WEBPARAM_MODE_OUT_INOUT_HOLDER_TYPE_ERROR_MESSAGE);
+                                JAXWSCoreMessages.WEBPARAM_MODE_OUT_INOUT_HOLDER_TYPE);
                 } else if (isHolderParameter && isWebParamInMode(parameter)){
                     printError(parameter.getPosition(),
-                            JAXWSCoreMessages.HOLDER_TYPE_MUST_BE_OUT_INOUT_ERROR_MESSAGE);
+                            JAXWSCoreMessages.HOLDER_TYPE_MUST_BE_OUT_INOUT);
                 }
             }
         }

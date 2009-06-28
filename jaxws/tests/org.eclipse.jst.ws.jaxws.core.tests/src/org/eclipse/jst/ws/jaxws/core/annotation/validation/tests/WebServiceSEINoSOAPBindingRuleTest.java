@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -22,8 +19,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -31,58 +28,60 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 /**
  * 
  * @author sclarke
- *
+ * 
  */
-public class WebServiceDefaultPublicConstructorRuleTest extends AbstractAnnotationValidationTest {
+public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRule {
 
     @Override
     protected Annotation getAnnotation() {
-        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-
-        MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "name", "MyClass");
-
-        MemberValuePair portNameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "portName",
-                "MyClassPort");
-
-        MemberValuePair serviceNameValuePair = AnnotationsCore.createStringMemberValuePair(ast,
-                "serviceName", "MyClassService");
-
-        MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast,
-                "targetNamespace", "http://example.com/");
-
-        memberValuePairs.add(nameValuePair);
-        memberValuePairs.add(targetNamespaceValuePair);
-        memberValuePairs.add(portNameValuePair);
-        memberValuePairs.add(serviceNameValuePair);
-
-        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, SOAPBinding.class, SOAPBinding.class.getSimpleName(), null);
     }
 
-    @Override
-    protected String getClassContents() {
-        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("public class MyClass {\n\n\tpublic MyClass(String arg) {\n\t}\n}");
-        return classContents.toString();
-    }
-
-    @Override
-    protected String getClassName() {
-        return "MyClass.java";
-    }
-
-    @Override
-    protected String getPackageName() {
-        return "com.example";
-    }
-
-    public void testWebServiceDefaultPublicConstructorRule() {
+    public void testNoSOAPBindingOnMethodRule() {
         try {
             assertNotNull(annotation);
-            assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils
-                    .addImportChange(compilationUnit, WebService.class, textFileChange, true);
+            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
+            assertNotNull(method);
+
+            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
+
+            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+                    annotation, textFileChange);
+
+            assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
+
+            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
+                    .getAnnotationName(annotation)));
+
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+
+            IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
+                    IResource.DEPTH_INFINITE);
+
+            assertEquals(1, allmarkers.length);
+
+            IMarker annotationProblemMarker = allmarkers[0];
+
+            assertEquals(source.getResource(), annotationProblemMarker.getResource());
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING,
+                    annotationProblemMarker.getAttribute(IMarker.MESSAGE));
+        } catch (CoreException ce) {
+            fail(ce.getLocalizedMessage());
+        } catch (OperationCanceledException oce) {
+            fail(oce.getLocalizedMessage());
+        } catch (InterruptedException ie) {
+            fail(ie.getLocalizedMessage());
+        }
+    }
+
+    public void testNoSOAPBindingOnTypeRule() {
+        try {
+            assertNotNull(annotation);
+            assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
+
+            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
 
             AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
                     source.findPrimaryType(), annotation, textFileChange);
@@ -102,7 +101,7 @@ public class WebServiceDefaultPublicConstructorRuleTest extends AbstractAnnotati
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR,
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
@@ -112,5 +111,8 @@ public class WebServiceDefaultPublicConstructorRuleTest extends AbstractAnnotati
             fail(ie.getLocalizedMessage());
         }
     }
+
+    
+    
 
 }

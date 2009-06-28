@@ -7,12 +7,16 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PARAMETER_STYLE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.USE;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 import javax.jws.soap.SOAPBinding;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
@@ -28,7 +32,7 @@ import com.sun.mirror.declaration.MethodDeclaration;
  * @author ohurley
  *
  */
-public class SOAPBindingMethodUseRule extends AbstractJAXWSAnnotationProcessor {
+public class SOAPBindingMethodUseRule extends AbstractAnnotationProcessor {
 
     @Override
     public void process() {
@@ -72,7 +76,7 @@ public class SOAPBindingMethodUseRule extends AbstractJAXWSAnnotationProcessor {
                         
                         if (methodParameterStylePresent && methodUseEncoded) {
                             printError(mirror.getPosition(),
-                                    JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_MESSAGE);
+                                    JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED);
                         	return;
                         }
                     }

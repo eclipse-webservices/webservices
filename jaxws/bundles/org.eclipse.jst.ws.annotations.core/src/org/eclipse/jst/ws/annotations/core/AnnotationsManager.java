@@ -65,6 +65,9 @@ public final class AnnotationsManager {
     private static final String ATT_ID = "id"; //$NON-NLS-1$
     private static final String ATT_NAME = "name"; //$NON-NLS-1$
     private static final String ATT_CATEGORY = "category"; //$NON-NLS-1$
+    
+    private static final String ELEM_TARGET_FILTER = "targetFilter"; //$NON-NLS-1$
+    private static final String ATT_TARGET = "target"; //$NON-NLS-1$
 
     private AnnotationsManager() {
     }
@@ -281,6 +284,20 @@ public final class AnnotationsManager {
             return attribute;
         }
         return ""; //$NON-NLS-1$
+    }
+    
+    public static List<ElementType> getFilteredTargets(IConfigurationElement configurationElement) {
+        List<ElementType> targets = new ArrayList<ElementType>(7);
+        try {
+            IConfigurationElement[] deprecatedTargets = configurationElement.getChildren(ELEM_TARGET_FILTER);
+            for (IConfigurationElement deprecatedTargetElement : deprecatedTargets) {
+                String target = AnnotationsManager.getAttributeValue(deprecatedTargetElement, ATT_TARGET);
+                targets.add(ElementType.valueOf(target));
+            }
+        } catch (IllegalArgumentException iae) {
+            AnnotationsCorePlugin.log(iae);
+        }
+        return targets;
     }
 
     private static List<AnnotationDefinition> getAllAnnotationsForElement(Object element) 

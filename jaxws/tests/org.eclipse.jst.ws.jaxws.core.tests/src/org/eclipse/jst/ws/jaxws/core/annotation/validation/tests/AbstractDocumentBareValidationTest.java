@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
@@ -31,15 +32,15 @@ public abstract class AbstractDocumentBareValidationTest extends AbstractAnnotat
     @Override
     protected Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-
+        
         MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "style", Style.DOCUMENT);
+                SOAPBinding.class.getCanonicalName(), "style", Style.DOCUMENT);
 
         MemberValuePair useValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "use", Use.LITERAL);
+                SOAPBinding.class.getCanonicalName(), "use", Use.LITERAL);
 
         MemberValuePair parameterStyleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "parameterStyle", ParameterStyle.BARE);
+                SOAPBinding.class.getCanonicalName(), "parameterStyle", ParameterStyle.BARE);
 
         memberValuePairs.add(styleValuePair);
         memberValuePairs.add(useValuePair);

@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.STYLE;
+
 import java.util.Collection;
 
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
@@ -29,7 +32,7 @@ import com.sun.mirror.declaration.MethodDeclaration;
  * @author sclarke
  *
  */
-public class SOAPBindingMethodStyleDocumentRule extends AbstractJAXWSAnnotationProcessor {
+public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProcessor {
     
     @Override
     public void process() {
@@ -51,7 +54,7 @@ public class SOAPBindingMethodStyleDocumentRule extends AbstractJAXWSAnnotationP
                         String style = AnnotationUtils.getStringValue(mirror, STYLE);
                         if (style != null && style.equals(Style.RPC.toString())) {
                             messager.printError(mirror.getPosition(), 
-                              JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE); 
+                              JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY); 
                         }
                     }
                 }

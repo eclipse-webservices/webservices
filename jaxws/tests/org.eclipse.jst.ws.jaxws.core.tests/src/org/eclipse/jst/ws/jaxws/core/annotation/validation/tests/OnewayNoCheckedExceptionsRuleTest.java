@@ -29,7 +29,7 @@ public class OnewayNoCheckedExceptionsRuleTest extends AbstractOnewayValidationT
 
     @Override
     public String getErrorMessage() {
-        return JAXWSCoreMessages.ONEWAY_NO_CHECKED_EXCEPTIONS_ERROR_MESSAGE;
+        return JAXWSCoreMessages.ONEWAY_NO_CHECKED_EXCEPTIONS;
     }
 
     @Override

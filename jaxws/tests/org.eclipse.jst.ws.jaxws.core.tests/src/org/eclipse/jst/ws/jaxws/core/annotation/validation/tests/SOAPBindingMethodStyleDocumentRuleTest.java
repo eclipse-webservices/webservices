@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
@@ -43,20 +44,20 @@ public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationVa
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "style", Style.RPC);
+                SOAPBinding.class.getCanonicalName(), "style", Style.RPC);
 
         MemberValuePair useValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "use", Use.LITERAL);
+                SOAPBinding.class.getCanonicalName(), "use", Use.LITERAL);
 
         MemberValuePair parameterStyleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", "parameterStyle", ParameterStyle.WRAPPED);
+                SOAPBinding.class.getCanonicalName(), "parameterStyle", ParameterStyle.WRAPPED);
 
         memberValuePairs.add(styleValuePair);
         memberValuePairs.add(useValuePair);
         memberValuePairs.add(parameterStyleValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.soap.SOAPBinding.class,
-                javax.jws.soap.SOAPBinding.class.getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, SOAPBinding.class, SOAPBinding.class.getSimpleName(), 
+                memberValuePairs);
     }
 
     @Override
@@ -80,13 +81,12 @@ public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationVa
     public void testSOAPBindingMethodStyleDocumentRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.soap.SOAPBinding.class,
-                    textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -106,7 +106,7 @@ public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationVa
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY_MESSAGE,
+            assertEquals(JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

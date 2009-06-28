@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import javax.jws.WebResult;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -28,45 +30,22 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
  * @author sclarke
  * 
  */
-public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationValidationTest {
+public class WebServiceSEINoWebResultRuleTest extends AbstractWebServiceSEIRule {
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
-                .getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, WebResult.class, WebResult.class.getSimpleName(), null);
     }
 
-    @Override
-    protected String getClassContents() {
-        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("import javax.jws.WebService;\n\n");
-        classContents.append("@WebService(endpointInterface=\"MyInterface\", ");
-        classContents.append("targetNamespace=\"http://example.com/\", portName=\"MyClassPort\", ");
-        classContents.append("serviceName=\"MyClassService\")\n");
-        classContents.append("public class MyClass {\n\n");
-        classContents.append("\tpublic String myMethod() {" + "\n\t\treturn \"txt\";\n\t}\n\n}");
-        return classContents.toString();
-    }
-
-    @Override
-    protected String getClassName() {
-        return "MyClass.java";
-    }
-
-    @Override
-    protected String getPackageName() {
-        return "com.example";
-    }
-
-    public void testWebServiceSEIPresentNoWebMethodRule() {
+    public void testWebServiceSEIPresentNoWebResultRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebResult.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
+            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, WebResult.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -86,7 +65,7 @@ public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationV
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHODS_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBRESULT,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
@@ -96,5 +75,4 @@ public class WebServiceSEIPresentNoWebMethodRuleTest extends AbstractAnnotationV
             fail(ie.getLocalizedMessage());
         }
     }
-
 }

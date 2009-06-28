@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import javax.jws.soap.SOAPBinding;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -45,15 +47,14 @@ public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBar
     public void testVoidOneInParameterRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("oneIn", new String[] { "QHolder<QString;>;",
                     "QString;"});
             
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.soap.SOAPBinding.class,
-                    textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -87,15 +88,14 @@ public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBar
     public void testVoidOneOutParameterRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("SOAPBinding", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("oneOut", new String[] { "QHolder<QString;>;",
                     "QHolder<QString;>;"});
             
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.soap.SOAPBinding.class,
-                    textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);

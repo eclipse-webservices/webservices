@@ -10,10 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ENDPOINT_INTERFACE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PORT_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.SERVICE_NAME;
+
 import java.util.Collection;
 
 import javax.jws.WebService;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
@@ -27,7 +32,7 @@ import com.sun.mirror.declaration.InterfaceDeclaration;
  * @author sclarke
  *
  */
-public class WebServiceSEIAllowedAttributesRule extends AbstractJAXWSAnnotationProcessor {
+public class WebServiceSEIAllowedAttributesRule extends AbstractAnnotationProcessor {
 
     @Override
     public void process() {
@@ -45,18 +50,18 @@ public class WebServiceSEIAllowedAttributesRule extends AbstractJAXWSAnnotationP
                     String serviceName = AnnotationUtils.getStringValue(mirror, SERVICE_NAME);
                     if (serviceName != null) {
                         printError(mirror.getPosition(),
-                                JAXWSCoreMessages.WEBSERVICE_SERVICENAME_SEI_ERROR_MESSAGE);
+                                JAXWSCoreMessages.WEBSERVICE_SERVICENAME_SEI);
                     }
 
                     String endpointInterface = AnnotationUtils.getStringValue(mirror, ENDPOINT_INTERFACE);
                     if (endpointInterface != null) {
                         printError(mirror.getPosition(),
-                                JAXWSCoreMessages.WEBSERVICE_ENDPOINTINTERFACE_SEI_ERROR_MESSAGE);
+                                JAXWSCoreMessages.WEBSERVICE_ENDPOINTINTERFACE_SEI);
                     }
                     String portName = AnnotationUtils.getStringValue(mirror, PORT_NAME);
                     if (portName != null) {
                         printError(mirror.getPosition(),
-                                JAXWSCoreMessages.WEBSERVICE_PORTNAME_SEI_ERROR_MESSAGE);
+                                JAXWSCoreMessages.WEBSERVICE_PORTNAME_SEI);
                     }
                 }
             }

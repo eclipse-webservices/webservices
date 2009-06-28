@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.MODE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
+
 import java.util.Collection;
 
 import javax.jws.Oneway;
@@ -18,8 +22,10 @@ import javax.jws.WebParam.Mode;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.Holder;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -34,7 +40,7 @@ import com.sun.mirror.type.TypeMirror;
  * @author sclarke
  *
  */
-public class SOAPBindingDocumentBareRules extends AbstractJAXWSAnnotationProcessor {
+public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
     
     @Override
     public void process() {
@@ -50,7 +56,7 @@ public class SOAPBindingDocumentBareRules extends AbstractJAXWSAnnotationProcess
                 Collection<AnnotationMirror> annotationMirrors = typeDeclaration.getAnnotationMirrors();
                 for (AnnotationMirror mirror : annotationMirrors) {
                     if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)) {
-                        if (isDocumentBare(mirror)) {
+                        if (JAXWSUtils.isDocumentBare(mirror)) {
                             Collection<? extends MethodDeclaration> methodDeclarations = typeDeclaration.getMethods();
                             for (MethodDeclaration methodDeclaration : methodDeclarations) {
                                 processMethod(methodDeclaration);    
@@ -65,7 +71,7 @@ public class SOAPBindingDocumentBareRules extends AbstractJAXWSAnnotationProcess
                 Collection<AnnotationMirror> annotationMirrors = methodDeclaration.getAnnotationMirrors();
                 for (AnnotationMirror mirror : annotationMirrors) {
                     if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)) {
-                        if (isDocumentBare(mirror)) {
+                        if (JAXWSUtils.isDocumentBare(mirror)) {
                             processMethod((MethodDeclaration) declaration);
                         }
                     }
@@ -80,7 +86,7 @@ public class SOAPBindingDocumentBareRules extends AbstractJAXWSAnnotationProcess
         //@Oneway operations
         if (isOneway(methodDeclaration) && !isSingleNonHeaderINParameter(parameters)) {
             printError(methodDeclaration.getPosition(), 
-                JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE);                                
+                JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER);                                
         } else {
             if (isVoidReturnType(methodDeclaration)) {
                 if (countINParameters(parameters) > 1) {
@@ -94,7 +100,7 @@ public class SOAPBindingDocumentBareRules extends AbstractJAXWSAnnotationProcess
             } else {
                 if (countINParameters(parameters) > 1) {
                     printError(methodDeclaration.getPosition(), 
-                        JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER_ERROR_MESSAGE);                                                                        
+                        JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER);                                                                        
                 } 
                 if (countOUTParameters(parameters) > 0) {
                     printError(methodDeclaration.getPosition(), 
@@ -108,7 +114,7 @@ public class SOAPBindingDocumentBareRules extends AbstractJAXWSAnnotationProcess
 //            AnnotationMirror annotationMirror = AnnotationUtils.getAnnotation(parameterDeclaration, WebParam.class);
 //            if (annotationMirror != null) {
 //                String mode = getWebParamMode(annotationMirror, parameterDeclaration);
-//                String name = AnnotationUtils.getStringValue(annotationMirror, WEB_PARAM_NAME);
+//                String name = AnnotationUtils.getStringValue(annotationMirror, NAME);
 //                
 //                if (name == null && (mode.equals(Mode.OUT.name()) || mode.equals(Mode.INOUT.name()))) {
 //                    printError(annotationMirror.getPosition(), 

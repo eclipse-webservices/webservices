@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.CLASS_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.DOT_CHARACTER;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.JAXWS_SUBPACKAGE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.LOCAL_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
@@ -36,7 +44,7 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
  * @author sclarke
  *
  */
-public class RequestWrapperAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
+public class RequestWrapperAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,

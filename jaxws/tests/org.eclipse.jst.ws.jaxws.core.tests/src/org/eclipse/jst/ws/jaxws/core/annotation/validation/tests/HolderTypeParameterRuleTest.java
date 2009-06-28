@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import javax.jws.WebService;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,8 +33,7 @@ public class HolderTypeParameterRuleTest extends AbstractAnnotationValidationTes
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, javax.jws.WebService.class
-                .getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(), null);
     }
 
     @Override
@@ -58,13 +59,13 @@ public class HolderTypeParameterRuleTest extends AbstractAnnotationValidationTes
     public void testHolderTypeParameterRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebService", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
             
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebService.class, textFileChange,
+            AnnotationUtils.addImportChange(compilationUnit, WebService.class, textFileChange,
                     true);
 
-            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation,
-                    textFileChange);
+            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+                    source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
@@ -81,7 +82,7 @@ public class HolderTypeParameterRuleTest extends AbstractAnnotationValidationTes
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.HOLDER_TYPE_MUST_BE_OUT_INOUT_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.HOLDER_TYPE_MUST_BE_OUT_INOUT,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

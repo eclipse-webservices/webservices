@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebMethod;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -43,8 +45,8 @@ public class WebMethodExcludeRuleOnSEITest extends AbstractAnnotationValidationT
 
         memberValuePairs.add(excludeValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
-                .getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(),
+                memberValuePairs);
     }
 
     @Override
@@ -69,12 +71,12 @@ public class WebMethodExcludeRuleOnSEITest extends AbstractAnnotationValidationT
     public void testWebMethodExcludeRuleOnInterface() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebMethod.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, WebMethod.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);

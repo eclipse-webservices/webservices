@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ACTION;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
@@ -31,7 +35,7 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
  * @author sclarke
  *
  */
-public class WebMethodAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
+public class WebMethodAttributeInitializer extends AnnotationAttributeInitializer {
     
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,

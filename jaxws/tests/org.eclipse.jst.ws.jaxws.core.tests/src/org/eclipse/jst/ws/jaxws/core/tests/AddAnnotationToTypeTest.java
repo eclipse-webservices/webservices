@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.jaxws.core.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebService;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -67,20 +69,20 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
         memberValuePairs.add(portNameValuePair);
         memberValuePairs.add(serviceNameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, javax.jws.WebService.class
-                .getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(),
+                memberValuePairs);
     }
 
     public void testAddAnnotationToType() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebService", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebService.class, textFileChange,
+            AnnotationUtils.addImportChange(compilationUnit, WebService.class, textFileChange,
                     true);
 
-            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation,
-                    textFileChange);
+            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+                    source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

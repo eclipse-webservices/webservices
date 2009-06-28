@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import javax.jws.Oneway;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,8 +33,7 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.Oneway.class, 
-              javax.jws.Oneway.class.getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, Oneway.class, Oneway.class.getSimpleName(), null);
     }
 
     @Override
@@ -52,12 +53,12 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
     public void testOnewayRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("Oneway", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(Oneway.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = getMethodToTest();
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.Oneway.class, textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, Oneway.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);

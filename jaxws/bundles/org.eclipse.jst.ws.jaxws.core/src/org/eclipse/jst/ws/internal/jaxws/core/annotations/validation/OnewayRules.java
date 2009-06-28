@@ -15,6 +15,7 @@ import java.util.Collection;
 import javax.jws.Oneway;
 import javax.xml.ws.Holder;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -28,7 +29,7 @@ import com.sun.mirror.type.TypeMirror;
  * @author sclarke
  *
  */
-public class OnewayRules extends AbstractJAXWSAnnotationProcessor {
+public class OnewayRules extends AbstractAnnotationProcessor {
     
     @Override
     public void process() {
@@ -43,11 +44,11 @@ public class OnewayRules extends AbstractJAXWSAnnotationProcessor {
                 MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
                 if (!methodDeclaration.getReturnType().equals(environment.getTypeUtils().getVoidType())) {
                    printError(annotationDeclaration, methodDeclaration,
-                            JAXWSCoreMessages.ONEWAY_NO_RETURN_VALUE_ERROR_MESSAGE); 
+                            JAXWSCoreMessages.ONEWAY_NO_RETURN_VALUE); 
                 }
                 if (methodDeclaration.getThrownTypes().size() > 0) {
                     printError(annotationDeclaration, methodDeclaration,
-                            JAXWSCoreMessages.ONEWAY_NO_CHECKED_EXCEPTIONS_ERROR_MESSAGE); 
+                            JAXWSCoreMessages.ONEWAY_NO_CHECKED_EXCEPTIONS); 
                 }
                 checkParameters(methodDeclaration, annotationDeclaration);
             }

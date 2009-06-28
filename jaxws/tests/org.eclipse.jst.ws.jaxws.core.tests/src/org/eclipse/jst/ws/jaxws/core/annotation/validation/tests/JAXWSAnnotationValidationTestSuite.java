@@ -51,7 +51,11 @@ public class JAXWSAnnotationValidationTestSuite extends TestSuite {
         addTestSuite(WebServiceSEINoServiceNameRuleTest.class);
         addTestSuite(WebServiceSEINoEndpointInterfaceRuleTest.class);
         addTestSuite(WebServiceSEINoPortNameRuleTest.class);
-        addTestSuite(WebServiceSEIPresentNoWebMethodRuleTest.class);
+        addTestSuite(WebServiceSEINoWebMethodRuleTest.class);
+        addTestSuite(WebServiceSEINoWebResultRuleTest.class);
+        addTestSuite(WebServiceSEINoWebParamRuleTest.class);
+        addTestSuite(WebServiceSEINoOnewayRuleTest.class);
+        addTestSuite(WebServiceSEINoSOAPBindingRuleTest.class);
         addTestSuite(WebServiceWebServiceProviderCoExistRuleTest.class);
     }
 

@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ENDPOINT_INTERFACE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
+
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
@@ -19,23 +23,29 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
+import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
+import com.sun.mirror.declaration.InterfaceDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.declaration.ParameterDeclaration;
+import com.sun.mirror.declaration.TypeDeclaration;
 
 /**
  * 
  * @author sclarke
  * 
  */
-public class WebServiceSEIPresentRestrictionsApplyRule extends AbstractJAXWSAnnotationProcessor {
+public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
 
     @Override
     public void process() {
@@ -50,12 +60,12 @@ public class WebServiceSEIPresentRestrictionsApplyRule extends AbstractJAXWSAnno
                     AnnotationValue endpointInterface = AnnotationUtils.getAnnotationValue(mirror,
                             ENDPOINT_INTERFACE);
                     if (endpointInterface != null) {
-//                        AnnotationValue name = AnnotationUtils.getAnnotationValue(mirror, "name");
-//                        if (name != null) {
-//                            printError(
-//                                    name.getPosition(),
-//                                    JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_NAME_ATTRIBUTE_ERROR_MESSAGE);
-//                        }
+                        AnnotationValue name = AnnotationUtils.getAnnotationValue(mirror, NAME);
+                        if (name != null) {
+                            printError(
+                                    name.getPosition(),
+                                    JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_NAME_ATTRIBUTE);
+                        }
                         checkRestrictions((ClassDeclaration) declaration, endpointInterface);
                         checkJSR181Annotations((ClassDeclaration) declaration);
                     }
@@ -65,45 +75,83 @@ public class WebServiceSEIPresentRestrictionsApplyRule extends AbstractJAXWSAnno
     }
 
     private void checkRestrictions(ClassDeclaration classDeclaration, AnnotationValue endpointInterface) {
-        com.sun.mirror.declaration.TypeDeclaration typeDeclaration = environment
-                .getTypeDeclaration(endpointInterface.getValue().toString());
+        String sei = endpointInterface.getValue().toString();
+        if ((JDTUtils.validateJavaTypeName(sei).getSeverity() == IStatus.ERROR)) {
+            return;
+        }
+        com.sun.mirror.declaration.TypeDeclaration typeDeclaration = environment.getTypeDeclaration(sei);
         if (typeDeclaration != null) {
+            if (!(typeDeclaration instanceof InterfaceDeclaration)) {
+                printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_INTERFACE, sei));
+            }
             if (typeDeclaration.getDeclaringType() != null) {
-                printError(endpointInterface.getPosition(),
-                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_OUTER_ERROR_MESSAGE);
+                printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_OUTER, sei));
             }
             AnnotationMirror annotationMirror = AnnotationUtils.getAnnotation(typeDeclaration,
                     WebService.class);
             if (annotationMirror == null) {
-                printError(endpointInterface.getPosition(),
-                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_ANNOTATED_ERROR_MESSAGE);
+                printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_ANNOTATED, sei));
             }
 
             if (!typeDeclaration.getModifiers().contains(Modifier.PUBLIC)) {
-                printError(endpointInterface.getPosition(),
-                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_PUBLIC_ERROR_MESSAGE);
+                printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_PUBLIC, sei));
             }
 
-//            if (!classDeclaration.getSuperinterfaces().contains(typeDeclaration)) {
-//                Collection<? extends com.sun.mirror.declaration.MethodDeclaration> seiMethods = typeDeclaration
-//                        .getMethods();
-//                for (com.sun.mirror.declaration.MethodDeclaration methodDeclaration : seiMethods) {
-//                }
-//                Collection<? extends com.sun.mirror.declaration.MethodDeclaration> implMethods = classDeclaration
-//                        .getMethods();
-//                for (com.sun.mirror.declaration.MethodDeclaration methodDeclaration : implMethods) {
-//                }
-//            }
+            if (!classDeclaration.getSuperinterfaces().contains(typeDeclaration)) {
+                Collection<? extends MethodDeclaration> seiMethods = typeDeclaration.getMethods();
+                Collection<? extends MethodDeclaration> implMethods = classDeclaration.getMethods();
+                
+                for (MethodDeclaration seiMethod : seiMethods) {
+                    boolean implemented = false;
+                    for (MethodDeclaration implMethod : implMethods) {
+                        
+                        if (AnnotationUtils.compareMethods(seiMethod, implMethod)) {
+                            implemented = true;
+                            break;
+                        }
+                    }
+                    if (!implemented) {
+                        printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
+                                JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
+                                getImplementsMessage(typeDeclaration, seiMethod)));
+                    }
+                }
+            }
         } else {
-//            printError(endpointInterface.getPosition(), JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND_ERROR_MESSAGE);
+            printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
+                    JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND, sei));
         }
+    }
+
+    private String getImplementsMessage(TypeDeclaration typeDeclaration, MethodDeclaration seiMethod) {
+        StringBuilder message = new StringBuilder(typeDeclaration.getSimpleName());
+        message.append(".");
+        message.append(seiMethod.getSimpleName());
+        message.append("(");
+        Collection<ParameterDeclaration> parameters = seiMethod.getParameters();
+        Iterator<ParameterDeclaration> iter = parameters.iterator();
+        while (iter.hasNext()) {
+            ParameterDeclaration parameterDeclaration = iter.next();
+            String typeMirror = environment.getTypeUtils().getErasure(parameterDeclaration.getType()).toString();
+            message.append(typeMirror.substring(typeMirror.lastIndexOf(".") + 1));
+            if (iter.hasNext()) {
+                message.append(", ");
+            }
+            
+        }
+        message.append(")");
+        return message.toString();
     }
 
     private void checkJSR181Annotations(ClassDeclaration classDeclaration) {
         AnnotationMirror soapBinding = AnnotationUtils.getAnnotation(classDeclaration, SOAPBinding.class);
         if (soapBinding != null) {
             printError(soapBinding.getPosition(),
-                    JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING_MESSAGE);
+                    JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING);
         }
 
         Collection<? extends com.sun.mirror.declaration.MethodDeclaration> implMethods = classDeclaration
@@ -113,24 +161,24 @@ public class WebServiceSEIPresentRestrictionsApplyRule extends AbstractJAXWSAnno
                     SOAPBinding.class);
             if (msoapBinding != null) {
                 printError(msoapBinding.getPosition(),
-                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING_MESSAGE);
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING);
             }
 
             AnnotationMirror oneway = AnnotationUtils.getAnnotation(methodDeclaration, Oneway.class);
             if (oneway != null) {
                 printError(oneway.getPosition(),
-                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_ONEWAY_ERROR_MESSAGE);
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_ONEWAY);
             }
 
             AnnotationMirror webMethod = AnnotationUtils.getAnnotation(methodDeclaration, WebMethod.class);
             if (webMethod != null) {
                 printError(webMethod.getPosition(),
-                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHODS_ERROR_MESSAGE);
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHODS);
             }
             AnnotationMirror webResult = AnnotationUtils.getAnnotation(methodDeclaration, WebResult.class);
             if (webResult != null) {
                 printError(webResult.getPosition(),
-                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBRESULT_ERROR_MESSAGE);
+                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBRESULT);
             }
 
             Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
@@ -139,7 +187,7 @@ public class WebServiceSEIPresentRestrictionsApplyRule extends AbstractJAXWSAnno
                         WebParam.class);
                 if (webParam != null) {
                     printError(webParam.getPosition(),
-                            JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBPARAM_ERROR_MESSAGE);
+                            JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBPARAM);
                 }
             }
         }

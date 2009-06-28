@@ -13,7 +13,7 @@ package org.eclipse.jst.ws.annotations.core;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -39,6 +39,7 @@ public class AnnotationDefinition {
     private static final String RESTRICTED_TO_INTERFACE_ONLY = "INTERFACE_ONLY";
     private static final String RESTRICTED_TO_ENUM_ONLY = "ENUM_ONLY";
     
+    private IConfigurationElement configurationElement;
     private String category;
     private String annotationClassName;
     private Class<? extends java.lang.annotation.Annotation> annotationClass;
@@ -51,7 +52,9 @@ public class AnnotationDefinition {
     private boolean enumOnly;
     
     public AnnotationDefinition(IConfigurationElement configurationElement, String category) {
+        this.configurationElement = configurationElement;
         this.category = category;
+        
         this.annotationClassName = AnnotationsManager.getAttributeValue(configurationElement, ATT_CLASS);
         this.name = AnnotationsManager.getAttributeValue(configurationElement, ATT_NAME);
         this.restictedTo = AnnotationsManager.getAttributeValue(configurationElement, 
@@ -103,13 +106,19 @@ public class AnnotationDefinition {
     
     public List<ElementType> getTargets() {
         if (targets == null) {
-        	targets = Collections.emptyList();
+        	targets = new LinkedList<ElementType>();
         	
             Class<? extends java.lang.annotation.Annotation> annotation = getAnnotationClass();
             if (annotation != null) {
             	Target target = annotation.getAnnotation(Target.class);
             	if (target != null) {
-            		targets = Arrays.asList(target.value());
+            	    targets.addAll(Arrays.asList(target.value()));
+            	    
+                    List<ElementType> filteredTargets = AnnotationsManager
+                            .getFilteredTargets(configurationElement);
+                    if (targets.containsAll(filteredTargets) && filteredTargets.size() < targets.size()) {
+                        targets.removeAll(filteredTargets);
+                    }
             	} 
             }
         }

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
+import javax.jws.WebMethod;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,8 +33,7 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
-                .getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(), null);
     }
 
     @Override
@@ -66,12 +67,12 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
     public void testWebMethodRestriction() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebMethod.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = getMethodToTeset();
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, WebMethod.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);

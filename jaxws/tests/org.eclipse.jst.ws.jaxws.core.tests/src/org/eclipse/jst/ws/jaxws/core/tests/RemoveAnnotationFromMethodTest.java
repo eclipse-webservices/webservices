@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.tests;
 
+import javax.jws.WebMethod;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IMethod;
@@ -45,14 +47,13 @@ public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
-                .getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromMethod() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebMethod.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);

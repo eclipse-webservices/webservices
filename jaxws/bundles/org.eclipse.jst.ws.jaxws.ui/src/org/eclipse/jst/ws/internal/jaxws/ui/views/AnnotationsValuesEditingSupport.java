@@ -433,7 +433,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     annotation, textFileChange);
         }
 
-        AnnotationUtils.getImportChange(compilationUnit, annotationClass, textFileChange, annotate);
+        AnnotationUtils.addImportChange(compilationUnit, annotationClass, textFileChange, annotate);
 
         executeChange(new NullProgressMonitor(), textFileChange);
     }
@@ -456,13 +456,13 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
         if (annotate) {
             if (member.getElementType() == IJavaElement.TYPE) {
-                AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter,
-                        annotation, textFileChange);
+                AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+                        source.findPrimaryType(), annotation, textFileChange);
             } else if (member.getElementType() == IJavaElement.METHOD) {
                 AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter,
                         (IMethod) member, annotation, textFileChange);
             } else if (member.getElementType() == IJavaElement.FIELD) {
-                AnnotationUtils.createFiedlAnnotationChange(source, compilationUnit, rewriter,
+                AnnotationUtils.createFieldAnnotationChange(source, compilationUnit, rewriter,
                         (IField) member, annotation, textFileChange);
             }
         } else {
@@ -471,7 +471,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             }
             if (member.getElementType() == IJavaElement.TYPE) {
                 AnnotationUtils.removeAnnotationFromType(source, compilationUnit, rewriter,
-                        annotation, textFileChange);
+                        source.findPrimaryType(), annotation, textFileChange);
             } else if (member.getElementType() == IJavaElement.METHOD) {
                 AnnotationUtils.removeAnnotationFromMethod(source, compilationUnit, rewriter,
                         (IMethod) member, annotation, textFileChange);
@@ -481,7 +481,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             }
         }
         
-        AnnotationUtils.getImportChange(compilationUnit, annotationClass, textFileChange, annotate);
+        AnnotationUtils.addImportChange(compilationUnit, annotationClass, textFileChange, annotate);
 
         executeChange(new NullProgressMonitor(), textFileChange);
     }
@@ -513,7 +513,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             AnnotationUtils.removeAnnotationFromMethodParameter(source, rewriter, parameter, annotation,
                     textFileChange);
         }
-        AnnotationUtils.getImportChange(compilationUnit, annotationClass, textFileChange, annotate);
+        AnnotationUtils.addImportChange(compilationUnit, annotationClass, textFileChange, annotate);
 
         executeChange(new NullProgressMonitor(), textFileChange);
     }
@@ -586,7 +586,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     if (memberValuePair.getMemberName().equals(method.getName())) {
                         ASTNode memberValue = getMemberValuePairValue(ast, method, value);
                         if (memberValue != null) {
-                            AnnotationUtils.updateMemberVaulePairValue(source,
+                            AnnotationUtils.updateMemberValuePairValue(source,
                                     compilationUnit, rewriter, javaElement, annotation,
                                     memberValuePair, memberValue, textFileChange);
                             hasMemberValuePair = true;
@@ -595,11 +595,11 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     }
                 }
                 if (!hasMemberValuePair) {
-                    ASTNode memberVaulePair = getMemberValuePair(ast, method, value);
-                    if (memberVaulePair != null) {
+                    ASTNode memberValuePair = getMemberValuePair(ast, method, value);
+                    if (memberValuePair != null) {
                         AnnotationUtils
-                                .createMemberVaulePairChange(source, compilationUnit,
-                                        rewriter, javaElement, annotation, memberVaulePair,
+                                .createMemberValuePairChange(source, compilationUnit,
+                                        rewriter, javaElement, annotation, memberValuePair,
                                         textFileChange);
                         break;
                     }
@@ -637,7 +637,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                         if (memberValuePair.getName().toString().equals(method.getName())) {
                             ASTNode memberValue = getMemberValuePairValue(ast, method, value);
                             if (memberValue != null) {
-                                AnnotationUtils.updateMemberVaulePairValue(source, compilationUnit, rewriter,
+                                AnnotationUtils.updateMemberValuePairValue(source, compilationUnit, rewriter,
                                         normalAnnotation, memberValuePair, memberValue, textFileChange);
                                 hasMemberValuePair = true;
                                 break;
@@ -647,7 +647,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     if (!hasMemberValuePair) {
                         ASTNode memberValuePair = getMemberValuePair(ast, method, value);
                         if (memberValuePair != null) {
-                            AnnotationUtils.createMemberVaulePairChange(source, compilationUnit, rewriter,
+                            AnnotationUtils.createMemberValuePairChange(source, compilationUnit, rewriter,
                                     normalAnnotation, memberValuePair, textFileChange);
                             break;
                         }
@@ -709,7 +709,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         
         if (returnType.equals(Class.class)) {
-            return AnnotationsCore.createTypeMemberVaulePair(ast, method.getName(), value.toString());
+            return AnnotationsCore.createTypeMemberValuePair(ast, method.getName(), value.toString());
         }
 
         if (returnType.isEnum()) {

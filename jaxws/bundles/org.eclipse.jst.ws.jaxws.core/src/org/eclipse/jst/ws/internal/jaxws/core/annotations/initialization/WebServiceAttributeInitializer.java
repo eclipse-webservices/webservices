@@ -10,6 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ENDPOINT_INTERFACE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PORT_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PORT_SUFFIX;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.SERVICE_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.SERVICE_SUFFIX;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +33,7 @@ import org.eclipse.jdt.ui.ISharedImages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
@@ -34,7 +43,7 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
  * @author sclarke
  *
  */
-public class WebServiceAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
+public class WebServiceAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
@@ -56,7 +65,11 @@ public class WebServiceAttributeInitializer extends JAXWSAnnotationAttributeInit
                 MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
                         TARGET_NAMESPACE, getTargetNamespace(type));
     
-                memberValuePairs.add(nameValuePair);
+
+                if (type.isInterface()) {
+                    memberValuePairs.add(nameValuePair);
+                }
+
                 memberValuePairs.add(targetNamespaceValuePair);
                 
                 if (type.isClass()) {

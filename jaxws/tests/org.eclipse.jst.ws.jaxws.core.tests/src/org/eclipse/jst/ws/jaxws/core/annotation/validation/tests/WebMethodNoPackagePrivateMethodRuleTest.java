@@ -27,7 +27,7 @@ public class WebMethodNoPackagePrivateMethodRuleTest extends AbstractWebMethodPu
 
     @Override
     public String getErrorMessage() {
-        return JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS_MESSAGE;
+        return JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS;
     }
 
 }

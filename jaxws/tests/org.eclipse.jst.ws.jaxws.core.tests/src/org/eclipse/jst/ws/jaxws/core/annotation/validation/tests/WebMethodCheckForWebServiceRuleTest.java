@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebMethod;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -47,8 +49,8 @@ public class WebMethodCheckForWebServiceRuleTest extends AbstractAnnotationValid
         memberValuePairs.add(operationValuePair);
         memberValuePairs.add(actionValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebMethod.class, javax.jws.WebMethod.class
-                .getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(),
+                memberValuePairs);
     }
 
     @Override
@@ -72,12 +74,12 @@ public class WebMethodCheckForWebServiceRuleTest extends AbstractAnnotationValid
     public void testWebMethodCheckForWebServiceRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebMethod", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebMethod.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebMethod.class, textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, WebMethod.class, textFileChange, true);
 
             AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
@@ -97,7 +99,7 @@ public class WebMethodCheckForWebServiceRuleTest extends AbstractAnnotationValid
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

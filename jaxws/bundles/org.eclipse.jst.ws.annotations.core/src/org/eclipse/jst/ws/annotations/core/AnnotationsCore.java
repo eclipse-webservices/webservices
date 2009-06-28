@@ -100,7 +100,7 @@ public final class AnnotationsCore {
          return AnnotationsCore.createMemberValuePair(ast, name, createEnumLiteral(ast, className, value));        
     }
     
-    public static MemberValuePair createTypeMemberVaulePair(AST ast, String name, Object value) {
+    public static MemberValuePair createTypeMemberValuePair(AST ast, String name, Object value) {
         return AnnotationsCore.createMemberValuePair(ast, name,
                 createTypeLiteral(ast, value));
     }

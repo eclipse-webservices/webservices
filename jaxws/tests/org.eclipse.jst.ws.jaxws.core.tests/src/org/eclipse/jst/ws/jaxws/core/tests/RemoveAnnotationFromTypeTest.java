@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.tests;
 
+import javax.jws.WebService;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -47,20 +49,19 @@ public class RemoveAnnotationFromTypeTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, javax.jws.WebService.class
-                .getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromType() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebService", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
                     .getAnnotationName(annotation)));
 
-            AnnotationUtils.removeAnnotationFromType(source, compilationUnit, rewriter, annotation,
-                    textFileChange);
+            AnnotationUtils.removeAnnotationFromType(source, compilationUnit, rewriter, 
+                    source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

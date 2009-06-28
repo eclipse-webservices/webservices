@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.CLASS_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.FAULT_BEAN;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
+
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,8 +35,10 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.WebFault;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 import com.sun.mirror.declaration.AnnotationMirror;
@@ -47,8 +56,8 @@ import com.sun.mirror.type.ReferenceType;
  * @author sclarke
  *
  */
-public class UniqueNamesRule extends AbstractJAXWSAnnotationProcessor {
-    
+public class UniqueNamesRule extends AbstractAnnotationProcessor {
+
     @Override
     public void process() {
         AnnotationTypeDeclaration webServiceDeclaration = (AnnotationTypeDeclaration) environment
@@ -61,77 +70,83 @@ public class UniqueNamesRule extends AbstractJAXWSAnnotationProcessor {
             if (declaration instanceof TypeDeclaration) {
                 TypeDeclaration typeDeclaration = (TypeDeclaration) declaration;
                 checkOperationNames(typeDeclaration.getMethods());
-                checkWrapperBeanNames(typeDeclaration.getMethods());
-                checkFaultBeanNames(typeDeclaration.getMethods());
-                //checkDocBareMethods(typeDeclaration.getMethods());
+                checkWrapperAndFaultBeanNames(typeDeclaration.getMethods());
+                //checkDocumentBareMethods(typeDeclaration.getMethods());
             }
         }
     }
     
     private void checkOperationNames(Collection<? extends MethodDeclaration> methods) {
+        Map<MethodDeclaration, QName> methodNameMap = new HashMap<MethodDeclaration, QName>();
         for (MethodDeclaration methodDeclaration : methods) {
-            List<MethodDeclaration> overloadedMethods = findOverloadedMethod(methodDeclaration, methods);
-            for (MethodDeclaration overloadedMethod : overloadedMethods) {
-                if (compareOperationNames(methodDeclaration, overloadedMethod)) {
-                    printError(methodDeclaration.getPosition(),
-                            JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR_MESSAGE);
-                    printError(overloadedMethod.getPosition(),
-                            JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR_MESSAGE);
+            methodNameMap.put(methodDeclaration, new QName(getTargetNamespace(methodDeclaration.getDeclaringType()), 
+                    getOperationName(methodDeclaration)));
+        }
+        
+        MethodDeclaration[] keys = methodNameMap.keySet().toArray(new MethodDeclaration[methodNameMap.size()]);
+        QName[] values = methodNameMap.values().toArray(new QName[methodNameMap.size()]);
+
+        for (int i = 0; i < values.length; i++) {
+            QName name = values[i];
+            for (int j = i + 1; j < values.length; j++) {
+                QName otherName = values[j];
+                if (name.equals(otherName)) {
+                    printError(keys[i].getPosition(), JAXWSCoreMessages.bind(
+                            JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR, name));
+                    printError(keys[j].getPosition(), JAXWSCoreMessages.bind(
+                            JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR, otherName));
                 }
             }
         }
     }
+        
+    private String getAttributeValue(Declaration declaration, Class<? extends Annotation> annotation, String attributeName) {
+        AnnotationMirror annotationMirror = AnnotationUtils.getAnnotation(declaration, annotation);
+        if (annotationMirror != null) {
+            return AnnotationUtils.getStringValue(annotationMirror, attributeName);
+        }
+        return null;
+    }
 
-    private void checkWrapperBeanNames(Collection<? extends MethodDeclaration> methodDeclarations) {
+    private void checkWrapperAndFaultBeanNames(Collection<? extends MethodDeclaration> methodDeclarations) {
         AnnotationTypeDeclaration requestWrapperDeclaration = (AnnotationTypeDeclaration) environment
-        .getTypeDeclaration(RequestWrapper.class.getName());
+                .getTypeDeclaration(RequestWrapper.class.getName());
 
         AnnotationTypeDeclaration resposeWrapperDeclaration = (AnnotationTypeDeclaration) environment
-        .getTypeDeclaration(ResponseWrapper.class.getName());
+                .getTypeDeclaration(ResponseWrapper.class.getName());
 
         Set<Declaration> methods = new HashSet<Declaration>();
         methods.addAll(environment.getDeclarationsAnnotatedWith(requestWrapperDeclaration));
         methods.addAll(environment.getDeclarationsAnnotatedWith(resposeWrapperDeclaration));
-        
+
         List<AnnotationValue> classNames = new ArrayList<AnnotationValue>();
-        
+
         for (Declaration declaration : methods) {
-            AnnotationMirror requestWrapper = AnnotationUtils.getAnnotation(declaration, RequestWrapper.class);
+            AnnotationMirror requestWrapper = AnnotationUtils
+                    .getAnnotation(declaration, RequestWrapper.class);
             if (requestWrapper != null) {
                 AnnotationValue className = AnnotationUtils.getAnnotationValue(requestWrapper, CLASS_NAME);
                 if (className != null) {
                     classNames.add(className);
                 }
+
             }
-            AnnotationMirror responseWrapper = AnnotationUtils.getAnnotation(declaration, ResponseWrapper.class);
+            AnnotationMirror responseWrapper = AnnotationUtils.getAnnotation(declaration,
+                    ResponseWrapper.class);
             if (responseWrapper != null) {
                 AnnotationValue className = AnnotationUtils.getAnnotationValue(responseWrapper, CLASS_NAME);
                 if (className != null) {
                     classNames.add(className);
                 }
             }
+
         }
         
-        for (int i = 0; i < classNames.size(); i++) {
-            AnnotationValue className = classNames.get(i);
-            for (int j = i + 1; j < classNames.size(); j++) {
-                AnnotationValue otherClassName = classNames.get(j);
-                if (className.getValue().equals(otherClassName.getValue())) {
-                    printError(className.getPosition(), JAXWSCoreMessages.WRAPPER_BEAN_NAMES_MUST_BE_UNIQUE_ERROR_MESSAGE);
-                    printError(otherClassName.getPosition(), JAXWSCoreMessages.WRAPPER_BEAN_NAMES_MUST_BE_UNIQUE_ERROR_MESSAGE);
-                }
-            }
-        }        
-    }
-    
-    private void checkFaultBeanNames(Collection<? extends MethodDeclaration> methodDeclarations) {
         Set<ReferenceType> thrownTypes = new HashSet<ReferenceType>();
         
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             thrownTypes.addAll(methodDeclaration.getThrownTypes());
         }
-        
-        List<AnnotationValue> faultBeans = new ArrayList<AnnotationValue>();
 
         for (ReferenceType referenceType : thrownTypes) {
             if (referenceType instanceof ClassDeclaration) {
@@ -140,24 +155,27 @@ public class UniqueNamesRule extends AbstractJAXWSAnnotationProcessor {
                 if (webFault != null) {
                     AnnotationValue annotationValue = AnnotationUtils.getAnnotationValue(webFault, FAULT_BEAN);
                     if (annotationValue != null) {
-                        faultBeans.add(annotationValue);
+                        classNames.add(annotationValue);
                     }
                 }
             }
         }
-       
-       for (int i = 0; i < faultBeans.size(); i++) {
-            AnnotationValue faultBean = faultBeans.get(i);
-            for (int j = i + 1; j < faultBeans.size(); j++) {
-                AnnotationValue otherFaultBean = faultBeans.get(j);
-                if (faultBean.getValue().equals(otherFaultBean.getValue())) {
-                    printError(JAXWSCoreMessages.FAULT_BEAN_NAMES_MUST_BE_UNIQUE_ERROR_MESSAGE);
+
+        for (int i = 0; i < classNames.size(); i++) {
+            AnnotationValue className = classNames.get(i);
+            for (int j = i + 1; j < classNames.size(); j++) {
+                AnnotationValue otherClassName = classNames.get(j);
+                if (className.getValue().toString().equalsIgnoreCase(otherClassName.getValue().toString())) {
+                    printError(className.getPosition(), JAXWSCoreMessages.bind(
+                            JAXWSCoreMessages.WRAPPER_FAULT_BEAN_NAMES_MUST_BE_UNIQUE, className));
+                    printError(otherClassName.getPosition(), JAXWSCoreMessages.bind(
+                            JAXWSCoreMessages.WRAPPER_FAULT_BEAN_NAMES_MUST_BE_UNIQUE, otherClassName));
                 }
             }
         }
     }
     
-    private void checkDocBareMethods(Collection<? extends MethodDeclaration> methods) {
+    private void checkDocumentBareMethods(Collection<? extends MethodDeclaration> methods) {
         List<MethodDeclaration> docBareMethods = new ArrayList<MethodDeclaration>();
         for (MethodDeclaration methodDeclaration : methods) {
             if (hasDocumentBareSOAPBinding(methodDeclaration)) {
@@ -196,35 +214,44 @@ public class UniqueNamesRule extends AbstractJAXWSAnnotationProcessor {
             for(int j = i + 1; j < values.length; j++) {
                 QName otherName = values[j];
                 if (name.equals(otherName)) {
-                    printError(keys[i].getPosition(), JAXWSCoreMessages.DOC_BARE_METHODS_UNIQUE_XML_ELEMENTS_ERROR_MESSAGE);
-                    printError(keys[j].getPosition(), JAXWSCoreMessages.DOC_BARE_METHODS_UNIQUE_XML_ELEMENTS_ERROR_MESSAGE);
+                    printError(keys[i].getPosition(), JAXWSCoreMessages.bind( 
+                            JAXWSCoreMessages.DOC_BARE_METHODS_UNIQUE_XML_ELEMENTS, name));
+                    printError(keys[j].getPosition(), JAXWSCoreMessages.bind( 
+                            JAXWSCoreMessages.DOC_BARE_METHODS_UNIQUE_XML_ELEMENTS, otherName));
                 }
             }
         }
     }
 
-    private String getTargetNamespace(AnnotationMirror webResult, MethodDeclaration methodDeclaration) {
-        String targetNamespace = AnnotationUtils.getStringValue(webResult, TARGET_NAMESPACE);
-        if (targetNamespace == null) {
-            targetNamespace = getTargetNamespace(methodDeclaration);
-        }
-        return targetNamespace;
-    }
-    
-    private String getTargetNamespace(MethodDeclaration methodDeclaration) {
-        TypeDeclaration typeDeclaration = methodDeclaration.getDeclaringType();
-        AnnotationMirror webService = AnnotationUtils.getAnnotation(typeDeclaration, WebService.class);
-        String targetNamespace = AnnotationUtils.getStringValue(webService, TARGET_NAMESPACE);
+    private String getTargetNamespace(TypeDeclaration typeDeclaration) {
+        String targetNamespace = getAttributeValue(typeDeclaration, WebService.class, TARGET_NAMESPACE);
         if (targetNamespace != null) {
             return targetNamespace;
         }
+        
         return JDTUtils.getTargetNamespaceFromPackageName(typeDeclaration.getPackage().getQualifiedName());
+    }
+    
+    private String getTargetNamespace(AnnotationMirror annotationMirror, MethodDeclaration methodDeclaration) {
+        String targetNamespace = AnnotationUtils.getStringValue(annotationMirror, TARGET_NAMESPACE);
+        if (targetNamespace == null) {
+            targetNamespace = getTargetNamespace(methodDeclaration.getDeclaringType());
+        }
+        return targetNamespace;
+    }
+
+    private String getOperationName(MethodDeclaration methodDeclaration) {
+        String operationName = getAttributeValue(methodDeclaration, WebMethod.class, OPERATION_NAME);
+        if (operationName != null) {
+            return operationName;
+        }
+        return methodDeclaration.getSimpleName();
     }
 
     private boolean hasDocumentBareSOAPBinding(Declaration declaration) {
         AnnotationMirror soapBinding = AnnotationUtils.getAnnotation(declaration, SOAPBinding.class);
         if (soapBinding != null) {
-            return isDocumentBare(soapBinding);
+            return JAXWSUtils.isDocumentBare(soapBinding);
         }
         if (declaration instanceof MethodDeclaration) {
             MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
@@ -233,28 +260,4 @@ public class UniqueNamesRule extends AbstractJAXWSAnnotationProcessor {
         
         return false;
     }
-
-    private List<MethodDeclaration> findOverloadedMethod(MethodDeclaration methodToTest, Collection<? extends MethodDeclaration> methods) {
-        List<MethodDeclaration> overloadedMethods = new ArrayList<MethodDeclaration>();
-        for (MethodDeclaration method : methods) {
-            if (!methodToTest.equals(method) && methodToTest.getSimpleName().equals(method.getSimpleName())) {
-                overloadedMethods.add(method);
-            }
-        }
-        return overloadedMethods;
-    }
-    
-    private boolean compareOperationNames(MethodDeclaration methodOne, MethodDeclaration methodTwo) {
-        return getOperationName(methodOne).equals(getOperationName(methodTwo));
-    }
-    
-    private String getOperationName(MethodDeclaration methodDeclaration) {
-        String operationName = methodDeclaration.getSimpleName();
-        AnnotationMirror webMethod = AnnotationUtils.getAnnotation(methodDeclaration, WebMethod.class);
-        if (webMethod != null) {
-            operationName = AnnotationUtils.getStringValue(webMethod, OPERATION_NAME);
-        }
-        return operationName;
-    }
-    
 }

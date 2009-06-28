@@ -13,6 +13,7 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebParam;
 import javax.jws.WebParam.Mode;
 
 import org.eclipse.core.resources.IMarker;
@@ -42,12 +43,12 @@ public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidation
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         MemberValuePair modeValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.WebParam", "mode", Mode.OUT);
+                WebParam.class.getCanonicalName(), "mode", Mode.OUT);
 
         memberValuePairs.add(modeValuePair);
         
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, javax.jws.WebParam.class
-                .getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, WebParam.class, WebParam.class.getSimpleName(),
+                memberValuePairs);
     }
 
     @Override
@@ -73,12 +74,12 @@ public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidation
     public void testWebParamModeHolderTypeRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebParam", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebParam.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
             
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebParam.class, textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, WebParam.class, textFileChange, true);
 
             SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
                     128);
@@ -104,7 +105,7 @@ public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidation
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBPARAM_MODE_OUT_INOUT_HOLDER_TYPE_ERROR_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBPARAM_MODE_OUT_INOUT_HOLDER_TYPE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.jaxws.core.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebParam;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IMethod;
@@ -55,19 +57,19 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
 
         memberValuePairs.add(nameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebParam.class, javax.jws.WebParam.class
-                .getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, WebParam.class, WebParam.class.getSimpleName(),
+                memberValuePairs);
     }
 
     public void testAddAnnotationToMethodParameter() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebParam", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebParam.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);
 
-            AnnotationUtils.getImportChange(compilationUnit, javax.jws.WebParam.class, textFileChange, true);
+            AnnotationUtils.addImportChange(compilationUnit, WebParam.class, textFileChange, true);
 
             SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
                     65);

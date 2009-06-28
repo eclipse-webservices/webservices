@@ -12,13 +12,13 @@ package org.eclipse.jst.ws.internal.annotations.core.processor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.jdt.apt.core.util.AptPreferenceConstants;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCorePlugin;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
@@ -79,9 +79,7 @@ public class AnnotationsCoreProcessorFactory implements AnnotationProcessorFacto
     }
 
     public Collection<String> supportedOptions() {
-        List<String> options = new ArrayList<String>();
-        options.add(AptPreferenceConstants.PROCESSING_IN_EDITOR_DISABLED_OPTION);
-        return options;
+        return Collections.emptyList();
     }
 
 }

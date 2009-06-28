@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.RESPONSE_SUFFIX;
+
 import java.util.Locale;
 
 import javax.jws.WebMethod;

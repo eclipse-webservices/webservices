@@ -27,7 +27,7 @@ public class WebMethodNoFinalModifierRuleTest extends AbstractWebMethodPublicSta
 
     @Override
     public String getErrorMessage() {
-        return JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED_MESSAGE;
+        return JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED;
     }
 
 }

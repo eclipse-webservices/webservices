@@ -10,6 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PART_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.RESPONSE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.RETURN;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +26,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.ParameterStyle;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.jws.soap.SOAPBinding.Use;
 
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
@@ -33,8 +38,10 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 /**
@@ -42,7 +49,7 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
  * @author sclarke
  *
  */
-public class WebResultAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
+public class WebResultAttributeInitializer extends AnnotationAttributeInitializer {
     
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
@@ -114,7 +121,7 @@ public class WebResultAttributeInitializer extends JAXWSAnnotationAttributeIniti
         try {
             IAnnotation annotation = AnnotationUtils.getAnnotation(annotatable, SOAPBinding.class);
             if (annotation != null) {
-                return isDocumentBare(annotation);
+                return JAXWSUtils.isDocumentBare(annotation);
             }
             if (annotatable instanceof IMethod) {
                 IMethod method = (IMethod) annotatable;
@@ -126,20 +133,6 @@ public class WebResultAttributeInitializer extends JAXWSAnnotationAttributeIniti
         return false;
     }
   
-    private boolean isDocumentBare(IAnnotation annotation) {
-        try {
-            String style = AnnotationUtils.getEnumValue(annotation, STYLE);
-            String use = AnnotationUtils.getEnumValue(annotation, USE);
-            String parameterStyle = AnnotationUtils.getEnumValue(annotation, PARAMETER_STYLE);
-            return (style == null || style.equals(Style.DOCUMENT.name()))
-                    && (use == null || use.equals(Use.LITERAL.name()))
-                    && (parameterStyle != null && parameterStyle.equals(ParameterStyle.BARE.name()));
-        } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
-        }
-        return false;
-    }
-
     private String getPartName(IMethod method) {
         try {
             IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebResult.class);
@@ -166,7 +159,7 @@ public class WebResultAttributeInitializer extends JAXWSAnnotationAttributeIniti
         try {
             IAnnotation annotation = AnnotationUtils.getAnnotation(annotatable, SOAPBinding.class);
             if (annotation != null) {
-                return isDocumentWrapped(annotation);
+                return JAXWSUtils.isDocumentWrapped(annotation);
             }
             if (annotatable instanceof IMethod) {
                 IMethod method = (IMethod) annotatable;
@@ -178,20 +171,6 @@ public class WebResultAttributeInitializer extends JAXWSAnnotationAttributeIniti
         return true;
     }
     
-    private boolean isDocumentWrapped(IAnnotation annotation) {
-        try {
-            String style = AnnotationUtils.getEnumValue(annotation, STYLE);
-            String use = AnnotationUtils.getEnumValue(annotation, USE);
-            String parameterStyle = AnnotationUtils.getEnumValue(annotation, PARAMETER_STYLE);
-            return (style == null || style.equals(Style.DOCUMENT.name()))
-                    && (use == null || use.equals(Use.LITERAL.name()))
-                    && (parameterStyle == null || parameterStyle.equals(ParameterStyle.WRAPPED.name()));
-        } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
-        }
-        return true;
-    }
-
     private boolean isHeader(IMethod method) {
         try {
             IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebResult.class);

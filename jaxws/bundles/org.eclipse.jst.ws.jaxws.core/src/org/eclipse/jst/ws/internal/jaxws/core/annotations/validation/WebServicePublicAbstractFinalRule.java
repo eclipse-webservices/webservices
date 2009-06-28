@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import javax.jws.WebService;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
@@ -27,7 +28,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
  * @author sclarke
  *
  */
-public class WebServicePublicAbstractFinalRule extends AbstractJAXWSAnnotationProcessor {
+public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcessor {
 
     @Override
     public void process() {
@@ -47,7 +48,7 @@ public class WebServicePublicAbstractFinalRule extends AbstractJAXWSAnnotationPr
                         if (mirror.getAnnotationType().toString()
                             .equals(annotationDeclaration.getQualifiedName())) {
                             printError(mirror.getPosition(), 
-                                JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE);
+                                JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL);
                         }
                     }
                 }
@@ -66,7 +67,7 @@ public class WebServicePublicAbstractFinalRule extends AbstractJAXWSAnnotationPr
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (mirror.getAnnotationType().toString().equals(annotationDeclaration.getQualifiedName())) {
                     printError(mirror.getPosition(),
-                            JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE);
+                            JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL);
                 }
             }
         }

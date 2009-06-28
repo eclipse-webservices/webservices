@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import javax.jws.WebService;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
@@ -28,7 +29,7 @@ import com.sun.mirror.declaration.Modifier;
  * @author sclarke
  *
  */
-public class WebServiceDefaultPublicConstructorRule extends AbstractJAXWSAnnotationProcessor {
+public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationProcessor {
 
     @Override
     public void process() {
@@ -60,7 +61,7 @@ public class WebServiceDefaultPublicConstructorRule extends AbstractJAXWSAnnotat
                         if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
                                 .getQualifiedName())) {
                             printError(mirror.getPosition(),
-                                    JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR_MESSAGE); 
+                                    JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR); 
                         }
                     }
                 }                

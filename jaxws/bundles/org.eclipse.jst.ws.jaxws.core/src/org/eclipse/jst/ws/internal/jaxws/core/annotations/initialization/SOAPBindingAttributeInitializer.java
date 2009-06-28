@@ -10,10 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PARAMETER_STYLE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.STYLE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.USE;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
@@ -22,13 +27,14 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 
 /**
  * 
  * @author sclarke
  *
  */
-public class SOAPBindingAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
+public class SOAPBindingAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
@@ -36,13 +42,13 @@ public class SOAPBindingAttributeInitializer extends JAXWSAnnotationAttributeIni
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", STYLE, Style.DOCUMENT);
+                SOAPBinding.class.getCanonicalName(), STYLE, Style.DOCUMENT);
 
         MemberValuePair useValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", USE, Use.LITERAL);
+                SOAPBinding.class.getCanonicalName(), USE, Use.LITERAL);
 
         MemberValuePair parameterStyleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                "javax.jws.soap.SOAPBinding", PARAMETER_STYLE, ParameterStyle.WRAPPED);
+                SOAPBinding.class.getCanonicalName(), PARAMETER_STYLE, ParameterStyle.WRAPPED);
         
         memberValuePairs.add(styleValuePair);
         memberValuePairs.add(useValuePair);

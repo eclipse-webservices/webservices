@@ -27,7 +27,7 @@ public class WebMethodNoStaticModifierRuleTest extends AbstractWebMethodPublicSt
 
     @Override
     public String getErrorMessage() {
-        return JAXWSCoreMessages.WEBMETHOD_NO_STATIC_MODIFIER_ALLOWED_MESSAGE;
+        return JAXWSCoreMessages.WEBMETHOD_NO_STATIC_MODIFIER_ALLOWED;
     }
 
 }

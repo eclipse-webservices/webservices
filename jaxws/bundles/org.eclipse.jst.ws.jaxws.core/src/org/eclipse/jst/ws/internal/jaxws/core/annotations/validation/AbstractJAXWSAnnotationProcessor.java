@@ -50,6 +50,9 @@ public abstract class AbstractJAXWSAnnotationProcessor extends AbstractAnnotatio
 
     protected static final String USE = "use"; //$NON-NLS-1$
 
+    protected static final String VALUE = "value"; //$NON-NLS-1$
+    protected static final String TYPE = "type"; //$NON-NLS-1$
+    
     public abstract void process();
 
     protected boolean isDocumentBare(AnnotationMirror mirror) {
@@ -61,6 +64,14 @@ public abstract class AbstractJAXWSAnnotationProcessor extends AbstractAnnotatio
                 && (use == null || use.equals(Use.LITERAL.name()))
                 && (parameterStyle != null && parameterStyle.equals(ParameterStyle.BARE.name()));
     }
+    
+    protected boolean isDocumentWrapped(AnnotationMirror mirror) {
+        String style = AnnotationUtils.getStringValue(mirror, STYLE);
+        String use = AnnotationUtils.getStringValue(mirror, USE);
+        String parameterStyle = AnnotationUtils.getStringValue(mirror, PARAMETER_STYLE);
 
-
+        return (style == null || style.equals(Style.DOCUMENT.name()))
+                && (use == null || use.equals(Use.LITERAL.name()))
+                && (parameterStyle == null || parameterStyle.equals(ParameterStyle.WRAPPED.name()));
+    }
 }

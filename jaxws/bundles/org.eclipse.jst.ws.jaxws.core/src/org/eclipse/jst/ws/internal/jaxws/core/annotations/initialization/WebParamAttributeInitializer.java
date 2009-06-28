@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ARG;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PART_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +25,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.ParameterStyle;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.jws.soap.SOAPBinding.Use;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -33,7 +37,9 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 /**
@@ -41,7 +47,7 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
  * @author sclarke
  * 
  */
-public class WebParamAttributeInitializer extends JAXWSAnnotationAttributeInitializer {
+public class WebParamAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override
     public List<MemberValuePair> getMemberValuePairs(ASTNode astNode, AST ast,
@@ -154,7 +160,7 @@ public class WebParamAttributeInitializer extends JAXWSAnnotationAttributeInitia
         org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(methodDeclaration,
                 SOAPBinding.class);
         if (annotation != null) {
-            return isDocumentWrapped(annotation);
+            return JAXWSUtils.isDocumentWrapped(annotation);
         }
         
         TypeDeclaration typeDeclaration = (TypeDeclaration) methodDeclaration.getParent();
@@ -162,26 +168,16 @@ public class WebParamAttributeInitializer extends JAXWSAnnotationAttributeInitia
         org.eclipse.jdt.core.dom.Annotation typeAnnotation = AnnotationUtils.getAnnotation(typeDeclaration,
                 SOAPBinding.class);
         if (typeAnnotation != null) {
-            return isDocumentWrapped(typeAnnotation);
+            return JAXWSUtils.isDocumentWrapped(typeAnnotation);
         }
         return true;
-    }
-
-    private boolean isDocumentWrapped(org.eclipse.jdt.core.dom.Annotation annotation) {
-        String style = AnnotationUtils.getEnumValue(annotation, STYLE);
-        String use = AnnotationUtils.getEnumValue(annotation, USE);
-        String parameterStyle = AnnotationUtils.getEnumValue(annotation, PARAMETER_STYLE);
-
-        return (style == null || style.equals(Style.DOCUMENT.name()))
-                && (use == null || use.equals(Use.LITERAL.name()))
-                && (parameterStyle == null || parameterStyle.equals(ParameterStyle.WRAPPED.name()));
     }
 
     private boolean hasDocumentBareSOAPBinding(BodyDeclaration bodyDeclaration) {
         org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(bodyDeclaration,
                 SOAPBinding.class);
         if (annotation != null) {
-            return isDocumentBare(annotation);
+            return JAXWSUtils.isDocumentBare(annotation);
         }
         if (bodyDeclaration instanceof MethodDeclaration) {
             MethodDeclaration methodDeclaration = (MethodDeclaration) bodyDeclaration;
@@ -190,15 +186,6 @@ public class WebParamAttributeInitializer extends JAXWSAnnotationAttributeInitia
         return false;
     }
 
-    private boolean isDocumentBare(org.eclipse.jdt.core.dom.Annotation annotation) {
-        String style = AnnotationUtils.getEnumValue(annotation, STYLE);
-        String use = AnnotationUtils.getEnumValue(annotation, USE);
-        String parameterStyle = AnnotationUtils.getEnumValue(annotation, PARAMETER_STYLE);
-
-        return (style == null || style.equals(Style.DOCUMENT.name()))
-                && (use == null || use.equals(Use.LITERAL.name()))
-                && (parameterStyle != null && parameterStyle.equals(ParameterStyle.BARE.name()));
-    }
 
     private String getWebMethodOperationName(MethodDeclaration methodDeclaration) {
         org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(methodDeclaration,

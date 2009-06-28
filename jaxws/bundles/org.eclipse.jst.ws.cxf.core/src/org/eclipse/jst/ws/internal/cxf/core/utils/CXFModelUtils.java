@@ -118,8 +118,8 @@ public final class CXFModelUtils {
         Annotation annotation = AnnotationsCore.createAnnotation(ast, WebService.class,
                 WebService.class.getSimpleName(), memberValuePairs);
         
-        AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation, 
-                textFileChange);
+        AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, source.findPrimaryType(),
+                annotation,  textFileChange);
     }
 
     public static void createMethodAnnotationChange(IType type, IMethod method, 

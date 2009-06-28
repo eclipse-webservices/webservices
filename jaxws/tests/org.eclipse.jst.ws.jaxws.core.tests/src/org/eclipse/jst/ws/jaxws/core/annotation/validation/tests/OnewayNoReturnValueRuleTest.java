@@ -28,7 +28,7 @@ public class OnewayNoReturnValueRuleTest extends AbstractOnewayValidationTest {
 	}
 
     public String getErrorMessage() {
-        return JAXWSCoreMessages.ONEWAY_NO_RETURN_VALUE_ERROR_MESSAGE;
+        return JAXWSCoreMessages.ONEWAY_NO_RETURN_VALUE;
     }
 
     @Override

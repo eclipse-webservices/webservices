@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import javax.jws.WebMethod;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -27,7 +28,7 @@ import com.sun.mirror.declaration.Modifier;
  * @author sclarke
  * 
  */
-public class WebMethodPublicStaticFinalRule extends AbstractJAXWSAnnotationProcessor {
+public class WebMethodPublicStaticFinalRule extends AbstractAnnotationProcessor {
 	
     @Override
     public void process() {
@@ -44,15 +45,15 @@ public class WebMethodPublicStaticFinalRule extends AbstractJAXWSAnnotationProce
                     Collection<Modifier> modifiers = methodDeclaration.getModifiers();
                     if (!modifiers.contains(Modifier.PUBLIC)) {
                         printError(annotationDeclaration, methodDeclaration,
-                                JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS_MESSAGE);
+                                JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS);
                     }
                     if (modifiers.contains(Modifier.FINAL)) {
                         printError(annotationDeclaration, methodDeclaration,
-                                JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED_MESSAGE);
+                                JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED);
                     }
                     if (modifiers.contains(Modifier.STATIC)) {
                         printError(annotationDeclaration, methodDeclaration,
-                                JAXWSCoreMessages.WEBMETHOD_NO_STATIC_MODIFIER_ALLOWED_MESSAGE);
+                                JAXWSCoreMessages.WEBMETHOD_NO_STATIC_MODIFIER_ALLOWED);
                     }
         	    }
         	}

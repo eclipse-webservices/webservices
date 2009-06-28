@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.jst.ws.annotations.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="org.eclipse.jst.ws.annotations.core" id="annotationProcessor" name="Annotation Processor"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          This extension point allows clients to contribute annotation procesoors. These processors are associated with contributed annotation definitions.
 
@@ -14,12 +14,12 @@ The goal of the processor is to validate annotation rules.
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="0" maxOccurs="unbounded">
+         <sequence>
             <element ref="processor" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
@@ -41,9 +41,9 @@ The goal of the processor is to validate annotation rules.
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -59,9 +59,9 @@ The goal of the processor is to validate annotation rules.
                <documentation>
                   the class name of the annotation definition that this processor handles.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="identifier" basedOn="org.eclipse.jst.ws.annotations.core.annotationDefinition/annotation/@class"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="class" type="string" use="required">
@@ -71,9 +71,9 @@ The goal of the processor is to validate annotation rules.
 class must be a public subclass of
 &lt;code&gt;org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor&lt;/code&gt;and must have a public 0-argument constructor.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor:"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -89,9 +89,9 @@ class must be a public subclass of
 
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          The following is an example of an annotation processor contribution:
 
@@ -114,9 +114,9 @@ class must be a public subclass of
 
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="copyright"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          Copyright (c) 2009 Shane Clarke. &lt;br&gt;
 All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at &lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;

@@ -13,6 +13,8 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebService;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -53,8 +55,8 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
         memberValuePairs.add(portNameValuePair);
         memberValuePairs.add(serviceNameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.WebService.class, javax.jws.WebService.class
-                .getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(), 
+                memberValuePairs);
     }
 
     @Override
@@ -70,13 +72,13 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
     public void testWebServicePublicAbstractFinalRule() {
         try {
             assertNotNull(annotation);
-            assertEquals("WebService", AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             AnnotationUtils
-                    .getImportChange(compilationUnit, javax.jws.WebService.class, textFileChange, true);
+                    .addImportChange(compilationUnit, WebService.class, textFileChange, true);
 
-            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, annotation,
-                    textFileChange);
+            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+                    source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
@@ -93,7 +95,7 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL_MESSAGE,
+            assertEquals(JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());

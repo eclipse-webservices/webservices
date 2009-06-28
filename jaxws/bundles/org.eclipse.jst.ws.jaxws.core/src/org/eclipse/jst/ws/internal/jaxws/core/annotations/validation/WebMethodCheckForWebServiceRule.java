@@ -15,6 +15,7 @@ import java.util.Collection;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
@@ -29,7 +30,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
  * @author sclarke
  *
  */
-public class WebMethodCheckForWebServiceRule extends AbstractJAXWSAnnotationProcessor {
+public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor {
 
     @Override
     public void process() {
@@ -45,7 +46,7 @@ public class WebMethodCheckForWebServiceRule extends AbstractJAXWSAnnotationProc
                 if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)
                         && !checkForWebServiceAnnotation(((MethodDeclaration) declaration).getDeclaringType())) {
                     printError(mirror.getPosition(),
-                            JAXWSCoreMessages.WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE_MESSAGE);
+                            JAXWSCoreMessages.WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE);
                 }
             }
         }

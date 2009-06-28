@@ -310,6 +310,12 @@ public final class JDTUtils {
         return JavaConventions.validatePackageName(packageName, sourceLevel, complianceLevel);
     }
 
+    public static IStatus validateIdentifier(String id) {
+        String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
+        String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
+        return JavaConventions.validateIdentifier(id, sourceLevel, complianceLevel);
+    }
+
 	public static ICompilationUnit getCompilationUnitFromFile(IFile file) {
 		IProject project = file.getProject();
 		try {

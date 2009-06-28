@@ -87,7 +87,7 @@ public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeI
                 }
                 
                 if (returnType.equals(Class.class)) {
-                    memberValuePairs.add(AnnotationsCore.createTypeMemberVaulePair(ast, name, 
+                    memberValuePairs.add(AnnotationsCore.createTypeMemberValuePair(ast, name, 
                             defaultValue));
                 }
             }
