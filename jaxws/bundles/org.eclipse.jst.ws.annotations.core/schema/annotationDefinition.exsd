@@ -82,7 +82,7 @@
          <attribute name="restrictedTo">
             <annotation>
                <documentation>
-                  Used in addition to the  java.lang.annotation.ElementType (s) that are specifed in the value element of the  @TARGET annotation on the contributed annotation to further restrict visiblity in the UI.
+                  Used in addition to the java.lang.annotation.ElementType(s) that are specified in the value element of the  @Target annotation on the contributed annotation to add further restrictions.
                </documentation>
             </annotation>
             <simpleType>
@@ -104,7 +104,7 @@
          <attribute name="target" use="required">
             <annotation>
                <documentation>
-                  Used to filter java.lang.annotation.ElementType (s) that are specified in the value element of the  @TARGET annotation on the contributed annotation.
+                  Used to filter java.lang.annotation.ElementType(s) that are specified in the value element of the  @Target annotation on the contributed annotation.
                </documentation>
             </annotation>
             <simpleType>
