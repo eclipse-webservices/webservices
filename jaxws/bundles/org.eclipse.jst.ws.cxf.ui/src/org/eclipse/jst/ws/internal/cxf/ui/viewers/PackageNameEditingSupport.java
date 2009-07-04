@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;

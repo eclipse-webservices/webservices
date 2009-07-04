@@ -8,21 +8,23 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.cxf.core.utils;
+package org.eclipse.jst.ws.jaxws.core.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,6 +39,7 @@ import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.wsdl.xml.WSDLWriter;
 
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -46,125 +49,123 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
-import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
+import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.xml.sax.InputSource;
 
 /**
+ * WSDL Utility class.
+ * <p>
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under 
+ * development and expected to change significantly before reaching stability. It is being made available at 
+ * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
+ * this API will almost certainly be broken (repeatedly) as the API evolves.
+ * </p>
  * @author sclarke
  */
 public final class WSDLUtils {
-	public static final String WSDL_FILE_EXTENSION = ".wsdl"; //$NON-NLS-1$
-	public static final IPath WSDL_FOLDER_PATH = new Path("wsdl/"); //$NON-NLS-1$
-    private static final String WSDL_FILE_NAME_PATTERN = "[a-zA-Z0-9_\\-]+";//$NON-NLS-1$
+    private static final String WSDL_FILE_NAME_PATTERN = "[a-zA-Z0-9_\\-]+.wsdl";//$NON-NLS-1$
+    private static final String WSDL_QUERY = "?wsdl"; //$NON-NLS-1$
 
+	private static final IPath WSDL_FOLDER_PATH = new Path("wsdl/"); //$NON-NLS-1$
+    private static final int TIMEOUT = 30000;
+
+	public static final String WSDL_FILE_EXTENSION = ".wsdl"; //$NON-NLS-1$
+	
     private WSDLUtils() {
     }
-    
-    public static String getWSDLFileNameFromURL(URL wsdlURL) {
-        IPath wsdlPath = new Path(wsdlURL.toExternalForm());
-        return wsdlPath.lastSegment();
-    }
-
-    public static Definition readWSDL(URL wsdlURL) {
+        
+    public static Definition readWSDL(URL wsdlURL) throws IOException {
+    	URLConnection urlConnection = wsdlURL.openConnection();
+    	urlConnection.setConnectTimeout(TIMEOUT);
+    	urlConnection.setReadTimeout(TIMEOUT);
+    	InputStream inputStream = null;
         try {
-        	InputSource inputSource = new InputSource(wsdlURL.openStream());
+            inputStream = urlConnection.getInputStream();
+            InputSource inputSource = new InputSource(inputStream);
             WSDLFactory wsdlFactory = WSDLFactory.newInstance();
             WSDLReader wsdlReader = wsdlFactory.newWSDLReader();
             Definition definition = wsdlReader.readWSDL(wsdlURL.getPath(), inputSource);
             return definition;
         } catch (WSDLException wsdle) {
-            CXFCorePlugin.log(wsdle);
-        } catch (IOException ioe) {
-            CXFCorePlugin.log(ioe);
+            JAXWSCorePlugin.log(wsdle);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
         return null;
     }
     
-    public static void writeWSDL(CXFDataModel model) throws IOException, CoreException {
-        URL wsdlURL = model.getWsdlURL();
-        Definition definition = model.getWsdlDefinition();
+    public static void writeWSDL(URL wsdlURL, Definition definition) throws IOException, CoreException {
+    	URI wsdlURI = null;
         OutputStream wsdlOutputStream = null;
         try {
-            File wsdlFile = new File(wsdlURL.toURI());
+        	wsdlURI = wsdlURL.toURI();
+            File wsdlFile = new File(wsdlURI);
             wsdlOutputStream = new FileOutputStream(wsdlFile);
             WSDLFactory wsdlFactory = WSDLFactory.newInstance();
             WSDLWriter wsdlWriter = wsdlFactory.newWSDLWriter();
             wsdlWriter.writeWSDL(definition, wsdlOutputStream);
         } catch (WSDLException wsdle) {
-            CXFCorePlugin.log(wsdle);
+        	JAXWSCorePlugin.log(wsdle);
         } catch (URISyntaxException urise) {
-            CXFCorePlugin.log(urise);
+        	JAXWSCorePlugin.log(urise);
         } finally {
             if (wsdlOutputStream != null) {
                 wsdlOutputStream.close();
-            }
-            WSDLUtils.getWSDLFolder(model.getProjectName()).getFile(model.getWsdlFileName()).refreshLocal(
-                    IResource.DEPTH_INFINITE, new NullProgressMonitor());
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static void loadSpringConfigInformationFromWSDL(CXFDataModel model) {
-        IFile wsdlFile = WSDLUtils.getWSDLFolder(model.getProjectName()).getFile(model.getWsdlFileName());
-        if (wsdlFile.exists()) {
-            try {
-                model.setWsdlURL(wsdlFile.getLocationURI().toURL());
-                Definition definition = WSDLUtils.readWSDL(model.getWsdlURL());
-                Map servicesMap = definition.getServices();
-                Set<Map.Entry> servicesSet = servicesMap.entrySet();
-                for (Map.Entry serviceEntry : servicesSet) {
-                    Service service = (Service) serviceEntry.getValue();
-                    model.setServiceName(service.getQName().getLocalPart());
-                    Map portsMap = service.getPorts();
-                    Set<Map.Entry> portsSet = portsMap.entrySet();
-                    for (Map.Entry portEntry : portsSet) {
-                        Port port = (Port) portEntry.getValue();
-                        model.setEndpointName(port.getName());
-                     }
+                IFile file = ResourcesPlugin.getWorkspace().getRoot()
+						.getFileForLocation(URIUtil.toPath(wsdlURI));
+                if (file != null && file.exists()) {
+                	file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
                 }
-                model.setWsdlDefinition(definition);
-            } catch (MalformedURLException murle) {
-                CXFCorePlugin.log(murle);
             }
         }
     }
-    
+   
     public static boolean isValidWSDLFileName(String wsdlFileName) {
-        boolean isValid = true;
-        if (wsdlFileName != null && wsdlFileName.trim().length() > 0 
-                && wsdlFileName.indexOf(WSDL_FILE_EXTENSION) != -1 
-                && wsdlFileName.substring(0, wsdlFileName.indexOf(WSDL_FILE_EXTENSION)).trim().length() > 0) {
-            wsdlFileName = wsdlFileName.substring(0, wsdlFileName.indexOf(WSDL_FILE_EXTENSION)).trim();
-            if (wsdlFileName.matches(WSDL_FILE_NAME_PATTERN)) {
-                isValid = true;     
-            } else {
-                isValid = false;
-            }
-        } else {
-            isValid = false;
-        }
-        return isValid;
+        return wsdlFileName != null && wsdlFileName.matches(WSDL_FILE_NAME_PATTERN);     
+    }
+        
+    public static IProject getProject(String projectName) {
+        return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+    }
+        
+    public static IFolder getWebContentFolder(String projectName) {
+    	return WSDLUtils.getWebContentFolder(WSDLUtils.getProject(projectName));
+    }
+    
+    public static IFolder getWebContentFolder(IProject project) {
+		return ResourcesPlugin.getWorkspace().getRoot().getFolder(
+				WSDLUtils.getWebContentPath(project));
+	}
+
+    public static IFolder getWSDLFolder(String projectName) {
+        return WSDLUtils.getWSDLFolder(WSDLUtils.getProject(projectName));
     }
 
-    
-    public static  IFolder getWSDLFolder(String projectName) {
-        return WSDLUtils.getWSDLFolder(FileUtils.getProject(projectName));
-    }
-    
     public static IFolder getWSDLFolder(IProject project) {
-        IPath wsdlFolderPath = FileUtils.getWebContentPath(project).append(WSDLUtils.WSDL_FOLDER_PATH);
+        IPath wsdlFolderPath = WSDLUtils.getWebContentPath(project).append(WSDLUtils.WSDL_FOLDER_PATH);
         IFolder wsdlFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(wsdlFolderPath);
         if (!wsdlFolder.exists()) {
             try {
                 wsdlFolder.create(true, true, new NullProgressMonitor());
             } catch (CoreException ce) {
-                CXFCorePlugin.log(ce.getStatus());
+                JAXWSCorePlugin.log(ce.getStatus());
             }
         }
         return wsdlFolder;
     }
     
+    public static IPath getWebContentPath(IProject project) {
+        return J2EEUtils.getWebContentPath(project).addTrailingSeparator();
+    }
+
+    public static String getWSDLFileNameFromURL(URL wsdlURL) {
+        IPath wsdlPath = new Path(wsdlURL.toExternalForm());
+        return wsdlPath.lastSegment();
+    }
+
     /**
      * will return one of: 
      * <li>SOAPAddress<li>SOAP12Address<li>null if it can not find a soap address
@@ -191,7 +192,7 @@ public final class WSDLUtils {
         }
         return null;
     }
-    
+
     public static String getWSDLLocation(Definition definition) throws MalformedURLException {
 		ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
 		if (extensibilityElement != null) {
@@ -199,9 +200,9 @@ public final class WSDLUtils {
 	        if (locationURI.length() > 0) {
 	            URL endpointURL = new URL(locationURI);
 	            if (endpointURL.getQuery() == null) {
-	                locationURI += "?wsdl"; //$NON-NLS-1$
-	                return locationURI;
+	                locationURI += WSDL_QUERY;
 	            }
+                return locationURI;
 	        }
 		}
 	    return null;
@@ -229,7 +230,7 @@ public final class WSDLUtils {
             if (authority.indexOf("www") != -1) { //$NON-NLS-1$
                 authority = authority.substring(authority.indexOf(".") + 1, authority.length()); //$NON-NLS-1$
             }
-            // Flip it
+
             List<String> authorityElements = Arrays.asList(authority.split("\\.")); //$NON-NLS-1$
             Collections.reverse(authorityElements);
             packageNameElements.addAll(authorityElements);
@@ -249,8 +250,8 @@ public final class WSDLUtils {
                 }
             }
         } catch (MalformedURLException murle) {
-            CXFCorePlugin.log(murle);
+            JAXWSCorePlugin.log(murle);
         }
-        return packageName.toLowerCase(Locale.getDefault());
+        return packageName.toLowerCase();
     }
 }

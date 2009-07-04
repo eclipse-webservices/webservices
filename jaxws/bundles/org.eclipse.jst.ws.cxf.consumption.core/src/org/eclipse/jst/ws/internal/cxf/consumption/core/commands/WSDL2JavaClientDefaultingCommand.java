@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.consumption.core.commands;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -25,8 +26,8 @@ import org.eclipse.jst.ws.internal.cxf.consumption.core.CXFConsumptionCorePlugin
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.WSDL2JavaPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -107,8 +108,11 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
 		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID, 
 		            murle.getLocalizedMessage());
 			CXFConsumptionCorePlugin.log(status);
+		} catch (IOException ioe) {
+		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID, 
+		    		ioe.getLocalizedMessage());
+			CXFConsumptionCorePlugin.log(status);
 		}
-
         return status;
     }
     

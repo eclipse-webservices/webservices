@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
-import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 
 /**
  * @author sclarke

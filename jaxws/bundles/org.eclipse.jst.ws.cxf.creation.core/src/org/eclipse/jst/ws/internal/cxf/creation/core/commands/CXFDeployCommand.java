@@ -31,8 +31,8 @@ import org.eclipse.jst.ws.internal.common.ServerUtils;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.SpringUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
@@ -99,6 +99,7 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
                 webService.getWebServiceInfo().setWsdlURL(wsdlURL);
                 
                 Definition definition = model.getWsdlDefinition();
+
                 ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
                 if (extensibilityElement != null) {
                     if (extensibilityElement instanceof SOAPAddress) {
@@ -106,9 +107,9 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
                     }
                     if (extensibilityElement instanceof SOAP12Address) {
                         ((SOAP12Address) extensibilityElement).setLocationURI(wsdlAddress);
-
                     }
-                    WSDLUtils.writeWSDL(model);
+
+                    WSDLUtils.writeWSDL(model.getWsdlURL(), definition);
                 }              
             }
         } catch (IOException ioe) {

@@ -109,7 +109,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
     protected String getClassName(IType type, IMethod method) {
         try {
             String methodName = method.getElementName();
-            return getPackageName(type) + methodName.substring(0, 1).toUpperCase(Locale.getDefault())
+            return getPackageName(type) + methodName.substring(0, 1).toUpperCase()
                 + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());

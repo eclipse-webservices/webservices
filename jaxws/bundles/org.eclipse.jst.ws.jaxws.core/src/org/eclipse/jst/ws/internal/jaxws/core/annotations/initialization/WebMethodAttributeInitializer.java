@@ -16,7 +16,6 @@ import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
@@ -97,7 +96,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
     private String getActionValue(IType type, IMethod method) {
         try {
             String methodName = method.getElementName();
-            return "urn:" + methodName.substring(0, 1).toUpperCase(Locale.getDefault()) 
+            return "urn:" + methodName.substring(0, 1).toUpperCase() 
                 + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());

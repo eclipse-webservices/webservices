@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.internal.cxf.creation.core.commands;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -45,9 +46,9 @@ import org.eclipse.jst.ws.internal.cxf.core.context.WSDL2JavaPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.resources.WebContentChangeListener;
 import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.util.WSDLCopier;
 
@@ -167,12 +168,12 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
             	workspace.run(copier, monitor);
             	
             	File wsdlFile = wsdlFolderPath.addTrailingSeparator().append(filename).toFile();
-    			model.setWsdlURL(wsdlFile.toURL());
+    			model.setWsdlURL(wsdlFile.toURI().toURL());
         	}
         	model.setWsdlFileName(WSDLUtils.getWSDLFileNameFromURL(model.getWsdlURL()));
         	
         	IPath wsdlLocationPath = new Path(model.getWsdlURL().getPath());
-        	wsdlLocationPath = wsdlLocationPath.removeFirstSegments(FileUtils.getWebContentFolder(project)
+        	wsdlLocationPath = wsdlLocationPath.removeFirstSegments(WSDLUtils.getWebContentFolder(project)
         			.getLocation().matchingFirstSegments(wsdlLocationPath));
         	
         	if (wsdlLocationPath.getDevice() != null) {
@@ -190,6 +191,9 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
 		} catch (MalformedURLException murle) {
 			status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, murle.getLocalizedMessage());
 			CXFCreationCorePlugin.log(murle);
+		} catch (IOException ioe) {
+			status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, ioe.getLocalizedMessage());
+			CXFCreationCorePlugin.log(ioe);
 		}
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
         return status;

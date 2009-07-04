@@ -27,6 +27,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -74,7 +75,7 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
             model.setVerbose(context.isVerbose());
             
             String className = JDTUtils.getClassName(model.getProjectName(), model.getJavaStartingPoint());
-            model.setWsdlFileName(className.toLowerCase(Locale.getDefault()) + ".wsdl"); //$NON-NLS-1$
+            model.setWsdlFileName(className.toLowerCase() + WSDLUtils.WSDL_FILE_EXTENSION);
         } catch (JavaModelException jme) {
             status = jme.getStatus();
             CXFCreationCorePlugin.log(status);

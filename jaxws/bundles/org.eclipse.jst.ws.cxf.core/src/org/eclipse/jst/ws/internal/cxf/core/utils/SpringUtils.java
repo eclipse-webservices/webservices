@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,6 +40,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -202,7 +204,6 @@ public final class SpringUtils {
             springConfigFile = SpringUtils.getCXFServlet(projectName);
         }
 
-        boolean exists = false;
         if (isSpringBeansFile(springConfigFile)) {
             SAXBuilder builder = new SAXBuilder();
             FileInputStream springConfigInputSteam = new FileInputStream(springConfigFile.getLocation()
@@ -216,8 +217,7 @@ public final class SpringUtils {
                     if (element != null && element.getAttribute("id") != null) { //$NON-NLS-1$
                         Attribute idAttribute = element.getAttribute("id"); //$NON-NLS-1$
                         if (idAttribute.getValue().equals(id)) {
-                            exists = true;
-                            break;
+                            return true;
                         }
                     }                    
                 }
@@ -227,7 +227,7 @@ public final class SpringUtils {
                springConfigInputSteam.close();
             }
         }
-        return exists;
+        return false;
     }
     
     @SuppressWarnings("unchecked")
@@ -288,6 +288,34 @@ public final class SpringUtils {
                 SpringUtils.createJAXWSEndpoint(model);
              }
          }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void loadSpringConfigInformationFromWSDL(CXFDataModel model) {
+        IFile wsdlFile = WSDLUtils.getWSDLFolder(model.getProjectName()).getFile(model.getWsdlFileName());
+        if (wsdlFile.exists()) {
+            try {
+                model.setWsdlURL(wsdlFile.getLocationURI().toURL());
+                Definition definition = WSDLUtils.readWSDL(model.getWsdlURL());
+                Map servicesMap = definition.getServices();
+                Set<Map.Entry> servicesSet = servicesMap.entrySet();
+                for (Map.Entry serviceEntry : servicesSet) {
+                    Service service = (Service) serviceEntry.getValue();
+                    model.setServiceName(service.getQName().getLocalPart());
+                    Map portsMap = service.getPorts();
+                    Set<Map.Entry> portsSet = portsMap.entrySet();
+                    for (Map.Entry portEntry : portsSet) {
+                        Port port = (Port) portEntry.getValue();
+                        model.setEndpointName(port.getName());
+                     }
+                }
+                model.setWsdlDefinition(definition);
+            } catch (MalformedURLException murle) {
+               CXFCorePlugin.log(murle);
+            } catch (IOException ioe) {
+                CXFCorePlugin.log(ioe);
+            }
+        }
     }
 
     private static String convertPortTypeName(String portTypeName) {

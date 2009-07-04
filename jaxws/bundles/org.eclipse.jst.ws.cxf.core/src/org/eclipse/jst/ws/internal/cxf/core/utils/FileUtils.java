@@ -36,11 +36,11 @@ import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.sse.ui.internal.FormatProcessorsExtensionReader;
 
@@ -219,7 +219,7 @@ public final class FileUtils {
     }
 
     public static boolean isFileInWebContentFolder(IProject project, IPath filePath) {
-    	IPath webContentPath = FileUtils.getWebContentFolder(project).getLocation();
+    	IPath webContentPath = WSDLUtils.getWebContentFolder(project).getLocation();
     	if (webContentPath.isPrefixOf(filePath)) {
        		return true;
     	}
@@ -237,23 +237,6 @@ public final class FileUtils {
         return false;
     }
 
-    public static IPath getWebContentPath(IProject project) {
-        IPath webContentPath = J2EEUtils.getWebContentPath(project);
-        if (!webContentPath.hasTrailingSeparator()) {
-            webContentPath = webContentPath.addTrailingSeparator();
-        }
-        return webContentPath;
-    }
-    
-    public static IFolder getWebContentFolder(String projectName) {
-    	return FileUtils.getWebContentFolder(FileUtils.getProject(projectName));
-    }
-    
-    public static IFolder getWebContentFolder(IProject project) {
-    	IPath webContentPath = FileUtils.getWebContentPath(project);
-    	return ResourcesPlugin.getWorkspace().getRoot().getFolder(webContentPath);
-    }
-    
     public static void formatXMLFile(IFile file) {
         if (file != null) {
             try {

@@ -35,9 +35,9 @@ import org.eclipse.jst.ws.internal.cxf.core.utils.CommandLineUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.FileUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.LaunchUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.SpringUtils;
-import org.eclipse.jst.ws.internal.cxf.core.utils.WSDLUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
+import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -90,7 +90,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
             FileUtils.copyJ2WFilesFromTmp(model);
             
             if (model.isGenerateWSDL()) {
-                WSDLUtils.loadSpringConfigInformationFromWSDL((model));
+            	SpringUtils.loadSpringConfigInformationFromWSDL((model));
             }
             
             if (model.getFullyQualifiedJavaClassName() != null && 
