@@ -333,11 +333,7 @@
               operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
               property="ServiceTypeRuntimeServer"
               transform="org.eclipse.jst.ws.internal.common.String2TypeRuntimeServerModifier"/>             
-        <map
-              key="GenerateProxy"
-              operation="org.eclipse.jst.ws.internal.creation.ui.widgets.ServerWizardWidgetOutputCommand"
-              property="GenerateProxy"/>
-      <map
+     <map
               key="Service.RuntimeId"
               operation="org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions.ServerExtensionDefaultingCommand"
               property="ServiceTypeRuntimeServer"

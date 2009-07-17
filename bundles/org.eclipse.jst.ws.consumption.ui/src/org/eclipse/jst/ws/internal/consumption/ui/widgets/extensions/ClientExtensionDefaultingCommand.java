@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
+ * 20090714   283312 ericdp@ca.ibm.com - Eric D. Peters, ANT Client gen- message missing server name subst. variable
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.extensions;
 
@@ -612,6 +613,8 @@ public class ClientExtensionDefaultingCommand extends AbstractDataModelOperation
 	}
     if (noRuntimeInstalled){
         String serverLabel = WebServiceRuntimeExtensionUtils2.getServerLabelById(serverId);
+        if (serverLabel == null) // Cannot translate from id to label, so let's just use the id
+        	serverLabel = serverId;
     	status = StatusUtils.errorStatus(NLS.bind(ConsumptionUIMessages.MSG_ERROR_NO_SERVER_RUNTIME_INSTALLED, new String[] {serverLabel}));
         env.getStatusHandler().reportError(status);
     }
