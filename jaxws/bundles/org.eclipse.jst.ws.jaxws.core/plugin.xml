@@ -289,6 +289,20 @@
          <description>
             %WEBSERVICEREFS_RULES
          </description>
+      </processor>
+      <processor
+            annotation="javax.jws.WebService"
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.WebServiceTargetNamespaceRule">
+         <description>
+            %WEBSERVICE_TARGET_NAMESPACE_RULE
+         </description>
+      </processor>     
+      <processor
+            annotation="javax.jws.WebService"
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.WebServiceWSDLLocationRule">
+         <description>
+            %WEBSERVICE_WSDL_LOCATION_RULE
+         </description>
       </processor>     
    </extension>
 

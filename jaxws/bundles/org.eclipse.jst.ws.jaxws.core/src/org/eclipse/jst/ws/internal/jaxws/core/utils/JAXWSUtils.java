@@ -56,6 +56,7 @@ public final class JAXWSUtils {
     public static final String TRUE = "true"; //$NON-NLS-1$
     public static final String TYPE = "type"; //$NON-NLS-1$
     public static final String USE = "use"; //$NON-NLS-1$
+    public static final String WSDL_LOCATION = "wsdlLocation"; //$NON-NLS-1$
     public static final String VALUE = "value"; //$NON-NLS-1$
 
     private JAXWSUtils() {

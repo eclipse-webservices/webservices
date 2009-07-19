@@ -58,7 +58,9 @@ public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchab
     public void setInitialSelection(IStructuredSelection initialSelection) {
         if (initialSelection != null && !initialSelection.isEmpty()) {
             Object firstElement = initialSelection.getFirstElement();
-            className = firstElement.toString();
+            if (firstElement instanceof String) {
+                className = firstElement.toString();
+            }
         }
     }
 

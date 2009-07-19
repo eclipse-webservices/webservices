@@ -12,7 +12,6 @@ package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.MODE;
-import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
 
 import java.util.Collection;
 

@@ -34,5 +34,6 @@ Import-Package: javax.jws,
  javax.xml.ws.http;version="2.1.0",
  javax.xml.ws.soap;version="2.1.0",
  javax.xml.ws.spi;version="2.1.0",
- javax.xml.ws.wsaddressing;version="2.1.0"
+ javax.xml.ws.wsaddressing;version="2.1.0",
+ org.apache.xerces.util
 Bundle-ActivationPolicy: lazy

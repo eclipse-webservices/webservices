@@ -75,12 +75,26 @@ public class JAXWSCoreMessages extends NLS {
 
     public static String WEBSERVICE_WEBSERVICEPROVIDER_COMBINATION;
     
+    public static String WEBSERVICE_DEFAULT_PACKAGE_TARGET_NAMESPACE;
+    
+    public static String WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE;
+    public static String WEBSERVICE_WSDL_LOCATION_NO_PORT_NAME;
+    public static String WEBSERVICE_WSDL_LOCATION_NO_SERVICE_NAME;
+    public static String WEBSERVICE_WSDL_LOCATION_NO_OPERTATION_NAME;
+    public static String WEBSERVICE_WSDL_LOCATION_WSDL_OPERATION_OUTPUT_METHOD_ONEWAY;
+    public static String WEBSERVICE_WSDL_LOCATION_SOAP_BINDING_STYLE;
+    
     public static String SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY;
     public static String SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED;
     
     public static String OPERATION_NAMES_MUST_BE_UNIQUE_ERROR;
     public static String WRAPPER_FAULT_BEAN_NAMES_MUST_BE_UNIQUE;
     public static String DOC_BARE_METHODS_UNIQUE_XML_ELEMENTS;
+    public static String LOCAL_NAME_ATTRIBUTES_MUST_BE_UNIQUE;
+    public static String INVALID_NAME_ATTRIBUTE;
+    
+    public static String PARAMETER_NAME_CLASH;
+    public static String GENERATED_PARAMETER_NAME_CLASH;
     
     static {
         // initialize resource bundle
