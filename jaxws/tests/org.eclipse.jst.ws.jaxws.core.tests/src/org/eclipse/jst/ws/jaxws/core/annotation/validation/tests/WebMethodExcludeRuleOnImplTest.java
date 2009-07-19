@@ -29,11 +29,6 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class WebMethodExcludeRuleOnImplTest extends AbstractAnnotationValidationTest {
 
     @Override

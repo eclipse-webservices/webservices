@@ -23,11 +23,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBareValidationTest {
     @Override
     protected String getClassContents() {

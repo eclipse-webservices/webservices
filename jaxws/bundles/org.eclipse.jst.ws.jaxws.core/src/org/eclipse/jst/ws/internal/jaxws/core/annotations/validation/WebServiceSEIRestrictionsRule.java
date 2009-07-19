@@ -40,11 +40,6 @@ import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
 
     @Override

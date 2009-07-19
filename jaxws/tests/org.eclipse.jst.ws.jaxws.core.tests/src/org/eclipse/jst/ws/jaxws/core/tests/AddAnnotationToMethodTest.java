@@ -23,11 +23,6 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
 
     @Override

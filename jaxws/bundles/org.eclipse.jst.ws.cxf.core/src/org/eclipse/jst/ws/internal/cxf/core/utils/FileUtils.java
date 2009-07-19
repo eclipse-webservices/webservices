@@ -44,9 +44,6 @@ import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.sse.ui.internal.FormatProcessorsExtensionReader;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public final class FileUtils {
 

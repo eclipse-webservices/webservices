@@ -24,11 +24,6 @@ import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class OnewayRules extends AbstractAnnotationProcessor {
     
     @Override

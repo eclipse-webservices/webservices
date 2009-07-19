@@ -24,11 +24,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationsComposite extends Composite {
     private Java2WSPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
     

@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-/**
- * @author sclarke
- */
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;

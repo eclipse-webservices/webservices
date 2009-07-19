@@ -23,11 +23,6 @@ import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.declaration.TypeDeclaration;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcessor {
 
     @Override

@@ -24,9 +24,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-/**
- * @author sclarke
- */
 public class SpringConfigComposite extends Composite {
     private CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
 

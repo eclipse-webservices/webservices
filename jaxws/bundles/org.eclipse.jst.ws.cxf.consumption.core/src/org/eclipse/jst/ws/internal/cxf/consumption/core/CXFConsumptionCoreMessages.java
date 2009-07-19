@@ -12,11 +12,6 @@ package org.eclipse.jst.ws.internal.cxf.consumption.core;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class CXFConsumptionCoreMessages extends NLS {
     private static final String BUNDLE_NAME = 
         "org.eclipse.jst.ws.internal.cxf.consumption.core.CXFConsumptionCoreMessages"; //$NON-NLS-1$

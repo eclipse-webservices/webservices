@@ -42,11 +42,6 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class WebParamAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override

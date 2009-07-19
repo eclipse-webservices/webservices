@@ -20,9 +20,6 @@ import javax.wsdl.Definition;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-/**
- * @author sclarke
- */
 public class PackageNameTableContentProvider implements IStructuredContentProvider {
 
     @SuppressWarnings("unchecked")

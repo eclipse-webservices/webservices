@@ -52,7 +52,6 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * A <code>SelectionStatusDialog</code> which allows the selection of files
  * with a specific extension from the workspace or file system.
  * 
- * @author sclarke
  */
 public class ResourceSelectionDialog extends SelectionStatusDialog {
     private IStatus OK_FILE_STATUS = new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$

@@ -31,11 +31,6 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.swt.graphics.Image;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
     private TreeViewer annotationTreeViewer;
     private Image true_image;

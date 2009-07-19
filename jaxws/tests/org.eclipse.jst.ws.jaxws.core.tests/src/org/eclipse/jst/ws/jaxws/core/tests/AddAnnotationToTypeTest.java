@@ -23,11 +23,6 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
 
     @Override

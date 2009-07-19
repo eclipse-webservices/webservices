@@ -49,9 +49,6 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public final class SpringUtils {
     private static Namespace SPRING_BEANS_NS = Namespace

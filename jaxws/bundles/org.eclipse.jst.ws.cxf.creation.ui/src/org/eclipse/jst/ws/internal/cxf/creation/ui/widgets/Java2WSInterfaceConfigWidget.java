@@ -23,10 +23,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
-/**
- * 
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class Java2WSInterfaceConfigWidget extends SimpleWidgetDataContributor {
     private Java2WSDataModel model;

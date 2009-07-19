@@ -27,9 +27,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.TabFolder;
 
-/**
- * @author sclarke
- */
 public class Java2WSRuntimePreferencesComposite extends Composite {
     private Java2WSPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
     

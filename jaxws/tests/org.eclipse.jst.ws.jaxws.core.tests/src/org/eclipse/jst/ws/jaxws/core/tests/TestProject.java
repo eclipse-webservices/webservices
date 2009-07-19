@@ -19,11 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class TestProject {
     IProgressMonitor monitor = new NullProgressMonitor();
 

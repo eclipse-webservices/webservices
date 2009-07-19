@@ -44,7 +44,6 @@ import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeIn
  * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
- * @author sclarke
  */
 public final class AnnotationsManager {
     public static final String ANNOTATION_DEFINITION = "annotationDefinition"; //$NON-NLS-1$

@@ -14,11 +14,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationsViewContentProvider implements ITreeContentProvider {
 
 	public Object[] getChildren(Object parentElement) {

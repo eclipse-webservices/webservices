@@ -17,9 +17,6 @@ import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public abstract class CXFPersistentContext extends PersistentContext implements CXFContext {
     /**

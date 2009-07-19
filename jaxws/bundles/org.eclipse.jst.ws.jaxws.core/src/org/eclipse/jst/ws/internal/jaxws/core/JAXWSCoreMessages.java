@@ -13,11 +13,6 @@ package org.eclipse.jst.ws.internal.jaxws.core;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class JAXWSCoreMessages extends NLS {
     private static final String BUNDLE_NAME = 
         "org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages"; //$NON-NLS-1$

@@ -23,9 +23,6 @@ import org.eclipse.jst.ws.internal.cxf.consumption.ui.CXFConsumptionUIPlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class JAXWSSelectionTransformer implements Transformer {
 

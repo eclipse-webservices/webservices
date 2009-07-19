@@ -25,11 +25,6 @@ import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor {
 
     @Override

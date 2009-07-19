@@ -56,7 +56,6 @@ import org.eclipse.ui.dialogs.SelectionDialog;
  * tooltips set here and where possible listeners are set which update instances
  * of <code>WSDL2JavaContext</code> and <code>WSDL2JavaDataModel</code>.
  * 
- * @author sclarke
  */
 public final class WSDL2JavaWidgetFactory {
     private static final String XJC_DV_ARG = "-Xdv"; //$NON-NLS-1$

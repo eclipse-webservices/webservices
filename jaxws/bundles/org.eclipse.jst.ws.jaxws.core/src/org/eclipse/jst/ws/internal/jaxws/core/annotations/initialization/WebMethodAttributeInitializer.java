@@ -29,11 +29,6 @@ import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeIni
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebMethodAttributeInitializer extends AnnotationAttributeInitializer {
     
     @Override

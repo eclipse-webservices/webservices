@@ -61,7 +61,6 @@ import org.xml.sax.InputSource;
  * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
- * @author sclarke
  */
 public final class WSDLUtils {
     private static final String WSDL_FILE_NAME_PATTERN = "[a-zA-Z0-9_\\-]+.wsdl";//$NON-NLS-1$

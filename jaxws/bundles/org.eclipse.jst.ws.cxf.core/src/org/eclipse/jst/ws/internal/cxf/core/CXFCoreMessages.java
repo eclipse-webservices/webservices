@@ -12,11 +12,6 @@ package org.eclipse.jst.ws.internal.cxf.core;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class CXFCoreMessages extends NLS {
     private static final String BUNDLE_NAME = 
         "org.eclipse.jst.ws.internal.cxf.core.CXFCoreMessages"; //$NON-NLS-1$

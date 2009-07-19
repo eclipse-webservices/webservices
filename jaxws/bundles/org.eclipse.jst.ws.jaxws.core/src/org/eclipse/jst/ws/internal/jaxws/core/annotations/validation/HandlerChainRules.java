@@ -25,11 +25,6 @@ import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class HandlerChainRules extends AbstractAnnotationProcessor {
 
     @Override

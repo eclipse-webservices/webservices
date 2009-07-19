@@ -72,11 +72,6 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationsView extends ViewPart implements INullSelectionListener, IPartListener2 {
     private PageBook pageBook;
     private Tree annotationTree;

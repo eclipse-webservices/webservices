@@ -23,11 +23,6 @@ import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class Java2WSValidateInputCommand extends AbstractDataModelOperation {
     
     private Java2WSDataModel model;

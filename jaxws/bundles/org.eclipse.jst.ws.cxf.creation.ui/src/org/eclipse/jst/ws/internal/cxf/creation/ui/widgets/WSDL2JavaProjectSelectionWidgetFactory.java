@@ -25,7 +25,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.INamedWidgetContributorFa
  * <p>
  * Used in conjunction with <code>WSDL2JavaProjectSelectionCommand</code>
  * 
- * @author sclarke
  */
 @SuppressWarnings("restriction")
 public class WSDL2JavaProjectSelectionWidgetFactory implements INamedWidgetContributorFactory {

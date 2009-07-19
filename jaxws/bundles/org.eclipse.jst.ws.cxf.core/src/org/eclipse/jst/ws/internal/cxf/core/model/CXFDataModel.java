@@ -14,7 +14,6 @@ import java.net.URL;
 import javax.wsdl.Definition;
 
 /**
- * @author sclarke
  * 
  * @model abstract="true"
  */

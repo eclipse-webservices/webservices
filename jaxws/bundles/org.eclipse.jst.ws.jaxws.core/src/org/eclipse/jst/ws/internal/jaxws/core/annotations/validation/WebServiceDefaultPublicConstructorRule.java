@@ -24,11 +24,6 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.Modifier;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationProcessor {
 
     @Override

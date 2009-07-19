@@ -12,9 +12,6 @@ package org.eclipse.jst.ws.internal.cxf.creation.ui;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * @author sclarke
- */
 public class CXFCreationUIMessages extends NLS {
     private static final String BUNDLE_NAME = 
         "org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUImessages"; //$NON-NLS-1$

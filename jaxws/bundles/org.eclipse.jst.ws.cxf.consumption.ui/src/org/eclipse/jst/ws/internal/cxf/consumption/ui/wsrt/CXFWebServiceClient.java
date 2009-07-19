@@ -24,9 +24,6 @@ import org.eclipse.wst.ws.internal.wsrt.IContext;
 import org.eclipse.wst.ws.internal.wsrt.ISelection;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class CXFWebServiceClient extends AbstractWebServiceClient {
 

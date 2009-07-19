@@ -29,7 +29,6 @@ import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 /**
  * Listens for changes to the <code>IJavaProject</code> src folder.
  * 
- * @author sclarke
  */
 public class JavaResourceChangeListener implements IResourceChangeListener {
     private List<IResource> changedResources = new ArrayList<IResource>();

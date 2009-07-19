@@ -15,7 +15,6 @@ import java.util.Map;
 import org.eclipse.jdt.core.IMethod;
 
 /**
- * @author sclarke
  * 
  * @model
  */

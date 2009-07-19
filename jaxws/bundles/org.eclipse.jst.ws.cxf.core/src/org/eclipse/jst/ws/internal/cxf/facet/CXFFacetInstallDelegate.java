@@ -49,14 +49,12 @@ import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
- * Copies the contents of the cxf lib folder from the cxf home directory into
- * the WEB-INF/lib in the web projects WebContent directory.
+ * Adds the CXF classpath container to the project.
  * <p>
  * Also sets up the web projects application deployment descriptor (web.xml file)
  * to use cxf-servlet or the Spring Application context (WEB-INF/beans.xml) for 
  * endpoint configuration. Depends on a setting in the CXF preferences. 
  * 
- * @author sclarke
  */
 public class CXFFacetInstallDelegate implements IDelegate {
 

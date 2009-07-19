@@ -20,11 +20,6 @@ import org.eclipse.jst.ws.annotations.core.AnnotationDefinition;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.ui.IMemento;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationsViewCategoryFilter extends ViewerFilter {
     private static final String TAG_CATEGORY = "AnnotationCategoryFilterInfo"; //$NON-NLS-1$
     private static final String TAG_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$

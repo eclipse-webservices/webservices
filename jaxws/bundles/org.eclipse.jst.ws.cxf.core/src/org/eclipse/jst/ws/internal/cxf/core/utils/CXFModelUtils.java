@@ -53,8 +53,6 @@ import org.osgi.framework.Version;
  * Provides utility methods for working with the CXF model.
  * Also serving as an interim class to aid in refactoring core utilities into jaxws core.
  * 
- * @author sclarke
- *
  */
 public final class CXFModelUtils {
     private static final Version v_0_0_0 = new Version("0.0.0");

@@ -25,11 +25,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
-/**
- * 
- * @author sclarke
- *
- */
 @SuppressWarnings("restriction")
 public class WSDL2JavaClientDefaultsConfigWidget extends SimpleWidgetDataContributor {
     

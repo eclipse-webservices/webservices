@@ -26,7 +26,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
  * This is stop gap workaround for bugs <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=243286">#243286</a>
  * and <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=243290">#243290</a>
  * 
- * @author sclarke
  *
  */
 public class WSDL2JavaProjectSelectionCommand extends AbstractDataModelOperation {

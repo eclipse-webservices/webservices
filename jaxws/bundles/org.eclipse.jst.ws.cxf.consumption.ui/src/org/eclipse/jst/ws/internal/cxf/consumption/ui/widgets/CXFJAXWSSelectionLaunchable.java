@@ -43,9 +43,6 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class CXFJAXWSSelectionLaunchable extends AbstractObjectSelectionLaunchable {
     private IStatus validationStatus = Status.OK_STATUS;

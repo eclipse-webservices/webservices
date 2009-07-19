@@ -41,11 +41,7 @@ import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.console.MessageConsole;
 
-/**
- * @author sclarke
- */
 public final class LaunchUtils {
-    //private static final String MESSAGE_CONSOLE_NAME = "CXF";
     
     private LaunchUtils() {
     }

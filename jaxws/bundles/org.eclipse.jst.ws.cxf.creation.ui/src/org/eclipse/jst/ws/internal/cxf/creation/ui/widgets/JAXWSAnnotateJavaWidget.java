@@ -77,9 +77,6 @@ import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
     IStatus status = Status.OK_STATUS;

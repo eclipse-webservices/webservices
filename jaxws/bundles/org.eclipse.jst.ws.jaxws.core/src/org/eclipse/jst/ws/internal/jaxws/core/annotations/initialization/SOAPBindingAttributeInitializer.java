@@ -29,11 +29,6 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class SOAPBindingAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override

@@ -15,11 +15,6 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class JAXWSCorePlugin extends Plugin {
     public static final String PLUGIN_ID = "org.eclipse.jst.ws.jaxws.core"; //$NON-NLS-1$
     

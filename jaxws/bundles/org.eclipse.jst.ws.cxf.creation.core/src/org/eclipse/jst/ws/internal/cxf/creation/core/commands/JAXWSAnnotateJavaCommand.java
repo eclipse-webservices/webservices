@@ -37,9 +37,6 @@ import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
-/**
- * @author sclarke
- */
 public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
     private int numberOfChanges = 0;
 

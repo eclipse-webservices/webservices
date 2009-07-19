@@ -27,11 +27,6 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class SOAPBindingMethodStyleDocumentRule extends AbstractAnnotationProcessor {
     
     @Override

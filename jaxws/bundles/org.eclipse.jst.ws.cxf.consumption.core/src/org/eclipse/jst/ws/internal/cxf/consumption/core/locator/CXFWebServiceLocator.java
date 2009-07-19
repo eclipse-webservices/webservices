@@ -19,9 +19,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.wst.ws.internal.wsfinder.AbstractWebServiceLocator;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class CXFWebServiceLocator extends AbstractWebServiceLocator {
 

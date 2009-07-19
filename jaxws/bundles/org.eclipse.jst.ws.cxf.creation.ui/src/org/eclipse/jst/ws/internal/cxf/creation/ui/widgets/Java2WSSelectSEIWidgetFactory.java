@@ -25,11 +25,6 @@ import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 
-/**
- * 
- * @author sclarke
- * 
- */
 @SuppressWarnings("restriction")
 public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFactory {
     private SimpleWidgetContributor classWidgetContributor;

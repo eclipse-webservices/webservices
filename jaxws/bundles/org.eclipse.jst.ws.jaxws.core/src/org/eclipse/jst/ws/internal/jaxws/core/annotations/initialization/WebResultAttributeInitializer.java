@@ -44,11 +44,6 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebResultAttributeInitializer extends AnnotationAttributeInitializer {
     
     @Override

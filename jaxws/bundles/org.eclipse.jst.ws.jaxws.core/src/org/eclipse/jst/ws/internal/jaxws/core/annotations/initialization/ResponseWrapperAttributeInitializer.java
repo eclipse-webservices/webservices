@@ -24,11 +24,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class ResponseWrapperAttributeInitializer extends RequestWrapperAttributeInitializer {
 
     @Override

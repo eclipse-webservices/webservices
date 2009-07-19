@@ -20,7 +20,6 @@ import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAM
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -39,11 +38,6 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class RequestWrapperAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override

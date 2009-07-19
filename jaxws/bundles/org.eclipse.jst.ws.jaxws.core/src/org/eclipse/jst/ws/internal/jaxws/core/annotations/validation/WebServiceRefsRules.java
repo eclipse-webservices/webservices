@@ -29,11 +29,6 @@ import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class WebServiceRefsRules extends AbstractAnnotationProcessor {
 
     @Override

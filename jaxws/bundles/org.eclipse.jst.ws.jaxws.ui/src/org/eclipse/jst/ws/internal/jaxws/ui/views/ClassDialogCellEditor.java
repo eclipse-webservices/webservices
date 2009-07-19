@@ -24,11 +24,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class ClassDialogCellEditor extends DialogCellEditor {
 
     public ClassDialogCellEditor(Composite parent) {

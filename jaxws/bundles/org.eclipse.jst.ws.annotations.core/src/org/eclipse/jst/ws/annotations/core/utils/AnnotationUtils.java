@@ -91,7 +91,6 @@ import com.sun.mirror.declaration.ParameterDeclaration;
  * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
- * @author sclarke
  */
 public final class AnnotationUtils {
     private static final String FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR 

@@ -27,11 +27,6 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.InterfaceDeclaration;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebServiceSEIAllowedAttributesRule extends AbstractAnnotationProcessor {
 
     @Override

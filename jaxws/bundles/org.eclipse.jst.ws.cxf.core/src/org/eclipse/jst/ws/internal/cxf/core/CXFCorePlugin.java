@@ -21,7 +21,6 @@ import org.osgi.framework.Version;
 /**
  * The activator class controls the plug-in life cycle
  * 
- * @author sclarke
  */
 public class CXFCorePlugin extends AbstractUIPlugin {
 

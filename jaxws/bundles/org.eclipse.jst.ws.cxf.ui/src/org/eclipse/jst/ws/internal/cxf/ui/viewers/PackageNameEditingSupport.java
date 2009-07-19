@@ -23,9 +23,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-/**
- * @author sclarke
- */
 public class PackageNameEditingSupport extends EditingSupport implements SelectionListener {
     private CellEditor packageNameCellEditor;
     private Table table;

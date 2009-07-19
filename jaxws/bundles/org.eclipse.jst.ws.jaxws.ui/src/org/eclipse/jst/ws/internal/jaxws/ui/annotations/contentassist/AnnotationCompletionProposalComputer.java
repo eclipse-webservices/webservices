@@ -38,11 +38,6 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationCompletionProposalComputer implements IJavaCompletionProposalComputer {
 
 	public AnnotationCompletionProposalComputer() {

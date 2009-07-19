@@ -27,9 +27,6 @@ import org.eclipse.emf.codegen.merge.java.facade.JCompilationUnit;
 import org.eclipse.emf.codegen.util.CodeGenUtil;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 
-/**
- * @author sclarke
- */
 public final class MergeUtils {
 
     private MergeUtils() {

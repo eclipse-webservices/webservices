@@ -17,9 +17,6 @@ import org.eclipse.wst.ws.internal.wsrt.IWebServiceClient;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceClientInfo;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class CXFWebServiceRuntime extends AbstractWebServiceRuntime {
 

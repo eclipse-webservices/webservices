@@ -30,11 +30,6 @@ import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class HolderTypeParametersRule extends AbstractAnnotationProcessor {
     
     @Override

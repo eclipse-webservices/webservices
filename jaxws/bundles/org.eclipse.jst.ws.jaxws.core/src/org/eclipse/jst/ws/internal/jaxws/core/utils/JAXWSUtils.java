@@ -21,11 +21,6 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public final class JAXWSUtils {
 
     public static final String ACTION = "action";

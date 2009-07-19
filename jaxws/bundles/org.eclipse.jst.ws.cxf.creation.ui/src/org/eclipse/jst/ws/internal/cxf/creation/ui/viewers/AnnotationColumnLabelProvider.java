@@ -24,9 +24,6 @@ import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin;
 import org.eclipse.swt.graphics.Image;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class AnnotationColumnLabelProvider extends ColumnLabelProvider {
     private Image addAnnotationImage;

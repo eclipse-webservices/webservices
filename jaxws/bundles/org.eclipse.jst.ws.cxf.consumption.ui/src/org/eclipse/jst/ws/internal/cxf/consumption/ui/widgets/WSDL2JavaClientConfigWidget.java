@@ -45,9 +45,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class WSDL2JavaClientConfigWidget extends SimpleWidgetDataContributor {
     private IStatus status = Status.OK_STATUS;

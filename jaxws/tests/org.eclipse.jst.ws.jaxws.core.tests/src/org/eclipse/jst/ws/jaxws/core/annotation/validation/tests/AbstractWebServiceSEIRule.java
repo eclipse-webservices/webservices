@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
-/**
- * 
- * @author sclarke
- *
- */
 public abstract class AbstractWebServiceSEIRule extends AbstractAnnotationValidationTest {
 
     @Override

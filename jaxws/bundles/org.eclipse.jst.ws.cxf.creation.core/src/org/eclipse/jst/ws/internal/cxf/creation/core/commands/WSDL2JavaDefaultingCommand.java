@@ -52,9 +52,6 @@ import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.ws.internal.util.WSDLCopier;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     private WSDL2JavaDataModel model;

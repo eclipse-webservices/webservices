@@ -24,11 +24,6 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
 
     @Override

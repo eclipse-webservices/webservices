@@ -14,9 +14,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class IStructuredSelectionToIProjectTransformer implements Transformer {
 

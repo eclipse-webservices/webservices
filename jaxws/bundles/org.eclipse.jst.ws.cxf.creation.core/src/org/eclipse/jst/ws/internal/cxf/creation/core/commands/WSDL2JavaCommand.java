@@ -40,7 +40,6 @@ import org.eclipse.wst.ws.internal.wsrt.IWebService;
 /**
  * Provides a wrapper around the <code>org.apache.cxf.tools.wsdlto.WSDLToJava</code> command.
  * 
- * @author sclarke
  */
 @SuppressWarnings("restriction")
 public class WSDL2JavaCommand extends AbstractDataModelOperation {

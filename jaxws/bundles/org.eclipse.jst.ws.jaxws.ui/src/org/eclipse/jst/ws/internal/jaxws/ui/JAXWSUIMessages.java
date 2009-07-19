@@ -12,9 +12,6 @@ package org.eclipse.jst.ws.internal.jaxws.ui;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * @author sclarke
- */
 public class JAXWSUIMessages extends NLS {
     private static final String BUNDLE_NAME = "org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages"; //$NON-NLS-1$
     

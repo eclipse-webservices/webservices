@@ -24,11 +24,6 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
-/**
- * 
- * @author sclarke
- *
- */
 public abstract class AbstractOnewayValidationTest extends AbstractAnnotationValidationTest {
 
     @Override

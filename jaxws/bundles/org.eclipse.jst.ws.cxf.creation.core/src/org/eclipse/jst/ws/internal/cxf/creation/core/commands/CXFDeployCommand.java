@@ -39,10 +39,6 @@ import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.ws.internal.wsrt.IWebService;
 import org.eclipse.wst.ws.internal.wsrt.WebServiceInfo;
 
-/**
- * 
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class CXFDeployCommand extends AbstractDataModelOperation {
     private static final String CXF_SERVLET = "org.apache.cxf.transport.servlet.CXFServlet"; //$NON-NLS-1$

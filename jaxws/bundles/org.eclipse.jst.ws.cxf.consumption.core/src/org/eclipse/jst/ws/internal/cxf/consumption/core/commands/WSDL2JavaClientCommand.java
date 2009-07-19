@@ -36,7 +36,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
  * Executes the <code>org.apache.cxf.tools.wsdlto.WSDLToJava</code> command with the arguments
  * necessary to generate a client.
  * 
- * @author sclarke
  */
 public class WSDL2JavaClientCommand extends AbstractDataModelOperation {
     public static final String CXF_TOOL_CLASS_NAME = "org.apache.cxf.tools.wsdlto.WSDLToJava"; //$NON-NLS-1$

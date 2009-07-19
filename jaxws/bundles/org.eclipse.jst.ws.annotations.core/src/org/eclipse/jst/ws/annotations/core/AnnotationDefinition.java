@@ -28,7 +28,6 @@ import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeIn
  * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
- * @author sclarke
  */
 public class AnnotationDefinition {
     private static final String ATT_CLASS = "class"; //$NON-NLS-1$

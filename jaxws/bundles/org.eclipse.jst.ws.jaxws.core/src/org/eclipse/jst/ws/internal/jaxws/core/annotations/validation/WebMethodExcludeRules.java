@@ -29,11 +29,6 @@ import com.sun.mirror.declaration.InterfaceDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
 
     @Override

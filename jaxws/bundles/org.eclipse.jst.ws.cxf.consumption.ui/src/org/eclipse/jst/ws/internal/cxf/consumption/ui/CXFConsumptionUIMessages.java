@@ -12,11 +12,6 @@ package org.eclipse.jst.ws.internal.cxf.consumption.ui;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class CXFConsumptionUIMessages extends NLS {
     private static final String BUNDLE_NAME = 
         "org.eclipse.jst.ws.internal.cxf.consumption.ui.CXFConsumptionUIMessages"; //$NON-NLS-1$

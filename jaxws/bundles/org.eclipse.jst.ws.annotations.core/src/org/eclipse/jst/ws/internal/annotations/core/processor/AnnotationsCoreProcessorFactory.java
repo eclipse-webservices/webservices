@@ -29,11 +29,6 @@ import com.sun.mirror.apt.AnnotationProcessorFactory;
 import com.sun.mirror.apt.AnnotationProcessors;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationsCoreProcessorFactory implements AnnotationProcessorFactory {
 
     public AnnotationProcessor getProcessorFor(Set<AnnotationTypeDeclaration> annotationSet,

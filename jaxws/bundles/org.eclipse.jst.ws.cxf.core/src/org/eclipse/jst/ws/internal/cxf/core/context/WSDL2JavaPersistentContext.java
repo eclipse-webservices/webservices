@@ -17,9 +17,6 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaContext;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class WSDL2JavaPersistentContext extends CXFPersistentContext implements WSDL2JavaContext {
     public static final String PREFERENCE_W2J_GENERATE_CLIENT = "cxfW2JGenerateClient"; //$NON-NLS-1$

@@ -17,9 +17,6 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSContext;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class Java2WSPersistentContext extends CXFPersistentContext implements Java2WSContext {
     /**

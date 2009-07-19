@@ -28,11 +28,6 @@ import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class TestJavaProject extends TestProject {
     private IJavaProject javaProject;
     

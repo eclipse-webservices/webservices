@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Text;
  * set here and where possible listeners are set which update instances of
  * <code>Java2WSContext</code> and <code>Java2WSDataModel</code>.
  * 
- * @author sclarke
  */
 public final class Java2WSWidgetFactory {
 

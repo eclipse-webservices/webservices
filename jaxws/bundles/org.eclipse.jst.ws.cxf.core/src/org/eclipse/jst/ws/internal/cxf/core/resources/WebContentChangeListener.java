@@ -27,7 +27,6 @@ import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 /**
  * Listens for changes to the web projects WebContent folder.
  * 
- * @author sclarke
  */
 @SuppressWarnings("restriction")
 public class WebContentChangeListener implements IResourceChangeListener {

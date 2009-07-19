@@ -24,9 +24,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-/**
- * @author sclarke
- */
 public class CXF21WSDL2JavaPreferencesComposite extends Composite {
     WSDL2JavaContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
 

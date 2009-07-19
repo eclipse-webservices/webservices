@@ -35,7 +35,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
  * from the preferences and with the initial runtime information such as the
  * starting point WSDL URL.
  * 
- * @author sclarke
  */
 public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation {
     private WSDL2JavaDataModel model;

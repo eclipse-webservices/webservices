@@ -13,11 +13,6 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public class JAXWSAnnotationValidationTestSuite extends TestSuite {
 
     public static Test suite() {

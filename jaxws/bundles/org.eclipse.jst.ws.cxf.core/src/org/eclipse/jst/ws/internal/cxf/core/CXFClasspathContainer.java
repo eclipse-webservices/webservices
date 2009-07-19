@@ -22,11 +22,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class CXFClasspathContainer implements IClasspathContainer {
 
 	private IPath path;

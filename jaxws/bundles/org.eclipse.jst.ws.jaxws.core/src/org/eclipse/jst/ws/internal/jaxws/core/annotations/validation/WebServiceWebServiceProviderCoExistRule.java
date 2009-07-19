@@ -22,11 +22,6 @@ import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class WebServiceWebServiceProviderCoExistRule extends AbstractAnnotationProcessor {
     
     @Override

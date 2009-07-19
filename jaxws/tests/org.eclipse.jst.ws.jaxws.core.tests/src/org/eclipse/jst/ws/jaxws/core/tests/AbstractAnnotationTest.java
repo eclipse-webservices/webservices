@@ -25,11 +25,6 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 
-/**
- * 
- * @author sclarke
- *
- */
 public abstract class AbstractAnnotationTest extends TestCase {
     protected TestJavaProject testJavaProject;
     protected ICompilationUnit source;

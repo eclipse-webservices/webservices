@@ -45,7 +45,6 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
  * <code>org.apache.cxf.tools.java2wsdl.JavaToWSDL</code> command depending on the version
  * of CXF used.
  * 
- * @author sclarke
  */
 public class Java2WSCommand extends AbstractDataModelOperation {
     private static String JAVA2WSDL_TOOL_CLASS_NAME = "org.apache.cxf.tools.java2wsdl.JavaToWSDL"; //$NON-NLS-1$

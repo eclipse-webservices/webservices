@@ -23,9 +23,6 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public final class CommandLineUtils {
     // Java2WSDL

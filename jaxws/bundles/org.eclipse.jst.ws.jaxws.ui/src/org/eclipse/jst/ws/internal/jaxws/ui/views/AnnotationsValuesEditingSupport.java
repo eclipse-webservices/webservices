@@ -66,10 +66,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-/**
- * @author sclarke
- * 
- */
 public class AnnotationsValuesEditingSupport extends EditingSupport {
     private AnnotationsView annotationsView;
     private TreeViewer treeViewer;

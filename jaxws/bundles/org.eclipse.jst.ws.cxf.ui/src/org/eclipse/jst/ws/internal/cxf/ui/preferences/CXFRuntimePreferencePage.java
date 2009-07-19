@@ -54,9 +54,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.framework.Version;
 
-/**
- * @author sclarke
- */
 public class CXFRuntimePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
     private IStatus CXF_LOCATION_STATUS = new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, null);
     private IStatus OK_STATUS = new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$

@@ -42,9 +42,6 @@ import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
-/**
- * @author sclarke
- */
 @SuppressWarnings("restriction")
 public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
     private Change undoExtractInterfaceChange;

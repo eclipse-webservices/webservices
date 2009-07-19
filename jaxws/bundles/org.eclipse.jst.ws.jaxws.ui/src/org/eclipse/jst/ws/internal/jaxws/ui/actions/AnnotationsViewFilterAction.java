@@ -28,10 +28,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-/**
- * @author sclarke
- *
- */
 public class AnnotationsViewFilterAction extends Action {
     private StructuredViewer viewer;
     private AnnotationsViewCategoryFilter categoryFilter;

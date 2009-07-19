@@ -22,11 +22,6 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 
-/**
- * 
- * @author sclarke
- * 
- */
 public abstract class AbstractDocumentBareValidationTest extends AbstractAnnotationValidationTest {
 
     @Override

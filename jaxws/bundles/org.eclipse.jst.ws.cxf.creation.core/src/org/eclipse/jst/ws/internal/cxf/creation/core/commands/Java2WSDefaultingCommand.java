@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.creation.core.commands;
 
-import java.util.Locale;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,9 +28,6 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
-/**
- * @author sclarke
- */
 public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
     private Java2WSDataModel model;
 

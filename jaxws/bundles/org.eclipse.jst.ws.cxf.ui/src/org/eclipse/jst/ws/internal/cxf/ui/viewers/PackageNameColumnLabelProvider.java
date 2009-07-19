@@ -16,9 +16,6 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 
-/**
- * @author sclarke
- */
 public class PackageNameColumnLabelProvider extends ColumnLabelProvider {
     private Map<String, String> includedNamespaces;
 

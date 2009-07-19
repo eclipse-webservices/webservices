@@ -12,9 +12,6 @@ package org.eclipse.jst.ws.internal.cxf.ui;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * @author sclarke
- */
 public class CXFUIMessages extends NLS {
     private static final String BUNDLE_NAME = "org.eclipse.jst.ws.internal.cxf.ui.CXFUImessages"; //$NON-NLS-1$
     public static String CXF_RUNTIME_PREFERENCE_PAGE_RUNTIME_HOME_TAB_NAME;

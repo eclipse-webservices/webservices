@@ -62,11 +62,6 @@ import com.sun.mirror.type.ReferenceType;
 import com.sun.mirror.type.TypeMirror;
 import com.sun.mirror.util.SourcePosition;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class UniqueNamesRule extends AbstractAnnotationProcessor {
     private static Pattern pattern = Pattern.compile("arg\\d++");
     

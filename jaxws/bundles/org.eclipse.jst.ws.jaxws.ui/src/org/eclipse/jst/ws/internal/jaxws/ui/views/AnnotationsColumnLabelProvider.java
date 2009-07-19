@@ -18,11 +18,6 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class AnnotationsColumnLabelProvider extends ColumnLabelProvider {
 
     @Override

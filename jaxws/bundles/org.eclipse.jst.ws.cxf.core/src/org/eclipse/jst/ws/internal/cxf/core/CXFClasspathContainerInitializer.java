@@ -17,11 +17,6 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
-/**
- * 
- * @author sclarke
- *
- */
 public class CXFClasspathContainerInitializer extends ClasspathContainerInitializer {
 
 	@Override

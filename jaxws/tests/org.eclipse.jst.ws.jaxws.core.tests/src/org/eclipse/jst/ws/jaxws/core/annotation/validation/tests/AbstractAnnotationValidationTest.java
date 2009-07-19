@@ -12,11 +12,6 @@ package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
 import org.eclipse.jst.ws.jaxws.core.tests.AbstractAnnotationTest;
 
-/**
- * 
- * @author sclarke
- *
- */
 public abstract class AbstractAnnotationValidationTest extends AbstractAnnotationTest {
 
     @Override

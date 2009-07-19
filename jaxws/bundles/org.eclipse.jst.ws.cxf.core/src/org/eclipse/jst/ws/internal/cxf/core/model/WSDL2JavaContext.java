@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.internal.cxf.core.model;
 
 /**
- * @author sclarke
  * 
  * @model abstract="true" interface="true"
  */

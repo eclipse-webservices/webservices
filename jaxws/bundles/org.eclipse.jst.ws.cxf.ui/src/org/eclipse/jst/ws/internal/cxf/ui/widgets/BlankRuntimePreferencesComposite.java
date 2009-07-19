@@ -19,9 +19,6 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-/**
- * @author sclarke
- */
 public class BlankRuntimePreferencesComposite extends Composite {
 
     public BlankRuntimePreferencesComposite(Composite parent, int style) {
