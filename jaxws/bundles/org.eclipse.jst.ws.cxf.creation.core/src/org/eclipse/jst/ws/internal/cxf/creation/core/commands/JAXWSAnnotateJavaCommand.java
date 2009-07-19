@@ -200,7 +200,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
                 numberOfChanges++;
             }
         } catch (CoreException ce) {
-            ce.printStackTrace();
+            CXFCreationCorePlugin.log(ce.getStatus());
         } finally {
             manager.changePerformed(change, successful);
         }

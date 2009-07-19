@@ -738,7 +738,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                 successful = true;
             }
         } catch (CoreException ce) {
-            ce.printStackTrace();
+            JAXWSUIPlugin.log(ce.getStatus());
         } finally {
             manager.changePerformed(change, successful);
         }
