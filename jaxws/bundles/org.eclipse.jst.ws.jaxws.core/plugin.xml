@@ -303,7 +303,7 @@
          <description>
             %WEBSERVICE_WSDL_LOCATION_RULE
          </description>
-      </processor>     
+      </processor>
    </extension>
 
 </plugin>

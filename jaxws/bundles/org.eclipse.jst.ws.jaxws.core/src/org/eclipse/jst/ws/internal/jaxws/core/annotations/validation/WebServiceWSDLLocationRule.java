@@ -72,6 +72,9 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
                 ClassDeclaration classDeclaration = (ClassDeclaration) declaration;
                 AnnotationMirror webService = AnnotationUtils.getAnnotation(declaration, WebService.class);
                 AnnotationValue wsdlLocationValue = AnnotationUtils.getAnnotationValue(webService, WSDL_LOCATION);
+                if (wsdlLocationValue == null) {
+                	break;
+                }
                 String wsdlLocation = wsdlLocationValue.getValue().toString();
                 if (wsdlLocation != null && wsdlLocation.trim().length() > 0) {
                     try {
