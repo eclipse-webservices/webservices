@@ -27,8 +27,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.jdt.internal.core.SourceMethod;
-import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaSourceViewer;
 import org.eclipse.jdt.internal.ui.text.SimpleJavaSourceViewerConfiguration;
@@ -159,7 +157,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                         ICompilationUnit compilationUnit = (ICompilationUnit) element;
                         IType[] types = compilationUnit.getTypes();
                         for (IType type : types) {
-                            if (type instanceof SourceType) {
+                            if (type instanceof IType) {
                                 return new Object[] {type};
                             }
                         }
@@ -168,9 +166,9 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                     }
                 }
 
-                if (element instanceof SourceType) {
+                if (element instanceof IType) {
                     try {
-                        SourceType sourceType = (SourceType) element;
+                        IType sourceType = (IType) element;
                         List<IMethod> publicMethods = new ArrayList<IMethod>();
                         IMethod[] methods = sourceType.getMethods();
                         if (sourceType.isInterface()) {
@@ -207,8 +205,8 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                     FindReplaceDocumentAdapter findReplaceDocumentAdapter = 
                     	new FindReplaceDocumentAdapter(document);
                     try {
-                        if (firstElement instanceof SourceType) {
-                            SourceType sourceType = (SourceType) firstElement;
+                        if (firstElement instanceof IType) {
+                            IType sourceType = (IType) firstElement;
                             String elementName = sourceType.getElementName();
                             
                             StringBuilder regex = new StringBuilder("\\bpublic\\W+(?:\\w+\\W+){1,3}?");
@@ -219,9 +217,9 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
 
                             annotationPreviewViewer.setSelectedRange(region.getOffset(), region.getLength());
                             annotationPreviewViewer.revealRange(region.getOffset(), region.getLength());
-                        } else if (firstElement instanceof SourceMethod) {
-                            SourceMethod sourceMethod = (SourceMethod) firstElement;
-                            SourceType sourceType = (SourceType) sourceMethod.getParent();
+                        } else if (firstElement instanceof IMethod) {
+                            IMethod sourceMethod = (IMethod) firstElement;
+                            IType sourceType = (IType) sourceMethod.getParent();
                             
                             String elementName = sourceMethod.getElementName();
                             
@@ -509,8 +507,8 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
 
         @Override
         protected void setValue(Object element, Object value) {
-            if (element instanceof SourceMethod) {
-                SourceMethod method = (SourceMethod) element;
+            if (element instanceof IMethod) {
+                IMethod method = (IMethod) element;
                 Boolean annotate = (Boolean) value;
                 Map<String, Boolean> annotationMap = model.getMethodMap().get(element);
                 annotationMap.put(annotationKey, annotate);

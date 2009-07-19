@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.internal.cxf.creation.core.commands;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -25,28 +24,24 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter;
-import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
-import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.utils.CXFModelUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
+import org.eclipse.ltk.core.refactoring.IUndoManager;
+import org.eclipse.ltk.core.refactoring.RefactoringCore;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.MultiTextEdit;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
  * @author sclarke
  */
-@SuppressWarnings("restriction")
 public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
-
-    private Stack<Change> interfaceUndoChanges = new Stack<Change>();
-    private Stack<Change> classUndoChanges = new Stack<Change>();
+    private int numberOfChanges = 0;
 
     private Java2WSDataModel model;
     private IType javaClassType;
@@ -123,7 +118,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         CXFModelUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model, 
         		textFileChange, false);
         
-        executeChange(monitor, textFileChange, interfaceUndoChanges);
+        executeChange(monitor, textFileChange);
     }
     
     private void annotateClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
@@ -166,7 +161,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
         		textFileChange, false);
         
-        executeChange(monitor, textFileChange, classUndoChanges);
+        executeChange(monitor, textFileChange);
     }
 
     private void annotateSEIClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
@@ -184,55 +179,52 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
         		textFileChange, true);
 
-        executeChange(monitor, textFileChange, classUndoChanges);
+        executeChange(monitor, textFileChange);
     }
     
-    private void executeChange(IProgressMonitor monitor, Change change, Stack<Change> undoChanges) 
-            throws InvocationTargetException, InterruptedException {
-        
+    private void executeChange(IProgressMonitor monitor, Change change) {
         if (change == null) {
             return;
         }
-        
-        change.initializeValidationData(monitor);
 
-        PerformChangeOperation changeOperation = new PerformChangeOperation(change);
-
-        WorkbenchRunnableAdapter adapter = new WorkbenchRunnableAdapter(changeOperation);
-        PlatformUI.getWorkbench().getProgressService().runInUI(new BusyIndicatorRunnableContext(), adapter,
-                adapter.getSchedulingRule());
-
-        if (undoChanges != null && changeOperation.changeExecuted()) {
-            undoChanges.push(changeOperation.getUndoChange());
-        }        
+        IUndoManager manager= RefactoringCore.getUndoManager();
+        boolean successful = false;
+        Change undoChange = null;
+        try {
+            change.initializeValidationData(monitor);
+            RefactoringStatus valid = change.isValid(monitor);
+            if (valid.isOK()) {
+                manager.aboutToPerformChange(change);
+                undoChange = change.perform(monitor);
+                successful = true;
+                numberOfChanges++;
+            }
+        } catch (CoreException ce) {
+            ce.printStackTrace();
+        } finally {
+            manager.changePerformed(change, successful);
+        }
+        if (undoChange != null) {
+            undoChange.initializeValidationData(monitor);
+            manager.addUndo(undoChange.getName(), undoChange);
+        }
     }
-
+    
     @Override
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
-        try {
-            if (javaInterfaceType != null) {
-                while (!interfaceUndoChanges.isEmpty()) {
-                    Change undoChange = interfaceUndoChanges.pop();
-                    if (undoChange != null) {
-                        executeChange(monitor, undoChange, null);
-                    }
+        
+        IUndoManager manager= RefactoringCore.getUndoManager();
+
+        if (manager.anythingToUndo()) {
+            try {
+                for (int i = 0; i < numberOfChanges; i++) {
+                    manager.performUndo(null, monitor);
                 }
+            } catch (CoreException ce) {
+                status = ce.getStatus();
+                CXFCreationCorePlugin.log(status);
             }
-            if (javaClassType != null) {
-                while (!classUndoChanges.isEmpty()) {
-                    Change undoChange = classUndoChanges.pop();
-                    if (undoChange != null) {
-                        executeChange(monitor, undoChange, null);
-                    }
-                }
-            }
-        } catch (InvocationTargetException ite) {
-            status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, ite.getLocalizedMessage());
-            CXFCreationCorePlugin.log(status);
-        } catch (InterruptedException ie) {
-            status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, ie.getLocalizedMessage());
-            CXFCreationCorePlugin.log(status);
         }
         return status;
     }

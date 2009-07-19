@@ -26,6 +26,7 @@ import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.apt.AnnotationProcessorFactory;
+import com.sun.mirror.apt.AnnotationProcessors;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 
 /**
@@ -58,7 +59,7 @@ public class AnnotationsCoreProcessorFactory implements AnnotationProcessorFacto
             }
         }
         
-        return new AnnotationsCoreProcessor(annotationProcessors);
+        return AnnotationProcessors.getCompositeAnnotationProcessor(annotationProcessors);
     }
     
     public AnnotationProcessor getAnnotationProcessor(IConfigurationElement configurationElement,

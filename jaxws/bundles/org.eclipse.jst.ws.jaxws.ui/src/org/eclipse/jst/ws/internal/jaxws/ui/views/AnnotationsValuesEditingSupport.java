@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
@@ -44,8 +43,6 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter;
-import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -61,9 +58,10 @@ import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
+import org.eclipse.ltk.core.refactoring.IUndoManager;
+import org.eclipse.ltk.core.refactoring.RefactoringCore;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.ltk.ui.refactoring.RefactoringUI;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -723,26 +721,31 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         return null;
     }
 
-    @SuppressWarnings("restriction")
     private void executeChange(IProgressMonitor monitor, Change change) {
         if (change == null) {
             return;
         }
 
-        change.initializeValidationData(monitor);
-
-        PerformChangeOperation changeOperation = RefactoringUI.createUIAwareChangeOperation(change);
-
-        WorkbenchRunnableAdapter adapter = new WorkbenchRunnableAdapter(changeOperation);
+        IUndoManager manager= RefactoringCore.getUndoManager();
+        boolean successful = false;
+        Change undoChange = null;
         try {
-            PlatformUI.getWorkbench().getProgressService().runInUI(new BusyIndicatorRunnableContext(), adapter,
-                adapter.getSchedulingRule());
-        } catch (InvocationTargetException ite) {
-            JAXWSUIPlugin.log(ite);
-        } catch (InterruptedException ie) {
-            JAXWSUIPlugin.log(ie);
+            change.initializeValidationData(monitor);
+            RefactoringStatus valid = change.isValid(monitor);
+            if (valid.isOK()) {
+                manager.aboutToPerformChange(change);
+                undoChange = change.perform(monitor);
+                successful = true;
+            }
+        } catch (CoreException ce) {
+            ce.printStackTrace();
+        } finally {
+            manager.changePerformed(change, successful);
         }
-            
+        if (undoChange != null) {
+            undoChange.initializeValidationData(monitor);
+            manager.addUndo(undoChange.getName(), undoChange);
+        }
         annotationsView.refresh();
     }
 }
