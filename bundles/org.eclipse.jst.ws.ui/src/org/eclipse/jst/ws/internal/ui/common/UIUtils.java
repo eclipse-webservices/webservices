@@ -12,6 +12,7 @@
  * 20060817   140017 makandre@ca.ibm.com - Andrew Mak, longer project or server/runtime strings do not resize wizard
  * 20060829   155441 makandre@ca.ibm.com - Andrew Mak, web service wizard hangs during resize
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
+ * 20090722   278136 kchong@ca.ibm.com - Keith Chong, Use SWT.LEFT or LEAD instead of SWT.WRAP style for Label
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.ui.common;
 
@@ -111,7 +112,7 @@ public class UIUtils
     
     if( labelName != null )
     {
-      Label label = new Label( parent, SWT.WRAP);
+      Label label = new Label( parent, SWT.LEAD);
       label.setText(  labelName  );
       label.setToolTipText(  tooltip );
     }
