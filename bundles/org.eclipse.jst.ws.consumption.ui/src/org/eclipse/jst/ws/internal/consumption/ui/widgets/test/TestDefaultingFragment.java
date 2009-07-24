@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * 20060727   144354 kathy@ca.ibm.com - Kathy Chan
  * 20060821   153833 makandre@ca.ibm.com - Andrew Mak, Allow the Web Service Test extension point to specify the supported client runtime
  * 20060907   156606 makandre@ca.ibm.com - Andrew Mak, no sample JSP in the pop-up action of Generate Sample JSPs
+ * 20090724   284582 mahutch@ca.ibm.com - Mark Hutchinson, WS Test facility selection ignored when wizard completes. Default always chosen
  *******************************************************************************/
 /*
  * Created on May 4, 2004
@@ -57,8 +58,9 @@ public class TestDefaultingFragment extends AbstractDataModelOperation
   	IStatus status = Status.OK_STATUS;
   	
   	scenarioContext = WebServicePlugin.getInstance().getScenarioContext().copy();
-  	//  test facilities
-    selectTestFacility();
+  	if (generateProxy || testFacilities == null) {
+  		selectTestFacility();
+  	}
     return status;
   }
 	
@@ -113,6 +115,10 @@ public class TestDefaultingFragment extends AbstractDataModelOperation
 	}
   }
 
+  public void setServiceTestFacilities(SelectionList facilities) {
+	  this.testFacilities = facilities;
+  }
+  
   public void setLaunchedServiceTestName(String launchedServiceTestName)
   {
   	this.launchedServiceTestName = launchedServiceTestName;

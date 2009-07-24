@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
+ * 20090724   284582 mahutch@ca.ibm.com - Mark Hutchinson, WS Test facility selection ignored when wizard completes. Default always chosen
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -248,6 +249,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
     dataRegistry.addMapping(ServiceTestWidget.class, "LaunchedServiceTestName", ClientExtensionDefaultingCommand.class);
     dataRegistry.addMapping(ServiceTestWidget.class, "LaunchedServiceTestName", FinishTestFragment.class);
     dataRegistry.addMapping(ServiceTestWidget.class, "LaunchedServiceTestName", TestDefaultingFragment.class);
+    dataRegistry.addMapping(ServiceTestWidget.class, "ServiceTestFacilities", TestDefaultingFragment.class);
         
     // Before Client Test widget.
     dataRegistry.addMapping(SelectionCommand.class, "InitialSelection", ClientTestWidget.class );
