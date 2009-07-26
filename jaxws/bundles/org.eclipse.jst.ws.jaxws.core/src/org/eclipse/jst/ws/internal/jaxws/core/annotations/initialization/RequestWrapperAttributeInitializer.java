@@ -108,7 +108,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
     protected String getLocalName(IType type, IMethod method) {
@@ -124,7 +124,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
     protected String getTargetNamespace(IType type) {
@@ -140,7 +140,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 }

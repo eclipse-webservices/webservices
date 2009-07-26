@@ -34,24 +34,27 @@ public class WebMethodPublicStaticFinalRule extends AbstractAnnotationProcessor 
                 annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-        	if (declaration instanceof MethodDeclaration) {
-        	    MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
-        	    if (methodDeclaration.getDeclaringType() instanceof ClassDeclaration) {
+            if (declaration instanceof MethodDeclaration) {
+                MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
+                if (methodDeclaration.getDeclaringType() instanceof ClassDeclaration) {
                     Collection<Modifier> modifiers = methodDeclaration.getModifiers();
                     if (!modifiers.contains(Modifier.PUBLIC)) {
-                        printError(annotationDeclaration, methodDeclaration,
+                        printFixableError(methodDeclaration.getPosition(), 
                                 JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS);
                     }
+
                     if (modifiers.contains(Modifier.FINAL)) {
-                        printError(annotationDeclaration, methodDeclaration,
+                        printFixableError(methodDeclaration.getPosition(),
                                 JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED);
                     }
+                    
                     if (modifiers.contains(Modifier.STATIC)) {
-                        printError(annotationDeclaration, methodDeclaration,
+                        printFixableError(methodDeclaration.getPosition(),
                                 JAXWSCoreMessages.WEBMETHOD_NO_STATIC_MODIFIER_ALLOWED);
                     }
-        	    }
-        	}
+                }
+            }
         }
-	}
+    }
+
 }

@@ -40,10 +40,10 @@ public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcess
                      || !modifiers.contains(Modifier.PUBLIC)) {
                     Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
                     for (AnnotationMirror mirror : annotationMirrors) {
-                        if (mirror.getAnnotationType().toString()
-                            .equals(annotationDeclaration.getQualifiedName())) {
-                            printError(mirror.getPosition(), 
-                                JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL);
+                        if (mirror.getAnnotationType().toString().equals(
+                                annotationDeclaration.getQualifiedName())) {
+                            printFixableError(declaration.getPosition(), 
+                                    JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL);
                         }
                     }
                 }

@@ -63,7 +63,7 @@ import com.sun.mirror.type.TypeMirror;
 import com.sun.mirror.util.SourcePosition;
 
 public class UniqueNamesRule extends AbstractAnnotationProcessor {
-    private static Pattern pattern = Pattern.compile("arg\\d++");
+    private static Pattern pattern = Pattern.compile("arg\\d++"); //$NON-NLS-1$
     
     @Override
     public void process() {

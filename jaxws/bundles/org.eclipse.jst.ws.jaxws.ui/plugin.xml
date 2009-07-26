@@ -48,4 +48,22 @@
          </partition>
       </javaCompletionProposalComputer>
    </extension>
+
+   <extension point="org.eclipse.jdt.ui.quickFixProcessors">
+      <quickFixProcessor
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.correction.JAXWSQuickFixProcessor"
+            id="org.eclipse.jst.ws.jaxws.ui.annotations.correction.JAXWSQuickFixProcessor">
+         <handledMarkerTypes>
+            <markerType id="org.eclipse.jdt.apt.core.compile.problem"/>
+         </handledMarkerTypes>
+      </quickFixProcessor>
+   </extension>
+
+   <extension point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.correction.APTCompileProblemMarkerResolutionGenerator"
+            markerType="org.eclipse.jdt.apt.core.compile.problem">
+      </markerResolutionGenerator>
+   </extension>
+
 </plugin>

@@ -40,7 +40,7 @@ public class WebMethodCheckForWebServiceRule extends AbstractAnnotationProcessor
             for (AnnotationMirror mirror : annotationMirrors) {
                 if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)
                         && !checkForWebServiceAnnotation(((MethodDeclaration) declaration).getDeclaringType())) {
-                    printError(mirror.getPosition(),
+                    printFixableError(mirror.getPosition(),
                             JAXWSCoreMessages.WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE);
                 }
             }

@@ -51,7 +51,7 @@ public class ClasspathComposite extends Composite {
         informationLabel = new Label(this, SWT.NONE);
         informationLabel.setBackground(getParent().getDisplay().getSystemColor(SWT.COLOR_WHITE));
         informationLabel.setText(JAXWSUIMessages.bind(
-                JAXWSUIMessages.ANNOTATIONS_VIEW_NO_SUITABLE_LIBRARY_FOUND, "JAX-WS"));
+                JAXWSUIMessages.ANNOTATIONS_VIEW_NO_SUITABLE_LIBRARY_FOUND, "JAX-WS")); //$NON-NLS-1$
         Link link = new Link(this, SWT.NONE);
         link.setBackground(getParent().getDisplay().getSystemColor(SWT.COLOR_WHITE));
         link.setText(JAXWSUIMessages.CONFIGURE_JAVA_1_6_LIBRARY);

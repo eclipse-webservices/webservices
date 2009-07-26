@@ -41,7 +41,7 @@ public class HandlerChainRules extends AbstractAnnotationProcessor {
                 AnnotationMirror annotationMirror = AnnotationUtils.getAnnotation(declaration,
                         javax.jws.soap.SOAPMessageHandlers.class);
                 if (annotationMirror != null) {
-                    printError(annotationMirror.getPosition(),
+                    printFixableError(annotationMirror.getPosition(),
                             JAXWSCoreMessages.HANDLER_CHAIN_SOAP_MESSAGE_HANDLERS);
                 }
             }

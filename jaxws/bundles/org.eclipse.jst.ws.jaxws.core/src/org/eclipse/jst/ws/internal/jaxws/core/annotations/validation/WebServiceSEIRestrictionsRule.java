@@ -57,8 +57,7 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
                     if (endpointInterface != null) {
                         AnnotationValue name = AnnotationUtils.getAnnotationValue(mirror, NAME);
                         if (name != null) {
-                            printError(
-                                    name.getPosition(),
+                            printFixableError(name.getPosition(),
                                     JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_NAME_ATTRIBUTE);
                         }
                         checkRestrictions((ClassDeclaration) declaration, endpointInterface);
@@ -110,9 +109,10 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
                         }
                     }
                     if (!implemented) {
-                        printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
+                        printFixableError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
                                 JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
-                                getImplementsMessage(typeDeclaration, seiMethod)));
+                                getImplementsMessage(typeDeclaration, seiMethod)), "", //$NON-NLS-1$
+                                JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT);
                     }
                 }
             }
@@ -124,28 +124,28 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
 
     private String getImplementsMessage(TypeDeclaration typeDeclaration, MethodDeclaration seiMethod) {
         StringBuilder message = new StringBuilder(typeDeclaration.getSimpleName());
-        message.append(".");
+        message.append("."); //$NON-NLS-1$
         message.append(seiMethod.getSimpleName());
-        message.append("(");
+        message.append("("); //$NON-NLS-1$
         Collection<ParameterDeclaration> parameters = seiMethod.getParameters();
         Iterator<ParameterDeclaration> iter = parameters.iterator();
         while (iter.hasNext()) {
             ParameterDeclaration parameterDeclaration = iter.next();
             String typeMirror = environment.getTypeUtils().getErasure(parameterDeclaration.getType()).toString();
-            message.append(typeMirror.substring(typeMirror.lastIndexOf(".") + 1));
+            message.append(typeMirror.substring(typeMirror.lastIndexOf(".") + 1)); //$NON-NLS-1$
             if (iter.hasNext()) {
-                message.append(", ");
+                message.append(", "); //$NON-NLS-1$
             }
             
         }
-        message.append(")");
+        message.append(")"); //$NON-NLS-1$
         return message.toString();
     }
 
     private void checkJSR181Annotations(ClassDeclaration classDeclaration) {
         AnnotationMirror soapBinding = AnnotationUtils.getAnnotation(classDeclaration, SOAPBinding.class);
         if (soapBinding != null) {
-            printError(soapBinding.getPosition(),
+            printFixableError(soapBinding.getPosition(),
                     JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING);
         }
 
@@ -155,24 +155,24 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
             AnnotationMirror msoapBinding = AnnotationUtils.getAnnotation(methodDeclaration,
                     SOAPBinding.class);
             if (msoapBinding != null) {
-                printError(msoapBinding.getPosition(),
+                printFixableError(msoapBinding.getPosition(),
                         JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING);
             }
 
             AnnotationMirror oneway = AnnotationUtils.getAnnotation(methodDeclaration, Oneway.class);
             if (oneway != null) {
-                printError(oneway.getPosition(),
+                printFixableError(oneway.getPosition(),
                         JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_ONEWAY);
             }
 
             AnnotationMirror webMethod = AnnotationUtils.getAnnotation(methodDeclaration, WebMethod.class);
             if (webMethod != null) {
-                printError(webMethod.getPosition(),
+                printFixableError(webMethod.getPosition(),
                         JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBMETHODS);
             }
             AnnotationMirror webResult = AnnotationUtils.getAnnotation(methodDeclaration, WebResult.class);
             if (webResult != null) {
-                printError(webResult.getPosition(),
+                printFixableError(webResult.getPosition(),
                         JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBRESULT);
             }
 
@@ -181,7 +181,7 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
                 AnnotationMirror webParam = AnnotationUtils.getAnnotation(parameterDeclaration,
                         WebParam.class);
                 if (webParam != null) {
-                    printError(webParam.getPosition(),
+                    printFixableError(webParam.getPosition(),
                             JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_WEBPARAM);
                 }
             }

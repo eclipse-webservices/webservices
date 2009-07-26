@@ -273,7 +273,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                                 Object[] arrayValues = (Object[])memberValuePair.getValue();
                                 for (int i = 0; i < arrayValues.length; i++) {
                                     String value = arrayValues[i].toString();
-                                    arrayValues[i] = value + ".class";
+                                    arrayValues[i] = value + ".class"; //$NON-NLS-1$
                                 }
                                 return arrayValues;
                             }
@@ -417,7 +417,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass, 
                 annotationClass.getSimpleName(), memberValueParis);
 
-        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
+        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         if (annotate) {
             AnnotationUtils.createPackageDeclarationAnnotationChange(source, pkgDeclaration, rewriter,
@@ -446,7 +446,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass,
                 annotationClass.getSimpleName(), memberValueParis);
 
-        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
+        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         if (annotate) {
             if (member.getElementType() == IJavaElement.TYPE) {
@@ -498,7 +498,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass,
                 annotationClass.getSimpleName(), memberValueParis);
 
-        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
+        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         if (annotate) {
             AnnotationUtils.createMethodParameterAnnotationChange(source, rewriter, parameter, annotation,
@@ -565,7 +565,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
+        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         IAnnotatable annotatedElement = (IAnnotatable) javaElement;
         IAnnotation[] annotations = annotatedElement.getAnnotations();
@@ -615,7 +615,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         AST ast = parameter.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
+        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         List<IExtendedModifier> modifiers = parameter.modifiers();
         for (IExtendedModifier extendedModifier : modifiers) {

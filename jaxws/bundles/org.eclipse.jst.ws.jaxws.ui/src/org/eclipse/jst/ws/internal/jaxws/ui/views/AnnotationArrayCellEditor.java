@@ -431,7 +431,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                 text.setLayoutData(gridData);
                 if (defaultValue != null) {
                     Class<?> classValue = (Class<?>)defaultValue;
-                    text.setText(classValue.getCanonicalName() + ".class");    
+                    text.setText(classValue.getCanonicalName() + ".class"); //$NON-NLS-1$
                 }
                 Button browseClassButton = new Button(typeComposite, SWT.PUSH);
                 browseClassButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL);

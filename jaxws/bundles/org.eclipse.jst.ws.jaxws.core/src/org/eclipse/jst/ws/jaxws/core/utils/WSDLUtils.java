@@ -214,7 +214,7 @@ public final class WSDLUtils {
         if (extensibilityElement instanceof SOAP12Address) {
             return ((SOAP12Address) extensibilityElement).getLocationURI();
         }
-		return "";
+		return ""; //$NON-NLS-1$
     }
     
     public static String getPackageNameFromNamespace(String namespace) {

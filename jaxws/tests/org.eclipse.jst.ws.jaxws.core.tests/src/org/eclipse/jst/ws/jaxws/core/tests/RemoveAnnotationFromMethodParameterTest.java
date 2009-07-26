@@ -66,7 +66,7 @@ public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationT
 
             // refresh
             parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
-                    .getCompilationUnit()), method, 93);
+                    .getCompilationUnit(), false), method, 93);
 
             assertFalse(AnnotationUtils.isAnnotationPresent(parameter, annotation));
         } catch (CoreException ce) {

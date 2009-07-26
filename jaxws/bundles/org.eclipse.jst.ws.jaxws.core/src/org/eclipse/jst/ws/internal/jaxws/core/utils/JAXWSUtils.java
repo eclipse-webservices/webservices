@@ -23,7 +23,7 @@ import com.sun.mirror.declaration.AnnotationMirror;
 
 public final class JAXWSUtils {
 
-    public static final String ACTION = "action";
+    public static final String ACTION = "action"; //$NON-NLS-1$
     public static final String ARG = "arg"; //$NON-NLS-1$
     public static final String CLASS_NAME = "className"; //$NON-NLS-1$
     public static final String DOT_CHARACTER = "."; //$NON-NLS-1$

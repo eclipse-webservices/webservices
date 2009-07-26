@@ -24,6 +24,7 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
+import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.InterfaceDeclaration;
 
@@ -36,26 +37,27 @@ public class WebServiceSEIAllowedAttributesRule extends AbstractAnnotationProces
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
-
+        
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof InterfaceDeclaration) {
                 Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
-
+        
                 for (AnnotationMirror mirror : annotationMirrors) {
-                    String serviceName = AnnotationUtils.getStringValue(mirror, SERVICE_NAME);
+                    AnnotationValue serviceName = AnnotationUtils.getAnnotationValue(mirror, SERVICE_NAME);
                     if (serviceName != null) {
-                        printError(mirror.getPosition(),
+                        printFixableError(serviceName.getPosition(),
                                 JAXWSCoreMessages.WEBSERVICE_SERVICENAME_SEI);
                     }
-
-                    String endpointInterface = AnnotationUtils.getStringValue(mirror, ENDPOINT_INTERFACE);
+                
+                    AnnotationValue endpointInterface = AnnotationUtils.getAnnotationValue(mirror, ENDPOINT_INTERFACE);
                     if (endpointInterface != null) {
-                        printError(mirror.getPosition(),
+                        printFixableError(endpointInterface.getPosition(),
                                 JAXWSCoreMessages.WEBSERVICE_ENDPOINTINTERFACE_SEI);
                     }
-                    String portName = AnnotationUtils.getStringValue(mirror, PORT_NAME);
+                    
+                    AnnotationValue portName = AnnotationUtils.getAnnotationValue(mirror, PORT_NAME);
                     if (portName != null) {
-                        printError(mirror.getPosition(),
+                        printFixableError(portName.getPosition(),
                                 JAXWSCoreMessages.WEBSERVICE_PORTNAME_SEI);
                     }
                 }

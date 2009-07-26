@@ -86,7 +86,7 @@ public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidation
 
             // refresh
             parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
-                    .getCompilationUnit()), method, 156);
+                    .getCompilationUnit(), false), method, 156);
 
             assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
             

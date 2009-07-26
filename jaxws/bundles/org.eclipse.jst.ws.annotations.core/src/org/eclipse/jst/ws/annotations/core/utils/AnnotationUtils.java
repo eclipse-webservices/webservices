@@ -814,14 +814,24 @@ public final class AnnotationUtils {
         return null;
     }
 
-    public static CompilationUnit getASTParser(ICompilationUnit source) {
+//    public static CompilationUnit getASTParser(ICompilationUnit source) {
+//        ASTParser parser = ASTParser.newParser(AST.JLS3);
+//        parser.setSource(source);
+//        CompilationUnit compilationUnit = (CompilationUnit) parser.createAST(new NullProgressMonitor());
+//        compilationUnit.recordModifications();
+//        return compilationUnit;
+//    }
+
+    public static CompilationUnit getASTParser(ICompilationUnit source, boolean resolveBindings) {
         ASTParser parser = ASTParser.newParser(AST.JLS3);
         parser.setSource(source);
+        parser.setResolveBindings(resolveBindings);
+        parser.setBindingsRecovery(resolveBindings);
         CompilationUnit compilationUnit = (CompilationUnit) parser.createAST(new NullProgressMonitor());
         compilationUnit.recordModifications();
         return compilationUnit;
     }
-    
+
     public static TextFileChange createTextFileChange(String textFileChangeName, IFile file) {
         TextFileChange textFileChange = new TextFileChange(textFileChangeName, file);
         MultiTextEdit multiTextEdit = new MultiTextEdit();
@@ -832,7 +842,7 @@ public final class AnnotationUtils {
     @SuppressWarnings("unchecked")
     public static List<SingleVariableDeclaration> getMethodParameters(IType type, final IMethod method) {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = getASTParser(source);
+        CompilationUnit compilationUnit = getASTParser(source, false);
         final List<SingleVariableDeclaration> parameters = new ArrayList();
         compilationUnit.accept(new ASTVisitor() {
             @Override
@@ -864,6 +874,25 @@ public final class AnnotationUtils {
 		    	for (int i = 0; i < parametetTypes.length; i++) {
 	                String simpleName1 = Signature.toString(parametetTypes[i]);
 					String simpleName2 = methodDeclarationParameters.get(i).getType().toString();
+					if (!simpleName1.equals(simpleName2)) {
+						return false;
+					}
+				}
+		    	return true;
+	    	}
+    	}
+    	return false;
+	}
+    
+    @SuppressWarnings("unchecked")
+    public static boolean compareMethods(MethodDeclaration methodOne, MethodDeclaration methodTwo) {
+    	if (methodOne.getName().getIdentifier().equals(methodTwo.getName().getIdentifier())) {
+	    	List<SingleVariableDeclaration> methodParametersOne = methodOne.parameters();
+	    	List<SingleVariableDeclaration> methodParametersTwo = methodTwo.parameters();
+	    	if (methodParametersOne.size() == methodParametersTwo.size()) {
+		    	for (int i = 0; i < methodParametersOne.size(); i++) {
+		    		String simpleName1 = methodParametersOne.get(i).getType().toString();
+					String simpleName2 = methodParametersTwo.get(i).getType().toString();
 					if (!simpleName1.equals(simpleName2)) {
 						return false;
 					}
@@ -988,7 +1017,7 @@ public final class AnnotationUtils {
         ICompilationUnit source = ((IMember)javaElement).getCompilationUnit();
         
         int elementType = javaElement.getElementType();
-        CompilationUnit compilationUnit = getASTParser(source);
+        CompilationUnit compilationUnit = getASTParser(source, false);
         if (elementType == IJavaElement.PACKAGE_DECLARATION) {
             return isAnnotationPresent(compilationUnit.getPackage(), annotationName);
         }
@@ -1128,7 +1157,7 @@ public final class AnnotationUtils {
     public static SingleVariableDeclaration getMethodParameter(CompilationUnit compilationUnit, 
                 IMethod method, int offset) {
         if (compilationUnit == null) {
-          compilationUnit = getASTParser(method.getCompilationUnit());                
+          compilationUnit = getASTParser(method.getCompilationUnit(), false);                
         }
         IType type = method.getDeclaringType();
         List<AbstractTypeDeclaration> types = compilationUnit.types();

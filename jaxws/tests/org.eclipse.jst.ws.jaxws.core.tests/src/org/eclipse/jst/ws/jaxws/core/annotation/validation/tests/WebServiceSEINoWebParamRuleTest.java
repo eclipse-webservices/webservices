@@ -53,7 +53,7 @@ public class WebServiceSEINoWebParamRuleTest extends AbstractWebServiceSEIRule {
 
             // refresh
             parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
-                    .getCompilationUnit()), method, 278);
+                    .getCompilationUnit(), false), method, 278);
 
             assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
             

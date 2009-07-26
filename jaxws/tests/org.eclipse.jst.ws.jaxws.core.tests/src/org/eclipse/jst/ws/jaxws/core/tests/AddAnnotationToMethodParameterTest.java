@@ -76,7 +76,7 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
 
             // refresh
             parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
-                    .getCompilationUnit()), method, 93);
+                    .getCompilationUnit(), false), method, 93);
 
             assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
         } catch (CoreException ce) {

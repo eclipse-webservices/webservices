@@ -43,7 +43,7 @@ public class WebServiceWebServiceProviderCoExistRule extends AbstractAnnotationP
 
     private void checkWebServiceProvider(AnnotationMirror mirror) {
         if (mirror.getAnnotationType().toString().equals(WebServiceProvider.class.getName())) {
-            printError(mirror.getPosition(), JAXWSCoreMessages
+            printFixableError(mirror.getPosition(), JAXWSCoreMessages
                     .WEBSERVICE_WEBSERVICEPROVIDER_COMBINATION);
         }
     }

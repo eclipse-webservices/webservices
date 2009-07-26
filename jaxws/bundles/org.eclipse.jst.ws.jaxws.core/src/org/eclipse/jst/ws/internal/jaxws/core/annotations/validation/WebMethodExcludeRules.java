@@ -49,14 +49,14 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
                     TypeDeclaration typeDeclaration = methodDeclaration.getDeclaringType();
                     
                     if (typeDeclaration instanceof InterfaceDeclaration) {
-                        printError(excludeAttribute.getPosition(),
+                        printFixableError(excludeAttribute.getPosition(),
                                 JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
                     }
 
-                    if (typeDeclaration instanceof ClassDeclaration
+                    if (typeDeclaration instanceof ClassDeclaration 
+                            && annotationMirror.getElementValues().size() > 1
                             && Boolean.valueOf(excludeAttribute.getValue().toString()).booleanValue()) {
-                        printError(
-                                excludeAttribute.getPosition(),
+                        printFixableError(excludeAttribute.getPosition(),
                                 JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFIED_NO_OTHER_ATTRIBUTES_ALLOWED);
                     }
                 }

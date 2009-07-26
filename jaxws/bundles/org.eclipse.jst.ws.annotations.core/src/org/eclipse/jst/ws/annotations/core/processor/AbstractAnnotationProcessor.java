@@ -77,6 +77,11 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
         environment.getMessager().printNotice(message);        
     }
 
+    protected void printFixableError(SourcePosition position, String message) {
+        EclipseMessager messager = (EclipseMessager) environment.getMessager();
+        messager.printFixableError(position, message, "", message);
+    }
+
     protected void printFixableError(SourcePosition position, String message, String pluginId, String errorId) {
         EclipseMessager messager = (EclipseMessager) environment.getMessager();
         messager.printFixableError(position, message, pluginId, errorId);

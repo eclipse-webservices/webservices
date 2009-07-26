@@ -145,7 +145,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
 
     private String getTargetNamespace(IMethod method) {
         if (hasDocumentWrappedSOAPBinding(method) && !isHeader(method)) {
-            return ""; 
+            return "";  //$NON-NLS-1$
         }
         return getDefaultTargetNamespace(method);
     }

@@ -85,18 +85,18 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
     private String getActionValue(IType type, IMethod method) {
         try {
             String methodName = method.getElementName();
-            return "urn:" + methodName.substring(0, 1).toUpperCase() 
+            return "urn:" + methodName.substring(0, 1).toUpperCase()  //$NON-NLS-1$
                 + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 }

@@ -22,7 +22,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jst.ws.annotations.core;bundle-version="0.5.0",
  javax.wsdl;bundle-version="[1.6.2,1.7.0)",
  org.eclipse.jst.ws;bundle-version="[1.0.304,1.1.0)"
-Export-Package: org.eclipse.jst.ws.internal.jaxws.core;x-friends:="org.eclipse.jst.ws.jaxws.core.tests",
+Export-Package: org.eclipse.jst.ws.internal.jaxws.core;x-friends:="org.eclipse.jst.ws.jaxws.core.tests,org.eclipse.jst.ws.jaxws.ui",
  org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;x-friends:="org.eclipse.jst.ws.annotations.core",
  org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;x-friends:="org.eclipse.jst.ws.annotations.core",
  org.eclipse.jst.ws.jaxws.core.utils

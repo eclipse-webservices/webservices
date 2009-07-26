@@ -55,7 +55,7 @@ public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationPr
                     for (AnnotationMirror mirror : annotationMirrors) {
                         if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
                                 .getQualifiedName())) {
-                            printError(mirror.getPosition(),
+                            printFixableError(declaration.getPosition(),
                                     JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR); 
                         }
                     }

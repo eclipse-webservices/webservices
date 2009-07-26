@@ -95,7 +95,7 @@ public final class CXFModelUtils {
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
 
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source);
+        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
         
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -109,7 +109,7 @@ public final class CXFModelUtils {
         
         if (model.isUseServiceEndpointInterface() && type.isClass()) {
             MemberValuePair endpointInterfaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
-                    "endpointInterface", model.getFullyQualifiedJavaInterfaceName());
+                    "endpointInterface", model.getFullyQualifiedJavaInterfaceName()); //$NON-NLS-1$
             memberValuePairs.add(1, endpointInterfaceValuePair);
         }
         
@@ -124,7 +124,7 @@ public final class CXFModelUtils {
             Class<? extends java.lang.annotation.Annotation> annotationClass, TextFileChange textFileChange) 
                 throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source);
+        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
 
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -138,7 +138,7 @@ public final class CXFModelUtils {
     public static void getWebMethodAnnotationChange(IType type, IMethod method, 
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source);
+        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
 
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -152,7 +152,7 @@ public final class CXFModelUtils {
     public static void getRequestWrapperAnnotationChange(IType type, IMethod method, 
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source);
+        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
 
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -166,7 +166,7 @@ public final class CXFModelUtils {
     public static void getResponseWrapperAnnotationChange(IType type, IMethod method,
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source);
+        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
 
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -181,7 +181,7 @@ public final class CXFModelUtils {
             SingleVariableDeclaration parameter, TextFileChange textFileChange) 
             throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source);
+        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
 
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);

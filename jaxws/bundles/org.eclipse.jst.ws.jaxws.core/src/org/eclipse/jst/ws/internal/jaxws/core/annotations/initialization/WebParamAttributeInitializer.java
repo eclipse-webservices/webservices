@@ -108,7 +108,7 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
     
     private String getTargetNamespace(SingleVariableDeclaration parameter) {
         if (hasDocumentWrappedSOAPBinding(parameter) && !isHeader(parameter)) {
-            return ""; 
+            return "";  //$NON-NLS-1$
         }
         return getDefaultTargetNamespace(parameter);
     }
@@ -135,7 +135,7 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
                 return packageDeclaration.getName().getFullyQualifiedName();
             }          
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
     private boolean isHeader(SingleVariableDeclaration parameter) {

@@ -42,7 +42,7 @@ public abstract class AbstractAnnotationTest extends TestCase {
 
         source = testJavaProject.createCompilationUnit(getPackageName(), getClassName(), getClassContents());
 
-        compilationUnit = AnnotationUtils.getASTParser(source);
+        compilationUnit = AnnotationUtils.getASTParser(source, false);
         ast = compilationUnit.getAST();
         rewriter = ASTRewrite.create(ast);
         annotation = getAnnotation();

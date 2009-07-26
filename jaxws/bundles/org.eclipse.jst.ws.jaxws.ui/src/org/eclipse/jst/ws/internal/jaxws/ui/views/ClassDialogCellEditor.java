@@ -57,9 +57,9 @@ public class ClassDialogCellEditor extends DialogCellEditor {
     @Override
     protected void updateContents(Object value) {
         if (value != null) {
-            getDefaultLabel().setText(value.toString() + ".class"); 
+            getDefaultLabel().setText(value.toString() + ".class"); //$NON-NLS-1$
         } else {
-            getDefaultLabel().setText("");
+            getDefaultLabel().setText(""); //$NON-NLS-1$
         }
     }
 }

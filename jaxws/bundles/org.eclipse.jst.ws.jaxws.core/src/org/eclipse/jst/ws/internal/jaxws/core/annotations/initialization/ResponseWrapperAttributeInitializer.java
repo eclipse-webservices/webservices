@@ -35,7 +35,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
     @Override
@@ -53,7 +53,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
 }
