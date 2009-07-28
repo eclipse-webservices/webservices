@@ -17,8 +17,12 @@ import java.util.List;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Base class for initializers contributed to the
@@ -36,6 +40,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 */
 public class AnnotationAttributeInitializer implements IAnnotationAttributeInitializer {
 
+    protected static final String MISSING_IDENTIFER = "$missing$";
+	 
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends Annotation> annotationClass) {
         return Collections.emptyList();
@@ -55,4 +61,34 @@ public class AnnotationAttributeInitializer implements IAnnotationAttributeIniti
             MemberValuePair memberValuePair) {
         return Collections.emptyList();
     }
+
+	protected CompletionProposal createCompletionProposal(String proposal, Expression value) {
+		int replacementOffset = value.getStartPosition();
+		int replacementLength = 0;
+		if (value.toString().equals(MISSING_IDENTIFER)) {
+			if (proposal.charAt(0) != '\"') {
+				proposal = "\"" + proposal;
+			}
+			if (proposal.charAt(proposal.length() - 1) != '\"') {
+				proposal = proposal + "\"";
+			}
+		} else {
+			replacementOffset += 1;
+			replacementLength = value.getLength() - 2;
+		}
+
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(org.eclipse.ui.ISharedImages.IMG_OBJ_FILE);
+		return new CompletionProposal(proposal, replacementOffset, replacementLength, proposal.length(),
+				image, proposal, null, null);
+	}
+
+	protected CompletionProposal createCompletionProposal(String proposal, Expression value, Image image, 
+			String displayString) {
+		int replacementOffset = value.getStartPosition() + 1;
+		int replacementLength = value.getLength() - 2;
+
+		return new CompletionProposal(proposal, replacementOffset, replacementLength, proposal.length(),
+				image, displayString, null, null);
+	}
+
 }

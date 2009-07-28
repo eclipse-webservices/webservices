@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
+package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ACTION;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
@@ -27,7 +27,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
+import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 
 public class WebMethodAttributeInitializer extends AnnotationAttributeInitializer {
     
@@ -66,13 +66,13 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
             String memberValuePairName = memberValuePair.getName().getIdentifier();
 
             if (memberValuePairName.equals(OPERATION_NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(
-                        getOperationNameValue(type, method), memberValuePair.getValue()));
+                completionProposals.add(createCompletionProposal(getOperationNameValue(type, method), 
+                		memberValuePair.getValue()));
             }
             
             if (memberValuePairName.equals(ACTION)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(
-                        getActionValue(type, method), memberValuePair.getValue()));
+                completionProposals.add(createCompletionProposal(getActionValue(type, method),
+                		memberValuePair.getValue()));
             }
 
         }
@@ -83,7 +83,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
         try {
             return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }
@@ -94,7 +94,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
             return "urn:" + methodName.substring(0, 1).toUpperCase()  //$NON-NLS-1$
                 + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }

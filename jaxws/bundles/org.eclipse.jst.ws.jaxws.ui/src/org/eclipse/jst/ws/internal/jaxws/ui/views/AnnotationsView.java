@@ -165,7 +165,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         IWorkbenchPage workbenchPage = getViewSite().getWorkbenchWindow().getActivePage();
         IWorkbenchPartReference workbenchPartReference = workbenchPage.getActivePartReference();
        
-        if ( workbenchPartReference.getId().equals(getViewSite().getId()) 
+        if (workbenchPartReference == null || workbenchPartReference.getId().equals(getViewSite().getId()) 
                 || !workbenchPartReference.getId().equals(JavaUI.ID_CU_EDITOR)) {
             return;
         }

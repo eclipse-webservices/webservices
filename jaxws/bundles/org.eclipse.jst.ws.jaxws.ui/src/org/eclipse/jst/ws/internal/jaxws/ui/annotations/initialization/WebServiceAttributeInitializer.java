@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
+package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ENDPOINT_INTERFACE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
@@ -34,8 +34,7 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
-import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
+import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 public class WebServiceAttributeInitializer extends AnnotationAttributeInitializer {
@@ -60,7 +59,6 @@ public class WebServiceAttributeInitializer extends AnnotationAttributeInitializ
                 MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
                         TARGET_NAMESPACE, getTargetNamespace(type));
     
-
                 if (type.isInterface()) {
                     memberValuePairs.add(nameValuePair);
                 }
@@ -72,7 +70,7 @@ public class WebServiceAttributeInitializer extends AnnotationAttributeInitializ
                     memberValuePairs.add(serviceNameValuePair);
                 }
             } catch (JavaModelException jme) {
-                JAXWSCorePlugin.log(jme.getStatus());
+            	JAXWSUIPlugin.log(jme.getStatus());
             }
         }
         return memberValuePairs;
@@ -90,25 +88,25 @@ public class WebServiceAttributeInitializer extends AnnotationAttributeInitializ
             if (memberValuePairName.equals(ENDPOINT_INTERFACE)) {
                 List<String> interfaces = getInterfaces(type);
                 for (String anInterface : interfaces) {
-                    completionProposals.add(AnnotationUtils.createCompletionProposal(anInterface,
+                    completionProposals.add(createCompletionProposal(anInterface,
                             memberValuePair.getValue(), JavaUI.getSharedImages().getImage(
-                                    ISharedImages.IMG_OBJS_INTERFACE)));
+                                    ISharedImages.IMG_OBJS_INTERFACE), anInterface));
                 }
             }
             if (memberValuePairName.equals(NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getName(type),
+                completionProposals.add(createCompletionProposal(getName(type),
                         memberValuePair.getValue()));
             }
             if (memberValuePairName.equals(PORT_NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getPortName(type),
+                completionProposals.add(createCompletionProposal(getPortName(type),
                         memberValuePair.getValue()));
             }
             if (memberValuePairName.equals(SERVICE_NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getServiceName(type),
+                completionProposals.add(createCompletionProposal(getServiceName(type),
                         memberValuePair.getValue()));
             }
             if (memberValuePairName.equals(TARGET_NAMESPACE)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getTargetNamespace(type),
+                completionProposals.add(createCompletionProposal(getTargetNamespace(type),
                         memberValuePair.getValue()));
             }
         }
@@ -149,7 +147,7 @@ public class WebServiceAttributeInitializer extends AnnotationAttributeInitializ
             }
             return interfaces;
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return Collections.emptyList();
     }

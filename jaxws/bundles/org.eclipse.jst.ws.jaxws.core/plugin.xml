@@ -139,37 +139,6 @@
       </annotation>
    </extension>
    
-   <extension point="org.eclipse.jst.ws.annotations.core.annotationInitializer">
-      <initializer
-            annotation="javax.jws.WebService"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.WebServiceAttributeInitializer">
-      </initializer>
-      <initializer
-            annotation="javax.jws.WebMethod"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.WebMethodAttributeInitializer">
-      </initializer>
-      <initializer
-            annotation="javax.jws.WebParam"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.WebParamAttributeInitializer">
-      </initializer>
-      <initializer
-            annotation="javax.jws.WebResult"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.WebResultAttributeInitializer">
-      </initializer>
-      <initializer
-            annotation="javax.jws.soap.SOAPBinding"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.SOAPBindingAttributeInitializer">
-      </initializer>      
-      <initializer
-            annotation="javax.xml.ws.RequestWrapper"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.RequestWrapperAttributeInitializer">
-      </initializer>
-      <initializer
-            annotation="javax.xml.ws.ResponseWrapper"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization.ResponseWrapperAttributeInitializer">
-      </initializer>
-   </extension>
-   
    <extension point="org.eclipse.jst.ws.annotations.core.annotationProcessor">
       <processor
             annotation="javax.jws.WebService"

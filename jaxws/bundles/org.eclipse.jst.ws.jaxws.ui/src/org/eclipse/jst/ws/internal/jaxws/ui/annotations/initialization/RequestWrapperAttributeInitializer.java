@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
+package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.CLASS_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.DOT_CHARACTER;
@@ -35,7 +35,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
+import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 public class RequestWrapperAttributeInitializer extends AnnotationAttributeInitializer {
@@ -67,7 +67,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair) {
         
-        List<ICompletionProposal> completionProposals = new ArrayList<ICompletionProposal>();
+        List<ICompletionProposal> completionProposals = new ArrayList<ICompletionProposal>(1);
         if (javaElement.getElementType() == IJavaElement.METHOD) {
             IMethod method = (IMethod) javaElement;
             IType type = method.getCompilationUnit().findPrimaryType();
@@ -75,15 +75,15 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
             String memberValuePairName = memberValuePair.getName().getIdentifier();
 
             if (memberValuePairName.equals(CLASS_NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getClassName(type, method),
+                completionProposals.add(createCompletionProposal(getClassName(type, method),
                         memberValuePair.getValue()));
             }
             if (memberValuePairName.equals(LOCAL_NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getLocalName(type, method),
+                completionProposals.add(createCompletionProposal(getLocalName(type, method),
                         memberValuePair.getValue()));
             }
             if (memberValuePairName.equals(TARGET_NAMESPACE)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getTargetNamespace(type),
+                completionProposals.add(createCompletionProposal(getTargetNamespace(type),
                         memberValuePair.getValue()));
             }
         }
@@ -106,7 +106,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
             return getPackageName(type) + methodName.substring(0, 1).toUpperCase()
                 + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }
@@ -122,7 +122,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
             }
             return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }
@@ -138,7 +138,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
             }
             return JDTUtils.getTargetNamespaceFromPackageName(type.getPackageFragment().getElementName());
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }

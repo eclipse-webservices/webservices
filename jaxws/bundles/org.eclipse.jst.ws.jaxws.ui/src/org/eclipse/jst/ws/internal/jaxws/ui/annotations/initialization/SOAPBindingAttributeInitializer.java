@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
+package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PARAMETER_STYLE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.STYLE;

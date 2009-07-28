@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
+package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
@@ -40,8 +40,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
+import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 public class WebResultAttributeInitializer extends AnnotationAttributeInitializer {
@@ -72,17 +72,17 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
             String memberValuePairName = memberValuePair.getName().getIdentifier();
 
             if (memberValuePairName.equals(NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getName(method), memberValuePair
+                completionProposals.add(createCompletionProposal(getName(method), memberValuePair
                     .getValue()));
             }
             
             if (memberValuePairName.equals(PART_NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getPartName(method),
+                completionProposals.add(createCompletionProposal(getPartName(method),
                         memberValuePair.getValue()));
             }
             
             if (memberValuePairName.equals(TARGET_NAMESPACE)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getTargetNamespace(method),
+                completionProposals.add(createCompletionProposal(getTargetNamespace(method),
                         memberValuePair.getValue()));
             }
 
@@ -107,7 +107,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return method.getElementName();
     }
@@ -123,7 +123,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 return hasDocumentBareSOAPBinding((IType) method.getParent());
             }
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return false;
     }
@@ -138,7 +138,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return getName(method);
     }
@@ -161,7 +161,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 return hasDocumentWrappedSOAPBinding((IType) method.getParent());
             }
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return true;
     }
@@ -176,7 +176,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return false;
     }
@@ -192,7 +192,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
 
         return JDTUtils.getTargetNamespaceFromPackageName(getPackageName(type));

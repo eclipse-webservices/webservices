@@ -25,6 +25,41 @@
          </view>
       </perspectiveExtension>
    </extension> -->
+
+   <extension point="org.eclipse.jst.ws.annotations.core.annotationInitializer">
+      <initializer
+            annotation="javax.jws.WebService"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.WebServiceAttributeInitializer">
+      </initializer>
+      <initializer
+            annotation="javax.jws.WebMethod"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.WebMethodAttributeInitializer">
+      </initializer>
+      <initializer
+            annotation="javax.jws.WebParam"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.WebParamAttributeInitializer">
+      </initializer>
+      <initializer
+            annotation="javax.jws.WebResult"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.WebResultAttributeInitializer">
+      </initializer>
+      <initializer
+            annotation="javax.jws.soap.SOAPBinding"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.SOAPBindingAttributeInitializer">
+      </initializer>      
+      <initializer
+            annotation="javax.xml.ws.RequestWrapper"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.RequestWrapperAttributeInitializer">
+      </initializer>
+      <initializer
+            annotation="javax.xml.ws.ResponseWrapper"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.ResponseWrapperAttributeInitializer">
+      </initializer>
+      <initializer
+            annotation="javax.xml.ws.BindingType"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization.BindingTypeAttributeInitializer">
+      </initializer>
+   </extension>
   
    <extension id="jaxwsProposalComputer"
          name="JAX-WS Proposals"
@@ -40,9 +75,9 @@
             activate="true"
             categoryId="org.eclipse.jst.ws.jaxws.ui.jaxwsProposalComputer"
             class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.contentassist.AnnotationCompletionProposalComputer">
-         <!--<partition
+         <partition
                type="__dftl_partition_content_type">
-         </partition> -->
+         </partition>
          <partition
                type="__java_string">
          </partition>

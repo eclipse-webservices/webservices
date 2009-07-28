@@ -8,12 +8,10 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
+package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.RESPONSE_SUFFIX;
-
-import java.util.Locale;
 
 import javax.jws.WebMethod;
 
@@ -22,7 +20,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
+import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 
 public class ResponseWrapperAttributeInitializer extends RequestWrapperAttributeInitializer {
 
@@ -33,7 +31,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
             return getPackageName(type) + methodName.substring(0, 1).toUpperCase()
                 + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }
@@ -51,7 +49,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
             return method.getElementName() + RESPONSE_SUFFIX 
                     + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
+        	JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }

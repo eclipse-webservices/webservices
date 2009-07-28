@@ -26,4 +26,6 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.jws,
  javax.jws.soap,
- javax.xml.ws;version="2.1.0"
+ javax.xml.ws;version="2.1.0",
+ javax.xml.ws.http;version="2.1.0",
+ javax.xml.ws.soap;version="2.1.0"

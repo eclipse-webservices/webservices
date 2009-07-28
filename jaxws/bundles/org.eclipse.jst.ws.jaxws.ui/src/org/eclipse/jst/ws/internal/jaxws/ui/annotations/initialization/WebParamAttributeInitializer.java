@@ -8,7 +8,7 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.internal.jaxws.core.annotations.initialization;
+package org.eclipse.jst.ws.internal.jaxws.ui.annotations.initialization;
 
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.ARG;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
@@ -66,17 +66,17 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
             String memberValuePairName = memberValuePair.getName().getIdentifier();
             
             if (memberValuePairName.equals(NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getName(parameter),
-                        memberValuePair.getValue()));
+                completionProposals.add(createCompletionProposal(getName(parameter),
+                		memberValuePair.getValue()));
             }
             
             if (memberValuePairName.equals(PART_NAME)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getPartName(parameter),
+                completionProposals.add(createCompletionProposal(getPartName(parameter),
                         memberValuePair.getValue()));
             }
             
             if (memberValuePairName.equals(TARGET_NAMESPACE)) {
-                completionProposals.add(AnnotationUtils.createCompletionProposal(getTargetNamespace(parameter),
+                completionProposals.add(createCompletionProposal(getTargetNamespace(parameter),
                         memberValuePair.getValue()));
             }
             

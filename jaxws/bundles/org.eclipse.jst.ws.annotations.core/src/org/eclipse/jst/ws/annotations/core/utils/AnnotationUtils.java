@@ -70,9 +70,7 @@ import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.text.edits.TextEditGroup;
@@ -1197,23 +1195,6 @@ public final class AnnotationUtils {
         return (typeOne.equals(typeTwo)) && (nameOne.equals(nameTwo));
     }
 
-    public static CompletionProposal createCompletionProposal(String proposal, Expression value) {
-        int replacementOffset = value.getStartPosition() + 1;
-        int replacementLength = value.getLength() - 2;
-
-        return new CompletionProposal(proposal, replacementOffset, replacementLength,
-                proposal.length());
-    }
-    
-    public static CompletionProposal createCompletionProposal(String proposal, Expression value,
-            Image image) {
-        int replacementOffset = value.getStartPosition() + 1;
-        int replacementLength = value.getLength() - 2;
-
-        return new CompletionProposal(proposal, replacementOffset, replacementLength, proposal.length(), 
-                image, proposal, null, null);
-    }
-    
     public static String getStringValue(AnnotationMirror mirror, String attributeName) {
         AnnotationValue annotationValue = getAnnotationValue(mirror, attributeName);
         if (annotationValue != null) {
