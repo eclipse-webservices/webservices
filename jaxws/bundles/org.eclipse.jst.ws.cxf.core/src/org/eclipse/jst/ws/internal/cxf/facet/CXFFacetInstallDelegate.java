@@ -192,7 +192,7 @@ public class CXFFacetInstallDelegate implements IDelegate {
     private void addCXFJSTWEB24Servlet(IProject webProject, org.eclipse.jst.j2ee.webapplication.WebApp webapp) {
         List servlets = webapp.getServlets();
         for (int i = 0; i < servlets.size(); i++) {
-            Servlet servlet = (Servlet) servlets.get(i);
+        	org.eclipse.jst.j2ee.webapplication.Servlet servlet = (org.eclipse.jst.j2ee.webapplication.Servlet) servlets.get(i);
             if (servlet.getServletName().equals("cxf")) { //$NON-NLS-1$
                 return;
             }
