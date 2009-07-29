@@ -62,7 +62,7 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
 			IJavaElement javaElement = source.getElementAt(tokenStart);
 			if (javaElement != null) {
 		        
-			    CompilationUnit compilationUnit = JDTUtils.getCompilationUnit(source);
+			    CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, true);//JDTUtils.getCompilationUnit(source);
 			    int elementType = javaElement.getElementType();
 			    
                 if (elementType == IJavaElement.PACKAGE_DECLARATION) {
@@ -90,10 +90,11 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
                             (IMethod)javaElement, tokenStart);
                     if (parameter != null) {
                         return getCompletionProposalsForASTNode(parameter.modifiers(), parameter, tokenStart);
-                    } else {
-                        return getCompletionProposalsForJavaElement(AnnotationUtils.getExtendedModifiers(
-                                compilationUnit, javaElement), javaElement, tokenStart);
-                    }
+                    } 
+//                    else {
+//                        return getCompletionProposalsForJavaElement(AnnotationUtils.getExtendedModifiers(
+//                                compilationUnit, javaElement), javaElement, tokenStart);
+//                    }
                 }
 			}
 		} catch (JavaModelException jme) {
@@ -123,7 +124,7 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
             if (extendedModifier.isAnnotation() && extendedModifier instanceof NormalAnnotation) {
                 NormalAnnotation normalAnnotation = (NormalAnnotation) extendedModifier;
                 MemberValuePair memberValuePair = getMemberValuePairForPosition(normalAnnotation, offset);
-                if(memberValuePair != null) {
+                if (memberValuePair != null) {
                     return getCompletionProposalsForJavaElement(normalAnnotation, memberValuePair, 
                             javaElement);
                 }

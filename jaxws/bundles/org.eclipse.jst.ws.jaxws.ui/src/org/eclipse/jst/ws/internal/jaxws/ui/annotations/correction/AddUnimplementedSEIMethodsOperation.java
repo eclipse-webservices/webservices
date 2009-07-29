@@ -65,6 +65,7 @@ public class AddUnimplementedSEIMethodsOperation extends AddUnimplementedMethods
         ICompilationUnit compilationUnit = compilationUnitRewrite.getCu();
         CodeGenerationSettings settings = JavaPreferencesSettings.getCodeGenerationSettings(
                 compilationUnit.getJavaProject());
+        settings.overrideAnnotation = false;
         
         AbstractTypeDeclaration typeDeclaration = (AbstractTypeDeclaration) astNode;
         ListRewrite listRewrite = astRewrite.getListRewrite(typeDeclaration, 
