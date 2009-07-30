@@ -104,7 +104,7 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
         String problem = problemLocation.getProblemArguments()[1];
 
         if (problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT)) {
-            addUnimplementedMethodsProposals(context, problemLocation, proposals);
+            addUnimplementedMethodsProposal(context, problemLocation, proposals);
         }
 
         if (problem.equals(JAXWSCoreMessages.WEBMETHOD_ONLY_SUPPORTED_ON_CLASSES_WITH_WEBSERVICE)) {
@@ -272,38 +272,31 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
 		}		
 	}
 
-    private void addUnimplementedMethodsProposals(IInvocationContext context, IProblemLocation problemLocation, 
-            List<IJavaCompletionProposal> proposals) {
-        IProposableFix unimplementedMethodFix = createAddUnimplementedMethodsFix(context.getASTRoot(),
-                problemLocation);
-        if (unimplementedMethodFix != null) {
-            Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
+    private void addUnimplementedMethodsProposal(IInvocationContext context,
+            IProblemLocation problemLocation, List<IJavaCompletionProposal> proposals) {
 
-            Map<String, String> settings= new HashMap<String, String>();
-            settings.put("cleanup.add_missing_methods", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-
-            proposals.add(new FixCorrectionProposal(unimplementedMethodFix, 
-                    new UnimplementedCodeCleanUp(settings), 5, image, context));
-        }
-    }
-    
-    private IProposableFix createAddUnimplementedMethodsFix(final CompilationUnit compilationUnit, 
-            IProblemLocation problemLocation) {
-        ASTNode endpointInterfaceValue = problemLocation.getCoveringNode(compilationUnit);
+        ASTNode endpointInterfaceValue = problemLocation.getCoveringNode(context.getASTRoot());
         ASTNode endpointInterfaceMVP = endpointInterfaceValue.getParent();
         ASTNode webServiceAnnotation = endpointInterfaceMVP.getParent();
         ASTNode typeDeclaration = webServiceAnnotation.getParent();
-        
-        String endpointInterface = ((StringLiteral) endpointInterfaceValue).getLiteralValue();
-        AddUnimplementedSEIMethodsOperation operation= new AddUnimplementedSEIMethodsOperation(typeDeclaration, 
-                endpointInterface);
-        if (operation.getMethodsToImplement() != null && operation.getMethodsToImplement().length > 0) {
-            return new UnimplementedCodeFix(JAXWSUIMessages.ADD_UNIMPLEMENTED_METHODS, compilationUnit, 
-                    new CompilationUnitRewriteOperation[] { operation });
-        }
-        return null;
-    }
 
+        String endpointInterface = ((StringLiteral) endpointInterfaceValue).getLiteralValue();
+        AddUnimplementedSEIMethodsOperation operation = new AddUnimplementedSEIMethodsOperation(
+                typeDeclaration, endpointInterface);
+        if (operation.getMethodsToImplement() != null && operation.getMethodsToImplement().length > 0) {
+            IProposableFix unimplementedMethodFix = new UnimplementedCodeFix(
+                    JAXWSUIMessages.ADD_UNIMPLEMENTED_METHODS, context.getASTRoot(),
+                    new CompilationUnitRewriteOperation[] { operation });
+            Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("cleanup.add_missing_methods", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+
+            proposals.add(new FixCorrectionProposal(unimplementedMethodFix, new UnimplementedCodeCleanUp(
+                    settings), 5, image, context));
+        }
+    }
+    
 	private void addChangeModifierProposal(IInvocationContext context, IProblemLocation problemLocation,
 	        List<IJavaCompletionProposal> proposals, int relevance) {
 		
