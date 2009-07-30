@@ -62,7 +62,7 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
 			IJavaElement javaElement = source.getElementAt(tokenStart);
 			if (javaElement != null) {
 		        
-			    CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, true);//JDTUtils.getCompilationUnit(source);
+			    CompilationUnit compilationUnit = JDTUtils.getCompilationUnit(source);
 			    int elementType = javaElement.getElementType();
 			    
                 if (elementType == IJavaElement.PACKAGE_DECLARATION) {
