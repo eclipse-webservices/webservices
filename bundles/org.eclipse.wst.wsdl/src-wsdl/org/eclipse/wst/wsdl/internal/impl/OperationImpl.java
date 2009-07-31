@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Fault;
 import org.eclipse.wst.wsdl.Input;
 import org.eclipse.wst.wsdl.Operation;
@@ -912,6 +913,10 @@ return opType;
     else if (modelObject instanceof Fault)
     {
       operation.getEFaults().remove(modelObject);
+    }
+    else if (modelObject instanceof ExtensibilityElement) 
+    {
+      getExtensibilityElements().remove(modelObject);
     }
   }
 

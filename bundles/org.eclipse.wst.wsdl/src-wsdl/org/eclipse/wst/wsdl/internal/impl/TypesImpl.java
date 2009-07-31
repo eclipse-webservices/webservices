@@ -170,18 +170,8 @@ public class TypesImpl extends ExtensibleElementImpl implements Types
 
   protected void handleReconciliation(Collection remainingModelObjects)
   {
-    for (Iterator i = remainingModelObjects.iterator(); i.hasNext();)
-    {
-      remove(this, i.next());
-    }
+    super.handleReconciliation(remainingModelObjects);
     ((DefinitionImpl)getEnclosingDefinition()).reconcileReferences(true);
-  }
-
-  protected void remove(Object component, Object modelObject)
-  {
-    Types types = (Types)component;
-    List list = types.getEExtensibilityElements();
-    list.remove(modelObject);
   }
 
   public Collection getModelObjects(Object component)

@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.WSDLPackage;
@@ -431,13 +432,28 @@ public class MessageImpl extends ExtensibleElementImpl implements Message
 
   protected void remove(Object component, Object modelObject)
   {
+    List list = getList(component, modelObject);
+    if (list != null)
+    {
+      list.remove(modelObject);
+    }    
+  }
+  
+  private List getList(Object component, Object modelObject)
+  {
+    List result = null;
     Message message = (Message)component;
     if (modelObject instanceof Part)
     {
-      message.getEParts().remove(modelObject);
-      //      message.getEParts().clear();
+      result = message.getEParts();
     }
-  }
+    else if (modelObject instanceof ExtensibilityElement)
+    {
+      result = getExtensibilityElements();
+    }
+    
+    return result;
+  }  
 
   //
   // For reconciliation: Model -> DOM

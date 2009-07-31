@@ -12,6 +12,7 @@ package org.eclipse.wst.wsdl.internal.impl;
 
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -260,6 +261,24 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
   {
     // Use extension factories by default.
     return getEnclosingDefinition() == null ? true : ((DefinitionImpl)getEnclosingDefinition()).getUseExtensionFactories();
+  }
+
+  /**
+   * Override this method if the remainingModelObjects contain elements that are not only ExtensibilityElement
+   */
+  protected void handleReconciliation(Collection remainingModelObjects)
+  {
+    super.handleReconciliation(remainingModelObjects);
+    Iterator iterator = remainingModelObjects.iterator();
+    List extensibilityElements = getExtensibilityElements();
+    while (iterator.hasNext())
+    {
+      Object modelObject = iterator.next();
+      if (modelObject instanceof ExtensibilityElement) 
+      {
+        extensibilityElements.remove(modelObject);
+      }
+    }
   }
 
 } //ExtensibleElementImpl
