@@ -37,6 +37,7 @@ import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.Fault;
@@ -49,6 +50,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
+import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
@@ -314,7 +316,15 @@ public class BugFixesTest extends TestCase
       {
         testReconcilesImportsWithNoLocation();
       }
-    });        
+    }); 
+    
+    suite.addTest(new BugFixesTest("ReconcilesExtensibleElements") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testReconcilesExtensibleElements();
+      }
+    });
 
     return suite;
   }
@@ -1763,5 +1773,128 @@ public class BugFixesTest extends TestCase
       e.printStackTrace();
       fail();
     }
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=236404
+   */
+  public void testReconcilesExtensibleElements()
+  {
+    Definition definition = null;
+
+    // The sample WSDL already has an <annotation> extensibility element for each extensible element
+    // We will loop through every extensible element and remove the annotation extensibility element
+    // and force the model to update, thus calling the reconciliation code. The expected result is that
+    // the annotation extensibility element will be removed in the model.
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/ReconcilesExtensibleElements/ExtensibleElementSample.wsdl"); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    // Definition
+    ensureExtensibilityElementRemoved(definition, 1);
+    
+    // Import
+    EList imports = definition.getEImports();
+    Import myImport = (Import) imports.get(0);
+    ensureExtensibilityElementRemoved(myImport, 1);
+    
+    // Type: original is two because it has <annotation> and <schema>
+    Types types = definition.getETypes();
+    ensureExtensibilityElementRemoved(types, 2);
+    
+    // Service
+    Service service = (Service)definition.getEServices().get(0);
+    ensureExtensibilityElementRemoved(service, 1);
+    
+    // Port
+    org.eclipse.wst.wsdl.Port port = (org.eclipse.wst.wsdl.Port)service.getEPorts().get(0);
+    ensureExtensibilityElementRemoved(port, 2);
+    
+    // Binding: original is 2 because it has <annotation> and <soap:binding>
+    Binding binding = port.getEBinding();
+    ensureExtensibilityElementRemoved(binding, 2);
+    
+    // Binding Operation: original is 2 because it has <annotation> and <soap:operation>
+    List bindingOperations = binding.getBindingOperations();
+    BindingOperation bindingOperation = (BindingOperation)bindingOperations.get(0);
+    ensureExtensibilityElementRemoved(bindingOperation, 2);    
+    
+    // Binding Input: original is 2 because it has <annotation> and <soap:body>
+    BindingInput bindingInput = bindingOperation.getEBindingInput();
+    ensureExtensibilityElementRemoved(bindingInput, 2);
+    
+    // Binding Output: original is 2 because it has <annotation> and <soap:body>
+    BindingOutput bindingOutput = bindingOperation.getEBindingOutput();
+    ensureExtensibilityElementRemoved(bindingOutput, 2);
+    
+    // Binding Fault: original is 2 because it has <annotation> and <soap:fault>    
+    EList bindingFaults = bindingOperation.getEBindingFaults();
+    BindingFault bindingFault = (BindingFault)bindingFaults.get(0);
+    ensureExtensibilityElementRemoved(bindingFault, 2);
+    
+    // Port Type
+    PortType portType = binding.getEPortType();
+    ensureExtensibilityElementRemoved(portType, 1);
+    
+    // Operation
+    EList operations = portType.getEOperations();
+    Operation operation = (Operation) operations.get(0);
+    ensureExtensibilityElementRemoved(operation, 1);
+    
+    // Output
+    Output output = operation.getEOutput();
+    ensureExtensibilityElementRemoved(output, 1);
+    
+    // Input
+    Input input = operation.getEInput();
+    ensureExtensibilityElementRemoved(input, 1);
+    
+    // fault 
+    EList faults = operation.getEFaults();
+    Fault fault = (Fault) faults.get(0);
+    ensureExtensibilityElementRemoved(fault, 1);
+    
+    // Message
+    Message message = input.getEMessage();
+    ensureExtensibilityElementRemoved(message, 1);
+    
+    // Part
+    EList parts = message.getEParts();
+    Part part = (Part) parts.get(0);
+    ensureExtensibilityElementRemoved(part, 1);
+  }
+  
+  /**
+   * Remove the first UnknownExtensibilityElement. The expected result is original size will decrement by 1
+   */
+  private void ensureExtensibilityElementRemoved(ExtensibleElement extensibleElement, int originalSize) 
+  {
+    List extensibilityElements = extensibleElement.getExtensibilityElements();
+    assertEquals(originalSize, extensibilityElements.size());
+    UnknownExtensibilityElement unknownExtensibilityElement = null;
+    Iterator extensibilityElementsIterator = extensibilityElements.iterator();
+    while (extensibilityElementsIterator.hasNext())
+    {
+      Object object = extensibilityElementsIterator.next();
+      if (object instanceof UnknownExtensibilityElement) 
+      {
+        unknownExtensibilityElement = (UnknownExtensibilityElement) object;
+        break;
+      }
+    }
+
+    if (unknownExtensibilityElement == null) 
+    {
+      fail("Cannot find the UnknownExtensibilityElement.");
+    }
+    Element element = unknownExtensibilityElement.getElement();
+    extensibleElement.getElement().removeChild(element);
+    extensibleElement.elementChanged(extensibleElement.getElement());
+    assertEquals(originalSize - 1, extensibilityElements.size());
   }
 }

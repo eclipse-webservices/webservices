@@ -267,10 +267,6 @@ public abstract class MessageReferenceImpl extends ExtensibleElementImpl impleme
     super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
-  protected void handleReconciliation(Collection remainingModelObjects)
-  {
-  }
-
   //
   // For reconciliation: Model -> DOM
   //
