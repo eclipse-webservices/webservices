@@ -90,15 +90,20 @@
             id="org.eclipse.jst.ws.jaxws.ui.annotations.correction.JAXWSQuickFixProcessor">
          <handledMarkerTypes>
             <markerType id="org.eclipse.jdt.apt.core.compile.problem"/>
+           <!-- <markerType id="org.eclipse.jdt.apt.core.nonreconcile.compile.problem"/> -->
          </handledMarkerTypes>
       </quickFixProcessor>
    </extension>
 
    <extension point="org.eclipse.ui.ide.markerResolution">
       <markerResolutionGenerator
-            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.correction.APTCompileProblemMarkerResolutionGenerator"
-            markerType="org.eclipse.jdt.apt.core.compile.problem">
+            markerType="org.eclipse.jdt.apt.core.compile.problem"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.correction.APTCompileProblemMarkerResolutionGenerator">
       </markerResolutionGenerator>
+      <!--<markerResolutionGenerator
+            markerType="org.eclipse.jdt.apt.core.nonreconcile.compile.problem"
+            class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.correction.APTCompileProblemMarkerResolutionGenerator">
+      </markerResolutionGenerator> -->
    </extension>
 
 </plugin>

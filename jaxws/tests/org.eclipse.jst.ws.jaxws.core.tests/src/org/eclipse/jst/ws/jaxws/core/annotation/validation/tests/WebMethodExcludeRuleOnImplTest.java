@@ -80,9 +80,9 @@ public class WebMethodExcludeRuleOnImplTest extends AbstractAnnotationValidation
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, WebMethod.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebMethod.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

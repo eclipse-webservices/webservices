@@ -72,10 +72,10 @@ public class WebServiceSEINoEndpointInterfaceRuleTest extends AbstractAnnotation
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.addImportChange(compilationUnit, WebService.class, textFileChange,
+            AnnotationUtils.addImportEdit(compilationUnit, WebService.class, textFileChange,
                     true);
 
-            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
                     source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

@@ -44,6 +44,7 @@ public class JAXWSUIMessages extends NLS {
     public static String CHANGE_METHOD_VISIBILITY;
     public static String CREATE_CONSTRUCTOR;
     public static String REMOVE_ANNOTATION;
+    public static String REMOVE_METHOD;
     public static String REMOVE_FINAL_MODIFIER;
     public static String REMOVE_ILLEGAL_MODIFIER;
     public static String REMOVE_STATIC_MODIFIER;

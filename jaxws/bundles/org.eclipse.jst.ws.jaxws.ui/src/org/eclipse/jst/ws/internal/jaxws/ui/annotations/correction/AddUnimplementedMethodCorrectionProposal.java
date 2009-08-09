@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
@@ -27,65 +28,66 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ImportRewrite.ImportRewriteContext;
 import org.eclipse.jdt.internal.corext.codemanipulation.CodeGenerationSettings;
-import org.eclipse.jdt.internal.corext.codemanipulation.ContextSensitiveImportRewriteContext;
 import org.eclipse.jdt.internal.corext.codemanipulation.StubUtility2;
-import org.eclipse.jdt.internal.corext.fix.AddUnimplementedMethodsOperation;
-import org.eclipse.jdt.internal.corext.fix.LinkedProposalModel;
-import org.eclipse.jdt.internal.corext.refactoring.structure.CompilationUnitRewrite;
 import org.eclipse.jdt.internal.ui.preferences.JavaPreferencesSettings;
+import org.eclipse.jdt.ui.text.java.IInvocationContext;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
-import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.swt.graphics.Image;
 
 @SuppressWarnings("restriction")
-public class AddUnimplementedSEIMethodsOperation extends AddUnimplementedMethodsOperation {
-    private ASTNode astNode;
+public class AddUnimplementedMethodCorrectionProposal extends AbstractJavaCorrectionPropsoal {
+
+    private ASTNode typeDeclaration;
     private String endpointInterface;
-    
-    public AddUnimplementedSEIMethodsOperation(ASTNode typeNode, String endpointInterface) {
-        super(typeNode);
-        this.astNode = typeNode;
+
+    public AddUnimplementedMethodCorrectionProposal(IInvocationContext invocationContext, ASTNode typeDeclaration, 
+            String endpointInterface, String displayString, int relevance, Image image) {
+        super(invocationContext, displayString, relevance, image);
         this.endpointInterface = endpointInterface;
+        this.typeDeclaration = typeDeclaration;
     }
-    
+
     @Override
-    public void rewriteAST(CompilationUnitRewrite compilationUnitRewrite, LinkedProposalModel model) throws CoreException {
-        IMethodBinding[] unimplementedMethods = getUnimplementedMethods(astNode, endpointInterface);
+    public void addEdits(TextFileChange textChange) throws CoreException {
+        IMethodBinding[] unimplementedMethods = getUnimplementedMethods(typeDeclaration, endpointInterface);
         if (unimplementedMethods.length == 0) {
             return;
         }
+
+        ICompilationUnit compilationUnit = invocationContext.getCompilationUnit();
         
-        ImportRewriteContext importRewriteContext = new ContextSensitiveImportRewriteContext(
-                (CompilationUnit) astNode.getRoot(), astNode.getStartPosition(), 
-                compilationUnitRewrite.getImportRewrite());
+        CompilationUnit astRoot = invocationContext.getASTRoot();
         
-        ASTRewrite astRewrite = compilationUnitRewrite.getASTRewrite();
-        ICompilationUnit compilationUnit = compilationUnitRewrite.getCu();
-        CodeGenerationSettings settings = JavaPreferencesSettings.getCodeGenerationSettings(
-                compilationUnit.getJavaProject());
+        AST ast = astRoot.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        
+        CodeGenerationSettings settings = JavaPreferencesSettings.getCodeGenerationSettings(compilationUnit.getJavaProject());
         settings.overrideAnnotation = false;
         
-        AbstractTypeDeclaration typeDeclaration = (AbstractTypeDeclaration) astNode;
-        ListRewrite listRewrite = astRewrite.getListRewrite(typeDeclaration, 
-                typeDeclaration.getBodyDeclarationsProperty());
+        AbstractTypeDeclaration abstractTypeDeclaration = (AbstractTypeDeclaration) typeDeclaration;
+        ListRewrite listRewrite = rewriter.getListRewrite(abstractTypeDeclaration, 
+                abstractTypeDeclaration.getBodyDeclarationsProperty());
  
-        ImportRewrite importRewrite = compilationUnitRewrite.getImportRewrite();
+        ImportRewrite importRewrite = ImportRewrite.create(astRoot, true);
 
-        for (int i= 0; i < unimplementedMethods.length; i++) {
+        for (int i = 0; i < unimplementedMethods.length; i++) {
             IMethodBinding methodBinding = unimplementedMethods[i];
-            MethodDeclaration methodDeclaration = StubUtility2.createImplementationStub(compilationUnit, 
-                    astRewrite, importRewrite, importRewriteContext, methodBinding, 
+            MethodDeclaration methodDeclaration = StubUtility2.createImplementationStub(compilationUnit, rewriter,
+                    importRewrite, importRewrite.getDefaultImportRewriteContext(), methodBinding,
                     methodBinding.getDeclaringClass().getName(), settings, false);
-            listRewrite.insertLast(methodDeclaration, createTextEditGroup(JAXWSUIMessages.ADD_MISSING_METHOD, 
-                    compilationUnitRewrite));
+            listRewrite.insertLast(methodDeclaration, null);
+        }
+        textChange.addEdit(rewriter.rewriteAST());
+        if (importRewrite.hasRecordedChanges()) {
+            textChange.addEdit(importRewrite.rewriteImports(null));
         }
     }
-
-    @Override
+    
     public IMethodBinding[] getMethodsToImplement() {
-        return getUnimplementedMethods(astNode, endpointInterface);
+        return getUnimplementedMethods(typeDeclaration, endpointInterface);
     }
     
     private IMethodBinding[] getUnimplementedMethods(ASTNode typeDeclaration, String endpointInterface) {
@@ -138,4 +140,5 @@ public class AddUnimplementedSEIMethodsOperation extends AddUnimplementedMethods
         });
         return methodDeclarations;
     }
+
 }

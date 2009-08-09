@@ -77,9 +77,9 @@ public class WebServiceDefaultPublicConstructorRuleTest extends AbstractAnnotati
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
             AnnotationUtils
-                    .addImportChange(compilationUnit, WebService.class, textFileChange, true);
+                    .addImportEdit(compilationUnit, WebService.class, textFileChange, true);
 
-            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
                     source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

@@ -61,9 +61,9 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);
 
-            AnnotationUtils.addImportChange(compilationUnit, WebServiceRef.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebServiceRef.class, textFileChange, true);
 
-            AnnotationUtils.createFieldAnnotationChange(source, compilationUnit, rewriter, field, annotation,
+            AnnotationUtils.addAnnotationToField(source, compilationUnit, rewriter, field, annotation,
                     textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

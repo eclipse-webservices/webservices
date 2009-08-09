@@ -58,9 +58,9 @@ public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotat
             assertNotNull(annotation);
             assertEquals(WebServiceProvider.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.addImportChange(compilationUnit, WebServiceProvider.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebServiceProvider.class, textFileChange, true);
 
-            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter,
+            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter,
                     source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

@@ -40,9 +40,9 @@ public class WebServiceSEINoWebResultRuleTest extends AbstractWebServiceSEIRule 
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, WebResult.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebResult.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

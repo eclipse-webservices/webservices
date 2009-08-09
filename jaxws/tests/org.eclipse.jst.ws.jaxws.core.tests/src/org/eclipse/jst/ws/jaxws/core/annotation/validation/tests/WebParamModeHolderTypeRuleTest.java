@@ -74,13 +74,13 @@ public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidation
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, WebParam.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebParam.class, textFileChange, true);
 
             SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
                     128);
 
-            AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, rewriter,
-                    parameter, method, annotation, textFileChange);
+            AnnotationUtils.addAnnotationToMethodParameter(source, compilationUnit, rewriter, parameter,
+                    method, annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

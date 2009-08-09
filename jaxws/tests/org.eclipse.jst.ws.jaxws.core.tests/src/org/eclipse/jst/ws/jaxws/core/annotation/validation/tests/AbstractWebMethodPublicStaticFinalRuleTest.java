@@ -67,9 +67,9 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
             IMethod method = getMethodToTeset();
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, WebMethod.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebMethod.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

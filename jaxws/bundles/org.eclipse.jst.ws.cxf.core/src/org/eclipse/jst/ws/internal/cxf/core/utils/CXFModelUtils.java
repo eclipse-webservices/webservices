@@ -116,7 +116,7 @@ public final class CXFModelUtils {
         Annotation annotation = AnnotationsCore.createAnnotation(ast, WebService.class,
                 WebService.class.getSimpleName(), memberValuePairs);
         
-        AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, source.findPrimaryType(),
+        AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, source.findPrimaryType(),
                 annotation,  textFileChange);
     }
 
@@ -131,7 +131,7 @@ public final class CXFModelUtils {
 
         Annotation annotation = getAnnotation(method, ast, annotationClass);
 
-        AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                 annotation, textFileChange);
     }
 
@@ -145,7 +145,7 @@ public final class CXFModelUtils {
 
         Annotation annotation = getAnnotation(method, ast, WebMethod.class);
 
-        AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                 annotation, textFileChange);
     }
     
@@ -159,7 +159,7 @@ public final class CXFModelUtils {
 
         Annotation annotation = getAnnotation(method, ast, RequestWrapper.class);
 
-        AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method, 
+        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method, 
                 annotation, textFileChange);
     }
 
@@ -173,7 +173,7 @@ public final class CXFModelUtils {
 
         Annotation annotation = getAnnotation(method, ast, ResponseWrapper.class);
 
-        AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method, 
+        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method, 
                 annotation, textFileChange);
     }
     
@@ -188,7 +188,7 @@ public final class CXFModelUtils {
 
         Annotation annotation = getAnnotation(parameter, ast, WebParam.class);
 
-        AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, 
+        AnnotationUtils.addAnnotationToMethodParameter(source, compilationUnit, 
                 rewriter, parameter, method, annotation, textFileChange);
     }
     

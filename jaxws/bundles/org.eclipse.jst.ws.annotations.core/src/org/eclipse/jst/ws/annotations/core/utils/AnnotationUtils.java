@@ -102,7 +102,7 @@ public final class AnnotationUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static void addImportChange(CompilationUnit compilationUnit, 
+    public static void addImportEdit(CompilationUnit compilationUnit, 
             Class<? extends java.lang.annotation.Annotation> annotation, TextFileChange textFileChange, 
             boolean annotate) throws CoreException {
         String qualifiedName = annotation.getCanonicalName();
@@ -163,10 +163,8 @@ public final class AnnotationUtils {
             }
         }
         if (importRewrite.hasRecordedChanges()) {
-            // TODO Cleanup imports
-            // Repeatedly adding and removing an import where none existed
-            // before will
-            // insert a new line on each insert.
+            // TODO Cleanup imports. Repeatedly adding and removing an import where none existed before will
+            //insert a new line on each insert.
             TextEdit importTextEdit = importRewrite.rewriteImports(null);
             textFileChange.addEdit(importTextEdit);
         }
@@ -184,7 +182,7 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void createPackageDeclarationAnnotationChange(ICompilationUnit source, 
+    public static void addAnnotationToPackageDeclaration(ICompilationUnit source, 
             PackageDeclaration packageDeclaration, ASTRewrite rewriter, Annotation annotation, 
             TextFileChange textFileChange) throws CoreException {
         IProgressMonitor monitor = new NullProgressMonitor();
@@ -253,7 +251,7 @@ public final class AnnotationUtils {
         }
     }
     
-    public static void createTypeAnnotationChange(ICompilationUnit source, CompilationUnit 
+    public static void addAnnotationToType(ICompilationUnit source, CompilationUnit 
             compilationUnit, ASTRewrite rewriter, IType type, Annotation annotation, 
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -321,7 +319,7 @@ public final class AnnotationUtils {
                     }
                     
                     TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
-                     
+
                     textFileChange.addEdit(annotationTextEdit);
 
                     textFileChange.addTextEditGroup(new TextEditGroup("AA", new  //$NON-NLS-1$
@@ -335,7 +333,7 @@ public final class AnnotationUtils {
         }
     }
     
-    public static void createMethodAnnotationChange(ICompilationUnit source, CompilationUnit 
+    public static void addAnnotationToMethod(ICompilationUnit source, CompilationUnit 
             compilationUnit, ASTRewrite rewriter, IMethod method, Annotation annotation, 
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -376,9 +374,8 @@ public final class AnnotationUtils {
         }
     }
     
-    public static void removeAnnotationFromMethod(ICompilationUnit source, CompilationUnit 
-            compilationUnit, ASTRewrite rewriter, IMethod method, Annotation annotation, 
-            TextFileChange textFileChange) throws CoreException {
+    public static void removeAnnotationFromMethod(ICompilationUnit source, CompilationUnit compilationUnit,
+            ASTRewrite rewriter, IMethod method, Annotation annotation, TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
@@ -425,9 +422,8 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void createFieldAnnotationChange(ICompilationUnit source, CompilationUnit 
-            compilationUnit, ASTRewrite rewriter, IField field, Annotation annotation, 
-            TextFileChange textFileChange) throws CoreException {
+    public static void addAnnotationToField(ICompilationUnit source, CompilationUnit compilationUnit,
+            ASTRewrite rewriter, IField field, Annotation annotation, TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
@@ -467,9 +463,8 @@ public final class AnnotationUtils {
         }
     }
     
-    public static void removeAnnotationFromField(ICompilationUnit source, CompilationUnit 
-            compilationUnit, ASTRewrite rewriter, IField field, Annotation annotation, 
-            TextFileChange textFileChange) throws CoreException {
+    public static void removeAnnotationFromField(ICompilationUnit source, CompilationUnit compilationUnit,
+            ASTRewrite rewriter, IField field, Annotation annotation, TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
@@ -518,8 +513,8 @@ public final class AnnotationUtils {
         }
     }
    
-    public static void createMethodParameterAnnotationChange(ICompilationUnit source, CompilationUnit 
-            compilationUnit, ASTRewrite rewriter, SingleVariableDeclaration singleVariableDeclaration, 
+    public static void addAnnotationToMethodParameter(ICompilationUnit source, CompilationUnit 
+            compilationUnit, ASTRewrite rewriter, SingleVariableDeclaration methodParameter, 
             IMethod method, Annotation annotation, TextFileChange textFileChange) throws CoreException {
 
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -538,7 +533,7 @@ public final class AnnotationUtils {
                     @SuppressWarnings("unchecked")
                     List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
                     for (SingleVariableDeclaration parameter : parameters) {
-                        if (compareMethodParameters(parameter, singleVariableDeclaration)
+                        if (compareMethodParameters(parameter, methodParameter)
                                 && !isAnnotationPresent(parameter, annotation)) {
                             bufferManager.connect(path, LocationKind.IFILE, null);
                             connected = true;
@@ -568,20 +563,20 @@ public final class AnnotationUtils {
         }        
     }
     
-    public static void createMethodParameterAnnotationChange(ICompilationUnit source, ASTRewrite rewriter,
-            SingleVariableDeclaration singleVariableDeclaration, Annotation annotation,
+    public static void addAnnotationToMethodParameter(ICompilationUnit source, ASTRewrite rewriter,
+            SingleVariableDeclaration methodParameter, Annotation annotation,
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
         try {
-            if (!isAnnotationPresent(singleVariableDeclaration, annotation)) {
+            if (!isAnnotationPresent(methodParameter, annotation)) {
                 bufferManager.connect(path, LocationKind.IFILE, null);
                 connected = true;
 
                 IDocument document = bufferManager.getTextFileBuffer(path, LocationKind.IFILE).getDocument();
 
-                ListRewrite listRewrite = rewriter.getListRewrite(singleVariableDeclaration,
+                ListRewrite listRewrite = rewriter.getListRewrite(methodParameter,
                         SingleVariableDeclaration.MODIFIERS2_PROPERTY);
 
                 listRewrite.insertAt(annotation, -1, null);
@@ -601,19 +596,19 @@ public final class AnnotationUtils {
     }
     
     public static void removeAnnotationFromMethodParameter(ICompilationUnit source, ASTRewrite rewriter,
-            SingleVariableDeclaration singleVariableDeclaration, Annotation annotation,
+            SingleVariableDeclaration methodParameter, Annotation annotation,
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
         try {
-            if (isAnnotationPresent(singleVariableDeclaration, annotation)) {
+            if (isAnnotationPresent(methodParameter, annotation)) {
                 bufferManager.connect(path, LocationKind.IFILE, null);
                 connected = true;
 
                 IDocument document = bufferManager.getTextFileBuffer(path, LocationKind.IFILE).getDocument();
 
-                ListRewrite listRewrite = rewriter.getListRewrite(singleVariableDeclaration,
+                ListRewrite listRewrite = rewriter.getListRewrite(methodParameter,
                         SingleVariableDeclaration.MODIFIERS2_PROPERTY);
 
                 @SuppressWarnings("unchecked")
@@ -638,7 +633,7 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void createMemberValuePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
+    public static void addMemberValuePairToAnnotation(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, IJavaElement javaElement, IAnnotation annotation, ASTNode memberValuePair,
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -677,7 +672,7 @@ public final class AnnotationUtils {
         }
     }
     
-    public static void createMemberValuePairChange(ICompilationUnit source, CompilationUnit compilationUnit,
+    public static void addMemberValuePairToAnnotation(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, NormalAnnotation annotation, ASTNode memberValuePair,
             TextFileChange textFileChange) throws CoreException {
         ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
@@ -689,8 +684,7 @@ public final class AnnotationUtils {
 
             IDocument document = bufferManager.getTextFileBuffer(path, LocationKind.IFILE).getDocument();
 
-            ListRewrite listRewrite = rewriter.getListRewrite(annotation,
-                    NormalAnnotation.VALUES_PROPERTY);
+            ListRewrite listRewrite = rewriter.getListRewrite(annotation,  NormalAnnotation.VALUES_PROPERTY);
 
             listRewrite.insertLast(memberValuePair, null);
 
@@ -811,14 +805,6 @@ public final class AnnotationUtils {
         }
         return null;
     }
-
-//    public static CompilationUnit getASTParser(ICompilationUnit source) {
-//        ASTParser parser = ASTParser.newParser(AST.JLS3);
-//        parser.setSource(source);
-//        CompilationUnit compilationUnit = (CompilationUnit) parser.createAST(new NullProgressMonitor());
-//        compilationUnit.recordModifications();
-//        return compilationUnit;
-//    }
 
     public static CompilationUnit getASTParser(ICompilationUnit source, boolean resolveBindings) {
         ASTParser parser = ASTParser.newParser(AST.JLS3);

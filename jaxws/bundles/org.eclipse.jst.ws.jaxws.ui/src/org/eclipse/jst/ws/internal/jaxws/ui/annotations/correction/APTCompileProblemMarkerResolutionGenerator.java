@@ -112,8 +112,8 @@ public class APTCompileProblemMarkerResolutionGenerator implements IMarkerResolu
 	private ICompilationUnit getCompilationUnit(IMarker marker) {
 		IResource resource = marker.getResource();
 		if (resource instanceof IFile && resource.isAccessible()) {
-			IJavaElement javaElement = JavaCore.create((IFile) resource);
-			if (javaElement instanceof ICompilationUnit) {
+            IJavaElement javaElement = JavaCore.create((IFile) resource);
+			if (javaElement != null && javaElement instanceof ICompilationUnit) {
 				return (ICompilationUnit) javaElement;
 			}
 		}

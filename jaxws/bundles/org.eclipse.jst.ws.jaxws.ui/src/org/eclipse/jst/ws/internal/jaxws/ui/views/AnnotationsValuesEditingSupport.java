@@ -420,14 +420,14 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         if (annotate) {
-            AnnotationUtils.createPackageDeclarationAnnotationChange(source, pkgDeclaration, rewriter,
+            AnnotationUtils.addAnnotationToPackageDeclaration(source, pkgDeclaration, rewriter,
                     annotation, textFileChange);
         } else {
             AnnotationUtils.removeAnnotationFromPackageDeclaration(source, pkgDeclaration, rewriter, 
                     annotation, textFileChange);
         }
 
-        AnnotationUtils.addImportChange(compilationUnit, annotationClass, textFileChange, annotate);
+        AnnotationUtils.addImportEdit(compilationUnit, annotationClass, textFileChange, annotate);
 
         executeChange(new NullProgressMonitor(), textFileChange);
     }
@@ -446,17 +446,18 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass,
                 annotationClass.getSimpleName(), memberValueParis);
 
+        
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         if (annotate) {
             if (member.getElementType() == IJavaElement.TYPE) {
-                AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+                AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
                         source.findPrimaryType(), annotation, textFileChange);
             } else if (member.getElementType() == IJavaElement.METHOD) {
-                AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter,
+                AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter,
                         (IMethod) member, annotation, textFileChange);
             } else if (member.getElementType() == IJavaElement.FIELD) {
-                AnnotationUtils.createFieldAnnotationChange(source, compilationUnit, rewriter,
+                AnnotationUtils.addAnnotationToField(source, compilationUnit, rewriter,
                         (IField) member, annotation, textFileChange);
             }
         } else {
@@ -475,7 +476,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             }
         }
         
-        AnnotationUtils.addImportChange(compilationUnit, annotationClass, textFileChange, annotate);
+        AnnotationUtils.addImportEdit(compilationUnit, annotationClass, textFileChange, annotate);
 
         executeChange(new NullProgressMonitor(), textFileChange);
     }
@@ -501,13 +502,13 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
 
         if (annotate) {
-            AnnotationUtils.createMethodParameterAnnotationChange(source, rewriter, parameter, annotation,
+            AnnotationUtils.addAnnotationToMethodParameter(source, rewriter, parameter, annotation,
                     textFileChange);
         } else {
             AnnotationUtils.removeAnnotationFromMethodParameter(source, rewriter, parameter, annotation,
                     textFileChange);
         }
-        AnnotationUtils.addImportChange(compilationUnit, annotationClass, textFileChange, annotate);
+        AnnotationUtils.addImportEdit(compilationUnit, annotationClass, textFileChange, annotate);
 
         executeChange(new NullProgressMonitor(), textFileChange);
     }
@@ -591,8 +592,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                 if (!hasMemberValuePair) {
                     ASTNode memberValuePair = getMemberValuePair(ast, method, value);
                     if (memberValuePair != null) {
-                        AnnotationUtils
-                                .createMemberValuePairChange(source, compilationUnit,
+                        AnnotationUtils.addMemberValuePairToAnnotation(source, compilationUnit,
                                         rewriter, javaElement, annotation, memberValuePair,
                                         textFileChange);
                         break;
@@ -641,7 +641,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     if (!hasMemberValuePair) {
                         ASTNode memberValuePair = getMemberValuePair(ast, method, value);
                         if (memberValuePair != null) {
-                            AnnotationUtils.createMemberValuePairChange(source, compilationUnit, rewriter,
+                            AnnotationUtils.addMemberValuePairToAnnotation(source, compilationUnit, rewriter,
                                     normalAnnotation, memberValuePair, textFileChange);
                             break;
                         }

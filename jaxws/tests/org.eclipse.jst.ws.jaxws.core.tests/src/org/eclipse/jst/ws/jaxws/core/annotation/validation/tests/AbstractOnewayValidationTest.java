@@ -53,9 +53,9 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
             IMethod method = getMethodToTest();
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, Oneway.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, Oneway.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

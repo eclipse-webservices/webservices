@@ -40,9 +40,9 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
@@ -76,9 +76,9 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
 
-            AnnotationUtils.createTypeAnnotationChange(source, compilationUnit, rewriter, 
+            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
                     source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

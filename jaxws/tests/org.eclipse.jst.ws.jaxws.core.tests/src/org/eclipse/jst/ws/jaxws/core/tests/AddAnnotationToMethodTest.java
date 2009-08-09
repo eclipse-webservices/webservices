@@ -64,9 +64,9 @@ public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
             IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, WebMethod.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebMethod.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

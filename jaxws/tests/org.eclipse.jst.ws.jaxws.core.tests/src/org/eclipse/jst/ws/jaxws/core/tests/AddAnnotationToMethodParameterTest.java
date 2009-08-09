@@ -64,13 +64,13 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
             IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, WebParam.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebParam.class, textFileChange, true);
 
             SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
                     65);
 
-            AnnotationUtils.createMethodParameterAnnotationChange(source, compilationUnit, rewriter,
-                    parameter, method, annotation, textFileChange);
+            AnnotationUtils.addAnnotationToMethodParameter(source, compilationUnit, rewriter, parameter,
+                    method, annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

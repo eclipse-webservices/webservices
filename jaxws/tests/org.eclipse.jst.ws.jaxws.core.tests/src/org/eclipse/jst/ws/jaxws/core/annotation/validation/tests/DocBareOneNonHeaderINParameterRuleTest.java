@@ -89,9 +89,9 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
             
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
@@ -130,9 +130,9 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
             
             assertNotNull(method);
 
-            AnnotationUtils.addImportChange(compilationUnit, SOAPBinding.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
 
-            AnnotationUtils.createMethodAnnotationChange(source, compilationUnit, rewriter, method,
+            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
                     annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
