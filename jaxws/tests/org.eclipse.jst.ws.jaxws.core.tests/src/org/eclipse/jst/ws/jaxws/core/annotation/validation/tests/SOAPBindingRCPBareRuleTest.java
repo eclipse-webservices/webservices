@@ -25,24 +25,23 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTest {
+public class SOAPBindingRCPBareRuleTest extends AbstractSOAPBindingValidationTest {
 
     @Override
     protected Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                SOAPBinding.class.getCanonicalName(), "style", Style.DOCUMENT);
+                SOAPBinding.class.getCanonicalName(), "style", Style.RPC);
 
         MemberValuePair useValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                SOAPBinding.class.getCanonicalName(), "use", Use.ENCODED);
+                SOAPBinding.class.getCanonicalName(), "use", Use.LITERAL);
 
         MemberValuePair parameterStyleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
                 SOAPBinding.class.getCanonicalName(), "parameterStyle", ParameterStyle.BARE);
@@ -54,41 +53,20 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
         return AnnotationsCore.createAnnotation(ast, SOAPBinding.class, SOAPBinding.class.getSimpleName(), 
                 memberValuePairs);
     }
-
-    @Override
-    protected String getClassContents() {
-        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("public class MyClass {\n\n\tpublic String myMethod(String in) {");
-        classContents.append("\n\t\treturn \"txt\";\n\t}\n\n}");
-        return classContents.toString();
-    }
-
-    @Override
-    protected String getClassName() {
-        return "MyClass.java";
-    }
-
-    @Override
-    protected String getPackageName() {
-        return "com.example";
-    }
-
-    public void testSOAPBindingMethodUseRule() {
+    
+    public void testSOAPBindingRPCBareRule() {
         try {
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
             
-            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
-            assertNotNull(method);
-
             AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
+                    source.findPrimaryType(), annotation, textFileChange);
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
+            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
                     .getAnnotationName(annotation)));
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
@@ -101,7 +79,7 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED,
+            assertEquals(JAXWSCoreMessages.SOAPBINDING_RPC_NO_BARE_PARAMETER_STYLE,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
@@ -111,4 +89,5 @@ public class SOAPBindingMethodUseRuleTest extends AbstractAnnotationValidationTe
             fail(ie.getLocalizedMessage());
         }
     }
+
 }

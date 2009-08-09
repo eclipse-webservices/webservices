@@ -226,16 +226,9 @@
       </processor>
       <processor
             annotation="javax.jws.soap.SOAPBinding"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.SOAPBindingMethodStyleDocumentRule">
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.SOAPBindingRules">
          <description>
-            %SOAPBINDING_METHOD_STYLE_DOCUMENT_RULE
-         </description>
-      </processor>
-      <processor
-            annotation="javax.jws.soap.SOAPBinding"
-            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.SOAPBindingMethodUseRule">
-         <description>
-            %SOAPBINDING_NO_PARAMETERSTYLE_WHEN_ENCODED_RULE
+            %SOAPBINDING_RULES
          </description>
       </processor>
       <processor

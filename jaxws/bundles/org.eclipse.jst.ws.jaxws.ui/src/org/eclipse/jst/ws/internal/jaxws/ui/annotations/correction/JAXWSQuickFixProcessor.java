@@ -114,7 +114,8 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
             addRemoveAnnotationProposal(context, problemLocation, proposals, WebMethod.class);
         }
 
-        if (problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING)) {
+        if (problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NO_SOAPBINDING)
+                || problem.equals(JAXWSCoreMessages.SOAPBINDING_NO_RPC_STYLE_ON_METHODS)) {
             addRemoveAnnotationProposal(context, problemLocation, proposals, SOAPBinding.class);
         }
 

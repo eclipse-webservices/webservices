@@ -32,20 +32,20 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
-public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationValidationTest {
+public class SOAPBindingDocumentEncodedRuleTest extends AbstractSOAPBindingValidationTest {
 
     @Override
     protected Annotation getAnnotation() {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
         MemberValuePair styleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                SOAPBinding.class.getCanonicalName(), "style", Style.RPC);
+                SOAPBinding.class.getCanonicalName(), "style", Style.DOCUMENT);
 
         MemberValuePair useValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                SOAPBinding.class.getCanonicalName(), "use", Use.LITERAL);
+                SOAPBinding.class.getCanonicalName(), "use", Use.ENCODED);
 
         MemberValuePair parameterStyleValuePair = AnnotationsCore.createEnumMemberValuePair(ast,
-                SOAPBinding.class.getCanonicalName(), "parameterStyle", ParameterStyle.WRAPPED);
+                SOAPBinding.class.getCanonicalName(), "parameterStyle", ParameterStyle.BARE);
 
         memberValuePairs.add(styleValuePair);
         memberValuePairs.add(useValuePair);
@@ -55,30 +55,12 @@ public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationVa
                 memberValuePairs);
     }
 
-    @Override
-    protected String getClassContents() {
-        StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("public class MyClass {\n\n\tpublic String myMethod() {");
-        classContents.append("\n\t\treturn \"txt\";\n\t}\n}");
-        return classContents.toString();
-    }
-
-    @Override
-    protected String getClassName() {
-        return "MyClass.java";
-    }
-
-    @Override
-    protected String getPackageName() {
-        return "com.example";
-    }
-
-    public void testSOAPBindingMethodStyleDocumentRule() {
+    public void testSOAPBindingDocumentEncodedRule() {
         try {
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
-
-            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
+            
+            IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
             AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
@@ -101,7 +83,7 @@ public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationVa
             IMarker annotationProblemMarker = allmarkers[0];
 
             assertEquals(source.getResource(), annotationProblemMarker.getResource());
-            assertEquals(JAXWSCoreMessages.SOAPBINDING_ON_METHOD_STYLE_DOCUMENT_ONLY,
+            assertEquals(JAXWSCoreMessages.SOAPBINDING_DOCUMENT_ENCODED_NOT_SUPPORTED,
                     annotationProblemMarker.getAttribute(IMarker.MESSAGE));
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
@@ -111,5 +93,4 @@ public class SOAPBindingMethodStyleDocumentRuleTest extends AbstractAnnotationVa
             fail(ie.getLocalizedMessage());
         }
     }
-
 }
