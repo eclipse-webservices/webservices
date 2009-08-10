@@ -487,8 +487,12 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
 
         @Override
         protected boolean canEdit(Object element) {
-            return !AnnotationUtils.isAnnotationPresent(type.findMethods((IMethod) element)[0], 
-                    annotationKey);
+            if (element instanceof IMethod) {
+                IMethod method = (IMethod) element;
+                return !AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], 
+                        annotationKey);
+            }
+            return false;
         }
 
         @Override
