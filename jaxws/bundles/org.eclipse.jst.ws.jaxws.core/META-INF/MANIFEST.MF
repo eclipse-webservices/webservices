@@ -26,8 +26,10 @@ Export-Package: org.eclipse.jst.ws.internal.jaxws.core;x-friends:="org.eclipse.j
  org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;x-friends:="org.eclipse.jst.ws.annotations.core",
  org.eclipse.jst.ws.internal.jaxws.core.utils;x-friends:="org.eclipse.jst.ws.jaxws.ui",
  org.eclipse.jst.ws.jaxws.core.utils
-Import-Package: javax.jws,
+Import-Package: javax.activation,
+ javax.jws,
  javax.jws.soap,
+ javax.xml.soap,
  javax.xml.ws;version="2.1.0",
  javax.xml.ws.handler;version="2.1.0",
  javax.xml.ws.handler.soap;version="2.1.0",

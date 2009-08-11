@@ -266,6 +266,13 @@
             %WEBSERVICE_WSDL_LOCATION_RULE
          </description>
       </processor>
+      <processor
+            annotation="javax.xml.ws.WebServiceProvider"
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.WebServiceProviderRules">
+         <description>
+            %WEBSERVICEPROVIDER_RULES
+         </description>
+      </processor>
    </extension>
 
 </plugin>
