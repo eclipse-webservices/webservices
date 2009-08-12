@@ -68,33 +68,39 @@ public class ChangeModifierCorrectionProposal extends AbstractJavaCorrectionProp
                         }
                         newModifierFlags &= ~modifierFlag;
                     }
-
                 }
             }
-            
-            ASTNode lastAnnotation = null;
-            List<ASTNode> rewrittenList = listRewrite.getRewrittenList();
-            for (ASTNode astNode : rewrittenList) {
-                if (astNode instanceof IExtendedModifier) {
-                    IExtendedModifier extendedModifier = (IExtendedModifier) astNode;
-                    if (extendedModifier.isAnnotation()) {
-                        lastAnnotation = astNode;
-                    }
-                }
-            }
-            
+                        
             List<Modifier> modifers = ast.newModifiers(newModifierFlags);
+            ASTNode lastAnnotation = getLastAnnotation(listRewrite);
             for (Modifier modifier : modifers) {
                 int modifierFlag = modifier.getKeyword().toFlagValue();
                 if ((modifierFlag & (Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED)) != 0) {
                     if (lastAnnotation != null) {
                         listRewrite.insertAfter(modifier, lastAnnotation, null);
+                    } else {
+                    	listRewrite.insertFirst(modifier, null);
                     }
                 }
             }
             
             textChange.addEdit(rewriter.rewriteAST());
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private ASTNode getLastAnnotation(ListRewrite listRewrite) {
+        ASTNode lastAnnotation = null;
+        List<ASTNode> rewrittenList = listRewrite.getRewrittenList();
+        for (ASTNode astNode : rewrittenList) {
+            if (astNode instanceof IExtendedModifier) {
+                IExtendedModifier extendedModifier = (IExtendedModifier) astNode;
+                if (extendedModifier.isAnnotation()) {
+                    lastAnnotation = astNode;
+                }
+            }
+        }
+        return lastAnnotation;
     }
     
     private ListRewrite getListRewrite(ASTNode astNode, ASTRewrite astRewrite) {

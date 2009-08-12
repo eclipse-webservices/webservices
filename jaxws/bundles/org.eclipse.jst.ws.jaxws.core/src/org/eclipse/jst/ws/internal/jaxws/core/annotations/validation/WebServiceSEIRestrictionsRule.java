@@ -102,8 +102,17 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
                 for (MethodDeclaration seiMethod : seiMethods) {
                     boolean implemented = false;
                     for (MethodDeclaration implMethod : implMethods) {
-                        
                         if (AnnotationUtils.compareMethods(seiMethod, implMethod)) {
+                            if (!implMethod.getModifiers().contains(Modifier.PUBLIC)) {
+                            	printFixableError(implMethod.getPosition(), 
+                            			JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_REDUCED_VISIBILITY);
+                            }
+                            if (!implMethod.getReturnType().equals(seiMethod.getReturnType())) {
+                            	printFixableError(implMethod.getPosition(), JAXWSCoreMessages.bind(
+                            			JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE, 
+                            			getImplementsMessage(typeDeclaration, seiMethod)),
+                            			"", JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE);
+                            }
                             implemented = true;
                             break;
                         }

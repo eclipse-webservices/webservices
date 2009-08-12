@@ -42,6 +42,7 @@ public class JAXWSUIMessages extends NLS {
     public static String ADD_MISSING_METHOD;
     public static String ADD_UNIMPLEMENTED_METHODS;
     public static String CHANGE_METHOD_VISIBILITY;
+    public static String CHANGE_METHOD_RETURN_TYPE;
     public static String CREATE_CONSTRUCTOR;
     public static String REMOVE_ANNOTATION;
     public static String REMOVE_METHOD;

@@ -29,6 +29,7 @@ import org.eclipse.jdt.apt.core.util.EclipseMessager;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -39,6 +40,7 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
@@ -46,6 +48,7 @@ import org.eclipse.jdt.ui.text.java.IInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.IProblemLocation;
 import org.eclipse.jdt.ui.text.java.IQuickFixProcessor;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.swt.graphics.Image;
@@ -156,7 +159,15 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
                 || problem.equals(JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED)) {
             addChangeModifierProposal(context, problemLocation, proposals, 5);
             addRemoveAnnotationProposal(context, problemLocation, proposals, WebMethod.class);
-        }        
+        }
+
+        if (problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_REDUCED_VISIBILITY)) {
+            addChangeModifierProposal(context, problemLocation, proposals, 5);
+        }
+
+        if (problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE)) {
+        	addChangeReturnTypeProposal(context, problemLocation, proposals);
+        }
     }
 
     private void addAnnotationToTypeProposal(IInvocationContext context, List<IJavaCompletionProposal> proposals, 
@@ -243,7 +254,8 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
 	private void addChangeModifierProposal(IInvocationContext context, IProblemLocation problemLocation,
 	        List<IJavaCompletionProposal> proposals, int relevance) {
 		
-		ASTNode selectedNode = problemLocation.getCoveringNode(context.getASTRoot());
+        CompilationUnit astRoot = context.getASTRoot();
+        ASTNode selectedNode = problemLocation.getCoveringNode(astRoot);
 
 		if (!(selectedNode instanceof SimpleName)) {
 			return;
@@ -259,7 +271,8 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
 			
         	String problem = problemLocation.getProblemArguments()[1];
 
-            if(problem.equals(JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS)) {
+            if(problem.equals(JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS)
+            		|| problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_REDUCED_VISIBILITY)) {
     			excludedModifiers = ~(Modifier.PUBLIC);
     			includedModifiers = Modifier.PUBLIC ;
     			displayString = JAXWSUIMessages.bind(JAXWSUIMessages.CHANGE_METHOD_VISIBILITY, "public"); //$NON-NLS-1$
@@ -293,7 +306,6 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
         ASTNode selectedNode = problemLocation.getCoveringNode(astRoot);
 
         ITypeBinding typeBinding = ((AbstractTypeDeclaration) selectedNode.getParent()).resolveBinding();
-
         if (typeBinding != null && typeBinding.isFromSource()) {
             String displayString = JAXWSUIMessages.bind(JAXWSUIMessages.CREATE_CONSTRUCTOR,
                     typeBinding.getTypeDeclaration().getName());
@@ -304,5 +316,25 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
             proposals.add(new NewDefaultConstructorCorrectionProposal(context, typeBinding, displayString, 5,
                     image));
         }
+    }
+    
+    private void addChangeReturnTypeProposal(IInvocationContext context, IProblemLocation problemLocation,
+            List<IJavaCompletionProposal> proposals) {
+
+    	CompilationUnit astRoot = context.getASTRoot();
+        ASTNode selectedNode = problemLocation.getCoveringNode(astRoot);
+
+		if (!(selectedNode instanceof SimpleName)) {
+			return;
+		}
+		
+		MethodDeclaration implMethodDeclaration = (MethodDeclaration)((SimpleName) selectedNode).getParent();
+		TypeDeclaration implTypeDeclaration = (TypeDeclaration)implMethodDeclaration.getParent();
+		Annotation annotation = AnnotationUtils.getAnnotation(implTypeDeclaration, WebService.class);
+		String endpointInterface = AnnotationUtils.getStringValue(annotation, "endpointInterface"); //$NON-NLS-1$
+		String displayString = JAXWSUIMessages.CHANGE_METHOD_RETURN_TYPE;
+		Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
+		proposals.add(new ChangeReturnTypeCorrectionProposal(context, implTypeDeclaration,
+				implMethodDeclaration, endpointInterface, displayString, 5, image));
     }
 }

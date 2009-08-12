@@ -889,7 +889,7 @@ public final class AnnotationUtils {
 
     public static boolean compareMethods(com.sun.mirror.declaration.MethodDeclaration methodOne,
             com.sun.mirror.declaration.MethodDeclaration methodTwo) {
-        return compareMethodNames(methodOne, methodTwo) && compareMethodReturnTypes(methodOne, methodTwo)
+        return compareMethodNames(methodOne, methodTwo)
                 && compareMethodParameterTypes(methodOne, methodTwo);
     }
 
@@ -898,11 +898,10 @@ public final class AnnotationUtils {
         return methodOne.getSimpleName().equals(methodTwo.getSimpleName());
     }
 
-    private static boolean compareMethodReturnTypes(com.sun.mirror.declaration.MethodDeclaration methodOne,
-            com.sun.mirror.declaration.MethodDeclaration methodTwo) {
-        return methodOne.getReturnType().equals(methodTwo.getReturnType());
-
-    }
+//    private static boolean compareMethodReturnTypes(com.sun.mirror.declaration.MethodDeclaration methodOne,
+//            com.sun.mirror.declaration.MethodDeclaration methodTwo) {
+//        return methodOne.getReturnType().equals(methodTwo.getReturnType());
+//    }
 
     private static boolean compareMethodParameterTypes(com.sun.mirror.declaration.MethodDeclaration methodOne,
             com.sun.mirror.declaration.MethodDeclaration methodTwo) {
