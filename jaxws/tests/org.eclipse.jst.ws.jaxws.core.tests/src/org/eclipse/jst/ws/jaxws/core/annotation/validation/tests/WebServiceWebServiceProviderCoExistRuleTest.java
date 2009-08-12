@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
-import javax.xml.ws.WebServiceProvider;
+import javax.jws.WebService;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -28,18 +28,19 @@ public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotat
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, WebServiceProvider.class,
-                WebServiceProvider.class.getSimpleName(), null);
+        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(),
+                null);
     }
 
     @Override
     protected String getClassContents() {
         StringBuilder classContents = new StringBuilder("package com.example;\n\n");
-        classContents.append("import javax.jws.WebService;\n\n");
-        classContents.append("@WebService(targetNamespace=\"http://example.com/\", portName=\"MyClassPort\",");
-        classContents.append(" serviceName=\"MyClassService\")\n");
-        classContents.append("public class MyClass {\n\n");
-        classContents.append("\tpublic String myMethod() {" + "\n\t\treturn \"txt\";\n\t}\n\n}");
+        classContents.append("import javax.xml.transform.Source;\n");
+        classContents.append("import javax.xml.ws.Provider;\n");
+        classContents.append("import javax.xml.ws.WebServiceProvider;\n\n");
+        classContents.append("@WebServiceProvider\n");
+        classContents.append("public class MyClass implements Provider<Source> {\n\n");
+        classContents.append("\tpublic Source invoke(Source arg0) {" + "\n\t\treturn null;\n\t}\n\n}");
         return classContents.toString();
     }
 
@@ -56,9 +57,9 @@ public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotat
     public void testWebServiceWebServiceProviderCoExistRule() {
         try {
             assertNotNull(annotation);
-            assertEquals(WebServiceProvider.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
+            assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebServiceProvider.class, textFileChange, true);
+            AnnotationUtils.addImportEdit(compilationUnit, WebService.class, textFileChange, true);
 
             AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter,
                     source.findPrimaryType(), annotation, textFileChange);
@@ -72,7 +73,7 @@ public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotat
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
-
+            
             assertEquals(1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];
