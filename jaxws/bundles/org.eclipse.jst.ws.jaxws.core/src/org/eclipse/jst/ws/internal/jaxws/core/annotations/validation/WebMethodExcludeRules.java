@@ -48,7 +48,8 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
                     MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
                     TypeDeclaration typeDeclaration = methodDeclaration.getDeclaringType();
                     
-                    if (typeDeclaration instanceof InterfaceDeclaration) {
+                    if (typeDeclaration instanceof InterfaceDeclaration
+                            && ((Boolean) excludeAttribute.getValue()).booleanValue()) {
                         printFixableError(excludeAttribute.getPosition(),
                                 JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
                     }

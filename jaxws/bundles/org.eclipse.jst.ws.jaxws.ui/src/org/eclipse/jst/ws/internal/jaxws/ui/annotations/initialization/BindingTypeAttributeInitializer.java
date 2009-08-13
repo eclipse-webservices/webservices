@@ -66,7 +66,8 @@ public class BindingTypeAttributeInitializer extends AnnotationAttributeInitiali
             IType type = (IType)  javaElement;
             String memberValuePairName = memberValuePair.getName().getIdentifier();
             if (memberValuePairName.equals(VALUE)) { //$NON-NLS-1$
-               if (memberValuePair.getValue().toString().equals(MISSING_IDENTIFER)) {
+                String value = memberValuePair.getValue().toString();
+                if (value.equals(MISSING_IDENTIFER) || value.charAt(0) != '\"') {
                     Map<String, String> bindings = getShortNameBindingsMap();
                     Iterator<Map.Entry<String, String>> bindingsIter = bindings.entrySet().iterator();
                     while (bindingsIter.hasNext()) {
