@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Require-Bundle: org.junit;visibility:=reexport
+Export-Package: .,
+ org.jmock,
+ org.jmock.builder,
+ org.jmock.core,
+ org.jmock.core.constraint,
+ org.jmock.core.matcher,
+ org.jmock.core.stub,
+ org.jmock.expectation,
+ org.jmock.util
+Bundle-Vendor: org.jmock
+Bundle-ClassPath: lib/jmock-core-1.2.0.jar
+Bundle-Version: 1.2.0
+Eclipse-BuddyPolicy: global
+Bundle-Name: JMock
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.jmock;singleton:=true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+
