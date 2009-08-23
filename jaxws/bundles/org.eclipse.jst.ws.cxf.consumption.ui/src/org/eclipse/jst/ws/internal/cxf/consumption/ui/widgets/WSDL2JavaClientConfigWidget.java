@@ -56,10 +56,13 @@ public class WSDL2JavaClientConfigWidget extends SimpleWidgetDataContributor {
     private Composite namespaceComposite;
     private int namespaceCompositeHeight = -1;
 
-    public WSDL2JavaClientConfigWidget(WSDL2JavaDataModel model) {
-        this.model = model;
+    public WSDL2JavaClientConfigWidget() {
     }
 
+    public void setWSDL2JavaDataModel(WSDL2JavaDataModel model) {
+        this.model = model;
+    }
+    
     @Override
     public WidgetDataEvents addControls(final Composite parent, final Listener statusListener) {
         this.statusListener = statusListener;

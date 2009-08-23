@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: Java2WSDataModelImpl.java,v 1.1 2008/11/10 20:37:42 david_williams Exp $
+ * $Id: Java2WSDataModelImpl.java,v 1.2 2009/08/23 22:51:57 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -165,7 +165,7 @@ public class Java2WSDataModelImpl extends CXFDataModelImpl implements Java2WSDat
      * @generated
      * @ordered
      */
-    protected static final boolean GENERATE_WEB_METHOD_ANNOTATION_EDEFAULT = true;
+    protected static final boolean GENERATE_WEB_METHOD_ANNOTATION_EDEFAULT = false;
 
     /**
      * The cached value of the '{@link #isGenerateWebMethodAnnotation() <em>Generate Web Method Annotation</em>}' attribute.
@@ -185,7 +185,7 @@ public class Java2WSDataModelImpl extends CXFDataModelImpl implements Java2WSDat
      * @generated
      * @ordered
      */
-    protected static final boolean GENERATE_WEB_PARAM_ANNOTATION_EDEFAULT = true;
+    protected static final boolean GENERATE_WEB_PARAM_ANNOTATION_EDEFAULT = false;
 
     /**
      * The cached value of the '{@link #isGenerateWebParamAnnotation() <em>Generate Web Param Annotation</em>}' attribute.
@@ -205,7 +205,7 @@ public class Java2WSDataModelImpl extends CXFDataModelImpl implements Java2WSDat
      * @generated
      * @ordered
      */
-    protected static final boolean GENERATE_REQUEST_WRAPPER_ANNOTATION_EDEFAULT = true;
+    protected static final boolean GENERATE_REQUEST_WRAPPER_ANNOTATION_EDEFAULT = false;
 
     /**
      * The cached value of the '{@link #isGenerateRequestWrapperAnnotation() <em>Generate Request Wrapper Annotation</em>}' attribute.
@@ -225,7 +225,7 @@ public class Java2WSDataModelImpl extends CXFDataModelImpl implements Java2WSDat
      * @generated
      * @ordered
      */
-    protected static final boolean GENERATE_RESPONSE_WRAPPER_ANNOTATION_EDEFAULT = true;
+    protected static final boolean GENERATE_RESPONSE_WRAPPER_ANNOTATION_EDEFAULT = false;
 
     /**
      * The cached value of the '{@link #isGenerateResponseWrapperAnnotation() <em>Generate Response Wrapper Annotation</em>}' attribute.

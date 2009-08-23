@@ -10,20 +10,40 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.creation.ui.widgets;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.jws.WebService;
+
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.ui.JavaElementLabelProvider;
+import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIMessages;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin;
 import org.eclipse.jst.ws.internal.cxf.ui.widgets.Java2WSWidgetFactory;
+import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -40,6 +60,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.wst.command.internal.env.ui.widgets.SimpleWidgetDataContributor;
 import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
@@ -49,12 +71,15 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
     private IStatus JAVA_TYPE_EXISTS_STATUS = Status.OK_STATUS;
     private IStatus SEI_SELECTION_STATUS = Status.OK_STATUS;
 
+    private static final String NAME = "name";
+    
     private int NUMBER_OF_PUBLIC_METHODS;
     private int NUMBER_OF_CHECKED_METHODS;
     private IMethod[] publicMethods;
 
     private Button useSEIButton;
     private Button selectSEIButton;
+    private Button browseSEIButton;
     private Button extractSEIButton;
 
     private Combo selectSEICombo;
@@ -81,13 +106,14 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
 
     @Override
     public void internalize() {
-        useSEIButton.setSelection(false);
-        selectSEIButton.setSelection(false);
-        selectSEIButton.setEnabled(false);
-        enableSelectSEIControls(false);
+        boolean useSEI = model.isUseServiceEndpointInterface();
+        useSEIButton.setSelection(useSEI);
+        selectSEIButton.setSelection(useSEI);
+        selectSEIButton.setEnabled(useSEI);
+        enableSelectSEIControls(useSEI);
         extractSEIButton.setSelection(false);
-        extractSEIButton.setEnabled(false);
-        enableExtractSEIControls(false);
+        extractSEIButton.setEnabled(useSEI);
+        enableExtractSEIControls(useSEI);
         seiInterfaceNameText.setText("");
         seiMembersToExtractTableViewer.setAllChecked(false);
         NUMBER_OF_CHECKED_METHODS = 0;
@@ -114,6 +140,8 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
                 updateSEISelectionStatus();
                 statusListener.handleEvent(null);
                 if (!useSEI) {
+                    model.setServiceEndpointInterfaceName("");
+                    
                     selectSEIButton.setSelection(false);
                     enableSelectSEIControls(false);
 
@@ -126,12 +154,12 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         gridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
         gridData.horizontalSpan = 3;
         useSEIButton.setLayoutData(gridData);
-
-        Label infoLabel = Java2WSWidgetFactory.createInformationLabel(composite, startingPointType);
-        gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-        gridData.horizontalSpan = 3;
-        gridData.widthHint = 100;
-        infoLabel.setLayoutData(gridData);
+        
+//        Label infoLabel = Java2WSWidgetFactory.createInformationLabel(composite, startingPointType);
+//        gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
+//        gridData.horizontalSpan = 3;
+//        gridData.widthHint = 100;
+//        infoLabel.setLayoutData(gridData);
 
         Label paddingLabel = Java2WSWidgetFactory.createPaddingLabel(composite);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -145,12 +173,13 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             public void widgetSelected(SelectionEvent event) {
                 enableSelectSEIControls(selectSEIButton.getSelection());
                 enableExtractSEIControls(!selectSEIButton.getSelection());
-                if (selectSEIButton.getSelection() && selectSEICombo.getSelectionIndex() != -1) {
-                    model.setFullyQualifiedJavaInterfaceName(selectSEICombo.getText());
+                if (selectSEIButton.getSelection() && selectSEICombo.getText().trim().length() > 0) {
+                    validateSEISelection();
                 }
                 updateSEISelectionStatus();
                 statusListener.handleEvent(null);
             }
+
         });
         selectSEIButton.setSelection(false);
         selectSEIButton.setEnabled(false);
@@ -161,13 +190,56 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         selectSEICombo.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
-                updateSEISelectionStatus();
+                validateSEISelection();
                 statusListener.handleEvent(null);
             }
         });
+        
+        selectSEICombo.addModifyListener(new ModifyListener() {
+
+            public void modifyText(ModifyEvent event) {
+                validateSEISelection();
+                statusListener.handleEvent(null);
+            }
+        });
+
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-        gridData.horizontalSpan = 2;
+        gridData.horizontalSpan = 1;
         selectSEICombo.setLayoutData(gridData);
+        
+        browseSEIButton = new Button(composite, SWT.PUSH);
+        browseSEIButton.setText(CXFCreationUIMessages.JAVA2WS_SELECT_SEI_BROWSE);
+
+        gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
+        gridData.horizontalSpan = 1;
+        browseSEIButton.setLayoutData(gridData);
+
+        browseSEIButton.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ElementTreeSelectionDialog selectionDialog = new ElementTreeSelectionDialog(composite.getShell(),
+                        new JavaElementLabelProvider(), new StandardJavaElementContentProvider());
+                selectionDialog.setTitle(CXFCreationUIMessages.JAVA2WS_SELECT_SEI_DIALOG_TITLE);
+                selectionDialog.setMessage(CXFCreationUIMessages.JAVA2WS_SELECT_SEI_DIALOG_DESCRIPTION);
+                selectionDialog.setAllowMultiple(false);
+                selectionDialog.setInput(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
+                selectionDialog.addFilter(new JavaViewerFilter(JDTUtils.getJavaProject(model.getProjectName())));
+
+                selectionDialog.setValidator(new JavaSelectionStatusValidator());
+
+                int returnCode = selectionDialog.open();
+                if (returnCode == Window.OK) {
+                    ICompilationUnit selectedCompilationUnit = (ICompilationUnit) selectionDialog.getFirstResult();
+                    String selectedInterface = selectedCompilationUnit.findPrimaryType().getFullyQualifiedName();
+                    List<String> seis = Arrays.asList(selectSEICombo.getItems());
+                    if (!seis.contains(selectedInterface)) {
+                        selectSEICombo.add(selectedInterface);
+                    }
+                    selectSEICombo.setText(selectedInterface);
+                }
+            }
+        });
 
         paddingLabel = Java2WSWidgetFactory.createPaddingLabel(composite);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -197,21 +269,29 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         seiInterfaceNameText.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent event) {
-                String interfaceName = seiInterfaceNameText.getText();
-                model.setServiceEndpointInterfaceName(interfaceName);
+                if (extractSEIButton.getSelection()) {
+                    String interfaceName = seiInterfaceNameText.getText();
+                    String seiName = interfaceName;
+                    String packageName = startingPointType.getPackageFragment().getElementName();
+                    if (packageName.length() > 0) {
+                        seiName = packageName + "." + interfaceName;
+                    }
+                    model.setServiceEndpointInterfaceName(seiName);
 
-                String compilationUnitName = interfaceName + ".java"; //$NON-NLS-1$
-                JAVA_TYPE_NAME_STATUS = JDTUtils.validateJavaTypeName(model.getProjectName(), interfaceName);
-                JAVA_TYPE_EXISTS_STATUS = JDTUtils.checkTypeExists(startingPointType, compilationUnitName);
-                updateSEISelectionStatus();
-                statusListener.handleEvent(null);
+                    String compilationUnitName = interfaceName + ".java"; //$NON-NLS-1$
+                    JAVA_TYPE_NAME_STATUS = JDTUtils.validateJavaTypeName(model.getProjectName(), interfaceName);
+                    JAVA_TYPE_EXISTS_STATUS = JDTUtils.checkTypeExists(startingPointType, compilationUnitName);
+                    updateSEISelectionStatus();
+                    statusListener.handleEvent(null);
+                }
             }
         });
 
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-        gridData.horizontalSpan = 2;
+        gridData.horizontalSpan = 1;
         seiInterfaceNameText.setLayoutData(gridData);
 
+        Java2WSWidgetFactory.createPaddingLabel(composite);
         Java2WSWidgetFactory.createPaddingLabel(composite);
 
         Java2WSWidgetFactory.createMemebersToExtractLabel(composite);
@@ -303,7 +383,6 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
                 updateSEISelectionStatus();
                 statusListener.handleEvent(null);
             }
-
         });
         gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
         deselectAllButton.setLayoutData(gridData);
@@ -317,11 +396,125 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         selectAllButton.setEnabled(false);
         deselectAllButton.setEnabled(false);
 
+        if (model.isUseServiceEndpointInterface()) {
+            selectSEICombo.add(model.getServiceEndpointInterfaceName());
+            selectSEICombo.setText(model.getServiceEndpointInterfaceName());
+        }
+
         return this;
+    }
+    
+    private void validateSEISelection() {
+        IType seiType = JDTUtils.getType(model.getProjectName(), selectSEICombo.getText());
+        if (seiType != null) {
+            try {
+                IMethod[] seiMethods = seiType.getMethods();
+                for (IMethod seiMethod : seiMethods) {
+                    IMethod[] implMethods = startingPointType.findMethods(seiMethod);
+                    if (implMethods == null) {
+                        SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
+                            JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
+                                    getImplementsMessage(seiType, seiMethod)));
+                        break;
+                    } else {
+                        SEI_SELECTION_STATUS = validateSEIAddition();
+                    }
+                }
+                model.setServiceEndpointInterfaceName(selectSEICombo.getText());
+                model.setFullyQualifiedJavaInterfaceName(selectSEICombo.getText());
+            } catch (JavaModelException jme) {
+                CXFCreationUIPlugin.log(jme.getStatus());
+            }
+        } else {
+            SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
+                    JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND,
+                            selectSEICombo.getText()));   
+        }        
+    }
+
+    private String getImplementsMessage(IType seiType, IMethod seiMethod) {
+        StringBuilder message = new StringBuilder(seiType.getElementName());
+        message.append("."); //$NON-NLS-1$
+        message.append(seiMethod.getElementName());
+        message.append("("); //$NON-NLS-1$
+        String[] parameterTypes = seiMethod.getParameterTypes();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            String parameterType = Signature.toString(parameterTypes[i]);
+            message.append(parameterType);
+            if (i < parameterTypes.length - 1) {
+                message.append(", "); //$NON-NLS-1$
+            }
+        }
+        message.append(")"); //$NON-NLS-1$
+        return message.toString();
+    }
+
+    private IStatus validateSEIAddition() {
+        IStatus status = Status.OK_STATUS;
+        try {
+            IAnnotation webService = AnnotationUtils.getAnnotation(startingPointType, WebService.class);
+            if (webService != null) {
+                Object name = AnnotationUtils.getAnnotationValue(webService, NAME);
+                if (name != null) {
+                    status = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
+                            CXFCreationUIMessages.JAVA2WS_SELECT_SEI_WEBSERVICE_NAME_ATTRIBUTE_PRESENT); 
+                }
+            }
+        } catch (JavaModelException jme) {
+            CXFCreationUIPlugin.log(jme.getStatus());
+        }
+        return status;
+    }
+   
+    private static class JavaViewerFilter extends ViewerFilter {
+        
+        private IJavaProject javaProject;
+        
+        public JavaViewerFilter(IJavaProject javaProject) {
+            this.javaProject = javaProject;
+        }
+        
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+            try {
+                if (element instanceof IJavaProject) {
+                    return javaProject.equals((IJavaProject) element);
+                }
+                if (element instanceof IPackageFragmentRoot) {
+                    IPackageFragmentRoot packageFragmentRoot = (IPackageFragmentRoot) element;
+                    return packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE;
+                }
+                if (element instanceof IPackageFragment) {
+                    IPackageFragment packageFragment = (IPackageFragment) element;
+                    return packageFragment.hasChildren();
+                }
+                if (element instanceof ICompilationUnit) {
+                    ICompilationUnit compilationUnit = (ICompilationUnit) element;
+                    IType type = compilationUnit.findPrimaryType();
+                    return type.isInterface();
+
+                }
+            } catch (JavaModelException jme) {
+                CXFCreationUIPlugin.log(jme.getStatus());
+            }
+            return false;
+        }
+    }
+
+    private static class JavaSelectionStatusValidator implements ISelectionStatusValidator {
+        public IStatus validate(Object[] selection) {
+            if (selection.length == 1) {
+                if (selection[0] instanceof ICompilationUnit) {
+                    return new Status(IStatus.OK, CXFCreationUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
+                }
+            }
+            return new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
+        }
     }
 
     public void enableSelectSEIControls(boolean enable) {
         selectSEICombo.setEnabled(enable);
+        browseSEIButton.setEnabled(enable);
     }
 
     public void enableExtractSEIControls(boolean enable) {
@@ -355,7 +548,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
 
             if (selectSEIButton.getSelection() && selectSEICombo.getText().length() == 0) {
                 SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                        CXFCreationUIMessages.JAVA2WS_SELECT_SEI_FROM_TYPE_HIERARCHY);
+                        CXFCreationUIMessages.JAVA2WS_SELECT_SEI_MESSAGE);
             } else if (selectSEIButton.getSelection() && selectSEICombo.getText().length() > 0) {
                 SEI_SELECTION_STATUS = Status.OK_STATUS;
             }

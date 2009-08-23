@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.creation.ui.widgets;
 
+import javax.jws.WebService;
+
+import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
@@ -27,12 +31,15 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetContributorFactory;
 
 @SuppressWarnings("restriction")
 public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFactory {
+    private static final String ENDPOINT_INTERFACE = "endpointInterface";
+    
     private SimpleWidgetContributor classWidgetContributor;
     private SimpleWidgetContributor interfaceWidgetContributor;
     
     private Java2WSClassConfigWidget java2WSClassConfigWidget = new Java2WSClassConfigWidget();
     private Java2WSInterfaceConfigWidget java2WSInterfaceConfigWidget = new Java2WSInterfaceConfigWidget();
 
+    private Java2WSDataModel model;
     private IType startingPointType;
 
     public INamedWidgetContributor getFirstNamedWidget() {
@@ -48,6 +55,7 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
             if (startingPointType.isInterface()) {
                 return interfaceWidgetContributor;
             } else if (startingPointType.isClass()) {
+                checkForServiceEndpointInterface();
                 return classWidgetContributor;
             }
         } catch (JavaModelException jme) {
@@ -55,6 +63,25 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
         }
 
         return null;
+    }
+    
+    private void checkForServiceEndpointInterface() throws JavaModelException {
+        IAnnotation[] annotations = startingPointType.getAnnotations();
+        for (IAnnotation annotation : annotations) {
+            if (annotation.getElementName().equals(WebService.class.getSimpleName())) {
+                IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
+                for (IMemberValuePair memberValuePair : memberValuePairs) {
+                    if (memberValuePair.getMemberName().equals(ENDPOINT_INTERFACE)) {
+                        String endpointInterface = memberValuePair.getValue().toString();
+                        IType seiType = startingPointType.getJavaProject().findType(endpointInterface);
+                        if (seiType != null && seiType.exists()) {
+                            model.setUseServiceEndpointInterface(true);
+                            model.setServiceEndpointInterfaceName(endpointInterface);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public INamedWidgetContributor getNextNamedWidget(INamedWidgetContributor widgetContributor) {
@@ -69,6 +96,7 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
     }
 
     public void setJava2WSDataModel(Java2WSDataModel model) {
+        this.model = model;
         java2WSClassConfigWidget.setJava2WSDataModel(model);
         java2WSInterfaceConfigWidget.setJava2WSDataModel(model);
     }

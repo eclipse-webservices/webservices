@@ -238,7 +238,7 @@ public final class Java2WSWidgetFactory {
 
     public static Combo createSelectSEICombo(Composite parent, final Java2WSDataModel model,
             IType javaStartingPointType) {
-        final Combo seiCombo = new Combo(parent, SWT.READ_ONLY);
+        final Combo seiCombo = new Combo(parent, SWT.BORDER);
         seiCombo.setToolTipText(CXFUIMessages.JAVA2WS_SELECT_SEI_TOOLTIP);
 
         IJavaProject javaProject = JDTUtils.getJavaProject(model.getProjectName());

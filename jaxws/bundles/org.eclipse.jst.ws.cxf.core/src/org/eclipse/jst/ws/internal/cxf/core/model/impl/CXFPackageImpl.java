@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackageImpl.java,v 1.4 2009/04/06 21:33:14 sclarke Exp $
+ * $Id: CXFPackageImpl.java,v 1.5 2009/08/23 22:51:57 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -1090,10 +1090,10 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         initEAttribute(getJava2WSContext_GenerateWSDL(), ecorePackage.getEBoolean(), "generateWSDL", "true", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getJava2WSContext_GenerateWrapperFaultBeans(), ecorePackage.getEBoolean(), "generateWrapperFaultBeans", "true", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getJava2WSContext_AnnotationProcessingEnabled(), ecorePackage.getEBoolean(), "annotationProcessingEnabled", "false", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getJava2WSContext_GenerateWebMethodAnnotation(), ecorePackage.getEBoolean(), "generateWebMethodAnnotation", "true", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getJava2WSContext_GenerateWebParamAnnotation(), ecorePackage.getEBoolean(), "generateWebParamAnnotation", "true", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getJava2WSContext_GenerateRequestWrapperAnnotation(), ecorePackage.getEBoolean(), "generateRequestWrapperAnnotation", "true", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getJava2WSContext_GenerateResponseWrapperAnnotation(), ecorePackage.getEBoolean(), "generateResponseWrapperAnnotation", "true", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getJava2WSContext_GenerateWebMethodAnnotation(), ecorePackage.getEBoolean(), "generateWebMethodAnnotation", "false", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getJava2WSContext_GenerateWebParamAnnotation(), ecorePackage.getEBoolean(), "generateWebParamAnnotation", "false", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getJava2WSContext_GenerateRequestWrapperAnnotation(), ecorePackage.getEBoolean(), "generateRequestWrapperAnnotation", "false", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getJava2WSContext_GenerateResponseWrapperAnnotation(), ecorePackage.getEBoolean(), "generateResponseWrapperAnnotation", "false", 0, 1, Java2WSContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(java2WSDataModelEClass, Java2WSDataModel.class, "Java2WSDataModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getJava2WSDataModel_Classpath(), ecorePackage.getEString(), "classpath", null, 0, 1, Java2WSDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

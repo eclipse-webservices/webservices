@@ -90,6 +90,9 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
+            if (methodAnnotationMap == null) {
+                continue;
+            }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_METHOD)) {
                 CXFModelUtils.getWebMethodAnnotationChange(javaInterfaceType, method, 
                 		textFileChange);

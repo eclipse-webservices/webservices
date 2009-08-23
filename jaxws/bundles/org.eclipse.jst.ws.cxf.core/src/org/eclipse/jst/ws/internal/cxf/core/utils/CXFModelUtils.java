@@ -30,10 +30,13 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
@@ -66,6 +69,8 @@ public final class CXFModelUtils {
     public static final String REQUEST_WRAPPER = "RequestWrapper"; //$NON-NLS-1$
     public static final String RESPONSE_WRAPPER = "ResponseWrapper"; //$NON-NLS-1$
 
+    private static final String ENDPOINT_INTERFACE = "endpointInterface"; //$NON-NLS-1$
+
     private static Map<String, String> ANNOTATION_TYPENAME_MAP = new HashMap<String, String>();
 
     static {
@@ -90,34 +95,81 @@ public final class CXFModelUtils {
 
     private CXFModelUtils() {
     }
-    
+
     public static void getWebServiceAnnotationChange(IType type, Java2WSDataModel model, 
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
+        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);        
 
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
-        
         AST ast = compilationUnit.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-        
-        IAnnotationAttributeInitializer annotationAttributeInitializer = 
-            AnnotationsManager.getAnnotationDefinitionForClass(WebService.class).
-                getAnnotationAttributeInitializer();
-        
-        List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast,
-                WebService.class);
-        
-        if (model.isUseServiceEndpointInterface() && type.isClass()) {
-            MemberValuePair endpointInterfaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
-                    "endpointInterface", model.getFullyQualifiedJavaInterfaceName()); //$NON-NLS-1$
-            memberValuePairs.add(1, endpointInterfaceValuePair);
+
+        NormalAnnotation webServiceAnnotation = getAnnotation(compilationUnit, type, WebService.class);
+        if (webServiceAnnotation != null && model.isUseServiceEndpointInterface() && type.isClass()) {
+            MemberValuePair endpointInterface = getMemberValuePair(webServiceAnnotation, ENDPOINT_INTERFACE);
+            if (endpointInterface != null && endpointInterface.getValue() instanceof StringLiteral) {
+                if (!((StringLiteral) endpointInterface.getValue()).getLiteralValue().equals(
+                        model.getServiceEndpointInterfaceName())) {
+                    ASTNode newSEIValue = AnnotationsCore.createStringLiteral(ast, model
+                            .getServiceEndpointInterfaceName());
+
+                    AnnotationUtils.updateMemberValuePairValue(source, compilationUnit, rewriter,
+                            webServiceAnnotation, endpointInterface, newSEIValue, textFileChange);
+                }
+            } else {
+                MemberValuePair endpointInterfacePair = AnnotationsCore.createMemberValuePair(ast,
+                        ENDPOINT_INTERFACE, AnnotationsCore.createStringLiteral(ast, model
+                                .getServiceEndpointInterfaceName()));
+
+                AnnotationUtils.addMemberValuePairToAnnotation(source, compilationUnit, rewriter,
+                        webServiceAnnotation, endpointInterfacePair, textFileChange);
+            }
+        } else {
+            IAnnotationAttributeInitializer annotationAttributeInitializer = 
+                AnnotationsManager.getAnnotationDefinitionForClass(WebService.class).
+                    getAnnotationAttributeInitializer();
+
+            List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast,
+                    WebService.class);
+
+            if (model.isUseServiceEndpointInterface() && type.isClass()) {
+                MemberValuePair endpointInterfaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
+                        ENDPOINT_INTERFACE, model.getServiceEndpointInterfaceName());
+                memberValuePairs.add(1, endpointInterfaceValuePair);
+            }
+
+            Annotation annotation = AnnotationsCore.createAnnotation(ast, WebService.class,
+                    WebService.class.getSimpleName(), memberValuePairs);
+
+            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, source.findPrimaryType(),
+                    annotation,  textFileChange);
+        }        
+    }
+
+    @SuppressWarnings("unchecked")
+    private static NormalAnnotation getAnnotation(CompilationUnit compilationUnit, IType type,
+            Class<? extends java.lang.annotation.Annotation> annotation) {
+        List<AbstractTypeDeclaration> types = compilationUnit.types();
+        for (AbstractTypeDeclaration typeDeclaration : types) {
+            if (AnnotationUtils.compareTypeNames(typeDeclaration, type)) {
+                Annotation jdtAnnotation = AnnotationUtils.getAnnotation(typeDeclaration, annotation);
+                if (jdtAnnotation != null && jdtAnnotation instanceof NormalAnnotation) {
+                    return (NormalAnnotation) jdtAnnotation;
+                }
+            }
         }
-        
-        Annotation annotation = AnnotationsCore.createAnnotation(ast, WebService.class,
-                WebService.class.getSimpleName(), memberValuePairs);
-        
-        AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, source.findPrimaryType(),
-                annotation,  textFileChange);
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static MemberValuePair getMemberValuePair(NormalAnnotation annotation, String memberName) {
+        List<MemberValuePair> memberValuePairs = annotation.values();
+        for (MemberValuePair memberValuePair : memberValuePairs) {
+            if (memberValuePair.getName().getIdentifier().equals(memberName)) {
+                return memberValuePair;
+            }
+        }
+        return null;
     }
 
     public static void createMethodAnnotationChange(IType type, IMethod method, 

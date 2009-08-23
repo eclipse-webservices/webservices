@@ -15,10 +15,15 @@ import org.eclipse.osgi.util.NLS;
 public class CXFCreationUIMessages extends NLS {
     private static final String BUNDLE_NAME = 
         "org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUImessages"; //$NON-NLS-1$
+    
     public static String JAVA2WS_ENTER_SEI_NAME;
     public static String JAVA2WS_SELECT_SEI_EXTRACTED_METHODS;
-    public static String JAVA2WS_SELECT_SEI_FROM_TYPE_HIERARCHY;
+    public static String JAVA2WS_SELECT_SEI_MESSAGE;
     public static String JAVA2WS_SELECT_SEI_OPTION;
+    public static String JAVA2WS_SELECT_SEI_BROWSE;
+    public static String JAVA2WS_SELECT_SEI_DIALOG_TITLE;
+    public static String JAVA2WS_SELECT_SEI_DIALOG_DESCRIPTION;
+    public static String JAVA2WS_SELECT_SEI_WEBSERVICE_NAME_ATTRIBUTE_PRESENT;
     public static String JAVA2WS_ENTER_VALID_WSDL_NAME;
 
     public static String JAVA2WS_CLASS_CONFIG_PAGE_TITLE;

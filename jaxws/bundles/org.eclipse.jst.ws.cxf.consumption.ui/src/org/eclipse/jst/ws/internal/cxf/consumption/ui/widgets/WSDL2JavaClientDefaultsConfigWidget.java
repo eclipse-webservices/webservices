@@ -30,10 +30,13 @@ public class WSDL2JavaClientDefaultsConfigWidget extends SimpleWidgetDataContrib
     
     private WSDL2JavaDataModel model;
     
-    public WSDL2JavaClientDefaultsConfigWidget(WSDL2JavaDataModel model) {
-        this.model = model;
+    public WSDL2JavaClientDefaultsConfigWidget() {
     }
     
+    public void setWSDL2JavaDataModel(WSDL2JavaDataModel model) {
+        this.model = model;
+    }
+
     @Override
     public WidgetDataEvents addControls(final Composite parent, final Listener statusListener) {
         final Composite mainComposite = new Composite(parent, SWT.NONE);

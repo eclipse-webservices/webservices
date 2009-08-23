@@ -91,7 +91,11 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
                     return extractInterfaceProcessor;
                 }
             };
-            extractInterfaceProcessor.setTypeName(model.getServiceEndpointInterfaceName());
+            String typeName = model.getServiceEndpointInterfaceName();
+            if (typeName.indexOf(".") != -1) {
+                typeName = typeName.substring(typeName.lastIndexOf(".") + 1, typeName.length());
+            }
+            extractInterfaceProcessor.setTypeName(typeName);
             extractInterfaceProcessor.setReplace(false);
             
             Set<IMethod> methods = model.getMethodMap().keySet();
