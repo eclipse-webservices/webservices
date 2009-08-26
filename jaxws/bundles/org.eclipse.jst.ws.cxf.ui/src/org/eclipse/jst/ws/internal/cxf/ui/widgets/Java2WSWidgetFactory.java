@@ -10,11 +10,17 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.ui.widgets;
 
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
+import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jst.ws.internal.cxf.core.model.DataBinding;
@@ -23,6 +29,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIPlugin;
+import org.eclipse.jst.ws.internal.cxf.ui.viewers.JavaViewerFilter;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -33,7 +40,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 
 /**
  * Provides widgets for Java2WS preferences, wizards, dialogs. Enables the reuse
@@ -267,6 +277,12 @@ public final class Java2WSWidgetFactory {
         return seiCombo;
     }
 
+    public static Button createBrowseButton(Composite parent) {
+        Button browseButton = new Button(parent, SWT.PUSH);
+        browseButton.setText(CXFUIMessages.JAVA2WS_BROWSE_LABEL);
+        return browseButton;
+    }
+
     public static Button createExtractSEIButton(Composite parent) {
         Button extractSEIButton = new Button(parent, SWT.RADIO);
         extractSEIButton.setText(CXFUIMessages.JAVA2WS_EXTRACT_SEI_LABEL);
@@ -352,5 +368,43 @@ public final class Java2WSWidgetFactory {
         selectImplementationCombo.select(-1);
         return selectImplementationCombo;
     }
+    
+    /**
+     * Creates am <code>ElementTreeSelectionDialog</code> that displays all the classes or all the interfaces
+     * within a <code>IJavaProject</code> allowing one class or interface to be selected.
+     * 
+     * @param parent the parent shell
+     * @param title the dialog title
+     * @param message the dialog message
+     * @param javaProject the java project that is filtered
+     * @param filterClasses true to filter all classes, false to filter all interfaces
+     * @return
+     */
+    public static ElementTreeSelectionDialog createElementTreeSelectionDialog(Shell parent, String title, 
+            String message, IJavaProject javaProject, boolean filterClasses) {
+        ElementTreeSelectionDialog selectionDialog = new ElementTreeSelectionDialog(parent,
+                new JavaElementLabelProvider(), new StandardJavaElementContentProvider());
+        selectionDialog.setTitle(title);
+        selectionDialog.setMessage(message);
+        selectionDialog.setAllowMultiple(false);
+        selectionDialog.setInput(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
 
+        selectionDialog.addFilter(new JavaViewerFilter(javaProject, filterClasses));
+
+        selectionDialog.setValidator(new ISelectionStatusValidator() {
+
+            public IStatus validate(Object[] selection) {
+              if (selection.length == 1) {
+                    if (selection[0] instanceof ICompilationUnit) {
+                        return new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
+                    }
+                }
+                return new Status(IStatus.ERROR, CXFUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
+            }            
+        });
+
+        return selectionDialog;
+
+    }
+ 
 }

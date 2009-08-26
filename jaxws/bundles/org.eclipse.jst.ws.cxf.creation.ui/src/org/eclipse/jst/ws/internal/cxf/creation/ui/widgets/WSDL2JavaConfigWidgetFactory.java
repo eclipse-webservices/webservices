@@ -63,7 +63,8 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
                         context.getCxfRuntimeVersion()});
         wsdl2JavaWidgetContributor.setTitle(wsdl2JavaPageTitle);
         wsdl2JavaWidgetContributor
-                .setDescription(CXFCreationUIMessages.WSDL2JAVA_PAGE_DESCRIPTION);
+                .setDescription(CXFCreationUIMessages.bind(CXFCreationUIMessages.WSDL2JAVA_PAGE_DESCRIPTION,
+                        context.getCxfRuntimeEdition()));
         wsdl2JavaWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return wsdl2JavaConfigWidget;

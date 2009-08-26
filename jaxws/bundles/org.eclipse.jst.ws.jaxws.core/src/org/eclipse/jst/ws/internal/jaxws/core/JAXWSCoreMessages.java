@@ -8,7 +8,6 @@
  * Contributors:
  *    Shane Clarke - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.jst.ws.internal.jaxws.core;
 
 import org.eclipse.osgi.util.NLS;

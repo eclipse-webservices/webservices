@@ -20,7 +20,6 @@ public class CXFCreationUIMessages extends NLS {
     public static String JAVA2WS_SELECT_SEI_EXTRACTED_METHODS;
     public static String JAVA2WS_SELECT_SEI_MESSAGE;
     public static String JAVA2WS_SELECT_SEI_OPTION;
-    public static String JAVA2WS_BROWSE_LABEL;
     public static String JAVA2WS_SELECT_SEI_DIALOG_TITLE;
     public static String JAVA2WS_SELECT_SEI_DIALOG_DESCRIPTION;
     public static String JAVA2WS_SELECT_SEI_WEBSERVICE_NAME_ATTRIBUTE_PRESENT;

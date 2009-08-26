@@ -62,7 +62,8 @@ public class Java2WSConfigWidgetFactory implements INamedWidgetContributorFactor
 
         java2WSWidgetContributor.setTitle(title);
         java2WSWidgetContributor
-                .setDescription(CXFCreationUIMessages.JAVA2WS_PAGE_DESCRIPTION);
+                .setDescription(CXFCreationUIMessages.bind(CXFCreationUIMessages.JAVA2WS_PAGE_DESCRIPTION, 
+                        context.getCxfRuntimeEdition()));
         java2WSWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return java2WSConfigWidget;

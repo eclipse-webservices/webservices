@@ -96,6 +96,7 @@ public class CXFUIMessages extends NLS {
     public static String JAVA2WS_SELECT_SEI;
     public static String JAVA2WS_SELECT_SEI_LABEL;
     public static String JAVA2WS_SELECT_SEI_TOOLTIP;
+    public static String JAVA2WS_BROWSE_LABEL;
     public static String JAVA2WS_EXTRACT_SEI;
     public static String JAVA2WS_EXTRACT_SEI_LABEL;
     public static String JAVA2WS_EXTRACT_SEI_TOOLTIP;
