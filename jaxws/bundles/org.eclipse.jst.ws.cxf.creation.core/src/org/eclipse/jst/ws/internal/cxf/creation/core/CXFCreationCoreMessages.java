@@ -19,6 +19,7 @@ public class CXFCreationCoreMessages extends NLS {
     public static String WSDL2JAVA_VALID_PORTTYPE_MESSAGE;
     
     public static String JAVA2WS_SERVICE_IMPL_NOT_FOUND;
+    public static String JAVA2WS_SERVICE_IMPL_NOT_BINARY;
 
     static {
         // initialize resource bundle

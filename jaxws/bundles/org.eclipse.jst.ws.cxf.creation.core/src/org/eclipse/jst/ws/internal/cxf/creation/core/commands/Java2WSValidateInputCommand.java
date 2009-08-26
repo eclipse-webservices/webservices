@@ -42,6 +42,10 @@ public class Java2WSValidateInputCommand extends AbstractDataModelOperation {
                         CXFCreationCoreMessages.bind(CXFCreationCoreMessages.JAVA2WS_SERVICE_IMPL_NOT_FOUND,
                                 new Object[] {model.getJavaStartingPoint(), model.getProjectName()}));
             }
+            if (type.isBinary()) {
+                status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID,
+                        CXFCreationCoreMessages.JAVA2WS_SERVICE_IMPL_NOT_BINARY);
+            }
         }
         return status;
     }

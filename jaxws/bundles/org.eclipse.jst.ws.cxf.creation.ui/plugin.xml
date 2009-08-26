@@ -12,7 +12,7 @@
     <extension point="org.eclipse.jst.ws.consumption.ui.serviceRuntimes">
       <serviceRuntime
         id="org.eclipse.jst.ws.cxf.creation.java" 
-        serviceImplementationTypeId="org.eclipse.jst.ws.cxf.wsImpl.java"
+        serviceImplementationTypeId="org.eclipse.jst.ws.wsImpl.java"
         runtimeId="org.eclipse.jst.ws.cxf.cxfWebServiceRT"
         bottomUp="true"
         topDown="true"
