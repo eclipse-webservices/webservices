@@ -43,7 +43,6 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIMessages;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIPlugin;
 import org.eclipse.jst.ws.internal.cxf.ui.widgets.Java2WSWidgetFactory;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -208,7 +207,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         selectSEICombo.setLayoutData(gridData);
         
         browseSEIButton = new Button(composite, SWT.PUSH);
-        browseSEIButton.setText(CXFCreationUIMessages.JAVA2WS_SELECT_SEI_BROWSE);
+        browseSEIButton.setText(CXFCreationUIMessages.JAVA2WS_BROWSE_LABEL);
 
         gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
         gridData.horizontalSpan = 1;
@@ -413,7 +412,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
                     IMethod[] implMethods = startingPointType.findMethods(seiMethod);
                     if (implMethods == null) {
                         SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                            JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
+                            CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
                                     getImplementsMessage(seiType, seiMethod)));
                         break;
                     } else {
@@ -427,7 +426,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             }
         } else {
             SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                    JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND,
+                CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND,
                             selectSEICombo.getText()));   
         }        
     }
@@ -593,6 +592,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             return JAVA_TYPE_EXISTS_STATUS;
         }
 
-        return JAVA_TYPE_NAME_STATUS;    }
+        return JAVA_TYPE_NAME_STATUS;
+    }
 
 }

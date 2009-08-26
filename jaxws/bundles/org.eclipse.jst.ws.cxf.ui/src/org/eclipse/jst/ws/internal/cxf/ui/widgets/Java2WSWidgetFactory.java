@@ -319,7 +319,7 @@ public final class Java2WSWidgetFactory {
     
     public static Combo createSelectImplementationCombo(Composite parent, 
             final Java2WSDataModel model, IType javaStartingPointType) {
-        final Combo selectImplementationCombo = new Combo(parent, SWT.READ_ONLY);
+        final Combo selectImplementationCombo = new Combo(parent, SWT.BORDER);
         selectImplementationCombo.setToolTipText(CXFUIMessages.JAVA2WS_SELECT_IMPLEMENTATION_TOOLTIP);
 
         IJavaProject javaProject = JDTUtils.getJavaProject(model.getProjectName());

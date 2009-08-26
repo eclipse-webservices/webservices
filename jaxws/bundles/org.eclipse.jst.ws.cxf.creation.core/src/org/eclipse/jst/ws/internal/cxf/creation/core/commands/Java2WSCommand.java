@@ -37,7 +37,6 @@ import org.eclipse.jst.ws.internal.cxf.core.utils.LaunchUtils;
 import org.eclipse.jst.ws.internal.cxf.core.utils.SpringUtils;
 import org.eclipse.jst.ws.internal.cxf.creation.core.CXFCreationCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
-import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
@@ -92,8 +91,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
             	SpringUtils.loadSpringConfigInformationFromWSDL((model));
             }
             
-            if (model.getFullyQualifiedJavaClassName() != null && 
-                    model.getFullyQualifiedJavaClassName().trim().length() > 0) {
+            if (isImplementationSelected() || isGenerateServer()) {
                 SpringUtils.createJAXWSEndpoint(model);
             }
             
@@ -112,6 +110,19 @@ public class Java2WSCommand extends AbstractDataModelOperation {
         return status;
     }
 
+	private boolean isImplementationSelected() {
+        return (model.getFullyQualifiedJavaClassName() != null && 
+                model.getFullyQualifiedJavaClassName().trim().length() > 0);
+    }
+
+    private boolean isGenerateServer() {
+		if (model.isGenerateServer()) {
+			model.setFullyQualifiedJavaClassName(model.getFullyQualifiedJavaInterfaceName() + "Impl");
+			return true;
+		}
+		return false;
+	}
+    
     @Override
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;

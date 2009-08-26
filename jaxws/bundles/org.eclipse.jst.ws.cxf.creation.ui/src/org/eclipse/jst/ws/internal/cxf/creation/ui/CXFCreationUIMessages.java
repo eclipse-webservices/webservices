@@ -20,10 +20,12 @@ public class CXFCreationUIMessages extends NLS {
     public static String JAVA2WS_SELECT_SEI_EXTRACTED_METHODS;
     public static String JAVA2WS_SELECT_SEI_MESSAGE;
     public static String JAVA2WS_SELECT_SEI_OPTION;
-    public static String JAVA2WS_SELECT_SEI_BROWSE;
+    public static String JAVA2WS_BROWSE_LABEL;
     public static String JAVA2WS_SELECT_SEI_DIALOG_TITLE;
     public static String JAVA2WS_SELECT_SEI_DIALOG_DESCRIPTION;
     public static String JAVA2WS_SELECT_SEI_WEBSERVICE_NAME_ATTRIBUTE_PRESENT;
+    public static String JAVA2WS_SELECT_IMPL_DIALOG_TITLE;
+    public static String JAVA2WS_SELECT_IMPL_DIALOG_DESCRIPTION;
     public static String JAVA2WS_ENTER_VALID_WSDL_NAME;
 
     public static String JAVA2WS_CLASS_CONFIG_PAGE_TITLE;
@@ -50,6 +52,10 @@ public class CXFCreationUIMessages extends NLS {
 
     public static String WSDL2JAVA_GROUP_LABEL;
     public static String WSDL2JAVA_XJC_ARG_GROUP_LABEL;
+    
+    public static String WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT;
+    public static String WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND;
+    public static String WEBSERVICE_IMPLEMENTATION_NOT_FOUND;
     
     static {
         // initialize resource bundle
