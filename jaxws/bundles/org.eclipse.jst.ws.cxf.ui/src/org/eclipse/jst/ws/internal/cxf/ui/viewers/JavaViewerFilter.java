@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jst.ws.internal.cxf.ui.CXFUIPlugin;
@@ -27,18 +28,21 @@ import org.eclipse.jst.ws.internal.cxf.ui.CXFUIPlugin;
 public class JavaViewerFilter extends ViewerFilter {
 
     private IJavaProject javaProject;
-    private  boolean filterClasses;
+    private int elementKinds;
     
     /**
-     * Constructs an instance of <code>JavaViewerFilter</code> given a <code>IJavaProject</code> to filter and a 
-     * boolean value that controls what to filter in the project.
+     * Constructs an instance of <code>JavaViewerFilter</code> given a <code>IJavaProject</code> and an
+     * <code>IJavaSearchConstants</code> element kind to search for. All other elements are filtered.
      * 
      * @param javaProject the java project to filter
-     * @param filterClasses true to filter all classes. false to filter all interfaces 
+     * @param elementKinds a flag defining nature of searched elements; the only valid values are: 
+     *  <code>IJavaSearchConstants.CLASS</code>
+     *  <code>IJavaSearchConstants.INTERFACE</code>
+     *  <code>IJavaSearchConstants.CLASS_AND_INTERFACE</code>
      */
-    public JavaViewerFilter(IJavaProject javaProject, boolean filterClasses) {
+    public JavaViewerFilter(IJavaProject javaProject, int elementKinds) {
         this.javaProject = javaProject;
-        this.filterClasses = filterClasses;
+        this.elementKinds = elementKinds;
         
     }
     
@@ -59,10 +63,13 @@ public class JavaViewerFilter extends ViewerFilter {
             if (element instanceof ICompilationUnit) {
                 ICompilationUnit compilationUnit = (ICompilationUnit) element;
                 IType type = compilationUnit.findPrimaryType();
-                if (filterClasses) {
-                    return type.isInterface() && !type.isAnnotation();
-                } else {
+                switch (elementKinds) {
+                case IJavaSearchConstants.CLASS:
                     return type.isClass();
+                case IJavaSearchConstants.INTERFACE:
+                    return type.isInterface() && !type.isAnnotation();
+                case IJavaSearchConstants.CLASS_AND_INTERFACE:
+                    return type.isClass() || (type.isInterface() && !type.isAnnotation());
                 }
 
             }

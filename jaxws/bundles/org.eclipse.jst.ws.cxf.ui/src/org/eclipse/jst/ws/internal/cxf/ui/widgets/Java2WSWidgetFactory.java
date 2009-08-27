@@ -273,7 +273,7 @@ public final class Java2WSWidgetFactory {
             }
         });
 
-        seiCombo.select(-1);
+        seiCombo.deselectAll();
         return seiCombo;
     }
 
@@ -365,7 +365,7 @@ public final class Java2WSWidgetFactory {
             }
         });
 
-        selectImplementationCombo.select(-1);
+        selectImplementationCombo.deselectAll();
         return selectImplementationCombo;
     }
     
@@ -377,11 +377,15 @@ public final class Java2WSWidgetFactory {
      * @param title the dialog title
      * @param message the dialog message
      * @param javaProject the java project that is filtered
-     * @param filterClasses true to filter all classes, false to filter all interfaces
-     * @return
+     * @param elementKinds a flag defining nature of searched elements; the only valid values are: 
+     *  <code>IJavaSearchConstants.CLASS</code>
+     *  <code>IJavaSearchConstants.INTERFACE</code>
+     *  <code>IJavaSearchConstants.CLASS_AND_INTERFACE</code>
+     *  
+     * @return the element tree selection dialog
      */
     public static ElementTreeSelectionDialog createElementTreeSelectionDialog(Shell parent, String title, 
-            String message, IJavaProject javaProject, boolean filterClasses) {
+            String message, IJavaProject javaProject, int elementKinds) {
         ElementTreeSelectionDialog selectionDialog = new ElementTreeSelectionDialog(parent,
                 new JavaElementLabelProvider(), new StandardJavaElementContentProvider());
         selectionDialog.setTitle(title);
@@ -389,7 +393,7 @@ public final class Java2WSWidgetFactory {
         selectionDialog.setAllowMultiple(false);
         selectionDialog.setInput(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
 
-        selectionDialog.addFilter(new JavaViewerFilter(javaProject, filterClasses));
+        selectionDialog.addFilter(new JavaViewerFilter(javaProject, elementKinds));
 
         selectionDialog.setValidator(new ISelectionStatusValidator() {
 

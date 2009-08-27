@@ -503,7 +503,7 @@ public final class WSDL2JavaWidgetFactory {
                     QName qName = service.getQName();
                     serviceNameCombo.add(qName.getLocalPart());
                 }
-                serviceNameCombo.select(-1);
+                serviceNameCombo.deselectAll();
             }
         }
     }

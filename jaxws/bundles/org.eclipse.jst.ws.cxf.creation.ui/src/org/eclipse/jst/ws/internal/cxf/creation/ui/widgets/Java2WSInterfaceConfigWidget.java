@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.creation.ui.CXFCreationUIMessages;
@@ -105,7 +106,7 @@ public class Java2WSInterfaceConfigWidget extends SimpleWidgetDataContributor {
                 ElementTreeSelectionDialog selectionDialog = Java2WSWidgetFactory.createElementTreeSelectionDialog(
                         composite.getShell(), CXFCreationUIMessages.JAVA2WS_SELECT_IMPL_DIALOG_TITLE,
                         CXFCreationUIMessages.JAVA2WS_SELECT_IMPL_DIALOG_DESCRIPTION,
-                        JDTUtils.getJavaProject(model.getProjectName()), false);
+                        JDTUtils.getJavaProject(model.getProjectName()), IJavaSearchConstants.CLASS);
 
                 int returnCode = selectionDialog.open();
                 if (returnCode == Window.OK) {
