@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
  * 20080429   213730 trungha@ca.ibm.com - Trung Ha
  * 20080507   229532 kathy@ca.ibm.com - Kathy Chan
+ * 20090818   286859 zina@ca.ibm.com - Zina Mostafia
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -30,10 +31,13 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
@@ -776,6 +780,7 @@ public class FacetUtils
         try
         {
           fproject.modify(actions, shellMonitor);
+		  fixEJBClassPath(fproject);
         } catch (CoreException e)
         {
           status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
@@ -802,6 +807,7 @@ public class FacetUtils
 		try
         {
           fproject.modify(actions, null);
+		  fixEJBClassPath(fproject);
         } catch (CoreException e)
         {
           status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
@@ -811,7 +817,35 @@ public class FacetUtils
     return status[0];
   }
   
-  /**
+  protected static void fixEJBClassPath(IFacetedProject project) {
+			if (!J2EEUtils.isEJBComponent(project.getProject())) return;
+			IProject ejbProject = project.getProject();
+			IJavaProject javaProject = JavaCore.create(ejbProject);
+			Path projectRoot = new Path(Path.ROOT.append(new Path(ejbProject.getName())).toString());
+			IPath ejbModulePath = projectRoot.append("ejbModule");
+			try {
+				IClasspathEntry[] originalSet = javaProject.getRawClasspath();
+				boolean foundEJBModulEntry = false;
+				for (int i = 0; i < originalSet.length ; i++) {
+					if (originalSet[i].equals(ejbModulePath))
+						foundEJBModulEntry = true;
+				}
+				if (!foundEJBModulEntry) {
+					IClasspathEntry[] newSet = new IClasspathEntry[originalSet.length + 1];
+					for (int i = 0; i < originalSet.length ; i++) {
+						newSet[i] = originalSet[i];
+					}
+					newSet[originalSet.length] = JavaCore.newSourceEntry(ejbModulePath);
+					javaProject.setRawClasspath(newSet,null);
+				}
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}  		
+
+		}
+
+/**
    * Returns an error status indicating that the facet versions could not be
    * added to the faceted project
    * 
