@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,8 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
@@ -25,7 +25,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.ISelectionMapper;
@@ -48,6 +47,8 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
    * Clicking on it invokes the refactor->rename action.
    */
   protected ImageHyperlink renameHyperlink;
+  private Composite lightBulbComposite;
+  private Composite topComposite;
 	
 	/**
 	 * @see org.eclipse.wst.common.ui.properties.internal.provisional.ITabbedPropertySection#createControls(org.eclipse.swt.widgets.Composite, org.eclipse.wst.common.ui.properties.internal.provisional.TabbedPropertySheetWidgetFactory)
@@ -55,25 +56,30 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory)
 	{
 		super.createControls(parent, factory);
-
-		composite =	getWidgetFactory().createFlatFormComposite(parent);
 		
-		FormData data;		
-    
-		nameText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(100, -rightMarginSpace);
-		data.top = new FormAttachment(0, 0);
-		nameText.setLayoutData(data);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(nameText, ASDEditorCSHelpIds.PROPERTIES_NAME_TEXT);
+		topComposite = getWidgetFactory().createFlatFormComposite(parent);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		topComposite.setLayout(gridLayout);
+
+		composite = getWidgetFactory().createComposite(topComposite);
+		gridLayout = new GridLayout();
+
+		gridLayout.numColumns = 2;
+		composite.setLayout(gridLayout);
+		GridData data = new GridData(GridData.FILL_BOTH);
+		composite.setLayoutData(data);	
 
 		nameLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAME + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(nameText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(nameText, 0, SWT.CENTER);
+		data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
 		nameLabel.setLayoutData(data);
+		
+		nameText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
+		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(nameText, ASDEditorCSHelpIds.PROPERTIES_NAME_TEXT);
+		
 		applyTextListeners(nameText);
 	}
 	
@@ -82,25 +88,23 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
       return;
     }
       
+    if (lightBulbComposite == null) {
+    	lightBulbComposite = getWidgetFactory().createComposite(topComposite);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 0;
+		lightBulbComposite.setLayout(gridLayout);
+		lightBulbComposite.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+    }
+    
     if (renameHyperlink == null) {
-      renameHyperlink = getWidgetFactory().createImageHyperlink(composite, SWT.NONE);
+      renameHyperlink = getWidgetFactory().createImageHyperlink(lightBulbComposite, SWT.NONE);
 
       renameHyperlink.setImage(WSDLEditorPlugin.getInstance().getImage("icons/quickassist.gif")); //$NON-NLS-1$
       renameHyperlink.setToolTipText(Messages._UI_TOOLTIP_RENAME_REFACTOR);
+      renameHyperlink.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
       renameHyperlink.addHyperlinkListener(this);
     }
 
-    FormData data = new FormData();
-    data.right = new FormAttachment(100, -rightMarginSpace);
-    data.top = new FormAttachment(0, 0);
-    renameHyperlink.setLayoutData(data);
-    
-    data = (FormData) nameText.getLayoutData(); 
-    FormAttachment right = data.right;
-    right.control = renameHyperlink;
-    right.offset = -ITabbedPropertyConstants.HSPACE;
-    right.alignment = SWT.LEFT;
-    data.top = new FormAttachment(renameHyperlink, 0, SWT.CENTER);
     renameHyperlink.setVisible(true);
   }
   
@@ -112,12 +116,7 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
     if (renameHyperlink == null) {
       return;
     }
-    FormData data = (FormData) nameText.getLayoutData();
-    FormAttachment right = data.right;
-    right.control = null;
-    right.numerator = 100;
-    right.offset = -rightMarginSpace; 
-    data.top = new FormAttachment(0, 0);
+
     renameHyperlink.setVisible(false);
   }
   

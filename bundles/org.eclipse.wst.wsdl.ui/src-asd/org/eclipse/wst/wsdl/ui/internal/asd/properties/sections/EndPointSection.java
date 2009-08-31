@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,14 +18,12 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -56,40 +54,29 @@ public class EndPointSection extends ReferenceSection {
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory)
 	{
 		super.createControls(parent, factory);
-		FormData data;
 		
 		// Address row
 		CLabel addressLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_ADDRESS + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		addressText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 		
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(addressText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(addressText, 0, SWT.CENTER);
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
 		addressLabel.setLayoutData(data);
 		
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
-		addressText.setLayoutData(data);
+		addressText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(addressText, ASDEditorCSHelpIds.PROPERTIES_PORT_ADDRESS_TEXT);
 
 		// Protocol Row
 		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		protocolCombo = getWidgetFactory().createCCombo(composite); //$NON-NLS-1$
 
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(protocolCombo, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(protocolCombo, 0, SWT.CENTER);
+		data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
 		protocolLabel.setLayoutData(data);
 		
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(addressText, +ITabbedPropertyConstants.VSPACE);
-		protocolCombo.setLayoutData(data);
+		protocolCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		protocolCombo.addListener(SWT.Modify, this);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.PROPERTIES_PORT_PROTOCOL_TEXT);
 

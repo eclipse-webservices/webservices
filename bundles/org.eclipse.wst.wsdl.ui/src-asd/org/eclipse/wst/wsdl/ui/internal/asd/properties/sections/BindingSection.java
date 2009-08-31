@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,13 +19,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -56,19 +54,13 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		protocolValue= getWidgetFactory().createCLabel(composite, ""); //$NON-NLS-1$
 		
 		// Layout protocolLabel
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(protocolValue, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(protocolValue, 0, SWT.CENTER);
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
 		protocolLabel.setLayoutData(data);
 		
 		// Layout protocolValue
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(combo, 0);
-//		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
-		protocolValue.setLayoutData(data);
+		protocolValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		/*
 		CLabel optionsLabel = getWidgetFactory().createCLabel(composite, Messages.getString("_UI_TITLE_OPTIONS") + ":");
@@ -104,10 +96,9 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 		regenBindingButton = getWidgetFactory().createButton(composite, buttonLabel, SWT.PUSH);
 
 		// Layout button
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-//		data.right = new FormAttachment(optionsValue, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(protocolLabel, 0);
+		data = new GridData();
+		data.horizontalSpan = 2;
+		data.horizontalAlignment = GridData.BEGINNING;
 		regenBindingButton.setLayoutData(data);
 
 		regenBindingButton.addSelectionListener(this);

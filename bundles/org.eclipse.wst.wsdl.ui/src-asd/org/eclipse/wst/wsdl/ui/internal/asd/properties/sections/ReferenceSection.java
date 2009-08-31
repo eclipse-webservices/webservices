@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,9 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public abstract class ReferenceSection extends NameSection {
@@ -35,7 +33,6 @@ public abstract class ReferenceSection extends NameSection {
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory)
 	{
 		super.createControls(parent, factory);
-		FormData data;
 		
 		// Create Combo row of widgets
 		comboLabel = getWidgetFactory().createCLabel(composite, "Reference"); //$NON-NLS-1$
@@ -43,18 +40,13 @@ public abstract class ReferenceSection extends NameSection {
 		combo.setBackground(composite.getBackground());
 
 		// Layout Combo Label
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(combo, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(combo, 0, SWT.CENTER);
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
 		comboLabel.setLayoutData(data);
 		
 		// Layout Combo
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(nameText, +ITabbedPropertyConstants.VSPACE);
-		combo.setLayoutData(data);
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
         combo.addListener(SWT.Modify, this);
         combo.addListener(SWT.DefaultSelection, this);

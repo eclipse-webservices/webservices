@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,10 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.MessageReference;
@@ -46,7 +44,13 @@ public class W11MessageReferenceSection extends NameSection {
 	
 	public void createControlArea()
 	{
-		FormData data;
+		
+		
+		comboLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_MESSAGE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
+		comboLabel.setLayoutData(data);
 		
 		combo = getWidgetFactory().createCCombo(composite);
 		combo.setBackground(composite.getBackground());
@@ -55,19 +59,7 @@ public class W11MessageReferenceSection extends NameSection {
         combo.addListener(SWT.Traverse, this);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, ASDEditorCSHelpIds.PROPERTIES_MESSAGE_REF_MESSAGE_COMBO);
 		
-		comboLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_MESSAGE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(combo, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(combo, 0, SWT.CENTER);
-		comboLabel.setLayoutData(data);
-		
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-//		data.right = new FormAttachment(button, 0);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(nameText, +ITabbedPropertyConstants.VSPACE);
-		combo.setLayoutData(data);
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 	
 	/*

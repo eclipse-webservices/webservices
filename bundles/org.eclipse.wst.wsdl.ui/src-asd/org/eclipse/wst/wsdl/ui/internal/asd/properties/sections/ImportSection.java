@@ -17,14 +17,13 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Import;
@@ -54,66 +53,53 @@ public class ImportSection extends ASDAbstractSection
 	{
 		super.createControls(parent, factory);
 		Composite composite = getWidgetFactory().createFlatFormComposite(parent);
-		FormData data;
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		composite.setLayout(gridLayout);
+		
+		CLabel namespaceLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAMESPACE); //$NON-NLS-1$
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
+		namespaceLabel.setLayoutData(data);
 
 		namespaceText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
 		namespaceText.setEditable(false);
-//		namespaceText.addListener(SWT.Modify, this);
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(0, 0);
-		namespaceText.setLayoutData(data);
-
-		CLabel namespaceLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAMESPACE); //$NON-NLS-1$
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(namespaceText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(namespaceText, 0, SWT.CENTER);
-		namespaceLabel.setLayoutData(data);
-
-		prefixText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
-//		prefixText.setEditable(false);
-		applyTextListeners(prefixText);
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(100, -rightMarginSpace - ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(namespaceText, +ITabbedPropertyConstants.VSPACE);
-		prefixText.setLayoutData(data);
+		namespaceText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		// fill the 3rd column
+		getWidgetFactory().createLabel(composite, ""); //$NON-NLS-1$
 
 		CLabel prefixLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_PREFIX); //$NON-NLS-1$
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(prefixText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(prefixText, 0, SWT.CENTER);
+		data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
 		prefixLabel.setLayoutData(data);
-
-		locationText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
-		locationText.setEditable(false);
-//		locationText.addListener(SWT.Modify, this);
+		
+		prefixText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
+		applyTextListeners(prefixText);
+		prefixText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		// fill the 3rd column
+		getWidgetFactory().createLabel(composite, ""); //$NON-NLS-1$
 
 		CLabel locationLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_LOCATION); //$NON-NLS-1$
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(locationText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(locationText, 0, SWT.CENTER);
+		data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
 		locationLabel.setLayoutData(data);
+		
+		locationText = getWidgetFactory().createText(composite, ""); //$NON-NLS-1$
+		locationText.setEditable(false);
+		locationText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		button = getWidgetFactory().createButton(composite, "", SWT.PUSH); //$NON-NLS-1$
 		button.setImage(WSDLEditorPlugin.getInstance().getImage("icons/browsebutton.gif")); //$NON-NLS-1$
 
 		button.addSelectionListener(this);
-		data = new FormData();
-		data.left = new FormAttachment(100, -rightMarginSpace + 2);
-		data.right = new FormAttachment(100,0);
-		data.top = new FormAttachment(locationText, 0, SWT.CENTER);
-		button.setLayoutData(data);
+		button.setLayoutData(new GridData());
 
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.right = new FormAttachment(button, 0);
-		data.top = new FormAttachment(prefixText, +ITabbedPropertyConstants.VSPACE);
-		locationText.setLayoutData(data);
+		
 	}
 
 	/*

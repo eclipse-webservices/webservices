@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,8 @@
 package org.eclipse.wst.wsdl.ui.internal.asd.properties.sections;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
@@ -37,15 +37,11 @@ public class DocumentationSection extends ASDAbstractSection {
 	{
 		super.createControls(parent, factory);
 		composite =	getWidgetFactory().createFlatFormComposite(parent);
-
+		composite.setLayout(new GridLayout());
+		
 		docText = getWidgetFactory().createText(composite, "", SWT.MULTI | SWT.NONE | SWT.H_SCROLL | SWT.V_SCROLL); //$NON-NLS-1$
 		docText.addListener(SWT.KeyDown, this);
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, 0);
-		data.bottom = new FormAttachment(100, 0);
-		docText.setLayoutData(data);
+		docText.setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, true));
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(docText, ASDEditorCSHelpIds.PROPERTIES_DOCUMENTATION_TAB);
 	}
 

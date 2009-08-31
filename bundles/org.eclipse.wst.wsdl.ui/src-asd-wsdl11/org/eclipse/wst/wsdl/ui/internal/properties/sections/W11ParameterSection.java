@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,13 +14,11 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.wst.common.ui.internal.search.dialogs.ComponentSpecification;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.ui.internal.Messages;
@@ -40,9 +38,14 @@ public class W11ParameterSection extends ParameterSection {
 	
 	public void createControlArea()	{
 		super.createControlArea();
-		FormData data;
 		
 		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_REFERENCE_KIND + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+	    data.grabExcessHorizontalSpace = false;
+		referenceKindLabel.setLayoutData(data);
+		
+		
 		Composite comp = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
@@ -50,12 +53,8 @@ public class W11ParameterSection extends ParameterSection {
 		layout.marginWidth = 0;
 		layout.marginRight = 5;
 		comp.setLayout(layout);
+		comp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(comp, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(comp, 0, SWT.CENTER);
-		referenceKindLabel.setLayoutData(data);
 		
 		typeRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_TYPE, SWT.RADIO); //$NON-NLS-1$
 		elementRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_ELEMENT, SWT.RADIO);	 //$NON-NLS-1$
@@ -64,10 +63,7 @@ public class W11ParameterSection extends ParameterSection {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(typeRadio, ASDEditorCSHelpIds.PROPERTIES_PART_TYPE_RADIO);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(elementRadio, ASDEditorCSHelpIds.PROPERTIES_PART_ELEMENT_RADIO);
 		
-		data = new FormData();
-		data.left = new FormAttachment(0, 100);
-		data.top = new FormAttachment(combo, +ITabbedPropertyConstants.VSPACE);
-		comp.setLayoutData(data);
+		
 	}
 	
 	public void doWidgetSelected(SelectionEvent e) {
