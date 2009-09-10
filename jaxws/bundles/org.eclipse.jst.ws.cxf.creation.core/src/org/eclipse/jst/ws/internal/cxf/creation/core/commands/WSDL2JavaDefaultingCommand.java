@@ -131,11 +131,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
             	definition = WSDLUtils.readWSDL(model.getWsdlURL());
             	if (definition != null) {
             	    setTNSOnModel(definition);
-            	    
-            	    String wsdlLocation = WSDLUtils.getWSDLLocation(definition);
-            	    if (wsdlLocation != null) {
-                        model.setWsdlLocation(wsdlLocation);
-            	    }
+            	    setWSDLLocation(definition);
             	}
         	} else {
                	String filename = ""; //$NON-NLS-1$
@@ -144,6 +140,8 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
                     Map servicesMap = definition.getServices();
                     Set<Map.Entry> servicesSet = servicesMap.entrySet();
                     setTNSOnModel(definition);
+                    setWSDLLocation(definition);
+
                     for (Map.Entry serviceEntry : servicesSet) {
                         Service service = (Service) serviceEntry.getValue();
                         Map portsMap = service.getPorts();
@@ -196,6 +194,13 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
         return status;
     }
     
+    private void setWSDLLocation(Definition definition) throws MalformedURLException {
+        String wsdlLocation = WSDLUtils.getWSDLLocation(definition);
+        if (wsdlLocation != null) {
+            model.setWsdlLocation(wsdlLocation);
+        }
+    }
+
     private void setTNSOnModel(Definition definition) {
         String targetNamespace = definition.getTargetNamespace();
         String packageName = WSDLUtils.getPackageNameFromNamespace(targetNamespace);

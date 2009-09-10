@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.jst.ws.annotations.core" id="annotationInitializer" name="Annotation Initializer"/>
       </appInfo>
       <documentation>
-         This extension point allows clients to associate an annotation initializer with a contribute annotation definition.
+         This extension point allows clients to associate an annotation initializer with an annotation definition.
 
 The annotation initializers role is to construct values for the annotations member value pairs.
       </documentation>
