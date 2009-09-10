@@ -23,6 +23,7 @@
  * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
+ * 20090910   289113 ericdp@ca.ibm.com - Eric D. Peters -  Linux: usability issue when selecting a Java Project in the Specify Client Project Settings dialog
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -157,6 +158,7 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
 	                           public void modifyText(ModifyEvent evt) 
 					           {
 					             handleProjectChanged();
+					             updateEARState();
 					             statusListener_.handleEvent( null );
 		                       }
 	                         };
