@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Tasks" link_to="toc.xml#tasks">
+   <link toc="../org.eclipse.jst.ws.cxf.doc.user/toctasks.xml"/> 
+</toc>
