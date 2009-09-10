@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compositeCheatsheet name="Creating a Web service from a Java implementation bean using Apache CXF">
+   <taskGroup kind="set" name="Creating a Web service from a Java implementation bean using Apache CXF" skip="false">
+      <intro>
+         This cheat sheet will guide you through the individual steps to setup the Apache CXF runtime, create an Apache Tomcat server,  a Dynamic Web Project enabled for Apache CXF Web services development  and create a JAX-WS Web service from a Java implementation bean, deploy it to Apache Tomcat and test it using the Web Services Explorer.
+         <br/>
+         <br/>
+To assist you along the way, wizards and commands will be available for you to launch automatically.
+      </intro>
+      <onCompletion>
+         Congratulations! You just configured the Apache CXF runtime, created an Apache Tomcat server, a Dynamic Web Project enabled for Apache CXF Web services developemnt and a JAX-WS Web service from a Java implementation bean and then deployed that service to Apache Tomcat and tested it with the Web Services Explorer.
+      </onCompletion>
+      <task kind="cheatsheet" name="Install and configure the Apache CXF Runtime" skip="true">
+         <intro>
+            This cheat sheet will demonstrate how to install and configure the Apache CXF runtime in the workbench.
+<br/>
+<br/>
+If you have already installed and configured the Apache CXF runtime in the workbench you may skip this task by clicking the &quot;Skip this task&quot; button.
+         </intro>
+         <onCompletion>
+            Congratulations!  You just installed and configured the Apache CXF runtime!
+         </onCompletion>
+         <param name="path" value="configure-cxf-runtime.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="Install and create an Apache Tomcat server" skip="true">
+         <intro>
+            This cheat sheet will demonstrate how to install and create an Apache Tomcat server.
+<br/>
+<br/>
+If you have already installed and created an Apache Tomcat server you may skip this task by clicking the &quot;Skip this task&quot; button.
+         </intro>
+         <onCompletion>
+            Congratulations!  You just installed and created an Apache Tomcat server!
+         </onCompletion>
+         <param name="path" value="create-tomcat-server.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="Create a project for CXF Web services" skip="true">
+         <intro>
+            This cheat sheet will demonstrate how to create a Dynamic Web Project and enable it for Apache CXF Web services developemnt.
+<br/>
+<br/>
+If you already have a Dynamic Web Project  enabled for Apache CXF Web services development you may skip this task by clicking the &quot;Skip this task&quot; button.
+         </intro>
+         <onCompletion>
+            Congratulations!  You just created a Dynamic Web Project and enabled it for Apache CXF Web services development!
+         </onCompletion>
+         <param name="path" value="create-cxf-project.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="Create a Web service from a Java implementation bean using Apache CXF" skip="false">
+         <intro>
+            This cheat sheet will demonstrate how to create a JAX-WS Web service from a Java implementation  bean using the Apache CXF runtime.
+         </intro>
+         <onCompletion>
+            Congratulations!  You just icreated a JAX-WS Web service from a Java bean using the Apache CXF runtime!
+         </onCompletion>
+         <param name="path" value="create-bottomUp-cxf.xml">
+         </param>
+      </task>
+   </taskGroup>
+</compositeCheatsheet>

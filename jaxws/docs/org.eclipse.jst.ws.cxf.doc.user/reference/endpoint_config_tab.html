@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2009 Shane Clarke. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>JAX-WS Endpoint Configuration Preferences</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h2>Endpoint Config Preferences</h2>
+<p>The <strong>Endpoint Config</strong> tab provides setting that control the type of endpoint configuration that web projects are configured with when the CXF Facet is installed.</p>
+<p><img src="./images/spring_config.png" alt="Spring Config tab" > </p>
+<p></p>
+    <table border="1" cellspacing="0" cellpadding="5" summary="Java search actions">
+      <thead>
+        <tr>
+          <td>
+            <p><span class="control">Option</span></p>
+          </td>
+
+          <td>
+            <p><span class="control">Description</span></p>
+          </td>
+          
+          <td>
+            <p><span class="control">Default</span></p>
+          </td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td valign="top">
+            <p>Use CXF Servlet</p>
+          </td>
+
+          <td valign="top">
+            <p>Creates a cxf-servlet.xml file in the Web Projects WEB-INF directory. This is the slower option of the two as it loads all possible CXF modules for an endpoint</p>
+          </td>
+          
+          <td valign="top">
+            <p>false</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <p>Use Spring Application Context</p>
+          </td>
+
+          <td valign="top">
+            <p>Creates a beans.xml file in the Web Projects WEB-INF directory. This is the fastest option as it allows the specification of which CXF modules to load for an endpoint</p>
+          </td>
+
+          <td valign="top">
+            <p>true</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+<p>During bottom-up and top-down web services development the endpoint configuration file in the web project is updated with a jaxws:endpoint element for the generated web service.</p>
+
+<p><img src="../images/ngrelr.png" alt="Related reference" border="0" ></p>
+<a href="../reference/cxf_facet.html">CXF Project Facet</a><br>
+<p><img src="../images/ngrelt.png" alt="Related tasks" border="0" ></p>
+<a href="../tasks/create_cxf_project.html">Create a project for CXF Web services</a><br>
+<a href="../tasks/create_bottomup.html">Create a Web Service from a Java implementation bean using Apache CXF</a><br>
+<a href="../tasks/create_topdown.html">Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF</a><br>
+</body>
+</html>

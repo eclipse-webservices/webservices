@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="Generate a JAX-WS SEI and a skeleton implementation bean from a WSDL document using Apache CXF">
+   <intro
+         href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+      <description>
+         This cheat sheet will demonstrate how to use the Web Services wizard to generate a JAX-WS Service Endpoint Interface and a skeleton implementation bean from a WSDL document using the Apache CXF runtime.
+         <br/>
+         <br/>
+If you need help at any step, click the help button in the top right corner (?).
+      </description>
+   </intro>
+   <item
+         href="/org.eclipse.wst.wsdl.ui.doc.user/tasks/tcrtwsdl.html"
+         title="Create or import a WSDL document">
+      <description>
+         Create or import a WSDL file into the Web Content folder of the Web project. The WSDL document must have a valid service element.
+      </description>
+   </item>
+   <item
+         dialog="true"
+         href="/org.eclipse.jst.ws.cxf.doc.user/tasks/create_topdown.html"
+         title="Generate a JAX-WS SEI and a skeleton implementation bean from the WSDL document">
+      <description>
+         To generate a JAX-WS SEI and a skeleton implementation bean from a WSDL document perform the following steps:
+      </description>
+      <subitem
+            label="Select &quot;File -&gt; New -&gt; Other...&quot; from the main menu, expand the &quot;Web Services&quot; category and select &quot;Web Service&quot;. Click &quot;OK&quot; to launch the Web Services wizard or select the &quot;Click to perform&quot; button to do this automatically.">
+         <command
+               required="false"
+               serialization="org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.ws.creation.ui.wizard.serverwizard)"/>
+      </subitem>
+      <subitem
+            label="Select &quot;Top down Java bean Web Service&quot; as the &quot;Web service type&quot;.">
+      </subitem>
+      <subitem
+            label="Browse to select the Service definition.">
+      </subitem>
+      <subitem
+            label="Verify that &quot;Apache CXF 2.x&quot; is selected as the Web service runtime.">
+      </subitem>
+      <subitem
+            label="Move the service slider to the &quot;Develop service&quot; stage.">
+      </subitem>
+      <subitem
+            label="Accept all other default values on this page and click &quot;Next &gt;&quot;.">
+      </subitem>
+      <subitem
+            label="On the Apache CXF WSDL to Java page accept the defaults and click &quot;Next &gt;&quot;.">
+      </subitem>
+      <subitem
+            label="Select &quot;Generate Implementation&quot; on the WSDL to Java preference override page and click &quot;Finish&quot;.">
+      </subitem>
+   </item>
+</cheatsheet>

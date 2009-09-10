@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2009 Shane Clarke. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+	<script type="text/javascript" language="JavaScript" src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+
+<body>
+<h2>Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF</h2>
+<h3>Prerequisites:</h3>
+<ol>
+    <li>Install and configure the Apache CXF runtime environment. See the <a href="PLUGINS_ROOT/org.eclipse.jst.ws.jaxws.doc.user/gettingstarted/requirements.html">Requirements and Installation</a> page for more details.</li>
+    <li>Create a Dynamic Web Project and enable it for Apache CXF Web services development as described here: <a href="../tasks/create_cxf_project.html">Create a project for CXF Web services</a>.</li>
+</ol>
+To generate a JAX-WS client from a WSDL document:
+<ol>
+	<li>Select <a class="command-link"
+		href='javascript:executeCommand("org.eclipse.ui.perspectives.showPerspective(org.eclipse.ui.perspectives.showPerspective.perspectiveId=org.eclipse.jst.j2ee.J2EEPerspective)")'>
+	<img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the Java EE perspective"><strong>Window &gt; Open Perspective &gt; Java EE</strong></a> from the top level menu to switch to the Java EE perspective.</li>
+	<li>Open the Web Service Client by selecting <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.ws.internal.consumption.ui.wizard.client.clientwizard)")'>
+	<img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the new web service client wizard"><strong>File
+	&gt; New &gt; Other... &gt; Web Services &gt; Web Service Client</strong></a> from the top level menu.</li>
+	<li>Web Services page:
+	<p><img src="./images/ws_client_wizard.png" alt="Web Services Client Wizard"></p>
+	<ol type="a">
+	    <Li>Enter the URI to the remote WSDL file that will be used to generate the client.</Li>
+		<li>Select <b>Java Proxy</b> as the Client type.</li>
+		<li>Move the client slider to the <b>Develop client</b> stage.</li>
+		<li>Web service runtime: Select Apache CXF 2.x</li>
+		<li>Service project: Select the project in your workspace into which Apache CXF will generate the code.</li>
+	</ol>
+	</li>
+	<li>Click <b>Next &gt;</b> to move to the first Apache CXF wsdl2java Configuration page:
+	<ol>
+		<li>Output Directory: Specify the source folder in the service project into which the code is generated.</li>
+		<li>Package Name: Type the Java package name to use for the generated code.</li>
+		<li>Specify WSDL Namespace to Package Name Mappings: Optionally specify WSDL namespace mappings to Java package names.</li>
+		<li>Service Name: Specify the name of the WSDL service from which to generate code. The default is to generate code for every service in the WSDL document.</li>
+		<li>Binding Files: Specify one or more JAX-WS or JAXB binding files.</li>
+	</ol>
+	</li>
+	<li>Click <b>Next &gt;</b> to move to the second Apache CXF wsdl2java configuration page which allows you to override the <a href="../reference/wsdl2java_tab.html">wsdl2java</a> default preferences:
+	</li>
+	<li>Click <b>Finish</b> to generate the client.</li>
+</ol>
+<p>The generated client will include a main() that when run will connect to the remote service and invoke every operation on that remote service.</p>
+<p>Before running the client open the client in the Java Editor and edit the generated arguments used to invoke the operations on the service.</p>
+<p>To <b>run</b> the client right-click on the client in the Project Explorer and select <b>Run As > Java Application</b>.
+<p><img src="../images/ngrelt.png" alt="Related tasks" border="0" ></p>
+<a href="../tasks/create_bottomup.html">Create a Web Service from a Java implementation bean using Apache CXF</a><br>
+<a href="../tasks/create_topdown.html">Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF</a><br>
+</body>
+</html>

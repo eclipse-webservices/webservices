@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2009 Shane Clarke. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Create a Web Service from a Java implementation bean using Apache CXF</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+    <script type="text/javascript" language="JavaScript" src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+
+<body>
+<h2>Create a Web Service from a Java implementation bean using Apache CXF</h2>
+<h3>Prerequisites:</h3>
+<ol>
+<li>Install and configure the Apache CXF runtime environment. See the <a href="PLUGINS_ROOT/org.eclipse.jst.ws.jaxws.doc.user/gettingstarted/requirements.html">Requirements and Installation</a> page for more details.</li>
+<li>Create a Dynamic Web Project and enable it for Apache CXF Web services development as described here: <a href="../tasks/create_cxf_project.html">Create a project for CXF Web services</a>.</li>
+<li>Create or import a Java implementation bean into the source folder of the Dynamic Web Project.</li>
+</ol>
+To create a Web service from a Java bean using the Apache CXF runtime environment:
+<ol>
+<li>Select <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.perspectives.showPerspective(org.eclipse.ui.perspectives.showPerspective.perspectiveId=org.eclipse.jst.j2ee.J2EEPerspective)")'>
+	<img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the Java EE perspective"><strong>Window &gt; Open Perspective &gt; Java EE</strong></a> from the top level menu to switch to the Java EE perspective.</li>
+<li>In the Project Explorer view select the Java implementation bean that you created or imported into the Dynamic Web Projects source folder.</li>
+<li>Open the Web Service wizard by selecting <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.ws.creation.ui.wizard.serverwizard)")'>
+<img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the new web service wizard"><strong>File &gt; New &gt; Other... &gt; Web Services &gt; Web Service</strong></a> from the top level menu.</li>
+<li>Web Services page: select <b>Bottom up Java bean Web Service</b> as the Web service type and browse to select the Java implementation bean from which to create the Web service:<p><img src="./images/bottom_up_wizard.png" alt="Bottom Up Web Services Wizard" ></p>
+<ol type="a">
+<li>Move the service slider to the stage of Web services development that you wish to complete.</li>
+<ul>
+<li>Develop: Invokes the Apache CXF java2ws tool using the preference defaults and the information gathered in the wizard to create a service. The wizard also generates a JAX-WS endpoint configuration file.</li>
+<li>Assemble: If required by the target server this phase assembles and configures the project that hosts the Web service into an EAR.</li>
+<li>Deploy: Generates the deployment artifacts for the Web service.</li>
+<li>Install: Installs and configures the Web Module and EARs on the target server.</li>
+<li>Start: Starts the target server once the Web service has been installed on it.</li>
+<li>Test: Use the Web Service Explorer to test the generated Web service.</li>
+</ul>
+<li>Server: Select a server to deploy your Web service to.</li>
+<li>Web service runtime: Select Apache CXF 2.x</li>
+<li>Service project: Select the project in your workspace into which Apache CXF will generate the code.</li>
+<li>If you wish to generate a client for your Web service, select <b>Java Proxy</b> as the Client type:
+<ul>
+<li>Move the client slider to the <b>Develop client</b> stage.</li>
+<li>Client project: Select a different project into which to generate the client code. The wizard will create the project for you if it doesn't exist and configure it with the CXF Facet.</li>
+</ul></li>
+<li>Publish the Web service: Launch the Web Services Explorer to publish your Web service to a UDDI registry.</li>
+<li>Monitor the Web service: Monitor the Web service's SOAP traffic using the TCP/IP Monitor.</li>
+</ol></li>
+<li>Click <b>Next &gt;</b> to move to the Service Endpoint Interface configuration page:
+<ol>
+<li>Use a Service Endpoint Interface: Select or create a Service Endpoint Interface (SEI) that defines the methods you wish to expose in the service. This is the recommended approach. 
+<ul>
+<li>Select an SEI: Browse to select an existing SEI.</li>
+<li>Create an SEI: Create an Interface from the Implementation by providing a name and the methods to declare in the extracted interface.</li>
+</ul>
+Both options create or update the <i>@WebService.endpointInterface</i> element on the implementation bean. 
+</ol>
+</li>
+<li>Click <b>Next &gt;</b> to move to the JAX-WS annotations configuration page:
+<p>This page allows you add to JAX-WS annotations to the SEI or Implementation (if not using an explicit SEI).</p>
+<p>The JAX-WS annotations element values default to those outlined in the JAX-WS specifications.</p>
+<p>If the Implementation bean / SEI contains overloaded methods the JAX-WS annotations added on this page adjust to resolve those conflicts.</p></li>
+<li>Click <b>Next &gt;</b> to move to the Apache CXF java2ws configuration page which allows you to override the default <a href="../reference/java2ws_tab.html">java2ws</a> preferences:
+</li>
+	<li>Test Web Service page. This page will be displayed if the service slider on the first page was set to Test service.
+	<p>Select the launch button to test the Web Service with the <a href="PLUGINS_ROOT/org.eclipse.jst.ws.consumption.ui.doc.user/tasks/ttestwsdl.html">Web Services Explorer</a>.</p>
+	</li>
+	<li>Apache CXF JAX-WS client configuration page: This page will be displayed if the client slider on the Web services page was set to <b>Develop client</b>.
+	<p>Refer to the <a href="./create_client.html">Generate a JAX-WS Web Service Client</a> page for information on the options displayed on this page.</p>
+	</li>
+	<li>Web Service Publication Page: Select whether or not you want to publish this Web service to a UDDI registry. Click <b>Finish</b></li>
+</ol>
+<p><img src="../images/ngrelt.png" alt="Related tasks" border="0" ></p>
+<a href="../tasks/create_topdown.html">Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF</a><br>
+<a href="../tasks/create_client.html">Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF</a><br>
+</body>
+</html>
