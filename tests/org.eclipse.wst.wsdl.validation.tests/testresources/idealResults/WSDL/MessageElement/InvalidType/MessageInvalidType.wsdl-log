@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-The part 'NewOperationRequest' has an invalid value 'NewOperationRequest' defined for its type. Type declarations must refer to valid values defined in a schema. [13, 75]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
