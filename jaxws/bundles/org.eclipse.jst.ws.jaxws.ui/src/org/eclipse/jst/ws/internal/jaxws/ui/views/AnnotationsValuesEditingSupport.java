@@ -557,6 +557,10 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             IField field = (IField)javaElement.getPrimaryElement();
             return field.getCompilationUnit();
         }
+        if (elementType == IJavaElement.PACKAGE_DECLARATION) { 
+        	IPackageDeclaration packageDecl = (IPackageDeclaration)javaElement;
+        	return (ICompilationUnit)packageDecl.getParent();
+        }
         return JDTUtils.getCompilationUnitFromFile((IFile)javaElement.getCorrespondingResource());
     }
 

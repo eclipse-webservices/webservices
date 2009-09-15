@@ -36,6 +36,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
@@ -94,9 +95,10 @@ public final class AnnotationUtils {
     private static final String FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR 
             = "org.eclipse.jdt.core.formatter.insert_space_before_assignment_operator"; //$NON-NLS-1$
     private static final String FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR 
-            = "org.eclipse.jdt.core.formatter.insert_space_after_assignment_operator"; //$NON-NLS-1$
+            = "org.eclipse.jdt.core.formatter.insert_space_after_assignment_operator"; //$NON-NLS-1$ 
     private static final String DO_NOT_INSERT 
             = "do not insert"; //$NON-NLS-1$
+
 
     private AnnotationUtils() {
     }
@@ -640,37 +642,65 @@ public final class AnnotationUtils {
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
         try {
-            List<IExtendedModifier> modifiers = getExtendedModifiers(compilationUnit, javaElement);
-            for (IExtendedModifier extendedModifier : modifiers) {
-                if (extendedModifier instanceof NormalAnnotation) {
-                    NormalAnnotation existingAnnotation = (NormalAnnotation) extendedModifier;
-                    if (AnnotationUtils.compareAnnotationNames(annotation, existingAnnotation)) {
-                        bufferManager.connect(path, LocationKind.IFILE, null);
-                        connected = true;
-
-                        IDocument document = bufferManager.getTextFileBuffer(path, LocationKind.IFILE)
-                                .getDocument();
-
-                        ListRewrite listRewrite = rewriter.getListRewrite(existingAnnotation,
-                                NormalAnnotation.VALUES_PROPERTY);
-
-                        listRewrite.insertLast(memberValuePair, null);
-
-                        TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
-
-                        textFileChange.addEdit(annotationTextEdit);
-
-                        textFileChange.addTextEditGroup(new TextEditGroup("AA", new //$NON-NLS-1$
-                                TextEdit[] { annotationTextEdit }));
-                    }
-                }
-            }
+        	if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION) {
+        		List annotationNodes = compilationUnit.getPackage().annotations();
+        		for (Object annotationNode : annotationNodes) {
+        			if (annotationNode instanceof NormalAnnotation) {
+        				NormalAnnotation existingAnnotation = (NormalAnnotation)annotationNode;
+	        			if (AnnotationUtils.compareAnnotationNames(annotation, existingAnnotation)) {
+	                        connected = rewriteAnnotationWithMemberValuePair(
+									source, rewriter, memberValuePair,
+									textFileChange, bufferManager, path,
+									existingAnnotation);
+	                    }
+        			}
+        		}
+        	} else {
+	            List<IExtendedModifier> modifiers = getExtendedModifiers(compilationUnit, javaElement);
+	            for (IExtendedModifier extendedModifier : modifiers) {
+	                if (extendedModifier instanceof NormalAnnotation) {
+	                    NormalAnnotation existingAnnotation = (NormalAnnotation) extendedModifier;
+	                    if (AnnotationUtils.compareAnnotationNames(annotation, existingAnnotation)) {
+	                        connected = rewriteAnnotationWithMemberValuePair(
+									source, rewriter, memberValuePair,
+									textFileChange, bufferManager, path,
+									existingAnnotation);
+	                    }
+	                }
+	            }
+        	}
         } finally {
             if (connected) {
                 bufferManager.disconnect(path, LocationKind.IFILE, null);
             }
         }
     }
+
+	private static boolean rewriteAnnotationWithMemberValuePair(
+			ICompilationUnit source, ASTRewrite rewriter,
+			ASTNode memberValuePair, TextFileChange textFileChange,
+			ITextFileBufferManager bufferManager, IPath path,
+			NormalAnnotation existingAnnotation) throws CoreException {
+		boolean connected;
+		bufferManager.connect(path, LocationKind.IFILE, null);
+		connected = true;
+
+		IDocument document = bufferManager.getTextFileBuffer(path, LocationKind.IFILE)
+		        .getDocument();
+
+		ListRewrite listRewrite = rewriter.getListRewrite(existingAnnotation,
+		        NormalAnnotation.VALUES_PROPERTY);
+
+		listRewrite.insertLast(memberValuePair, null);
+
+		TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
+
+		textFileChange.addEdit(annotationTextEdit);
+
+		textFileChange.addTextEditGroup(new TextEditGroup("AA", new //$NON-NLS-1$
+		        TextEdit[] { annotationTextEdit }));
+		return connected;
+	}
     
     public static void addMemberValuePairToAnnotation(ICompilationUnit source, CompilationUnit compilationUnit,
             ASTRewrite rewriter, NormalAnnotation annotation, ASTNode memberValuePair,
@@ -679,21 +709,9 @@ public final class AnnotationUtils {
         IPath path = source.getResource().getFullPath();
         boolean connected = false;
         try {
-            bufferManager.connect(path, LocationKind.IFILE, null);
-            connected = true;
-
-            IDocument document = bufferManager.getTextFileBuffer(path, LocationKind.IFILE).getDocument();
-
-            ListRewrite listRewrite = rewriter.getListRewrite(annotation,  NormalAnnotation.VALUES_PROPERTY);
-
-            listRewrite.insertLast(memberValuePair, null);
-
-            TextEdit annotationTextEdit = rewriter.rewriteAST(document, getOptions(source));
-
-            textFileChange.addEdit(annotationTextEdit);
-
-            textFileChange.addTextEditGroup(new TextEditGroup("AA", new //$NON-NLS-1$
-                    TextEdit[] { annotationTextEdit }));
+            connected = rewriteAnnotationWithMemberValuePair(source, rewriter,
+					memberValuePair, textFileChange, bufferManager, path,
+					annotation);
         } finally {
             if (connected) {
                 bufferManager.disconnect(path, LocationKind.IFILE, null);
@@ -997,7 +1015,14 @@ public final class AnnotationUtils {
             return isAnnotationPresent(((ICompilationUnit)javaElement).findPrimaryType(), annotationName);
         }
         
-        ICompilationUnit source = ((IMember)javaElement).getCompilationUnit();
+        ICompilationUnit source = null;
+        
+        if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION) {
+        	IPackageDeclaration packageDeclaration = (IPackageDeclaration)javaElement;
+        	source = (ICompilationUnit)packageDeclaration.getParent();
+        } else {
+        	source = ((IMember)javaElement).getCompilationUnit();
+        }
         
         int elementType = javaElement.getElementType();
         CompilationUnit compilationUnit = getASTParser(source, false);
