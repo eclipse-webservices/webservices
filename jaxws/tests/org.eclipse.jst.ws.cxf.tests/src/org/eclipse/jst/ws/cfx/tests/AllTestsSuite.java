@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.cfx.tests;
 
 import junit.framework.TestSuite;
 
+import org.eclipse.jst.ws.jaxb.core.tests.JAXBCoreTestSuite;
 import org.eclipse.jst.ws.jaxws.core.annotation.validation.tests.JAXWSAnnotationValidationTestSuite;
 import org.eclipse.jst.ws.jaxws.core.tests.JAXWSCoreTestSuite;
 
@@ -23,9 +24,10 @@ public class AllTestsSuite extends TestSuite {
 
 
 	public AllTestsSuite() {
-		super("All JAXWS Test Suites");
+		super("All JAXWS and JAXB Test Suites");
 		addTest(JAXWSCoreTestSuite.suite());
 		addTest(JAXWSAnnotationValidationTestSuite.suite());
+		addTest(JAXBCoreTestSuite.suite());
 	}
 
 	/**
