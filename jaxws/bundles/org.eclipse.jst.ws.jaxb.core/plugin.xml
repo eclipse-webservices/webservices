@@ -12,46 +12,17 @@
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAccessorOrder"
-            name="XmlAccessorOrder">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
-      </annotation>
+            name="XmlAccessorOrder"/>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAccessorType"
-            name="XmlAccessorType">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
-      </annotation>
+            name="XmlAccessorType"/>
       
       <!-- TODO Reinstate when XmlAdapter issue is solved
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.adapters.XmlAdapter"
             name="XmlAdapter">
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
-         <targetFilter
-               target="PARAMETER">
-         </targetFilter>
       </annotation>
       -->
       
@@ -59,230 +30,101 @@
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAnyAttribute"
             name="XmlAnyAttribute">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAnyElement"
             name="XmlAnyElement">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAttachmentRef"
             name="XmlAttachmentRef">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
-         <targetFilter
-               target="PARAMETER">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlAttribute"
             name="XmlAttribute">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlElement"
             name="XmlElement">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlElementDecl"
             name="XmlElementDecl">
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlElementRef"
             name="XmlElementRef">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlElementRefs"
             name="XmlElementRefs">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlElementWrapper"
             name="XmlElementWrapper">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlElements"
             name="XmlElements">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlEnum"
             name="XmlEnum">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlEnumValue"
             name="XmlEnumValue">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlID"
             name="XmlID">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlIDREF"
             name="XmlIDREF">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlInlineBinaryData"
             name="XmlInlineBinaryData">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
             name="XmlJavaTypeAdapter">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
-         <targetFilter
-               target="PARAMETER">
-         </targetFilter>
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters"
             name="XmlJavaTypeAdapters">
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlList"
             name="XmlList">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
-         <targetFilter
-               target="PARAMETER">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlMimeType"
             name="XmlMimeType">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
-         <targetFilter
-               target="PARAMETER">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlMixed"
             name="XmlMixed">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
@@ -293,88 +135,46 @@
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlRegistry"
             name="XmlRegistry">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlRootElement"
             name="XmlRootElement">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlSchema"
             name="XmlSchema">
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlSchemaType"
             name="XmlSchemaType">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlSchemaTypes"
             name="XmlSchemaTypes">
-         <targetFilter
-               target="PACKAGE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlSeeAlso"
             name="XmlSeeAlso">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlTransient"
             name="XmlTransient">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlType"
             name="XmlType">
-         <targetFilter
-               target="TYPE">
-         </targetFilter>
       </annotation>
       <annotation
             category="jaxb.category"
             class="javax.xml.bind.annotation.XmlValue"
             name="XmlValue">
-         <targetFilter
-               target="FIELD">
-         </targetFilter>
-         <targetFilter
-               target="METHOD">
-         </targetFilter>
       </annotation>
    </extension>
    

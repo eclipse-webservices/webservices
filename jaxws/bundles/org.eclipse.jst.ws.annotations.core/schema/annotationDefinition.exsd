@@ -104,7 +104,10 @@
          <attribute name="target" use="required">
             <annotation>
                <documentation>
-                  Used to filter java.lang.annotation.ElementType(s) that are specified in the value element of the  @Target annotation on the contributed annotation.
+                  The annotations core automatically knows where to permit annotations as it inspects the contributed annotation and
+                  reads the @Target that has been defined for it. These filters are only used when there might be an extra restriction
+                  you want to add, for example, if version 2 of an annotation allows adding the annotation to a field, and then version
+                  3 deprecates that usage, you can add a filter here to disallow the usage in the UI.
                </documentation>
             </annotation>
             <simpleType>
