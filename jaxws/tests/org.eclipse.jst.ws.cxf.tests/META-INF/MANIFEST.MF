@@ -4,9 +4,11 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.jst.ws.cfx.tests
 Bundle-Version: 0.4.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Localization: plugin
 Require-Bundle: org.junit;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.jst.ws.jaxws.core.tests;bundle-version="[0.5.0,0.6.0)",
- org.eclipse.jst.ws.jaxb.core.tests;bundle-version="[0.1.0,0.2.0)"
+ org.eclipse.jst.ws.jaxb.core.tests;bundle-version="[0.1.0,0.2.0)",
+ org.eclipse.jst.ws.jaxws.sapnw.dom.integration.tests;bundle-version="[1.0.0,1.1.0)",
+ org.eclipse.jst.ws.jaxws.sapnw.dom.runtime.tests;bundle-version="[1.0.0,1.1.0)"
 Export-Package: org.eclipse.jst.ws.cfx.tests

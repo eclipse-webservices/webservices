@@ -34,4 +34,8 @@
          id="org.eclipse.jst.ws.jaxws_sdk.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.jst.ws.jaxws.sapnw.dom_sdk.feature"
+         version="0.0.0"/>
+
 </feature>
