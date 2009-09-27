@@ -83,11 +83,4 @@
          version="1.6.2.qualifier"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.jst.ws.cxf.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
 </feature>
