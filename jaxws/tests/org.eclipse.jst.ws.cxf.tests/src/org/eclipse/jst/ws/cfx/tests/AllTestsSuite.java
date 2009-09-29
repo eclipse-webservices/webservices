@@ -28,10 +28,6 @@ public class AllTestsSuite extends TestSuite {
 		addTest(JAXWSCoreTestSuite.suite());
 		addTest(JAXWSAnnotationValidationTestSuite.suite());
 		addTest(JAXBCoreTestSuite.suite());
-		
-		//Adding two SAPNW DOM test plug-ins for a trial run
-		addTest(org.eclipse.jst.ws.jaxws.sapnw.dom.integration.tests.dom.AllTestsSuite.suite());
-		addTest(org.eclipse.jst.ws.jaxws.sapnw.dom.runtime.tests.AllTestsSuite.suite());
 	}
 
 	/**
