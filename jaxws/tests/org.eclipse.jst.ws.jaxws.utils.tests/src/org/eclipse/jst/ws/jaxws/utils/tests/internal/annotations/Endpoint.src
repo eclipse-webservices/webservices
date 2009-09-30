@@ -1,0 +1,15 @@
+import java.util.List;
+import java.util.Map;
+
+@WebService(serviceName="WSImplBeanService", name="WSImplBean", targetNamespace="http://demo/eclipse/org/", portName="WSImplBeanPort")
+@Stateless
+public class Endpoint
+{
+	@MyAnnotation(name="field1")
+	public String field1;
+	
+	@WebMethod(exclude=false,operationName="test")
+	public void annotatedMethod( @WebParam(name="annotatedParam") String annotatedParam) 
+	{
+	}
+}

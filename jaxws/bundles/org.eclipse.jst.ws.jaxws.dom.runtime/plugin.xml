@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<!--
+    Copyright (c) 2009 by SAP AG, Walldorf. 
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        SAP AG - initial API and implementation
+ -->
+
+<plugin>
+
+   <extension-point id="domruntimes" name="%DomRuntimesExtension_Name" schema="schema/runtimes.exsd"/>
+   <extension-point id="domValidator" name="%DomValidatorsExtension_Name" schema="schema/domValidator.exsd"/>
+      
+   <extension point="org.eclipse.ui.startup">
+      <startup class="org.eclipse.jst.ws.jaxws.dom.runtime.WsDomStartupParticipant"/>
+   </extension>
+   
+   <extension point="org.eclipse.emf.ecore.generated_package">
+   	<package 
+       uri = "http:///org/eclipse/jst/ws/jaxws/dom/runtime/dom.ecore" 
+       class = "org.eclipse.jst.ws.jaxws.dom.runtime.api.DomPackage" />
+  	</extension>
+
+
+   <extension
+         id="org.eclipse.jst.ws.jaxws.dom.jee5" 
+         name="%ExtensionPoint-Name.3"
+         point="org.eclipse.jst.ws.jaxws.dom.runtime.domruntimes">
+      <implementation class="org.eclipse.jst.ws.jaxws.dom.runtime.persistence.Jee5WsDomRuntimeExtension"/>
+      <project_facet id="jst.ejb" version="3.0"/>
+      <project_facet id="jst.web" version="2.5"/>
+   </extension>
+   <extension
+         id="dom"
+         name="%ExtensionPoint-Name.5"
+         point="org.eclipse.jst.ws.jaxws.dom.runtime.domValidator">
+      <implementation class="org.eclipse.jst.ws.jaxws.dom.runtime.validation.JaxWsDomValidator"/>
+   </extension>
+   
+   <!-- {{{ EMF validation contribution -->
+
+   <extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <category
+            name="%category.name.0"
+            id="org.eclipse.jst.ws.jaxws.dom.jee5"/>
+      <constraintProvider 
+      		cache="true" 
+      		class="org.eclipse.jst.ws.jaxws.dom.runtime.validation.WsDynamicModelConstraintProvider">
+      	<package namespaceUri="http:///org/eclipse/jst/ws/jaxws/dom/runtime/dom.ecore"/>
+      </constraintProvider> 
+   </extension>
+	<extension
+         point="org.eclipse.emf.validation.constraintBindings">
+      <clientContext
+            default="false"
+            id="org.eclipse.jst.ws.jaxws.dom.jee5.domContext">
+         <enablement>
+            <or>
+               <instanceof
+                     value="org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebParam">
+               </instanceof>               
+            </or>
+         </enablement>
+      </clientContext>
+      <binding
+            context="org.eclipse.jst.ws.jaxws.dom.jee5.domContext"
+            category="org.eclipse.jst.ws.jaxws.dom.jee5"/>
+   </extension>
+   <extension point="org.eclipse.emf.validation.validationListeners">
+       <listener class="org.eclipse.jst.ws.jaxws.dom.runtime.validation.WsProblemsReporter">
+           <clientContext id="org.eclipse.jst.ws.jaxws.dom.jee5.domContext"/>
+       </listener>
+   </extension>
+   <!-- }}} EMF validation contribution -->  
+   
+</plugin>

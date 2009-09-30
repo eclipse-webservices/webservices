@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Utilities for JUnit tests (Incubation)
+Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.testutils
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.jmock,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.ui,
+ org.eclipse.jdt.launching,
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.jst.ws.jaxws.utils,
+ org.junit
+Export-Package: org.eclipse.jst.ws.jaxws.testutils,
+ org.eclipse.jst.ws.jaxws.testutils.assertions,
+ org.eclipse.jst.ws.jaxws.testutils.files,
+ org.eclipse.jst.ws.jaxws.testutils.jmock,
+ org.eclipse.jst.ws.jaxws.testutils.jmock.testcases,
+ org.eclipse.jst.ws.jaxws.testutils.jobs,
+ org.eclipse.jst.ws.jaxws.testutils.project,
+ org.eclipse.jst.ws.jaxws.testutils.threading

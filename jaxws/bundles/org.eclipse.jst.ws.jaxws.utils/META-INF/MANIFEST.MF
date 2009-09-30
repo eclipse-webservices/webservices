@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: UtilsPlugin (Incubation)
+Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.utils;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.core.resources,
+ org.eclipse.text,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.wst.common.project.facet.core,
+ org.apache.axis
+Export-Package: org.eclipse.jst.ws.jaxws.utils,
+ org.eclipse.jst.ws.jaxws.utils.annotations,
+ org.eclipse.jst.ws.jaxws.utils.clazz,
+ org.eclipse.jst.ws.jaxws.utils.dom.validation,
+ org.eclipse.jst.ws.jaxws.utils.exception,
+ org.eclipse.jst.ws.jaxws.utils.facets,
+ org.eclipse.jst.ws.jaxws.utils.internal.annotations.impl,
+ org.eclipse.jst.ws.jaxws.utils.internal.text;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration.tests",
+ org.eclipse.jst.ws.jaxws.utils.logging,
+ org.eclipse.jst.ws.jaxws.utils.resources
+Bundle-Activator: org.eclipse.jst.ws.jaxws.utils.internal.plugin.JaxwsUtilsPlugin

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DOM UI Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.dom.ui.tests
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.eclipse.jst.ws.jaxws.dom.ui
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.jmock,
+ org.eclipse.jst.ws.jaxws.testutils,
+ org.junit

@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DOM Integration Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.dom.integration.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jst.ws.jaxws.dom.integration,
+ org.eclipse.jst.ws.jaxws.utils,
+ org.eclipse.jst.ws.jaxws.testutils,
+ org.jmock,
+ org.eclipse.jdt.core,
+ org.eclipse.ui.navigator,
+ org.eclipse.jst.ws.jaxws.dom.ui,
+ org.eclipse.jst.j2ee.core,
+ org.eclipse.jst.jee.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.emf.edit.ui,
+ org.eclipse.jface.text,
+ org.junit,
+ org.eclipse.jdt.ui,
+ org.eclipse.wst.validation
+Export-Package: org.eclipse.jst.ws.jaxws.dom.integration.tests.dom
