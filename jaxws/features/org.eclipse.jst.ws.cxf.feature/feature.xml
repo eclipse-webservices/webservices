@@ -31,6 +31,10 @@
          id="org.eclipse.jst.ws.jaxws_userdoc.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.jst.ws.jaxws.dom.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.jdom"
          download-size="156"
