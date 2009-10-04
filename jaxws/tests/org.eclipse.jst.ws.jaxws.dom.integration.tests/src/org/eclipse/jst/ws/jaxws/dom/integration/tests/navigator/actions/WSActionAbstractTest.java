@@ -807,7 +807,8 @@ public class WSActionAbstractTest extends MockObjectTestCase
 	{
 		final NavigatorContentService contentService = (NavigatorContentService)NavigatorContentServiceFactory.INSTANCE.createContentService("myviewer");
 		
-		return new CommonActionExtensionSite("myextensionid", (ICommonViewerSite)mock(ICommonViewerSite.class).proxy(), contentService, viewer);
+		//Eclipse 3.5 constructor required for WTP build
+		return new CommonActionExtensionSite("myextensionid", "mypluginid", (ICommonViewerSite)mock(ICommonViewerSite.class).proxy(), contentService, viewer);
 	}
 	
 	protected IContributionItem createContributionItemMock(final String itemId)
