@@ -89,7 +89,14 @@ public class WsDOMRuntimeRegistry
 			{
 				try
 				{
-					return (IWsDOMRuntimeExtension) el.createExecutableExtension(XP_IMPLEMENTATION_ELEMENT_CLASS_ATTR);
+					//Classcast exception thrown during WTP build
+					Object impl = el.createExecutableExtension(XP_IMPLEMENTATION_ELEMENT_CLASS_ATTR);
+					if (impl instanceof IWsDOMRuntimeExtension) {
+						return (IWsDOMRuntimeExtension) impl;
+					} else {
+						return null;
+					}
+//					return (IWsDOMRuntimeExtension) el.createExecutableExtension(XP_IMPLEMENTATION_ELEMENT_CLASS_ATTR);
 				} 
 				catch (final CoreException e)
 				{
@@ -97,11 +104,11 @@ public class WsDOMRuntimeRegistry
 					return null;
 					
 				}
-				catch (final ClassCastException e)
-				{
-					logger().logError("Implementation class does not implement proper interface", e); //$NON-NLS-1$
-					return null;
-				}
+//				catch (final ClassCastException e)
+//				{
+//					logger().logError("Implementation class does not implement proper interface", e); //$NON-NLS-1$
+//					return null;
+//				}
 			}
 		}
 		
