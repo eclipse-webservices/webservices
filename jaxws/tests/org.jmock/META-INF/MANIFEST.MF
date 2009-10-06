@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Require-Bundle: org.junit;visibility:=reexport
-Export-Package: .,
- org.jmock,
+Export-Package: org.jmock,
  org.jmock.builder,
  org.jmock.core,
  org.jmock.core.constraint,
