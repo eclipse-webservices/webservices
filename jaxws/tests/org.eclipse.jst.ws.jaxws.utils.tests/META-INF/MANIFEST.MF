@@ -8,3 +8,8 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.jst.ws.jaxws.testutils,
  org.jmock,
  org.junit
+Export-Package: org.eclipse.jst.ws.jaxws.utils.resources,
+ org.eclipse.jst.ws.jaxws.utils.tests,
+ org.eclipse.jst.ws.jaxws.utils.tests.internal,
+ org.eclipse.jst.ws.jaxws.utils.tests.internal.annotations,
+ org.eclipse.jst.ws.jaxws.utils.tests.internal.clazz
