@@ -30,8 +30,8 @@ public class AllTestsSuite extends TestSuite {
 		addTest(JAXBCoreTestSuite.suite());
 		
 		//Adding two JAX-WS DOM Tools test suites for a trial run
-		addTest(org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.AllTestsSuite.suite());
-		addTest(org.eclipse.jst.ws.jaxws.dom.runtime.tests.AllTestsSuite.suite());
+//		addTest(org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.AllTestsSuite.suite());
+//		addTest(org.eclipse.jst.ws.jaxws.dom.runtime.tests.AllTestsSuite.suite());
 	}
 
 	/**
