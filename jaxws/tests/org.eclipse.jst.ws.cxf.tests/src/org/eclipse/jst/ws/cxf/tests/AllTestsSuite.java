@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jst.ws.cfx.tests;
+package org.eclipse.jst.ws.cxf.tests;
 
 import junit.framework.TestSuite;
 
