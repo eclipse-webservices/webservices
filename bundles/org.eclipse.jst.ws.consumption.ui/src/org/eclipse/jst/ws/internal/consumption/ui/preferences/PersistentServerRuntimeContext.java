@@ -12,6 +12,7 @@
  * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
  * 20080918   247537 mahutch@ca.ibm.com - Mark Hutchinson, Update default server runtime to Tomcat 6
  * 20090714   283399 ericdp@ca.ibm.com - Eric D. Peters, Web Services > Server & Runtime preference undefined
+ * 20091007   283399 ericdp@ca.ibm.com - Eric D. Peters, Web Services > Server & Runtime preference undefined 
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
@@ -58,6 +59,8 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 		if (runtimeDefault==null || runtimeDefault.length()==0 || WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeDefault)==null)
 		{
 		  setDefault(PREFERENCE_RUNTIME, RUNTIME_ID_DEFAULT);
+		} else {
+		  setDefault(PREFERENCE_RUNTIME, runtimeDefault);
 		}
 				
 	}
