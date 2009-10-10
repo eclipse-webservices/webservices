@@ -1,11 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Utils Tests (Incubation)
+Bundle-Name: %Bundle-Name.0
+Bundle-Vendor: %Bundle-Vendor.0
 Bundle-SymbolicName: org.eclipse.jst.ws.jaxws.utils.tests
+Bundle-Localization: plugin
 Bundle-Version: 1.0.0.qualifier
-Fragment-Host: org.eclipse.jst.ws.jaxws.utils
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.eclipse.jst.ws.jaxws.testutils,
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.jst.ws.jaxws.utils,
+ org.eclipse.jst.ws.jaxws.testutils,
  org.jmock,
  org.junit
 Export-Package: org.eclipse.jst.ws.jaxws.utils.resources,
