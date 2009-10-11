@@ -89,7 +89,7 @@ public class WsDOMRuntimeRegistry
 			{
 				try
 				{
-					//Classcast exception thrown during WTP build
+					//FIXME ClassCastException showing up in the logs in the WTP build
 					Object impl = el.createExecutableExtension(XP_IMPLEMENTATION_ELEMENT_CLASS_ATTR);
 					if (impl instanceof IWsDOMRuntimeExtension) {
 						return (IWsDOMRuntimeExtension) impl;
