@@ -64,7 +64,8 @@ public class EndpointIsSessionBeanConstraintTest extends TestCase
 	{
 		project.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		project.getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
-		JobUtils.waitForJobs();
+		//FIXME Changed from waitForJobs(). checkMarkers intermittently failing in build. 
+		JobUtils.waitForJobsSlow();
 	}
 
 	private IType findTestEndpoint(final TestProject project) throws JavaModelException
