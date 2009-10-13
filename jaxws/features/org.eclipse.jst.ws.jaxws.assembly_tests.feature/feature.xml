@@ -18,8 +18,12 @@ This feature should never appear in build distributions or update sites.
       %license
    </license>
 
-   <includes
+   <includes 
          id="org.eclipse.jst.ws.jaxws_tests.feature"
+         version="0.0.0"/>
+         
+   <includes 
+         id="org.eclipse.jst.ws.cxf_tests.feature"
          version="0.0.0"/>
          
    <includes
