@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.jst.ws.jaxws.assembly.feature"
+      label="Assembly Feature"
+      version="1.0.0.qualifier"
+      provider-name="Webtools Platform Project">
+
+   <description>
+      This feature is for building only, to assemble the releated features, without forceing them to encoding dependencies on each other. 
+This feature should never appear in build distributions or update sites.
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+
+   <includes
+         id="org.eclipse.jst.ws.jaxws.feature"
+         version="0.0.0"/>
+         
+   <includes
+         id="org.eclipse.jst.ws.cxf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.jst.ws.jaxws.dom.feature"
+         version="0.0.0"/>
+
+</feature>
