@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk, Initial coding.
  * 20080516   232603 pmoogk@ca.ibm.com - Peter Moogk, Clean up java doc
+ * 20091009   277198 mahutch@ca.ibm.com - Mark Hutchinson, Remove IStartup code
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy.ui;
 
@@ -21,13 +22,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IStartup;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class ServicePolicyActivatorUI extends Plugin implements IStartup {
+public class ServicePolicyActivatorUI extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.wst.ws.service.policy.ui"; //$NON-NLS-1$
@@ -94,13 +94,5 @@ public class ServicePolicyActivatorUI extends Plugin implements IStartup {
     IStatus status = new Status( IStatus.ERROR, PLUGIN_ID, 0, message, exc );
     
     getDefault().getLog().log(status);
-  }
-
-  /**
-   * Called by Eclipse when it starts up.
-   */
-  public void earlyStartup()
-  {
-    // DO nothing.  All we want to do is get the plugin loaded at UI start time.
   }
 }
