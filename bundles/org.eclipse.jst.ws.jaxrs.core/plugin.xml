@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-
+<!--
+   <extension-point id="pluginProvidedJaxrsLibraries" name="pluginProvidedJaxrsLibraries" schema="schema/pluginProvidedJaxrsLibraries.exsd"/>
+   <extension-point id="jaxrsSharedLibrarySupport" name="jaxrsSharedLibrarySupport" schema="schema/jaxrsSharedLibrarySupport.exsd"/>
+-->
   <!-- JAXRS Project Facets -->
 	<extension
        id="org.eclipse.jst.ws.jaxrs.project.facet"
@@ -9,7 +12,7 @@
        point="org.eclipse.wst.common.project.facet.core.facets">
 
     <project-facet id="jst.jaxrs">
-      <label>JAX-RS (REST Web Services)</label>
+      <label>%plugin.facet.label</label>
       <description>%plugin.facet.description</description>
     </project-facet>
 
@@ -53,6 +56,11 @@
    
 
    
-
-  
+<!--
+  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+    <classpathContainerInitializer
+      class="org.eclipse.jst.ws.jaxrs.core.internal.JAXRSLibrariesContainerInitializer"
+      id="org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibrarycontainer"/>
+  </extension>
+-->
 </plugin>

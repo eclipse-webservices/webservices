@@ -9,7 +9,7 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20091013   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -22,4 +22,29 @@ import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetInstallDa
 public interface IJAXRSFacetInstallDataModelProperties extends
 		IFacetInstallDataModelProperties {
 
+	public static final String ADD_TO_EAR = "IJAXRSFacetInstallDataModelProperties.ADD_TO_EAR"; //$NON-NLS-1$
+
+	public static final String IMPLEMENTATION = "IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION"; //$NON-NLS-1$
+
+	public static final String SHAREDLIBRARY = "IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY"; //$NON-NLS-1$
+
+	public static final String EARPROJECT_NAME = "IJAXRSFacetInstallDataModelProperties.EARPROJECT_NAME"; //$NON-NLS-1$
+
+	public static final String WEBPROJECT_NAME = "IJAXRSFacetInstallDataModelProperties.WEBPROJECT_NAME"; //$NON-NLS-1$
+
+	public static final String TARGETRUNTIME = "IJAXRSFacetInstallDataModelProperties.TARGETRUNTIME"; //$NON-NLS-1$
+
+	public static final String DEPLOY_IMPLEMENTATION = "IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION"; //$NON-NLS-1$
+
+	public static final String SERVLET_NAME = "IJAXRSFacetInstallDataModelProperties.SERVLET_NAME"; //$NON-NLS-1$
+
+	public static final String SERVLET_CLASSNAME = "IJAXRSFacetInstallDataModelProperties.SERVLET_CLASSNAME"; //$NON-NLS-1$
+
+	public static final String SERVLET_URL_PATTERNS = "IJAXRSFacetInstallDataModelProperties.SERVLET_URL_PATTERNS"; //$NON-NLS-1$
+
+	public static final String WEBCONTENT_DIR = "IJAXRSFacetInstallDataModelProperties.WEBCONTENT_DIR"; //$NON-NLS-1$
+
+	public static final String DEFAULT_IMPLEMENTATION_LIBRARY = "IJAXRSFacetInstallDataModelProperties.DEFAULT_IMPLEMENTATION_LIBRARY"; //$NON-NLS-1$
+
+	public static final String IMPLEMENTATION_LIBRARIES = "IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION_LIBRARIES"; //$NON-NLS-1$
 }

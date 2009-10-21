@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jst.ws.jaxrs.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.jst.ws.jaxrs.core" id="pluginProvidedJaxrsLibraries" name="JAX-RS Libraries"/>
+      </appInfo>
+      <documentation>
+         This extension point allows clients to create named sets of jars for use with JAX-RS Applications.
+
+&lt;p&gt;&lt;b&gt;This extension point is provisional and subject to change&lt;/b&gt;&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="jaxrsLibrary" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="jaxrsLibrary">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            A named collection of jars that will be added to the classpath as a classpath container to a project that references it.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A unique, non-translatable, name for the library.  The plugin developer is responsible for ensuring uniqueness within the plugin.  This name, in combination with the plugin id, is used to identify the classpath container reference.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string">
+            <annotation>
+               <documentation>
+                  Translatable string for displaying the library name.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="archiveFilesDelegate" type="string" use="required">
+            <annotation>
+               <documentation>
+                  class that must extend org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.JAXRSLibraryArchiveFilesDelegate to supply a collection of IPaths to jars in the library
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.PluginProvidedJAXRSLibraryArchiveFilesDelegate:" deprecated="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="deploy" type="boolean">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         Value of the attribute class must be a fully qualified name of a Java class that extends the abstract class &lt;code&gt;org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.PluginProvidedJAXRSLibraryJarFilesDelegate&lt;/code&gt; and has a public 0-arg constructor.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of usage of pluginProvidedJaxrsLibraries extension point:
+
+&lt;p&gt;
+&lt;pre&gt;
+  &lt;extension point=&quot;org.eclipse.jst.ws.jaxrs.core.pluginProvidedJaxrsLibraries&quot;&gt;
+    &lt;jaxrsLibrary       
+       name=&quot;MyComponentLib1&quot;
+       label=&quot;%MyComponentLib1.translatableLabel&quot;
+       archiveFilesDelegate=&quot;com.acme.jaxrs.libraries.MyComponentLibraryFiles&quot;/&gt;
+  &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         none
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+Contributors:
+Eric D. Peters - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>
