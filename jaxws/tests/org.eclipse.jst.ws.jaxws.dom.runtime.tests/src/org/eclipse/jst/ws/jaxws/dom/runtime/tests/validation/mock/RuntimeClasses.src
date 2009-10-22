@@ -279,3 +279,21 @@ public class MyMap<K, V> implements Map<K, V>
 	public int size() {	return 0; }
 	public Collection<V> values() { return null; }
 }
+
+#ParameterizedClass
+public class ParameterizedClass<T> {
+	public T value;
+}
+
+#ParameterizedMethodParameterEndpointClass
+public class ParameterizedMethodParameterEndpointClass {
+	public void test(ParameterizedClass<String> param) {
+	}
+}
+
+#ParameterizedMethodReturnTypeEndpointClass
+public class ParameterizedMethodReturnTypeEndpointClass {
+	public ParameterizedClass<String> test() {
+		return null;
+	}
+}

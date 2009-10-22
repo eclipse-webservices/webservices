@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jst.ws.jaxws.dom.runtime.GeneralTypesNames;
 import org.eclipse.jst.ws.jaxws.dom.runtime.PrimitiveTypeHandler;
 import org.eclipse.jst.ws.jaxws.dom.runtime.TypeResolver;
@@ -323,6 +324,11 @@ public class RuntimeTypeValidator extends TypeValidator
 	 */
 	private void resolveAndCheckType(String typeName, IType type) throws JavaModelException, TypeNotFoundException, InadmissableTypeException
 	{
+		if(isVariableType(typeName, type))
+		{
+			return;
+		}
+		
 		for (String resolvedType : TypeResolver.resolveTypes(typeName, type))
 		{
 			if (PrimitiveTypeHandler.isVoidType(resolvedType))
@@ -421,5 +427,13 @@ public class RuntimeTypeValidator extends TypeValidator
 		}
 
 		return true;
+	}
+	
+	/**
+	 * Checks if the type is a variable type (like e.g. "T" in Holder&ltT&gt)
+	 */
+	private boolean isVariableType(final String typeName, final IType type) throws JavaModelException
+	{
+		return Signature.getTypeSignatureKind(TypeResolver.resolveType(typeName, type)) == Signature.TYPE_VARIABLE_SIGNATURE;
 	}
 }

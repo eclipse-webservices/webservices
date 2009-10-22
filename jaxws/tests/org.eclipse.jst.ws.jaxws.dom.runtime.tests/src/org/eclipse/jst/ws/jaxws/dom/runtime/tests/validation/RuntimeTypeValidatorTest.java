@@ -12,10 +12,12 @@ package org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.internal.validation.provider.TypeFactory;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.RuntimeTypeValidator;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.AbstractClassNotImplementedException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.HasInadmisableInnerTypesException;
+import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InadmissableTypeException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InheritanceAndImplementationExecption;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InterfacesNotSupportedException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.MultipleImplementationException;
@@ -361,5 +363,25 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 		
 		assertNotNull(type);
 		validator.validate(type);
+	}
+	
+	public void testValidateParameterizedMethodParameterClass() throws JavaModelException, InadmissableTypeException
+	{
+		final IType parameterizedType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedClass");
+		assertNotNull(parameterizedType);
+		final IType endpointType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedMethodParameterEndpointClass");
+		assertNotNull(endpointType);
+		
+		validator.validate(parameterizedType);
+	}
+	
+	public void testValidateParameterizedReturnTypeClass() throws JavaModelException, InadmissableTypeException
+	{
+		final IType parameterizedType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedClass");
+		assertNotNull(parameterizedType);
+		final IType endpointType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedMethodReturnTypeEndpointClass");
+		assertNotNull(endpointType);
+		
+		validator.validate(parameterizedType);
 	}
 }
