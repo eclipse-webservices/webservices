@@ -28,7 +28,7 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(), null);
+        return AnnotationsCore.createNormalAnnotation(ast, WebMethod.class.getSimpleName(), null);
     }
 
     @Override
@@ -67,10 +67,9 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
             IMethod method = getMethodToTeset();
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebMethod.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebMethod.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,7 +30,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -40,9 +38,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
@@ -313,45 +308,5 @@ public final class JDTUtils {
         String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
         String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
         return JavaConventions.validateIdentifier(id, sourceLevel, complianceLevel);
-    }
-
-	public static ICompilationUnit getCompilationUnitFromFile(IFile file) {
-		IProject project = file.getProject();
-		try {
-			if (project.hasNature(JavaCore.NATURE_ID)) {
-				IJavaProject javaProject = JavaCore.create(project);
-				IPackageFragmentRoot[] packageFragmentRoots = javaProject.getPackageFragmentRoots();
-				for (IPackageFragmentRoot packageFragmentRoot : packageFragmentRoots) {
-					if (packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE) {
-						IJavaElement[] packageFragments = packageFragmentRoot.getChildren();
-						for (IJavaElement javaElement : packageFragments) {
-							if (javaElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-								IPackageFragment packageFragment = (IPackageFragment)javaElement;
-								ICompilationUnit[] compilationUnits = packageFragment.getCompilationUnits();
-								for (ICompilationUnit compilationUnit : compilationUnits) {
-									if (compilationUnit.getPath().equals(file.getFullPath())) {
-										return compilationUnit;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		} catch (JavaModelException jme) {
-			JAXWSCorePlugin.log(jme.getStatus());
-		} catch (CoreException ce) {
-			JAXWSCorePlugin.log(ce.getStatus());
-		}
-		return null;
-	}
-	
-    public static CompilationUnit getCompilationUnit(ICompilationUnit source) {
-        ASTParser parser = ASTParser.newParser(AST.JLS3);
-        parser.setSource(source);
-        CompilationUnit compilationUnit = (CompilationUnit) parser.createAST(new NullProgressMonitor());
-        compilationUnit.recordModifications();
-        
-        return compilationUnit;
     }
 }

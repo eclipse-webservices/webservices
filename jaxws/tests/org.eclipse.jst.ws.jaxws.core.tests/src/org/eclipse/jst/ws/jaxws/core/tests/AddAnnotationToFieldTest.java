@@ -49,8 +49,7 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
 
         memberValuePairs.add(wsdlLocationValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, WebServiceRef.class, WebServiceRef.class.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, WebServiceRef.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToField() {
@@ -61,15 +60,13 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebServiceRef.class, textFileChange, true);
-
-            AnnotationUtils.addAnnotationToField(source, compilationUnit, rewriter, field, annotation,
-                    textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(field, WebServiceRef.class));
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(field, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils
-                    .getAnnotationName(annotation)));
+            assertTrue(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils.getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebServiceRef.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

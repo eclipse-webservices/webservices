@@ -28,8 +28,7 @@ public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotat
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(),
-                null);
+        return AnnotationsCore.createNormalAnnotation(ast, WebService.class.getSimpleName(), null);
     }
 
     @Override
@@ -59,10 +58,9 @@ public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotat
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebService.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class));
 
-            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter,
-                    source.findPrimaryType(), annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

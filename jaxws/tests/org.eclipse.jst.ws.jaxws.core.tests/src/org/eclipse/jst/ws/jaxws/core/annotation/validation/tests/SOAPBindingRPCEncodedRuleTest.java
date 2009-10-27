@@ -50,8 +50,7 @@ public class SOAPBindingRPCEncodedRuleTest extends AbstractSOAPBindingValidation
         memberValuePairs.add(useValuePair);
         memberValuePairs.add(parameterStyleValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, SOAPBinding.class, SOAPBinding.class.getSimpleName(), 
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, SOAPBinding.class.getSimpleName(), memberValuePairs);
     }
 
     public void testSOAPBindingRPCEncodedRule() {
@@ -59,10 +58,9 @@ public class SOAPBindingRPCEncodedRuleTest extends AbstractSOAPBindingValidation
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
             
-            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), SOAPBinding.class));
 
-            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
-                    source.findPrimaryType(), annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

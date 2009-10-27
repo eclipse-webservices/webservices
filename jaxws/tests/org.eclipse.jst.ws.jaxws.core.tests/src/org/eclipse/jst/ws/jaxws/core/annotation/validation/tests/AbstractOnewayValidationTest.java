@@ -28,7 +28,7 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, Oneway.class, Oneway.class.getSimpleName(), null);
+        return AnnotationsCore.createNormalAnnotation(ast, Oneway.class.getSimpleName(), null);
     }
 
     @Override
@@ -53,10 +53,9 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
             IMethod method = getMethodToTest();
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, Oneway.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, Oneway.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

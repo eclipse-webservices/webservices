@@ -19,9 +19,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -30,7 +30,7 @@ public class WebServiceSEINoWebParamRuleTest extends AbstractWebServiceSEIRule {
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, WebParam.class, WebParam.class.getSimpleName(), null);
+        return AnnotationsCore.createNormalAnnotation(ast, WebParam.class.getSimpleName(), null);
     }
 
     public void testWebServiceSEIPresentNoWebParamRule() {
@@ -41,21 +41,15 @@ public class WebServiceSEINoWebParamRuleTest extends AbstractWebServiceSEIRule {
             IMethod method = source.findPrimaryType().getMethod("methodOne", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebParam.class, textFileChange, true);
+            ILocalVariable localVariable = AnnotationUtils.getLocalVariable(method, "in");
 
-            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
-                    250);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class));
 
-            AnnotationUtils.addAnnotationToMethodParameter(source, compilationUnit, rewriter, parameter,
-                    method, annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(localVariable, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            // refresh
-            parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
-                    .getCompilationUnit(), false), method, 278);
-
-            assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
+            assertTrue(AnnotationUtils.isAnnotationPresent(localVariable, annotation));
             
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

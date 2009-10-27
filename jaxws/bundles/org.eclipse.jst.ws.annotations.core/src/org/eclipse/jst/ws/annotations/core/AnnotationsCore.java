@@ -19,10 +19,10 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.QualifiedType;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 /**
@@ -46,10 +47,7 @@ public final class AnnotationsCore {
     private AnnotationsCore() {
     }
     
-    public static Annotation createAnnotation(AST ast,
-            Class<? extends java.lang.annotation.Annotation> annotationClass,
-            String annotationName,
-            List<MemberValuePair> memberValuePairs) {
+    public static NormalAnnotation createNormalAnnotation(AST ast, String annotationName, List<MemberValuePair> memberValuePairs) {
 
         NormalAnnotation annotation = ast.newNormalAnnotation();
         
@@ -66,6 +64,32 @@ public final class AnnotationsCore {
         }
         return annotation;
     }
+    
+    public static SingleMemberAnnotation createSingleMemberAnnotation(AST ast, String annotationName, Expression value) {
+        SingleMemberAnnotation annotation = ast.newSingleMemberAnnotation();
+        
+        Name annotationTypeName = ast.newName(annotationName);
+        
+        annotation.setTypeName(annotationTypeName);
+
+        if (value != null) {
+        	value = (Expression)Expression.copySubtree(ast, value);
+        	annotation.setValue(value);
+        }
+        
+        return annotation;
+    }
+
+    public static MarkerAnnotation createMarkerAnnotation(AST ast, String annotationName) {
+        MarkerAnnotation annotation = ast.newMarkerAnnotation();
+        
+        Name annotationTypeName = ast.newName(annotationName);
+        
+        annotation.setTypeName(annotationTypeName);
+
+        return annotation;
+    }
+
 
     public static MemberValuePair createMemberValuePair(AST ast, String name, Expression expression) {
         MemberValuePair memberValuePair = ast.newMemberValuePair();
@@ -164,8 +188,8 @@ public final class AnnotationsCore {
                         }
                     }
                 }
-                arrayInitializer.expressions().add(createAnnotation(ast, annotationClass,
-                        annotationClass.getCanonicalName(), memberValuePairs));
+                arrayInitializer.expressions().add(createNormalAnnotation(ast, annotationClass.getCanonicalName(),
+                        memberValuePairs));
             }
             if (value.equals(Class.class)) {
                 arrayInitializer.expressions().add(createTypeLiteral(ast, value.toString()));

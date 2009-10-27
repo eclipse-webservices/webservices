@@ -18,7 +18,6 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
 import org.eclipse.jdt.ui.text.java.IInvocationContext;
@@ -47,7 +46,6 @@ public class AddAnnotationToTypeCorrectionProposal extends AbstractJavaCorrectio
         CompilationUnit astRoot = invocationContext.getASTRoot();
         
         AST ast = astRoot.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
 
         IAnnotationAttributeInitializer annotationAttributeInitializer = 
             AnnotationsManager.getAnnotationDefinitionForClass(annotationClass).
@@ -56,11 +54,10 @@ public class AddAnnotationToTypeCorrectionProposal extends AbstractJavaCorrectio
         List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(
                 compilationUnit.findPrimaryType(), ast, annotationClass);
         
-        Annotation annotation = AnnotationsCore.createAnnotation(ast, annotationClass,
-                annotationClass.getSimpleName(), memberValuePairs);
+        Annotation annotation = AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(),
+                memberValuePairs);
         
-        AnnotationUtils.addAnnotationToType(compilationUnit, astRoot, rewriter, compilationUnit.findPrimaryType(),
-                annotation, textChange);
+        textChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(compilationUnit.findPrimaryType(), annotation));
             
         ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
         importRewrite.addImport(annotationClass.getCanonicalName());

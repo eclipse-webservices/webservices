@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -406,7 +407,6 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             MultiTextEdit multiTextEdit = new MultiTextEdit();
             textFileChange.setEdit(multiTextEdit);
             textFileChange.setKeepPreviewEdits(true);
-//            compositeChange.setSaveMode(TextFileChange.FORCE_SAVE);
 
             CXFModelUtils.getWebServiceAnnotationChange(type, model, textFileChange);
 
@@ -424,11 +424,11 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                     CXFModelUtils.getResponseWrapperAnnotationChange(type, method, textFileChange);
                 }
                 if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
-                    List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
-                            type, method);
-                    for (SingleVariableDeclaration parameter : parameters) {
-                        CXFModelUtils.getWebParamAnnotationChange(type, method, parameter, textFileChange);
-                    }
+					List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
+					for (SingleVariableDeclaration parameter : parameters) {
+						CXFModelUtils.getWebParamAnnotationChange(type, method, 
+								(ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
+					}
                 } 
             }
             

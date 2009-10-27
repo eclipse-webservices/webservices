@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
@@ -40,7 +41,7 @@ public abstract class AbstractAnnotationTest extends TestCase {
 
         source = testJavaProject.createCompilationUnit(getPackageName(), getClassName(), getClassContents());
         
-        compilationUnit = AnnotationUtils.getASTParser(source, false);
+        compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
         ast = compilationUnit.getAST();
         rewriter = ASTRewrite.create(ast);
         annotation = getAnnotation();

@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -106,11 +107,10 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
                 		textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
-                List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
-                        javaInterfaceType, method);
+                List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
                 for (SingleVariableDeclaration parameter : parameters) {
-                    CXFModelUtils.getWebParamAnnotationChange(javaInterfaceType, method, parameter, 
-                    		textFileChange);
+                    CXFModelUtils.getWebParamAnnotationChange(javaInterfaceType, method, 
+                    		(ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
                 }
             } 
         }
@@ -127,7 +127,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
                 .getFullyQualifiedJavaClassName());
 
         TextFileChange textFileChange = new TextFileChange("Annotating Class", 
-                (IFile)javaClassType.getCompilationUnit().getResource());
+                (IFile) javaClassType.getCompilationUnit().getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
         
@@ -149,11 +149,10 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
                 		textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
-                List<SingleVariableDeclaration> parameters = AnnotationUtils.getMethodParameters(
-                        javaClassType, method);
-                for (SingleVariableDeclaration parameter : parameters) {
-                    CXFModelUtils.getWebParamAnnotationChange(javaClassType, method, parameter, 
-                    		textFileChange);
+            	List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
+            	for (SingleVariableDeclaration parameter : parameters) {
+                    CXFModelUtils.getWebParamAnnotationChange(javaClassType, method, 
+                    		(ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
                 }
             } 
         }
@@ -187,7 +186,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
             return;
         }
 
-        IUndoManager manager= RefactoringCore.getUndoManager();
+        IUndoManager manager = RefactoringCore.getUndoManager();
         boolean successful = false;
         Change undoChange = null;
         try {
@@ -214,7 +213,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
         
-        IUndoManager manager= RefactoringCore.getUndoManager();
+        IUndoManager manager = RefactoringCore.getUndoManager();
 
         if (manager.anythingToUndo()) {
             try {

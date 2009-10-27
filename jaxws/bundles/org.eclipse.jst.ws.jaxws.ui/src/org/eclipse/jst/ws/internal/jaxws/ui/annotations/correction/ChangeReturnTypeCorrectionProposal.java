@@ -28,6 +28,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
+import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.jdt.ui.text.java.IInvocationContext;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
@@ -84,7 +85,7 @@ public class ChangeReturnTypeCorrectionProposal extends AbstractJavaCorrectionPr
                     
                     if (seiType != null) {
                         ICompilationUnit seiCompilationUnit = seiType.getCompilationUnit();
-                        CompilationUnit seiASTRoot = AnnotationUtils.getASTParser(seiCompilationUnit, true);
+                        CompilationUnit seiASTRoot = SharedASTProvider.getAST(seiCompilationUnit, SharedASTProvider.WAIT_YES, null);
 
                         List<MethodDeclaration> seiMethodDeclarations = getMethodDeclarations(seiASTRoot);
                         for (MethodDeclaration seiMethodDeclaration : seiMethodDeclarations) {

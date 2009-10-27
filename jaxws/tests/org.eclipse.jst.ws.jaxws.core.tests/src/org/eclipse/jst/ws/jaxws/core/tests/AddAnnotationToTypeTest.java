@@ -64,8 +64,7 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
         memberValuePairs.add(portNameValuePair);
         memberValuePairs.add(serviceNameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, WebService.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToType() {
@@ -73,16 +72,13 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebService.class, textFileChange,
-                    true);
-
-            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
-                    source.findPrimaryType(), annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class));
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-
-            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
-                    .getAnnotationName(annotation)));
+ 
+            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils.getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebService.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

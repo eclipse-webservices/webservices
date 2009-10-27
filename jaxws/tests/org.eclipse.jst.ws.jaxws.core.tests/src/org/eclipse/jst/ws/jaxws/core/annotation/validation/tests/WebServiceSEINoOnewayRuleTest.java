@@ -29,7 +29,7 @@ public class WebServiceSEINoOnewayRuleTest extends AbstractWebServiceSEIRule {
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, Oneway.class, Oneway.class.getSimpleName(), null);
+        return AnnotationsCore.createNormalAnnotation(ast, Oneway.class.getSimpleName(), null);
     }
 
     public void testWebServiceSEIPresentNoOnewayRule() {
@@ -40,10 +40,9 @@ public class WebServiceSEINoOnewayRuleTest extends AbstractWebServiceSEIRule {
             IMethod method = source.findPrimaryType().getMethod("methodOne", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, Oneway.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, Oneway.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

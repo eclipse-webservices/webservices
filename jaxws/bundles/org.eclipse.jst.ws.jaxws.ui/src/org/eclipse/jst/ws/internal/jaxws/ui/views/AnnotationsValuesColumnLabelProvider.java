@@ -11,20 +11,12 @@
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.BooleanLiteral;
-import org.eclipse.jdt.core.dom.IExtendedModifier;
-import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
@@ -57,12 +49,10 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         String text = ""; //$NON-NLS-1$
         if (annotationTreeViewer.getInput() instanceof IAnnotatable) {
             text = getTextForMethod(method, (IAnnotatable) annotationTreeViewer.getInput());
-        } else if (annotationTreeViewer.getInput() instanceof SingleVariableDeclaration) {
-            text = getTextForMethod(method, (SingleVariableDeclaration)annotationTreeViewer.getInput());
         }
         return text;
     }
-
+    
     private String getTextForMethod(Method method, IAnnotatable annotatedElement) {
         Class<?> returnType = method.getReturnType();
         try {
@@ -115,45 +105,6 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         return ""; //$NON-NLS-1$
     }
 
-    @SuppressWarnings("unchecked")
-    private String getTextForMethod(Method method, SingleVariableDeclaration singleVariableDeclaration) {
-        Class<?> returnType = method.getReturnType();
-        List<IExtendedModifier> modifiers = singleVariableDeclaration.modifiers();
-        for (IExtendedModifier extendedModifier : modifiers) {
-            if (extendedModifier instanceof NormalAnnotation) {
-                NormalAnnotation normalAnnotation = (NormalAnnotation) extendedModifier;
-                String annotationName = AnnotationUtils.getAnnotationName(normalAnnotation);
-                Class<?> declaringClass = method.getDeclaringClass();
-                if (annotationName.equals(declaringClass.getSimpleName()) || 
-                        annotationName.equals(declaringClass.getCanonicalName())) {
-                    List<MemberValuePair> memberValuePairs = normalAnnotation.values();
-                    for (MemberValuePair memberValuePair : memberValuePairs) {
-                        if (memberValuePair.getName().toString().equals(method.getName())) {
-                            if (returnType.equals(String.class)) {
-                                StringLiteral stringLiteral = (StringLiteral)memberValuePair.getValue();
-                                return stringLiteral.getLiteralValue();
-                            }
-
-                            if (returnType.isPrimitive() && (returnType.equals(Byte.TYPE) 
-                                    || returnType.equals(Short.TYPE) 
-                                    || returnType.equals(Integer.TYPE) || returnType.equals(Long.TYPE)
-                                    || returnType.equals(Float.TYPE) 
-                                    || returnType.equals(Double.TYPE))) {
-                                return memberValuePair.getValue().toString();
-                            }
-
-                            if (returnType.isEnum()) {
-                                String enumValue = memberValuePair.getValue().toString();
-                                return enumValue.substring(enumValue.lastIndexOf(".") + 1); //$NON-NLS-1$
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return ""; //$NON-NLS-1$
-    }
-    
     @Override
     public Image getImage(Object element) {
         try {
@@ -173,10 +124,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         if (annotationTreeViewer.getInput() instanceof IAnnotatable) {
             return getImageForClass(aClass, (IAnnotatable) annotationTreeViewer.getInput());
         }
-        
-        if (annotationTreeViewer.getInput() instanceof SingleVariableDeclaration) {
-            return getImageForClass(aClass, (SingleVariableDeclaration)annotationTreeViewer.getInput());
-        }
+
         return false_image;        
     }
     
@@ -193,31 +141,11 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         return false_image;
     }
     
-    @SuppressWarnings("unchecked")
-    private Image getImageForClass(Class<?> aClass, SingleVariableDeclaration parameter) {
-        List<IExtendedModifier> modifiers = parameter.modifiers();
-        for (IExtendedModifier extendedModifier : modifiers) {
-            if (extendedModifier instanceof Annotation) {
-                Annotation annotation = (Annotation) extendedModifier;
-                String annotationName = AnnotationUtils.getAnnotationName(annotation);
-                if (AnnotationUtils.isAnnotationPresent(parameter, annotation)
-                        && (annotationName.equals(aClass.getSimpleName())
-                        || annotationName.equals(aClass.getCanonicalName()))) {
-                    return true_image;
-                }
-            }
-        }
-        return false_image;
-    }
-    
     private Image getImageForMethod(Method method) throws JavaModelException {
         Class<?> returnType = method.getReturnType();
         if (returnType.equals(Boolean.TYPE)) {
             if (annotationTreeViewer.getInput() instanceof IAnnotatable) {
                 return getImageForMethod(method, (IAnnotatable) annotationTreeViewer.getInput());
-            }
-            if (annotationTreeViewer.getInput() instanceof SingleVariableDeclaration) {
-                return getImageForMethod(method, (SingleVariableDeclaration)annotationTreeViewer.getInput());
             }
         }
         return null;
@@ -243,32 +171,6 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         return false_image;
     }
     
-    @SuppressWarnings("unchecked")
-    private Image getImageForMethod(Method method, SingleVariableDeclaration singleVariableDeclaration) 
-            throws JavaModelException {
-        List<IExtendedModifier> modifiers = singleVariableDeclaration.modifiers();
-        for (IExtendedModifier extendedModifier : modifiers) {
-            if (extendedModifier instanceof NormalAnnotation) {
-                NormalAnnotation annotation = (NormalAnnotation) extendedModifier;
-                String annotationName = AnnotationUtils.getAnnotationName(annotation);
-                Class<?> declaringClass = method.getDeclaringClass();
-                if (annotationName.equals(declaringClass.getSimpleName())
-                        || annotationName.equals(declaringClass.getCanonicalName())) {
-                    List<MemberValuePair> memberValuePairs = annotation.values();
-                    for (MemberValuePair memberValuePair : memberValuePairs) {
-                        if (memberValuePair.getName().toString().equals(method.getName())) {
-                            BooleanLiteral booleanLiteral = (BooleanLiteral)memberValuePair.getValue();
-                            if (booleanLiteral.booleanValue()) {
-                                return true_image;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false_image;
-    }
-
     @Override
     public void dispose() {
         super.dispose();

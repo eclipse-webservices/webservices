@@ -50,8 +50,7 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
         memberValuePairs.add(portNameValuePair);
         memberValuePairs.add(serviceNameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, WebService.class, WebService.class.getSimpleName(), 
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, WebService.class.getSimpleName(), memberValuePairs);
     }
 
     @Override
@@ -69,11 +68,9 @@ public abstract class AbstractWebServicePublicAbstractFinalRuleTest extends Abst
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils
-                    .addImportEdit(compilationUnit, WebService.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class));
 
-            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
-                    source.findPrimaryType(), annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

@@ -42,7 +42,7 @@ public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(), null);
+        return AnnotationsCore.createNormalAnnotation(ast, WebMethod.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromMethod() {
@@ -55,14 +55,16 @@ public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
-
-            AnnotationUtils.removeAnnotationFromMethod(source, compilationUnit, rewriter, method, annotation,
-                    textFileChange);
+            assertNotNull(source.getImport(WebMethod.class.getCanonicalName()));
+            
+            textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(method, annotation));
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(method, WebMethod.class));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             assertFalse(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertFalse(source.getImport(WebMethod.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

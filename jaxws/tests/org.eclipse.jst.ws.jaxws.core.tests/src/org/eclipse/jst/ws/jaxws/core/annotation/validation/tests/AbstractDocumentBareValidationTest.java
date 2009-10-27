@@ -41,8 +41,8 @@ public abstract class AbstractDocumentBareValidationTest extends AbstractAnnotat
         memberValuePairs.add(useValuePair);
         memberValuePairs.add(parameterStyleValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, javax.jws.soap.SOAPBinding.class,
-                javax.jws.soap.SOAPBinding.class.getSimpleName(), memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, javax.jws.soap.SOAPBinding.class.getSimpleName(),
+                memberValuePairs);
 
     }
 

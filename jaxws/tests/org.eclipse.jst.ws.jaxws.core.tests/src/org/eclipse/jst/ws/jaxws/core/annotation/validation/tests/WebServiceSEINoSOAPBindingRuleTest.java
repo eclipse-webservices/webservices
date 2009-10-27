@@ -29,7 +29,7 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, SOAPBinding.class, SOAPBinding.class.getSimpleName(), null);
+        return AnnotationsCore.createNormalAnnotation(ast, SOAPBinding.class.getSimpleName(), null);
     }
 
     public void testNoSOAPBindingOnMethodRule() {
@@ -40,10 +40,9 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
@@ -76,10 +75,9 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), SOAPBinding.class));
 
-            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, 
-                    source.findPrimaryType(), annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

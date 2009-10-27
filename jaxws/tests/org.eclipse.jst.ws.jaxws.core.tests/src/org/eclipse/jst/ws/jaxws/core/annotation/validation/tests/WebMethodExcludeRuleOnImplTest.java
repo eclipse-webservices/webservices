@@ -48,8 +48,7 @@ public class WebMethodExcludeRuleOnImplTest extends AbstractAnnotationValidation
         memberValuePairs.add(actionValuePair);
         memberValuePairs.add(excludeValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, WebMethod.class.getSimpleName(), memberValuePairs);
     }
 
     @Override
@@ -80,10 +79,9 @@ public class WebMethodExcludeRuleOnImplTest extends AbstractAnnotationValidation
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebMethod.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebMethod.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

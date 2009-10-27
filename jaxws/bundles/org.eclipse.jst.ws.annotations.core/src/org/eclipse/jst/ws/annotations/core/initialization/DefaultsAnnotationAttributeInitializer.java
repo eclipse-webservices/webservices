@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 
@@ -33,17 +32,10 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeInitializer {
     
     public DefaultsAnnotationAttributeInitializer() {
-        
     }
 
     @Override
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
-            Class<? extends Annotation> annotationClass) {
-        return getMemberValuePairs(ast, annotationClass);
-    }
-
-    @Override
-    public List<MemberValuePair> getMemberValuePairs(ASTNode astNode, AST ast,
             Class<? extends Annotation> annotationClass) {
         return getMemberValuePairs(ast, annotationClass);
     }

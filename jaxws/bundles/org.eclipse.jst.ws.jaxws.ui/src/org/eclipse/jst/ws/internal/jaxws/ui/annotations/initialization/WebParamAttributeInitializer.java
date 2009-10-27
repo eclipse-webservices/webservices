@@ -26,8 +26,9 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -45,24 +46,26 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 public class WebParamAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override
-    public List<MemberValuePair> getMemberValuePairs(ASTNode astNode, AST ast,
-    Class<? extends Annotation> annotationClass) {
-        
-        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        if (astNode instanceof SingleVariableDeclaration) {
-            MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, NAME,
-            getName((SingleVariableDeclaration) astNode));
+	public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement,
+			AST ast, Class<? extends Annotation> annotationClass) {
+
+    	List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+    	
+        if (javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
+        	SingleVariableDeclaration parameter = AnnotationUtils.getSingleVariableDeclaration((ILocalVariable) javaElement);
+        	MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, NAME, getName(parameter));
             memberValuePairs.add(nameValuePair);
         }
         return memberValuePairs;
-    }
+	}
 
-    public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(ASTNode astNode,
+	public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair) {
         
         List<ICompletionProposal> completionProposals = new ArrayList<ICompletionProposal>();
-        if (astNode instanceof SingleVariableDeclaration) {
-            SingleVariableDeclaration parameter = (SingleVariableDeclaration) astNode;
+        if (javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
+        	SingleVariableDeclaration parameter = AnnotationUtils.getSingleVariableDeclaration((ILocalVariable) javaElement);
+            
             String memberValuePairName = memberValuePair.getName().getIdentifier();
             
             if (memberValuePairName.equals(NAME)) {

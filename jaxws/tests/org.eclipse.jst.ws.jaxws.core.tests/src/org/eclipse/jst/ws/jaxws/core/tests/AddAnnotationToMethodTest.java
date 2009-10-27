@@ -52,8 +52,7 @@ public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
 
         memberValuePairs.add(operationValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, WebMethod.class, WebMethod.class.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, WebMethod.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToMethod() {
@@ -64,15 +63,13 @@ public class AddAnnotationToMethodTest extends AbstractAnnotationTest {
             IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebMethod.class, textFileChange, true);
-
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebMethod.class));
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-
-            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
-                    .getAnnotationName(annotation)));
+            
+            assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils.getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebMethod.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

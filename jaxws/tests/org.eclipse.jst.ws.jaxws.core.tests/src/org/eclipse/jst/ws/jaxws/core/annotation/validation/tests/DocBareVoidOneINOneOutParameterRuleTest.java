@@ -49,10 +49,9 @@ public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBar
             
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
@@ -90,10 +89,9 @@ public class DocBareVoidOneINOneOutParameterRuleTest extends AbstractDocumentBar
             
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

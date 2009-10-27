@@ -29,7 +29,7 @@ public class WebServiceSEINoWebResultRuleTest extends AbstractWebServiceSEIRule 
 
     @Override
     protected Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, WebResult.class, WebResult.class.getSimpleName(), null);
+        return AnnotationsCore.createNormalAnnotation(ast, WebResult.class.getSimpleName(), null);
     }
 
     public void testWebServiceSEIPresentNoWebResultRule() {
@@ -40,10 +40,9 @@ public class WebServiceSEINoWebResultRuleTest extends AbstractWebServiceSEIRule 
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebResult.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebResult.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

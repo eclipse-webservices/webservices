@@ -20,11 +20,12 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.text.ITextSelection;
@@ -43,7 +44,6 @@ import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.internal.jaxws.ui.actions.AnnotationsViewFilterAction;
 import org.eclipse.jst.ws.internal.jaxws.ui.widgets.ClasspathComposite;
-import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -163,6 +163,11 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
     
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
         IWorkbenchPage workbenchPage = getViewSite().getWorkbenchWindow().getActivePage();
+        
+        if (workbenchPage == null) {
+        	return;
+        }
+        
         IWorkbenchPartReference workbenchPartReference = workbenchPage.getActivePartReference();
        
         if (workbenchPartReference == null || workbenchPartReference.getId().equals(getViewSite().getId()) 
@@ -176,7 +181,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
 
         if (selection instanceof TextSelection) {
             ITextSelection txtSelection = (TextSelection) selection;
-            ICompilationUnit compilationUnit = JDTUtils.getCompilationUnitFromFile(fileEditorInput.getFile());
+            ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(fileEditorInput.getFile());
             if (compilationUnit != null) {
                 updateView(compilationUnit, txtSelection);
             }
@@ -241,11 +246,10 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
             if (javaElement.getElementType() == IJavaElement.METHOD) {
                 IMethod method = (IMethod) javaElement;
                 if (!method.getDeclaringType().isMember()) {
-                    SingleVariableDeclaration parameter = AnnotationUtils
-                            .getMethodParameter(null, method, offset);
-                    if (parameter != null) {
-                        annotationTreeViewer.setInput(parameter);
-                    } else {
+                	ILocalVariable localVariable = AnnotationUtils.getLocalVariable(method, offset);
+			    	if (localVariable != null) {
+            			annotationTreeViewer.setInput(localVariable);
+			    	} else {
                         annotationTreeViewer.setInput(method);
                     }
                 } else {
@@ -441,9 +445,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
                                         .equals(JavaUI.ID_CU_EDITOR)) {
                             ITextEditor txtEditor = (ITextEditor) workbenchPage.getActiveEditor();
                             IFileEditorInput fileEditorInput = (IFileEditorInput) txtEditor.getEditorInput();
-
-                            ICompilationUnit compilationUnit = JDTUtils
-                                    .getCompilationUnitFromFile(fileEditorInput.getFile());
+                            ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(fileEditorInput.getFile());
                             if (compilationUnit != null) {
                                 if (!compilationUnit.isConsistent()) {
                                     compilationUnit.makeConsistent(new NullProgressMonitor());

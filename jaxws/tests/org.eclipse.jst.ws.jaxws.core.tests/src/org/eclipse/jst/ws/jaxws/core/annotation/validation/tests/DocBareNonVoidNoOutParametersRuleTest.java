@@ -45,11 +45,9 @@ public class DocBareNonVoidNoOutParametersRuleTest extends AbstractDocumentBareV
             
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class,
-                    textFileChange, true);
-
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
+            
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

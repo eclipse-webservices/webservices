@@ -17,10 +17,10 @@ import javax.jws.WebParam;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 
@@ -52,8 +52,7 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
 
         memberValuePairs.add(nameValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, WebParam.class, WebParam.class.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, WebParam.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToMethodParameter() {
@@ -64,21 +63,15 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
             IMethod method = source.findPrimaryType().getMethod("add", new String[] { "I", "I" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, WebParam.class, textFileChange, true);
-
-            SingleVariableDeclaration parameter = AnnotationUtils.getMethodParameter(compilationUnit, method,
-                    65);
-
-            AnnotationUtils.addAnnotationToMethodParameter(source, compilationUnit, rewriter, parameter,
-                    method, annotation, textFileChange);
+            ILocalVariable localVariable  = AnnotationUtils.getLocalVariable(method, "i");
+            
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class));
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(localVariable, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            // refresh
-            parameter = AnnotationUtils.getMethodParameter(AnnotationUtils.getASTParser(method
-                    .getCompilationUnit(), false), method, 93);
-
-            assertTrue(AnnotationUtils.isAnnotationPresent(parameter, annotation));
+            assertTrue(AnnotationUtils.isAnnotationPresent(localVariable, annotation));
+            assertTrue(source.getImport(WebParam.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

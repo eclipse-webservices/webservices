@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlSchema;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -54,8 +53,7 @@ public class AddAnnotationToPackageTest extends AbstractAnnotationTest {
         memberValuePairs.add(locationVP);
         memberValuePairs.add(namespaceVP);
         
-        return AnnotationsCore.createAnnotation(ast, XmlSchema.class, XmlSchema.class.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, XmlSchema.class.getSimpleName(), memberValuePairs);
     }
 
     public void testAddAnnotationToPackage() {
@@ -65,13 +63,13 @@ public class AddAnnotationToPackageTest extends AbstractAnnotationTest {
             IPackageDeclaration myPackage = source.getPackageDeclaration(getPackageName());
             assertNotNull(myPackage);
             
-            AnnotationUtils.addAnnotationToPackageDeclaration(source, compilationUnit.getPackage(), rewriter, annotation, textFileChange);
-            AnnotationUtils.addImportEdit(compilationUnit, XmlSchema.class, textFileChange, true);
-
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(myPackage, annotation));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(myPackage, XmlSchema.class));
+            
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils
-                    .getAnnotationName(annotation)));
+            assertTrue(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils.getAnnotationName(annotation)));
+            assertTrue(source.getImport(XmlSchema.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

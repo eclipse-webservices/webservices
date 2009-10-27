@@ -25,6 +25,7 @@ import javax.xml.ws.ResponseWrapper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -35,11 +36,10 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.StringLiteral;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
+import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
@@ -99,30 +99,27 @@ public final class CXFModelUtils {
     public static void getWebServiceAnnotationChange(IType type, Java2WSDataModel model, 
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);        
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);        
 
         AST ast = compilationUnit.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
+        
         NormalAnnotation webServiceAnnotation = getAnnotation(compilationUnit, type, WebService.class);
         if (webServiceAnnotation != null && model.isUseServiceEndpointInterface() && type.isClass()) {
             MemberValuePair endpointInterface = getMemberValuePair(webServiceAnnotation, ENDPOINT_INTERFACE);
             if (endpointInterface != null && endpointInterface.getValue() instanceof StringLiteral) {
-                if (!((StringLiteral) endpointInterface.getValue()).getLiteralValue().equals(
-                        model.getServiceEndpointInterfaceName())) {
+            	StringLiteral stringLiteral = (StringLiteral) endpointInterface.getValue();
+                if (!stringLiteral.getLiteralValue().equals(model.getServiceEndpointInterfaceName())) {
                     ASTNode newSEIValue = AnnotationsCore.createStringLiteral(ast, model
                             .getServiceEndpointInterfaceName());
 
-                    AnnotationUtils.updateMemberValuePairValue(source, compilationUnit, rewriter,
-                            webServiceAnnotation, endpointInterface, newSEIValue, textFileChange);
+                    textFileChange.addEdit(AnnotationUtils.createUpdateMemberValuePairTextEdit(endpointInterface, newSEIValue));
                 }
             } else {
                 MemberValuePair endpointInterfacePair = AnnotationsCore.createMemberValuePair(ast,
                         ENDPOINT_INTERFACE, AnnotationsCore.createStringLiteral(ast, model
                                 .getServiceEndpointInterfaceName()));
 
-                AnnotationUtils.addMemberValuePairToAnnotation(source, compilationUnit, rewriter,
-                        webServiceAnnotation, endpointInterfacePair, textFileChange);
+                textFileChange.addEdit(AnnotationUtils.createAddMemberValuePairTextEdit(webServiceAnnotation, endpointInterfacePair));
             }
         } else {
             IAnnotationAttributeInitializer annotationAttributeInitializer = 
@@ -138,11 +135,9 @@ public final class CXFModelUtils {
                 memberValuePairs.add(1, endpointInterfaceValuePair);
             }
 
-            Annotation annotation = AnnotationsCore.createAnnotation(ast, WebService.class,
-                    WebService.class.getSimpleName(), memberValuePairs);
+            Annotation annotation = AnnotationsCore.createNormalAnnotation(ast, WebService.class.getSimpleName(), memberValuePairs);
 
-            AnnotationUtils.addAnnotationToType(source, compilationUnit, rewriter, source.findPrimaryType(),
-                    annotation,  textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
         }        
     }
 
@@ -160,7 +155,7 @@ public final class CXFModelUtils {
         }
         return null;
     }
-
+    
     @SuppressWarnings("unchecked")
     private static MemberValuePair getMemberValuePair(NormalAnnotation annotation, String memberName) {
         List<MemberValuePair> memberValuePairs = annotation.values();
@@ -176,72 +171,62 @@ public final class CXFModelUtils {
             Class<? extends java.lang.annotation.Annotation> annotationClass, TextFileChange textFileChange) 
                 throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         AST ast = compilationUnit.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
 
         Annotation annotation = getAnnotation(method, ast, annotationClass);
 
-        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                annotation, textFileChange);
+        textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
 
     public static void getWebMethodAnnotationChange(IType type, IMethod method, 
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         AST ast = compilationUnit.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
 
         Annotation annotation = getAnnotation(method, ast, WebMethod.class);
 
-        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                annotation, textFileChange);
+        textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
     
     public static void getRequestWrapperAnnotationChange(IType type, IMethod method, 
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         AST ast = compilationUnit.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
 
         Annotation annotation = getAnnotation(method, ast, RequestWrapper.class);
 
-        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method, 
-                annotation, textFileChange);
+        textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
 
     public static void getResponseWrapperAnnotationChange(IType type, IMethod method,
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         AST ast = compilationUnit.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
 
         Annotation annotation = getAnnotation(method, ast, ResponseWrapper.class);
 
-        AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method, 
-                annotation, textFileChange);
+        textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
     
     public static void getWebParamAnnotationChange(IType type, final IMethod method, 
-            SingleVariableDeclaration parameter, TextFileChange textFileChange) 
+            ILocalVariable parameter, TextFileChange textFileChange) 
             throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = AnnotationUtils.getASTParser(source, false);
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         AST ast = compilationUnit.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
 
         Annotation annotation = getAnnotation(parameter, ast, WebParam.class);
 
-        AnnotationUtils.addAnnotationToMethodParameter(source, compilationUnit, 
-                rewriter, parameter, method, annotation, textFileChange);
+        textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(parameter, annotation));
     }
     
     private static Annotation getAnnotation(IJavaElement javaElement, AST ast, 
@@ -253,21 +238,7 @@ public final class CXFModelUtils {
         List<MemberValuePair> memberValuePairs = 
                 annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
         
-        return AnnotationsCore.createAnnotation(ast, annotationClass, annotationClass.getSimpleName(),
-                memberValuePairs);
-    }
-
-    private static Annotation getAnnotation(ASTNode astNode, AST ast, 
-                Class<? extends java.lang.annotation.Annotation> annotationClass) {
-        
-        IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager.
-            getAnnotationDefinitionForClass(annotationClass).getAnnotationAttributeInitializer();
-        
-        List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(astNode, 
-                ast, annotationClass);
-        
-        return AnnotationsCore.createAnnotation(ast, annotationClass, annotationClass.getSimpleName(),
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
     }
     
     public static void getImportsChange(ICompilationUnit compilationUnit, Java2WSDataModel model, 

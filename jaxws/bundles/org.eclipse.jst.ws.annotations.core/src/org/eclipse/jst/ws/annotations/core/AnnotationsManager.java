@@ -325,11 +325,11 @@ public final class AnnotationsManager {
         if (element instanceof SingleVariableDeclaration) {
             return getAnnotationsForElementType(ElementType.PARAMETER);
         }
-        
+
         if (element instanceof ILocalVariable) {
-            return getAnnotationsForElementType(ElementType.LOCAL_VARIABLE);
+            return getAnnotationsForElementType(ElementType.PARAMETER);
         }
-        
+
         if (element instanceof IAnnotation) {
             return getAnnotationsForElementType(ElementType.ANNOTATION_TYPE);
         }

@@ -41,8 +41,7 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, WebServiceRef.class, WebServiceRef.class.getSimpleName(),
-                null);
+        return AnnotationsCore.createNormalAnnotation(ast, WebServiceRef.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromField() {
@@ -55,14 +54,16 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
 
             assertTrue(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils
                     .getAnnotationName(annotation)));
-
-            AnnotationUtils.removeAnnotationFromField(source, compilationUnit, rewriter, field, annotation,
-                    textFileChange);
-
+            
+            assertNotNull(source.getImport(WebServiceRef.class.getCanonicalName()));
+            
+            textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(field, annotation));
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(field, WebServiceRef.class));
+            
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertFalse(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils
-                    .getAnnotationName(annotation)));
+            assertFalse(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils.getAnnotationName(annotation)));
+            assertFalse(source.getImport(WebServiceRef.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

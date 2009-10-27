@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
@@ -47,17 +46,7 @@ public class AnnotationAttributeInitializer implements IAnnotationAttributeIniti
         return Collections.emptyList();
     }
 
-    public List<MemberValuePair> getMemberValuePairs(ASTNode astNode, AST ast,
-            Class<? extends Annotation> annotationClass) {
-        return Collections.emptyList();
-    }
-
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
-            MemberValuePair memberValuePair) {
-        return Collections.emptyList();
-    }
-
-    public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(ASTNode astNode,
             MemberValuePair memberValuePair) {
         return Collections.emptyList();
     }

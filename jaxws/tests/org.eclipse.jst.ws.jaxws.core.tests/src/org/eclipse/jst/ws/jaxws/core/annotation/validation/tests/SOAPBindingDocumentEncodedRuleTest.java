@@ -51,8 +51,7 @@ public class SOAPBindingDocumentEncodedRuleTest extends AbstractSOAPBindingValid
         memberValuePairs.add(useValuePair);
         memberValuePairs.add(parameterStyleValuePair);
 
-        return AnnotationsCore.createAnnotation(ast, SOAPBinding.class, SOAPBinding.class.getSimpleName(), 
-                memberValuePairs);
+        return AnnotationsCore.createNormalAnnotation(ast, SOAPBinding.class.getSimpleName(), memberValuePairs);
     }
 
     public void testSOAPBindingDocumentEncodedRule() {
@@ -63,10 +62,9 @@ public class SOAPBindingDocumentEncodedRuleTest extends AbstractSOAPBindingValid
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            AnnotationUtils.addImportEdit(compilationUnit, SOAPBinding.class, textFileChange, true);
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
 
-            AnnotationUtils.addAnnotationToMethod(source, compilationUnit, rewriter, method,
-                    annotation, textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

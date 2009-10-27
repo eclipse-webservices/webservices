@@ -38,8 +38,7 @@ public class RemoveAnnotationFromPackageTest extends AbstractAnnotationTest {
 
     @Override
     public Annotation getAnnotation() {
-        return AnnotationsCore.createAnnotation(ast, XmlSchema.class, XmlSchema.class.getSimpleName(),
-                null);
+        return AnnotationsCore.createNormalAnnotation(ast, XmlSchema.class.getSimpleName(), null);
     }
 
     public void testRemoveAnnotationFromPackage() {
@@ -52,13 +51,13 @@ public class RemoveAnnotationFromPackageTest extends AbstractAnnotationTest {
             assertTrue(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils
                     .getAnnotationName(annotation)));
 
-            AnnotationUtils.removeAnnotationFromPackageDeclaration(source, compilationUnit.getPackage(), rewriter, annotation,
-                    textFileChange);
+            textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(myPackage, annotation));
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(myPackage, XmlSchema.class));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-
-            assertFalse(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils
-                    .getAnnotationName(annotation)));
+            
+            assertFalse(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils.getAnnotationName(annotation)));
+            assertFalse(source.getImport(XmlSchema.class.getCanonicalName()).exists());
         } catch (CoreException ce) {
             fail(ce.getLocalizedMessage());
         }

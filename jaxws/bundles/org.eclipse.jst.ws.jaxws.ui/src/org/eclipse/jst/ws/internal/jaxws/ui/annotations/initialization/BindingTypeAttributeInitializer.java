@@ -97,10 +97,7 @@ public class BindingTypeAttributeInitializer extends AnnotationAttributeInitiali
         return completionProposals;
     }
 
-
-
     public String getDefault() {
-
         return SOAPBinding.SOAP11HTTP_BINDING;
     }
 
