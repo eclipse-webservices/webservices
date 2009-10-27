@@ -70,9 +70,10 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 			return null;
 		else if (webApp instanceof WebApp)
 			it = ((WebApp) webApp).getServlets().iterator();
-		else if (webApp instanceof org.eclipse.jst.javaee.web.WebApp)
-			it = ((org.eclipse.jst.javaee.web.WebApp) webApp).getServlets()
-					.iterator();
+// See Bug 293103		
+//		else if (webApp instanceof org.eclipse.jst.javaee.web.WebApp)
+//			it = ((org.eclipse.jst.javaee.web.WebApp) webApp).getServlets()
+//					.iterator();
 		else
 			return null;
 
