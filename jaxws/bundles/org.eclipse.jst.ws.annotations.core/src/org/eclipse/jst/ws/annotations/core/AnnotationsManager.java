@@ -163,12 +163,10 @@ public final class AnnotationsManager {
     
     public static IAnnotationAttributeInitializer getAnnotationAttributeInitializerForName(Name name) {
         if (name != null) {
-            if (name.isSimpleName()) {
-                return getSimpleNameToDefinitionMap().get(((SimpleName)name).getIdentifier())
-                    .getAnnotationAttributeInitializer();
-            } else if (name.isQualifiedName()) {
-                return getQualifiedNameToDefinitionMap().get(name.getFullyQualifiedName())
-                    .getAnnotationAttributeInitializer();
+            if (name.isSimpleName() && getSimpleNameToDefinitionMap().containsKey(((SimpleName) name).getIdentifier())) {
+                return getSimpleNameToDefinitionMap().get(((SimpleName) name).getIdentifier()).getAnnotationAttributeInitializer();	
+            } else if (name.isQualifiedName() && getQualifiedNameToDefinitionMap().containsKey(name.getFullyQualifiedName())) {
+                return getQualifiedNameToDefinitionMap().get(name.getFullyQualifiedName()).getAnnotationAttributeInitializer();
             }
         }
         return null;
