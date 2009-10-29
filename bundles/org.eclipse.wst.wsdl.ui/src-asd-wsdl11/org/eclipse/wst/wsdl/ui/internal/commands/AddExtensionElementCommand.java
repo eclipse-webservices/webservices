@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ public class AddExtensionElementCommand extends AddExtensionCommand
       String xmlnsColon = "xmlns:"; //$NON-NLS-1$
       String attributeName = xmlnsColon + prefix;
       int count = 0;
-      while (rootElement.getAttribute(attributeName) != null)
+      while (rootElement.hasAttribute(attributeName))
       {
         count++;
         prefix = basePrefix + count;
