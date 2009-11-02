@@ -277,10 +277,9 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
 
         try {
-            if (element instanceof Class) {
+            if (element instanceof Class && ((Class<?>) element).isAnnotation()) {
                 Class<? extends java.lang.annotation.Annotation> annotationClass =
-                    AnnotationsManager.getAnnotationDefinitionForClass(element).getAnnotationClass();
-
+                    		(Class<? extends java.lang.annotation.Annotation>) element;
                 if (annotationClass != null) {
                     setValueForClass(annotationClass, (Boolean) value);
                 }

@@ -97,6 +97,12 @@ public final class AnnotationUtils {
     private AnnotationUtils() {
     }
 
+    /**
+     * Adds an import to the given <code>IJavaElement</code>.
+     * @param javaElement the <code>IJavaElement</code> to add the import to.
+     * @param qualifiedName the import to add.
+     * @throws CoreException
+     */
     public static void addImport(IJavaElement javaElement, String qualifiedName) throws CoreException {
         TextFileChange change = new TextFileChange("Add Import", (IFile) javaElement.getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
@@ -107,6 +113,12 @@ public final class AnnotationUtils {
         applyChange(null, change);
     }
 
+    /**
+     *
+     * @param javaElement
+     * @param qualifiedName
+     * @throws CoreException
+     */
     public static void removeImport(IJavaElement javaElement, String qualifiedName) throws CoreException {
         TextFileChange change = new TextFileChange("Remove Import", (IFile) javaElement.getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();

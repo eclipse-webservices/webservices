@@ -42,16 +42,25 @@ public class AnnotationAttributeInitializer implements IAnnotationAttributeIniti
 
     protected static final String MISSING_IDENTIFER = "$missing$";
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
+	 */
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends Annotation> annotationClass) {
         return Collections.emptyList();
     }
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForMemberValuePair(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.MemberValuePair)
+	 */
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair) {
         return Collections.emptyList();
     }
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForSingleMemberAnnotation(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.SingleMemberAnnotation)
+	 */
     public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
             SingleMemberAnnotation singleMemberAnnotation) {
         return Collections.emptyList();

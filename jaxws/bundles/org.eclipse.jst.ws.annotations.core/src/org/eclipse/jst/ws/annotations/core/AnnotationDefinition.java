@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.annotations.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,6 +45,9 @@ public final class AnnotationDefinition {
     private static final String RESTRICTED_TO_CLASS_ONLY = "CLASS_ONLY";
     private static final String RESTRICTED_TO_INTERFACE_ONLY = "INTERFACE_ONLY";
     private static final String RESTRICTED_TO_ENUM_ONLY = "ENUM_ONLY";
+
+	private static final String ELEM_TARGET_FILTER = "targetFilter"; //$NON-NLS-1$
+	private static final String ATT_TARGET = "target"; //$NON-NLS-1$
 
     private IConfigurationElement configurationElement;
     private String category;
@@ -169,8 +173,7 @@ public final class AnnotationDefinition {
             	if (target != null) {
             	    targets.addAll(Arrays.asList(target.value()));
 
-                    List<ElementType> filteredTargets = AnnotationsManager
-                            .getFilteredTargets(configurationElement);
+                    List<ElementType> filteredTargets = getFilteredTargets(configurationElement);
                     if (targets.containsAll(filteredTargets) && filteredTargets.size() < targets.size()) {
                         targets.removeAll(filteredTargets);
                     }
@@ -202,4 +205,23 @@ public final class AnnotationDefinition {
         }
         return annotationInitializer;
     }
+
+	  /**
+	   *
+	   * @param configurationElement the  co
+	   * @return a list of <code>ElementType</code>.
+	   */
+	  private List<ElementType> getFilteredTargets(IConfigurationElement configurationElement) {
+		  List<ElementType> targets = new ArrayList<ElementType>(7);
+		  try {
+			  IConfigurationElement[] deprecatedTargets = configurationElement.getChildren(ELEM_TARGET_FILTER);
+			  for (IConfigurationElement deprecatedTargetElement : deprecatedTargets) {
+				  String target = AnnotationsManager.getAttributeValue(deprecatedTargetElement, ATT_TARGET);
+				  targets.add(ElementType.valueOf(target));
+			  }
+		  } catch (IllegalArgumentException iae) {
+			  AnnotationsCorePlugin.log(iae);
+		  }
+		  return targets;
+	  }
 }

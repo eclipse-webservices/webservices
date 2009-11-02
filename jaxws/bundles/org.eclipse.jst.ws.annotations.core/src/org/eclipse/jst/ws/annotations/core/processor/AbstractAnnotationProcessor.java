@@ -26,55 +26,64 @@ import com.sun.mirror.util.SourcePosition;
  * <code>org.eclipse.jst.ws.annotations.core.annotationProcessor</code> extension point.
  *
  * <p>
- * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under 
- * development and expected to change significantly before reaching stability. It is being made available at 
- * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under
+ * development and expected to change significantly before reaching stability. It is being made available at
+ * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
- * 
+ *
  */
 public abstract class AbstractAnnotationProcessor implements AnnotationProcessor {
     protected AnnotationProcessorEnvironment environment;
-    
+
+    /**
+     * Sets the <code>AnnotationProcessor</code> environment.
+     * @param environment the <code>AnnotationProcessorEnvironment</code>.
+     * @see com.sun.mirror.apt.AnnotationProcessorEnvironment
+     */
     public void setAnnotationProcessorEnvironment(AnnotationProcessorEnvironment environment) {
         this.environment = environment;
     }
-    
-    public abstract void process();
-    
+
+    /**
+     * Process all program elements supported by this annotation processor.
+     * @see com.sun.mirror.apt.AnnotationProcessor
+     */
+     public abstract void process();
+
     protected void printError(AnnotationTypeDeclaration annotationDeclaration ,
             MethodDeclaration methodDeclaration, String errorMessage) {
 
         Collection<AnnotationMirror> annotationMirrors = methodDeclaration.getAnnotationMirrors();
         for (AnnotationMirror mirror : annotationMirrors) {
             if (mirror.getAnnotationType().toString().equals(annotationDeclaration.getQualifiedName())) {
-                environment.getMessager().printError(mirror.getPosition(), errorMessage); 
+                environment.getMessager().printError(mirror.getPosition(), errorMessage);
             }
         }
     }
-    
+
     protected void printError(SourcePosition position, String message) {
-        environment.getMessager().printError(position, message);        
+        environment.getMessager().printError(position, message);
     }
-    
+
     protected void printError(String message) {
-        environment.getMessager().printError(message);        
+        environment.getMessager().printError(message);
     }
 
     protected void printWarning(SourcePosition position, String message) {
-        environment.getMessager().printWarning(position, message);        
+        environment.getMessager().printWarning(position, message);
     }
-    
+
     protected void printWarning(String message) {
-        environment.getMessager().printWarning(message);        
+        environment.getMessager().printWarning(message);
     }
 
     protected void printNotice(SourcePosition position, String message) {
-        environment.getMessager().printNotice(position, message);        
+        environment.getMessager().printNotice(position, message);
     }
-    
+
     protected void printNotice(String message) {
-        environment.getMessager().printNotice(message);        
+        environment.getMessager().printNotice(message);
     }
 
     protected void printFixableError(SourcePosition position, String message) {
@@ -97,7 +106,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
         EclipseMessager messager = (EclipseMessager) environment.getMessager();
         messager.printFixableWarning(position, message, pluginId, errorId);
     }
-    
+
     protected void printFixableWarning(String message, String pluginId, String errorId) {
         EclipseMessager messager = (EclipseMessager) environment.getMessager();
         messager.printFixableWarning(message, pluginId, errorId);
@@ -108,7 +117,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
         EclipseMessager messager = (EclipseMessager) environment.getMessager();
         messager.printFixableNotice(position, message, pluginId, errorId);
     }
-    
+
     protected void printFixableNotice(String message, String pluginId, String errorId) {
         EclipseMessager messager = (EclipseMessager) environment.getMessager();
         messager.printFixableNotice(message, pluginId, errorId);

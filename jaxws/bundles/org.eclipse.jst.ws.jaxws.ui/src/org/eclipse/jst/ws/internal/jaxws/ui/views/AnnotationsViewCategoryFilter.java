@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,18 +29,18 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
     private final StructuredViewer viewer;
 
     private List<Object> categories;
-    
+
     public AnnotationsViewCategoryFilter(AnnotationsView annotationsView, StructuredViewer viewer) {
         this.annotationsView = annotationsView;
         this.viewer = viewer;
         categories = new ArrayList<Object>();
     }
-    
+
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-        if (element instanceof Class) {
+        if (element instanceof Class && ((Class<?>) element).isAnnotation()) {
             AnnotationDefinition annotationDefinition = AnnotationsManager.
-                getAnnotationDefinitionForClass(element);
+                getAnnotationDefinitionForClass((Class<? extends Annotation>)element);
             if (annotationDefinition != null) {
                 return !categories.contains(annotationDefinition.getCategory());
             }
@@ -56,11 +57,11 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
         }
         annotationsView.refresh();
     }
-    
+
     public List<Object> getCategories() {
         return categories;
     }
-    
+
     public void init(IMemento memento) {
         IMemento catMemento = memento.getChild(TAG_CATEGORY);
         if (catMemento == null) {
@@ -74,7 +75,7 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
         }
         filterAnnotations(categories);
     }
-    
+
     public void saveState(IMemento memento) {
         if (categories == null || categories.size() == 0) {
             return;
@@ -85,5 +86,5 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
             catMemento.putString(TAG_CATEGORY_NAME + i, category.toString());
             i++;
         }
-    }    
+    }
 }
