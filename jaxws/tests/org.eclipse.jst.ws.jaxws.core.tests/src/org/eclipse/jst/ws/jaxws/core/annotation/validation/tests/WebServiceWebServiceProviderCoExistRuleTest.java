@@ -58,20 +58,20 @@ public class WebServiceWebServiceProviderCoExistRuleTest extends AbstractAnnotat
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
-            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
-                    .getAnnotationName(annotation)));
+            assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils.getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebService.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
-            
+
             assertEquals(1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];

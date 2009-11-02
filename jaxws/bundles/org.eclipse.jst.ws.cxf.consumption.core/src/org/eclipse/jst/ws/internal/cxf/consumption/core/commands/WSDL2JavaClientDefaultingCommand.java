@@ -31,10 +31,10 @@ import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
- * Loads the <code>WSDL2JavaDataModel</code> with the persisted defaults 
+ * Loads the <code>WSDL2JavaDataModel</code> with the persisted defaults
  * from the preferences and with the initial runtime information such as the
  * starting point WSDL URL.
- * 
+ *
  */
 public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation {
     private WSDL2JavaDataModel model;
@@ -79,13 +79,13 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
         model.setUseDefaultValues(context.isUseDefaultValues());
         model.setNoAddressBinding(context.isNoAddressBinding());
         model.setAutoNameResolution(context.isAutoNameResolution());
-        
-        model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()));
+
+        model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()).toOSString());
 
     	try {
     		URL wsdlUrl = new URL(inputURL);
 			model.setWsdlURL(wsdlUrl);
-			
+
 			Definition definition = WSDLUtils.readWSDL(model.getWsdlURL());
         	if (definition != null) {
         		String targetNamespace = definition.getTargetNamespace();
@@ -97,22 +97,22 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
                 if (wsdlLocation != null) {
                     model.setWsdlLocation(wsdlLocation);
                 }
-        		
+
         		model.setWsdlDefinition(definition);
         	}
 
 		} catch (MalformedURLException murle) {
-		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID, 
+		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID,
 		            murle.getLocalizedMessage());
 			CXFConsumptionCorePlugin.log(status);
 		} catch (IOException ioe) {
-		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID, 
+		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID,
 		    		ioe.getLocalizedMessage());
 			CXFConsumptionCorePlugin.log(status);
 		}
         return status;
     }
-    
+
     public WSDL2JavaDataModel getWSDL2JavaDataModel() {
         return model;
     }

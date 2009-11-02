@@ -52,13 +52,13 @@ public class SOAPBindingRCPBareRuleTest extends AbstractSOAPBindingValidationTes
 
         return AnnotationsCore.createNormalAnnotation(ast, SOAPBinding.class.getSimpleName(), memberValuePairs);
     }
-    
+
     public void testSOAPBindingRPCBareRule() {
         try {
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
-            
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), SOAPBinding.class));
+
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), SOAPBinding.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
@@ -66,6 +66,7 @@ public class SOAPBindingRCPBareRuleTest extends AbstractSOAPBindingValidationTes
 
             assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(SOAPBinding.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

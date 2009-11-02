@@ -62,7 +62,7 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
-            
+
             assertEquals(1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];
@@ -84,12 +84,12 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            IMethod method = source.findPrimaryType().getMethod("onlyOneIN", new String[] { "QString;", 
+            IMethod method = source.findPrimaryType().getMethod("onlyOneIN", new String[] { "QString;",
                     "QString;" });
-            
+
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -102,7 +102,7 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
-            
+
             assertEquals(1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];
@@ -118,18 +118,18 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
             fail(ie.getLocalizedMessage());
         }
     }
-    
+
     public void testOnlyOneNonHeaderINParameterWithWebParamsRule() {
         try {
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            IMethod method = source.findPrimaryType().getMethod("oneMore", new String[] { "QString;", 
+            IMethod method = source.findPrimaryType().getMethod("oneMore", new String[] { "QString;",
                     "QString;" });
-            
+
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -137,12 +137,13 @@ public class DocBareOneNonHeaderINParameterRuleTest extends AbstractDocumentBare
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(SOAPBinding.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
-            
+
             assertEquals(1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];

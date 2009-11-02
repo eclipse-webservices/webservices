@@ -99,7 +99,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
 
     private String getOperationName(IMethod method) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebMethod.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(WebMethod.class, method);
             if (annotation != null) {
                 String operationName = AnnotationUtils.getStringValue(annotation, OPERATION_NAME);
                 if (operationName != null) {
@@ -107,14 +107,14 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return method.getElementName();
     }
 
     private boolean hasDocumentBareSOAPBinding(IAnnotatable annotatable) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(annotatable, SOAPBinding.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(SOAPBinding.class, annotatable);
             if (annotation != null) {
                 return JAXWSUtils.isDocumentBare(annotation);
             }
@@ -123,14 +123,14 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 return hasDocumentBareSOAPBinding((IType) method.getParent());
             }
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return false;
     }
   
     private String getPartName(IMethod method) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebResult.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(WebResult.class, method);
             if (annotation != null) {
                 String name = AnnotationUtils.getStringValue(annotation, NAME);
                 if (name != null) {
@@ -138,7 +138,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return getName(method);
     }
@@ -152,7 +152,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
 
     private boolean hasDocumentWrappedSOAPBinding(IAnnotatable annotatable) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(annotatable, SOAPBinding.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(SOAPBinding.class, annotatable);
             if (annotation != null) {
                 return JAXWSUtils.isDocumentWrapped(annotation);
             }
@@ -161,14 +161,14 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 return hasDocumentWrappedSOAPBinding((IType) method.getParent());
             }
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return true;
     }
     
     private boolean isHeader(IMethod method) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebResult.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(WebResult.class, method);
             if (annotation != null) {
                 Boolean header = AnnotationUtils.getBooleanValue(annotation, HEADER);
                 if (header != null) {
@@ -176,7 +176,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return false;
     }
@@ -184,7 +184,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
     private String getDefaultTargetNamespace(IMethod method) {
         IType type = method.getDeclaringType();
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(type, WebService.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(WebService.class, type);
             if (annotation != null) {
                 String targetNamespace = AnnotationUtils.getStringValue(annotation, TARGET_NAMESPACE);
                 if (targetNamespace != null) {
@@ -192,7 +192,7 @@ public class WebResultAttributeInitializer extends AnnotationAttributeInitialize
                 }
             }
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
 
         return JDTUtils.getTargetNamespaceFromPackageName(getPackageName(type));

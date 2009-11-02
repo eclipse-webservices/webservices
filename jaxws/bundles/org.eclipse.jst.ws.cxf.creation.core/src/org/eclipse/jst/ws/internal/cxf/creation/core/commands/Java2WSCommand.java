@@ -25,6 +25,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
@@ -40,10 +42,10 @@ import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 /**
- * Provides a wrapper around the <code>org.apache.cxf.tools.java2ws.JavaToWS</code> or the 
+ * Provides a wrapper around the <code>org.apache.cxf.tools.java2ws.JavaToWS</code> or the
  * <code>org.apache.cxf.tools.java2wsdl.JavaToWSDL</code> command depending on the version
  * of CXF used.
- * 
+ *
  */
 public class Java2WSCommand extends AbstractDataModelOperation {
     private static String JAVA2WSDL_TOOL_CLASS_NAME = "org.apache.cxf.tools.java2wsdl.JavaToWSDL"; //$NON-NLS-1$
@@ -52,10 +54,10 @@ public class Java2WSCommand extends AbstractDataModelOperation {
 
     private Java2WSDataModel model;
     private String projectName;
-    
+
     private JavaResourceChangeListener javaResourceChangeListener;
     private WebContentChangeListener webContentChangeListener;
-    
+
     public Java2WSCommand(Java2WSDataModel model) {
         this.model = model;
         projectName = model.getProjectName();
@@ -64,13 +66,14 @@ public class Java2WSCommand extends AbstractDataModelOperation {
     @Override
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
+        IType startingPoint = JDTUtils.getType(projectName, model.getJavaStartingPoint());
         javaResourceChangeListener = new JavaResourceChangeListener(JDTUtils
-                .getJavaProjectSourceDirectoryPath(projectName, model.getJavaStartingPoint()));
+                .getJavaProjectSourceDirectoryPath(startingPoint));
         webContentChangeListener = new WebContentChangeListener(projectName);
 
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(javaResourceChangeListener, 
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(javaResourceChangeListener,
                 IResourceChangeEvent.POST_CHANGE);
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(webContentChangeListener, 
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(webContentChangeListener,
                 IResourceChangeEvent.POST_CHANGE);
 
         if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
@@ -83,18 +86,18 @@ public class Java2WSCommand extends AbstractDataModelOperation {
 
         try {
             IProject project = FileUtils.getProject(projectName);
-            IJavaProject javaProject = JDTUtils.getJavaProject(project);
+            IJavaProject javaProject = JavaCore.create(project);
             LaunchUtils.launch(javaProject, CXF_TOOL_CLASS_NAME, progArgs);
             FileUtils.copyJ2WFilesFromTmp(model);
-            
+
             if (model.isGenerateWSDL()) {
             	SpringUtils.loadSpringConfigInformationFromWSDL((model));
             }
-            
+
             if (isImplementationSelected() || isGenerateServer()) {
                 SpringUtils.createJAXWSEndpoint(model);
             }
-            
+
         } catch (CoreException ce) {
             status = ce.getStatus();
             CXFCreationCorePlugin.log(status);
@@ -111,7 +114,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
     }
 
 	private boolean isImplementationSelected() {
-        return (model.getFullyQualifiedJavaClassName() != null && 
+        return (model.getFullyQualifiedJavaClassName() != null &&
                 model.getFullyQualifiedJavaClassName().trim().length() > 0);
     }
 
@@ -122,7 +125,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
 		}
 		return false;
 	}
-    
+
     @Override
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
@@ -148,7 +151,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
         model.setGenerateXSDImports(context.isGenerateXSDImports());
         return status;
     }
-    
+
     public CXFDataModel getCXFDataModel() {
         return model;
     }

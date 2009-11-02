@@ -56,9 +56,9 @@ import org.xml.sax.InputSource;
 /**
  * WSDL Utility class.
  * <p>
- * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under 
- * development and expected to change significantly before reaching stability. It is being made available at 
- * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under
+ * development and expected to change significantly before reaching stability. It is being made available at
+ * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
  */
@@ -70,10 +70,17 @@ public final class WSDLUtils {
     private static final int TIMEOUT = 30000;
 
 	public static final String WSDL_FILE_EXTENSION = ".wsdl"; //$NON-NLS-1$
-	
+
     private WSDLUtils() {
     }
-        
+
+    /**
+     * Returns a <code>javax.wsdl.Definition</code> by reading the WSDL document at the given URL or null if none can be found
+     * or if the connection times out.
+     * @param wsdlURL the url of the wsdl document to read.
+     * @return the definition described in the wsdl document pointed to by the given URL.
+     * @throws IOException if an I/O exception occurs.
+     */
     public static Definition readWSDL(URL wsdlURL) throws IOException {
     	URLConnection urlConnection = wsdlURL.openConnection();
     	urlConnection.setConnectTimeout(TIMEOUT);
@@ -95,7 +102,14 @@ public final class WSDLUtils {
         }
         return null;
     }
-    
+
+    /**
+     * Writes the given <code>javax.wsdl.Definition</code> to the wsdl document at the given URL.
+     * @param wsdlURL the url of the wsdl document to write to.
+     * @param definition the WSDL definition to be written.
+     * @throws IOException  if an I/O exception occurs.
+     * @throws CoreException if an exception occurs refreshing the file in the workspace if it exists.
+     */
     public static void writeWSDL(URL wsdlURL, Definition definition) throws IOException, CoreException {
     	URI wsdlURI = null;
         OutputStream wsdlOutputStream = null;
@@ -121,28 +135,47 @@ public final class WSDLUtils {
             }
         }
     }
-   
+
+    /**
+     * Returns <code>true</code> if the given file name contains Alphanumeric characters, underscore '_',
+     * dashes '-' and ends with the '.wsdl' extension. Otherwise returns <code>false</code>.
+     * @param wsdlFileName the wsdl file name
+     * @return <code>true</code> if valid, code>false</code> otherwise.
+     */
     public static boolean isValidWSDLFileName(String wsdlFileName) {
-        return wsdlFileName != null && wsdlFileName.matches(WSDL_FILE_NAME_PATTERN);     
+        return wsdlFileName != null && wsdlFileName.matches(WSDL_FILE_NAME_PATTERN);
     }
-        
-    public static IProject getProject(String projectName) {
+
+    private static IProject getProject(String projectName) {
         return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
     }
-        
-    public static IFolder getWebContentFolder(String projectName) {
-    	return WSDLUtils.getWebContentFolder(WSDLUtils.getProject(projectName));
-    }
-    
+
+    /**
+     * Returns the Web Content folder of the given project. The returned resource may not exist.
+     * @param project the name of the web project
+     * @return the web content folder
+     */
     public static IFolder getWebContentFolder(IProject project) {
 		return ResourcesPlugin.getWorkspace().getRoot().getFolder(
 				WSDLUtils.getWebContentPath(project));
 	}
 
+    /**
+     * Returns the WSDL folder of the project with the given name. The WSDL folder path is the projects web content folder
+     * path appended with the 'WSDL' directory. The returned resource may not exist.
+     * @param projectName the name of the web project
+     * @return the wsdl folder
+     */
     public static IFolder getWSDLFolder(String projectName) {
         return WSDLUtils.getWSDLFolder(WSDLUtils.getProject(projectName));
     }
 
+    /**
+     * Returns the WSDL folder of the given project. The WSDL folder path is the projects web content folder
+     * path appended with the 'WSDL' directory. The returned resource may not exist.
+     * @param projectName the name of the web project
+     * @return the wsdl folder
+     */
     public static IFolder getWSDLFolder(IProject project) {
         IPath wsdlFolderPath = WSDLUtils.getWebContentPath(project).append(WSDLUtils.WSDL_FOLDER_PATH);
         IFolder wsdlFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(wsdlFolderPath);
@@ -155,18 +188,16 @@ public final class WSDLUtils {
         }
         return wsdlFolder;
     }
-    
-    public static IPath getWebContentPath(IProject project) {
+
+    private static IPath getWebContentPath(IProject project) {
         return J2EEUtils.getWebContentPath(project).addTrailingSeparator();
     }
 
-    public static String getWSDLFileNameFromURL(URL wsdlURL) {
-        IPath wsdlPath = new Path(wsdlURL.toExternalForm());
-        return wsdlPath.lastSegment();
-    }
-
     /**
-     * will return one of: 
+     * Returns the first <code>SOAPAddress</code> or <code>SOAP12Address</code> found in the given
+     * <code>Definition</code> or null if none is found.
+     * @param definition the given definition.
+     * @return return one of:
      * <li>SOAPAddress<li>SOAP12Address<li>null if it can not find a soap address
      */
     @SuppressWarnings("unchecked")
@@ -183,7 +214,7 @@ public final class WSDLUtils {
                     List extensibilityElements = port.getExtensibilityElements();
                     for (Object object : extensibilityElements) {
                         if (object instanceof SOAPAddress || object instanceof SOAP12Address) {
-                            return (ExtensibilityElement) object;      
+                            return (ExtensibilityElement) object;
                         }
                     }
                  }
@@ -192,6 +223,14 @@ public final class WSDLUtils {
         return null;
     }
 
+    /**
+     * Returns the location URI from the first <code>SOAPAddress</code> or <code>SOAP12Address</code> found
+     * in the given <code>Definition</code> or null if none is found. The returned location URI is appended with
+     * the '?wsdl' query if the query was not present in the <code>SOAPAddress</code> or <code>SOAP12Address</code> location URI.
+     * @param definition the given defintion.
+     * @return the location URI or the first <code>SOAPAddress</code> or <code>SOAP12Address</code> found in the given definition.
+     * @throws MalformedURLException if an error occurs testing the location URI for a query part.
+     */
     public static String getWSDLLocation(Definition definition) throws MalformedURLException {
 		ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
 		if (extensibilityElement != null) {
@@ -206,7 +245,7 @@ public final class WSDLUtils {
 		}
 	    return null;
     }
-    
+
     private static String getLocationURI(ExtensibilityElement extensibilityElement) {
 	    if (extensibilityElement instanceof SOAPAddress) {
             return ((SOAPAddress) extensibilityElement).getLocationURI();
@@ -216,7 +255,14 @@ public final class WSDLUtils {
         }
 		return ""; //$NON-NLS-1$
     }
-    
+
+    /**
+     * Constructs a dot separated package name from a given namespace.
+     * <p>E.g., the namespace “http://ws.example.com/” would return the Java package name “com.example.ws”.</p>
+     * <p>N.B. This method does not preserve 'www' in the returned package name if it exists in the given namespace.</p>
+     * @param namespace the given name.
+     * @return a package name.
+     */
     public static String getPackageNameFromNamespace(String namespace) {
         String packageName = ""; //$NON-NLS-1$
         try {

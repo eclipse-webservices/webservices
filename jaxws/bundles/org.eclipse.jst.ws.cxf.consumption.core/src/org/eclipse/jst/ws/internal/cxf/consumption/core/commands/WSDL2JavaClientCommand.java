@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jst.ws.internal.cxf.consumption.core.CXFConsumptionCorePlugin;
@@ -35,7 +36,7 @@ import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 /**
  * Executes the <code>org.apache.cxf.tools.wsdlto.WSDLToJava</code> command with the arguments
  * necessary to generate a client.
- * 
+ *
  */
 public class WSDL2JavaClientCommand extends AbstractDataModelOperation {
     public static final String CXF_TOOL_CLASS_NAME = "org.apache.cxf.tools.wsdlto.WSDLToJava"; //$NON-NLS-1$
@@ -56,7 +57,7 @@ public class WSDL2JavaClientCommand extends AbstractDataModelOperation {
     @Override
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
-        javaResourceChangeListener = new JavaResourceChangeListener(model.getJavaSourceFolder());
+        javaResourceChangeListener = new JavaResourceChangeListener(new Path(model.getJavaSourceFolder()));
         ResourcesPlugin.getWorkspace().addResourceChangeListener(javaResourceChangeListener,
                 IResourceChangeEvent.POST_CHANGE);
 

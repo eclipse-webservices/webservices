@@ -53,7 +53,7 @@ public class SOAPBindingMixedBindingsRuleTest extends AbstractSOAPBindingValidat
 
         return AnnotationsCore.createNormalAnnotation(ast, SOAPBinding.class.getSimpleName(), memberValuePairs);
     }
-    
+
     @Override
     protected String getClassContents() {
         StringBuilder classContents = new StringBuilder("package com.example;\n\n");
@@ -64,16 +64,16 @@ public class SOAPBindingMixedBindingsRuleTest extends AbstractSOAPBindingValidat
         classContents.append("\n\t\treturn \"txt\";\n\t}\n\n}");
         return classContents.toString();
     }
-    
+
     public void testSOAPBindingMixedBindingsRule() {
         try {
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
-            
+
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -81,6 +81,7 @@ public class SOAPBindingMixedBindingsRuleTest extends AbstractSOAPBindingValidat
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(SOAPBinding.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

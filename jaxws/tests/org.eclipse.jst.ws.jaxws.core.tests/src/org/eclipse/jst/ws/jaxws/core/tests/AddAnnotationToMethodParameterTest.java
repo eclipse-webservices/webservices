@@ -64,8 +64,8 @@ public class AddAnnotationToMethodParameterTest extends AbstractAnnotationTest {
             assertNotNull(method);
 
             ILocalVariable localVariable  = AnnotationUtils.getLocalVariable(method, "i");
-            
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class));
+
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class.getCanonicalName()));
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(localVariable, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));

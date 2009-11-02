@@ -21,10 +21,10 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.ui.SharedASTProvider;
-import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.text.edits.MultiTextEdit;
 
 public abstract class AbstractAnnotationTest extends TestCase {
     protected TestJavaProject testJavaProject;
@@ -47,7 +47,9 @@ public abstract class AbstractAnnotationTest extends TestCase {
         ast = compilationUnit.getAST();
         rewriter = ASTRewrite.create(ast);
         annotation = getAnnotation();
-        textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource());
+        textFileChange = new TextFileChange("Add annotation", (IFile) source.getResource());
+        MultiTextEdit multiTextEdit = new MultiTextEdit();
+        textFileChange.setEdit(multiTextEdit);
     }
     
     protected boolean isAutoBuildingEnabled() {

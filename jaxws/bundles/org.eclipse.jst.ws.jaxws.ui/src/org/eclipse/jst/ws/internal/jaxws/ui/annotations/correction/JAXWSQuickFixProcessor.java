@@ -84,13 +84,13 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
                 }
             }
         }
-        
-        return (IJavaCompletionProposal[]) proposals.toArray(new IJavaCompletionProposal[proposals.size()]);
+
+        return proposals.toArray(new IJavaCompletionProposal[proposals.size()]);
     }
 
-    private void process(IInvocationContext context, IProblemLocation problemLocation, 
+    private void process(IInvocationContext context, IProblemLocation problemLocation,
             List<IJavaCompletionProposal> proposals) throws CoreException {
-        
+
         String problem = problemLocation.getProblemArguments()[1];
 
         if (problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT)) {
@@ -108,7 +108,7 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
                 || problem.equals(JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI)) {
             addRemoveMemberValuePairProposal(context, problemLocation, proposals, false);
         }
-        
+
         if (problem.equals(JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFIED_NO_OTHER_ATTRIBUTES_ALLOWED)) {
             addRemoveMemberValuePairProposal(context, problemLocation, proposals, true);
         }
@@ -145,7 +145,7 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
         if (problem.equals(JAXWSCoreMessages.WEBSERVICE_WEBSERVICEPROVIDER_COMBINATION)) {
             addRemoveAnnotationProposal(context, problemLocation, proposals, WebServiceProvider.class);
         }
-        
+
         if (problem.equals(JAXWSCoreMessages.HANDLER_CHAIN_SOAP_MESSAGE_HANDLERS)) {
             addRemoveAnnotationProposal(context, problemLocation, proposals, SOAPMessageHandlers.class);
         }
@@ -153,7 +153,7 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
         if (problem.equals(JAXWSCoreMessages.WEBSERVICE_OVERRIDE_FINALIZE)) {
             addRemoveMethodProposal(context, problemLocation, proposals);
         }
-        
+
         if (problem.equals(JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS)
                 || problem.equals(JAXWSCoreMessages.WEBMETHOD_NO_STATIC_MODIFIER_ALLOWED)
                 || problem.equals(JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED)) {
@@ -166,25 +166,25 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
         }
 
         if (problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE)) {
-        	addChangeReturnTypeProposal(context, problemLocation, proposals);
+            addChangeReturnTypeProposal(context, problemLocation, proposals);
         }
     }
 
-    private void addAnnotationToTypeProposal(IInvocationContext context, List<IJavaCompletionProposal> proposals, 
+    private void addAnnotationToTypeProposal(IInvocationContext context, List<IJavaCompletionProposal> proposals,
             Class<? extends java.lang.annotation.Annotation> annotationClass) {
-        
+
         String displayString = JAXWSUIMessages.bind(JAXWSUIMessages.ADD_ANNOTATION, annotationClass.getSimpleName());
         Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
         proposals.add(new AddAnnotationToTypeCorrectionProposal(context, annotationClass, displayString, 5, image));
     }
-    
+
     private void addRemoveMethodProposal(IInvocationContext context, IProblemLocation problemLocation,
             List<IJavaCompletionProposal> proposals) {
-        
+
         ASTNode selectedNode = problemLocation.getCoveringNode(context.getASTRoot());
 
         if (selectedNode.getParent() instanceof NormalAnnotation) {
-            NormalAnnotation normalAnnotation = (NormalAnnotation) selectedNode.getParent(); 
+            NormalAnnotation normalAnnotation = (NormalAnnotation) selectedNode.getParent();
             ASTNode parentNode = normalAnnotation.getParent();
             if (parentNode instanceof MethodDeclaration) {
                 selectedNode = ((MethodDeclaration) parentNode).getName();
@@ -194,7 +194,7 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
                 selectedNode = ((MethodDeclaration) singleVariableDeclaration.getParent()).getName();
             }
         }
-        
+
         if (selectedNode instanceof SimpleName) {
             SimpleName methodName = (SimpleName) selectedNode;
             String displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_METHOD, methodName.getIdentifier());
@@ -204,23 +204,23 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
         }
     }
 
-    private void addRemoveAnnotationProposal(IInvocationContext context, IProblemLocation problemLocation, 
+    private void addRemoveAnnotationProposal(IInvocationContext context, IProblemLocation problemLocation,
             List<IJavaCompletionProposal> proposals, Class<? extends java.lang.annotation.Annotation> annotation) {
-		
+
         ASTNode coveringNode = problemLocation.getCoveringNode(context.getASTRoot());
         ASTNode parentNode = coveringNode.getParent();
-        
-		String displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_ANNOTATION, annotation.getSimpleName());
+
+        String displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_ANNOTATION, annotation.getSimpleName());
         Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE);
         proposals.add(new RemoveAnnotationCorrectionProposal(context, annotation, parentNode, displayString, 5, image));
     }
 
-	private void addRemoveMemberValuePairProposal(IInvocationContext context, IProblemLocation problemLocation,
-	        List<IJavaCompletionProposal> proposals, boolean removeAllOtherMVPs) {
-	    
-		ASTNode coveringNode = problemLocation.getCoveringNode(context.getASTRoot());
-		
-		if (coveringNode.getParent() instanceof MemberValuePair) {
+    private void addRemoveMemberValuePairProposal(IInvocationContext context, IProblemLocation problemLocation,
+            List<IJavaCompletionProposal> proposals, boolean removeAllOtherMVPs) {
+
+        ASTNode coveringNode = problemLocation.getCoveringNode(context.getASTRoot());
+
+        if (coveringNode.getParent() instanceof MemberValuePair) {
             MemberValuePair memberValuePair = (MemberValuePair) coveringNode.getParent();
             String displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_MEMBERVALUEPAIR, memberValuePair
                     .toString());
@@ -231,8 +231,8 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
             Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE);
             proposals.add(new RemoveMemberValuePairCorrectionProposal(context, memberValuePair,
                     removeAllOtherMVPs, displayString, 5, image));
-        }		
-	}
+        }
+    }
 
     private void addUnimplementedMethodsProposal(IInvocationContext context, IProblemLocation problemLocation,
             List<IJavaCompletionProposal> proposals) {
@@ -244,61 +244,61 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
             ASTNode typeDeclaration = webServiceAnnotation.getParent();
 
             String endpointInterface = ((StringLiteral) endpointInterfaceValue).getLiteralValue();
-            
+
             Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
             proposals.add(new AddUnimplementedMethodCorrectionProposal(context, typeDeclaration, endpointInterface,
                     JAXWSUIMessages.ADD_UNIMPLEMENTED_METHODS, 5, image));
         }
     }
-    
-	private void addChangeModifierProposal(IInvocationContext context, IProblemLocation problemLocation,
-	        List<IJavaCompletionProposal> proposals, int relevance) {
-		
+
+    private void addChangeModifierProposal(IInvocationContext context, IProblemLocation problemLocation,
+            List<IJavaCompletionProposal> proposals, int relevance) {
+
         CompilationUnit astRoot = context.getASTRoot();
         ASTNode selectedNode = problemLocation.getCoveringNode(astRoot);
 
-		if (!(selectedNode instanceof SimpleName)) {
-			return;
-		}
+        if (!(selectedNode instanceof SimpleName)) {
+            return;
+        }
 
-		IBinding binding = ((SimpleName) selectedNode).resolveBinding();
-		if (binding != null) {
-			String bindingName = binding.getName();
-			String displayString = "";
-			
-			int excludedModifiers = 0;
-			int includedModifiers = 0;
-			
-        	String problem = problemLocation.getProblemArguments()[1];
+        IBinding binding = ((SimpleName) selectedNode).resolveBinding();
+        if (binding != null) {
+            String bindingName = binding.getName();
+            String displayString = "";
+
+            int excludedModifiers = 0;
+            int includedModifiers = 0;
+
+            String problem = problemLocation.getProblemArguments()[1];
 
             if(problem.equals(JAXWSCoreMessages.WEBMETHOD_ONLY_ON_PUBLIC_METHODS)
-            		|| problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_REDUCED_VISIBILITY)) {
-    			excludedModifiers = ~(Modifier.PUBLIC);
-    			includedModifiers = Modifier.PUBLIC ;
-    			displayString = JAXWSUIMessages.bind(JAXWSUIMessages.CHANGE_METHOD_VISIBILITY, "public"); //$NON-NLS-1$
+                    || problem.equals(JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_REDUCED_VISIBILITY)) {
+                excludedModifiers = ~(Modifier.PUBLIC);
+                includedModifiers = Modifier.PUBLIC ;
+                displayString = JAXWSUIMessages.bind(JAXWSUIMessages.CHANGE_METHOD_VISIBILITY, "public"); //$NON-NLS-1$
             }
 
             if(problem.equals(JAXWSCoreMessages.WEBMETHOD_NO_FINAL_MODIFIER_ALLOWED)) {
-            	excludedModifiers = Modifier.FINAL;
-            	displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_FINAL_MODIFIER, bindingName);
+                excludedModifiers = Modifier.FINAL;
+                displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_FINAL_MODIFIER, bindingName);
             }
 
             if(problem.equals(JAXWSCoreMessages.WEBMETHOD_NO_STATIC_MODIFIER_ALLOWED)) {
-            	excludedModifiers = Modifier.STATIC;
-            	displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_STATIC_MODIFIER, bindingName);
-            }
-            
-            if (problem.equals(JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL)) {
-    			excludedModifiers = Modifier.ABSTRACT | Modifier.FINAL;
-    			displayString = JAXWSUIMessages.REMOVE_ILLEGAL_MODIFIER;
+                excludedModifiers = Modifier.STATIC;
+                displayString = JAXWSUIMessages.bind(JAXWSUIMessages.REMOVE_STATIC_MODIFIER, bindingName);
             }
 
-			Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
-	        proposals.add(new ChangeModifierCorrectionProposal(context, binding, includedModifiers,
-                    excludedModifiers, displayString, 5, image));           
-		}
-	}
-	
+            if (problem.equals(JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL)) {
+                excludedModifiers = Modifier.ABSTRACT | Modifier.FINAL;
+                displayString = JAXWSUIMessages.REMOVE_ILLEGAL_MODIFIER;
+            }
+
+            Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
+            proposals.add(new ChangeModifierCorrectionProposal(context, binding, includedModifiers,
+                    excludedModifiers, displayString, 5, image));
+        }
+    }
+
     private void addConstructorProposal(IInvocationContext context, IProblemLocation problemLocation,
             List<IJavaCompletionProposal> proposals, int relevance) {
 
@@ -309,7 +309,7 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
         if (typeBinding != null && typeBinding.isFromSource()) {
             String displayString = JAXWSUIMessages.bind(JAXWSUIMessages.CREATE_CONSTRUCTOR,
                     typeBinding.getTypeDeclaration().getName());
-            
+
             Image image = JavaElementImageProvider.getDecoratedImage(JavaPluginImages.DESC_MISC_PUBLIC,
                     JavaElementImageDescriptor.CONSTRUCTOR, JavaElementImageProvider.SMALL_SIZE);
 
@@ -317,24 +317,26 @@ public class JAXWSQuickFixProcessor implements IQuickFixProcessor {
                     image));
         }
     }
-    
+
     private void addChangeReturnTypeProposal(IInvocationContext context, IProblemLocation problemLocation,
             List<IJavaCompletionProposal> proposals) {
 
-    	CompilationUnit astRoot = context.getASTRoot();
+        CompilationUnit astRoot = context.getASTRoot();
         ASTNode selectedNode = problemLocation.getCoveringNode(astRoot);
 
-		if (!(selectedNode instanceof SimpleName)) {
-			return;
-		}
-		
-		MethodDeclaration implMethodDeclaration = (MethodDeclaration)((SimpleName) selectedNode).getParent();
-		TypeDeclaration implTypeDeclaration = (TypeDeclaration)implMethodDeclaration.getParent();
-		Annotation annotation = AnnotationUtils.getAnnotation(implTypeDeclaration, WebService.class);
-		String endpointInterface = AnnotationUtils.getStringValue(annotation, "endpointInterface"); //$NON-NLS-1$
-		String displayString = JAXWSUIMessages.CHANGE_METHOD_RETURN_TYPE;
-		Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
-		proposals.add(new ChangeReturnTypeCorrectionProposal(context, implTypeDeclaration,
-				implMethodDeclaration, endpointInterface, displayString, 5, image));
+        if (!(selectedNode instanceof SimpleName)) {
+            return;
+        }
+
+        MethodDeclaration implMethodDeclaration = (MethodDeclaration)((SimpleName) selectedNode).getParent();
+        TypeDeclaration implTypeDeclaration = (TypeDeclaration)implMethodDeclaration.getParent();
+
+        Annotation annotation = AnnotationUtils.getAnnotation(implTypeDeclaration.resolveBinding().getJavaElement(), WebService.class);
+
+        String endpointInterface = AnnotationUtils.getStringValue(annotation, "endpointInterface"); //$NON-NLS-1$
+        String displayString = JAXWSUIMessages.CHANGE_METHOD_RETURN_TYPE;
+        Image image = JavaPluginImages.get(JavaPluginImages.IMG_CORRECTION_CHANGE);
+        proposals.add(new ChangeReturnTypeCorrectionProposal(context, implTypeDeclaration,
+                implMethodDeclaration, endpointInterface, displayString, 5, image));
     }
 }

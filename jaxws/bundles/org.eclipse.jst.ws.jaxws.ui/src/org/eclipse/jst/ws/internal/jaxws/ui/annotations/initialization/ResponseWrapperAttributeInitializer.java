@@ -31,7 +31,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
             return getPackageName(type) + methodName.substring(0, 1).toUpperCase()
                 + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }
@@ -39,7 +39,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
     @Override
     protected String getLocalName(IType type, IMethod method) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebMethod.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(WebMethod.class, method);
             if (annotation != null) {
                 String operationName = AnnotationUtils.getStringValue(annotation, OPERATION_NAME);
                 if (operationName != null) {
@@ -49,7 +49,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
             return method.getElementName() + RESPONSE_SUFFIX 
                     + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }

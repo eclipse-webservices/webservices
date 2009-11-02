@@ -52,10 +52,10 @@ public class RemoveAnnotationFromPackageTest extends AbstractAnnotationTest {
                     .getAnnotationName(annotation)));
 
             textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(myPackage, annotation));
-            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(myPackage, XmlSchema.class));
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(myPackage, XmlSchema.class.getCanonicalName()));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
+
             assertFalse(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils.getAnnotationName(annotation)));
             assertFalse(source.getImport(XmlSchema.class.getCanonicalName()).exists());
         } catch (CoreException ce) {

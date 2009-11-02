@@ -40,7 +40,7 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -48,6 +48,7 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(SOAPBinding.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
@@ -75,7 +76,7 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
             assertNotNull(annotation);
             assertEquals(SOAPBinding.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), SOAPBinding.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), SOAPBinding.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
@@ -105,7 +106,7 @@ public class WebServiceSEINoSOAPBindingRuleTest extends AbstractWebServiceSEIRul
         }
     }
 
-    
-    
+
+
 
 }

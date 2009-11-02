@@ -56,9 +56,9 @@ public class RemoveAnnotationFromMethodTest extends AbstractAnnotationTest {
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
             assertNotNull(source.getImport(WebMethod.class.getCanonicalName()));
-            
+
             textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(method, annotation));
-            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(method, WebMethod.class));
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(method, WebMethod.class.getCanonicalName()));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

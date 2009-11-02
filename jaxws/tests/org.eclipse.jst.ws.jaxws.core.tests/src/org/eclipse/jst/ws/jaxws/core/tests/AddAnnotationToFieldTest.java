@@ -60,7 +60,7 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
             IField field = source.findPrimaryType().getField("service");
             assertNotNull(field);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(field, WebServiceRef.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(field, WebServiceRef.class.getCanonicalName()));
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(field, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
@@ -71,5 +71,5 @@ public class AddAnnotationToFieldTest extends AbstractAnnotationTest {
             fail(ce.getLocalizedMessage());
         }
     }
-    
+
 }

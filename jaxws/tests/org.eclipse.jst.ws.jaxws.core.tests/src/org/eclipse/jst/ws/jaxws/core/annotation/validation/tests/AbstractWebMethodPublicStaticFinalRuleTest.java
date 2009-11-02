@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
 import javax.jws.WebMethod;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -55,7 +54,7 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
     protected String getPackageName() {
         return "com.example";
     }
-    
+
     public abstract IMethod getMethodToTeset();
     public abstract String getErrorMessage();
 
@@ -67,7 +66,7 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
             IMethod method = getMethodToTeset();
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebMethod.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebMethod.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -75,6 +74,7 @@ public abstract class AbstractWebMethodPublicStaticFinalRuleTest extends Abstrac
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebMethod.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

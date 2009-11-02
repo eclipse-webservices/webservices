@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.jws.WebParam;
 import javax.jws.WebParam.Mode;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -41,7 +40,7 @@ public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidation
                 WebParam.class.getCanonicalName(), "mode", Mode.OUT);
 
         memberValuePairs.add(modeValuePair);
-        
+
         return AnnotationsCore.createNormalAnnotation(ast, WebParam.class.getSimpleName(), memberValuePairs);
     }
 
@@ -69,20 +68,21 @@ public class WebParamModeHolderTypeRuleTest extends AbstractAnnotationValidation
         try {
             assertNotNull(annotation);
             assertEquals(WebParam.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
-            
+
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
             ILocalVariable localVariable = AnnotationUtils.getLocalVariable(method, "param");
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(localVariable, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             assertTrue(AnnotationUtils.isAnnotationPresent(localVariable, annotation));
-            
+            assertTrue(source.getImport(WebParam.class.getCanonicalName()).exists());
+
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,

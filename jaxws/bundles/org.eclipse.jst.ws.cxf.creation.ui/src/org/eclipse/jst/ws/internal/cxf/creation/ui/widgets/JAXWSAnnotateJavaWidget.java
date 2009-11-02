@@ -91,23 +91,23 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
     private TreeViewerColumn webParamViewerColumn;
     private TreeViewerColumn requestWrapperViewerColumn;
     private TreeViewerColumn responceWrapperViewerColumn;
-    
+
     public JAXWSAnnotateJavaWidget() {
     }
 
     public void setJava2WSDataModel(Java2WSDataModel model) {
         this.model = model;
     }
-    
+
     @Override
     public WidgetDataEvents addControls(Composite parent, Listener statusListener) {
         SashForm sashForm = new SashForm(parent, SWT.VERTICAL | SWT.SMOOTH);
         GridLayout gridLayout = new GridLayout(1, true);
         sashForm.setLayout(gridLayout);
-        
+
         GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         sashForm.setLayoutData(gridData);
-        
+
         Composite javaTreecomposite = new Composite(sashForm, SWT.NONE);
         gridLayout = new GridLayout(1, true);
         javaTreecomposite.setLayout(gridLayout);
@@ -198,15 +198,15 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                 if (event.getSelection() instanceof ITreeSelection) {
                     ITreeSelection treeSelection = (TreeSelection) event.getSelection();
                     Object firstElement = treeSelection.getFirstElement();
-                    
+
                     IDocument document = annotationPreviewViewer.getDocument();
-                    FindReplaceDocumentAdapter findReplaceDocumentAdapter = 
+                    FindReplaceDocumentAdapter findReplaceDocumentAdapter =
                     	new FindReplaceDocumentAdapter(document);
                     try {
                         if (firstElement instanceof IType) {
                             IType sourceType = (IType) firstElement;
                             String elementName = sourceType.getElementName();
-                            
+
                             StringBuilder regex = new StringBuilder("\\bpublic\\W+(?:\\w+\\W+){1,3}?");
                             regex.append(elementName);
                             regex.append("\\b");
@@ -218,22 +218,22 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                         } else if (firstElement instanceof IMethod) {
                             IMethod sourceMethod = (IMethod) firstElement;
                             IType sourceType = (IType) sourceMethod.getParent();
-                            
+
                             String elementName = sourceMethod.getElementName();
-                            
+
                             StringBuilder regex = new StringBuilder();
-                            
+
                             if (sourceType.isClass()) {
                                 regex.append("\\bpublic");
                             }
-                           	
+
                             regex.append("\\W+(?:\\w+\\W+){1,3}?");
                             regex.append(elementName);
                             regex.append("\\s*?\\(\\s*?.*?");
-                           	
+
                             String[] parameterTypes = sourceMethod.getParameterTypes();
                             String[] paramterNames = sourceMethod.getParameterNames();
-                            
+
                             for (int i = 0; i < parameterTypes.length; i++) {
                                 regex.append("\\s*?");
                                 String typeName = Signature.toString(parameterTypes[i]);
@@ -248,14 +248,14 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
 
                         	IRegion region = findReplaceDocumentAdapter.find(0, regex.toString(), true, true,
                         	        false, true);
-                            
+
                             if (region != null) {
                                 IRegion elementNameRegion = findReplaceDocumentAdapter.find(
                                 		region.getOffset(), elementName, true, true, true, false);
                                 if (elementNameRegion != null) {
-                                	annotationPreviewViewer.setSelectedRange(elementNameRegion.getOffset(), 
+                                	annotationPreviewViewer.setSelectedRange(elementNameRegion.getOffset(),
                                     		elementNameRegion.getLength());
-                                    annotationPreviewViewer.revealRange(elementNameRegion.getOffset(), 
+                                    annotationPreviewViewer.revealRange(elementNameRegion.getOffset(),
                                     		elementNameRegion.getLength());
                                 }
                             }
@@ -293,9 +293,9 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         gridData.heightHint = 10;
         gridData.widthHint = 200;
         annotationPreviewViewer.getControl().setLayoutData(gridData);
-        
+
         sashForm.setWeights(new int[]{50, 50});
-        
+
         return this;
     }
 
@@ -319,17 +319,17 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             type =JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                     .getFullyQualifiedJavaClassName());
         }
-        
+
         if (type == null) {
             type = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                     .getJavaStartingPoint());
         }
-        
+
         model.setMethodMap(CXFModelUtils.getMethodMap(type, model));
 
         return type;
     }
-    
+
     private TreeViewerColumn createWebMethodViewerColumn(TreeViewer treeViewer) {
         webMethodViewerColumn = new TreeViewerColumn(treeViewer, SWT.CENTER);
         TreeColumn webMethodColumn = webMethodViewerColumn.getColumn();
@@ -366,7 +366,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         createRequestWrapperColumn.setMoveable(false);
         requestWrapperViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
                 CXFModelUtils.REQUEST_WRAPPER, getType()));
-        requestWrapperViewerColumn.setEditingSupport(new AnnotationEditingSupport(treeViewer, 
+        requestWrapperViewerColumn.setEditingSupport(new AnnotationEditingSupport(treeViewer,
                 CXFModelUtils.REQUEST_WRAPPER));
         return requestWrapperViewerColumn;
     }
@@ -383,7 +383,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                 CXFModelUtils.RESPONSE_WRAPPER));
         return responceWrapperViewerColumn;
     }
-    
+
     private void updateLabelProviders() {
         webMethodViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
                 CXFModelUtils.WEB_METHOD, getType()));
@@ -394,15 +394,15 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         responceWrapperViewerColumn.setLabelProvider(new AnnotationColumnLabelProvider(model,
                 CXFModelUtils.RESPONSE_WRAPPER, getType()));
     }
-    
+
     private void handleAnnotation(IType type) {
         try {
             annotationPreviewViewer.setRedraw(false);
 
             ICompilationUnit compilationUnit = type.getCompilationUnit();
             IProgressMonitor monitor =  new NullProgressMonitor();
-            
-            TextFileChange textFileChange = new TextFileChange("Annotation Changes", 
+
+            TextFileChange textFileChange = new TextFileChange("Annotation Changes",
                     (IFile)compilationUnit.getResource());
             MultiTextEdit multiTextEdit = new MultiTextEdit();
             textFileChange.setEdit(multiTextEdit);
@@ -426,12 +426,12 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                 if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
 					List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
 					for (SingleVariableDeclaration parameter : parameters) {
-						CXFModelUtils.getWebParamAnnotationChange(type, method, 
+						CXFModelUtils.getWebParamAnnotationChange(type, method,
 								(ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
 					}
-                } 
+                }
             }
-            
+
             CXFModelUtils.getImportsChange(compilationUnit, model, textFileChange, false);
             annotationPreviewViewer.getDocument().set(textFileChange.getPreviewContent(monitor));
 
@@ -440,7 +440,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             CXFCreationUIPlugin.log(ce.getStatus());
         } catch (MalformedTreeException mte) {
             CXFCreationUIPlugin.log(mte);
-        } 
+        }
     }
 
     private SourceViewer createAnnotationPreviewer(Composite parent, int styles) {
@@ -459,7 +459,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         annotationPreviewViewer.setEditable(false);
 
 
-        String source = JDTUtils.getSourceFromType(getType());
+        String source = getSourceFromType(getType());
         IDocument document = new Document(source);
 
         JavaPlugin.getDefault().getJavaTextTools().setupJavaDocumentPartitioner(document,
@@ -467,6 +467,15 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         annotationPreviewViewer.setDocument(document);
 
         return annotationPreviewViewer;
+    }
+
+    public String getSourceFromType(IType type) {
+        try {
+            return type.getCompilationUnit().getBuffer().getContents();
+        } catch (JavaModelException jme) {
+            CXFCreationUIPlugin.log(jme.getStatus());
+        }
+        return ""; //$NON-NLS-1$
     }
 
     @Override
@@ -478,7 +487,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         private CheckboxCellEditor checkboxCellEditor;
 
         private String annotationKey;
-        
+
         public AnnotationEditingSupport(TreeViewer viewer, String annotationKey) {
             super(viewer);
             this.annotationKey = annotationKey;
@@ -489,7 +498,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
         protected boolean canEdit(Object element) {
             if (element instanceof IMethod) {
                 IMethod method = (IMethod) element;
-                return !AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0], 
+                return !AnnotationUtils.isAnnotationPresent(type.findMethods(method)[0],
                         annotationKey);
             }
             return false;

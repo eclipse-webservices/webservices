@@ -49,10 +49,10 @@ public class AddAnnotationToPackageTest extends AbstractAnnotationTest {
 
         MemberValuePair namespaceVP = AnnotationsCore.createStringMemberValuePair(ast,
                 "namespace", "uri:testNS");
-        
+
         memberValuePairs.add(locationVP);
         memberValuePairs.add(namespaceVP);
-        
+
         return AnnotationsCore.createNormalAnnotation(ast, XmlSchema.class.getSimpleName(), memberValuePairs);
     }
 
@@ -62,10 +62,10 @@ public class AddAnnotationToPackageTest extends AbstractAnnotationTest {
             assertEquals(XmlSchema.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
             IPackageDeclaration myPackage = source.getPackageDeclaration(getPackageName());
             assertNotNull(myPackage);
-            
+
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(myPackage, annotation));
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(myPackage, XmlSchema.class));
-            
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(myPackage, XmlSchema.class.getCanonicalName()));
+
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             assertTrue(AnnotationUtils.isAnnotationPresent(myPackage, AnnotationUtils.getAnnotationName(annotation)));
@@ -74,5 +74,5 @@ public class AddAnnotationToPackageTest extends AbstractAnnotationTest {
             fail(ce.getLocalizedMessage());
         }
     }
-    
+
 }

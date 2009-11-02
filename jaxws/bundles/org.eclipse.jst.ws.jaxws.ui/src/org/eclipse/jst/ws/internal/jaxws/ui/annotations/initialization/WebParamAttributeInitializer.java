@@ -19,6 +19,7 @@ import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAM
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -28,76 +29,79 @@ import javax.jws.soap.SOAPBinding;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.PackageDeclaration;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
+import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 
 public class WebParamAttributeInitializer extends AnnotationAttributeInitializer {
 
     @Override
-	public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement,
-			AST ast, Class<? extends Annotation> annotationClass) {
+    public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement,
+            AST ast, Class<? extends Annotation> annotationClass) {
 
-    	List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-    	
+        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+
         if (javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-        	SingleVariableDeclaration parameter = AnnotationUtils.getSingleVariableDeclaration((ILocalVariable) javaElement);
-        	MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, NAME, getName(parameter));
+            ILocalVariable parameter = (ILocalVariable) javaElement;
+            MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, NAME, getName(parameter));
             memberValuePairs.add(nameValuePair);
         }
         return memberValuePairs;
-	}
+    }
 
-	public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
+    @Override
+    public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair) {
-        
+
         List<ICompletionProposal> completionProposals = new ArrayList<ICompletionProposal>();
         if (javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-        	SingleVariableDeclaration parameter = AnnotationUtils.getSingleVariableDeclaration((ILocalVariable) javaElement);
-            
+            ILocalVariable parameter = (ILocalVariable) javaElement;
+
             String memberValuePairName = memberValuePair.getName().getIdentifier();
-            
+
             if (memberValuePairName.equals(NAME)) {
                 completionProposals.add(createCompletionProposal(getName(parameter),
-                		memberValuePair.getValue()));
+                        memberValuePair.getValue()));
             }
-            
+
             if (memberValuePairName.equals(PART_NAME)) {
                 completionProposals.add(createCompletionProposal(getPartName(parameter),
                         memberValuePair.getValue()));
             }
-            
+
             if (memberValuePairName.equals(TARGET_NAMESPACE)) {
                 completionProposals.add(createCompletionProposal(getTargetNamespace(parameter),
                         memberValuePair.getValue()));
             }
-            
+
         }
         return completionProposals;
     }
 
-    private String getName(SingleVariableDeclaration parameter) {
-        MethodDeclaration methodDeclaration = (MethodDeclaration) parameter.getParent();
-        if (hasDocumentBareSOAPBinding(methodDeclaration)) {
-            return getWebMethodOperationName(methodDeclaration);
+    private String getName(ILocalVariable parameter) {
+        IMethod method = (IMethod) parameter.getParent();
+        if (hasDocumentBareSOAPBinding(method)) {
+            return getWebMethodOperationName(method);
         }
-
-        List<?> siblings = (List<?>) methodDeclaration.getStructuralProperty(parameter.getLocationInParent());
-        return ARG + siblings.indexOf(parameter);
+        try {
+            List<String> methodNames = Arrays.asList(method.getParameterNames());
+            return ARG + methodNames.indexOf(parameter.getElementName());
+        } catch (JavaModelException jme) {
+            JAXWSUIPlugin.log(jme.getStatus());
+        }
+        return parameter.getElementName();
     }
-    
-    private String getPartName(SingleVariableDeclaration parameter) {
+
+    private String getPartName(ILocalVariable parameter) {
         org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(parameter,
                 WebParam.class);
         if (annotation != null) {
@@ -108,19 +112,18 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
         }
         return getName(parameter);
     }
-    
-    private String getTargetNamespace(SingleVariableDeclaration parameter) {
+
+    private String getTargetNamespace(ILocalVariable parameter) {
         if (hasDocumentWrappedSOAPBinding(parameter) && !isHeader(parameter)) {
             return "";  //$NON-NLS-1$
         }
         return getDefaultTargetNamespace(parameter);
     }
 
-    private String getDefaultTargetNamespace(SingleVariableDeclaration parameter) {
-        MethodDeclaration methodDeclaration = (MethodDeclaration) parameter.getParent();
-        TypeDeclaration typeDeclaration = (TypeDeclaration) methodDeclaration.getParent();
-        
-        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(typeDeclaration,
+    private String getDefaultTargetNamespace(ILocalVariable parameter) {
+        IMethod method = (IMethod) parameter.getParent();
+        IType type = method.getDeclaringType();
+        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(type,
                 WebService.class);
         if (annotation != null) {
             String targetNamespace = AnnotationUtils.getStringValue(annotation, TARGET_NAMESPACE);
@@ -128,20 +131,10 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
                 return targetNamespace;
             }
         }
-        return JDTUtils.getTargetNamespaceFromPackageName(getPackageName(typeDeclaration));
+        return JDTUtils.getTargetNamespaceFromPackageName(type.getPackageFragment().getElementName());
     }
 
-    private String getPackageName(TypeDeclaration typeDeclaration) {
-        if (typeDeclaration.isPackageMemberTypeDeclaration()) {
-            PackageDeclaration packageDeclaration = ((CompilationUnit) typeDeclaration.getParent()).getPackage();
-            if (packageDeclaration != null) {
-                return packageDeclaration.getName().getFullyQualifiedName();
-            }          
-        }
-        return ""; //$NON-NLS-1$
-    }
-    
-    private boolean isHeader(SingleVariableDeclaration parameter) {
+    private boolean isHeader(ILocalVariable parameter) {
         org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(parameter, WebParam.class);
         if (annotation != null) {
             Boolean header = AnnotationUtils.getBooleanValue(annotation, HEADER);
@@ -152,18 +145,16 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
         return false;
     }
 
-    private boolean hasDocumentWrappedSOAPBinding(SingleVariableDeclaration parameter) {
-        MethodDeclaration methodDeclaration = (MethodDeclaration) parameter.getParent();
+    private boolean hasDocumentWrappedSOAPBinding(ILocalVariable parameter) {
+        IMethod method = (IMethod) parameter.getParent();
 
-        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(methodDeclaration,
+        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(method,
                 SOAPBinding.class);
         if (annotation != null) {
             return JAXWSUtils.isDocumentWrapped(annotation);
         }
-        
-        TypeDeclaration typeDeclaration = (TypeDeclaration) methodDeclaration.getParent();
-        
-        org.eclipse.jdt.core.dom.Annotation typeAnnotation = AnnotationUtils.getAnnotation(typeDeclaration,
+
+        org.eclipse.jdt.core.dom.Annotation typeAnnotation = AnnotationUtils.getAnnotation(method.getDeclaringType(),
                 SOAPBinding.class);
         if (typeAnnotation != null) {
             return JAXWSUtils.isDocumentWrapped(typeAnnotation);
@@ -171,22 +162,22 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
         return true;
     }
 
-    private boolean hasDocumentBareSOAPBinding(BodyDeclaration bodyDeclaration) {
-        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(bodyDeclaration,
+    private boolean hasDocumentBareSOAPBinding(IJavaElement javaElement) {
+        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(javaElement,
                 SOAPBinding.class);
         if (annotation != null) {
             return JAXWSUtils.isDocumentBare(annotation);
         }
-        if (bodyDeclaration instanceof MethodDeclaration) {
-            MethodDeclaration methodDeclaration = (MethodDeclaration) bodyDeclaration;
-            return hasDocumentBareSOAPBinding((TypeDeclaration) methodDeclaration.getParent());
+        if (javaElement.getElementType() ==  IJavaElement.METHOD) {
+            IMethod method = (IMethod) javaElement;
+            return hasDocumentBareSOAPBinding(method.getDeclaringType());
         }
         return false;
     }
 
 
-    private String getWebMethodOperationName(MethodDeclaration methodDeclaration) {
-        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(methodDeclaration,
+    private String getWebMethodOperationName(IMethod method) {
+        org.eclipse.jdt.core.dom.Annotation annotation = AnnotationUtils.getAnnotation(method,
                 WebMethod.class);
         if (annotation != null) {
             String operationName = AnnotationUtils.getStringValue(annotation, OPERATION_NAME);
@@ -194,7 +185,7 @@ public class WebParamAttributeInitializer extends AnnotationAttributeInitializer
                 return operationName;
             }
         }
-        return methodDeclaration.getName().getIdentifier();
+        return method.getElementName();
     }
 
 }

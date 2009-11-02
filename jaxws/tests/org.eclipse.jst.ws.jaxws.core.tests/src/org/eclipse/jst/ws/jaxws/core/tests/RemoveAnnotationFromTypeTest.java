@@ -54,9 +54,9 @@ public class RemoveAnnotationFromTypeTest extends AbstractAnnotationTest {
 
             assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils.getAnnotationName(annotation)));
             assertNotNull(source.getImport(WebService.class.getCanonicalName()));
-            
+
             textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(source.findPrimaryType(), annotation));
-            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(source.findPrimaryType(), WebService.class));
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(source.findPrimaryType(), WebService.class.getCanonicalName()));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 

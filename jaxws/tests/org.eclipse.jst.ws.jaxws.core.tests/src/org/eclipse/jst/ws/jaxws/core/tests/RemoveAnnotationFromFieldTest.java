@@ -54,12 +54,12 @@ public class RemoveAnnotationFromFieldTest extends AbstractAnnotationTest {
 
             assertTrue(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils
                     .getAnnotationName(annotation)));
-            
+
             assertNotNull(source.getImport(WebServiceRef.class.getCanonicalName()));
-            
+
             textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(field, annotation));
-            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(field, WebServiceRef.class));
-            
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(field, WebServiceRef.class.getCanonicalName()));
+
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             assertFalse(AnnotationUtils.isAnnotationPresent(field, AnnotationUtils.getAnnotationName(annotation)));

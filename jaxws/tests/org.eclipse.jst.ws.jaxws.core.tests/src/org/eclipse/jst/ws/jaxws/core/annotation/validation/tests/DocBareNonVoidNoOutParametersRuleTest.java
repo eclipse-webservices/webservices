@@ -42,23 +42,24 @@ public class DocBareNonVoidNoOutParametersRuleTest extends AbstractDocumentBareV
 
             IMethod method = source.findPrimaryType().getMethod("noOut", new String[] { "QString;",
                     "QString; "});
-            
+
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class));
-            
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, SOAPBinding.class.getCanonicalName()));
+
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(SOAPBinding.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,
                     IResource.DEPTH_INFINITE);
-            
+
             assertEquals(1, allmarkers.length);
 
             IMarker annotationProblemMarker = allmarkers[0];

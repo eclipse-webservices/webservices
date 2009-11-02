@@ -37,20 +37,24 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
 
 /**
- * 
+ * Manages the annotation categories, definitions, processors and initializers contributed through the
+ * <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code>,
+ * <code>org.eclipse.jst.ws.annotations.core.annotationCategory</code>,
+ * <code>org.eclipse.jst.ws.annotations.core.annotationInitializer</code> and
+ * <code>org.eclipse.jst.ws.annotations.core.annotationProcessor</code> extension points.
  * <p>
- * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under 
- * development and expected to change significantly before reaching stability. It is being made available at 
- * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under
+ * development and expected to change significantly before reaching stability. It is being made available at
+ * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
  */
 public final class AnnotationsManager {
-    public static final String ANNOTATION_DEFINITION = "annotationDefinition"; //$NON-NLS-1$
-    public static final String ANNOTATION_CATEGORY = "annotationCategory"; //$NON-NLS-1$
-    public static final String ANNOTATION_INITIALIZER = "annotationInitializer"; //$NON-NLS-1$
-    public static final String ANNOTATION_PROCESSOR = "annotationProcessor"; //$NON-NLS-1$
-    public static final String ANNOTATION = "annotation"; //$NON-NLS-1$
+    private static final String ANNOTATION_DEFINITION = "annotationDefinition"; //$NON-NLS-1$
+    private static final String ANNOTATION_CATEGORY = "annotationCategory"; //$NON-NLS-1$
+    private static final String ANNOTATION_INITIALIZER = "annotationInitializer"; //$NON-NLS-1$
+    private static final String ANNOTATION_PROCESSOR = "annotationProcessor"; //$NON-NLS-1$
+    private static final String ANNOTATION = "annotation"; //$NON-NLS-1$
 
     private static List<AnnotationDefinition> annotationCache = null;
     private static Map<String, String> annotationCategoryCache = null;
@@ -64,17 +68,23 @@ public final class AnnotationsManager {
     private static final String ATT_ID = "id"; //$NON-NLS-1$
     private static final String ATT_NAME = "name"; //$NON-NLS-1$
     private static final String ATT_CATEGORY = "category"; //$NON-NLS-1$
-    
+
     private static final String ELEM_TARGET_FILTER = "targetFilter"; //$NON-NLS-1$
     private static final String ATT_TARGET = "target"; //$NON-NLS-1$
 
     private AnnotationsManager() {
     }
-    
+
+    /**
+     * Returns a list of <code>AnnotationDefinition</code> constructed from contributions to the
+     * <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code> extension point.
+     *
+     * @return a list of <code>AnnotationDefinition</code>.
+     */
     public static synchronized List<AnnotationDefinition> getAnnotations() {
         if (annotationCache == null) {
             annotationCache = new ArrayList<AnnotationDefinition>();
-            
+
             IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
                     AnnotationsCorePlugin.PLUGIN_ID, ANNOTATION_DEFINITION);
             if (extensionPoint != null) {
@@ -82,7 +92,7 @@ public final class AnnotationsManager {
                 for (int i = 0; i < elements.length; i++) {
                     IConfigurationElement element = elements[i];
                     if (element.getName().equals(ANNOTATION)) {
-                        AnnotationDefinition annotationDefinition = new AnnotationDefinition(element, 
+                        AnnotationDefinition annotationDefinition = new AnnotationDefinition(element,
                                 getAnnotationCategory(getAttributeValue(element, ATT_CATEGORY)));
                         annotationCache.add(annotationDefinition);
                     }
@@ -92,26 +102,37 @@ public final class AnnotationsManager {
         return annotationCache;
     }
 
-    public static Object[] getAnnotations(Object element) {
+    /**
+     * Returns a list of all the contributed <code>java.lang.annotation.Annotation</code> that target the given java element type.
+     *
+     * @param element one of
+     * <li>org.eclipse.jdt.core.IPackageDeclaration</li>
+     * <li>org.eclipse.jdt.core.IType</li>
+     * <li>org.eclipse.jdt.core.IField</li>
+     * <li>org.eclipse.jdt.core.IMethod</li>
+     * <li>org.eclipse.jdt.core.ILocalVariable</li>
+     *
+     * @return a list of <code>java.lang.annotation.Annotation</code>
+     */
+    public static List<Class<? extends Annotation>> getAnnotations(Object element) {
         List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
-        
+
         try {
             List<AnnotationDefinition> annotationDefinitions = getAllAnnotationsForElement(element);
-        
+
             filterAnnotationsList(element, annotationDefinitions);
-        
+
             for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
                 annotations.add(annotationDefinition.getAnnotationClass());
             }
         } catch (JavaModelException jme) {
             AnnotationsCorePlugin.log(jme.getStatus());
-        }  
-        return annotations.toArray();     
+        }
+        return annotations;
     }
-    
-    private static synchronized Map<String, AnnotationDefinition> 
-            getAnnotationToClassNameDefinitionMap() {
-            
+
+    private static synchronized Map<String, AnnotationDefinition> getAnnotationToClassNameDefinitionMap() {
+
         if (annotationClassNameToDefinitionMap == null) {
             List<AnnotationDefinition> annotationDefinitions = getAnnotations();
 
@@ -124,26 +145,26 @@ public final class AnnotationsManager {
         }
         return annotationClassNameToDefinitionMap;
     }
-    
+
     private static synchronized Map<String, AnnotationDefinition> getSimpleNameToDefinitionMap() {
         if (annotationSimpleNameToDefinitionMap == null) {
             List<AnnotationDefinition> annotationDefinitions = getAnnotations();
 
             annotationSimpleNameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
-            
+
             for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
                 annotationSimpleNameToDefinitionMap.put(annotationDefinition.getName(), annotationDefinition);
             }
         }
         return annotationSimpleNameToDefinitionMap;
     }
-    
+
     private static synchronized Map<String, AnnotationDefinition> getQualifiedNameToDefinitionMap() {
         if (annotationQualifiedNameToDefinitionMap == null) {
             List<AnnotationDefinition> annotationDefinitions = getAnnotations();
-            
+
             annotationQualifiedNameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
-            
+
             for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
                 annotationQualifiedNameToDefinitionMap.put(annotationDefinition.getAnnotationClassName(),
                         annotationDefinition);
@@ -151,7 +172,12 @@ public final class AnnotationsManager {
         }
         return annotationQualifiedNameToDefinitionMap;
     }
-    
+
+    /**
+     *
+     * @param element
+     * @return <code></code>
+     */
     @SuppressWarnings("unchecked")
     public static AnnotationDefinition getAnnotationDefinitionForClass(Object element) {
         if (element instanceof Class && ((Class<?>)element).isAnnotation()) {
@@ -160,35 +186,59 @@ public final class AnnotationsManager {
         }
         return null;
     }
-    
+
+    /**
+     *
+     * @param name
+     * @return <code></code>
+     */
     public static IAnnotationAttributeInitializer getAnnotationAttributeInitializerForName(Name name) {
         if (name != null) {
             if (name.isSimpleName() && getSimpleNameToDefinitionMap().containsKey(((SimpleName) name).getIdentifier())) {
-                return getSimpleNameToDefinitionMap().get(((SimpleName) name).getIdentifier()).getAnnotationAttributeInitializer();	
+                return getSimpleNameToDefinitionMap().get(((SimpleName) name).getIdentifier()).getAnnotationAttributeInitializer();
             } else if (name.isQualifiedName() && getQualifiedNameToDefinitionMap().containsKey(name.getFullyQualifiedName())) {
                 return getQualifiedNameToDefinitionMap().get(name.getFullyQualifiedName()).getAnnotationAttributeInitializer();
             }
         }
         return null;
     }
-    
-    public static AnnotationDefinition getAnnotationDefinitionForClass(Class<? extends Annotation> 
+
+    /**
+     *
+     * @param annotationClass
+     * @return <code></code>
+     */
+    public static AnnotationDefinition getAnnotationDefinitionForClass(Class<? extends Annotation>
             annotationClass) {
         return getAnnotationToClassNameDefinitionMap().get(annotationClass.getCanonicalName());
     }
-    
+
+    /**
+     *
+     * @param canonicalName
+     * @return <code></code>
+     */
+    public static AnnotationDefinition getAnnotationDefinitionForClass(String canonicalName) {
+        return getAnnotationToClassNameDefinitionMap().get(canonicalName);
+    }
+
+    /**
+     *
+     * @param categoryName
+     * @return <code></code>
+     */
     public static synchronized List<AnnotationDefinition> getAnnotationsByCategory(String categoryName) {
         if (annotationsByCategoryMap == null) {
             annotationsByCategoryMap = new HashMap<String, List<AnnotationDefinition>>();
             for (AnnotationDefinition annotationDefinition : getAnnotations()) {
-                
+
                 List<AnnotationDefinition> annotationDefinitionList = annotationsByCategoryMap.get(
                         annotationDefinition.getCategory());
-                
+
                 if (annotationDefinitionList == null) {
                     annotationDefinitionList = new ArrayList<AnnotationDefinition>();
                     annotationDefinitionList.add(annotationDefinition);
-                    annotationsByCategoryMap.put(annotationDefinition.getCategory(), 
+                    annotationsByCategoryMap.put(annotationDefinition.getCategory(),
                     		annotationDefinitionList);
                     continue;
                 }
@@ -198,13 +248,17 @@ public final class AnnotationsManager {
         return annotationsByCategoryMap.get(categoryName);
     }
 
+    /**
+     *
+     * @return <code></code>
+     */
     public static List<String> getAnnotationCategories() {
         return Arrays.asList(getAnnotationCategoryCache().values().toArray(
                 new String[getAnnotationCategoryCache().size()]));
     }
 
-    public static String getAnnotationCategory(String categoryId) {
-        return getAnnotationCategoryCache().get(categoryId);        
+    private static String getAnnotationCategory(String categoryId) {
+        return getAnnotationCategoryCache().get(categoryId);
     }
 
     private static synchronized Map<String, String> getAnnotationCategoryCache() {
@@ -213,44 +267,52 @@ public final class AnnotationsManager {
         }
 
         annotationCategoryCache = new HashMap<String, String>();
-        
+
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
                 AnnotationsCorePlugin.PLUGIN_ID, ANNOTATION_CATEGORY);
         if (extensionPoint != null) {
             IConfigurationElement[] elements = extensionPoint.getConfigurationElements();
             for (int i = 0; i < elements.length; i++) {
                 IConfigurationElement element = elements[i];
-                annotationCategoryCache.put(getAttributeValue(element, ATT_ID), 
+                annotationCategoryCache.put(getAttributeValue(element, ATT_ID),
                         getAttributeValue(element, ATT_NAME));
             }
         }
         return annotationCategoryCache;
     }
-    
+
+    /**
+     *
+     * @return <code></code>
+     */
     public static synchronized Map<String, IConfigurationElement> getAnnotationInitializerCache() {
         if (annotationInitializerCache != null) {
             return annotationInitializerCache;
         }
 
         annotationInitializerCache = new HashMap<String, IConfigurationElement>();
-        
+
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
                 AnnotationsCorePlugin.PLUGIN_ID, ANNOTATION_INITIALIZER);
         if (extensionPoint != null) {
             IConfigurationElement[] elements = extensionPoint.getConfigurationElements();
             for (int i = 0; i < elements.length; i++) {
                 IConfigurationElement element = elements[i];
-                annotationInitializerCache.put(getAttributeValue(element, ANNOTATION), 
+                annotationInitializerCache.put(getAttributeValue(element, ANNOTATION),
                         element);
             }
         }
         return annotationInitializerCache;
     }
-    
+
+    /**
+     *
+     * @return <code></code>
+     */
     public static synchronized Map<String, List<IConfigurationElement>> getAnnotationProcessorsCache() {
         if (annotationProcessorCache == null) {
             annotationProcessorCache = new HashMap<String, List<IConfigurationElement>>();
-            
+
             IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
                     AnnotationsCorePlugin.PLUGIN_ID, ANNOTATION_PROCESSOR);
             if (extensionPoint != null) {
@@ -260,7 +322,7 @@ public final class AnnotationsManager {
                     if (element.getName().equalsIgnoreCase("processor")) {
                         String annotationKey = getAttributeValue(element, ANNOTATION);
                         List<IConfigurationElement> configurationElements = annotationProcessorCache.get(
-                        		annotationKey); 
+                        		annotationKey);
                         if (configurationElements == null) {
                             configurationElements = new ArrayList<IConfigurationElement>();
                             configurationElements.add(element);
@@ -275,6 +337,12 @@ public final class AnnotationsManager {
         return annotationProcessorCache;
     }
 
+    /**
+     *
+     * @param configurationElement
+     * @param attributeName
+     * @return
+     */
     public static String getAttributeValue(IConfigurationElement configurationElement, String attributeName) {
         String attribute = configurationElement.getAttribute(attributeName);
         if (attribute != null) {
@@ -282,7 +350,12 @@ public final class AnnotationsManager {
         }
         return ""; //$NON-NLS-1$
     }
-    
+
+    /**
+     *
+     * @param configurationElement
+     * @return
+     */
     public static List<ElementType> getFilteredTargets(IConfigurationElement configurationElement) {
         List<ElementType> targets = new ArrayList<ElementType>(7);
         try {
@@ -297,13 +370,13 @@ public final class AnnotationsManager {
         return targets;
     }
 
-    private static List<AnnotationDefinition> getAllAnnotationsForElement(Object element) 
+    private static List<AnnotationDefinition> getAllAnnotationsForElement(Object element)
             throws JavaModelException {
-        
+
         if (element instanceof IPackageDeclaration) {
             return getAnnotationsForElementType(ElementType.PACKAGE);
         }
-        
+
         if (element instanceof IType) {
             IType type = (IType) element;
             if (type.isAnnotation()) {
@@ -311,15 +384,15 @@ public final class AnnotationsManager {
             }
             return getAnnotationsForElementType(ElementType.TYPE);
         }
-        
+
         if (element instanceof IField) {
             return getAnnotationsForElementType(ElementType.FIELD);
         }
-        
+
         if (element instanceof IMethod) {
             return getAnnotationsForElementType(ElementType.METHOD);
         }
-        
+
         if (element instanceof SingleVariableDeclaration) {
             return getAnnotationsForElementType(ElementType.PARAMETER);
         }
@@ -331,32 +404,32 @@ public final class AnnotationsManager {
         if (element instanceof IAnnotation) {
             return getAnnotationsForElementType(ElementType.ANNOTATION_TYPE);
         }
-        
+
         return Collections.emptyList();
     }
-    
+
     private static List<AnnotationDefinition> getAnnotationsForElementType(ElementType elementType) {
         List<AnnotationDefinition> annotationDefinitions = new ArrayList<AnnotationDefinition>();
-        
+
         if (annotationCache == null) {
             getAnnotations();
         }
-        
+
         for (AnnotationDefinition annotationDefinition : annotationCache) {
-            if (annotationDefinition.getTargets().contains(elementType) && 
+            if (annotationDefinition.getTargets().contains(elementType) &&
                     !isDeprecated(annotationDefinition)) {
                 annotationDefinitions.add(annotationDefinition);
             }
         }
         return annotationDefinitions;
     }
-    
-    private static void filterAnnotationsList(Object element, 
+
+    private static void filterAnnotationsList(Object element,
         List<AnnotationDefinition> annotationDefinitions) throws JavaModelException {
         Iterator<AnnotationDefinition> annotationIter = annotationDefinitions.iterator();
         while (annotationIter.hasNext()) {
             AnnotationDefinition annotationDefinition = annotationIter.next();
-            
+
             if (element instanceof IType) {
                 IType type = (IType) element;
                 if (isClassRestricted(type, annotationDefinition)
@@ -381,7 +454,7 @@ public final class AnnotationsManager {
                     annotationIter.remove();
                 }
             }
-            
+
             if (element instanceof IField) {
                 if(isClassRestricted((IField) element, annotationDefinition)
                         || isInterfaceRestricted((IField) element, annotationDefinition)
@@ -391,7 +464,7 @@ public final class AnnotationsManager {
             }
         }
     }
-    
+
     private static boolean isClassRestricted(IJavaElement javaElement,
     		AnnotationDefinition annotationDefinition) throws JavaModelException {
         if (javaElement.getElementType() == IJavaElement.TYPE) {
@@ -407,7 +480,7 @@ public final class AnnotationsManager {
         }
         return false;
     }
-    
+
     private static boolean isInterfaceRestricted(IJavaElement javaElement,
     		AnnotationDefinition annotationDefinition) throws JavaModelException {
         if (javaElement.getElementType() == IJavaElement.TYPE) {
@@ -423,23 +496,23 @@ public final class AnnotationsManager {
         }
         return false;
     }
-    
+
     private static boolean isEnumRestricted(IJavaElement javaElement,
     		AnnotationDefinition annotationDefinition) throws JavaModelException {
         if (javaElement.getElementType() == IJavaElement.TYPE) {
-            return !((IType)javaElement).isEnum() && annotationDefinition.isEnumOnly();            
+            return !((IType)javaElement).isEnum() && annotationDefinition.isEnumOnly();
         }
         if (javaElement.getElementType() == IJavaElement.METHOD) {
             IType type = (IType)javaElement.getParent();
-            return !type.isEnum() && annotationDefinition.isEnumOnly();            
+            return !type.isEnum() && annotationDefinition.isEnumOnly();
         }
         if (javaElement.getElementType() == IJavaElement.FIELD) {
             IType type = (IType)javaElement.getParent();
-            return !type.isEnum() && annotationDefinition.isEnumOnly();            
+            return !type.isEnum() && annotationDefinition.isEnumOnly();
         }
         return false;
     }
-    
+
     //TODO Move the Deprecated option to preferences
     private static boolean isDeprecated(AnnotationDefinition annotationDefinition) {
         Class<?> annotationClass = annotationDefinition.getAnnotationClass();

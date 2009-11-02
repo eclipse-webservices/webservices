@@ -20,12 +20,11 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.ui.SharedASTProvider;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -37,71 +36,72 @@ import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 
 public class AnnotationCompletionProposalComputer implements IJavaCompletionProposalComputer {
 
-	public AnnotationCompletionProposalComputer() {
-		super();
-	}
+    public AnnotationCompletionProposalComputer() {
+        super();
+    }
 
-	@SuppressWarnings("unchecked")
-	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
-	    if (context instanceof JavaContentAssistInvocationContext) {
-	        return computeCompletionProposals((JavaContentAssistInvocationContext) context);
-	    }
- 	    return Collections.emptyList();
-	}
+    @SuppressWarnings("unchecked")
+    public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
+        if (context instanceof JavaContentAssistInvocationContext) {
+            return computeCompletionProposals((JavaContentAssistInvocationContext) context);
+        }
+        return Collections.emptyList();
+    }
 
-	private List<ICompletionProposal> computeCompletionProposals(JavaContentAssistInvocationContext context) {
+    private List<ICompletionProposal> computeCompletionProposals(JavaContentAssistInvocationContext context) {
         CompletionContext completionContext = context.getCoreContext();
         int tokenStart = completionContext.getOffset();
-	    
-	    ICompilationUnit source = context.getCompilationUnit();
-		try {
-			IJavaElement javaElement = source.getElementAt(tokenStart);
-			if (javaElement != null) {
-		        
-			    CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
-			    
-			    switch(javaElement.getElementType()) {
-			    case IJavaElement.PACKAGE_DECLARATION:
-			    case IJavaElement.TYPE:
-			    case IJavaElement.FIELD:
-			        return getCompletionProposalsForJavaElement(AnnotationUtils.getExtendedModifiers(
-			                compilationUnit, javaElement), javaElement, tokenStart);
-			    case IJavaElement.METHOD:
-			    	ILocalVariable localVariable = AnnotationUtils.getLocalVariable((IMethod) javaElement, tokenStart);
-			    	if (localVariable != null) {
-                        return getCompletionProposalsForJavaElement(AnnotationUtils.getExtendedModifiers(
-                                compilationUnit, localVariable), localVariable, tokenStart);
-			    	}  else {
-                        return getCompletionProposalsForJavaElement(AnnotationUtils.getExtendedModifiers(
-                                compilationUnit, javaElement), javaElement, tokenStart);
+
+        ICompilationUnit source = context.getCompilationUnit();
+        try {
+            IJavaElement javaElement = source.getElementAt(tokenStart);
+            if (javaElement != null) {
+                switch(javaElement.getElementType()) {
+                case IJavaElement.PACKAGE_DECLARATION:
+                case IJavaElement.TYPE:
+                case IJavaElement.FIELD:
+                    return getCompletionProposalsForJavaElement(AnnotationUtils.getAnnotations(
+                            javaElement), javaElement, tokenStart);
+                case IJavaElement.METHOD:
+                    ILocalVariable localVariable = AnnotationUtils.getLocalVariable((IMethod) javaElement, tokenStart);
+                    if (localVariable != null) {
+                        return getCompletionProposalsForJavaElement(AnnotationUtils.getAnnotations(
+                                localVariable), localVariable, tokenStart);
+                    }  else {
+                        return getCompletionProposalsForJavaElement(AnnotationUtils.getAnnotations(
+                                javaElement), javaElement, tokenStart);
                     }
-			    }
-			}
-		} catch (JavaModelException jme) {
-		    JAXWSUIPlugin.log(jme.getStatus());
-		}
-		return Collections.emptyList();
-	}
-	
-	private List<ICompletionProposal> getCompletionProposalsForJavaElement(List<IExtendedModifier> modifiers,
-	        IJavaElement javaElement, int offset) {
-        for (IExtendedModifier extendedModifier : modifiers) {
-            if (extendedModifier.isAnnotation() && extendedModifier instanceof NormalAnnotation) {
-                NormalAnnotation normalAnnotation = (NormalAnnotation) extendedModifier;
+                }
+            }
+        } catch (JavaModelException jme) {
+            JAXWSUIPlugin.log(jme.getStatus());
+        }
+        return Collections.emptyList();
+    }
+
+    private List<ICompletionProposal> getCompletionProposalsForJavaElement(List<Annotation> annotations,
+            IJavaElement javaElement, int offset) {
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof NormalAnnotation) {
+                NormalAnnotation normalAnnotation = (NormalAnnotation) annotation;
                 MemberValuePair memberValuePair = getMemberValuePairForPosition(normalAnnotation, offset);
                 if (memberValuePair != null) {
-                    return getCompletionProposalsForJavaElement(normalAnnotation, memberValuePair, 
+                    return getCompletionProposalsForJavaElement(normalAnnotation, memberValuePair,
                             javaElement);
                 }
+            }
+            if (annotation instanceof SingleMemberAnnotation) {
+                SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
+                return getCompletionProposalsForJavaElement(singleMemberAnnotation, javaElement);
             }
         }
         return Collections.emptyList();
     }
-	
-	private List<ICompletionProposal> getCompletionProposalsForJavaElement(NormalAnnotation normalAnnotation,
-	        MemberValuePair memberValuePair, IJavaElement javaElement) {
+
+    private List<ICompletionProposal> getCompletionProposalsForJavaElement(NormalAnnotation annotation,
+            MemberValuePair memberValuePair, IJavaElement javaElement) {
         IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager
-                .getAnnotationAttributeInitializerForName(normalAnnotation.getTypeName());
+                .getAnnotationAttributeInitializerForName(annotation.getTypeName());
         if (annotationAttributeInitializer != null) {
             return annotationAttributeInitializer.getCompletionProposalsForMemberValuePair(javaElement,
                     memberValuePair);
@@ -109,8 +109,20 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
         return Collections.emptyList();
     }
 
-	@SuppressWarnings("unchecked")
-	private MemberValuePair getMemberValuePairForPosition(NormalAnnotation normalAnnotation, int offset) {
+    private List<ICompletionProposal> getCompletionProposalsForJavaElement(SingleMemberAnnotation annotation,
+            IJavaElement javaElement) {
+        IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager
+                .getAnnotationAttributeInitializerForName(annotation.getTypeName());
+        if (annotationAttributeInitializer != null) {
+            return annotationAttributeInitializer.getCompletionProposalsForSingleMemberAnnotation(javaElement,
+                    annotation);
+        }
+        return Collections.emptyList();
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private MemberValuePair getMemberValuePairForPosition(NormalAnnotation normalAnnotation, int offset) {
         List<MemberValuePair> memberValuePairs = normalAnnotation.values();
         for (MemberValuePair memberValuePair : memberValuePairs) {
             Expression value = memberValuePair.getValue();
@@ -122,21 +134,20 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
             }
         }
         return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
-		return Collections.emptyList();
-	}
+    }
 
-	public String getErrorMessage() {
-		return null;
-	}
+    @SuppressWarnings("unchecked")
+    public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
+        return Collections.emptyList();
+    }
 
-	public void sessionEnded() {
-	}
+    public String getErrorMessage() {
+        return null;
+    }
 
-	public void sessionStarted() {
-	}
+    public void sessionEnded() {
+    }
 
+    public void sessionStarted() {
+    }
 }

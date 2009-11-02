@@ -22,7 +22,9 @@ import javax.xml.ws.soap.SOAPBinding;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
@@ -42,10 +44,10 @@ public class BindingTypeAttributeInitializer extends AnnotationAttributeInitiali
     private static final String HTTP_BINDING = "javax.xml.ws.http.HTTPBinding"; //$NON-NLS-1$
 
     public BindingTypeAttributeInitializer() {
-        JAXWSUIPlugin.getDefault().getImageRegistry().put(SOAP_BINDING, 
-        		JAXWSUIPlugin.getImageDescriptor("icons/obj16/soapbinding_obj.gif").createImage()); //$NON-NLS-1$
-        JAXWSUIPlugin.getDefault().getImageRegistry().put(HTTP_BINDING, 
-        		JAXWSUIPlugin.getImageDescriptor("icons/obj16/httpbinding_obj.gif").createImage()); //$NON-NLS-1$
+        JAXWSUIPlugin.getDefault().getImageRegistry().put(SOAP_BINDING,
+                JAXWSUIPlugin.getImageDescriptor("icons/obj16/soapbinding_obj.gif").createImage()); //$NON-NLS-1$
+        JAXWSUIPlugin.getDefault().getImageRegistry().put(HTTP_BINDING,
+                JAXWSUIPlugin.getImageDescriptor("icons/obj16/httpbinding_obj.gif").createImage()); //$NON-NLS-1$
     }
 
     @Override
@@ -59,11 +61,25 @@ public class BindingTypeAttributeInitializer extends AnnotationAttributeInitiali
         return memberValuePairs;
     }
 
+    @Override
+    public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
+            SingleMemberAnnotation singleMemberAnnotation) {
+        List<ICompletionProposal> completionProposals = new ArrayList<ICompletionProposal>();
+        if (javaElement.getElementType() == IJavaElement.TYPE) {
+            Expression expression = singleMemberAnnotation.getValue();
+            if (expression != null) {
+                addQualifiedNameBindingsCompletionProposals(completionProposals, expression);
+            }
+        }
+        return completionProposals;
+    }
+
+    @Override
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair) {
         List<ICompletionProposal> completionProposals = new ArrayList<ICompletionProposal>();
         if (javaElement.getElementType() == IJavaElement.TYPE) {
-            IType type = (IType)  javaElement;
+            IType type = (IType) javaElement;
             String memberValuePairName = memberValuePair.getName().getIdentifier();
             if (memberValuePairName.equals(VALUE)) { //$NON-NLS-1$
                 String value = memberValuePair.getValue().toString();
@@ -82,19 +98,22 @@ public class BindingTypeAttributeInitializer extends AnnotationAttributeInitiali
                               fullyQualifiedTypeName));
                     }
                 } else {
-                    Map<String, String> bindings = getQualifiedNameBindingsMap();
-                    Iterator<Map.Entry<String, String>> bindingsIter = bindings.entrySet().iterator();
-                    while (bindingsIter.hasNext()) {
-                        Map.Entry<String, String> bindingEntry = bindingsIter.next();
-                        String proposal = bindingEntry.getKey();
-                        Image image = JAXWSUIPlugin.getDefault().getImageRegistry().get(bindingEntry.getValue());
-                        completionProposals.add(createCompletionProposal(proposal, memberValuePair.getValue(),
-                                image, getDisplayString(proposal)));
-                    }
+                    addQualifiedNameBindingsCompletionProposals(completionProposals, memberValuePair.getValue());
                 }
              }
         }
         return completionProposals;
+    }
+
+    private void addQualifiedNameBindingsCompletionProposals(List<ICompletionProposal> completionProposals, Expression value) {
+        Map<String, String> bindings = getQualifiedNameBindingsMap();
+        Iterator<Map.Entry<String, String>> bindingsIter = bindings.entrySet().iterator();
+        while (bindingsIter.hasNext()) {
+            Map.Entry<String, String> bindingEntry = bindingsIter.next();
+            String proposal = bindingEntry.getKey();
+            Image image = JAXWSUIPlugin.getDefault().getImageRegistry().get(bindingEntry.getValue());
+            completionProposals.add(createCompletionProposal(proposal, value, image, getDisplayString(proposal)));
+        }
     }
 
     public String getDefault() {

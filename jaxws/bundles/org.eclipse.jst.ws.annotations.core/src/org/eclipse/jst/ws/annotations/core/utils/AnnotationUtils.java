@@ -1,17 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2008 IONA Technologies PLC
+ * Copyright (c) 2008 IONA Technologies PLC, Shane Clarke
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * IONA Technologies PLC - initial API and implementation
+ *    IONA Technologies PLC - initial API and implementation
+ *    Shane Clarke - Rewrote API
  *******************************************************************************/
 package org.eclipse.jst.ws.annotations.core.utils;
 
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,12 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.filebuffers.FileBuffers;
-import org.eclipse.core.filebuffers.ITextFileBufferManager;
-import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IAnnotatable;
@@ -46,7 +42,6 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
-import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
@@ -71,13 +66,13 @@ import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jdt.ui.CodeStyleConfiguration;
 import org.eclipse.jdt.ui.SharedASTProvider;
-import org.eclipse.jface.text.IDocument;
+import org.eclipse.jst.ws.annotations.core.AnnotationDefinition;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCorePlugin;
+import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.IUndoManager;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
-import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
@@ -98,35 +93,120 @@ import com.sun.mirror.declaration.ParameterDeclaration;
  * </p>
  */
 public final class AnnotationUtils {
-    private static final String FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR
-        = "org.eclipse.jdt.core.formatter.insert_space_before_assignment_operator"; //$NON-NLS-1$
-    private static final String FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR
-        = "org.eclipse.jdt.core.formatter.insert_space_after_assignment_operator"; //$NON-NLS-1$
-    private static final String DO_NOT_INSERT = "do not insert"; //$NON-NLS-1$
-
 
     private AnnotationUtils() {
     }
 
-    public static TextEdit createAddImportTextEdit(IJavaElement javaElement,
-            Class<? extends java.lang.annotation.Annotation> annotation) throws CoreException {
+    public static void addImport(IJavaElement javaElement, String qualifiedName) throws CoreException {
+        TextFileChange change = new TextFileChange("Add Import", (IFile) javaElement.getResource());
+        MultiTextEdit multiTextEdit = new MultiTextEdit();
+        change.setEdit(multiTextEdit);
+
+        TextEdit annotationEdit = AnnotationUtils.createAddImportTextEdit(javaElement, qualifiedName);
+        change.addEdit(annotationEdit);
+        applyChange(null, change);
+    }
+
+    public static void removeImport(IJavaElement javaElement, String qualifiedName) throws CoreException {
+        TextFileChange change = new TextFileChange("Remove Import", (IFile) javaElement.getResource());
+        MultiTextEdit multiTextEdit = new MultiTextEdit();
+        change.setEdit(multiTextEdit);
+
+        TextEdit annotationEdit = AnnotationUtils.createRemoveImportTextEdit(javaElement, qualifiedName);
+        change.addEdit(annotationEdit);
+        applyChange(null, change);
+    }
+
+    public static void addAnnotation(IJavaElement javaElement, Annotation annotation) throws CoreException {
+        TextFileChange change = new TextFileChange("Add annotation", (IFile) javaElement.getResource());
+        MultiTextEdit multiTextEdit = new MultiTextEdit();
+        change.setEdit(multiTextEdit);
+
+        TextEdit annotationEdit = AnnotationUtils.createAddAnnotationTextEdit(javaElement, annotation);
+        change.addEdit(annotationEdit);
+        applyChange(null, change);
+    }
+
+    public static void removeAnnotation(IJavaElement javaElement, Annotation annotation) throws CoreException {
+        TextFileChange change = new TextFileChange("Remove annotation", (IFile) javaElement.getResource());
+        MultiTextEdit multiTextEdit = new MultiTextEdit();
+        change.setEdit(multiTextEdit);
+
+        TextEdit textEdit = AnnotationUtils.createRemoveAnnotationTextEdit(javaElement, annotation);
+        change.addEdit(textEdit);
+        applyChange(null, change);
+    }
+
+    public static void addMemberValuePair(NormalAnnotation annotation, MemberValuePair memberValuePair) throws CoreException {
+        if (annotation.getRoot() instanceof CompilationUnit) {
+            CompilationUnit compilationUnit = (CompilationUnit) annotation.getRoot();
+            TextFileChange change = new TextFileChange("Add Member Value Pair", (IFile) compilationUnit.getJavaElement().getResource());
+            MultiTextEdit multiTextEdit = new MultiTextEdit();
+            change.setEdit(multiTextEdit);
+
+            TextEdit annotationEdit = AnnotationUtils.createAddMemberValuePairTextEdit(annotation, memberValuePair);
+            change.addEdit(annotationEdit);
+            applyChange(null, change);
+        }
+    }
+
+    public static void removeMemberValuePair(NormalAnnotation annotation, MemberValuePair memberValuePair) throws CoreException {
+        if (annotation.getRoot() instanceof CompilationUnit) {
+            CompilationUnit compilationUnit = (CompilationUnit) annotation.getRoot();
+            TextFileChange change = new TextFileChange("Remove Member Value Pair", (IFile) compilationUnit.getJavaElement().getResource());
+            MultiTextEdit multiTextEdit = new MultiTextEdit();
+            change.setEdit(multiTextEdit);
+
+            TextEdit annotationEdit = AnnotationUtils.createRemoveMemberValuePairTextEdit(annotation, memberValuePair);
+            change.addEdit(annotationEdit);
+            applyChange(null, change);
+        }
+    }
+
+    public static void updateMemberValuePair(MemberValuePair memberValuePair, ASTNode value) throws CoreException {
+        if (memberValuePair.getRoot() instanceof CompilationUnit) {
+            CompilationUnit compilationUnit = (CompilationUnit) memberValuePair.getRoot();
+            TextFileChange change = new TextFileChange("Update Member Value Pair", (IFile) compilationUnit.getJavaElement().getResource());
+            MultiTextEdit multiTextEdit = new MultiTextEdit();
+            change.setEdit(multiTextEdit);
+
+            TextEdit annotationEdit = AnnotationUtils.createUpdateMemberValuePairTextEdit(memberValuePair, value);
+            change.addEdit(annotationEdit);
+            applyChange(null, change);
+        }
+    }
+
+    public static void updateSingleMemberAnnotation(SingleMemberAnnotation annotation, ASTNode value)  throws CoreException {
+        if (annotation.getRoot() instanceof CompilationUnit) {
+            CompilationUnit compilationUnit = (CompilationUnit) annotation.getRoot();
+            TextFileChange change = new TextFileChange("Update Single Member Annotation", (IFile) compilationUnit.getJavaElement().getResource());
+            MultiTextEdit multiTextEdit = new MultiTextEdit();
+            change.setEdit(multiTextEdit);
+
+            TextEdit annotationEdit = AnnotationUtils.createUpdateSingleMemberAnnotationTextEdit(annotation, value);
+            change.addEdit(annotationEdit);
+            applyChange(null, change);
+        }
+    }
+
+    public static TextEdit createAddImportTextEdit(IJavaElement javaElement, String qualifiedName) throws CoreException {
         CompilationUnit compilationUnit = SharedASTProvider.getAST(getCompilationUnitFromJavaElement(javaElement), SharedASTProvider.WAIT_YES, null);
-        String qualifiedName = annotation.getCanonicalName();
         ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
         importRewrite.addImport(qualifiedName);
         return importRewrite.rewriteImports(null);
     }
 
     @SuppressWarnings("unchecked")
-    public static TextEdit createRemoveImportTextEdit(IJavaElement javaElement,
-            Class<? extends java.lang.annotation.Annotation> annotation) throws CoreException {
+    public static TextEdit createRemoveImportTextEdit(IJavaElement javaElement, String qualifiedName) throws CoreException {
         CompilationUnit compilationUnit = SharedASTProvider.getAST(getCompilationUnitFromJavaElement(javaElement), SharedASTProvider.WAIT_YES, null);
-        String qualifiedName = annotation.getCanonicalName();
         ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
-        final String annotationSimpleName = annotation.getSimpleName();
+        final String annotationSimpleName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
         final List<String> occurences = new ArrayList<String>();
-        Target target = annotation.getAnnotation(Target.class);
-        List<ElementType> elementTypes = Arrays.asList(target.value());
+        AnnotationDefinition annotationDefinition = AnnotationsManager.getAnnotationDefinitionForClass(qualifiedName);
+        List<ElementType> elementTypes = Collections.emptyList();
+        if (annotationDefinition != null) {
+            elementTypes = annotationDefinition.getTargets();
+        }
         for (ElementType elementType : elementTypes) {
             if (elementType == ElementType.PACKAGE) {
                 compilationUnit.accept(new ASTVisitor() {
@@ -236,20 +316,6 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void addAnnotation(IJavaElement javaElement, Annotation annotation) throws CoreException {
-        TextChange change = AnnotationUtils.createTextFileChange("Add annotation", (IFile) javaElement.getResource());
-        TextEdit annotationEdit = createAddAnnotationTextEdit(javaElement, annotation);
-        change.addEdit(annotationEdit);
-        applyChange(null, change);
-    }
-
-    public static void removeAnnotation(IJavaElement javaElement, Annotation annotation) throws CoreException {
-        TextEdit textEdit = createRemoveAnnotationTextEdit(javaElement, annotation);
-        TextChange change = AnnotationUtils.createTextFileChange("Add annotation", (IFile) javaElement.getResource());
-        change.addEdit(textEdit);
-        applyChange(null, change);
-    }
-
     private static void applyChange(IProgressMonitor monitor, Change change) {
         if (change == null) {
             return;
@@ -278,24 +344,6 @@ public final class AnnotationUtils {
         if (undoChange != null) {
             undoChange.initializeValidationData(monitor);
             manager.addUndo(undoChange.getName(), undoChange);
-        }
-    }
-
-    private static IDocument getDocument(ICompilationUnit source) throws CoreException {
-        ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
-        IProgressMonitor monitor = new NullProgressMonitor();
-
-        IPath path = source.getResource().getFullPath();
-        boolean connected = false;
-        try {
-            bufferManager.connect(path, LocationKind.IFILE, monitor);
-            connected = true;
-            IDocument document = bufferManager.getTextFileBuffer(path, LocationKind.IFILE).getDocument();
-            return document;
-        } finally {
-            if (connected) {
-                bufferManager.disconnect(path, LocationKind.IFILE, monitor);
-            }
         }
     }
 
@@ -331,22 +379,17 @@ public final class AnnotationUtils {
                     listRewrite.remove((Annotation) object, null);
                 }
             }
-
             return rewriter.rewriteAST();
         }
         return new MultiTextEdit();
     }
 
     private static TextEdit createAddAnnotationTextEdit(IType type, Annotation annotation) throws CoreException {
-        ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(type);
+        if(typeDeclaration != null && !isAnnotationPresent(type, annotation)) {
+            ASTRewrite rewriter = ASTRewrite.create(typeDeclaration.getAST());
 
-        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(compilationUnit, type);
-        if(typeDeclaration != null && !isAnnotationPresent(typeDeclaration, annotation)) {
-            ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
-
-            ListRewrite listRewrite = rewriter.getListRewrite(typeDeclaration,
-                    getChildListPropertyDescriptorForType(typeDeclaration));
+            ListRewrite listRewrite = rewriter.getListRewrite(typeDeclaration, getChildListPropertyDescriptorForType(typeDeclaration));
 
             listRewrite.insertFirst(annotation, null);
 
@@ -356,15 +399,11 @@ public final class AnnotationUtils {
     }
 
     private static TextEdit createRemoveAnnotationTextEdit(IType type, Annotation annotation) throws CoreException {
-        ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(type);
+        if (typeDeclaration != null && isAnnotationPresent(type, annotation)) {
+            ASTRewrite rewriter = ASTRewrite.create(typeDeclaration.getAST());
 
-        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(compilationUnit, type);
-        if (typeDeclaration != null && isAnnotationPresent(typeDeclaration, annotation)) {
-            ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
-
-            ListRewrite listRewrite = rewriter.getListRewrite(typeDeclaration,
-                    getChildListPropertyDescriptorForType(typeDeclaration));
+            ListRewrite listRewrite = rewriter.getListRewrite(typeDeclaration, getChildListPropertyDescriptorForType(typeDeclaration));
 
             @SuppressWarnings("unchecked")
             List originalList = listRewrite.getOriginalList();
@@ -373,22 +412,18 @@ public final class AnnotationUtils {
                     listRewrite.remove((Annotation)object, null);
                 }
             }
-
             return rewriter.rewriteAST();
         }
         return new MultiTextEdit();
     }
 
     private static TextEdit createAddAnnotationTextEdit(IMethod method, Annotation annotation) throws CoreException {
-        ICompilationUnit source = method.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        MethodDeclaration methodDeclaration = getMethodDeclaration(method);
+        if (methodDeclaration != null && !isAnnotationPresent(method, annotation)) {
+            ASTRewrite rewriter = ASTRewrite.create(methodDeclaration.getAST());
 
-        BodyDeclaration bodyDeclaration = getMethodDeclaration(compilationUnit, method);
-        if (bodyDeclaration != null && !isAnnotationPresent(bodyDeclaration, annotation)) {
-            ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
+            ListRewrite listRewrite = rewriter.getListRewrite(methodDeclaration,  MethodDeclaration.MODIFIERS2_PROPERTY);
 
-            ListRewrite listRewrite = rewriter.getListRewrite(bodyDeclaration,
-                    getChildListPropertyDescriptorForMethod(bodyDeclaration));
             listRewrite.insertAt(annotation, 0, null);
 
             return rewriter.rewriteAST();
@@ -397,15 +432,11 @@ public final class AnnotationUtils {
     }
 
     private static TextEdit createRemoveAnnotationTextEdit(IMethod method, Annotation annotation) throws CoreException {
-        ICompilationUnit source = method.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        MethodDeclaration methodDeclaration = getMethodDeclaration(method);
+        if (methodDeclaration != null && isAnnotationPresent(method, annotation)) {
+            ASTRewrite rewriter = ASTRewrite.create(methodDeclaration.getAST());
 
-        BodyDeclaration bodyDeclaration = getMethodDeclaration(compilationUnit, method);
-        if (bodyDeclaration != null && isAnnotationPresent(bodyDeclaration, annotation)) {
-            ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
-
-            ListRewrite listRewrite = rewriter.getListRewrite(bodyDeclaration,
-                    getChildListPropertyDescriptorForMethod(bodyDeclaration));
+            ListRewrite listRewrite = rewriter.getListRewrite(methodDeclaration,  MethodDeclaration.MODIFIERS2_PROPERTY);
 
             @SuppressWarnings("unchecked")
             List originalList = listRewrite.getOriginalList();
@@ -416,18 +447,14 @@ public final class AnnotationUtils {
             }
             return rewriter.rewriteAST();
         }
-
         return new MultiTextEdit();
     }
 
     private static TextEdit createAddAnnotationTextEdit(IField field, Annotation annotation) throws CoreException {
-        ICompilationUnit source = field.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
+        FieldDeclaration fieldDeclaration = getFieldDeclaration(field);
+        if (fieldDeclaration != null && !isAnnotationPresent(field, annotation)) {
 
-        FieldDeclaration fieldDeclaration = getFieldDeclaration(compilationUnit, field);
-        if (fieldDeclaration != null && !isAnnotationPresent(fieldDeclaration, annotation)) {
-
-            ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
+            ASTRewrite rewriter = ASTRewrite.create(fieldDeclaration.getAST());
 
             ListRewrite listRewrite = rewriter.getListRewrite(fieldDeclaration, FieldDeclaration.MODIFIERS2_PROPERTY);
             listRewrite.insertAt(annotation, 0, null);
@@ -439,14 +466,9 @@ public final class AnnotationUtils {
     }
 
     private static TextEdit createRemoveAnnotationTextEdit(IField field, Annotation annotation) throws CoreException {
-        ICompilationUnit source = field.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
-
-        FieldDeclaration fieldDeclaration = getFieldDeclaration(compilationUnit, field);
-
-        if (fieldDeclaration != null && isAnnotationPresent(fieldDeclaration, annotation)) {
-
-            ASTRewrite rewriter = ASTRewrite.create(compilationUnit.getAST());
+        FieldDeclaration fieldDeclaration = getFieldDeclaration(field);
+        if (fieldDeclaration != null && isAnnotationPresent(field, annotation)) {
+            ASTRewrite rewriter = ASTRewrite.create(fieldDeclaration.getAST());
 
             ListRewrite listRewrite = rewriter.getListRewrite(fieldDeclaration, FieldDeclaration.MODIFIERS2_PROPERTY);
 
@@ -457,10 +479,8 @@ public final class AnnotationUtils {
                     listRewrite.remove((Annotation) object, null);
                 }
             }
-
             return rewriter.rewriteAST();
         }
-
         return new MultiTextEdit();
     }
 
@@ -505,14 +525,25 @@ public final class AnnotationUtils {
 
         listRewrite.insertLast(memberValuePair, null);
 
-        if (annotation.getRoot() instanceof CompilationUnit) {
-            CompilationUnit compilationUnit = (CompilationUnit) annotation.getRoot();
-            ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(compilationUnit.getJavaElement());
-            IDocument document = getDocument(source);
-            return rewriter.rewriteAST(document, getOptions(source));
-        } else {
-            return rewriter.rewriteAST();
+        return rewriter.rewriteAST();
+    }
+
+    public static TextEdit createRemoveMemberValuePairTextEdit(NormalAnnotation annotation, MemberValuePair memberValuePair) throws CoreException {
+        ASTRewrite rewriter = ASTRewrite.create(annotation.getAST());
+
+        ListRewrite listRewrite = rewriter.getListRewrite(annotation, NormalAnnotation.VALUES_PROPERTY);
+
+        @SuppressWarnings("unchecked")
+        List originalList = listRewrite.getOriginalList();
+        for (Object object : originalList) {
+            if (object instanceof MemberValuePair) {
+                MemberValuePair mvp = (MemberValuePair) object;
+                if (mvp.getName().getIdentifier().equals(memberValuePair.getName().getIdentifier())) {
+                    listRewrite.remove(mvp, null);
+                }
+            }
         }
+        return rewriter.rewriteAST();
     }
 
     public static TextEdit createUpdateMemberValuePairTextEdit(MemberValuePair memberValuePair, ASTNode value) throws CoreException {
@@ -558,7 +589,8 @@ public final class AnnotationUtils {
     }
 
     @SuppressWarnings("unchecked")
-    private static AbstractTypeDeclaration getTypeDeclaration(CompilationUnit compilationUnit, IType type) {
+    public static AbstractTypeDeclaration getTypeDeclaration(IType type) {
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(type.getCompilationUnit(), SharedASTProvider.WAIT_YES, null);
         List<TypeDeclaration> types = compilationUnit.types();
         for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
             if (compareTypeNames(abstractTypeDeclaration, type)) {
@@ -569,19 +601,15 @@ public final class AnnotationUtils {
     }
 
     @SuppressWarnings("unchecked")
-    private static BodyDeclaration getMethodDeclaration(CompilationUnit compilationUnit, IMethod method) {
-        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(compilationUnit, method.getDeclaringType());
+    public static MethodDeclaration getMethodDeclaration(IMethod method) {
+        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(method.getDeclaringType());
         if (typeDeclaration != null) {
             List<BodyDeclaration> bodyDeclarations = typeDeclaration.bodyDeclarations();
             for (BodyDeclaration bodyDeclaration : bodyDeclarations) {
                 if (bodyDeclaration instanceof MethodDeclaration) {
-                    if (compareMethods((MethodDeclaration) bodyDeclaration, method)) {
-                        return bodyDeclaration;
-                    }
-                }
-                if (bodyDeclaration instanceof AnnotationTypeMemberDeclaration) {
-                    if (compareMethodNames((AnnotationTypeMemberDeclaration)bodyDeclaration, method)) {
-                        return bodyDeclaration;
+                    MethodDeclaration methodDeclaration = (MethodDeclaration) bodyDeclaration;
+                    if (compareMethods(methodDeclaration, method)) {
+                        return methodDeclaration;
                     }
                 }
             }
@@ -590,8 +618,8 @@ public final class AnnotationUtils {
     }
 
     @SuppressWarnings("unchecked")
-    private static FieldDeclaration getFieldDeclaration(CompilationUnit compilationUnit, IField field) {
-        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(compilationUnit, field.getDeclaringType());
+    public static FieldDeclaration getFieldDeclaration(IField field) {
+        AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(field.getDeclaringType());
         if (typeDeclaration != null) {
             List<BodyDeclaration> bodyDeclarations = typeDeclaration.bodyDeclarations();
             for (BodyDeclaration bodyDeclaration : bodyDeclarations) {
@@ -606,23 +634,21 @@ public final class AnnotationUtils {
         return null;
     }
 
-    private static BodyDeclaration getFieldDeclaration(List<BodyDeclaration> bodyDeclarations, IField field) {
-        for (BodyDeclaration bodyDeclaration : bodyDeclarations) {
-            if (bodyDeclaration instanceof FieldDeclaration) {
-                if (compareFieldNames((FieldDeclaration)bodyDeclaration, field)) {
-                    return bodyDeclaration;
+    public static SingleVariableDeclaration getSingleVariableDeclaration(ILocalVariable javaElement) {
+        if (javaElement instanceof ILocalVariable && javaElement.getParent() instanceof IMethod) {
+            ILocalVariable localVariable = javaElement;
+            IMethod method = (IMethod) localVariable.getParent();
+            MethodDeclaration methodDeclaration = getMethodDeclaration(method);
+
+            @SuppressWarnings("unchecked")
+            List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
+            for (SingleVariableDeclaration singleVariableDeclaration : parameters) {
+                if (singleVariableDeclaration.getName().getIdentifier().equals(localVariable.getElementName())) {
+                    return singleVariableDeclaration;
                 }
             }
         }
         return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Map getOptions(ICompilationUnit source) {
-        Map options = source.getJavaProject().getOptions(true);
-        options.put(FORMATTER_INSERT_SPACE_BEFORE_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-        options.put(FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, DO_NOT_INSERT);
-        return options;
     }
 
     private static ChildListPropertyDescriptor getChildListPropertyDescriptorForType(AbstractTypeDeclaration
@@ -640,24 +666,11 @@ public final class AnnotationUtils {
         return childListPropertyDescriptor;
     }
 
-    private static ChildListPropertyDescriptor getChildListPropertyDescriptorForMethod(
-            BodyDeclaration bodyDeclaration) {
-        if (bodyDeclaration instanceof MethodDeclaration) {
-            return MethodDeclaration.MODIFIERS2_PROPERTY;
-        }
-        if (bodyDeclaration instanceof AnnotationTypeMemberDeclaration) {
-            return AnnotationTypeMemberDeclaration.MODIFIERS2_PROPERTY;
-        }
-        return null;
-    }
-
-    public static TextFileChange createTextFileChange(String textFileChangeName, IFile file) {
-        TextFileChange textFileChange = new TextFileChange(textFileChangeName, file);
-        MultiTextEdit multiTextEdit = new MultiTextEdit();
-        textFileChange.setEdit(multiTextEdit);
-        return textFileChange;
-    }
-
+    /**
+     * Returns the annotations name.
+     * @param annotation
+     * @return the annotation name
+     */
     public static String getAnnotationName(Annotation annotation) {
         Name annotationTypeName = annotation.getTypeName();
         return annotationTypeName.getFullyQualifiedName();
@@ -707,8 +720,7 @@ public final class AnnotationUtils {
 
     public static boolean compareMethods(com.sun.mirror.declaration.MethodDeclaration methodOne,
             com.sun.mirror.declaration.MethodDeclaration methodTwo) {
-        return compareMethodNames(methodOne, methodTwo)
-        && compareMethodParameterTypes(methodOne, methodTwo);
+        return compareMethodNames(methodOne, methodTwo) && compareMethodParameterTypes(methodOne, methodTwo);
     }
 
     private static boolean compareMethodNames(com.sun.mirror.declaration.MethodDeclaration methodOne,
@@ -730,13 +742,8 @@ public final class AnnotationUtils {
                 }
             }
             return true;
-
         }
         return false;
-    }
-
-    private static boolean compareMethodNames(AnnotationTypeMemberDeclaration memmberDeclaration, IMethod method) {
-        return memmberDeclaration.getName().getIdentifier().equals(method.getElementName());
     }
 
     @SuppressWarnings("unchecked")
@@ -777,44 +784,17 @@ public final class AnnotationUtils {
             return isAnnotationPresent(((ICompilationUnit)javaElement).findPrimaryType(), annotationName);
         }
 
-        ICompilationUnit source = getCompilationUnitFromJavaElement(javaElement);
-
         int elementType = javaElement.getElementType();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         if (elementType == IJavaElement.PACKAGE_DECLARATION
                 || elementType == IJavaElement.TYPE
                 || elementType == IJavaElement.METHOD
                 || elementType == IJavaElement.LOCAL_VARIABLE
                 || elementType == IJavaElement.FIELD) {
-            return isAnnotationPresent(compilationUnit, javaElement,
-                    annotationName);
-        }
-        return false;
-    }
 
-    @SuppressWarnings("unchecked")
-    private static boolean isAnnotationPresent(BodyDeclaration bodyDeclaration, Annotation annatotationToAdd) {
-        boolean exists = false;
-        List<IExtendedModifier> modifiers = bodyDeclaration.modifiers();
-        for (IExtendedModifier extendedModifier : modifiers) {
-            if (extendedModifier instanceof Annotation) {
-                Annotation existingAnnotation = (Annotation) extendedModifier;
-                if (compareAnnotationNames(annatotationToAdd, existingAnnotation)) {
-                    return true;
-                }
-            }
-        }
-        return exists;
-    }
-
-    private static boolean isAnnotationPresent(CompilationUnit compilationUnit, IJavaElement javaElement,
-            String annotationName) {
-        List<IExtendedModifier> modifiers = getExtendedModifiers(compilationUnit, javaElement);
-        for (IExtendedModifier extendedModifier : modifiers) {
-            if (extendedModifier.isAnnotation()) {
-                Annotation existingAnnotation = (Annotation) extendedModifier;
-                if (AnnotationUtils.getAnnotationName(existingAnnotation).equals(annotationName)) {
+            List<Annotation> annotations = getAnnotations(javaElement);
+            for (Annotation annotation : annotations) {
+                if (AnnotationUtils.getAnnotationName(annotation).equals(annotationName)) {
                     return true;
                 }
             }
@@ -823,105 +803,59 @@ public final class AnnotationUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static List<IExtendedModifier> getExtendedModifiers(CompilationUnit compilationUnit,
-            IJavaElement javaElement) {
+    public static List<Annotation> getAnnotations(IJavaElement javaElement) {
+        ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION) {
             PackageDeclaration packageDeclaration = compilationUnit.getPackage();
             return packageDeclaration.annotations();
         }
 
-        IType type = compilationUnit.getTypeRoot().findPrimaryType();
-        List<AbstractTypeDeclaration> types = compilationUnit.types();
-        for (AbstractTypeDeclaration abstractTypeDeclaration : types) {
-            if (compareTypeNames(abstractTypeDeclaration, type)) {
-                List<BodyDeclaration> bodyDeclarations = getBodyDeclarationsForType(abstractTypeDeclaration);
 
-                BodyDeclaration bodyDeclaration = null;
-                if (javaElement.getElementType() == IJavaElement.TYPE) {
-                    bodyDeclaration = abstractTypeDeclaration;
-                }
+        if (javaElement.getElementType() == IJavaElement.TYPE) {
+            IType type = (IType) javaElement;
+            AbstractTypeDeclaration typeDeclaration = AnnotationUtils.getTypeDeclaration(type);
+            return extractAnnotations(typeDeclaration.modifiers());
+        }
 
-                if (javaElement.getElementType() == IJavaElement.METHOD) {
-                    bodyDeclaration = getMethodDeclaration(bodyDeclarations, (IMethod) javaElement);
-                }
+        if (javaElement.getElementType() == IJavaElement.METHOD) {
+            IMethod method = (IMethod) javaElement;
+            MethodDeclaration methodDeclaration = AnnotationUtils.getMethodDeclaration(method);
+            return extractAnnotations(methodDeclaration.modifiers());
+        }
 
-                if (javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-                    SingleVariableDeclaration singleVariableDeclaration = getSingleVariableDeclaration((ILocalVariable) javaElement);
-                    if (singleVariableDeclaration != null) {
-                        return singleVariableDeclaration.modifiers();
-                    }
-                }
+        if (javaElement.getElementType() == IJavaElement.FIELD) {
+            IField field = (IField) javaElement;
+            FieldDeclaration fieldDeclaration = AnnotationUtils.getFieldDeclaration(field);
+            return extractAnnotations(fieldDeclaration.modifiers());
+        }
 
-                if (javaElement.getElementType() == IJavaElement.FIELD) {
-                    bodyDeclaration = getFieldDeclaration(bodyDeclarations, (IField) javaElement);
-                }
-
-                return bodyDeclaration != null ? bodyDeclaration.modifiers() : Collections.emptyList();
+        if (javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
+            SingleVariableDeclaration singleVariableDeclaration = getSingleVariableDeclaration((ILocalVariable) javaElement);
+            if (singleVariableDeclaration != null) {
+                return extractAnnotations(singleVariableDeclaration.modifiers());
             }
         }
+
         return Collections.emptyList();
     }
 
-    public static SingleVariableDeclaration getSingleVariableDeclaration(ILocalVariable javaElement) {
-        if (javaElement instanceof ILocalVariable && javaElement.getParent() instanceof IMethod) {
-            ILocalVariable localVariable = javaElement;
-            IMethod method = (IMethod) localVariable.getParent();
-            CompilationUnit compilationUnit = SharedASTProvider.getAST(getCompilationUnitFromJavaElement(javaElement), SharedASTProvider.WAIT_YES, null);
-
-            MethodDeclaration methodDeclaration = (MethodDeclaration) getMethodDeclaration(compilationUnit, method);
-
-            @SuppressWarnings("unchecked")
-            List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
-            for (SingleVariableDeclaration singleVariableDeclaration : parameters) {
-                if (singleVariableDeclaration.getName().toString().equals(localVariable.getElementName())) {
-                    return singleVariableDeclaration;
-                }
+    private static List<Annotation> extractAnnotations(List<IExtendedModifier> extendedModifiers) {
+        List<Annotation> annotations = new ArrayList<Annotation>();
+        for (IExtendedModifier extendedModifier : extendedModifiers) {
+            if (extendedModifier.isAnnotation()) {
+                annotations.add((Annotation) extendedModifier);
             }
         }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<BodyDeclaration> getBodyDeclarationsForType(
-            AbstractTypeDeclaration abstractTypeDeclaration) {
-        if (abstractTypeDeclaration instanceof TypeDeclaration) {
-            TypeDeclaration typeDeclaration = (TypeDeclaration) abstractTypeDeclaration;
-            return typeDeclaration.bodyDeclarations();
-        }
-        if (abstractTypeDeclaration instanceof EnumDeclaration) {
-            EnumDeclaration enumDeclaration = (EnumDeclaration) abstractTypeDeclaration;
-            return enumDeclaration.bodyDeclarations();
-        }
-        if (abstractTypeDeclaration instanceof AnnotationTypeDeclaration) {
-            AnnotationTypeDeclaration annotationTypeDeclaration =
-                (AnnotationTypeDeclaration) abstractTypeDeclaration;
-            return annotationTypeDeclaration.bodyDeclarations();
-        }
-        return Collections.emptyList();
-    }
-
-    private static MethodDeclaration getMethodDeclaration(List<BodyDeclaration> bodyDeclarations, IMethod method) {
-        for (BodyDeclaration bodyDeclaration : bodyDeclarations) {
-            if (bodyDeclaration instanceof MethodDeclaration) {
-                if (compareMethods((MethodDeclaration)bodyDeclaration, method)) {
-                    return (MethodDeclaration) bodyDeclaration;
-                }
-            }
-            if (bodyDeclaration instanceof AnnotationTypeMemberDeclaration) {
-                if (compareMethodNames((AnnotationTypeMemberDeclaration)bodyDeclaration, method)) {
-                    return (MethodDeclaration) bodyDeclaration;
-                }
-            }
-        }
-        return null;
+        return annotations;
     }
 
     @SuppressWarnings("unchecked")
     public static List<SingleVariableDeclaration> getSingleVariableDeclarations(final IMethod method) {
         ICompilationUnit source = method.getCompilationUnit();
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
-        final List<SingleVariableDeclaration> parameters = new ArrayList();
+        final List<SingleVariableDeclaration> parameters = new ArrayList<SingleVariableDeclaration>();
         compilationUnit.accept(new ASTVisitor() {
             @Override
             public boolean visit(MethodDeclaration methodDeclaration) {
@@ -958,32 +892,9 @@ public final class AnnotationUtils {
         return null;
     }
 
-    public static String getStringValue(AnnotationMirror mirror, String attributeName) {
-        AnnotationValue annotationValue = getAnnotationValue(mirror, attributeName);
-        if (annotationValue != null) {
-            return annotationValue.getValue().toString();
-        }
-        return null;
-    }
-
-    public static Boolean getBooleanValue(AnnotationMirror mirror, String attributeName) {
-        String value = getStringValue(mirror, attributeName);
-        if (value != null) {
-            return Boolean.valueOf(value);
-        }
-        return null;
-    }
-
-    public static AnnotationValue getAnnotationValue(AnnotationMirror mirror, String attributeName) {
-        Map<AnnotationTypeElementDeclaration, AnnotationValue> values = mirror.getElementValues();
-        Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> entrySet = values.entrySet();
-        for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> entry : entrySet) {
-            AnnotationTypeElementDeclaration element = entry.getKey();
-            if (element.getSimpleName().equals(attributeName)) {
-                return entry.getValue();
-            }
-        }
-        return null;
+    public static Annotation getAnnotation(IJavaElement javaElement, Class<? extends java.lang.annotation.Annotation> annotation) {
+        List<Annotation> annotations = getAnnotations(javaElement);
+        return getAnnotation(annotations, annotation);
     }
 
     public static AnnotationMirror getAnnotation(Declaration declaration,
@@ -1001,31 +912,38 @@ public final class AnnotationUtils {
         return null;
     }
 
-    public static String getStringValue(Annotation annotation, String attributeName) {
-        if (annotation instanceof NormalAnnotation) {
-            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
-            if (expression != null && expression instanceof StringLiteral) {
-                return ((StringLiteral) expression).getLiteralValue();
+    private static Annotation getAnnotation(List<Annotation> annotations,
+            Class<? extends java.lang.annotation.Annotation> annotation) {
+        for (Annotation astAnnotation : annotations) {
+            String typeName = astAnnotation.getTypeName().getFullyQualifiedName();
+            if (typeName.equals(annotation.getCanonicalName())
+                    || typeName.equals(annotation.getSimpleName())) {
+                return astAnnotation;
             }
         }
         return null;
     }
 
-    public static String getEnumValue(Annotation annotation, String attributeName) {
-        if (annotation instanceof NormalAnnotation) {
-            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
-            if (expression != null && expression instanceof QualifiedName) {
-                return ((QualifiedName) expression).getName().getIdentifier();
+    public static IAnnotation getAnnotation(Class<? extends java.lang.annotation.Annotation> annotation,
+            IAnnotatable annotatable) throws JavaModelException {
+        IAnnotation[] annotations = annotatable.getAnnotations();
+        for (IAnnotation jdtAnnotation : annotations) {
+            String annotationName = jdtAnnotation.getElementName();
+            if (annotationName.equals(annotation.getCanonicalName())
+                    || annotationName.equals(annotation.getSimpleName())) {
+                return jdtAnnotation;
             }
         }
         return null;
     }
 
-    public static Boolean getBooleanValue(Annotation annotation, String attributeName) {
-        if (annotation instanceof NormalAnnotation) {
-            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
-            if (expression != null && expression instanceof BooleanLiteral) {
-                return Boolean.valueOf(((BooleanLiteral) expression).booleanValue());
+    public static AnnotationValue getAnnotationValue(AnnotationMirror mirror, String attributeName) {
+        Map<AnnotationTypeElementDeclaration, AnnotationValue> values = mirror.getElementValues();
+        Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> entrySet = values.entrySet();
+        for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> entry : entrySet) {
+            AnnotationTypeElementDeclaration element = entry.getKey();
+            if (element.getSimpleName().equals(attributeName)) {
+                return entry.getValue();
             }
         }
         return null;
@@ -1042,32 +960,42 @@ public final class AnnotationUtils {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    public static Annotation getAnnotation(BodyDeclaration bodyDeclaration,
-            Class<? extends java.lang.annotation.Annotation> annotation) {
-
-        return getAnnotation(bodyDeclaration.modifiers(), annotation);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Annotation getAnnotation(SingleVariableDeclaration parameter,
-            Class<? extends java.lang.annotation.Annotation> annotation) {
-
-        return getAnnotation(parameter.modifiers(), annotation);
-    }
-
-    private static Annotation getAnnotation(List<IExtendedModifier> modifiers,
-            Class<? extends java.lang.annotation.Annotation> annotation) {
-        if (modifiers != null) {
-            for (IExtendedModifier extendedModifier : modifiers) {
-                if (extendedModifier instanceof Annotation) {
-                    Annotation astAnnotation = (Annotation) extendedModifier;
-                    String typeName = astAnnotation.getTypeName().getFullyQualifiedName();
-                    if (typeName.equals(annotation.getCanonicalName())
-                            || typeName.equals(annotation.getSimpleName())) {
-                        return astAnnotation;
-                    }
+    public static Object getAnnotationValue(IAnnotation annotation, String attributeName) throws JavaModelException {
+        IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
+        if (memberValuePairs.length > 0) {
+            for (IMemberValuePair memberValuePair : memberValuePairs) {
+                if (memberValuePair.getMemberName().equals(attributeName)) {
+                    return memberValuePair.getValue();
                 }
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static MemberValuePair getMemberValuePair(NormalAnnotation normalAnnotation, String memberName) {
+        List<MemberValuePair> memberValuesPairs = normalAnnotation.values();
+        for (MemberValuePair memberValuePair : memberValuesPairs) {
+            if (memberValuePair.getName().getIdentifier().equals(memberName)) {
+                return memberValuePair;
+            }
+        }
+        return null;
+    }
+
+    public static String getStringValue(AnnotationMirror mirror, String attributeName) {
+        AnnotationValue annotationValue = getAnnotationValue(mirror, attributeName);
+        if (annotationValue != null) {
+            return annotationValue.getValue().toString();
+        }
+        return null;
+    }
+
+    public static String getStringValue(Annotation annotation, String attributeName) {
+        if (annotation instanceof NormalAnnotation) {
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            if (expression != null && expression instanceof StringLiteral) {
+                return ((StringLiteral) expression).getLiteralValue();
             }
         }
         return null;
@@ -1082,10 +1010,20 @@ public final class AnnotationUtils {
         return null;
     }
 
-    public static String getEnumValue(IAnnotation annotation, String attributeName) throws JavaModelException {
-        String value = AnnotationUtils.getStringValue(annotation, attributeName);
-        if (value != null && value.indexOf(".") != -1) {
-            return value.substring(value.lastIndexOf(".") + 1);
+    public static Boolean getBooleanValue(AnnotationMirror mirror, String attributeName) {
+        String value = getStringValue(mirror, attributeName);
+        if (value != null) {
+            return Boolean.valueOf(value);
+        }
+        return null;
+    }
+
+    public static Boolean getBooleanValue(Annotation annotation, String attributeName) {
+        if (annotation instanceof NormalAnnotation) {
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            if (expression != null && expression instanceof BooleanLiteral) {
+                return Boolean.valueOf(((BooleanLiteral) expression).booleanValue());
+            }
         }
         return null;
     }
@@ -1098,30 +1036,21 @@ public final class AnnotationUtils {
         return null;
     }
 
-    public static Object getAnnotationValue(IAnnotation annotation, String attributeName)
-    throws JavaModelException {
-        IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
-        if (memberValuePairs.length > 0) {
-            for (IMemberValuePair memberValuePair : memberValuePairs) {
-                if (memberValuePair.getMemberName().equals(attributeName)) {
-                    return memberValuePair.getValue();
-                }
+    public static String getEnumValue(Annotation annotation, String attributeName) {
+        if (annotation instanceof NormalAnnotation) {
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            if (expression != null && expression instanceof QualifiedName) {
+                return ((QualifiedName) expression).getName().getIdentifier();
             }
         }
         return null;
     }
 
-    public static IAnnotation getAnnotation(IAnnotatable annotatable,
-            Class<? extends java.lang.annotation.Annotation> annotation) throws JavaModelException {
-        IAnnotation[] annotations = annotatable.getAnnotations();
-        for (IAnnotation jdtAnnotation : annotations) {
-            String annotationName = jdtAnnotation.getElementName();
-            if (annotationName.equals(annotation.getCanonicalName())
-                    || annotationName.equals(annotation.getSimpleName())) {
-                return jdtAnnotation;
-            }
+    public static String getEnumValue(IAnnotation annotation, String attributeName) throws JavaModelException {
+        String value = AnnotationUtils.getStringValue(annotation, attributeName);
+        if (value != null && value.indexOf(".") != -1) {
+            return value.substring(value.lastIndexOf(".") + 1);
         }
         return null;
     }
-
 }

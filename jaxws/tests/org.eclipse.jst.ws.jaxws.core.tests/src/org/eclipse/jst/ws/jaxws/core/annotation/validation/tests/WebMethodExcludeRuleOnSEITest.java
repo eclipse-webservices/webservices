@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebMethod;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -70,7 +69,7 @@ public class WebMethodExcludeRuleOnSEITest extends AbstractAnnotationValidationT
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[0]);
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebMethod.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebMethod.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -78,6 +77,7 @@ public class WebMethodExcludeRuleOnSEITest extends AbstractAnnotationValidationT
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebMethod.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

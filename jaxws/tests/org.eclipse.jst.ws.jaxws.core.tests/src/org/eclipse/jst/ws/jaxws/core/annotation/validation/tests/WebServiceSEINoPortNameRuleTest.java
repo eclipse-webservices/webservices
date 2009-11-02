@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -36,10 +35,10 @@ public class WebServiceSEINoPortNameRuleTest extends AbstractAnnotationValidatio
 
         MemberValuePair nameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "name", "MyClass");
 
-        MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
+        MemberValuePair targetNamespaceValuePair = AnnotationsCore.createStringMemberValuePair(ast,
                 "targetNamespace", "http://example.com/");
 
-        MemberValuePair portNameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "portName", 
+        MemberValuePair portNameValuePair = AnnotationsCore.createStringMemberValuePair(ast, "portName",
         "MyClassPort");
 
         memberValuePairs.add(nameValuePair);
@@ -65,13 +64,13 @@ public class WebServiceSEINoPortNameRuleTest extends AbstractAnnotationValidatio
     protected String getPackageName() {
         return "com.example";
     }
-    
+
     public void testWebServiceSEINoPortNameRule() {
         try {
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
@@ -79,6 +78,7 @@ public class WebServiceSEINoPortNameRuleTest extends AbstractAnnotationValidatio
 
             assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebService.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

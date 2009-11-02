@@ -43,13 +43,13 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
             model.setCxfRuntimeVersion(context.getCxfRuntimeVersion());
             model.setCxfRuntimeEdition(context.getCxfRuntimeEdition());
 
-            IType startingPointType = getJavaStartingPointType(); 
+            IType startingPointType = getJavaStartingPointType();
             model.setUseServiceEndpointInterface(startingPointType.isInterface());
             model.setExtractInterface(false);
-            
+
             String packageName = startingPointType.getPackageFragment().getElementName();
             model.setTargetNamespace(JDTUtils.getTargetNamespaceFromPackageName(packageName));
-            
+
             model.setAnnotationProcessingEnabled(context.isAnnotationProcessingEnabled());
             model.setGenerateWebMethodAnnotation(context.isGenerateWebMethodAnnotation());
             model.setGenerateWebParamAnnotation(context.isGenerateWebParamAnnotation());
@@ -57,7 +57,7 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
             model.setGenerateResponseWrapperAnnotation(context.isGenerateResponseWrapperAnnotation());
             model.setAnnotationMap(CXFModelUtils.getAnnotationMap(model));
             model.setMethodMap(CXFModelUtils.getMethodMap(startingPointType, model));
-            
+
             model.setGenerateXSDImports(context.isGenerateXSDImports());
             model.setDatabinding(context.getDatabinding());
             model.setFrontend(context.getFrontend());
@@ -68,8 +68,8 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
             model.setGenerateWSDL(context.isGenerateWSDL());
             model.setUseSpringApplicationContext(context.isUseSpringApplicationContext());
             model.setVerbose(context.isVerbose());
-            
-            String className = JDTUtils.getClassName(model.getProjectName(), model.getJavaStartingPoint());
+
+            String className = getClassName(model.getProjectName(), model.getJavaStartingPoint());
             model.setWsdlFileName(className.toLowerCase() + WSDLUtils.WSDL_FILE_EXTENSION);
         } catch (JavaModelException jme) {
             status = jme.getStatus();
@@ -91,10 +91,15 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
         return startingPointType;
     }
 
+    public String getClassName(String projectName, String fullyQualifiedClassName) {
+        return JDTUtils.getType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName)
+                .getElementName();
+    }
+
     @Override
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
-        
+
         return status;
     }
 }

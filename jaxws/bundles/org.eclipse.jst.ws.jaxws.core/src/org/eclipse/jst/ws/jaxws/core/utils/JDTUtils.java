@@ -10,15 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.utils;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -26,10 +23,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -38,15 +34,14 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
 /**
  * JDT Utility class.
  * <p>
- * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under 
- * development and expected to change significantly before reaching stability. It is being made available at 
- * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under
+ * development and expected to change significantly before reaching stability. It is being made available at
+ * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
  */
@@ -55,6 +50,11 @@ public final class JDTUtils {
     private JDTUtils() {
     }
 
+    /**
+     * Add a <code>IClasspathEntry</code> to a <code>IJavaProject</code>
+     * @param javaProject the <code>IJavaProject</code> to add the classpath entry to
+     * @param classpathEntry the <code>IClasspathEntry</code> to add
+     */
     public static void addToClasspath(IJavaProject javaProject, IClasspathEntry classpathEntry) {
         try {
             List<IClasspathEntry> currentEntries = Arrays.asList(javaProject.getRawClasspath());
@@ -70,6 +70,11 @@ public final class JDTUtils {
         }
     }
 
+    /**
+     * Remove a <code>IClasspathEntry</code> from a <code>IJavaProject</code>
+     * @param javaProject the <code>IJavaProject</code> to remove the classpath entry from
+     * @param classpathEntry the <code>IClasspathEntry</code> to remove
+     */
     public static void removeFromClasspath(IJavaProject javaProject, IClasspathEntry classpathEntry) {
         try {
             List<IClasspathEntry> currentEntries = Arrays.asList(javaProject.getRawClasspath());
@@ -84,119 +89,85 @@ public final class JDTUtils {
             JAXWSCorePlugin.log(jme.getStatus());
         }
     }
-    
-    public static IStatus checkTypeExists(IType type, String compilationUnitName) {
-        compilationUnitName = compilationUnitName.trim();
 
-        IPackageFragment packageFragment = type.getPackageFragment();
-        ICompilationUnit compilationUnit = packageFragment.getCompilationUnit(compilationUnitName);
-        IResource resource = compilationUnit.getResource();
-
-        if (resource.exists()) {
-            return new Status(IStatus.ERROR, JAXWSCorePlugin.PLUGIN_ID, JAXWSCoreMessages
-                    .bind(JAXWSCoreMessages.TYPE_WITH_NAME_ALREADY_EXISTS, new Object[] {
-                            compilationUnitName, packageFragment.getElementName() }));
-        }
-        URI location = resource.getLocationURI();
-        if (location != null) {
-            try {
-                IFileStore fileStore = EFS.getStore(location);
-                if (fileStore.fetchInfo().exists()) {
-                    return new Status(IStatus.ERROR, JAXWSCorePlugin.PLUGIN_ID,
-                            JAXWSCoreMessages.TYPE_NAME_DIFFERENT_CASE_EXISTS);
-                }
-            } catch (CoreException ce) {
-                JAXWSCorePlugin.log(ce.getStatus());
-            }
-        }
-        return Status.OK_STATUS;
-    }
-    
-    public static String getClassName(String projectName, String fullyQualifiedClassName) {
-        return JDTUtils.getType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName)
-                .getElementName();
-    }
-
-    public static IJavaProject getJavaProject(IProject project) {
-        IJavaProject javaProject = JavaCore.create(project);
-        return javaProject;
-    }
-
+    /**
+     * Returns the Java project corresponding to the given project name.
+     * @param projectName the project name
+     * @return the Java project corresponding to the given project name
+     */
     public static IJavaProject getJavaProject(String projectName) {
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-        return JDTUtils.getJavaProject(project);
+        return JavaCore.create(project);
     }
 
-    public static String getJavaProjectOutputDirectoryPath(IJavaProject javaProject) {
-        IPath outputPath;
-        String fullPath = ""; //$NON-NLS-1$
+    /**
+     * Returns the absolute path in the local file system of the default output location for the given java project.
+     * @param javaProject the java project
+     * @return the absolute path of the default output folder for the given java project
+     */
+    public static IPath getJavaProjectOutputDirectoryPath(IJavaProject javaProject) {
         try {
-            outputPath = javaProject.getOutputLocation();
-            fullPath = ResourcesPlugin.getWorkspace().getRoot().findMember(outputPath).getLocation()
-                    .toOSString();
+            return ResourcesPlugin.getWorkspace().getRoot().findMember(javaProject.getOutputLocation()).getLocation();
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return fullPath;
+        return ResourcesPlugin.getWorkspace().getRoot().findMember(javaProject.getPath()).getLocation();
     }
 
-    public static String getJavaProjectOutputDirectoryPath(String projectName) {
+    /**
+     * Returns the absolute path in the local file system of the default output location for the given java project name.
+     * @param projectName the name of the java project
+     * @return  the absolute path of the default output folder for the given java project name
+     */
+    public static IPath getJavaProjectOutputDirectoryPath(String projectName) {
         return JDTUtils.getJavaProjectOutputDirectoryPath(JDTUtils.getJavaProject(projectName));
     }
 
-    public static String getJavaProjectSourceDirectoryPath(IJavaProject javaProject,
-            String fullyQualifiedClassName) {
-        
-        IType type = JDTUtils.getType(javaProject, fullyQualifiedClassName);
+    /**
+     * Returns the full, absolute path relative to the workspace of the source folder that contains the given type.
+     * @param type the <code>IType</code>
+     * @return the absolute path of the given <code>IType</code> source folder
+     */
+    public static IPath getJavaProjectSourceDirectoryPath(IType type) {
         IPackageFragment packageFragment = type.getPackageFragment();
-        IPackageFragmentRoot packageFragmentRoot = (IPackageFragmentRoot)packageFragment.getParent();
+        IPackageFragmentRoot packageFragmentRoot = (IPackageFragmentRoot) packageFragment.getParent();
         IResource srcDirectoryResource = packageFragmentRoot.getResource();
-        return srcDirectoryResource.getFullPath().toOSString();
+        return srcDirectoryResource.getFullPath();
     }
 
-    public static String getJavaProjectSourceDirectoryPath(String projectName, 
-            String fullyQualifiedClassName) {
-        return JDTUtils.getJavaProjectSourceDirectoryPath(JDTUtils.getJavaProject(projectName),
-                fullyQualifiedClassName);
-    }
-
-    public static String getJavaProjectSourceDirectoryPath(String projectName) {
+    /**
+     * Returns the full, absolute path relative to the workspace of the first source folder found in the java project with the given name.
+     * @param projectName the name of the java project
+     * @return the absolute path of the first source folder found in the java project with the given name.
+     */
+    public static IPath getJavaProjectSourceDirectoryPath(String projectName) {
         return JDTUtils.getJavaProjectSourceDirectoryPath(JDTUtils.getJavaProject(projectName));
     }
 
-    public static String getJavaProjectSourceDirectoryPath(IProject project) {
-        return JDTUtils.getJavaProjectSourceDirectoryPath(JDTUtils.getJavaProject(project));
-    }
-    
-    public static String getJavaProjectSourceDirectoryPath(IJavaProject javaProject) {
+    /**
+     * Returns the full, absolute path relative to the workspace of the first source folder found in the given java project.
+     * @param javaProject the <code>IJavaProject</code>
+     * @return the absolute path of the first source folder found in the given java project.
+     */
+    public static IPath getJavaProjectSourceDirectoryPath(IJavaProject javaProject) {
         try {
             IPackageFragmentRoot[] packageFragmentRoots = javaProject.getAllPackageFragmentRoots();
             IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[0];
             IResource srcDirectoryResource = packageFragmentRoot.getResource();
-            return srcDirectoryResource.getFullPath().toOSString();
+            return srcDirectoryResource.getFullPath();
         } catch (JavaModelException jme) {
             JAXWSCorePlugin.log(jme.getStatus());
         }
-        return ""; //$NON-NLS-1$
+        return new Path("");
     }
 
-    public static String getPackageNameFromClass(IJavaProject javaProject, String fullyQualifiedClassName) {
-        return JDTUtils.getType(javaProject, fullyQualifiedClassName).getPackageFragment().getElementName();
-    }
-
-    public static String getPackageNameFromClass(String projectName, String fullyQualifiedClassName) {
-        return JDTUtils
-                .getPackageNameFromClass(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName);
-    }
-
-    
     /**
      * If the given <code>IType</code> is an interface all methods declared in that interface are returned.
      * <p>
-     * Alternatively if the given given <code>IType</code> is a class only methods that are explicitly marked
+     * Alternatively if the given given <code>IType</code> is a class, only methods that are explicitly marked
      * public are returned.
-     * 
-     * @param type the type
+     *
+     * @param type the <code>IType</code>
      * @return the public methods declared in this type
      */
     public static IMethod[] getPublicMethods(IType type) {
@@ -217,16 +188,16 @@ public final class JDTUtils {
         }
         return publicMethods.toArray(new IMethod[publicMethods.size()]);
     }
-    
-    public static String getSourceFromType(IType type) {
-        try {
-            return type.getCompilationUnit().getBuffer().getContents();
-        } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
-        }
-        return ""; //$NON-NLS-1$
-    }
 
+    /**
+     * Constructs a target namespace string from the given package name by splitting the dot '.' separated
+     * package name, reversing the order of the package name segments followed by prefixing the string with
+     * 'http://' and appending a forward slash '/' to the end.
+     * <p>E.g., the Java package “com.example.ws” would return the target namespace “http://ws.example.com/”.</p>
+     * <p>If the package name is null or is of zero length  "http://default_package/" is returned.</p>
+     * @param packageName the package name
+     * @return the derived target namespace
+     */
     public static String getTargetNamespaceFromPackageName(String packageName) {
         if (packageName == null || packageName.length() == 0) {
             return "http://default_package/"; //$NON-NLS-1$
@@ -249,6 +220,12 @@ public final class JDTUtils {
         return targetNamespace;
     }
 
+    /**
+     * Returns the first type found following the given java project's classpath with the given fully qualified name or null if none is found.
+     * @param javaProject the given <code>IJavaProject</code>
+     * @param fullyQualifiedClassName the given fully qualified name
+     * @return the first type found following the java project's classpath with the given fully qualified name or null if none is found
+     */
     public static IType getType(IJavaProject javaProject, String fullyQualifiedClassName) {
         try {
             return javaProject.findType(fullyQualifiedClassName);
@@ -258,14 +235,22 @@ public final class JDTUtils {
         return null;
     }
 
-    public static IType getType(IProject project, String fullyQualifiedClassName) {
-        return JDTUtils.getType(JDTUtils.getJavaProject(project), fullyQualifiedClassName);
-    }
-
+    /**
+     * Returns the first type found with the given fully qualified name following the classpath of the java project with
+     * the give project name or null if none is found.
+     * @param projectName the name of the java project
+     * @param fullyQualifiedClassName the given fully qualified name
+     * @return the first type found following the java project's classpath with the given fully qualified name or null if none is found
+     */
     public static IType getType(String projectName, String fullyQualifiedClassName) {
         return JDTUtils.getType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName);
     }
 
+    /**
+     * Returns whether the given project has the java nature.
+     * @param project the given project
+     * @return <code>true</code> if the project has the java nature
+     */
     public static boolean isJavaProject(IProject project) {
         try {
             return project.hasNature(JavaCore.NATURE_ID);
@@ -274,7 +259,12 @@ public final class JDTUtils {
         }
         return false;
     }
-    
+
+    /**
+     * Returns true if the given method isn't a main method or constructor and if it has the public modifier.
+     * @param method the given method
+     * @return <code>true</code> if the given method is public
+     */
     public static boolean isPublicMethod(IMethod method) {
         try {
             return Flags.isPublic(method.getFlags()) && !method.isConstructor() && !method.isMainMethod();
@@ -284,19 +274,39 @@ public final class JDTUtils {
         return false;
     }
 
-    public static IStatus validateJavaTypeName(String compilationUnitName) {
+    /**
+     * Validates the given Java type name, either simple or qualified, using the workspace source and compliance levels.
+     * @param name the name of a type
+     * @return a status object with code IStatus.OK if the given name is valid as a Java type name, a status with
+     * code IStatus.WARNING indicating why the given name is discouraged, otherwise a status object indicating what is wrong with the name
+     */
+    public static IStatus validateJavaTypeName(String name) {
         String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
         String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);
-        return JavaConventions.validateJavaTypeName(compilationUnitName, sourceLevel, complianceLevel);
+        return JavaConventions.validateJavaTypeName(name, sourceLevel, complianceLevel);
     }
 
-    public static IStatus validateJavaTypeName(String projectName, String compilationUnitName) {
+    /**
+     * Validates the given Java type name, either simple or qualified, using the given projects source and compliance levels.
+     * @param projectName the name of the java project
+     * @param name the name of a type
+     * @return a status object with code IStatus.OK if the given name is valid as a Java type name, a status with
+     * code IStatus.WARNING indicating why the given name is discouraged, otherwise a status object indicating what is wrong with the name
+     */
+    public static IStatus validateJavaTypeName(String projectName, String name) {
         IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
         String sourceLevel = javaProject.getOption(JavaCore.COMPILER_SOURCE, true);
         String complianceLevel = javaProject.getOption(JavaCore.COMPILER_COMPLIANCE, true);
-        return JavaConventions.validateJavaTypeName(compilationUnitName, sourceLevel, complianceLevel);
+        return JavaConventions.validateJavaTypeName(name, sourceLevel, complianceLevel);
     }
 
+    /**
+     * Validate the given package name using the given projects source and compliance levels.
+     * @param projectName the name of the java project
+     * @param packageName the name of a package
+     * @return a status object with code IStatus.OK if the given name is valid as a package name, otherwise a status
+     * object indicating what is wrong with the name
+     */
     public static IStatus validatePackageName(String projectName, String packageName) {
         IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
         String sourceLevel = javaProject.getOption(JavaCore.COMPILER_SOURCE, true);
@@ -304,6 +314,12 @@ public final class JDTUtils {
         return JavaConventions.validatePackageName(packageName, sourceLevel, complianceLevel);
     }
 
+    /**
+     * Validates the given Java identifier with the workspace source and compliance levels.
+     * @param id the Java identifier
+     * @return a status object with code IStatus.OK if the given identifier is a valid Java identifier, otherwise
+     * a status object indicating what is wrong with the identifier
+     */
     public static IStatus validateIdentifier(String id) {
         String sourceLevel = JavaCore.getOption(JavaCore.COMPILER_SOURCE);
         String complianceLevel = JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE);

@@ -72,11 +72,11 @@ public class AddAnnotationToTypeTest extends AbstractAnnotationTest {
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class.getCanonicalName()));
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
- 
+
             assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils.getAnnotationName(annotation)));
             assertTrue(source.getImport(WebService.class.getCanonicalName()).exists());
         } catch (CoreException ce) {

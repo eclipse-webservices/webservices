@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
 import javax.jws.WebParam;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -43,14 +42,15 @@ public class WebServiceSEINoWebParamRuleTest extends AbstractWebServiceSEIRule {
 
             ILocalVariable localVariable = AnnotationUtils.getLocalVariable(method, "in");
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(localVariable, WebParam.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(localVariable, annotation));
 
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
 
             assertTrue(AnnotationUtils.isAnnotationPresent(localVariable, annotation));
-            
+            assertTrue(source.getImport(WebParam.class.getCanonicalName()).exists());
+
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,

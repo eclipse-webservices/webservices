@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
 import javax.jws.Oneway;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -40,11 +39,11 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
     public String getPackageName() {
         return "com.example";
     }
-    
+
     public abstract String getErrorMessage();
-    
+
     public abstract IMethod getMethodToTest();
-    
+
     public void testOnewayRule() {
         try {
             assertNotNull(annotation);
@@ -53,7 +52,7 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
             IMethod method = getMethodToTest();
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, Oneway.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, Oneway.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -61,7 +60,8 @@ public abstract class AbstractOnewayValidationTest extends AbstractAnnotationVal
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
-            
+            assertTrue(source.getImport(Oneway.class.getCanonicalName()).exists());
+
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
             IMarker[] allmarkers = source.getResource().findMarkers(IMarker.PROBLEM, true,

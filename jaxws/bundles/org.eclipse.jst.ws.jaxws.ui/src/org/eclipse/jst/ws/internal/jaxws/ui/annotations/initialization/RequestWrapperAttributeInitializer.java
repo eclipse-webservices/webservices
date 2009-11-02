@@ -113,7 +113,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
     
     protected String getLocalName(IType type, IMethod method) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(method, WebMethod.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(WebMethod.class, method);
             if (annotation != null) {
                 String operationName = AnnotationUtils.getStringValue(annotation, OPERATION_NAME);
                 if (operationName != null) {
@@ -122,14 +122,14 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
             }
             return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(type, method);
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }
     
     protected String getTargetNamespace(IType type) {
         try {
-            IAnnotation annotation = AnnotationUtils.getAnnotation(type, WebService.class);
+            IAnnotation annotation = AnnotationUtils.getAnnotation(WebService.class, type);
             if (annotation != null) {
                 String targetNamespace = AnnotationUtils.getStringValue(annotation, TARGET_NAMESPACE);
                 if (targetNamespace != null && targetNamespace.length() > 0) {
@@ -138,7 +138,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
             }
             return JDTUtils.getTargetNamespaceFromPackageName(type.getPackageFragment().getElementName());
         } catch (JavaModelException jme) {
-        	JAXWSUIPlugin.log(jme.getStatus());
+            JAXWSUIPlugin.log(jme.getStatus());
         }
         return ""; //$NON-NLS-1$
     }

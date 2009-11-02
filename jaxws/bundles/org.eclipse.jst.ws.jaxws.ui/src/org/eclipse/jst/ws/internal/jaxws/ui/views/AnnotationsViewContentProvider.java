@@ -36,11 +36,11 @@ public class AnnotationsViewContentProvider implements ITreeContentProvider {
 
 	public Object[] getElements(Object inputElement) {
 	    if (inputElement != null) {
-	        return AnnotationsManager.getAnnotations(inputElement);
+	        return AnnotationsManager.getAnnotations(inputElement).toArray();
 	    }
 	    return new Object[] {};
 	}
-	
+
 	public void dispose() {
 
 	}

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -75,7 +74,7 @@ public class WebServiceDefaultPublicConstructorRuleTest extends AbstractAnnotati
             assertNotNull(annotation);
             assertEquals(WebService.class.getSimpleName(), AnnotationUtils.getAnnotationName(annotation));
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(source.findPrimaryType(), WebService.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
 
@@ -83,6 +82,8 @@ public class WebServiceDefaultPublicConstructorRuleTest extends AbstractAnnotati
 
             assertTrue(AnnotationUtils.isAnnotationPresent(source, AnnotationUtils
                     .getAnnotationName(annotation)));
+
+            assertTrue(source.getImport(WebService.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

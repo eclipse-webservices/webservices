@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.graphics.Image;
@@ -30,17 +31,17 @@ import org.eclipse.ui.PlatformUI;
  * Provides default implementations for all methods.
  * </p>
  * <p>
- * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under development and 
- * expected to change significantly before reaching stability. It is being made available at this early stage 
- * to solicit feedback from pioneering adopters on the understanding that any code that uses this API will 
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is being made available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this API will
  * almost certainly be broken (repeatedly) as the API evolves.
  * </p>
- * 
+ *
 */
 public class AnnotationAttributeInitializer implements IAnnotationAttributeInitializer {
 
     protected static final String MISSING_IDENTIFER = "$missing$";
-	 
+
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends Annotation> annotationClass) {
         return Collections.emptyList();
@@ -51,12 +52,17 @@ public class AnnotationAttributeInitializer implements IAnnotationAttributeIniti
         return Collections.emptyList();
     }
 
-	protected CompletionProposal createCompletionProposal(String proposal, Expression value) {
+    public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
+            SingleMemberAnnotation singleMemberAnnotation) {
+        return Collections.emptyList();
+    }
+
+    protected CompletionProposal createCompletionProposal(String proposal, Expression value) {
         Image image = PlatformUI.getWorkbench().getSharedImages().getImage(org.eclipse.ui.ISharedImages.IMG_OBJ_FILE);
         return createCompletionProposal(proposal, value, image, proposal);
-	}
+    }
 
-    protected CompletionProposal createCompletionProposal(String proposal, Expression value, Image image, 
+    protected CompletionProposal createCompletionProposal(String proposal, Expression value, Image image,
             String displayString) {
         int replacementOffset = value.getStartPosition();
         int replacementLength = 0;

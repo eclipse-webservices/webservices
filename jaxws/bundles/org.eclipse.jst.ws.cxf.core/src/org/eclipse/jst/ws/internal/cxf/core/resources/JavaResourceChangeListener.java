@@ -23,27 +23,26 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 
 /**
  * Listens for changes to the <code>IJavaProject</code> src folder.
- * 
+ *
  */
 public class JavaResourceChangeListener implements IResourceChangeListener {
     private List<IResource> changedResources = new ArrayList<IResource>();
 
-    private String sourceDirectoryPath;
-    
+    private IPath sourceDirectoryPath;
+
     /**
      * Constructs a JavaResourceChangeListener instance.
-     * 
+     *
      * @param sourceDirectoryPath
      */
-    public JavaResourceChangeListener(String sourceDirectoryPath) {
+    public JavaResourceChangeListener(IPath sourceDirectoryPath) {
         this.sourceDirectoryPath = sourceDirectoryPath;
     }
-    
+
     public void resourceChanged(IResourceChangeEvent event) {
         if (event.getType() != IResourceChangeEvent.POST_CHANGE) {
             return;
@@ -51,7 +50,7 @@ public class JavaResourceChangeListener implements IResourceChangeListener {
         IResourceDelta rootDelta = event.getDelta();
 
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IFolder srcFolder = workspaceRoot.getFolder(new Path(sourceDirectoryPath));
+        IFolder srcFolder = workspaceRoot.getFolder(sourceDirectoryPath);
         IPath srcFolderPath = srcFolder.getFullPath();
         if (!srcFolderPath.hasTrailingSeparator()) {
             srcFolderPath = srcFolderPath.addTrailingSeparator();
@@ -79,7 +78,7 @@ public class JavaResourceChangeListener implements IResourceChangeListener {
             CXFCorePlugin.log(ce.getStatus());
         }
     }
-    
+
     public List<IResource> getChangedResources() {
         return changedResources;
     }

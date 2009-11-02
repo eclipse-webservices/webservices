@@ -57,9 +57,9 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     private WSDL2JavaDataModel model;
     private String projectName;
     private String inputURL;
-    
+
     private WebContentChangeListener webContentChangeListener;
-    
+
     public WSDL2JavaDefaultingCommand(WSDL2JavaDataModel model, String projectName, String inputURL) {
         this.model = model;
         this.projectName = projectName;
@@ -70,11 +70,11 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     @SuppressWarnings({ "unchecked", "deprecation" })
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
     	IStatus status = Status.OK_STATUS;
-    	
+
     	webContentChangeListener = new WebContentChangeListener(projectName);
     	ResourcesPlugin.getWorkspace().addResourceChangeListener(webContentChangeListener,
     	        IResourceChangeEvent.POST_CHANGE);
-    	
+
         WSDL2JavaPersistentContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         model.setCxfRuntimeVersion(context.getCxfRuntimeVersion());
         model.setCxfRuntimeEdition(context.getCxfRuntimeEdition());
@@ -105,7 +105,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
         model.setAutoNameResolution(context.isAutoNameResolution());
         model.setNoAddressBinding(context.isNoAddressBinding());
         model.setUseSpringApplicationContext(context.isUseSpringApplicationContext());
-        model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()));
+        model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()).toOSString());
 
     	try {
     		Definition definition = null;
@@ -145,7 +145,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
                     for (Map.Entry serviceEntry : servicesSet) {
                         Service service = (Service) serviceEntry.getValue();
                         Map portsMap = service.getPorts();
-                        Set<Map.Entry> portsSet = portsMap.entrySet();                     
+                        Set<Map.Entry> portsSet = portsMap.entrySet();
                         for (Map.Entry portEntry : portsSet) {
                             Port port = (Port) portEntry.getValue();
                             PortType portType = port.getBinding().getPortType();
@@ -161,22 +161,22 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
             	copier.setTargetFolderURI(wsdlFolderPath.toFile().toURI().toString());
             	copier.setTargetFilename(filename);
             	workspace.run(copier, monitor);
-            	
+
             	File wsdlFile = wsdlFolderPath.addTrailingSeparator().append(filename).toFile();
     			model.setWsdlURL(wsdlFile.toURI().toURL());
         	}
-        	model.setWsdlFileName(WSDLUtils.getWSDLFileNameFromURL(model.getWsdlURL()));
-        	
+        	model.setWsdlFileName(getWSDLFileNameFromURL(model.getWsdlURL()));
+
         	IPath wsdlLocationPath = new Path(model.getWsdlURL().getPath());
         	wsdlLocationPath = wsdlLocationPath.removeFirstSegments(WSDLUtils.getWebContentFolder(project)
         			.getLocation().matchingFirstSegments(wsdlLocationPath));
-        	
+
         	if (wsdlLocationPath.getDevice() != null) {
         	    wsdlLocationPath = wsdlLocationPath.setDevice(null);
         	}
         	model.setWsdlDefinition(definition);
         	model.setConfigWsdlLocation(wsdlLocationPath.toString());
-        	
+
  		} catch (CoreException ce) {
  			status = ce.getStatus();
 			CXFCreationCorePlugin.log(status);
@@ -193,7 +193,12 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
         return status;
     }
-    
+
+    public String getWSDLFileNameFromURL(URL wsdlURL) {
+        IPath wsdlPath = new Path(wsdlURL.toExternalForm());
+        return wsdlPath.lastSegment();
+    }
+
     private void setWSDLLocation(Definition definition) throws MalformedURLException {
         String wsdlLocation = WSDLUtils.getWSDLLocation(definition);
         if (wsdlLocation != null) {
@@ -211,7 +216,7 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     public WSDL2JavaDataModel getWSDL2JavaDataModel() {
         return model;
     }
-    
+
     @Override
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
@@ -227,10 +232,10 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
                 }
             }
         }
-        
+
         model.getBindingFiles().clear();
         model.getIncludedNamespaces().clear();
-       
+
         return status;
     }
 }

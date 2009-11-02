@@ -22,11 +22,11 @@ import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.swt.graphics.Image;
 
 public class RemoveAnnotationCorrectionProposal extends AbstractJavaCorrectionPropsoal {
-    
+
     private Class<? extends java.lang.annotation.Annotation> annotation;
     private ASTNode parentNode;
-    
-    public RemoveAnnotationCorrectionProposal(IInvocationContext invocationContext, 
+
+    public RemoveAnnotationCorrectionProposal(IInvocationContext invocationContext,
             Class<? extends java.lang.annotation.Annotation> annotation, ASTNode parentNode, String displayString,
             int relevance, Image image) {
         super(invocationContext, displayString, relevance, image);
@@ -42,23 +42,23 @@ public class RemoveAnnotationCorrectionProposal extends AbstractJavaCorrectionPr
             Annotation jdtDomAnnotation = (Annotation) parentNode;
             rewriter.remove(jdtDomAnnotation, null);
         }
-        
+
         if (parentNode instanceof MethodDeclaration) {
             MethodDeclaration methodDeclaration = (MethodDeclaration) parentNode;
-            Annotation jdtDomAnnotation = AnnotationUtils.getAnnotation(methodDeclaration, annotation);
+            Annotation jdtDomAnnotation = AnnotationUtils.getAnnotation(methodDeclaration.resolveBinding().getJavaElement(), annotation);
             if (jdtDomAnnotation != null) {
                 rewriter.remove(jdtDomAnnotation, null);
             }
         }
-        
+
         if (parentNode.getParent() instanceof TypeDeclaration) {
             TypeDeclaration typeDeclaration = (TypeDeclaration) parentNode.getParent();
-            Annotation jdtDomAnnotation = AnnotationUtils.getAnnotation(typeDeclaration, annotation);
+            Annotation jdtDomAnnotation = AnnotationUtils.getAnnotation(typeDeclaration.resolveBinding().getJavaElement(), annotation);
             if (jdtDomAnnotation != null) {
                 rewriter.remove(jdtDomAnnotation, null);
             }
         }
-        
+
         textChange.addEdit(rewriter.rewriteAST());
     }
 

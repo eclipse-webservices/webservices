@@ -18,7 +18,7 @@ public class JAXWSCoreTestSuite extends TestSuite {
     public static Test suite() {
         return new JAXWSCoreTestSuite();
     }
-    
+
     public JAXWSCoreTestSuite() {
         super("JAX-WS Core Tests");
         addTestSuite(AddAnnotationToTypeTest.class);
@@ -28,7 +28,11 @@ public class JAXWSCoreTestSuite extends TestSuite {
         addTestSuite(AddAnnotationToMethodTest.class);
         addTestSuite(RemoveAnnotationFromMethodTest.class);
         addTestSuite(AddAnnotationToMethodParameterTest.class);
-        addTestSuite(RemoveAnnotationFromMethodParameterTest.class);        
+        addTestSuite(RemoveAnnotationFromMethodParameterTest.class);
+        addTestSuite(AddMemberValuePairToAnnotationTest.class);
+        addTestSuite(RemoveMemberValuePairTest.class);
+        addTestSuite(UpdateMemberValuePairTest.class);
+        addTestSuite(UpdateSingleMemberAnnotationTest.class);
     }
-    
+
 }

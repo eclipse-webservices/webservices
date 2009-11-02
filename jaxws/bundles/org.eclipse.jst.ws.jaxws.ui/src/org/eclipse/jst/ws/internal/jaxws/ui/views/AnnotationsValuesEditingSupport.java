@@ -29,7 +29,6 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
@@ -52,11 +51,12 @@ import org.eclipse.ltk.core.refactoring.IUndoManager;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.text.edits.MultiTextEdit;
 
 public class AnnotationsValuesEditingSupport extends EditingSupport {
     private AnnotationsView annotationsView;
     private TreeViewer treeViewer;
-    
+
     private TextCellEditor textCellEditor;
     private CheckboxCellEditor checkboxCellEditor;
     private ComboBoxCellEditor comboBoxCellEditor;
@@ -103,11 +103,11 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             if (returnType.equals(Boolean.TYPE)) {
                 return checkboxCellEditor;
             }
-            
+
             if (returnType.equals(Class.class)) {
                 return classDialogCellEditor;
             }
-            
+
             if (returnType.isArray()) {
                 annotationArrayCellEditor.setMethod(method);
                 return annotationArrayCellEditor;
@@ -135,7 +135,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                                 Double.parseDouble((String) value);
                             }
                         } catch (NumberFormatException nfe) {
-                            return JAXWSUIMessages.ANNOTATION_EDITING_SUPPORT_NOT_VALID_MESSAGE_PREFIX 
+                            return JAXWSUIMessages.ANNOTATION_EDITING_SUPPORT_NOT_VALID_MESSAGE_PREFIX
                                 + returnType.getSimpleName();
                         }
                         return null;
@@ -147,7 +147,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         return checkboxCellEditor;
     }
-    
+
     @Override
     protected Object getValue(Object element) {
         if (element instanceof Class) {
@@ -158,14 +158,14 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         return null;
     }
-    
+
     private Object getValueForClass(Class<?> aClass) {
         if (treeViewer.getInput() instanceof IAnnotatable) {
             return getValueForClass(aClass, (IAnnotatable) treeViewer.getInput());
         }
         return Boolean.FALSE;
     }
-    
+
     private Object getValueForClass(Class<?> aClass, IAnnotatable annotatedElement) {
         try {
             IAnnotation[] annotations = annotatedElement.getAnnotations();
@@ -179,10 +179,10 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             }
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
-        } 
+        }
         return Boolean.FALSE;
     }
-    
+
     private Object getValueForMethod(Method method) {
         Object value = null;
         try {
@@ -194,7 +194,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         return value;
     }
-    
+
     private Object getValueForMethod(Method method, IAnnotatable annotatedElement) throws JavaModelException {
         Class<?> returnType = method.getReturnType();
         IAnnotation[] annotations = annotatedElement.getAnnotations();
@@ -224,7 +224,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                         if (returnType.equals(Class.class)) {
                             return memberValuePair.getValue();
                         }
-                        
+
                         if (returnType.equals(Boolean.TYPE)) {
                             return memberValuePair.getValue();
                         }
@@ -250,7 +250,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         return null;
     }
-    
+
     private Object getDefaultValueForMethod(Class<?> returnType) {
         if (returnType.equals(String.class)) {
             return ""; //$NON-NLS-1$
@@ -269,7 +269,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         return null;
     }
-        
+
     @Override
     protected void setValue(Object element, Object value) {
         if (value == null) {
@@ -278,9 +278,9 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
         try {
             if (element instanceof Class) {
-                Class<? extends java.lang.annotation.Annotation> annotationClass = 
+                Class<? extends java.lang.annotation.Annotation> annotationClass =
                     AnnotationsManager.getAnnotationDefinitionForClass(element).getAnnotationClass();
-                
+
                 if (annotationClass != null) {
                     setValueForClass(annotationClass, (Boolean) value);
                 }
@@ -290,50 +290,50 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             }
         } catch (CoreException ce) {
             JAXWSUIPlugin.log(ce.getStatus());
-        } 
+        }
     }
-    
-    private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass, 
+
+    private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass,
             Boolean annotate) throws CoreException {
         Object viewerInput = treeViewer.getInput();
 
-        IAnnotationAttributeInitializer annotationAttributeInitializer = 
+        IAnnotationAttributeInitializer annotationAttributeInitializer =
             AnnotationsManager.getAnnotationDefinitionForClass(annotationClass).getAnnotationAttributeInitializer();
 
         if (viewerInput instanceof IJavaElement) {
             setValueForClass(annotationClass, annotate, (IJavaElement) viewerInput, annotationAttributeInitializer);
         }
     }
-    
+
     private Annotation getAnnotation(AST ast, Class<? extends java.lang.annotation.Annotation> annotationClass,
-    		List<MemberValuePair> memberValuePairs) {
-    	
-    	Annotation annotation =  null;
-    	int numberOfDeclaredMethods = annotationClass.getDeclaredMethods().length;
-    	if (numberOfDeclaredMethods == 0) {
-    		annotation = AnnotationsCore.createMarkerAnnotation(ast, annotationClass.getSimpleName());
-    	} else if (numberOfDeclaredMethods == 1) {
-    		Expression value = null;
-			if (memberValuePairs != null && memberValuePairs.size() == 1) {
-    			MemberValuePair memberValuePair = memberValuePairs.get(0);
-        		if (memberValuePair != null) {
-        			value = memberValuePair.getValue();
-        		}
-    		}
-			if (value != null) {
-				annotation = AnnotationsCore.createSingleMemberAnnotation(ast, annotationClass.getSimpleName(), value);
-			} else {
-    	        annotation = AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
-			}
-		} else if (numberOfDeclaredMethods > 1) {
-    		annotation = AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
-    	}
-    	
-		return annotation;
-	}
+            List<MemberValuePair> memberValuePairs) {
+
+        Annotation annotation =  null;
+        int numberOfDeclaredMethods = annotationClass.getDeclaredMethods().length;
+        if (numberOfDeclaredMethods == 0) {
+            annotation = AnnotationsCore.createMarkerAnnotation(ast, annotationClass.getSimpleName());
+        } else if (numberOfDeclaredMethods == 1) {
+            Expression value = null;
+            if (memberValuePairs != null && memberValuePairs.size() == 1) {
+                MemberValuePair memberValuePair = memberValuePairs.get(0);
+                if (memberValuePair != null) {
+                    value = memberValuePair.getValue();
+                }
+            }
+            if (value != null) {
+                annotation = AnnotationsCore.createSingleMemberAnnotation(ast, annotationClass.getSimpleName(), value);
+            } else {
+                annotation = AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
+            }
+        } else if (numberOfDeclaredMethods > 1) {
+            annotation = AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
+        }
+
+        return annotation;
+    }
 
     private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass,
-            Boolean annotate, IJavaElement javaElement, IAnnotationAttributeInitializer annotationAttributeInitializer) 
+            Boolean annotate, IJavaElement javaElement, IAnnotationAttributeInitializer annotationAttributeInitializer)
                 throws CoreException {
         ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
@@ -344,32 +344,34 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
         Annotation annotation = getAnnotation(ast, annotationClass, memberValuePairs);
 
-        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
+        TextFileChange change = new TextFileChange("Add/Remove Annotation", (IFile) source.getResource()); //$NON-NLS-1$
+        MultiTextEdit multiTextEdit = new MultiTextEdit();
+        change.setEdit(multiTextEdit);
 
         if (annotate) {
-        	if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION
-        			|| javaElement.getElementType() == IJavaElement.TYPE
-        			|| javaElement.getElementType() == IJavaElement.FIELD
-        			|| javaElement.getElementType() == IJavaElement.METHOD
-        			|| javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-        		textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(javaElement, annotation));
-        		textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(javaElement, annotationClass));
-        	}
+            if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION
+                    || javaElement.getElementType() == IJavaElement.TYPE
+                    || javaElement.getElementType() == IJavaElement.FIELD
+                    || javaElement.getElementType() == IJavaElement.METHOD
+                    || javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
+                change.addEdit(AnnotationUtils.createAddAnnotationTextEdit(javaElement, annotation));
+                change.addEdit(AnnotationUtils.createAddImportTextEdit(javaElement, annotationClass.getCanonicalName()));
+            }
         } else {
-        	if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION
-        			|| javaElement.getElementType() == IJavaElement.TYPE
-        			|| javaElement.getElementType() == IJavaElement.FIELD
-        			|| javaElement.getElementType() == IJavaElement.METHOD
-        			|| javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-            	textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(javaElement, annotation));
-        		textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(javaElement, annotationClass));
-        	}
+            if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION
+                    || javaElement.getElementType() == IJavaElement.TYPE
+                    || javaElement.getElementType() == IJavaElement.FIELD
+                    || javaElement.getElementType() == IJavaElement.METHOD
+                    || javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
+                change.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(javaElement, annotation));
+                change.addEdit(AnnotationUtils.createRemoveImportTextEdit(javaElement, annotationClass.getCanonicalName()));
+            }
         }
-        executeChange(new NullProgressMonitor(), textFileChange);
+        executeChange(new NullProgressMonitor(), change);
     }
-  
+
     private List<MemberValuePair> getMemberValuePairs(
-            IAnnotationAttributeInitializer annotationAttributeInitializer, IJavaElement javaElement, AST ast, 
+            IAnnotationAttributeInitializer annotationAttributeInitializer, IJavaElement javaElement, AST ast,
             Class<?extends java.lang.annotation.Annotation> annotationClass) {
         if (annotationAttributeInitializer != null) {
             return annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
@@ -383,62 +385,65 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             Object viewerInput = treeViewer.getInput();
             if (viewerInput instanceof IAnnotatable) {
                 setValueForMethod(method, value, (IJavaElement) viewerInput);
-            } 
+            }
         }
     }
-    
+
     private void setValueForMethod(Method method, Object value, IJavaElement javaElement) throws CoreException {
-        ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);        
+        ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
         AST ast = compilationUnit.getAST();
 
-        TextFileChange textFileChange = AnnotationUtils.createTextFileChange("AC", (IFile) source.getResource()); //$NON-NLS-1$
+        TextFileChange change = new TextFileChange("Add/Update Annotation Value", (IFile) source.getResource());
+        MultiTextEdit multiTextEdit = new MultiTextEdit();
+        change.setEdit(multiTextEdit);
 
-        List<IExtendedModifier> extendedModifiers = AnnotationUtils.getExtendedModifiers(compilationUnit, javaElement);
-        for (IExtendedModifier extendedModifier : extendedModifiers) {
-			if (extendedModifier instanceof NormalAnnotation) {				
-				NormalAnnotation normalAnnotation = (NormalAnnotation) extendedModifier;
-	            Class<?> declaringClass = method.getDeclaringClass();
-	            String annotationName = normalAnnotation.getTypeName().getFullyQualifiedName();
-	            if (annotationName.equals(declaringClass.getSimpleName()) || annotationName.equals(declaringClass.getCanonicalName())) {
-	            	@SuppressWarnings("unchecked")
-	            	List<MemberValuePair> memberValuePairs = normalAnnotation.values();
-	            	boolean hasMemberValuePair = false;
-	                for (MemberValuePair memberValuePair : memberValuePairs) {
-	                    if (memberValuePair.getName().getIdentifier().equals(method.getName())) {
-	                    	ASTNode memberValue = getMemberValuePairValue(ast, method, value);
-	                        if (memberValue != null) {
-	                        	textFileChange.addEdit(AnnotationUtils.createUpdateMemberValuePairTextEdit(memberValuePair, memberValue));
-	                        	hasMemberValuePair = true;
-	                        	break;
-	                        }
-	                    }		
-					}
-	                if (!hasMemberValuePair) {
-	                	MemberValuePair memberValuePair = getMemberValuePair(ast, method, value);
-	                    if (memberValuePair != null) {
-	                    	textFileChange.addEdit(AnnotationUtils.createAddMemberValuePairTextEdit(normalAnnotation, memberValuePair));
-	                        break;
-	                    }
-	                }
-	            }
-			} else if (extendedModifier instanceof SingleMemberAnnotation) {
-				SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) extendedModifier;
-				Class<?> declaringClass = method.getDeclaringClass();
-	            String annotationName = singleMemberAnnotation.getTypeName().getFullyQualifiedName();
-	            if (annotationName.equals(declaringClass.getSimpleName()) || annotationName.equals(declaringClass.getCanonicalName())) {
-	            	MemberValuePair memberValuePair = getMemberValuePair(ast, method, value);
-	            	if (memberValuePair != null) {
-	            		textFileChange.addEdit(AnnotationUtils.createUpdateSingleMemberAnnotationTextEdit(singleMemberAnnotation, memberValuePair.getValue()));
-	            		break;
-	            	}
-	            }
-	            
-			}
-		}
-        executeChange(new NullProgressMonitor(), textFileChange);
+        List<Annotation> annotations = AnnotationUtils.getAnnotations(javaElement);
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof NormalAnnotation) {
+                NormalAnnotation normalAnnotation = (NormalAnnotation) annotation;
+                Class<?> declaringClass = method.getDeclaringClass();
+                String annotationName = normalAnnotation.getTypeName().getFullyQualifiedName();
+                if (annotationName.equals(declaringClass.getSimpleName()) || annotationName.equals(declaringClass.getCanonicalName())) {
+                    @SuppressWarnings("unchecked")
+                    List<MemberValuePair> memberValuePairs = normalAnnotation.values();
+                    boolean hasMemberValuePair = false;
+                    for (MemberValuePair memberValuePair : memberValuePairs) {
+                        if (memberValuePair.getName().getIdentifier().equals(method.getName())) {
+                            ASTNode memberValue = getMemberValuePairValue(ast, method, value);
+                            if (memberValue != null) {
+                                change.addEdit(AnnotationUtils.createUpdateMemberValuePairTextEdit(memberValuePair, memberValue));
+                                hasMemberValuePair = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!hasMemberValuePair) {
+                        MemberValuePair memberValuePair = getMemberValuePair(ast, method, value);
+                        if (memberValuePair != null) {
+                            change.addEdit(AnnotationUtils.createAddMemberValuePairTextEdit(normalAnnotation, memberValuePair));
+                            break;
+                        }
+                    }
+                }
+            } else if (annotation instanceof SingleMemberAnnotation) {
+                SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
+                Class<?> declaringClass = method.getDeclaringClass();
+                String annotationName = singleMemberAnnotation.getTypeName().getFullyQualifiedName();
+                if (annotationName.equals(declaringClass.getSimpleName()) || annotationName.equals(declaringClass.getCanonicalName())) {
+                    MemberValuePair memberValuePair = getMemberValuePair(ast, method, value);
+                    if (memberValuePair != null) {
+                        change.addEdit(AnnotationUtils.createUpdateSingleMemberAnnotationTextEdit(singleMemberAnnotation, memberValuePair.getValue()));
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        executeChange(new NullProgressMonitor(), change);
     }
-    
+
     private ASTNode getMemberValuePairValue(AST ast, Method method, Object value) {
         Class<?> returnType = method.getReturnType();
         if (returnType.equals(String.class)) {
@@ -456,11 +461,11 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         if (returnType.isArray()) {
             return AnnotationsCore.createArrayValueLiteral(ast, method, (Object[]) value);
         }
-        
+
         if (returnType.equals(Class.class)) {
             return AnnotationsCore.createTypeLiteral(ast, value.toString());
         }
-        
+
         if (returnType.isEnum()) {
             int selected = ((Integer) value).intValue();
             if (selected != -1) {
@@ -474,10 +479,10 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
     private MemberValuePair getMemberValuePair(AST ast, Method method, Object value) {
         Class<?> returnType = method.getReturnType();
         if (returnType.equals(String.class)) {
-            return AnnotationsCore.createStringMemberValuePair(ast, method.getName(), value);
+            return AnnotationsCore.createStringMemberValuePair(ast, method.getName(), (String) value);
         }
         if (returnType.equals(Boolean.TYPE)) {
-            return AnnotationsCore.createBooleanMemberValuePair(ast, method.getName(), value);
+            return AnnotationsCore.createBooleanMemberValuePair(ast, method.getName(), (Boolean) value);
         }
         if (returnType.isPrimitive()
                 && (returnType.equals(Byte.TYPE) || returnType.equals(Short.TYPE)
@@ -488,7 +493,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         if (returnType.isArray()) {
             return AnnotationsCore.createArrayMemberValuePair(ast, method, (Object[]) value);
         }
-        
+
         if (returnType.equals(Class.class)) {
             return AnnotationsCore.createTypeMemberValuePair(ast, method.getName(), value.toString());
         }
@@ -496,7 +501,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         if (returnType.isEnum()) {
             int selected = ((Integer) value).intValue();
             if (selected != -1) {
-                return AnnotationsCore.createEnumMemberValuePair(ast, 
+                return AnnotationsCore.createEnumMemberValuePair(ast,
                        method.getDeclaringClass().getCanonicalName(), method.getName(), method.getReturnType()
                         .getEnumConstants()[selected]);
             }

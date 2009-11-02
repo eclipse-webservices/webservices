@@ -31,7 +31,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -55,7 +54,7 @@ import org.osgi.framework.Version;
 /**
  * Provides utility methods for working with the CXF model.
  * Also serving as an interim class to aid in refactoring core utilities into jaxws core.
- * 
+ *
  */
 public final class CXFModelUtils {
     private static final Version v_0_0_0 = new Version("0.0.0");
@@ -96,18 +95,18 @@ public final class CXFModelUtils {
     private CXFModelUtils() {
     }
 
-    public static void getWebServiceAnnotationChange(IType type, Java2WSDataModel model, 
+    public static void getWebServiceAnnotationChange(IType type, Java2WSDataModel model,
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);        
+        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
         AST ast = compilationUnit.getAST();
-        
-        NormalAnnotation webServiceAnnotation = getAnnotation(compilationUnit, type, WebService.class);
+
+        NormalAnnotation webServiceAnnotation = getAnnotation(type, WebService.class);
         if (webServiceAnnotation != null && model.isUseServiceEndpointInterface() && type.isClass()) {
             MemberValuePair endpointInterface = getMemberValuePair(webServiceAnnotation, ENDPOINT_INTERFACE);
             if (endpointInterface != null && endpointInterface.getValue() instanceof StringLiteral) {
-            	StringLiteral stringLiteral = (StringLiteral) endpointInterface.getValue();
+                StringLiteral stringLiteral = (StringLiteral) endpointInterface.getValue();
                 if (!stringLiteral.getLiteralValue().equals(model.getServiceEndpointInterfaceName())) {
                     ASTNode newSEIValue = AnnotationsCore.createStringLiteral(ast, model
                             .getServiceEndpointInterfaceName());
@@ -122,7 +121,7 @@ public final class CXFModelUtils {
                 textFileChange.addEdit(AnnotationUtils.createAddMemberValuePairTextEdit(webServiceAnnotation, endpointInterfacePair));
             }
         } else {
-            IAnnotationAttributeInitializer annotationAttributeInitializer = 
+            IAnnotationAttributeInitializer annotationAttributeInitializer =
                 AnnotationsManager.getAnnotationDefinitionForClass(WebService.class).
                     getAnnotationAttributeInitializer();
 
@@ -130,7 +129,7 @@ public final class CXFModelUtils {
                     WebService.class);
 
             if (model.isUseServiceEndpointInterface() && type.isClass()) {
-                MemberValuePair endpointInterfaceValuePair = AnnotationsCore.createStringMemberValuePair(ast, 
+                MemberValuePair endpointInterfaceValuePair = AnnotationsCore.createStringMemberValuePair(ast,
                         ENDPOINT_INTERFACE, model.getServiceEndpointInterfaceName());
                 memberValuePairs.add(1, endpointInterfaceValuePair);
             }
@@ -138,24 +137,17 @@ public final class CXFModelUtils {
             Annotation annotation = AnnotationsCore.createNormalAnnotation(ast, WebService.class.getSimpleName(), memberValuePairs);
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(source.findPrimaryType(), annotation));
-        }        
+        }
     }
 
-    @SuppressWarnings("unchecked")
-    private static NormalAnnotation getAnnotation(CompilationUnit compilationUnit, IType type,
-            Class<? extends java.lang.annotation.Annotation> annotation) {
-        List<AbstractTypeDeclaration> types = compilationUnit.types();
-        for (AbstractTypeDeclaration typeDeclaration : types) {
-            if (AnnotationUtils.compareTypeNames(typeDeclaration, type)) {
-                Annotation jdtAnnotation = AnnotationUtils.getAnnotation(typeDeclaration, annotation);
-                if (jdtAnnotation != null && jdtAnnotation instanceof NormalAnnotation) {
-                    return (NormalAnnotation) jdtAnnotation;
-                }
-            }
+    private static NormalAnnotation getAnnotation(IType type, Class<? extends java.lang.annotation.Annotation> annotation) {
+        Annotation jdtAnnotation = AnnotationUtils.getAnnotation(type, annotation);
+        if (jdtAnnotation != null && jdtAnnotation instanceof NormalAnnotation) {
+            return (NormalAnnotation) jdtAnnotation;
         }
         return null;
     }
-    
+
     @SuppressWarnings("unchecked")
     private static MemberValuePair getMemberValuePair(NormalAnnotation annotation, String memberName) {
         List<MemberValuePair> memberValuePairs = annotation.values();
@@ -167,8 +159,8 @@ public final class CXFModelUtils {
         return null;
     }
 
-    public static void createMethodAnnotationChange(IType type, IMethod method, 
-            Class<? extends java.lang.annotation.Annotation> annotationClass, TextFileChange textFileChange) 
+    public static void createMethodAnnotationChange(IType type, IMethod method,
+            Class<? extends java.lang.annotation.Annotation> annotationClass, TextFileChange textFileChange)
                 throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
@@ -180,7 +172,7 @@ public final class CXFModelUtils {
         textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
 
-    public static void getWebMethodAnnotationChange(IType type, IMethod method, 
+    public static void getWebMethodAnnotationChange(IType type, IMethod method,
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
@@ -191,8 +183,8 @@ public final class CXFModelUtils {
 
         textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
-    
-    public static void getRequestWrapperAnnotationChange(IType type, IMethod method, 
+
+    public static void getRequestWrapperAnnotationChange(IType type, IMethod method,
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
@@ -215,9 +207,9 @@ public final class CXFModelUtils {
 
         textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
     }
-    
-    public static void getWebParamAnnotationChange(IType type, final IMethod method, 
-            ILocalVariable parameter, TextFileChange textFileChange) 
+
+    public static void getWebParamAnnotationChange(IType type, final IMethod method,
+            ILocalVariable parameter, TextFileChange textFileChange)
             throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
@@ -228,27 +220,27 @@ public final class CXFModelUtils {
 
         textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(parameter, annotation));
     }
-    
-    private static Annotation getAnnotation(IJavaElement javaElement, AST ast, 
+
+    private static Annotation getAnnotation(IJavaElement javaElement, AST ast,
                 Class<? extends java.lang.annotation.Annotation> annotationClass) {
-        
+
         IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager.
             getAnnotationDefinitionForClass(annotationClass).getAnnotationAttributeInitializer();
-        
-        List<MemberValuePair> memberValuePairs = 
+
+        List<MemberValuePair> memberValuePairs =
                 annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
-        
+
         return AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
     }
-    
-    public static void getImportsChange(ICompilationUnit compilationUnit, Java2WSDataModel model, 
+
+    public static void getImportsChange(ICompilationUnit compilationUnit, Java2WSDataModel model,
             TextFileChange textFileChange, boolean classOnly) {
         try {
-        
+
             ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
-            
+
             importRewrite.addImport(ANNOTATION_TYPENAME_MAP.get(WEB_SERVICE));
-            
+
             if (!classOnly) {
                 Map<IMethod, Map<String, Boolean>> methodAnnotationMap = model.getMethodMap();
                 Set<Entry<IMethod, Map<String, Boolean>>> methodAnnotationSet = methodAnnotationMap.entrySet();
@@ -259,7 +251,7 @@ public final class CXFModelUtils {
                         if (ANNOTATION_TYPENAME_MAP.containsKey(method.getKey()) && method.getValue()) {
                             importRewrite.addImport(ANNOTATION_TYPENAME_MAP.get(method.getKey()));
                         }
-                    }                    
+                    }
                 }
             }
             if (importRewrite.hasRecordedChanges()) {
@@ -282,7 +274,7 @@ public final class CXFModelUtils {
             IMethod[] methods = type.getMethods();
             for (IMethod method : methods) {
                 if (type.isInterface()) {
-                    methodMap.put(method, getAnnotationMap(model));                 
+                    methodMap.put(method, getAnnotationMap(model));
                 } else if (type.isClass() && JDTUtils.isPublicMethod(method)) {
                     methodMap.put(method, getAnnotationMap(model));
                 }
@@ -292,7 +284,7 @@ public final class CXFModelUtils {
         }
         return methodMap;
     }
-    
+
     public static Map<String, Boolean> getAnnotationMap(Java2WSDataModel model) {
         Map<String, Boolean> annotationdMap = new HashMap<String, Boolean>();
         annotationdMap.put(CXFModelUtils.WEB_METHOD, model.isGenerateWebMethodAnnotation());
@@ -301,11 +293,11 @@ public final class CXFModelUtils {
         annotationdMap.put(CXFModelUtils.RESPONSE_WRAPPER, model.isGenerateResponseWrapperAnnotation());
         return annotationdMap;
     }
-    
+
     /**
      * CXF wsdl2java -autoNameResolution is supported in the CXF 2.0 stream from 2.0.7
      * and in the CXF 2.1 stream from 2.1.1 up.
-     * 
+     *
      * @param cxfRuntimeVersion
      * @return
      */
@@ -326,7 +318,7 @@ public final class CXFModelUtils {
         }
         return false;
     }
-    
+
     public static boolean getDefaultBooleanValue(int classifierID, int featureID) {
         Object defaultValue = null;
 

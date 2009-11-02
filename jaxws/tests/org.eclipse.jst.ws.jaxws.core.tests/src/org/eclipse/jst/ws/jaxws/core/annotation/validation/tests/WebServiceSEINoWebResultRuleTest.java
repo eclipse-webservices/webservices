@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.jaxws.core.annotation.validation.tests;
 
 import javax.jws.WebResult;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -40,7 +39,7 @@ public class WebServiceSEINoWebResultRuleTest extends AbstractWebServiceSEIRule 
             IMethod method = source.findPrimaryType().getMethod("myMethod", new String[] { "QString;" });
             assertNotNull(method);
 
-            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebResult.class));
+            textFileChange.addEdit(AnnotationUtils.createAddImportTextEdit(method, WebResult.class.getCanonicalName()));
 
             textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
 
@@ -48,6 +47,7 @@ public class WebServiceSEINoWebResultRuleTest extends AbstractWebServiceSEIRule 
 
             assertTrue(AnnotationUtils.isAnnotationPresent(method, AnnotationUtils
                     .getAnnotationName(annotation)));
+            assertTrue(source.getImport(WebResult.class.getCanonicalName()).exists());
 
             Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 

@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
@@ -39,12 +40,12 @@ import org.eclipse.wst.ws.internal.wsrt.IWebService;
 
 /**
  * Provides a wrapper around the <code>org.apache.cxf.tools.wsdlto.WSDLToJava</code> command.
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public class WSDL2JavaCommand extends AbstractDataModelOperation {
     public static final String CXF_TOOL_CLASS_NAME = "org.apache.cxf.tools.wsdlto.WSDLToJava"; //$NON-NLS-1$
-    
+
     private WSDL2JavaDataModel model;
     private IWebService ws;
 
@@ -59,7 +60,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
     @Override
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
-        javaResourceChangeListener = new JavaResourceChangeListener(model.getJavaSourceFolder());
+        javaResourceChangeListener = new JavaResourceChangeListener(new Path(model.getJavaSourceFolder()));
         webContentChangeListener = new WebContentChangeListener(model.getProjectName());
 
         ResourcesPlugin.getWorkspace().addResourceChangeListener(javaResourceChangeListener,
@@ -68,7 +69,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
                 IResourceChangeEvent.POST_CHANGE);
 
         String projectName = model.getProjectName();
-        
+
         //TODO revisit
         ws.getWebServiceInfo().setImplURLs(new String[] {projectName + "/Impl.java"}); //$NON-NLS-1$
 
@@ -88,7 +89,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
             CXFCreationCorePlugin.log(status);
         } catch (IOException ioe) {
             status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, ioe.getLocalizedMessage());
-            CXFCreationCorePlugin.log(status);  
+            CXFCreationCorePlugin.log(status);
         } finally {
             ResourcesPlugin.getWorkspace().removeResourceChangeListener(javaResourceChangeListener);
             ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
@@ -116,7 +117,7 @@ public class WSDL2JavaCommand extends AbstractDataModelOperation {
         }
         return status;
     }
-    
+
     public CXFDataModel getCXFDataModel() {
         return model;
     }

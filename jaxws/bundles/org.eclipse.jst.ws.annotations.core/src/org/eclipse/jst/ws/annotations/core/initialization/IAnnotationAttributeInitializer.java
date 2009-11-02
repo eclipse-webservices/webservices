@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 /**
@@ -33,5 +34,9 @@ public interface IAnnotationAttributeInitializer {
     
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair);
+    
+    public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
+            SingleMemberAnnotation singleMemberAnnotation);
+
         
 }

@@ -82,7 +82,7 @@ public final class CommandLineUtils {
 
     private CommandLineUtils() {
     }
-    
+
     public static String[] getJava2WSProgramArguments(Java2WSDataModel model) {
         List<String> progArgs = new ArrayList<String>();
 
@@ -115,7 +115,7 @@ public final class CommandLineUtils {
                 if (model.isGenerateClient()) {
                     progArgs.add(GEN_CLIENT);
                 }
-                
+
                 if (model.isGenerateServer()) {
                     progArgs.add(GEN_SERVER);
                 }
@@ -127,14 +127,14 @@ public final class CommandLineUtils {
 
             progArgs.add(className);
         }
-        return (String[]) progArgs.toArray(new String[progArgs.size()]);
+        return progArgs.toArray(new String[progArgs.size()]);
     }
-    
+
     private static String[] getStandardJava2WSDLProgramArguments(Java2WSDataModel model) {
         String projectName = model.getProjectName();
         List<String> progArgs = new ArrayList<String>();
         progArgs.add(J2W_CLASSPATH);
-        progArgs.add(JDTUtils.getJavaProjectOutputDirectoryPath(projectName));
+        progArgs.add(JDTUtils.getJavaProjectOutputDirectoryPath(projectName).toOSString());
 
         progArgs.add(SOURCE_DIR);
         progArgs.add(FileUtils.getTmpFolder(projectName) + "/src"); //$NON-NLS-1$
@@ -143,10 +143,10 @@ public final class CommandLineUtils {
         progArgs.add(FileUtils.getTmpFolder(projectName) + "/wsdl"); //$NON-NLS-1$
 
         progArgs.add(CLASS_DIR);
-        progArgs.add(JDTUtils.getJavaProjectOutputDirectoryPath(projectName));
+        progArgs.add(JDTUtils.getJavaProjectOutputDirectoryPath(projectName).toOSString());
 
         progArgs.add(OUT_FILE);
-        progArgs.add(((Java2WSDataModel) model).getWsdlFileName());
+        progArgs.add(model.getWsdlFileName());
 
         if (model.isSoap12Binding()) {
             progArgs.add(INC_SOAP12);
@@ -158,8 +158,8 @@ public final class CommandLineUtils {
         if (model.isVerbose()) {
             progArgs.add(VERBOSE);
         }
-        
-        return (String[]) progArgs.toArray(new String[progArgs.size()]);
+
+        return progArgs.toArray(new String[progArgs.size()]);
     }
 
     public static String[] getWSDL2JavaProgramArguments(WSDL2JavaDataModel model) {
@@ -171,17 +171,17 @@ public final class CommandLineUtils {
             // Add Standard args
             progArgs.addAll(Arrays.asList(CommandLineUtils.getStandardWSDL2JavaProgramArguments(model,
                     projectName)));
-            
+
             String serviceName = model.getServiceName();
             if (serviceName != null && serviceName.length() > 0) {
                 progArgs.add(W2J_SERVICE_NAME);
                 progArgs.add(serviceName);
             }
-            
+
             if (model.isUseDefaultValues()) {
                 progArgs.add(W2J_DEFAULT_VALUES);
             }
-            
+
             if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
                 progArgs.add(W2J_FRONTEND);
                 progArgs.add(model.getFrontend().getLiteral());
@@ -191,7 +191,7 @@ public final class CommandLineUtils {
 
                 progArgs.add(W2J_WSDL_VERSION);
                 progArgs.add(model.getWsdlVersion());
-                
+
                 if (model.isNoAddressBinding()) {
                     progArgs.add(W2J_NO_ADDRESS_BINDING);
                 }
@@ -199,7 +199,7 @@ public final class CommandLineUtils {
 
             progArgs.add(model.getWsdlURL().toExternalForm());
         }
-        return (String[]) progArgs.toArray(new String[progArgs.size()]);
+        return progArgs.toArray(new String[progArgs.size()]);
     }
 
     public static String[] getWSDL2JavaGenerateClientArguments(WSDL2JavaDataModel model) {
@@ -213,16 +213,16 @@ public final class CommandLineUtils {
             // Add WSLD2Java args
             progArgs.addAll(Arrays.asList(CommandLineUtils.getWSDL2JavaProgramArguments(model)));
         }
-        return (String[]) progArgs.toArray(new String[progArgs.size()]);
+        return progArgs.toArray(new String[progArgs.size()]);
     }
-    
+
     public static String[] getStandardWSDL2JavaProgramArguments(WSDL2JavaDataModel model, String projectName) {
         List<String> progArgs = new ArrayList<String>();
         progArgs.add(RESOURCE_DIR);
         progArgs.add(FileUtils.getTmpFolder(projectName) + "/src"); //$NON-NLS-1$
 
         progArgs.add(CLASS_DIR);
-        progArgs.add(JDTUtils.getJavaProjectOutputDirectoryPath(projectName));
+        progArgs.add(JDTUtils.getJavaProjectOutputDirectoryPath(projectName).toOSString());
 
         Map<String, String> includedNamespaces = model.getIncludedNamespaces();
         if (includedNamespaces != null && model.getIncludedNamespaces().size() > 0) {
@@ -242,7 +242,7 @@ public final class CommandLineUtils {
                 progArgs.add(bindingFile);
             }
         }
-        
+
         if (model.isGenerateServer()) {
             progArgs.add(GEN_SERVER);
         }
@@ -254,13 +254,13 @@ public final class CommandLineUtils {
         if(model.isValidate()) {
             progArgs.add(W2J_VALIDATE_WSDL);
         }
-        
+
         progArgs.add(W2J_EXT_SOAP_HEADER);
         progArgs.add(Boolean.toString(model.isProcessSOAPHeaders()));
-        
+
         progArgs.add(W2J_DEFAULT_NAMESPACE);
         progArgs.add(Boolean.toString(model.isLoadDefaultNamespacePackageNameMapping()));
-        
+
         progArgs.add(W2J_DEFAULT_EXCLUDE_NS);
         progArgs.add(Boolean.toString(model.isLoadDefaultExcludesNamepsaceMapping()));
 
@@ -277,11 +277,11 @@ public final class CommandLineUtils {
             progArgs.add(W2J_WSDL_LOCATION);
             progArgs.add(model.getWsdlLocation());
         }
-        
+
         if (model.isVerbose()) {
             progArgs.add(VERBOSE);
         }
-        return (String[]) progArgs.toArray(new String[progArgs.size()]);
+        return progArgs.toArray(new String[progArgs.size()]);
     }
 
     private static String getXJCArgs(WSDL2JavaDataModel model) {
@@ -309,11 +309,11 @@ public final class CommandLineUtils {
         }
 
         String xjcArg = xjcArgs.toString();
-        xjcArg = xjcArg.replace('[', ' ');        
+        xjcArg = xjcArg.replace('[', ' ');
         xjcArg = xjcArg.replace(']', ' ');
-        
+
         xjcArg = xjcArg.replaceAll("\\s", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         return xjcArg.trim();
     }
 }

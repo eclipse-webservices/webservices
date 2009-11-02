@@ -23,14 +23,14 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 /**
  * Constructs <code>MemberValuePair</code> from the defaults found in the passed in <code>Annotation</code>.
  * <p>
- * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under 
- * development and expected to change significantly before reaching stability. It is being made available at 
- * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses 
+ * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under
+ * development and expected to change significantly before reaching stability. It is being made available at
+ * this early stage to solicit feedback from pioneering adopters on the understanding that any code that uses
  * this API will almost certainly be broken (repeatedly) as the API evolves.
  * </p>
  */
 public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeInitializer {
-    
+
     public DefaultsAnnotationAttributeInitializer() {
     }
 
@@ -39,11 +39,11 @@ public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeI
             Class<? extends Annotation> annotationClass) {
         return getMemberValuePairs(ast, annotationClass);
     }
-    
+
     private List<MemberValuePair> getMemberValuePairs(AST ast,
             Class<? extends Annotation> annotationClass) {
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        
+
         Method[] declaredMethods = annotationClass.getDeclaredMethods();
         for (Method method : declaredMethods) {
             String name = method.getName();
@@ -55,34 +55,34 @@ public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeI
                     memberValuePairs.add(AnnotationsCore.createStringMemberValuePair(ast,
                             name, defaultValue.toString()));
                 }
-                
+
                 if (returnType.equals(Boolean.TYPE)) {
                     memberValuePairs.add(AnnotationsCore.createBooleanMemberValuePair(ast,
                             name, Boolean.parseBoolean(defaultValue.toString())));
                 }
-                
-                if (returnType.isPrimitive() && (returnType.equals(Byte.TYPE) || returnType.equals(Short.TYPE) 
+
+                if (returnType.isPrimitive() && (returnType.equals(Byte.TYPE) || returnType.equals(Short.TYPE)
                         || returnType.equals(Integer.TYPE) || returnType.equals(Long.TYPE)
                         || returnType.equals(Float.TYPE) || returnType.equals(Double.TYPE))) {
-                    memberValuePairs.add(AnnotationsCore.createNumberMemberValuePair(ast, name, defaultValue));
+                    memberValuePairs.add(AnnotationsCore.createNumberMemberValuePair(ast, name, defaultValue.toString()));
                 }
-                
+
                 if (returnType.isArray()) {
-                    memberValuePairs.add(AnnotationsCore.createArrayMemberValuePair(ast, method, 
+                    memberValuePairs.add(AnnotationsCore.createArrayMemberValuePair(ast, method,
                             (Object[])defaultValue));
                 }
-                
+
                 if (returnType.isEnum()) {
-                    memberValuePairs.add(AnnotationsCore.createEnumMemberValuePair(ast, 
+                    memberValuePairs.add(AnnotationsCore.createEnumMemberValuePair(ast,
                             method.getDeclaringClass().getCanonicalName(), name, defaultValue));
                 }
-                
+
                 if (returnType.equals(Class.class)) {
-                    memberValuePairs.add(AnnotationsCore.createTypeMemberValuePair(ast, name, 
+                    memberValuePairs.add(AnnotationsCore.createTypeMemberValuePair(ast, name,
                             defaultValue));
                 }
             }
-        }      
+        }
         return memberValuePairs;
     }
 }

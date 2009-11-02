@@ -58,12 +58,12 @@ public class RemoveAnnotationFromMethodParameterTest extends AbstractAnnotationT
 
             assertTrue(AnnotationUtils.isAnnotationPresent(localVariable, annotation));
             assertNotNull(source.getImport(WebParam.class.getCanonicalName()));
-            
+
             textFileChange.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(localVariable, annotation));
-            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(localVariable, WebParam.class));
-            
+            textFileChange.addEdit(AnnotationUtils.createRemoveImportTextEdit(localVariable, WebParam.class.getCanonicalName()));
+
             assertTrue(executeChange(new NullProgressMonitor(), textFileChange));
-            
+
             assertFalse(AnnotationUtils.isAnnotationPresent(localVariable, annotation));
             assertFalse(source.getImport(WebParam.class.getCanonicalName()).exists());
         } catch (CoreException ce) {

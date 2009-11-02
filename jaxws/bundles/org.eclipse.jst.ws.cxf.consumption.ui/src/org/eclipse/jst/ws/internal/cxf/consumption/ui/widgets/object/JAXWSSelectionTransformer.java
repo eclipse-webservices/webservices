@@ -16,11 +16,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jst.ws.internal.cxf.consumption.ui.CXFConsumptionUIPlugin;
-import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.command.internal.env.core.data.Transformer;
 
 @SuppressWarnings("restriction")
@@ -63,7 +63,7 @@ public class JAXWSSelectionTransformer implements Transformer {
         if (path.isAbsolute()) {
             try {
                 IPath javaFolderPath = path.removeLastSegments(1);
-                IPackageFragment packageFragment = JDTUtils.getJavaProject(project).findPackageFragment(
+                IPackageFragment packageFragment = JavaCore.create(project).findPackageFragment(
                         javaFolderPath);
                 return packageFragment.getElementName() + "." + javaFileName; //$NON-NLS-1$
             } catch (JavaModelException jme) {
