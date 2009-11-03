@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2009 by SAP AG, Walldorf.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.Abstr
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.HasInadmisableInnerTypesException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InadmissableTypeException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InheritanceAndImplementationExecption;
-import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InterfacesNotSupportedException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.MultipleImplementationException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.NoDefaultConstructorException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.RemoteObjectException;
@@ -27,7 +26,7 @@ import org.eclipse.jst.ws.jaxws.testutils.project.ClassLoadingTest;
 
 /**
  * Test for runtime types validation.
- * 
+ *
  * @author Georgi Vachkov
  */
 @SuppressWarnings("nls")
@@ -85,14 +84,14 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 		validator.validate(type);
 
 	}
-	
+
 	public void testJavaSqlTymestampNotSupported() throws Exception
-	{		
+	{
 		IType type = TypeFactory.create(getProjectName(), "java.sql.Timestamp");
 		try {
 			validator.validate(type);
 			fail("java.sql.Timestamp not detected as unsupported");
-		} catch (NoDefaultConstructorException _) {			
+		} catch (NoDefaultConstructorException _) {
 		}
 	}
 
@@ -121,7 +120,7 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 			assertTrue(true);
 		}
 	}
-		
+
 	public void testUsesUnsupportedInTransientMethod() throws Exception
 	{
 		// uses unsupported in xml transient method
@@ -129,7 +128,7 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 		assertNotNull(type);
 		validator.validate(type);
 	}
-	
+
 	public void testXmlTypeAnnotated() throws Exception
 	{
 		IType type = TypeFactory.create(getProjectName(), PCK + ".XmlTypeClass");
@@ -142,7 +141,7 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 			fail("XML Type annotated class not recognized");
 		}
 	}
-	
+
 	public void testWebFaultAnnotated() throws Exception
 	{
 		IType type = TypeFactory.create(getProjectName(), PCK + ".WebFaultClass");
@@ -209,37 +208,38 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 		}
 	}
 
-	public void testValidateTypesIncompatibleImplementation() throws Exception
-	{
-		// use not implemented abstract class
-		IType type = TypeFactory.create(getProjectName(), PCK + ".BaseNotImplemented");
-		assertNotNull(type);
-		try
-		{
-			validator.validate(type);
-			fail("ImplementsRemote");
-		} catch (AbstractClassNotImplementedException e)
-		{
-			assertTrue(true);
-		}
-
-		// use implemented abstract class
-		type = TypeFactory.create(getProjectName(), PCK + ".BaseImplemented");
-		assertNotNull(type);
-		validator.validate(type);
-
-		// use interface
-		type = TypeFactory.create(getProjectName(), PCK + ".InterfaceImplemented");
-		assertNotNull(type);
-		try
-		{
-			// use implemented interface
-			validator.validate(type);
-		} catch (InterfacesNotSupportedException e)
-		{
-			assertTrue(true);
-		}
-	}
+	//FIXME Uncomment when Eclipse 3.6 M4 is used in the WTP builds. Contains a fix for Bug# 158361
+//	public void testValidateTypesIncompatibleImplementation() throws Exception
+//	{
+//		// use not implemented abstract class
+//		IType type = TypeFactory.create(getProjectName(), PCK + ".BaseNotImplemented");
+//		assertNotNull(type);
+//		try
+//		{
+//			validator.validate(type);
+//			fail("ImplementsRemote");
+//		} catch (AbstractClassNotImplementedException e)
+//		{
+//			assertTrue(true);
+//		}
+//
+//		// use implemented abstract class
+//		type = TypeFactory.create(getProjectName(), PCK + ".BaseImplemented");
+//		assertNotNull(type);
+//		validator.validate(type);
+//
+//		// use interface
+//		type = TypeFactory.create(getProjectName(), PCK + ".InterfaceImplemented");
+//		assertNotNull(type);
+//		try
+//		{
+//			// use implemented interface
+//			validator.validate(type);
+//		} catch (InterfacesNotSupportedException e)
+//		{
+//			assertTrue(true);
+//		}
+//	}
 
 	public void testValidateTypesIncompatibleInheritance() throws Exception
 	{
@@ -347,41 +347,41 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 		assertNotNull(type);
 		validator.validate(type);
 	}
-	
+
 	public void testValidateInterfaceInObjectFactory() throws Exception
 	{
 		final String PCK1 = "org.eclipse.test.implemented";
 		final IPackageFragment pack = getTestProject().createPackage(PCK1);
-		
+
 		final IType type = getTestProject().createType(pack, "ImplementedInterface.java",  "public interface ImplementedInterface {}");
-		getTestProject().createType(pack, "ObjectFactory.java", 
+		getTestProject().createType(pack, "ObjectFactory.java",
 			"public class ObjectFactory {" +
 			"	public ImplementedInterface createImplementedInterface() {" +
 			"		return null;" +
 			"	}" +
 			"}");
-		
+
 		assertNotNull(type);
 		validator.validate(type);
 	}
-	
+
 	public void testValidateParameterizedMethodParameterClass() throws JavaModelException, InadmissableTypeException
 	{
 		final IType parameterizedType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedClass");
 		assertNotNull(parameterizedType);
 		final IType endpointType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedMethodParameterEndpointClass");
 		assertNotNull(endpointType);
-		
+
 		validator.validate(parameterizedType);
 	}
-	
+
 	public void testValidateParameterizedReturnTypeClass() throws JavaModelException, InadmissableTypeException
 	{
 		final IType parameterizedType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedClass");
 		assertNotNull(parameterizedType);
 		final IType endpointType = TypeFactory.create(getProjectName(), PCK + ".ParameterizedMethodReturnTypeEndpointClass");
 		assertNotNull(endpointType);
-		
+
 		validator.validate(parameterizedType);
 	}
 }
