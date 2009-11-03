@@ -270,7 +270,7 @@ public final class AnnotationUtils {
     /**
      * Creates a {@link TextEdit} object representing the add import change to the source code of the java elements compilation unit.
      * The compilation unit itself is not modified.
-     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * @param javaElement one of the following types of java element:
      * <li>IJavaElement.COMPILATION_UNIT</li>
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
@@ -293,7 +293,7 @@ public final class AnnotationUtils {
      * Creates a {@link TextEdit} object representing the remove import change to the source code of the java elements compilation unit.
      * The compilation unit itself is not modified. No change will be recorded if the import type is referenced on more than one an annotatable
      * element in the source code. This method should be called in conjunction with {@link AnnotationUtils#createRemoveAnnotationTextEdit(IJavaElement, Annotation)}}.
-     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * @param javaElement one of the following types of java element:
      * <li>IJavaElement.COMPILATION_UNIT</li>
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
@@ -394,8 +394,7 @@ public final class AnnotationUtils {
     /**
      * Creates a {@link TextEdit} object representing the add annotation change to the source code of the java elements compilation unit.
      * The compilation unit itself is not modified.
-     * @param javaElement the javaElement to remove the annotation from. The following types of java
-     * element {@link IJavaElement#getElementType} are supported:
+     * @param javaElement one of the following types of java element:
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
      * <li>IJavaElement.FIELD</li>
@@ -426,8 +425,7 @@ public final class AnnotationUtils {
     /**
      * Creates a {@link TextEdit} object representing the remove annotation change to the source code of the java elements compilation unit.
      * The compilation unit itself is not modified.
-     * @param javaElement the javaElement to remove the annotation from. The following types of java
-     * element {@link IJavaElement#getElementType} are supported:
+     * @param javaElement one of the following types of java element:
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
      * <li>IJavaElement.FIELD</li>
@@ -739,8 +737,7 @@ public final class AnnotationUtils {
 
     /**
      * Returns a {link ICompilationUnit} for the given {@link IJavaElement}.
-     * @param javaElement the following types of java
-     * element {@link IJavaElement#getElementType} are supported:
+     * @param javaElement one of the following types of java element:
      * <li>IJavaElement.COMPILATION_UNIT</li>
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
@@ -874,7 +871,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns the annotations name  {@link Name#getFullyQualifiedName}.
+     * Returns the annotations type name {@link Name#getFullyQualifiedName}.
      * @param annotation the annotation.
      * @return the annotation name. The simple name or the fully qualified name
      */
@@ -944,7 +941,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Compares the two {@link om.sun.mirror.declaration.MethodDeclaration}.
+     * Compares the two {@link com.sun.mirror.declaration.MethodDeclaration}.
      * @param methodOne the first method declaration.
      * @param methodTwo the second method declaration.
      * @return <code>true</code> if the method names and parameter types match.
@@ -996,12 +993,14 @@ public final class AnnotationUtils {
 
     /**
      * Tests the given {@link IMethod} to see if it is an overloaded method. If it is it will return
-     * a string representing the position of this method in it's parents. {@link IType}}.
+     * a string representing the position of this method in it's parents {@link IType}}.
      * <p>
      * E.g. Given three methods:
-     * <pre>public void myMethod(...);</pre>
-     * <pre>public void myMethod(...);</pre>
-     * <pre>public void myMethod(...);</pre>
+     * <pre>
+     * public void myMethod(...);
+     * public void myMethod(...);
+     * public void myMethod(...);
+     * </pre>
      * The first method would return a blank string, the second would return the string "1" and the third
      * would return the string "2".
      * </p>
@@ -1266,17 +1265,17 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns the {@link AnnotationValue} with the given key name that is declared within the {@link AnnotationMirror}.
+     * Returns the {@link AnnotationValue} with the given member name that is declared within the {@link AnnotationMirror}.
      * @param mirror the annotation mirror.
-     * @param attributeName the attribute name.
+     * @param memberName the member name.
      * @return the annotation value or null if not found.
      */
-    public static AnnotationValue getAnnotationValue(AnnotationMirror mirror, String attributeName) {
+    public static AnnotationValue getAnnotationValue(AnnotationMirror mirror, String memberName) {
         Map<AnnotationTypeElementDeclaration, AnnotationValue> values = mirror.getElementValues();
         Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> entrySet = values.entrySet();
         for (Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue> entry : entrySet) {
             AnnotationTypeElementDeclaration element = entry.getKey();
-            if (element.getSimpleName().equals(attributeName)) {
+            if (element.getSimpleName().equals(memberName)) {
                 return entry.getValue();
             }
         }
@@ -1284,16 +1283,16 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns the {@link NormalAnnotation} member value pair value with the given key name.
+     * Returns the {@link NormalAnnotation} member value pair value with the given member name.
      * @param normalAnnotation the normal annotation.
-     * @param attributeName the member value pair member name.
-     * @return the expression value or null if not found
+     * @param memberName the member value pair member name.
+     * @return the value expression or null if not found.
      */
     @SuppressWarnings("unchecked")
-    public static Expression getAnnotationValue(NormalAnnotation normalAnnotation, String attributeName) {
+    public static Expression getAnnotationValue(NormalAnnotation normalAnnotation, String memberName) {
         List<MemberValuePair> memberValuePairs = normalAnnotation.values();
         for (MemberValuePair memberValuePair : memberValuePairs) {
-            if (memberValuePair.getName().getIdentifier().equals(attributeName)) {
+            if (memberValuePair.getName().getIdentifier().equals(memberName)) {
                 return memberValuePair.getValue();
             }
         }
@@ -1301,17 +1300,17 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns the JDT {@link IAnnotation} member value pairs value with the given key name.
-     * @param annotation the annotation
-     * @param attributeName the member value pair member name.
+     * Returns the JDT {@link IAnnotation} member value pairs value with the given member name.
+     * @param annotation the annotation.
+     * @param memberName the member name.
      * @return an object representing the member value pairs value.
-     * @throws JavaModelException
+     * @throws JavaModelException if the annotation does not exist or if an exception occurs while accessing its corresponding resource.
      */
-    public static Object getAnnotationValue(IAnnotation annotation, String attributeName) throws JavaModelException {
+    public static Object getAnnotationValue(IAnnotation annotation, String memberName) throws JavaModelException {
         IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
         if (memberValuePairs.length > 0) {
             for (IMemberValuePair memberValuePair : memberValuePairs) {
-                if (memberValuePair.getMemberName().equals(attributeName)) {
+                if (memberValuePair.getMemberName().equals(memberName)) {
                     return memberValuePair.getValue();
                 }
             }
@@ -1320,10 +1319,10 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param normalAnnotation
-     * @param memberName
-     * @return
+     * Returns the {@link MemberValuePair} with the given member name from the {@link NormalAnnotation}.
+     * @param normalAnnotation the normal annotation.
+     * @param memberName the member name of the member value pair to return.
+     * @return a member value pair or null if no member value pair with the given member name can be found.
      */
     @SuppressWarnings("unchecked")
     public static MemberValuePair getMemberValuePair(NormalAnnotation normalAnnotation, String memberName) {
@@ -1337,13 +1336,13 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param mirror
-     * @param attributeName
-     * @return
+     * Returns the member value with the given member name from the {@link AnnotationMirror} as a {@link String} value.
+     * @param mirror the annotation mirror.
+     * @param memberName the member name.
+     * @return the member value as a String or null if no member with the member name can be found.
      */
-    public static String getStringValue(AnnotationMirror mirror, String attributeName) {
-        AnnotationValue annotationValue = getAnnotationValue(mirror, attributeName);
+    public static String getStringValue(AnnotationMirror mirror, String memberName) {
+        AnnotationValue annotationValue = getAnnotationValue(mirror, memberName);
         if (annotationValue != null) {
             return annotationValue.getValue().toString();
         }
@@ -1351,14 +1350,14 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param attributeName
-     * @return
+     * Returns the member value with the given member name from the {@link Annotation} as a {@link String} value.
+     * @param annotation the AST annotation.
+     * @param memberName the member name.
+     * @return the member value as a String or null if no member with the member name can be found.
      */
-    public static String getStringValue(Annotation annotation, String attributeName) {
+    public static String getStringValue(Annotation annotation, String memberName) {
         if (annotation instanceof NormalAnnotation) {
-            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, memberName);
             if (expression != null && expression instanceof StringLiteral) {
                 return ((StringLiteral) expression).getLiteralValue();
             }
@@ -1367,14 +1366,15 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param attributeName
-     * @return
-     * @throws JavaModelException
+     * Returns the member value with the given member name from the {@link IAnnotation} as a {@link String} value.
+     * @param annotation the JDT annotation.
+     * @param memberName the member name.
+     * @return the member value as a String or null if no member with the member name can be found.
+     * @throws JavaModelException  if the annotation does not exist or if an exception occurs while accessing
+     * its corresponding resource.
      */
-    public static String getStringValue(IAnnotation annotation, String attributeName) throws JavaModelException {
-        Object value = AnnotationUtils.getAnnotationValue(annotation, attributeName);
+    public static String getStringValue(IAnnotation annotation, String memberName) throws JavaModelException {
+        Object value = AnnotationUtils.getAnnotationValue(annotation, memberName);
         if (value != null) {
             return value.toString();
         }
@@ -1382,13 +1382,13 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param mirror
-     * @param attributeName
-     * @return
+     * Returns the member value with the given member name from the {@link AnnotationMirror} as a {@link Boolean} value.
+     * @param mirror the annotation mirror.
+     * @param memberName the member name.
+     * @return the member value as a Boolean or null if no member with the member name can be found.
      */
-    public static Boolean getBooleanValue(AnnotationMirror mirror, String attributeName) {
-        String value = getStringValue(mirror, attributeName);
+    public static Boolean getBooleanValue(AnnotationMirror mirror, String memberName) {
+        String value = getStringValue(mirror, memberName);
         if (value != null) {
             return Boolean.valueOf(value);
         }
@@ -1396,14 +1396,14 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param attributeName
-     * @return
+     * Returns the member value with the given member name from the {@link Annotation} as a {@link Boolean} value.
+     * @param annotation the AST annotation.
+     * @param memberName the member name.
+     * @return the member value as a Boolean or null if no member with the member name can be found.
      */
-    public static Boolean getBooleanValue(Annotation annotation, String attributeName) {
+    public static Boolean getBooleanValue(Annotation annotation, String memberName) {
         if (annotation instanceof NormalAnnotation) {
-            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, memberName);
             if (expression != null && expression instanceof BooleanLiteral) {
                 return Boolean.valueOf(((BooleanLiteral) expression).booleanValue());
             }
@@ -1412,14 +1412,15 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param attributeName
-     * @return
-     * @throws JavaModelException
+     * Returns the  member value with the given member name from the {@link IAnnotation} as a {@link Boolean} value.
+     * @param annotation the JDT annotation.
+     * @param memberName the member name.
+     * @return the member value as a Boolean or null if no member with the member name can be found.
+     * @throws JavaModelException  if the annotation does not exist or if an exception occurs while accessing
+     * its corresponding resource.
      */
-    public static Boolean getBooleanValue(IAnnotation annotation, String attributeName) throws JavaModelException {
-        String value = AnnotationUtils.getStringValue(annotation, attributeName);
+    public static Boolean getBooleanValue(IAnnotation annotation, String memberName) throws JavaModelException {
+        String value = AnnotationUtils.getStringValue(annotation, memberName);
         if (value != null) {
             return Boolean.valueOf(value);
         }
@@ -1427,14 +1428,15 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param attributeName
-     * @return
+     * Returns the member value with the given member name from the {@link Annotation} as a {@link String} value.
+     * The returned String value is the name of the enum constant.
+     * @param annotation the AST annotation.
+     * @param memberName the member name.
+     * @return the member value as a String or null if no member with the member name can be found.
      */
-    public static String getEnumValue(Annotation annotation, String attributeName) {
+    public static String getEnumValue(Annotation annotation, String memberName) {
         if (annotation instanceof NormalAnnotation) {
-            Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
+            Expression expression = getAnnotationValue((NormalAnnotation) annotation, memberName);
             if (expression != null && expression instanceof QualifiedName) {
                 return ((QualifiedName) expression).getName().getIdentifier();
             }
@@ -1443,14 +1445,16 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param attributeName
-     * @return
-     * @throws JavaModelException
+     * Returns the member value with the given member name from the {@link IAnnotation} as a {@link String} value.
+     * The returned String value is the name of the enum constant.
+     * @param annotation the JDT annotation.
+     * @param memberName the member name.
+     * @return the member value as a String or null if no member with the member name can be found.
+     * @throws JavaModelException  if the annotation does not exist or if an exception occurs while accessing
+     * its corresponding resource.
      */
-    public static String getEnumValue(IAnnotation annotation, String attributeName) throws JavaModelException {
-        String value = AnnotationUtils.getStringValue(annotation, attributeName);
+    public static String getEnumValue(IAnnotation annotation, String memberName) throws JavaModelException {
+        String value = AnnotationUtils.getStringValue(annotation, memberName);
         if (value != null && value.indexOf(".") != -1) {
             return value.substring(value.lastIndexOf(".") + 1);
         }
