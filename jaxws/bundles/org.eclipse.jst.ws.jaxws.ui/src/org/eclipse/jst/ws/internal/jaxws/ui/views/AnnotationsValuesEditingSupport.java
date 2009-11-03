@@ -278,6 +278,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
         try {
             if (element instanceof Class && ((Class<?>) element).isAnnotation()) {
+                @SuppressWarnings("unchecked")
                 Class<? extends java.lang.annotation.Annotation> annotationClass =
                     		(Class<? extends java.lang.annotation.Annotation>) element;
                 if (annotationClass != null) {

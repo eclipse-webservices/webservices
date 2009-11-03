@@ -129,7 +129,19 @@ public final class AnnotationUtils {
         applyChange(null, change);
     }
 
-    public static void addAnnotation(IJavaElement javaElement, Annotation annotation) throws CoreException {
+    /**
+     * Adds the given {@link Annotation} to the {@link IJavaElement}.
+     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param annotation the annotation to add.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static void addAnnotation(IJavaElement javaElement, Annotation annotation) throws JavaModelException {
         TextFileChange change = new TextFileChange("Add annotation", (IFile) javaElement.getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         change.setEdit(multiTextEdit);
@@ -139,7 +151,19 @@ public final class AnnotationUtils {
         applyChange(null, change);
     }
 
-    public static void removeAnnotation(IJavaElement javaElement, Annotation annotation) throws CoreException {
+    /**
+     * Removes the given {@link Annotation} from the {@link IJavaElement}.
+     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param annotation the annotation to remove.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static void removeAnnotation(IJavaElement javaElement, Annotation annotation) throws JavaModelException {
         TextFileChange change = new TextFileChange("Remove annotation", (IFile) javaElement.getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         change.setEdit(multiTextEdit);
@@ -149,7 +173,14 @@ public final class AnnotationUtils {
         applyChange(null, change);
     }
 
-    public static void addMemberValuePair(NormalAnnotation annotation, MemberValuePair memberValuePair) throws CoreException {
+    /**
+     * Adds the {@link MemberValuePair} to the {@link NormalAnnotation}.
+     * @param annotation the normal annotation to add the member value pair.
+     * @param memberValuePair the member value pair to add.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static void addMemberValuePair(NormalAnnotation annotation, MemberValuePair memberValuePair) throws JavaModelException {
         if (annotation.getRoot() instanceof CompilationUnit) {
             CompilationUnit compilationUnit = (CompilationUnit) annotation.getRoot();
             TextFileChange change = new TextFileChange("Add Member Value Pair", (IFile) compilationUnit.getJavaElement().getResource());
@@ -162,7 +193,14 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void removeMemberValuePair(NormalAnnotation annotation, MemberValuePair memberValuePair) throws CoreException {
+    /**
+     * Removes the {@link MemberValuePair} from the {@link NormalAnnotation}.
+     * @param annotation the normal annotation from which to remove the member value pair.
+     * @param memberValuePair the member value pair to remove.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static void removeMemberValuePair(NormalAnnotation annotation, MemberValuePair memberValuePair) throws JavaModelException {
         if (annotation.getRoot() instanceof CompilationUnit) {
             CompilationUnit compilationUnit = (CompilationUnit) annotation.getRoot();
             TextFileChange change = new TextFileChange("Remove Member Value Pair", (IFile) compilationUnit.getJavaElement().getResource());
@@ -175,7 +213,14 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void updateMemberValuePair(MemberValuePair memberValuePair, ASTNode value) throws CoreException {
+    /**
+     * Updates the {@link MemberValuePair} value with the given {@link ASTNode}.
+     * @param memberValuePair the member value pair to update.
+     * @param value the value to set.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static void updateMemberValuePair(MemberValuePair memberValuePair, ASTNode value) throws JavaModelException {
         if (memberValuePair.getRoot() instanceof CompilationUnit) {
             CompilationUnit compilationUnit = (CompilationUnit) memberValuePair.getRoot();
             TextFileChange change = new TextFileChange("Update Member Value Pair", (IFile) compilationUnit.getJavaElement().getResource());
@@ -188,7 +233,14 @@ public final class AnnotationUtils {
         }
     }
 
-    public static void updateSingleMemberAnnotation(SingleMemberAnnotation annotation, ASTNode value)  throws CoreException {
+    /**
+     * Updates the value of the {@link SingleMemberAnnotation} with the given {@link ASTNode}.
+     * @param annotation the single member annotation to update.
+     * @param value the value to set.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static void updateSingleMemberAnnotation(SingleMemberAnnotation annotation, ASTNode value)  throws JavaModelException {
         if (annotation.getRoot() instanceof CompilationUnit) {
             CompilationUnit compilationUnit = (CompilationUnit) annotation.getRoot();
             TextFileChange change = new TextFileChange("Update Single Member Annotation", (IFile) compilationUnit.getJavaElement().getResource());
@@ -201,6 +253,21 @@ public final class AnnotationUtils {
         }
     }
 
+    /**
+     * Creates a {@link TextEdit} object representing the add import change to the source code of the java elements compilation unit.
+     * The compilation unit itself is not modified.
+     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * <li>IJavaElement.COMPILATION_UNIT</li>
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * The java element will be used to create a {@link CompilationUnit} which will in turn be used to create an {@link ImportRewrite}.
+     * @param qualifiedName the import to add.
+     * @return text edit object describing the add import changes.
+     * @throws CoreException the exception is thrown if the import rewrite fails.
+     */
     public static TextEdit createAddImportTextEdit(IJavaElement javaElement, String qualifiedName) throws CoreException {
         CompilationUnit compilationUnit = SharedASTProvider.getAST(getCompilationUnitFromJavaElement(javaElement), SharedASTProvider.WAIT_YES, null);
         ImportRewrite importRewrite = CodeStyleConfiguration.createImportRewrite(compilationUnit, true);
@@ -208,6 +275,22 @@ public final class AnnotationUtils {
         return importRewrite.rewriteImports(null);
     }
 
+    /**
+     * Creates a {@link TextEdit} object representing the remove import change to the source code of the java elements compilation unit.
+     * The compilation unit itself is not modified. No change will be recorded if the import type is referenced on an annotatable
+     * element in the source code.
+     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * <li>IJavaElement.COMPILATION_UNIT</li>
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * The java element will be used to create a {@link CompilationUnit} which will in turn be used to create an {@link ImportRewrite}.
+     * @param qualifiedName the annotation import to remove.
+     * @return text edit object describing the remove import changes.
+     * @throws CoreException the exception is thrown if the import rewrite fails.
+     */
     @SuppressWarnings("unchecked")
     public static TextEdit createRemoveImportTextEdit(IJavaElement javaElement, String qualifiedName) throws CoreException {
         CompilationUnit compilationUnit = SharedASTProvider.getAST(getCompilationUnitFromJavaElement(javaElement), SharedASTProvider.WAIT_YES, null);
@@ -294,7 +377,22 @@ public final class AnnotationUtils {
         }
     }
 
-    public static TextEdit createAddAnnotationTextEdit(IJavaElement javaElement, Annotation annotation) throws CoreException {
+    /**
+     * Creates a {@link TextEdit} object representing the add annotation change to the source code of the java elements compilation unit.
+     * The compilation unit itself is not modified.
+     * @param javaElement the javaElement to remove the annotation from. The following types of java
+     * element {@link IJavaElement#getElementType} are supported:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param annotation the annotation to add.
+     * @return text edit object describing the add annotation changes. Returns a {@link MultiTextEdit} if the given java element isn't supported.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static TextEdit createAddAnnotationTextEdit(IJavaElement javaElement, Annotation annotation) throws JavaModelException {
         switch(javaElement.getElementType()) {
         case IJavaElement.PACKAGE_DECLARATION:
             return createAddAnnotationTextEdit((IPackageDeclaration) javaElement, annotation);
@@ -311,7 +409,22 @@ public final class AnnotationUtils {
         }
     }
 
-    public static TextEdit createRemoveAnnotationTextEdit(IJavaElement javaElement, Annotation annotation) throws CoreException {
+    /**
+     * Creates a {@link TextEdit} object representing the remove annotation change to the source code of the java elements compilation unit.
+     * The compilation unit itself is not modified.
+     * @param javaElement the javaElement to remove the annotation from. The following types of java
+     * element {@link IJavaElement#getElementType} are supported:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param annotation the annotation to add.
+     * @return text edit object describing the add annotation changes. Returns a {@link MultiTextEdit} if the given java element isn't supported.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
+     * buffer could not be accessed.
+     */
+    public static TextEdit createRemoveAnnotationTextEdit(IJavaElement javaElement, Annotation annotation) throws JavaModelException {
         switch(javaElement.getElementType()) {
         case IJavaElement.PACKAGE_DECLARATION:
             return createRemoveAnnotationTextEdit((IPackageDeclaration) javaElement, annotation);
@@ -359,7 +472,7 @@ public final class AnnotationUtils {
         }
     }
 
-    private static TextEdit createAddAnnotationTextEdit(IPackageDeclaration packageDeclaration, Annotation annotation) throws CoreException {
+    private static TextEdit createAddAnnotationTextEdit(IPackageDeclaration packageDeclaration, Annotation annotation) throws JavaModelException {
         if (packageDeclaration != null && !isAnnotationPresent(packageDeclaration, AnnotationUtils.getAnnotationName(annotation))) {
             ICompilationUnit source = getCompilationUnitFromJavaElement(packageDeclaration);
             CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
@@ -374,7 +487,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createRemoveAnnotationTextEdit(IPackageDeclaration packageDeclaration, Annotation annotation) throws CoreException {
+    private static TextEdit createRemoveAnnotationTextEdit(IPackageDeclaration packageDeclaration, Annotation annotation) throws JavaModelException {
         if (packageDeclaration != null && isAnnotationPresent(packageDeclaration, getAnnotationName(annotation))) {
             ICompilationUnit source = getCompilationUnitFromJavaElement(packageDeclaration);
             CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
@@ -396,7 +509,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createAddAnnotationTextEdit(IType type, Annotation annotation) throws CoreException {
+    private static TextEdit createAddAnnotationTextEdit(IType type, Annotation annotation) throws JavaModelException {
         AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(type);
         if(typeDeclaration != null && !isAnnotationPresent(type, annotation)) {
             ASTRewrite rewriter = ASTRewrite.create(typeDeclaration.getAST());
@@ -410,7 +523,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createRemoveAnnotationTextEdit(IType type, Annotation annotation) throws CoreException {
+    private static TextEdit createRemoveAnnotationTextEdit(IType type, Annotation annotation) throws JavaModelException {
         AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(type);
         if (typeDeclaration != null && isAnnotationPresent(type, annotation)) {
             ASTRewrite rewriter = ASTRewrite.create(typeDeclaration.getAST());
@@ -429,7 +542,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createAddAnnotationTextEdit(IMethod method, Annotation annotation) throws CoreException {
+    private static TextEdit createAddAnnotationTextEdit(IMethod method, Annotation annotation) throws JavaModelException {
         MethodDeclaration methodDeclaration = getMethodDeclaration(method);
         if (methodDeclaration != null && !isAnnotationPresent(method, annotation)) {
             ASTRewrite rewriter = ASTRewrite.create(methodDeclaration.getAST());
@@ -443,7 +556,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createRemoveAnnotationTextEdit(IMethod method, Annotation annotation) throws CoreException {
+    private static TextEdit createRemoveAnnotationTextEdit(IMethod method, Annotation annotation) throws JavaModelException {
         MethodDeclaration methodDeclaration = getMethodDeclaration(method);
         if (methodDeclaration != null && isAnnotationPresent(method, annotation)) {
             ASTRewrite rewriter = ASTRewrite.create(methodDeclaration.getAST());
@@ -462,7 +575,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createAddAnnotationTextEdit(IField field, Annotation annotation) throws CoreException {
+    private static TextEdit createAddAnnotationTextEdit(IField field, Annotation annotation) throws JavaModelException {
         FieldDeclaration fieldDeclaration = getFieldDeclaration(field);
         if (fieldDeclaration != null && !isAnnotationPresent(field, annotation)) {
 
@@ -477,7 +590,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createRemoveAnnotationTextEdit(IField field, Annotation annotation) throws CoreException {
+    private static TextEdit createRemoveAnnotationTextEdit(IField field, Annotation annotation) throws JavaModelException {
         FieldDeclaration fieldDeclaration = getFieldDeclaration(field);
         if (fieldDeclaration != null && isAnnotationPresent(field, annotation)) {
             ASTRewrite rewriter = ASTRewrite.create(fieldDeclaration.getAST());
@@ -496,7 +609,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createAddAnnotationTextEdit(ILocalVariable methodParameter, Annotation annotation) throws CoreException {
+    private static TextEdit createAddAnnotationTextEdit(ILocalVariable methodParameter, Annotation annotation) throws JavaModelException {
         SingleVariableDeclaration parameter = getSingleVariableDeclaration(methodParameter);
         if (parameter != null && !isAnnotationPresent(methodParameter, AnnotationUtils.getAnnotationName(annotation))) {
             ASTRewrite rewriter = ASTRewrite.create(parameter.getAST());
@@ -510,7 +623,7 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    private static TextEdit createRemoveAnnotationTextEdit(ILocalVariable methodParameter, Annotation annotation) throws CoreException {
+    private static TextEdit createRemoveAnnotationTextEdit(ILocalVariable methodParameter, Annotation annotation) throws JavaModelException {
         SingleVariableDeclaration parameter = getSingleVariableDeclaration(methodParameter);
         if (isAnnotationPresent(methodParameter, AnnotationUtils.getAnnotationName(annotation))) {
             ASTRewrite rewriter = ASTRewrite.create(parameter.getAST());
@@ -530,7 +643,16 @@ public final class AnnotationUtils {
         return new MultiTextEdit();
     }
 
-    public static TextEdit createAddMemberValuePairTextEdit(NormalAnnotation annotation, MemberValuePair memberValuePair) throws CoreException {
+    /**
+     * Creates a {@link TextEdit} object representing the change of adding the {@link MemberValuePair} to the {@link NormalAnnotation}.
+     * The underlying compilation unit itself is not modified.
+     * @param annotation the normal annotation to add the member value pair to.
+     * @param memberValuePair the member value pair to add.
+     * @return text edit object describing the add member value pair change.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when
+     * the underlying compilation units buffer could not be accessed.
+     */
+    public static TextEdit createAddMemberValuePairTextEdit(NormalAnnotation annotation, MemberValuePair memberValuePair) throws JavaModelException {
         ASTRewrite rewriter = ASTRewrite.create(annotation.getAST());
 
         ListRewrite listRewrite = rewriter.getListRewrite(annotation, NormalAnnotation.VALUES_PROPERTY);
@@ -540,7 +662,16 @@ public final class AnnotationUtils {
         return rewriter.rewriteAST();
     }
 
-    public static TextEdit createRemoveMemberValuePairTextEdit(NormalAnnotation annotation, MemberValuePair memberValuePair) throws CoreException {
+    /**
+     * Creates a {@link TextEdit} object representing the change of removing the {@link MemberValuePair} from the {@link NormalAnnotation}.
+     * The underlying compilation unit itself is not modified.
+     * @param annotation the normal annotation to remove the member value pair from.
+     * @param memberValuePair the member value pair to remove.
+     * @return text edit object describing the remove member value pair change.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when
+     * the underlying compilation units buffer could not be accessed.
+     */
+    public static TextEdit createRemoveMemberValuePairTextEdit(NormalAnnotation annotation, MemberValuePair memberValuePair) throws JavaModelException {
         ASTRewrite rewriter = ASTRewrite.create(annotation.getAST());
 
         ListRewrite listRewrite = rewriter.getListRewrite(annotation, NormalAnnotation.VALUES_PROPERTY);
@@ -558,7 +689,16 @@ public final class AnnotationUtils {
         return rewriter.rewriteAST();
     }
 
-    public static TextEdit createUpdateMemberValuePairTextEdit(MemberValuePair memberValuePair, ASTNode value) throws CoreException {
+    /**
+     * Creates a {@link TextEdit} object representing the change of updating the {@link MemberValuePair} with the {@link ASTNode} value.
+     * The underlying compilation unit itself is not modified.
+     * @param memberValuePair the member value pair to update.
+     * @param value the value to set.
+     * @return text edit object describing the update member value pair change.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when
+     * the underlying compilation units buffer could not be accessed.
+     */
+    public static TextEdit createUpdateMemberValuePairTextEdit(MemberValuePair memberValuePair, ASTNode value) throws JavaModelException {
         ASTRewrite rewriter = ASTRewrite.create(memberValuePair.getAST());
 
         rewriter.set(memberValuePair, MemberValuePair.VALUE_PROPERTY, value, null);
@@ -566,7 +706,16 @@ public final class AnnotationUtils {
         return rewriter.rewriteAST();
     }
 
-    public static TextEdit createUpdateSingleMemberAnnotationTextEdit(SingleMemberAnnotation annotation, ASTNode value) throws CoreException {
+    /**
+     * Creates a {@link TextEdit} object representing the change of updating the {@link SingleMemberAnnotation} with the {@link ASTNode} value.
+     * The underlying compilation unit itself is not modified.
+     * @param annotation the single memeber annotation to update.
+     * @param value the value to set.
+     * @return text edit object describing the update single member annotation change.
+     * @throws JavaModelException A {@link JavaModelException} is thrown when
+     * the underlying compilation units buffer could not be accessed.
+     */
+    public static TextEdit createUpdateSingleMemberAnnotationTextEdit(SingleMemberAnnotation annotation, ASTNode value) throws JavaModelException {
         ASTRewrite rewriter = ASTRewrite.create(annotation.getAST());
 
         rewriter.set(annotation, SingleMemberAnnotation.VALUE_PROPERTY, value, null);
@@ -574,6 +723,18 @@ public final class AnnotationUtils {
         return rewriter.rewriteAST();
     }
 
+    /**
+     * Returns a {link ICompilationUnit} for the given {@link IJavaElement}.
+     * @param javaElement the following types of java
+     * element {@link IJavaElement#getElementType} are supported:
+     * <li>IJavaElement.COMPILATION_UNIT</li>
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @return a compilation unit.
+     */
     public static ICompilationUnit getCompilationUnitFromJavaElement(IJavaElement javaElement) {
         switch(javaElement.getElementType()) {
         case IJavaElement.COMPILATION_UNIT:
@@ -600,6 +761,11 @@ public final class AnnotationUtils {
         }
     }
 
+    /**
+     * Returns the {@link AbstractTypeDeclaration} that corresponds to the given {@link IType}.
+     * @param type the type.
+     * @return a type declaration or null if not found.
+     */
     @SuppressWarnings("unchecked")
     public static AbstractTypeDeclaration getTypeDeclaration(IType type) {
         CompilationUnit compilationUnit = SharedASTProvider.getAST(type.getCompilationUnit(), SharedASTProvider.WAIT_YES, null);
@@ -612,6 +778,11 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     * Returns the {@link MethodDeclaration} that corresponds to the given {@link IMethod}.
+     * @param method the method
+     * @return a method declaration or null if not found.
+     */
     @SuppressWarnings("unchecked")
     public static MethodDeclaration getMethodDeclaration(IMethod method) {
         AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(method.getDeclaringType());
@@ -629,6 +800,11 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     * Returns the {@link FieldDeclaration} that corresponds to the given {@link IField}.
+     * @param field the field
+     * @return a field declaration or null if not found.
+     */
     @SuppressWarnings("unchecked")
     public static FieldDeclaration getFieldDeclaration(IField field) {
         AbstractTypeDeclaration typeDeclaration = getTypeDeclaration(field.getDeclaringType());
@@ -646,6 +822,11 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     * Returns the {@link SingleVariableDeclaration} that corresponds to the given {@link ILocalVariable}.
+     * @param javaElement the local variable
+     * @return a single variable declaration or null if not found.
+     */
     public static SingleVariableDeclaration getSingleVariableDeclaration(ILocalVariable javaElement) {
         if (javaElement instanceof ILocalVariable && javaElement.getParent() instanceof IMethod) {
             ILocalVariable localVariable = javaElement;
@@ -679,19 +860,31 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns the annotations name.
-     * @param annotation
-     * @return the annotation name
+     * Returns the annotations name  {@link Name#getFullyQualifiedName}.
+     * @param annotation the annotation.
+     * @return the annotation name. The simple name or the fully qualified name
      */
     public static String getAnnotationName(Annotation annotation) {
         Name annotationTypeName = annotation.getTypeName();
         return annotationTypeName.getFullyQualifiedName();
     }
 
+    /**
+     * Compares the {@link AbstractTypeDeclaration} and {@link IType}.
+     * @param abstractTypeDeclaration the type declaration.
+     * @param type the type
+     * @return <code>true</code> if the names match.
+     */
     public static boolean compareTypeNames(AbstractTypeDeclaration abstractTypeDeclaration, IType type) {
         return abstractTypeDeclaration.getName().getIdentifier().equals(type.getElementName());
     }
 
+    /**
+     * Compares the {@link MethodDeclaration} and {@link IMethod}.
+     * @param methodDeclaration the method declaration.
+     * @param method the method.
+     * @return <code>true</code> if the method names and parameter types match.
+     */
     @SuppressWarnings("unchecked")
     public static boolean compareMethods(MethodDeclaration methodDeclaration, IMethod method) {
         if (methodDeclaration.getName().getIdentifier().equals(method.getElementName())) {
@@ -711,6 +904,12 @@ public final class AnnotationUtils {
         return false;
     }
 
+    /**
+     * Compares the two {@link MethodDeclaration}.
+     * @param methodOne the first method declaration.
+     * @param methodTwo the second method declaration.
+     * @return <code>true</code> if the method names and parameter types match.
+     */
     @SuppressWarnings("unchecked")
     public static boolean compareMethods(MethodDeclaration methodOne, MethodDeclaration methodTwo) {
         if (methodOne.getName().getIdentifier().equals(methodTwo.getName().getIdentifier())) {
@@ -730,6 +929,12 @@ public final class AnnotationUtils {
         return false;
     }
 
+    /**
+     * Compares the two {@link om.sun.mirror.declaration.MethodDeclaration}.
+     * @param methodOne the first method declaration.
+     * @param methodTwo the second method declaration.
+     * @return <code>true</code> if the method names and parameter types match.
+     */
     public static boolean compareMethods(com.sun.mirror.declaration.MethodDeclaration methodOne,
             com.sun.mirror.declaration.MethodDeclaration methodTwo) {
         return compareMethodNames(methodOne, methodTwo) && compareMethodParameterTypes(methodOne, methodTwo);
@@ -758,8 +963,14 @@ public final class AnnotationUtils {
         return false;
     }
 
+    /**
+     * Compares the {@link FieldDeclaration} and {@link IField}.
+     * @param fieldDeclaration the field declaration.
+     * @param field the field.
+     * @return <code>true</code> if the field names match.
+     */
     @SuppressWarnings("unchecked")
-    private static boolean compareFieldNames(FieldDeclaration fieldDeclaration, IField field) {
+    public static boolean compareFieldNames(FieldDeclaration fieldDeclaration, IField field) {
         List<VariableDeclarationFragment> fragments = fieldDeclaration.fragments();
         for (VariableDeclarationFragment variableDeclarationFragment : fragments) {
             if (variableDeclarationFragment.getName().getIdentifier().equals(field.getElementName())) {
@@ -769,6 +980,13 @@ public final class AnnotationUtils {
         return false;
     }
 
+    /**
+     *
+     * @param type
+     * @param method
+     * @return
+     * @throws JavaModelException
+     */
     public static String accountForOverloadedMethods(IType type, IMethod method) throws JavaModelException {
         List<IMethod> methods =  Arrays.asList(type.getMethods());
         List<IMethod> similarMethods = new ArrayList<IMethod>();
@@ -787,10 +1005,22 @@ public final class AnnotationUtils {
                 AnnotationUtils.getAnnotationName(newAnnotation));
     }
 
+    /**
+     * Checks if the given {@link Annotation} is present on the {@link IJavaElement}.
+     * @param javaElement
+     * @param annotation
+     * @return
+     */
     public static boolean isAnnotationPresent(IJavaElement javaElement, Annotation annotation) {
         return AnnotationUtils.isAnnotationPresent(javaElement, AnnotationUtils.getAnnotationName(annotation));
     }
 
+    /**
+     *
+     * @param javaElement
+     * @param annotationName
+     * @return
+     */
     public static boolean isAnnotationPresent(IJavaElement javaElement, String annotationName) {
         if (javaElement.getElementType() == IJavaElement.COMPILATION_UNIT) {
             return isAnnotationPresent(((ICompilationUnit)javaElement).findPrimaryType(), annotationName);
@@ -814,6 +1044,11 @@ public final class AnnotationUtils {
         return false;
     }
 
+    /**
+     *
+     * @param javaElement
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static List<Annotation> getAnnotations(IJavaElement javaElement) {
         ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
@@ -863,6 +1098,11 @@ public final class AnnotationUtils {
         return annotations;
     }
 
+    /**
+     *
+     * @param method
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static List<SingleVariableDeclaration> getSingleVariableDeclarations(final IMethod method) {
         ICompilationUnit source = method.getCompilationUnit();
@@ -880,6 +1120,12 @@ public final class AnnotationUtils {
         return parameters;
     }
 
+    /**
+     *
+     * @param method
+     * @param offset
+     * @return
+     */
     public static ILocalVariable getLocalVariable(IMethod method, int offset) {
         List<SingleVariableDeclaration> parameters = getSingleVariableDeclarations(method);
         for (SingleVariableDeclaration parameter : parameters) {
@@ -894,6 +1140,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param method
+     * @param paramName
+     * @return
+     */
     public static ILocalVariable getLocalVariable(IMethod method, String paramName) {
         List<SingleVariableDeclaration> parameters = getSingleVariableDeclarations(method);
         for (SingleVariableDeclaration parameter : parameters) {
@@ -904,11 +1156,30 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param javaElement
+     * @param annotation
+     * @return
+     */
     public static Annotation getAnnotation(IJavaElement javaElement, Class<? extends java.lang.annotation.Annotation> annotation) {
         List<Annotation> annotations = getAnnotations(javaElement);
-        return getAnnotation(annotations, annotation);
+        for (Annotation astAnnotation : annotations) {
+            String typeName = astAnnotation.getTypeName().getFullyQualifiedName();
+            if (typeName.equals(annotation.getCanonicalName())
+                    || typeName.equals(annotation.getSimpleName())) {
+                return astAnnotation;
+            }
+        }
+        return null;
     }
 
+    /**
+     *
+     * @param declaration
+     * @param annotation
+     * @return
+     */
     public static AnnotationMirror getAnnotation(Declaration declaration,
             Class<? extends java.lang.annotation.Annotation> annotation) {
         Collection<AnnotationMirror> aannotationMirrors = declaration.getAnnotationMirrors();
@@ -924,18 +1195,13 @@ public final class AnnotationUtils {
         return null;
     }
 
-    private static Annotation getAnnotation(List<Annotation> annotations,
-            Class<? extends java.lang.annotation.Annotation> annotation) {
-        for (Annotation astAnnotation : annotations) {
-            String typeName = astAnnotation.getTypeName().getFullyQualifiedName();
-            if (typeName.equals(annotation.getCanonicalName())
-                    || typeName.equals(annotation.getSimpleName())) {
-                return astAnnotation;
-            }
-        }
-        return null;
-    }
-
+    /**
+     *
+     * @param annotation
+     * @param annotatable
+     * @return
+     * @throws JavaModelException
+     */
     public static IAnnotation getAnnotation(Class<? extends java.lang.annotation.Annotation> annotation,
             IAnnotatable annotatable) throws JavaModelException {
         IAnnotation[] annotations = annotatable.getAnnotations();
@@ -949,6 +1215,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param mirror
+     * @param attributeName
+     * @return
+     */
     public static AnnotationValue getAnnotationValue(AnnotationMirror mirror, String attributeName) {
         Map<AnnotationTypeElementDeclaration, AnnotationValue> values = mirror.getElementValues();
         Set<Map.Entry<AnnotationTypeElementDeclaration, AnnotationValue>> entrySet = values.entrySet();
@@ -961,6 +1233,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param normalAnnotation
+     * @param attributeName
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static Expression getAnnotationValue(NormalAnnotation normalAnnotation, String attributeName) {
         List<MemberValuePair> memberValuePairs = normalAnnotation.values();
@@ -972,6 +1250,13 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param annotation
+     * @param attributeName
+     * @return
+     * @throws JavaModelException
+     */
     public static Object getAnnotationValue(IAnnotation annotation, String attributeName) throws JavaModelException {
         IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
         if (memberValuePairs.length > 0) {
@@ -984,6 +1269,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param normalAnnotation
+     * @param memberName
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static MemberValuePair getMemberValuePair(NormalAnnotation normalAnnotation, String memberName) {
         List<MemberValuePair> memberValuesPairs = normalAnnotation.values();
@@ -995,6 +1286,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param mirror
+     * @param attributeName
+     * @return
+     */
     public static String getStringValue(AnnotationMirror mirror, String attributeName) {
         AnnotationValue annotationValue = getAnnotationValue(mirror, attributeName);
         if (annotationValue != null) {
@@ -1003,6 +1300,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param annotation
+     * @param attributeName
+     * @return
+     */
     public static String getStringValue(Annotation annotation, String attributeName) {
         if (annotation instanceof NormalAnnotation) {
             Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
@@ -1013,8 +1316,14 @@ public final class AnnotationUtils {
         return null;
     }
 
-    public static String getStringValue(IAnnotation annotation, String attributeName)
-    throws JavaModelException {
+    /**
+     *
+     * @param annotation
+     * @param attributeName
+     * @return
+     * @throws JavaModelException
+     */
+    public static String getStringValue(IAnnotation annotation, String attributeName) throws JavaModelException {
         Object value = AnnotationUtils.getAnnotationValue(annotation, attributeName);
         if (value != null) {
             return value.toString();
@@ -1022,6 +1331,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param mirror
+     * @param attributeName
+     * @return
+     */
     public static Boolean getBooleanValue(AnnotationMirror mirror, String attributeName) {
         String value = getStringValue(mirror, attributeName);
         if (value != null) {
@@ -1030,6 +1345,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param annotation
+     * @param attributeName
+     * @return
+     */
     public static Boolean getBooleanValue(Annotation annotation, String attributeName) {
         if (annotation instanceof NormalAnnotation) {
             Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
@@ -1040,6 +1361,13 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param annotation
+     * @param attributeName
+     * @return
+     * @throws JavaModelException
+     */
     public static Boolean getBooleanValue(IAnnotation annotation, String attributeName) throws JavaModelException {
         String value = AnnotationUtils.getStringValue(annotation, attributeName);
         if (value != null) {
@@ -1048,6 +1376,12 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param annotation
+     * @param attributeName
+     * @return
+     */
     public static String getEnumValue(Annotation annotation, String attributeName) {
         if (annotation instanceof NormalAnnotation) {
             Expression expression = getAnnotationValue((NormalAnnotation) annotation, attributeName);
@@ -1058,6 +1392,13 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     *
+     * @param annotation
+     * @param attributeName
+     * @return
+     * @throws JavaModelException
+     */
     public static String getEnumValue(IAnnotation annotation, String attributeName) throws JavaModelException {
         String value = AnnotationUtils.getStringValue(annotation, attributeName);
         if (value != null && value.indexOf(".") != -1) {

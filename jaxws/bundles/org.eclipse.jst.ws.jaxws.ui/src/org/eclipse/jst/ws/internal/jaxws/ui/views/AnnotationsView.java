@@ -22,7 +22,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -138,8 +137,8 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
             public int compare(Viewer viewer, Object obj1, Object obj2) {
                 if ((obj1 instanceof Class<?> && ((Class<?>) obj1).isAnnotation())
                 		&& (obj2 instanceof Class<?> && ((Class<?>) obj2).isAnnotation())) {
-                	return ((Class<? extends java.lang.annotation.Annotation>) obj1).getCanonicalName().compareTo(
-                			((Class<? extends java.lang.annotation.Annotation>) obj1).getCanonicalName());
+                    return ((Class<? extends java.lang.annotation.Annotation>) obj1).getCanonicalName().compareTo(
+                			((Class<? extends java.lang.annotation.Annotation>) obj2).getCanonicalName());
                 }
                 if (obj1 instanceof Method && obj2 instanceof Method) {
                     return ((Method)obj1).getName().compareTo(((Method)obj2).getName());
