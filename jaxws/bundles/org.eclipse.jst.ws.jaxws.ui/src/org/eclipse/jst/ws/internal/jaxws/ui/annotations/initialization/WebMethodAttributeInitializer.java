@@ -81,7 +81,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
 
     private String getOperationNameValue(IType type, IMethod method) {
         try {
-            return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(type, method);
+            return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
         	JAXWSUIPlugin.log(jme.getStatus());
         }
@@ -92,7 +92,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
         try {
             String methodName = method.getElementName();
             return "urn:" + methodName.substring(0, 1).toUpperCase()  //$NON-NLS-1$
-                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
+                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
         	JAXWSUIPlugin.log(jme.getStatus());
         }

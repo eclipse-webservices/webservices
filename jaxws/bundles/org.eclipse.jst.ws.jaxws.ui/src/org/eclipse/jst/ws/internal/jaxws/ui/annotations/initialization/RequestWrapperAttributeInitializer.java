@@ -104,7 +104,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
         try {
             String methodName = method.getElementName();
             return getPackageName(type) + methodName.substring(0, 1).toUpperCase()
-                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
+                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }
@@ -120,7 +120,7 @@ public class RequestWrapperAttributeInitializer extends AnnotationAttributeIniti
                     return operationName;
                 }
             }
-            return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(type, method);
+            return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }

@@ -98,10 +98,16 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Adds an import to the given <code>IJavaElement</code>.
-     * @param javaElement the <code>IJavaElement</code> to add the import to.
+     * Adds an import to the given {@link IJavaElement}.
+     * @param javaElement the java element to add the import to.
+     * The following types of java elements are supported:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
      * @param qualifiedName the import to add.
-     * @throws CoreException
+     * @throws CoreException the exception is thrown if the import rewrite fails.
      */
     public static void addImport(IJavaElement javaElement, String qualifiedName) throws CoreException {
         TextFileChange change = new TextFileChange("Add Import", (IFile) javaElement.getResource());
@@ -114,10 +120,18 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param javaElement
-     * @param qualifiedName
-     * @throws CoreException
+     * Removes an import from the given {@link IJavaElement}. The import will not be removed if the
+     * import type is referenced on more than one annotatable element in the source code. This method
+     * is intended to be used in conjunction with {@link AnnotationUtils#removeAnnotation(IJavaElement, Annotation)}}.
+     * @param javaElement the java element to remove the import from.
+     * The following types of java elements are supported:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param qualifiedName the import to remove.
+     * @throws CoreException the exception is thrown if the import rewrite fails.
      */
     public static void removeImport(IJavaElement javaElement, String qualifiedName) throws CoreException {
         TextFileChange change = new TextFileChange("Remove Import", (IFile) javaElement.getResource());
@@ -277,8 +291,8 @@ public final class AnnotationUtils {
 
     /**
      * Creates a {@link TextEdit} object representing the remove import change to the source code of the java elements compilation unit.
-     * The compilation unit itself is not modified. No change will be recorded if the import type is referenced on an annotatable
-     * element in the source code.
+     * The compilation unit itself is not modified. No change will be recorded if the import type is referenced on more than one an annotatable
+     * element in the source code. This method should be called in conjunction with {@link AnnotationUtils#createRemoveAnnotationTextEdit(IJavaElement, Annotation)}}.
      * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
      * <li>IJavaElement.COMPILATION_UNIT</li>
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
@@ -981,13 +995,25 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param type
-     * @param method
-     * @return
-     * @throws JavaModelException
+     * Tests the given {@link IMethod} to see if it is an overloaded method. If it is it will return
+     * a string representing the position of this method in it's parents. {@link IType}}.
+     * <p>
+     * E.g. Given three methods:
+     * <pre>public void myMethod(...);</pre>
+     * <pre>public void myMethod(...);</pre>
+     * <pre>public void myMethod(...);</pre>
+     * The first method would return a blank string, the second would return the string "1" and the third
+     * would return the string "2".
+     * </p>
+     * @param method the method to test
+     * @return a string value
+     * @exception JavaModelException thrown if an exception occurs while accessing the underlying resource
      */
-    public static String accountForOverloadedMethods(IType type, IMethod method) throws JavaModelException {
+    public static String accountForOverloadedMethods(IMethod method) throws JavaModelException {
+    	IType type = method.getDeclaringType();
+    	if (type == null) {
+    		return "";
+    	}
         List<IMethod> methods =  Arrays.asList(type.getMethods());
         List<IMethod> similarMethods = new ArrayList<IMethod>();
         for (IMethod methodToTest : methods) {
@@ -1007,19 +1033,29 @@ public final class AnnotationUtils {
 
     /**
      * Checks if the given {@link Annotation} is present on the {@link IJavaElement}.
-     * @param javaElement
-     * @param annotation
-     * @return
+     * @param javaElement one of the following types of java element:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param annotation the annotation.
+     * @return <code>true</code> if the annotation is present.
      */
     public static boolean isAnnotationPresent(IJavaElement javaElement, Annotation annotation) {
         return AnnotationUtils.isAnnotationPresent(javaElement, AnnotationUtils.getAnnotationName(annotation));
     }
 
     /**
-     *
-     * @param javaElement
-     * @param annotationName
-     * @return
+     * Checks if the an annotation with the given name is present on the {@link IJavaElement}.
+     * @param javaElement one of the following types of java element:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param annotationName the annotation name.
+     * @return <code>true</code> if the annotation is present.
      */
     public static boolean isAnnotationPresent(IJavaElement javaElement, String annotationName) {
         if (javaElement.getElementType() == IJavaElement.COMPILATION_UNIT) {
@@ -1045,9 +1081,14 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param javaElement
-     * @return
+     * Returns a list of all the {@link Annotation} that are present on the given {@link IJavaElement}
+     * @param javaElement one of the following types of java element:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @return a list of annotations.
      */
     @SuppressWarnings("unchecked")
     public static List<Annotation> getAnnotations(IJavaElement javaElement) {
@@ -1099,9 +1140,9 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param method
-     * @return
+     * Returns a list of all the {@link SingleVariableDeclaration} for the given {@link IMethod}.
+     * @param method the method.
+     * @return a list of single variable declarations.
      */
     @SuppressWarnings("unchecked")
     public static List<SingleVariableDeclaration> getSingleVariableDeclarations(final IMethod method) {
@@ -1121,10 +1162,12 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param method
-     * @param offset
-     * @return
+     * Returns the {@link ILocalVariable} at the given offset position in the source file.
+     * @param method the method in which the local variable is declared.
+     * @param offset the character index of the local variable in the source file.
+     * The offset must be >= to the start position of the node representing the local variable and
+     * <= the nodes start position plus length.
+     * @return the local variable or null if not found.
      */
     public static ILocalVariable getLocalVariable(IMethod method, int offset) {
         List<SingleVariableDeclaration> parameters = getSingleVariableDeclarations(method);
@@ -1136,15 +1179,14 @@ public final class AnnotationUtils {
                 return (ILocalVariable) parameter.resolveBinding().getJavaElement();
             }
         }
-
         return null;
     }
 
     /**
-     *
-     * @param method
-     * @param paramName
-     * @return
+     * Returns the {@link ILocalVariable} with the given name within the declared {@link IMethod}.
+     * @param method the method in which the local variable is declared.
+     * @param paramName the local variable name.
+     * @return the local variable or null if not found.
      */
     public static ILocalVariable getLocalVariable(IMethod method, String paramName) {
         List<SingleVariableDeclaration> parameters = getSingleVariableDeclarations(method);
@@ -1157,10 +1199,16 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param javaElement
-     * @param annotation
-     * @return
+     * Returns the AST {@link Annotation} that corresponds to the given {@link java.lang.annotation.Annotation} class
+     * on the {@link IJavaElement}.
+     * @param javaElement one of the following types of java element:
+     * <li>IJavaElement.PACKAGE_DECLARATION</li>
+     * <li>IJavaElement.TYPE</li>
+     * <li>IJavaElement.FIELD</li>
+     * <li>IJavaElement.METHOD</li>
+     * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * @param annotation the {@link java.lang.annotation.Annotation} class.
+     * @return the AST annotation or null if not found.
      */
     public static Annotation getAnnotation(IJavaElement javaElement, Class<? extends java.lang.annotation.Annotation> annotation) {
         List<Annotation> annotations = getAnnotations(javaElement);
@@ -1175,10 +1223,11 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param declaration
-     * @param annotation
-     * @return
+     * Returns the {@link AnnotationMirror} that corresponds to the given {@link java.lang.annotation.Annotation} class
+     * on the {@link Declaration}.
+     * @param declaration the declaration
+     * @param annotation the {@link java.lang.annotation.Annotation} class.
+     * @return the annotation mirror or null if not found.
      */
     public static AnnotationMirror getAnnotation(Declaration declaration,
             Class<? extends java.lang.annotation.Annotation> annotation) {
@@ -1196,11 +1245,12 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param annotatable
-     * @return
-     * @throws JavaModelException
+     * Returns the JDT {@link IAnnotation} that corresponds to the given {@link java.lang.annotation.Annotation} class
+     * on the {@link IAnnotatable} element.
+     * @param annotation the {@link java.lang.annotation.Annotation} class.
+     * @param annotatable a package declaration, a type, a method, a field or a local variable in a compilation unit.
+     * @return the annotation or null if not found.
+     * @throws JavaModelException if the annotatable element does not exist or if an exception occurs while accessing its corresponding resource.
      */
     public static IAnnotation getAnnotation(Class<? extends java.lang.annotation.Annotation> annotation,
             IAnnotatable annotatable) throws JavaModelException {
@@ -1216,10 +1266,10 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param mirror
-     * @param attributeName
-     * @return
+     * Returns the {@link AnnotationValue} with the given key name that is declared within the {@link AnnotationMirror}.
+     * @param mirror the annotation mirror.
+     * @param attributeName the attribute name.
+     * @return the annotation value or null if not found.
      */
     public static AnnotationValue getAnnotationValue(AnnotationMirror mirror, String attributeName) {
         Map<AnnotationTypeElementDeclaration, AnnotationValue> values = mirror.getElementValues();
@@ -1234,10 +1284,10 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param normalAnnotation
-     * @param attributeName
-     * @return
+     * Returns the {@link NormalAnnotation} member value pair value with the given key name.
+     * @param normalAnnotation the normal annotation.
+     * @param attributeName the member value pair member name.
+     * @return the expression value or null if not found
      */
     @SuppressWarnings("unchecked")
     public static Expression getAnnotationValue(NormalAnnotation normalAnnotation, String attributeName) {
@@ -1251,10 +1301,10 @@ public final class AnnotationUtils {
     }
 
     /**
-     *
-     * @param annotation
-     * @param attributeName
-     * @return
+     * Returns the JDT {@link IAnnotation} member value pairs value with the given key name.
+     * @param annotation the annotation
+     * @param attributeName the member value pair member name.
+     * @return an object representing the member value pairs value.
      * @throws JavaModelException
      */
     public static Object getAnnotationValue(IAnnotation annotation, String attributeName) throws JavaModelException {

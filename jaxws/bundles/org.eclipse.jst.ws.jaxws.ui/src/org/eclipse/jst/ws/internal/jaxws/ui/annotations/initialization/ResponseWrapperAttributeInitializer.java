@@ -29,7 +29,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
         try {
             String methodName = method.getElementName() + RESPONSE_SUFFIX;
             return getPackageName(type) + methodName.substring(0, 1).toUpperCase()
-                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(type, method);
+                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }
@@ -47,7 +47,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
                 }
             }
             return method.getElementName() + RESPONSE_SUFFIX 
-                    + AnnotationUtils.accountForOverloadedMethods(type, method);
+                    + AnnotationUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }
