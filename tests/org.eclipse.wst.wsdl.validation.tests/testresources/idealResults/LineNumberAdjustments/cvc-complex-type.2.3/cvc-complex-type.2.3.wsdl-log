@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-cvc-complex-type.2.3: Element 'wsdl:operation' cannot have character [children], because the type's content type is element-only. [16, 37]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
