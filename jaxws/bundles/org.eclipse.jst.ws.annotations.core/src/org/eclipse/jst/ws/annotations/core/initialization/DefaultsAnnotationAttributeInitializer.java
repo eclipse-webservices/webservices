@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 
 /**
- * Constructs <code>MemberValuePair</code> from the defaults found in the passed in <code>java.lang.annotation.Annotation</code>.
+ * Constructs {@link MemberValuePair} from the defaults found in the given {@link java.lang.annotation.Annotation}.
  * <p>
  * <strong>Provisional API:</strong> This class/interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability. It is being made available at
@@ -35,8 +35,8 @@ public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeI
     }
 
     /**
-     * Constructs a list of <code>MemberValuePair</code> using the declared method names and default values in
-     * the given <code>java.lang.annotation.Annotation</code>.
+     * Constructs a list of {@link MemberValuePair} using the declared method names and default values in
+     * the given {@link java.lang.annotation.Annotation}.
      *  @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
      */
     @Override

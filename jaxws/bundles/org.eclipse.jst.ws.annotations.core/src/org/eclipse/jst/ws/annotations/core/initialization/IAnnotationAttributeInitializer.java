@@ -31,31 +31,30 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 public interface IAnnotationAttributeInitializer {
 
 	/**
-	 * Returns a list of <code>MemberValuePair</code> that may be added to a <code>org.eclipse.jdt.core.dom.NormalAnnotation</code>.
-	 * @param javaElement the <code>IJavaElement</code> that is the parent of the <code>org.eclipse.jdt.core.dom.NormalAnnotation</code>
-	 * into which the member value pairs may be added.
+	 * Returns a list of {@link MemberValuePair} that may be added to a {@link NormalAnnotation}.
+	 * @param javaElement the java element on which the annotation is declared.
 	 * @param ast the <code>AST</code> with which to create the member value pairs.
-	 * @param annotationClass the <code>java.lang.annotation.Annotation</code> class.
-	 * @return a list of <code>MemberValuePair</code>.
+	 * @param annotationClass the {@link java.lang.annotation.Annotation} class which may be
+	 * used to query the declared members of the annotation type and the members default values.
+	 * @return a list of member value pairs.
 	 */
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends java.lang.annotation.Annotation> annotationClass);
 
     /**
-     * Used to provide a list of <code>ICompletionProposal</code> for a <code>MemberValuePair</code> value.
-	 * @param javaElement the <code>IJavaElement</code> that is the parent of the <code>org.eclipse.jdt.core.dom.NormalAnnotation</code>
-	 * in which content assist was invoked.
-     * @param memberValuePair the <code>MemberValuePair</code> in which content assist was invoked.
-     * @return a list of <code>ICompletionProposal</code>.
+     * Used to provide a list of {@link ICompletionProposal} for a {@link MemberValuePair} value.
+	 * @param javaElement the java element on which the annotation is declared.
+     * @param memberValuePair the member value pair in which content assist was invoked.
+     * @return a list of completion proposals.
      */
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair);
 
     /**
-     * Used to provide a list of <code>ICompletionProposal</code> for a <code>SingleMemberAnnotation</code> value.
-     * @param javaElement the <code>IJavaElement</code> that is the parent of the <code>org.eclipse.jdt.core.dom.SingleMemberAnnotation</code>
-     * @param singleMemberAnnotation the <code>SingleMemberAnnotation</code> in which content assist was invoked.
-     * @return a list of <code>ICompletionProposal</code>.
+     * Used to provide a list of {@link ICompletionProposal} for a {@link SingleMemberAnnotation} value.
+	 * @param javaElement the java element on which the annotation is declared.
+     * @param singleMemberAnnotation the single member annotation in which content assist was invoked.
+     * @return a list of completion proposals.
      */
     public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
             SingleMemberAnnotation singleMemberAnnotation);

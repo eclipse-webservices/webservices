@@ -76,10 +76,10 @@ public final class AnnotationsManager {
 	}
 
 	/**
-	 * Returns a list of <code>AnnotationDefinition</code> constructed from contributions to the
+	 * Returns a list of {@link AnnotationDefinition} constructed from contributions to the
 	 * <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code> extension point.
 	 *
-	 * @return a list of <code>AnnotationDefinition</code>.
+	 * @return a list of annotation definitions.
 	 */
 	public static synchronized List<AnnotationDefinition> getAnnotations() {
 		if (annotationCache == null) {
@@ -103,7 +103,7 @@ public final class AnnotationsManager {
 	}
 
 	/**
-	 * Returns a list of all the contributed <code>java.lang.annotation.Annotation</code> that target the given java element type.
+	 * Returns a list of all the contributed {@link java.lang.annotation.Annotation} that target the given java element type.
 	 *
 	 * @param element one of
 	 * <li>org.eclipse.jdt.core.IPackageDeclaration</li>
@@ -112,7 +112,7 @@ public final class AnnotationsManager {
 	 * <li>org.eclipse.jdt.core.IMethod</li>
 	 * <li>org.eclipse.jdt.core.ILocalVariable</li>
 	 *
-	 * @return a list of <code>java.lang.annotation.Annotation</code>
+	 * @return a list of annotations.
 	 */
 	public static List<Class<? extends Annotation>> getAnnotations(Object element) {
 		List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
@@ -173,11 +173,6 @@ public final class AnnotationsManager {
 		return annotationQualifiedNameToDefinitionMap;
 	}
 
-	/**
-	 * Returns
-	 * @param element
-	 * @return <code></code>
-	 */
 //	 @SuppressWarnings("unchecked")
 //	 public static AnnotationDefinition getAnnotationDefinitionForClass(Object element) {
 //		 if (element instanceof Class && ((Class<?>)element).isAnnotation()) {
@@ -188,30 +183,30 @@ public final class AnnotationsManager {
 //	 }
 
 	 /**
-	  * Returns the <code>AnnotationDefinition</code> for the given <code>java.lang.annotation.Annotation</code> class
-	  * or null if no <code>AnnotationDefinition</code> can be found.
+	  * Returns the {@link AnnotationDefinition} for the given {@link java.lang.annotation.Annotation} class
+	  * or null if no annotation definition can be found.
 	  * @param annotationClass the <code>java.lang.annotation.Annotation</code> class.
-	  * @return the <code>AnnotationDefinition</code> for the <code>java.lang.annotation.Annotation</code> class.
+	  * @return the annotation definition for the <code>java.lang.annotation.Annotation</code> class.
 	  */
 	 public static AnnotationDefinition getAnnotationDefinitionForClass(Class<? extends Annotation> annotationClass) {
 		 return getAnnotationToClassNameDefinitionMap().get(annotationClass.getCanonicalName());
 	 }
 
 	 /**
-	  * Returns the <code>AnnotationDefinition</code> for the given fully qualified <code>java.lang.annotation.Annotation</code> class
-	  * name or null if no <code>AnnotationDefinition</code> can be found.
+	  * Returns the {@link AnnotationDefinition} for the given fully qualified {@link java.lang.annotation.Annotation} class
+	  * name or null if no annotation definition can be found.
 	  * @param canonicalName the fully qualified name of the <code>java.lang.annotation.Annotation</code> class.
-	  * @return the <code>AnnotationDefinition</code> for the fully qualified <code>java.lang.annotation.Annotation</code> class name.
+	  * @return the annotation definition for the fully qualified <code>java.lang.annotation.Annotation</code> class name.
 	  */
 	 public static AnnotationDefinition getAnnotationDefinitionForClass(String canonicalName) {
 		 return getAnnotationToClassNameDefinitionMap().get(canonicalName);
 	 }
 
 	 /**
-	  * Returns the <code>IAnnotationAttributeInitializer</code> for the given <code>org.eclipse.jdt.core.dom.Name</code>
+	  * Returns the {@link IAnnotationAttributeInitializer} for the given {@link org.eclipse.jdt.core.dom.Name}
 	  * or null if none can be found.
-	  * @param name a <code>SimpleName</code> or <code>QualifiedName</code> for the annotation to search for.
-	  * @return an <code>IAnnotationAttributeInitializer</code> for the given <code>org.eclipse.jdt.core.dom.Name</code>.
+	  * @param name a {@link SimpleName} or {@link QualifiedName} for the annotation to search for.
+	  * @return an <code>IAnnotationAttributeInitializer</code> for the given name.
 	  */
 	 public static IAnnotationAttributeInitializer getAnnotationAttributeInitializerForName(Name name) {
 		 if (name != null) {
@@ -225,9 +220,9 @@ public final class AnnotationsManager {
 	 }
 
 	 /**
-	  * Returns a list of all the <code>AnnotationDefinition</code> with the given annotation category name.
+	  * Returns a list of all the {@link AnnotationDefinition} with the given annotation category name.
 	  * @param categoryName the annotation category name.
-	  * @return a list of <code>AnnotationDefinition</code>.
+	  * @return a list of annotation definitions.
 	  */
 	 public static synchronized List<AnnotationDefinition> getAnnotationsByCategory(String categoryName) {
 		 if (annotationsByCategoryMap == null) {
@@ -283,11 +278,7 @@ public final class AnnotationsManager {
 		 return annotationCategoryCache;
 	 }
 
-	 /**
-	  *
-	  * @return <code></code>
-	  */
-	  protected static synchronized Map<String, IConfigurationElement> getAnnotationInitializerCache() {
+     protected static synchronized Map<String, IConfigurationElement> getAnnotationInitializerCache() {
 		  if (annotationInitializerCache != null) {
 			  return annotationInitializerCache;
 		  }
@@ -307,10 +298,6 @@ public final class AnnotationsManager {
 		  return annotationInitializerCache;
 	  }
 
-	  /**
-	   *
-	   * @return <code></code>
-	   */
 	  public static synchronized Map<String, List<IConfigurationElement>> getAnnotationProcessorsCache() {
 		  if (annotationProcessorCache == null) {
 			  annotationProcessorCache = new HashMap<String, List<IConfigurationElement>>();
@@ -339,12 +326,6 @@ public final class AnnotationsManager {
 		  return annotationProcessorCache;
 	  }
 
-	  /**
-	   *
-	   * @param configurationElement
-	   * @param attributeName
-	   * @return
-	   */
 	  public static String getAttributeValue(IConfigurationElement configurationElement, String attributeName) {
 		  String attribute = configurationElement.getAttribute(attributeName);
 		  if (attribute != null) {
@@ -353,11 +334,6 @@ public final class AnnotationsManager {
 		  return ""; //$NON-NLS-1$
 	  }
 
-//	  /**
-//	   *
-//	   * @param configurationElement the  co
-//	   * @return a list of <code>ElementType</code>.
-//	   */
 //	  public static List<ElementType> getFilteredTargets(IConfigurationElement configurationElement) {
 //		  List<ElementType> targets = new ArrayList<ElementType>(7);
 //		  try {

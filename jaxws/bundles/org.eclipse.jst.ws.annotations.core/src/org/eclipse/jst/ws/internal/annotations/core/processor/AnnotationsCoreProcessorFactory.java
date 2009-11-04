@@ -33,16 +33,19 @@ public class AnnotationsCoreProcessorFactory implements AnnotationProcessorFacto
 
     public AnnotationProcessor getProcessorFor(Set<AnnotationTypeDeclaration> annotationSet,
             AnnotationProcessorEnvironment processorEnvironment) {
-        
+
+    	if (annotationSet.size() == 0) {
+    		return AnnotationProcessors.NO_OP;
+    	}
         List<AnnotationProcessor> annotationProcessors = new ArrayList<AnnotationProcessor>();
-        
-        Map<String, List<IConfigurationElement>> annotationProcessorCache = 
+
+        Map<String, List<IConfigurationElement>> annotationProcessorCache =
             AnnotationsManager.getAnnotationProcessorsCache();
-        
+
         for (AnnotationTypeDeclaration annotationTypeDeclaration : annotationSet) {
             List<IConfigurationElement> processorElements = annotationProcessorCache.get(
                     annotationTypeDeclaration.getQualifiedName());
-            
+
             for (IConfigurationElement configurationElement : processorElements) {
                 if (configurationElement != null) {
                     AnnotationProcessor processor = getAnnotationProcessor(configurationElement,
@@ -53,14 +56,14 @@ public class AnnotationsCoreProcessorFactory implements AnnotationProcessorFacto
                 }
             }
         }
-        
+
         return AnnotationProcessors.getCompositeAnnotationProcessor(annotationProcessors);
     }
-    
+
     public AnnotationProcessor getAnnotationProcessor(IConfigurationElement configurationElement,
             AnnotationProcessorEnvironment processorEnvironment) {
           try {
-              AbstractAnnotationProcessor annotationProcessor = 
+              AbstractAnnotationProcessor annotationProcessor =
                   (AbstractAnnotationProcessor)configurationElement.createExecutableExtension("class");
               annotationProcessor.setAnnotationProcessorEnvironment(processorEnvironment);
               return annotationProcessor;

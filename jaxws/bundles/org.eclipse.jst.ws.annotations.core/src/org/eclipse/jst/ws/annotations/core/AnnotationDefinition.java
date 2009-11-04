@@ -152,16 +152,16 @@ public final class AnnotationDefinition {
     }
 
     /**
-     * Returns a list of <code>ElementType</code> that specify the Java elements to which the annotation
+     * Returns a list of {@link ElementType} that specify the Java elements to which the annotation
      * can be applied.
      * <p>
-     * The <code>ElementType</code> are retrieved from the annotations
-     * <code>java.lang.annotation.Target</code> meta-annotation type. This list can be filtered using
+     * The element types are retrieved from the annotations
+     * {@link java.lang.annotation.Target} meta-annotation type. This list can be filtered using
      * the <code>targetFilter</code> element on the
      * <code>org.eclipse.jst.ws.annotations.core.annotationDefinition</code> extension point when defining
      * the annotation.
      * </p>
-     * @return a list of <code>ElementType</code>
+     * @return a list of element types.
      */
     public List<ElementType> getTargets() {
         if (targets == null) {
@@ -206,11 +206,6 @@ public final class AnnotationDefinition {
         return annotationInitializer;
     }
 
-	  /**
-	   *
-	   * @param configurationElement the  co
-	   * @return a list of <code>ElementType</code>.
-	   */
 	  private List<ElementType> getFilteredTargets(IConfigurationElement configurationElement) {
 		  List<ElementType> targets = new ArrayList<ElementType>(7);
 		  try {

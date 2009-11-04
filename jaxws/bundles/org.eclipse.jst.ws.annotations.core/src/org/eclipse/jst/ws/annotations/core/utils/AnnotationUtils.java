@@ -98,9 +98,10 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Adds an import to the given {@link IJavaElement}.
-     * @param javaElement the java element to add the import to.
+     * Adds an import to the compilation unit of the given {@link IJavaElement}.
+     * @param javaElement the java element which is used to get the compilation unit to add the import to.
      * The following types of java elements are supported:
+     * <li>IJavaElement.COMPILATION_UNIT</li>
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
      * <li>IJavaElement.FIELD</li>
@@ -120,11 +121,12 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Removes an import from the given {@link IJavaElement}. The import will not be removed if the
+     * Removes an import from the compilation unit of the given {@link IJavaElement}. The import will not be removed if the
      * import type is referenced on more than one annotatable element in the source code. This method
      * is intended to be used in conjunction with {@link AnnotationUtils#removeAnnotation(IJavaElement, Annotation)}}.
-     * @param javaElement the java element to remove the import from.
+     * @param javaElement the java element which is used to get the compilation unit to remove the import from.
      * The following types of java elements are supported:
+     * <li>IJavaElement.COMPILATION_UNIT</li>
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
      * <li>IJavaElement.FIELD</li>
@@ -145,7 +147,7 @@ public final class AnnotationUtils {
 
     /**
      * Adds the given {@link Annotation} to the {@link IJavaElement}.
-     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * @param javaElement the following types of java elements are supported:
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
      * <li>IJavaElement.FIELD</li>
@@ -167,7 +169,7 @@ public final class AnnotationUtils {
 
     /**
      * Removes the given {@link Annotation} from the {@link IJavaElement}.
-     * @param javaElement one of the following types of java element {@link IJavaElement#getElementType}:
+     * @param javaElement the following types of java elements are supported:
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
      * <li>IJavaElement.FIELD</li>
@@ -189,7 +191,7 @@ public final class AnnotationUtils {
 
     /**
      * Adds the {@link MemberValuePair} to the {@link NormalAnnotation}.
-     * @param annotation the normal annotation to add the member value pair.
+     * @param annotation the normal annotation to add the member value pair to.
      * @param memberValuePair the member value pair to add.
      * @throws JavaModelException A {@link JavaModelException} is thrown when the underlying compilation units
      * buffer could not be accessed.
@@ -277,7 +279,9 @@ public final class AnnotationUtils {
      * <li>IJavaElement.FIELD</li>
      * <li>IJavaElement.METHOD</li>
      * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * <p>
      * The java element will be used to create a {@link CompilationUnit} which will in turn be used to create an {@link ImportRewrite}.
+     * </p>
      * @param qualifiedName the import to add.
      * @return text edit object describing the add import changes.
      * @throws CoreException the exception is thrown if the import rewrite fails.
@@ -300,7 +304,9 @@ public final class AnnotationUtils {
      * <li>IJavaElement.FIELD</li>
      * <li>IJavaElement.METHOD</li>
      * <li>IJavaElement.LOCAL_VARIABLE</li>
+     * <p>
      * The java element will be used to create a {@link CompilationUnit} which will in turn be used to create an {@link ImportRewrite}.
+     * </p>
      * @param qualifiedName the annotation import to remove.
      * @return text edit object describing the remove import changes.
      * @throws CoreException the exception is thrown if the import rewrite fails.
@@ -736,7 +742,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns a {link ICompilationUnit} for the given {@link IJavaElement}.
+     * Returns a {@link ICompilationUnit} for the given {@link IJavaElement}.
      * @param javaElement one of the following types of java element:
      * <li>IJavaElement.COMPILATION_UNIT</li>
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
@@ -871,9 +877,12 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns the annotations type name {@link Name#getFullyQualifiedName}.
+     * Returns the annotations type name. If the annotation name is a simple name, the result is the
+     * name's identifier. If the name is a qualified name, the result is the name of the qualifier
+     * followed by "." followed by the name's identifier.
+
      * @param annotation the annotation.
-     * @return the annotation name. The simple name or the fully qualified name
+     * @return the annotation name. The simple name or the fully qualified name.
      */
     public static String getAnnotationName(Annotation annotation) {
         Name annotationTypeName = annotation.getTypeName();
@@ -883,7 +892,7 @@ public final class AnnotationUtils {
     /**
      * Compares the {@link AbstractTypeDeclaration} and {@link IType}.
      * @param abstractTypeDeclaration the type declaration.
-     * @param type the type
+     * @param type the type.
      * @return <code>true</code> if the names match.
      */
     public static boolean compareTypeNames(AbstractTypeDeclaration abstractTypeDeclaration, IType type) {
@@ -993,7 +1002,7 @@ public final class AnnotationUtils {
 
     /**
      * Tests the given {@link IMethod} to see if it is an overloaded method. If it is it will return
-     * a string representing the position of this method in it's parents {@link IType}}.
+     * a string representing the position of this method in it's parents {@link IType}.
      * <p>
      * E.g. Given three methods:
      * <pre>
@@ -1046,7 +1055,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Checks if the an annotation with the given name is present on the {@link IJavaElement}.
+     * Checks if the annotation with the given name is present on the {@link IJavaElement}.
      * @param javaElement one of the following types of java element:
      * <li>IJavaElement.PACKAGE_DECLARATION</li>
      * <li>IJavaElement.TYPE</li>
@@ -1300,7 +1309,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Returns the JDT {@link IAnnotation} member value pairs value with the given member name.
+     * Returns the JDT {@link IAnnotation} member value pair value with the given member name.
      * @param annotation the annotation.
      * @param memberName the member name.
      * @return an object representing the member value pairs value.

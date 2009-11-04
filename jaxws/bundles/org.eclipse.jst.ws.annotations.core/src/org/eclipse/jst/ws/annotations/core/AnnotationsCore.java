@@ -48,11 +48,11 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>NormalAnnotation</code>.
+     * Creates a new {@link NormalAnnotation}.
      *
-     * @param ast the <code>AST</code> that will be used to create the annotation.
+     * @param ast the {@link AST} that will be used to create the annotation.
      * @param annotationName the name of the annotation.
-     * @param memberValuePairs a list of <code>MemberValuePair</code> to add to the <code>NormalAnnotation</code>.
+     * @param memberValuePairs a list of {@link MemberValuePair} to add to the normal annotation.
      * @return a normal annotation with the given member value pairs.
      */
     public static NormalAnnotation createNormalAnnotation(AST ast, String annotationName, List<MemberValuePair> memberValuePairs) {
@@ -73,11 +73,11 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>SingleMemberAnnotation</code>.
+     * Creates a new {@link SingleMemberAnnotation}.
      *
-     * @param ast the <code>AST</code> that will be used to create the annotation.
+     * @param ast the {@link AST} that will be used to create the annotation.
      * @param annotationName the name of the annotation.
-     * @param value the <code>Expression</code> to set as the <code>SingleMemberAnnotation</code> value.
+     * @param value the {@link Expression} to set as the single member annotation value.
      * @return a single member annotation with the given value.
      */
     public static SingleMemberAnnotation createSingleMemberAnnotation(AST ast, String annotationName, Expression value) {
@@ -96,9 +96,9 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MarkerAnnotation</code>.
+     * Creates a new {@link MarkerAnnotation}.
      *
-     * @param ast the <code>AST</code> that will be used to create the annotation.
+     * @param ast the {@link AST} that will be used to create the annotation.
      * @param annotationName the name of the annotation.
      * @return a marker annotation.
      */
@@ -113,12 +113,12 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MemberValuePair</code>.
+     * Creates a new {@link MemberValuePair}.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>MemberValuePair</code>.
-     * @param name the name of the <code>MemberValuePair</code>.
-     * @param expression the <code>Expression</code> to set as the <code>MemberValuePair</code> value.
-     * @return a new <code>MemberValuePair</code> with the given name and value.
+     * @param ast the {@link AST} that will be used to create the member value pair.
+     * @param name the {@link MemberValuePair} "name".
+     * @param expression the {@link Expression} "value" of the member value pair.
+     * @return a new member value pair with the given name and value.
      */
     public static MemberValuePair createMemberValuePair(AST ast, String name, Expression expression) {
         MemberValuePair memberValuePair = ast.newMemberValuePair();
@@ -128,12 +128,12 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MemberValuePair</code> with a <code>StringLiteral</code> value.
+     * Creates a new {@link MemberValuePair} with a {@link StringLiteral} value.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>MemberValuePair</code>.
-     * @param name the name of the <code>MemberValuePair</code>.
-     * @param value the <code>String</code> value.
-     * @return a new <code>MemberValuePair</code> with the given name and value.
+     * @param ast the {@link AST} that will be used to create the member value pair.
+     * @param name the member value pair "name".
+     * @param value the <code>String</code> "value".
+     * @return a new member value pair with the given name and value.
      */
     public static MemberValuePair createStringMemberValuePair(AST ast, String name, String value) {
         MemberValuePair stringMemberValuePair = AnnotationsCore.createMemberValuePair(ast, name,
@@ -143,12 +143,12 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MemberValuePair</code> with a <code>BooleanLiteral</code> value.
+     * Creates a new {@link MemberValuePair} with a {@link BooleanLiteral} value.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>MemberValuePair</code>.
-     * @param name the name of the <code>MemberValuePair</code>.
-     * @param value the <code>Boolean</code> value.
-     * @return a new <code>MemberValuePair</code> with the given name and value.
+     * @param ast the {@link AST} that will be used to create the member value pair.
+     * @param name the member value pair "name".
+     * @param value the <code>Boolean</code> "value".
+     * @return a new member value pair with the given name and value.
      */
     public static MemberValuePair createBooleanMemberValuePair(AST ast, String name, Boolean value) {
         MemberValuePair booleanValuePair = AnnotationsCore.createMemberValuePair(ast, name, AnnotationsCore
@@ -158,12 +158,12 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MemberValuePair</code> with a <code>NumberLiteral</code> value.
+     * Creates a new {@link MemberValuePair} with a {@link NumberLiteral} value.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>MemberValuePair</code>.
-     * @param name the name of the <code>MemberValuePair</code>.
-     * @param value the <code>String</code> value representing the number.
-     * @return a new <code>MemberValuePair</code> with the given name and value.
+     * @param ast the {@link AST} that will be used to create the member value pair.
+     * @param name the member value pair "name".
+     * @param value the <code>String</code> "value" representing the number.
+     * @return a new member value pair with the given name and value.
      */
     public static MemberValuePair createNumberMemberValuePair(AST ast, String name, String value) {
         MemberValuePair primitiveValuePair = AnnotationsCore.createMemberValuePair(ast, name,
@@ -172,12 +172,13 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MemberValuePair</code> with a <code>Name</code> value.
+     * Creates a new {@link MemberValuePair} with a {@link Name} value.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>MemberValuePair</code>.
-     * @param name the name of the <code>MemberValuePair</code>.
-     * @param value the enum value.
-     * @return a new <code>MemberValuePair</code> with the given name and value.
+     * @param ast the {@link AST} that will be used to create the member value pair.
+     * @param className the enclosing class name.
+     * @param name the member value pair "name".
+     * @param value an object representing the <code>enum</code> value.
+     * @return a new member value pair with the given name and value.
      */
     public static MemberValuePair createEnumMemberValuePair(AST ast, String className, String name,
             Object value) {
@@ -185,12 +186,12 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MemberValuePair</code> with a <code>TypeLiteral</code> value.
+     * Creates a new {@link MemberValuePair} with a {@link TypeLiteral} value.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>MemberValuePair</code>.
-     * @param name the name of the <code>MemberValuePair</code>.
-     * @param value the type value.
-     * @return a new <code>MemberValuePair</code> with the given name and value.
+     * @param ast the {@link AST} that will be used to create the member value pair.
+     * @param name the member value pair "name".
+     * @param value an object representing the type value.
+     * @return a new member value pair with the given name and value.
      */
     public static MemberValuePair createTypeMemberValuePair(AST ast, String name, Object value) {
         return AnnotationsCore.createMemberValuePair(ast, name,
@@ -198,12 +199,12 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>MemberValuePair</code> with an <code>ArrayInitializer</code> value.
+     * Creates a new {@link MemberValuePair} with an {@link ArrayInitializer} value.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>MemberValuePair</code>.
-     * @param method
+     * @param ast the {@link AST} that will be used to create the member value pair.
+     * @param method a {@link java.lang.annotation.Annotation} member.
      * @param values an array of <code>Object</code> values.
-     * @return a new <code>MemberValuePair</code> with the given name and array of values.
+     * @return a new member value pair with the given name and array of values.
      */
     public static MemberValuePair createArrayMemberValuePair(AST ast, Method method, Object[] values) {
         return AnnotationsCore.createMemberValuePair(ast, method.getName(), createArrayValueLiteral(ast,
@@ -211,11 +212,11 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>ArrayInitializer</code>.
-     * @param ast the <code>AST</code> that will be used to create the <code>ArrayInitializer</code>.
-     * @param method
+     * Creates a new {@link ArrayInitializer}.
+     * @param ast the {@link AST} that will be used to create the {@link ArrayInitializer}.
+     * @param method a {@link java.lang.annotation.Annotation} member.
      * @param values an array of <code>Object</code> values.
-     * @return a new <code>ArrayInitializer</code>.
+     * @return a new srray initializer.
      */
     @SuppressWarnings("unchecked")
     public static ArrayInitializer createArrayValueLiteral(AST ast, Method method, Object[] values) {
@@ -292,14 +293,14 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>Name</code> to represent an enum literal value.
+     * Creates a new {@link QualifiedName} to represent an <code>enum</code> literal value.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>Name</code>.
-     * @param className the fully qualified name of the ENUM class.
-     * @param value the ENUM value.
-     * @return a new <code>Name</code>.
+     * @param ast the {@link AST} that will be used to create the qualified name.
+     * @param className the fully qualified name of the enclosing class.
+     * @param value sn object representing the <code>enum</code> value.
+     * @return a new qualified name.
      */
-    public static Name createEnumLiteral(AST ast, String className, Object value) {
+    public static QualifiedName createEnumLiteral(AST ast, String className, Object value) {
         QualifiedName enumName = null;
         SimpleName enumClassName = ast.newSimpleName(value.getClass().getSimpleName());
         SimpleName enumLiteral = ast.newSimpleName(value.toString());
@@ -322,11 +323,11 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>TypeLiteral</code>.
+     * Creates a new {@link TypeLiteral}.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>TypeLiteral</code>.
-     * @param value a <code>Class</code> or a <code>String</code> from which to create the <code>TypeLiteral</code>.
-     * @return a new <code>TypeLiteral</code> or null it the value is not of type <code>Class</code> or <code>String</code>.
+     * @param ast the {@link AST} that will be used to create the {@link TypeLiteral}.
+     * @param value a <code>Class</code> or a <code>String</code> from which to create the type literal.
+     * @return a new type literal or null it the value is not of type <code>Class</code> or <code>String</code>.
      */
     public static TypeLiteral createTypeLiteral(AST ast, Object value) {
         TypeLiteral typeLiteral = null;
@@ -340,11 +341,11 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>TypeLiteral</code>
+     * Creates a new {@link TypeLiteral}.
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>TypeLiteral</code>
-     * @param value the class value
-     * @return a new <code>TypeLiteral</code>
+     * @param ast the {@link AST} that will be used to create the type literal.
+     * @param value the class value.
+     * @return a new type literal.
      */
     public static TypeLiteral createTypeLiteral(AST ast, Class<?> value) {
         TypeLiteral typeLiteral = ast.newTypeLiteral();
@@ -362,11 +363,11 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>TypeLiteral</code>
+     * Creates a new {@link TypeLiteral}
      *
-     * @param ast the <code>AST</code> that will be used to create the <code>TypeLiteral</code>
-     * @param value the name of class
-     * @return a new <code>TypeLiteral</code>
+     * @param ast the {@link AST} that will be used to create the type literal.
+     * @param value the name of the class.
+     * @return a new type literal.
      */
     public static TypeLiteral createTypeLiteral(AST ast, String value) {
         TypeLiteral typeLiteral = ast.newTypeLiteral();
@@ -387,10 +388,10 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>StringLiteral</code>.
-     * @param ast the <code>AST</code> that will be used to create the <code>StringLiteral</code>.
+     * Creates a new {@link StringLiteral}.
+     * @param ast the {@link AST} that will be used to create the string literal.
      * @param literalValue the string value.
-     * @return a new <code>StringLiteral</code>.
+     * @return a new string literal.
      */
     public static StringLiteral createStringLiteral(AST ast, String literalValue) {
         StringLiteral stringLiteral = ast.newStringLiteral();
@@ -399,10 +400,10 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>BooleanLiteral</code>.
-     * @param ast the <code>AST</code> that will be used to create the <code>BooleanLiteral</code>.
+     * Creates a new {@link BooleanLiteral}.
+     * @param ast the {@link AST} that will be used to create the boolean literal.
      * @param value the boolean value.
-     * @return a new <code>BooleanLiteral</code>.
+     * @return a new boolean literal.
      */
     public static BooleanLiteral createBooleanLiteral(AST ast, boolean value) {
         BooleanLiteral booleanLiteral = ast.newBooleanLiteral(value);
@@ -410,11 +411,10 @@ public final class AnnotationsCore {
     }
 
     /**
-     * Creates a new <code>NumberLiteral</code>.
-     *
-     * @param ast the <code>AST</code> that will be used to create the <code>NumberLiteral</code>.
+     * Creates a new {@link NumberLiteral}.
+     * @param ast the {@link AST} that will be used to create the {@link NumberLiteral}.
      * @param value the number value.
-     * @return a new <code>NumberLiteral</code>.
+     * @return a new number literal.
      */
     public static NumberLiteral createNumberLiteral(AST ast, String value) {
         NumberLiteral primitiveLiteral = ast.newNumberLiteral();

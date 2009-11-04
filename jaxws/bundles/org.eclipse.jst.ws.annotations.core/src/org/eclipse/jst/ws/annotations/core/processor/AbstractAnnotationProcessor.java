@@ -37,9 +37,8 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     protected AnnotationProcessorEnvironment environment;
 
     /**
-     * Sets the <code>AnnotationProcessor</code> environment.
-     * @param environment the <code>AnnotationProcessorEnvironment</code>.
-     * @see com.sun.mirror.apt.AnnotationProcessorEnvironment
+     * Set the {@link AnnotationProcessorEnvironment} environment to use during processing.
+     * @param environment the annotation processor environment.
      */
     public void setAnnotationProcessorEnvironment(AnnotationProcessorEnvironment environment) {
         this.environment = environment;
