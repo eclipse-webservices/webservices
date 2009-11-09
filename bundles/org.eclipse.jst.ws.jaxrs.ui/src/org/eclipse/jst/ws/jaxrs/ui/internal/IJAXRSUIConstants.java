@@ -10,7 +10,9 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
- *******************************************************************************/package org.eclipse.jst.ws.jaxrs.ui.internal;
+ * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ *******************************************************************************/
+package org.eclipse.jst.ws.jaxrs.ui.internal;
 
 import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 

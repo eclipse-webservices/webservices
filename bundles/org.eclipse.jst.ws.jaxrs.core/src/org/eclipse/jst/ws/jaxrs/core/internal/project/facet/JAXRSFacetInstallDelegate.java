@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -22,25 +23,22 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
 import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
 import org.eclipse.jst.javaee.web.Servlet;
 import org.eclipse.jst.javaee.web.WebApp;
-import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
 import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInternalReference;
-import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryRegistryUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfigurator;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfiguratorUtil;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.JAXRSLibraryConfigurationHelper;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
@@ -112,9 +110,8 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 //				// Create JAXRS libraries as shared library entries
 //				createSharedLibraries(project, fv, monitor, config);
 //			
-//			// Create JAXRS libraries as as classpath entries (as a deploy / publish dependency if "Deploy" selected)
-//			createClasspathEntries(project, fv, config, monitor);
-				
+			//Configure libraries
+			( (LibraryInstallDelegate) config.getProperty( IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE ) ).execute( new NullProgressMonitor() );
 
 			// Update web model
 			createServletAndModifyWebXML(project, config, monitor);
@@ -135,8 +132,8 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 
 		String targetRuntimeID = config
 				.getStringProperty(IJAXRSFacetInstallDataModelProperties.TARGETRUNTIME);
-		JAXRSLibraryInternalReference libref = (JAXRSLibraryInternalReference) config
-				.getProperty(IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION);
+		JAXRSLibraryInternalReference libref = null; /*(JAXRSLibraryInternalReference) config
+				.getProperty(IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION);*/
 
 		SharedLibraryConfiguratorUtil
 				.getInstance();
@@ -159,44 +156,6 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 			}
 
 		}
-	}
-
-	/**
-	 * Adds the JAXRS Library references specified in the wizard to the project
-	 * as classpath containers. Marks the containers as J2EE module dependencies
-	 * as required
-	 * 
-	 * @param project
-	 * @param config
-	 * @param monitor
-	 */
-	private void createClasspathEntries(final IProject project,
-			final IProjectFacetVersion fv, final IDataModel config,
-			final IProgressMonitor monitor) {
-		IJavaProject javaProject = JavaCore.create(project);
-		List<IClasspathEntry> cpEntries = new ArrayList<IClasspathEntry>();
-		try {
-			for (int i = 0; i < javaProject.getRawClasspath().length; i++) {
-				cpEntries.add(javaProject.getRawClasspath()[i]);
-			}
-		} catch (JavaModelException e) {
-			JAXRSCorePlugin.log(e, "Unable to read classpath"); //$NON-NLS-1$
-		}
-
-		IPath path, cp = null;
-		IClasspathEntry entry = null;
-		JAXRSLibraryInternalReference libref = null;
-
-		cp = new Path(
-				JAXRSLibraryConfigurationHelper.JAXRS_LIBRARY_CP_CONTAINER_ID);
-		libref = (JAXRSLibraryInternalReference) config
-				.getProperty(IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION);
-		path = cp.append(new Path(libref.getID()));
-		entry = getNewCPEntry(path, libref);
-		cpEntries.add(entry);
-		JAXRSLibraryRegistryUtil.setRawClasspath(javaProject, cpEntries,
-				monitor);
-
 	}
 
 	/**

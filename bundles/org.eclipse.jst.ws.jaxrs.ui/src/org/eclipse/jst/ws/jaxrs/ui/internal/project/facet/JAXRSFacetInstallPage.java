@@ -10,7 +10,9 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
- *******************************************************************************/package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
+ * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ *******************************************************************************/
+package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
 import java.util.Iterator;
 
@@ -21,18 +23,14 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.jst.j2ee.project.facet.IJ2EEModuleFacetInstallDataModelProperties;
 import org.eclipse.jst.server.core.FacetUtil;
-import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryConfigDialogSettingData;
-import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryConfiglModelSource;
-import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInternalReference;
-import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryRegistryUtil;
-import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfiguratorUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
 import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
 import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 import org.eclipse.jst.ws.jaxrs.ui.internal.Messages;
-import org.eclipse.jst.ws.jaxrs.ui.internal.jaxrslibraryconfig.JAXRSLibraryConfigControl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -40,6 +38,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -65,7 +64,6 @@ import org.eclipse.wst.server.core.IRuntimeType;
 public class JAXRSFacetInstallPage extends DataModelWizardPage implements
 		IJAXRSFacetInstallDataModelProperties, IFacetWizardPage {
 	// UI
-//	private Group lblJAXRSImpl;
 	private Group servletInfo;
 	private Label lblJAXRSServletName;
 	private Text txtJAXRSServletName;
@@ -86,10 +84,6 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements
 	private static final String SETTINGS_SERVLET_CLASSNAME = "servletClassname"; //$NON-NLS-1$
 	private static final String SETTINGS_URL_MAPPINGS = "urlMappings"; //$NON-NLS-1$
 	private static final String SETTINGS_URL_PATTERN = "pattern"; //$NON-NLS-1$
-	private static final String SETTINGS_DEPLOY_IMPL = "deployImplementation"; //$NON-NLS-1$
-	private static final String SETTINGS_SHAREDLIB = "sharedLibImplementation";
-
-//	private JAXRSLibraryConfigControl jaxrsLibCfgComp = null;
 	private Composite composite = null;
 
 	/**
@@ -124,30 +118,19 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements
 		jaxrsCompositeLayout.marginLeft = 0;
 		composite.setLayout(jaxrsCompositeLayout);
 
-//		lblJAXRSImpl = new Group(composite, SWT.NONE);
-//		GridData groupGD = new GridData(GridData.FILL_HORIZONTAL);
-//		lblJAXRSImpl.setLayoutData(groupGD);
-//		lblJAXRSImpl.setLayout(new GridLayout(3, false));
-//		lblJAXRSImpl.setText(Messages.JAXRSFacetInstallPage_JAXRSLibraryLabel0);
-//
-//		jaxrsLibCfgComp = new JAXRSLibraryConfigControl(lblJAXRSImpl, SWT.NONE);
-//		jaxrsLibCfgComp
-//				.addOkClickedListener(new IJAXRSImplLibraryCreationListener() {
-//					public void okClicked(JAXRSImplLibraryCreationEvent event) {
-//						if (event.isLibraryCreated()) {
-//							validatePage();
-//						}
-//					}
-//				});
-//
-//		jaxrsLibCfgComp
-//				.addChangeListener(new JAXRSLibraryConfigControlChangeListener() {
-//
-//					public void changed(JAXRSLibraryConfigControlChangeEvent e) {
-//						validatePage();
-//					}
-//
-//				});
+		final LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel()
+				.getProperty(LIBRARY_PROVIDER_DELEGATE);
+
+		final Control librariesComposite = LibraryProviderFrameworkUi
+				.createInstallLibraryPanel(
+						composite,
+						librariesInstallDelegate,
+						Messages.JAXRSFacetInstallPage_JAXRSImplementationLibrariesFrame);
+
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 3;
+
+		librariesComposite.setLayoutData(gd);
 
 		servletInfo = new Group(composite, SWT.NONE);
 		GridData servletGD = new GridData(GridData.FILL_HORIZONTAL);
@@ -268,60 +251,11 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements
 		loadURLMappingPatterns(root);
 	}
 
-	private void initJAXRSCfgCtrlValues(IDialogSettings root) {
-		String deployImpl = null;
-		String sharedLibImpl = null;
-		if (root != null) {
-			deployImpl = root.get(SETTINGS_DEPLOY_IMPL);
-			sharedLibImpl = root.get(SETTINGS_SHAREDLIB);
-
-		}
-		JAXRSLibraryInternalReference dftImplLib = JAXRSLibraryRegistryUtil
-		.getInstance().getDefaultJAXRSImplementationLibrary();
-		boolean sharedLibSupported = false;
-
-		if (dftImplLib != null)
-			sharedLibSupported = SharedLibraryConfiguratorUtil.isSharedLibSupportAvailable(dftImplLib.getID(), model
-					.getStringProperty(IJAXRSFacetInstallDataModelProperties.TARGETRUNTIME), SharedLibraryConfiguratorUtil.getWebProject(model), SharedLibraryConfiguratorUtil.getEARProject(model), SharedLibraryConfiguratorUtil.getAddToEar(model));
-
-		if (deployImpl != null && !deployImpl.equals("") && sharedLibImpl != null && !sharedLibImpl.equals("") ) {
-			if (Boolean.valueOf(deployImpl).booleanValue() == false && (Boolean.valueOf(sharedLibImpl).booleanValue() == true && !sharedLibSupported) ) {
-				//assume if shared lib is not supported but they selected it in the past, they still want to deploy 
-				deployImpl = "true";
-			}
-				
-		}
-		if (deployImpl == null || deployImpl.equals("")) { //$NON-NLS-1$
-			deployImpl = ((Boolean) model
-					.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION))
-					.toString();
-		}
-
-		if (sharedLibImpl == null || sharedLibImpl.equals("")) { //$NON-NLS-1$
-			sharedLibImpl = ((Boolean) model
-					.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY))
-					.toString();
-		}
-		//if shared lib not supported but shared lib setting was true, assume they still want to include libraries
-		JAXRSLibraryConfiglModelSource source = new JAXRSLibraryConfigDialogSettingData(
-				Boolean.valueOf(deployImpl).booleanValue(), Boolean.valueOf(sharedLibImpl).booleanValue(), sharedLibSupported);
-		if (dftImplLib != null) {
-			//set the properties on the model
-			model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, Boolean.valueOf(deployImpl).booleanValue());
-			if (sharedLibSupported) {
-				model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, Boolean.valueOf(sharedLibImpl).booleanValue());
-			}
-		}
-//		jaxrsLibCfgComp.loadControlValuesFromModel(source);
-	}
-
 	private void saveSettings() {
 		DialogSettings root = new DialogSettings(
 				IJAXRSUIConstants.SETTINGS_ROOT);
 		dialogSettings.addSection(root);
 
-//		root.put(SETTINGS_DEPLOY_IMPL, String.valueOf(getDeployJAXRSImpl()));
-//		root.put(SETTINGS_SHAREDLIB, String.valueOf(getSharedLibJAXRSImpl()));
 		root.put(SETTINGS_SERVLET, getJAXRSServletName());
 		root.put(SETTINGS_SERVLET_CLASSNAME, getJAXRSServletClassname());
 		DialogSettings mappings = new DialogSettings(SETTINGS_URL_MAPPINGS);
@@ -329,22 +263,6 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements
 		mappings.put(SETTINGS_URL_PATTERN, getJAXRSPatterns());
 
 	}
-
-//	private boolean getDeployJAXRSImpl() {
-//		if (jaxrsLibCfgComp.getSelectedJAXRSLibImplementation() == null) {
-//			return false;
-//		}
-//		return jaxrsLibCfgComp.getSelectedJAXRSLibImplementation()
-//				.isCheckedToBeDeployed();
-//	}
-//
-//	private boolean getSharedLibJAXRSImpl() {
-//		if (jaxrsLibCfgComp.getSelectedJAXRSLibImplementation() == null) {
-//			return false;
-//		}
-//		return jaxrsLibCfgComp.getSelectedJAXRSLibImplementation()
-//				.isCheckedToBeSharedLibrary() && jaxrsLibCfgComp.getSelectedJAXRSLibImplementation().isSharedLibSupported();
-//	}
 
 	private String getJAXRSServletName() {
 		return txtJAXRSServletName.getText().trim();
@@ -462,8 +380,7 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements
 	 * #getValidationPropertyNames()
 	 */
 	protected String[] getValidationPropertyNames() {
-		return new String[] { IMPLEMENTATION, DEPLOY_IMPLEMENTATION,
-				SERVLET_NAME, SERVLET_CLASSNAME };
+		return new String[] { SERVLET_NAME, SERVLET_CLASSNAME, LIBRARY_PROVIDER_DELEGATE };
 	}
 
 	/*
@@ -594,19 +511,6 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements
 		initializeValues();
 
 //		checkToCompletePage(jaxrsLibCfgComp);
-	}
-
-	/*
-	 * To force a JAXRS facet install page configuration to be performed when
-	 * the JAXRS facet is selected but no JAXRS implementation library exists.
-	 */
-	private void checkToCompletePage(Composite control) {
-		boolean enableFinish = false;
-		if (control != null && control instanceof JAXRSLibraryConfigControl) {
-			enableFinish = (((JAXRSLibraryConfigControl) control)
-					.getSelectedJAXRSLibImplementation() != null);
-		}
-		setPageComplete(enableFinish);
 	}
 
 	/*

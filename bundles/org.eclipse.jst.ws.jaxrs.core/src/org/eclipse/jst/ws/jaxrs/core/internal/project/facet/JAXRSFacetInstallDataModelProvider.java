@@ -10,11 +10,11 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -23,10 +23,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
 import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
 import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
@@ -36,6 +34,9 @@ import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInt
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryRegistryUtil;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
  * Provides a data model used by the JAXRS facet install.
@@ -45,12 +46,11 @@ public class JAXRSFacetInstallDataModelProvider extends
 		IJAXRSFacetInstallDataModelProperties {
 
 	private String errorMessage;
+    private LibraryInstallDelegate libraryInstallDelegate = null;
 
 	@SuppressWarnings("unchecked")
 	public Set<String> getPropertyNames() {
 		Set<String> names = super.getPropertyNames();
-		names.add(IMPLEMENTATION);
-		names.add(DEPLOY_IMPLEMENTATION);
 		names.add(SHAREDLIBRARY);
 		names.add(EARPROJECT_NAME);
 		names.add(WEBPROJECT_NAME);
@@ -60,24 +60,14 @@ public class JAXRSFacetInstallDataModelProvider extends
 		names.add(SERVLET_CLASSNAME);
 		names.add(SERVLET_URL_PATTERNS);
 		names.add(WEBCONTENT_DIR);
-
-		names.add(IMPLEMENTATION_LIBRARIES);
-		names.add(DEFAULT_IMPLEMENTATION_LIBRARY);
+		names.add(LIBRARY_PROVIDER_DELEGATE);
 
 		return names;
 	}
 
 	public Object getDefaultProperty(String propertyName) {
-		if (propertyName.equals(IMPLEMENTATION)) {
-			if (JAXRSLibraryRegistryUtil.getInstance()
-					.getJAXRSLibraryRegistry() == null)
-				return null;
-			return getDefaultImplementationLibrary();
-		} else if (propertyName.equals(DEPLOY_IMPLEMENTATION)) {
-			return Boolean.TRUE;
-		} else if (propertyName.equals(SHAREDLIBRARY)) {
-			return Boolean.FALSE;
-		} else if (propertyName.equals(EARPROJECT_NAME)) {
+
+		if (propertyName.equals(EARPROJECT_NAME)) {
 			return null;
 		} else if (propertyName.equals(WEBPROJECT_NAME)) {
 			return null;
@@ -95,28 +85,67 @@ public class JAXRSFacetInstallDataModelProvider extends
 			return IJAXRSCoreConstants.JAXRS_FACET_ID;
 		} else if (propertyName.equals(WEBCONTENT_DIR)) {
 			return "WebContent"; //$NON-NLS-1$
-		} else if (propertyName.equals(IMPLEMENTATION_LIBRARIES)) {
-			return getDefaultJAXRSImplementationLibraries();
-		} else if (propertyName.equals(DEFAULT_IMPLEMENTATION_LIBRARY)) {
-			return getDefaultImplementationLibrary();
+		} else if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
+            return this.libraryInstallDelegate;
 		}
 		return super.getDefaultProperty(propertyName);
 	}
 
 	public IStatus validate(String name) {
 		errorMessage = null;
-		/*if (name.equals(IMPLEMENTATION)) {
-			JAXRSLibraryInternalReference lib = (JAXRSLibraryInternalReference) getProperty(IMPLEMENTATION);
-			IStatus status = validateImpl(lib.getLibrary());
-			if (!OK_STATUS.equals(status))
-				return status;
-
-			return validateClasspath();
-		} else */ if (name.equals(SERVLET_NAME)) {
+		if (name.equals(LIBRARY_PROVIDER_DELEGATE)) {
+			return ((LibraryInstallDelegate) getProperty(LIBRARY_PROVIDER_DELEGATE))
+					.validate();
+		} else if (name.equals(SERVLET_NAME)) {
 			return validateServletName(getStringProperty(SERVLET_NAME));
 		}
 		return super.validate(name);
 	}
+
+	public boolean propertySet(final String propertyName,
+			final Object propertyValue) {
+		if (propertyName.equals(FACETED_PROJECT_WORKING_COPY)
+				|| propertyName.equals(FACET_VERSION)) {
+			initLibraryInstallDelegate();
+
+			if (this.libraryInstallDelegate != null
+					&& propertyName.equals(FACET_VERSION)) {
+				final IProjectFacetVersion fv = (IProjectFacetVersion) getProperty(FACET_VERSION);
+				this.libraryInstallDelegate.setProjectFacetVersion(fv);
+			}
+		}
+
+		return super.propertySet(propertyName, propertyValue);
+	}
+    @SuppressWarnings("restriction")
+	private void initLibraryInstallDelegate()
+    {
+        final IFacetedProjectWorkingCopy fpjwc = (IFacetedProjectWorkingCopy) getProperty( FACETED_PROJECT_WORKING_COPY );
+        final IProjectFacetVersion fv = (IProjectFacetVersion) getProperty( FACET_VERSION );
+        
+        if( this.libraryInstallDelegate == null && fpjwc != null && fv != null )
+        {
+            this.libraryInstallDelegate = new LibraryInstallDelegate( fpjwc, fv );
+            
+            this.libraryInstallDelegate.addListener
+            ( 
+                new IPropertyChangeListener()
+                {
+                    public void propertyChanged( final String property,
+                                                 final Object oldValue,
+                                                 final Object newValue )
+                    {
+                        final IDataModel dm = getDataModel();
+    
+                        if( dm != null )
+                        {
+                            dm.notifyPropertyChange( LIBRARY_PROVIDER_DELEGATE, IDataModel.VALUE_CHG );
+                        }
+                    }
+                }
+            );
+        }
+    }
 
 	private IStatus createErrorStatus(String msg) {
 		return new Status(IStatus.ERROR, JAXRSCorePlugin.PLUGIN_ID, msg);
@@ -129,63 +158,6 @@ public class JAXRSFacetInstallDataModelProvider extends
 		}
 
 		return OK_STATUS;
-	}
-
-	private IStatus validateImpl(JAXRSLibrary impl) {
-		if (impl == null) {
-			errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateJAXRSImpl;
-		}
-		if (errorMessage != null) {
-			return createErrorStatus(errorMessage);
-		}
-		return OK_STATUS;
-	}
-
-	private IStatus validateClasspath() {
-		Set<String> jars = new HashSet<String>();
-		if (doesProjectExist()) {
-			// validate actual classpath by loading jars from cp
-			try {
-				IClasspathEntry[] entries = getJavaProject()
-						.getResolvedClasspath(true);
-				for (int i = 0; i < entries.length; i++) {
-					IClasspathEntry entry = entries[i];
-					if (entry.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-						jars.add(entry.getPath().makeAbsolute().toString());
-					}
-				}
-			} catch (JavaModelException e) {
-				// FIXME: what should we do in this case?
-				JAXRSCorePlugin.log(e, "Error searching class path"); //$NON-NLS-1$
-			}
-		}
-		// else as we do not have a javaProject yet, all we can do is validate
-		// that there is no duplicate jars (absolute path)
-
-		IStatus status = null;
-
-		JAXRSLibraryInternalReference ref = null;
-		ref = ((JAXRSLibraryInternalReference) getProperty(IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION));
-		if (ref != null) {
-			status = checkForDupeArchiveFiles(
-					jars,
-					((JAXRSLibraryInternalReference) getProperty(IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION))
-							.getLibrary());
-			if (!OK_STATUS.equals(status)) {
-				return status;
-			}
-		} else {
-			return createErrorStatus(Messages.JAXRSFacetInstallDataModelProvider_ClientImplValidationMsg);
-		}
-
-		return OK_STATUS;
-	}
-
-	private IJavaProject getJavaProject() {
-		IProject proj = getProject();
-		if (proj != null)
-			return JavaCore.create(proj);
-		return null;
 	}
 
 	private IProject getProject() {
