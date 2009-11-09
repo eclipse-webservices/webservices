@@ -71,7 +71,7 @@ public final class JAXRSFacetUninstallDelegate implements IDelegate {
 											project.getName()));
 				}
 
-				// Remove JSF Libraries
+				// Remove JAXRS Libraries
 				( (JAXRSFacetUninstallConfig) config ).getLibrariesUninstallDelegate().execute( null );
 
 				// remove servlet stuff from web.xml
