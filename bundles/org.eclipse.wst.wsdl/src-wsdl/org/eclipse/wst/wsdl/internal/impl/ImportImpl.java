@@ -31,8 +31,14 @@ import org.eclipse.wst.wsdl.internal.util.WSDLModelLocator;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceImpl;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 
 /**
@@ -510,7 +516,7 @@ public class ImportImpl extends ExtensibleElementImpl implements Import
               try
               {
                 InputStream inputStream = resourceSet.getURIConverter().createInputStream(uri);
-                resolvedResource = resourceSet.createResource(uri);
+                resolvedResource = getResource(uri, resourceSet);
                 resolvedResource.load(inputStream, resourceSet.getLoadOptions());
               }
               catch (IOException exception)
@@ -585,5 +591,77 @@ public class ImportImpl extends ExtensibleElementImpl implements Import
       }
     }
     return result;
+  }
+  
+  private static String getRootElementName(String uri)
+  {
+    RootElementNameContentHandler handler = new RootElementNameContentHandler();
+    try
+    {
+      XMLReader reader = XMLReaderFactory.createXMLReader();
+      reader.setContentHandler(handler);
+      reader.parse(uri);
+    }
+    catch (Exception e)
+    {
+      // Explicitly ignore any exceptions.
+    }
+
+    return handler.rootElementName;
+  }
+
+  private static class RootElementNameContentHandler extends DefaultHandler
+  {
+    public String rootElementName;
+
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+    {
+      rootElementName = localName;
+
+      // Throw an exception to make the SAX Parser to stop parsing
+      throw new SAXException("SAXParser intentionally stopped"); //$NON-NLS-1$
+    }
+  }
+  
+  private static final URI XSD_URI = URI.createURI("*.xsd"); //$NON-NLS-1$
+  private static final URI WSDL_URI = URI.createURI("*.wsdl"); //$NON-NLS-1$
+  
+  private static Resource getResource(URI uri, ResourceSet resourceSet)
+  {
+    // Allow the resource set the first chance to create the resource based on
+    // the registered resource factories.
+    
+    Resource resource = resourceSet.createResource(uri);
+    
+    boolean isWsdlOrXsdResource = resource instanceof WSDLResourceImpl || resource instanceof XSDResourceImpl;
+    
+    if (!isWsdlOrXsdResource)
+    {
+      // The URI was not mapped to a WSDL or XSD resource.
+      // Try to peek inside the resource to determine if its an XSD or WSDL document. 
+      
+      String rootElementName = getRootElementName(uri.toString());
+      
+      if (rootElementName != null)
+      {
+        URI resourceURI = null;
+
+        if (XSDConstants.SCHEMA_ELEMENT_TAG.equals(rootElementName))
+        {
+          resourceURI = XSD_URI;
+        }
+        else if (WSDLConstants.DEFINITION_ELEMENT_TAG.equals(rootElementName))
+        {
+          resourceURI = WSDL_URI;
+        }
+        
+        if (resourceURI != null)
+        {
+          resource = resourceSet.createResource(resourceURI);
+          resource.setURI(uri);
+        }
+      }
+    }
+    return resource;
   }
 } //ImportImpl
