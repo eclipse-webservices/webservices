@@ -69,6 +69,7 @@ import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLUtil;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDSchema;
@@ -323,6 +324,14 @@ public class BugFixesTest extends TestCase
       protected void runTest()
       {
         testReconcilesExtensibleElements();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("ImportsWithNonStandardFileExtension") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testImportsWithNonStandardFileExtension();
       }
     });
 
@@ -1896,5 +1905,67 @@ public class BugFixesTest extends TestCase
     extensibleElement.getElement().removeChild(element);
     extensibleElement.elementChanged(extensibleElement.getElement());
     assertEquals(originalSize - 1, extensibilityElements.size());
+  }
+  
+  public void testImportsWithNonStandardFileExtension() 
+  {
+    String WSDL_NS = "http://www.example.org/ImportWithNonStandardWSDLFileExtension/wsdl0/"; //$NON-NLS-1$ 
+    String XSD_NS = "http://www.example.org/NonStandardSchemaFileExtension/xsd0"; //$NON-NLS-1$ 
+    
+    try
+    {
+      // load a wsdl that imports another WSDL with non-standard file extension (.wsdl0) which in turn
+      // imports a XSD with non-standard file extension (.xsd0)
+      // ImportWithNonStandardFileExtension.wsdl also imports a XSD (NonStandardSchemaFileExtension.xsd1) using <wsdl:import>
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/ImportsWithNonStandardFileExtension/ImportWithNonStandardFileExtension.wsdl", true); //$NON-NLS-1$
+      
+      // there should only be two valid <wsdl:import>s - NonStandardWSDLFileExtension.wsdl0 and NonStandardSchemaFileExtension.xsd1
+      EList imports = definition.getEImports();
+      assertEquals("Incorrect number of imports", 2, imports.size()); //$NON-NLS-1$
+      
+      
+      for (int i = 0; i < imports.size(); i++) {
+        Import myImport = (Import) imports.get(i);
+        assertTrue("Incorrect imported namespace", WSDL_NS.equals(myImport.getNamespaceURI()) || XSD_NS.equals(myImport.getNamespaceURI())); //$NON-NLS-1$ 
+        if (WSDL_NS.equals(myImport.getNamespaceURI())) {
+       // WSDL import: make sure the binding in the imported NonStandardWSDLFileExtension.wsdl0 is resolved
+          Definition importedDefinition = myImport.getEDefinition(); 
+          assertNotNull(importedDefinition);
+          Map bindings = importedDefinition.getBindings();
+          assertEquals("Incorrect number of binding elements in imported WSDL", 1, bindings.size());  //$NON-NLS-1$
+          
+          // Go to the resolved "NewType" complex type element and reads its testXSD0 attribute, and verify it's accessible. 
+          List schemas = importedDefinition.getETypes().getSchemas();
+          assertEquals(1, schemas.size());
+          XSDSchema schema = (XSDSchema)schemas.get(0);
+          EList types = schema.getTypeDefinitions();
+          assertEquals("Incorrect number of types definitions in the inline schema of the imported WSDL", 1, types.size());  //$NON-NLS-1$
+          Object type = types.get(0);
+          assertTrue("Not complex type", type instanceof XSDComplexTypeDefinition);
+          XSDComplexTypeDefinition complexTypeDefinition = (XSDComplexTypeDefinition) type;
+          assertEquals("Incorrect name for the ComplexType imported from NonStandardSchemaFileExtension.xsd0", "NewType", complexTypeDefinition.getName());  //$NON-NLS-1$ $NON-NLS-2$
+          String testAttribute = complexTypeDefinition.getElement().getAttribute("testXSD0");  
+          assertEquals("Incorrect test attribute for the ComplexType imported from NonStandardSchemaFileExtension.xsd0", "passed", testAttribute); //$NON-NLS-1$ $NON-NLS-2$
+        } else {
+       // schema import: make sure the complex type in the imported NonStandardSchemaFileExtension.xsd1 is resolved
+          // Go to the resolved "ImportedTypeViaWSDLImport" complex type element and reads its testXSD1 attribute, and verify it's accessible.
+          XSDSchema schema = myImport.getESchema();
+          EList types = schema.getTypeDefinitions();
+          assertEquals("Incorrect number of types definitions in imported XSD", 1, types.size());  //$NON-NLS-1$
+          
+          Object type = types.get(0);
+          assertTrue("Not complex type", type instanceof XSDComplexTypeDefinition);
+          XSDComplexTypeDefinition complexTypeDefinition = (XSDComplexTypeDefinition) type;
+          assertEquals("Incorrect name for the ComplexType imported from NonStandardSchemaFileExtension.xsd1", "ImportedTypeViaWSDLImport", complexTypeDefinition.getName());  //$NON-NLS-1$ $NON-NLS-2$
+          String testAttribute = complexTypeDefinition.getElement().getAttribute("testXSD1");  //$NON-NLS-1$
+          assertEquals("Incorrect test attribute for the ComplexType imported from NonStandardSchemaFileExtension.xsd1", "passed", testAttribute);  //$NON-NLS-1$ $NON-NLS-2$
+        }
+      } 
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
   }
 }
