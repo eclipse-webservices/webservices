@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public class WSDLValidateTest extends BaseTestCase
 		String nonexistantFile = "nonexistantfile.wsdl";
 		// 1. A valid file should report back that it's valid.
 		IValidationReport report = validate.validateFile(validFile);
-		assertFalse("Errors were reported for a valid file.", report.hasErrors());
+		assertFalse("Errors were reported for a valid file." + getValidationMessages(report), report.hasErrors());
 		
 		// 2. An invalid file should report back that it's invalid.
 		IValidationReport report2 = validate.validateFile(invalidFile);
@@ -217,5 +217,20 @@ public class WSDLValidateTest extends BaseTestCase
 		assertTrue("The WSDL file list did not include filename1.wsdl", wsdlFiles.contains("filename1.wsdl"));
 		assertTrue("The WSDL file list did not include folder/filename2.wsdl", wsdlFiles.contains("folder/filename2.wsdl"));
 		assertTrue("The WSDL file list did not include folder\filename3.wsdl", wsdlFiles.contains("folder\filename3.wsdl"));
+	}
+	
+	String getValidationMessages(IValidationReport report)
+	{
+		StringBuffer buffer = new StringBuffer();
+		if (report != null)
+		{
+			IValidationMessage[] validationMessages = report.getValidationMessages();
+			for (int i = 0; i < validationMessages.length; i++) {
+				IValidationMessage validationMessage = validationMessages[i];
+				buffer.append(validationMessage.getMessage());
+				buffer.append(System.getProperty("line.separator")); //$NON-NLS-1$
+			}
+		}
+		return buffer.toString();
 	}
 }
