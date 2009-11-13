@@ -17,6 +17,8 @@ import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.ValidatorRegistry;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.eclipse.URIResolverWrapper;
 import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
 import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.logging.StandardLogger;
@@ -33,6 +35,9 @@ public class WSDLValidateTest extends BaseTestCase
 	{
 		super.setUp();
 		validate = new WSDLValidateWrapper();
+		WSDLValidator wsdlValidator = validate.getWSDLValidator();
+		URIResolverWrapper resolver = new URIResolverWrapper();
+		wsdlValidator.addURIResolver(resolver);
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +70,7 @@ public class WSDLValidateTest extends BaseTestCase
 		String nonexistantFile = "nonexistantfile.wsdl";
 		// 1. A valid file should report back that it's valid.
 		IValidationReport report = validate.validateFile(validFile);
-		assertFalse("Errors were reported for a valid file." + getValidationMessages(report), report.hasErrors());
+		assertFalse("Errors were reported for a valid file.", report.hasErrors());
 		
 		// 2. An invalid file should report back that it's invalid.
 		IValidationReport report2 = validate.validateFile(invalidFile);
@@ -217,20 +222,5 @@ public class WSDLValidateTest extends BaseTestCase
 		assertTrue("The WSDL file list did not include filename1.wsdl", wsdlFiles.contains("filename1.wsdl"));
 		assertTrue("The WSDL file list did not include folder/filename2.wsdl", wsdlFiles.contains("folder/filename2.wsdl"));
 		assertTrue("The WSDL file list did not include folder\filename3.wsdl", wsdlFiles.contains("folder\filename3.wsdl"));
-	}
-	
-	String getValidationMessages(IValidationReport report)
-	{
-		StringBuffer buffer = new StringBuffer();
-		if (report != null)
-		{
-			IValidationMessage[] validationMessages = report.getValidationMessages();
-			for (int i = 0; i < validationMessages.length; i++) {
-				IValidationMessage validationMessage = validationMessages[i];
-				buffer.append(validationMessage.getMessage());
-				buffer.append(System.getProperty("line.separator")); //$NON-NLS-1$
-			}
-		}
-		return buffer.toString();
 	}
 }
