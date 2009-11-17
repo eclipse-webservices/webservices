@@ -60,7 +60,7 @@ public class AnnotationsCoreProcessorFactory implements AnnotationProcessorFacto
         return AnnotationProcessors.getCompositeAnnotationProcessor(annotationProcessors);
     }
 
-    public AnnotationProcessor getAnnotationProcessor(IConfigurationElement configurationElement,
+    private AnnotationProcessor getAnnotationProcessor(IConfigurationElement configurationElement,
             AnnotationProcessorEnvironment processorEnvironment) {
           try {
               AbstractAnnotationProcessor annotationProcessor =

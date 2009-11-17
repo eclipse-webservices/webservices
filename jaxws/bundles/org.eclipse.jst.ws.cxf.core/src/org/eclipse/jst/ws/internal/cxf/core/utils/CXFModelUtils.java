@@ -159,19 +159,6 @@ public final class CXFModelUtils {
         return null;
     }
 
-    public static void createMethodAnnotationChange(IType type, IMethod method,
-            Class<? extends java.lang.annotation.Annotation> annotationClass, TextFileChange textFileChange)
-                throws CoreException {
-        ICompilationUnit source = type.getCompilationUnit();
-        CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
-
-        AST ast = compilationUnit.getAST();
-
-        Annotation annotation = getAnnotation(method, ast, annotationClass);
-
-        textFileChange.addEdit(AnnotationUtils.createAddAnnotationTextEdit(method, annotation));
-    }
-
     public static void getWebMethodAnnotationChange(IType type, IMethod method,
             TextFileChange textFileChange) throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
