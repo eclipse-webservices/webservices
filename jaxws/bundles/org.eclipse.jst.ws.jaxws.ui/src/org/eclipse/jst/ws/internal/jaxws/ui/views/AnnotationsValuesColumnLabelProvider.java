@@ -126,7 +126,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }
-        return null;
+        return false_image;
     }
 
     private Image getImageForClass(Class<?> aClass) throws JavaModelException {
@@ -158,7 +158,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
                 return getImageForMethod(method, javaElement);
             }
         }
-        return null;
+        return false_image;
     }
 
     private Image getImageForMethod(Method method, IJavaElement javaElement) throws JavaModelException {
