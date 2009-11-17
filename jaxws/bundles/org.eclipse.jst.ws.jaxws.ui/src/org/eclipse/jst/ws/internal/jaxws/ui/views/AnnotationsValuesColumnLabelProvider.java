@@ -11,12 +11,17 @@
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
-import org.eclipse.jdt.core.IAnnotatable;
-import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
@@ -27,7 +32,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
     private TreeViewer annotationTreeViewer;
     private Image true_image;
     private Image false_image;
-    
+
     public AnnotationsValuesColumnLabelProvider(TreeViewer annotationTreeViewer) {
         this.annotationTreeViewer = annotationTreeViewer;
         true_image = JAXWSUIPlugin.imageDescriptorFromPlugin(JAXWSUIPlugin.PLUGIN_ID, "icons/obj16/true.gif") //$NON-NLS-1$
@@ -35,72 +40,76 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         false_image = JAXWSUIPlugin.imageDescriptorFromPlugin(JAXWSUIPlugin.PLUGIN_ID, "icons/obj16/false.gif") //$NON-NLS-1$
                 .createImage();
     }
-    
+
     @Override
     public String getText(Object element) {
-        String text = ""; //$NON-NLS-1$
         if (element instanceof Method) {
-            text =  getTextForMethod((Method)element);
+            return getTextForMethod((Method)element);
         }
-        return text;
+        return ""; //$NON-NLS-1$
     }
-    
+
     private String getTextForMethod(Method method) {
-        String text = ""; //$NON-NLS-1$
-        if (annotationTreeViewer.getInput() instanceof IAnnotatable) {
-            text = getTextForMethod(method, (IAnnotatable) annotationTreeViewer.getInput());
+        if (annotationTreeViewer.getInput() instanceof IJavaElement) {
+            IJavaElement javaElement = (IJavaElement) annotationTreeViewer.getInput();
+            if (javaElement.exists()) {
+                return getTextForMethod(method, javaElement);
+            }
         }
-        return text;
+        return ""; //$NON-NLS-1$
     }
-    
-    private String getTextForMethod(Method method, IAnnotatable annotatedElement) {
-        Class<?> returnType = method.getReturnType();
-        try {
-            IAnnotation[] annotations = annotatedElement.getAnnotations();
-            for (IAnnotation annotation : annotations) {
-                Class<?> declaringClass = method.getDeclaringClass();
-                if (annotation.getElementName().equals(declaringClass.getSimpleName())
-                        || annotation.getElementName().equals(declaringClass.getCanonicalName())) {
-                    IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
-                    for (IMemberValuePair memberValuePair : memberValuePairs) {
-                        if (memberValuePair.getValue() == null) {
-                            break;
-                        }
-                        if (memberValuePair.getMemberName().equals(method.getName())) {
-                            if (returnType.equals(String.class)) {
-                                return memberValuePair.getValue().toString();
-                            }
-                            
-                            if (returnType.equals(Class.class)) {
-                                return memberValuePair.getValue().toString() + ".class";  //$NON-NLS-1$
-                            }
-                            if (returnType.isPrimitive() && (returnType.equals(Byte.TYPE) 
-                                    || returnType.equals(Short.TYPE) 
-                                    || returnType.equals(Integer.TYPE) || returnType.equals(Long.TYPE)
-                                    || returnType.equals(Float.TYPE) 
-                                    || returnType.equals(Double.TYPE))) {
-                                return memberValuePair.getValue().toString();
-                            }
-                            
-                            if (returnType.isArray()) {
-                                Object[] values = (Object[])memberValuePair.getValue();
-                                if (values != null && values.length > 0) {
-                                    return "[]{...}"; //$NON-NLS-1$
-                                } else {
-                                    return "[]{}"; //$NON-NLS-1$
-                                }
-                            }
-                            
-                            if (returnType.isEnum()) {
-                                String enumValue = memberValuePair.getValue().toString();
-                                return enumValue.substring(enumValue.lastIndexOf(".") + 1); //$NON-NLS-1$
-                            }
+
+    private String getTextForMethod(Method method, IJavaElement annotatedElement) {
+        List<Annotation> annotations = AnnotationUtils.getAnnotations(annotatedElement);
+        for (Annotation annotation : annotations) {
+            String annotationName = AnnotationUtils.getAnnotationName(annotation);
+            Class<?> declaringClass = method.getDeclaringClass();
+            if (annotationName.equals(declaringClass.getSimpleName())
+                    || annotationName.equals(declaringClass.getCanonicalName())) {
+                if (annotation.isNormalAnnotation()) {
+                    NormalAnnotation normalAnnotation = (NormalAnnotation) annotation;
+                    @SuppressWarnings("unchecked")
+                    List<MemberValuePair> memberValuePairs = normalAnnotation.values();
+                    for (MemberValuePair memberValuePair : memberValuePairs) {
+                        if (memberValuePair.getName().getIdentifier().equals(method.getName())) {
+                            return getTextForMethod(method.getReturnType(), memberValuePair.getValue());
                         }
                     }
+                } else if (annotation.isSingleMemberAnnotation()) {
+                    SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
+                    return getTextForMethod(method.getReturnType(), singleMemberAnnotation.getValue());
                 }
             }
-        } catch (JavaModelException jme) {
-            JAXWSUIPlugin.log(jme.getStatus());
+        }
+        return ""; //$NON-NLS-1$
+    }
+
+    private String getTextForMethod(Class<?> returnType, Expression expression) {
+        if (returnType.equals(String.class)) {
+            return expression.toString();
+        }
+
+        if (returnType.equals(Class.class)) {
+            return expression.toString() + ".class"; //$NON-NLS-1$
+        }
+        if (returnType.isPrimitive() && (returnType.equals(Byte.TYPE)
+                || returnType.equals(Short.TYPE) || returnType.equals(Integer.TYPE)
+                || returnType.equals(Long.TYPE)  || returnType.equals(Float.TYPE)
+                || returnType.equals(Double.TYPE))) {
+            return expression.toString();
+        }
+
+        if (returnType.isArray() && expression instanceof ArrayInitializer) {
+            ArrayInitializer arrayInitializer = (ArrayInitializer) expression;
+            if (arrayInitializer.expressions().size() > 0) {
+                return "[]{...}"; //$NON-NLS-1$
+            } else {
+                return "[]{}"; //$NON-NLS-1$
+            }
+        }
+        if (returnType.isEnum()) {
+            String enumValue = expression.toString();
+            return enumValue.substring(enumValue.lastIndexOf(".") + 1); //$NON-NLS-1$
         }
         return ""; //$NON-NLS-1$
     }
@@ -119,49 +128,62 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         }
         return null;
     }
-        
-    private Image getImageForClass(Class<?> aClass) throws JavaModelException {
-        if (annotationTreeViewer.getInput() instanceof IAnnotatable) {
-            return getImageForClass(aClass, (IAnnotatable) annotationTreeViewer.getInput());
-        }
 
-        return false_image;        
+    private Image getImageForClass(Class<?> aClass) throws JavaModelException {
+        if (annotationTreeViewer.getInput() instanceof IJavaElement) {
+            IJavaElement javaElement = (IJavaElement) annotationTreeViewer.getInput();
+            if (javaElement.exists()) {
+                return getImageForClass(aClass, javaElement);
+            }
+        }
+        return false_image;
     }
-    
-    private Image getImageForClass(Class<?> aClass, IAnnotatable annotatedElement) throws JavaModelException {
-        IAnnotation[] annotations = annotatedElement.getAnnotations();
-        for (IAnnotation annotation : annotations) {
-            String annotationName = annotation.getElementName();
-            if (AnnotationUtils.isAnnotationPresent((IJavaElement)annotatedElement, annotationName) && 
-                    (annotationName.equals(aClass.getSimpleName()) || 
-                    annotationName.equals(aClass.getCanonicalName()))) {
+
+    private Image getImageForClass(Class<?> aClass, IJavaElement javaElement) throws JavaModelException {
+        List<Annotation> annotations = AnnotationUtils.getAnnotations(javaElement);
+        for (Annotation annotation : annotations) {
+            String annotationName = AnnotationUtils.getAnnotationName(annotation);
+            if (annotationName.equals(aClass.getSimpleName()) ||
+                    annotationName.equals(aClass.getCanonicalName())) {
                 return true_image;
             }
         }
         return false_image;
     }
-    
+
     private Image getImageForMethod(Method method) throws JavaModelException {
-        Class<?> returnType = method.getReturnType();
-        if (returnType.equals(Boolean.TYPE)) {
-            if (annotationTreeViewer.getInput() instanceof IAnnotatable) {
-                return getImageForMethod(method, (IAnnotatable) annotationTreeViewer.getInput());
+        if (method.getReturnType().equals(Boolean.TYPE) && annotationTreeViewer.getInput() instanceof IJavaElement) {
+            IJavaElement javaElement = (IJavaElement) annotationTreeViewer.getInput();
+            if (javaElement.exists()) {
+                return getImageForMethod(method, javaElement);
             }
         }
         return null;
     }
 
-    private Image getImageForMethod(Method method, IAnnotatable annotatedElement) throws JavaModelException {
-        IAnnotation[] annotations = annotatedElement.getAnnotations();
-        for (IAnnotation annotation : annotations) {
-            String annotationName = annotation.getElementName();
+    private Image getImageForMethod(Method method, IJavaElement javaElement) throws JavaModelException {
+        List<Annotation> annotations = AnnotationUtils.getAnnotations(javaElement);
+        for (Annotation annotation : annotations) {
+            String annotationName = AnnotationUtils.getAnnotationName(annotation);
             Class<?> declaringClass = method.getDeclaringClass();
             if (annotationName.equals(declaringClass.getSimpleName())
                     || annotationName.equals(declaringClass.getCanonicalName())) {
-                IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
-                for (IMemberValuePair memberValuePair : memberValuePairs) {
-                    if (memberValuePair.getMemberName().equals(method.getName())) {
-                        if (Boolean.parseBoolean(memberValuePair.getValue().toString())) {
+                if (annotation.isNormalAnnotation()) {
+                    NormalAnnotation normalAnnotation = (NormalAnnotation) annotation;
+                    @SuppressWarnings("unchecked")
+                    List<MemberValuePair> memberValuePairs = normalAnnotation.values();
+                    for (MemberValuePair memberValuePair : memberValuePairs) {
+                        if (memberValuePair.getName().getIdentifier().equals(method.getName())
+                                && memberValuePair.getValue() instanceof BooleanLiteral) {
+                            if (((BooleanLiteral) memberValuePair.getValue()).booleanValue()) {
+                                return true_image;
+                            }
+                        }
+                    }
+                } else if (annotation.isSingleMemberAnnotation()) {
+                    SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
+                    if (singleMemberAnnotation.getValue() instanceof BooleanLiteral) {
+                        if (((BooleanLiteral) singleMemberAnnotation.getValue()).booleanValue()) {
                             return true_image;
                         }
                     }
@@ -170,7 +192,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         }
         return false_image;
     }
-    
+
     @Override
     public void dispose() {
         super.dispose();

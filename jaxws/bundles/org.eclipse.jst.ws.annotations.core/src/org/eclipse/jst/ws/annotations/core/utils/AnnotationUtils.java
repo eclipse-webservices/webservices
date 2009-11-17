@@ -1112,19 +1112,25 @@ public final class AnnotationUtils {
         if (javaElement.getElementType() == IJavaElement.TYPE) {
             IType type = (IType) javaElement;
             AbstractTypeDeclaration typeDeclaration = AnnotationUtils.getTypeDeclaration(type);
-            return extractAnnotations(typeDeclaration.modifiers());
+            if (typeDeclaration != null) {
+                return extractAnnotations(typeDeclaration.modifiers());
+            }
         }
 
         if (javaElement.getElementType() == IJavaElement.METHOD) {
             IMethod method = (IMethod) javaElement;
             MethodDeclaration methodDeclaration = AnnotationUtils.getMethodDeclaration(method);
-            return extractAnnotations(methodDeclaration.modifiers());
+            if (methodDeclaration != null) {
+                return extractAnnotations(methodDeclaration.modifiers());
+            }
         }
 
         if (javaElement.getElementType() == IJavaElement.FIELD) {
             IField field = (IField) javaElement;
             FieldDeclaration fieldDeclaration = AnnotationUtils.getFieldDeclaration(field);
-            return extractAnnotations(fieldDeclaration.modifiers());
+            if (fieldDeclaration != null) {
+                return extractAnnotations(fieldDeclaration.modifiers());
+            }
         }
 
         if (javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
