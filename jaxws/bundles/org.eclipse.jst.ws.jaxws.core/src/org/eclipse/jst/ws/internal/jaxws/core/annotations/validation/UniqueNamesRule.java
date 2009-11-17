@@ -64,7 +64,7 @@ import com.sun.mirror.util.SourcePosition;
 
 public class UniqueNamesRule extends AbstractAnnotationProcessor {
     private static Pattern pattern = Pattern.compile("arg\\d++"); //$NON-NLS-1$
-    
+
     @Override
     public void process() {
         AnnotationTypeDeclaration webServiceDeclaration = (AnnotationTypeDeclaration) environment
@@ -83,14 +83,14 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             }
         }
     }
-    
+
     private void checkOperationNames(Collection<? extends MethodDeclaration> methods) {
         Map<Declaration, QName> nameMap = new HashMap<Declaration, QName>();
         for (MethodDeclaration methodDeclaration : methods) {
-            nameMap.put(methodDeclaration, new QName(getTargetNamespace(methodDeclaration.getDeclaringType()), 
+            nameMap.put(methodDeclaration, new QName(getTargetNamespace(methodDeclaration.getDeclaringType()),
                     getOperationName(methodDeclaration)));
         }
-        
+
         Declaration[] keys = nameMap.keySet().toArray(new Declaration[nameMap.size()]);
         QName[] values = nameMap.values().toArray(new QName[nameMap.size()]);
 
@@ -108,7 +108,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             }
         }
     }
-        
+
     private String getAttributeValue(Declaration declaration, Class<? extends Annotation> annotation, String attributeName) {
         AnnotationMirror annotationMirror = AnnotationUtils.getAnnotation(declaration, annotation);
         if (annotationMirror != null) {
@@ -132,21 +132,23 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         Map<Object, QName> qNames = new HashMap<Object, QName>();
 
         for (Declaration declaration : methods) {
-            AnnotationMirror requestWrapper = AnnotationUtils.getAnnotation(declaration, RequestWrapper.class);
-            if (requestWrapper != null) {
-                addClassName(requestWrapper, CLASS_NAME, classNames);
-                addLocalName(requestWrapper, LOCAL_NAME, declaration, qNames);
-            }
-            
-            AnnotationMirror responseWrapper = AnnotationUtils.getAnnotation(declaration, ResponseWrapper.class);
-            if (responseWrapper != null) {
-                addClassName(responseWrapper, CLASS_NAME, classNames);
-                addLocalName(responseWrapper, LOCAL_NAME, declaration, qNames);
+            if (declaration instanceof MethodDeclaration) {
+                AnnotationMirror requestWrapper = AnnotationUtils.getAnnotation(declaration, RequestWrapper.class);
+                if (requestWrapper != null) {
+                    addClassName(requestWrapper, CLASS_NAME, classNames);
+                    addLocalName(requestWrapper, LOCAL_NAME, (MethodDeclaration) declaration, qNames);
+                }
+
+                AnnotationMirror responseWrapper = AnnotationUtils.getAnnotation(declaration, ResponseWrapper.class);
+                if (responseWrapper != null) {
+                    addClassName(responseWrapper, CLASS_NAME, classNames);
+                    addLocalName(responseWrapper, LOCAL_NAME, (MethodDeclaration) declaration, qNames);
+                }
             }
         }
-        
+
         Set<ReferenceType> thrownTypes = new HashSet<ReferenceType>();
-        
+
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             thrownTypes.addAll(methodDeclaration.getThrownTypes());
         }
@@ -173,14 +175,14 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
                 }
             }
         }
-        
+
         validateQNames(qNames, JAXWSCoreMessages.LOCAL_NAME_ATTRIBUTES_MUST_BE_UNIQUE);
     }
-    
+
     private void validateQNames(Map<Object, QName> qNames, String errorMessage) {
         Object[] keys =  qNames.keySet().toArray(new Object[qNames.size()]);
         QName[] values = qNames.values().toArray(new QName[qNames.size()]);
-       
+
         for(int i = 0; i < values.length; i++) {
             QName qName = values[i];
             validateName(qName, keys[i]);
@@ -193,7 +195,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             }
         }
     }
-    
+
     private void addClassName(AnnotationMirror annotationMirror, String attributeKey,
             List<AnnotationValue> classNames) {
         AnnotationValue className = AnnotationUtils.getAnnotationValue(annotationMirror, attributeKey);
@@ -202,13 +204,13 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         }
     }
 
-    private void addLocalName(AnnotationMirror annotationMirror, String attributeKey, 
-            Declaration declaration, Map<Object, QName> qNames) {
+    private void addLocalName(AnnotationMirror annotationMirror, String attributeKey,
+            MethodDeclaration methodDeclaration, Map<Object, QName> qNames) {
         AnnotationValue localNameValue = AnnotationUtils.getAnnotationValue(annotationMirror, attributeKey);
         if (localNameValue != null) {
-            qNames.put(localNameValue, new QName(getTargetNamespace(annotationMirror, 
-                    (MethodDeclaration)declaration), localNameValue.getValue().toString()));
-        }    
+            qNames.put(localNameValue, new QName(getTargetNamespace(annotationMirror, methodDeclaration),
+                    localNameValue.getValue().toString()));
+        }
     }
 
     private void checkDocumentBareMethods(Collection<? extends MethodDeclaration> methods) {
@@ -218,13 +220,13 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
                 docBareMethods.add(methodDeclaration);
             }
         }
-        
+
         Map<Object, QName> qNames = new HashMap<Object, QName>();
         for (MethodDeclaration methodDeclaration : docBareMethods) {
             getDocumentBareOperationRequest(methodDeclaration, qNames);
-            getDocumentBareOperationResponse(methodDeclaration, qNames);            
+            getDocumentBareOperationResponse(methodDeclaration, qNames);
         }
-        
+
         validateQNames(qNames, JAXWSCoreMessages.DOC_BARE_METHODS_UNIQUE_XML_ELEMENTS);
     }
 
@@ -240,7 +242,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         }
         return null;
     }
-    
+
     private void validateName(QName qName, Object object) {
         String name = qName.getLocalPart();
         if (name.trim().length() > 0) {
@@ -275,7 +277,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             }
         }
     }
-    
+
     private void getOperationRequest(AnnotationMirror annotationMirror, MethodDeclaration methodDeclaration,
             ParameterDeclaration parameterDeclaration, Map<Object, QName> qNames) {
         AnnotationValue name = AnnotationUtils.getAnnotationValue(annotationMirror, NAME);
@@ -292,7 +294,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         return new QName(getTargetNamespace(methodDeclaration.getDeclaringType()), methodDeclaration
                 .getSimpleName());
     }
-    
+
     private void getDocumentBareOperationResponse(MethodDeclaration methodDeclaration, Map<Object, QName> qNames) {
         if (!returnsVoid(methodDeclaration)) {
             getOperationResponse(AnnotationUtils.getAnnotation(methodDeclaration, WebResult.class),
@@ -314,7 +316,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             }
         }
     }
-    
+
     private void getOperationResponse(AnnotationMirror annotationMirror, MethodDeclaration methodDeclaration,
             Map<Object, QName> qNames) {
         if (annotationMirror != null) {
@@ -329,7 +331,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             qNames.put(methodDeclaration, getOperationResponseDefault(methodDeclaration));
         }
     }
-    
+
     private QName getOperationResponseDefault(MethodDeclaration methodDeclaration) {
         return new QName(getTargetNamespace(methodDeclaration.getDeclaringType()), methodDeclaration
                 .getSimpleName()
@@ -343,7 +345,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         }
         return false;
     }
-    
+
     private String getWebParamMode(AnnotationMirror annotationMirror, ParameterDeclaration parameterDeclaration) {
         String mode = AnnotationUtils.getStringValue(annotationMirror, MODE);
         if (mode == null || mode.length() == 0) {
@@ -351,7 +353,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
         }
         return mode;
     }
-    
+
     private String getDefaultWebParamMode(ParameterDeclaration parameterDeclaration) {
         TypeMirror typeMirror = environment.getTypeUtils().getErasure(parameterDeclaration.getType());
         if (typeMirror.toString().equals(Holder.class.getCanonicalName())) {
@@ -361,9 +363,9 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
     }
 
     private boolean returnsVoid(MethodDeclaration methodDeclaration) {
-        return methodDeclaration.getReturnType().equals(environment.getTypeUtils().getVoidType()); 
+        return methodDeclaration.getReturnType().equals(environment.getTypeUtils().getVoidType());
     }
-    
+
     private void checkMethodParameters(Collection<? extends MethodDeclaration> methodDeclarations) {
         List<MethodDeclaration> methods = new ArrayList<MethodDeclaration>();
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
@@ -372,7 +374,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
                 methods.add(methodDeclaration);
             }
         }
-        
+
         for (MethodDeclaration methodDeclaration : methods) {
             List<AnnotationValue> names = new ArrayList<AnnotationValue>();
             List<ParameterDeclaration> parameters = (List<ParameterDeclaration>) methodDeclaration.getParameters();
@@ -386,7 +388,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
                     }
                 }
             }
-            
+
             for (int i = 0; i < names.size(); i++) {
                 AnnotationValue name = names.get(i);
                 validateName(name);
@@ -436,16 +438,16 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             }
         }
     }
-    
+
     private String getTargetNamespace(TypeDeclaration typeDeclaration) {
         String targetNamespace = getAttributeValue(typeDeclaration, WebService.class, TARGET_NAMESPACE);
         if (targetNamespace != null) {
             return targetNamespace;
         }
-        
+
         return JDTUtils.getTargetNamespaceFromPackageName(typeDeclaration.getPackage().getQualifiedName());
     }
-    
+
     private String getTargetNamespace(AnnotationMirror annotationMirror, MethodDeclaration methodDeclaration) {
         String targetNamespace = AnnotationUtils.getStringValue(annotationMirror, TARGET_NAMESPACE);
         if (targetNamespace == null) {
@@ -471,7 +473,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
             return hasDocumentBareSOAPBinding(methodDeclaration.getDeclaringType());
         }
-        
+
         return false;
     }
 }

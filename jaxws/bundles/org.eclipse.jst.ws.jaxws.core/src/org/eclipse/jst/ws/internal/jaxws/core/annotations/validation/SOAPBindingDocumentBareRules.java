@@ -35,7 +35,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
 public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
-    
+
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
@@ -43,7 +43,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
 
         Collection<Declaration> annotatedTypes = environment
                 .getDeclarationsAnnotatedWith(annotationDeclaration);
-        
+
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof TypeDeclaration) {
                 TypeDeclaration typeDeclaration = (TypeDeclaration) declaration;
@@ -53,20 +53,20 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
                         if (JAXWSUtils.isDocumentBare(mirror)) {
                             Collection<? extends MethodDeclaration> methodDeclarations = typeDeclaration.getMethods();
                             for (MethodDeclaration methodDeclaration : methodDeclarations) {
-                                processMethod(methodDeclaration);    
+                                processMethod(methodDeclaration);
                             }
                         }
                     }
                 }
             }
-            
+
             if (declaration instanceof MethodDeclaration) {
                 MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
                 Collection<AnnotationMirror> annotationMirrors = methodDeclaration.getAnnotationMirrors();
                 for (AnnotationMirror mirror : annotationMirrors) {
                     if (mirror.getAnnotationType().getDeclaration().equals(annotationDeclaration)) {
                         if (JAXWSUtils.isDocumentBare(mirror)) {
-                            processMethod((MethodDeclaration) declaration);
+                            processMethod(methodDeclaration);
                         }
                     }
                 }
@@ -76,28 +76,28 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
 
     public void processMethod(MethodDeclaration methodDeclaration) {
         Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
-        
+
         //@Oneway operations
         if (isOneway(methodDeclaration) && !isSingleNonHeaderINParameter(parameters)) {
-            printError(methodDeclaration.getPosition(), 
-                JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER);                                
+            printError(methodDeclaration.getPosition(),
+                JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER);
         } else {
             if (isVoidReturnType(methodDeclaration)) {
                 if (countINParameters(parameters) > 1) {
-                    printError(methodDeclaration.getPosition(), 
-                            JAXWSCoreMessages.DOC_BARE_VOID_RETURN_ONE_IN_PARAMETER);                                                                        
+                    printError(methodDeclaration.getPosition(),
+                            JAXWSCoreMessages.DOC_BARE_VOID_RETURN_ONE_IN_PARAMETER);
                 }
                 if (countOUTParameters(parameters) > 1) {
-                    printError(methodDeclaration.getPosition(), 
-                            JAXWSCoreMessages.DOC_BARE_VOID_RETURN_ONE_OUT_PARAMETER);                                                                                            
+                    printError(methodDeclaration.getPosition(),
+                            JAXWSCoreMessages.DOC_BARE_VOID_RETURN_ONE_OUT_PARAMETER);
                 }
             } else {
                 if (countINParameters(parameters) > 1) {
-                    printError(methodDeclaration.getPosition(), 
-                        JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER);                                                                        
-                } 
+                    printError(methodDeclaration.getPosition(),
+                        JAXWSCoreMessages.DOC_BARE_ONLY_ONE_NON_HEADER_IN_PARAMETER);
+                }
                 if (countOUTParameters(parameters) > 0) {
-                    printError(methodDeclaration.getPosition(), 
+                    printError(methodDeclaration.getPosition(),
                         JAXWSCoreMessages.DOC_BARE_NON_VOID_RETURN_NO_INOUT_OUT_PARAMETER);
                 }
             }
@@ -109,15 +109,15 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
 //            if (annotationMirror != null) {
 //                String mode = getWebParamMode(annotationMirror, parameterDeclaration);
 //                String name = AnnotationUtils.getStringValue(annotationMirror, NAME);
-//                
+//
 //                if (name == null && (mode.equals(Mode.OUT.name()) || mode.equals(Mode.INOUT.name()))) {
-//                    printError(annotationMirror.getPosition(), 
+//                    printError(annotationMirror.getPosition(),
 //                       JAXWSCoreMessages.WEBPARAM_NAME_REQUIRED_WHEN_DOC_BARE_OUT_INOUT);
 //                }
 //            }
 //        }
     }
-    
+
     private boolean isOneway(MethodDeclaration methodDeclaration) {
         AnnotationMirror oneway = AnnotationUtils.getAnnotation(methodDeclaration, Oneway.class);
         if (oneway != null) {
@@ -125,15 +125,15 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
         }
         return false;
     }
-    
+
     private boolean isVoidReturnType(MethodDeclaration methodDeclaration) {
         return methodDeclaration.getReturnType().equals(environment.getTypeUtils().getVoidType());
     }
-    
+
     private boolean isSingleNonHeaderINParameter(Collection<ParameterDeclaration> parameters) {
         return countNonHeaderINParameters(parameters) <= 1;
     }
-    
+
     private int countNonHeaderINParameters(Collection<ParameterDeclaration> parameters) {
         int inNonHeaderParameters = 0;
         for (ParameterDeclaration parameterDeclaration : parameters) {
@@ -143,21 +143,21 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
         }
         return inNonHeaderParameters;
     }
-    
+
     private boolean isNonHeaderINParameter(ParameterDeclaration parameterDeclaration) {
         AnnotationMirror webParam = AnnotationUtils.getAnnotation(parameterDeclaration, WebParam.class);
         if (webParam != null) {
             return getWebParamMode(webParam, parameterDeclaration).equals(Mode.IN.name())
               && !isHeader(webParam);
         }
-        
+
         if (getDefaultWebParamMode(parameterDeclaration).equals(Mode.IN.name())) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     private int countINParameters(Collection<ParameterDeclaration> parameters) {
         int inNonHeaderParameters = 0;
         for (ParameterDeclaration parameterDeclaration : parameters) {
@@ -167,7 +167,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
         }
         return inNonHeaderParameters;
     }
- 
+
     private boolean isINParameter(ParameterDeclaration parameterDeclaration) {
         AnnotationMirror webParam = AnnotationUtils.getAnnotation(parameterDeclaration, WebParam.class);
         if (webParam != null) {
@@ -175,7 +175,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
             return (mode.equals(Mode.IN.name()) || mode.equals(Mode.INOUT.name()))
                     && !isHeader(webParam);
         }
-        
+
         String defaultMode = getDefaultWebParamMode(parameterDeclaration);
         if (defaultMode.equals(Mode.IN.name()) || defaultMode.equals(Mode.INOUT.name())) {
             return true;
@@ -201,7 +201,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
             return (mode.equals(Mode.OUT.name()) || mode.equals(Mode.INOUT.name()))
                     && !isHeader(webParam);
         }
-        
+
         if (getDefaultWebParamMode(parameterDeclaration).equals(Mode.INOUT.name())) {
             return true;
         }
@@ -216,7 +216,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
         }
         return false;
     }
-    
+
     private String getWebParamMode(AnnotationMirror annotationMirror, ParameterDeclaration parameterDeclaration) {
         String mode = AnnotationUtils.getStringValue(annotationMirror, MODE);
         if (mode == null || mode.length() == 0) {
@@ -224,7 +224,7 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
         }
         return mode;
     }
-    
+
     private String getDefaultWebParamMode(ParameterDeclaration parameterDeclaration) {
         TypeMirror typeMirror = environment.getTypeUtils().getErasure(parameterDeclaration.getType());
         if (typeMirror.toString().equals(Holder.class.getCanonicalName())) {
@@ -232,5 +232,5 @@ public class SOAPBindingDocumentBareRules extends AbstractAnnotationProcessor {
         }
         return Mode.IN.name();
     }
-    
+
 }

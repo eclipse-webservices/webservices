@@ -40,29 +40,30 @@ public class WebMethodExcludeRules extends AbstractAnnotationProcessor {
                 annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-            Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
-            for (AnnotationMirror annotationMirror : annotationMirrors) {
-                AnnotationValue excludeAttribute = AnnotationUtils.getAnnotationValue(annotationMirror,
-                        EXCLUDE);
-                if (excludeAttribute != null) {
-                    MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
-                    TypeDeclaration typeDeclaration = methodDeclaration.getDeclaringType();
-                    
-                    if (typeDeclaration instanceof InterfaceDeclaration
-                            && ((Boolean) excludeAttribute.getValue()).booleanValue()) {
-                        printFixableError(excludeAttribute.getPosition(),
-                                JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
-                    }
+            if (declaration instanceof MethodDeclaration) {
+                Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
+                for (AnnotationMirror annotationMirror : annotationMirrors) {
+                    AnnotationValue excludeAttribute = AnnotationUtils.getAnnotationValue(annotationMirror,
+                            EXCLUDE);
+                    if (excludeAttribute != null) {
+                        MethodDeclaration methodDeclaration = (MethodDeclaration) declaration;
+                        TypeDeclaration typeDeclaration = methodDeclaration.getDeclaringType();
 
-                    if (typeDeclaration instanceof ClassDeclaration 
-                            && annotationMirror.getElementValues().size() > 1
-                            && Boolean.valueOf(excludeAttribute.getValue().toString()).booleanValue()) {
-                        printFixableError(excludeAttribute.getPosition(),
-                                JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFIED_NO_OTHER_ATTRIBUTES_ALLOWED);
+                        if (typeDeclaration instanceof InterfaceDeclaration
+                                && ((Boolean) excludeAttribute.getValue()).booleanValue()) {
+                            printFixableError(excludeAttribute.getPosition(),
+                                    JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
+                        }
+
+                        if (typeDeclaration instanceof ClassDeclaration
+                                && annotationMirror.getElementValues().size() > 1
+                                && Boolean.valueOf(excludeAttribute.getValue().toString()).booleanValue()) {
+                            printFixableError(excludeAttribute.getPosition(),
+                                    JAXWSCoreMessages.WEBMETHOD_EXCLUDE_SPECIFIED_NO_OTHER_ATTRIBUTES_ALLOWED);
+                        }
                     }
                 }
             }
         }
     }
-
 }
