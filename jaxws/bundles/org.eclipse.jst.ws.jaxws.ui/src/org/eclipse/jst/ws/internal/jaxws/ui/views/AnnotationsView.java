@@ -78,31 +78,31 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
     private Composite notAvaiableComposite;
     private ClasspathComposite setupClasspathComposite;
 
-	private TreeViewer annotationTreeViewer;
+    private TreeViewer annotationTreeViewer;
 
-	private IMemento memento;
+    private IMemento memento;
 
-	private AnnotationsViewFilterAction annotationsViewFilterAction;
+    private AnnotationsViewFilterAction annotationsViewFilterAction;
 
-	public AnnotationsView() {
-	}
+    public AnnotationsView() {
+    }
 
     @Override
-	public void createPartControl(Composite parent) {
+    public void createPartControl(Composite parent) {
         pageBook = new PageBook(parent, SWT.NONE);
 
         annotationTree = new Tree(pageBook, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER | SWT.V_SCROLL
                 | SWT.H_SCROLL);
         annotationTreeViewer = new TreeViewer(annotationTree);
 
-		annotationTreeViewer.setContentProvider(new AnnotationsViewContentProvider());
-		annotationTreeViewer.getTree().setHeaderVisible(true);
-		annotationTreeViewer.getTree().setLinesVisible(true);
+        annotationTreeViewer.setContentProvider(new AnnotationsViewContentProvider());
+        annotationTreeViewer.getTree().setHeaderVisible(true);
+        annotationTreeViewer.getTree().setLinesVisible(true);
 
-		TreeViewerColumn annotationsViewerColumn = new TreeViewerColumn(annotationTreeViewer, SWT.NONE);
-		annotationsViewerColumn.setLabelProvider(new AnnotationsColumnLabelProvider());
-		TreeColumn annotationsColumn = annotationsViewerColumn.getColumn();
-		annotationsColumn.setWidth(400);
+        TreeViewerColumn annotationsViewerColumn = new TreeViewerColumn(annotationTreeViewer, SWT.NONE);
+        annotationsViewerColumn.setLabelProvider(new AnnotationsColumnLabelProvider());
+        TreeColumn annotationsColumn = annotationsViewerColumn.getColumn();
+        annotationsColumn.setWidth(400);
         annotationsColumn.setMoveable(false);
         annotationsColumn.setText(JAXWSUIMessages.ANNOTATIONS_VIEW_ANNOTATIONS_COLUMN_NAME);
 
@@ -110,48 +110,48 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         valuesViewerColumn.setLabelProvider(new AnnotationsValuesColumnLabelProvider(annotationTreeViewer));
         valuesViewerColumn.setEditingSupport(new AnnotationsValuesEditingSupport(this, annotationTreeViewer));
         TreeColumn valuesColumn = valuesViewerColumn.getColumn();
-		valuesColumn.setWidth(400);
-		valuesColumn.setMoveable(false);
-		valuesColumn.setAlignment(SWT.LEFT);
-		valuesColumn.setText(JAXWSUIMessages.ANNOTATIONS_VIEW_ANNOTATIONS_VALUES_COLUMN_NAME);
+        valuesColumn.setWidth(400);
+        valuesColumn.setMoveable(false);
+        valuesColumn.setAlignment(SWT.LEFT);
+        valuesColumn.setText(JAXWSUIMessages.ANNOTATIONS_VIEW_ANNOTATIONS_VALUES_COLUMN_NAME);
 
-		//Selection Service
-		startListeningForSelectionChanges();
-		//Part Service
-		getViewSite().getWorkbenchWindow().getPartService().addPartListener(this);
+        //Selection Service
+        startListeningForSelectionChanges();
+        //Part Service
+        getViewSite().getWorkbenchWindow().getPartService().addPartListener(this);
 
-		contributeToActionBars();
+        contributeToActionBars();
 
-		notAvaiableComposite = new Composite(pageBook, SWT.NONE);
-		GridLayout gridLayout = new GridLayout();
-		notAvaiableComposite.setLayout(gridLayout);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		notAvaiableComposite.setLayoutData(gridData);
-		notAvaiableComposite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		Label label = new Label(notAvaiableComposite, SWT.NONE);
-		label.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		label.setText(JAXWSUIMessages.ANNOTATIONS_VIEW_ANNOTATIONS_NOT_AVAILABLE_ON_SELECTION);
+        notAvaiableComposite = new Composite(pageBook, SWT.NONE);
+        GridLayout gridLayout = new GridLayout();
+        notAvaiableComposite.setLayout(gridLayout);
+        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        notAvaiableComposite.setLayoutData(gridData);
+        notAvaiableComposite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        Label label = new Label(notAvaiableComposite, SWT.NONE);
+        label.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        label.setText(JAXWSUIMessages.ANNOTATIONS_VIEW_ANNOTATIONS_NOT_AVAILABLE_ON_SELECTION);
 
-		annotationTreeViewer.setComparator(new ViewerComparator() {
+        annotationTreeViewer.setComparator(new ViewerComparator() {
             @Override
             public int compare(Viewer viewer, Object obj1, Object obj2) {
                 if ((obj1 instanceof Class<?> && ((Class<?>) obj1).isAnnotation())
-                		&& (obj2 instanceof Class<?> && ((Class<?>) obj2).isAnnotation())) {
+                        && (obj2 instanceof Class<?> && ((Class<?>) obj2).isAnnotation())) {
                     return ((Class<? extends java.lang.annotation.Annotation>) obj1).getCanonicalName().compareTo(
-                			((Class<? extends java.lang.annotation.Annotation>) obj2).getCanonicalName());
+                            ((Class<? extends java.lang.annotation.Annotation>) obj2).getCanonicalName());
                 }
                 if (obj1 instanceof Method && obj2 instanceof Method) {
                     return ((Method)obj1).getName().compareTo(((Method)obj2).getName());
                 }
                 return super.compare(viewer, obj1, obj2);
             }
-		});
+        });
 
-		//TODO Add a Faceted Project composite
-		setupClasspathComposite = new ClasspathComposite(pageBook, SWT.NONE);
+        //TODO Add a Faceted Project composite
+        setupClasspathComposite = new ClasspathComposite(pageBook, SWT.NONE);
 
-		pageBook.showPage(notAvaiableComposite);
-	}
+        pageBook.showPage(notAvaiableComposite);
+    }
 
     private void startListeningForSelectionChanges() {
         getViewSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener(this);
@@ -165,7 +165,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         IWorkbenchPage workbenchPage = getViewSite().getWorkbenchWindow().getActivePage();
 
         if (workbenchPage == null) {
-        	return;
+            return;
         }
 
         IWorkbenchPartReference workbenchPartReference = workbenchPage.getActivePartReference();
@@ -188,7 +188,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         }
     }
 
-	public void updateView(IJavaElement javaElement, ITextSelection textSelection) {
+    public void updateView(IJavaElement javaElement, ITextSelection textSelection) {
         TreePath[] expandedTreePaths = annotationTreeViewer.getExpandedTreePaths();
 
         IJavaProject javaProject = javaElement.getJavaProject();
@@ -201,7 +201,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
 
         pageBook.showPage(annotationTree);
 
-	    int offset = textSelection.getOffset();
+        int offset = textSelection.getOffset();
         try {
             ICompilationUnit compilationUnit = null;
             if (javaElement instanceof ICompilationUnit) {
@@ -215,7 +215,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
 
             if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION) {
                 if (javaElement.getResource().getName().equals("package-info.java")) { //$NON-NLS-1$
-                    annotationTreeViewer.setInput(javaElement);
+                    setInput(javaElement);
                 } else {
                     annotationTreeViewer.setInput(null);
                 }
@@ -228,7 +228,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
             if (javaElement.getElementType() == IJavaElement.TYPE) {
                 IType type = (IType)javaElement;
                 if (!type.isMember()) {
-                    annotationTreeViewer.setInput(type);
+                    setInput(type);
                 } else {
                     annotationTreeViewer.setInput(null);
                 }
@@ -237,7 +237,7 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
             if (javaElement.getElementType() == IJavaElement.FIELD) {
                 IField field = (IField)javaElement;
                 if (!field.getDeclaringType().isMember()) {
-                    annotationTreeViewer.setInput(field);
+                    setInput(field);
                 } else {
                     annotationTreeViewer.setInput(null);
                 }
@@ -246,11 +246,11 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
             if (javaElement.getElementType() == IJavaElement.METHOD) {
                 IMethod method = (IMethod) javaElement;
                 if (!method.getDeclaringType().isMember()) {
-                	ILocalVariable localVariable = AnnotationUtils.getLocalVariable(method, offset);
-			    	if (localVariable != null) {
-            			annotationTreeViewer.setInput(localVariable);
-			    	} else {
-                        annotationTreeViewer.setInput(method);
+                    ILocalVariable localVariable = AnnotationUtils.getLocalVariable(method, offset);
+                    if (localVariable != null) {
+                        setInput(localVariable);
+                    } else {
+                        setInput(method);
                     }
                 } else {
                     annotationTreeViewer.setInput(null);
@@ -262,23 +262,31 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         }
 
         annotationTreeViewer.setExpandedTreePaths(expandedTreePaths);
-	}
+    }
+
+    private void setInput(IJavaElement javaElement) {
+        if (annotationTreeViewer.getInput() == null) {
+            annotationTreeViewer.setInput(javaElement);
+        } else if (!annotationTreeViewer.getInput().equals(javaElement)) {
+            annotationTreeViewer.setInput(javaElement);
+        }
+    }
 
     private boolean checkClasspath(IJavaProject javaProject) {
         List<String> categories = new ArrayList<String>();
         categories.addAll(AnnotationsManager.getAnnotationCategories());
         ViewerFilter[] viewerFilters = annotationTreeViewer.getFilters();
         for (ViewerFilter viewerFilter : viewerFilters) {
-           if (viewerFilter instanceof AnnotationsViewCategoryFilter) {
-               categories.removeAll(((AnnotationsViewCategoryFilter)viewerFilter).getCategories());
-           }
+            if (viewerFilter instanceof AnnotationsViewCategoryFilter) {
+                categories.removeAll(((AnnotationsViewCategoryFilter)viewerFilter).getCategories());
+            }
         }
 
         boolean jwsReady = true;
         try {
             for (String category : categories) {
                 List<AnnotationDefinition> annotationDefinitions = AnnotationsManager
-                        .getAnnotationsByCategory(category);
+                .getAnnotationsByCategory(category);
                 String className = annotationDefinitions.get(0).getAnnotationClassName();
                 if (javaProject.findType(className) == null) {
                     jwsReady = false;
@@ -354,13 +362,13 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
     public void partInputChanged(IWorkbenchPartReference partRef) {
     }
 
-	private void clearAnnotationsView() {
+    private void clearAnnotationsView() {
         annotationTreeViewer.setInput(null);
         annotationTreeViewer.refresh();
         pageBook.showPage(notAvaiableComposite);
-	}
+    }
 
-	private void javaEditorActivated(IEditorPart editorPart) {
+    private void javaEditorActivated(IEditorPart editorPart) {
         ITextEditor textEditor = (ITextEditor) editorPart;
         ISelection selection = textEditor.getSelectionProvider().getSelection();
         IJavaElement javaElement = (IJavaElement) editorPart.getEditorInput().getAdapter(IJavaElement.class);
@@ -408,27 +416,31 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         annotationsViewFilterAction.saveState(memento);
     }
 
-	private void contributeToActionBars() {
-		IActionBars bars = getViewSite().getActionBars();
-		fillLocalPullDown(bars.getMenuManager());
-	}
+    private void contributeToActionBars() {
+        IActionBars bars = getViewSite().getActionBars();
+        fillLocalPullDown(bars.getMenuManager());
+    }
 
-	private void fillLocalPullDown(IMenuManager manager) {
-	    annotationsViewFilterAction = new AnnotationsViewFilterAction(this, annotationTreeViewer,
-	            JAXWSUIMessages.ANNOTATIONS_VIEW_FILTER_ACTION_NAME);
-	    if (memento != null) {
-	        annotationsViewFilterAction.init(memento);
-	    }
-	    manager.add(annotationsViewFilterAction);
-	}
+    private void fillLocalPullDown(IMenuManager manager) {
+        annotationsViewFilterAction = new AnnotationsViewFilterAction(this, annotationTreeViewer,
+                JAXWSUIMessages.ANNOTATIONS_VIEW_FILTER_ACTION_NAME);
+        if (memento != null) {
+            annotationsViewFilterAction.init(memento);
+        }
+        manager.add(annotationsViewFilterAction);
+    }
 
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	@Override
-	public void setFocus() {
-		annotationTreeViewer.getControl().setFocus();
-	}
+    /**
+     * Passing the focus request to the viewer's control.
+     */
+    @Override
+    public void setFocus() {
+        annotationTreeViewer.getControl().setFocus();
+    }
+
+    public void refreshLabels() {
+        annotationTreeViewer.refresh();
+    }
 
     public void refresh() {
         Display display = annotationTreeViewer.getControl().getDisplay();

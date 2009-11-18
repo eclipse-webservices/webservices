@@ -136,7 +136,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                             }
                         } catch (NumberFormatException nfe) {
                             return JAXWSUIMessages.ANNOTATION_EDITING_SUPPORT_NOT_VALID_MESSAGE_PREFIX
-                                + returnType.getSimpleName();
+                            + returnType.getSimpleName();
                         }
                         return null;
                     }
@@ -173,7 +173,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                 String annotationName = annotation.getElementName();
                 if (AnnotationUtils.isAnnotationPresent((IJavaElement)annotatedElement, annotationName)
                         && (annotationName.equals(aClass.getSimpleName())
-                        || annotationName.equals(aClass.getCanonicalName()))) {
+                                || annotationName.equals(aClass.getCanonicalName()))) {
                     return Boolean.TRUE;
                 }
             }
@@ -280,7 +280,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             if (element instanceof Class && ((Class<?>) element).isAnnotation()) {
                 @SuppressWarnings("unchecked")
                 Class<? extends java.lang.annotation.Annotation> annotationClass =
-                    		(Class<? extends java.lang.annotation.Annotation>) element;
+                    (Class<? extends java.lang.annotation.Annotation>) element;
                 if (annotationClass != null) {
                     setValueForClass(annotationClass, (Boolean) value);
                 }
@@ -334,7 +334,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
 
     private void setValueForClass(Class<? extends java.lang.annotation.Annotation> annotationClass,
             Boolean annotate, IJavaElement javaElement, IAnnotationAttributeInitializer annotationAttributeInitializer)
-                throws CoreException {
+    throws CoreException {
         ICompilationUnit source = AnnotationUtils.getCompilationUnitFromJavaElement(javaElement);
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
         AST ast = compilationUnit.getAST();
@@ -502,7 +502,7 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             int selected = ((Integer) value).intValue();
             if (selected != -1) {
                 return AnnotationsCore.createEnumMemberValuePair(ast,
-                       method.getDeclaringClass().getCanonicalName(), method.getName(), method.getReturnType()
+                        method.getDeclaringClass().getCanonicalName(), method.getName(), method.getReturnType()
                         .getEnumConstants()[selected]);
             }
         }
@@ -534,6 +534,6 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             undoChange.initializeValidationData(monitor);
             manager.addUndo(undoChange.getName(), undoChange);
         }
-        annotationsView.refresh();
+        annotationsView.refreshLabels();
     }
 }

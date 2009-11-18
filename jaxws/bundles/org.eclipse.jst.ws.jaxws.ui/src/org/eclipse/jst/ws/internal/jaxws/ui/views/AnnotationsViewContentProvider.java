@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
@@ -17,9 +18,9 @@ import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 public class AnnotationsViewContentProvider implements ITreeContentProvider {
 
 	public Object[] getChildren(Object parentElement) {
-	    if (parentElement instanceof Class) {
-	        return ((Class<?>)parentElement).getDeclaredMethods();
-	    }
+		if (parentElement instanceof Class) {
+			return ((Class<?>)parentElement).getDeclaredMethods();
+		}
 		return new Object[] {};
 	}
 
@@ -28,17 +29,18 @@ public class AnnotationsViewContentProvider implements ITreeContentProvider {
 	}
 
 	public boolean hasChildren(Object element) {
-	    if (element instanceof Class) {
-	        return ((Class<?>)element).getDeclaredMethods().length > 0;
-	    }
+		if (element instanceof Class) {
+			return ((Class<?>)element).getDeclaredMethods().length > 0;
+		}
 		return false;
 	}
 
 	public Object[] getElements(Object inputElement) {
-	    if (inputElement != null) {
-	        return AnnotationsManager.getAnnotations(inputElement).toArray();
-	    }
-	    return new Object[] {};
+		if (inputElement != null && inputElement instanceof IJavaElement && ((IJavaElement) inputElement).exists()) {
+			IJavaElement javaElement = (IJavaElement) inputElement;
+			return AnnotationsManager.getAnnotations(javaElement).toArray();
+		}
+		return new Object[] {};
 	}
 
 	public void dispose() {

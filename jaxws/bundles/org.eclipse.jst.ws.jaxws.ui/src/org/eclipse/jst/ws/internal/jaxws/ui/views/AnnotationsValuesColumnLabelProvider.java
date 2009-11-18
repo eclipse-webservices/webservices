@@ -36,9 +36,9 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
     public AnnotationsValuesColumnLabelProvider(TreeViewer annotationTreeViewer) {
         this.annotationTreeViewer = annotationTreeViewer;
         true_image = JAXWSUIPlugin.imageDescriptorFromPlugin(JAXWSUIPlugin.PLUGIN_ID, "icons/obj16/true.gif") //$NON-NLS-1$
-                .createImage();
+        .createImage();
         false_image = JAXWSUIPlugin.imageDescriptorFromPlugin(JAXWSUIPlugin.PLUGIN_ID, "icons/obj16/false.gif") //$NON-NLS-1$
-                .createImage();
+        .createImage();
     }
 
     @Override
@@ -126,7 +126,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }
-        return false_image;
+        return null;
     }
 
     private Image getImageForClass(Class<?> aClass) throws JavaModelException {
@@ -136,7 +136,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
                 return getImageForClass(aClass, javaElement);
             }
         }
-        return false_image;
+        return null;
     }
 
     private Image getImageForClass(Class<?> aClass, IJavaElement javaElement) throws JavaModelException {
@@ -158,7 +158,7 @@ public class AnnotationsValuesColumnLabelProvider extends ColumnLabelProvider {
                 return getImageForMethod(method, javaElement);
             }
         }
-        return false_image;
+        return null;
     }
 
     private Image getImageForMethod(Method method, IJavaElement javaElement) throws JavaModelException {
