@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.wst.wsdl.validation.wsdl11validator">
+      <validator
+            class="org.eclipse.wst.wsdl.validation.tests.internal.SimpleExtensionsValidator"
+            namespace="http://org.eclipse.wst.wsdl.validation.tests/Extensions">
+      </validator>
+   </extension>
+   <extension
+         point="org.eclipse.wst.xml.core.catalogContributions">
+      <catalogContribution>
+         <uri
+               name="http://org.eclipse.wst.wsdl.validation.tests/Extensions"
+               uri="testresources/samples/WSDL/ExtensibleElements/Extensions.xsd">
+         </uri>
+      </catalogContribution>
+   </extension>
+</plugin>
