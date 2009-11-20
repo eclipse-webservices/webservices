@@ -102,15 +102,13 @@ public class WSDL11BasicValidator implements IWSDL11Validator
    */
   public void validate(Object element, List parents, IWSDL11ValidationInfo valInfo)
   {
-    //this.validatorcontroller = validatorcontroller;
-    //setDefaultResourceBundleIfNeeded(validatorcontroller);
     Definition wsdlDefinition = (Definition)element;
     validateTypes(wsdlDefinition, valInfo);
     validateServices(wsdlDefinition, valInfo);
     validateBindings(wsdlDefinition, valInfo);
     validatePortTypes(wsdlDefinition, valInfo);
     validateMessages(wsdlDefinition, valInfo);
-
+    validateExtensibilityElementList(parents, wsdlDefinition.getExtensibilityElements(), valInfo);
   }
 
   /**
