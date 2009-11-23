@@ -16,6 +16,7 @@
  * 20080501   229728 makandre@ca.ibm.com - Andrew Mak, uppercase .WSDL cannot be found by the Web Service Client wizard
  * 20090128   262639 ericdp@ca.ibm.com - Eric D. Peters, WSDLCopier gives NPE in projects with spaces
  * 20090204   262913 ericdp@ca.ibm.com - Eric D. Peters, Top-down WS fails when .wsdl imports .xsd or .wsdl which resides in folder containing URI encoded chars like " ", ")"
+ * 20091106   294486 yenlu@ca.ib,.com - Yen Lu, WSDLCopier may not write WSDLs and XSDs with the correct XML encoding
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.util;
@@ -39,8 +40,6 @@ import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.UnknownExtensibilityElement;
 import javax.wsdl.extensions.schema.Schema;
-import javax.wsdl.factory.WSDLFactory;
-import javax.wsdl.xml.WSDLWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -66,11 +65,13 @@ import org.eclipse.wst.ws.internal.parser.discovery.NetUtils;
 import org.eclipse.wst.ws.internal.parser.wsil.WWWAuthenticationException;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
-import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLFactoryImpl;
+import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
+import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDParser;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -107,6 +108,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	  	
 		public IPath  path;
 	  	public Object content;
+	  	public String encoding;
 	  	  	
 	  	/**
 	  	 * Constructor.
@@ -116,7 +118,20 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	  	 */
 	  	public XMLObjectInfo(IPath path, Object content) {
 	  		this.path    = path.setDevice(null); // we want a device independent path  		
-	  		this.content = content;
+	  		this.content = content;	  		
+	  	}
+	  	
+	  	/**
+	  	 * Constructor.
+	  	 * 
+	  	 * @param path The path of the source file.
+	  	 * @param content A representation of the source file (either wsdl or xsd)
+	  	 * @param encoding The encoding of the content.
+	  	 */	  	
+	  	public XMLObjectInfo(IPath path, Object content, String encoding)
+	  	{
+	  		this(path, content);
+	  		this.encoding = encoding;
 	  	}
 	}	  
 	
@@ -439,6 +454,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
 		
 		XSDSchema xsdSchema = XSDSchemaImpl.getSchemaForSchema(uri.toString());
 
+		String encoding = null;
 		// if schema is not cached, parse it
 	    if (xsdSchema == null) {
 	    	XSDParser p = new XSDParser(null);
@@ -447,12 +463,18 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	    	if (is != null) {
 	    		p.parse(is);
 	    		xsdSchema = p.getSchema();
+	    		encoding = p.getEncoding();
 	    	}
 	    }
+	    else
+	    	encoding = xsdSchema.getDocument().getXmlEncoding();
 	    
 	    if (xsdSchema != null) {
 	        
-	    	XMLObjectInfo info = new XMLObjectInfo(new Path(uri.getPath()), xsdSchema);	    	
+	    	if (encoding == null)
+	    		encoding = "UTF-8";
+	    	
+	    	XMLObjectInfo info = new XMLObjectInfo(new Path(uri.getPath()), xsdSchema, encoding);	    	
 	    	xmlObjectInfos.put(uri.toString(), info);
 	    	updatePathPrefix(info);
 	      
@@ -486,13 +508,15 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	private String writeXMLObj(IPath path, Definition definition, IProgressMonitor monitor) throws
 		WSDLException, URIException, IOException, CoreException {				
 			  
-	    WSDLFactory wsdlFactory = new WSDLFactoryImpl();	    
-	    WSDLWriter wsdlWriter = wsdlFactory.newWSDLWriter();
-	    
 	    String[] targetURI = appendPathToURI(targetFolderURI, path);
 	    
-	    OutputStream os = uriFactory.newURI(targetURI[0]).getOutputStream();	    
-	    wsdlWriter.writeWSDL(definition, os);
+	    OutputStream os = uriFactory.newURI(targetURI[0]).getOutputStream();
+	    
+	    DefinitionImpl definitionImpl = (DefinitionImpl)definition;
+		WSDLResourceImpl resource = (WSDLResourceImpl) definitionImpl.eResource();
+		Document document = definitionImpl.getDocument();
+		resource.serialize(os, document, document.getXmlEncoding());
+	    
 	    os.close();
 	    
 	    return targetURI[1];
@@ -501,12 +525,12 @@ public class WSDLCopier implements IWorkspaceRunnable {
 	/*
 	 * Writes the xsd schema to the file at the given path, relative to the target folder.
 	 */
-	private String writeXMLObj(IPath path, XSDSchema xsdSchema, IProgressMonitor monitor) throws
+	private String writeXMLObj(IPath path, XSDSchema xsdSchema, String encoding, IProgressMonitor monitor) throws
 		TransformerConfigurationException, TransformerException, URIException, IOException, CoreException {			
-		
 		Transformer serializer = TransformerFactory.newInstance().newTransformer();
+		Document document = xsdSchema.getDocument();
 		serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-		serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		serializer.setOutputProperty(OutputKeys.ENCODING, encoding);
 		serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		
 		Element e = xsdSchema.getElement();
@@ -582,7 +606,7 @@ public class WSDLCopier implements IWorkspaceRunnable {
   						return;
   				}
   				else
-  					writeXMLObj(relPath, (XSDSchema) info.content, monitor);  					
+  					writeXMLObj(relPath, (XSDSchema) info.content, info.encoding, monitor);  					
   			}  			
   		} catch (Exception t) {
   			throw new CoreException(StatusUtils.errorStatus(
