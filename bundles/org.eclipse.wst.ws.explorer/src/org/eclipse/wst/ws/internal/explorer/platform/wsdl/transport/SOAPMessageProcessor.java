@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070413   176493 makandre@ca.ibm.com - Andrew Mak, WSE: Make message/transport stack pluggable
  * 20081020   251269 mahutch@ca.ibm.com - Mark Hutchinson, WSE Sends Wrong Namespace for child elements of the SOAP body
+ * 20091104   294260 mahutch@ca.ibm.com - Mark Hutchinson, WSE source view missing some namespace prefixes in SOAP response message
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.transport;
 
@@ -357,7 +358,7 @@ public class SOAPMessageProcessor implements ISerializer, IDeserializer {
 		    for (int i = 0; i < instanceVector.size(); i++) {
 		    	Element element = (Element) instanceVector.get(i);
 		    	
-		    	if (!element.getTagName().equals(fragName)) {
+		    	if (!element.getLocalName().equals(fragName)) {
 		    		Document doc = element.getOwnerDocument();
 		    		NodeList children = element.getChildNodes();
 		    		NamedNodeMap attributes = element.getAttributes();
