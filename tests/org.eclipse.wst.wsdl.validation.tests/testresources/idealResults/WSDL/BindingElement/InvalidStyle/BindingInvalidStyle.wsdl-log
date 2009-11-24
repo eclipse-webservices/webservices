@@ -1,9 +1,0 @@
-number of errors      : 2
-number of warnings    : 0
-
-------------error list-------------------------------------------
-cvc-enumeration-valid: Value 'InvalidStyle' is not facet-valid with respect to enumeration '[rpc, document]'. It must be a value from the enumeration. [22, 90]
-cvc-attribute.3: The value 'InvalidStyle' of attribute 'style' on element 'soap:binding' is not valid with respect to its type, 'tStyleChoice'. [22, 90]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
