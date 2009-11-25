@@ -302,14 +302,6 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
     super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
-  protected void handleReconciliation(Collection remainingModelObjects)
-  {
-    for (Iterator i = remainingModelObjects.iterator(); i.hasNext();)
-    {
-      getEExtensibilityElements().remove(i.next());
-    }
-  }
-
   public Collection getModelObjects(Object component)
   {
     BindingInput bindingInput = (BindingInput)component;

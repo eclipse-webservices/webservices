@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@ import org.eclipse.wst.wsdl.validation.internal.IValidationMessage;
 import org.eclipse.wst.wsdl.validation.internal.IValidationReport;
 import org.eclipse.wst.wsdl.validation.internal.ValidationMessageImpl;
 import org.eclipse.wst.wsdl.validation.internal.ValidatorRegistry;
+import org.eclipse.wst.wsdl.validation.internal.WSDLValidator;
+import org.eclipse.wst.wsdl.validation.internal.eclipse.URIResolverWrapper;
 import org.eclipse.wst.wsdl.validation.internal.logging.ILogger;
 import org.eclipse.wst.wsdl.validation.internal.logging.LoggerFactory;
 import org.eclipse.wst.wsdl.validation.internal.logging.StandardLogger;
@@ -33,6 +35,9 @@ public class WSDLValidateTest extends BaseTestCase
 	{
 		super.setUp();
 		validate = new WSDLValidateWrapper();
+		WSDLValidator wsdlValidator = validate.getWSDLValidator();
+		URIResolverWrapper resolver = new URIResolverWrapper();
+		wsdlValidator.addURIResolver(resolver);
 	}
 
 	/* (non-Javadoc)

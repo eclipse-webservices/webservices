@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20090303   242635 mahutch@ca.ibm.com - Mark Hutchinson, Remove unnecessary UI dependencies from org.eclipse.jst.ws.consumption
+ * 20090819   286874 zina@ca.ibm.com - Zina Mostafia
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -21,12 +22,18 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
 import org.eclipse.jst.ws.internal.consumption.common.IFacetOperationDelegate;
@@ -53,6 +60,7 @@ public class FacetOperationDelegate implements IFacetOperationDelegate {
 			public void run(IProgressMonitor shellMonitor) throws InvocationTargetException, InterruptedException {
 				try {
 					fproject.modify(actions, shellMonitor);
+					fixEJBClassPath(fproject);
 				} catch (CoreException e) {
 					status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
 				}
@@ -71,12 +79,43 @@ public class FacetOperationDelegate implements IFacetOperationDelegate {
 		} else {
 			try {
 				fproject.modify(actions, null);
+				fixEJBClassPath(fproject);
 			} catch (CoreException e) {
 				status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
 			}
 		}
 
 		return status[0];
+	}
+
+	private void fixEJBClassPath(IFacetedProject project) {
+		if (!J2EEUtils.isEJBComponent(project.getProject())) return;
+		IProject ejbProject = project.getProject();
+		IJavaProject javaProject = JavaCore.create(ejbProject);
+		Path projectRoot = new Path(Path.ROOT.append(new Path(ejbProject.getName())).toString());
+		IPath ejbModulePath = projectRoot.append("ejbModule");
+		try {
+			IClasspathEntry[] originalSet = javaProject.getRawClasspath();
+			boolean foundEJBModulEntry = false;
+			for (IClasspathEntry entry : originalSet) {
+				if (entry.getPath().equals(ejbModulePath))
+					foundEJBModulEntry = true;
+			}
+			if (!foundEJBModulEntry) {
+				IClasspathEntry[] newSet = new IClasspathEntry[originalSet.length + 1];
+				int i=0;
+
+				for (IClasspathEntry entry : originalSet) {
+					newSet[i++] = entry;
+				}
+				newSet[i] = JavaCore.newSourceEntry(ejbModulePath);
+				javaProject.setRawClasspath(newSet,null);
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 	}
 
 	public IStatus createNewFacetedProject(final String projectName) {

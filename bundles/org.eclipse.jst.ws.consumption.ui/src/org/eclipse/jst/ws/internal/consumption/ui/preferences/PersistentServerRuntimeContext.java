@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,14 @@
  * -------- -------- -----------------------------------------------------------
  * 20080415   227152 makandre@ca.ibm.com - Andrew Mak, Need a way to specify a backup Web service runtime
  * 20080918   247537 mahutch@ca.ibm.com - Mark Hutchinson, Update default server runtime to Tomcat 6
+ * 20090714   283399 ericdp@ca.ibm.com - Eric D. Peters, Web Services > Server & Runtime preference undefined
+ * 20091007   283399 ericdp@ca.ibm.com - Eric D. Peters, Web Services > Server & Runtime preference undefined 
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.preferences;
 
 import org.eclipse.jst.ws.internal.consumption.ui.plugin.WebServiceConsumptionUIPlugin;
+import org.eclipse.jst.ws.internal.consumption.ui.wsrt.WebServiceRuntimeExtensionUtils2;
 import org.eclipse.wst.command.internal.env.context.PersistentContext;
 
 
@@ -44,15 +47,20 @@ public class PersistentServerRuntimeContext extends PersistentContext {
 		//Defaults will be set via the .ini customization. They are hard coded to default values in the
 		//absence of a .ini file.
 		String serverDefault = getDefaultString(PREFERENCE_SERVER);
-		if (serverDefault==null || serverDefault.length()==0)
+		if (serverDefault==null || serverDefault.length()==0 || WebServiceRuntimeExtensionUtils2.getServerLabelById(serverDefault)==null)
 		{
 		  setDefault(PREFERENCE_SERVER, SERVER_FACTORY_ID_DEFAULT);
 		}
 
 		String runtimeDefault = getDefaultString(PREFERENCE_RUNTIME);
-		if (runtimeDefault==null || runtimeDefault.length()==0)
+		if (WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeDefault)==null)
+			//try again using fall back runtime
+			runtimeDefault = getDefaultString(FALLBACK_RUNTIME);
+		if (runtimeDefault==null || runtimeDefault.length()==0 || WebServiceRuntimeExtensionUtils2.getRuntimeLabelById(runtimeDefault)==null)
 		{
 		  setDefault(PREFERENCE_RUNTIME, RUNTIME_ID_DEFAULT);
+		} else {
+		  setDefault(PREFERENCE_RUNTIME, runtimeDefault);
 		}
 				
 	}

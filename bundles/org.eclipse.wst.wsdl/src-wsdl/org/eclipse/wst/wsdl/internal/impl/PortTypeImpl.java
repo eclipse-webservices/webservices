@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibilityElement;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLFactory;
@@ -458,6 +459,11 @@ public class PortTypeImpl extends ExtensibleElementImpl implements PortType
     {
       result = portType.getEOperations();
     }
+    else if (modelObject instanceof ExtensibilityElement)
+    {
+      result = getExtensibilityElements();
+    }
+    
     return result;
   }
 

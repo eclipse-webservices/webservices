@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ImportWithNonStandardFileExtension"
+	targetNamespace="http://www.example.org/ImportWithNonStandardFileExtension/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/ImportWithNonStandardFileExtension/"
+	xmlns:wsdl0="http://www.example.org/ImportWithNonStandardWSDLFileExtension/wsdl0/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsd1="http://www.example.org/NonStandardSchemaFileExtension/xsd0">
+
+	<wsdl:import
+		namespace="http://www.example.org/ImportWithNonStandardWSDLFileExtension/wsdl0/"
+		location="NonStandardWSDLFileExtension.wsdl0"></wsdl:import>
+		
+	<wsdl:import
+		namespace="http://www.example.org/NonStandardSchemaFileExtension/xsd0"
+		location="NonStandardSchemaFileExtension.xsd1">
+	</wsdl:import>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://www.example.org/ImportWithNonStandardFileExtension/">
+			<xsd:element name="NewOperation">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="in" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NewOperationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="out" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="NewOperationRequest">
+		<wsdl:part name="parameters" type="xsd1:ImportedTypeViaWSDLImport"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="NewOperationResponse">
+		<wsdl:part name="parameters" element="tns:NewOperationResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="NewPortType">
+		<wsdl:operation name="NewOperation">
+			<wsdl:input message="tns:NewOperationRequest"></wsdl:input>
+			<wsdl:output message="tns:NewOperationResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:service name="ImportWithNonStandardFileExtension">
+		<wsdl:port binding="wsdl0:ImportWithNonStandardFileExtensionSOAP"
+			name="ImportWithNonStandardFileExtensionSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

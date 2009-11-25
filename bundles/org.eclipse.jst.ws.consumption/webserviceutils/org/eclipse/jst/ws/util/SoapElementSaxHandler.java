@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060131   123963 andyzhai@ca.ibm.com - Andy Zhai
+ * 20090806   285933 ericdp@ca.ibm.com - Eric D. Peters, SOAPElementSaxHandler to create text nodes results in null return for char size 1
  *******************************************************************************/
 
 package org.eclipse.jst.ws.util;
@@ -68,7 +69,7 @@ public class SoapElementSaxHandler extends DefaultHandler
 	{
 		String str = String.valueOf(ch);
 		//Add non-trivial text as a text node
-		if (length > 1)
+		if (length > 0)
 		{
 			try 
 			{

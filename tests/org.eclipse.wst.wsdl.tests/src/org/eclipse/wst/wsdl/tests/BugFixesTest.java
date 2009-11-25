@@ -37,6 +37,7 @@ import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.BindingFault;
 import org.eclipse.wst.wsdl.BindingInput;
 import org.eclipse.wst.wsdl.BindingOperation;
+import org.eclipse.wst.wsdl.BindingOutput;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.Fault;
@@ -49,6 +50,7 @@ import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.Types;
+import org.eclipse.wst.wsdl.UnknownExtensibilityElement;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.WSDLPlugin;
@@ -67,6 +69,7 @@ import org.eclipse.wst.wsdl.binding.soap.internal.util.SOAPConstants;
 import org.eclipse.wst.wsdl.internal.util.WSDLUtil;
 import org.eclipse.wst.wsdl.tests.util.DefinitionLoader;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDSchema;
@@ -314,7 +317,23 @@ public class BugFixesTest extends TestCase
       {
         testReconcilesImportsWithNoLocation();
       }
-    });        
+    }); 
+    
+    suite.addTest(new BugFixesTest("ReconcilesExtensibleElements") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testReconcilesExtensibleElements();
+      }
+    });
+
+    suite.addTest(new BugFixesTest("ImportsWithNonStandardFileExtension") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testImportsWithNonStandardFileExtension();
+      }
+    });
 
     return suite;
   }
@@ -1763,5 +1782,190 @@ public class BugFixesTest extends TestCase
       e.printStackTrace();
       fail();
     }
+  }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=236404
+   */
+  public void testReconcilesExtensibleElements()
+  {
+    Definition definition = null;
+
+    // The sample WSDL already has an <annotation> extensibility element for each extensible element
+    // We will loop through every extensible element and remove the annotation extensibility element
+    // and force the model to update, thus calling the reconciliation code. The expected result is that
+    // the annotation extensibility element will be removed in the model.
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/ReconcilesExtensibleElements/ExtensibleElementSample.wsdl"); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    // Definition
+    ensureExtensibilityElementRemoved(definition, 1);
+    
+    // Import
+    EList imports = definition.getEImports();
+    Import myImport = (Import) imports.get(0);
+    ensureExtensibilityElementRemoved(myImport, 1);
+    
+    // Type: original is two because it has <annotation> and <schema>
+    Types types = definition.getETypes();
+    ensureExtensibilityElementRemoved(types, 2);
+    
+    // Service
+    Service service = (Service)definition.getEServices().get(0);
+    ensureExtensibilityElementRemoved(service, 1);
+    
+    // Port
+    org.eclipse.wst.wsdl.Port port = (org.eclipse.wst.wsdl.Port)service.getEPorts().get(0);
+    ensureExtensibilityElementRemoved(port, 2);
+    
+    // Binding: original is 2 because it has <annotation> and <soap:binding>
+    Binding binding = port.getEBinding();
+    ensureExtensibilityElementRemoved(binding, 2);
+    
+    // Binding Operation: original is 2 because it has <annotation> and <soap:operation>
+    List bindingOperations = binding.getBindingOperations();
+    BindingOperation bindingOperation = (BindingOperation)bindingOperations.get(0);
+    ensureExtensibilityElementRemoved(bindingOperation, 2);    
+    
+    // Binding Input: original is 2 because it has <annotation> and <soap:body>
+    BindingInput bindingInput = bindingOperation.getEBindingInput();
+    ensureExtensibilityElementRemoved(bindingInput, 2);
+    
+    // Binding Output: original is 2 because it has <annotation> and <soap:body>
+    BindingOutput bindingOutput = bindingOperation.getEBindingOutput();
+    ensureExtensibilityElementRemoved(bindingOutput, 2);
+    
+    // Binding Fault: original is 2 because it has <annotation> and <soap:fault>    
+    EList bindingFaults = bindingOperation.getEBindingFaults();
+    BindingFault bindingFault = (BindingFault)bindingFaults.get(0);
+    ensureExtensibilityElementRemoved(bindingFault, 2);
+    
+    // Port Type
+    PortType portType = binding.getEPortType();
+    ensureExtensibilityElementRemoved(portType, 1);
+    
+    // Operation
+    EList operations = portType.getEOperations();
+    Operation operation = (Operation) operations.get(0);
+    ensureExtensibilityElementRemoved(operation, 1);
+    
+    // Output
+    Output output = operation.getEOutput();
+    ensureExtensibilityElementRemoved(output, 1);
+    
+    // Input
+    Input input = operation.getEInput();
+    ensureExtensibilityElementRemoved(input, 1);
+    
+    // fault 
+    EList faults = operation.getEFaults();
+    Fault fault = (Fault) faults.get(0);
+    ensureExtensibilityElementRemoved(fault, 1);
+    
+    // Message
+    Message message = input.getEMessage();
+    ensureExtensibilityElementRemoved(message, 1);
+    
+    // Part
+    EList parts = message.getEParts();
+    Part part = (Part) parts.get(0);
+    ensureExtensibilityElementRemoved(part, 1);
+  }
+  
+  /**
+   * Remove the first UnknownExtensibilityElement. The expected result is original size will decrement by 1
+   */
+  private void ensureExtensibilityElementRemoved(ExtensibleElement extensibleElement, int originalSize) 
+  {
+    List extensibilityElements = extensibleElement.getExtensibilityElements();
+    assertEquals(originalSize, extensibilityElements.size());
+    UnknownExtensibilityElement unknownExtensibilityElement = null;
+    Iterator extensibilityElementsIterator = extensibilityElements.iterator();
+    while (extensibilityElementsIterator.hasNext())
+    {
+      Object object = extensibilityElementsIterator.next();
+      if (object instanceof UnknownExtensibilityElement) 
+      {
+        unknownExtensibilityElement = (UnknownExtensibilityElement) object;
+        break;
+      }
+    }
+
+    if (unknownExtensibilityElement == null) 
+    {
+      fail("Cannot find the UnknownExtensibilityElement.");
+    }
+    Element element = unknownExtensibilityElement.getElement();
+    extensibleElement.getElement().removeChild(element);
+    extensibleElement.elementChanged(extensibleElement.getElement());
+    assertEquals(originalSize - 1, extensibilityElements.size());
+  }
+  
+  public void testImportsWithNonStandardFileExtension() 
+  {
+    String WSDL_NS = "http://www.example.org/ImportWithNonStandardWSDLFileExtension/wsdl0/"; //$NON-NLS-1$ 
+    String XSD_NS = "http://www.example.org/NonStandardSchemaFileExtension/xsd0"; //$NON-NLS-1$ 
+    
+    try
+    {
+      // load a wsdl that imports another WSDL with non-standard file extension (.wsdl0) which in turn
+      // imports a XSD with non-standard file extension (.xsd0)
+      // ImportWithNonStandardFileExtension.wsdl also imports a XSD (NonStandardSchemaFileExtension.xsd1) using <wsdl:import>
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/ImportsWithNonStandardFileExtension/ImportWithNonStandardFileExtension.wsdl", true); //$NON-NLS-1$
+      
+      // there should only be two valid <wsdl:import>s - NonStandardWSDLFileExtension.wsdl0 and NonStandardSchemaFileExtension.xsd1
+      EList imports = definition.getEImports();
+      assertEquals("Incorrect number of imports", 2, imports.size()); //$NON-NLS-1$
+      
+      
+      for (int i = 0; i < imports.size(); i++) {
+        Import myImport = (Import) imports.get(i);
+        assertTrue("Incorrect imported namespace", WSDL_NS.equals(myImport.getNamespaceURI()) || XSD_NS.equals(myImport.getNamespaceURI())); //$NON-NLS-1$ 
+        if (WSDL_NS.equals(myImport.getNamespaceURI())) {
+       // WSDL import: make sure the binding in the imported NonStandardWSDLFileExtension.wsdl0 is resolved
+          Definition importedDefinition = myImport.getEDefinition(); 
+          assertNotNull(importedDefinition);
+          Map bindings = importedDefinition.getBindings();
+          assertEquals("Incorrect number of binding elements in imported WSDL", 1, bindings.size());  //$NON-NLS-1$
+          
+          // Go to the resolved "NewType" complex type element and reads its testXSD0 attribute, and verify it's accessible. 
+          List schemas = importedDefinition.getETypes().getSchemas();
+          assertEquals(1, schemas.size());
+          XSDSchema schema = (XSDSchema)schemas.get(0);
+          EList types = schema.getTypeDefinitions();
+          assertEquals("Incorrect number of types definitions in the inline schema of the imported WSDL", 1, types.size());  //$NON-NLS-1$
+          Object type = types.get(0);
+          assertTrue("Not complex type", type instanceof XSDComplexTypeDefinition);
+          XSDComplexTypeDefinition complexTypeDefinition = (XSDComplexTypeDefinition) type;
+          assertEquals("Incorrect name for the ComplexType imported from NonStandardSchemaFileExtension.xsd0", "NewType", complexTypeDefinition.getName());  //$NON-NLS-1$ $NON-NLS-2$
+          String testAttribute = complexTypeDefinition.getElement().getAttribute("testXSD0");  
+          assertEquals("Incorrect test attribute for the ComplexType imported from NonStandardSchemaFileExtension.xsd0", "passed", testAttribute); //$NON-NLS-1$ $NON-NLS-2$
+        } else {
+       // schema import: make sure the complex type in the imported NonStandardSchemaFileExtension.xsd1 is resolved
+          // Go to the resolved "ImportedTypeViaWSDLImport" complex type element and reads its testXSD1 attribute, and verify it's accessible.
+          XSDSchema schema = myImport.getESchema();
+          EList types = schema.getTypeDefinitions();
+          assertEquals("Incorrect number of types definitions in imported XSD", 1, types.size());  //$NON-NLS-1$
+          
+          Object type = types.get(0);
+          assertTrue("Not complex type", type instanceof XSDComplexTypeDefinition);
+          XSDComplexTypeDefinition complexTypeDefinition = (XSDComplexTypeDefinition) type;
+          assertEquals("Incorrect name for the ComplexType imported from NonStandardSchemaFileExtension.xsd1", "ImportedTypeViaWSDLImport", complexTypeDefinition.getName());  //$NON-NLS-1$ $NON-NLS-2$
+          String testAttribute = complexTypeDefinition.getElement().getAttribute("testXSD1");  //$NON-NLS-1$
+          assertEquals("Incorrect test attribute for the ComplexType imported from NonStandardSchemaFileExtension.xsd1", "passed", testAttribute);  //$NON-NLS-1$ $NON-NLS-2$
+        }
+      } 
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }      
   }
 }

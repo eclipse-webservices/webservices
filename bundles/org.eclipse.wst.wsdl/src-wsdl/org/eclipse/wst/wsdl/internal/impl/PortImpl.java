@@ -298,14 +298,6 @@ public class PortImpl extends ExtensibleElementImpl implements Port
     super.handleUnreconciledElement(child, remainingModelObjects);
   }
 
-  protected void handleReconciliation(Collection remainingModelObjects)
-  {
-    for (Iterator i = remainingModelObjects.iterator(); i.hasNext();)
-    {
-      getEExtensibilityElements().remove(i.next());
-    }
-  }
-
   public Collection getModelObjects(Object component)
   {
     Port port = (Port)component;
