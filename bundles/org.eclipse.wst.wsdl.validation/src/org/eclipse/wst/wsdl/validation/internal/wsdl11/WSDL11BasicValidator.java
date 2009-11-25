@@ -108,7 +108,14 @@ public class WSDL11BasicValidator implements IWSDL11Validator
     validateBindings(wsdlDefinition, valInfo);
     validatePortTypes(wsdlDefinition, valInfo);
     validateMessages(wsdlDefinition, valInfo);
+
+    // The parents list is expected to be empty here, so simply add the definition 
+    // being validated to the parents list, validate its extensibility elements, 
+    // then remove it.
+    
+    parents.add(wsdlDefinition);
     validateExtensibilityElementList(parents, wsdlDefinition.getExtensibilityElements(), valInfo);
+    parents.remove(0);
   }
 
   /**
