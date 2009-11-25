@@ -14,6 +14,7 @@ package org.eclipse.wst.wsdl.validation.tests.internal;
 
 import java.util.List;
 
+import javax.wsdl.extensions.ElementExtensible;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.xml.namespace.QName;
 
@@ -35,6 +36,11 @@ public class SimpleExtensionsValidator implements IWSDL11Validator
     ExtensibilityElement extensibilityElement = (ExtensibilityElement)element;
     QName elementType = extensibilityElement.getElementType();
     String namespaceURI = elementType.getNamespaceURI();
+    
+    if (parents.isEmpty() || !(parents.get(0) instanceof ElementExtensible))
+    {
+      valInfo.addWarning("The current parent is expected to have extensibility elements.", element); //$NON-NLS-1$
+    }
     
     if (NS_URI.equals(namespaceURI))
     {
