@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     bug 296245 - Yen Lu - yenlu@ca.ibm.com - Input.jsp produces malformed HTML 
  *******************************************************************************/
 
 
@@ -126,9 +127,8 @@ public class InputFileGenerator extends Generator
       fbuffer.append("if (valid) {" + StringUtils.NEWLINE);
       fbuffer.append("%>" + StringUtils.NEWLINE + "Select a method to test." + StringUtils.NEWLINE);  
       fbuffer.append("<%" + StringUtils.NEWLINE);
-      fbuffer.append(Generator.TAB + "return;" + StringUtils.NEWLINE);
       fbuffer.append("}" + StringUtils.NEWLINE);
-      fbuffer.append("%>" + StringUtils.NEWLINE + StringUtils.NEWLINE);
+      fbuffer.append("%>").append(StringUtils.NEWLINE).append(StringUtils.NEWLINE);
       fbuffer.append("</BODY>" + StringUtils.NEWLINE);
       fbuffer.append("</HTML>" + StringUtils.NEWLINE);
       
