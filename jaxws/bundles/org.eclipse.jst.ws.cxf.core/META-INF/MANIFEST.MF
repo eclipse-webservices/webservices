@@ -13,6 +13,7 @@ Export-Package: org.eclipse.jst.ws.internal.cxf.core;
    org.eclipse.jst.ws.cxf.creation.ui,
    org.eclipse.jst.ws.cxf.consumption.core",
  org.eclipse.jst.ws.internal.cxf.core.context;x-friends:="org.eclipse.jst.ws.cxf.ui,org.eclipse.jst.ws.cxf.creation.core,org.eclipse.jst.ws.cxf.consumption.core",
+ org.eclipse.jst.ws.internal.cxf.core.env.ant;x-internal:=true,
  org.eclipse.jst.ws.internal.cxf.core.model;
   x-friends:="org.eclipse.jst.ws.cxf.consumption.ui,
    org.eclipse.jst.ws.cxf.creation.core,

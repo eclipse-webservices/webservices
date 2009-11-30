@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.cxf.consumption.core.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IResource;
@@ -94,5 +95,85 @@ public class WSDL2JavaClientCommand extends AbstractDataModelOperation {
             }
         }
         return status;
+    }
+
+    //ANT Environment Mappings
+    public void setJavaSourceFolder(String javaSourceFolder) {
+        model.setJavaSourceFolder(javaSourceFolder);
+    }
+
+    public void setServiceName(String serviceName) {
+        model.setServiceName(serviceName);
+    }
+
+    public void setGenerateServer(boolean generateServer) {
+        model.setGenerateServer(generateServer);
+    }
+
+    public void setGenerateClient(boolean generateClient) {
+        model.setGenerateClient(generateClient);
+    }
+
+    public void setGenerateImplementation(boolean generateImplementation) {
+        model.setGenerateImplementation(generateImplementation);
+    }
+
+    public void setUseDefaultValues(boolean useDefaultValues) {
+        model.setUseDefaultValues(useDefaultValues);
+    }
+
+    public void setProcessSOAPHeaders(boolean processSOAPHeaders) {
+        model.setProcessSOAPHeaders(processSOAPHeaders);
+    }
+
+    public void setLoadDefaultNamespacePackageNameMapping(boolean loadDefaultNamespacePackageNameMapping) {
+        model.setLoadDefaultNamespacePackageNameMapping(loadDefaultNamespacePackageNameMapping);
+    }
+
+    public void setLoadDefaultExcludesNamepsaceMapping(boolean loadDefaultExcludesNamepsaceMapping) {
+        model.setLoadDefaultExcludesNamepsaceMapping(loadDefaultExcludesNamepsaceMapping);
+    }
+
+    public void setAutoNameResolution(boolean autoNameResolution) {
+        model.setAutoNameResolution(autoNameResolution);
+    }
+
+    public void setXjcUseDefaultValues(boolean xjcUseDefaultValues) {
+        model.setXjcUseDefaultValues(xjcUseDefaultValues);
+    }
+
+    public void setXjcToString(boolean xjcToString) {
+        model.setXjcToStringSimple(xjcToString);
+    }
+
+    public void setXjcToStringSimple(boolean xjcToStringSimple) {
+        model.setXjcToStringSimple(xjcToStringSimple);
+    }
+
+    public void setXjcToStringMultiLine(boolean xjcToStringMultiLine) {
+        model.setXjcToStringMultiLine(xjcToStringMultiLine);
+    }
+
+    public void setXjcLocator(boolean xjcLocator) {
+        model.setXjcLocator(xjcLocator);
+    }
+
+    public void setXjcSyncMethods(boolean xjcSyncMethods) {
+        model.setXjcSyncMethods(xjcSyncMethods);
+    }
+
+    public void setXjcMarkGenerated(boolean xjcMarkGenerated) {
+        model.setXjcMarkGenerated(xjcMarkGenerated);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIncludedNamespaces(Map value) {
+        model.setIncludedNamespaces(value);
+    }
+
+    public void setBindingFiles(List<String> bindingFiles) {
+        for (String path : bindingFiles) {
+            model.getBindingFiles().add(path);
+        }
     }
 }

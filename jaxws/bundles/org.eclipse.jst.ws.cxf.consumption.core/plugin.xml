@@ -14,4 +14,33 @@
       </webServiceLocator>
    </extension>
 
+   <extension point="org.eclipse.wst.command.env.ui.antfiles">
+      <antfiles
+         id="org.eclipse.jst.ws.cxf.creation.cxfWebServiceRTBUJava"
+    	 runtimeid="cxf"
+    	 pluginlocation="org.eclipse.jst.ws.cxf.consumption.core"
+    	 path="ant/cxf_bujava.properties"
+    	 wsgenpath="ant/cxf_bujava.xml"
+    	 runtimelabel="%LABEL_RUNTIME_CXF"
+    	 scenariolabel="%LABEL_BOTTOM_UP_JAVA_BEAN">
+  	  </antfiles>
+      <antfiles
+         id="org.eclipse.jst.ws.cxf.creation.cxfWebServiceRTTopJava"
+         runtimeid="cxf"
+         pluginlocation="org.eclipse.jst.ws.cxf.consumption.core"
+         path="ant/cxf_tdjava.properties"
+         wsgenpath="ant/cxf_tdjava.xml"
+         runtimelabel="%LABEL_RUNTIME_CXF"
+         scenariolabel="%LABEL_TOP_DOWN_JAVA_BEAN">
+  	  </antfiles>
+  	  <antfiles
+         id="org.eclipse.jst.ws.cxf.creation.cxfWebServiceRTZClient"
+         runtimeid="cxf"
+         pluginlocation="org.eclipse.jst.ws.cxf.consumption.core"
+         path="ant/cxf_client.properties"
+         wsgenpath="ant/cxf_client.xml"
+         runtimelabel="%LABEL_RUNTIME_CXF"
+         scenariolabel="%LABEL_CLIENT">
+      </antfiles>
+   </extension>
 </plugin>

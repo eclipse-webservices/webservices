@@ -91,7 +91,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
             FileUtils.copyJ2WFilesFromTmp(model);
 
             if (model.isGenerateWSDL()) {
-            	SpringUtils.loadSpringConfigInformationFromWSDL((model));
+                SpringUtils.loadSpringConfigInformationFromWSDL((model));
             }
 
             if (isImplementationSelected() || isGenerateServer()) {
@@ -113,18 +113,18 @@ public class Java2WSCommand extends AbstractDataModelOperation {
         return status;
     }
 
-	private boolean isImplementationSelected() {
+    private boolean isImplementationSelected() {
         return (model.getFullyQualifiedJavaClassName() != null &&
                 model.getFullyQualifiedJavaClassName().trim().length() > 0);
     }
 
     private boolean isGenerateServer() {
-		if (model.isGenerateServer()) {
-			model.setFullyQualifiedJavaClassName(model.getFullyQualifiedJavaInterfaceName() + "Impl");
-			return true;
-		}
-		return false;
-	}
+        if (model.isGenerateServer()) {
+            model.setFullyQualifiedJavaClassName(model.getFullyQualifiedJavaInterfaceName() + "Impl");
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
@@ -154,5 +154,34 @@ public class Java2WSCommand extends AbstractDataModelOperation {
 
     public CXFDataModel getCXFDataModel() {
         return model;
+    }
+
+    //ANT Environment Mappings
+    public void setGenerateClient(Boolean generateClient) {
+        model.setGenerateClient(generateClient);
+    }
+
+    public void setGenerateServer(Boolean generateServer) {
+        model.setGenerateServer(generateServer);
+    }
+
+    public void setGenerateWrapperFaultBeans(Boolean generateWrapperFaultBeans) {
+        model.setGenerateWrapperFaultBeans(true);
+    }
+
+    public void setGenerateWSDL(Boolean generateWSDL) {
+        model.setGenerateWSDL(generateWSDL);
+    }
+
+    public void setWsdlFileName(String wsdlFileName) {
+        model.setWsdlFileName(wsdlFileName);
+    }
+
+    public void setGenerateXSDImports(Boolean generateXSDImports) {
+        model.setGenerateXSDImports(generateXSDImports);
+    }
+
+    public void setUseSOAP12Binding(Boolean useSOAP12Binding) {
+        model.setSoap12Binding(useSOAP12Binding);
     }
 }
