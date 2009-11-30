@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
@@ -35,7 +36,9 @@ import org.eclipse.ltk.core.refactoring.IUndoManager;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.text.edits.MultiTextEdit;
+import org.eclipse.wst.command.internal.env.ant.AntEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
@@ -44,7 +47,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
     private Java2WSDataModel model;
     private IType javaClassType;
     private IType javaInterfaceType;
-    
+
     public JAXWSAnnotateJavaCommand(Java2WSDataModel model) {
         this.model = model;
     }
@@ -71,16 +74,16 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         } catch (InterruptedException ie) {
             status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, ie.getLocalizedMessage());
             CXFCreationCorePlugin.log(status);
-        } 
+        }
         return status;
     }
-    
+
     private void annotateInterface(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
-            InterruptedException {
+    InterruptedException {
         javaInterfaceType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaInterfaceName());
 
-        TextFileChange textFileChange = new TextFileChange("Annotating Interface", 
+        TextFileChange textFileChange = new TextFileChange("Annotating Interface",
                 (IFile)javaInterfaceType.getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
@@ -91,80 +94,84 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
-            if (methodAnnotationMap == null) {
+            if (methodAnnotationMap == null || methodAnnotationMap.size() == 0) {
                 continue;
             }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_METHOD)) {
-                CXFModelUtils.getWebMethodAnnotationChange(javaInterfaceType, method, 
-                		textFileChange);
+                CXFModelUtils.getWebMethodAnnotationChange(javaInterfaceType, method,
+                        textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.REQUEST_WRAPPER)) {
-                CXFModelUtils.getRequestWrapperAnnotationChange(javaInterfaceType, method, 
-                		textFileChange);
+                CXFModelUtils.getRequestWrapperAnnotationChange(javaInterfaceType, method,
+                        textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.RESPONSE_WRAPPER)) {
-                CXFModelUtils.getResponseWrapperAnnotationChange(javaInterfaceType, method, 
-                		textFileChange);
+                CXFModelUtils.getResponseWrapperAnnotationChange(javaInterfaceType, method,
+                        textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
                 List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
                 for (SingleVariableDeclaration parameter : parameters) {
-                    CXFModelUtils.getWebParamAnnotationChange(javaInterfaceType, method, 
-                    		(ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
+                    CXFModelUtils.getWebParamAnnotationChange(javaInterfaceType, method,
+                            (ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
                 }
-            } 
+            }
         }
-        
-        CXFModelUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model, 
-        		textFileChange, false);
-        
+
+        CXFModelUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model,
+                textFileChange, false);
+
         executeChange(monitor, textFileChange);
     }
-    
+
     private void annotateClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
-            InterruptedException {
+    InterruptedException {
         javaClassType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaClassName());
 
-        TextFileChange textFileChange = new TextFileChange("Annotating Class", 
+        TextFileChange textFileChange = new TextFileChange("Annotating Class",
                 (IFile) javaClassType.getCompilationUnit().getResource());
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
-        
+
         CXFModelUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
 
         IMethod[] typeMethods = JDTUtils.getPublicMethods(javaClassType);
         for (int i = 0; i < typeMethods.length; i++) {
             IMethod method = typeMethods[i];
             Map<String, Boolean> methodAnnotationMap = model.getMethodMap().get(method);
+            if (methodAnnotationMap == null || methodAnnotationMap.size() == 0) {
+                continue;
+            }
+
             if (methodAnnotationMap.get(CXFModelUtils.WEB_METHOD)) {
                 CXFModelUtils.getWebMethodAnnotationChange(javaClassType, method, textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.REQUEST_WRAPPER)) {
-                CXFModelUtils.getRequestWrapperAnnotationChange(javaClassType, method, 
-                		textFileChange);
+                CXFModelUtils.getRequestWrapperAnnotationChange(javaClassType, method,
+                        textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.RESPONSE_WRAPPER)) {
-                CXFModelUtils.getResponseWrapperAnnotationChange(javaClassType, method, 
-                		textFileChange);
+                CXFModelUtils.getResponseWrapperAnnotationChange(javaClassType, method,
+                        textFileChange);
             }
             if (methodAnnotationMap.get(CXFModelUtils.WEB_PARAM)) {
-            	List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
-            	for (SingleVariableDeclaration parameter : parameters) {
-                    CXFModelUtils.getWebParamAnnotationChange(javaClassType, method, 
-                    		(ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
+                List<SingleVariableDeclaration> parameters = AnnotationUtils.getSingleVariableDeclarations(method);
+                for (SingleVariableDeclaration parameter : parameters) {
+                    CXFModelUtils.getWebParamAnnotationChange(javaClassType, method,
+                            (ILocalVariable) parameter.resolveBinding().getJavaElement(), textFileChange);
                 }
-            } 
+            }
         }
-        
-        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
-        		textFileChange, false);
-        
+
+        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model,
+                textFileChange, false);
+
         executeChange(monitor, textFileChange);
     }
 
     private void annotateSEIClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
-            InterruptedException {
+    InterruptedException {
         javaClassType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaClassName());
 
@@ -174,45 +181,63 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         textFileChange.setEdit(multiTextEdit);
 
         CXFModelUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
-        
-        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, 
-        		textFileChange, true);
+
+        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model,
+                textFileChange, true);
 
         executeChange(monitor, textFileChange);
     }
-    
-    private void executeChange(IProgressMonitor monitor, Change change) {
-        if (change == null) {
+
+    private void executeChange(final IProgressMonitor monitor, final Change change) {
+        if (change == null || !change.isEnabled()) {
             return;
         }
 
-        IUndoManager manager = RefactoringCore.getUndoManager();
-        boolean successful = false;
-        Change undoChange = null;
-        try {
-            change.initializeValidationData(monitor);
-            RefactoringStatus valid = change.isValid(monitor);
-            if (valid.isOK()) {
-                manager.aboutToPerformChange(change);
-                undoChange = change.perform(monitor);
-                successful = true;
-                numberOfChanges++;
+        if (getEnvironment() instanceof AntEnvironment) {
+            Display.getDefault().asyncExec(new Runnable() {
+
+                public void run() {
+                    try {
+                        change.initializeValidationData(monitor);
+                        RefactoringStatus valid= change.isValid(new SubProgressMonitor(monitor, 1));
+                        if (valid.hasFatalError()) {
+                            return;
+                        }
+                        Change undo= change.perform(new SubProgressMonitor(monitor, 1));
+                    } catch (CoreException ce) {
+                        CXFCreationCorePlugin.log(ce.getStatus());
+                    }
+                }
+            });
+        } else {
+            IUndoManager manager = RefactoringCore.getUndoManager();
+            boolean successful = false;
+            Change undoChange = null;
+            try {
+                change.initializeValidationData(monitor);
+                RefactoringStatus valid = change.isValid(monitor);
+                if (valid.isOK()) {
+                    manager.aboutToPerformChange(change);
+                    undoChange = change.perform(monitor);
+                    successful = true;
+                    numberOfChanges++;
+                }
+            } catch (CoreException ce) {
+                CXFCreationCorePlugin.log(ce.getStatus());
+            } finally {
+                manager.changePerformed(change, successful);
             }
-        } catch (CoreException ce) {
-            CXFCreationCorePlugin.log(ce.getStatus());
-        } finally {
-            manager.changePerformed(change, successful);
-        }
-        if (undoChange != null) {
-            undoChange.initializeValidationData(monitor);
-            manager.addUndo(undoChange.getName(), undoChange);
+            if (undoChange != null) {
+                undoChange.initializeValidationData(monitor);
+                manager.addUndo(undoChange.getName(), undoChange);
+            }
         }
     }
-    
+
     @Override
     public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
-        
+
         IUndoManager manager = RefactoringCore.getUndoManager();
 
         if (manager.anythingToUndo()) {

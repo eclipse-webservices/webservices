@@ -69,6 +69,7 @@ public final class Java2WSWidgetFactory {
         soapBindingCombo.add("SOAP 1.1"); //$NON-NLS-1$
         soapBindingCombo.add("SOAP 1.2"); //$NON-NLS-1$
         soapBindingCombo.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 String soapBinding = ((Combo) e.widget).getText();
                 if (soapBinding.equals("SOAP 1.2")) { //$NON-NLS-1$
@@ -92,6 +93,7 @@ public final class Java2WSWidgetFactory {
         createXSDImports.setText(CXFUIMessages.JAVA2WS_GEN_XSD_IMPORTS);
         createXSDImports.setToolTipText(CXFUIMessages.JAVA2WS_CREATE_XSD_IMPORTS_TOOLTIP);
         createXSDImports.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 context.setGenerateXSDImports(((Button) e.widget).getSelection());
             }
@@ -111,15 +113,16 @@ public final class Java2WSWidgetFactory {
         frontendCombo.setToolTipText(CXFUIMessages.JAVA2WS_FRONTEND_TOOLTIP);
         frontendCombo.add(Frontend.JAXWS.getLiteral());
         frontendCombo.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 String frontend = frontendCombo.getText();
                 context.setFrontend(Frontend.get(frontend));
                 if (frontend.equals(Frontend.JAXWS.getLiteral())) {
                     context.setDatabinding(DataBinding.get(DataBinding.JAXB.getLiteral()));
                 }
-//                if (frontend.equals("simple")) {
-//                    context.setDatabinding("aegis");
-//                }
+                //                if (frontend.equals("simple")) {
+                //                    context.setDatabinding("aegis");
+                //                }
             }
         });
         frontendCombo.setText(context.getFrontend().getLiteral());
@@ -138,6 +141,7 @@ public final class Java2WSWidgetFactory {
         databindingCombo.setToolTipText(CXFUIMessages.JAVA2WS_DATABINDING_TOOLTIP);
         databindingCombo.add(DataBinding.JAXB.getLiteral());
         databindingCombo.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 context.setDatabinding(DataBinding.get(databindingCombo.getText()));
             }
@@ -151,6 +155,7 @@ public final class Java2WSWidgetFactory {
         genClientButton.setText(CXFUIMessages.JAVA2WS_GEN_CLIENT_LABEL);
         genClientButton.setToolTipText(CXFUIMessages.JAVA2WS_GENERATE_CLIENT_TOOLTIP);
         genClientButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 context.setGenerateClient(genClientButton.getSelection());
             }
@@ -164,6 +169,7 @@ public final class Java2WSWidgetFactory {
         genServerButton.setText(CXFUIMessages.JAVA2WS_GEN_SERVER_LABEL);
         genServerButton.setToolTipText(CXFUIMessages.JAVA2WS_GENERATE_SERVER_TOOLTIP);
         genServerButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 context.setGenerateServer(genServerButton.getSelection());
             }
@@ -177,6 +183,7 @@ public final class Java2WSWidgetFactory {
         genWrapperFaultButton.setText(CXFUIMessages.JAVA2WS_GEN_WRAPPER_FAULT_LABEL);
         genWrapperFaultButton.setToolTipText(CXFUIMessages.JAVA2WS_GENERATE_WRAPPERBEAN_TOOLTIP);
         genWrapperFaultButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 context.setGenerateWrapperFaultBeans(genWrapperFaultButton.getSelection());
             }
@@ -190,6 +197,7 @@ public final class Java2WSWidgetFactory {
         genWSDLButton.setText(CXFUIMessages.JAVA2WS_GEN_WSDL_LABEL);
         genWSDLButton.setToolTipText(CXFUIMessages.JAVA2WS_GENERATE_WSDL_TOOLTIP);
         genWSDLButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 context.setGenerateWSDL(genWSDLButton.getSelection());
             }
@@ -326,14 +334,14 @@ public final class Java2WSWidgetFactory {
         deselectAllButton.setText(CXFUIMessages.JAVA2WS_DESELECT_ALL_BUTTON);
         return deselectAllButton;
     }
-    
+
     public static Label createSelectImplementationLabel(Composite parent) {
         Label selectImplementationLabel = new Label(parent, SWT.NONE);
         selectImplementationLabel.setText(CXFUIMessages.JAVA2WS_SELECT_IMPLEMENTATION);
         return selectImplementationLabel;
     }
-    
-    public static Combo createSelectImplementationCombo(Composite parent, 
+
+    public static Combo createSelectImplementationCombo(Composite parent,
             final Java2WSDataModel model, IType javaStartingPointType) {
         final Combo selectImplementationCombo = new Combo(parent, SWT.BORDER);
         selectImplementationCombo.setToolTipText(CXFUIMessages.JAVA2WS_SELECT_IMPLEMENTATION_TOOLTIP);
@@ -368,23 +376,23 @@ public final class Java2WSWidgetFactory {
         selectImplementationCombo.deselectAll();
         return selectImplementationCombo;
     }
-    
+
     /**
-     * Creates am <code>ElementTreeSelectionDialog</code> that displays all the classes or all the interfaces
+     * Creates an <code>ElementTreeSelectionDialog</code> that displays all the classes or all the interfaces
      * within a <code>IJavaProject</code> allowing one class or interface to be selected.
      * 
      * @param parent the parent shell
      * @param title the dialog title
      * @param message the dialog message
      * @param javaProject the java project that is filtered
-     * @param elementKinds a flag defining nature of searched elements; the only valid values are: 
+     * @param elementKinds a flag defining nature of searched elements; the only valid values are:
      *  <code>IJavaSearchConstants.CLASS</code>
      *  <code>IJavaSearchConstants.INTERFACE</code>
      *  <code>IJavaSearchConstants.CLASS_AND_INTERFACE</code>
-     *  
+     * 
      * @return the element tree selection dialog
      */
-    public static ElementTreeSelectionDialog createElementTreeSelectionDialog(Shell parent, String title, 
+    public static ElementTreeSelectionDialog createElementTreeSelectionDialog(Shell parent, String title,
             String message, IJavaProject javaProject, int elementKinds) {
         ElementTreeSelectionDialog selectionDialog = new ElementTreeSelectionDialog(parent,
                 new JavaElementLabelProvider(), new StandardJavaElementContentProvider());
@@ -398,17 +406,17 @@ public final class Java2WSWidgetFactory {
         selectionDialog.setValidator(new ISelectionStatusValidator() {
 
             public IStatus validate(Object[] selection) {
-              if (selection.length == 1) {
+                if (selection.length == 1) {
                     if (selection[0] instanceof ICompilationUnit) {
                         return new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
                     }
                 }
                 return new Status(IStatus.ERROR, CXFUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
-            }            
+            }
         });
 
         return selectionDialog;
 
     }
- 
+
 }
