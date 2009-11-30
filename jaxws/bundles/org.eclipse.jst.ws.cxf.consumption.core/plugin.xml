@@ -10,7 +10,7 @@
          class="org.eclipse.jst.ws.internal.cxf.consumption.core.locator.CXFWebServiceLocator"
          id="ws.locator.cxf"
          category="ws.locator.category.cxf"
-         label="WEB_SERVICE_LOCATOR_CXF">
+         label="%WEB_SERVICE_LOCATOR_CXF">
       </webServiceLocator>
    </extension>
 
