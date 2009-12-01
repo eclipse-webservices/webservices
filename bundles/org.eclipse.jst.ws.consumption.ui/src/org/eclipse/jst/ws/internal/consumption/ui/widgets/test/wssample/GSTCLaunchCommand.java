@@ -12,12 +12,13 @@
  * 20060418   134322 rsinha@ca.ibm.com - Rupam Kuehner
  * 20060424   124368 kathy@ca.ibm.com - Kathy Chan
  * 20090312	  250984 mahutch@ca.ibm.com - Mark Hutchinson, Use another mechanism to wait for build to be completed
+ * 20091201   296529 yenlu@ca.ibm.com - Yen Lu, Determination of when the sample JSP goes live is not robust.
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.test.wssample;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -129,21 +130,42 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	      URL url;
 	      url = new URL(urlString.toString());
         
-        InputStream resultStream = null;
-        InputStream methodStream = null;
-        InputStream inputStream  = null;
-        InputStream clientStream = null;
-
-	      for( int retries = 0; retries < 10; retries++ )
+	      for( int retries = 0; retries < 20; retries++ )
 	      {
 	        try
 	        {
 	          // Test the URLs
-            
-	          resultStream = new URL(newPath + "/" + RESULT).openStream();
-	          methodStream = new URL(newPath + "/" + METHOD).openStream();
-	          inputStream  = new URL(newPath + "/" + INPUT).openStream();
-	          clientStream = new URL(newPath + "/" + TEST_CLIENT).openStream();
+	          URL sampleUrl = new URL(newPath + "/" + RESULT);
+	          HttpURLConnection urlConn = (HttpURLConnection)sampleUrl.openConnection();
+	          int responseCode = urlConn.getResponseCode();
+	          //System.out.println(retries + ": result HTTP code = " + responseCode);
+	          //dumpUrlContents(urlConn);	          
+	          if (responseCode != HttpURLConnection.HTTP_OK)
+	        	  throw new IOException();
+	          
+	          sampleUrl = new URL(newPath + "/" + METHOD);
+	          urlConn = (HttpURLConnection)sampleUrl.openConnection();
+	          responseCode = urlConn.getResponseCode();
+	          //System.out.println(retries + ": method HTTP code = " + responseCode);
+	          //dumpUrlContents(urlConn);	          
+	          if (responseCode != HttpURLConnection.HTTP_OK)
+	        	  throw new IOException();
+	          
+	          sampleUrl = new URL(newPath + "/" + INPUT);
+	          urlConn = (HttpURLConnection)sampleUrl.openConnection();
+	          responseCode = urlConn.getResponseCode();	          
+	          //System.out.println(retries + ": input HTTP code = " + responseCode);
+	          //dumpUrlContents(urlConn);	          
+	          if (responseCode != HttpURLConnection.HTTP_OK)
+	        	  throw new IOException();	
+	          
+	          sampleUrl = new URL(newPath + "/" + TEST_CLIENT);
+	          urlConn = (HttpURLConnection)sampleUrl.openConnection();
+	          responseCode = urlConn.getResponseCode();	          
+	          //System.out.println(retries + ": test client HTTP code = " + responseCode);
+	          //dumpUrlContents(urlConn);	          
+	          if (responseCode != HttpURLConnection.HTTP_OK)
+	        	  throw new IOException();	    
             
 	          // Looks good, exit loop
 	          break;
@@ -156,19 +178,6 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	          }
 	          catch (InterruptedException ie) {} 	  	          
 	        }
-          finally
-          {
-            try
-            {
-              if( resultStream != null ) resultStream.close();
-              if( methodStream != null ) methodStream.close();
-              if( inputStream != null ) inputStream.close();
-              if( clientStream != null ) clientStream.close();
-            }
-            catch( IOException exc )
-            {
-            }
-          }
 	      }
 
 			IWorkbenchBrowserSupport browserSupport = WebServiceConsumptionUIPlugin.getInstance().getWorkbench().getBrowserSupport();
@@ -191,4 +200,34 @@ public class GSTCLaunchCommand extends AbstractDataModelOperation
 	    	return status;
 	    }
      }
+/*  
+     private void dumpUrlContents(URLConnection conn)
+     {    	 
+    	 InputStream is = null;
+    	 try
+    	 {
+    		 is = conn.getInputStream();
+    		 BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    		 String s = null;
+    		 while ((s = br.readLine()) != null)
+    			 System.out.println(s);
+    	 }
+    	 catch (IOException e)
+    	 {    		 
+    	 }
+    	 finally
+    	 {
+    		 if (is != null)
+    		 {
+    			 try
+    			 {
+    			   is.close();
+    			 }
+    			 catch (IOException e)
+    			 {    				 
+    			 }
+    		 }
+    	 }
+     }
+*/     
 }
