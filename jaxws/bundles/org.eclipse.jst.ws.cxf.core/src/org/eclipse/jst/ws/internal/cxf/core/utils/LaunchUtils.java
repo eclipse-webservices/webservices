@@ -42,7 +42,7 @@ import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.console.MessageConsole;
 
 public final class LaunchUtils {
-    
+
     private LaunchUtils() {
     }
 
@@ -79,7 +79,7 @@ public final class LaunchUtils {
     }
 
     public static void launch(IJavaProject javaProject, String className, String[] programArgs)
-            throws CoreException {
+    throws CoreException {
         IVMInstall vmInstall = JavaRuntime.getVMInstall(javaProject);
         if (vmInstall == null) {
             vmInstall = JavaRuntime.getDefaultVMInstall();
@@ -116,11 +116,14 @@ public final class LaunchUtils {
         logStream(outputStream);
         String errorStream = processes[0].getStreamsProxy().getErrorStreamMonitor().getContents();
         logStream(errorStream);
-      
+
         logErrorStreamContents(errorStream, className);
     }
 
     private static void logStream(String outputStream) {
+        if (!PlatformUI.isWorkbenchRunning()) {
+            return;
+        }
         try {
             MessageConsole cxfConsole = getCXFConsole();
             IWorkbench workbench = PlatformUI.getWorkbench();
@@ -147,26 +150,26 @@ public final class LaunchUtils {
         IConsole[] existingConsoles = consoleManager.getConsoles();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         for (int i = 0; i < existingConsoles.length; i++) {
-           if (existingConsoles[i].getName().equals(context.getCxfRuntimeEdition() + " " 
-                   + context.getCxfRuntimeVersion())) {
-               return (MessageConsole) existingConsoles[i]; 
-           }
+            if (existingConsoles[i].getName().equals(context.getCxfRuntimeEdition() + " "
+                    + context.getCxfRuntimeVersion())) {
+                return (MessageConsole) existingConsoles[i];
+            }
         }
-        MessageConsole cxfConsole = new MessageConsole(context.getCxfRuntimeEdition() + " " 
+        MessageConsole cxfConsole = new MessageConsole(context.getCxfRuntimeEdition() + " "
                 + context.getCxfRuntimeVersion(),
-                CXFCorePlugin.imageDescriptorFromPlugin(CXFCorePlugin.PLUGIN_ID, 
-                        "icons/view16/console_view.gif")); //$NON-NLS-1$
+                CXFCorePlugin.imageDescriptorFromPlugin(CXFCorePlugin.PLUGIN_ID,
+                "icons/view16/console_view.gif")); //$NON-NLS-1$
         consoleManager.addConsoles(new IConsole[]{cxfConsole});
         return cxfConsole;
-     }
+    }
 
     private static void logErrorStreamContents(String message, String className) {
-    	String toolName = className.substring(className.lastIndexOf(".") + 1,  //$NON-NLS-1$
+        String toolName = className.substring(className.lastIndexOf(".") + 1,  //$NON-NLS-1$
                 className.length());
 
         if (message != null && message.indexOf(toolName + " Error") != -1) { //$NON-NLS-1$
-          Status toolStatus = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, message);
-          CXFCorePlugin.log(toolStatus);
+            Status toolStatus = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, message);
+            CXFCorePlugin.log(toolStatus);
         }
     }
 }

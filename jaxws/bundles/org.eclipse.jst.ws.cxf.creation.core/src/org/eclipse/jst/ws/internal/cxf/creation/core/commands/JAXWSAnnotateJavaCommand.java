@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
@@ -36,7 +35,6 @@ import org.eclipse.ltk.core.refactoring.IUndoManager;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.wst.command.internal.env.ant.AntEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -55,6 +53,9 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
     @Override
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
+        if (getEnvironment() instanceof AntEnvironment) {
+            return status;
+        }
         try {
             if (model.isUseServiceEndpointInterface()) {
                 annotateInterface(monitor);
@@ -193,44 +194,26 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
             return;
         }
 
-        if (getEnvironment() instanceof AntEnvironment) {
-            Display.getDefault().asyncExec(new Runnable() {
-
-                public void run() {
-                    try {
-                        change.initializeValidationData(monitor);
-                        RefactoringStatus valid= change.isValid(new SubProgressMonitor(monitor, 1));
-                        if (valid.hasFatalError()) {
-                            return;
-                        }
-                        Change undo= change.perform(new SubProgressMonitor(monitor, 1));
-                    } catch (CoreException ce) {
-                        CXFCreationCorePlugin.log(ce.getStatus());
-                    }
-                }
-            });
-        } else {
-            IUndoManager manager = RefactoringCore.getUndoManager();
-            boolean successful = false;
-            Change undoChange = null;
-            try {
-                change.initializeValidationData(monitor);
-                RefactoringStatus valid = change.isValid(monitor);
-                if (valid.isOK()) {
-                    manager.aboutToPerformChange(change);
-                    undoChange = change.perform(monitor);
-                    successful = true;
-                    numberOfChanges++;
-                }
-            } catch (CoreException ce) {
-                CXFCreationCorePlugin.log(ce.getStatus());
-            } finally {
-                manager.changePerformed(change, successful);
+        IUndoManager manager = RefactoringCore.getUndoManager();
+        boolean successful = false;
+        Change undoChange = null;
+        try {
+            change.initializeValidationData(monitor);
+            RefactoringStatus valid = change.isValid(monitor);
+            if (valid.isOK()) {
+                manager.aboutToPerformChange(change);
+                undoChange = change.perform(monitor);
+                successful = true;
+                numberOfChanges++;
             }
-            if (undoChange != null) {
-                undoChange.initializeValidationData(monitor);
-                manager.addUndo(undoChange.getName(), undoChange);
-            }
+        } catch (CoreException ce) {
+            CXFCreationCorePlugin.log(ce.getStatus());
+        } finally {
+            manager.changePerformed(change, successful);
+        }
+        if (undoChange != null) {
+            undoChange.initializeValidationData(monitor);
+            manager.addUndo(undoChange.getName(), undoChange);
         }
     }
 

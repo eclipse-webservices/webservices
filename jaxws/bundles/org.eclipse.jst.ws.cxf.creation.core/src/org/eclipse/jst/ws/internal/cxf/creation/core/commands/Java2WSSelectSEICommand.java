@@ -40,6 +40,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.command.internal.env.ant.AntEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 
 @SuppressWarnings("restriction")
@@ -47,7 +48,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
     private Change undoExtractInterfaceChange;
 
     private Java2WSDataModel model;
-    
+
     private  IType startingPointType;
 
     public Java2WSSelectSEICommand(Java2WSDataModel model) {
@@ -63,7 +64,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
 
             IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
             startingPointType = JDTUtils.getType(javaProject, javaStartingPoint);
-            
+
             if (startingPointType.isInterface()) {
                 model.setFullyQualifiedJavaInterfaceName(startingPointType.getFullyQualifiedName());
             } else if (startingPointType.isClass()) {
@@ -81,6 +82,9 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
     }
 
     private void extractInterface(IType type, IProgressMonitor monitor) {
+        if (getEnvironment() instanceof AntEnvironment) {
+            return;
+        }
         try {
             final ExtractInterfaceProcessor extractInterfaceProcessor = new ExtractInterfaceProcessor(type,
                     JavaPreferencesSettings.getCodeGenerationSettings(type.getJavaProject()));
@@ -97,7 +101,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
             }
             extractInterfaceProcessor.setTypeName(typeName);
             extractInterfaceProcessor.setReplace(false);
-            
+
             Set<IMethod> methods = model.getMethodMap().keySet();
             extractInterfaceProcessor.setExtractedMembers(methods.toArray(new IMember[methods.size()]));
             extractInterfaceProcessor.setAbstract(false);
@@ -109,12 +113,12 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
                     new CheckConditionsOperation(extractInterfaceRefactoring,
                             CheckConditionsOperation.FINAL_CONDITIONS), RefactoringCore
                             .getConditionCheckingFailedSeverity());
-            
+
             PerformChangeOperation performChangeOperation = new PerformChangeOperation(createChangeOperation);
-            
+
             WorkbenchRunnableAdapter adapter = new WorkbenchRunnableAdapter(performChangeOperation);
             PlatformUI.getWorkbench().getProgressService().runInUI(
-                new BusyIndicatorRunnableContext(), adapter, adapter.getSchedulingRule());
+                    new BusyIndicatorRunnableContext(), adapter, adapter.getSchedulingRule());
 
             if (performChangeOperation.changeExecuted()) {
                 String packageName = type.getPackageFragment().getElementName();
@@ -123,9 +127,9 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
                 }
                 String fullyQualifiedJavaInterfaceName = packageName + extractInterfaceProcessor.getTypeName();
                 model.setFullyQualifiedJavaInterfaceName(fullyQualifiedJavaInterfaceName);
-                model.setMethodMap(CXFModelUtils.getMethodMap(JDTUtils.getType(model.getProjectName(), 
+                model.setMethodMap(CXFModelUtils.getMethodMap(JDTUtils.getType(model.getProjectName(),
                         fullyQualifiedJavaInterfaceName), model));
-                
+
                 undoExtractInterfaceChange = performChangeOperation.getUndoChange();
             }
         } catch (JavaModelException jme) {
@@ -134,7 +138,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
             CXFCreationCorePlugin.log(ite);
         } catch (InterruptedException ie) {
             CXFCreationCorePlugin.log(ie);
-        } 
+        }
     }
 
     @Override
@@ -142,12 +146,12 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
         IStatus status = Status.OK_STATUS;
         if (undoExtractInterfaceChange != null) {
             try {
-            	PerformChangeOperation changeOperation = new PerformChangeOperation(undoExtractInterfaceChange);
-            
+                PerformChangeOperation changeOperation = new PerformChangeOperation(undoExtractInterfaceChange);
+
                 WorkbenchRunnableAdapter adapter= new WorkbenchRunnableAdapter(changeOperation);
                 PlatformUI.getWorkbench().getProgressService().runInUI(
                         new BusyIndicatorRunnableContext(), adapter, adapter.getSchedulingRule());
-                
+
                 if (!startingPointType.getCompilationUnit().isConsistent()) {
                     startingPointType.getCompilationUnit().makeConsistent(monitor);
                 }
