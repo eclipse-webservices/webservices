@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@
  * 20080402   225378 makandre@ca.ibm.com - Andrew Mak, Client wizard runtime/server defaulting is not respecting the preference
  * 20080530   234871 makandre@ca.ibm.com - Andrew Mak, Workbench has not been created yet error in cmdline Ant
  * 20080808   243623 mahutch@ca.ibm.com - Mark Hutchinson, Improve server defaulting performance
+ * 20091207   295654 kchong@ca.ibm.com - Keith Chong, Project type defaulting is incorrect for a new project
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -27,12 +28,15 @@ package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
+// This plug-in already references this internal class
+import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.consumption.common.FacetMatcher;
 import org.eclipse.jst.ws.internal.consumption.common.FacetUtils;
@@ -151,8 +155,21 @@ public class WebServiceRuntimeExtensionUtils2
         }
       }            
     }
-    
+    ensureWebProjectIsFirst(finalTemplateIdList);
     return (String[])finalTemplateIdList.toArray(new String[]{});
+  }
+  
+  private static void ensureWebProjectIsFirst(List finalTemplateIdList)
+  {
+    // IJ2EEModuleConstants.JST_WEB_TEMPLATE = "template.jst.web"
+    int i = finalTemplateIdList.indexOf(IJ2EEModuleConstants.JST_WEB_TEMPLATE);
+    // This will ensure that the basic web project is first as default when the workbench
+    // is launched on a clean/empty workspace, and not something else contributed by some other extension
+    if (i > 0)
+    {
+  	  finalTemplateIdList.remove(i);
+  	  finalTemplateIdList.add(0, IJ2EEModuleConstants.JST_WEB_TEMPLATE);
+    }
   }
   
   /**
@@ -180,11 +197,11 @@ public class WebServiceRuntimeExtensionUtils2
         IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
         if (!finalTemplateIdList.contains(template.getId()))
         {
-          finalTemplateIdList.add(template.getId());
+       	  finalTemplateIdList.add(template.getId());
         }
       }            
     }
-    
+    ensureWebProjectIsFirst(finalTemplateIdList);
     return (String[])finalTemplateIdList.toArray(new String[]{});
   }
   
