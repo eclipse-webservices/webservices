@@ -105,5 +105,25 @@
             class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.correction.APTCompileProblemMarkerResolutionGenerator">
       </markerResolutionGenerator>
    </extension>
+   
+   <extension point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.jst.ws.ui.new/org.eclipse.jst.ws.jaxws.ui.wizards.category"
+            icon="$nl$/icons/etool16/newhandler_wiz.gif"
+            id="org.eclipse.jst.ws.internal.jaxws.ui.wizards.NewJAXWSHandlerWizard"
+            name="%NEW_JAXWS_HANDLER_LABEL">
+         <class class="org.eclipse.jst.ws.internal.jaxws.ui.wizards.NewJAXWSHandlerWizard">
+            <parameter name="javatype" value="true"/>
+         </class>
+         <description>
+            %NEW_JAXWS_HANDLER__DESCRIPTION
+         </description>
+      </wizard>
+      <category
+            id="org.eclipse.jst.ws.jaxws.ui.wizards.category"
+            name="%JAXWS_WIZARD_CATEGORY_NAME"
+            parentCategory="org.eclipse.jst.ws.ui.new">
+      </category>
+   </extension>
 
 </plugin>
