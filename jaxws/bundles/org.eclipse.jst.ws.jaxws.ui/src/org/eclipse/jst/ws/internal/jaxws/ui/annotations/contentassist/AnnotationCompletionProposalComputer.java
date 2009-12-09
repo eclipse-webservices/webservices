@@ -90,9 +90,12 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
                             javaElement);
                 }
             }
+
             if (annotation instanceof SingleMemberAnnotation) {
                 SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
-                return getCompletionProposalsForJavaElement(singleMemberAnnotation, javaElement);
+                if (isWithinSingleMemberAnnotationValue(singleMemberAnnotation, offset)) {
+                    return getCompletionProposalsForJavaElement(singleMemberAnnotation, javaElement);
+                }
             }
         }
         return Collections.emptyList();
@@ -101,7 +104,7 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
     private List<ICompletionProposal> getCompletionProposalsForJavaElement(NormalAnnotation annotation,
             MemberValuePair memberValuePair, IJavaElement javaElement) {
         IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager
-                .getAnnotationAttributeInitializerForName(annotation.getTypeName());
+        .getAnnotationAttributeInitializerForName(annotation.getTypeName());
         if (annotationAttributeInitializer != null) {
             return annotationAttributeInitializer.getCompletionProposalsForMemberValuePair(javaElement,
                     memberValuePair);
@@ -112,7 +115,7 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
     private List<ICompletionProposal> getCompletionProposalsForJavaElement(SingleMemberAnnotation annotation,
             IJavaElement javaElement) {
         IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager
-                .getAnnotationAttributeInitializerForName(annotation.getTypeName());
+        .getAnnotationAttributeInitializerForName(annotation.getTypeName());
         if (annotationAttributeInitializer != null) {
             return annotationAttributeInitializer.getCompletionProposalsForSingleMemberAnnotation(javaElement,
                     annotation);
@@ -134,6 +137,16 @@ public class AnnotationCompletionProposalComputer implements IJavaCompletionProp
             }
         }
         return null;
+    }
+
+    private boolean isWithinSingleMemberAnnotationValue(SingleMemberAnnotation singleMemberAnnotation, int offset) {
+        Expression value = singleMemberAnnotation.getValue();
+        if (value != null) {
+            int valueStartPosition = value.getStartPosition();
+            int valueLength = value.getLength();
+            return (offset >= valueStartPosition && offset <= valueStartPosition + valueLength);
+        }
+        return false;
     }
 
     @SuppressWarnings("unchecked")
