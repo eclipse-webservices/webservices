@@ -12,7 +12,9 @@ package org.eclipse.jst.ws.jaxws.core.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -84,6 +86,22 @@ public abstract class AbstractAnnotationTest extends TestCase {
     
     @Override
     protected void tearDown() throws Exception {
-        testJavaProject.getProject().delete(true, true, null);
+    	deleteProject(testJavaProject.getProject());
+    }
+
+    private void deleteProject(IProject project) throws CoreException, InterruptedException {
+    	int noAttempts = 0;
+    	while (project != null && project.exists() && noAttempts < 5) {
+    		try {
+    			noAttempts++;
+    			if (project.isOpen()) {
+    				project.close(null);    				
+    			}
+    			project.delete(true, true, null);
+    		} catch (ResourceException re) {
+    			System.out.println(re.getLocalizedMessage());
+    			Thread.sleep(1);
+    		}
+    	}
     }
 }

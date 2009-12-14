@@ -49,12 +49,13 @@ public class TestProject {
         }
     }
     
-    public void mkdirs(final IFolder folder) throws CoreException {
-        if (!folder.exists()) {
-            if (folder.getParent() instanceof IFolder) {
-                mkdirs((IFolder) folder.getParent());
-            }
-            folder.create(true, true, null);
-        }
+    public void mkdirs(final IFolder folder) {
+    	try {
+	        if (!folder.exists() && folder.getParent().isAccessible()) {
+	            folder.create(true, true, null);
+	        }
+		} catch (CoreException ce) {
+			ce.printStackTrace();
+		}
     }
 }
