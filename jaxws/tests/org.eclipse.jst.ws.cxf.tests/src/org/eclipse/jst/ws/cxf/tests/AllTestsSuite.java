@@ -29,15 +29,11 @@ public class AllTestsSuite extends TestSuite {
 		addTest(JAXWSAnnotationValidationTestSuite.suite());
 		addTest(JAXBCoreTestSuite.suite());
 
-		//Commenting out JAX-WS DOM tests until Eclipse 3.6M4 is used in the WTP builds. Contains a fix for Bug# 158361.
-		//Causing intermittent java.util.ConcurrentModificationException test errors on
-		//org.eclipse.jst.ws.jaxws.testutils.project.TestProject deletion line 227
-
 		//Adding JAX-WS DOM Tools test suites
-        //addTest(org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.AllTestsSuite.suite());
-		//addTest(org.eclipse.jst.ws.jaxws.dom.runtime.tests.AllTestsSuite.suite());
-		//addTest(org.eclipse.jst.ws.jaxws.dom.ui.tests.AllTestsSuite.suite());
-		//addTest(org.eclipse.jst.ws.jaxws.utils.tests.AllTestsSuite.suite());
+        addTest(org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.AllTestsSuite.suite());
+		addTest(org.eclipse.jst.ws.jaxws.dom.runtime.tests.AllTestsSuite.suite());
+		addTest(org.eclipse.jst.ws.jaxws.dom.ui.tests.AllTestsSuite.suite());
+		addTest(org.eclipse.jst.ws.jaxws.utils.tests.AllTestsSuite.suite());
 	}
 
 	/**

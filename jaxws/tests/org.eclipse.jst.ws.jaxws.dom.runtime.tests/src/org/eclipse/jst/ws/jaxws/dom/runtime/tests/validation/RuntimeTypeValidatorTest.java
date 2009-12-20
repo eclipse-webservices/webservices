@@ -19,6 +19,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.Abstr
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.HasInadmisableInnerTypesException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InadmissableTypeException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InheritanceAndImplementationExecption;
+import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.InterfacesNotSupportedException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.MultipleImplementationException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.NoDefaultConstructorException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.RemoteObjectException;
@@ -208,38 +209,37 @@ public class RuntimeTypeValidatorTest extends ClassLoadingTest
 		}
 	}
 
-	//FIXME Uncomment when Eclipse 3.6 M4 is used in the WTP builds. Contains a fix for Bug# 158361
-//	public void testValidateTypesIncompatibleImplementation() throws Exception
-//	{
-//		// use not implemented abstract class
-//		IType type = TypeFactory.create(getProjectName(), PCK + ".BaseNotImplemented");
-//		assertNotNull(type);
-//		try
-//		{
-//			validator.validate(type);
-//			fail("ImplementsRemote");
-//		} catch (AbstractClassNotImplementedException e)
-//		{
-//			assertTrue(true);
-//		}
-//
-//		// use implemented abstract class
-//		type = TypeFactory.create(getProjectName(), PCK + ".BaseImplemented");
-//		assertNotNull(type);
-//		validator.validate(type);
-//
-//		// use interface
-//		type = TypeFactory.create(getProjectName(), PCK + ".InterfaceImplemented");
-//		assertNotNull(type);
-//		try
-//		{
-//			// use implemented interface
-//			validator.validate(type);
-//		} catch (InterfacesNotSupportedException e)
-//		{
-//			assertTrue(true);
-//		}
-//	}
+	public void testValidateTypesIncompatibleImplementation() throws Exception
+	{
+		// use not implemented abstract class
+		IType type = TypeFactory.create(getProjectName(), PCK + ".BaseNotImplemented");
+		assertNotNull(type);
+		try
+		{
+			validator.validate(type);
+			fail("ImplementsRemote");
+		} catch (AbstractClassNotImplementedException e)
+		{
+			assertTrue(true);
+		}
+
+		// use implemented abstract class
+		type = TypeFactory.create(getProjectName(), PCK + ".BaseImplemented");
+		assertNotNull(type);
+		validator.validate(type);
+
+		// use interface
+		type = TypeFactory.create(getProjectName(), PCK + ".InterfaceImplemented");
+		assertNotNull(type);
+		try
+		{
+			// use implemented interface
+			validator.validate(type);
+		} catch (InterfacesNotSupportedException e)
+		{
+			assertTrue(true);
+		}
+	}
 
 	public void testValidateTypesIncompatibleInheritance() throws Exception
 	{
