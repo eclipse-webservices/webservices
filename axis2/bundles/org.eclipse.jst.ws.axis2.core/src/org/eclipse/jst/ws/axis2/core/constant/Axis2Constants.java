@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2010 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20071029   206967 sandakith@wso2.com - Lahiru Sandakith
  * 20080521   231098 sandakith@wso2.com - Lahiru Sandakith, Fix for Axis2 1.4 dependency chenge
  * 20080604   193371 samindaw@wso2.com - Saminda Wijeratne, creating a function to validate services.xml
+ * 20091207   192005 samindaw@wso2.com - merge the web.xml to have axis2 welcome file defined
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.constant;
 
@@ -72,6 +73,7 @@ public class Axis2Constants {
 	public static final String JUNIT_BUNDLE="org.junit";						//$NON-NLS-1$
 	public static final String DIR_AXIS2_WEB="axis2-web";						//$NON-NLS-1$
 	public static final String FILE_WEB_XML="web.xml";							//$NON-NLS-1$
+	public static final String AXIS2_WELCOME_FILE="/"+DIR_AXIS2_WEB+"/index.jsp";//$NON-NLS-1$
 	public static final String FILE_SERVLET_API="servletapi";					//$NON-NLS-1$
 	public static final String[] AXIS2_LIB_PREFIXES = {							//$NON-NLS-1$
         "ant",

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 WSO2 Inc, IBM Corporation and others.
+ * Copyright (c) 2003, 2010 WSO2 Inc, IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070606   177421 sandakith@wso2.com - fix web.xml wiped out when Axis2 facet
+ * 20091207   192005 samindaw@wso2.com - merge the web.xml to have axis2 welcome file defined
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
@@ -37,6 +38,8 @@ import org.eclipse.jst.javaee.core.DisplayName;
 import org.eclipse.jst.javaee.core.JavaeeFactory;
 import org.eclipse.jst.javaee.core.UrlPatternType;
 import org.eclipse.jst.javaee.web.WebFactory;
+import org.eclipse.jst.javaee.web.WelcomeFileList;
+import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.common.environment.IEnvironment;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
@@ -212,6 +215,16 @@ public class MergeWEBXMLCommand extends AbstractDataModelOperation {
 				url.setValue(servletDescriptor._mappings[i]);
 				servletMapping.getUrlPatterns().add(url);
 				webapp.getServletMappings().add(servletMapping);					
+			}
+		}
+		List welcomeFileLists = webapp.getWelcomeFileLists();
+		if (welcomeFileLists!=null){
+			for (Object list : welcomeFileLists) {
+				if (list instanceof WelcomeFileList){
+					WelcomeFileList welcomeList=(WelcomeFileList) list;
+					if (!welcomeList.getWelcomeFiles().contains(Axis2Constants.AXIS2_WELCOME_FILE))
+						welcomeList.getWelcomeFiles().add(Axis2Constants.AXIS2_WELCOME_FILE);
+				}
 			}
 		}
 	}
