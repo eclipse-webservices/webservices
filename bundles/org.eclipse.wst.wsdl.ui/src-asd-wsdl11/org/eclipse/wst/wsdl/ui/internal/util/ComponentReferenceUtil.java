@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -514,7 +514,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(binding);
     if (element != null)
     {
-      result = element.getAttribute("type"); //$NON-NLS-1$
+      result = element.getAttribute(WSDLConstants.TYPE_ATTRIBUTE);
     }
     return result;
   }
@@ -524,7 +524,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(binding);
     if (element != null)
     {
-      element.setAttribute("type", portType); //$NON-NLS-1$
+      element.setAttribute(WSDLConstants.TYPE_ATTRIBUTE, portType);
     }
   }
 
@@ -534,7 +534,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(port);
     if (element != null)
     {
-      result = element.getAttribute("binding"); //$NON-NLS-1$
+      result = element.getAttribute(WSDLConstants.BINDING_ATTRIBUTE);
     }
     return result;
   }
@@ -545,7 +545,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(binding);
     if (element != null)
     {
-      result = element.getAttribute("name"); //$NON-NLS-1$
+      result = element.getAttribute(WSDLConstants.NAME_ATTRIBUTE);
     }
     return result;
   }
@@ -610,7 +610,7 @@ public class ComponentReferenceUtil
     Element element = WSDLEditorUtil.getInstance().getElementForObject(o);
     if (element != null)
     {
-      result = element.getAttribute("message"); //$NON-NLS-1$
+      result = element.getAttribute(WSDLConstants.MESSAGE_ATTRIBUTE);
     }
     return result;
   }
@@ -786,23 +786,21 @@ public class ComponentReferenceUtil
 
   public static boolean isType(Part part)
   {
-    //Element element = WSDLEditorUtil.getInstance().getElementForObject(part);
     Element element = part.getElement();
-    return !element.hasAttribute("element"); //$NON-NLS-1$
+    return !element.hasAttribute(WSDLConstants.ELEMENT_ATTRIBUTE);
   }
 
   public static String getPartComponentReference(Part part)
   {
-    //Element element = WSDLEditorUtil.getInstance().getElementForObject(part);
     Element element = part.getElement();
     String result = null;
-    if (element.hasAttribute("type")) //$NON-NLS-1$
+    if (element.hasAttribute(WSDLConstants.TYPE_ATTRIBUTE))
     {
-      result = element.getAttribute("type"); //$NON-NLS-1$
+      result = element.getAttribute(WSDLConstants.TYPE_ATTRIBUTE);
     }
-    else if (element.hasAttribute("element")) //$NON-NLS-1$
+    else if (element.hasAttribute(WSDLConstants.ELEMENT_ATTRIBUTE))
     {
-      result = element.getAttribute("element"); //$NON-NLS-1$
+      result = element.getAttribute(WSDLConstants.ELEMENT_ATTRIBUTE);
     }
     return result;
   }
@@ -810,8 +808,8 @@ public class ComponentReferenceUtil
   public static void setComponentReference(Part part, boolean isType, String componentName)
   {
     Element element = WSDLEditorUtil.getInstance().getElementForObject(part);
-    String newAttribute = isType ? "type" : "element"; //$NON-NLS-1$ //$NON-NLS-2$
-    String oldAttribute = isType ? "element" : "type"; //$NON-NLS-1$ //$NON-NLS-2$
+    String newAttribute = isType ? WSDLConstants.TYPE_ATTRIBUTE : WSDLConstants.ELEMENT_ATTRIBUTE;
+    String oldAttribute = isType ? WSDLConstants.ELEMENT_ATTRIBUTE : WSDLConstants.TYPE_ATTRIBUTE;
     element.removeAttribute(oldAttribute);
 
     String value = componentName != null ? componentName : element.getAttribute(newAttribute);
@@ -886,13 +884,13 @@ public class ComponentReferenceUtil
     String value = null;
     if (element != null)
     {
-      if (element.hasAttribute("type")) //$NON-NLS-1$
+      if (element.hasAttribute(WSDLConstants.TYPE_ATTRIBUTE))
       {      		
-        value = element.getAttribute("type"); //$NON-NLS-1$
+        value = element.getAttribute(WSDLConstants.TYPE_ATTRIBUTE);
       }
-      else if (element.hasAttribute("element")) //$NON-NLS-1$
+      else if (element.hasAttribute(WSDLConstants.ELEMENT_ATTRIBUTE))
       {  
-        value = element.getAttribute("element"); //$NON-NLS-1$
+        value = element.getAttribute(WSDLConstants.ELEMENT_ATTRIBUTE);
       }         
     }  
     return value != null ? value : ""; //$NON-NLS-1$

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.wst.wsdl.ui.internal.util.WSDLEditorUtil;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.format.FormatProcessorXML;
+import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -78,7 +79,7 @@ public class AddWSISchemaImportAction extends BaseNodeAction
             if (node.getNodeType() == Node.ELEMENT_NODE)
             {
                 Element element = (Element) node;
-                if ("schema".equals(element.getLocalName()) && element.getAttribute("targetNamespace") == null) //$NON-NLS-1$ //$NON-NLS-2$
+                if (XSDConstants.SCHEMA_ELEMENT_TAG.equals(element.getLocalName()) && !element.hasAttributeNS(null, XSDConstants.TARGETNAMESPACE_ATTRIBUTE))
                 {
                     importHolderElement = element;
                     break;
@@ -94,7 +95,7 @@ public class AddWSISchemaImportAction extends BaseNodeAction
         Element importHolderElement = getImportHolderElement(typesElement);
         if (importHolderElement == null)
         {
-            AddElementAction addImportHolderAction = new AddElementAction("", "icons/xsd_obj.gif", typesElement, "xsd", "schema") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            AddElementAction addImportHolderAction = new AddElementAction("", "icons/xsd_obj.gif", typesElement, "xsd", XSDConstants.SCHEMA_ELEMENT_TAG) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             {
                 protected void addAttributes(Element newElement)
                 {
@@ -136,11 +137,10 @@ public class AddWSISchemaImportAction extends BaseNodeAction
 
     				for (int index = 0; index < schemaChildren.size(); index++) {
     					Element schemaChild = (Element) schemaChildren.elementAt(index);
-    					String schemaLocation = schemaChild.getAttribute("schemaLocation"); //$NON-NLS-1$
-    					String schemaNamespace = schemaChild.getAttribute("namespace"); //$NON-NLS-1$
+    					String schemaLocation = schemaChild.getAttribute(XSDConstants.SCHEMALOCATION_ATTRIBUTE);
+    					String schemaNamespace = schemaChild.getAttribute(XSDConstants.NAMESPACE_ATTRIBUTE);
 				
-    					if (schemaLocation != null && namespace != null &&
-    							schemaLocation.equals(location) && schemaNamespace.equals(namespace)) {
+    					if (schemaLocation.equals(location) && schemaNamespace.equals(namespace)) {
     						notExists = false;
     						break;
     					}
@@ -168,12 +168,12 @@ public class AddWSISchemaImportAction extends BaseNodeAction
             Element typesElement = getOrCreateTypesElement();
             Element importHolderElement = getOrCreateImportHolderElement(typesElement);
 
-            AddElementAction addImportAction = new AddElementAction("", "icons/xsd_obj.gif", importHolderElement, importHolderElement.getPrefix(), "import") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            AddElementAction addImportAction = new AddElementAction("", "icons/xsd_obj.gif", importHolderElement, importHolderElement.getPrefix(), XSDConstants.IMPORT_ELEMENT_TAG) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 protected void addAttributes(Element newElement)
                 {
-                    newElement.setAttribute("namespace", namespace); //$NON-NLS-1$
-                    newElement.setAttribute("schemaLocation", location); //$NON-NLS-1$
+                    newElement.setAttribute(XSDConstants.NAMESPACE_ATTRIBUTE, namespace);
+                    newElement.setAttribute(XSDConstants.SCHEMALOCATION_ATTRIBUTE, location);
                 }
             };
             addImportAction.run();

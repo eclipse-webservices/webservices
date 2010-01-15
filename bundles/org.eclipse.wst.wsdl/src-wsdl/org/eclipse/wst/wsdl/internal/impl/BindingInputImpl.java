@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -287,9 +287,9 @@ public class BindingInputImpl extends ExtensibleElementImpl implements BindingIn
 
   public void reconcileAttributes(Element changedElement)
   {
-    if (changedElement.hasAttribute("name"))
+    if (changedElement.hasAttribute(WSDLConstants.NAME_ATTRIBUTE))
     {
-      String name = changedElement.getAttribute("name");
+      String name = changedElement.getAttribute(WSDLConstants.NAME_ATTRIBUTE);
       if (name != null)
       {
         setName(name);
