@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackage.java,v 1.3 2009/04/06 21:33:14 sclarke Exp $
+ * $Id: CXFPackage.java,v 1.4 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model;
 
@@ -77,31 +77,31 @@ public interface CXFPackage extends EPackage {
     int CXF_CONTEXT = 0;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Location</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Location</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_CONTEXT__CXF_RUNTIME_LOCATION = 0;
+    int CXF_CONTEXT__DEFAULT_RUNTIME_LOCATION = 0;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Edition</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Type</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_CONTEXT__CXF_RUNTIME_EDITION = 1;
+    int CXF_CONTEXT__DEFAULT_RUNTIME_TYPE = 1;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Version</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Version</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_CONTEXT__CXF_RUNTIME_VERSION = 2;
+    int CXF_CONTEXT__DEFAULT_RUNTIME_VERSION = 2;
 
     /**
      * The feature id for the '<em><b>Verbose</b></em>' attribute.
@@ -176,13 +176,22 @@ public interface CXFPackage extends EPackage {
     int CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = 10;
 
     /**
+     * The feature id for the '<em><b>Installations</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_CONTEXT__INSTALLATIONS = 11;
+
+    /**
      * The number of structural features of the '<em>Context</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_CONTEXT_FEATURE_COUNT = 11;
+    int CXF_CONTEXT_FEATURE_COUNT = 12;
 
     /**
      * The meta object id for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl <em>Data Model</em>}' class.
@@ -195,31 +204,31 @@ public interface CXFPackage extends EPackage {
     int CXF_DATA_MODEL = 1;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Location</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Location</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_DATA_MODEL__CXF_RUNTIME_LOCATION = CXF_CONTEXT__CXF_RUNTIME_LOCATION;
+    int CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION = CXF_CONTEXT__DEFAULT_RUNTIME_LOCATION;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Edition</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Type</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_DATA_MODEL__CXF_RUNTIME_EDITION = CXF_CONTEXT__CXF_RUNTIME_EDITION;
+    int CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE = CXF_CONTEXT__DEFAULT_RUNTIME_TYPE;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Version</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Version</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CXF_DATA_MODEL__CXF_RUNTIME_VERSION = CXF_CONTEXT__CXF_RUNTIME_VERSION;
+    int CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION = CXF_CONTEXT__DEFAULT_RUNTIME_VERSION;
 
     /**
      * The feature id for the '<em><b>Verbose</b></em>' attribute.
@@ -292,6 +301,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER;
+
+    /**
+     * The feature id for the '<em><b>Installations</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_DATA_MODEL__INSTALLATIONS = CXF_CONTEXT__INSTALLATIONS;
 
     /**
      * The feature id for the '<em><b>Project Name</b></em>' attribute.
@@ -439,31 +457,31 @@ public interface CXFPackage extends EPackage {
     int JAVA2_WS_CONTEXT = 2;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Location</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Location</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int JAVA2_WS_CONTEXT__CXF_RUNTIME_LOCATION = CXF_CONTEXT__CXF_RUNTIME_LOCATION;
+    int JAVA2_WS_CONTEXT__DEFAULT_RUNTIME_LOCATION = CXF_CONTEXT__DEFAULT_RUNTIME_LOCATION;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Edition</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Type</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int JAVA2_WS_CONTEXT__CXF_RUNTIME_EDITION = CXF_CONTEXT__CXF_RUNTIME_EDITION;
+    int JAVA2_WS_CONTEXT__DEFAULT_RUNTIME_TYPE = CXF_CONTEXT__DEFAULT_RUNTIME_TYPE;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Version</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Version</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int JAVA2_WS_CONTEXT__CXF_RUNTIME_VERSION = CXF_CONTEXT__CXF_RUNTIME_VERSION;
+    int JAVA2_WS_CONTEXT__DEFAULT_RUNTIME_VERSION = CXF_CONTEXT__DEFAULT_RUNTIME_VERSION;
 
     /**
      * The feature id for the '<em><b>Verbose</b></em>' attribute.
@@ -536,6 +554,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int JAVA2_WS_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER;
+
+    /**
+     * The feature id for the '<em><b>Installations</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int JAVA2_WS_CONTEXT__INSTALLATIONS = CXF_CONTEXT__INSTALLATIONS;
 
     /**
      * The feature id for the '<em><b>Soap12 Binding</b></em>' attribute.
@@ -638,31 +665,31 @@ public interface CXFPackage extends EPackage {
     int JAVA2_WS_DATA_MODEL = 3;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Location</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Location</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int JAVA2_WS_DATA_MODEL__CXF_RUNTIME_LOCATION = CXF_DATA_MODEL__CXF_RUNTIME_LOCATION;
+    int JAVA2_WS_DATA_MODEL__DEFAULT_RUNTIME_LOCATION = CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Edition</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Type</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int JAVA2_WS_DATA_MODEL__CXF_RUNTIME_EDITION = CXF_DATA_MODEL__CXF_RUNTIME_EDITION;
+    int JAVA2_WS_DATA_MODEL__DEFAULT_RUNTIME_TYPE = CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Version</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Version</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int JAVA2_WS_DATA_MODEL__CXF_RUNTIME_VERSION = CXF_DATA_MODEL__CXF_RUNTIME_VERSION;
+    int JAVA2_WS_DATA_MODEL__DEFAULT_RUNTIME_VERSION = CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION;
 
     /**
      * The feature id for the '<em><b>Verbose</b></em>' attribute.
@@ -735,6 +762,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int JAVA2_WS_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER;
+
+    /**
+     * The feature id for the '<em><b>Installations</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int JAVA2_WS_DATA_MODEL__INSTALLATIONS = CXF_DATA_MODEL__INSTALLATIONS;
 
     /**
      * The feature id for the '<em><b>Project Name</b></em>' attribute.
@@ -1044,31 +1080,31 @@ public interface CXFPackage extends EPackage {
     int WSDL2_JAVA_CONTEXT = 4;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Location</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Location</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_CONTEXT__CXF_RUNTIME_LOCATION = CXF_CONTEXT__CXF_RUNTIME_LOCATION;
+    int WSDL2_JAVA_CONTEXT__DEFAULT_RUNTIME_LOCATION = CXF_CONTEXT__DEFAULT_RUNTIME_LOCATION;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Edition</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Type</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_CONTEXT__CXF_RUNTIME_EDITION = CXF_CONTEXT__CXF_RUNTIME_EDITION;
+    int WSDL2_JAVA_CONTEXT__DEFAULT_RUNTIME_TYPE = CXF_CONTEXT__DEFAULT_RUNTIME_TYPE;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Version</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Version</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_CONTEXT__CXF_RUNTIME_VERSION = CXF_CONTEXT__CXF_RUNTIME_VERSION;
+    int WSDL2_JAVA_CONTEXT__DEFAULT_RUNTIME_VERSION = CXF_CONTEXT__DEFAULT_RUNTIME_VERSION;
 
     /**
      * The feature id for the '<em><b>Verbose</b></em>' attribute.
@@ -1141,6 +1177,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int WSDL2_JAVA_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER;
+
+    /**
+     * The feature id for the '<em><b>Installations</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int WSDL2_JAVA_CONTEXT__INSTALLATIONS = CXF_CONTEXT__INSTALLATIONS;
 
     /**
      * The feature id for the '<em><b>Generate Implementation</b></em>' attribute.
@@ -1324,31 +1369,31 @@ public interface CXFPackage extends EPackage {
     int WSDL2_JAVA_DATA_MODEL = 5;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Location</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Location</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__CXF_RUNTIME_LOCATION = CXF_DATA_MODEL__CXF_RUNTIME_LOCATION;
+    int WSDL2_JAVA_DATA_MODEL__DEFAULT_RUNTIME_LOCATION = CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Edition</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Type</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__CXF_RUNTIME_EDITION = CXF_DATA_MODEL__CXF_RUNTIME_EDITION;
+    int WSDL2_JAVA_DATA_MODEL__DEFAULT_RUNTIME_TYPE = CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE;
 
     /**
-     * The feature id for the '<em><b>Cxf Runtime Version</b></em>' attribute.
+     * The feature id for the '<em><b>Default Runtime Version</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int WSDL2_JAVA_DATA_MODEL__CXF_RUNTIME_VERSION = CXF_DATA_MODEL__CXF_RUNTIME_VERSION;
+    int WSDL2_JAVA_DATA_MODEL__DEFAULT_RUNTIME_VERSION = CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION;
 
     /**
      * The feature id for the '<em><b>Verbose</b></em>' attribute.
@@ -1421,6 +1466,15 @@ public interface CXFPackage extends EPackage {
      * @ordered
      */
     int WSDL2_JAVA_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER = CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER;
+
+    /**
+     * The feature id for the '<em><b>Installations</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int WSDL2_JAVA_DATA_MODEL__INSTALLATIONS = CXF_DATA_MODEL__INSTALLATIONS;
 
     /**
      * The feature id for the '<em><b>Project Name</b></em>' attribute.
@@ -1765,6 +1819,52 @@ public interface CXFPackage extends EPackage {
     int WSDL2_JAVA_DATA_MODEL_FEATURE_COUNT = CXF_DATA_MODEL_FEATURE_COUNT + 23;
 
     /**
+     * The meta object id for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFInstallImpl <em>Install</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFInstallImpl
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getCXFInstall()
+     * @generated
+     */
+    int CXF_INSTALL = 6;
+
+    /**
+     * The feature id for the '<em><b>Version</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_INSTALL__VERSION = 0;
+
+    /**
+     * The feature id for the '<em><b>Location</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_INSTALL__LOCATION = 1;
+
+    /**
+     * The feature id for the '<em><b>Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_INSTALL__TYPE = 2;
+
+    /**
+     * The number of structural features of the '<em>Install</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CXF_INSTALL_FEATURE_COUNT = 3;
+
+    /**
      * The meta object id for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.Frontend <em>Frontend</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1772,7 +1872,7 @@ public interface CXFPackage extends EPackage {
      * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getFrontend()
      * @generated
      */
-    int FRONTEND = 6;
+    int FRONTEND = 7;
 
     /**
      * The meta object id for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.DataBinding <em>Data Binding</em>}' enum.
@@ -1782,7 +1882,7 @@ public interface CXFPackage extends EPackage {
      * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getDataBinding()
      * @generated
      */
-    int DATA_BINDING = 7;
+    int DATA_BINDING = 8;
 
     /**
      * The meta object id for the '<em>URL</em>' data type.
@@ -1792,7 +1892,7 @@ public interface CXFPackage extends EPackage {
      * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getURL()
      * @generated
      */
-    int URL = 8;
+    int URL = 9;
 
     /**
      * The meta object id for the '<em>Definition</em>' data type.
@@ -1802,7 +1902,7 @@ public interface CXFPackage extends EPackage {
      * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getDefinition()
      * @generated
      */
-    int DEFINITION = 9;
+    int DEFINITION = 10;
 
     /**
      * The meta object id for the '<em>Map</em>' data type.
@@ -1812,7 +1912,7 @@ public interface CXFPackage extends EPackage {
      * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getMap()
      * @generated
      */
-    int MAP = 10;
+    int MAP = 11;
 
     /**
      * The meta object id for the '<em>IMethod</em>' data type.
@@ -1822,7 +1922,7 @@ public interface CXFPackage extends EPackage {
      * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getIMethod()
      * @generated
      */
-    int IMETHOD = 11;
+    int IMETHOD = 12;
 
 
     /**
@@ -1836,37 +1936,37 @@ public interface CXFPackage extends EPackage {
     EClass getCXFContext();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeLocation <em>Cxf Runtime Location</em>}'.
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeLocation <em>Default Runtime Location</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Cxf Runtime Location</em>'.
-     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeLocation()
+     * @return the meta object for the attribute '<em>Default Runtime Location</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeLocation()
      * @see #getCXFContext()
      * @generated
      */
-    EAttribute getCXFContext_CxfRuntimeLocation();
+    EAttribute getCXFContext_DefaultRuntimeLocation();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeEdition <em>Cxf Runtime Edition</em>}'.
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeType <em>Default Runtime Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Cxf Runtime Edition</em>'.
-     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeEdition()
+     * @return the meta object for the attribute '<em>Default Runtime Type</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeType()
      * @see #getCXFContext()
      * @generated
      */
-    EAttribute getCXFContext_CxfRuntimeEdition();
+    EAttribute getCXFContext_DefaultRuntimeType();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeVersion <em>Cxf Runtime Version</em>}'.
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeVersion <em>Default Runtime Version</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Cxf Runtime Version</em>'.
-     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeVersion()
+     * @return the meta object for the attribute '<em>Default Runtime Version</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeVersion()
      * @see #getCXFContext()
      * @generated
      */
-    EAttribute getCXFContext_CxfRuntimeVersion();
+    EAttribute getCXFContext_DefaultRuntimeVersion();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#isVerbose <em>Verbose</em>}'.
@@ -1955,6 +2055,17 @@ public interface CXFPackage extends EPackage {
      * @generated
      */
     EAttribute getCXFContext_ExportCXFClasspathContainer();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getInstallations <em>Installations</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Installations</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getInstallations()
+     * @see #getCXFContext()
+     * @generated
+     */
+    EAttribute getCXFContext_Installations();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel <em>Data Model</em>}'.
@@ -2612,6 +2723,49 @@ public interface CXFPackage extends EPackage {
     EAttribute getWSDL2JavaDataModel_JavaSourceFolder();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall <em>Install</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Install</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall
+     * @generated
+     */
+    EClass getCXFInstall();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall#getVersion <em>Version</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Version</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall#getVersion()
+     * @see #getCXFInstall()
+     * @generated
+     */
+    EAttribute getCXFInstall_Version();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall#getLocation <em>Location</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Location</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall#getLocation()
+     * @see #getCXFInstall()
+     * @generated
+     */
+    EAttribute getCXFInstall_Location();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall#getType <em>Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Type</em>'.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall#getType()
+     * @see #getCXFInstall()
+     * @generated
+     */
+    EAttribute getCXFInstall_Type();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.jst.ws.internal.cxf.core.model.Frontend <em>Frontend</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2708,28 +2862,28 @@ public interface CXFPackage extends EPackage {
         EClass CXF_CONTEXT = eINSTANCE.getCXFContext();
 
         /**
-         * The meta object literal for the '<em><b>Cxf Runtime Location</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Default Runtime Location</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute CXF_CONTEXT__CXF_RUNTIME_LOCATION = eINSTANCE.getCXFContext_CxfRuntimeLocation();
+        EAttribute CXF_CONTEXT__DEFAULT_RUNTIME_LOCATION = eINSTANCE.getCXFContext_DefaultRuntimeLocation();
 
         /**
-         * The meta object literal for the '<em><b>Cxf Runtime Edition</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Default Runtime Type</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute CXF_CONTEXT__CXF_RUNTIME_EDITION = eINSTANCE.getCXFContext_CxfRuntimeEdition();
+        EAttribute CXF_CONTEXT__DEFAULT_RUNTIME_TYPE = eINSTANCE.getCXFContext_DefaultRuntimeType();
 
         /**
-         * The meta object literal for the '<em><b>Cxf Runtime Version</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Default Runtime Version</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute CXF_CONTEXT__CXF_RUNTIME_VERSION = eINSTANCE.getCXFContext_CxfRuntimeVersion();
+        EAttribute CXF_CONTEXT__DEFAULT_RUNTIME_VERSION = eINSTANCE.getCXFContext_DefaultRuntimeVersion();
 
         /**
          * The meta object literal for the '<em><b>Verbose</b></em>' attribute feature.
@@ -2794,6 +2948,14 @@ public interface CXFPackage extends EPackage {
          * @generated
          */
         EAttribute CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER = eINSTANCE.getCXFContext_ExportCXFClasspathContainer();
+
+        /**
+         * The meta object literal for the '<em><b>Installations</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute CXF_CONTEXT__INSTALLATIONS = eINSTANCE.getCXFContext_Installations();
 
         /**
          * The meta object literal for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl <em>Data Model</em>}' class.
@@ -3284,6 +3446,40 @@ public interface CXFPackage extends EPackage {
          * @generated
          */
         EAttribute WSDL2_JAVA_DATA_MODEL__JAVA_SOURCE_FOLDER = eINSTANCE.getWSDL2JavaDataModel_JavaSourceFolder();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFInstallImpl <em>Install</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFInstallImpl
+         * @see org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFPackageImpl#getCXFInstall()
+         * @generated
+         */
+        EClass CXF_INSTALL = eINSTANCE.getCXFInstall();
+
+        /**
+         * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute CXF_INSTALL__VERSION = eINSTANCE.getCXFInstall_Version();
+
+        /**
+         * The meta object literal for the '<em><b>Location</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute CXF_INSTALL__LOCATION = eINSTANCE.getCXFInstall_Location();
+
+        /**
+         * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute CXF_INSTALL__TYPE = eINSTANCE.getCXFInstall_Type();
 
         /**
          * The meta object literal for the '{@link org.eclipse.jst.ws.internal.cxf.core.model.Frontend <em>Frontend</em>}' enum.

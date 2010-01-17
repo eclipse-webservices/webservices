@@ -75,6 +75,7 @@ public final class WSDL2JavaWidgetFactory {
         genClientButton.setText(CXFUIMessages.JAVA2WS_GEN_CLIENT_LABEL);
         genClientButton.setToolTipText(CXFUIMessages.WSDL2JAVA_GENERATE_CLIENT_TOOLTIP);
         genClientButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setGenerateClient(genClientButton.getSelection());
             }
@@ -88,6 +89,7 @@ public final class WSDL2JavaWidgetFactory {
         genServerButton.setText(CXFUIMessages.JAVA2WS_GEN_SERVER_LABEL);
         genServerButton.setToolTipText(CXFUIMessages.WSDL2JAVA_GENERATE_SERVER_TOOLTIP);
         genServerButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setGenerateServer(genServerButton.getSelection());
             }
@@ -101,6 +103,7 @@ public final class WSDL2JavaWidgetFactory {
         genImplementatinButton.setText(CXFUIMessages.JAVA2WS_GEN_IMPLEMENTATION_LABEL);
         genImplementatinButton.setToolTipText(CXFUIMessages.WSDL2JAVA_GENERATE_IMPLEMENTATION_TOOLTIP);
         genImplementatinButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setGenerateImplementation(genImplementatinButton.getSelection());
             }
@@ -114,6 +117,7 @@ public final class WSDL2JavaWidgetFactory {
         processSOAPHeadersButton.setText(CXFUIMessages.WSDL2JAVA_PROCESS_SOAP_HEADERS);
         processSOAPHeadersButton.setToolTipText(CXFUIMessages.WSDL2JAVA_PROCESS_SOAP_HEADERS_TOOLTIP);
         processSOAPHeadersButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setProcessSOAPHeaders(processSOAPHeadersButton.getSelection());
             }
@@ -125,10 +129,11 @@ public final class WSDL2JavaWidgetFactory {
     public static Button createNamespacePackageMappingButton(Composite parent, final WSDL2JavaContext model) {
         final Button namespacePackageMappingButton = new Button(parent, SWT.CHECK);
         namespacePackageMappingButton
-                .setText(CXFUIMessages.WSDL2JAVA_LOAD_DEFAULT_NAMESPACE_PACKAGE_MAPPING);
+        .setText(CXFUIMessages.WSDL2JAVA_LOAD_DEFAULT_NAMESPACE_PACKAGE_MAPPING);
         namespacePackageMappingButton
-                .setToolTipText(CXFUIMessages.WSDL2JAVA_DEFAULT_NAMESPACE_LOADING_TOOLTIP);
+        .setToolTipText(CXFUIMessages.WSDL2JAVA_DEFAULT_NAMESPACE_LOADING_TOOLTIP);
         namespacePackageMappingButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setLoadDefaultNamespacePackageNameMapping(namespacePackageMappingButton.getSelection());
             }
@@ -140,10 +145,11 @@ public final class WSDL2JavaWidgetFactory {
     public static Button createExcludesNamespaceMappingButton(Composite parent, final WSDL2JavaContext model) {
         final Button excludesNamespaceMappingButton = new Button(parent, SWT.CHECK);
         excludesNamespaceMappingButton
-                .setText(CXFUIMessages.WSDL2JAVA_USE_DEFAULT_EXCLUDES_NAMESPACE_MAPPING);
+        .setText(CXFUIMessages.WSDL2JAVA_USE_DEFAULT_EXCLUDES_NAMESPACE_MAPPING);
         excludesNamespaceMappingButton
-                .setToolTipText(CXFUIMessages.WSDL2JAVA_EXCLUDE_NAMESPACE_LOADING_TOOLTIP);
+        .setToolTipText(CXFUIMessages.WSDL2JAVA_EXCLUDE_NAMESPACE_LOADING_TOOLTIP);
         excludesNamespaceMappingButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setLoadDefaultExcludesNamepsaceMapping(excludesNamespaceMappingButton.getSelection());
             }
@@ -151,15 +157,16 @@ public final class WSDL2JavaWidgetFactory {
         excludesNamespaceMappingButton.setSelection(model.isLoadDefaultExcludesNamepsaceMapping());
         return excludesNamespaceMappingButton;
     }
-    
+
     public static Button createNoAddressBindingButton(Composite parent, final WSDL2JavaContext model) {
         final Button noAddressBindingButton = new Button(parent, SWT.CHECK);
         noAddressBindingButton.setText(CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_NO_ADDRESS_BINDING,
-                model.getCxfRuntimeEdition()));
+                model.getDefaultRuntimeType()));
         noAddressBindingButton.setToolTipText(
-                CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_NO_ADDRESS_BINDING_TOOLTIP, 
-                        model.getCxfRuntimeEdition()));
+                CXFUIMessages.bind(CXFUIMessages.WSDL2JAVA_NO_ADDRESS_BINDING_TOOLTIP,
+                        model.getDefaultRuntimeType()));
         noAddressBindingButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setNoAddressBinding(noAddressBindingButton.getSelection());
             }
@@ -173,6 +180,7 @@ public final class WSDL2JavaWidgetFactory {
         autoNameResolutionButton.setText(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION);
         autoNameResolutionButton.setToolTipText(CXFUIMessages.WSDL2JAVA_AUTO_NAME_RESOLUTION_TOOLTIP);
         autoNameResolutionButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setAutoNameResolution(autoNameResolutionButton.getSelection());
             }
@@ -180,7 +188,7 @@ public final class WSDL2JavaWidgetFactory {
         autoNameResolutionButton.setSelection(model.isAutoNameResolution());
         return autoNameResolutionButton;
     }
-    
+
     public static TableItem createXJCDefaultValuesTableItem(Table xjcArgsTable, final WSDL2JavaContext model) {
         TableItem xjcDefaultValuesItem = new TableItem(xjcArgsTable, SWT.NONE);
         xjcDefaultValuesItem.setText(0, XJC_DV_ARG);
@@ -361,6 +369,7 @@ public final class WSDL2JavaWidgetFactory {
         useDefaultValuesButton.setText(CXFUIMessages.WSDL2JAVA_USE_DEFAULT_VALUES);
         useDefaultValuesButton.setToolTipText(CXFUIMessages.WSDL2JAVA_DEFAULT_VALUES_TOOLTIP);
         useDefaultValuesButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 model.setUseDefaultValues(useDefaultValuesButton.getSelection());
             }
@@ -389,7 +398,7 @@ public final class WSDL2JavaWidgetFactory {
         });
 
         populateOutputDirectoryCombo(outputDirCombo, model.getProjectName());
-        
+
         return outputDirCombo;
     }
 
@@ -397,7 +406,7 @@ public final class WSDL2JavaWidgetFactory {
         outputDirCombo.removeAll();
         try {
             IPackageFragmentRoot[] packageFragmentRoots = JDTUtils.getJavaProject(projectName)
-                    .getAllPackageFragmentRoots();
+            .getAllPackageFragmentRoots();
             for (int i = 0; i < packageFragmentRoots.length; i++) {
                 IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[i];
                 if (packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE) {
@@ -409,7 +418,7 @@ public final class WSDL2JavaWidgetFactory {
             CXFUIPlugin.log(jme.getStatus());
         }
     }
-    
+
     public static Label createPackageNameLabel(Composite parent) {
         Label packageNameLabel = new Label(parent, SWT.NONE);
         packageNameLabel.setText(CXFUIMessages.WSDL2JAVA_PACKAGE_NAME);
@@ -487,7 +496,7 @@ public final class WSDL2JavaWidgetFactory {
 
         return serviceNameCombo;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static void populateServiceNameCombo(Combo serviceNameCombo, WSDL2JavaDataModel model) {
         serviceNameCombo.removeAll();
@@ -531,7 +540,7 @@ public final class WSDL2JavaWidgetFactory {
             public void widgetSelected(SelectionEvent event) {
                 ResourceSelectionDialog selectionDialog = new ResourceSelectionDialog(
                         parent.getShell(),
-                        "xml", //$NON-NLS-1$ 
+                        "xml", //$NON-NLS-1$
                         CXFUIMessages.WSDL2JAVA_BINDING_FILE_DIALOG_FILTER_NAME,
                         CXFUIMessages.WSDL2JAVA_BINDING_FILE_DIALOG_TITLE);
                 selectionDialog.setMessage(CXFUIMessages.WSDL2JAVA_BINDING_FILE_DIALOG_MESSAGE);

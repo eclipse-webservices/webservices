@@ -13,7 +13,6 @@ package org.eclipse.jst.ws.annotations.core.utils;
 
 import java.lang.annotation.ElementType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -998,40 +997,6 @@ public final class AnnotationUtils {
             }
         }
         return false;
-    }
-
-    /**
-     * Tests the given {@link IMethod} to see if it is an overloaded method. If it is it will return
-     * a string representing the position of this method in it's parents {@link IType}.
-     * <p>
-     * E.g. Given three methods:
-     * <pre>
-     * public void myMethod(...);
-     * public void myMethod(...);
-     * public void myMethod(...);
-     * </pre>
-     * The first method would return a blank string, the second would return the string "1" and the third
-     * would return the string "2".
-     * </p>
-     * @param method the method to test
-     * @return a string value
-     * @exception JavaModelException thrown if an exception occurs while accessing the underlying resource
-     */
-    public static String accountForOverloadedMethods(IMethod method) throws JavaModelException {
-    	IType type = method.getDeclaringType();
-    	if (type == null) {
-    		return "";
-    	}
-        List<IMethod> methods =  Arrays.asList(type.getMethods());
-        List<IMethod> similarMethods = new ArrayList<IMethod>();
-        for (IMethod methodToTest : methods) {
-            if (!method.equals(methodToTest) && method.getElementName().equalsIgnoreCase(
-                    methodToTest.getElementName()) && methodToTest.getSourceRange().getOffset() <
-                    method.getSourceRange().getOffset()) {
-                similarMethods.add(methodToTest);
-            }
-        }
-        return similarMethods.size() > 0 ? Integer.toString(similarMethods.size()) : ""; //$NON-NLS-1$
     }
 
     private static boolean compareAnnotationNames(Annotation newAnnotation, Annotation existingAnnotation) {

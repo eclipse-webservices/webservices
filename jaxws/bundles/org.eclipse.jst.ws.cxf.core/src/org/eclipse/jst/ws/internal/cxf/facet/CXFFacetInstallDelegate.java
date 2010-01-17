@@ -44,6 +44,7 @@ import org.eclipse.jst.javaee.web.SessionConfig;
 import org.eclipse.jst.javaee.web.WebFactory;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCoreMessages;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -52,8 +53,8 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * Adds the CXF classpath container to the project.
  * <p>
  * Also sets up the web projects application deployment descriptor (web.xml file)
- * to use cxf-servlet or the Spring Application context (WEB-INF/beans.xml) for 
- * endpoint configuration. Depends on a setting in the CXF preferences. 
+ * to use cxf-servlet or the Spring Application context (WEB-INF/beans.xml) for
+ * endpoint configuration. Depends on a setting in the CXF preferences.
  * 
  */
 public class CXFFacetInstallDelegate implements IDelegate {
@@ -61,38 +62,43 @@ public class CXFFacetInstallDelegate implements IDelegate {
     public void execute(final IProject project, IProjectFacetVersion fv, Object config,
             IProgressMonitor monitor) throws CoreException {
 
-        if (CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeLocation().equals("")) { //$NON-NLS-1$
+        CXFDataModel model = (CXFDataModel) config;
+
+        if (CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeLocation().equals("")) { //$NON-NLS-1$
             throw new CoreException(new Status(Status.ERROR, CXFCorePlugin.PLUGIN_ID,
                     CXFCoreMessages.CXF_FACET_INSTALL_DELEGATE_RUNTIME_LOCATION_NOT_SET));
         }
 
-        IPath cxfLibPath = new Path(CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeLocation());
+        IPath cxfLibPath = new Path(model.getDefaultRuntimeLocation());
+
         if (!cxfLibPath.hasTrailingSeparator()) {
             cxfLibPath = cxfLibPath.addTrailingSeparator();
         }
         cxfLibPath = cxfLibPath.append("lib"); //$NON-NLS-1$
 
-        IClasspathAttribute jstComponentDependency = 
+        IClasspathAttribute jstComponentDependency =
             JavaCore.newClasspathAttribute("org.eclipse.jst.component.dependency", "/WEB-INF/lib"); //$NON-NLS-1$
-        IClasspathEntry cxfClasspathContainer = 
-            JavaCore.newContainerEntry(new Path("org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER"), //$NON-NLS-1$
-            new IAccessRule[0],
-            CXFCorePlugin.getDefault().getJava2WSContext().isExportCXFClasspathContainer() 
-            ? new IClasspathAttribute[]{jstComponentDependency} : new IClasspathAttribute[]{},
-            true);
-        
+        IClasspathEntry cxfClasspathContainer =
+            JavaCore.newContainerEntry(new Path(CXFCorePlugin.CXF_CLASSPATH_CONTAINER_ID),
+                    new IAccessRule[0],
+                    CXFCorePlugin.getDefault().getJava2WSContext().isExportCXFClasspathContainer()
+                    ? new IClasspathAttribute[]{jstComponentDependency} : new IClasspathAttribute[]{},
+                            true);
+
         JDTUtils.addToClasspath(JavaCore.create(project), cxfClasspathContainer);
-        
+
+        //Set project default
+        CXFCorePlugin.getDefault().setCXFRuntimeVersion(project, model.getDefaultRuntimeVersion());
+
         // Add CXF Servlet, Servlet Mapping and Session Config to web.xml
         final IModelProvider provider = ModelProviderManager.getModelProvider(project);
         provider.modify(new Runnable() {
             public void run() {
                 Object modelProvider = provider.getModelObject();
-                boolean useSpringAppContext = CXFCorePlugin.getDefault().getJava2WSContext()
-                        .isUseSpringApplicationContext();
+                boolean useSpringAppContext = CXFCorePlugin.getDefault().getJava2WSContext().isUseSpringApplicationContext();
                 // jst.web 2.5
                 if (modelProvider instanceof org.eclipse.jst.javaee.web.WebApp) {
-                    org.eclipse.jst.javaee.web.WebApp javaeeWebApp = 
+                    org.eclipse.jst.javaee.web.WebApp javaeeWebApp =
                         (org.eclipse.jst.javaee.web.WebApp) modelProvider;
                     addCXFJSTWEB25Servlet(project, javaeeWebApp);
                     if (useSpringAppContext) {
@@ -101,7 +107,7 @@ public class CXFFacetInstallDelegate implements IDelegate {
                 }
                 // jst.web 2.4
                 if (modelProvider instanceof org.eclipse.jst.j2ee.webapplication.WebApp) {
-                    org.eclipse.jst.j2ee.webapplication.WebApp webApp = 
+                    org.eclipse.jst.j2ee.webapplication.WebApp webApp =
                         (org.eclipse.jst.j2ee.webapplication.WebApp) modelProvider;
                     addCXFJSTWEB24Servlet(project, webApp);
                     if (useSpringAppContext) {
@@ -112,7 +118,7 @@ public class CXFFacetInstallDelegate implements IDelegate {
         }, null);
 
         if (CXFCorePlugin.getDefault().getJava2WSContext().isAnnotationProcessingEnabled()) {
-            AptConfig.setEnabled(JavaCore.create(project), true);    
+            AptConfig.setEnabled(JavaCore.create(project), true);
         }
     }
 
@@ -131,7 +137,7 @@ public class CXFFacetInstallDelegate implements IDelegate {
         for (int i = 0; i < listeners.size(); i++) {
             Listener contextLoaderListener = (Listener) listeners.get(i);
             if (contextLoaderListener.getListenerClass().getName().equals(
-                    "org.springframework.web.context.ContextLoaderListener")) { //$NON-NLS-1$
+            "org.springframework.web.context.ContextLoaderListener")) { //$NON-NLS-1$
                 return;
             }
         }
@@ -166,10 +172,10 @@ public class CXFFacetInstallDelegate implements IDelegate {
 
         List listeners = webapp.getListeners();
         for (int i = 0; i < listeners.size(); i++) {
-            org.eclipse.jst.javaee.core.Listener contextLoaderListener = 
+            org.eclipse.jst.javaee.core.Listener contextLoaderListener =
                 (org.eclipse.jst.javaee.core.Listener) listeners.get(i);
             if (contextLoaderListener.getListenerClass().equals(
-                    "org.springframework.web.context.ContextLoaderListener")) { //$NON-NLS-1$
+            "org.springframework.web.context.ContextLoaderListener")) { //$NON-NLS-1$
                 return;
             }
         }
@@ -192,7 +198,7 @@ public class CXFFacetInstallDelegate implements IDelegate {
     private void addCXFJSTWEB24Servlet(IProject webProject, org.eclipse.jst.j2ee.webapplication.WebApp webapp) {
         List servlets = webapp.getServlets();
         for (int i = 0; i < servlets.size(); i++) {
-        	org.eclipse.jst.j2ee.webapplication.Servlet servlet = (org.eclipse.jst.j2ee.webapplication.Servlet) servlets.get(i);
+            org.eclipse.jst.j2ee.webapplication.Servlet servlet = (org.eclipse.jst.j2ee.webapplication.Servlet) servlets.get(i);
             if (servlet.getServletName().equals("cxf")) { //$NON-NLS-1$
                 return;
             }

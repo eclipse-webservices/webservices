@@ -27,7 +27,7 @@ public class JAXWSAnnotateWidgetFactory implements INamedWidgetContributorFactor
     private SimpleWidgetContributor jaxwsAnnotateWidgetContributor;
 
     private JAXWSAnnotateJavaWidget jaxwsAnnotateJavaWidget = new JAXWSAnnotateJavaWidget();
-    
+
     public INamedWidgetContributor getFirstNamedWidget() {
         if (jaxwsAnnotateWidgetContributor == null) {
             init();
@@ -52,11 +52,11 @@ public class JAXWSAnnotateWidgetFactory implements INamedWidgetContributorFactor
         jaxwsAnnotateWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String title = CXFCreationUIMessages.bind(
-                CXFCreationUIMessages.JAVA2WS_JAXWS_ANNOTATE_PAGE_TITLE, 
-                new Object[]{context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
+                CXFCreationUIMessages.JAVA2WS_JAXWS_ANNOTATE_PAGE_TITLE,
+                new Object[]{context.getDefaultRuntimeType(), context.getDefaultRuntimeVersion()});
         jaxwsAnnotateWidgetContributor.setTitle(title);
         jaxwsAnnotateWidgetContributor
-                .setDescription(CXFCreationUIMessages.JAVA2WS_JAXWS_ANNOTATE_PAGE_DESCRIPTION);
+        .setDescription(CXFCreationUIMessages.JAVA2WS_JAXWS_ANNOTATE_PAGE_DESCRIPTION);
         jaxwsAnnotateWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return jaxwsAnnotateJavaWidget;

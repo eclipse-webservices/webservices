@@ -225,6 +225,7 @@ public final class AnnotationsCore {
             if (value instanceof java.lang.annotation.Annotation) {
                 //TODO Handle this situation. Arises when annotations are specified as defaults in array initializers
             }
+            //List of values. Used by the annotation array cell editor when adding annotations
             if (value instanceof List) {
                 Class<? extends java.lang.annotation.Annotation> annotationClass =
                  (Class<? extends java.lang.annotation.Annotation>) method.getReturnType().getComponentType();

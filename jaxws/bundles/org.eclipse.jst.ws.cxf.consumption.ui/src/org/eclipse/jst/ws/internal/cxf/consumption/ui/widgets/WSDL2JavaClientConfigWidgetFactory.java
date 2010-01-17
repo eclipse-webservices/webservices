@@ -31,8 +31,8 @@ public class WSDL2JavaClientConfigWidgetFactory implements INamedWidgetContribut
     private WSDL2JavaClientDefaultsConfigWidget wsdl2JavaClientDefaultsConfigWidget = new WSDL2JavaClientDefaultsConfigWidget();
 
     public INamedWidgetContributor getFirstNamedWidget() {
-        if ((wsdl2JavaClientWidgetContributor == null
-                || wsdl2JavaClientDefaultsWidgetContributor == null)) {
+        if (wsdl2JavaClientWidgetContributor == null
+                || wsdl2JavaClientDefaultsWidgetContributor == null) {
             init();
         }
         return wsdl2JavaClientWidgetContributor;
@@ -60,23 +60,23 @@ public class WSDL2JavaClientConfigWidgetFactory implements INamedWidgetContribut
         CXFContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         String wsdl2JavaClientPageTitle = CXFConsumptionUIMessages.bind(
                 CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_PAGE_TITLE, new Object[]{
-                        context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
+                        context.getDefaultRuntimeType(), context.getDefaultRuntimeVersion()});
         wsdl2JavaClientWidgetContributor.setTitle(wsdl2JavaClientPageTitle);
         wsdl2JavaClientWidgetContributor
-                .setDescription(CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_PAGE_DESCRIPTION);
+        .setDescription(CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_PAGE_DESCRIPTION);
         wsdl2JavaClientWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return wsdl2JavaConfigWidget;
             }
         });
-        
+
         wsdl2JavaClientDefaultsWidgetContributor = new SimpleWidgetContributor();
         String wsdl2JavaClientDefaultsPageTitle = CXFConsumptionUIMessages.bind(
-        CXFConsumptionUIMessages.WSDL2JAVA_ClIENT_DEFAULTS_PAGE_TITLE, new Object[] {
-                context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
+                CXFConsumptionUIMessages.WSDL2JAVA_ClIENT_DEFAULTS_PAGE_TITLE, new Object[] {
+                        context.getDefaultRuntimeType(), context.getDefaultRuntimeVersion()});
         wsdl2JavaClientDefaultsWidgetContributor.setTitle(wsdl2JavaClientDefaultsPageTitle);
         wsdl2JavaClientDefaultsWidgetContributor
-                .setDescription(CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_DEFAULTS_PAGE_DESCRIPTION);
+        .setDescription(CXFConsumptionUIMessages.WSDL2JAVA_CLIENT_DEFAULTS_PAGE_DESCRIPTION);
         wsdl2JavaClientDefaultsWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return wsdl2JavaClientDefaultsConfigWidget;

@@ -231,12 +231,12 @@ public final class Java2WSWidgetFactory {
         return useSEIButton;
     }
 
-    public static Label createInformationLabel(Composite parent, IType startingPointType) {
-        Label infoLabel = new Label(parent, SWT.WRAP);
-        infoLabel.setText(CXFUIMessages.bind(CXFUIMessages.JAVA2WS_USE_SEI_INFO_LABEL, startingPointType
-                .getElementName()));
-        return infoLabel;
-    }
+    //    public static Label createInformationLabel(Composite parent, IType startingPointType) {
+    //        Label infoLabel = new Label(parent, SWT.WRAP);
+    //        infoLabel.setText(CXFUIMessages.bind(CXFUIMessages.JAVA2WS_USE_SEI_INFO_LABEL, startingPointType
+    //                .getElementName()));
+    //        return infoLabel;
+    //    }
 
     public static Label createPaddingLabel(Composite parent) {
         return new Label(parent, SWT.NONE);

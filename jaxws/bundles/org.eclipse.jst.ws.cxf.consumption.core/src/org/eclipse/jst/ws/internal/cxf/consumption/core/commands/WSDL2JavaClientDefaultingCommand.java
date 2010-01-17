@@ -54,10 +54,10 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
 
     @Override
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-    	IStatus status = Status.OK_STATUS;
+        IStatus status = Status.OK_STATUS;
         WSDL2JavaPersistentContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
-        model.setCxfRuntimeVersion(context.getCxfRuntimeVersion());
-        model.setCxfRuntimeEdition(context.getCxfRuntimeEdition());
+        model.setDefaultRuntimeVersion(context.getDefaultRuntimeVersion());
+        model.setDefaultRuntimeType(context.getDefaultRuntimeType());
         model.setProjectName(projectName);
 
         model.setIncludedNamespaces(new HashMap<String, String>());
@@ -82,34 +82,34 @@ public class WSDL2JavaClientDefaultingCommand extends AbstractDataModelOperation
 
         model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()).toOSString());
 
-    	try {
-    		URL wsdlUrl = new URL(inputURL);
-			model.setWsdlURL(wsdlUrl);
+        try {
+            URL wsdlUrl = new URL(inputURL);
+            model.setWsdlURL(wsdlUrl);
 
-			Definition definition = WSDLUtils.readWSDL(model.getWsdlURL());
-        	if (definition != null) {
-        		String targetNamespace = definition.getTargetNamespace();
-        		String packageName = WSDLUtils.getPackageNameFromNamespace(targetNamespace);
-        		model.setTargetNamespace(targetNamespace);
-        		model.getIncludedNamespaces().put(targetNamespace, packageName);
+            Definition definition = WSDLUtils.readWSDL(model.getWsdlURL());
+            if (definition != null) {
+                String targetNamespace = definition.getTargetNamespace();
+                String packageName = WSDLUtils.getPackageNameFromNamespace(targetNamespace);
+                model.setTargetNamespace(targetNamespace);
+                model.getIncludedNamespaces().put(targetNamespace, packageName);
 
                 String wsdlLocation = WSDLUtils.getWSDLLocation(definition);
                 if (wsdlLocation != null) {
                     model.setWsdlLocation(wsdlLocation);
                 }
 
-        		model.setWsdlDefinition(definition);
-        	}
+                model.setWsdlDefinition(definition);
+            }
 
-		} catch (MalformedURLException murle) {
-		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID,
-		            murle.getLocalizedMessage());
-			CXFConsumptionCorePlugin.log(status);
-		} catch (IOException ioe) {
-		    status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID,
-		    		ioe.getLocalizedMessage());
-			CXFConsumptionCorePlugin.log(status);
-		}
+        } catch (MalformedURLException murle) {
+            status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID,
+                    murle.getLocalizedMessage());
+            CXFConsumptionCorePlugin.log(status);
+        } catch (IOException ioe) {
+            status = new Status(IStatus.ERROR, CXFConsumptionCorePlugin.PLUGIN_ID,
+                    ioe.getLocalizedMessage());
+            CXFConsumptionCorePlugin.log(status);
+        }
         return status;
     }
 

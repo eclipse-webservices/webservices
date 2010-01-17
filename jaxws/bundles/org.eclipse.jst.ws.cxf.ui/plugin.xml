@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.preferencePages">
+   <extension point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.wst.ws.internal.ui.preferences.name"
-            class="org.eclipse.jst.ws.internal.cxf.ui.preferences.CXFRuntimePreferencePage"
-            id="org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage"
-            name="%PREFERENCE_CATEGORY_CXF_RUNTIME">
+         category="org.eclipse.wst.ws.internal.ui.preferences.name"
+         class="org.eclipse.jst.ws.internal.cxf.ui.preferences.CXFRuntimePreferencePage"
+         id="org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage"
+         name="%PREFERENCE_CATEGORY_CXF_RUNTIME">
       </page>
    </extension>
+   
+   <extension point="org.eclipse.ui.propertyPages">
+      <page
+         name="%PROPERTIES_CATEGORY_CXF_RUNTIME"
+         class="org.eclipse.jst.ws.internal.cxf.ui.properties.CXFPropertyPage"
+         id="org.eclipse.jst.ws.cxf.propertyPages.CXFPreferencePage">
+         <enabledWhen>
+            <adapt type="org.eclipse.core.resources.IProject">
+               <test forcePluginActivation="true"
+                  property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                  value="cxf.core" />
+            </adapt>         
+         </enabledWhen>
+      </page>
+   </extension>
+   
+   <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
+      <wizard-pages action="cxf.core.install">
+         <page
+            class="org.eclipse.jst.ws.internal.cxf.ui.wizards.CXFFacetInstallWizardPage">
+         </page>
+      </wizard-pages>
+   </extension>
+   
 </plugin>

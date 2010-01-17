@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFPackageImpl.java,v 1.5 2009/08/23 22:51:57 sclarke Exp $
+ * $Id: CXFPackageImpl.java,v 1.6 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -22,13 +22,12 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFFactory;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
 import org.eclipse.jst.ws.internal.cxf.core.model.DataBinding;
 import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
@@ -86,6 +85,13 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      * @generated
      */
     private EClass wsdl2JavaDataModelEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass cxfInstallEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -156,20 +162,10 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
     private static boolean isInited = false;
 
     /**
-     * Creates, registers, and initializes the <b>Package</b> for this
-     * model, and for any others upon which it depends.  Simple
-     * dependencies are satisfied by calling this method on all
-     * dependent packages before doing anything else.  This method drives
-     * initialization for interdependent packages directly, in parallel
-     * with this package, itself.
-     * <p>Of this package and its interdependencies, all packages which
-     * have not yet been registered by their URI values are first created
-     * and registered.  The packages are then initialized in two steps:
-     * meta-model objects for all of the packages are created before any
-     * are initialized, since one package's meta-model objects may refer to
-     * those of another.
-     * <p>Invocation of this method will not affect any packages that have
-     * already been initialized.
+     * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+     * 
+     * <p>This method is used to initialize {@link CXFPackage#eINSTANCE} when that field is accessed.
+     * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #eNS_URI
@@ -181,7 +177,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         if (isInited) return (CXFPackage)EPackage.Registry.INSTANCE.getEPackage(CXFPackage.eNS_URI);
 
         // Obtain or create and register package
-        CXFPackageImpl theCXFPackage = (CXFPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof CXFPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new CXFPackageImpl());
+        CXFPackageImpl theCXFPackage = (CXFPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof CXFPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new CXFPackageImpl());
 
         isInited = true;
 
@@ -194,6 +190,9 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         // Mark meta-data to indicate it can't be changed
         theCXFPackage.freeze();
 
+  
+        // Update the registry and return the package
+        EPackage.Registry.INSTANCE.put(CXFPackage.eNS_URI, theCXFPackage);
         return theCXFPackage;
     }
 
@@ -211,7 +210,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getCXFContext_CxfRuntimeLocation() {
+    public EAttribute getCXFContext_DefaultRuntimeLocation() {
         return (EAttribute)cxfContextEClass.getEStructuralFeatures().get(0);
     }
 
@@ -220,7 +219,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getCXFContext_CxfRuntimeEdition() {
+    public EAttribute getCXFContext_DefaultRuntimeType() {
         return (EAttribute)cxfContextEClass.getEStructuralFeatures().get(1);
     }
 
@@ -229,7 +228,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getCXFContext_CxfRuntimeVersion() {
+    public EAttribute getCXFContext_DefaultRuntimeVersion() {
         return (EAttribute)cxfContextEClass.getEStructuralFeatures().get(2);
     }
 
@@ -303,6 +302,15 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      */
     public EAttribute getCXFContext_ExportCXFClasspathContainer() {
         return (EAttribute)cxfContextEClass.getEStructuralFeatures().get(10);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCXFContext_Installations() {
+        return (EAttribute)cxfContextEClass.getEStructuralFeatures().get(11);
     }
 
     /**
@@ -850,6 +858,42 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getCXFInstall() {
+        return cxfInstallEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCXFInstall_Version() {
+        return (EAttribute)cxfInstallEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCXFInstall_Location() {
+        return (EAttribute)cxfInstallEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCXFInstall_Type() {
+        return (EAttribute)cxfInstallEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getFrontend() {
         return frontendEEnum;
     }
@@ -928,9 +972,9 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
 
         // Create classes and their features
         cxfContextEClass = createEClass(CXF_CONTEXT);
-        createEAttribute(cxfContextEClass, CXF_CONTEXT__CXF_RUNTIME_LOCATION);
-        createEAttribute(cxfContextEClass, CXF_CONTEXT__CXF_RUNTIME_EDITION);
-        createEAttribute(cxfContextEClass, CXF_CONTEXT__CXF_RUNTIME_VERSION);
+        createEAttribute(cxfContextEClass, CXF_CONTEXT__DEFAULT_RUNTIME_LOCATION);
+        createEAttribute(cxfContextEClass, CXF_CONTEXT__DEFAULT_RUNTIME_TYPE);
+        createEAttribute(cxfContextEClass, CXF_CONTEXT__DEFAULT_RUNTIME_VERSION);
         createEAttribute(cxfContextEClass, CXF_CONTEXT__VERBOSE);
         createEAttribute(cxfContextEClass, CXF_CONTEXT__GENERATE_ANT_BUILD_FILE);
         createEAttribute(cxfContextEClass, CXF_CONTEXT__GENERATE_CLIENT);
@@ -939,6 +983,7 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         createEAttribute(cxfContextEClass, CXF_CONTEXT__FRONTEND);
         createEAttribute(cxfContextEClass, CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT);
         createEAttribute(cxfContextEClass, CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER);
+        createEAttribute(cxfContextEClass, CXF_CONTEXT__INSTALLATIONS);
 
         cxfDataModelEClass = createEClass(CXF_DATA_MODEL);
         createEAttribute(cxfDataModelEClass, CXF_DATA_MODEL__PROJECT_NAME);
@@ -1005,6 +1050,11 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         createEAttribute(wsdl2JavaDataModelEClass, WSDL2_JAVA_DATA_MODEL__CATALOG_FILE);
         createEAttribute(wsdl2JavaDataModelEClass, WSDL2_JAVA_DATA_MODEL__JAVA_SOURCE_FOLDER);
 
+        cxfInstallEClass = createEClass(CXF_INSTALL);
+        createEAttribute(cxfInstallEClass, CXF_INSTALL__VERSION);
+        createEAttribute(cxfInstallEClass, CXF_INSTALL__LOCATION);
+        createEAttribute(cxfInstallEClass, CXF_INSTALL__TYPE);
+
         // Create enums
         frontendEEnum = createEEnum(FRONTEND);
         dataBindingEEnum = createEEnum(DATA_BINDING);
@@ -1056,9 +1106,9 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
 
         // Initialize classes and features; add operations and parameters
         initEClass(cxfContextEClass, CXFContext.class, "CXFContext", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getCXFContext_CxfRuntimeLocation(), ecorePackage.getEString(), "cxfRuntimeLocation", null, 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getCXFContext_CxfRuntimeEdition(), ecorePackage.getEString(), "cxfRuntimeEdition", null, 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getCXFContext_CxfRuntimeVersion(), ecorePackage.getEString(), "cxfRuntimeVersion", null, 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCXFContext_DefaultRuntimeLocation(), ecorePackage.getEString(), "defaultRuntimeLocation", null, 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCXFContext_DefaultRuntimeType(), ecorePackage.getEString(), "defaultRuntimeType", null, 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCXFContext_DefaultRuntimeVersion(), ecorePackage.getEString(), "defaultRuntimeVersion", null, 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_Verbose(), ecorePackage.getEBoolean(), "verbose", "true", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_GenerateAntBuildFile(), ecorePackage.getEBoolean(), "generateAntBuildFile", "false", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_GenerateClient(), ecorePackage.getEBoolean(), "generateClient", "false", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1067,6 +1117,12 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         initEAttribute(getCXFContext_Frontend(), this.getFrontend(), "frontend", "jaxws", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_UseSpringApplicationContext(), ecorePackage.getEBoolean(), "useSpringApplicationContext", "true", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCXFContext_ExportCXFClasspathContainer(), ecorePackage.getEBoolean(), "exportCXFClasspathContainer", "true", 0, 1, CXFContext.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        EGenericType g1 = createEGenericType(ecorePackage.getEMap());
+        EGenericType g2 = createEGenericType(ecorePackage.getEString());
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(this.getCXFInstall());
+        g1.getETypeArguments().add(g2);
+        initEAttribute(getCXFContext_Installations(), g1, "installations", null, 0, 1, CXFContext.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(cxfDataModelEClass, CXFDataModel.class, "CXFDataModel", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getCXFDataModel_ProjectName(), ecorePackage.getEString(), "projectName", null, 0, 1, CXFDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1101,8 +1157,8 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         initEAttribute(getJava2WSDataModel_UseServiceEndpointInterface(), ecorePackage.getEBoolean(), "useServiceEndpointInterface", null, 0, 1, Java2WSDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getJava2WSDataModel_ExtractInterface(), ecorePackage.getEBoolean(), "extractInterface", null, 0, 1, Java2WSDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getJava2WSDataModel_ServiceEndpointInterfaceName(), ecorePackage.getEString(), "serviceEndpointInterfaceName", null, 0, 1, Java2WSDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        EGenericType g1 = createEGenericType(this.getMap());
-        EGenericType g2 = createEGenericType(this.getIMethod());
+        g1 = createEGenericType(this.getMap());
+        g2 = createEGenericType(this.getIMethod());
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(this.getMap());
         g1.getETypeArguments().add(g2);
@@ -1156,6 +1212,11 @@ public class CXFPackageImpl extends EPackageImpl implements CXFPackage {
         initEAttribute(getWSDL2JavaDataModel_ExcludedNamespaces(), g1, "excludedNamespaces", null, 0, 1, WSDL2JavaDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getWSDL2JavaDataModel_CatalogFile(), ecorePackage.getEString(), "catalogFile", null, 0, 1, WSDL2JavaDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getWSDL2JavaDataModel_JavaSourceFolder(), ecorePackage.getEString(), "javaSourceFolder", null, 0, 1, WSDL2JavaDataModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(cxfInstallEClass, CXFInstall.class, "CXFInstall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getCXFInstall_Version(), ecorePackage.getEString(), "version", null, 0, 1, CXFInstall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCXFInstall_Location(), ecorePackage.getEString(), "location", null, 0, 1, CXFInstall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCXFInstall_Type(), ecorePackage.getEString(), "type", null, 0, 1, CXFInstall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(frontendEEnum, Frontend.class, "Frontend");

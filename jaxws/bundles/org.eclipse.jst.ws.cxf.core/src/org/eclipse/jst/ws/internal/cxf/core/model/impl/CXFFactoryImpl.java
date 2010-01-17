@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFFactoryImpl.java,v 1.1 2008/11/10 20:37:42 david_williams Exp $
+ * $Id: CXFFactoryImpl.java,v 1.2 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -77,6 +77,7 @@ public class CXFFactoryImpl extends EFactoryImpl implements CXFFactory {
         switch (eClass.getClassifierID()) {
             case CXFPackage.JAVA2_WS_DATA_MODEL: return (EObject)createJava2WSDataModel();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL: return (EObject)createWSDL2JavaDataModel();
+            case CXFPackage.CXF_INSTALL: return (EObject)createCXFInstall();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -150,6 +151,16 @@ public class CXFFactoryImpl extends EFactoryImpl implements CXFFactory {
     public WSDL2JavaDataModel createWSDL2JavaDataModel() {
         WSDL2JavaDataModelImpl wsdl2JavaDataModel = new WSDL2JavaDataModelImpl();
         return wsdl2JavaDataModel;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public CXFInstall createCXFInstall() {
+        CXFInstallImpl cxfInstall = new CXFInstallImpl();
+        return cxfInstall;
     }
 
     /**

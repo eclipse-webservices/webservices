@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFSwitch.java,v 1.1 2008/11/10 20:37:45 david_williams Exp $
+ * $Id: CXFSwitch.java,v 1.2 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.util;
 
@@ -138,6 +138,12 @@ public class CXFSwitch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case CXFPackage.CXF_INSTALL: {
+                CXFInstall cxfInstall = (CXFInstall)theEObject;
+                T result = caseCXFInstall(cxfInstall);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -229,6 +235,21 @@ public class CXFSwitch<T> {
      * @generated
      */
     public T caseWSDL2JavaDataModel(WSDL2JavaDataModel object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Install</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Install</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCXFInstall(CXFInstall object) {
         return null;
     }
 

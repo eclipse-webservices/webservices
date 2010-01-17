@@ -94,8 +94,8 @@ public final class LaunchUtils {
         if (vmInstall instanceof IVMInstall2) {
             IVMInstall2 install2 = (IVMInstall2) vmInstall;
             if (install2.getJavaVersion().compareTo(JavaCore.VERSION_1_6) > 0) {
-                vmRunnerConfiguration.setVMArguments(new String[] { "-Djava.endorsed.dirs="
-                        + CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeLocation() });
+                vmRunnerConfiguration.setVMArguments(new String[] { "-Djava.endorsed.dirs=" //$NON-NLS-1$
+                        + CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeLocation() });
             }
         }
 
@@ -150,13 +150,13 @@ public final class LaunchUtils {
         IConsole[] existingConsoles = consoleManager.getConsoles();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         for (int i = 0; i < existingConsoles.length; i++) {
-            if (existingConsoles[i].getName().equals(context.getCxfRuntimeEdition() + " "
-                    + context.getCxfRuntimeVersion())) {
+            if (existingConsoles[i].getName().equals(context.getDefaultRuntimeType() + " "
+                    + context.getDefaultRuntimeVersion())) {
                 return (MessageConsole) existingConsoles[i];
             }
         }
-        MessageConsole cxfConsole = new MessageConsole(context.getCxfRuntimeEdition() + " "
-                + context.getCxfRuntimeVersion(),
+        MessageConsole cxfConsole = new MessageConsole(context.getDefaultRuntimeType() + " "
+                + context.getDefaultRuntimeVersion(),
                 CXFCorePlugin.imageDescriptorFromPlugin(CXFCorePlugin.PLUGIN_ID,
                 "icons/view16/console_view.gif")); //$NON-NLS-1$
         consoleManager.addConsoles(new IConsole[]{cxfConsole});

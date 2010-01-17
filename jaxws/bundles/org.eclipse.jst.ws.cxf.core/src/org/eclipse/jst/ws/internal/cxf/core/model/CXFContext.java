@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.core.model;
 
+import java.util.Map;
+
 /**
  * 
  * @model abstract="true" interface="true"
@@ -17,58 +19,76 @@ package org.eclipse.jst.ws.internal.cxf.core.model;
 public interface CXFContext {
 
     /**
-     * Returns the CXF Home Directory location.
-     * 
-     * @model
-     */
-    String getCxfRuntimeLocation();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeLocation <em>Cxf Runtime Location</em>}' attribute.
+     * Returns the value of the '<em><b>Default Runtime Location</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * Sets the CXF Home Directory location.
+     * Returns the default CXF Home Directory location.
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Cxf Runtime Location</em>' attribute.
-     * @see #getCxfRuntimeLocation()
+     * @return the value of the '<em>Default Runtime Location</em>' attribute.
+     * @see #setDefaultRuntimeLocation(String)
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage#getCXFContext_DefaultRuntimeLocation()
+     * @model
      * @generated
      */
-    void setCxfRuntimeLocation(String value);
+    String getDefaultRuntimeLocation();
 
     /**
-     * Returns the CXF Runtime Edition.
-     * 
-     * @model
-     */
-    String getCxfRuntimeEdition();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeEdition <em>Cxf Runtime Edition</em>}' attribute.
+     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeLocation <em>Default Runtime Location</em>}' attribute.
      * <!-- begin-user-doc -->
-     * Sets the CXF Runtime Edition.
+     * Sets the default CXF runtime location.
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Cxf Runtime Edition</em>' attribute.
-     * @see #getCxfRuntimeEdition()
+     * @param value the new value of the '<em>Default Runtime Location</em>' attribute.
+     * @see #getDefaultRuntimeLocation()
      * @generated
      */
-    void setCxfRuntimeEdition(String value);
+    void setDefaultRuntimeLocation(String value);
 
     /**
-     * Returns the CXF Tool version.
-     * 
-     * @model
-     */
-    String getCxfRuntimeVersion();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getCxfRuntimeVersion <em>Cxf Runtime Version</em>}' attribute.
+     * Returns the value of the '<em><b>Default Runtime Type</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * Sets the CXF Tool version
+     *  Returns the default CXF runtime type.
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Cxf Runtime Version</em>' attribute.
-     * @see #getCxfRuntimeVersion()
+     * @return the value of the '<em>Default Runtime Type</em>' attribute.
+     * @see #setDefaultRuntimeType(String)
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage#getCXFContext_DefaultRuntimeType()
+     * @model
      * @generated
      */
-    void setCxfRuntimeVersion(String value);
+    String getDefaultRuntimeType();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeType <em>Default Runtime Type</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * Sets the default CXF runtime type.
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Default Runtime Type</em>' attribute.
+     * @see #getDefaultRuntimeType()
+     * @generated
+     */
+    void setDefaultRuntimeType(String value);
+
+    /**
+     * Returns the value of the '<em><b>Default Runtime Version</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     *  Returns the default CXF runtime version.
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Default Runtime Version</em>' attribute.
+     * @see #setDefaultRuntimeVersion(String)
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage#getCXFContext_DefaultRuntimeVersion()
+     * @model
+     * @generated
+     */
+    String getDefaultRuntimeVersion();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getDefaultRuntimeVersion <em>Default Runtime Version</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * Sets the default CXF runtime version.
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Default Runtime Version</em>' attribute.
+     * @see #getDefaultRuntimeVersion()
+     * @generated
+     */
+    void setDefaultRuntimeVersion(String value);
 
     /**
      * Returns whether comments are shown during the code generation process.
@@ -222,4 +242,30 @@ public interface CXFContext {
      * @generated
      */
     void setExportCXFClasspathContainer(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Installations</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Installations</em>' reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Installations</em>' attribute.
+     * @see #setInstallations(Map)
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage#getCXFContext_Installations()
+     * @model transient="true"
+     * @generated
+     */
+    Map<String, CXFInstall> getInstallations();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFContext#getInstallations <em>Installations</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Installations</em>' attribute.
+     * @see #getInstallations()
+     * @generated
+     */
+    void setInstallations(Map<String, CXFInstall> value);
 }

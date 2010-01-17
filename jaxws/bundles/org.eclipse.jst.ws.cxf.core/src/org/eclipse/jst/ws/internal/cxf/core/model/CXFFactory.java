@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFFactory.java,v 1.1 2008/11/10 20:37:43 david_williams Exp $
+ * $Id: CXFFactory.java,v 1.2 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model;
 
@@ -48,6 +48,15 @@ public interface CXFFactory extends EFactory {
      * @generated
      */
     WSDL2JavaDataModel createWSDL2JavaDataModel();
+
+    /**
+     * Returns a new object of class '<em>Install</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Install</em>'.
+     * @generated
+     */
+    CXFInstall createCXFInstall();
 
     /**
      * Returns the package supported by this factory.

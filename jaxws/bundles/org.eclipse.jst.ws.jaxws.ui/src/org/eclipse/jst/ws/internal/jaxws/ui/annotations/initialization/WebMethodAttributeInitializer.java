@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.initialization.AnnotationAttributeInitializer;
-import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 
 public class WebMethodAttributeInitializer extends AnnotationAttributeInitializer {
@@ -81,7 +81,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
 
     private String getOperationNameValue(IType type, IMethod method) {
         try {
-            return method.getElementName() + AnnotationUtils.accountForOverloadedMethods(method);
+            return method.getElementName() + JAXWSUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
         	JAXWSUIPlugin.log(jme.getStatus());
         }
@@ -92,7 +92,7 @@ public class WebMethodAttributeInitializer extends AnnotationAttributeInitialize
         try {
             String methodName = method.getElementName();
             return "urn:" + methodName.substring(0, 1).toUpperCase()  //$NON-NLS-1$
-                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(method);
+                + methodName.substring(1) + JAXWSUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
         	JAXWSUIPlugin.log(jme.getStatus());
         }

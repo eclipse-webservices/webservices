@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 
 public class ResponseWrapperAttributeInitializer extends RequestWrapperAttributeInitializer {
@@ -29,7 +30,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
         try {
             String methodName = method.getElementName() + RESPONSE_SUFFIX;
             return getPackageName(type) + methodName.substring(0, 1).toUpperCase()
-                + methodName.substring(1) + AnnotationUtils.accountForOverloadedMethods(method);
+                + methodName.substring(1) + JAXWSUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }
@@ -47,7 +48,7 @@ public class ResponseWrapperAttributeInitializer extends RequestWrapperAttribute
                 }
             }
             return method.getElementName() + RESPONSE_SUFFIX 
-                    + AnnotationUtils.accountForOverloadedMethods(method);
+                    + JAXWSUtils.accountForOverloadedMethods(method);
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme.getStatus());
         }

@@ -76,7 +76,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
         ResourcesPlugin.getWorkspace().addResourceChangeListener(webContentChangeListener,
                 IResourceChangeEvent.POST_CHANGE);
 
-        if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
+        if (model.getDefaultRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
             CXF_TOOL_CLASS_NAME = JAVA2WS_TOOL_CLASS_NAME;
         } else {
             CXF_TOOL_CLASS_NAME = JAVA2WSDL_TOOL_CLASS_NAME;
@@ -91,7 +91,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
             FileUtils.copyJ2WFilesFromTmp(model);
 
             if (model.isGenerateWSDL()) {
-                SpringUtils.loadSpringConfigInformationFromWSDL((model));
+                SpringUtils.loadSpringConfigInformationFromWSDL(model);
             }
 
             if (isImplementationSelected() || isGenerateServer()) {
@@ -114,8 +114,8 @@ public class Java2WSCommand extends AbstractDataModelOperation {
     }
 
     private boolean isImplementationSelected() {
-        return (model.getFullyQualifiedJavaClassName() != null &&
-                model.getFullyQualifiedJavaClassName().trim().length() > 0);
+        return model.getFullyQualifiedJavaClassName() != null &&
+        model.getFullyQualifiedJavaClassName().trim().length() > 0;
     }
 
     private boolean isGenerateServer() {

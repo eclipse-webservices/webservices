@@ -30,9 +30,9 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
 
     private WSDL2JavaConfigWidget wsdl2JavaConfigWidget = new WSDL2JavaConfigWidget();
     private WSDL2JavaDefaultsConfigWidget wsdl2JavaDefaultsConfigWidget = new WSDL2JavaDefaultsConfigWidget();
-    
+
     public INamedWidgetContributor getFirstNamedWidget() {
-        if ((wsdl2JavaWidgetContributor == null || wsdl2JavaDefaultsWidgetContributor == null)) {
+        if (wsdl2JavaWidgetContributor == null || wsdl2JavaDefaultsWidgetContributor == null) {
             init();
         }
         return wsdl2JavaWidgetContributor;
@@ -59,12 +59,12 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
         wsdl2JavaWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
         String wsdl2JavaPageTitle = CXFCreationUIMessages.bind(
-                CXFCreationUIMessages.WSDL2JAVA_PAGE_TITLE, new Object[]{context.getCxfRuntimeEdition(),
-                        context.getCxfRuntimeVersion()});
+                CXFCreationUIMessages.WSDL2JAVA_PAGE_TITLE, new Object[]{context.getDefaultRuntimeType(),
+                        context.getDefaultRuntimeVersion()});
         wsdl2JavaWidgetContributor.setTitle(wsdl2JavaPageTitle);
         wsdl2JavaWidgetContributor
-                .setDescription(CXFCreationUIMessages.bind(CXFCreationUIMessages.WSDL2JAVA_PAGE_DESCRIPTION,
-                        context.getCxfRuntimeEdition()));
+        .setDescription(CXFCreationUIMessages.bind(CXFCreationUIMessages.WSDL2JAVA_PAGE_DESCRIPTION,
+                context.getDefaultRuntimeType()));
         wsdl2JavaWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return wsdl2JavaConfigWidget;
@@ -74,10 +74,10 @@ public class WSDL2JavaConfigWidgetFactory implements INamedWidgetContributorFact
         wsdl2JavaDefaultsWidgetContributor = new SimpleWidgetContributor();
         String wsdl2JavaDefaultsPageTitle = CXFCreationUIMessages.bind(
                 CXFCreationUIMessages.WSDL2JAVA_DEFAULTS_PAGE_TITLE, new Object[]{
-                        context.getCxfRuntimeEdition(), context.getCxfRuntimeVersion()});
+                        context.getDefaultRuntimeType(), context.getDefaultRuntimeVersion()});
         wsdl2JavaDefaultsWidgetContributor.setTitle(wsdl2JavaDefaultsPageTitle);
         wsdl2JavaDefaultsWidgetContributor
-                .setDescription(CXFCreationUIMessages.WSDL2JAVA_DEFAULTS_PAGE_DESCRIPTION);
+        .setDescription(CXFCreationUIMessages.WSDL2JAVA_DEFAULTS_PAGE_DESCRIPTION);
         wsdl2JavaDefaultsWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return wsdl2JavaDefaultsConfigWidget;

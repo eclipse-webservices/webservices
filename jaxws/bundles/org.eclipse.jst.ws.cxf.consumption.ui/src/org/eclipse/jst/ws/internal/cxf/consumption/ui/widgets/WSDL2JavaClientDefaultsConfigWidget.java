@@ -27,12 +27,12 @@ import org.eclipse.wst.command.internal.env.ui.widgets.WidgetDataEvents;
 
 @SuppressWarnings("restriction")
 public class WSDL2JavaClientDefaultsConfigWidget extends SimpleWidgetDataContributor {
-    
+
     private WSDL2JavaDataModel model;
-    
+
     public WSDL2JavaClientDefaultsConfigWidget() {
     }
-    
+
     public void setWSDL2JavaDataModel(WSDL2JavaDataModel model) {
         this.model = model;
     }
@@ -53,7 +53,7 @@ public class WSDL2JavaClientDefaultsConfigWidget extends SimpleWidgetDataContrib
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         wsdl2javaGroup.setLayoutData(gridData);
 
-//        WSDL2JavaWidgetFactory.createGenerateServerButton(wsdl2javaGroup, model);
+        //        WSDL2JavaWidgetFactory.createGenerateServerButton(wsdl2javaGroup, model);
         WSDL2JavaWidgetFactory.createGenerateImplementationButton(wsdl2javaGroup, model);
 
         WSDL2JavaWidgetFactory.createDefaultValuesButton(wsdl2javaGroup, model);
@@ -67,11 +67,11 @@ public class WSDL2JavaClientDefaultsConfigWidget extends SimpleWidgetDataContrib
         if (CXFModelUtils.isAutoNameResolutionPermitted()) {
             WSDL2JavaWidgetFactory.createAutoNameResolutionButton(wsdl2javaGroup, model);
         }
-        
-        if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
+
+        if (model.getDefaultRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
             WSDL2JavaWidgetFactory.createNoAddressBindingButton(wsdl2javaGroup, model);
         }
-        
+
         Group xjcArgGroup = new Group(mainComposite, SWT.SHADOW_IN);
         xjcArgGroup.setText(CXFConsumptionUIMessages.WSDL2JAVA_XJC_ARG_GROUP_LABEL);
         GridLayout xjcArgLayout = new GridLayout(1, true);

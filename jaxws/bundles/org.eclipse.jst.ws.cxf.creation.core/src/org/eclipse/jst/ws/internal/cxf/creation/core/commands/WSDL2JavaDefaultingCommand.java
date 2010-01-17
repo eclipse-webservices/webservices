@@ -69,15 +69,15 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
     @Override
     @SuppressWarnings({ "unchecked", "deprecation" })
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-    	IStatus status = Status.OK_STATUS;
+        IStatus status = Status.OK_STATUS;
 
-    	webContentChangeListener = new WebContentChangeListener(projectName);
-    	ResourcesPlugin.getWorkspace().addResourceChangeListener(webContentChangeListener,
-    	        IResourceChangeEvent.POST_CHANGE);
+        webContentChangeListener = new WebContentChangeListener(projectName);
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(webContentChangeListener,
+                IResourceChangeEvent.POST_CHANGE);
 
         WSDL2JavaPersistentContext context = CXFCorePlugin.getDefault().getWSDL2JavaContext();
-        model.setCxfRuntimeVersion(context.getCxfRuntimeVersion());
-        model.setCxfRuntimeEdition(context.getCxfRuntimeEdition());
+        model.setDefaultRuntimeVersion(context.getDefaultRuntimeVersion());
+        model.setDefaultRuntimeType(context.getDefaultRuntimeType());
         //
         model.setGenerateImplementation(context.isGenerateImplementation());
         model.setGenerateServer(context.isGenerateServer());
@@ -107,36 +107,36 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
         model.setUseSpringApplicationContext(context.isUseSpringApplicationContext());
         model.setJavaSourceFolder(JDTUtils.getJavaProjectSourceDirectoryPath(model.getProjectName()).toOSString());
 
-    	try {
-    		Definition definition = null;
-        	IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        	IProject project = workspace.getRoot().getProject(projectName);
-        	URL wsdlUrl = new URL(inputURL);
-        	model.setWsdlURL(wsdlUrl);
-        	if (wsdlUrl.getProtocol().equals("file")) { //$NON-NLS-1$
-        		if (!FileUtils.isFileInWebContentFolder(project, new Path(wsdlUrl.getPath()))) {
-        		    IFolder wsdlFolder = WSDLUtils.getWSDLFolder(project);
-        			IPath wsdlFolderPath = wsdlFolder.getLocation();
+        try {
+            Definition definition = null;
+            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+            IProject project = workspace.getRoot().getProject(projectName);
+            URL wsdlUrl = new URL(inputURL);
+            model.setWsdlURL(wsdlUrl);
+            if (wsdlUrl.getProtocol().equals("file")) { //$NON-NLS-1$
+                if (!FileUtils.isFileInWebContentFolder(project, new Path(wsdlUrl.getPath()))) {
+                    IFolder wsdlFolder = WSDLUtils.getWSDLFolder(project);
+                    IPath wsdlFolderPath = wsdlFolder.getLocation();
                     File fileToCopy = new File(wsdlUrl.toURI());
-        			WSDLCopier copier = new WSDLCopier();
-        			//for Eclipse 3.3 compatibility
-        			copier.setSourceURI(wsdlUrl.toExternalForm());
-        			copier.setTargetFolderURI(wsdlFolder.getLocationURI().toString());
+                    WSDLCopier copier = new WSDLCopier();
+                    //for Eclipse 3.3 compatibility
+                    copier.setSourceURI(wsdlUrl.toExternalForm());
+                    copier.setTargetFolderURI(wsdlFolder.getLocationURI().toString());
                     //copier.setTargetFolderURI(wsdlFolderPath.toFile().toString());
-        			workspace.run(copier, monitor);
-        			wsdlFolder.refreshLocal(IResource.DEPTH_ONE, monitor);
-        			File wsdlFile = wsdlFolderPath.addTrailingSeparator().append(fileToCopy.getName()).toFile();
-        			model.setWsdlURL(wsdlFile.toURL());
-        		}
-            	definition = WSDLUtils.readWSDL(model.getWsdlURL());
-            	if (definition != null) {
-            	    setTNSOnModel(definition);
-            	    setWSDLLocation(definition);
-            	}
-        	} else {
-               	String filename = ""; //$NON-NLS-1$
-               	definition = WSDLUtils.readWSDL(wsdlUrl);
-        		if (definition != null) {
+                    workspace.run(copier, monitor);
+                    wsdlFolder.refreshLocal(IResource.DEPTH_ONE, monitor);
+                    File wsdlFile = wsdlFolderPath.addTrailingSeparator().append(fileToCopy.getName()).toFile();
+                    model.setWsdlURL(wsdlFile.toURL());
+                }
+                definition = WSDLUtils.readWSDL(model.getWsdlURL());
+                if (definition != null) {
+                    setTNSOnModel(definition);
+                    setWSDLLocation(definition);
+                }
+            } else {
+                String filename = ""; //$NON-NLS-1$
+                definition = WSDLUtils.readWSDL(wsdlUrl);
+                if (definition != null) {
                     Map servicesMap = definition.getServices();
                     Set<Map.Entry> servicesSet = servicesMap.entrySet();
                     setTNSOnModel(definition);
@@ -154,43 +154,43 @@ public class WSDL2JavaDefaultingCommand extends AbstractDataModelOperation {
                             break;
                         }
                     }
-        		}
-        		IPath wsdlFolderPath = WSDLUtils.getWSDLFolder(project).getLocation();
-            	WSDLCopier copier = new WSDLCopier();
-            	copier.setSourceURI(wsdlUrl.toExternalForm());
-            	copier.setTargetFolderURI(wsdlFolderPath.toFile().toURI().toString());
-            	copier.setTargetFilename(filename);
-            	workspace.run(copier, monitor);
+                }
+                IPath wsdlFolderPath = WSDLUtils.getWSDLFolder(project).getLocation();
+                WSDLCopier copier = new WSDLCopier();
+                copier.setSourceURI(wsdlUrl.toExternalForm());
+                copier.setTargetFolderURI(wsdlFolderPath.toFile().toURI().toString());
+                copier.setTargetFilename(filename);
+                workspace.run(copier, monitor);
 
-            	File wsdlFile = wsdlFolderPath.addTrailingSeparator().append(filename).toFile();
-    			model.setWsdlURL(wsdlFile.toURI().toURL());
-        	}
-        	model.setWsdlFileName(getWSDLFileNameFromURL(model.getWsdlURL()));
+                File wsdlFile = wsdlFolderPath.addTrailingSeparator().append(filename).toFile();
+                model.setWsdlURL(wsdlFile.toURI().toURL());
+            }
+            model.setWsdlFileName(getWSDLFileNameFromURL(model.getWsdlURL()));
 
-        	IPath wsdlLocationPath = new Path(model.getWsdlURL().getPath());
-        	wsdlLocationPath = wsdlLocationPath.removeFirstSegments(WSDLUtils.getWebContentFolder(project)
-        			.getLocation().matchingFirstSegments(wsdlLocationPath));
+            IPath wsdlLocationPath = new Path(model.getWsdlURL().getPath());
+            wsdlLocationPath = wsdlLocationPath.removeFirstSegments(WSDLUtils.getWebContentFolder(project)
+                    .getLocation().matchingFirstSegments(wsdlLocationPath));
 
-        	if (wsdlLocationPath.getDevice() != null) {
-        	    wsdlLocationPath = wsdlLocationPath.setDevice(null);
-        	}
-        	model.setWsdlDefinition(definition);
-        	model.setConfigWsdlLocation(wsdlLocationPath.toString());
+            if (wsdlLocationPath.getDevice() != null) {
+                wsdlLocationPath = wsdlLocationPath.setDevice(null);
+            }
+            model.setWsdlDefinition(definition);
+            model.setConfigWsdlLocation(wsdlLocationPath.toString());
 
- 		} catch (CoreException ce) {
- 			status = ce.getStatus();
-			CXFCreationCorePlugin.log(status);
-		} catch (URISyntaxException urise) {
-			status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, urise.getLocalizedMessage());
-			CXFCreationCorePlugin.log(status);
-		} catch (MalformedURLException murle) {
-			status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, murle.getLocalizedMessage());
-			CXFCreationCorePlugin.log(murle);
-		} catch (IOException ioe) {
-			status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, ioe.getLocalizedMessage());
-			CXFCreationCorePlugin.log(ioe);
-		}
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
+        } catch (CoreException ce) {
+            status = ce.getStatus();
+            CXFCreationCorePlugin.log(status);
+        } catch (URISyntaxException urise) {
+            status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, urise.getLocalizedMessage());
+            CXFCreationCorePlugin.log(status);
+        } catch (MalformedURLException murle) {
+            status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, murle.getLocalizedMessage());
+            CXFCreationCorePlugin.log(murle);
+        } catch (IOException ioe) {
+            status = new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, ioe.getLocalizedMessage());
+            CXFCreationCorePlugin.log(ioe);
+        }
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(webContentChangeListener);
         return status;
     }
 

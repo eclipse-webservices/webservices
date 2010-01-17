@@ -10,13 +10,18 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.core;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jst.ws.internal.cxf.core.context.Java2WSPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.context.WSDL2JavaPersistentContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
+import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -26,6 +31,9 @@ public class CXFCorePlugin extends AbstractUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.eclipse.jst.ws.cxf.core"; //$NON-NLS-1$
+
+    //CXF Classpath container ID
+    public static final String CXF_CLASSPATH_CONTAINER_ID = "org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER"; //$NON-NLS-1$
 
     public static final String CXF_VERSION_2_0 = "2.0"; //$NON-NLS-1$
 
@@ -38,7 +46,7 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     private WSDL2JavaPersistentContext wsdl2JavaContext;
 
     private Version currentRuntimeVersion;
-    
+
     /**
      * The constructor
      */
@@ -50,6 +58,7 @@ public class CXFCorePlugin extends AbstractUIPlugin {
      * 
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
      */
+    @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
@@ -60,6 +69,7 @@ public class CXFCorePlugin extends AbstractUIPlugin {
      * 
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
+    @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
@@ -91,20 +101,48 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     }
 
     public Version getCurrentRuntimeVersion() {
-        if (currentRuntimeVersion == null) {
-            String cxfRuntimeVersion = CXFCorePlugin.getDefault().getJava2WSContext().getCxfRuntimeVersion();
-            if (cxfRuntimeVersion.length() == 0) {
-                cxfRuntimeVersion = "0.0.0";
-            }
-            this.currentRuntimeVersion = new Version(cxfRuntimeVersion);
+        //if (currentRuntimeVersion == null) {
+        String cxfRuntimeVersion = CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeVersion();
+        if (cxfRuntimeVersion.length() == 0) {
+            cxfRuntimeVersion = "0.0.0";
         }
+        this.currentRuntimeVersion = new Version(cxfRuntimeVersion);
+        //}
         return currentRuntimeVersion;
     }
 
     public void setCurrentRuntimeVersion(Version version) {
         this.currentRuntimeVersion = version;
     }
-    
+
+    public void setCXFRuntimeVersion(IProject project, String cxfRuntimeVersion) {
+        IEclipsePreferences prefs = getProjectPreferences(project);
+        prefs.put(PLUGIN_ID + ".runtime.version", cxfRuntimeVersion);
+        flush(prefs);
+    }
+
+    public String getCXFRuntimeVersion(IProject project) {
+        IEclipsePreferences prefs = getProjectPreferences(project);
+        return prefs.get(PLUGIN_ID + ".runtime.version",
+                CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeVersion());
+    }
+
+    private static void flush(IEclipsePreferences prefs) {
+        try {
+            prefs.flush();
+        } catch (BackingStoreException bse) {
+            log(bse);
+        }
+    }
+
+    /**
+     * Return the CXF preferences for the specified Eclipse project.
+     */
+    public IEclipsePreferences getProjectPreferences(IProject project) {
+        IScopeContext context = new ProjectScope(project);
+        return context.getNode(PLUGIN_ID);
+    }
+
     public static void logMessage(int severity, String message) {
         CXFCorePlugin.log(new Status(severity, CXFCorePlugin.PLUGIN_ID, message));
     }
@@ -112,9 +150,9 @@ public class CXFCorePlugin extends AbstractUIPlugin {
     public static void log(IStatus status) {
         CXFCorePlugin.getDefault().getLog().log(status);
     }
-    
+
     public static void log(Throwable exception) {
-        CXFCorePlugin.log(new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID, 
+        CXFCorePlugin.log(new Status(IStatus.ERROR, CXFCorePlugin.PLUGIN_ID,
                 exception.toString(), exception));
     }
 }

@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: Java2WSDataModelImpl.java,v 1.2 2009/08/23 22:51:57 sclarke Exp $
+ * $Id: Java2WSDataModelImpl.java,v 1.3 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
@@ -803,31 +803,31 @@ public class Java2WSDataModelImpl extends CXFDataModelImpl implements Java2WSDat
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case CXFPackage.JAVA2_WS_DATA_MODEL__SOAP12_BINDING:
-                return isSoap12Binding() ? Boolean.TRUE : Boolean.FALSE;
+                return isSoap12Binding();
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_XSD_IMPORTS:
-                return isGenerateXSDImports() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateXSDImports();
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WSDL:
-                return isGenerateWSDL() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateWSDL();
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WRAPPER_FAULT_BEANS:
-                return isGenerateWrapperFaultBeans() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateWrapperFaultBeans();
             case CXFPackage.JAVA2_WS_DATA_MODEL__ANNOTATION_PROCESSING_ENABLED:
-                return isAnnotationProcessingEnabled() ? Boolean.TRUE : Boolean.FALSE;
+                return isAnnotationProcessingEnabled();
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WEB_METHOD_ANNOTATION:
-                return isGenerateWebMethodAnnotation() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateWebMethodAnnotation();
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WEB_PARAM_ANNOTATION:
-                return isGenerateWebParamAnnotation() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateWebParamAnnotation();
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_REQUEST_WRAPPER_ANNOTATION:
-                return isGenerateRequestWrapperAnnotation() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateRequestWrapperAnnotation();
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_RESPONSE_WRAPPER_ANNOTATION:
-                return isGenerateResponseWrapperAnnotation() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateResponseWrapperAnnotation();
             case CXFPackage.JAVA2_WS_DATA_MODEL__CLASSPATH:
                 return getClasspath();
             case CXFPackage.JAVA2_WS_DATA_MODEL__JAVA_STARTING_POINT:
                 return getJavaStartingPoint();
             case CXFPackage.JAVA2_WS_DATA_MODEL__USE_SERVICE_ENDPOINT_INTERFACE:
-                return isUseServiceEndpointInterface() ? Boolean.TRUE : Boolean.FALSE;
+                return isUseServiceEndpointInterface();
             case CXFPackage.JAVA2_WS_DATA_MODEL__EXTRACT_INTERFACE:
-                return isExtractInterface() ? Boolean.TRUE : Boolean.FALSE;
+                return isExtractInterface();
             case CXFPackage.JAVA2_WS_DATA_MODEL__SERVICE_ENDPOINT_INTERFACE_NAME:
                 return getServiceEndpointInterfaceName();
             case CXFPackage.JAVA2_WS_DATA_MODEL__METHOD_MAP:
@@ -852,31 +852,31 @@ public class Java2WSDataModelImpl extends CXFDataModelImpl implements Java2WSDat
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case CXFPackage.JAVA2_WS_DATA_MODEL__SOAP12_BINDING:
-                setSoap12Binding(((Boolean)newValue).booleanValue());
+                setSoap12Binding((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_XSD_IMPORTS:
-                setGenerateXSDImports(((Boolean)newValue).booleanValue());
+                setGenerateXSDImports((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WSDL:
-                setGenerateWSDL(((Boolean)newValue).booleanValue());
+                setGenerateWSDL((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WRAPPER_FAULT_BEANS:
-                setGenerateWrapperFaultBeans(((Boolean)newValue).booleanValue());
+                setGenerateWrapperFaultBeans((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__ANNOTATION_PROCESSING_ENABLED:
-                setAnnotationProcessingEnabled(((Boolean)newValue).booleanValue());
+                setAnnotationProcessingEnabled((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WEB_METHOD_ANNOTATION:
-                setGenerateWebMethodAnnotation(((Boolean)newValue).booleanValue());
+                setGenerateWebMethodAnnotation((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_WEB_PARAM_ANNOTATION:
-                setGenerateWebParamAnnotation(((Boolean)newValue).booleanValue());
+                setGenerateWebParamAnnotation((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_REQUEST_WRAPPER_ANNOTATION:
-                setGenerateRequestWrapperAnnotation(((Boolean)newValue).booleanValue());
+                setGenerateRequestWrapperAnnotation((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__GENERATE_RESPONSE_WRAPPER_ANNOTATION:
-                setGenerateResponseWrapperAnnotation(((Boolean)newValue).booleanValue());
+                setGenerateResponseWrapperAnnotation((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__CLASSPATH:
                 setClasspath((String)newValue);
@@ -885,10 +885,10 @@ public class Java2WSDataModelImpl extends CXFDataModelImpl implements Java2WSDat
                 setJavaStartingPoint((String)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__USE_SERVICE_ENDPOINT_INTERFACE:
-                setUseServiceEndpointInterface(((Boolean)newValue).booleanValue());
+                setUseServiceEndpointInterface((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__EXTRACT_INTERFACE:
-                setExtractInterface(((Boolean)newValue).booleanValue());
+                setExtractInterface((Boolean)newValue);
                 return;
             case CXFPackage.JAVA2_WS_DATA_MODEL__SERVICE_ENDPOINT_INTERFACE_NAME:
                 setServiceEndpointInterfaceName((String)newValue);

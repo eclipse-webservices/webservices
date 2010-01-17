@@ -28,7 +28,7 @@ public class Java2WSConfigWidgetFactory implements INamedWidgetContributorFactor
     private SimpleWidgetContributor java2WSWidgetContributor;
 
     private Java2WSConfigWidget java2WSConfigWidget = new Java2WSConfigWidget();
-    
+
     public Java2WSConfigWidgetFactory() {
 
     }
@@ -57,13 +57,13 @@ public class Java2WSConfigWidgetFactory implements INamedWidgetContributorFactor
         java2WSWidgetContributor = new SimpleWidgetContributor();
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         String title = CXFCreationUIMessages.bind(
-                CXFCreationUIMessages.JAVA2WS_PAGE_TITLE, new Object[]{context.getCxfRuntimeEdition(), 
-                        context.getCxfRuntimeVersion()});
+                CXFCreationUIMessages.JAVA2WS_PAGE_TITLE, new Object[]{context.getDefaultRuntimeType(),
+                        context.getDefaultRuntimeVersion()});
 
         java2WSWidgetContributor.setTitle(title);
         java2WSWidgetContributor
-                .setDescription(CXFCreationUIMessages.bind(CXFCreationUIMessages.JAVA2WS_PAGE_DESCRIPTION, 
-                        context.getCxfRuntimeEdition()));
+        .setDescription(CXFCreationUIMessages.bind(CXFCreationUIMessages.JAVA2WS_PAGE_DESCRIPTION,
+                context.getDefaultRuntimeType()));
         java2WSWidgetContributor.setFactory(new WidgetContributorFactory() {
             public WidgetContributor create() {
                 return java2WSConfigWidget;

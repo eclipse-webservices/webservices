@@ -18,10 +18,25 @@ public class CXFUIMessages extends NLS {
     public static String CXF_RUNTIME_PREFERENCE_PAGE_RUNTIME_HOME_TAB_TOOLTIP;
     public static String CXF_RUNTIME_PREFERENCE_PAGE_CXF_HOME_DIR_LABEL;
     public static String CXF_RUNTIME_PREFERENCE_PAGE_RUNTIME_NOT_SET;
+    public static String CXF_RUNTIME_PREFERENCE_PAGE_ADD_BUTTON_LABEL;
+    public static String CXF_RUNTIME_PREFERENCE_PAGE_EDIT_BUTTON_LABEL;
+    public static String CXF_RUNTIME_PREFERENCE_PAGE_REMOVE_BUTTON_LABEL;
     public static String CXF_RUNTIME_PREFERENCE_PAGE_BROWSE_BUTTON_LABEL;
     public static String CXF_RUNTIME_PREFERENCE_PAGE_CXF_VERSON_LABEL;
     public static String CXF_RUNTIME_PREFERENCE_PAGE_EXPORT_CXF_CLASSPATH_CONTAINER;
-    
+    public static String CXF_RUNTIME_PREFERENCE_PAGE_DESCRIPTION_LABEL;
+    public static String CXF_RUNTIME_PREFERENCE_PAGE_VERSION_COLUMN_NAME;
+    public static String CXF_RUNTIME_PREFERENCE_PAGE_LOCATION_COLUMN_NAME;
+
+    public static String CXF_PROPERTY_PAGE_RUNTIME_LABEL;
+    public static String CXF_CONFIGURE_INSTALLED_RUNTIMES_LABEL;
+
+    public static String CXF_INSTALL_WIZARD_PAGE_TITLE;
+    public static String CXF_INSTALL_WIZARD_PAGE_DESCRIPTION;
+
+    public static String CXF_FACET_INSTALL_WIZARD_PAGE_TITLE;
+    public static String CXF_FACET_INSTALL_WIZARD_PAGE_DESCRIPTION;
+
     public static String JAVA2WS_PREFERENCES_TAB_NAME;
     public static String JAVA2WS_PREFERENCES_TAB_TOOLTIP;
 
@@ -33,12 +48,12 @@ public class CXFUIMessages extends NLS {
 
     public static String WSDL2JAVA_PREFERENCES_TAB_NAME;
     public static String WSDL2JAVA_PREFERENCES_TAB_TOOLTIP;
-    
+
     public static String SPRING_CONFIG_PREFERENCES_TAB_NAME;
     public static String SPRING_CONFIG_PREFERENCES_TAB_TOOLTIP;
-    
+
     public static String ANNOTATIONS_PREFERENCES_LINK;
-    
+
     public static String CXF_DEFAULT_FRONTEND_LABEL;
     public static String CXF_DEFAULT_DATABINDING_LABEL;
     public static String JAVA2WS_GROUP_LABEL;
@@ -71,7 +86,7 @@ public class CXFUIMessages extends NLS {
     public static String JAXWS_ANNOTATIONS_PROCESSING_GROUP_LABEL;
     public static String JAXWS_ENABLE_ANNOTATION_PROCESSING;
     public static String JAXWS_ENABLE_ANNOTATION_PROCESSING_TOOLTIP;
-    
+
     public static String JAVA2WS_SOAP12_BINDING_TOOLTIP;
     public static String JAVA2WS_CREATE_XSD_IMPORTS_TOOLTIP;
     public static String JAVA2WS_DATABINDING_TOOLTIP;

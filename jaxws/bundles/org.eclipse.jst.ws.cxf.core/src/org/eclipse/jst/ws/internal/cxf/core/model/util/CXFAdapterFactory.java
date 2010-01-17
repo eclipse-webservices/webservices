@@ -8,7 +8,7 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFAdapterFactory.java,v 1.2 2009/01/26 15:28:14 sclarke Exp $
+ * $Id: CXFAdapterFactory.java,v 1.3 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.util;
 
@@ -100,6 +100,10 @@ public class CXFAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseWSDL2JavaDataModel(WSDL2JavaDataModel object) {
                 return createWSDL2JavaDataModelAdapter();
+            }
+            @Override
+            public Adapter caseCXFInstall(CXFInstall object) {
+                return createCXFInstallAdapter();
             }
             @Override
             public Adapter defaultCase(EObject object) {
@@ -202,6 +206,20 @@ public class CXFAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createWSDL2JavaDataModelAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall <em>Install</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall
+     * @generated
+     */
+    public Adapter createCXFInstallAdapter() {
         return null;
     }
 

@@ -26,14 +26,14 @@ import org.eclipse.swt.widgets.Group;
 
 public class AnnotationsComposite extends Composite {
     private Java2WSPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
-    
+
     private Button generateWebMethodButton;
     private Button generateWebParamButton;
     private Button generateRequestWrapperButton;
     private Button generateResponseWrapperButton;
 
     private Button enableAPTButton;
-    
+
     public AnnotationsComposite(Composite parent, int style) {
         super(parent, style);
         addControls();
@@ -57,36 +57,40 @@ public class AnnotationsComposite extends Composite {
         generateWebMethodButton = new Button(jaxwsAnnotationsGroup, SWT.CHECK);
         generateWebMethodButton.setText(CXFUIMessages.JAXWS_GENERATE_WEB_METHOD);
         generateWebMethodButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 boolean selected = ((Button) e.widget).getSelection();
                 context.setGenerateWebMethodAnnotation(selected);
             }
         });
         generateWebMethodButton.setSelection(context.isGenerateWebMethodAnnotation());
-        
+
         generateWebParamButton = new Button(jaxwsAnnotationsGroup, SWT.CHECK);
         generateWebParamButton.setText(CXFUIMessages.JAXWS_GENERATE_WEB_PARAM);
         generateWebParamButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 boolean selected = ((Button) e.widget).getSelection();
                 context.setGenerateWebParamAnnotation(selected);
             }
         });
         generateWebParamButton.setSelection(context.isGenerateWebParamAnnotation());
-        
+
         generateRequestWrapperButton = new Button(jaxwsAnnotationsGroup, SWT.CHECK);
         generateRequestWrapperButton.setText(CXFUIMessages.JAXWS_GENERATE_REQUEST_WRAPPER);
         generateRequestWrapperButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 boolean selected = ((Button) e.widget).getSelection();
                 context.setGenerateRequestWrapperAnnotation(selected);
             }
         });
         generateRequestWrapperButton.setSelection(context.isGenerateRequestWrapperAnnotation());
-        
+
         generateResponseWrapperButton = new Button(jaxwsAnnotationsGroup, SWT.CHECK);
         generateResponseWrapperButton.setText(CXFUIMessages.JAXWS_GENERATE_RESPONSE_WRAPPER);
         generateResponseWrapperButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 boolean selected = ((Button) e.widget).getSelection();
                 context.setGenerateResponseWrapperAnnotation(selected);
@@ -97,8 +101,8 @@ public class AnnotationsComposite extends Composite {
         Group annotationProcessingGroup = new Group(this, SWT.SHADOW_IN);
         annotationProcessingGroup.setText(CXFUIMessages.JAXWS_ANNOTATIONS_PROCESSING_GROUP_LABEL);
         annotationProcessingGroup.setToolTipText(CXFUIMessages.bind(
-                CXFUIMessages.JAXWS_ENABLE_ANNOTATION_PROCESSING_TOOLTIP, 
-                context.getCxfRuntimeEdition()));
+                CXFUIMessages.JAXWS_ENABLE_ANNOTATION_PROCESSING_TOOLTIP,
+                context.getDefaultRuntimeType()));
         gridLayout = new GridLayout(1, true);
         annotationProcessingGroup.setLayout(gridLayout);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -107,6 +111,7 @@ public class AnnotationsComposite extends Composite {
         enableAPTButton = new Button(annotationProcessingGroup, SWT.CHECK);
         enableAPTButton.setText(CXFUIMessages.JAXWS_ENABLE_ANNOTATION_PROCESSING);
         enableAPTButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 boolean selected = ((Button) e.widget).getSelection();
                 context.setAnnotationProcessingEnabled(selected);
@@ -118,22 +123,22 @@ public class AnnotationsComposite extends Composite {
     public void setDefaults() {
         generateWebMethodButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
                 CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_METHOD_ANNOTATION));
-        
+
         generateWebParamButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
                 CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_PARAM_ANNOTATION));
-        
+
         generateRequestWrapperButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
-                CXFPackage.JAVA2_WS_CONTEXT, 
+                CXFPackage.JAVA2_WS_CONTEXT,
                 CXFPackage.JAVA2_WS_CONTEXT__GENERATE_REQUEST_WRAPPER_ANNOTATION));
-        
+
         generateResponseWrapperButton.setSelection(CXFModelUtils.getDefaultBooleanValue(
                 CXFPackage.JAVA2_WS_CONTEXT,
                 CXFPackage.JAVA2_WS_CONTEXT__GENERATE_RESPONSE_WRAPPER_ANNOTATION));
-        
+
         enableAPTButton.setSelection(CXFModelUtils.getDefaultBooleanValue(CXFPackage.JAVA2_WS_CONTEXT,
                 CXFPackage.JAVA2_WS_CONTEXT__ANNOTATION_PROCESSING_ENABLED));
     }
-    
+
     public void storeValues() {
         context.setGenerateWebMethodAnnotation(generateWebMethodButton.getSelection());
         context.setGenerateWebParamAnnotation(generateWebParamButton.getSelection());

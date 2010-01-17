@@ -8,21 +8,21 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: CXFDataModelImpl.java,v 1.3 2009/01/29 21:46:59 sclarke Exp $
+ * $Id: CXFDataModelImpl.java,v 1.4 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
 import java.net.URL;
+import java.util.Map;
 
 import javax.wsdl.Definition;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFDataModel;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFPackage;
 import org.eclipse.jst.ws.internal.cxf.core.model.DataBinding;
 import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
@@ -35,9 +35,9 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getCxfRuntimeLocation <em>Cxf Runtime Location</em>}</li>
- *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getCxfRuntimeEdition <em>Cxf Runtime Edition</em>}</li>
- *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getCxfRuntimeVersion <em>Cxf Runtime Version</em>}</li>
+ *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getDefaultRuntimeLocation <em>Default Runtime Location</em>}</li>
+ *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getDefaultRuntimeType <em>Default Runtime Type</em>}</li>
+ *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getDefaultRuntimeVersion <em>Default Runtime Version</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#isVerbose <em>Verbose</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#isGenerateAntBuildFile <em>Generate Ant Build File</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#isGenerateClient <em>Generate Client</em>}</li>
@@ -46,6 +46,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getFrontend <em>Frontend</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#isUseSpringApplicationContext <em>Use Spring Application Context</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#isExportCXFClasspathContainer <em>Export CXF Classpath Container</em>}</li>
+ *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getInstallations <em>Installations</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getProjectName <em>Project Name</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getResourceDirectory <em>Resource Directory</em>}</li>
  *   <li>{@link org.eclipse.jst.ws.internal.cxf.core.model.impl.CXFDataModelImpl#getClassDirectory <em>Class Directory</em>}</li>
@@ -67,64 +68,64 @@ import org.eclipse.jst.ws.internal.cxf.core.model.Frontend;
  */
 public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataModel {
     /**
-     * The default value of the '{@link #getCxfRuntimeLocation() <em>Cxf Runtime Location</em>}' attribute.
+     * The default value of the '{@link #getDefaultRuntimeLocation() <em>Default Runtime Location</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCxfRuntimeLocation()
+     * @see #getDefaultRuntimeLocation()
      * @generated
      * @ordered
      */
-    protected static final String CXF_RUNTIME_LOCATION_EDEFAULT = null;
+    protected static final String DEFAULT_RUNTIME_LOCATION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCxfRuntimeLocation() <em>Cxf Runtime Location</em>}' attribute.
+     * The cached value of the '{@link #getDefaultRuntimeLocation() <em>Default Runtime Location</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCxfRuntimeLocation()
+     * @see #getDefaultRuntimeLocation()
      * @generated
      * @ordered
      */
-    protected String cxfRuntimeLocation = CXF_RUNTIME_LOCATION_EDEFAULT;
+    protected String defaultRuntimeLocation = DEFAULT_RUNTIME_LOCATION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getCxfRuntimeEdition() <em>Cxf Runtime Edition</em>}' attribute.
+     * The default value of the '{@link #getDefaultRuntimeType() <em>Default Runtime Type</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCxfRuntimeEdition()
+     * @see #getDefaultRuntimeType()
      * @generated
      * @ordered
      */
-    protected static final String CXF_RUNTIME_EDITION_EDEFAULT = null;
+    protected static final String DEFAULT_RUNTIME_TYPE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCxfRuntimeEdition() <em>Cxf Runtime Edition</em>}' attribute.
+     * The cached value of the '{@link #getDefaultRuntimeType() <em>Default Runtime Type</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCxfRuntimeEdition()
+     * @see #getDefaultRuntimeType()
      * @generated
      * @ordered
      */
-    protected String cxfRuntimeEdition = CXF_RUNTIME_EDITION_EDEFAULT;
+    protected String defaultRuntimeType = DEFAULT_RUNTIME_TYPE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getCxfRuntimeVersion() <em>Cxf Runtime Version</em>}' attribute.
+     * The default value of the '{@link #getDefaultRuntimeVersion() <em>Default Runtime Version</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCxfRuntimeVersion()
+     * @see #getDefaultRuntimeVersion()
      * @generated
      * @ordered
      */
-    protected static final String CXF_RUNTIME_VERSION_EDEFAULT = null;
+    protected static final String DEFAULT_RUNTIME_VERSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCxfRuntimeVersion() <em>Cxf Runtime Version</em>}' attribute.
+     * The cached value of the '{@link #getDefaultRuntimeVersion() <em>Default Runtime Version</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCxfRuntimeVersion()
+     * @see #getDefaultRuntimeVersion()
      * @generated
      * @ordered
      */
-    protected String cxfRuntimeVersion = CXF_RUNTIME_VERSION_EDEFAULT;
+    protected String defaultRuntimeVersion = DEFAULT_RUNTIME_VERSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #isVerbose() <em>Verbose</em>}' attribute.
@@ -285,6 +286,16 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * @ordered
      */
     protected boolean exportCXFClasspathContainer = EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getInstallations() <em>Installations</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInstallations()
+     * @generated
+     * @ordered
+     */
+    protected Map<String, CXFInstall> installations;
 
     /**
      * The default value of the '{@link #getProjectName() <em>Project Name</em>}' attribute.
@@ -590,8 +601,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getCxfRuntimeLocation() {
-        return cxfRuntimeLocation;
+    public String getDefaultRuntimeLocation() {
+        return defaultRuntimeLocation;
     }
 
     /**
@@ -599,11 +610,11 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setCxfRuntimeLocation(String newCxfRuntimeLocation) {
-        String oldCxfRuntimeLocation = cxfRuntimeLocation;
-        cxfRuntimeLocation = newCxfRuntimeLocation;
+    public void setDefaultRuntimeLocation(String newDefaultRuntimeLocation) {
+        String oldDefaultRuntimeLocation = defaultRuntimeLocation;
+        defaultRuntimeLocation = newDefaultRuntimeLocation;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_LOCATION, oldCxfRuntimeLocation, cxfRuntimeLocation));
+            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION, oldDefaultRuntimeLocation, defaultRuntimeLocation));
     }
 
     /**
@@ -611,8 +622,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getCxfRuntimeEdition() {
-        return cxfRuntimeEdition;
+    public String getDefaultRuntimeType() {
+        return defaultRuntimeType;
     }
 
     /**
@@ -620,11 +631,11 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setCxfRuntimeEdition(String newCxfRuntimeEdition) {
-        String oldCxfRuntimeEdition = cxfRuntimeEdition;
-        cxfRuntimeEdition = newCxfRuntimeEdition;
+    public void setDefaultRuntimeType(String newDefaultRuntimeType) {
+        String oldDefaultRuntimeType = defaultRuntimeType;
+        defaultRuntimeType = newDefaultRuntimeType;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_EDITION, oldCxfRuntimeEdition, cxfRuntimeEdition));
+            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE, oldDefaultRuntimeType, defaultRuntimeType));
     }
 
     /**
@@ -632,8 +643,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getCxfRuntimeVersion() {
-        return cxfRuntimeVersion;
+    public String getDefaultRuntimeVersion() {
+        return defaultRuntimeVersion;
     }
 
     /**
@@ -641,11 +652,11 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setCxfRuntimeVersion(String newCxfRuntimeVersion) {
-        String oldCxfRuntimeVersion = cxfRuntimeVersion;
-        cxfRuntimeVersion = newCxfRuntimeVersion;
+    public void setDefaultRuntimeVersion(String newDefaultRuntimeVersion) {
+        String oldDefaultRuntimeVersion = defaultRuntimeVersion;
+        defaultRuntimeVersion = newDefaultRuntimeVersion;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_VERSION, oldCxfRuntimeVersion, cxfRuntimeVersion));
+            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION, oldDefaultRuntimeVersion, defaultRuntimeVersion));
     }
 
     /**
@@ -814,6 +825,27 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
         exportCXFClasspathContainer = newExportCXFClasspathContainer;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER, oldExportCXFClasspathContainer, exportCXFClasspathContainer));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Map<String, CXFInstall> getInstallations() {
+        return installations;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setInstallations(Map<String, CXFInstall> newInstallations) {
+        Map<String, CXFInstall> oldInstallations = installations;
+        installations = newInstallations;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, CXFPackage.CXF_DATA_MODEL__INSTALLATIONS, oldInstallations, installations));
     }
 
     /**
@@ -1118,28 +1150,30 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_LOCATION:
-                return getCxfRuntimeLocation();
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_EDITION:
-                return getCxfRuntimeEdition();
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_VERSION:
-                return getCxfRuntimeVersion();
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION:
+                return getDefaultRuntimeLocation();
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE:
+                return getDefaultRuntimeType();
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION:
+                return getDefaultRuntimeVersion();
             case CXFPackage.CXF_DATA_MODEL__VERBOSE:
-                return isVerbose() ? Boolean.TRUE : Boolean.FALSE;
+                return isVerbose();
             case CXFPackage.CXF_DATA_MODEL__GENERATE_ANT_BUILD_FILE:
-                return isGenerateAntBuildFile() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateAntBuildFile();
             case CXFPackage.CXF_DATA_MODEL__GENERATE_CLIENT:
-                return isGenerateClient() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateClient();
             case CXFPackage.CXF_DATA_MODEL__GENERATE_SERVER:
-                return isGenerateServer() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateServer();
             case CXFPackage.CXF_DATA_MODEL__DATABINDING:
                 return getDatabinding();
             case CXFPackage.CXF_DATA_MODEL__FRONTEND:
                 return getFrontend();
             case CXFPackage.CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT:
-                return isUseSpringApplicationContext() ? Boolean.TRUE : Boolean.FALSE;
+                return isUseSpringApplicationContext();
             case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
-                return isExportCXFClasspathContainer() ? Boolean.TRUE : Boolean.FALSE;
+                return isExportCXFClasspathContainer();
+            case CXFPackage.CXF_DATA_MODEL__INSTALLATIONS:
+                return getInstallations();
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 return getProjectName();
             case CXFPackage.CXF_DATA_MODEL__RESOURCE_DIRECTORY:
@@ -1177,29 +1211,30 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_LOCATION:
-                setCxfRuntimeLocation((String)newValue);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION:
+                setDefaultRuntimeLocation((String)newValue);
                 return;
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_EDITION:
-                setCxfRuntimeEdition((String)newValue);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE:
+                setDefaultRuntimeType((String)newValue);
                 return;
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_VERSION:
-                setCxfRuntimeVersion((String)newValue);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION:
+                setDefaultRuntimeVersion((String)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__VERBOSE:
-                setVerbose(((Boolean)newValue).booleanValue());
+                setVerbose((Boolean)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__GENERATE_ANT_BUILD_FILE:
-                setGenerateAntBuildFile(((Boolean)newValue).booleanValue());
+                setGenerateAntBuildFile((Boolean)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__GENERATE_CLIENT:
-                setGenerateClient(((Boolean)newValue).booleanValue());
+                setGenerateClient((Boolean)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__GENERATE_SERVER:
-                setGenerateServer(((Boolean)newValue).booleanValue());
+                setGenerateServer((Boolean)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__DATABINDING:
                 setDatabinding((DataBinding)newValue);
@@ -1208,10 +1243,13 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
                 setFrontend((Frontend)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__USE_SPRING_APPLICATION_CONTEXT:
-                setUseSpringApplicationContext(((Boolean)newValue).booleanValue());
+                setUseSpringApplicationContext((Boolean)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
-                setExportCXFClasspathContainer(((Boolean)newValue).booleanValue());
+                setExportCXFClasspathContainer((Boolean)newValue);
+                return;
+            case CXFPackage.CXF_DATA_MODEL__INSTALLATIONS:
+                setInstallations((Map<String, CXFInstall>)newValue);
                 return;
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 setProjectName((String)newValue);
@@ -1267,14 +1305,14 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_LOCATION:
-                setCxfRuntimeLocation(CXF_RUNTIME_LOCATION_EDEFAULT);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION:
+                setDefaultRuntimeLocation(DEFAULT_RUNTIME_LOCATION_EDEFAULT);
                 return;
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_EDITION:
-                setCxfRuntimeEdition(CXF_RUNTIME_EDITION_EDEFAULT);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE:
+                setDefaultRuntimeType(DEFAULT_RUNTIME_TYPE_EDEFAULT);
                 return;
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_VERSION:
-                setCxfRuntimeVersion(CXF_RUNTIME_VERSION_EDEFAULT);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION:
+                setDefaultRuntimeVersion(DEFAULT_RUNTIME_VERSION_EDEFAULT);
                 return;
             case CXFPackage.CXF_DATA_MODEL__VERBOSE:
                 setVerbose(VERBOSE_EDEFAULT);
@@ -1299,6 +1337,9 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
                 return;
             case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
                 setExportCXFClasspathContainer(EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT);
+                return;
+            case CXFPackage.CXF_DATA_MODEL__INSTALLATIONS:
+                setInstallations((Map<String, CXFInstall>)null);
                 return;
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 setProjectName(PROJECT_NAME_EDEFAULT);
@@ -1354,12 +1395,12 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_LOCATION:
-                return CXF_RUNTIME_LOCATION_EDEFAULT == null ? cxfRuntimeLocation != null : !CXF_RUNTIME_LOCATION_EDEFAULT.equals(cxfRuntimeLocation);
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_EDITION:
-                return CXF_RUNTIME_EDITION_EDEFAULT == null ? cxfRuntimeEdition != null : !CXF_RUNTIME_EDITION_EDEFAULT.equals(cxfRuntimeEdition);
-            case CXFPackage.CXF_DATA_MODEL__CXF_RUNTIME_VERSION:
-                return CXF_RUNTIME_VERSION_EDEFAULT == null ? cxfRuntimeVersion != null : !CXF_RUNTIME_VERSION_EDEFAULT.equals(cxfRuntimeVersion);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_LOCATION:
+                return DEFAULT_RUNTIME_LOCATION_EDEFAULT == null ? defaultRuntimeLocation != null : !DEFAULT_RUNTIME_LOCATION_EDEFAULT.equals(defaultRuntimeLocation);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_TYPE:
+                return DEFAULT_RUNTIME_TYPE_EDEFAULT == null ? defaultRuntimeType != null : !DEFAULT_RUNTIME_TYPE_EDEFAULT.equals(defaultRuntimeType);
+            case CXFPackage.CXF_DATA_MODEL__DEFAULT_RUNTIME_VERSION:
+                return DEFAULT_RUNTIME_VERSION_EDEFAULT == null ? defaultRuntimeVersion != null : !DEFAULT_RUNTIME_VERSION_EDEFAULT.equals(defaultRuntimeVersion);
             case CXFPackage.CXF_DATA_MODEL__VERBOSE:
                 return verbose != VERBOSE_EDEFAULT;
             case CXFPackage.CXF_DATA_MODEL__GENERATE_ANT_BUILD_FILE:
@@ -1376,6 +1417,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
                 return useSpringApplicationContext != USE_SPRING_APPLICATION_CONTEXT_EDEFAULT;
             case CXFPackage.CXF_DATA_MODEL__EXPORT_CXF_CLASSPATH_CONTAINER:
                 return exportCXFClasspathContainer != EXPORT_CXF_CLASSPATH_CONTAINER_EDEFAULT;
+            case CXFPackage.CXF_DATA_MODEL__INSTALLATIONS:
+                return installations != null;
             case CXFPackage.CXF_DATA_MODEL__PROJECT_NAME:
                 return PROJECT_NAME_EDEFAULT == null ? projectName != null : !PROJECT_NAME_EDEFAULT.equals(projectName);
             case CXFPackage.CXF_DATA_MODEL__RESOURCE_DIRECTORY:
@@ -1418,12 +1461,12 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (cxfRuntimeLocation: ");
-        result.append(cxfRuntimeLocation);
-        result.append(", cxfRuntimeEdition: ");
-        result.append(cxfRuntimeEdition);
-        result.append(", cxfRuntimeVersion: ");
-        result.append(cxfRuntimeVersion);
+        result.append(" (defaultRuntimeLocation: ");
+        result.append(defaultRuntimeLocation);
+        result.append(", defaultRuntimeType: ");
+        result.append(defaultRuntimeType);
+        result.append(", defaultRuntimeVersion: ");
+        result.append(defaultRuntimeVersion);
         result.append(", verbose: ");
         result.append(verbose);
         result.append(", generateAntBuildFile: ");
@@ -1440,6 +1483,8 @@ public abstract class CXFDataModelImpl extends EObjectImpl implements CXFDataMod
         result.append(useSpringApplicationContext);
         result.append(", exportCXFClasspathContainer: ");
         result.append(exportCXFClasspathContainer);
+        result.append(", installations: ");
+        result.append(installations);
         result.append(", projectName: ");
         result.append(projectName);
         result.append(", resourceDirectory: ");

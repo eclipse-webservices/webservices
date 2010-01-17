@@ -95,7 +95,7 @@ public final class CommandLineUtils {
             // Add all the earlier wsdl2java tool options
             progArgs.addAll(Arrays.asList(CommandLineUtils.getStandardJava2WSDLProgramArguments(model)));
 
-            if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
+            if (model.getDefaultRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
                 progArgs.add(J2W_FRONTEND);
                 progArgs.add(model.getFrontend().getLiteral());
 
@@ -182,7 +182,7 @@ public final class CommandLineUtils {
                 progArgs.add(W2J_DEFAULT_VALUES);
             }
 
-            if (model.getCxfRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
+            if (model.getDefaultRuntimeVersion().compareTo(CXFCorePlugin.CXF_VERSION_2_1) >= 0) {
                 progArgs.add(W2J_FRONTEND);
                 progArgs.add(model.getFrontend().getLiteral());
 

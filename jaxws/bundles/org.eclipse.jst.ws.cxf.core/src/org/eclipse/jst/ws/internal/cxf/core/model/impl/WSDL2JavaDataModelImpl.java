@@ -8,11 +8,12 @@
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
  *
- * $Id: WSDL2JavaDataModelImpl.java,v 1.2 2009/04/06 21:33:14 sclarke Exp $
+ * $Id: WSDL2JavaDataModelImpl.java,v 1.3 2010/01/17 19:56:56 sclarke Exp $
  */
 package org.eclipse.jst.ws.internal.cxf.core.model.impl;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -918,7 +919,7 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<String> getBindingFiles() {
+    public List<String> getBindingFiles() {
         if (bindingFiles == null) {
             bindingFiles = new EDataTypeUniqueEList<String>(String.class, this, CXFPackage.WSDL2_JAVA_DATA_MODEL__BINDING_FILES);
         }
@@ -997,41 +998,41 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__GENERATE_IMPLEMENTATION:
-                return isGenerateImplementation() ? Boolean.TRUE : Boolean.FALSE;
+                return isGenerateImplementation();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__PROCESS_SOAP_HEADERS:
-                return isProcessSOAPHeaders() ? Boolean.TRUE : Boolean.FALSE;
+                return isProcessSOAPHeaders();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__LOAD_DEFAULT_NAMESPACE_PACKAGE_NAME_MAPPING:
-                return isLoadDefaultNamespacePackageNameMapping() ? Boolean.TRUE : Boolean.FALSE;
+                return isLoadDefaultNamespacePackageNameMapping();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING:
-                return isLoadDefaultExcludesNamepsaceMapping() ? Boolean.TRUE : Boolean.FALSE;
+                return isLoadDefaultExcludesNamepsaceMapping();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__VALIDATE:
-                return isValidate() ? Boolean.TRUE : Boolean.FALSE;
+                return isValidate();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__WSDL_VERSION:
                 return getWsdlVersion();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__USE_DEFAULT_VALUES:
-                return isUseDefaultValues() ? Boolean.TRUE : Boolean.FALSE;
+                return isUseDefaultValues();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_ARGS:
                 return getXjcArgs();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__NO_ADDRESS_BINDING:
-                return isNoAddressBinding() ? Boolean.TRUE : Boolean.FALSE;
+                return isNoAddressBinding();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_USE_DEFAULT_VALUES:
-                return isXjcUseDefaultValues() ? Boolean.TRUE : Boolean.FALSE;
+                return isXjcUseDefaultValues();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_TO_STRING:
-                return isXjcToString() ? Boolean.TRUE : Boolean.FALSE;
+                return isXjcToString();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_TO_STRING_MULTI_LINE:
-                return isXjcToStringMultiLine() ? Boolean.TRUE : Boolean.FALSE;
+                return isXjcToStringMultiLine();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_TO_STRING_SIMPLE:
-                return isXjcToStringSimple() ? Boolean.TRUE : Boolean.FALSE;
+                return isXjcToStringSimple();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_LOCATOR:
-                return isXjcLocator() ? Boolean.TRUE : Boolean.FALSE;
+                return isXjcLocator();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_SYNC_METHODS:
-                return isXjcSyncMethods() ? Boolean.TRUE : Boolean.FALSE;
+                return isXjcSyncMethods();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_MARK_GENERATED:
-                return isXjcMarkGenerated() ? Boolean.TRUE : Boolean.FALSE;
+                return isXjcMarkGenerated();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE:
                 return getXjcEpisodeFile();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION:
-                return isAutoNameResolution() ? Boolean.TRUE : Boolean.FALSE;
+                return isAutoNameResolution();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES:
                 return getIncludedNamespaces();
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__BINDING_FILES:
@@ -1056,58 +1057,58 @@ public class WSDL2JavaDataModelImpl extends CXFDataModelImpl implements WSDL2Jav
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__GENERATE_IMPLEMENTATION:
-                setGenerateImplementation(((Boolean)newValue).booleanValue());
+                setGenerateImplementation((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__PROCESS_SOAP_HEADERS:
-                setProcessSOAPHeaders(((Boolean)newValue).booleanValue());
+                setProcessSOAPHeaders((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__LOAD_DEFAULT_NAMESPACE_PACKAGE_NAME_MAPPING:
-                setLoadDefaultNamespacePackageNameMapping(((Boolean)newValue).booleanValue());
+                setLoadDefaultNamespacePackageNameMapping((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING:
-                setLoadDefaultExcludesNamepsaceMapping(((Boolean)newValue).booleanValue());
+                setLoadDefaultExcludesNamepsaceMapping((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__VALIDATE:
-                setValidate(((Boolean)newValue).booleanValue());
+                setValidate((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__WSDL_VERSION:
                 setWsdlVersion((String)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__USE_DEFAULT_VALUES:
-                setUseDefaultValues(((Boolean)newValue).booleanValue());
+                setUseDefaultValues((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_ARGS:
                 setXjcArgs((String)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__NO_ADDRESS_BINDING:
-                setNoAddressBinding(((Boolean)newValue).booleanValue());
+                setNoAddressBinding((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_USE_DEFAULT_VALUES:
-                setXjcUseDefaultValues(((Boolean)newValue).booleanValue());
+                setXjcUseDefaultValues((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_TO_STRING:
-                setXjcToString(((Boolean)newValue).booleanValue());
+                setXjcToString((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_TO_STRING_MULTI_LINE:
-                setXjcToStringMultiLine(((Boolean)newValue).booleanValue());
+                setXjcToStringMultiLine((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_TO_STRING_SIMPLE:
-                setXjcToStringSimple(((Boolean)newValue).booleanValue());
+                setXjcToStringSimple((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_LOCATOR:
-                setXjcLocator(((Boolean)newValue).booleanValue());
+                setXjcLocator((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_SYNC_METHODS:
-                setXjcSyncMethods(((Boolean)newValue).booleanValue());
+                setXjcSyncMethods((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_MARK_GENERATED:
-                setXjcMarkGenerated(((Boolean)newValue).booleanValue());
+                setXjcMarkGenerated((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__XJC_EPISODE_FILE:
                 setXjcEpisodeFile((String)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__AUTO_NAME_RESOLUTION:
-                setAutoNameResolution(((Boolean)newValue).booleanValue());
+                setAutoNameResolution((Boolean)newValue);
                 return;
             case CXFPackage.WSDL2_JAVA_DATA_MODEL__INCLUDED_NAMESPACES:
                 setIncludedNamespaces((Map<String, String>)newValue);

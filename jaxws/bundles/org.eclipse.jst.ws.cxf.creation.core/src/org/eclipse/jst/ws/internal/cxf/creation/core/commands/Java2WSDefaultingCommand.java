@@ -40,8 +40,8 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
         IStatus status = Status.OK_STATUS;
         try {
             Java2WSPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
-            model.setCxfRuntimeVersion(context.getCxfRuntimeVersion());
-            model.setCxfRuntimeEdition(context.getCxfRuntimeEdition());
+            model.setDefaultRuntimeVersion(context.getDefaultRuntimeVersion());
+            model.setDefaultRuntimeType(context.getDefaultRuntimeType());
 
             IType startingPointType = getJavaStartingPointType();
             model.setUseServiceEndpointInterface(startingPointType.isInterface());
@@ -93,7 +93,7 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
 
     public String getClassName(String projectName, String fullyQualifiedClassName) {
         return JDTUtils.getType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName)
-                .getElementName();
+        .getElementName();
     }
 
     @Override

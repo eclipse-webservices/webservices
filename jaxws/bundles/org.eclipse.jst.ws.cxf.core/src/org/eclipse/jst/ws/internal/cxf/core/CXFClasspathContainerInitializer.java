@@ -19,13 +19,26 @@ import org.eclipse.jdt.core.JavaCore;
 
 public class CXFClasspathContainerInitializer extends ClasspathContainerInitializer {
 
-	@Override
-	public void initialize(IPath containerPath, IJavaProject javaProject) throws CoreException {
-	    CXFClasspathContainer cxfClasspathContainer = new CXFClasspathContainer(containerPath, javaProject);
-	    
-	    if (cxfClasspathContainer.isValid()) {
-	        JavaCore.setClasspathContainer(containerPath, new IJavaProject[] {javaProject}, 
-				new IClasspathContainer[] {cxfClasspathContainer}, null);
-	    }
-	}
+    @Override
+    public void initialize(IPath containerPath, IJavaProject javaProject) throws CoreException {
+        CXFClasspathContainer cxfClasspathContainer = new CXFClasspathContainer(containerPath, javaProject);
+
+        if (cxfClasspathContainer.isValid()) {
+            JavaCore.setClasspathContainer(containerPath, new IJavaProject[] { javaProject },
+                    new IClasspathContainer[] { cxfClasspathContainer }, null);
+        }
+    }
+
+    @Override
+    public boolean canUpdateClasspathContainer(IPath containerPath, IJavaProject project) {
+        return true;
+    }
+
+    @Override
+    public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject javaProject,
+            IClasspathContainer containerSuggestion) throws CoreException {
+        JavaCore.setClasspathContainer(containerPath, new IJavaProject[] {javaProject},
+                new IClasspathContainer[] { containerSuggestion }, null);
+    }
+
 }

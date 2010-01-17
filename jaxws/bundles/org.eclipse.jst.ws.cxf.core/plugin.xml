@@ -27,6 +27,7 @@
           
           <action id="cxf.core.install" type="INSTALL">
       	     <delegate class="org.eclipse.jst.ws.internal.cxf.facet.CXFFacetInstallDelegate"/>
+             <config-factory class="org.eclipse.jst.ws.internal.cxf.facet.CXFFacetInstallActionConfigFactory"/>
     	  </action>
           
           <action id="cxf.core.uninstall" type="UNINSTALL">
@@ -99,5 +100,6 @@
              class="org.eclipse.jst.ws.internal.cxf.core.CXFClasspathContainerInitializer"
              id="org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER">
        </classpathContainerInitializer>
-    </extension>
+    </extension>    
+    
 </plugin>

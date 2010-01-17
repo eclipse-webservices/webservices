@@ -76,41 +76,42 @@ public class Java2WSPersistentContext extends CXFPersistentContext implements Ja
      * String constant used to lookup the APT annotation processing general
      * preference from the plugins local preferences store.
      */
-    public static final String PREFERENCE_J2WS_ENABLE_ANNOTATION_PROCESSING 
-        = "cxfJ2WSEnableAnnotationProcessing"; //$NON-NLS-1$
- 
+    public static final String PREFERENCE_J2WS_ENABLE_ANNOTATION_PROCESSING
+    = "cxfJ2WSEnableAnnotationProcessing"; //$NON-NLS-1$
+
     /**
      * String constant used to lookup the generate <code>@WebMethod</code> annotation general
      * preference from the plugins local preferences store.
      */
-    public static final String PREFERENCE_GENERATE_WEB_METHOD_ANNOTATION 
-        = "cxfJ2WSGenerateWebMethodAnnotation"; //$NON-NLS-1$
- 
+    public static final String PREFERENCE_GENERATE_WEB_METHOD_ANNOTATION
+    = "cxfJ2WSGenerateWebMethodAnnotation"; //$NON-NLS-1$
+
     /**
      * String constant used to lookup the generate <code>@WebParam</code> annotation general
      * preference from the plugins local preferences store.
      */
-    public static final String PREFERENCE_GENERATE_WEB_PARAM_ANNOTATION 
-        = "cxfJ2WSGenerateWebParamAnnotation"; //$NON-NLS-1$
- 
+    public static final String PREFERENCE_GENERATE_WEB_PARAM_ANNOTATION
+    = "cxfJ2WSGenerateWebParamAnnotation"; //$NON-NLS-1$
+
     /**
      * String constant used to lookup the generate <code>@RequestWrapper</code> annotation general
      * preference from the plugins local preferences store.
      */
-    public static final String PREFERENCE_GENERATE_REQUEST_WRAPPER_ANNOTATION 
-        = "cxfJ2WSGenerateRequestWrapperAnnotation"; //$NON-NLS-1$
+    public static final String PREFERENCE_GENERATE_REQUEST_WRAPPER_ANNOTATION
+    = "cxfJ2WSGenerateRequestWrapperAnnotation"; //$NON-NLS-1$
 
     /**
      * String constant used to lookup the generate <code>@ResponseWrapper</code> annotation general
      * preference from the plugins local preferences store.
      */
-    public static final String PREFERENCE_GENERATE_RESPONSE_WRAPPER_ANNOTATION 
-        = "cxfJ2WSGenerateResponseWrapperAnnotation"; //$NON-NLS-1$
+    public static final String PREFERENCE_GENERATE_RESPONSE_WRAPPER_ANNOTATION
+    = "cxfJ2WSGenerateResponseWrapperAnnotation"; //$NON-NLS-1$
 
     public Java2WSPersistentContext() {
         super(CXFCorePlugin.getDefault());
     }
 
+    @Override
     public void load() {
         super.load();
         setDefault(PREFERENCE_J2WS_SOAP12_BINDING, CXFModelUtils.getDefaultBooleanValue(
@@ -241,15 +242,15 @@ public class Java2WSPersistentContext extends CXFPersistentContext implements Ja
     public void setGenerateWebParamAnnotation(boolean generateWebParamAnnotation) {
         setValue(PREFERENCE_GENERATE_WEB_PARAM_ANNOTATION, generateWebParamAnnotation);
     }
-    
+
     public void setGenerateWebMethodAnnotation(boolean generateWebMethodAnnotation) {
         setValue(PREFERENCE_GENERATE_WEB_METHOD_ANNOTATION, generateWebMethodAnnotation);
     }
-    
+
     public void setAnnotationProcessingEnabled(boolean enableAnnotationProcessing) {
         setValue(PREFERENCE_J2WS_ENABLE_ANNOTATION_PROCESSING, enableAnnotationProcessing);
     }
-    
+
     public boolean isGenerateRequestWrapperAnnotation() {
         return getValueAsBoolean(PREFERENCE_GENERATE_REQUEST_WRAPPER_ANNOTATION);
     }

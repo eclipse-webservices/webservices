@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.core.model;
 
+import java.util.List;
 import java.util.Map;
-import org.eclipse.emf.common.util.EList;
 
 /**
  * @model
@@ -40,7 +40,7 @@ public interface WSDL2JavaDataModel extends CXFDataModel, WSDL2JavaContext {
      * 
      * @model
      */
-    EList<String> getBindingFiles();
+    List<String> getBindingFiles();
 
     /**
      * Returns the java package to excluded namespace mappings.
