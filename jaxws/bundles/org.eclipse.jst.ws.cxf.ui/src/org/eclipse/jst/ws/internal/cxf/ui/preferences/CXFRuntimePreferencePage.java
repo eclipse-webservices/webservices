@@ -260,7 +260,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
         });
 
         TableColumn typeColumn = typeViewerColumn.getColumn();
-        typeColumn.setText(CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_LOCATION_TYPE_NAME);
+        typeColumn.setText(CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_TYPE_COLUMN_NAME);
         typeColumn.pack();
 
         columnWeightData = new ColumnWeightData(50, 100, true);

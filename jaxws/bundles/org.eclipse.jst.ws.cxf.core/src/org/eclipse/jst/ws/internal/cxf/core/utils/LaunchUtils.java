@@ -27,7 +27,7 @@ import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
-import org.eclipse.jst.ws.internal.cxf.core.model.CXFContext;
+import org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -78,12 +78,14 @@ public final class LaunchUtils {
         return status;
     }
 
-    public static void launch(IJavaProject javaProject, String className, String[] programArgs)
-    throws CoreException {
+    public static void launch(IJavaProject javaProject, String className, String[] programArgs) throws CoreException {
         IVMInstall vmInstall = JavaRuntime.getVMInstall(javaProject);
         if (vmInstall == null) {
             vmInstall = JavaRuntime.getDefaultVMInstall();
         }
+
+        String installedVersion = CXFCorePlugin.getDefault().getCXFRuntimeVersion(javaProject.getProject());
+        CXFInstall cxfInstall = CXFCorePlugin.getDefault().getJava2WSContext().getInstallations().get(installedVersion);
 
         IVMRunner vmRunner = vmInstall.getVMRunner(ILaunchManager.RUN_MODE);
         String[] runtimeClasspath = JavaRuntime.computeDefaultRuntimeClassPath(javaProject);
@@ -95,7 +97,7 @@ public final class LaunchUtils {
             IVMInstall2 install2 = (IVMInstall2) vmInstall;
             if (install2.getJavaVersion().compareTo(JavaCore.VERSION_1_6) > 0) {
                 vmRunnerConfiguration.setVMArguments(new String[] { "-Djava.endorsed.dirs=" //$NON-NLS-1$
-                        + CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeLocation() });
+                        + cxfInstall.getLocation() });
             }
         }
 
@@ -113,19 +115,19 @@ public final class LaunchUtils {
         IProcess[] processes = launch.getProcesses();
 
         String outputStream = processes[0].getStreamsProxy().getOutputStreamMonitor().getContents();
-        logStream(outputStream);
+        logStream(outputStream, cxfInstall);
         String errorStream = processes[0].getStreamsProxy().getErrorStreamMonitor().getContents();
-        logStream(errorStream);
+        logStream(errorStream, cxfInstall);
 
         logErrorStreamContents(errorStream, className);
     }
 
-    private static void logStream(String outputStream) {
+    private static void logStream(String outputStream, CXFInstall cxfInstall) {
         if (!PlatformUI.isWorkbenchRunning()) {
             return;
         }
         try {
-            MessageConsole cxfConsole = getCXFConsole();
+            MessageConsole cxfConsole = getCXFConsole(cxfInstall);
             IWorkbench workbench = PlatformUI.getWorkbench();
             IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
             if (workbenchWindow != null) {
@@ -144,19 +146,18 @@ public final class LaunchUtils {
         }
     }
 
-    private static MessageConsole getCXFConsole() {
+    private static MessageConsole getCXFConsole(CXFInstall cxfInstall) {
         ConsolePlugin consolePlugin = ConsolePlugin.getDefault();
         IConsoleManager consoleManager = consolePlugin.getConsoleManager();
         IConsole[] existingConsoles = consoleManager.getConsoles();
-        CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         for (int i = 0; i < existingConsoles.length; i++) {
-            if (existingConsoles[i].getName().equals(context.getDefaultRuntimeType() + " "
-                    + context.getDefaultRuntimeVersion())) {
+            if (existingConsoles[i].getName().equals(cxfInstall.getType() + " "
+                    + cxfInstall.getVersion())) {
                 return (MessageConsole) existingConsoles[i];
             }
         }
-        MessageConsole cxfConsole = new MessageConsole(context.getDefaultRuntimeType() + " "
-                + context.getDefaultRuntimeVersion(),
+        MessageConsole cxfConsole = new MessageConsole(cxfInstall.getType() + " "
+                + cxfInstall.getVersion(),
                 CXFCorePlugin.imageDescriptorFromPlugin(CXFCorePlugin.PLUGIN_ID,
                 "icons/view16/console_view.gif")); //$NON-NLS-1$
         consoleManager.addConsoles(new IConsole[]{cxfConsole});

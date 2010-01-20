@@ -56,9 +56,11 @@ public class CXFFacetInstallWizardPage extends AbstractFacetWizardPage {
     public void transferStateToConfig() {
         StructuredSelection structuredSelection = (StructuredSelection) installationsComboViewer.getSelection();
         CXFInstall selectedInstall = (CXFInstall) structuredSelection.getFirstElement();
-        dataModel.setDefaultRuntimeVersion(selectedInstall.getVersion());
-        dataModel.setDefaultRuntimeLocation(selectedInstall.getLocation());
-        dataModel.setDefaultRuntimeType(selectedInstall.getType());
+        if (selectedInstall != null) {
+            dataModel.setDefaultRuntimeVersion(selectedInstall.getVersion());
+            dataModel.setDefaultRuntimeLocation(selectedInstall.getLocation());
+            dataModel.setDefaultRuntimeType(selectedInstall.getType());
+        }
     }
 
     public void createControl(Composite parent) {
@@ -134,6 +136,9 @@ public class CXFFacetInstallWizardPage extends AbstractFacetWizardPage {
         CXFInstall defaultInstall = cxfContext.getInstallations().get(intalledVersion);
         if (defaultInstall != null) {
             installationsComboViewer.setSelection(new StructuredSelection(defaultInstall), true);
+            setPageComplete(true);
+        } else {
+            setPageComplete(false);
         }
     }
 }

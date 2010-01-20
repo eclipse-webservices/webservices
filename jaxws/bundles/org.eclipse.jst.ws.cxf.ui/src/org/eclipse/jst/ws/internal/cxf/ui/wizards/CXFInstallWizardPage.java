@@ -20,9 +20,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -234,20 +231,16 @@ public class CXFInstallWizardPage extends WizardPage {
 
     private IStatus validateTypeName(String typeName) {
         if (typeName.trim().length() == 0) {
-            CXF_TYPE_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID, "Enter Type Name");
+            CXF_TYPE_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID, CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_ENTER_TYPE_NAME);
         } else {
             CXF_TYPE_STATUS = OK_STATUS;
         }
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IStatus result = workspace.validateName(typeName, IResource.FOLDER);
-        if (!result.isOK()) {
-            return result;
+        if (!typeName.matches("[a-zA-Z0-9_\\-\\s]+")) {
+            CXF_TYPE_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID,
+                    CXFUIMessages.bind(CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_INVALID_TYPE_NAME, typeName));
+        } else {
+            CXF_TYPE_STATUS = OK_STATUS;
         }
-        //        if (!typeName.matches("[a-zA-Z0-9_\\-\\s]")) {
-        //            CXF_TYPE_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID, "Invalid type name");
-        //        } else {
-        //            CXF_TYPE_STATUS = OK_STATUS;
-        //        }
         return CXF_TYPE_STATUS;
     }
 
@@ -323,9 +316,9 @@ public class CXFInstallWizardPage extends WizardPage {
         CXFPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         Map<String, CXFInstall> installs = context.getInstallations();
         CXFInstall install = CXFFactory.eINSTANCE.createCXFInstall();
-        install.setVersion(cxfVersionText.getText());
-        install.setLocation(cxfHomeDirText.getText());
-        install.setType(cxfTypeText.getText());
+        install.setVersion(cxfVersionText.getText().trim());
+        install.setLocation(cxfHomeDirText.getText().trim());
+        install.setType(cxfTypeText.getText().trim());
         installs.put(cxfRuntimeVersion, install);
         context.setInstallations(installs);
         if (isUpdateRequired(install)) {
