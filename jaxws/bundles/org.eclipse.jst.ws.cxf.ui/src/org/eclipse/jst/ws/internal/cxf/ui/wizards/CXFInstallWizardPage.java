@@ -13,15 +13,27 @@ package org.eclipse.jst.ws.internal.cxf.ui.wizards;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.ClasspathContainerInitializer;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jst.ws.internal.cxf.core.CXFClasspathContainer;
 import org.eclipse.jst.ws.internal.cxf.core.CXFCorePlugin;
 import org.eclipse.jst.ws.internal.cxf.core.context.CXFPersistentContext;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFFactory;
@@ -41,17 +53,22 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.osgi.framework.Version;
 
 public class CXFInstallWizardPage extends WizardPage {
     private IStatus CXF_LOCATION_STATUS = new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, null);
+    private IStatus CXF_TYPE_STATUS = new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, null);
+    private IStatus CXF_VERSION_STATUS = new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, null);
     private IStatus OK_STATUS = new Status(IStatus.OK, CXFUIPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
 
     private Pattern digitPattern = Pattern.compile("\\d"); //$NON-NLS-1$
 
     private Button browseButton;
     private Text cxfHomeDirText;
-    private Label cxfToolVersionLabel;
+    private Text cxfTypeText;
+    private Text cxfVersionText;
 
     String cxfRuntimeVersion = ""; //$NON-NLS-1$
     String cxfRuntimeLocation = ""; //$NON-NLS-1$
@@ -80,11 +97,11 @@ public class CXFInstallWizardPage extends WizardPage {
         cxfHomeDirText = new Text(composite, SWT.BORDER);
 
         gridData = new GridData(GridData.FILL_HORIZONTAL);
-
         cxfHomeDirText.setLayoutData(gridData);
+
         cxfHomeDirText.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                updateStatus();
+                updateLocationStatus();
             }
         });
 
@@ -104,17 +121,37 @@ public class CXFInstallWizardPage extends WizardPage {
 
         //CXF Version
         Label cxfVersionLabel = new Label(composite, SWT.NONE);
-        cxfVersionLabel.setText(CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_CXF_VERSON_LABEL);
-        gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
-        cxfVersionLabel.setLayoutData(gridData);
+        cxfVersionLabel.setText(CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_CXF_VERSION_LABEL);
 
-        cxfToolVersionLabel = new Label(composite, SWT.NONE);
-        gridData = new GridData(SWT.FILL, SWT.FILL, false, false);
-        gridData.horizontalSpan = 2;
-        cxfToolVersionLabel.setLayoutData(gridData);
+        cxfVersionText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
+        gridData = new GridData(GridData.FILL_HORIZONTAL);
+        cxfVersionText.setLayoutData(gridData);
+        cxfVersionText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                updateVersionStatus();
+            }
+        });
+
+        //Blank label
+        new Label(composite, SWT.NONE);
+
+        //CXF Type
+        Label cxfTypeLabel = new Label(composite, SWT.NONE);
+        cxfTypeLabel.setText(CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_CXF_TYPE_LABEL);
+
+        cxfTypeText = new Text(composite, SWT.BORDER);
+        gridData = new GridData(GridData.FILL_HORIZONTAL);
+        cxfTypeText.setLayoutData(gridData);
+        cxfTypeText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                updateTypeStatus();
+            }
+        });
 
         if (cxfInstall != null) {
             cxfHomeDirText.setText(cxfInstall.getLocation());
+            cxfVersionText.setText(cxfInstall.getVersion());
+            cxfTypeText.setText(cxfInstall.getType());
         }
 
         setControl(composite);
@@ -125,13 +162,18 @@ public class CXFInstallWizardPage extends WizardPage {
         this.cxfInstall = cxfInstall;
     }
 
-    @Override
-    public boolean isPageComplete() {
-        return cxfHomeDirText.getText().trim().length() > 0 && CXF_LOCATION_STATUS.getSeverity() == IStatus.OK;
+    private void updateLocationStatus() {
+        CXF_LOCATION_STATUS = checkRuntimeExist(cxfHomeDirText.getText());
+        applyStatusToPage(findMostSevere());
     }
 
-    private void updateStatus() {
-        CXF_LOCATION_STATUS = checkRuntimeExist(cxfHomeDirText.getText());
+    private void updateTypeStatus() {
+        CXF_TYPE_STATUS = validateTypeName(cxfTypeText.getText());
+        applyStatusToPage(findMostSevere());
+    }
+
+    private void updateVersionStatus() {
+        CXF_VERSION_STATUS = validateVersion(cxfVersionText.getText());
         applyStatusToPage(findMostSevere());
     }
 
@@ -140,6 +182,7 @@ public class CXFInstallWizardPage extends WizardPage {
         if (status.getSeverity() > IStatus.OK) {
             setErrorMessage(message);
             setPageComplete(false);
+
         } else {
             setMessage(getDescription());
             setErrorMessage(null);
@@ -148,12 +191,25 @@ public class CXFInstallWizardPage extends WizardPage {
     }
 
     private IStatus findMostSevere() {
+        if (CXF_TYPE_STATUS.getSeverity() > CXF_LOCATION_STATUS.getSeverity()) {
+            return CXF_TYPE_STATUS;
+        }
+        if (CXF_VERSION_STATUS.getSeverity() > CXF_LOCATION_STATUS.getSeverity()) {
+            return CXF_VERSION_STATUS;
+        }
+        if (CXF_TYPE_STATUS.getSeverity() == CXF_LOCATION_STATUS.getSeverity()) {
+            return CXF_LOCATION_STATUS;
+        }
+        if (CXF_VERSION_STATUS.getSeverity() == CXF_LOCATION_STATUS.getSeverity()) {
+            return CXF_LOCATION_STATUS;
+        }
+
         return CXF_LOCATION_STATUS;
     }
 
     private IStatus checkRuntimeExist(String path) {
         File cxfHomeDir = new File(path);
-        if (cxfHomeDirText.getText().equals("")) { //$NON-NLS-1$
+        if (cxfHomeDirText.getText().trim().equals("")) { //$NON-NLS-1$
             CXF_LOCATION_STATUS = new Status(IStatus.ERROR, CXFUIPlugin.PLUGIN_ID,
                     CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_RUNTIME_NOT_SET);
         }
@@ -169,10 +225,40 @@ public class CXFInstallWizardPage extends WizardPage {
                 }
             }
         }
-        cxfToolVersionLabel.setText(""); //$NON-NLS-1$
+        cxfTypeText.setText("");
+        cxfVersionText.setText("");
         CXF_LOCATION_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID,
                 CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_RUNTIME_NOT_SET);
         return CXF_LOCATION_STATUS;
+    }
+
+    private IStatus validateTypeName(String typeName) {
+        if (typeName.trim().length() == 0) {
+            CXF_TYPE_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID, "Enter Type Name");
+        } else {
+            CXF_TYPE_STATUS = OK_STATUS;
+        }
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        IStatus result = workspace.validateName(typeName, IResource.FOLDER);
+        if (!result.isOK()) {
+            return result;
+        }
+        //        if (!typeName.matches("[a-zA-Z0-9_\\-\\s]")) {
+        //            CXF_TYPE_STATUS = new Status(Status.ERROR, CXFUIPlugin.PLUGIN_ID, "Invalid type name");
+        //        } else {
+        //            CXF_TYPE_STATUS = OK_STATUS;
+        //        }
+        return CXF_TYPE_STATUS;
+    }
+
+    private IStatus validateVersion(String version) {
+        if (CXFCorePlugin.getDefault().getJava2WSContext().getInstallations().containsKey(version)
+                && cxfInstall != null && !cxfInstall.getVersion().equals(version)) {
+            CXF_VERSION_STATUS = new Status(IStatus.ERROR, CXFUIPlugin.PLUGIN_ID, "Version already installed");
+        } else {
+            CXF_VERSION_STATUS = OK_STATUS;
+        }
+        return CXF_VERSION_STATUS;
     }
 
     private String[] getCXFJarFiles(File directory) {
@@ -227,8 +313,8 @@ public class CXFInstallWizardPage extends WizardPage {
                 cxfRuntimeVersion = cxfToolVersion.substring(start, end);
             }
 
-            cxfToolVersionLabel.setText(cxfRuntimeType + " " + cxfRuntimeVersion); //$NON-NLS-1$
-
+            cxfVersionText.setText(cxfRuntimeVersion);
+            cxfTypeText.setText(cxfRuntimeType);
             CXFCorePlugin.getDefault().setCurrentRuntimeVersion(new Version(cxfRuntimeVersion));
         }
     }
@@ -237,11 +323,49 @@ public class CXFInstallWizardPage extends WizardPage {
         CXFPersistentContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         Map<String, CXFInstall> installs = context.getInstallations();
         CXFInstall install = CXFFactory.eINSTANCE.createCXFInstall();
-        install.setVersion(cxfRuntimeVersion);
+        install.setVersion(cxfVersionText.getText());
         install.setLocation(cxfHomeDirText.getText());
-        install.setType(cxfRuntimeType);
+        install.setType(cxfTypeText.getText());
         installs.put(cxfRuntimeVersion, install);
         context.setInstallations(installs);
+        if (isUpdateRequired(install)) {
+            updateProjects(install);
+        }
         return true;
+    }
+
+    public boolean isUpdateRequired(CXFInstall install) {
+        if (cxfInstall == null) {
+            return false;
+        }
+        if (!cxfInstall.getLocation().equals(install.getLocation())
+                || !cxfInstall.getType().equals(install.getType())) {
+            return true;
+        }
+        return false;
+    }
+
+    public void updateProjects(CXFInstall install) {
+        try {
+            Set<IFacetedProject> cxfProjects = ProjectFacetsManager.getFacetedProjects(ProjectFacetsManager.getProjectFacet("cxf.core"));
+            Iterator<IFacetedProject> projIter = cxfProjects.iterator();
+            while (projIter.hasNext()) {
+                IFacetedProject cxfProject = projIter.next();
+                String installedVersion = CXFCorePlugin.getDefault().getCXFRuntimeVersion(cxfProject.getProject());
+                if (installedVersion.equals(install.getVersion())) {
+                    ClasspathContainerInitializer classpathContainerInitializer = JavaCore.getClasspathContainerInitializer(
+                            CXFCorePlugin.CXF_CLASSPATH_CONTAINER_ID);
+                    if (classpathContainerInitializer != null) {
+                        IPath containerPath = new Path(CXFCorePlugin.CXF_CLASSPATH_CONTAINER_ID);
+                        IJavaProject javaProject = JavaCore.create(cxfProject.getProject());
+                        CXFClasspathContainer cxfClasspathContainer = new CXFClasspathContainer(containerPath, javaProject);
+                        classpathContainerInitializer.requestClasspathContainerUpdate(containerPath, javaProject,
+                                cxfClasspathContainer);
+                    }
+                }
+            }
+        } catch (CoreException ce) {
+            CXFUIPlugin.log(ce.getStatus());
+        }
     }
 }

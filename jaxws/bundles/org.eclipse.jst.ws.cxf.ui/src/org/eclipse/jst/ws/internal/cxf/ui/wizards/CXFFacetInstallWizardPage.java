@@ -38,8 +38,6 @@ public class CXFFacetInstallWizardPage extends AbstractFacetWizardPage {
 
     private CXFDataModel dataModel;
     private CXFContext cxfContext;
-    //    private Button useCXFServletButton;
-    //    private Button useSpringAppContextButton;
 
     private ComboViewer installationsComboViewer;
 
@@ -59,7 +57,8 @@ public class CXFFacetInstallWizardPage extends AbstractFacetWizardPage {
         StructuredSelection structuredSelection = (StructuredSelection) installationsComboViewer.getSelection();
         CXFInstall selectedInstall = (CXFInstall) structuredSelection.getFirstElement();
         dataModel.setDefaultRuntimeVersion(selectedInstall.getVersion());
-        //        dataModel.setUseSpringApplicationContext(useSpringAppContextButton.getSelection());
+        dataModel.setDefaultRuntimeLocation(selectedInstall.getLocation());
+        dataModel.setDefaultRuntimeType(selectedInstall.getType());
     }
 
     public void createControl(Composite parent) {
@@ -73,6 +72,7 @@ public class CXFFacetInstallWizardPage extends AbstractFacetWizardPage {
         link.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+                int selectedIndex = installationsComboViewer.getCombo().getSelectionIndex();
                 int result = PreferencesUtil.createPreferenceDialogOn(getShell(),
                         "org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage", //$NON-NLS-1$
                         new String[] { "org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage" }, null).open(); //$NON-NLS-1$
@@ -126,34 +126,14 @@ public class CXFFacetInstallWizardPage extends AbstractFacetWizardPage {
         Collection<CXFInstall> installations = cxfContext.getInstallations().values();
         installationsComboViewer.setInput(installations);
         setDefault();
-
-        //        Group springConfigGroup = new Group(composite, SWT.SHADOW_IN);
-        //        springConfigGroup.setText(CXFUIMessages.SPRING_CONFIG_GROUP_LABEL);
-        //        GridLayout springConfigLayout = new GridLayout(2, true);
-        //        springConfigGroup.setLayout(springConfigLayout);
-        //        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-        //        gridData.horizontalSpan = 2;
-        //        springConfigGroup.setLayoutData(gridData);
-        //
-        //        useCXFServletButton = new Button(springConfigGroup, SWT.RADIO);
-        //        useCXFServletButton.setText(CXFUIMessages.SPRING_CONFIG_USE_CXF_SERVLET);
-        //
-        //        useSpringAppContextButton = new Button(springConfigGroup, SWT.RADIO);
-        //        useSpringAppContextButton.setText(CXFUIMessages.SPRING_CONFIG_USE_CXF_SPRING_APPLICATION_CONTEXT);
-        //
-        //        if (cxfContext.isUseSpringApplicationContext()) {
-        //            useSpringAppContextButton.setSelection(true);
-        //        } else {
-        //            useCXFServletButton.setSelection(true);
-        //        }
-
         setControl(composite);
     }
 
     private void setDefault() {
         String intalledVersion = CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeVersion();
         CXFInstall defaultInstall = cxfContext.getInstallations().get(intalledVersion);
-        installationsComboViewer.setSelection(new StructuredSelection(defaultInstall), true);
+        if (defaultInstall != null) {
+            installationsComboViewer.setSelection(new StructuredSelection(defaultInstall), true);
+        }
     }
-
 }

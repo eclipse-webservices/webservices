@@ -29,7 +29,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
 
     private IPath path;
     private List<IClasspathEntry> classpathEntries;
-    private String cxfLibraryEdition;
+    private String cxfLibraryType;
     private String cxfLibraryVersion;
     private String cxfLibraryLocation;
     private IProject project;
@@ -38,18 +38,18 @@ public class CXFClasspathContainer implements IClasspathContainer {
         this.path = path;
         this.project = javaProject.getProject();
         classpathEntries =  new ArrayList<IClasspathEntry>();
-        cxfLibraryLocation = getCxfRuntimeLocation();
-        cxfLibraryVersion = getCxfRuntimeVersion();
-        cxfLibraryEdition = getCxfRuntimeEdition();
+        this.cxfLibraryLocation = getCxfRuntimeLocation();
+        this.cxfLibraryVersion = getCxfRuntimeVersion();
+        this.cxfLibraryType = getCxfRuntimeEdition();
     }
 
     public IClasspathEntry[] getClasspathEntries() {
-        if (!cxfLibraryVersion.equals(getCxfRuntimeVersion())) {
-            classpathEntries = new ArrayList<IClasspathEntry>();
-            cxfLibraryLocation = getCxfRuntimeLocation();
-            cxfLibraryVersion = getCxfRuntimeVersion();
-            cxfLibraryEdition = getCxfRuntimeEdition();
-        }
+        //                if (!cxfLibraryVersion.equals(getCxfRuntimeVersion())) {
+        //                    classpathEntries = new ArrayList<IClasspathEntry>();
+        //                    this.cxfLibraryLocation = cxfInstallgetCxfRuntimeLocation();
+        //                    this.cxfLibraryVersion = getCxfRuntimeVersion();
+        //                    this.cxfLibraryEdition = getCxfRuntimeEdition();
+        //                }
 
         if (classpathEntries.size() == 0) {
             File cxfLibDirectory = getCXFLibraryDirectory();
@@ -71,7 +71,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
     }
 
     public boolean isValid() {
-        if (getCxfRuntimeLocation().length() > 0) {
+        if (cxfLibraryLocation.length() > 0) {
             File cxfLibDirectory = getCXFLibraryDirectory();
             return cxfLibDirectory.exists() && cxfLibDirectory.isDirectory();
         }
@@ -79,7 +79,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
     }
 
     public String getDescription() {
-        return  MessageFormat.format(CXFCoreMessages.CXF_CONTAINER_LIBRARY, cxfLibraryEdition,
+        return  MessageFormat.format(CXFCoreMessages.CXF_CONTAINER_LIBRARY, cxfLibraryType,
                 cxfLibraryVersion);
     }
 

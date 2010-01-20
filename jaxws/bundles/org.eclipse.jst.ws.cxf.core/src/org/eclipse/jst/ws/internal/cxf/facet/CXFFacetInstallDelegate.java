@@ -64,6 +64,9 @@ public class CXFFacetInstallDelegate implements IDelegate {
 
         CXFDataModel model = (CXFDataModel) config;
 
+        //Set project default
+        CXFCorePlugin.getDefault().setCXFRuntimeVersion(project, model.getDefaultRuntimeVersion());
+
         if (CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeLocation().equals("")) { //$NON-NLS-1$
             throw new CoreException(new Status(Status.ERROR, CXFCorePlugin.PLUGIN_ID,
                     CXFCoreMessages.CXF_FACET_INSTALL_DELEGATE_RUNTIME_LOCATION_NOT_SET));
@@ -86,9 +89,6 @@ public class CXFFacetInstallDelegate implements IDelegate {
                             true);
 
         JDTUtils.addToClasspath(JavaCore.create(project), cxfClasspathContainer);
-
-        //Set project default
-        CXFCorePlugin.getDefault().setCXFRuntimeVersion(project, model.getDefaultRuntimeVersion());
 
         // Add CXF Servlet, Servlet Mapping and Session Config to web.xml
         final IModelProvider provider = ModelProviderManager.getModelProvider(project);

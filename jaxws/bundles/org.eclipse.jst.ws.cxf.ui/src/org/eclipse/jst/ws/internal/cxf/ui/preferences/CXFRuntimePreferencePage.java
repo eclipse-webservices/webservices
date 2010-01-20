@@ -62,6 +62,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -204,9 +205,8 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
             public String getText(Object element) {
                 if (element instanceof CXFInstall) {
                     CXFInstall install = (CXFInstall) element;
-                    String type = install.getType().toString().trim();
                     String version = install.getVersion().toString().trim();
-                    return type + " " + version; //$NON-NLS-1$
+                    return version;
                 }
                 return ""; //$NON-NLS-1$
             }
@@ -244,6 +244,26 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
         locationColumn.pack();
 
         columnWeightData = new ColumnWeightData(50, 150, true);
+        tableLayout.addColumnData(columnWeightData);
+
+        TableViewerColumn typeViewerColumn = new TableViewerColumn(cxfInstallations, SWT.LEFT);
+        typeViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+
+            @Override
+            public String getText(Object element) {
+                if (element instanceof CXFInstall) {
+                    CXFInstall install = (CXFInstall) element;
+                    return install.getType().toString().trim();
+                }
+                return ""; //$NON-NLS-1$
+            }
+        });
+
+        TableColumn typeColumn = typeViewerColumn.getColumn();
+        typeColumn.setText(CXFUIMessages.CXF_RUNTIME_PREFERENCE_PAGE_LOCATION_TYPE_NAME);
+        typeColumn.pack();
+
+        columnWeightData = new ColumnWeightData(50, 100, true);
         tableLayout.addColumnData(columnWeightData);
 
         gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -304,10 +324,16 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
             public void widgetSelected(SelectionEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) cxfInstallations.getSelection();
                 if (selection != null && selection.getFirstElement() instanceof CXFInstall) {
+                    cxfInstallations.getCheckedElements();
+                    //int selectedInstall = cxfInstallations.getTable().getSelectionIndex();
+                    String checkedVersion = getCheckedVersion();
                     CXFInstallWizard installWizard = new CXFInstallWizard((CXFInstall) selection.getFirstElement());
                     WizardDialog dialog = new WizardDialog(getShell(), installWizard);
                     if (dialog.open() == Window.OK) {
                         cxfInstallations.refresh();
+                        if (checkedVersion != null) {
+                            setCheckedVersion(checkedVersion);
+                        }
                     }
                 }
             }
@@ -331,6 +357,9 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
                 }
                 context.setInstallations(installations);
                 cxfInstallations.refresh();
+                if (cxfInstallations.getCheckedElements().length == 0) {
+                    setCheckedInstall(null);
+                }
             }
         });
         removeButton.setEnabled(false);
@@ -462,9 +491,9 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
 
         springConfigTabItem.setControl(springConfigPreferncesGroup);
 
-        CXFInstall selected = getSelectedInstall();
-        if (selected != null) {
-            setSelection(new StructuredSelection(selected));
+        CXFInstall defaultInstall = getDefaultInstall();
+        if (defaultInstall != null) {
+            setSelection(new StructuredSelection(defaultInstall));
         }
 
         handlePreferenceControls();
@@ -473,7 +502,7 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
         return composite;
     }
 
-    private CXFInstall getSelectedInstall() {
+    private CXFInstall getDefaultInstall() {
         Collection<CXFInstall> set = context.getInstallations().values();
         Iterator<CXFInstall> setIterator = set.iterator();
         while (setIterator.hasNext()) {
@@ -483,6 +512,23 @@ public class CXFRuntimePreferencePage extends PreferencePage implements IWorkben
             }
         }
         return null;
+    }
+
+    private String getCheckedVersion() {
+        Object[] checkedElements = cxfInstallations.getCheckedElements();
+        if (checkedElements.length > 0) {
+            return ((CXFInstall) checkedElements[0]).getVersion();
+        }
+        return null;
+    }
+
+    private void setCheckedVersion(String version) {
+        TableItem[] tableItems = cxfInstallations.getTable().getItems();
+        for (TableItem install : tableItems) {
+            if (install.getText(0).equals(version)) {
+                install.setChecked(true);
+            }
+        }
     }
 
     private void setCheckedInstall(Object element) {

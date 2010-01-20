@@ -77,11 +77,13 @@ public class CXFPropertyPage extends PropertyPage {
         link.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+                int selectedIndex = installationsComboViewer.getCombo().getSelectionIndex();
                 int result = PreferencesUtil.createPreferenceDialogOn(getShell(),
                         "org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage", //$NON-NLS-1$
                         new String[] {"org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage"}, null).open(); //$NON-NLS-1$
                 if (result == Window.OK) {
                     installationsComboViewer.refresh();
+                    installationsComboViewer.getCombo().select(selectedIndex);
                 }
             }
         });
@@ -139,7 +141,9 @@ public class CXFPropertyPage extends PropertyPage {
     @Override
     public boolean performOk() {
         CXFInstall selectedInstall = getSelectedInstall();
-        if (!defaultInstall.getVersion().equals(selectedInstall.getVersion())) {
+        //if (isUpdateRequired(project, selectedInstall)) {
+        //if (!defaultInstall.getVersion().equals(selectedInstall.getVersion())) {
+        if (selectedInstall != null) {
             CXFCorePlugin.getDefault().setCXFRuntimeVersion(project, selectedInstall.getVersion());
 
             ClasspathContainerInitializer classpathContainerInitializer = JavaCore.getClasspathContainerInitializer(

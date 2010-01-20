@@ -19,7 +19,6 @@ public class CXFInstallWizard extends Wizard {
     private CXFInstall cxfInstall;
 
     public CXFInstallWizard() {
-
     }
 
     public CXFInstallWizard(CXFInstall cxfInstall) {
@@ -41,5 +40,4 @@ public class CXFInstallWizard extends Wizard {
     public boolean performFinish() {
         return cxfInstallWizardPage.finish();
     }
-
 }
