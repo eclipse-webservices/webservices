@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.wst.ws.service.policy.IServicePolicy;
@@ -266,6 +268,17 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
     WSIPreferenceLink.setLayoutData(new GridData(GridData.GRAB_VERTICAL | GridData.VERTICAL_ALIGN_END));
 
+    // Modify default values setting link
+	Link preferencesLink = new Link(base, SWT.NONE);
+	preferencesLink.setText("<a>" + Messages._UI_LINK_TEXT_MODIFY_DEFAULT_VALUES_SETTING  + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$
+	preferencesLink.addSelectionListener(new SelectionAdapter(){
+		public void widgetSelected(SelectionEvent selectionEvent) {
+			PreferenceDialog preferenceDialog = PreferencesUtil.createPreferenceDialogOn(getShell(), WSDLEditorPlugin.WSDL_PREFERENCE_PAGE, new String[]{WSDLEditorPlugin.WSDL_PREFERENCE_PAGE}, null);
+			if (preferenceDialog != null)
+				preferenceDialog.open();
+		}
+	});
+    
     createSkeletonCheckBox.addSelectionListener(this);
 
     PlatformUI.getWorkbench().getHelpSystem().setHelp(base, ASDEditorCSHelpIds.WSDL_WIZARD_OPTIONS_PAGE);
@@ -305,6 +318,11 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     }
     return namespace;
   }
+  
+  private String computeDefaultPrefix() 
+  {
+	  return WSDLEditorPlugin.getInstance().getPreferenceStore().getString(WSDLEditorPlugin.DEFAULT_TARGET_NAMESPACE_PREFIX_PREFERENCE_ID);
+  }
 
   public void setVisible(boolean visible)
   {
@@ -314,7 +332,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
     {
       // prime the fields    
       targetNamespaceText.setText(computeDefaultNamespaceName());
-      prefixText.setText("tns"); //$NON-NLS-1$
+      prefixText.setText(computeDefaultPrefix()); 
     }
   }
 

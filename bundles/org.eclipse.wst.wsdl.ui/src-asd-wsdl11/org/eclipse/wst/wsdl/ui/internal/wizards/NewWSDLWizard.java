@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.wizards;
 
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -30,6 +32,7 @@ import org.eclipse.core.runtime.Preferences;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -78,6 +81,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceInfo;
 import org.w3c.dom.Element;
 
 public class NewWSDLWizard extends Wizard implements INewWizard {
+	private static final String DOT_WSDL = ".wsdl"; //$NON-NLS-1$
 	private WSDLNewFilePage newFilePage;
 	private WSDLNewFileOptionsPage optionsPage;
 	private IStructuredSelection selection;
@@ -164,6 +168,7 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 					protocolName = extension.getName();
 			    }
 				CreateWSDLElementHelper.portName = definitionName + protocolName;
+			    createPortType(definitionName, wsdlPrefix, prefix, charSet, factory);
 			    
 				Service service = CreateWSDLElementHelper.createService(definition);
 
@@ -205,6 +210,52 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		}
 
 		return true;
+	}
+
+	private void createPortType(String definitionName, String wsdlPrefix,
+			String prefix, String charSet, WSDLFactoryImpl factory)
+			throws IOException {
+		IPreferenceStore preferenceStore = WSDLEditorPlugin.getInstance().getPreferenceStore();
+		boolean createPortTypeInSeparateWSDL = 
+			preferenceStore.getBoolean(WSDLEditorPlugin.GENERATE_SEPARATE_INTERFACE_PREFERENCE_ID);
+		if (createPortTypeInSeparateWSDL) {
+			// Create the port type in another WSDL file
+			CreateWSDLElementHelper.IMPORT_PORT_TYPE_FROM_ANOTHER_FILE = false;
+			CreateWSDLElementHelper.portTypeName = definitionName;
+			
+			IFile portTypeFile = getIntfFile(fNewFile);
+			
+			
+			URI portTypeURI = URI.createPlatformResourceURI(portTypeFile.getFullPath().toOSString(), false);
+			ResourceSet portTypeResourceSet = new ResourceSetImpl();
+			WSDLResourceImpl portTypeResource = (WSDLResourceImpl) portTypeResourceSet.createResource(URI.createURI("*.wsdl")); //$NON-NLS-1$
+			portTypeResource.setURI(portTypeURI);
+			
+			DefinitionImpl portTypeDefinition = (DefinitionImpl) factory.createDefinition();
+			portTypeResource.getContents().add(portTypeDefinition);
+			
+			String portTypeNamespace = getPortTypeDefaultTargetNamespace();
+			portTypeDefinition.setTargetNamespace(portTypeNamespace);
+			portTypeDefinition.setLocation(portTypeFile.getLocation().toString());
+			portTypeDefinition.setEncoding(charSet);
+			portTypeDefinition.setQName(new QName(wsdlPrefix, definitionName + getPortTypeFileSuffix()));
+			portTypeDefinition.addNamespace(prefix, portTypeNamespace);
+			portTypeDefinition.updateElement(true);
+			CreateWSDLElementHelper.createPortType(portTypeDefinition);
+			portTypeResource.save(null);
+			
+			CreateWSDLElementHelper.portTypeNamespace = portTypeDefinition.getTargetNamespace();
+			CreateWSDLElementHelper.portTypePrefix = getPortTypeDefaultPrefix();
+			CreateWSDLElementHelper.portTypeLocation = portTypeFile.getName();	
+			
+			CreateWSDLElementHelper.IMPORT_PORT_TYPE_FROM_ANOTHER_FILE = true;
+		} else {
+			CreateWSDLElementHelper.portTypeName = null;
+			CreateWSDLElementHelper.portTypeNamespace = null;
+			CreateWSDLElementHelper.portTypePrefix = null;
+			CreateWSDLElementHelper.portTypeLocation = null;
+			CreateWSDLElementHelper.IMPORT_PORT_TYPE_FROM_ANOTHER_FILE = false;
+		}
 	}
 
 	/**
@@ -430,5 +481,42 @@ public class NewWSDLWizard extends Wizard implements INewWizard {
 		      {
 		    	return (PersistentWSIContext.IGNORE_NON_WSI);
 		      }
+	  }
+	  
+	  private IFile getIntfFile(IFile file) {
+		  String baseName = file.getFullPath().removeFileExtension().lastSegment();
+		  String suffix = getPortTypeFileSuffix() + DOT_WSDL;
+		  String fileName = baseName + suffix;
+		  IContainer parent = file.getParent();
+		  IFile result = parent.getFile(new Path(fileName));
+		  if (!result.exists()) {
+			  return result;
+		  }
+
+		  // compute a unique filename if needed
+		  for (int count = 1; count < 100; count++) {
+			  fileName = baseName + count + suffix;
+			  result = parent.getFile(new Path(fileName));
+			  if (!result.exists()) {
+				  break;
+			  }
+		  }
+
+		  return result;
+	  }
+	  
+	  private String getPortTypeFileSuffix() {
+		  return WSDLEditorPlugin.getInstance().getPreferenceStore().
+		  			getString(WSDLEditorPlugin.INTERFACE_FILE_SUFFIX_PREFERENCE_ID);
+	  }
+	  
+	  private String getPortTypeDefaultPrefix() {
+		  return WSDLEditorPlugin.getInstance().getPreferenceStore().
+			getString(WSDLEditorPlugin.INTERFACE_PREFIX_PREFERENCE_ID);
+	  }
+	  
+	  private String getPortTypeDefaultTargetNamespace() {
+		  return WSDLEditorPlugin.getInstance().getPreferenceStore().
+			getString(WSDLEditorPlugin.INTERFACE_DEFAULT_TARGET_NAMESPACE_PREFERENCE_ID);
 	  }
 }

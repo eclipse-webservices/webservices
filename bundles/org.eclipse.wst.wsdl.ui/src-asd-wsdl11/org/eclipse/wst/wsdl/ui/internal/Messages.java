@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,13 +52,19 @@ public class Messages {
 		return MessageFormat.format(getString(key), args);
 	}
 	
-  public static String _UI_EDITOR_NAME;
+	public static String _UI_EDITOR_NAME;
 	public static String _UI_DEPENDENCIES_CHANGED;
 	public static String _UI_DEPENDENCIES_CHANGED_REFRESH;
 	public static String _UI_EDIT_NAMESPACES_DIALOG_TITLE;
 	public static String _UI_PREF_PAGE_CREATING_FILES;
 	public static String _UI_REMEMBER_MY_DECISION_LABEL;
 	public static String _UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE;
+	public static String _UI_PREF_PAGE_DEFAULT_PREFIX;
+	public static String _UI_PREF_GENERATE_SEPARATE_INTERFACE;
+	public static String _UI_PREF_PAGE_INTERFACE_DEFAULT_PREFIX;
+	public static String _UI_PREF_PAGE_INTERFACE_DEFAULT_TARGET_NAMESPACE;
+	public static String _UI_PREF_PAGE_INTERFACE_FILE_SUFFIX;
+	public static String _UI_LINK_TEXT_MODIFY_DEFAULT_VALUES_SETTING;
 	public static String _UI_REGEN_BINDINGS_ON_SAVE_QUESTIONMARK;
 	public static String _UI_LABEL_WARNING_DUPLICATE_NAME_EXISTS;
 	public static String _UI_LABEL_NAMESPACE_URIS_TO_BE_INCLUDED;

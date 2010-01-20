@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.wsdl.OperationType;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.wsdl.Binding;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Fault;
@@ -31,11 +32,13 @@ import org.eclipse.wst.wsdl.Service;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.eclipse.wst.wsdl.XSDSchemaExtensibilityElement;
 import org.eclipse.wst.wsdl.internal.generator.ContentGenerator;
+import org.eclipse.wst.wsdl.internal.impl.ImportImpl;
 import org.eclipse.wst.wsdl.internal.impl.MessageReferenceImpl;
 import org.eclipse.wst.wsdl.internal.impl.WSDLElementImpl;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBaseParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddBindingCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddFaultCommand;
+import org.eclipse.wst.wsdl.ui.internal.commands.AddImportCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddInputParameterCommand;
 import org.eclipse.wst.wsdl.ui.internal.commands.AddMessageCommand;
@@ -75,9 +78,13 @@ public class CreateWSDLElementHelper {
 	public static String faultName = null;
 	public static String messageName = null;
 	public static String partName = null;
+	public static String portTypeNamespace;
+	public static String portTypePrefix;
+	public static String portTypeLocation;
 	
 	public static String PART_TYPE_OR_DEFINITION = PART_INFO_TYPE_DEFINITION;
 	public static boolean CREATE_DOWN_TO_PART = true;
+	public static boolean IMPORT_PORT_TYPE_FROM_ANOTHER_FILE = false;	
 		
 	/**
 	 * Adds additional namespaces required by contentGenerator to definition.
@@ -220,16 +227,43 @@ public class CreateWSDLElementHelper {
 		return binding;
 	}
 	
-	public static PortType createPortType(Definition definition) {
-		if (portTypeName == null || portTypeName.trim().equals("")) //$NON-NLS-1$
-			portTypeName = NameUtil.buildUniquePortTypeName(definition, "PortType"); //$NON-NLS-1$
+	public static PortType importPortType(Definition definition) {
+		AddImportCommand addImportCommand = new AddImportCommand(definition, portTypeNamespace, portTypeLocation);
+		addImportCommand.run();
+		WSDLElement wsdlElement = addImportCommand.getWSDLElement();
+		if (wsdlElement instanceof ImportImpl) {
+			ImportImpl importImpl = (ImportImpl) wsdlElement;
+			importImpl.importDefinitionOrSchema();
+			Definition importedDefinition = importImpl.getEDefinition();
+			if (importedDefinition != null) {
+				definition.addNamespace(portTypePrefix, portTypeNamespace);
+				EList portTypes = importedDefinition.getEPortTypes();
+				if (portTypes.size() > 0) {
+					return (PortType) portTypes.get(0);
+				}
+			}
+		}
 		
-		AddPortTypeCommand addPortTypeCommand = new AddPortTypeCommand(definition, portTypeName);
-		addPortTypeCommand.run();
-		PortType portType = (PortType) addPortTypeCommand.getWSDLElement();
+		return null;
+	}
+	
+	public static PortType createPortType(Definition definition) {
+		PortType portType = null;
+		if (IMPORT_PORT_TYPE_FROM_ANOTHER_FILE) {
+			portType = importPortType(definition);
+		}
+		else {
+		  if (portTypeName == null || portTypeName.trim().equals("")) { //$NON-NLS-1$
+		    portTypeName = NameUtil.buildUniquePortTypeName(definition, "PortType"); //$NON-NLS-1$
+		  }
 
-		if (CREATE_DOWN_TO_PART) {
-			CreateWSDLElementHelper.createOperation(portType);
+		  AddPortTypeCommand addPortTypeCommand = new AddPortTypeCommand(definition, portTypeName);
+		  addPortTypeCommand.run();
+		  portType = (PortType) addPortTypeCommand.getWSDLElement();
+
+		  if (CREATE_DOWN_TO_PART) {
+		    CreateWSDLElementHelper.createOperation(portType);
+		  }
 		}
 		
 		return portType;

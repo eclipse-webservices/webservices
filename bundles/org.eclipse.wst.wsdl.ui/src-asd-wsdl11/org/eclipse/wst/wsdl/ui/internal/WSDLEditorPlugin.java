@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,12 +47,24 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   public static final String DESIGN_PAGE = "org.eclipse.wst.wsdl.ui.internal.designpage"; //$NON-NLS-1$
   public static final String SOURCE_PAGE = "org.eclipse.wst.wsdl.ui.internal.sourcepage"; //$NON-NLS-1$
 
-  public final static String PLUGIN_ID = "org.eclipse.wst.wsdl.ui"; //$NON-NLS-1$
-  public final static String WSDL_EDITOR_ID = "org.eclipse.wst.wsdl.ui.internal.WSDLEditor";  //$NON-NLS-1$
-  public final static String XSD_EDITOR_ID = "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor";  //$NON-NLS-1$
-  public final static String WSDL_CONTENT_TYPE_ID = "org.eclipse.wst.wsdl.wsdlsource"; //$NON-NLS-1$
+  public static final String PLUGIN_ID = "org.eclipse.wst.wsdl.ui"; //$NON-NLS-1$
+  public static final String WSDL_EDITOR_ID = "org.eclipse.wst.wsdl.ui.internal.WSDLEditor";  //$NON-NLS-1$
+  public static final String XSD_EDITOR_ID = "org.eclipse.wst.xsd.ui.internal.editor.InternalXSDMultiPageEditor";  //$NON-NLS-1$
+  public static final String WSDL_CONTENT_TYPE_ID = "org.eclipse.wst.wsdl.wsdlsource"; //$NON-NLS-1$
 
-  public final static String DEFAULT_TARGET_NAMESPACE = "http://www.example.org"; //$NON-NLS-1$
+  public static final String WSDL_PREFERENCE_PAGE = "org.eclipse.wst.wsdl.ui.internal.WSDLPreferencePage"; //$NON-NLS-1$
+  public static final String DEFAULT_TARGET_NAMESPACE = "http://www.example.org"; //$NON-NLS-1$
+  public static final String DEFAULT_TARGET_NAMESPACE_PREFIX = "tns"; //$NON-NLS-1$
+  public static final String DEFAULT_TARGET_NAMESPACE_PREFIX_PREFERENCE_ID = "defaultPrefix"; //$NON-NLS-1$
+  
+  // TODO VB Move these defaults to a preferences initializer class.
+  
+  public static final String GENERATE_SEPARATE_INTERFACE_PREFERENCE_ID = "generateSeparateInterface"; //$NON-NLS-1$
+  public static final String INTERFACE_PREFIX_PREFERENCE_ID = "interfaceDefaultPrefix"; //$NON-NLS-1$
+  public static final String INTERFACE_PREFIX_DEFAULT = "intf"; //$NON-NLS-1$
+  public static final String INTERFACE_DEFAULT_TARGET_NAMESPACE_PREFERENCE_ID = "interfaceDefaultTargetNamespace"; //$NON-NLS-1$
+  public static final String INTERFACE_FILE_SUFFIX_PREFERENCE_ID = "interfaceFileSuffix"; //$NON-NLS-1$
+  public static final String INTERFACE_FILE_SUFFIX_DEFAULT = "PortType"; //$NON-NLS-1$
   
   public static int DEPENDECIES_CHANGED_POLICY_PROMPT = 0;
   public static int DEPENDECIES_CHANGED_POLICY_IGNORE = 1;
@@ -309,6 +321,11 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     // This makes the preferences non-portable between different locales.
     // Opened https://bugs.eclipse.org/bugs/show_bug.cgi?id=267471
     store.setDefault(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE, DEFAULT_TARGET_NAMESPACE);
+    store.setDefault(DEFAULT_TARGET_NAMESPACE_PREFIX_PREFERENCE_ID, DEFAULT_TARGET_NAMESPACE_PREFIX);
+    store.setDefault(GENERATE_SEPARATE_INTERFACE_PREFERENCE_ID, false);
+    store.setDefault(INTERFACE_PREFIX_PREFERENCE_ID, INTERFACE_PREFIX_DEFAULT);
+    store.setDefault(INTERFACE_DEFAULT_TARGET_NAMESPACE_PREFERENCE_ID, DEFAULT_TARGET_NAMESPACE);
+    store.setDefault(INTERFACE_FILE_SUFFIX_PREFERENCE_ID, INTERFACE_FILE_SUFFIX_DEFAULT);
     store.setDefault(Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING, false);
     store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false);
     store.setDefault(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP, false);
