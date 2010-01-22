@@ -134,7 +134,9 @@ public class CXFPropertyPage extends PropertyPage {
 
         String intalledVersion = CXFCorePlugin.getDefault().getCXFRuntimeVersion(project);
         defaultInstall = context.getInstallations().get(intalledVersion);
-        installationsComboViewer.setSelection(new StructuredSelection(defaultInstall), true);
+        if (defaultInstall != null) {
+            installationsComboViewer.setSelection(new StructuredSelection(defaultInstall), true);
+        }
         return composite;
     }
 
@@ -164,14 +166,19 @@ public class CXFPropertyPage extends PropertyPage {
 
     private CXFInstall getSelectedInstall() {
         StructuredSelection structuredSelection = (StructuredSelection) installationsComboViewer.getSelection();
-        CXFInstall selectedInstall = (CXFInstall) structuredSelection.getFirstElement();
-        return selectedInstall;
+        if (!structuredSelection.isEmpty()) {
+            CXFInstall selectedInstall = (CXFInstall) structuredSelection.getFirstElement();
+            return selectedInstall;
+        }
+        return null;
     }
 
     @Override
     protected void performDefaults() {
         CXFInstall defaultInstall = context.getInstallations().get(context.getDefaultRuntimeVersion());
-        installationsComboViewer.setSelection(new StructuredSelection(defaultInstall), true);
+        if (defaultInstall != null) {
+            installationsComboViewer.setSelection(new StructuredSelection(defaultInstall), true);
+        }
         super.performDefaults();
     }
 }
