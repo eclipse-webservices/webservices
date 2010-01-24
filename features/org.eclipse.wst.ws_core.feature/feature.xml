@@ -92,7 +92,7 @@
          id="org.apache.log4j"
          download-size="0"
          install-size="0"
-         version="1.2.13.qualifier"
+         version="1.2.15.qualifier"
          unpack="false"/>
 
    <plugin
