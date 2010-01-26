@@ -63,6 +63,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.JaxWsDomValidat
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.SeiValidationTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WmValidationTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WpValidationTest;
+import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WsProblemsReporterTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WsValidationTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation.MethodValidatorTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation.RuntimeTypeValidatorTest;
@@ -135,6 +136,7 @@ public class AllTestsSuite
 		suite.addTestSuite(WmValidationTest.class);
 		suite.addTestSuite(WpValidationTest.class);
 		suite.addTestSuite(EndpointIsSessionBeanConstraintTest.class);
+		suite.addTestSuite(WsProblemsReporterTest.class);
 		
 		//suite.addTestSuite(CAFWsdlTests.class);
 		

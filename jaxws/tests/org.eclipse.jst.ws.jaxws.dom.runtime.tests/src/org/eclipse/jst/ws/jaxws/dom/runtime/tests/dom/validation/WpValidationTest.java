@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.WsProblemsReporter;
+import org.jmock.core.Constraint;
 
 public class WpValidationTest extends ValidationTestsSetUp 
 {
@@ -35,13 +38,13 @@ public class WpValidationTest extends ValidationTestsSetUp
 				"public void test(@javax.jws.WebParam(name=\"---\")int a); \n" + 
 				"}");
 		
-		validator.validate(sei);
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
-		assertEquals(1, markers.length);
-		assertEquals(115, markers[0].getAttribute(IMarker.CHAR_START));
-		assertEquals(120, markers[0].getAttribute(IMarker.CHAR_END));
-		assertEquals(2, markers[0].getAttribute(IMarker.LINE_NUMBER));
-		assertEquals(IMarker.SEVERITY_ERROR, markers[0].getAttribute(IMarker.SEVERITY));
+		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
+		markerAttributes.put(IMarker.CHAR_START, eq(115));
+		markerAttributes.put(IMarker.CHAR_END, eq(120));
+		markerAttributes.put(IMarker.LINE_NUMBER, eq(2));
+		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
+		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
+		validate(sei, markerData);
 	}
 	
 	public void testPartNameIsNCName() throws CoreException
@@ -51,13 +54,13 @@ public class WpValidationTest extends ValidationTestsSetUp
 				"@javax.jws.WebService public interface Sei {" +
 				"public void test(@javax.jws.WebParam(partName=\"---\")int a); \n" + 
 				"}");
-		
-		validator.validate(sei);
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
-		assertEquals(1, markers.length);
-		assertEquals(179, markers[0].getAttribute(IMarker.CHAR_START));
-		assertEquals(184, markers[0].getAttribute(IMarker.CHAR_END));
-		assertEquals(IMarker.SEVERITY_ERROR, markers[0].getAttribute(IMarker.SEVERITY));
+
+		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
+		markerAttributes.put(IMarker.CHAR_START, eq(179));
+		markerAttributes.put(IMarker.CHAR_END, eq(184));
+		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
+		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
+		validate(sei, markerData);
 	}	
 	
 	public void testNameIsUniqe() throws CoreException
@@ -66,27 +69,18 @@ public class WpValidationTest extends ValidationTestsSetUp
 				"public void test(@javax.jws.WebParam(name=\"param1\")int a, @javax.jws.WebParam(name=\"param1\")int b); \n" + 
 				"}");
 		
-		validator.validate(sei);
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
-		assertEquals(2, markers.length);
-
-		IMarker first;
-		IMarker second;
+		final Map<Object, Constraint> marker1_Attributes = new HashMap<Object, Constraint>();
+		marker1_Attributes.put(IMarker.CHAR_START, eq(115));
+		marker1_Attributes.put(IMarker.CHAR_END, eq(123));
+		marker1_Attributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
+		final Map<Object, Constraint> marker2_Attributes = new HashMap<Object, Constraint>();
+		marker2_Attributes.put(IMarker.CHAR_START, eq(156));
+		marker2_Attributes.put(IMarker.CHAR_END, eq(164));
+		marker2_Attributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
 		
-		if (markers[0].getAttribute(IMarker.CHAR_START).equals(new Integer(115)) ) {
-			first = markers[0];
-			second = markers[1];
-		} else {
-			first = markers[1];
-			second = markers[0];
-		}
-		
-		assertEquals(115, first.getAttribute(IMarker.CHAR_START));
-		assertEquals(123, first.getAttribute(IMarker.CHAR_END));
-		assertEquals(IMarker.SEVERITY_ERROR, first.getAttribute(IMarker.SEVERITY));
-		assertEquals(156, second.getAttribute(IMarker.CHAR_START));
-		assertEquals(164, second.getAttribute(IMarker.CHAR_END));
-		assertEquals(IMarker.SEVERITY_ERROR, second.getAttribute(IMarker.SEVERITY));			
+		final MarkerData marker1_Data =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, marker1_Attributes);
+		final MarkerData marker2_Data =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, marker2_Attributes);
+		validate(sei, marker2_Data, marker1_Data);
 	}
 	
 	public void testNameNotRedundant() throws CoreException
@@ -97,10 +91,7 @@ public class WpValidationTest extends ValidationTestsSetUp
 				"@javax.jws.WebService public interface Sei {" +
 				"public void test(@javax.jws.WebParam(name=\"myName\")int a); \n" + 
 				"}");
-		
-		validator.validate(sei);
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
-		assertEquals(0, markers.length);
+		assertNoValidationErrors(seiType.getResource(), WsProblemsReporter.MARKER_ID, sei);
 	}
 	
 	public void testNameRedundant() throws CoreException
@@ -112,12 +103,12 @@ public class WpValidationTest extends ValidationTestsSetUp
 				"public void test(@javax.jws.WebParam(name=\"myName\", partName=\"myPart\")int a); \n" + 
 				"}");
 		
-		validator.validate(sei);
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
-		assertEquals(1, markers.length);
-		assertEquals(175, markers[0].getAttribute(IMarker.CHAR_START));
-		assertEquals(183, markers[0].getAttribute(IMarker.CHAR_END));
-		assertEquals(IMarker.SEVERITY_WARNING, markers[0].getAttribute(IMarker.SEVERITY));
+		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
+		markerAttributes.put(IMarker.CHAR_START, eq(175));
+		markerAttributes.put(IMarker.CHAR_END, eq(183));
+		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_WARNING));
+		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
+		validate(sei, markerData);
 	}
 	
 	public void testNameIsRequired() throws CoreException
@@ -128,12 +119,12 @@ public class WpValidationTest extends ValidationTestsSetUp
 				"public int test(@javax.jws.WebParam(mode=WebParam.Mode.INOUT) int a); \n" + 
 				"}");
 
-		validator.validate(sei);
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
-		assertEquals(1, markers.length);
-		assertEquals(168, markers[0].getAttribute(IMarker.CHAR_START));
-		assertEquals(213, markers[0].getAttribute(IMarker.CHAR_END));
-		assertEquals(IMarker.SEVERITY_ERROR, markers[0].getAttribute(IMarker.SEVERITY));
+		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
+		markerAttributes.put(IMarker.CHAR_START, eq(168));
+		markerAttributes.put(IMarker.CHAR_END, eq(213));
+		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
+		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
+		validate(sei, markerData);
 	}	
 	
 	public void testTargetNsValidUri() throws CoreException
@@ -142,11 +133,11 @@ public class WpValidationTest extends ValidationTestsSetUp
 				"public void test(@javax.jws.WebParam(targetNamespace=\"^^^\")int a); \n" + 
 				"}");
 
-		validator.validate(sei);
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
-		assertEquals(1, markers.length);
-		assertEquals(126, markers[0].getAttribute(IMarker.CHAR_START));
-		assertEquals(131, markers[0].getAttribute(IMarker.CHAR_END));
-		assertEquals(IMarker.SEVERITY_ERROR, markers[0].getAttribute(IMarker.SEVERITY));	
+		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
+		markerAttributes.put(IMarker.CHAR_START, eq(126));
+		markerAttributes.put(IMarker.CHAR_END, eq(131));
+		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
+		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
+		validate(sei, markerData);
 	}
 }

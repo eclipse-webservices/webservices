@@ -44,7 +44,7 @@ public class WsSynchronizer extends ElementSynchronizerImpl
 	{
 		for (IWebService ws : wsProject.getWebServices())
 		{
-			if (ws.getImplementation().equals(implName))
+			if (ws.getImplementation()!= null && ws.getImplementation().equals(implName))
 			{
 				return ws;
 			}
