@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.cxf.tests;
 
+import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.jst.ws.jaxb.core.tests.JAXBCoreTestSuite;
@@ -22,27 +23,30 @@ import org.eclipse.jst.ws.jaxws.core.tests.JAXWSCoreTestSuite;
  */
 public class AllTestsSuite extends TestSuite {
 
+    public static Test suite() {
+        return new AllTestsSuite();
+    }
 
-	public AllTestsSuite() {
-		super("All JAXWS and JAXB Test Suites");
-		addTest(JAXWSCoreTestSuite.suite());
-		addTest(JAXWSAnnotationValidationTestSuite.suite());
-		addTest(JAXBCoreTestSuite.suite());
+    public AllTestsSuite() {
+        super("All JAXWS and JAXB Test Suites");
+        addTest(JAXWSCoreTestSuite.suite());
+        addTest(JAXWSAnnotationValidationTestSuite.suite());
+        addTest(JAXBCoreTestSuite.suite());
 
-		//Adding JAX-WS DOM Tools test suites
+        //Adding JAX-WS DOM Tools test suites
         addTest(org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.AllTestsSuite.suite());
-		addTest(org.eclipse.jst.ws.jaxws.dom.runtime.tests.AllTestsSuite.suite());
-		addTest(org.eclipse.jst.ws.jaxws.dom.ui.tests.AllTestsSuite.suite());
-		addTest(org.eclipse.jst.ws.jaxws.utils.tests.AllTestsSuite.suite());
-	}
+        addTest(org.eclipse.jst.ws.jaxws.dom.runtime.tests.AllTestsSuite.suite());
+        addTest(org.eclipse.jst.ws.jaxws.dom.ui.tests.AllTestsSuite.suite());
+        addTest(org.eclipse.jst.ws.jaxws.utils.tests.AllTestsSuite.suite());
+    }
 
-	/**
-	 * This is just need to run in a development environment workbench.
-	 */
-	public void testAll() {
-		// this method needs to exist, but doesn't really do anything
-		// other than to signal to create an instance of this class.
-		// The rest it automatic from the tests added in constructor.
+    /**
+     * This is just need to run in a development environment workbench.
+     */
+    public void testAll() {
+        // this method needs to exist, but doesn't really do anything
+        // other than to signal to create an instance of this class.
+        // The rest it automatic from the tests added in constructor.
 
-	}
+    }
 }
