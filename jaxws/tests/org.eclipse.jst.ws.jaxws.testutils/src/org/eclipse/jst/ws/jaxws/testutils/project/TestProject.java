@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.jaxws.testutils.project;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -22,11 +23,13 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -40,10 +43,21 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
+import org.eclipse.jst.ws.jaxws.testutils.threading.TestContext;
 import org.eclipse.jst.ws.jaxws.utils.ContractChecker;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
+/**
+ * Wrapper utility for maintaining projects which participate in tests fixture. Resource modification operations are always performed outside the UI (main thread). If the caller thread is the UI thread, fork in {@link TestContext} is performed.
+ * Resource change operations are performed within a {@link IWorkspaceRunnable} with a scheduling rule of the workspace root<br>
+ * Executing resource changes outside the UI thread allows resource change events propagation event when the JUnit tests run in the UI thread. This is especially important for Web service DOM tests as the model is updated on resource changes   
+ * 
+ * @author Georgi Vachkov, Danail Branekov
+ */
 @SuppressWarnings("restriction")
 public class TestProject
 {
@@ -64,7 +78,6 @@ public class TestProject
 	
 	public TestProject(String name) throws CoreException
 	{
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		/*
 		 * Calculate the name of the test project. The formula: JavaProj_ + <current_time_in_millis? + <idInMillis> is ussed. In this formula
 		 * JavaProj_ is a string litteral, current_time_in_millis is obvious. idInMillis is an integer incremented each time a project name is
@@ -74,11 +87,20 @@ public class TestProject
 		 * idInMillis gives a unique project name
 		 */
 		final String testProjectName = "JavaProj_" + Long.toString(System.currentTimeMillis()) + "_" + idInMillis++ + name;
-		project = root.getProject(testProjectName);
-		project.create(null);
-		project.open(null);
+		project = workspace().getRoot().getProject(testProjectName);
+		
+		final IWorkspaceRunnable createProjectOperation = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				project.create(null);
+				project.open(null);
 
-		configureJavaProject();
+				configureJavaProject();
+			}
+		};
+		
+		executeWorkspaceRunnable(createProjectOperation);
 	}
 
 	private void configureJavaProject() throws CoreException
@@ -129,45 +151,53 @@ public class TestProject
 		return javaProject;
 	}
 
-	public void addJar(String plugin, String jar) throws MalformedURLException, IOException, JavaModelException
+	public void addJar(String plugin, String jar) throws MalformedURLException, IOException, CoreException
 	{
 		Path result = findFileInPlugin(plugin, jar);
 		IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+		final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
 		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
 		newEntries[oldEntries.length] = JavaCore.newLibraryEntry(result, null, null);
-		javaProject.setRawClasspath(newEntries, null);
 		
-		String log = "\n"+javaProject.getProject().getName()+"\n"+String.valueOf(javaProject.getRawClasspath().length)+"\n"; 
-
-		for(int ii=0; ii < javaProject.getRawClasspath().length; ii++)
-		{
-			log = log +  javaProject.getRawClasspath()[ii].getPath().toString()+"\n";
-		}
-		
-		if(javaProject.getRawClasspath().length==0)
-		{
-			log = log + "Classpath not initialized !\n";
-		}
-		
-		ResourcesPlugin.getPlugin().getLog().log(new Status(0,"testOutput",log));
+		setClasspath(newEntries);
 	}
 
-	public IPackageFragment createPackage(String name) throws CoreException
+	public IPackageFragment createPackage(final String name) throws CoreException
 	{
-		if (sourceFolder == null)
-			sourceFolder = createSourceFolder("src");
-		return sourceFolder.createPackageFragment(name, false, null);
+		final IPackageFragment[] createdPackage = new IPackageFragment[1];
+		
+		final IWorkspaceRunnable createPackageRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				if (sourceFolder == null)
+					sourceFolder = createSourceFolder("src");
+				createdPackage[0] = sourceFolder.createPackageFragment(name, false, null);
+			}
+		};
+		executeWorkspaceRunnable(createPackageRunnable);
+		
+		return createdPackage[0];
 	}
 
-	public IType createType(IPackageFragment pack, String cuName, String source) throws JavaModelException
+	public IType createType(final IPackageFragment pack, final String cuName, final String source) throws CoreException
 	{
-		StringBuffer buf = new StringBuffer();
+		final StringBuffer buf = new StringBuffer();
 		buf.append("package " + pack.getElementName() + ";\n");
 		buf.append("\n");
 		buf.append(source);
-		ICompilationUnit cu = pack.createCompilationUnit(cuName, buf.toString(), false, null);
-		return cu.getTypes()[0];
+		
+		final ICompilationUnit[] createdCu = new ICompilationUnit[1];
+		final IWorkspaceRunnable createCuRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				createdCu[0] = pack.createCompilationUnit(cuName, buf.toString(), false, null);
+			}
+		};
+		executeWorkspaceRunnable(createCuRunnable);
+		
+		return createdCu[0].getTypes()[0];
 	}
 
 	
@@ -222,24 +252,40 @@ public class TestProject
 	public void dispose() throws CoreException
 	{
 		JobUtils.waitForJobs();
-		try {
-			project.refreshLocal(IResource.DEPTH_INFINITE, null);
-			project.delete(true, true, null);
-		} catch (ResourceException re) {
-			/*
-			 * silently swallow the resource exception. For some reason this exception gets thrown
-			 * from time to time and reports the test failing. The project deletion itself happens
-			 * after the test has completed and a failure will not report a problem in the test.
-	    	 * Only ResourceException is caught in order not to hide unexpected errors.	
-			 */
-			return;
-		}
+		
+		final IWorkspaceRunnable disposeProjectRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				try {
+					project.refreshLocal(IResource.DEPTH_INFINITE, null);
+					project.delete(true, true, null);
+				} catch (ResourceException re) {
+					/*
+					 * silently swallow the resource exception. For some reason this exception gets thrown
+					 * from time to time and reports the test failing. The project deletion itself happens
+					 * after the test has completed and a failure will not report a problem in the test.
+			    	 * Only ResourceException is caught in order not to hide unexpected errors.	
+					 */
+					return;
+				}
+			}
+		};
+		executeWorkspaceRunnable(disposeProjectRunnable);
 	}
+	
 	public void close() throws CoreException
 	{
 		JobUtils.waitForJobs();
 		
-		project.close(new NullProgressMonitor());		
+		final IWorkspaceRunnable closeRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				project.close(monitor);		
+			}
+		};
+		executeWorkspaceRunnable(closeRunnable);
 	}
 
 	private IFolder createBinFolder() throws CoreException
@@ -262,57 +308,38 @@ public class TestProject
 		javaProject.setOutputLocation(outputLocation, null);
 	}
 
-	public IPackageFragmentRoot createSourceFolder(String name) throws CoreException
+	public IPackageFragmentRoot createSourceFolder(final String name) throws CoreException
 	{
-		IFolder folder = project.getFolder(name);
-		folder.create(false, true, null);
-		IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(folder);
-
-		IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
-		javaProject.setRawClasspath(newEntries, null);
-		this.sourceFolder = root;
-		
-		String log = "\n"+javaProject.getProject().getName()+"\n"+String.valueOf(javaProject.getRawClasspath().length)+"\n"; 
-
-		for(int ii=0; ii < javaProject.getRawClasspath().length; ii++)
+		final IPackageFragmentRoot[] createdRoot = new IPackageFragmentRoot[1];
+		final IWorkspaceRunnable createRootRunnable = new IWorkspaceRunnable()
 		{
-			log = log +  javaProject.getRawClasspath()[ii].getPath().toString()+"\n";
-		}
+			
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				IFolder folder = project.getFolder(name);
+				folder.create(false, true, null);
+				createdRoot[0] = javaProject.getPackageFragmentRoot(folder);
+
+				IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+				IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+				System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+				newEntries[oldEntries.length] = JavaCore.newSourceEntry(createdRoot[0].getPath());
+				setClasspath(newEntries);
+			}
+		};
+		executeWorkspaceRunnable(createRootRunnable);
+		this.sourceFolder = createdRoot[0];
 		
-		if(javaProject.getRawClasspath().length==0)
-		{
-			log = log + "Classpath not initialized !\n";
-		}
-		
-		ResourcesPlugin.getPlugin().getLog().log(new Status(0,"testOutput",log));
-		
-		return root;
+		return sourceFolder;
 	}
 
-	private void addSystemLibraries() throws JavaModelException
+	private void addSystemLibraries() throws CoreException
 	{
 		IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
 		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
 		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
 		newEntries[oldEntries.length] = JavaRuntime.getDefaultJREContainerEntry();
-		javaProject.setRawClasspath(newEntries, null);
-		
-		String log = "\n"+javaProject.getProject().getName()+"\n"+String.valueOf(javaProject.getRawClasspath().length)+"\n"; 
-
-		for(int ii=0; ii < javaProject.getRawClasspath().length; ii++)
-		{
-			log = log +  javaProject.getRawClasspath()[ii].getPath().toString()+"\n";
-		}
-		
-		if(javaProject.getRawClasspath().length==0)
-		{
-			log = log + "Classpath not initialized !\n";
-		}
-		
-		ResourcesPlugin.getPlugin().getLog().log(new Status(0,"testOutput",log));
+		setClasspath(newEntries);
 	}
 
 	private Path findFileInPlugin(String plugin, String file) throws MalformedURLException, IOException
@@ -354,7 +381,15 @@ public class TestProject
 	{
 		ContractChecker.nullCheckParam(folderName, "folderName");
 		final IFolder folder = this.project.getFolder(folderName);
-		folder.create(false, true, null);
+		final IWorkspaceRunnable createFolderRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				folder.create(false, true, monitor);
+			}
+		};
+		executeWorkspaceRunnable(createFolderRunnable);
+		
 		return folder;		
 	}
 	
@@ -362,7 +397,7 @@ public class TestProject
 	 * Set the project root as source folder
 	 * @throws JavaModelException 
 	 */
-	public void assignProjectRootAsSourceFolder() throws JavaModelException
+	public void assignProjectRootAsSourceFolder() throws CoreException
 	{
 		IClasspathEntry defaultSrcFolderEntry = JavaCore.newSourceEntry(project.getFullPath());
 		IClasspathEntry[] oldCp = javaProject.getRawClasspath();
@@ -370,8 +405,75 @@ public class TestProject
 		System.arraycopy(oldCp, 0, newCp, 0, oldCp.length);
 		newCp[newCp.length - 1] = defaultSrcFolderEntry;
 		
-		javaProject.setRawClasspath(newCp, null);
+		setClasspath(newCp);
 		this.sourceFolder =  TestProjectsUtils.getSourceFolder(project, "");
+	}
+	
+	private void executeWorkspaceRunnable(final IWorkspaceRunnable runnable) throws CoreException
+	{
+		executeWorkspaceRunnable(runnable, new NullProgressMonitor());
+	}
+	
+	private void executeWorkspaceRunnable(final IWorkspaceRunnable runnable, final IProgressMonitor monitor) throws CoreException
+	{
+		if(Display.getCurrent() == null)
+		{
+			// Execute the runnable in the current (non-UI) thread
+			workspace().run(runnable, monitor);
+		}
+		else
+		{
+			runInTestContext(runnable, monitor);
+		}
+	}
+	
+	private void runInTestContext(final IWorkspaceRunnable runnable, final IProgressMonitor pm) throws CoreException
+	{
+		final IRunnableWithProgress textCtxRunnable = new IRunnableWithProgress()
+		{
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+			{
+				try
+				{
+					executeWorkspaceRunnable(runnable, monitor);
+				} catch (CoreException e)
+				{
+					throw new InvocationTargetException(e);
+				}
+			}
+		};
+		try
+		{
+			TestContext.run(textCtxRunnable, true, pm, PlatformUI.getWorkbench().getDisplay());
+		} catch (InvocationTargetException e)
+		{
+			if(e.getCause() instanceof CoreException)
+			{
+				throw (CoreException)e.getCause();
+			}
+			
+			throw new IllegalStateException("Unexected exception thrown by runnable", e.getCause());
+		} catch (InterruptedException e)
+		{
+			throw new IllegalStateException("Interruption is not supported");
+		}
+	}
+
+	private IWorkspace workspace()
+	{
+		return ResourcesPlugin.getWorkspace();
+	}
+	
+	private void setClasspath(final IClasspathEntry[] newClasspath) throws CoreException
+	{
+		final IWorkspaceRunnable setClasspathRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				javaProject.setRawClasspath(newClasspath, null);
+			}
+		};
+		executeWorkspaceRunnable(setClasspathRunnable);
 		
 		String log = "\n"+javaProject.getProject().getName()+"\n"+String.valueOf(javaProject.getRawClasspath().length)+"\n"; 
 

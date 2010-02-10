@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.MethodValidator;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.AbstractClassNotImplementedException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.validation.provider.exceptions.ConstructorNotExposableException;
@@ -296,7 +296,7 @@ public class MethodValidatorTest extends ClassLoadingTest
 		assertNull(status.getException());
 	}
 
-	public void testCheckMethodWithDefaultAccessInInterface() throws JavaModelException
+	public void testCheckMethodWithDefaultAccessInInterface() throws CoreException
 	{
 		final String seiCode = "public interface SEIWithDefaultAccessMethod { \n" +
 				"	String test(); \n" +

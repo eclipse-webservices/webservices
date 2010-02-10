@@ -16,11 +16,11 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
@@ -52,7 +52,7 @@ public class JaxWsWorkspaceResourceTests extends TestCase
 	 * Verifies that a simple project with one web service class and one sei can be parsed
 	 *
 	 */
-	public void test_Smoke_OneWsAndOneSei() throws JavaModelException, IOException
+	public void test_Smoke_OneWsAndOneSei() throws CoreException, IOException
 	{
 		testProject.createType(pf, "Sei1.java", "@javax.jws.WebService public interface Sei1 {}");
 		testProject.createType(pf, "WebService1.java", "@javax.jws.WebService(endpointInterface=\"com.sap.test.smoke.Sei1\") public class WebService1{}");

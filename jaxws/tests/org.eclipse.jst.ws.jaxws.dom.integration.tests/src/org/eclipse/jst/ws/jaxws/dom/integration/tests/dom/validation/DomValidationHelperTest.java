@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.validation;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jst.ws.jaxws.dom.integration.validation.DomValidationHelper;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDOMRuntimeExtension;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMLoadCanceledException;
 import org.eclipse.jst.ws.jaxws.testutils.jmock.Mock;
 import org.eclipse.jst.ws.jaxws.testutils.jmock.MockObjectTestCase;
+import org.eclipse.jst.ws.jaxws.testutils.project.TestEjb3Project;
+import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 
 /**
  * Test class for {@link DomValidationHelper}.
@@ -34,22 +37,21 @@ public class DomValidationHelperTest extends MockObjectTestCase
         assertTrue(helper.isRegistered("webServiceProject"));
     }
 
-    //FIXME Bug #302034
-    //	public void testGetWebServiceProject() throws Exception
-    //	{
-    //		TestEjb3Project ejbProject = new TestEjb3Project("EjbProject");
-    //		TestProject testProject = new TestProject(ejbProject.getProject());
-    //		IPackageFragment pack = testProject.getSourceFolder().createPackageFragment("org.elcipse.test", true, null);
-    //		testProject.createType(pack, "Sei.java", "@javax.jws.WebService public interface Sei {}");
-    //
-    //		helper.setProject(testProject.getProject());
-    //		assertNotNull("DOM project not retrieved", helper.getWebServiceProject("org.eclipse.jst.ws.jaxws.dom.jee5"));
-    //
-    //		try {
-    //			testProject.dispose();
-    //		} catch (Exception _) {
-    //		}
-    //	}
+	public void testGetWebServiceProject() throws Exception
+	{
+		TestEjb3Project ejbProject = new TestEjb3Project("EjbProject");
+		TestProject testProject = new TestProject(ejbProject.getProject());
+		IPackageFragment pack = testProject.getSourceFolder().createPackageFragment("org.elcipse.test", true, null);
+		testProject.createType(pack, "Sei.java", "@javax.jws.WebService public interface Sei {}");
+
+		helper.setProject(testProject.getProject());
+		assertNotNull("DOM project not retrieved", helper.getWebServiceProject("org.eclipse.jst.ws.jaxws.dom.jee5"));
+
+		try {
+			testProject.dispose();
+		} catch (Exception _) {
+		}
+	}
 
     public void testGetWebServiceProjectDOMLoadingCanceled() throws Exception
     {

@@ -58,7 +58,7 @@ public abstract class ClassLoadingTest extends ProjectBasedTest
 	 * @throws IOException
 	 * @throws JavaModelException
 	 */
-	protected IType createClass(String sourceFilePath, String className) throws IOException, JavaModelException
+	protected IType createClass(String sourceFilePath, String className) throws IOException, CoreException
 	{
 		if (sourceFilePath == null)
 		{
@@ -82,7 +82,7 @@ public abstract class ClassLoadingTest extends ProjectBasedTest
 	 *             in case some of the params is null.
 	 * @throws JavaModelException
 	 */
-	protected IType createClass(IPackageFragment pck, String className, String source) throws JavaModelException
+	protected IType createClass(IPackageFragment pck, String className, String source) throws CoreException
 	{
 		if (className == null)
 		{

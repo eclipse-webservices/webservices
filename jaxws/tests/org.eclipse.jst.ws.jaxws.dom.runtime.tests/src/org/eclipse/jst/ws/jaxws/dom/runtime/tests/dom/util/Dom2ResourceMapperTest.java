@@ -21,6 +21,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.DomFactory;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod;
+import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDOMRuntimeExtension;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMRuntimeManager;
@@ -98,17 +99,16 @@ public class Dom2ResourceMapperTest extends TestCase
         assertEquals(seiType, type);
     }
 
-    //FIXME Bug #302033
-    //	public void testFindResourceWs() throws JavaModelException
-    //	{
-    //		IWebServiceProject wsProject = DomUtil.INSTANCE.findProjectByName(dom, testProject1.getProject().getName());
-    //		IWebService ws = DomUtil.INSTANCE.findWsByImplName(wsProject, "test.Ws");
-    //		assertNotNull(ws);
-    //
-    //		IType type = mapper.findType(ws);
-    //		assertNotNull(type);
-    //		assertEquals(wsType, type);
-    //	}
+	public void testFindResourceWs() throws JavaModelException
+	{
+		IWebServiceProject wsProject = DomUtil.INSTANCE.findProjectByName(dom, testProject1.getProject().getName());
+		IWebService ws = DomUtil.INSTANCE.findWsByImplName(wsProject, "test.Ws");
+		assertNotNull(ws);
+
+		IType type = mapper.findType(ws);
+		assertNotNull(type);
+		assertEquals(wsType, type);
+	}
 
     public void testFindResourceWebMethod() throws JavaModelException
     {
