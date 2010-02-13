@@ -211,16 +211,17 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		assertNull("The web service returns a sei instance which is contained in a closed project", ws3.getServiceEndpoint());
 	}
 	
-	public void test_deletedCUWithSeiSynched() throws JavaModelException, CoreException
-	{
-		target.startSynchronizing();
-		final ICompilationUnit sei1CU = testPrj1.getJavaProject().findType(sei1ImplName).getCompilationUnit();
-		sei1CU.delete(true, null);
-		JobUtils.waitForJobs();
-		
-		assertFalse(wsPrj1.getServiceEndpointInterfaces().contains(sei1));
-		assertNull(ws1.getServiceEndpoint());
-	}
+	//FIXME Bug #302748
+//	public void test_deletedCUWithSeiSynched() throws JavaModelException, CoreException
+//	{
+//		target.startSynchronizing();
+//		final ICompilationUnit sei1CU = testPrj1.getJavaProject().findType(sei1ImplName).getCompilationUnit();
+//		sei1CU.delete(true, null);
+//		JobUtils.waitForJobs();
+//		
+//		assertFalse(wsPrj1.getServiceEndpointInterfaces().contains(sei1));
+//		assertNull(ws1.getServiceEndpoint());
+//	}
 	
 	public void test_deletedCUWithWSSynched() throws JavaModelException, CoreException
 	{
