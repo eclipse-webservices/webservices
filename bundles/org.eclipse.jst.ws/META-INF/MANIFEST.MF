@@ -42,6 +42,7 @@ Require-Bundle: org.eclipse.wst.command.env;bundle-version="[1.0.101,1.1.0)",
  org.eclipse.jem.util;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.wst.common.environment;bundle-version="[1.0.100,1.1.0)",
  org.eclipse.wst.common.project.facet.core;bundle-version="[1.1.0,2.0.0)",
- org.eclipse.wst.ws;bundle-version="[1.0.100,1.2.0)"
+ org.eclipse.wst.ws;bundle-version="[1.0.100,1.2.0)",
+ org.eclipse.jst.common.project.facet.core;bundle-version="[1.4.100,2.0.0)"
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
