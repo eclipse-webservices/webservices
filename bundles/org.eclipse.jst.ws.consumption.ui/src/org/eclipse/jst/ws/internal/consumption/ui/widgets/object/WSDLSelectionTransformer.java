@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20070713   191357 kathy@ca.ibm.com - Kathy Chan
  * 20081208   257618 mahutch@ca.ibm.com - Mark Hutchinson, Add Mechanism for Adopters to map Services to WSDL URLs
  * 20090310   242440 yenlu@ca.ibm.com - Yen Lu, Pluggable IFile to URI Converter
+ * 20100209   302009 mahutch@ca.ibm.com - Mark Hutchinson, ClassCastException when org.eclipse.wst.ws.ifile2uriconverter plugged in
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.object;
 
@@ -64,7 +65,7 @@ public class WSDLSelectionTransformer implements Transformer
         	{
         	  String wsdlUrl = converter.convert(file);
         	  if (wsdlUrl != null || !converter.allowBaseConversionOnFailure())
-        	    return wsdlUrl;
+        	    return new StructuredSelection(wsdlUrl);
         	}
           }
           return new StructuredSelection(((IResource)sel).getLocation().toFile().toURL().toString());
