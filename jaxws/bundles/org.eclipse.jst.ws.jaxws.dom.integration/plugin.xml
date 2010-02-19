@@ -27,12 +27,13 @@
   <!-- {{{ Defines integration for DOM objects to navigation tree -->
 	<extension point="org.eclipse.ui.navigator.navigatorContent"> 
 		<navigatorContent
-			id="org.eclipse.jst.navigator.j2ee.ui.sapWS"
-			contentProvider="org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryContentProvider"
-			labelProvider="org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryLabelProvider"
-			activeByDefault="true"
-			name="%navigatorContent.name.0"
-			priority="highest">
+        activeByDefault="true"
+        contentProvider="org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryContentProvider"
+        icon="icons/jaxws_navcontent.gif"
+        id="org.eclipse.jst.navigator.j2ee.ui.sapWS"
+        labelProvider="org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryLabelProvider"
+        name="%navigatorContent.name.0"
+        priority="highest">
 			<triggerPoints>
 				<or>
 					<instanceof value="org.eclipse.core.resources.IProject" />
