@@ -30,7 +30,7 @@
         activeByDefault="true"
         contentProvider="org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryContentProvider"
         icon="icons/jaxws_navcontent.gif"
-        id="org.eclipse.jst.navigator.j2ee.ui.sapWS"
+        id="org.eclipse.jst.navigator.j2ee.ui.jaxws"
         labelProvider="org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryLabelProvider"
         name="%navigatorContent.name.0"
         priority="highest">
