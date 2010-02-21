@@ -36,7 +36,7 @@ public class Java2WSValidateInputCommand extends AbstractDataModelOperation {
         IStatus status = Status.OK_STATUS;
         IJavaProject javaProject = JDTUtils.getJavaProject(model.getProjectName());
         if (javaProject != null) {
-            IType type = JDTUtils.getType(javaProject, model.getJavaStartingPoint());
+            IType type = JDTUtils.findType(javaProject, model.getJavaStartingPoint());
             if (type == null || !type.exists()) {
                 status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, 
                         CXFCreationCoreMessages.bind(CXFCreationCoreMessages.JAVA2WS_SERVICE_IMPL_NOT_FOUND,

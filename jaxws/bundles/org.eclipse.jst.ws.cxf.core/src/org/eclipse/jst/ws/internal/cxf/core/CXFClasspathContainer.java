@@ -29,27 +29,19 @@ public class CXFClasspathContainer implements IClasspathContainer {
 
     private IPath path;
     private List<IClasspathEntry> classpathEntries;
-    private String cxfLibraryType;
-    private String cxfLibraryVersion;
-    private String cxfLibraryLocation;
     private IProject project;
+    private String installed;
 
     public CXFClasspathContainer(IPath path, IJavaProject javaProject) {
         this.path = path;
         this.project = javaProject.getProject();
         classpathEntries =  new ArrayList<IClasspathEntry>();
-        this.cxfLibraryLocation = getCxfRuntimeLocation();
-        this.cxfLibraryVersion = getCxfRuntimeVersion();
-        this.cxfLibraryType = getCxfRuntimeEdition();
     }
 
     public IClasspathEntry[] getClasspathEntries() {
-        //                if (!cxfLibraryVersion.equals(getCxfRuntimeVersion())) {
-        //                    classpathEntries = new ArrayList<IClasspathEntry>();
-        //                    this.cxfLibraryLocation = cxfInstallgetCxfRuntimeLocation();
-        //                    this.cxfLibraryVersion = getCxfRuntimeVersion();
-        //                    this.cxfLibraryEdition = getCxfRuntimeEdition();
-        //                }
+        if (!installed.equals(CXFCorePlugin.getDefault().getCXFRuntimeVersion(project))) {
+            classpathEntries.clear();
+        }
 
         if (classpathEntries.size() == 0) {
             File cxfLibDirectory = getCXFLibraryDirectory();
@@ -58,11 +50,11 @@ public class CXFClasspathContainer implements IClasspathContainer {
                 for (int i = 0; i < files.length; i++) {
                     File file = new File(cxfLibDirectory.getPath() + File.separator + files[i]);
                     String fileName = file.getName();
-                    if (fileName.indexOf(".") != -1
-                            && fileName.substring(fileName.lastIndexOf("."), fileName.length()).equals(
-                            ".jar")) {
+                    if (fileName.indexOf(".") != -1 //$NON-NLS-1$
+                            && fileName.substring(fileName.lastIndexOf("."), fileName.length()).equals( //$NON-NLS-1$
+                            ".jar")) { //$NON-NLS-1$
                         classpathEntries.add(JavaCore.newLibraryEntry(new Path(file.getAbsolutePath()), null,
-                                new Path("/")));
+                                new Path("/"))); //$NON-NLS-1$
                     }
                 }
             }
@@ -71,7 +63,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
     }
 
     public boolean isValid() {
-        if (cxfLibraryLocation.length() > 0) {
+        if (getCxfRuntimeLocation().length() > 0) {
             File cxfLibDirectory = getCXFLibraryDirectory();
             return cxfLibDirectory.exists() && cxfLibDirectory.isDirectory();
         }
@@ -79,8 +71,8 @@ public class CXFClasspathContainer implements IClasspathContainer {
     }
 
     public String getDescription() {
-        return  MessageFormat.format(CXFCoreMessages.CXF_CONTAINER_LIBRARY, cxfLibraryType,
-                cxfLibraryVersion);
+        return  MessageFormat.format(CXFCoreMessages.CXF_CONTAINER_LIBRARY, getCxfRuntimeType(),
+                getCxfRuntimeVersion());
     }
 
     public int getKind() {
@@ -93,6 +85,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
 
     private CXFInstall getCxfInstall() {
         String installed = CXFCorePlugin.getDefault().getCXFRuntimeVersion(project);
+        this.installed = installed;
         CXFContext context = CXFCorePlugin.getDefault().getJava2WSContext();
         CXFInstall cxfInstall = context.getInstallations().get(installed);
         return cxfInstall;
@@ -116,7 +109,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
         return CXFCorePlugin.getDefault().getJava2WSContext().getDefaultRuntimeVersion();
     }
 
-    private String getCxfRuntimeEdition() {
+    private String getCxfRuntimeType() {
         CXFInstall cxfInstall = getCxfInstall();
         if (cxfInstall != null) {
             return cxfInstall.getType();
@@ -126,7 +119,7 @@ public class CXFClasspathContainer implements IClasspathContainer {
     }
 
     private File getCXFLibraryDirectory() {
-        IPath cxfLibPath = new Path(cxfLibraryLocation);
+        IPath cxfLibPath = new Path(getCxfRuntimeLocation());
         if (!cxfLibPath.hasTrailingSeparator()) {
             cxfLibPath = cxfLibPath.addTrailingSeparator();
         }

@@ -56,6 +56,27 @@ public class JAXWSUIMessages extends NLS {
     public static String JAXWS_HANDLER_WIZARD_PAGE_TITLE;
     public static String JAXWS_HANDLER_WIZARD_PAGE_DESCRIPTION;
 
+    public static String JAXWS_ADD_HANDLER_WIZARD_PAGE_TITLE;
+    public static String JAXWS_ADD_HANDLER_WIZARD_PAGE_DESCRIPTION;
+
+    public static String JAXWS_ORDER_HANDLER_WIZARD_PAGE_TITLE;
+    public static String JAXWS_ORDER_HANDLER_WIZARD_PAGE_DESCRIPTION;
+
+    public static String JAXWS_CONFIGURE_HANDLER_WIZARD_TITLE;
+
+    public static String JAXWS_HANDLER_ADD;
+    public static String JAXWS_HANDLER_REMOVE;
+
+    public static String JAXWS_HANDLER_MOVE_UP;
+    public static String JAXWS_HANDLER_MOVE_DOWN;
+
+    public static String JAXWS_HANDLER_NAME_COLUMN;
+    public static String JAXWS_HANDLER_CLASS_COLUMN;
+    public static String JAXWS_HANDLER_TYPE_COLUMN;
+
+    public static String JAXWS_LOGICAL;
+    public static String JAXWS_PROTOCOL;
+
     public static String JAXWS_HANDLER_TYPE;
     public static String JAXWS_LOGICAL_HANDLER;
     public static String JAXWS_SOAP_HANDLER;
@@ -63,6 +84,7 @@ public class JAXWSUIMessages extends NLS {
     public static String JAXWS_HANDLER_CONFIGURATION_ADD;
     public static String JAXWS_HANDLER_CONFIGURATION_CREATE;
     public static String JAXWS_HANDLER_CONFIGURATION_EDIT;
+    public static String JAXWS_HANDLER_CONFIGURATION_CHOOSE;
     public static String JAXWS_HANDLER_CONFIGURATION_ASSOCIATE;
     public static String JAXWS_HANDLER_CONFIGURATION_WEB_SERVICE;
     public static String JAXWS_HANDLER_CONFIGURATION_FILE_PATH;
@@ -87,6 +109,10 @@ public class JAXWSUIMessages extends NLS {
     public static String JAXWS_HANDLER_CONFIGURATION_WS_DIALOG_DESCRIPTION;
     public static String JAXWS_HANDLER_CONFIGURATION_WS_DIALOG_INVALID;
     public static String JAXWS_HANDLER_CONFIGURATION_WS_NOT_FOUND;
+
+    public static String JAXWS_HANDLER_CONFIGURATION_HANDLER_DIALOG_TITLE;
+    public static String JAXWS_HANDLER_CONFIGURATION_HANDLER_DIALOG_DESCRIPTION;
+    public static String JAXWS_HANDLER_CONFIGURATION_HANDLER_DIALOG_INVALID;
 
     public static String JAXWS_HANDLER_CONFIGURATION_NEW_HANDLER_PATH_EMTPY;
     public static String JAXWS_HANDLER_CONFIGURATION_EXISTING_HANDLER_PATH_EMTPY;

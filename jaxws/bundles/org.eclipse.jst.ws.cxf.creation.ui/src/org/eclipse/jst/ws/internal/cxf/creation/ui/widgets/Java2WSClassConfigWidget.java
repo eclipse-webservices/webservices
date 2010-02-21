@@ -198,7 +198,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             }
         });
 
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.horizontalSpan = 1;
         selectSEICombo.setLayoutData(gridData);
 
@@ -276,7 +276,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             }
         });
 
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.horizontalSpan = 1;
         seiInterfaceNameText.setLayoutData(gridData);
 
@@ -289,7 +289,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
         Java2WSWidgetFactory.createPaddingLabel(composite);
 
         seiMembersToExtractTableViewer = Java2WSWidgetFactory
-                .createSEIMembersToExtractTableViewer(composite);
+        .createSEIMembersToExtractTableViewer(composite);
         seiMembersToExtractTable = seiMembersToExtractTableViewer.getTable();
         seiMembersToExtractTableViewer.addCheckStateListener(new ICheckStateListener() {
 
@@ -401,7 +401,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             SEI_SELECTION_STATUS = Status.OK_STATUS;
             return;
         }
-        IType seiType = JDTUtils.getType(model.getProjectName(), selectSEICombo.getText());
+        IType seiType = JDTUtils.findType(model.getProjectName(), selectSEICombo.getText());
         if (seiType != null) {
             try {
                 IMethod[] seiMethods = seiType.getMethods();
@@ -409,8 +409,8 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
                     IMethod[] implMethods = startingPointType.findMethods(seiMethod);
                     if (implMethods == null) {
                         SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                            CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
-                                    getImplementsMessage(seiType, seiMethod)));
+                                CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_MUST_IMPLEMENT,
+                                        getImplementsMessage(seiType, seiMethod)));
                         break;
                     } else {
                         SEI_SELECTION_STATUS = validateSEIAddition();
@@ -423,7 +423,7 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
             }
         } else {
             SEI_SELECTION_STATUS = new Status(IStatus.ERROR, CXFCreationUIPlugin.PLUGIN_ID,
-                CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND,
+                    CXFCreationUIMessages.bind(CXFCreationUIMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_FOUND,
                             selectSEICombo.getText()));
         }
     }
@@ -470,11 +470,11 @@ public class Java2WSClassConfigWidget extends SimpleWidgetDataContributor {
     public void enableExtractSEIControls(boolean enable) {
         seiInterfaceNameText.setEnabled(enable);
         seiMembersToExtractTable.setEnabled(enable);
-        if (enable && (NUMBER_OF_CHECKED_METHODS < NUMBER_OF_PUBLIC_METHODS)) {
+        if (enable && NUMBER_OF_CHECKED_METHODS < NUMBER_OF_PUBLIC_METHODS) {
             selectAllButton.setEnabled(true);
         }
 
-        if (enable && (NUMBER_OF_CHECKED_METHODS > 0)) {
+        if (enable && NUMBER_OF_CHECKED_METHODS > 0) {
             deselectAllButton.setEnabled(true);
         }
 

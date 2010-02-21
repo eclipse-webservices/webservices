@@ -23,7 +23,9 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
  javax.wsdl;bundle-version="[1.6.2,1.7.0)",
  org.eclipse.jst.ws;bundle-version="[1.0.304,1.1.0)",
  javax.xml.soap;bundle-version="[1.2.0,1.3.0)",
- org.apache.xerces;bundle-version="[2.9.0,3.0.0)"
+ org.apache.xerces;bundle-version="[2.9.0,3.0.0)",
+ org.eclipse.wst.sse.core;bundle-version="[1.1.0,1.2.0)",
+ org.eclipse.wst.sse.ui;bundle-version="[1.1.0,1.3.0)"
 Export-Package: org.eclipse.jst.ws.internal.jaxws.core;x-friends:="org.eclipse.jst.ws.jaxws.core.tests,org.eclipse.jst.ws.jaxws.ui",
  org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;x-friends:="org.eclipse.jst.ws.annotations.core",
  org.eclipse.jst.ws.internal.jaxws.core.utils;x-friends:="org.eclipse.jst.ws.jaxws.ui",
@@ -37,5 +39,8 @@ Import-Package: javax.activation,
  javax.xml.ws.http;version="2.1.0",
  javax.xml.ws.soap;version="2.1.0",
  javax.xml.ws.spi;version="2.1.0",
- javax.xml.ws.wsaddressing;version="2.1.0"
+ javax.xml.ws.wsaddressing;version="2.1.0",
+ org.jdom;version="1.0.0",
+ org.jdom.input;version="1.0.0",
+ org.jdom.output;version="1.0.0"
 Bundle-ActivationPolicy: lazy

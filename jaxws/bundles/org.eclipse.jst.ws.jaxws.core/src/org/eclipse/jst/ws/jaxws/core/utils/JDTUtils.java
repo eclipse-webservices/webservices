@@ -226,7 +226,7 @@ public final class JDTUtils {
      * @param fullyQualifiedClassName the given fully qualified name
      * @return the first type found following the java project's classpath with the given fully qualified name or null if none is found
      */
-    public static IType getType(IJavaProject javaProject, String fullyQualifiedClassName) {
+    public static IType findType(IJavaProject javaProject, String fullyQualifiedClassName) {
         try {
             return javaProject.findType(fullyQualifiedClassName);
         } catch (JavaModelException jme) {
@@ -242,8 +242,8 @@ public final class JDTUtils {
      * @param fullyQualifiedClassName the given fully qualified name
      * @return the first type found following the java project's classpath with the given fully qualified name or null if none is found
      */
-    public static IType getType(String projectName, String fullyQualifiedClassName) {
-        return JDTUtils.getType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName);
+    public static IType findType(String projectName, String fullyQualifiedClassName) {
+        return JDTUtils.findType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName);
     }
 
     /**

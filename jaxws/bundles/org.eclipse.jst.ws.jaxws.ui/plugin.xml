@@ -125,5 +125,53 @@
             parentCategory="org.eclipse.jst.ws.ui.new">
       </category>
    </extension>
+   
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=additions">
+         <command
+            commandId="org.eclipse.jst.ws.jaxws.ui.configure.handlers"
+            id="jaxws.configure.handlers"
+            label="%CONFIGURE_HANDLERS_LABEL"
+            style="push">
+            <visibleWhen checkEnabled="true"/>
+         </command>
+      </menuContribution>
+   </extension>
+   
+   <extension point="org.eclipse.ui.commands">
+      <command
+            id="org.eclipse.jst.ws.jaxws.ui.configure.handlers"
+            name="%CONFIGURE_HANDLERS_LABEL">
+      </command>
+   </extension>
+   
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.jst.ws.internal.jaxws.ui.handlers.ConfigureHandlerChainHandler"
+            commandId="org.eclipse.jst.ws.jaxws.ui.configure.handlers">
+         <activeWhen>
+            <reference definitionId="org.eclipse.jst.ws.jaxws.webservice.selected"/>
+         </activeWhen>
+         <enabledWhen>
+            <reference definitionId="org.eclipse.jst.ws.jaxws.webservice.selected"/>
+         </enabledWhen>
+      </handler>
+   </extension>
 
+   <extension point="org.eclipse.core.expressions.definitions">
+      <definition id="org.eclipse.jst.ws.jaxws.webservice.selected">
+         <with variable="selection">
+            <and>
+               <count value="1"/>
+               <iterate operator="or">
+                  <or>
+                     <instanceof value="org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService"/>
+                     <instanceof value="org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface"/>
+                  </or>
+               </iterate>
+            </and>
+         </with>
+      </definition>
+   </extension>
+   
 </plugin>

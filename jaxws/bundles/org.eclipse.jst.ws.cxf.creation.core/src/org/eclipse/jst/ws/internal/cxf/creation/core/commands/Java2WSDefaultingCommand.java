@@ -87,12 +87,12 @@ public class Java2WSDefaultingCommand extends AbstractDataModelOperation {
         String javaStartingPoint = model.getJavaStartingPoint();
 
         IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
-        IType startingPointType = JDTUtils.getType(javaProject, javaStartingPoint);
+        IType startingPointType = JDTUtils.findType(javaProject, javaStartingPoint);
         return startingPointType;
     }
 
     public String getClassName(String projectName, String fullyQualifiedClassName) {
-        return JDTUtils.getType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName)
+        return JDTUtils.findType(JDTUtils.getJavaProject(projectName), fullyQualifiedClassName)
         .getElementName();
     }
 

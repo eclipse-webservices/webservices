@@ -52,25 +52,25 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
     private Listener statusListener;
 
     private WSDL2JavaDataModel model;
-    
+
     private Combo outputDirCombo;
     private Text packageNameText;
     private Button namespaceMappingButton;
     private TableViewer packageNameTableViewer;
     private Combo serviceNameCombo;
     private List bindingFilesList;
-    
+
     private Composite namespaceCompositeHolder;
     private Composite namespaceComposite;
     private int namespaceCompositeHeight = -1;
 
     public WSDL2JavaConfigWidget() {
     }
-    
+
     public void setWSDL2JavaDataModel(WSDL2JavaDataModel model) {
         this.model = model;
     }
-    
+
     @Override
     public void internalize() {
         WSDL2JavaWidgetFactory.populateOutputDirectoryCombo(outputDirCombo, model.getProjectName());
@@ -101,7 +101,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         WSDL2JavaWidgetFactory.createOutputDirectoryLabel(mainComposite);
 
         outputDirCombo = WSDL2JavaWidgetFactory.createOutputDirectoryCombo(mainComposite, model);
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.horizontalSpan = 2;
         outputDirCombo.setLayoutData(gridData);
 
@@ -109,7 +109,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         WSDL2JavaWidgetFactory.createPackageNameLabel(mainComposite);
 
         packageNameText = WSDL2JavaWidgetFactory.createPackageNameText(mainComposite, model);
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.horizontalSpan = 2;
         packageNameText.setLayoutData(gridData);
 
@@ -122,7 +122,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         });
 
         namespaceMappingButton = WSDL2JavaWidgetFactory
-                .createNamespacePackageMappingButton(mainComposite);
+        .createNamespacePackageMappingButton(mainComposite);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         gridData.horizontalSpan = 3;
         namespaceMappingButton.setLayoutData(gridData);
@@ -144,7 +144,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
         WSDL2JavaWidgetFactory.createServiceNameLabel(mainComposite);
 
         serviceNameCombo = WSDL2JavaWidgetFactory.createServiceNameCombo(mainComposite, model);
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.horizontalSpan = 2;
         serviceNameCombo.setLayoutData(gridData);
 
@@ -217,7 +217,7 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
             }
         }
     }
-    
+
     private Composite getNamespaceMappingComposite(Composite parent) {
         namespaceComposite = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, true);
@@ -253,34 +253,34 @@ public class WSDL2JavaConfigWidget extends SimpleWidgetDataContributor {
 
         TableViewerColumn packageNameViewerColumn = WSDL2JavaWidgetFactory.createPackageNameColumn(
                 packageNameTableViewer, model);
-        
+
         TextCellEditor textCellEditor = new TextCellEditor(packageNameTableViewer.getTable());
         textCellEditor.addListener( new ICellEditorListener() {
-		
-			public void editorValueChanged(boolean oldValidState, boolean newValidState) {
-				statusListener.handleEvent(null);				
-			}
-		
-			public void cancelEditor() {
-			}
-		
-			public void applyEditorValue() {
-			}
-		});
-        
+
+            public void editorValueChanged(boolean oldValidState, boolean newValidState) {
+                statusListener.handleEvent(null);
+            }
+
+            public void cancelEditor() {
+            }
+
+            public void applyEditorValue() {
+            }
+        });
+
         textCellEditor.setValidator(new ICellEditorValidator() {
-		
-			public String isValid(Object packageName) {
-	            status = JDTUtils.validatePackageName(model.getProjectName(), packageName.toString());
-	            if (status.getSeverity() == IStatus.OK) {
-	                return null;
-	            }
-	            return status.getMessage();
-			}
-		});
+
+            public String isValid(Object packageName) {
+                status = JDTUtils.validatePackageName(model.getProjectName(), packageName.toString());
+                if (status.getSeverity() == IStatus.OK) {
+                    return null;
+                }
+                return status.getMessage();
+            }
+        });
 
         packageNameViewerColumn.setEditingSupport(new PackageNameEditingSupport(packageNameTableViewer,
-        		textCellEditor, model));
+                textCellEditor, model));
 
         columnWeightData = new ColumnWeightData(100, 100, true);
         tableLayout.addColumnData(columnWeightData);

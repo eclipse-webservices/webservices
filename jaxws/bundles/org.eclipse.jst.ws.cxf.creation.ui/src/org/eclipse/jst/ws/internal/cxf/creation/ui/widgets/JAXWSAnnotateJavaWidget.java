@@ -313,15 +313,15 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             return type;
         }
         if (model.getFullyQualifiedJavaInterfaceName() != null) {
-            type = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
+            type = JDTUtils.findType(JDTUtils.getJavaProject(model.getProjectName()), model
                     .getFullyQualifiedJavaInterfaceName());
         } else if (model.getFullyQualifiedJavaClassName() != null) {
-            type =JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
+            type =JDTUtils.findType(JDTUtils.getJavaProject(model.getProjectName()), model
                     .getFullyQualifiedJavaClassName());
         }
 
         if (type == null) {
-            type = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
+            type = JDTUtils.findType(JDTUtils.getJavaProject(model.getProjectName()), model
                     .getJavaStartingPoint());
         }
 

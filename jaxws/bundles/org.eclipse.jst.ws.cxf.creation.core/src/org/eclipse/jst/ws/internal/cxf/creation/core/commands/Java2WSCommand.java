@@ -66,7 +66,7 @@ public class Java2WSCommand extends AbstractDataModelOperation {
     @Override
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
-        IType startingPoint = JDTUtils.getType(projectName, model.getJavaStartingPoint());
+        IType startingPoint = JDTUtils.findType(projectName, model.getJavaStartingPoint());
         javaResourceChangeListener = new JavaResourceChangeListener(JDTUtils
                 .getJavaProjectSourceDirectoryPath(startingPoint));
         webContentChangeListener = new WebContentChangeListener(projectName);

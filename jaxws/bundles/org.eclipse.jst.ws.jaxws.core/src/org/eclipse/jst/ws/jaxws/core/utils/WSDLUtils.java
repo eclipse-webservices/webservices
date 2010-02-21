@@ -7,6 +7,7 @@
  *
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
+ * Bug #274293 - sudhan@progress.com
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.core.utils;
 
@@ -66,10 +67,10 @@ public final class WSDLUtils {
     private static final String WSDL_FILE_NAME_PATTERN = "[a-zA-Z0-9_\\-]+.wsdl";//$NON-NLS-1$
     private static final String WSDL_QUERY = "?wsdl"; //$NON-NLS-1$
 
-	private static final IPath WSDL_FOLDER_PATH = new Path("wsdl/"); //$NON-NLS-1$
+    private static final IPath WSDL_FOLDER_PATH = new Path("wsdl/"); //$NON-NLS-1$
     private static final int TIMEOUT = 30000;
 
-	public static final String WSDL_FILE_EXTENSION = ".wsdl"; //$NON-NLS-1$
+    public static final String WSDL_FILE_EXTENSION = ".wsdl"; //$NON-NLS-1$
 
     private WSDLUtils() {
     }
@@ -82,10 +83,10 @@ public final class WSDLUtils {
      * @throws IOException if an I/O exception occurs.
      */
     public static Definition readWSDL(URL wsdlURL) throws IOException {
-    	URLConnection urlConnection = wsdlURL.openConnection();
-    	urlConnection.setConnectTimeout(TIMEOUT);
-    	urlConnection.setReadTimeout(TIMEOUT);
-    	InputStream inputStream = null;
+        URLConnection urlConnection = wsdlURL.openConnection();
+        urlConnection.setConnectTimeout(TIMEOUT);
+        urlConnection.setReadTimeout(TIMEOUT);
+        InputStream inputStream = null;
         try {
             inputStream = urlConnection.getInputStream();
             InputSource inputSource = new InputSource(inputStream);
@@ -111,26 +112,26 @@ public final class WSDLUtils {
      * @throws CoreException if an exception occurs refreshing the file in the workspace if it exists.
      */
     public static void writeWSDL(URL wsdlURL, Definition definition) throws IOException, CoreException {
-    	URI wsdlURI = null;
+        URI wsdlURI = null;
         OutputStream wsdlOutputStream = null;
         try {
-        	wsdlURI = wsdlURL.toURI();
+            wsdlURI = wsdlURL.toURI();
             File wsdlFile = new File(wsdlURI);
             wsdlOutputStream = new FileOutputStream(wsdlFile);
             WSDLFactory wsdlFactory = WSDLFactory.newInstance();
             WSDLWriter wsdlWriter = wsdlFactory.newWSDLWriter();
             wsdlWriter.writeWSDL(definition, wsdlOutputStream);
         } catch (WSDLException wsdle) {
-        	JAXWSCorePlugin.log(wsdle);
+            JAXWSCorePlugin.log(wsdle);
         } catch (URISyntaxException urise) {
-        	JAXWSCorePlugin.log(urise);
+            JAXWSCorePlugin.log(urise);
         } finally {
             if (wsdlOutputStream != null) {
                 wsdlOutputStream.close();
                 IFile file = ResourcesPlugin.getWorkspace().getRoot()
-						.getFileForLocation(URIUtil.toPath(wsdlURI));
+                .getFileForLocation(URIUtil.toPath(wsdlURI));
                 if (file != null && file.exists()) {
-                	file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+                    file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
                 }
             }
         }
@@ -156,9 +157,9 @@ public final class WSDLUtils {
      * @return the web content folder
      */
     public static IFolder getWebContentFolder(IProject project) {
-		return ResourcesPlugin.getWorkspace().getRoot().getFolder(
-				WSDLUtils.getWebContentPath(project));
-	}
+        return ResourcesPlugin.getWorkspace().getRoot().getFolder(
+                WSDLUtils.getWebContentPath(project));
+    }
 
     /**
      * Returns the WSDL folder of the project with the given name. The WSDL folder path is the projects web content folder
@@ -217,7 +218,7 @@ public final class WSDLUtils {
                             return (ExtensibilityElement) object;
                         }
                     }
-                 }
+                }
             }
         }
         return null;
@@ -232,28 +233,28 @@ public final class WSDLUtils {
      * @throws MalformedURLException if an error occurs testing the location URI for a query part.
      */
     public static String getWSDLLocation(Definition definition) throws MalformedURLException {
-		ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
-		if (extensibilityElement != null) {
-	        String locationURI = getLocationURI(extensibilityElement);
-	        if (locationURI.length() > 0) {
-	            URL endpointURL = new URL(locationURI);
-	            if (endpointURL.getQuery() == null) {
-	                locationURI += WSDL_QUERY;
-	            }
+        ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
+        if (extensibilityElement != null) {
+            String locationURI = getLocationURI(extensibilityElement);
+            if (locationURI.length() > 0) {
+                URL endpointURL = new URL(locationURI);
+                if (endpointURL.getQuery() == null) {
+                    locationURI += WSDL_QUERY;
+                }
                 return locationURI;
-	        }
-		}
-	    return null;
+            }
+        }
+        return null;
     }
 
     private static String getLocationURI(ExtensibilityElement extensibilityElement) {
-	    if (extensibilityElement instanceof SOAPAddress) {
+        if (extensibilityElement instanceof SOAPAddress) {
             return ((SOAPAddress) extensibilityElement).getLocationURI();
         }
         if (extensibilityElement instanceof SOAP12Address) {
             return ((SOAP12Address) extensibilityElement).getLocationURI();
         }
-		return ""; //$NON-NLS-1$
+        return ""; //$NON-NLS-1$
     }
 
     /**

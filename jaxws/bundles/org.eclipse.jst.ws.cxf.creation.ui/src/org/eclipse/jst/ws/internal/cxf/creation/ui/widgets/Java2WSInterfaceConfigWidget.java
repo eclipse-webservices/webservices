@@ -129,7 +129,7 @@ public class Java2WSInterfaceConfigWidget extends SimpleWidgetDataContributor {
     }
     
 	private void validateImplementationSelection() {
-        IType implType = JDTUtils.getType(model.getProjectName(), selectImplementationCombo.getText());
+        IType implType = JDTUtils.findType(model.getProjectName(), selectImplementationCombo.getText());
         if (implType != null) {
             try {
                 IMethod[] seiMethods = startingPointType.getMethods();

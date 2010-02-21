@@ -10,15 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.wizards;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.jws.WebService;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,8 +28,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
@@ -42,15 +37,14 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
+import org.eclipse.jst.ws.internal.jaxws.ui.dialogs.HandlerChainSelectionDialog;
+import org.eclipse.jst.ws.internal.jaxws.ui.dialogs.NewHandlerChainDialog;
+import org.eclipse.jst.ws.internal.jaxws.ui.filters.NewHandlerChainViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -61,10 +55,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
@@ -73,8 +65,6 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
     private List<String> logicalHandlerList = new ArrayList<String>();
     private List<String> soapHandlerList = new ArrayList<String>();
 
-    private static final String XML_FILE_EXTENSION = "xml";  //$NON-NLS-1$
-
     private IStatus ok_status = new Status(IStatus.OK, JAXWSUIPlugin.PLUGIN_ID, "");  //$NON-NLS-1$
 
     private IStatus superClassImplementsStatus = Status.OK_STATUS;
@@ -82,6 +72,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
     private IStatus editHandlerChainStatus = Status.OK_STATUS;
     private IStatus associateWebServiceStatus = Status.OK_STATUS;
 
+    private Combo handlerTypeCombo;
     private Button configureHandlerChainButton;
     private Button createHandlerChainButton;
     private Text newHandlerChainText;
@@ -96,7 +87,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
     private Button browseWebServiceButton;
 
     public NewJAXWSHandlerWizardPage() {
-        super(true, "Create a new JAX-WS Handler");
+        super(true, "create.new.handler.chain.page"); //$NON-NLS-1$
         setTitle(JAXWSUIMessages.JAXWS_HANDLER_WIZARD_PAGE_TITLE);
         setDescription(JAXWSUIMessages.JAXWS_HANDLER_WIZARD_PAGE_DESCRIPTION);
         logicalHandlerList.add("javax.xml.ws.handler.LogicalHandler<javax.xml.ws.handler.LogicalMessageContext>");  //$NON-NLS-1$
@@ -135,7 +126,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         Label handlerTypeLabel = new Label(composite, SWT.NONE);
         handlerTypeLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_TYPE);
 
-        Combo handlerTypeCombo = new Combo(composite, SWT.READ_ONLY | SWT.BORDER);
+        handlerTypeCombo = new Combo(composite, SWT.READ_ONLY | SWT.BORDER);
 
         GridData gridData =  new GridData(SWT.FILL, SWT.BEGINNING, true, false);
         gridData.horizontalSpan = 2;
@@ -204,7 +195,6 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         gridData.horizontalSpan = 4;
         innerGroup.setLayoutData(gridData);
 
-
         createHandlerChainButton = new Button(innerGroup, SWT.RADIO);
         createHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE);
         gridData =  new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -227,7 +217,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
 
         newHandlerChainText = new Text(innerGroup, SWT.SINGLE | SWT.BORDER);
         newHandlerChainText.setFont(innerGroup.getFont());
-        gridData =  new GridData(SWT.FILL, SWT.BEGINNING, true, false);
+        gridData =  new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.horizontalSpan = 2;
         newHandlerChainText.setLayoutData(gridData);
 
@@ -248,10 +238,10 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                NewHandlerChainFileSelectionDialog dialog = new NewHandlerChainFileSelectionDialog(getShell(),
+                NewHandlerChainDialog dialog = new NewHandlerChainDialog(getShell(),
                         new JavaElementLabelProvider(), new StandardJavaElementContentProvider());
                 dialog.setInput(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
-                dialog.addFilter(new NewHandlerChainViewerFilter(true, true));
+                dialog.addFilter(new NewHandlerChainViewerFilter(getJavaProject(), true, true));
                 if (dialog.open() == Window.OK) {
                     newHandlerChainText.setText(dialog.getFilePath());
                     updateConfigureHandlerStatus();
@@ -279,7 +269,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
 
         exisitingHandlerChainText = new Text(innerGroup, SWT.SINGLE | SWT.BORDER);
         exisitingHandlerChainText.setFont(composite.getFont());
-        gridData =  new GridData(SWT.FILL, SWT.BEGINNING, true, false);
+        gridData =  new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.horizontalSpan = 2;
         exisitingHandlerChainText.setLayoutData(gridData);
         exisitingHandlerChainText.addKeyListener(new KeyAdapter() {
@@ -300,36 +290,12 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(),
+                HandlerChainSelectionDialog dialog = new HandlerChainSelectionDialog(getShell(),
                         new JavaElementLabelProvider(), new StandardJavaElementContentProvider());
 
-                dialog.setTitle(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_EDIT_DIALOG_TITLE);
-                dialog.setMessage(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_EDIT_DIALOG_DESCRIPTION);
-                dialog.setAllowMultiple(false);
                 dialog.setInput(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
-                dialog.addFilter(new NewHandlerChainViewerFilter(false, true));
+                dialog.addFilter(new NewHandlerChainViewerFilter(getJavaProject(), false, true));
 
-                dialog.setValidator(new ISelectionStatusValidator() {
-
-                    public IStatus validate(Object[] selection) {
-                        if (selection.length > 0) {
-                            Object selected = selection[0];
-                            if (selected instanceof IFile) {
-                                IFile file = (IFile) selected;
-                                try {
-                                    if (file.getFileExtension().equals(XML_FILE_EXTENSION) &&
-                                            ((NewJAXWSHandlerWizard)getWizard()).isHandlerChainFile(file)) {
-                                        return ok_status;
-                                    }
-                                } catch (IOException ioe) {
-                                    JAXWSUIPlugin.log(ioe);
-                                }
-                            }
-                        }
-                        return new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
-                                JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_EDIT_DIALOG_INVALID);
-                    }
-                });
                 if (dialog.open() == Window.OK) {
                     Object[] result = dialog.getResult();
                     IResource resource = (IResource) result[0];
@@ -362,7 +328,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
 
         webServiceText = new Text(innerGroup,  SWT.SINGLE | SWT.BORDER);
         webServiceText.setFont(composite.getFont());
-        gridData =  new GridData(SWT.FILL, SWT.BEGINNING, false, false);
+        gridData =  new GridData(SWT.FILL, SWT.CENTER, false, false);
         gridData.horizontalSpan = 2;
         webServiceText.setLayoutData(gridData);
         webServiceText.addKeyListener(new KeyAdapter() {
@@ -390,7 +356,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
                 dialog.setAllowMultiple(false);
                 dialog.setInput(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
 
-                dialog.addFilter(new NewHandlerChainViewerFilter(true, false));
+                dialog.addFilter(new NewHandlerChainViewerFilter(getJavaProject(), true, false));
                 dialog.setValidator(new ISelectionStatusValidator() {
 
                     public IStatus validate(Object[] selection) {
@@ -442,6 +408,10 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
 
     public boolean isEditHandlerChain() {
         return editHandlerChainButton.getSelection();
+    }
+
+    public String getSelectedHandlerType() {
+        return handlerTypeCombo.getText();
     }
 
     public String getNewHandlerChainPath() {
@@ -512,7 +482,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
     }
 
     private IStatus validateNewHandlerChainField() throws JavaModelException {
-        if (isCreateHandlerChain()) {
+        if (isConfigureHandlerChain() && isCreateHandlerChain()) {
             editHandlerChainStatus = ok_status;
             String newHandlerChainPath = getNewHandlerChainPath().trim();
             if (newHandlerChainPath.length() == 0) {
@@ -566,7 +536,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
     }
 
     private IStatus validateExistingHandlerChainField() {
-        if (isEditHandlerChain()) {
+        if (isConfigureHandlerChain() && isEditHandlerChain()) {
             addNewHandlerChainStatus = ok_status;
             String existingHandlerChainPath = getExistingHandlerChainPath().trim();
             if (existingHandlerChainPath.length() == 0) {
@@ -595,7 +565,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
     }
 
     private IStatus validateWebServiceField() throws JavaModelException {
-        if (isAssociateHandlerChain()) {
+        if (isConfigureHandlerChain() && isAssociateHandlerChain()) {
             String webServicePath = getSelectedWebServicePath().trim();
             if (webServicePath.length() == 0) {
                 return associateWebServiceStatus = new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
@@ -675,142 +645,4 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         }
     }
 
-    private class NewHandlerChainFileSelectionDialog extends ElementTreeSelectionDialog implements ISelectionStatusValidator {
-
-        private String handlerChainFileName = "handler-chain.xml";  //$NON-NLS-1$
-
-        public NewHandlerChainFileSelectionDialog(Shell parent, ILabelProvider labelProvider,
-                ITreeContentProvider contentProvider) {
-            super(parent, labelProvider, contentProvider);
-            setTitle(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_TITLE);
-            setMessage(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_DESCRIPTION);
-            setAllowMultiple(false);
-            setValidator(this);
-        }
-
-        @Override
-        protected Control createDialogArea(Composite parent) {
-            Composite composite = (Composite) super.createDialogArea(parent);
-            Composite fileComposite = new Composite(composite, SWT.NONE);
-            GridLayout gridLayout = new GridLayout();
-            gridLayout.numColumns = 2;
-            fileComposite.setLayout(gridLayout);
-            GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-            fileComposite.setLayoutData(gridData);
-            Label handleChainLabel = new Label(fileComposite, SWT.NONE);
-            handleChainLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_NAME);
-            Text newHandlerChainText = new Text(fileComposite, SWT.BORDER);
-            gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-            newHandlerChainText.setLayoutData(gridData);
-            newHandlerChainText.setText(handlerChainFileName);
-            newHandlerChainText.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    super.keyReleased(e);
-                    handlerChainFileName = ((Text) e.widget).getText();
-                    updateOKStatus();
-                }
-
-            });
-            updateOKStatus();
-            return composite;
-        }
-
-        public IStatus validate(Object[] selection) {
-            if (handlerChainFileName.trim().length() == 0) {
-                return new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
-                        JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_ENTER_NAME);
-            }
-
-            IWorkspace workspace = ResourcesPlugin.getWorkspace();
-            IStatus result = workspace.validateName(handlerChainFileName, IResource.FILE);
-            if (!result.isOK()) {
-                return result;
-            }
-
-            if (selection == null || selection.length == 0 || selection[0] instanceof IJavaProject) {
-                return new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
-                        JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_CHOOSE_FOLDER);
-            }
-
-            if (!handlerChainFileName.endsWith(".xml")) {  //$NON-NLS-1$
-                return new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
-                        JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_INVALID_NAME);
-            }
-
-            if (workspace.getRoot().getFile(new Path(getFilePath())).exists()) {
-                return new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
-                        JAXWSUIMessages.bind(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_EXISTS,
-                                handlerChainFileName));
-            }
-
-            return ok_status;
-        }
-
-        public String getFileName() {
-            return handlerChainFileName;
-        }
-
-        public String getFilePath() {
-            Object element = getFirstResult();
-            if (element instanceof IJavaProject) {
-                return ((IJavaProject) element).getProject().getFullPath().toOSString() + File.separatorChar
-                + handlerChainFileName;
-            }
-
-            if (element instanceof IJavaElement) {
-                return ((IJavaElement) element).getResource().getFullPath().toOSString() + File.separatorChar
-                + handlerChainFileName;
-            }
-            if (element instanceof IResource) {
-                return ((IResource) element).getFullPath().toOSString() + File.separatorChar + handlerChainFileName;
-            }
-            return handlerChainFileName;
-        }
-    }
-
-    private class NewHandlerChainViewerFilter extends ViewerFilter {
-        private boolean filterFiles;
-        private boolean filterCompilationUnits;
-
-        public NewHandlerChainViewerFilter(boolean filterFiles, boolean filterCompilationUnits) {
-            this.filterFiles = filterFiles;
-            this.filterCompilationUnits = filterCompilationUnits;
-        }
-
-        @Override
-        public boolean select(Viewer viewer, Object parentElement, Object element) {
-            try {
-                if (element instanceof IJavaProject) {
-                    IJavaProject javaProject = getJavaProject();
-                    if (javaProject != null) {
-                        return javaProject.equals(element);
-                    }
-                    return false;
-
-                }
-                if (element instanceof IPackageFragmentRoot) {
-                    IPackageFragmentRoot packageFragmentRoot = (IPackageFragmentRoot) element;
-                    return packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE;
-                }
-                if (element instanceof IPackageFragment) {
-                    return true;
-                }
-
-                if (!filterFiles && element instanceof IFile) {
-                    IFile file = (IFile) element;
-                    return file.isAccessible() && file.getFileExtension().equals(XML_FILE_EXTENSION);
-                }
-
-                if (!filterCompilationUnits && element instanceof ICompilationUnit) {
-                    ICompilationUnit compilationUnit = (ICompilationUnit) element;
-                    IType type = compilationUnit.findPrimaryType();
-                    return type.isClass() || (type.isInterface() && !type.isAnnotation());
-                }
-            } catch (JavaModelException jme) {
-                JAXWSUIPlugin.log(jme);
-            }
-            return false;
-        }
-    }
 }

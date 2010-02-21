@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.ui.wizards;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +22,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.content.IContentDescription;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
@@ -45,9 +36,11 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
+import org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSHandlerUtils;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.swt.widgets.Display;
@@ -59,28 +52,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
-import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
-import org.eclipse.wst.sse.ui.internal.FormatProcessorsExtensionReader;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 
 public class NewJAXWSHandlerWizard extends Wizard implements INewWizard {
     private IWorkbench workbench;
     private IStructuredSelection selection;
 
     private NewJAXWSHandlerWizardPage handlerWizardPage;
-
-    private String HANDLER_CHAINS = "handler-chains"; //$NON-NLS-1$
-    private String HANDLER_CHAIN = "handler-chain"; //$NON-NLS-1$
-    private String HANDLER = "handler"; //$NON-NLS-1$
-    private String HANDLER_NAME = "handler-name"; //$NON-NLS-1$
-    private String HANDLER_CLASS = "handler-class"; //$NON-NLS-1$
-
-    private Namespace JAVAEE_NS = Namespace.getNamespace("http://java.sun.com/xml/ns/javaee"); //$NON-NLS-1$
+    private OrderHandlerChainPage handlerOrderPage;
 
     @Override
     public void addPages() {
@@ -88,13 +66,30 @@ public class NewJAXWSHandlerWizard extends Wizard implements INewWizard {
             handlerWizardPage= new NewJAXWSHandlerWizardPage();
             handlerWizardPage.init(getSelection());
         }
+
+        if (handlerOrderPage == null) {
+            handlerOrderPage = new OrderHandlerChainPage();
+        }
         addPage(handlerWizardPage);
+        addPage(handlerOrderPage);
     }
 
     public NewJAXWSHandlerWizard() {
         setWindowTitle(JAXWSUIMessages.JAXWS_HANDLER_WIZARD_TITLE);
         //TODO replace with dedicated handler wizban
         setDefaultPageImageDescriptor(JAXWSUIPlugin.getImageDescriptor("$nl$/icons/wizban/new_wiz.png"));  //$NON-NLS-1$
+    }
+
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+        if (page == handlerWizardPage && handlerWizardPage.isConfigureHandlerChain() && handlerWizardPage.isEditHandlerChain()) {
+            handlerOrderPage.setJavaProject(handlerWizardPage.getJavaProject());
+            IPath handlerChainPath = new Path(handlerWizardPage.getExistingHandlerChainPath());
+            handlerOrderPage.setInput(handlerChainPath);
+            handlerOrderPage.addHandler(handlerWizardPage.getTypeName(), handlerWizardPage.getPackageText(), handlerWizardPage.getSelectedHandlerType());
+            return handlerOrderPage;
+        }
+        return null;
     }
 
     @Override
@@ -117,13 +112,12 @@ public class NewJAXWSHandlerWizard extends Wizard implements INewWizard {
                     IType type = handlerWizardPage.getCreatedType();
                     if (handlerWizardPage.isConfigureHandlerChain()) {
                         if (handlerWizardPage.isCreateHandlerChain()) {
-                            String newHandlerChainName = handlerWizardPage.getNewHandlerChainPath();
-                            createHandlerChainFile(new Path(newHandlerChainName), type.getElementName(),
-                                    type.getFullyQualifiedName());
+                            IPath handlerChainPath = new Path(handlerWizardPage.getNewHandlerChainPath());
+                            JAXWSHandlerUtils.createHandlerChainFile(handlerChainPath);
+                            JAXWSHandlerUtils.addHandlerToHandlerChain(handlerChainPath, type.getElementName(), type.getFullyQualifiedName());
                         } else if (handlerWizardPage.isEditHandlerChain()) {
-                            String existingHandlerChainName = handlerWizardPage.getExistingHandlerChainPath();
-                            addHandlerToHandlerChain(new Path(existingHandlerChainName), type.getElementName(),
-                                    type.getFullyQualifiedName());
+                            IPath handlerChainPath = new Path(handlerWizardPage.getExistingHandlerChainPath());
+                            JAXWSHandlerUtils.writeDocumentToFile(handlerChainPath, handlerOrderPage.getDocument());
                         }
                         if (handlerWizardPage.isAssociateHandlerChain()) {
                             String fullyQualifiedName = handlerWizardPage.getSelectedWebServicePath();
@@ -210,169 +204,5 @@ public class NewJAXWSHandlerWizard extends Wizard implements INewWizard {
 
     private IStructuredSelection getSelection() {
         return selection;
-    }
-
-    private void createHandlerChainFile(IPath path, String handlerName, String handlerClass) {
-        IFile handlerChainFile = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-        if (!handlerChainFile.exists()) {
-            try {
-                IProgressMonitor progressMonitor = new NullProgressMonitor();
-                handlerChainFile.create(new ByteArrayInputStream(new byte[] {}), true, progressMonitor);
-
-                Element handlerChainsElement = new Element(HANDLER_CHAINS);
-                handlerChainsElement.setNamespace(JAVAEE_NS);
-
-                Element handlerChainElement = new Element(HANDLER_CHAIN, JAVAEE_NS);
-                Element handlerElement = new Element(HANDLER, JAVAEE_NS);
-
-                Element handlerNameElement = new Element(HANDLER_NAME, JAVAEE_NS);
-                handlerNameElement.setText(handlerName);
-
-                Element handlerClassElement = new Element(HANDLER_CLASS, JAVAEE_NS);
-                handlerClassElement.setText(handlerClass);
-
-                handlerElement.addContent(handlerNameElement);
-                handlerElement.addContent(handlerClassElement);
-
-                handlerChainElement.addContent(handlerElement);
-
-                handlerChainsElement.addContent(handlerChainElement);
-
-                Document document = new Document(handlerChainsElement);
-                OutputStream outputStream = new FileOutputStream(handlerChainFile.getLocation().toFile());
-                XMLOutputter outputter = new XMLOutputter();
-                outputter.output(document, outputStream);
-                handlerChainFile.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-                formatXMLFile(handlerChainFile);
-            } catch (CoreException ce) {
-                JAXWSUIPlugin.log(ce);
-            } catch (FileNotFoundException fnfe) {
-                JAXWSUIPlugin.log(fnfe);
-            } catch (IOException ioe) {
-                JAXWSUIPlugin.log(ioe);
-            }
-        }
-    }
-
-    private void addHandlerToHandlerChain(IPath path, String handlerName, String handlerClass) {
-        IFile handlerChainFile = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-        if (handlerChainFile.exists()) {
-            try {
-                if (isHandlerChainFile(handlerChainFile)) {
-                    SAXBuilder builder = new SAXBuilder();
-                    FileInputStream handlerChainInputSteam = new FileInputStream(handlerChainFile.getLocation()
-                            .toFile());
-                    try {
-                        Document document = builder.build(handlerChainInputSteam);
-                        Element root = document.getRootElement();
-
-                        Element handlerChainElement = root.getChild(HANDLER_CHAIN, JAVAEE_NS);
-
-                        if (handlerChainElement != null) {
-                            Element handlerElement = new Element(HANDLER, JAVAEE_NS);
-
-                            Element handlerNameElement = new Element(HANDLER_NAME, JAVAEE_NS);
-                            handlerNameElement.setText(handlerName);
-
-                            Element handlerClassElement = new Element(HANDLER_CLASS, JAVAEE_NS);
-                            handlerClassElement.setText(handlerClass);
-
-                            handlerElement.addContent(handlerNameElement);
-                            handlerElement.addContent(handlerClassElement);
-
-                            if (!isHandlerDefined(handlerChainFile, handlerName, handlerClass)) {
-                                handlerChainElement.addContent(handlerElement);
-
-                                OutputStream outputStream = new FileOutputStream(handlerChainFile.getLocation().toFile());
-                                XMLOutputter outputter = new XMLOutputter();
-                                outputter.output(document, outputStream);
-                                handlerChainFile.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-                                formatXMLFile(handlerChainFile);
-                            }
-                        }
-                    } catch (JDOMException jdome) {
-                        JAXWSUIPlugin.log(jdome);
-                    } catch (CoreException ce) {
-                        JAXWSUIPlugin.log(ce);
-                    } finally {
-                        handlerChainInputSteam.close();
-                    }
-
-                }
-            } catch (IOException ioe) {
-                JAXWSUIPlugin.log(ioe);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private boolean isHandlerDefined(IFile handlerChainFile, String handlerName, String handlerClass) throws IOException {
-        if (isHandlerChainFile(handlerChainFile)) {
-            SAXBuilder builder = new SAXBuilder();
-            FileInputStream handlerChainInputSteam = new FileInputStream(handlerChainFile.getLocation()
-                    .toFile());
-            try {
-                Document doc = builder.build(handlerChainInputSteam);
-                Element root = doc.getRootElement();
-                List<Element> handlerChains = root.getChildren(HANDLER_CHAIN, JAVAEE_NS);
-                for (Element handlerChain : handlerChains) {
-                    Element handler = handlerChain.getChild(HANDLER, JAVAEE_NS);
-                    if (handler != null) {
-                        Element handlerNameElement = handler.getChild(HANDLER_NAME, JAVAEE_NS);
-                        Element handlerClassElement = handler.getChild(HANDLER_CLASS, JAVAEE_NS);
-
-                        if (handlerNameElement != null && handlerNameElement.getText().equals(handlerName)
-                                && handlerClassElement != null && handlerClassElement.getText().equals(handlerClass)) {
-                            return true;
-                        }
-                    }
-                }
-            } catch (JDOMException jdome) {
-                JAXWSUIPlugin.log(jdome);
-            } finally {
-                handlerChainInputSteam.close();
-            }
-        }
-        return false;
-    }
-
-    protected boolean isHandlerChainFile(IFile handlerChainFile) throws IOException {
-        FileInputStream handlerChainInputStream = new FileInputStream(handlerChainFile.getLocation().toFile());
-        if (handlerChainInputStream.available() > 0) {
-            SAXBuilder builder = new SAXBuilder();
-            try {
-                Document doc = builder.build(handlerChainInputStream);
-                Element root = doc.getRootElement();
-                if (root.getName().equals(HANDLER_CHAINS) && root.getNamespace().equals(JAVAEE_NS)) {
-                    return true;
-                }
-            } catch (JDOMException jdome) {
-                JAXWSUIPlugin.log(jdome);
-            } finally {
-                handlerChainInputStream.close();
-            }
-        }
-        return false;
-    }
-
-    private static void formatXMLFile(IFile file) {
-        if (file != null) {
-            try {
-                IContentDescription contentDescription = file.getContentDescription();
-                if (contentDescription == null) {
-                    return;
-                }
-                IContentType contentType = contentDescription.getContentType();
-                IStructuredFormatProcessor formatProcessor = FormatProcessorsExtensionReader.getInstance()
-                .getFormatProcessor(contentType.getId());
-                if (formatProcessor != null) {
-                    formatProcessor.formatFile(file);
-                }
-            } catch (CoreException ce) {
-                JAXWSUIPlugin.log(ce.getStatus());
-            } catch (IOException ioe) {
-                JAXWSUIPlugin.log(ioe);
-            }
-        }
     }
 }

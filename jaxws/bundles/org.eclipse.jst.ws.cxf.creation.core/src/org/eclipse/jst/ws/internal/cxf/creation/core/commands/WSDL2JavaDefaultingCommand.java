@@ -7,6 +7,7 @@
  *
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
+ * Bug #271562 - sudhan@progress.com
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.creation.core.commands;
 

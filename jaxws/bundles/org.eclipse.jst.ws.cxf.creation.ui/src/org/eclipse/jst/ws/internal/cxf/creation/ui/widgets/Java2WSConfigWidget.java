@@ -143,13 +143,13 @@ public class Java2WSConfigWidget extends SimpleWidgetDataContributor {
             }
         });
 
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         wsdlFileText.setLayoutData(gridData);
 
         Java2WSWidgetFactory.createSOAPBindingLabel(wsdlGroup);
 
         soapBindingCombo = Java2WSWidgetFactory.createSOAPBingCombo(wsdlGroup, model);
-        gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+        gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         soapBindingCombo.setLayoutData(gridData);
 
         createXSDImports = Java2WSWidgetFactory.createXSDImportsButton(wsdlGroup, model);

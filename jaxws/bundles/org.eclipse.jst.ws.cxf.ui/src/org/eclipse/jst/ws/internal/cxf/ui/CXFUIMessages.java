@@ -38,6 +38,8 @@ public class CXFUIMessages extends NLS {
 
     public static String CXF_INSTALL_WIZARD_PAGE_TITLE;
     public static String CXF_INSTALL_WIZARD_PAGE_DESCRIPTION;
+    public static String CXF_INSTALL_WIZARD_ADD_WINDOW_TITLE;
+    public static String CXF_INSTALL_WIZARD_EDIT_WINDOW_TITLE;
 
     public static String CXF_FACET_INSTALL_WIZARD_PAGE_TITLE;
     public static String CXF_FACET_INSTALL_WIZARD_PAGE_DESCRIPTION;

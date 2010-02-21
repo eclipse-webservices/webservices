@@ -176,7 +176,7 @@ public final class FileUtils {
         String projectName = model.getProjectName();
         IProject project = FileUtils.getProject(projectName);
 
-        IType type = JDTUtils.getType(JDTUtils.getJavaProject(projectName), model.getJavaStartingPoint());
+        IType type = JDTUtils.findType(JDTUtils.getJavaProject(projectName), model.getJavaStartingPoint());
         IJavaElement javaElement = type.getPackageFragment().getParent();
         IResource javaElementResource = javaElement.getResource();
         if (javaElementResource instanceof IFolder) {

@@ -7,6 +7,7 @@
  *
  * Contributors:
  * IONA Technologies PLC - initial API and implementation
+ * Bug #274293 - sudhan@progress.com
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.creation.core.commands;
 
@@ -45,55 +46,55 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
     private IProject project;
     private IWebService webService;
     private CXFDataModel model;
-    
+
     public CXFDeployCommand(String projectName, IWebService webService) {
         this.project = FileUtils.getProject(projectName);
         this.webService = webService;
     }
-    
+
     @Override
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
         IStatus status = Status.OK_STATUS;
-        
+
         try {
             WebServiceInfo webServiceInfo = webService.getWebServiceInfo();
-            
+
             String serverInstanceId = webServiceInfo.getServerInstanceId();
             String serverFactoryId = webServiceInfo.getServerFactoryId();
             if (serverInstanceId != null) {
                 IServer server = ServerCore.findServer(serverInstanceId);
                 String webCobComponentURL = ServerUtils.getEncodedWebComponentURL(project, serverFactoryId,
                         server);
-                
+
                 String urlPattern = ""; //$NON-NLS-1$
-                
+
                 IModelProvider provider = ModelProviderManager.getModelProvider(project);
                 Object modelProvider = provider.getModelObject();
                 // jst.web 2.5
                 if (modelProvider instanceof org.eclipse.jst.javaee.web.WebApp) {
-                    org.eclipse.jst.javaee.web.WebApp javaeeWebApp = 
+                    org.eclipse.jst.javaee.web.WebApp javaeeWebApp =
                         (org.eclipse.jst.javaee.web.WebApp) modelProvider;
-                    
+
                     urlPattern = getURLPattern(javaeeWebApp);
                 }
-                
+
                 // jst.web 2.4
                 if (modelProvider instanceof org.eclipse.jst.j2ee.webapplication.WebApp) {
-                    org.eclipse.jst.j2ee.webapplication.WebApp webApp = 
+                    org.eclipse.jst.j2ee.webapplication.WebApp webApp =
                         (org.eclipse.jst.j2ee.webapplication.WebApp) modelProvider;
-                    
+
                     urlPattern = getURLPattern(webApp);
                 }
-                
+
                 urlPattern = urlPattern.substring(0, urlPattern.lastIndexOf("/")); //$NON-NLS-1$
-                String jaxwsEndpointAddress = SpringUtils.getEndpointAddress(project, 
+                String jaxwsEndpointAddress = SpringUtils.getEndpointAddress(project,
                         model.getConfigId());
-                
+
                 String wsdlAddress = webCobComponentURL + urlPattern + jaxwsEndpointAddress;
                 String wsdlURL = wsdlAddress + "?wsdl"; //$NON-NLS-1$
-                
+
                 webService.getWebServiceInfo().setWsdlURL(wsdlURL);
-                
+
                 Definition definition = model.getWsdlDefinition();
 
                 ExtensibilityElement extensibilityElement = WSDLUtils.getEndpointAddress(definition);
@@ -106,7 +107,7 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
                     }
 
                     WSDLUtils.writeWSDL(model.getWsdlURL(), definition);
-                }              
+                }
             }
         } catch (IOException ioe) {
             status = new Status(IStatus.ERROR, CXFCreationCorePlugin.PLUGIN_ID, ioe.getLocalizedMessage());
@@ -117,21 +118,20 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
         }
         return status;
     }
-    
+
     @SuppressWarnings("unchecked")
     private String getURLPattern(org.eclipse.jst.javaee.web.WebApp javaeeWebApp) {
         List<org.eclipse.jst.javaee.web.Servlet> servlets = javaeeWebApp.getServlets();
         for (org.eclipse.jst.javaee.web.Servlet servlet : servlets) {
             if (servlet.getServletClass().equals(CXF_SERVLET)) {
-                List<org.eclipse.jst.javaee.web.ServletMapping> servletMappings = 
+                List<org.eclipse.jst.javaee.web.ServletMapping> servletMappings =
                     javaeeWebApp.getServletMappings();
                 for (org.eclipse.jst.javaee.web.ServletMapping servletMapping : servletMappings) {
                     if (servletMapping.getServletName().equals(servlet.getServletName())) {
-                        List<org.eclipse.jst.javaee.core.UrlPatternType> urlPatterns = 
+                        List<org.eclipse.jst.javaee.core.UrlPatternType> urlPatterns =
                             servletMapping.getUrlPatterns();
                         if (urlPatterns.size() > 0) {
-                            String value = ((org.eclipse.jst.javaee.core.UrlPatternType)
-                                    urlPatterns.get(0)).getValue();
+                            String value = (urlPatterns.get(0)).getValue();
                             return value;
                         }
                     }
@@ -140,13 +140,13 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
         }
         return ""; //$NON-NLS-1$
     }
-    
+
     @SuppressWarnings("unchecked")
     private String getURLPattern(org.eclipse.jst.j2ee.webapplication.WebApp webApp) {
         List<org.eclipse.jst.j2ee.webapplication.Servlet> servlets = webApp.getServlets();
         for (org.eclipse.jst.j2ee.webapplication.Servlet servlet : servlets) {
             if (servlet.getServletClass().getJavaName().equals(CXF_SERVLET)) {
-                List<org.eclipse.jst.j2ee.webapplication.ServletMapping> servletMappings = 
+                List<org.eclipse.jst.j2ee.webapplication.ServletMapping> servletMappings =
                     webApp.getServletMappings();
                 for (org.eclipse.jst.j2ee.webapplication.ServletMapping servletMapping : servletMappings) {
                     if (servletMapping.getServlet().getServletName().equals(servlet.getServletName())) {
@@ -157,11 +157,11 @@ public class CXFDeployCommand extends AbstractDataModelOperation {
         }
         return ""; //$NON-NLS-1$
     }
-    
+
     public void setCXFDataModel(CXFDataModel model) {
         this.model = model;
     }
-    
+
     public String getClientComponentType() {
         return "template.cxf.core"; //$NON-NLS-1$
     }

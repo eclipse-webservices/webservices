@@ -10,7 +10,7 @@
       </page>
    </extension>
    
-   <extension point="org.eclipse.ui.propertyPages">
+   <!--<extension point="org.eclipse.ui.propertyPages">
       <page
          name="%PROPERTIES_CATEGORY_CXF_RUNTIME"
          class="org.eclipse.jst.ws.internal.cxf.ui.properties.CXFPropertyPage"
@@ -23,7 +23,7 @@
             </adapt>         
          </enabledWhen>
       </page>
-   </extension>
+   </extension> -->
    
    <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
       <wizard-pages action="cxf.core.install">
@@ -32,5 +32,13 @@
          </page>
       </wizard-pages>
    </extension>
-   
+
+   <extension point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+         class="org.eclipse.jst.ws.internal.cxf.ui.wizards.CXFClasspathContainerPage"
+         id="org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER"
+         name="%CXF_RUNTIME_NAME">
+      </classpathContainerPage>
+   </extension>
+
 </plugin>

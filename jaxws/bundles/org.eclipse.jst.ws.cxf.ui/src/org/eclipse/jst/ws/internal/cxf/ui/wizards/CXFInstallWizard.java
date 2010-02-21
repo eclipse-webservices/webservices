@@ -12,6 +12,7 @@ package org.eclipse.jst.ws.internal.cxf.ui.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jst.ws.internal.cxf.core.model.CXFInstall;
+import org.eclipse.jst.ws.internal.cxf.ui.CXFUIMessages;
 
 public class CXFInstallWizard extends Wizard {
 
@@ -19,10 +20,12 @@ public class CXFInstallWizard extends Wizard {
     private CXFInstall cxfInstall;
 
     public CXFInstallWizard() {
+        setWindowTitle(CXFUIMessages.CXF_INSTALL_WIZARD_ADD_WINDOW_TITLE);
     }
 
     public CXFInstallWizard(CXFInstall cxfInstall) {
         this.cxfInstall = cxfInstall;
+        setWindowTitle(CXFUIMessages.CXF_INSTALL_WIZARD_EDIT_WINDOW_TITLE);
     }
 
     @Override

@@ -81,7 +81,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
 
     private void annotateInterface(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
     InterruptedException {
-        javaInterfaceType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
+        javaInterfaceType = JDTUtils.findType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaInterfaceName());
 
         TextFileChange textFileChange = new TextFileChange("Annotating Interface",
@@ -127,7 +127,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
 
     private void annotateClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
     InterruptedException {
-        javaClassType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
+        javaClassType = JDTUtils.findType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaClassName());
 
         TextFileChange textFileChange = new TextFileChange("Annotating Class",
@@ -173,7 +173,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
 
     private void annotateSEIClass(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
     InterruptedException {
-        javaClassType = JDTUtils.getType(JDTUtils.getJavaProject(model.getProjectName()), model
+        javaClassType = JDTUtils.findType(JDTUtils.getJavaProject(model.getProjectName()), model
                 .getFullyQualifiedJavaClassName());
 
         TextFileChange textFileChange = new TextFileChange("Annotation Changes",

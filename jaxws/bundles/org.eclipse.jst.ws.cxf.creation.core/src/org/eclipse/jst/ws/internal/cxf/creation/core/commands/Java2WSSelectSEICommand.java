@@ -63,7 +63,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
             String javaStartingPoint = model.getJavaStartingPoint();
 
             IJavaProject javaProject = JDTUtils.getJavaProject(projectName);
-            startingPointType = JDTUtils.getType(javaProject, javaStartingPoint);
+            startingPointType = JDTUtils.findType(javaProject, javaStartingPoint);
 
             if (startingPointType.isInterface()) {
                 model.setFullyQualifiedJavaInterfaceName(startingPointType.getFullyQualifiedName());
@@ -127,7 +127,7 @@ public class Java2WSSelectSEICommand extends AbstractDataModelOperation {
                 }
                 String fullyQualifiedJavaInterfaceName = packageName + extractInterfaceProcessor.getTypeName();
                 model.setFullyQualifiedJavaInterfaceName(fullyQualifiedJavaInterfaceName);
-                model.setMethodMap(CXFModelUtils.getMethodMap(JDTUtils.getType(model.getProjectName(),
+                model.setMethodMap(CXFModelUtils.getMethodMap(JDTUtils.findType(model.getProjectName(),
                         fullyQualifiedJavaInterfaceName), model));
 
                 undoExtractInterfaceChange = performChangeOperation.getUndoChange();
