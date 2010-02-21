@@ -369,10 +369,17 @@ public class OrderHandlerChainPage extends WizardPage {
         Dialog.applyDialogFont(composite);
     }
 
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (visible) {
+            setInput(handlerChainPath);
+        }
+    }
+
     public void setHandlerChainPath(IPath handlerChainPath) {
         this.handlerChainPath = handlerChainPath;
-        setInput(handlerChainPath);
-        treeViewer.expandAll();
     }
 
     private boolean isHandler(ICompilationUnit source) {
@@ -419,6 +426,7 @@ public class OrderHandlerChainPage extends WizardPage {
                         doc = builder.build(handlerInputStream);
                         root = doc.getRootElement();
                         treeViewer.setInput(root);
+                        treeViewer.expandAll();
                     } else {
                         JAXWSHandlerUtils.createHandlerChainFile(handlerChainPath);
                         setInput(handlerChainPath);

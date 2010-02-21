@@ -516,6 +516,10 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
                             JAXWSUIMessages.bind(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_PROJECT,
                                     getJavaProject().getElementName()));
                 }
+                if (path.lastSegment() != null && path.lastSegment().equals(".xml")) { //$NON-NLS-1$
+                    return addNewHandlerChainStatus = new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
+                            JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_EMPTY_FILE_NAME);
+                }
             } else {
                 return addNewHandlerChainStatus = new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
                         JAXWSUIMessages.bind(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_PROJECT,

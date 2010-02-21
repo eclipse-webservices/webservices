@@ -58,6 +58,8 @@ public class AddHandlerChainPage extends WizardPage {
     private Text exisitingHandlerChainText;
     private Button browseExistingHandlerChainButton;
 
+    private boolean fileCreated;
+
     protected AddHandlerChainPage(IType type) {
         super("add.handlerchain.wizard.page"); //$NON-NLS-1$
         this.type = type;
@@ -185,14 +187,39 @@ public class AddHandlerChainPage extends WizardPage {
             }
         });
 
-        createHandlerChainButton.setSelection(true);
-        enableNewHandlerChainFileWidgets(true);
-        enableEditHandlerChainFileWidgets(false);
 
-        newHandlerChainText.setText(type.getResource().getParent().getFullPath().addTrailingSeparator()
-                + "handler-chain.xml"); //$NON-NLS-1$
-        updateConfigureHandlerStatus();
+        setInitialSelection();
         setControl(composite);
+    }
+
+    private void setInitialSelection() {
+        IPath handlerChainPath = new Path(type.getResource().getParent().getFullPath().addTrailingSeparator()
+                + "handler-chain.xml");
+        IResource handlerChain = ResourcesPlugin.getWorkspace().getRoot().getFile(handlerChainPath);
+        if (handlerChain.exists()) {
+            editHandlerChainButton.setSelection(true);
+            exisitingHandlerChainText.setText(handlerChainPath.toString());
+            enableNewHandlerChainFileWidgets(false);
+            enableEditHandlerChainFileWidgets(true);
+        } else {
+            createHandlerChainButton.setSelection(true);
+            newHandlerChainText.setText(handlerChainPath.toString());
+            enableNewHandlerChainFileWidgets(true);
+            enableEditHandlerChainFileWidgets(false);
+        }
+        updateConfigureHandlerStatus();
+    }
+
+    public void setFileCreated(boolean fileCreated) {
+        this.fileCreated = fileCreated;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (visible && fileCreated) {
+            ((ConfigureHandlerWizard) getWizard()).deleteFile(new Path(getNewHandlerChainPath()));
+        }
     }
 
     private void enableEditHandlerChainFileWidgets(boolean enable) {
@@ -286,6 +313,10 @@ public class AddHandlerChainPage extends WizardPage {
                             JAXWSUIMessages.bind(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_PROJECT,
                                     type.getJavaProject().getElementName()));
                 }
+                if (path.lastSegment() != null && path.lastSegment().equals(".xml")) { //$NON-NLS-1$
+                    return addNewHandlerChainStatus = new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
+                            JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_EMPTY_FILE_NAME);
+                }
             } else {
                 return addNewHandlerChainStatus = new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
                         JAXWSUIMessages.bind(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_PROJECT,
@@ -293,7 +324,7 @@ public class AddHandlerChainPage extends WizardPage {
             }
 
             IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-            if (res != null) {
+            if (res != null && res.exists()) {
                 return addNewHandlerChainStatus = new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
                         JAXWSUIMessages.bind(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_EXISTS,
                                 res.getName()));
@@ -321,7 +352,15 @@ public class AddHandlerChainPage extends WizardPage {
 
             IWorkspace workspace = ResourcesPlugin.getWorkspace();
             IPath path = new Path(existingHandlerChainPath);
-            if (path.segmentCount() > 1 && path.segment(0).equals(type.getJavaProject().getElementName())
+
+            if (path.segmentCount() >= 2) {
+                if (path.lastSegment() != null && path.lastSegment().equals(".xml")) { //$NON-NLS-1$
+                    return addNewHandlerChainStatus = new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
+                            JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_EMPTY_FILE_NAME);
+                }
+            }
+
+            if (path.segmentCount() >= 2 && path.segment(0).equals(type.getJavaProject().getElementName())
                     && workspace.getRoot().getFile(path).exists()) {
                 return editHandlerChainStatus = ok_status;
             } else {

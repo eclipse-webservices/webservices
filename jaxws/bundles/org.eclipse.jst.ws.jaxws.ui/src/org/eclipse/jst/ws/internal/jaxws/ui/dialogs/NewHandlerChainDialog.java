@@ -15,6 +15,7 @@ import java.io.File;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -102,7 +103,14 @@ public class NewHandlerChainDialog extends ElementTreeSelectionDialog implements
                     JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_INVALID_NAME);
         }
 
-        if (workspace.getRoot().getFile(new Path(getFilePath())).exists()) {
+        IPath path = new Path(getFilePath());
+        if (path.segmentCount() > 1) {
+            if (path.lastSegment() != null && path.lastSegment().equals(".xml")) { //$NON-NLS-1$
+                return new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
+                        JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_EMPTY_FILE_NAME);
+            }
+        }
+        if (workspace.getRoot().getFile(path).exists()) {
             return new Status(IStatus.ERROR, JAXWSUIPlugin.PLUGIN_ID,
                     JAXWSUIMessages.bind(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_CREATE_DIALOG_FILE_EXISTS,
                             handlerChainFileName));

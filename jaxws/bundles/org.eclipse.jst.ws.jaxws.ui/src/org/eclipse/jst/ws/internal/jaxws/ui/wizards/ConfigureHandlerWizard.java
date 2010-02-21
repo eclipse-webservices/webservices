@@ -81,15 +81,17 @@ public class ConfigureHandlerWizard extends Wizard {
         if (page == addHandlerChainPage && addHandlerChainPage.isPageComplete()) {
             if (addHandlerChainPage.isCreateHandlerChain()) {
                 handlerChainPath = new Path(addHandlerChainPage.getNewHandlerChainPath());
-                JAXWSHandlerUtils.createHandlerChainFile(handlerChainPath);
                 orderHandlerChainPage.setHandlerChainPath(handlerChainPath);
                 addAnnotation = true;
                 fileCreated = true;
+                addHandlerChainPage.setFileCreated(fileCreated);
             }
             if (addHandlerChainPage.isEditHandlerChain()) {
                 handlerChainPath = new Path(addHandlerChainPage.getExistingHandlerChainPath());
                 orderHandlerChainPage.setHandlerChainPath(handlerChainPath);
                 addAnnotation = true;
+                fileCreated = false;
+                addHandlerChainPage.setFileCreated(fileCreated);
             }
         }
         return super.getNextPage(page);
@@ -181,18 +183,22 @@ public class ConfigureHandlerWizard extends Wizard {
         return true;
     }
 
+    public void deleteFile(IPath filePath) {
+        IFile handlerFile = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
+        if (handlerFile.exists()) {
+            try {
+                handlerFile.delete(true, null);
+            } catch (CoreException ce) {
+                JAXWSUIPlugin.log(ce.getStatus());
+            }
+        }
+    }
+    
     @Override
     public boolean performCancel() {
         if (fileCreated) {
-            IPath hPath = type.getPackageFragment().getPath().append(new Path("handler-chain.xml")); //$NON-NLS-1$
-            IFile handlerFile = ResourcesPlugin.getWorkspace().getRoot().getFile(hPath);
-            if (handlerFile.exists()) {
-                try {
-                    handlerFile.delete(true, null);
-                } catch (CoreException ce) {
-                    JAXWSUIPlugin.log(ce.getStatus());
-                }
-            }
+            IPath filePath = type.getPackageFragment().getPath().append(new Path("handler-chain.xml")); //$NON-NLS-1$
+            deleteFile(filePath);
         }
         return super.performCancel();
     }
