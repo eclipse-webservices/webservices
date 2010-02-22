@@ -11,7 +11,6 @@
 package org.eclipse.jst.ws.jaxws.testutils.project;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -43,12 +41,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.threading.TestContext;
 import org.eclipse.jst.ws.jaxws.utils.ContractChecker;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
 /**
@@ -100,7 +95,7 @@ public class TestProject
 			}
 		};
 		
-		executeWorkspaceRunnable(createProjectOperation);
+		TestProjectsUtils.executeWorkspaceRunnable(createProjectOperation);
 	}
 
 	private void configureJavaProject() throws CoreException
@@ -175,7 +170,7 @@ public class TestProject
 				createdPackage[0] = sourceFolder.createPackageFragment(name, false, null);
 			}
 		};
-		executeWorkspaceRunnable(createPackageRunnable);
+		TestProjectsUtils.executeWorkspaceRunnable(createPackageRunnable);
 		
 		return createdPackage[0];
 	}
@@ -195,7 +190,7 @@ public class TestProject
 				createdCu[0] = pack.createCompilationUnit(cuName, buf.toString(), false, null);
 			}
 		};
-		executeWorkspaceRunnable(createCuRunnable);
+		TestProjectsUtils.executeWorkspaceRunnable(createCuRunnable);
 		
 		return createdCu[0].getTypes()[0];
 	}
@@ -271,7 +266,7 @@ public class TestProject
 				}
 			}
 		};
-		executeWorkspaceRunnable(disposeProjectRunnable);
+		TestProjectsUtils.executeWorkspaceRunnable(disposeProjectRunnable);
 	}
 	
 	public void close() throws CoreException
@@ -285,7 +280,7 @@ public class TestProject
 				project.close(monitor);		
 			}
 		};
-		executeWorkspaceRunnable(closeRunnable);
+		TestProjectsUtils.executeWorkspaceRunnable(closeRunnable);
 	}
 
 	private IFolder createBinFolder() throws CoreException
@@ -327,7 +322,7 @@ public class TestProject
 				setClasspath(newEntries);
 			}
 		};
-		executeWorkspaceRunnable(createRootRunnable);
+		TestProjectsUtils.executeWorkspaceRunnable(createRootRunnable);
 		this.sourceFolder = createdRoot[0];
 		
 		return sourceFolder;
@@ -388,7 +383,7 @@ public class TestProject
 				folder.create(false, true, monitor);
 			}
 		};
-		executeWorkspaceRunnable(createFolderRunnable);
+		TestProjectsUtils.executeWorkspaceRunnable(createFolderRunnable);
 		
 		return folder;		
 	}
@@ -409,71 +404,21 @@ public class TestProject
 		this.sourceFolder =  TestProjectsUtils.getSourceFolder(project, "");
 	}
 	
-	private void executeWorkspaceRunnable(final IWorkspaceRunnable runnable) throws CoreException
-	{
-		executeWorkspaceRunnable(runnable, new NullProgressMonitor());
-	}
-	
-	private void executeWorkspaceRunnable(final IWorkspaceRunnable runnable, final IProgressMonitor monitor) throws CoreException
-	{
-		if(Display.getCurrent() == null)
-		{
-			// Execute the runnable in the current (non-UI) thread
-			workspace().run(runnable, monitor);
-		}
-		else
-		{
-			runInTestContext(runnable, monitor);
-		}
-	}
-	
-	private void runInTestContext(final IWorkspaceRunnable runnable, final IProgressMonitor pm) throws CoreException
-	{
-		final IRunnableWithProgress textCtxRunnable = new IRunnableWithProgress()
-		{
-			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
-			{
-				try
-				{
-					executeWorkspaceRunnable(runnable, monitor);
-				} catch (CoreException e)
-				{
-					throw new InvocationTargetException(e);
-				}
-			}
-		};
-		try
-		{
-			TestContext.run(textCtxRunnable, true, pm, PlatformUI.getWorkbench().getDisplay());
-		} catch (InvocationTargetException e)
-		{
-			if(e.getCause() instanceof CoreException)
-			{
-				throw (CoreException)e.getCause();
-			}
-			
-			throw new IllegalStateException("Unexected exception thrown by runnable", e.getCause());
-		} catch (InterruptedException e)
-		{
-			throw new IllegalStateException("Interruption is not supported");
-		}
-	}
-
 	private IWorkspace workspace()
 	{
 		return ResourcesPlugin.getWorkspace();
 	}
 	
-	private void setClasspath(final IClasspathEntry[] newClasspath) throws CoreException
+	public void setClasspath(final IClasspathEntry[] newClasspath) throws CoreException
 	{
 		final IWorkspaceRunnable setClasspathRunnable = new IWorkspaceRunnable()
 		{
 			public void run(IProgressMonitor monitor) throws CoreException
 			{
-				javaProject.setRawClasspath(newClasspath, null);
+				javaProject.setRawClasspath(newClasspath, monitor);
 			}
 		};
-		executeWorkspaceRunnable(setClasspathRunnable);
+		TestProjectsUtils.executeWorkspaceRunnable(setClasspathRunnable);
 		
 		String log = "\n"+javaProject.getProject().getName()+"\n"+String.valueOf(javaProject.getRawClasspath().length)+"\n"; 
 

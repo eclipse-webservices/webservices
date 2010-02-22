@@ -16,7 +16,9 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -25,6 +27,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.ISourceManipulation;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -35,6 +38,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestEjb3Project;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
+import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
 
 public class ModelSynchronizationTests extends SynchronizationTestFixture
 {
@@ -148,22 +152,22 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		//make the folder a source folder now in order to create the type in there.
 		final IClasspathEntry[] oldEntries = testPrj1.getJavaProject().getRawClasspath();
 		final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-		//create a new package fragment folder. Note htat it cannot be used to create type, as the folder is not source folder yet
+		//create a new package fragment folder. Note that it cannot be used to create type, as the folder is not source folder yet
 		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
 		final IPackageFragmentRoot newSourceFolder = testPrj1.getJavaProject().getPackageFragmentRoot(folder);
 		newEntries[oldEntries.length] = JavaCore.newSourceEntry(newSourceFolder.getPath());
-		testPrj1.getJavaProject().setRawClasspath(newEntries, null);
+		testPrj1.setClasspath(newEntries);
 		final IPackageFragment pf = newSourceFolder.createPackageFragment("com.sap.test.newws", true, null);
 		//now create the types
 		testPrj1.createType(pf, "WS3.java", "@javax.jws.WebService(serviceName=\"WS3Name\", endpointInterface=\"com.sap.test.newsei.Sei3\") public class WS3 {}");
 		testPrj1.createType(pf, "Sei3.java", "@javax.jws.WebService(name=\"Sei3Name\") public interface Sei3 {}");
-		//after the type is created make the source folder an ordinary source again. 
-		testPrj1.getJavaProject().setRawClasspath(oldEntries, null);
+		//after the type is created make the source folder an ordinary source again.
+		testPrj1.setClasspath(oldEntries);
 		JobUtils.waitForJobs();
 		//then start synchronizing
 		target.startSynchronizing();
 		//finally the resource is sychnronizing and in the same time we have a folder with source content. So just make it a source folder again.
-		testPrj1.getJavaProject().setRawClasspath(newEntries, null);
+		testPrj1.setClasspath(newEntries);
 		JobUtils.waitForJobs();
 		
 		final IWebServiceProject wsPrj1 = domUtil.findProjectByName(target.getDOM(), testPrj1.getJavaProject().getElementName());
@@ -180,7 +184,7 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		final IClasspathEntry[] oldEntries = testPrj1.getJavaProject().getRawClasspath();
 		final IClasspathEntry[]  newEntries = new IClasspathEntry[oldEntries.length - 1];
 		System.arraycopy(oldEntries, 0, newEntries, 0, newEntries.length);
-		testPrj1.getJavaProject().setRawClasspath(newEntries, null);
+		testPrj1.setClasspath(newEntries);
 		JobUtils.waitForJobs();
 		
 		assertNull(domUtil.findWsByImplName(wsPrj1, "com.sap.test.newws.WS3"));
@@ -211,30 +215,29 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		assertNull("The web service returns a sei instance which is contained in a closed project", ws3.getServiceEndpoint());
 	}
 	
-	//FIXME Bug #302748
-//	public void test_deletedCUWithSeiSynched() throws JavaModelException, CoreException
-//	{
-//		target.startSynchronizing();
-//		final ICompilationUnit sei1CU = testPrj1.getJavaProject().findType(sei1ImplName).getCompilationUnit();
-//		sei1CU.delete(true, null);
-//		JobUtils.waitForJobs();
-//		
-//		assertFalse(wsPrj1.getServiceEndpointInterfaces().contains(sei1));
-//		assertNull(ws1.getServiceEndpoint());
-//	}
+	public void test_deletedCUWithSeiSynched() throws JavaModelException, CoreException
+	{
+		target.startSynchronizing();
+		final ICompilationUnit sei1CU = testPrj1.getJavaProject().findType(sei1ImplName).getCompilationUnit();
+		delete(sei1CU, true);
+		JobUtils.waitForJobs();
+		
+		assertFalse(wsPrj1.getServiceEndpointInterfaces().contains(sei1));
+		assertNull(ws1.getServiceEndpoint());
+	}
 	
 	public void test_deletedCUWithWSSynched() throws JavaModelException, CoreException
 	{
 		target.startSynchronizing();
 		final ICompilationUnit ws1CU = testPrj1.getJavaProject().findType(ws1ImplName).getCompilationUnit();
-		ws1CU.delete(true, null);
+		delete(ws1CU, true);
 		JobUtils.waitForJobs();
 		
 		assertFalse(wsPrj1.getWebServices().contains(ws1));
 		assertFalse(sei1.getImplementingWebServices().contains(ws1));
 	}
 
-	public void test_deletedCuContentWithSeiSynched() throws JavaModelException
+	public void test_deletedCuContentWithSeiSynched() throws CoreException
 	{
 		target.startSynchronizing();
 		final ICompilationUnit sei1Cu = testPrj1.getJavaProject().findType(sei1ImplName).getCompilationUnit();
@@ -245,7 +248,7 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		assertNull(ws1.getServiceEndpoint());
 	}
 	
-	public void test_deletedCuContentWithWsSynched() throws JavaModelException
+	public void test_deletedCuContentWithWsSynched() throws CoreException
 	{
 		target.startSynchronizing();
 		final ICompilationUnit ws1CU = testPrj1.getJavaProject().findType(ws1ImplName).getCompilationUnit();
@@ -414,7 +417,7 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		assertNotNull(ws4);
 		assertSame(sei1, ws4.getServiceEndpoint());
 		final IPackageFragment pf = testPrj1.getSourceFolder().getPackageFragment("com.sap.test.modelsync1");
-		pf.delete(true, null);
+		delete(pf, true);
 		JobUtils.waitForJobs();
 		
 		assertNull(domUtil.findSeiByImplName(wsPrj1, sei1ImplName));
@@ -587,5 +590,18 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		this.sei1.eAdapters().add(adapter);
 		this.ws2.eAdapters().add(adapter);
 		this.sei2.eAdapters().add(adapter);
+	}
+	
+	private void delete(final ISourceManipulation source, final boolean force) throws CoreException
+	{
+		final IWorkspaceRunnable deleteRunable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				source.delete(force, monitor);
+			}
+		};
+		
+		TestProjectsUtils.executeWorkspaceRunnable(deleteRunable);
 	}
 }

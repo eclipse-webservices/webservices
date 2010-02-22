@@ -114,7 +114,7 @@ public class WsSynchronizationTest extends SynchronizationTestFixture
 		assertEquals(SOAPBindingParameterStyle.BARE, sei.getSoapBindingParameterStyle());	
 	}
 	
-	public void test_ContructorIsNotIncludedInWebMethods() throws JavaModelException
+	public void test_ContructorIsNotIncludedInWebMethods() throws CoreException
 	{
 		target.startSynchronizing();
 		final ICompilationUnit wsCU = testPrj1.getJavaProject().findType(ws1.getImplementation()).getCompilationUnit();

@@ -12,13 +12,16 @@ package org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence;
 
 import junit.framework.Assert;
 
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebParam;
+import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
 import org.eclipse.jst.ws.jaxws.utils.resources.FileUtils;
 
 public class DomTestUtils
@@ -30,10 +33,18 @@ public class DomTestUtils
 		return m;
 	}
 
-	public void setContents(ICompilationUnit cu, String contents) throws JavaModelException
+	public void setContents(final ICompilationUnit cu, final String contents) throws CoreException
 	{
 		final String contentToSet = "package "+cu.getParent().getElementName()+";\n"+contents;
-		FileUtils.getInstance().setCompilationUnitContent(cu, contentToSet, true, null);
+		final IWorkspaceRunnable setContentsRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				FileUtils.getInstance().setCompilationUnitContent(cu, contentToSet, true, null);
+			}
+		};
+		
+		TestProjectsUtils.executeWorkspaceRunnable(setContentsRunnable);
 	}
 	
 	public IWebParam findParam(final IWebMethod method, final String implName) 

@@ -24,6 +24,8 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,6 +45,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.threading.TestContext;
 import org.eclipse.jst.ws.jaxws.utils.logging.Logger;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
@@ -300,4 +303,63 @@ public class TestProjectsUtils
 
 		return webProject;
 	}
+	
+	/**
+	 * Executes a workspace runnable outside the main thread
+	 */
+	public static void executeWorkspaceRunnable(final IWorkspaceRunnable runnable) throws CoreException
+	{
+		executeWorkspaceRunnable(runnable, new NullProgressMonitor());
+	}
+	
+	private static void executeWorkspaceRunnable(final IWorkspaceRunnable runnable, final IProgressMonitor monitor) throws CoreException
+	{
+		if(Display.getCurrent() == null)
+		{
+			// Execute the runnable in the current (non-UI) thread
+			workspace().run(runnable, monitor);
+		}
+		else
+		{
+			runInTestContext(runnable, monitor);
+		}
+	}
+	
+	private static void runInTestContext(final IWorkspaceRunnable runnable, final IProgressMonitor pm) throws CoreException
+	{
+		final IRunnableWithProgress textCtxRunnable = new IRunnableWithProgress()
+		{
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+			{
+				try
+				{
+					executeWorkspaceRunnable(runnable, monitor);
+				} catch (CoreException e)
+				{
+					throw new InvocationTargetException(e);
+				}
+			}
+		};
+		try
+		{
+			TestContext.run(textCtxRunnable, true, pm, PlatformUI.getWorkbench().getDisplay());
+		} catch (InvocationTargetException e)
+		{
+			if(e.getCause() instanceof CoreException)
+			{
+				throw (CoreException)e.getCause();
+			}
+			
+			throw new IllegalStateException("Unexected exception thrown by runnable", e.getCause());
+		} catch (InterruptedException e)
+		{
+			throw new IllegalStateException("Interruption is not supported");
+		}
+	}
+
+	private static IWorkspace workspace()
+	{
+		return ResourcesPlugin.getWorkspace();
+	}
+	
 }
