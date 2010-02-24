@@ -13,11 +13,14 @@
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
+ * 20091207   193996 samindaw@wso2.com - Saminda Wijeratne, selecting a specific service/portname
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
+import javax.xml.namespace.QName;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -59,11 +62,11 @@ public class DefaultCodegenUtil {
 				if (!serviceQNameList.isEmpty()) {
 					// add the local part of the
 					Object serviceQnameInstance = serviceQNameList.get(0);
-					Class QNameClass = ClassLoadingUtil
-							.loadClassFromAntClassLoader("javax.xml.namespace.QName");
-					Method GetLocalPartMethod  = QNameClass.getMethod("getLocalPart", null);
-					Object resultLocalPart = GetLocalPartMethod.invoke(serviceQnameInstance, null);
-					model.setServiceName(resultLocalPart.toString());
+//					Class QNameClass = ClassLoadingUtil
+//							.loadClassFromAntClassLoader("javax.xml.namespace.QName");
+//					Method GetLocalPartMethod  = QNameClass.getMethod("getLocalPart", null);
+//					Object resultLocalPart = GetLocalPartMethod.invoke(serviceQnameInstance, null);
+					model.setServiceQName(serviceQnameInstance);
 					// load the ports
 					 loadPortNames();
 				} 

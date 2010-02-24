@@ -14,6 +14,7 @@
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
  * 20070507   184729 sandakith@wso2.com - Lahiru Sandakith
  * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
+ * 20091207   193996 samindaw@wso2.com - Saminda Wijeratne, selecting a specific service/portname
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.utils;
 
@@ -27,6 +28,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.namespace.QName;
+
 import org.eclipse.jst.ws.axis2.core.utils.ClassLoadingUtil;
 
 public class WSDL2JavaGenerator {
@@ -331,7 +335,7 @@ public class WSDL2JavaGenerator {
      * @throws WSDLException when WSDL File is invalid
      * @throws IOException on errors reading the WSDL file
      */
-    public Object getAxisService(String wsdlURI) throws Exception{
+    public Object getAxisService(String wsdlURI, Object serviceQName, String portName) throws Exception{
     	
     		URL url;
 			if (wsdlURI.indexOf("://")==-1){
@@ -362,13 +366,13 @@ public class WSDL2JavaGenerator {
 			//Class WSDL11ToAxisServiceBuilderClass = ClassLoadingUtil.loadClassFromAxis2LibPath(
 			//                projectName,
 			//                "org.apache.axis2.description.WSDL11ToAxisServiceBuilder");
-			
 			Class WSDL11ToAxisServiceBuilderClass = ClassLoadingUtil.loadClassFromAntClassLoader(
 					"org.apache.axis2.description.WSDL11ToAxisServiceBuilder");
+			Class QNameClass = ClassLoadingUtil.loadClassFromAntClassLoader("javax.xml.namespace.QName");
 			Constructor constructor = WSDL11ToAxisServiceBuilderClass.getConstructor(
-					new Class[]{InputStream.class});
+					new Class[]{InputStream.class, QNameClass, String.class});
 			Object WSDL11ToAxisServiceBuilderInstance = constructor.newInstance(
-					new Object[]{url.openConnection().getInputStream()});
+					new Object[]{url.openConnection().getInputStream(),serviceQName,portName});
 			Method setBaseUriMethod = WSDL11ToAxisServiceBuilderClass.getMethod(
 					"setBaseUri", 
 					new Class[]{String.class});

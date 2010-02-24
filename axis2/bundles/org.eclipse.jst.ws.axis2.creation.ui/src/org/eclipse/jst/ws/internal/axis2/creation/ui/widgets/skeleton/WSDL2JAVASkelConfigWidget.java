@@ -18,6 +18,7 @@
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20080319   207616 makandre@ca.ibm.com - Andrew Mak, Table in Axis2 Web Service Skeleton Java Bean Configuration Page not Accessible
  * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
+ * 20091207   193996 samindaw@wso2.com - Saminda Wijeratne, selecting a specific service/portname
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton;
 
@@ -118,7 +119,14 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		serviceNameCombo.setLayoutData(gd);
 		serviceNameCombo.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				model.setServiceName(serviceNameCombo.getText());
+				int selectionIndex = serviceNameCombo.getSelectionIndex();
+				if (selectionIndex != -1) {
+					Object object = reader.getServiceList().get(selectionIndex);
+					model.setServiceQName(object);
+				}
+				loadPortNames();
+				populatePackageName();
+				loadNamespaces(reader.getDefinitionNamespaceMap());
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -357,7 +365,11 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 	}
 
 	private void populateModel() {
-		model.setServiceName(serviceNameCombo.getText());
+		int selectionIndex = serviceNameCombo.getSelectionIndex();
+		if (selectionIndex != -1) {
+			Object object = reader.getServiceList().get(selectionIndex);
+			model.setServiceQName(object);
+		}
 		model.setPortName(portNameCombo.getText());
 		model.setPackageText(packageText.getText());
 		model.setDatabindingType(databindingTypeCombo.getText());
@@ -398,7 +410,7 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 					serviceNameCombo.removeAll();
 					for (int i = 0; i < serviceQNameList.size(); i++) {
 						// add the local part of the
-						Object serviceQnameInstance = serviceQNameList.get(0);
+						Object serviceQnameInstance = serviceQNameList.get(i);
 						Class QNameClass = ClassLoadingUtil
 										.loadClassFromAntClassLoader("javax.xml.namespace.QName");
 						Method GetLocalPartMethod  = QNameClass.getMethod("getLocalPart", null);
@@ -446,6 +458,7 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 					portNameCombo.add(ports.get(i).toString());
 				}
 				portNameCombo.select(0);
+				model.setPortName(portNameCombo.getText());
 			} else {
 				// TODO error no ports found
 			}

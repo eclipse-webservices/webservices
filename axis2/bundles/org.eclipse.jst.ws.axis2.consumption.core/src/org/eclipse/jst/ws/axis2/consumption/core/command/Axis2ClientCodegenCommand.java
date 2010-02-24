@@ -22,6 +22,7 @@
  * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again 
  * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
  * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
+ * 20091207   193996 samindaw@wso2.com - Saminda Wijeratne, selecting a specific service/portname
 *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
 
@@ -114,7 +115,7 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 		ClassLoadingUtil.setInitByClient(true);
 		ClassLoadingUtil.cleanAntClassLoader();
 		ClassLoadingUtil.init(model.getWebProjectName());
-		axisServiceInstance = generator.getAxisService(model.getWsdlURI());
+		axisServiceInstance = generator.getAxisService(model.getWsdlURI(),model.getServiceQName(),model.getPortName());
 		Map optionsMap = generator.fillOptionMap(	
 			model.isASync(), //async
             model.isSync(), //sync

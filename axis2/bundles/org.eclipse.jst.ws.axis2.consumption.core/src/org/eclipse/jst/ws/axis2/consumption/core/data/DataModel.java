@@ -12,6 +12,7 @@
  * 20070110   168762 sandakith@wso2.com - Lahiru Sandakith, Initial code to introduse the Axis2 
  * 										  runtime to the framework for 168762
  * 20070426   183046 sandakith@wso2.com - Lahiru Sandakith
+ * 20091207   193996 samindaw@wso2.com - Saminda Wijeratne, selecting a specific service/portname
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.data;
 
@@ -75,10 +76,6 @@ public class DataModel extends Model{
 		return super.getServiceName();
 	}
 
-	public void setServiceName(String serviceName) {
-		super.setServiceName(serviceName);
-	}
-	
 	public String getWsdlURI() {
 		return super.getWsdlURI();
 	}
