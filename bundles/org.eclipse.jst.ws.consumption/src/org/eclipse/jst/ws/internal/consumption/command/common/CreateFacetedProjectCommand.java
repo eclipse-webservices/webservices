@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 IBM Corporation and others.
+ * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20080326   220371 kathy@ca.ibm.com - Kathy Chan - re-applying 220371
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20091123   242615 mahutch@ca.ibm.com - Mark Hutchinson, Use project creation operations to create projects
+ * 20100211   302631 mahutch@ca.ibm.com - Mark Hutchinson, NullPointerException creating utility projects via CreateFacetedProjectCommand
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -38,12 +39,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.j2ee.applicationclient.internal.creation.AppClientFacetProjectCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.EjbFacetProjectCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
-import org.eclipse.jst.j2ee.internal.project.facet.UtilityFacetInstallDataModelProvider;
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebFacetProjectCreationDataModelProvider;
-import org.eclipse.jst.j2ee.project.facet.AppClientFacetInstallDataModelProvider;
 import org.eclipse.jst.j2ee.project.facet.IJ2EEFacetProjectCreationDataModelProperties;
+import org.eclipse.jst.j2ee.project.facet.UtilityProjectCreationDataModelProvider;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ServerUtils;
@@ -121,12 +122,12 @@ public class CreateFacetedProjectCommand extends AbstractDataModelOperation
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetRuntime);
 	  }
 	  else if (templateId.equals(IJ2EEModuleConstants.JST_APPCLIENT_TEMPLATE)) {
-		  dm = DataModelFactory.createDataModel(new AppClientFacetInstallDataModelProvider());
+		  dm = DataModelFactory.createDataModel(new AppClientFacetProjectCreationDataModelProvider());
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_PROJECT_NAME, projectName);
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetRuntime);		  
 	  }
 	  else if (templateId.equals(IJ2EEModuleConstants.JST_UTILITY_TEMPLATE)) {
-		  dm = DataModelFactory.createDataModel(new UtilityFacetInstallDataModelProvider());
+		  dm = DataModelFactory.createDataModel(new UtilityProjectCreationDataModelProvider());
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_PROJECT_NAME, projectName);
 		  dm.setProperty(IJ2EEFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetRuntime);
 	  }
