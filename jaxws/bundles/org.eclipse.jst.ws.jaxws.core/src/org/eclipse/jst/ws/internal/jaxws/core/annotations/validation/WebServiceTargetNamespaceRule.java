@@ -32,24 +32,26 @@ public class WebServiceTargetNamespaceRule extends AbstractAnnotationProcessor {
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(WebService.class.getName());
+        .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
-                .getDeclarationsAnnotatedWith(annotationDeclaration);
+        .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof TypeDeclaration) {
                 AnnotationMirror webService = AnnotationUtils.getAnnotation(declaration, WebService.class);
                 AnnotationValue targetNamespace = AnnotationUtils.getAnnotationValue(webService, TARGET_NAMESPACE);
-                
+
                 TypeDeclaration typeDeclaration = (TypeDeclaration) declaration;
                 PackageDeclaration packageDeclaration = typeDeclaration.getPackage();
-                if (packageDeclaration.getQualifiedName().length() == 0 && targetNamespace == null) {
-                    printError(webService.getPosition(), JAXWSCoreMessages.WEBSERVICE_DEFAULT_PACKAGE_TARGET_NAMESPACE);
-                } else if (targetNamespace != null && targetNamespace.getValue().toString().trim().length() == 0) {
-                    printError(targetNamespace.getPosition(), JAXWSCoreMessages.WEBSERVICE_DEFAULT_PACKAGE_TARGET_NAMESPACE);
+                if (packageDeclaration.getQualifiedName().length() == 0) {
+                    if (targetNamespace == null) {
+                        printError(webService.getPosition(), JAXWSCoreMessages.WEBSERVICE_DEFAULT_PACKAGE_TARGET_NAMESPACE);
+                    } else if (targetNamespace.getValue().toString().trim().length() == 0) {
+                        printError(targetNamespace.getPosition(), JAXWSCoreMessages.WEBSERVICE_DEFAULT_PACKAGE_TARGET_NAMESPACE);
+                    }
                 }
-            }            
+            }
         }
     }
 

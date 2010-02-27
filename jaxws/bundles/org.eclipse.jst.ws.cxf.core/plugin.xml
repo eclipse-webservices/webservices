@@ -18,7 +18,7 @@
 	   <project-facet-version facet="cxf.core" version="1.0">
 	      <constraint>
 		     <and>
-      	        <requires facet="jst.web" version="[2.4"/>
+      	        <requires facet="jst.web" version="[2.5"/>
       	        <requires facet="jst.java" version="[5.0"/>
                 <conflicts facet="axis2.core" version="[1.0"/>
                 <conflicts facet="axis2.ext" version="[1.0"/>
@@ -46,7 +46,7 @@
                facet="jst.java">
           </fixed>
           <preset
-             id="cxf.jst.web24.preset">
+             id="cxf.jst.web25.preset">
           </preset>
        </template>
 	</extension>
@@ -61,22 +61,6 @@
     </extension>
 
     <extension point="org.eclipse.wst.common.project.facet.core.presets">
-       <static-preset id="cxf.jst.web24.preset">
-          <label>%CXF_FACET_JST_WEB24_PRESET_LABEL</label>
-          <description>%CXF_FACET_JST_WEB24_PRESET_DESCRIPTION</description>
-          <facet
-             id="cxf.core"
-             version="1.0">
-          </facet>
-          <facet
-             id="jst.web"
-             version="2.4">
-          </facet>
-          <facet
-             id="jst.java"
-             version="5.0">
-          </facet>
-       </static-preset>
        <static-preset id="cxf.jst.web25.preset">
           <label>%CXF_FACET_JST_WEB25_PRESET_LABEL</label>
           <description>%CXF_FACET_JST_WEB25_PRESET_DESCRIPTION</description>
