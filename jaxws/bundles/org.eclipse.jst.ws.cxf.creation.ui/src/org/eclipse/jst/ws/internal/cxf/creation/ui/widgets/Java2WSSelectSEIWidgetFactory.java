@@ -76,6 +76,7 @@ public class Java2WSSelectSEIWidgetFactory implements INamedWidgetContributorFac
                         IType seiType = startingPointType.getJavaProject().findType(endpointInterface);
                         if (seiType != null && seiType.exists()) {
                             model.setUseServiceEndpointInterface(true);
+                            model.setFullyQualifiedJavaInterfaceName(endpointInterface);
                             model.setServiceEndpointInterfaceName(endpointInterface);
                         }
                     }

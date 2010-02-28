@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.jaxws.core.annotations.validation;
 
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.HEADER;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PARAMETER_STYLE;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PART_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.STYLE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.USE;
 
 import java.util.Collection;
 
+import javax.jws.WebParam;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
@@ -27,24 +31,28 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
+import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 
 public class SOAPBindingRules extends AbstractAnnotationProcessor {
-    
+
     @Override
     public void process() {
         AnnotationTypeDeclaration soapBindingDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(SOAPBinding.class.getName());
+        .getTypeDeclaration(SOAPBinding.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
-                .getDeclarationsAnnotatedWith(soapBindingDeclaration);
+        .getDeclarationsAnnotatedWith(soapBindingDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
             checkForEncodedUse(declaration);
             if (declaration instanceof TypeDeclaration) {
-                checkForRPCBareOnTypeDeclaration((TypeDeclaration) declaration);
+                TypeDeclaration typeDeclaration = (TypeDeclaration) declaration;
+                checkForRPCBareOnTypeDeclaration(typeDeclaration);
+                checkRedundantWebParamNameAttribute(typeDeclaration);
             }
 
             if (declaration instanceof MethodDeclaration) {
@@ -95,5 +103,37 @@ public class SOAPBindingRules extends AbstractAnnotationProcessor {
             printFixableError(soapBinding.getPosition(),
                     JAXWSCoreMessages.SOAPBINDING_NO_RPC_STYLE_ON_METHODS);
         }
-    }    
+    }
+
+    private void checkRedundantWebParamNameAttribute(TypeDeclaration typeDeclaration) {
+        AnnotationMirror soapBinding = AnnotationUtils.getAnnotation(typeDeclaration, SOAPBinding.class);
+        String style = AnnotationUtils.getStringValue(soapBinding, STYLE);
+        if (style != null && style.equals(Style.RPC.toString())) {
+            Collection<? extends MethodDeclaration> methods = typeDeclaration.getMethods();
+            for (MethodDeclaration methodDeclaration : methods) {
+                Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
+                for (ParameterDeclaration parameterDeclaration : parameters) {
+                    AnnotationMirror webParam = AnnotationUtils.getAnnotation(parameterDeclaration, WebParam.class);
+                    if (webParam != null && !isHeader(webParam)) {
+                        AnnotationValue partName = AnnotationUtils.getAnnotationValue(webParam, PART_NAME);
+                        if (partName != null) {
+                            AnnotationValue name = AnnotationUtils.getAnnotationValue(webParam, NAME);
+                            if (name != null) {
+                                printWarning(name.getPosition(), JAXWSCoreMessages.WEBPARAM_NAME_REDUNDANT);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isHeader(AnnotationMirror annotationMirror) {
+        Boolean header = AnnotationUtils.getBooleanValue(annotationMirror, HEADER);
+        if (header != null) {
+            return header.booleanValue();
+        }
+        return false;
+    }
+
 }

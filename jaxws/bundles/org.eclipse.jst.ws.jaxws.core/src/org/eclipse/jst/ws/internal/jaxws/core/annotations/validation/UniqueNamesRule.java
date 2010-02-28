@@ -17,7 +17,10 @@ import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.LOCAL_NAME
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.MODE;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.OPERATION_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PART_NAME;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.PORT_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.RESPONSE_SUFFIX;
+import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.SERVICE_NAME;
 import static org.eclipse.jst.ws.internal.jaxws.core.utils.JAXWSUtils.TARGET_NAMESPACE;
 
 import java.lang.annotation.Annotation;
@@ -68,18 +71,56 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
     @Override
     public void process() {
         AnnotationTypeDeclaration webServiceDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(WebService.class.getName());
+        .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
-                .getDeclarationsAnnotatedWith(webServiceDeclaration);
+        .getDeclarationsAnnotatedWith(webServiceDeclaration);
+
 
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof TypeDeclaration) {
                 TypeDeclaration typeDeclaration = (TypeDeclaration) declaration;
+                validateNameAttributes(typeDeclaration);
                 checkOperationNames(typeDeclaration.getMethods());
                 checkWrapperAndFaultBeanNames(typeDeclaration.getMethods());
                 checkDocumentBareMethods(typeDeclaration.getMethods());
                 checkMethodParameters(typeDeclaration.getMethods());
+            }
+        }
+    }
+
+    private void validateNameAttributes(TypeDeclaration typeDeclaration) {
+        AnnotationMirror webService = AnnotationUtils.getAnnotation(typeDeclaration, WebService.class);
+        checkAttributeValue(webService, WebService.class.getSimpleName(), NAME);
+        checkAttributeValue(webService, WebService.class.getSimpleName(), PORT_NAME);
+        checkAttributeValue(webService, WebService.class.getSimpleName(), SERVICE_NAME);
+
+        Collection<? extends MethodDeclaration> methods = typeDeclaration.getMethods();
+        for (MethodDeclaration methodDeclaration : methods) {
+            AnnotationMirror webMethod = AnnotationUtils.getAnnotation(methodDeclaration, WebMethod.class);
+            checkAttributeValue(webMethod, WebMethod.class.getSimpleName(), OPERATION_NAME);
+
+            Collection<ParameterDeclaration> parameters = methodDeclaration.getParameters();
+            for (ParameterDeclaration parameterDeclaration : parameters) {
+                AnnotationMirror webParam = AnnotationUtils.getAnnotation(parameterDeclaration, WebParam.class);
+                checkAttributeValue(webParam, WebParam.class.getSimpleName(), NAME);
+                checkAttributeValue(webParam, WebParam.class.getSimpleName(), PART_NAME);
+            }
+        }
+    }
+
+    private void checkAttributeValue(AnnotationMirror annotationMirror, String annotationName, String attributeName) {
+        if (annotationMirror != null) {
+            AnnotationValue annotationValue = AnnotationUtils.getAnnotationValue(annotationMirror, attributeName);
+            if (annotationValue != null) {
+                if (annotationValue.toString().trim().length() == 0) {
+                    printError(annotationValue.getPosition(), JAXWSCoreMessages.bind(
+                            JAXWSCoreMessages.EMPTY_ATTRIBUTE_VALUE, new Object[] { annotationName, attributeName }));
+                } else if (!XMLChar.isValidName(annotationValue.toString())) {
+                    printError(annotationValue.getPosition(), JAXWSCoreMessages.bind(
+                            JAXWSCoreMessages.INVALID_NCNAME_ATTRIBUTE, new Object[] { annotationName,
+                                    attributeName,  annotationValue.toString() }));
+                }
             }
         }
     }
@@ -96,7 +137,6 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
 
         for (int i = 0; i < values.length; i++) {
             QName qName = values[i];
-            validateName(qName, keys[i]);
             for (int j = i + 1; j < values.length; j++) {
                 QName otherQName = values[j];
                 if (qName.equals(otherQName)) {
@@ -119,10 +159,10 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
 
     private void checkWrapperAndFaultBeanNames(Collection<? extends MethodDeclaration> methodDeclarations) {
         AnnotationTypeDeclaration requestWrapperDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(RequestWrapper.class.getName());
+        .getTypeDeclaration(RequestWrapper.class.getName());
 
         AnnotationTypeDeclaration resposeWrapperDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(ResponseWrapper.class.getName());
+        .getTypeDeclaration(ResponseWrapper.class.getName());
 
         Set<Declaration> methods = new HashSet<Declaration>();
         methods.addAll(environment.getDeclarationsAnnotatedWith(requestWrapperDeclaration));
@@ -158,7 +198,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
                 ClassDeclaration classDeclaration = (ClassDeclaration) referenceType;
                 AnnotationMirror webFault = AnnotationUtils.getAnnotation(classDeclaration, WebFault.class);
                 if (webFault != null) {
-                   addClassName(webFault, FAULT_BEAN, classNames);
+                    addClassName(webFault, FAULT_BEAN, classNames);
                 }
             }
         }
@@ -185,7 +225,6 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
 
         for(int i = 0; i < values.length; i++) {
             QName qName = values[i];
-            validateName(qName, keys[i]);
             for(int j = i + 1; j < values.length; j++) {
                 QName otherQName = values[j];
                 if (qName.equals(otherQName)) {
@@ -241,26 +280,6 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
             return ((ParameterDeclaration) value).getPosition();
         }
         return null;
-    }
-
-    private void validateName(QName qName, Object object) {
-        String name = qName.getLocalPart();
-        if (name.trim().length() > 0) {
-            if (!XMLChar.isValidNCName(name)) {
-                printError(getPosition(object), JAXWSCoreMessages.bind(
-                        JAXWSCoreMessages.INVALID_NAME_ATTRIBUTE, name));
-            }
-        }
-    }
-
-    private void validateName(AnnotationValue value) {
-        String name = value.getValue().toString();
-        if (name.trim().length() > 0) {
-            if (!XMLChar.isValidNCName(name)) {
-                printError(value.getPosition(), JAXWSCoreMessages.bind(
-                        JAXWSCoreMessages.INVALID_NAME_ATTRIBUTE, name));
-            }
-        }
     }
 
     private void getDocumentBareOperationRequest(MethodDeclaration methodDeclaration, Map<Object, QName> qNames) {
@@ -341,7 +360,7 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
     private boolean isHeader(AnnotationMirror annotationMirror) {
         Boolean header = AnnotationUtils.getBooleanValue(annotationMirror, HEADER);
         if (header != null) {
-           return header.booleanValue();
+            return header.booleanValue();
         }
         return false;
     }
@@ -391,7 +410,6 @@ public class UniqueNamesRule extends AbstractAnnotationProcessor {
 
             for (int i = 0; i < names.size(); i++) {
                 AnnotationValue name = names.get(i);
-                validateName(name);
                 for (int j = i + 1; j < names.size(); j++) {
                     AnnotationValue otherName = names.get(j);
                     if (name.toString().equals(otherName.toString())) {

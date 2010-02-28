@@ -273,6 +273,20 @@
             %WEBSERVICEPROVIDER_RULES
          </description>
       </processor>
+      <processor
+            annotation="javax.jws.WebService"
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.WebServiceParametersReturnTypesRule">
+         <description>
+            %WEBSERVICE_METHOD_PARAMETERS_RETURN_TYPE_RULE
+         </description>
+      </processor>     
+      <processor
+            annotation="javax.jws.WebService"
+            class="org.eclipse.jst.ws.internal.jaxws.core.annotations.validation.WebServiceEJBModuleRule">
+         <description>
+            %WEBSERVICE_EJB_STATELESS_SESSION
+         </description>
+      </processor>     
    </extension>
 
 </plugin>

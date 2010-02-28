@@ -22,6 +22,7 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.Declaration;
+import com.sun.mirror.declaration.EnumDeclaration;
 import com.sun.mirror.declaration.Modifier;
 
 public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationProcessor {
@@ -29,13 +30,13 @@ public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationPr
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(WebService.class.getName());
+        .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
-                .getDeclarationsAnnotatedWith(annotationDeclaration);
+        .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-            if (declaration instanceof ClassDeclaration) {
+            if (declaration instanceof ClassDeclaration && !(declaration instanceof EnumDeclaration)) {
                 boolean hasDefaultConstructor = false;
                 ClassDeclaration classDeclaration = (ClassDeclaration) declaration;
                 Collection<ConstructorDeclaration> constructors = classDeclaration.getConstructors();
@@ -43,7 +44,7 @@ public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationPr
                     hasDefaultConstructor = true;
                 } else {
                     for (ConstructorDeclaration constructorDeclaration : constructors) {
-                        if (constructorDeclaration.getModifiers().contains(Modifier.PUBLIC) && 
+                        if (constructorDeclaration.getModifiers().contains(Modifier.PUBLIC) &&
                                 constructorDeclaration.getParameters().size() == 0) {
                             hasDefaultConstructor = true;
                             break;
@@ -56,10 +57,10 @@ public class WebServiceDefaultPublicConstructorRule extends AbstractAnnotationPr
                         if ( mirror.getAnnotationType().toString().equals(annotationDeclaration
                                 .getQualifiedName())) {
                             printFixableError(declaration.getPosition(),
-                                    JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR); 
+                                    JAXWSCoreMessages.WEBSERVICE_DEFAULT_PUBLIC_CONSTRUCTOR);
                         }
                     }
-                }                
+                }
             }
         }
     }

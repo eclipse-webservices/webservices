@@ -19,7 +19,10 @@ import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
+import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
+import com.sun.mirror.declaration.EnumDeclaration;
+import com.sun.mirror.declaration.InterfaceDeclaration;
 import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.declaration.TypeDeclaration;
 
@@ -28,35 +31,49 @@ public class WebServicePublicAbstractFinalRule extends AbstractAnnotationProcess
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(WebService.class.getName());
+        .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
-                .getDeclarationsAnnotatedWith(annotationDeclaration);
+        .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
-            if (declaration instanceof TypeDeclaration) {
-                Collection<Modifier> modifiers = declaration.getModifiers();
-                if (modifiers.contains(Modifier.FINAL) || modifiers.contains(Modifier.ABSTRACT) 
-                     || !modifiers.contains(Modifier.PUBLIC)) {
-                    Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
-                    for (AnnotationMirror mirror : annotationMirrors) {
-                        if (mirror.getAnnotationType().toString().equals(
-                                annotationDeclaration.getQualifiedName())) {
-                            printFixableError(declaration.getPosition(), 
-                                    JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL);
-                        }
-                    }
+            if (declaration instanceof ClassDeclaration) {
+                if (declaration instanceof EnumDeclaration) {
+                    printError(declaration.getPosition(), JAXWSCoreMessages.WEBSERVICE_CLASS_OR_INTERFACE_ONLY);
+                } else {
+                    testDeclaration(declaration, annotationDeclaration);
                 }
-                TypeDeclaration typeDeclaration = (TypeDeclaration)declaration;
-                if (typeDeclaration.getNestedTypes().size() > 0) {
-                    testNestedTypes(typeDeclaration.getNestedTypes(), annotationDeclaration);
+            }
+
+            if (declaration instanceof InterfaceDeclaration) {
+                if (declaration instanceof AnnotationTypeDeclaration) {
+                    printError(declaration.getPosition(), JAXWSCoreMessages.WEBSERVICE_CLASS_OR_INTERFACE_ONLY);
+                } else {
+                    testDeclaration(declaration, annotationDeclaration);
                 }
             }
         }
     }
-    
-    private void testNestedTypes(Collection<TypeDeclaration> nestedTypes, 
-            AnnotationTypeDeclaration annotationDeclaration) {
+
+    private void testDeclaration(Declaration declaration, AnnotationTypeDeclaration annotationDeclaration) {
+        Collection<Modifier> modifiers = declaration.getModifiers();
+        if (modifiers.contains(Modifier.FINAL) || modifiers.contains(Modifier.ABSTRACT)
+                || !modifiers.contains(Modifier.PUBLIC)) {
+            Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
+            for (AnnotationMirror mirror : annotationMirrors) {
+                if (mirror.getAnnotationType().toString().equals(annotationDeclaration.getQualifiedName())) {
+                    printFixableError(declaration.getPosition(),
+                            JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL);
+                }
+            }
+        }
+        TypeDeclaration typeDeclaration = (TypeDeclaration)declaration;
+        if (typeDeclaration.getNestedTypes().size() > 0) {
+            testNestedTypes(typeDeclaration.getNestedTypes(), annotationDeclaration);
+        }
+    }
+
+    private void testNestedTypes(Collection<TypeDeclaration> nestedTypes,AnnotationTypeDeclaration annotationDeclaration) {
         for (TypeDeclaration nestedDeclaration : nestedTypes) {
             Collection<AnnotationMirror> annotationMirrors = nestedDeclaration.getAnnotationMirrors();
             for (AnnotationMirror mirror : annotationMirrors) {

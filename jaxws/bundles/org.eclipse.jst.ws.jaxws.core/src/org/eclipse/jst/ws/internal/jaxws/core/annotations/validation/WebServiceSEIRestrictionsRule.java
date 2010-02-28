@@ -45,9 +45,9 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
     @Override
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(WebService.class.getName());
+        .getTypeDeclaration(WebService.class.getName());
         Collection<Declaration> annotatedTypes = environment
-                .getDeclarationsAnnotatedWith(annotationDeclaration);
+        .getDeclarationsAnnotatedWith(annotationDeclaration);
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof ClassDeclaration) {
                 Collection<AnnotationMirror> annotationMirrors = declaration.getAnnotationMirrors();
@@ -70,14 +70,15 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
 
     private void checkRestrictions(ClassDeclaration classDeclaration, AnnotationValue endpointInterface) {
         String sei = endpointInterface.getValue().toString();
-        if ((JDTUtils.validateJavaTypeName(sei).getSeverity() == IStatus.ERROR)) {
+        if (JDTUtils.validateJavaTypeName(sei).getSeverity() == IStatus.ERROR) {
             return;
         }
         com.sun.mirror.declaration.TypeDeclaration typeDeclaration = environment.getTypeDeclaration(sei);
         if (typeDeclaration != null) {
-            if (!(typeDeclaration instanceof InterfaceDeclaration)) {
+            if (!(typeDeclaration instanceof InterfaceDeclaration) || typeDeclaration instanceof AnnotationTypeDeclaration) {
                 printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
                         JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_NOT_INTERFACE, sei));
+                return;
             }
             if (typeDeclaration.getDeclaringType() != null) {
                 printError(endpointInterface.getPosition(), JAXWSCoreMessages.bind(
@@ -98,20 +99,26 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
             if (!classDeclaration.getSuperinterfaces().contains(typeDeclaration)) {
                 Collection<? extends MethodDeclaration> seiMethods = typeDeclaration.getMethods();
                 Collection<? extends MethodDeclaration> implMethods = classDeclaration.getMethods();
-                
+
                 for (MethodDeclaration seiMethod : seiMethods) {
                     boolean implemented = false;
                     for (MethodDeclaration implMethod : implMethods) {
                         if (AnnotationUtils.compareMethods(seiMethod, implMethod)) {
                             if (!implMethod.getModifiers().contains(Modifier.PUBLIC)) {
-                            	printFixableError(implMethod.getPosition(), 
-                            			JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_REDUCED_VISIBILITY);
+                                printFixableError(implMethod.getPosition(),
+                                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_REDUCED_VISIBILITY);
                             }
                             if (!implMethod.getReturnType().equals(seiMethod.getReturnType())) {
-                            	printFixableError(implMethod.getPosition(), JAXWSCoreMessages.bind(
-                            			JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE, 
-                            			getImplementsMessage(typeDeclaration, seiMethod)),
-                            			"", JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE);
+                                printFixableError(implMethod.getPosition(), JAXWSCoreMessages.bind(
+                                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE,
+                                        getImplementsMessage(typeDeclaration, seiMethod)),
+                                        "", JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_RETURN_TYPE);
+                            }
+                            if (implMethod.getThrownTypes().size() != seiMethod.getThrownTypes().size() ||
+                                    !implMethod.getThrownTypes().containsAll(seiMethod.getThrownTypes())) {
+                                printError(implMethod.getPosition(), JAXWSCoreMessages.bind(
+                                        JAXWSCoreMessages.WEBSERVICE_ENPOINTINTERFACE_INCOMPATIBLE_EXCEPTIONS,
+                                        implMethod.getSimpleName(), sei));
                             }
                             implemented = true;
                             break;
@@ -145,7 +152,7 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
             if (iter.hasNext()) {
                 message.append(", "); //$NON-NLS-1$
             }
-            
+
         }
         message.append(")"); //$NON-NLS-1$
         return message.toString();
@@ -159,7 +166,7 @@ public class WebServiceSEIRestrictionsRule extends AbstractAnnotationProcessor {
         }
 
         Collection<? extends com.sun.mirror.declaration.MethodDeclaration> implMethods = classDeclaration
-                .getMethods();
+        .getMethods();
         for (com.sun.mirror.declaration.MethodDeclaration methodDeclaration : implMethods) {
             AnnotationMirror msoapBinding = AnnotationUtils.getAnnotation(methodDeclaration,
                     SOAPBinding.class);
