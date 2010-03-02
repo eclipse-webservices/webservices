@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,7 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
 		GridData data = new GridData(GridData.FILL_BOTH);
 		composite.setLayoutData(data);	
 
-		nameLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAME + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		nameLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_NAME); 
 		data = new GridData();
 		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
 	    data.grabExcessHorizontalSpace = false;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -196,7 +196,7 @@ public class BindingWizard extends Wizard
   
   private String getDefaultNamespace(Definition definition)
   {
-    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE); //$NON-NLS-1$
+    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(WSDLEditorPlugin.DEFAULT_TARGET_NAMESPACE_ID); 
     if (!namespace.endsWith("/")) { //$NON-NLS-1$
     	namespace = namespace.concat("/"); //$NON-NLS-1$
     }

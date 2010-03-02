@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,9 +58,9 @@ public class GenerateBindingOnSaveDialog extends MessageDialog implements Select
 	private void storePromptPreference(int swtValue) {
 		// Store the new preference for displaying this dialog.
 		if (rememberDecision) {
-			WSDLEditorPlugin.getInstance().getPluginPreferences().setValue(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false); //$NON-NLS-1$
+			WSDLEditorPlugin.getInstance().getPluginPreferences().setValue(WSDLEditorPlugin.PROMPT_REGEN_BINDING_ON_SAVE_ID, false); //$NON-NLS-1$
 		
-			String generateID = Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING; //$NON-NLS-1$
+			String generateID = WSDLEditorPlugin.AUTO_REGENERATE_BINDING_ON_SAVE_ID; //$NON-NLS-1$
 			if (swtValue == SWT.YES) {
 				WSDLEditorPlugin.getInstance().getPluginPreferences().setValue(generateID, true);
 			}

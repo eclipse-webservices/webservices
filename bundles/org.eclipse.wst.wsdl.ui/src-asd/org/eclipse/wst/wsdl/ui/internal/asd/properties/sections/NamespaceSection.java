@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -61,9 +61,9 @@ public class NamespaceSection extends ASDAbstractSection {
 		gridLayout.marginRight = 10;
 		composite.setLayout(gridLayout);		
 		
-		String nameString = Messages._UI_LABEL_NAME + ":"; //$NON-NLS-1$
-		String prefixString = Messages._UI_LABEL_PREFIX + ":"; //$NON-NLS-1$
-		String namespaceString = Messages._UI_LABEL_TARGET_NAMESPACE + ":"; //$NON-NLS-1$
+		String nameString = Messages._UI_LABEL_NAME; 
+		String prefixString = Messages._UI_LABEL_PREFIX; 
+		String namespaceString = Messages._UI_LABEL_TARGET_NAMESPACE; 
 		
 		// name
 		CLabel nameLabel = getWidgetFactory().createCLabel(composite, nameString); //$NON-NLS-1$

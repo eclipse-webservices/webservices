@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -80,7 +80,7 @@ public class EndPointSection extends ReferenceSection {
 		protocolCombo.addListener(SWT.Modify, this);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(protocolCombo, ASDEditorCSHelpIds.PROPERTIES_PORT_PROTOCOL_TEXT);
 
-		comboLabel.setText(Messages._UI_LABEL_BINDING + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		comboLabel.setText(Messages._UI_LABEL_BINDING_IN_PROPERTIES_SECTION); 
 		
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, ASDEditorCSHelpIds.PROPERTIES_PORT_BINDING_COMBO);
 	}

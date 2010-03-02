@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,14 +67,14 @@ public class HttpBindingOptionsPage implements ContentGeneratorOptionsPage, Sele
     separator.setLayoutData(gd);
 
     Label optionsHeading = new Label(control, SWT.NONE);
-    optionsHeading.setText(Messages._UI_LABEL_HTTP_BINDING_OPTIONS); //$NON-NLS-1$
+    optionsHeading.setText(Messages._UI_LABEL_HTTP_BINDING_OPTIONS); 
 
     getButton = new Button(control, SWT.RADIO);
-    getButton.setText("HTTP GET"); //$NON-NLS-1$
+    getButton.setText(Messages._UI_LABEL_HTTP_GET_RADIO);  
     getButton.setSelection(true);
 
     postButton = new Button(control, SWT.RADIO);
-    postButton.setText("HTTP POST"); //$NON-NLS-1$
+    postButton.setText(Messages._UI_LABEL_HTTP_POST_RADIO);  
 
     if (generator.getName() != null)
     {

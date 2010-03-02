@@ -65,6 +65,11 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   public static final String INTERFACE_DEFAULT_TARGET_NAMESPACE_PREFERENCE_ID = "interfaceDefaultTargetNamespace"; //$NON-NLS-1$
   public static final String INTERFACE_FILE_SUFFIX_PREFERENCE_ID = "interfaceFileSuffix"; //$NON-NLS-1$
   public static final String INTERFACE_FILE_SUFFIX_DEFAULT = "PortType"; //$NON-NLS-1$
+  public static final String DEFAULT_TARGET_NAMESPACE_ID = "defaultNamespace"; //$NON-NLS-1$
+  public static final String AUTO_REGENERATE_BINDING_ON_SAVE_ID = "autoRegenerateBinding"; //$NON-NLS-1$
+  public static final String PROMPT_REGEN_BINDING_ON_SAVE_ID = "promptRegenerateBindingOnSave"; //$NON-NLS-1$
+  public static final String AUTO_IMPORT_CLEANUP_ID = "autoImportCleanup"; //$NON-NLS-1$
+  public static final String AUTO_OPEN_IMPORT_DIALOG_ID = "autoOpenImportDialog"; //$NON-NLS-1$
   
   public static int DEPENDECIES_CHANGED_POLICY_PROMPT = 0;
   public static int DEPENDECIES_CHANGED_POLICY_IGNORE = 1;
@@ -320,16 +325,16 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
     // vb Why is the editor using the translated preferences labels as preferences keys?
     // This makes the preferences non-portable between different locales.
     // Opened https://bugs.eclipse.org/bugs/show_bug.cgi?id=267471
-    store.setDefault(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE, DEFAULT_TARGET_NAMESPACE);
+    store.setDefault(DEFAULT_TARGET_NAMESPACE_ID, DEFAULT_TARGET_NAMESPACE);
     store.setDefault(DEFAULT_TARGET_NAMESPACE_PREFIX_PREFERENCE_ID, DEFAULT_TARGET_NAMESPACE_PREFIX);
     store.setDefault(GENERATE_SEPARATE_INTERFACE_PREFERENCE_ID, false);
     store.setDefault(INTERFACE_PREFIX_PREFERENCE_ID, INTERFACE_PREFIX_DEFAULT);
     store.setDefault(INTERFACE_DEFAULT_TARGET_NAMESPACE_PREFERENCE_ID, DEFAULT_TARGET_NAMESPACE);
     store.setDefault(INTERFACE_FILE_SUFFIX_PREFERENCE_ID, INTERFACE_FILE_SUFFIX_DEFAULT);
-    store.setDefault(Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING, false);
-    store.setDefault(Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE, false);
-    store.setDefault(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP, false);
-    store.setDefault(Messages._UI_PREF_PAGE_ENABLE_AUTO_OPEN_IMPORT_DIALOG, false);
+    store.setDefault(AUTO_REGENERATE_BINDING_ON_SAVE_ID, false);
+    store.setDefault(PROMPT_REGEN_BINDING_ON_SAVE_ID, false);
+    store.setDefault(AUTO_IMPORT_CLEANUP_ID, false);
+    store.setDefault(AUTO_OPEN_IMPORT_DIALOG_ID, false);
   }
   
   /**
@@ -356,12 +361,12 @@ public class WSDLEditorPlugin extends AbstractUIPlugin //, IPluginHelper
   
   public boolean getRemoveImportSetting()
   {
-    return getPreferenceStore().getBoolean(Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP);
+    return getPreferenceStore().getBoolean(AUTO_IMPORT_CLEANUP_ID);
   }
   
   public boolean getAutoOpenImportLocationDialogSetting()
   {
-    return getPreferenceStore().getBoolean(Messages._UI_PREF_PAGE_ENABLE_AUTO_OPEN_IMPORT_DIALOG);
+    return getPreferenceStore().getBoolean(AUTO_OPEN_IMPORT_DIALOG_ID);
   } 
   
   private static final String PRODUCT_CUSTOMIZATION_PROVIDER_PLUGIN_ID = "org.eclipse.wst.wsdl.ui.productCustomizationProviderPluginId"; //$NON-NLS-1$

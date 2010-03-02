@@ -169,4 +169,10 @@ public class Messages {
 	public static String _UI_LABEL_OR_UNDEFINED_ARG2;
 	public static String _UI_LABEL_NO_OBJECT_SPECIFIED_ARG1;
 	public static String _UI_LABEL_NO_PARAMETERS_SPECIFIED;
+	public static String INTERFACE_HEADER_TEXT;
+	public static String _UI_LABEL_HTTP_GET_RADIO;
+	public static String _UI_LABEL_HTTP_POST_RADIO;
+	public static String _UI_LABEL_BINDING_PROTOCOL_IN_PROPERTIES_SECTION;
+	public static String _UI_LABEL_ELEMENT_RADIO;
+	public static String _UI_LABEL_TYPE_RADIO;
 }

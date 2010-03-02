@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,9 +48,9 @@ public class BindingSection extends ReferenceSection implements SelectionListene
 	
 	public void createControls(Composite parent, TabbedPropertySheetWidgetFactory factory) {
 		super.createControls(parent, factory);
-		comboLabel.setText(org.eclipse.wst.wsdl.ui.internal.asd.Messages._UI_LABEL_PORTTYPE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		comboLabel.setText(org.eclipse.wst.wsdl.ui.internal.asd.Messages._UI_LABEL_PORTTYPE);
 		
-		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL);
+		CLabel protocolLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_BINDING_PROTOCOL_IN_PROPERTIES_SECTION);
 		protocolValue= getWidgetFactory().createCLabel(composite, ""); //$NON-NLS-1$
 		
 		// Layout protocolLabel

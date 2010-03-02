@@ -80,7 +80,7 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     addField(prefix);
     
 	String namespaceLabel = Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE;
-    StringFieldEditor targetNamespace = new StringFieldEditor(namespaceLabel, namespaceLabel, composite);
+    StringFieldEditor targetNamespace = new StringFieldEditor(WSDLEditorPlugin.DEFAULT_TARGET_NAMESPACE_ID, namespaceLabel, composite);
     addField(targetNamespace);
     PlatformUI.getWorkbench().getHelpSystem().setHelp(targetNamespace.getTextControl(composite), ASDEditorCSHelpIds.WSDL_PREF_DEFAULT_TNS);
 	
@@ -124,19 +124,19 @@ public class WSDLPreferencePage extends FieldEditorPreferencePage implements IWo
     addField(interfaceSuffix);
     
 	String generateLabel = Messages._UI_PREF_PAGE_AUTO_REGENERATE_BINDING;
-	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(generateLabel, generateLabel, parent);
+	BooleanFieldEditor generateBindingOnSave = new BooleanFieldEditor(WSDLEditorPlugin.AUTO_REGENERATE_BINDING_ON_SAVE_ID, generateLabel, parent);
 	addField(generateBindingOnSave);
     
 	String showGenerateDialogLabel = Messages._UI_PREF_PAGE_PROMPT_REGEN_BINDING_ON_SAVE;
-	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(showGenerateDialogLabel, showGenerateDialogLabel, parent);
+	BooleanFieldEditor showGenerateDialog = new BooleanFieldEditor(WSDLEditorPlugin.PROMPT_REGEN_BINDING_ON_SAVE_ID, showGenerateDialogLabel, parent);
 	addField(showGenerateDialog);
 	
 	String unusedImportLabel = Messages._UI_PREF_PAGE_ENABLE_AUTO_IMPORT_CLEANUP;
-	BooleanFieldEditor removeUnusedImports = new BooleanFieldEditor(unusedImportLabel, unusedImportLabel, parent);
+	BooleanFieldEditor removeUnusedImports = new BooleanFieldEditor(WSDLEditorPlugin.AUTO_IMPORT_CLEANUP_ID, unusedImportLabel, parent);
 	addField(removeUnusedImports);
 	
     String openImportDialogLabel = Messages._UI_PREF_PAGE_ENABLE_AUTO_OPEN_IMPORT_DIALOG;
-    BooleanFieldEditor openImportDialog = new BooleanFieldEditor(openImportDialogLabel, openImportDialogLabel, parent);
+    BooleanFieldEditor openImportDialog = new BooleanFieldEditor(WSDLEditorPlugin.AUTO_OPEN_IMPORT_DIALOG_ID, openImportDialogLabel, parent);
     addField(openImportDialog);
 	
     boolean enabled = WSDLEditorPlugin.getInstance().getPreferenceStore().getBoolean(WSDLEditorPlugin.GENERATE_SEPARATE_INTERFACE_PREFERENCE_ID);

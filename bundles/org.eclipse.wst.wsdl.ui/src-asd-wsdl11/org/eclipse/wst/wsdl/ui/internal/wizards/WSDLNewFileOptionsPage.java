@@ -306,7 +306,7 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
 
   private String computeDefaultNamespaceName()
   {
-    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(Messages._UI_PREF_PAGE_DEFAULT_TARGET_NAMESPACE);
+    String namespace = WSDLEditorPlugin.getInstance().getPreferenceStore().getString(WSDLEditorPlugin.DEFAULT_TARGET_NAMESPACE_ID);
     if (!namespace.endsWith("/")) { //$NON-NLS-1$
     	namespace = namespace.concat("/"); //$NON-NLS-1$
     }

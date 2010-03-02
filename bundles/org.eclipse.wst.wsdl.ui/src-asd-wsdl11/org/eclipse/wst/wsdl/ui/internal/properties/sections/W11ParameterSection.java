@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public class W11ParameterSection extends ParameterSection {
 	public void createControlArea()	{
 		super.createControlArea();
 		
-		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_REFERENCE_KIND + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		CLabel referenceKindLabel = getWidgetFactory().createCLabel(composite, Messages._UI_LABEL_REFERENCE_KIND); 
 		GridData data = new GridData();
 		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
 	    data.grabExcessHorizontalSpace = false;
@@ -56,8 +56,8 @@ public class W11ParameterSection extends ParameterSection {
 		comp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		
-		typeRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_TYPE, SWT.RADIO); //$NON-NLS-1$
-		elementRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_ELEMENT, SWT.RADIO);	 //$NON-NLS-1$
+		typeRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_TYPE_RADIO, SWT.RADIO); 
+		elementRadio = getWidgetFactory().createButton(comp, Messages._UI_LABEL_ELEMENT_RADIO, SWT.RADIO);	 
 		typeRadio.addSelectionListener(this);
 		elementRadio.addSelectionListener(this);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(typeRadio, ASDEditorCSHelpIds.PROPERTIES_PART_TYPE_RADIO);
@@ -71,15 +71,18 @@ public class W11ParameterSection extends ParameterSection {
 		Part part = (Part) parameter.getTarget();
 		
 		if (e.widget == typeRadio && typeRadio.getSelection()) {
-			comboLabel.setText(Messages._UI_LABEL_TYPE+ ":"); //$NON-NLS-1$ //$NON-NLS-2$
+			comboLabel.setText(Messages._UI_LABEL_TYPE); 
 			ComponentReferenceUtil.setComponentReference(part, true, null);
 			super.refreshCombo();
 		}
 		else if (e.widget == elementRadio && elementRadio.getSelection()) {
-			comboLabel.setText(Messages._UI_LABEL_ELEMENT + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+			comboLabel.setText(Messages._UI_LABEL_ELEMENT); 
 			ComponentReferenceUtil.setComponentReference(part, false, null);
 			refreshElementCombo();
 		}
+		// "Ele&ment:" will be truncated if the first selection is "Ty&pe" and then switched to "Ele&ment:"
+		// so need to call the layout() method here.
+		composite.layout();
 	}
 	
 	protected void handleComboSelection()
@@ -177,13 +180,13 @@ public class W11ParameterSection extends ParameterSection {
 			if (part.getTypeDefinition() != null) {
 				typeRadio.setSelection(true);
 				elementRadio.setSelection(false);
-				comboLabel.setText(Messages._UI_LABEL_TYPE + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+				comboLabel.setText(Messages._UI_LABEL_TYPE); 
 				handleTypeScenario = true;
 			}
 			else if (part.getElementDeclaration() != null) {
 				typeRadio.setSelection(false);
 				elementRadio.setSelection(true);
-				comboLabel.setText(Messages._UI_LABEL_ELEMENT + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+				comboLabel.setText(Messages._UI_LABEL_ELEMENT); 
 				handleTypeScenario = false;
 				refreshElementCombo();			
 			}
