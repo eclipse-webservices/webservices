@@ -2,10 +2,6 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-   <extension-point id="pluginProvidedJaxrsLibraries" name="pluginProvidedJaxrsLibraries" schema="schema/pluginProvidedJaxrsLibraries.exsd"/>
-<!--
-   <extension-point id="jaxrsSharedLibrarySupport" name="jaxrsSharedLibrarySupport" schema="schema/jaxrsSharedLibrarySupport.exsd"/>
--->
   <!-- JAXRS Project Facets -->
 	<extension
        id="org.eclipse.jst.ws.jaxrs.project.facet"
