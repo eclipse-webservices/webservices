@@ -135,14 +135,11 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
     jaxrsCompositeLayout.marginLeft = 0;
     composite.setLayout(jaxrsCompositeLayout);
 
-    Object libProvDel = getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
-
     final LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
 
     JAXRSUserLibraryProviderInstallOperationConfig customConfig = (JAXRSUserLibraryProviderInstallOperationConfig) librariesInstallDelegate.getLibraryProviderOperationConfig();
     customConfig.setModel(getDataModel());
 
-    System.out.println(librariesInstallDelegate.getLibraryProvider().getId());
     final Control librariesComposite = LibraryProviderFrameworkUi.createInstallLibraryPanel(composite, librariesInstallDelegate, Messages.JAXRSFacetInstallPage_JAXRSImplementationLibrariesFrame);
 
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
