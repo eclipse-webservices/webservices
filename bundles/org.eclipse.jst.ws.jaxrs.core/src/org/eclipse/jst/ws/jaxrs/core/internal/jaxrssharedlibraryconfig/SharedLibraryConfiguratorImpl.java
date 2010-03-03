@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,11 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig;
+
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -95,6 +98,19 @@ public class SharedLibraryConfiguratorImpl implements SharedLibraryConfigurator 
 	public void setSelected(boolean value) {
 		this.selected = value;
 		
+	}
+
+	public void installSharedLibs(IProject webProject, IProject earProject,
+			IProgressMonitor monitor, List<String> libraryNames)
+			throws CoreException {
+		JAXRSSharedLibConfiguratorDelegate sharedLibConfigurator = null;
+
+		sharedLibConfigurator = (JAXRSSharedLibConfiguratorDelegate) config_element
+					.createExecutableExtension(DELEGATE);
+		if (sharedLibConfigurator != null) {
+			sharedLibConfigurator.installSharedLibs(webProject, earProject, monitor, libraryNames);
+		}
+	
 	}
 	
 

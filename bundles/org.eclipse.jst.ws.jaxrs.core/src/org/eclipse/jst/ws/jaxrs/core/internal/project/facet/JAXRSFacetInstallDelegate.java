@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -32,9 +33,6 @@ import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
 import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
 import org.eclipse.jst.j2ee.model.IModelProvider;
-import org.eclipse.jst.j2ee.model.ModelProviderManager;
-import org.eclipse.jst.javaee.web.Servlet;
-import org.eclipse.jst.javaee.web.WebApp;
 import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInternalReference;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfigurator;
@@ -107,9 +105,9 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 
 			
 //			if (Boolean.parseBoolean((config.getProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY).toString())))
-//				// Create JAXRS libraries as shared library entries
-//				createSharedLibraries(project, fv, monitor, config);
-//			
+//				 // Create JAXRS libraries as shared library entries
+				//createSharedLibraries(project, fv, monitor, config);
+			
 			//Configure libraries
 			( (LibraryInstallDelegate) config.getProperty( IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE ) ).execute( new NullProgressMonitor() );
 
@@ -148,9 +146,9 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 				IProject earProject = getEARProject(config);
 				Boolean addToEar = getAddToEar(config);
 				if (thisConfigurator.getIsSharedLibSupported(project,
-						earProject, addToEar, libref.getID())) {
+						earProject, addToEar, null)) {  // libref.getID()
 					thisConfigurator.installSharedLibs(project, earProject,
-							monitor, libref.getID());
+							monitor, new ArrayList<String>());  //***ID Changed libref.getID()
 					break;
 				}
 			}
@@ -183,21 +181,21 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 		return entry;
 	}
 
-	/**
-	 * @param config
-	 * @return list of URL patterns from the datamodel
-	 */
-	private List<String> getServletMappings(final IDataModel config) {
-		List<String> mappings = new ArrayList<String>();
-		String[] patterns = (String[]) config
-				.getProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_URL_PATTERNS);
-		for (int i = 0; i < patterns.length; i++) {
-			String pattern = patterns[i];
-			mappings.add(pattern);
-		}
-
-		return mappings;
-	}
+//	/**
+//	 * @param config
+//	 * @return list of URL patterns from the datamodel
+//	 */
+//	private List<String> getServletMappings(final IDataModel config) {
+//		List<String> mappings = new ArrayList<String>();
+//		String[] patterns = (String[]) config
+//				.getProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_URL_PATTERNS);
+//		for (int i = 0; i < patterns.length; i++) {
+//			String pattern = patterns[i];
+//			mappings.add(pattern);
+//		}
+//
+//		return mappings;
+//	}
 
 	/**
 	 * Create servlet and URL mappings and update the webapp
@@ -241,60 +239,60 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 		return  config.getBooleanProperty(IJAXRSFacetInstallDataModelProperties.ADD_TO_EAR);
 	}
 
-	private class UpdateWebXMLForJavaEE implements Runnable {
-		private IProject project;
-		private IDataModel config;
-
-		UpdateWebXMLForJavaEE(final IProject project, final IDataModel config) {
-			this.project = project;
-			this.config = config;
-		}
-
-		public void run() {
-			WebApp webApp = (WebApp) ModelProviderManager.getModelProvider(
-					project).getModelObject();
-			// create or update servlet ref
-			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);// check to
-																		// see
-			// if already
-
-			servlet = JAXRSJEEUtils.createOrUpdateServletRef(webApp, config,
-					servlet);
-
-			// init mappings
-			List<String> listOfMappings = getServletMappings(config);
-			JAXRSJEEUtils.setUpURLMappings(webApp, listOfMappings, servlet);
-
-		}
-	}
-
-	private class UpdateWebXMLForJ2EE implements Runnable {
-		private IProject project;
-		private IDataModel config;
-
-		UpdateWebXMLForJ2EE(IProject project, final IDataModel config) {
-			this.project = project;
-			this.config = config;
-		}
-
-		public void run() {
-			org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
-					.getModelProvider(project).getModelObject();
-			// create or update servlet ref
-			org.eclipse.jst.j2ee.webapplication.Servlet servlet = JAXRSJ2EEUtils
-					.findJAXRSServlet(webApp);// check to see
-			// if already
-			// present
-
-			servlet = JAXRSJ2EEUtils.createOrUpdateServletRef(webApp, config,
-					servlet);
-
-			// init mappings
-			List<String> listOfMappings = getServletMappings(config);
-			JAXRSJ2EEUtils.setUpURLMappings(webApp, listOfMappings, servlet);
-
-		}
-
-	}
+//	private class UpdateWebXMLForJavaEE implements Runnable {
+//		private IProject project;
+//		private IDataModel config;
+//
+//		UpdateWebXMLForJavaEE(final IProject project, final IDataModel config) {
+//			this.project = project;
+//			this.config = config;
+//		}
+//
+//		public void run() {
+//			WebApp webApp = (WebApp) ModelProviderManager.getModelProvider(
+//					project).getModelObject();
+//			// create or update servlet ref
+//			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);// check to
+//																		// see
+//			// if already
+//
+//			servlet = JAXRSJEEUtils.createOrUpdateServletRef(webApp, config,
+//					servlet);
+//
+//			// init mappings
+//			List<String> listOfMappings = getServletMappings(config);
+//			JAXRSJEEUtils.setUpURLMappings(webApp, listOfMappings, servlet);
+//
+//		}
+//	}
+//
+//	private class UpdateWebXMLForJ2EE implements Runnable {
+//		private IProject project;
+//		private IDataModel config;
+//
+//		UpdateWebXMLForJ2EE(IProject project, final IDataModel config) {
+//			this.project = project;
+//			this.config = config;
+//		}
+//
+//		public void run() {
+//			org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
+//					.getModelProvider(project).getModelObject();
+//			// create or update servlet ref
+//			org.eclipse.jst.j2ee.webapplication.Servlet servlet = JAXRSJ2EEUtils
+//					.findJAXRSServlet(webApp);// check to see
+//			// if already
+//			// present
+//
+//			servlet = JAXRSJ2EEUtils.createOrUpdateServletRef(webApp, config,
+//					servlet);
+//
+//			// init mappings
+//			List<String> listOfMappings = getServletMappings(config);
+//			JAXRSJ2EEUtils.setUpURLMappings(webApp, listOfMappings, servlet);
+//
+//		}
+//
+//	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal;
 
@@ -41,4 +42,11 @@ public class Messages extends NLS {
 	public static String JAXRSFacetInstallPage_PatternEmptyMsg;
 	public static String JAXRSFacetInstallPage_PatternSpecifiedMsg;
 	public static String JAXRSFacetInstallPage_ErrorNoWebAppDataModel;
+	
+	public static String JAXRSLibraryConfigControl_IncludeGroupLabel;
+	public static String JAXRSLibraryConfigControl_DeployButtonLabel;
+	public static String JAXRSLibraryConfigControl_DeployJAR;
+	public static String JAXRSLibraryConfigControl_SharedLibButtonLabel;
+	public static String JAXRSLibraryConfigControl_TooltipIncludeAsSharedLib;
+
 }

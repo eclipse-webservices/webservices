@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -119,6 +120,12 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 
 		String displayName = getDisplayName(config);
 		String className = getServletClassname(config);
+		
+		return createOrUpdateServletRef(webApp, displayName, className, servlet);
+	}
+	
+	public static Servlet createOrUpdateServletRef(final WebApp webApp,
+			String displayName, String className, Servlet servlet) {
 
 		if (servlet == null) {
 			// Create the servlet instance and set up the parameters from data
@@ -195,6 +202,24 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 	public static void setUpURLMappings(final WebApp webApp,
 			final List urlMappingList, final Servlet servlet) {
 		// Add mappings
+		Iterator it = urlMappingList.iterator();
+		while (it.hasNext()) {
+			String pattern = (String) it.next();
+			if (!(doesServletMappingExist(webApp, servlet, pattern))) {
+				ServletMapping mapping = WebapplicationFactory.eINSTANCE
+						.createServletMapping();
+				mapping.setServlet(servlet);
+				mapping.setName(servlet.getServletName());
+				mapping.setUrlPattern(pattern);
+				webApp.getServletMappings().add(mapping);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void updateURLMappings(final WebApp webApp,
+			final List urlMappingList, final Servlet servlet) {
+		// TODO
 		Iterator it = urlMappingList.iterator();
 		while (it.hasNext()) {
 			String pattern = (String) it.next();

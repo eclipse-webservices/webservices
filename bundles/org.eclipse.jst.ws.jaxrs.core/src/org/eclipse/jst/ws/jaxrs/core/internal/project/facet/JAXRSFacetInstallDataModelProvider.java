@@ -61,6 +61,7 @@ public class JAXRSFacetInstallDataModelProvider extends
 		names.add(SERVLET_URL_PATTERNS);
 		names.add(WEBCONTENT_DIR);
 		names.add(LIBRARY_PROVIDER_DELEGATE);
+		names.add(DEPLOY_IMPLEMENTATION);
 
 		return names;
 	}
@@ -87,6 +88,8 @@ public class JAXRSFacetInstallDataModelProvider extends
 			return "WebContent"; //$NON-NLS-1$
 		} else if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
             return this.libraryInstallDelegate;
+		} else if (propertyName.equals(DEPLOY_IMPLEMENTATION)) {
+		  return Boolean.TRUE;
 		}
 		return super.getDefaultProperty(propertyName);
 	}

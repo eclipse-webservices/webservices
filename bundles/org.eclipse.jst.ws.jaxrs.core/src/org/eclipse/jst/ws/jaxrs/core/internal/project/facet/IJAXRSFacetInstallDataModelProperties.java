@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -41,6 +42,8 @@ public interface IJAXRSFacetInstallDataModelProperties extends
 
 	public static final String WEBCONTENT_DIR = "IJAXRSFacetInstallDataModelProperties.WEBCONTENT_DIR"; //$NON-NLS-1$
 
-	public static final String LIBRARY_PROVIDER_DELEGATE = "IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE"; //$NON-NLS-1$    
+	public static final String LIBRARY_PROVIDER_DELEGATE = "IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE"; //$NON-NLS-1$
+	
+	public static final String DEPLOY_IMPLEMENTATION = "IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION"; //$NON-NLS-1$
 
 }

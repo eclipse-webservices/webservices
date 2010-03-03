@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,11 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,6 +91,13 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 		String displayName = getDisplayName(config);
 		String className = getServletClassname(config);
 
+		return createOrUpdateServletRef(webApp, displayName, className, servlet);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Servlet createOrUpdateServletRef(final WebApp webApp,
+			String displayName, String className, org.eclipse.jst.javaee.web.Servlet servlet) {
+
 		if (servlet == null) {
 			// Create the servlet instance and set up the parameters from data
 			// model
@@ -160,6 +169,52 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 					urlPattern.setValue(pattern);
 					mapping.getUrlPatterns().add(urlPattern);
 				}
+				else
+				{
+					mapping.getUrlPatterns().remove(pattern);
+				}
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void updateURLMappings(final WebApp webApp,
+			final List urlMappingList, final Servlet servlet) {
+
+		if (urlMappingList != null) {
+			ServletMapping mapping = findServletMapping(webApp, servlet);
+			if (mapping == null) {
+				mapping = WebFactory.eINSTANCE.createServletMapping();
+				mapping.setServletName(servlet.getServletName());
+				webApp.getServletMappings().add(mapping);
+			}
+			// Add patterns
+			Iterator it = urlMappingList.iterator();
+			while (it.hasNext()) {
+				String pattern = (String) it.next();
+				if (!(doesServletMappingPatternExist(webApp, mapping, pattern))) {
+					UrlPatternType urlPattern = JavaeeFactory.eINSTANCE
+							.createUrlPatternType();
+					urlPattern.setValue(pattern);
+					mapping.getUrlPatterns().add(urlPattern);
+				}
+			}
+			// Now gather up the patterns that aren't defined in the UI...
+			List<UrlPatternType> patternsToRemove = new ArrayList<UrlPatternType>();
+			for (Iterator<UrlPatternType> iter = mapping.getUrlPatterns().iterator(); iter.hasNext();)
+			{
+			   UrlPatternType aPatternType = iter.next();
+			   String patternTypeValue = aPatternType.getValue();
+			   if (patternTypeValue != null && !urlMappingList.contains(patternTypeValue))
+			   {
+			     patternsToRemove.add(aPatternType);
+			   }
+		    }
+			//...and remove them from the model
+			for (Iterator<UrlPatternType> iter = patternsToRemove.iterator(); iter.hasNext(); )
+			{
+			   UrlPatternType aPatternType = iter.next();
+			   mapping.getUrlPatterns().remove(aPatternType);
 			}
 		}
 	}

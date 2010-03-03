@@ -28,5 +28,11 @@
      </wizard-pages>
      
   </extension>  
+
+  <extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
+    <panel 
+      provider="jaxrs-user-library-provider"
+      class="org.eclipse.jst.ws.jaxrs.ui.internal.project.facet.JAXRSUserLibraryProviderInstallPanel"/>
+  </extension>
       
 </plugin>
