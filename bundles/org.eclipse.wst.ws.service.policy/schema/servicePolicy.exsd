@@ -239,6 +239,16 @@
       </complexType>
    </element>
 
+   <element name="enablement">
+      <complexType>
+            <annotation>
+               <documentation>
+                  Include enablement criteria for when the policy should be shown
+               </documentation>
+            </annotation>
+      </complexType>
+   </element>
+
    <element name="state">
       <annotation>
          <documentation>
