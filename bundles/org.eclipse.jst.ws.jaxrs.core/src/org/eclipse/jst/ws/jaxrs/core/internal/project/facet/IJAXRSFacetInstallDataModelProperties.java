@@ -46,4 +46,11 @@ public interface IJAXRSFacetInstallDataModelProperties extends
 	
 	public static final String DEPLOY_IMPLEMENTATION = "IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION"; //$NON-NLS-1$
 
+  public static final String CONFIGURATION_PRESET = "IJAXRSFacetInstallDataModelProperties.CONFIGURATION_PRESET"; //$NON-NLS-1$"
+  
+  public static final String SERVER_IRUNTIME = "IJAXRSFacetInstallDataModelProperties.SERVER_IRUNTIME"; //$NON-NLS-1$"
+  
+  // Support post-project creation scenario.  If WAR is parked in multiple EARs, then we should update all the EARs
+  public static final String EARPROJECTS = "IJAXRSFacetInstallDataModelProperties.EARPROJECTS"; //$NON-NLS-1$
+
 }

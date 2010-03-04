@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -62,6 +63,9 @@ public class JAXRSFacetInstallDataModelProvider extends
 		names.add(WEBCONTENT_DIR);
 		names.add(LIBRARY_PROVIDER_DELEGATE);
 		names.add(DEPLOY_IMPLEMENTATION);
+		names.add(CONFIGURATION_PRESET);
+		names.add(SERVER_IRUNTIME);
+		names.add(EARPROJECTS);
 
 		return names;
 	}
@@ -90,7 +94,13 @@ public class JAXRSFacetInstallDataModelProvider extends
             return this.libraryInstallDelegate;
 		} else if (propertyName.equals(DEPLOY_IMPLEMENTATION)) {
 		  return Boolean.TRUE;
-		}
+    } else if (propertyName.equals(CONFIGURATION_PRESET)) {
+      return null;
+    } else if (propertyName.equals(SERVER_IRUNTIME)) {
+      return null;
+    } else if (propertyName.equals(EARPROJECTS)) {
+      return null;
+    }
 		return super.getDefaultProperty(propertyName);
 	}
 

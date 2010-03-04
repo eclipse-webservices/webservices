@@ -113,6 +113,7 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
         cfg.setSharedLibrary(false);
         IDataModel model = cfg.getModel();
         model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, btnDeployJars.getSelection());
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, btnSharedLibrary.getSelection());
       }
     });
 
@@ -126,6 +127,7 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
         cfg.setIsDeploy(false);
         cfg.setSharedLibrary(true);
         IDataModel model = cfg.getModel();
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, btnDeployJars.getSelection());
         model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, btnSharedLibrary.getSelection());
       }
     });
@@ -134,7 +136,10 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
     {
       public void propertyChanged(final String property, final Object oldValue, final Object newValue)
       {
-        copyOnPublishCheckBox.setSelection(cfg.isIncludeWithApplicationEnabled());
+        if (oldValue != newValue)
+        {
+//          copyOnPublishCheckBox.setSelection(cfg.isIncludeWithApplicationEnabled());
+        }
       }
     };
 

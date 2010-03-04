@@ -31,7 +31,7 @@ public class JAXRSUserLibraryProviderInstallOperationConfig extends
 	public void setSharedLibrary(boolean isSharedLibrary)
 	{
 	  this.isSharedLibrary = isSharedLibrary;
-	  setIncludeWithApplicationEnabled(!isSharedLibrary);
+//	  setIncludeWithApplicationEnabled(!isSharedLibrary);
 	}
 	
 	public boolean isSharedLibrary()
