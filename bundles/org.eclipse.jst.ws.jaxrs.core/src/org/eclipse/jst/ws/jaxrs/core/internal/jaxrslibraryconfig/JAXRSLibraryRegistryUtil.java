@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100304   304732 ericdp@ca.ibm.com - Eric D. Peters, NPE loading library extensions
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig;
 
@@ -451,7 +452,7 @@ public class JAXRSLibraryRegistryUtil {
 				JAXRSLibraryRegistry = (JAXRSLibraryRegistry) JAXRSLibraryRegistryResource
 						.getContents().get(0);
 
-				loadJAXRSLibraryExtensions();
+//				loadJAXRSLibraryExtensions();
 
 			} catch (IOException ioe) {
 				// Create a new Registry instance
@@ -461,7 +462,7 @@ public class JAXRSLibraryRegistryUtil {
 						.createResource(jaxrsLibRegURI);
 				JAXRSLibraryRegistryResource.getContents().add(
 						JAXRSLibraryRegistry);
-				loadJAXRSLibraryExtensions();
+//				loadJAXRSLibraryExtensions();
 				saveJAXRSLibraryRegistry();
 			}
 			// add adapter to maintain default implementation
