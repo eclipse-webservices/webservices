@@ -11,7 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
-package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration;
+package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,7 +23,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal.JAXRSLibraryReferenceFacadeFactory;
 
 /**
  * Helper class for adopters needing to deal with JAXRS Library References

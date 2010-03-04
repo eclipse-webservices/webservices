@@ -15,7 +15,6 @@ package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal;
 
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.PluginProvidedJAXRSLibrary;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInternalReference;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.JAXRSLibraryReferencePluginProvided;
 
 /**
  *

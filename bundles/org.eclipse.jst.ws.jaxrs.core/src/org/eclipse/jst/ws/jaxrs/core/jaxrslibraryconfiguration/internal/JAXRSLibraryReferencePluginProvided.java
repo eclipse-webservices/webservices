@@ -11,18 +11,19 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
-package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry;
+package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal;
 
-public class InvalidArchiveFilesCreationException extends Exception {
-	private static final long serialVersionUID = 1L;
-
+/**
+ * A reference to a plugin-defined JAXRS Library
+ * 
+ * <p>
+ * <b>Provisional API - subject to change</b>
+ * </p>
+ */
+public interface JAXRSLibraryReferencePluginProvided extends
+		JAXRSLibraryReferenceUserSpecified {
 	/**
-	 * Creates an instance with the specified message.
-	 * 
-	 * @param msg
-	 *            This instance's message
+	 * @return plugin id. May return null if plugin id cannot be determined.
 	 */
-	public InvalidArchiveFilesCreationException(String msg) {
-		super(msg);
-	}
+	public String getPluginId();
 }

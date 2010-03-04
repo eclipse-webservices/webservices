@@ -24,7 +24,7 @@ import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderFramewor
 import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.JAXRSLibrary;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryRegistryUtil;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.JAXRSLibraryConfigurationHelper;
+import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal.JAXRSLibraryConfigurationHelper;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 
 public final class LegacyJAXRSLibraryProviderDetector

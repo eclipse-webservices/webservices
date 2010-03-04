@@ -14,7 +14,6 @@
 package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal;
 
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInternalReference;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.JAXRSLibraryReferenceUserSpecified;
 
 /**
  * Implementation of a reference to a user specified JAXRS Library

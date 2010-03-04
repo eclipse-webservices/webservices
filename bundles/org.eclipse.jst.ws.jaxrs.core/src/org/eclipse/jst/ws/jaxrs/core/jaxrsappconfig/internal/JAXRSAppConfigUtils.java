@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
-package org.eclipse.jst.ws.jaxrs.core.jaxrsappconfig;
+package org.eclipse.jst.ws.jaxrs.core.jaxrsappconfig.internal;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -34,8 +34,10 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
  * JAXRSAppConfigUtils provides utility methods useful in processing of a JAXRS
  * application configuration.
  * 
+ * @deprecated
+ * 
  * <p>
- * <b>Provisional API - subject to change</b>
+ * <b>Provisional API - subject to change - do not use</b>
  * </p>
  * 
  */

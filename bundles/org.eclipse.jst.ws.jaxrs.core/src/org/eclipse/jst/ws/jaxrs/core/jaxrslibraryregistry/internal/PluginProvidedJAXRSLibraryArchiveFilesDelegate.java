@@ -11,9 +11,8 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
-package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry;
+package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.internal;
 
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.internal.PluginProvidedJAXRSLibraryCreationHelper2;
 
 /**
  * Abstract class to be used for supplying the jar file names for a plugin

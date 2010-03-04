@@ -11,7 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
-package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry;
+package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.internal;
 
 import java.util.Collection;
 import java.util.Iterator;

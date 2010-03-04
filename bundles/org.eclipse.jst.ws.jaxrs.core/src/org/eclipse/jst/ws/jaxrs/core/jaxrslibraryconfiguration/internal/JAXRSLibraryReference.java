@@ -11,19 +11,42 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
-package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration;
+package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal;
+
+import java.util.Collection;
+
+import org.eclipse.jdt.core.IClasspathEntry;
 
 /**
- * A reference to a plugin-defined JAXRS Library
+ * Represents a reference to a JAXRS Library on a project
  * 
  * <p>
  * <b>Provisional API - subject to change</b>
  * </p>
  */
-public interface JAXRSLibraryReferencePluginProvided extends
-		JAXRSLibraryReferenceUserSpecified {
+public abstract interface JAXRSLibraryReference {
 	/**
-	 * @return plugin id. May return null if plugin id cannot be determined.
+	 * @return id for the library
 	 */
-	public String getPluginId();
+	public String getId();
+
+	/**
+	 * @return name
+	 */
+	public String getName();
+
+	/**
+	 * @return collection of jars as {@link IClasspathEntry}s
+	 */
+	public Collection<IClasspathEntry> getJars();
+
+	/**
+	 * @return label user sees for this library
+	 */
+	public String getLabel();
+
+	/**
+	 * @return is deployed (marked as J2EE Module Dependency)
+	 */
+	public boolean isDeployed();
 }

@@ -21,7 +21,6 @@ import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.ArchiveFile;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.JAXRSLibrary;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.JAXRSLibraryRegistryFactory;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.PluginProvidedJAXRSLibrary;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.PluginProvidedJAXRSLibraryArchiveFilesDelegate;
 import org.eclipse.osgi.util.NLS;
 
 /**

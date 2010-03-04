@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.ArchiveFile;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry.JAXRSLibrary;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInternalReference;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.JAXRSLibraryReference;
 
 public abstract class AbstractJAXRSLibraryReferenceImpl implements
 		JAXRSLibraryReference {

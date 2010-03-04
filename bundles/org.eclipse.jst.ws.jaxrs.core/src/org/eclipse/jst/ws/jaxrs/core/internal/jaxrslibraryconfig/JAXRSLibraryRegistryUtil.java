@@ -53,7 +53,7 @@ import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryregistry.adapter.Maint
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryregistry.impl.JAXRSLibraryRegistryPackageImpl;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryregistry.util.JAXRSLibraryRegistryResourceFactoryImpl;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryregistry.util.JAXRSLibraryRegistryResourceImpl;
-import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.JAXRSLibraryConfigurationHelper;
+import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal.JAXRSLibraryConfigurationHelper;
 import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.internal.PluginProvidedJAXRSLibraryCreationHelper2;
 
 /**
