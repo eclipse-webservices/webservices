@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,12 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.wsdl.ui.internal.asd.ASDEditorPlugin;
+import org.eclipse.wst.wsdl.ui.internal.asd.Messages;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.BaseSelectionAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.actions.ShowPropertiesViewAction;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.ColumnEditPart;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.IActionProvider;
+import org.eclipse.wst.wsdl.ui.internal.refactor.IWSDLRefactorConstants;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.ContextMenuParticipant;
 import org.eclipse.wst.xsd.ui.internal.adt.editor.EditorModeManager;
 
@@ -125,7 +127,8 @@ public class DesignViewContextMenuProvider extends ContextMenuProvider
         
         menu.add(registry.getAction(ShowPropertiesViewAction.ID));
         menu.add(new Separator());       
-        menu.add(new Separator("refactoring-slot-temp"));  //$NON-NLS-1$
+        IMenuManager subMenu = new MenuManager(Messages._UI_REFACTOR_CONTEXT_MENU, IWSDLRefactorConstants.REFACTOR_CONTEXT_MENU_ID);
+		menu.add(subMenu);
         menu.add(new Separator());       
         menu.add(new Separator("search_slot_temp"));        //$NON-NLS-1$
         menu.add(new Separator());

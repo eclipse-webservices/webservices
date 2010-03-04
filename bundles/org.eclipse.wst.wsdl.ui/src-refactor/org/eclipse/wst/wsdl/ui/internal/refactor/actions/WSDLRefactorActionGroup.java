@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,13 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ui.internal.refactor.handlers.RenameHandler;
 import org.eclipse.wst.xsd.ui.internal.refactor.actions.RenameAction;
 import org.eclipse.wst.xsd.ui.internal.refactor.wizard.RefactorActionGroup;
 
+/** 
+ * @deprecated This class is replaced by {@link RenameHandler}. 
+ */
 public class WSDLRefactorActionGroup extends RefactorActionGroup {
 
 

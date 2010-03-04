@@ -35,7 +35,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBinding;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IInterface;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IMessage;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.INamedObject;
-import org.eclipse.wst.wsdl.ui.internal.refactor.actions.RenameComponentAction;
+import org.eclipse.wst.wsdl.ui.internal.refactor.handlers.RenameHandler;
 
 public class NameSection extends ASDAbstractSection implements IHyperlinkListener {
 	protected static final String NEW_STRING = Messages._UI_BUTTON_NEW; //$NON-NLS-1$
@@ -187,9 +187,8 @@ public class NameSection extends ASDAbstractSection implements IHyperlinkListene
     ISelection selection = editor.getSite().getSelectionProvider().getSelection();
     ISelectionMapper mapper = (ISelectionMapper) editor.getAdapter(ISelectionMapper.class);
     selection = mapper != null ? mapper.mapSelection(selection) : selection;
-    RenameComponentAction action = new RenameComponentAction(selection, definition);
-    action.update(selection);
-    action.run();
+    RenameHandler renameHandler = new RenameHandler();
+    renameHandler.execute(definition, selection);
   }
 
   private Object getRealModel() {

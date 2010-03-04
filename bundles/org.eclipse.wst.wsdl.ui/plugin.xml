@@ -235,22 +235,7 @@
       	namespaceURI="http://schemas.xmlsoap.org/wsdl/mime/">
      </category>
    </extension>
-   
-   <extension point="org.eclipse.ui.popupMenus"> 
-      <objectContribution 
-         id="org.eclipse.wst.wsdl.ui.refactoring.menu.objectContrib" 
-         objectClass="org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter">  
-         <action
-            id="org.eclipse.wst.wsdleditor.refactoring.menu.refactorGroup.object" 
-            enablesFor="1"
-            style="pulldown"
-            menubarPath="refactoring-slot-temp"
-            label="%_UI_LABEL_REFACTOR" 
-            class="org.eclipse.wst.wsdl.ui.internal.refactor.actions.WSDLRefactorGroupActionDelegate"> 
-         </action>          
-      </objectContribution>               
-    </extension>
-    
+
 	<extension point="org.eclipse.ui.popupMenus"> 
       <objectContribution 
          id="org.eclipse.wst.wsdl.ui.searchReferences.menu.objectContrib" 
@@ -342,32 +327,46 @@
 		</renameParticipant>
 	</extension>
 	
-	 	<!--  Refactoring UI extensions -->
-   <extension point="org.eclipse.ui.popupMenus"> 
-      <objectContribution 
-         id="org.eclipse.wst.wsdl.ui.refactoring.menu.objectContrib" 
-         objectClass="org.eclipse.wst.wsdl.WSDLElement"> 
-         <action
-            id="org.eclipse.wst.wsdl.ui.refactoring.menu.refactorGroup.object" 
-            enablesFor="1"
-            style="pulldown"
-            menubarPath="additions"
-            label="%refactoring.menu.label" 
-            class="org.eclipse.wst.wsdl.ui.internal.refactor.actions.WSDLRefactorGroupActionDelegate"> 
-         </action> 
-      </objectContribution>   
-   
-    <viewerContribution
-        id="org.eclipse.wst.xsd.ui.refactoring.menu.source"
-        targetID="org.eclipse.wst.wsdl.wsdlsource.source.EditorContext">
-	    <action id="org.eclipse.wst.wsdl.ui.refactoring.menu.refactorGroup.source"
-       		style="pulldown"
-            menubarPath="additions"
-            label="%refactoring.menu.label" 
-            class="org.eclipse.wst.wsdl.ui.internal.refactor.actions.WSDLRefactorGroupActionDelegate"> 
-  	    </action>
-       </viewerContribution>       
-     </extension>
+	<!--  Refactoring UI extensions -->
+    <extension point="org.eclipse.ui.menus">
+    	<menuContribution locationURI="popup:refactorPopupMenuId">
+     	   <command
+     	         commandId="org.eclipse.wst.wsdl.ui.refactor.rename.element"
+   	           label="%command.wsdl.refactor.rename.element.label">
+  	         <visibleWhen
+  	               checkEnabled="true">
+  	         </visibleWhen>
+   	  	   </command>
+ 	   	</menuContribution>
+   	 	<menuContribution
+        	  locationURI="popup:org.eclipse.wst.wsdl.ui.refactorMenuId">
+         	<command
+         	       commandId="org.eclipse.wst.wsdl.ui.refactor.rename.element"
+            	   label="%command.wsdl.refactor.rename.element.label">
+             	<visibleWhen
+                   	checkEnabled="true">
+             	</visibleWhen>
+        	</command>
+    	</menuContribution>
+		<menuContribution
+        	  locationURI="menu:refactorMenuId">
+      		<command
+             	commandId="org.eclipse.wst.wsdl.ui.refactor.rename.element"
+            	label="%command.wsdl.refactor.rename.element.label">
+          		<visibleWhen
+                	checkEnabled="false">
+                	<or>
+	                	<reference
+	                      	definitionId="org.eclipse.wst.wsdl.ui.editor.active.designView.definition">
+	                	</reference>
+	                	<reference
+	                      	definitionId="org.eclipse.wst.wsdl.ui.editor.active.sourceView.definition">
+	                	</reference>
+                	</or>
+          		</visibleWhen>
+        	</command>
+    	</menuContribution>
+	</extension>
           
      <extension point="org.eclipse.ui.commands">
 		<command
@@ -535,4 +534,66 @@
         bindingOptionsPageClass="org.eclipse.wst.wsdl.ui.internal.contentgenerator.ui.HttpBindingOptionsPage">
       </contentGeneratorUI>
    </extension>   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.wst.wsdl.ui.internal.refactor.handlers.RenameHandler"
+            commandId="org.eclipse.wst.wsdl.ui.refactor.rename.element">
+         <enabledWhen>
+           	<with variable="selection">
+               	<test property="org.eclipse.wst.wsdl.ui.refactor.renameEnabled"/>    
+	        </with>  
+		</enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.eclipse.wst.wsdl.ui.internal.refactor.RenameEnablementTester"
+            id="org.eclipse.wst.wsdl.ui.refactor.rename.enablement"
+            namespace="org.eclipse.wst.wsdl.ui.refactor"
+            properties="renameEnabled"
+            type="org.eclipse.jface.viewers.ISelection">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="%WSDL_DESIGN_VIEW_DESCRIPTION"
+            id="org.eclipse.wst.wsdl.ui.editor.designView"
+            name="%WSDL_DESIGN_VIEW">
+      </context>
+            <context
+            description="%WSDL_SOURCE_VIEW_DESCRIPTION"
+            id="org.eclipse.wst.wsdl.ui.editor.sourceView"
+            name="%WSDL_SOURCE_VIEW">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="org.eclipse.wst.wsdl.ui.editor.active.designView.definition">
+         <with
+               variable="activeContexts">
+            <iterate
+                  operator="or">
+               <equals
+                     value="org.eclipse.wst.wsdl.ui.editor.designView">
+               </equals>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="org.eclipse.wst.wsdl.ui.editor.active.sourceView.definition">
+         <with
+               variable="activeContexts">
+            <iterate
+                  operator="or">
+               <equals
+                     value="org.eclipse.wst.wsdl.ui.editor.sourceView">
+               </equals>
+            </iterate>
+         </with>
+      </definition>
+   </extension>
 </plugin>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,15 @@ import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ui.internal.ISelectionMapper;
+import org.eclipse.wst.wsdl.ui.internal.refactor.handlers.RenameHandler;
 import org.eclipse.wst.xsd.ui.internal.refactor.wizard.RefactorActionGroup;
 import org.eclipse.wst.xsd.ui.internal.refactor.wizard.RefactorGroupActionDelegate;
 import org.eclipse.wst.xsd.ui.internal.refactor.wizard.RefactorGroupSubMenu;
+
+
+/** 
+ * @deprecated This class is replaced by {@link RenameHandler}. 
+ */
 
 public class WSDLRefactorGroupActionDelegate extends RefactorGroupActionDelegate
 {

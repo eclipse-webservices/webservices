@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
@@ -69,6 +71,9 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
   protected DesignViewContextMenuProvider menuProvider;
   protected IDescription model;
   private int currentPage = -1;
+  private IContextActivation contextActivation;
+  public final static String DESIGN_VIEW_CONTEXT = "org.eclipse.wst.wsdl.ui.editor.designView"; //$NON-NLS-1$
+  public final static String SOURCE_VIEW_CONTEXT = "org.eclipse.wst.wsdl.ui.editor.sourceView"; //$NON-NLS-1$
   
   /**
    * Creates a multi-page editor example.
@@ -314,8 +319,23 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
   }
   
   protected void pageChange(int newPageIndex) {
+	// Note: createPages() will call this method; so the first context is activated here instead at createPages().  
+	deactivateContext(contextActivation);
     currentPage = newPageIndex;
     super.pageChange(newPageIndex);
+    
+    String context = getContext(currentPage);
+    contextActivation = activateContext(context);
+  }
+  
+  protected String getContext(int pageIndex) {
+	  if (pageIndex == DESIGN_PAGE_INDEX) {
+		  return DESIGN_VIEW_CONTEXT;
+	  } else if (pageIndex == SOURCE_PAGE_INDEX) {
+		  return SOURCE_VIEW_CONTEXT;
+	  }
+	  
+	  return null;
   }
   
   public void dispose() {
@@ -325,7 +345,26 @@ public abstract class ASDMultiPageEditor extends CommonMultiPageEditor
 	  else {
 		  WSDLEditorPlugin.getInstance().setDefaultPage(WSDLEditorPlugin.DESIGN_PAGE);
 	  }
+	  
+	  deactivateContext(contextActivation);
 
-	  super.dispose();
+      super.dispose();
+  }
+
+  private IContextActivation activateContext(String context) {
+	  IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+
+	  if (contextService != null && context != null) {
+		  return contextActivation = contextService.activateContext(context);
+	  }
+	  return null;
+  }
+  
+  private void deactivateContext(IContextActivation contextActivation) {
+	  IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+
+	  if (contextService != null && contextActivation != null) {
+		  contextService.deactivateContext(contextActivation);
+	  }
   }
 }

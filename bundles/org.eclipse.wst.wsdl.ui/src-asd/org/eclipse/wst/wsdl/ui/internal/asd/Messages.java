@@ -80,4 +80,5 @@ public class Messages {
 	public static String _UI_ACTION_SHOW_PROPERTIES;
 	public static String _ERROR_LABEL_PREFIX_EXISTS;
 	public static String _UI_LABEL_BINDING_IN_PROPERTIES_SECTION;
+	public static String _UI_REFACTOR_CONTEXT_MENU;
 }
