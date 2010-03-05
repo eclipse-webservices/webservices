@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2008 IBM Corporation and others.
+ * Copyright (c) 2003, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20071102   202222 kathy@ca.ibm.com - Kathy Chan
  * 20080122   216165 kathy@ca.ibm.com - Kathy Chan
  * 20080326   224148 makandre@ca.ibm.com - Andrew Mak, Web service scenarios broke in latest builds with Equinox p2
+ * 20100304   304385 mahutch@ca.ibm.com - Mark Hutchinson, Allow users to disable copying axis jars
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -46,6 +47,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.internal.axis.consumption.ui.AxisConsumptionUIMessages;
+import org.eclipse.jst.ws.internal.axis.consumption.ui.plugin.WebServiceAxisConsumptionUIPlugin;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
@@ -100,6 +102,12 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	 * Execute the command
 	 */
 	public IStatus execute(IProgressMonitor monitor, IAdaptable adaptable) {
+		
+		if (WebServiceAxisConsumptionUIPlugin.getInstance().getPluginPreferences().getBoolean("disableAxisJarCopy")) {
+			//IStatus status = new Status(IStatus.WARNING, WebServiceAxisConsumptionUIPlugin.ID,"Copying of Apache Axis Web Services jars has been disabled");
+			//WebServiceAxisConsumptionUIPlugin.getInstance().getLog().log(status);
+			return Status.OK_STATUS;
+		}
 
 		IEnvironment env = getEnvironment();
 		IStatus status = Status.OK_STATUS;
