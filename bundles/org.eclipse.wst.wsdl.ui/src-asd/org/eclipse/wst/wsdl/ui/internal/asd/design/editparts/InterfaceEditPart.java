@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
@@ -165,5 +166,14 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
   
   public IFigure getLinkIconColumn() {
 	  return linkIconColumn;
+  }
+
+  protected String getAccessibleName()
+  {
+    Label labelFigure = getLabelFigure();
+    if (labelFigure != null) {
+      return labelFigure.getText();
+    }
+    return ""; //$NON-NLS-1$
   }
 }

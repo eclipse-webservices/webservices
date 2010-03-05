@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.BindingConten
 import org.eclipse.wst.wsdl.ui.internal.asd.design.editpolicies.ASDSelectionEditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingMessageReference;
 import org.eclipse.wst.wsdl.ui.internal.asd.facade.IBindingOperation;
+import org.eclipse.wst.wsdl.ui.internal.asd.facade.INamedObject;
 import org.eclipse.wst.wsdl.ui.internal.asd.outline.ITreeElement;
 
 // This class is used to represent a BindingOperation, BindingInput, BindingOutput and BindingFault
@@ -100,5 +101,17 @@ public class BindingContentEditPart extends BaseEditPart
 
   public void removeFeedback() {
 	  label.getParent().setBackgroundColor(ColorConstants.tooltipBackground);
+  }
+
+
+  protected String getAccessibleName()
+  {
+    String accessibleName = ""; //$NON-NLS-1$
+    if (getModel() instanceof INamedObject)
+    {  
+        INamedObject namedObject = (INamedObject) getModel();
+        accessibleName = namedObject.getName();
+    }
+    return accessibleName;
   }
 }

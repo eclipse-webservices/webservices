@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -157,4 +157,12 @@ public class DefinitionsEditPart extends BaseEditPart {
           }          
         }   
       }        
+
+
+      protected String getAccessibleName()
+      {
+        IDescription description = (IDescription) getModel();
+        String descriptionName = description != null && description.getName() != null ? description.getName() : ""; //$NON-NLS-1$
+        return descriptionName;
+      }
 }

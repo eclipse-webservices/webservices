@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,12 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -39,6 +41,7 @@ import org.eclipse.wst.xsd.ui.internal.adt.design.editpolicies.KeyBoardAccessibi
 public abstract class BaseEditPart extends AbstractGraphicalEditPart implements IActionProvider, IASDObjectListener, IFeedbackHandler
 {
   protected static final String[] EMPTY_ACTION_ARRAY = {};
+  protected AccessibleGraphicalEditPart accessiblePart;
   
   public String[] getActions(Object object)
   {
@@ -213,4 +216,21 @@ public abstract class BaseEditPart extends AbstractGraphicalEditPart implements 
     }
   }
 
+  protected AccessibleEditPart getAccessibleEditPart() {
+
+	  if (accessiblePart == null)
+	  {
+		  accessiblePart = new AccessibleGraphicalEditPart(){
+
+			  public void getName(AccessibleEvent e) {
+				  e.result = getAccessibleName();
+			  }
+		  };
+	  }
+	  return accessiblePart;
+  }
+  
+  protected String getAccessibleName() {
+    return ""; //$NON-NLS-1$
+  }
 }
