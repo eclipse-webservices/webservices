@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.jdt.apt.core.env.EclipseAnnotationProcessorEnvironment;
 import org.eclipse.jdt.core.Flags;
@@ -25,6 +26,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
+import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 
@@ -214,7 +216,12 @@ public class WebServiceParametersReturnTypesRule extends AbstractAnnotationProce
     }
 
     private boolean isSuitableInterface(InterfaceDeclaration interfaceDeclaration) {
-        return isJavaType(interfaceDeclaration.getQualifiedName()) && JAVA_TYPES.contains(interfaceDeclaration.getQualifiedName());
+        return isJavaType(interfaceDeclaration.getQualifiedName()) && JAVA_TYPES.contains(interfaceDeclaration.getQualifiedName())
+        || isXMLType(interfaceDeclaration);
+    }
+
+    private boolean isXMLType(InterfaceDeclaration interfaceDeclaration) {
+        return AnnotationUtils.getAnnotation(interfaceDeclaration, XmlType.class) != null;
     }
 
     private void checkIfRemoteObject(ClassDeclaration classDeclaration, MethodDeclaration methodDeclaration) {

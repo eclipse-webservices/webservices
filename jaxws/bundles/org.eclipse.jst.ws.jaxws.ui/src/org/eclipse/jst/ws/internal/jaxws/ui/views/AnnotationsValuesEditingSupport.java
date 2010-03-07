@@ -11,8 +11,13 @@
 package org.eclipse.jst.ws.internal.jaxws.ui.views;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -27,6 +32,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -41,6 +47,7 @@ import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jst.ws.annotations.core.AnnotationsCore;
+import org.eclipse.jst.ws.annotations.core.AnnotationsCorePlugin;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
 import org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
@@ -459,7 +466,11 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             return AnnotationsCore.createNumberLiteral(ast, value.toString());
         }
         if (returnType.isArray()) {
-            return AnnotationsCore.createArrayValueLiteral(ast, method, (Object[]) value);
+            if (method.getReturnType().getComponentType().isAnnotation()) {
+                return createArrayValueLiteral(ast, method, (Object[]) value);
+            } else {
+                return AnnotationsCore.createArrayValueLiteral(ast, (Object[]) value);
+            }
         }
 
         if (returnType.equals(Class.class)) {
@@ -491,7 +502,11 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
             return AnnotationsCore.createNumberMemberValuePair(ast, method.getName(), value.toString());
         }
         if (returnType.isArray()) {
-            return AnnotationsCore.createArrayMemberValuePair(ast, method, (Object[]) value);
+            if (method.getReturnType().getComponentType().isAnnotation()) {
+                return createArrayMemberValuePair(ast, method, (Object[]) value);
+            } else {
+                return AnnotationsCore.createArrayMemberValuePair(ast, method.getName(), (Object[]) value);
+            }
         }
 
         if (returnType.equals(Class.class)) {
@@ -536,4 +551,69 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         annotationsView.refreshLabels();
     }
+
+    private MemberValuePair createArrayMemberValuePair(AST ast, Method method, Object[] values) {
+        return AnnotationsCore.createMemberValuePair(ast, method.getName(), createArrayValueLiteral(ast,
+                method, values));
+    }
+
+    @SuppressWarnings("unchecked")
+    private ArrayInitializer createArrayValueLiteral(AST ast, Method method, Object[] values) {
+        ArrayInitializer arrayInitializer = ast.newArrayInitializer();
+        for (Object value : values) {
+            if (value instanceof List) {
+                Class<? extends java.lang.annotation.Annotation> annotationClass =
+                    (Class<? extends java.lang.annotation.Annotation>) method.getReturnType().getComponentType();
+
+                List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+
+                List<Map<String, Object>> valuesList = (List<Map<String, Object>>) value;
+                Iterator<Map<String, Object>> valuesIterator = valuesList.iterator();
+                while (valuesIterator.hasNext()) {
+                    Map<String, Object> annotationMap = valuesIterator.next();
+                    Set<Entry<String, Object>> entrySet = annotationMap.entrySet();
+                    Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
+                    while (iterator.hasNext()) {
+                        Map.Entry<java.lang.String, Object> entry = iterator.next();
+                        String memberName = entry.getKey();
+                        try {
+                            Method annotationMethod = annotationClass.getMethod(memberName, new Class[0]);
+                            if (annotationMethod != null) {
+                                Object memberValue = entry.getValue();
+                                Class<?> returnType = annotationMethod.getReturnType();
+                                if (returnType.equals(String.class)) {
+                                    memberValuePairs.add(AnnotationsCore.createStringMemberValuePair(ast, memberName,
+                                            memberValue.toString()));
+                                }
+                                if (returnType.equals(Boolean.TYPE)) {
+                                    memberValuePairs.add(AnnotationsCore.createBooleanMemberValuePair(ast, memberName,
+                                            (Boolean) memberValue));
+                                }
+                                if (returnType.equals(Class.class)) {
+                                    String className = memberValue.toString();
+                                    if (className.endsWith(".class")) {
+                                        className = className.substring(0, className.lastIndexOf("."));
+                                    }
+                                    memberValuePairs.add(AnnotationsCore.createMemberValuePair(ast, memberName,
+                                            AnnotationsCore.createTypeLiteral(ast, className)));
+                                }
+                                //                                if (returnType.isPrimitive()) {
+                                //                                    memberValuePairs.add(getNumberMemberValuePair(ast, memberName, memberValue));
+                                //                                }
+                            }
+
+                        } catch (SecurityException se) {
+                            AnnotationsCorePlugin.log(se);
+                        } catch (NoSuchMethodException nsme) {
+                            AnnotationsCorePlugin.log(nsme);
+                        }
+                    }
+                }
+                arrayInitializer.expressions().add(AnnotationsCore.createNormalAnnotation(ast, annotationClass.getCanonicalName(),
+                        memberValuePairs));
+            }
+        }
+        return arrayInitializer;
+    }
+
 }

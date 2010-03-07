@@ -42,9 +42,16 @@ import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap12.SOAP12Binding;
 import javax.xml.namespace.QName;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.apt.core.env.EclipseAnnotationProcessorEnvironment;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
+import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
 import org.eclipse.jst.ws.jaxws.core.utils.JDTUtils;
 import org.eclipse.jst.ws.jaxws.core.utils.WSDLUtils;
 
@@ -59,98 +66,151 @@ import com.sun.mirror.declaration.TypeDeclaration;
 public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
 
     @Override
-    @SuppressWarnings("unchecked")
     public void process() {
         AnnotationTypeDeclaration annotationDeclaration = (AnnotationTypeDeclaration) environment
-                .getTypeDeclaration(WebService.class.getName());
+        .getTypeDeclaration(WebService.class.getName());
 
         Collection<Declaration> annotatedTypes = environment
-                .getDeclarationsAnnotatedWith(annotationDeclaration);
+        .getDeclarationsAnnotatedWith(annotationDeclaration);
 
         for (Declaration declaration : annotatedTypes) {
             if (declaration instanceof ClassDeclaration) {
                 ClassDeclaration classDeclaration = (ClassDeclaration) declaration;
-                AnnotationMirror webService = AnnotationUtils.getAnnotation(declaration, WebService.class);
-                AnnotationValue wsdlLocationValue = AnnotationUtils.getAnnotationValue(webService, WSDL_LOCATION);
-                if (wsdlLocationValue == null) {
-                	break;
-                }
-                String wsdlLocation = wsdlLocationValue.getValue().toString();
-                if (wsdlLocation != null && wsdlLocation.trim().length() > 0) {
-                    try {
-                        URL wsdlURL = new URL(wsdlLocation);
-                        Definition definition = WSDLUtils.readWSDL(wsdlURL);
-                        if (definition != null) {
-                            QName serviceQName =  getServiceQName(webService, (ClassDeclaration) declaration);
-                            Service service = getService(definition, serviceQName);
-                            if (service != null) {
-                                String portName =  getPortName(webService, classDeclaration);
-                                Port port = getPort(service, portName);
-                                if (port != null) {
-                                    Binding binding = port.getBinding();
-                                    validateBinding(binding, classDeclaration, webService, wsdlLocation);
-                                    Map<String, MethodDeclaration> methodMap = getWebMethods(classDeclaration,
-                                            webService);
-                                    List<Operation> operations = binding.getPortType().getOperations();
-                                    for (Operation operation : operations) {
-                                        MethodDeclaration methodDeclaration = methodMap.get(operation.getName());
-                                        if (methodDeclaration == null) {
-                                            printError(webService.getPosition(), JAXWSCoreMessages.bind(
-                                                    JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_NO_OPERTATION_NAME,
-                                                    operation.getName()));
-                                        } else {
-                                            AnnotationMirror oneway = AnnotationUtils.getAnnotation(
-                                                    methodDeclaration, Oneway.class);
-                                            if (oneway != null && operation.getOutput() != null) {
-                                                printError(methodDeclaration.getPosition(), JAXWSCoreMessages.bind(
-                                                        JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_WSDL_OPERATION_OUTPUT_METHOD_ONEWAY,
-                                                        new Object[] {methodDeclaration.getSimpleName(), operation.getName()}));
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    printError(webService.getPosition(), JAXWSCoreMessages.bind(
-                                            JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_NO_PORT_NAME,
-                                            new Object[] {portName, wsdlLocation}));
-                                }
-                            } else {
-                                printError(webService.getPosition(), JAXWSCoreMessages.bind(
-                                        JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_NO_SERVICE_NAME,
-                                        new Object[] {serviceQName.getLocalPart(), wsdlLocation}));
-                            }
-                        }
-                    } catch (MalformedURLException murle) {
-                        printError(wsdlLocationValue.getPosition(), murle.getLocalizedMessage());
-                    } catch (IOException ioe) {
-                        printNotice(wsdlLocationValue.getPosition(), JAXWSCoreMessages.bind(
-                                JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, wsdlLocation));
-                    }
-                }
+                checkWSDLocation(classDeclaration);
             }
         }
     }
 
+    private void checkWSDLocation(ClassDeclaration classDeclaration) {
+        AnnotationMirror webService = AnnotationUtils.getAnnotation(classDeclaration, WebService.class);
+        AnnotationValue wsdlLocationValue = AnnotationUtils.getAnnotationValue(webService, WSDL_LOCATION);
+        if (wsdlLocationValue != null) {
+            String wsdlLocation = wsdlLocationValue.getValue().toString().trim();
+            if (wsdlLocation.length() > 0) {
+                if (wsdlLocation.endsWith(".wsdl")) { //$NON-NLS-1$
+                    URL relativeURL = getRelativeURL(classDeclaration, wsdlLocation);
+                    if (relativeURL != null) {
+                        validateWSDL(relativeURL.toString(), webService, classDeclaration, wsdlLocationValue);
+                    } else {
+                        printWarning(wsdlLocationValue.getPosition(), JAXWSCoreMessages.bind(
+                                JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, wsdlLocation));
+                    }
+                } else {
+                    validateWSDL(wsdlLocation, webService, classDeclaration, wsdlLocationValue);
+                }
+
+            } else {
+                printError(wsdlLocationValue.getPosition(), JAXWSCoreMessages.bind(
+                        JAXWSCoreMessages.EMPTY_ATTRIBUTE_VALUE, new Object[] {WebService.class.getSimpleName(),
+                                WSDL_LOCATION}));
+            }
+        }
+    }
+
+    private URL getRelativeURL(ClassDeclaration classDeclaration, String wsdlLocation) {
+        EclipseAnnotationProcessorEnvironment eclipseEnvironment = (EclipseAnnotationProcessorEnvironment) environment;
+        IJavaProject javaProject = eclipseEnvironment.getJavaProject();
+        try {
+            IType type = javaProject.findType(classDeclaration.getQualifiedName());
+            if (type != null) {
+                IResource classResource = type.getResource();
+                IContainer classContainer = classResource.getParent();
+                if (wsdlLocation.startsWith("../")) { //$NON-NLS-1$
+                    while (wsdlLocation.startsWith("../")) { //$NON-NLS-1$
+                        wsdlLocation = wsdlLocation.substring(3);
+                        if (classContainer != null) {
+                            classContainer = classContainer.getParent();
+                        }
+                    }
+                }
+                if (classContainer != null) {
+                    IResource wsdlResource = classContainer.findMember(wsdlLocation);
+                    if (wsdlResource != null) {
+                        return wsdlResource.getLocationURI().toURL();
+                    }
+                }
+            }
+        } catch (JavaModelException jme) {
+            JAXWSCorePlugin.log(jme.getStatus());
+        } catch (MalformedURLException murle) {
+            JAXWSCorePlugin.log(murle);
+        }
+        return null;
+    }
+
+    private void validateWSDL(String wsdlLocation, AnnotationMirror webService, ClassDeclaration classDeclaration, AnnotationValue wsdlLocationValue) {
+        try {
+            URL wsdlURL = new URL(wsdlLocation);
+            Definition definition = WSDLUtils.readWSDL(wsdlURL);
+            if (definition != null) {
+                QName serviceQName =  getServiceQName(webService, classDeclaration);
+                Service service = getService(definition, serviceQName);
+                if (service != null) {
+                    String portName =  getPortName(webService, classDeclaration);
+                    Port port = getPort(service, portName);
+                    if (port != null) {
+                        Binding binding = port.getBinding();
+                        validateBinding(binding, classDeclaration, webService, wsdlLocation);
+                        Map<String, MethodDeclaration> methodMap = getWebMethods(classDeclaration,
+                                webService);
+                        @SuppressWarnings("unchecked")
+                        List<Operation> operations = binding.getPortType().getOperations();
+                        for (Operation operation : operations) {
+                            MethodDeclaration methodDeclaration = methodMap.get(operation.getName());
+                            if (methodDeclaration == null) {
+                                printError(webService.getPosition(), JAXWSCoreMessages.bind(
+                                        JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_NO_OPERTATION_NAME,
+                                        operation.getName()));
+                            } else {
+                                AnnotationMirror oneway = AnnotationUtils.getAnnotation(
+                                        methodDeclaration, Oneway.class);
+                                if (oneway != null && operation.getOutput() != null) {
+                                    printError(methodDeclaration.getPosition(), JAXWSCoreMessages.bind(
+                                            JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_WSDL_OPERATION_OUTPUT_METHOD_ONEWAY,
+                                            new Object[] {methodDeclaration.getSimpleName(), operation.getName()}));
+                                }
+                            }
+                        }
+                    } else {
+                        printError(webService.getPosition(), JAXWSCoreMessages.bind(
+                                JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_NO_PORT_NAME,
+                                new Object[] {portName, wsdlLocation}));
+                    }
+                } else {
+                    printError(webService.getPosition(), JAXWSCoreMessages.bind(
+                            JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_NO_SERVICE_NAME,
+                            new Object[] {serviceQName.getLocalPart(), wsdlLocation}));
+                }
+            }
+        } catch (MalformedURLException murle) {
+            printError(wsdlLocationValue.getPosition(), murle.getLocalizedMessage());
+        } catch (IOException ioe) {
+            printWarning(wsdlLocationValue.getPosition(), JAXWSCoreMessages.bind(
+                    JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, wsdlLocation));
+        }
+    }
+
     @SuppressWarnings("unchecked")
-    private void validateBinding(Binding binding, ClassDeclaration classDeclaration, 
+    private void validateBinding(Binding binding, ClassDeclaration classDeclaration,
             AnnotationMirror webService, String wsdlLocation) {
         String style = javax.jws.soap.SOAPBinding.Style.DOCUMENT.name();
-        
+
         AnnotationMirror soapBindingAnnotation = getSOAPBinding(classDeclaration, webService);
         if (soapBindingAnnotation != null) {
-           String styleValue = AnnotationUtils.getStringValue(soapBindingAnnotation, STYLE);
-           if (styleValue != null) {
-               style = styleValue;
-           }
+            String styleValue = AnnotationUtils.getStringValue(soapBindingAnnotation, STYLE);
+            if (styleValue != null) {
+                style = styleValue;
+            }
         }
-        
+
         List extensibilityElements =  binding.getExtensibilityElements();
         for (Object elementExtensible : extensibilityElements) {
             if (elementExtensible instanceof SOAPBinding) {
                 SOAPBinding soapBinding = (SOAPBinding) elementExtensible;
                 if (style.compareToIgnoreCase(soapBinding.getStyle()) != 0) {
                     printError(soapBindingAnnotation == null ? webService.getPosition()
-                            : soapBindingAnnotation.getPosition(), 
-                            JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_SOAP_BINDING_STYLE, 
+                            : soapBindingAnnotation.getPosition(),
+                            JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_SOAP_BINDING_STYLE,
                                     new Object[] {wsdlLocation, soapBinding.getStyle(), style}));
                 }
             }
@@ -159,13 +219,13 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
                 if (style.compareToIgnoreCase(soap12Binding.getStyle()) != 0) {
                     printError(soapBindingAnnotation == null ? webService.getPosition()
                             : soapBindingAnnotation.getPosition(),
-                            JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_SOAP_BINDING_STYLE, 
+                            JAXWSCoreMessages.bind(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_SOAP_BINDING_STYLE,
                                     new Object[] {wsdlLocation, soap12Binding.getStyle(), style}));
                 }
             }
         }
     }
-    
+
     private AnnotationMirror getSOAPBinding(TypeDeclaration typeDeclaration, AnnotationMirror webService) {
         String endpointInterface = AnnotationUtils.getStringValue(webService, ENDPOINT_INTERFACE);
         if (endpointInterface != null) {
@@ -176,7 +236,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         }
         return AnnotationUtils.getAnnotation(typeDeclaration, javax.jws.soap.SOAPBinding.class);
     }
-    
+
     private Map<String, MethodDeclaration> getWebMethods(TypeDeclaration typeDeclaration, AnnotationMirror webService) {
         Map<String, MethodDeclaration> methodMap = new HashMap<String, MethodDeclaration>();
 
@@ -187,7 +247,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
                 typeDeclaration = seiDeclaration;
             }
         }
-        
+
         Collection<? extends MethodDeclaration> methods = typeDeclaration.getMethods();
         for (MethodDeclaration methodDeclaration : methods) {
             AnnotationMirror webMethod = AnnotationUtils.getAnnotation(methodDeclaration, WebMethod.class);
@@ -228,11 +288,11 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         }
         return null;
     }
-    
+
     @SuppressWarnings("unchecked")
     private Port getPort(Service service, String portName) {
         Map portsMap = service.getPorts();
-        Set<Map.Entry> portsSet = portsMap.entrySet();                     
+        Set<Map.Entry> portsSet = portsMap.entrySet();
         for (Map.Entry<String, Port> portEntry : portsSet) {
             String portEntryKey = portEntry.getKey();
             if (portEntryKey.equals(portName)) {
@@ -241,7 +301,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         }
         return null;
     }
-    
+
     private QName getServiceQName(AnnotationMirror webService, ClassDeclaration classDeclaration) {
         String serviceName = AnnotationUtils.getStringValue(webService, SERVICE_NAME);
         if (serviceName == null) {
@@ -257,7 +317,7 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
         }
         return portName;
     }
-    
+
     private String getTargetNamespace(AnnotationMirror webService, ClassDeclaration classDeclaration) {
         String targetNamespace = AnnotationUtils.getStringValue(webService, TARGET_NAMESPACE);
         if (targetNamespace == null) {

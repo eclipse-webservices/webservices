@@ -90,6 +90,9 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
 
     public void setMethod(Method method) {
         this.method = method;
+        if (updatedValues != null) {
+            updatedValues.clear();
+        }
     }
 
     @Override
@@ -140,7 +143,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                 updatedValues = new ArrayList<Object>();
                 for (Object value : values) {
                     if (value instanceof IAnnotation) {
-                        IAnnotation annotation = (IAnnotation)value;
+                        IAnnotation annotation = (IAnnotation) value;
                         IMemberValuePair[] memberValuePairs = annotation.getMemberValuePairs();
                         if (memberValuePairs.length > 0) {
                             List<Map<String, Object>> aList = new ArrayList<Map<String,Object>>();
@@ -328,8 +331,8 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                             while (iterator.hasNext()) {
                                 Map.Entry<String, Object> entry = iterator.next();
                                 Object value = entry.getValue();
-                                boolean isString = (value instanceof String && !value.toString().
-                                        endsWith(".class")); //$NON-NLS-1$
+                                boolean isString = value instanceof String && !value.toString().
+                                endsWith(".class"); //$NON-NLS-1$
                                 if (isString) {
                                     annotationName += entry.getKey() + "=\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$
                                 } else {
@@ -411,9 +414,9 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
             //TODO Handle ENUMS
             Class<?> returnType = method.getReturnType();
             Object defaultValue = method.getDefaultValue();
-            GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+            GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
             //String or String[]
-            if (returnType.equals(String.class) || (returnType.isArray() && returnType.getComponentType().equals(String.class))) {
+            if (returnType.equals(String.class) || returnType.isArray() && returnType.getComponentType().equals(String.class)) {
                 Text text = new Text(typeComposite, SWT.BORDER);
                 text.setData(method);
                 gridData.horizontalSpan = 2;
@@ -429,10 +432,10 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                 controls.put(method.getName(), text);
             }
             //Class or Class[]
-            if (returnType.equals(Class.class) || (returnType.isArray() && returnType.getComponentType().equals(Class.class))) {
+            if (returnType.equals(Class.class) || returnType.isArray() && returnType.getComponentType().equals(Class.class)) {
                 final Text text = new Text(typeComposite, SWT.BORDER);
                 text.setData(method);
-                gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+                gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
                 text.setLayoutData(gridData);
                 if (defaultValue != null) {
                     Class<?> classValue = (Class<?>)defaultValue;

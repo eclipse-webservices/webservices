@@ -73,8 +73,8 @@ public class DefaultsAnnotationAttributeInitializer extends AnnotationAttributeI
                 }
 
                 if (returnType.isArray()) {
-                    memberValuePairs.add(AnnotationsCore.createArrayMemberValuePair(ast, method,
-                            (Object[])defaultValue));
+                    memberValuePairs.add(AnnotationsCore.createArrayMemberValuePair(ast, method.getName(),
+                            (Object[]) defaultValue));
                 }
 
                 if (returnType.isEnum()) {

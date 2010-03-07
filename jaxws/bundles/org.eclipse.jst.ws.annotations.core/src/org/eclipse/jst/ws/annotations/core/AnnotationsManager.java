@@ -316,7 +316,7 @@ public final class AnnotationsManager {
         return annotationProcessorCache;
     }
 
-    public static String getAttributeValue(IConfigurationElement configurationElement, String attributeName) {
+    static String getAttributeValue(IConfigurationElement configurationElement, String attributeName) {
         String attribute = configurationElement.getAttribute(attributeName);
         if (attribute != null) {
             return attribute;

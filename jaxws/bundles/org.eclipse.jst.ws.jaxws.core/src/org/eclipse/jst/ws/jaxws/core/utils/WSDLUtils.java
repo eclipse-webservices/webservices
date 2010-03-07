@@ -50,8 +50,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCorePlugin;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.xml.sax.InputSource;
 
 /**
@@ -191,7 +192,8 @@ public final class WSDLUtils {
     }
 
     private static IPath getWebContentPath(IProject project) {
-        return J2EEUtils.getWebContentPath(project).addTrailingSeparator();
+        IVirtualComponent virtualComponent = ComponentCore.createComponent(project);
+        return virtualComponent.getRootFolder().getWorkspaceRelativePath();
     }
 
     /**

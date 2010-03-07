@@ -10,13 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.annotations.core;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
@@ -88,8 +82,8 @@ public final class AnnotationsCore {
         annotation.setTypeName(annotationTypeName);
 
         if (value != null) {
-        	value = (Expression)Expression.copySubtree(ast, value);
-        	annotation.setValue(value);
+            value = (Expression)Expression.copySubtree(ast, value);
+            annotation.setValue(value);
         }
 
         return annotation;
@@ -182,7 +176,7 @@ public final class AnnotationsCore {
      */
     public static MemberValuePair createEnumMemberValuePair(AST ast, String className, String name,
             Object value) {
-         return AnnotationsCore.createMemberValuePair(ast, name, createEnumLiteral(ast, className, value));
+        return AnnotationsCore.createMemberValuePair(ast, name, createEnumLiteral(ast, className, value));
     }
 
     /**
@@ -202,84 +196,28 @@ public final class AnnotationsCore {
      * Creates a new {@link MemberValuePair} with an {@link ArrayInitializer} value.
      *
      * @param ast the {@link AST} that will be used to create the member value pair.
-     * @param method a {@link java.lang.annotation.Annotation} member.
-     * @param values an array of <code>Object</code> values.
+     * @param name the member value pair "name".
+     * @param values an array of <code>Object</code> values. Supports  {@link java.lang.String}, {@link java.lang.Boolean}, {@link java.lang.Class} values.
      * @return a new member value pair with the given name and array of values.
      */
-    public static MemberValuePair createArrayMemberValuePair(AST ast, Method method, Object[] values) {
-        return AnnotationsCore.createMemberValuePair(ast, method.getName(), createArrayValueLiteral(ast,
-                method, values));
+    public static MemberValuePair createArrayMemberValuePair(AST ast, String name, Object[] values) {
+        return AnnotationsCore.createMemberValuePair(ast, name, createArrayValueLiteral(ast, values));
     }
 
     /**
      * Creates a new {@link ArrayInitializer}.
      * @param ast the {@link AST} that will be used to create the {@link ArrayInitializer}.
-     * @param method a {@link java.lang.annotation.Annotation} member.
-     * @param values an array of <code>Object</code> values.
+     * @param values an array of <code>Object</code> values. Supports  {@link java.lang.String}, {@link java.lang.Boolean}, {@link java.lang.Class} values.
      * @return a new srray initializer.
      */
     @SuppressWarnings("unchecked")
-    public static ArrayInitializer createArrayValueLiteral(AST ast, Method method, Object[] values) {
+    public static ArrayInitializer createArrayValueLiteral(AST ast, Object[] values) {
         ArrayInitializer arrayInitializer = ast.newArrayInitializer();
         for (Object value : values) {
-            if (value instanceof java.lang.annotation.Annotation) {
-                //TODO Handle this situation. Arises when annotations are specified as defaults in array initializers
-            }
-            //List of values. Used by the annotation array cell editor when adding annotations
-            if (value instanceof List) {
-                Class<? extends java.lang.annotation.Annotation> annotationClass =
-                 (Class<? extends java.lang.annotation.Annotation>) method.getReturnType().getComponentType();
-
-                List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-
-                List<Map<String, Object>> valuesList = (List<Map<String, Object>>) value;
-                Iterator<Map<String, Object>> valuesIterator = valuesList.iterator();
-                while (valuesIterator.hasNext()) {
-                    Map<String, Object> annotationMap = valuesIterator.next();
-                    Set<Entry<String, Object>> entrySet = annotationMap.entrySet();
-                    Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
-                    while (iterator.hasNext()) {
-                        Map.Entry<java.lang.String, Object> entry = iterator.next();
-                        String memberName = entry.getKey();
-                        try {
-                            Method annotationMethod = annotationClass.getMethod(memberName, new Class[0]);
-                            if (annotationMethod != null) {
-                                Object memberValue = entry.getValue();
-                                Class<?> returnType = annotationMethod.getReturnType();
-                                if (returnType.equals(String.class)) {
-                                    memberValuePairs.add(createStringMemberValuePair(ast, memberName,
-                                            memberValue.toString()));
-                                }
-                                if (returnType.equals(Boolean.TYPE)) {
-                                    memberValuePairs.add(createBooleanMemberValuePair(ast, memberName,
-                                            (Boolean) memberValue));
-                                }
-                                if (returnType.equals(Class.class)) {
-                                    String className = memberValue.toString();
-                                    if (className.endsWith(".class")) {
-                                        className = className.substring(0, className.lastIndexOf("."));
-                                    }
-                                    memberValuePairs.add(AnnotationsCore.createMemberValuePair(ast, memberName,
-                                            createTypeLiteral(ast, className)));
-                                }
-//                                if (returnType.isPrimitive()) {
-//                                    memberValuePairs.add(getNumberMemberValuePair(ast, memberName, memberValue));
-//                                }
-                            }
-
-                        } catch (SecurityException se) {
-                            AnnotationsCorePlugin.log(se);
-                        } catch (NoSuchMethodException nsme) {
-                            AnnotationsCorePlugin.log(nsme);
-                        }
-                    }
-                }
-                arrayInitializer.expressions().add(createNormalAnnotation(ast, annotationClass.getCanonicalName(),
-                        memberValuePairs));
-            }
             if (value.equals(Class.class)) {
                 arrayInitializer.expressions().add(createTypeLiteral(ast, value.toString()));
             }
+
             if (value instanceof String) {
                 String stringValue = value.toString();
                 if (stringValue.endsWith(".class")) {
@@ -289,6 +227,11 @@ public final class AnnotationsCore {
                     arrayInitializer.expressions().add(createStringLiteral(ast, stringValue));
                 }
             }
+
+            if (value.equals(Boolean.TYPE)) {
+                arrayInitializer.expressions().add(createBooleanLiteral(ast, (Boolean) value));
+            }
+
         }
         return arrayInitializer;
     }
@@ -332,7 +275,7 @@ public final class AnnotationsCore {
      */
     public static TypeLiteral createTypeLiteral(AST ast, Object value) {
         TypeLiteral typeLiteral = null;
-        if (value instanceof Class) {
+        if (value instanceof Class<?>) {
             typeLiteral = createTypeLiteral(ast, (Class<?>) value);
         }
         if (value instanceof String) {
