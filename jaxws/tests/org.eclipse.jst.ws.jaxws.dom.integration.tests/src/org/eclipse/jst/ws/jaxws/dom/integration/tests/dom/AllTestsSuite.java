@@ -13,8 +13,6 @@ package org.eclipse.jst.ws.jaxws.dom.integration.tests.dom;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.validation.DomValidationHelperTest;
-import org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.validation.DomValidationManagerTest;
 import org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.DOMAdapterFactoryContentProviderTest;
 import org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.DOMAdapterFactoryLabelProviderTest;
 import org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.DOMPropertyViewAdapterFactoryTest;
@@ -29,8 +27,6 @@ public class AllTestsSuite
 		suite.addTestSuite(DOMAdapterFactoryContentProviderTest.class);
 		suite.addTestSuite(DOMAdapterFactoryLabelProviderTest.class);
 		suite.addTestSuite(DOMPropertyViewAdapterFactoryTest.class);
-		suite.addTestSuite(DomValidationHelperTest.class);
-		suite.addTestSuite(DomValidationManagerTest.class);
 		suite.addTestSuite(WebServiceDecoratorTest.class);
 		
 		return suite;

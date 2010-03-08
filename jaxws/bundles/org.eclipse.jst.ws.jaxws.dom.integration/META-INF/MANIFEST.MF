@@ -12,15 +12,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core,
  org.eclipse.ui.ide,
  org.eclipse.ui.navigator,
- org.eclipse.wst.validation,
  org.eclipse.jdt.ui,
  org.eclipse.jst.j2ee.core,
  org.eclipse.jst.jee.ui,
  org.eclipse.jem.util,
  org.eclipse.jst.ws.jaxws.dom.ui,
- org.eclipse.jst.ws.jaxws.utils
+ org.eclipse.jst.ws.jaxws.utils,
+ org.eclipse.jdt.apt.core;bundle-version="3.3.400"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.jst.ws.jaxws.dom.integration.navigator,
- org.eclipse.jst.ws.jaxws.dom.integration.navigator.actions,
- org.eclipse.jst.ws.jaxws.dom.integration.validation
+ org.eclipse.jst.ws.jaxws.dom.integration.navigator.actions

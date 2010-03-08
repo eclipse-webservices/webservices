@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
-import org.eclipse.jst.ws.jaxws.dom.runtime.validation.WsProblemsReporter;
-import org.jmock.core.Constraint;
+import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 /**
  * Tests for SEI validation constraints 
@@ -37,73 +36,77 @@ public class SeiValidationTest extends ValidationTestsSetUp
 
 	public void testServiceNameIsNCName() throws CoreException
 	{		
-		final IServiceEndpointInterface sei = findSei("test.Sei");
-		assertNoValidationErrors(seiType.getResource(), WsProblemsReporter.MARKER_ID, sei);
+		assertNotNull("SEI not found", findSei("test.Sei"));
+		assertNoValidationErrors(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
 		
 		setContents(seiType.getCompilationUnit(), "@javax.jws.WebService(name=\"---\") public interface Sei {}");
 		
-		final Map<Object, Constraint> markerProps = new HashMap<Object, Constraint>();
-		markerProps.put(IMarker.CHAR_START, eq(40));
-		markerProps.put(IMarker.CHAR_END, eq(45));
-		markerProps.put(IMarker.LINE_NUMBER, eq(2));
-		markerProps.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData markersData = new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerProps);
-		validate(sei, markersData);
+		final Map<String, Object> markerProps = new HashMap<String, Object>();
+		markerProps.put(IMarker.CHAR_START, 41);
+		markerProps.put(IMarker.CHAR_END, 46);
+		markerProps.put(IMarker.LINE_NUMBER, 2);
+		markerProps.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerProps.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.INVALID_NCNAME_ATTRIBUTE, "WebService", "name", "---"));
+		final MarkerData markersData = new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerProps);
+		validateResourceMarkers(seiType.getResource(), markersData);
 	}
 	
 	public void testTargetNsIsValidUri() throws CoreException
 	{
-		final IServiceEndpointInterface sei = findSei("test.Sei");
-		assertNoValidationErrors(seiType.getResource(), WsProblemsReporter.MARKER_ID, sei);
+		assertNotNull("SEI not found", findSei("test.Sei"));
+		assertNoValidationErrors(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
 		
 		setContents(seiType.getCompilationUnit(), "@javax.jws.WebService(targetNamespace=\"^^^\") public interface Sei {}");
 
-		final Map<Object, Constraint> markerProps = new HashMap<Object, Constraint>();
-		markerProps.put(IMarker.CHAR_START, eq(51));
-		markerProps.put(IMarker.CHAR_END, eq(56));
-		markerProps.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData markersData = new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerProps);
-		validate(sei, markersData);
+		final Map<String, Object> markerProps = new HashMap<String, Object>();
+		markerProps.put(IMarker.CHAR_START, 52);
+		markerProps.put(IMarker.CHAR_END, 57);
+		markerProps.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerProps.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.TARGET_NAMESPACE_URI_SYNTAX_ERROR, "0", "^^^", "Illegal character in path"));
+		final MarkerData markersData = new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerProps);
+		validateResourceMarkers(seiType.getResource(), markersData);
 	}
 
 	public void testRedundandAttributesOnExplicitSei() throws CoreException
 	{
 		setContents(seiType.getCompilationUnit(), "@javax.jws.WebService(name=\"Name\", portName=\"PortName\") public interface Sei {}");
-		IServiceEndpointInterface sei = findSei("test.Sei");
+		assertNotNull("SEI not found", findSei("test.Sei"));
 		
-		final Map<Object, Constraint> markerProps = new HashMap<Object, Constraint>();
-		markerProps.put(IMarker.CHAR_START, eq(13));
-		markerProps.put(IMarker.CHAR_END, eq(68));
-		markerProps.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData markersData = new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerProps);
-		validate(sei, markersData);
+		final Map<String, Object> markerProps = new HashMap<String, Object>();
+		markerProps.put(IMarker.CHAR_START, 58);
+		markerProps.put(IMarker.CHAR_END, 68);
+		markerProps.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerProps.put(IMarker.MESSAGE, JAXWSCoreMessages.WEBSERVICE_PORTNAME_SEI);
+		final MarkerData markersData = new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerProps);
+		validateResourceMarkers(seiType.getResource(), markersData);
 	}
 	
 	public void testRedundandAttributesOnImplicitSei() throws CoreException
 	{
 		testProject.createType(testPack, "Ws.java", "@javax.jws.WebService(name=\"Name\", portName=\"PortName\") public class Ws {}");		
-		IServiceEndpointInterface sei = findSei("test.Ws");
-		assertNoValidationErrors(seiType.getResource(), WsProblemsReporter.MARKER_ID, sei);
+		assertNotNull("SEI not found", findSei("test.Ws"));
+		assertNoValidationErrors(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
 	}
 	
 	public void testSeiClassCorrectExplicitSei() throws CoreException
 	{
 		setContents(seiType.getCompilationUnit(), "@javax.jws.WebService interface Sei {}");
-		IServiceEndpointInterface sei = findSei("test.Sei");
+		assertNotNull("SEI not found", findSei("test.Sei"));
 		
-		final Map<Object, Constraint> markerProps = new HashMap<Object, Constraint>();
-		markerProps.put(IMarker.CHAR_START, eq(13));
-		markerProps.put(IMarker.CHAR_END, eq(34));
-		markerProps.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData markersData = new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerProps);
-		validate(sei, markersData);
+		final Map<String, Object> markerProps = new HashMap<String, Object>();
+		markerProps.put(IMarker.CHAR_START, 46);
+		markerProps.put(IMarker.CHAR_END, 49);
+		markerProps.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerProps.put(IMarker.MESSAGE, JAXWSCoreMessages.WEBSERVICE_PUBLIC_ABSTRACT_FINAL);
+		final MarkerData markersData = new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerProps);
+		validateResourceMarkers(seiType.getResource(), markersData);
 	}
 	
 	public void testSeiClassCorrectImplicitSei() throws CoreException
 	{
 		testProject.createType(testPack, "Ws.java", "@javax.jws.WebService public class Ws {}");		
-		IServiceEndpointInterface sei = findSei("test.Ws");
-		assertNoValidationErrors(seiType.getResource(), WsProblemsReporter.MARKER_ID, sei);
+		assertNotNull("SEI not found", findSei("test.Sei"));
+		assertNoValidationErrors(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
 	}
 }
 	

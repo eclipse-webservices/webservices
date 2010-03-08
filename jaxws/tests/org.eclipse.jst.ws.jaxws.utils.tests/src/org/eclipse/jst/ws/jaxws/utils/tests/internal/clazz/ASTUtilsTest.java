@@ -16,10 +16,15 @@ import java.io.FileWriter;
 import junit.framework.TestCase;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jst.ws.jaxws.testutils.files.TestFileUtils;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 import org.eclipse.jst.ws.jaxws.utils.clazz.ASTUtils;
@@ -111,6 +116,52 @@ public class ASTUtilsTest extends TestCase
 		assertNotNull(abstractType);
 	}
 
+	public void testGetTypeSignatureForSimpleType() throws Exception
+	{
+		final String varArgSignature = getTypeSignatureForParameter("String p");
+		assertFalse("Signature should not start with '['", varArgSignature.toCharArray()[0] == Signature.C_ARRAY);
+	}
+
+	public void testGetTypeSignatureForArray() throws Exception
+	{
+		final String varArgSignature = getTypeSignatureForParameter("String[] p");
+		assertTrue("Signature should start with '['", varArgSignature.toCharArray()[0] == Signature.C_ARRAY);
+		assertFalse("Signature second caharacter must not be '['", varArgSignature.toCharArray()[1] == Signature.C_ARRAY);
+	}
+
+	public void testGetTypeSignatureForVarArg() throws Exception
+	{
+		final String varArgSignature = getTypeSignatureForParameter("String... p");
+		assertTrue("Signature should start with '['", varArgSignature.toCharArray()[0] == Signature.C_ARRAY);
+		assertFalse("Signature second caharacter must not be '['", varArgSignature.toCharArray()[1] == Signature.C_ARRAY);
+	}
+
+	public void testGetTypeSignatureForMultiDimensionalVarArg() throws Exception
+	{
+		final String varArgSignature = getTypeSignatureForParameter("String[][]... p");
+		assertTrue("Signature should start with '['", varArgSignature.toCharArray()[0] == Signature.C_ARRAY);
+		assertTrue("Signature second caharacter must be '['", varArgSignature.toCharArray()[1] == Signature.C_ARRAY);
+		assertTrue("Signature third caharacter must be '['", varArgSignature.toCharArray()[2] == Signature.C_ARRAY);
+		assertFalse("Signature fourth characted must not be '['", varArgSignature.toCharArray()[3] == Signature.C_ARRAY);
+	}
+
+	private String getTypeSignatureForParameter(final String paramDefinition) throws Exception
+	{
+		final ASTUtils astUtils = ASTUtils.getInstance();
+
+		manualSetUp();
+		String source = "public class Test { public void varArgMethod(" + paramDefinition + "){} }";
+
+		final IType sourceType = project.createType(project.createPackage(PCK), "Test.java", source);
+		final IMethod varargMethod = sourceType.getMethods()[0];
+		assertEquals("Unexpected method name", "varArgMethod", varargMethod.getElementName());
+		final CompilationUnit unit = astUtils.createCompilationUnit(sourceType.getCompilationUnit(), null);
+		final MethodDeclaration methodDecl = astUtils.getMethodDeclaration(varargMethod, (TypeDeclaration) astUtils.getTypeDeclaration("Test", unit));
+		assertEquals("One parameter expected", 1, methodDecl.parameters().size());
+
+		return astUtils.getTypeSignature((SingleVariableDeclaration) methodDecl.parameters().iterator().next());
+	}	
+	
 	private File createTempJavaFile() throws Exception
 	{
 		File dir = TestFileUtils.createTempDirectory("" + System.currentTimeMillis());

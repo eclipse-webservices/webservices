@@ -16,7 +16,9 @@ Require-Bundle: org.eclipse.jst.ws.jaxws.testutils,
  org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.emf.validation,
- org.junit
+ org.junit,
+ org.eclipse.jdt.apt.core,
+ org.eclipse.jst.ws.jaxws.core
 Export-Package: org.eclipse.jst.ws.jaxws.dom.runtime.tests,
  org.eclipse.jst.ws.jaxws.dom.runtime.tests.annotations,
  org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom,
@@ -28,5 +30,4 @@ Export-Package: org.eclipse.jst.ws.jaxws.dom.runtime.tests,
  org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.state,
  org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync,
  org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.util,
- org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation,
- org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation
+ org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation

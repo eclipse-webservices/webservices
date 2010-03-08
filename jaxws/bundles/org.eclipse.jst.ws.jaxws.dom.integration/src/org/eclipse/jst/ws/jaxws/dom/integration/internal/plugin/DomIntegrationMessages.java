@@ -35,16 +35,6 @@ public class DomIntegrationMessages extends NLS
 	/** message constant */
 	public static String NavigateToImplementationAction_ShowInEJBAreaAction;
 
-	/** message constant */
-	public static String SelectFilesToCheckoutDlgTitle;
-	
-	/** message constant */
-	public static String SelectFilesToCheckoutDlgTblTitle;	
-
-	/** message constant */
-	public static String SelectFilesToCheckout_CanceledMessage;	
-		
-	
 	static
 	{
 		NLS.initializeMessages(BUNDLE_NAME, DomIntegrationMessages.class);

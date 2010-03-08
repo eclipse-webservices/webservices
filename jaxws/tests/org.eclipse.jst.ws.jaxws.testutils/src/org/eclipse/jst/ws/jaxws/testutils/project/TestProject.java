@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.internal.resources.ResourceException;
+import org.eclipse.core.internal.resources.WorkspaceRoot;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -24,14 +25,17 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.apt.core.util.AptConfig;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
@@ -433,5 +437,52 @@ public class TestProject
 		}
 		
 		ResourcesPlugin.getPlugin().getLog().log(new Status(0,"testOutput",log));
+	}
+	
+	public void setAptProcessingEnabled(final boolean enabled, final boolean enableReconcile) throws CoreException
+	{
+		final IWorkspaceRunnable setProcessingRunnable = new IWorkspaceRunnable()
+		{
+			
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				AptConfig.setEnabled(TestProject.this.javaProject, enabled);
+				AptConfig.setProcessDuringReconcile(TestProject.this.javaProject, enableReconcile);
+				TestProject.this.javaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+			}
+		};
+		
+		TestProjectsUtils.executeWorkspaceRunnable(setProcessingRunnable);
+	}
+	
+	/**
+	 * Builds a project
+	 * @param kind build kind. See {@link IProject#build(int, IProgressMonitor)} for details
+	 * @throws CoreException
+	 */
+	public void build(final int kind) throws CoreException
+	{
+		final IWorkspaceRunnable buildRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				TestProject.this.project.build(kind, monitor);
+			}
+		};
+		
+		TestProjectsUtils.executeWorkspaceRunnable(buildRunnable);
+	}
+	
+	public void refresh() throws CoreException
+	{
+		final IWorkspaceRunnable refreshRunnable = new IWorkspaceRunnable()
+		{
+			public void run(IProgressMonitor monitor) throws CoreException
+			{
+				TestProject.this.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+			}
+		};
+		
+		TestProjectsUtils.executeWorkspaceRunnable(refreshRunnable);
 	}
 }

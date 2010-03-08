@@ -31,26 +31,6 @@ public class JaxWsUtilMessages extends NLS
 
 	public static String AnnotationUtils_ParamShouldNotBeNullMsg;
 
-//
-//	public static String EngineDataProvider_UnableToDeterminePortOfDeployServerMsg;
-//	
-//	public static String EngineDataProvider_UnableToDetermineNameOfDeployServerMsg;
-//
-//	public static String EngineDataProvider_UnableToDetermineSapSystemOfDeployServerMsg;
-//
-//
-	/** message constant */
-	public static String WsdlNamesValidator_EmptyXmlName;
-	
-	/** message constant */
-	public static String WsdlNamesValidator_InvalidNCName;
-	
-	/** message constant */
-	public static String WsdlNamesValidator_EmptyXmlName2;
-	
-	/** message constant */
-	public static String WsdlNamesValidator_InvalidNCName2;	
-	
 	public static String EditResourcesManager_FILE_CONTENTS_CHANGE_FAILED_MSG;
 	
 	public static String ProjectManagementUtils_ProjectHasNoMetaInfFolderMsg;

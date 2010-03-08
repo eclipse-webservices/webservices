@@ -19,7 +19,6 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.tests.annotations.ArrayValueImplTest
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.annotations.ComplexAnnotationImplTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.annotations.ParamValuePairImplTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.annotations.QualifiedNameValueImplTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.LocatorExtractorTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.WsDOMRuntimeManagerTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.WsDOMRuntimeRegistryTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.JaxWsDefaultsCalculatorTest;
@@ -54,20 +53,11 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.SeiSyncro
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.WsSynchronizationTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.util.Dom2ResourceMapperTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.util.DomUtilTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.AbstractValidationConstraintTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.ConstraintStatusExtendedTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.DomValidationConstraintDescriptorTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.DomValidatorFactoryTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.EndpointIsSessionBeanConstraintTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.JaxWsDomValidatorTest;
+import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.EndpointIsSessionBeanRuleTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.SeiValidationTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WmValidationTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WpValidationTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WsProblemsReporterTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WsValidationTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation.MethodValidatorTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation.RuntimeTypeValidatorTest;
-import org.eclipse.jst.ws.jaxws.dom.runtime.tests.validation.SeiValidatorTest;
 
 public class AllTestsSuite
 {
@@ -75,18 +65,14 @@ public class AllTestsSuite
 	{
 		TestSuite suite = new TestSuite();
 
-		suite.addTestSuite(RuntimeTypeValidatorTest.class);
-		suite.addTestSuite(MethodValidatorTest.class);
 		suite.addTestSuite(AnnotationFactoryTest.class);
 		suite.addTestSuite(AnnotationsTest.class);
 		suite.addTestSuite(ParamValuePairImplTest.class);
 		suite.addTestSuite(ComplexAnnotationImplTest.class);
 		suite.addTestSuite(QualifiedNameValueImplTest.class);
 		suite.addTestSuite(ArrayValueImplTest.class);
-		suite.addTestSuite(SeiValidatorTest.class);
 		suite.addTestSuite(WsDOMRuntimeRegistryTest.class);
 		suite.addTestSuite(WsDOMRuntimeManagerTest.class);
-		suite.addTestSuite(DomValidatorFactoryTest.class);
 		suite.addTestSuite(Dom2ResourceMapperTest.class);
 		suite.addTestSuite(DomUtilTest.class);
 		
@@ -95,7 +81,6 @@ public class AllTestsSuite
 		suite.addTestSuite(JaxWsWorkspaceResourceTests.class);
 		suite.addTestSuite(ProjectAddingTests.class);
 		suite.addTestSuite(WorkspaceCUFinderTest.class);
-		suite.addTestSuite(LocatorExtractorTest.class);
 		// DOM sync tests
 		suite.addTestSuite(AbstractModelSynchronizerTest.class);
 		suite.addTestSuite(OnEventModelSyncronizerTest.class);
@@ -128,20 +113,12 @@ public class AllTestsSuite
 		suite.addTestSuite(AnnotationAdapterTest.class);
 		suite.addTestSuite(AnnotationAdapterFactoryTest.class);
 		// validation tests
-		suite.addTestSuite(AbstractValidationConstraintTest.class);
-		suite.addTestSuite(DomValidationConstraintDescriptorTest.class);
-		suite.addTestSuite(JaxWsDomValidatorTest.class);
 		suite.addTestSuite(SeiValidationTest.class);
 		suite.addTestSuite(WsValidationTest.class);
 		suite.addTestSuite(WmValidationTest.class);
 		suite.addTestSuite(WpValidationTest.class);
-		suite.addTestSuite(EndpointIsSessionBeanConstraintTest.class);
-		suite.addTestSuite(WsProblemsReporterTest.class);
+		suite.addTestSuite(EndpointIsSessionBeanRuleTest.class);
 		
-		//suite.addTestSuite(CAFWsdlTests.class);
-		
-		suite.addTestSuite(ConstraintStatusExtendedTest.class);
-
 		return suite;
 	}
 }

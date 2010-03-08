@@ -16,6 +16,12 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.apt.core.internal.AptPlugin;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeParameter;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jdt.ui.ProblemsLabelDecorator;
 import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
@@ -25,29 +31,55 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebParam;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.util.Dom2ResourceMapper;
-import org.eclipse.jst.ws.jaxws.utils.dom.validation.DomValidationConstants;
+import org.eclipse.jst.ws.jaxws.utils.annotations.AnnotationFactory;
+import org.eclipse.jst.ws.jaxws.utils.annotations.IAnnotation;
+import org.eclipse.jst.ws.jaxws.utils.annotations.IAnnotationInspector;
 import org.eclipse.jst.ws.jaxws.utils.logging.Logger;
+import org.eclipse.ui.PlatformUI;
 
+@SuppressWarnings("restriction")
 public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 {
+	private static final String THIS_DECORATOR_ID = "org.eclipse.jst.ws.jaxws.dom.integration.navigator.WebServiceDecorator"; 
+	
+	/**
+	 * The APT marker ID
+	 */
+	protected static final String APT_MARKER_ID = AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER;
+	
 	/** Enum to represent different marker types */
 	public enum Severity {OK, ERROR, WARNING};
 	
 	private DomUtil domUtil = DomUtil.INSTANCE;
+	private final Dom2ResourceMapper dom2ResourceMapper = Dom2ResourceMapper.INSTANCE;
 	
 	@Override
 	protected int computeAdornmentFlags(Object obj) 
 	{
-		final Severity severity = defineSeverity(obj);		
-		if (severity == Severity.ERROR) {
-			return JavaElementImageDescriptor.ERROR;
+		try
+		{
+			final Severity severity = defineSeverity(obj);		
+			if (severity == Severity.ERROR) {
+				return JavaElementImageDescriptor.ERROR;
+			} 
+			
+			if (severity == Severity.WARNING) {
+				return JavaElementImageDescriptor.WARNING;
+			}
+
+			return 0;
 		} 
-		
-		if (severity == Severity.WARNING) {
-			return JavaElementImageDescriptor.WARNING;
+		finally
+		{
+			// Post a decoration update event in order to propagate decorations to parent tree nodes
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable()
+			{
+				public void run()
+				{
+					PlatformUI.getWorkbench().getDecoratorManager().update(THIS_DECORATOR_ID);
+				}
+			});
 		}
-		
-		return 0;
 	}	
 
 	/**
@@ -118,7 +150,7 @@ public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 		}
 		
 		final int depth = (resource.getType()==IResource.PROJECT) ? IResource.DEPTH_INFINITE : IResource.DEPTH_ZERO;
-		final IMarker[] markers = resource.findMarkers(DomValidationConstants.MARKER_ID, false, depth);
+		final IMarker[] markers = findAptMarkers(resource, depth);
 		Severity severity = Severity.OK;
 		for (IMarker marker : markers) 
 		{
@@ -168,7 +200,7 @@ public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 		case DomPackage.IWEB_METHOD:
 			return isRelevantForMethod((IWebMethod)eObject, marker);
 		case DomPackage.IWEB_PARAM:
-			return isRelevant(domUtil.calcUniqueImpl(eObject), marker);
+			return isRelevantForParameter((IWebParam)eObject, marker);
 		}
 		
 		return true;
@@ -182,37 +214,91 @@ public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 	 * @return <code>true</code> in case marker is relevant
 	 * @throws CoreException
 	 */	
-	protected boolean isRelevantForMethod(final IWebMethod webMethod, final IMarker marker) throws CoreException 
+	protected boolean isRelevantForMethod(final IWebMethod webMethod, final IMarker marker) throws CoreException
 	{
-		if (isRelevant(domUtil.calcUniqueImpl(webMethod), marker)) {
-			return true;
-		}
-		
-		for (IWebParam webParam : webMethod.getParameters()) 
+		final IType type = dom2ResourceMapper.findType(webMethod);
+		final IMethod javaMethod = domUtil.findMethod(type, webMethod);
+		final IAnnotationInspector annotationInspector = AnnotationFactory.createAnnotationInspector(type);
+		boolean relevant = isMarkerRelevantFor(javaMethod, marker, annotationInspector);
+		if (!relevant)
 		{
-			if (isRelevant(domUtil.calcUniqueImpl(webParam), marker)) {
+			for (String methodParameterName : javaMethod.getParameterNames())
+			{
+				final ITypeParameter param = javaMethod.getTypeParameter(methodParameterName);
+				relevant = relevant || isMarkerRelevantFor(param, marker, annotationInspector);
+			}
+		}
+
+		return relevant;
+	}
+
+	protected boolean isRelevantForParameter(final IWebParam webParam, final IMarker marker) throws CoreException
+	{
+		final IType type = dom2ResourceMapper.findType(webParam);
+		final ITypeParameter javaParameter = findJavaParameter(type, webParam);
+		return isMarkerRelevantFor(javaParameter, marker, AnnotationFactory.createAnnotationInspector(type));
+	}
+
+	/**
+	 * Finds the {@link ITypeParameter} instance which corresponds to the web parameter specified
+	 */
+	private ITypeParameter findJavaParameter(final IType type, final IWebParam webParam) throws JavaModelException
+	{
+		final IMethod javaMethod = domUtil.findMethod(type, (IWebMethod) webParam.eContainer());
+		for (String paramName : javaMethod.getParameterNames())
+		{
+			final ITypeParameter javaParam = javaMethod.getTypeParameter(paramName);
+			if (webParam.getImplementation().equals(javaParam.getElementName()))
+			{
+				return javaParam;
+			}
+		}
+
+		throw new IllegalStateException("Parameter " + webParam.getImplementation() + " not found");
+	}
+
+	private boolean isMarkerRelevantFor(final IMethod javaMethod, final IMarker marker, final IAnnotationInspector inspector) throws CoreException
+	{
+		for (IAnnotation<IMethod> ann : inspector.inspectMethod(javaMethod))
+		{
+			if (isMarkerRelevantToAnnotation(marker, ann))
+			{
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	/**
-	 * Checks if marker's {@link DomValidationConstants#IMPLEMENTATION} attribute has same
-	 * value as <code>implementation</code>.
-	 * @param implementation the implementation signature
-	 * @param marker the marker to be checked
-	 * @return <code>true</code> in case marker is for this implementation
-	 * @throws CoreException
-	 */
-	protected boolean isRelevant(final String implementation, final IMarker marker) throws CoreException
+
+	private boolean isMarkerRelevantFor(final ITypeParameter parameter, final IMarker marker, final IAnnotationInspector inspector) throws CoreException
 	{
-		final Object found = marker.getAttribute(DomValidationConstants.IMPLEMENTATION);
-		if (found != null && found.equals(implementation)) {
-			return true;
+		for (IAnnotation<ITypeParameter> ann : inspector.inspectParam(parameter))
+		{
+			if (isMarkerRelevantToAnnotation(marker, ann))
+			{
+				return true;
+			}
 		}
-		
+
 		return false;
+	}
+
+	/**
+	 * Check whether the marker is relevant for the annotation specified<br>
+	 * The implementation would read all the annotations relevant for the java element and check whether the marker start/end position is between annotation start/end
+	 */
+	private boolean isMarkerRelevantToAnnotation(final IMarker marker, final IAnnotation<? extends IJavaElement> ann) throws CoreException
+	{
+		final int annStartPos = ann.getLocator().getStartPosition();
+		final int annEndPos = annStartPos + ann.getLocator().getLength() - 1;
+		return (annStartPos <= (Integer) marker.getAttribute(IMarker.CHAR_START)) && (annEndPos >= (Integer) marker.getAttribute(IMarker.CHAR_END));
+	}
+
+	/**
+	 * Finds all APT nonreconcile markers associated with the resource specified
+	 */
+	private IMarker[] findAptMarkers(final IResource resource, final int depth) throws CoreException
+	{
+		return resource.findMarkers(APT_MARKER_ID, false, depth);
 	}
 }

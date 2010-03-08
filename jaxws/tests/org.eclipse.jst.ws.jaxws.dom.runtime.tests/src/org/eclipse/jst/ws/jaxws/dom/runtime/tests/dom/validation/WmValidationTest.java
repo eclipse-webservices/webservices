@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,15 +18,11 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
-import org.eclipse.jst.ws.jaxws.dom.runtime.validation.WsProblemsReporter;
-import org.jmock.core.Constraint;
-import org.jmock.core.constraint.IsGreaterThan;
+import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
 
 public class WmValidationTest extends ValidationTestsSetUp
 {
 	private IType seiType;
-	private IServiceEndpointInterface sei;
 	
 	@Override
 	public void setUp() throws Exception
@@ -38,21 +35,22 @@ public class WmValidationTest extends ValidationTestsSetUp
 	
 	public void testNameIsNCName() throws CoreException
 	{
-		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
+		IMarker [] markers = seiType.getResource().findMarkers(VALIDATION_PROBLEM_MARKER_ID, false, IResource.DEPTH_ZERO);
 		assertEquals(0, markers.length);
 		
 		setContents(seiType.getCompilationUnit(),  "@javax.jws.WebService(name=\"SeiName\") public interface Sei {\n" +
 				"@javax.jws.WebMethod(operationName=\"---\") public void test(); \n" + "}");
 		
-		sei = findSei("test.Sei");
+		assertNotNull("SEI not found", findSei("test.Sei"));
 		
-		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
-		markerAttributes.put(IMarker.CHAR_START, eq(109));
-		markerAttributes.put(IMarker.CHAR_END, eq(114));
-		markerAttributes.put(IMarker.LINE_NUMBER, eq(3));
-		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
-		validate(sei, markerData);
+		final Map<String, Object> markerAttributes = new HashMap<String, Object>();
+		markerAttributes.put(IMarker.CHAR_START, 110);
+		markerAttributes.put(IMarker.CHAR_END, 115);
+		markerAttributes.put(IMarker.LINE_NUMBER, 3);
+		markerAttributes.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerAttributes.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.INVALID_NCNAME_ATTRIBUTE, "WebMethod", "operationName", "---"));
+		final MarkerData markerData =  new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes);
+		validateResourceMarkers(seiType.getResource(), markerData);
 	}
 	
 	public void testNameIsUnique() throws CoreException
@@ -62,19 +60,21 @@ public class WmValidationTest extends ValidationTestsSetUp
 				"@javax.jws.WebMethod(operationName=\"OpName\") public void second(); \n" + 
 				"}");
 		
-		sei = findSei("test.Sei");
+		assertNotNull("SEI not found", findSei("test.Sei"));
 		
-		final Map<Object, Constraint> marker1_Attributes = new HashMap<Object, Constraint>();
-		marker1_Attributes.put(IMarker.CHAR_START, new IsGreaterThan(0));
-		marker1_Attributes.put(IMarker.CHAR_END, new IsGreaterThan(0));
-		marker1_Attributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final Map<Object, Constraint> marker2_Attributes = new HashMap<Object, Constraint>();
-		marker2_Attributes.put(IMarker.CHAR_START, new IsGreaterThan(0));
-		marker2_Attributes.put(IMarker.CHAR_END, new IsGreaterThan(0));
-		marker2_Attributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData marker1_Data =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, marker1_Attributes);
-		final MarkerData marker2_Data =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, marker2_Attributes);
-		validate(sei, marker1_Data, marker2_Data);
+		final Map<String, Object> marker1_Attributes = new HashMap<String, Object>();
+		marker1_Attributes.put(IMarker.CHAR_START, 132);
+		marker1_Attributes.put(IMarker.CHAR_END, 137);
+		marker1_Attributes.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		marker1_Attributes.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR, "{http://test/}OpName"));
+		final Map<String, Object> marker2_Attributes = new HashMap<String, Object>();
+		marker2_Attributes.put(IMarker.CHAR_START, 199);
+		marker2_Attributes.put(IMarker.CHAR_END, 205);
+		marker2_Attributes.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		marker2_Attributes.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR, "{http://test/}OpName"));
+		final MarkerData marker1_Data =  new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, marker1_Attributes);
+		final MarkerData marker2_Data =  new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, marker2_Attributes);
+		validateResourceMarkers(seiType.getResource(), marker1_Data, marker2_Data);
 	}
 	
 	public void testNameIsUniqueExcludedMethod() throws CoreException
@@ -84,14 +84,30 @@ public class WmValidationTest extends ValidationTestsSetUp
 				"@javax.jws.WebMethod(operationName=\"first\") public void second(); \n" + 
 				"}");
 		
-		sei = findSei("test.Sei");
+		assertNotNull("SEI not found", findSei("test.Sei"));
 		
-		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
-		markerAttributes.put(IMarker.CHAR_START, eq(103));
-		markerAttributes.put(IMarker.CHAR_END, eq(107));
-		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
-		validate(sei, markerData);
+		final Map<String, Object> markerAttributes_1 = new HashMap<String, Object>();
+		markerAttributes_1.put(IMarker.CHAR_START, 122);
+		markerAttributes_1.put(IMarker.CHAR_END, 127);
+		markerAttributes_1.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerAttributes_1.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR, "{http://test/}first"));
+
+		final Map<String, Object> markerAttributes_2 = new HashMap<String, Object>();
+		markerAttributes_2.put(IMarker.CHAR_START, 104);
+		markerAttributes_2.put(IMarker.CHAR_END, 108);
+		markerAttributes_2.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerAttributes_2.put(IMarker.MESSAGE, JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
+		
+		final Map<String, Object> markerAttributes_3 = new HashMap<String, Object>();
+		markerAttributes_3.put(IMarker.CHAR_START, 188);
+		markerAttributes_3.put(IMarker.CHAR_END, 194);
+		markerAttributes_3.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerAttributes_3.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.OPERATION_NAMES_MUST_BE_UNIQUE_ERROR, "{http://test/}first"));
+		
+		final MarkerData markerData_1 =  new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes_1);
+		final MarkerData markerData_2 =  new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes_2);
+		final MarkerData markerData_3 =  new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes_3);
+		validateResourceMarkers(seiType.getResource(), markerData_1, markerData_2, markerData_3);
 	}
 
 	/** 
@@ -110,7 +126,7 @@ public class WmValidationTest extends ValidationTestsSetUp
 //		IWebService ws = findWs("test.Sei");
 //		
 //		validator.validate(sei);
-//		IMarker [] markers = seiType.getResource().findMarkers(WsProblemsReporter.MARKER_ID, false, IResource.DEPTH_ZERO);
+//		IMarker [] markers = seiType.getResource().findMarkers(VALIDATION_PROBLEM_MARKER_ID, false, IResource.DEPTH_ZERO);
 	}
 	
 	public void testMethodCannotBeExcludedInSEI() throws CoreException
@@ -119,13 +135,14 @@ public class WmValidationTest extends ValidationTestsSetUp
 				"@javax.jws.WebMethod(exclude=true) public void first(); \n" +
 				"}");
 		
-		sei = findSei("test.Sei");
+		assertNotNull("SEI not found", findSei("test.Sei"));
 		
-		final Map<Object, Constraint> markerAttributes = new HashMap<Object, Constraint>();
-		markerAttributes.put(IMarker.CHAR_START, eq(103));
-		markerAttributes.put(IMarker.CHAR_END, eq(107));
-		markerAttributes.put(IMarker.SEVERITY, eq(IMarker.SEVERITY_ERROR));
-		final MarkerData markerData =  new MarkerData(seiType.getResource(), WsProblemsReporter.MARKER_ID, markerAttributes);
-		validate(sei, markerData);
+		final Map<String, Object> markerAttributes = new HashMap<String, Object>();
+		markerAttributes.put(IMarker.CHAR_START, 104);
+		markerAttributes.put(IMarker.CHAR_END, 108);
+		markerAttributes.put(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		markerAttributes.put(IMarker.MESSAGE, JAXWSCoreMessages.WEBMETHOD_EXCLUDE_NOT_ALLOWED_ON_SEI);
+		final MarkerData markerData =  new MarkerData(seiType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes);
+		validateResourceMarkers(seiType.getResource(), markerData);
 	}
 }

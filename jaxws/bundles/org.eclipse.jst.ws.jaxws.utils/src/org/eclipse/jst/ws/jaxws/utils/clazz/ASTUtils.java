@@ -14,6 +14,7 @@ import static org.eclipse.jst.ws.jaxws.utils.ContractChecker.nullCheckParam;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -144,17 +145,34 @@ public class ASTUtils
 	 */
 	public String getTypeSignature(final SingleVariableDeclaration svDecl)
 	{
-		String typeName = Signature.createTypeSignature(svDecl.getType().toString(), false);
+		String typeName = createDimensionedTypeName(Signature.createTypeSignature(svDecl.getType().toString(), false), svDecl.getExtraDimensions());
 
-		if (svDecl.getExtraDimensions() > 0 && typeName.indexOf('[') == -1)
+		// Varargs append another dimension
+		if (svDecl.isVarargs())
 		{
-			for (int i = 0; i < svDecl.getExtraDimensions(); i++)
-			{
-				typeName = "[" + typeName;// $JL-STR_CONCAT$ //$NON-NLS-1$
-			}
+			typeName = Signature.C_ARRAY + typeName;
 		}
 
 		return typeName;
+	}
+	
+	private String createDimensionedTypeName(final String typeName, final int dimensions)
+	{
+		final StringBuilder result = new StringBuilder(typeName);
+		final String dimensionString = createDimensionString(dimensions);
+		while(!result.toString().startsWith(dimensionString))
+		{
+			result.insert(0, Signature.C_ARRAY);
+		}
+		
+		return result.toString();
+	}
+	
+	private String createDimensionString(final int dimensions)
+	{
+		final char[] dimensionChars = new char[dimensions];
+		Arrays.fill(dimensionChars, Signature.C_ARRAY);
+		return new String(dimensionChars);
 	}
 	
 	/**

@@ -20,10 +20,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.emf.edit.ui,
  org.eclipse.jface.text,
- org.junit,
  org.eclipse.jdt.ui,
- org.eclipse.wst.validation
+ org.eclipse.jdt.apt.core;bundle-version="3.3.400"
 Export-Package: org.eclipse.jst.ws.jaxws.dom.integration.tests.dom,
- org.eclipse.jst.ws.jaxws.dom.integration.tests.dom.validation,
  org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator,
  org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.actions

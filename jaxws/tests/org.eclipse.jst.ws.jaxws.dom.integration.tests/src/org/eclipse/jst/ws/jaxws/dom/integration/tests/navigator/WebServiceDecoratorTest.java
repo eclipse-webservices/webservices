@@ -10,265 +10,306 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator;
 
-import junit.framework.TestCase;
+import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.apt.core.internal.AptPlugin;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jst.ws.jaxws.dom.integration.navigator.CustomDomItemProviderAdapterFactory;
+import org.eclipse.jdt.core.ITypeParameter;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ISEIChildList;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.IWebServiceChildList;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.WebServiceProblemsDecorator;
-import org.eclipse.jst.ws.jaxws.dom.integration.navigator.WebServiceProblemsDecorator.Severity;
 import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
-import org.eclipse.jst.ws.jaxws.dom.runtime.api.DomFactory;
-import org.eclipse.jst.ws.jaxws.dom.runtime.api.DomPackage;
+import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebParam;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
+import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMLoadCanceledException;
+import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMRuntimeManager;
+import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.Jee5WsDomRuntimeExtension;
+import org.eclipse.jst.ws.jaxws.testutils.IWaitCondition;
+import org.eclipse.jst.ws.jaxws.testutils.assertions.Assertions;
+import org.eclipse.jst.ws.jaxws.testutils.assertions.ConditionCheckException;
+import org.eclipse.jst.ws.jaxws.testutils.jmock.Mock;
+import org.eclipse.jst.ws.jaxws.testutils.jmock.MockObjectTestCase;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
-import org.eclipse.jst.ws.jaxws.utils.dom.validation.DomValidationConstants;
+import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
+import org.eclipse.jst.ws.jaxws.utils.annotations.AnnotationFactory;
+import org.eclipse.jst.ws.jaxws.utils.annotations.AnnotationGeneratorException;
+import org.eclipse.jst.ws.jaxws.utils.annotations.AnnotationWriter;
+import org.eclipse.jst.ws.jaxws.utils.annotations.IAnnotation;
+import org.eclipse.jst.ws.jaxws.utils.annotations.IAnnotationInspector;
+import org.eclipse.jst.ws.jaxws.utils.annotations.IParamValuePair;
 
 /**
  * Tests for {@link WebServiceDecorator} class
  * 
  * @author Georgi Vachkov
  */
-public class WebServiceDecoratorTest extends TestCase 
+@SuppressWarnings("restriction")
+public class WebServiceDecoratorTest extends MockObjectTestCase
 {
-	private TestWebServiceDecorator decorator = new TestWebServiceDecorator();;
+	private MyWebServiceProblemsDecorator decorator;
 	private TestProject testProject;
-	private IType seiType;
-	private IType wsType;
-	
-	private DomUtil domUtil = DomUtil.INSTANCE;
+
 	private IWebService ws;
 	private IServiceEndpointInterface sei;
 	private IWebServiceProject wsProject;
-	
+	private IWebMethod webMethod;
+	private IWebParam webParam;
+	private Mock<IWebServiceChildList> wsChildList;
+	private Mock<ISEIChildList> seiChildList;
+	private IPackageFragment testPackage;
+
+	private IType seiType;
+	private IType wsImplType;
+
+	private static final int NO_ERROR = 0;
+
+	private static final String SEI_CONTENT = "@javax.jws.WebService(name=\"{0}\")\n" + "public interface ISei '{'\n" + "@javax.jws.WebMethod(operationName=\"{1}\")\n"
+									+ "public void testMethod(@javax.jws.WebParam(name=\"{2}\") String s);}";
+	private static final String IMPL_CONTENT = "@javax.jws.WebService(serviceName=\"{0}\", endpointInterface=\"test.ISei\")\n" + "public class EndpointClass '{'\n"
+									+ "public void testMethod(String s)'{'}}";
+
 	@Override
 	public void setUp() throws CoreException
 	{
-		testProject = new TestProject();
-		testProject.createSourceFolder("src");
-		IPackageFragment pack = testProject.createPackage("test");
-		seiType = testProject.createType(pack, "Sei.java", "public interface Sei {}");
-		
-		sei = DomFactory.eINSTANCE.createIServiceEndpointInterface();
-		sei.eSet(DomPackage.Literals.IJAVA_WEB_SERVICE_ELEMENT__IMPLEMENTATION, seiType.getFullyQualifiedName());
-
-		wsType = testProject.createType(pack, "Ws.java", "public class Ws {}");
-		ws = DomFactory.eINSTANCE.createIWebService();
-		ws.eSet(DomPackage.Literals.IJAVA_WEB_SERVICE_ELEMENT__IMPLEMENTATION, wsType.getFullyQualifiedName());
-		
-		wsProject = DomFactory.eINSTANCE.createIWebServiceProject();
-		wsProject.eSet(DomPackage.Literals.IWEB_SERVICE_PROJECT__NAME, testProject.getProject().getName());
-		wsProject.getServiceEndpointInterfaces().add(sei);
-		wsProject.getWebServices().add(ws);
+		decorator = new MyWebServiceProblemsDecorator();
+		testProject = null;
 	}
 
-	public void testDefineSeverityForObject() throws CoreException 
+	@Override
+	protected void tearDown() throws Exception
 	{
-		assertEquals(Severity.OK, decorator.defineSeverity(new Integer(1)));
-	}
-	
-	public void testDefineSeverityForProject() throws CoreException 
-	{
-		assertEquals(Severity.OK, decorator.defineSeverity(wsProject));
-		
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);		
-		assertEquals(Severity.ERROR, decorator.defineSeverity(wsProject));
-
-		seiType.getResource().deleteMarkers(DomValidationConstants.MARKER_ID, true, IResource.DEPTH_ZERO);
-		assertEquals(Severity.OK, decorator.defineSeverity(wsProject));
-
-		marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-		assertEquals(Severity.ERROR, decorator.defineSeverity(wsProject));
-	}
-	
-	public void testDefineSeverityForISEIChildList() throws CoreException 
-	{
-		Adapter adapter = CustomDomItemProviderAdapterFactory.INSTANCE.adapt(wsProject, ISEIChildList.class);
-		assertEquals(Severity.OK, decorator.defineSeverity(adapter));	
-		
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-		
-		assertEquals(Severity.ERROR, decorator.defineSeverity(adapter));			
-		
-		adapter = CustomDomItemProviderAdapterFactory.INSTANCE.adapt(wsProject, IWebServiceChildList.class);
-		assertEquals(Severity.OK, decorator.defineSeverity(adapter));		
-	}
-	
-	public void testDefineSeverityForIWebServiceChildList() throws CoreException 
-	{
-		Adapter adapter = CustomDomItemProviderAdapterFactory.INSTANCE.adapt(wsProject, IWebServiceChildList.class);
-		assertEquals(Severity.OK, decorator.defineSeverity(adapter));	
-		
-		IMarker marker = wsType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-		
-		assertEquals(Severity.ERROR, decorator.defineSeverity(adapter));			
-		
-		adapter = CustomDomItemProviderAdapterFactory.INSTANCE.adapt(wsProject, ISEIChildList.class);
-		assertEquals(Severity.OK, decorator.defineSeverity(adapter));			
-	}
-	
-	public void testDefineSeverityIWebService() throws CoreException
-	{
-		assertEquals(Severity.OK, decorator.defineSeverity(ws));
-		
-		IMarker marker = wsType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-		
-		assertEquals(Severity.ERROR, decorator.defineSeverity(ws));
-	}
-	
-	public void testDefineSeverityIWebServiceWrongSei() throws CoreException
-	{
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-
-		assertEquals(Severity.OK, decorator.defineSeverity(ws));
-
-		sei.getImplementingWebServices().add(ws);
-		assertEquals(Severity.ERROR, decorator.defineSeverity(ws));
-	}
-	
-	public void testDefineSeveritySei() throws CoreException
-	{
-		assertEquals(Severity.OK, decorator.defineSeverity(sei));
-		
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-		assertEquals(Severity.ERROR, decorator.defineSeverity(sei));
-		
-	}
-	
-	public void testDefineSeveritySeiWrongMethod() throws CoreException
-	{
-		assertEquals(Severity.OK, decorator.defineSeverity(sei));
-		
-		IWebMethod webMethod = createMethod(true);
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);		
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, domUtil.calcUniqueImpl(webMethod));
-		
-		assertEquals(Severity.ERROR, decorator.defineSeverity(sei));
-	}
-	
-	public void testDefineSeveritySeiWrongParam() throws CoreException
-	{
-		assertEquals(Severity.OK, decorator.defineSeverity(sei));
-		
-		IWebMethod webMethod = createMethod(true);
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);		
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, domUtil.calcUniqueImpl(webMethod.getParameters().get(0)));
-		
-		assertEquals(Severity.ERROR, decorator.defineSeverity(sei));
-	}
-	
-	public void testDefineSeverityEObjectIResource() throws CoreException 
-	{		
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);		
-		assertEquals(Severity.ERROR, decorator.defineSeverity(sei, seiType.getResource()));
-
-		assertEquals(Severity.ERROR, decorator.defineSeverity(wsProject, testProject.getProject()));
-
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
-		assertEquals(Severity.WARNING, decorator.defineSeverity(sei, seiType.getResource()));
-
-		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
-		assertEquals(Severity.OK, decorator.defineSeverity(sei, seiType.getResource()));
-	}
-
-	public void testIsRelevantForMethod() throws CoreException 
-	{
-		final IWebMethod webMethod = createMethod(false);
-		
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, domUtil.calcUniqueImpl(webMethod));
-		assertTrue(decorator.isRelevantForMethod(webMethod, marker));
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, "other");
-		assertFalse(decorator.isRelevantForMethod(webMethod, marker));
-	}
-
-	public void testIsRelevant() throws CoreException 
-	{
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		assertFalse(decorator.isRelevant("impl", marker));
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, "impl");
-		assertTrue(decorator.isRelevant("impl", marker));
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, "impl");
-		assertFalse(decorator.isRelevant("newImpl", marker));		
-	}
-	
-	public void testIsRelevantFor() throws CoreException 
-	{
-		IMarker marker = seiType.getResource().createMarker(DomValidationConstants.MARKER_ID);
-		assertTrue(decorator.isRelevantFor(sei, marker));
-		IWebMethod webMethod = createMethod(false);
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, domUtil.calcUniqueImpl(webMethod));
-		assertTrue(decorator.isRelevantFor(webMethod, marker));
-		webMethod = createMethod(true);
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, domUtil.calcUniqueImpl(webMethod.getParameters().get(0)));
-		assertTrue(decorator.isRelevantFor(webMethod, marker));
-		assertTrue(decorator.isRelevantFor(webMethod.getParameters().get(0), marker));
-		marker.setAttribute(DomValidationConstants.IMPLEMENTATION, "impl");
-		assertFalse(decorator.isRelevantFor(webMethod, marker));
-		assertFalse(decorator.isRelevantFor(webMethod.getParameters().get(0), marker));		
-	}
-	
-	private IWebMethod createMethod(boolean withParam) 
-	{
-		final IWebMethod webMethod = DomFactory.eINSTANCE.createIWebMethod();
-		webMethod.eSet(DomPackage.Literals.IJAVA_WEB_SERVICE_ELEMENT__IMPLEMENTATION, "method(I)");
-		
-		if (withParam) 
+		if (testProject != null)
 		{
-			final IWebParam webParam = DomFactory.eINSTANCE.createIWebParam();
-			webParam.eSet(DomPackage.Literals.IJAVA_WEB_SERVICE_ELEMENT__IMPLEMENTATION, "a");
-			webMethod.getParameters().add(webParam);
+			testProject.dispose();
 		}
-		
-		return webMethod;
 	}
 
-	protected static class TestWebServiceDecorator extends WebServiceProblemsDecorator
+	public void testComputeAdornmentForObject()
+	{
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(new Object()));
+	}
+
+	public void testComputeAdornmentNoValidationErrors() throws CoreException, WsDOMLoadCanceledException
+	{
+		createWsContent("MyPort", "myMethod", "myParam", "MyService");
+		initWsDomObjects();
+		checkNoErrorsAdornment();
+	}
+
+	public void testComputeAdornmentForSeiError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
+	{
+		createWsContent("", "myMethod", "myParam", "MyService");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+		
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
+
+	public void testComputeAdornmentForWebMethodError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
+	{
+		createWsContent("MyPort", "", "myParam", "MyService");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+		
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
+
+	public void testComputeAdornmentForWebParamError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
+	{
+		createWsContent("MyPort", "MyMethod", "", "MyService");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webParam));
+		
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
+
+	public void testComputeAdornmentForWsImplError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
+	{
+		createWsContent("MyPort", "MyMethod", "myParam", "");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+		
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
+
+	private void createWsContent(final String seiName, final String webMethodName, final String paramName, final String serviceName) throws CoreException, WsDOMLoadCanceledException
+	{
+		final IProject webP = TestProjectsUtils.createWeb25Project("WebTester" + System.currentTimeMillis());
+		testProject = new TestProject(webP);
+		testProject.setAptProcessingEnabled(true, false);
+		testPackage = testProject.createPackage("test");
+
+		seiType = testProject.createType(testPackage, "ISei.java", MessageFormat.format(SEI_CONTENT, seiName, webMethodName, paramName));
+		wsImplType = testProject.createType(testPackage, "EndpointClass.java", MessageFormat.format(IMPL_CONTENT, serviceName));
+		testProject.build(IncrementalProjectBuilder.CLEAN_BUILD);
+	}
+
+	private void initWsDomObjects() throws WsDOMLoadCanceledException
+	{
+		final IDOM jaxwsDom = WsDOMRuntimeManager.instance().getDOMRuntime(Jee5WsDomRuntimeExtension.ID).getDOM();
+		wsProject = DomUtil.INSTANCE.findProjectByName(jaxwsDom, testProject.getProject().getName());
+		assertNotNull("Web service project not initialized", wsProject);
+
+		Assertions.waitAssert(new IWaitCondition()
+		{
+			public boolean checkCondition() throws ConditionCheckException
+			{
+				return wsProject.getWebServices().size() > 0 && wsProject.getWebServices().size() > 0;
+			}
+		}, "Web services did not appear in DOM");
+
+		ws = wsProject.getWebServices().iterator().next();
+		sei = wsProject.getServiceEndpointInterfaces().iterator().next();
+		webMethod = sei.getWebMethods().iterator().next();
+		webParam = webMethod.getParameters().iterator().next();
+
+		wsChildList = mock(IWebServiceChildList.class);
+		wsChildList.stubs().method("getWSChildList").will(returnValue(elist(ws)));
+		seiChildList = mock(ISEIChildList.class);
+		seiChildList.stubs().method("getSEIChildList").will(returnValue(elist(sei)));
+	}
+
+	private void waitForAptMarkersAppear()
+	{
+		Assertions.waitAssert(new IWaitCondition()
+		{
+			public boolean checkCondition() throws ConditionCheckException
+			{
+				try
+				{
+					return testProject.getProject().findMarkers(AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER, false, IResource.DEPTH_INFINITE).length > 0;
+				} catch (CoreException e)
+				{
+					throw new ConditionCheckException(e);
+				}
+			}
+		}, "APT markers did not appear");
+	}
+
+	private void waitForNoAptMarkers()
+	{
+		Assertions.waitAssert(new IWaitCondition()
+		{
+			public boolean checkCondition() throws ConditionCheckException
+			{
+				try
+				{
+					return testProject.getProject().findMarkers(AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER, false, IResource.DEPTH_INFINITE).length == 0;
+				} catch (CoreException e)
+				{
+					throw new ConditionCheckException(e);
+				}
+			}
+		}, "APT markers did not disappear");
+	}
+
+	private EList<EObject> elist(final EObject... elements)
+	{
+		final EList<EObject> result = new BasicEList<EObject>();
+		for (EObject eObj : elements)
+		{
+			result.add(eObj);
+		}
+
+		return result;
+	}
+
+	private void fixAptErrors() throws CoreException, AnnotationGeneratorException
+	{
+		final AnnotationWriter annWriter = AnnotationWriter.getInstance();
+
+		final IAnnotationInspector seiInspector = AnnotationFactory.createAnnotationInspector(seiType);
+		final IAnnotation<IType> seiWsAnnotation = seiInspector.inspectType("javax.jws.WebService");
+		seiWsAnnotation.getParamValuePairs().clear();
+		annWriter.update(seiWsAnnotation);
+
+		final IMethod seiMethod = seiType.getMethods()[0];
+		final IAnnotation<IMethod> seiWebMethodAnnotation = seiInspector.inspectMethod(seiMethod, "javax.jws.WebMethod");
+		annWriter.remove(seiWebMethodAnnotation);
+
+		final ITypeParameter seiMethodParam = seiMethod.getTypeParameter(seiMethod.getParameterNames()[0]);
+		final IAnnotation<ITypeParameter> seiWebParamAnnotation = seiInspector.inspectParam(seiMethodParam, "javax.jws.WebParam");
+		annWriter.remove(seiWebParamAnnotation);
+
+		final IAnnotationInspector wsImplInspector = AnnotationFactory.createAnnotationInspector(wsImplType);
+		final IAnnotation<IType> wsImplWsAnnotation = wsImplInspector.inspectType("javax.jws.WebService");
+		final Set<IParamValuePair> newAnnValues = new HashSet<IParamValuePair>();
+		for (IParamValuePair pair : wsImplWsAnnotation.getParamValuePairs())
+		{
+			if (pair.getParam().equals("serviceName"))
+			{
+				newAnnValues.add(AnnotationFactory.createParamValuePairValue("serviceName", AnnotationFactory.createStringValue("MyServiceName")));
+			} else
+			{
+				newAnnValues.add(pair);
+			}
+		}
+		wsImplWsAnnotation.getParamValuePairs().clear();
+		wsImplWsAnnotation.getParamValuePairs().addAll(newAnnValues);
+		annWriter.update(wsImplWsAnnotation);
+		waitForNoAptMarkers();
+	}
+	
+	private void checkNoErrorsAdornment()
+	{
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+	}
+
+	private class MyWebServiceProblemsDecorator extends WebServiceProblemsDecorator
 	{
 		@Override
-		protected boolean isRelevant(final String implementation, final IMarker marker) throws CoreException {
-			return super.isRelevant(implementation, marker);
-		}
-		
-		@Override
-		protected boolean isRelevantFor(final EObject eObject, final IMarker marker) throws CoreException {
-			return super.isRelevantFor(eObject, marker);
-		}
-		
-		@Override
-		protected boolean isRelevantForMethod(final IWebMethod webMethod, final IMarker marker) throws CoreException {
-			return super.isRelevantForMethod(webMethod, marker);
-		}
-		
-		@Override
-		protected Severity defineSeverity(final EObject eObject, final IResource resource) throws CoreException {
-			return super.defineSeverity(eObject, resource);
-		}
-		
-		@Override
-		protected Severity defineSeverity(final Object obj) {
-			return super.defineSeverity(obj);
+		public int computeAdornmentFlags(Object obj)
+		{
+			return super.computeAdornmentFlags(obj);
 		}
 	}
 }

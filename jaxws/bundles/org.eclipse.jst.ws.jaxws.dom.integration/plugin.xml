@@ -131,29 +131,4 @@
 		</factory>		
    </extension>
 <!-- }}} -->
-<!-- {{{ Defines integration for WST validation framework -->
-   <extension
-	         id="wsValidator"
-	         name="%DomValidator_Name"
-	         point="org.eclipse.wst.validation.validator">
-	      	<validator>
-		         <filter objectClass="org.eclipse.core.resources.IFile" nameFilter="*.java" />
-		         <markerId markerIdValue="WsValidatorMarker" />
-		         <helper
-		               class="org.eclipse.jst.ws.jaxws.dom.integration.validation.DomValidationHelper">
-		         </helper>
-		         <run
-		               class="org.eclipse.jst.ws.jaxws.dom.integration.validation.DomValidationManager">
-		         </run>
-	      	</validator>	      	
-	</extension>
-	<extension
-         id="WsValidatorMarker"
-         name="%DomValidation_MarkerName"
-         point="org.eclipse.core.resources.markers">
-      <super type="org.eclipse.core.resources.problemmarker"/>
-      <super type="org.eclipse.core.resources.textmarker"/>      
-      <persistent value="true" />
-      <attribute name="implementation"/>
-   </extension>
 </plugin>

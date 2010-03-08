@@ -10,63 +10,81 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.validation.service.IValidationListener;
-import org.eclipse.emf.validation.service.ModelValidationService;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.apt.core.internal.AptPlugin;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
-import org.eclipse.jst.ws.jaxws.dom.runtime.validation.JaxWsDomValidator;
-import org.eclipse.jst.ws.jaxws.dom.runtime.validation.WsProblemsReporter;
-import org.eclipse.jst.ws.jaxws.testutils.jmock.Mock;
 import org.eclipse.jst.ws.jaxws.testutils.jmock.MockObjectTestCase;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
+import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
 import org.eclipse.jst.ws.jaxws.utils.resources.FileUtils;
-import org.jmock.core.Constraint;
 
+@SuppressWarnings("restriction")
 public class ValidationTestsSetUp extends MockObjectTestCase
 {
+	/**
+	 * The APT nonreconcile marker ID
+	 */
+	protected static final String VALIDATION_PROBLEM_MARKER_ID = AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER;
+	
 	protected TestProject testProject;
 	protected JaxWsWorkspaceResource target;
 	protected IPackageFragment testPack;
-	private JaxWsDomValidator validator;
 	protected DomUtil util = DomUtil.INSTANCE;
 	
 	@Override
 	public void setUp() throws Exception
 	{
-		testProject = new TestProject();
-		testProject.createSourceFolder("src");
-		testPack = testProject.createPackage("test");
-		validator = new JaxWsDomValidator();
+		final TestProject[] fixtureProjects = createFixtureProjects();
 		
 		IJavaModel javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
-		target = new JaxWsWorkspaceResource(javaModel) 
+		target = new JaxWsWorkspaceResource(javaModel)
 		{
 			@Override
-			public boolean approveProject(IJavaProject prj) {
-				return prj.getElementName().equals(testProject.getJavaProject().getElementName());
+			public boolean approveProject(IJavaProject prj)
+			{
+				for (TestProject tp : fixtureProjects)
+				{
+					if (prj.getElementName().equals(tp.getJavaProject().getElementName()))
+					{
+						return true;
+					}
+				}
+
+				return false;
 			}
 		};
 		target.load(null);
 		target.startSynchronizing();
+	}
+	
+	protected TestProject[] createFixtureProjects() throws CoreException
+	{
+		testProject = new TestProject();
+		testProject.createSourceFolder("src");
+		testPack = testProject.createPackage("test");
+		testProject.setAptProcessingEnabled(true, false);
+		testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD);
+		
+		return new TestProject[]{testProject};
 	}
 
 	@Override
@@ -74,8 +92,13 @@ public class ValidationTestsSetUp extends MockObjectTestCase
 	{
 		super.tearDown();
 		try {
-			testProject.dispose();
+			disposeFixtureProjects();
 		} catch (Exception _) {}
+	}
+	
+	protected void disposeFixtureProjects() throws CoreException
+	{
+		testProject.dispose();
 	}
 
 	protected IWebService findWs(String wsFQName)
@@ -90,116 +113,144 @@ public class ValidationTestsSetUp extends MockObjectTestCase
 		return util.findSeiByImplName(wsProject, seiFQName);		
 	}
 	
-	protected void setContents(final ICompilationUnit cu, final String contents) throws JavaModelException 
+	protected void setContents(final ICompilationUnit cu, final String contents) throws CoreException
 	{
-		String newContent = "import " + testPack.getElementName() + ";\n" + contents;
-		FileUtils.getInstance().setCompilationUnitContent(cu, newContent, false, null);
-	}
-
-	/**
-	 * Forces validation of the object specified and verifies that the resource is marked with a marker which has the supplied properties  
-	 * @param object the object to validate
-	 * @param markersExpectations expectations for resource markers 
-	 */
-	protected void validate(final EObject object, final MarkerData... markersExpectations)
-	{
-		final List<IValidationListener> testListeners = new LinkedList<IValidationListener>();
-		final Map<IResource, Mock<IResource>> resourceToMockMap = new HashMap<IResource, Mock<IResource>>();
-		try
+		final IWorkspaceRunnable setContentsRunnable = new IWorkspaceRunnable()
 		{
-			for(MarkerData expectation : markersExpectations)
+			public void run(IProgressMonitor monitor) throws CoreException
 			{
-				Mock<IResource> resource = resourceToMockMap.get(expectation.resource);
-				if(resource == null)
-				{
-					resource = mock(IResource.class, "Mock for resource '" + expectation.resource.getName() + "'");
-					resourceToMockMap.put(expectation.resource, resource);
-				}
-				
-				// No marker attributes => assume no markers are expected
-				if(expectation.markerAttributes.isEmpty())
-				{
-					continue;
-				}
-				final IMarker marker = createMarkerWithExpectations(resource, expectation.markerType, expectation.markerAttributes);
-				resource.expects(once()).method("createMarker").with(eq(expectation.markerType)).will(returnValue(marker));
-				
-				final TestValidationListener l = new TestValidationListener(expectation.resource, resource.proxy(), new WsProblemsReporter(), this);
-				testListeners.add(l);
-				ModelValidationService.getInstance().addValidationListener(l);
-			}
-			
-			validator.validate(object);
-		}
-		finally
-		{
-			for(IValidationListener l : testListeners)
-			{
-				ModelValidationService.getInstance().removeValidationListener(l);
-			}
-		}
-		
-	}
-	
-	private IMarker createMarkerWithExpectations(final Mock<IResource> resourceMock, final String markerType, final Map<Object, Constraint> markerAttributes)
-	{
-		final Mock<IMarker> markerMock = mock(IMarker.class);
-		for (final Object propKey : markerAttributes.keySet())
-		{
-			markerMock.expects(once()).method("setAttribute").with(eq(propKey), markerAttributes.get(propKey));
-		}
-
-		// Accept setting other attributes
-		markerMock.stubs().method("setAttribute").with(notInConstraint(markerAttributes.keySet()), ANYTHING);
-		
-		return markerMock.proxy();
-	}
-
-	private Constraint notInConstraint(final Set<Object> set)
-	{
-		return new Constraint()
-		{
-			public boolean eval(Object arg0)
-			{
-				return !set.contains(arg0);
-			}
-
-			public StringBuffer describeTo(StringBuffer arg0)
-			{
-				return arg0;
+				String newContent = "package " + testPack.getElementName() + ";\n" + contents;
+				FileUtils.getInstance().setCompilationUnitContent(cu, newContent, false, monitor);
+				cu.getResource().getProject().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
 			}
 		};
+
+		TestProjectsUtils.executeWorkspaceRunnable(setContentsRunnable);
 	}
 
-	protected void assertNoValidationErrors(final IResource validatedResource, final String markerType, final EObject eObject)
+	/**
+	 * Validates whether the resource specified has markers with the specified expecteations
+	 * 
+	 * @param resource
+	 *            the resource to validate
+	 * @param markersExpectations
+	 *            expectations for resource markers
+	 * @throws CoreException
+	 */
+	protected void validateResourceMarkers(final IResource resource, final MarkerData... markersExpectations) throws CoreException
 	{
-		final MarkerData noErrorsData = new MarkerData(validatedResource, markerType, new HashMap<Object, Constraint>());
-		validate(eObject, noErrorsData);
+		validateMarkerCount(resource, markersExpectations);
+		for (MarkerData mData : markersExpectations)
+		{
+			validateSingleResourceMarker(resource, mData);
+		}
 	}
 	
+	private void validateMarkerCount(final IResource resource, final MarkerData... markersExpectations) throws CoreException
+	{
+		final Map<String, Integer> markersCount = new HashMap<String, Integer>();
+		for(MarkerData md : markersExpectations)
+		{
+			if(markersCount.get(md.markerType) == null)
+			{
+				markersCount.put(md.markerType, 0);
+			}
+			markersCount.put(md.markerType, markersCount.get(md.markerType) +1);
+		}
+		
+		for(MarkerData md : markersExpectations)
+		{
+			final IMarker[] markers = resource.findMarkers(md.markerType, true, IResource.DEPTH_INFINITE);
+			final int markersFound = markers == null ? 0 : markers.length;
+			assertEquals(MessageFormat.format("Unexpected count of markers of type {0}", md.markerType), markersCount.get(md.markerType), new Integer(markersFound));
+		}
+	}
+
+	private void validateSingleResourceMarker(final IResource resource, final MarkerData markerExpectation) throws CoreException
+	{
+		final IMarker[] markers = resource.findMarkers(markerExpectation.markerType, true, IResource.DEPTH_INFINITE);
+		assertTrue(MessageFormat.format("No markers with type {0} found in resource {1}", markerExpectation.markerType, resource.getName()), markers.length > 0);
+
+		boolean found = false;
+		for (IMarker m : markers)
+		{
+			found = found || markerHasAttributes(m, markerExpectation.markerAttributes);
+		}
+
+		assertTrue("Could not find marker with attributes specified: " + markerExpectation.markerAttributes, found);
+	}
+
+	private boolean markerHasAttributes(final IMarker marker, final Map<String, Object> attributes) throws CoreException
+	{
+		if (marker.getAttributes() == null || marker.getAttributes().isEmpty())
+		{
+			return false;
+		}
+
+		for (String attributeName : attributes.keySet())
+		{
+			final Object markerAttribute = getMarkerAttribute(marker, attributeName);
+			if (markerAttribute == null)
+			{
+				return false;
+			}
+
+			if (attributes.get(attributeName).equals(markerAttribute))
+			{
+				continue;
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	private Object getMarkerAttribute(final IMarker marker, final String attributeName)
+	{
+		try
+		{
+			return marker.getAttribute(attributeName);
+		} catch (CoreException e)
+		{
+			return null;
+		}
+	}
+
+	protected void assertNoValidationErrors(final IResource validatedResource, final String markerType) throws CoreException
+	{
+		final IMarker[] foundMarkers = validatedResource.findMarkers(markerType, true, IResource.DEPTH_INFINITE);
+		final int markersCount = (foundMarkers == null ? 0 : foundMarkers.length);
+		assertEquals("Markers unexpectedly found", 0, markersCount);
+	}
+
 	/**
 	 * Metadata for markers (instances of {@link IMarker} on resources
+	 * 
 	 * @author I030720
 	 */
 	protected class MarkerData
 	{
 		protected final IResource resource;
-		protected final Map<Object, Constraint> markerAttributes;
+		protected final Map<String, Object> markerAttributes;
 		protected final String markerType;
 
 		/**
 		 * Constructor
-		 * @param resource the resource the marker belongs to
-		 * @param markerType the marker type
-		 * @param markersAttributes a properties map containing marker attributes names as keys and expectations for attribute values 
-		 * @see IMarker#getAttribute(String) 
+		 * 
+		 * @param resource
+		 *            the resource the marker belongs to
+		 * @param markerType
+		 *            the marker type
+		 * @param markersAttributes
+		 *            a properties map containing marker attributes names as keys and expected attribute values
+		 * @see IMarker#getAttribute(String)
 		 */
-		public MarkerData(final IResource resource,  final String markerType, final Map<Object, Constraint> markerAttributes)
+		public MarkerData(final IResource resource, final String markerType, final Map<String, Object> markerAttributes)
 		{
 			this.resource = resource;
 			this.markerAttributes = markerAttributes;
 			this.markerType = markerType;
 		}
 	}
-	
 }
