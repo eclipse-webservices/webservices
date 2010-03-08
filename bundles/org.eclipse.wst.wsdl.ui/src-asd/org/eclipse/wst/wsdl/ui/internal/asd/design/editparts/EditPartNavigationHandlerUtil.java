@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,11 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.InterfaceColumn;
+import org.eclipse.wst.wsdl.ui.internal.asd.design.editparts.model.ServiceColumn;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.figures.ComponentReferenceConnection;
 
 
@@ -164,6 +167,99 @@ class EditPartNavigationHandlerUtil
     return result;
   }
   
+  static EditPart getFirstBinding(EditPart editPart) 
+  {
+	  if (editPart == null) return null;
+	  
+	  RootEditPart rootEditPart = editPart.getRoot();
+	  if (rootEditPart == null) return null;
+	  
+	  List rootEditPartChildren = rootEditPart.getChildren();
+	  if (rootEditPartChildren == null || rootEditPartChildren.size() != 1) return null;
+	  
+	  Object definitionObject = rootEditPartChildren.get(0);
+	  if (! (definitionObject instanceof DefinitionsEditPart)) return null;
+	  
+	  DefinitionsEditPart definitionsEditPart = (DefinitionsEditPart) definitionObject;
+	  
+	  List children = definitionsEditPart.getChildren();
+	  for (int i = 0; i < children.size(); i++) {
+		  if (children.get(i) instanceof BindingColumnEditPart) {
+			  List bindings = ((BindingColumnEditPart) children.get(i)).getChildren();
+			  if (bindings != null && bindings.size() > 0 && bindings.get(0) instanceof BindingEditPart) 
+				  return (BindingEditPart) bindings.get(0);
+		  }
+	  }
+	  return null;
+  }
+  
+  static EditPart getFirstService(EditPart editPart) 
+  {
+	  if (editPart == null) return null;
+	  
+	  RootEditPart rootEditPart = editPart.getRoot();
+	  if (rootEditPart == null) return null;
+	  
+	  List rootEditPartChildren = rootEditPart.getChildren();
+	  if (rootEditPartChildren == null || rootEditPartChildren.size() != 1) return null;
+	  
+	  Object definitionObject = rootEditPartChildren.get(0);
+	  if (! (definitionObject instanceof DefinitionsEditPart)) return null;
+	  
+	  DefinitionsEditPart definitionsEditPart = (DefinitionsEditPart) definitionObject;
+	  
+	  List children = definitionsEditPart.getChildren();
+	  for (int i = 0; i < children.size(); i++) {
+		  Object child = children.get(i);
+		  if (child instanceof ColumnEditPart) {
+			  ColumnEditPart column = (ColumnEditPart) child;
+			  Object model = column.getModel();
+			  
+			  if (model instanceof ServiceColumn) {
+				  List services = column.getChildren();
+				  if (services != null && services.size() > 0 && services.get(0) instanceof ServiceEditPart) {
+					  return (ServiceEditPart) services.get(0);
+				  }
+			  }
+		  }
+	  }
+	  return null;
+  }
+  
+  static EditPart getFirstInterface(EditPart editPart) 
+  {
+	  if (editPart == null) return null;
+	  
+	  RootEditPart rootEditPart = editPart.getRoot();
+	  if (rootEditPart == null) return null;
+	  
+	  List rootEditPartChildren = rootEditPart.getChildren();
+	  if (rootEditPartChildren == null || rootEditPartChildren.size() != 1) return null;
+	  
+	  Object definitionObject = rootEditPartChildren.get(0);
+	  if (! (definitionObject instanceof DefinitionsEditPart)) return null;
+	  
+	  DefinitionsEditPart definitionsEditPart = (DefinitionsEditPart) definitionObject;
+	  
+	  List children = definitionsEditPart.getChildren();
+	  for (int i = 0; i < children.size(); i++) {
+		  Object child = children.get(i);
+		  if (child instanceof ColumnEditPart) {
+			  ColumnEditPart column = (ColumnEditPart) child;
+			  Object model = column.getModel();
+			  
+			  if (model instanceof InterfaceColumn) {
+				  List interfaces = column.getChildren();
+				  if (interfaces != null && interfaces.size() > 0 && interfaces.get(0) instanceof InterfaceEditPart) {
+					  return (InterfaceEditPart) interfaces.get(0);
+				  }
+			  }
+		  }
+	  }
+	  return null;
+  }
+  
+
   static EditPart getSourceConnectionEditPart(AbstractGraphicalEditPart editPart)
   {
     // find the first connection that targets this editPart

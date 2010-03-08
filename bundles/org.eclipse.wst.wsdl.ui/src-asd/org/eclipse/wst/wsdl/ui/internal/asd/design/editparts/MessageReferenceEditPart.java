@@ -268,7 +268,7 @@ public class MessageReferenceEditPart extends BaseEditPart implements IFeedbackH
   public EditPart getRelativeEditPart(int direction)
   {  
     EditPart editPart = super.getRelativeEditPart(direction);
-    if (direction == PositionConstants.SOUTH && editPart == null)
+    if (direction == PositionConstants.SOUTH && (editPart == null || editPart == this))
     {
       editPart = EditPartNavigationHandlerUtil.getNextInterface(this);
     }        

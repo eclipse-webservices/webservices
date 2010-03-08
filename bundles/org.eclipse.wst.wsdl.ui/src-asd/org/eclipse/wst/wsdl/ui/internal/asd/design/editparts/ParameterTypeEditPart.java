@@ -317,7 +317,7 @@ public class ParameterTypeEditPart extends BaseEditPart implements IFeedbackHand
 	public EditPart getRelativeEditPart(int direction)
 	{         
 		EditPart editPart = super.getRelativeEditPart(direction);
-		if (direction == PositionConstants.SOUTH && editPart == null)
+		if (direction == PositionConstants.SOUTH && (editPart == null || editPart == this))
 		{
 			editPart = EditPartNavigationHandlerUtil.getNextInterface(this);
 		}   

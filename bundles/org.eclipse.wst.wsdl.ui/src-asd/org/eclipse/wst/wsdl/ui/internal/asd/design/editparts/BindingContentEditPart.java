@@ -19,8 +19,10 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.asd.design.DesignViewGraphicsConstants;
@@ -113,5 +115,15 @@ public class BindingContentEditPart extends BaseEditPart
         accessibleName = namedObject.getName();
     }
     return accessibleName;
+  }
+
+
+  public EditPart getRelativeEditPart(int direction) {
+	  EditPart editPart = super.getRelativeEditPart(direction);
+	  if (direction == PositionConstants.SOUTH && (editPart == null || editPart == this))
+	  {
+		  editPart = EditPartNavigationHandlerUtil.getNextSibling(getParent());           
+	  }       
+	  return editPart;
   }
 }

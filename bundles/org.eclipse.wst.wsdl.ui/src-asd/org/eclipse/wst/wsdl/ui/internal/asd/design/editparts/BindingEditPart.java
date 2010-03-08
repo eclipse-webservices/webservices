@@ -201,14 +201,30 @@ public class BindingEditPart extends BaseConnectedEditPart
       }
       else
       {
-    	  return null;
+    	  // or to the first unconnected interface
+    	  return EditPartNavigationHandlerUtil.getFirstInterface(this);
       }
     }  
     else if (direction == PositionConstants.WEST)
     {
-      // navigate backward along the connection (to the left)
-      return EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);
-    }      
+      // navigate backward along the connection (to the left) or to the first unconnected service
+    	EditPart connectedService = EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);
+    	if (connectedService != null) {
+    		return connectedService;
+    	} else {
+    		return EditPartNavigationHandlerUtil.getFirstService(this);
+    	}
+    }
+    else if (direction == PositionConstants.NORTH) {
+    	return EditPartNavigationHandlerUtil.getPrevSibling(this);
+    } else if (direction == PositionConstants.SOUTH && !isExpanded()) {
+    	EditPart nextSibling = EditPartNavigationHandlerUtil.getNextSibling(this);
+    	if (nextSibling != null) {
+    		return nextSibling;
+    	} else {
+    		return this; 
+    	}
+    }
     return super.getRelativeEditPart(direction);
   }
 

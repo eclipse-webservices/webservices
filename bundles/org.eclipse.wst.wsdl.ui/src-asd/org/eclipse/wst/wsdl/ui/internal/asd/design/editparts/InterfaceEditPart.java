@@ -157,11 +157,22 @@ public class InterfaceEditPart extends AbstractBoxtEditPart implements IFeedback
 
   public EditPart getRelativeEditPart(int direction)
   {
-    if (direction == PositionConstants.WEST)
-    {
-      return EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);     
-    }  
-    return super.getRelativeEditPart(direction);
+	  if (direction == PositionConstants.WEST)
+	  {
+		  EditPart connectedBinding = EditPartNavigationHandlerUtil.getSourceConnectionEditPart(this);
+		  if (connectedBinding != null) {
+			  return connectedBinding;
+		  } else {
+			  return EditPartNavigationHandlerUtil.getFirstBinding(this); 
+		  }
+	  }  
+
+	  EditPart editPart = super.getRelativeEditPart(direction);
+	  if (direction == PositionConstants.NORTH && (editPart == null || editPart == this))
+	  {
+		  editPart = EditPartNavigationHandlerUtil.getPrevSibling(this);
+	  }        
+	  return editPart;
   }
   
   public IFigure getLinkIconColumn() {

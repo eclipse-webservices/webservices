@@ -290,7 +290,8 @@ public class EndPointEditPart extends BaseConnectedEditPart implements IFeedback
       }
       else
       {
-          return null;
+    	  // or to the first unconnected binding
+          return EditPartNavigationHandlerUtil.getFirstBinding(this);
       }
     }
     
