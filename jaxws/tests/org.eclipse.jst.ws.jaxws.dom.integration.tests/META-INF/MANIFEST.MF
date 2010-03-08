@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit.ui,
  org.eclipse.jface.text,
  org.eclipse.jdt.ui,
- org.eclipse.jdt.apt.core;bundle-version="3.3.400"
+ org.eclipse.jdt.apt.core
 Export-Package: org.eclipse.jst.ws.jaxws.dom.integration.tests.dom,
  org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator,
  org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator.actions

@@ -106,16 +106,18 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
     }
 
     private URL getRelativeURL(ClassDeclaration classDeclaration, String wsdlLocation) {
-        EclipseAnnotationProcessorEnvironment eclipseEnvironment = (EclipseAnnotationProcessorEnvironment) environment;
-        IJavaProject javaProject = eclipseEnvironment.getJavaProject();
-        IFolder webContentFolder = WSDLUtils.getWebContentFolder(javaProject.getProject());
-        if (webContentFolder != null) {
-            IResource wsdlResource = webContentFolder.findMember(wsdlLocation);
-            if (wsdlResource != null) {
-                try {
-                    return wsdlResource.getLocationURI().toURL();
-                } catch (MalformedURLException murle) {
-                    JAXWSCorePlugin.log(murle);
+        if (environment instanceof EclipseAnnotationProcessorEnvironment) {
+            EclipseAnnotationProcessorEnvironment eclipseEnvironment = (EclipseAnnotationProcessorEnvironment) environment;
+            IJavaProject javaProject = eclipseEnvironment.getJavaProject();
+            IFolder webContentFolder = WSDLUtils.getWebContentFolder(javaProject.getProject());
+            if (webContentFolder != null) {
+                IResource wsdlResource = webContentFolder.findMember(wsdlLocation);
+                if (wsdlResource != null) {
+                    try {
+                        return wsdlResource.getLocationURI().toURL();
+                    } catch (MalformedURLException murle) {
+                        JAXWSCorePlugin.log(murle);
+                    }
                 }
             }
         }

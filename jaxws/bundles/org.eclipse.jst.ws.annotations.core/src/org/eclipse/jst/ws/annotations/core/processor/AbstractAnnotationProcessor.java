@@ -10,15 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.annotations.core.processor;
 
-import java.util.Collection;
-
 import org.eclipse.jdt.apt.core.util.EclipseMessager;
 
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-import com.sun.mirror.declaration.AnnotationMirror;
-import com.sun.mirror.declaration.AnnotationTypeDeclaration;
-import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.util.SourcePosition;
 
 /**
@@ -52,24 +47,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     public abstract void process();
 
     /**
-     * 
-     * @param annotationDeclaration
-     * @param methodDeclaration
-     * @param errorMessage the message, or an empty string if none
-     */
-    protected void printError(AnnotationTypeDeclaration annotationDeclaration ,
-            MethodDeclaration methodDeclaration, String errorMessage) {
-
-        Collection<AnnotationMirror> annotationMirrors = methodDeclaration.getAnnotationMirrors();
-        for (AnnotationMirror mirror : annotationMirrors) {
-            if (mirror.getAnnotationType().toString().equals(annotationDeclaration.getQualifiedName())) {
-                environment.getMessager().printError(mirror.getPosition(), errorMessage);
-            }
-        }
-    }
-
-    /**
-     * 
+     * Prints an error message.
      * @param position the position where the error occured, or null if it is unknown or not applicable
      * @param message the message, or an empty string if none
      */
@@ -78,7 +56,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     }
 
     /**
-     * 
+     * Prints an error message.
      * @param message the message, or an empty string if none
      */
     protected void printError(String message) {
@@ -86,7 +64,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     }
 
     /**
-     * 
+     * Prints a warning message.
      * @param position the position where the warning occured, or null if it is unknown or not applicable
      * @param message the message, or an empty string if none
      */
@@ -95,7 +73,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     }
 
     /**
-     * 
+     * Prints a warning message.
      * @param message the message, or an empty string if none
      */
     protected void printWarning(String message) {
@@ -103,7 +81,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     }
 
     /**
-     * 
+     * Prints a notice.
      * @param position the position where the notice occured, or null if it is unknown or not applicable
      * @param message the message, or an empty string if none
      */
@@ -112,7 +90,7 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     }
 
     /**
-     * 
+     * Prints a notice.
      * @param message the message, or an empty string if none
      */
     protected void printNotice(String message) {
@@ -120,84 +98,110 @@ public abstract class AbstractAnnotationProcessor implements AnnotationProcessor
     }
 
     /**
-     * 
+     * Print an error including the given arguments for use in quick-fixes.
      * @param position position of the error
      * @param message message to display to the user
      */
     protected void printFixableError(SourcePosition position, String message) {
-        EclipseMessager messager = (EclipseMessager) environment.getMessager();
-        messager.printFixableError(position, message, "", message);
+        if (environment.getMessager() instanceof EclipseMessager) {
+            EclipseMessager messager = (EclipseMessager) environment.getMessager();
+            messager.printFixableError(position, message, "", message);
+        } else {
+            printError(position, message);
+        }
     }
 
     /**
-     * 
+     * Print an error including the given arguments for use in quick-fixes.
      * @param position position of the error
      * @param message message to display to the user
-     * @param pluginId plugin which will provide an apt quick fix processor for this error. Cannot be null.
-     * @param errorId
+     * @param pluginId plug-in which will provide a java quick fix processor for this error. Cannot be null.
+     * @param errorId a plug-in provided error code which will be meaningful to the java quick fix processor. Cannot be null.
      */
     protected void printFixableError(SourcePosition position, String message, String pluginId, String errorId) {
-        EclipseMessager messager = (EclipseMessager) environment.getMessager();
-        messager.printFixableError(position, message, pluginId, errorId);
+        if (environment.getMessager() instanceof EclipseMessager) {
+            EclipseMessager messager = (EclipseMessager) environment.getMessager();
+            messager.printFixableError(position, message, pluginId, errorId);
+        } else {
+            printError(position, message);
+        }
     }
 
     /**
-     * 
+     * Print an error including the given arguments for use in quick-fixes.
      * @param message message to display to the user
-     * @param pluginId plugin which will provide an apt quick fix processor for this error. Cannot be null.
-     * @param errorId
+     * @param pluginId plug-in which will provide a java quick fix processor for this error. Cannot be null.
+     * @param errorId a plug-in provided error code which will be meaningful to the java quick fix processor. Cannot be null.
      */
     protected void printFixableError(String message, String pluginId, String errorId) {
-        EclipseMessager messager = (EclipseMessager) environment.getMessager();
-        messager.printFixableError(message, pluginId, errorId);
+        if (environment.getMessager() instanceof EclipseMessager) {
+            EclipseMessager messager = (EclipseMessager) environment.getMessager();
+            messager.printFixableError(message, pluginId, errorId);
+        } else {
+            printError(message);
+        }
     }
 
     /**
-     * 
+     * Print a warning including the given arguments for use in quick-fixes.
      * @param position position of the warning
      * @param message message to display to the user
-     * @param pluginId plugin which will provide an apt quick fix processor for this error. Cannot be null.
-     * @param errorId
+     * @param pluginId plug-in which will provide a java quick fix processor for this error. Cannot be null.
+     * @param errorId a plug-in provided error code which will be meaningful to the java quick fix processor. Cannot be null.
      */
-    protected void printFixableWarning(SourcePosition position, String message, String pluginId,
-            String errorId) {
-        EclipseMessager messager = (EclipseMessager) environment.getMessager();
-        messager.printFixableWarning(position, message, pluginId, errorId);
+    protected void printFixableWarning(SourcePosition position, String message, String pluginId, String errorId) {
+        if (environment.getMessager() instanceof EclipseMessager) {
+            EclipseMessager messager = (EclipseMessager) environment.getMessager();
+            messager.printFixableWarning(position, message, pluginId, errorId);
+        } else {
+            printWarning(position, message);
+        }
     }
 
     /**
-     * 
+     * Print a warning including the given arguments for use in quick-fixes.
      * @param message message to display to the user
-     * @param pluginId plugin which will provide an apt quick fix processor for this error. Cannot be null.
-     * @param errorId
+     * @param pluginId plug-in which will provide a java quick fix processor for this error. Cannot be null.
+     * @param errorId a plug-in provided error code which will be meaningful to the java quick fix processor. Cannot be null.
      */
     protected void printFixableWarning(String message, String pluginId, String errorId) {
-        EclipseMessager messager = (EclipseMessager) environment.getMessager();
-        messager.printFixableWarning(message, pluginId, errorId);
+        if (environment.getMessager() instanceof EclipseMessager) {
+            EclipseMessager messager = (EclipseMessager) environment.getMessager();
+            messager.printFixableWarning(message, pluginId, errorId);
+        } else {
+            printWarning(message);
+        }
     }
 
     /**
-     * 
+     * Print a notice including the given arguments for use in quick-fixes.
      * @param position position of the notice
      * @param message message to display to the user
-     * @param pluginId plugin which will provide an apt quick fix processor for this error. Cannot be null.
-     * @param errorId
+     * @param pluginId plug-in which will provide a java quick fix processor for this error. Cannot be null.
+     * @param errorId a plug-in provided error code which will be meaningful to the java quick fix processor. Cannot be null.
      */
     protected void printFixableNotice(SourcePosition position, String message, String pluginId, String errorId) {
-        EclipseMessager messager = (EclipseMessager) environment.getMessager();
-        messager.printFixableNotice(position, message, pluginId, errorId);
+        if (environment.getMessager() instanceof EclipseMessager) {
+            EclipseMessager messager = (EclipseMessager) environment.getMessager();
+            messager.printFixableNotice(position, message, pluginId, errorId);
+        } else {
+            printNotice(position, message);
+        }
     }
 
     /**
-     * 
-     * @see org.eclipse.jdt.apt.core.util.EclipseMessager.printFixableNotice
+     * Print a notice including the given arguments for use in quick-fixes.
      * @param message message to display to the user
-     * @param pluginId plugin which will provide an apt quick fix processor for this error. Cannot be null.
-     * @param errorId
+     * @param pluginId plug-in which will provide a java quick fix processor for this error. Cannot be null.
+     * @param errorId a plug-in provided error code which will be meaningful to the java quick fix processor. Cannot be null.
      */
     protected void printFixableNotice(String message, String pluginId, String errorId) {
-        EclipseMessager messager = (EclipseMessager) environment.getMessager();
-        messager.printFixableNotice(message, pluginId, errorId);
+        if (environment.getMessager() instanceof EclipseMessager) {
+            EclipseMessager messager = (EclipseMessager) environment.getMessager();
+            messager.printFixableNotice(message, pluginId, errorId);
+        } else {
+            printNotice(message);
+        }
     }
 
 }
