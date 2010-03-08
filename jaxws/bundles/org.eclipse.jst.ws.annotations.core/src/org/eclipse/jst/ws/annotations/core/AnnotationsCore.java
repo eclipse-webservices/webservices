@@ -220,9 +220,9 @@ public final class AnnotationsCore {
 
             if (value instanceof String) {
                 String stringValue = value.toString();
-                if (stringValue.endsWith(".class")) {
+                if (stringValue.endsWith(".class")) { //$NON-NLS-1$
                     arrayInitializer.expressions().add(createTypeLiteral(ast, stringValue.substring(0,
-                            stringValue.lastIndexOf("."))));
+                            stringValue.lastIndexOf(".")))); //$NON-NLS-1$
                 } else {
                     arrayInitializer.expressions().add(createStringLiteral(ast, stringValue));
                 }

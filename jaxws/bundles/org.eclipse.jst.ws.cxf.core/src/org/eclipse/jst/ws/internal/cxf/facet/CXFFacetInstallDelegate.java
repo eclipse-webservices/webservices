@@ -24,15 +24,8 @@ import org.eclipse.jdt.core.IAccessRule;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.JavaRefFactory;
-import org.eclipse.jst.j2ee.common.CommonFactory;
-import org.eclipse.jst.j2ee.common.Listener;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
-import org.eclipse.jst.j2ee.webapplication.ContextParam;
-import org.eclipse.jst.j2ee.webapplication.ServletType;
-import org.eclipse.jst.j2ee.webapplication.WebapplicationFactory;
 import org.eclipse.jst.javaee.core.Description;
 import org.eclipse.jst.javaee.core.DisplayName;
 import org.eclipse.jst.javaee.core.JavaeeFactory;
@@ -105,58 +98,12 @@ public class CXFFacetInstallDelegate implements IDelegate {
                         addSpringApplicationContextWeb25(project, javaeeWebApp);
                     }
                 }
-                // jst.web 2.4
-                if (modelProvider instanceof org.eclipse.jst.j2ee.webapplication.WebApp) {
-                    org.eclipse.jst.j2ee.webapplication.WebApp webApp =
-                        (org.eclipse.jst.j2ee.webapplication.WebApp) modelProvider;
-                    addCXFJSTWEB24Servlet(project, webApp);
-                    if (useSpringAppContext) {
-                        addSpringApplicationContextWeb24(project, webApp);
-                    }
-                }
             }
         }, null);
 
         if (CXFCorePlugin.getDefault().getJava2WSContext().isAnnotationProcessingEnabled()) {
             AptConfig.setEnabled(JavaCore.create(project), true);
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addSpringApplicationContextWeb24(IProject webProject,
-            org.eclipse.jst.j2ee.webapplication.WebApp webapp) {
-        List contextParams = webapp.getContextParams();
-        for (int i = 0; i < contextParams.size(); i++) {
-            ContextParam contextParam = (ContextParam) contextParams.get(i);
-            if (contextParam.getParamName().equals("contextConfigLocation")) { //$NON-NLS-1$
-                return;
-            }
-        }
-        // org.eclipse.jst.javaee.core.ParamValue
-        List listeners = webapp.getListeners();
-        for (int i = 0; i < listeners.size(); i++) {
-            Listener contextLoaderListener = (Listener) listeners.get(i);
-            if (contextLoaderListener.getListenerClass().getName().equals(
-            "org.springframework.web.context.ContextLoaderListener")) { //$NON-NLS-1$
-                return;
-            }
-        }
-
-        CommonFactory commonFactory = CommonFactory.eINSTANCE;
-        JavaRefFactory javaRefFactory = JavaRefFactory.eINSTANCE;
-
-        org.eclipse.jst.j2ee.common.ParamValue configLocationParam = commonFactory.createParamValue();
-        configLocationParam.setName("contextConfigLocation"); //$NON-NLS-1$
-        configLocationParam.setValue("WEB-INF/beans.xml"); //$NON-NLS-1$
-
-        webapp.getContextParams().add(configLocationParam);
-
-        Listener contextLoaderListener = commonFactory.createListener();
-        JavaClass javaClass = javaRefFactory.createJavaClass();
-        javaClass.setName("org.springframework.web.context.ContextLoaderListener"); //$NON-NLS-1$
-        contextLoaderListener.setListenerClass(javaClass);
-
-        webapp.getListeners().add(contextLoaderListener);
     }
 
     @SuppressWarnings("unchecked")
@@ -192,38 +139,6 @@ public class CXFFacetInstallDelegate implements IDelegate {
         contextLoaderListener.setListenerClass("org.springframework.web.context.ContextLoaderListener"); //$NON-NLS-1$
 
         webapp.getListeners().add(contextLoaderListener);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addCXFJSTWEB24Servlet(IProject webProject, org.eclipse.jst.j2ee.webapplication.WebApp webapp) {
-        List servlets = webapp.getServlets();
-        for (int i = 0; i < servlets.size(); i++) {
-            org.eclipse.jst.j2ee.webapplication.Servlet servlet = (org.eclipse.jst.j2ee.webapplication.Servlet) servlets.get(i);
-            if (servlet.getServletName().equals("cxf")) { //$NON-NLS-1$
-                return;
-            }
-        }
-
-        WebapplicationFactory factory = WebapplicationFactory.eINSTANCE;
-
-        org.eclipse.jst.j2ee.webapplication.Servlet cxfServlet = factory.createServlet();
-        ServletType servletType = factory.createServletType();
-        cxfServlet.setWebType(servletType);
-        cxfServlet.setServletName("cxf"); //$NON-NLS-1$
-        servletType.setClassName("org.apache.cxf.transport.servlet.CXFServlet"); //$NON-NLS-1$
-        cxfServlet.setDisplayName("cxf"); //$NON-NLS-1$
-        cxfServlet.setLoadOnStartup(Integer.valueOf(1));
-
-        webapp.getServlets().add(cxfServlet);
-
-        org.eclipse.jst.j2ee.webapplication.ServletMapping servletMapping = factory.createServletMapping();
-        servletMapping.setServlet(cxfServlet);
-        servletMapping.setUrlPattern("/services/*"); //$NON-NLS-1$
-        webapp.getServletMappings().add(servletMapping);
-
-        org.eclipse.jst.j2ee.webapplication.SessionConfig sessionConfig = factory.createSessionConfig();
-        sessionConfig.setSessionTimeout(60);
-        webapp.setSessionConfig(sessionConfig);
     }
 
     @SuppressWarnings("unchecked")

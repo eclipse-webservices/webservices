@@ -42,12 +42,10 @@ import javax.wsdl.extensions.soap.SOAPBinding;
 import javax.wsdl.extensions.soap12.SOAP12Binding;
 import javax.xml.namespace.QName;
 
-import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.apt.core.env.EclipseAnnotationProcessorEnvironment;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.ws.annotations.core.processor.AbstractAnnotationProcessor;
 import org.eclipse.jst.ws.annotations.core.utils.AnnotationUtils;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -110,30 +108,16 @@ public class WebServiceWSDLLocationRule extends AbstractAnnotationProcessor {
     private URL getRelativeURL(ClassDeclaration classDeclaration, String wsdlLocation) {
         EclipseAnnotationProcessorEnvironment eclipseEnvironment = (EclipseAnnotationProcessorEnvironment) environment;
         IJavaProject javaProject = eclipseEnvironment.getJavaProject();
-        try {
-            IType type = javaProject.findType(classDeclaration.getQualifiedName());
-            if (type != null) {
-                IResource classResource = type.getResource();
-                IContainer classContainer = classResource.getParent();
-                if (wsdlLocation.startsWith("../")) { //$NON-NLS-1$
-                    while (wsdlLocation.startsWith("../")) { //$NON-NLS-1$
-                        wsdlLocation = wsdlLocation.substring(3);
-                        if (classContainer != null) {
-                            classContainer = classContainer.getParent();
-                        }
-                    }
-                }
-                if (classContainer != null) {
-                    IResource wsdlResource = classContainer.findMember(wsdlLocation);
-                    if (wsdlResource != null) {
-                        return wsdlResource.getLocationURI().toURL();
-                    }
+        IFolder webContentFolder = WSDLUtils.getWebContentFolder(javaProject.getProject());
+        if (webContentFolder != null) {
+            IResource wsdlResource = webContentFolder.findMember(wsdlLocation);
+            if (wsdlResource != null) {
+                try {
+                    return wsdlResource.getLocationURI().toURL();
+                } catch (MalformedURLException murle) {
+                    JAXWSCorePlugin.log(murle);
                 }
             }
-        } catch (JavaModelException jme) {
-            JAXWSCorePlugin.log(jme.getStatus());
-        } catch (MalformedURLException murle) {
-            JAXWSCorePlugin.log(murle);
         }
         return null;
     }
