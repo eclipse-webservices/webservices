@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.integration.navigator;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
@@ -24,6 +26,8 @@ import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jdt.ui.ProblemsLabelDecorator;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.DomPackage;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
@@ -43,9 +47,10 @@ public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 	private static final String THIS_DECORATOR_ID = "org.eclipse.jst.ws.jaxws.dom.integration.navigator.WebServiceDecorator"; 
 	
 	/**
-	 * The APT marker ID
+	 * The APT marker IDs
 	 */
-	protected static final String APT_MARKER_ID = AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER;
+	private static final String APT_MARKER_ID = AptPlugin.APT_COMPILATION_PROBLEM_MARKER;
+	private static final String APT_NONRECONCILE_MARKER_ID = AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER;
 	
 	/** Enum to represent different marker types */
 	public enum Severity {OK, ERROR, WARNING};
@@ -53,33 +58,36 @@ public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 	private DomUtil domUtil = DomUtil.INSTANCE;
 	private final Dom2ResourceMapper dom2ResourceMapper = Dom2ResourceMapper.INSTANCE;
 	
+	public WebServiceProblemsDecorator()
+	{
+		addListener(new ILabelProviderListener()
+		{
+			public void labelProviderChanged(LabelProviderChangedEvent event)
+			{
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable()
+				{
+					public void run()
+					{
+						PlatformUI.getWorkbench().getDecoratorManager().update(THIS_DECORATOR_ID);
+					}
+				});
+			}
+		});
+	}
+	
 	@Override
 	protected int computeAdornmentFlags(Object obj) 
 	{
-		try
-		{
-			final Severity severity = defineSeverity(obj);		
-			if (severity == Severity.ERROR) {
-				return JavaElementImageDescriptor.ERROR;
-			} 
-			
-			if (severity == Severity.WARNING) {
-				return JavaElementImageDescriptor.WARNING;
-			}
-
-			return 0;
+		final Severity severity = defineSeverity(obj);		
+		if (severity == Severity.ERROR) {
+			return JavaElementImageDescriptor.ERROR;
 		} 
-		finally
-		{
-			// Post a decoration update event in order to propagate decorations to parent tree nodes
-			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable()
-			{
-				public void run()
-				{
-					PlatformUI.getWorkbench().getDecoratorManager().update(THIS_DECORATOR_ID);
-				}
-			});
+		
+		if (severity == Severity.WARNING) {
+			return JavaElementImageDescriptor.WARNING;
 		}
+
+		return 0;
 	}	
 
 	/**
@@ -150,7 +158,7 @@ public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 		}
 		
 		final int depth = (resource.getType()==IResource.PROJECT) ? IResource.DEPTH_INFINITE : IResource.DEPTH_ZERO;
-		final IMarker[] markers = findAptMarkers(resource, depth);
+		final Collection<IMarker> markers = findAptMarkers(resource, depth);
 		Severity severity = Severity.OK;
 		for (IMarker marker : markers) 
 		{
@@ -297,8 +305,20 @@ public class WebServiceProblemsDecorator extends ProblemsLabelDecorator
 	/**
 	 * Finds all APT nonreconcile markers associated with the resource specified
 	 */
-	private IMarker[] findAptMarkers(final IResource resource, final int depth) throws CoreException
+	private Collection<IMarker> findAptMarkers(final IResource resource, final int depth) throws CoreException
 	{
-		return resource.findMarkers(APT_MARKER_ID, false, depth);
+		final Collection<IMarker> result = new ArrayList<IMarker>();
+		// Search for both APT marker types. One of each IDs is used on Linux and Windows
+		for(final IMarker m : resource.findMarkers(APT_MARKER_ID, false, depth))
+		{
+			result.add(m);
+		}
+		
+		for(final IMarker m : resource.findMarkers(APT_NONRECONCILE_MARKER_ID, false, depth))
+		{
+			result.add(m);
+		}
+		
+		return result;
 	}
 }
