@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.text;
 
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.DefinitionImpl;
@@ -147,8 +148,19 @@ class WSDLModelReconcileAdapter extends ModelReconcileAdapter
       // That way if the incremental sync between DOM and model has gotten
       // the model out of whack we'll be able to put things right at this point.
       //   
-      // TODO (cs) need to do more to ensure model is sync'd up properly      
-      ((DefinitionImpl)definition).reconcileReferences(true);
+      // TODO (cs) need to do more to ensure model is sync'd up properly
+      
+      // This method may be called from a non UI thread during refactoring and the 
+      // notifications it triggers via model adapters to edit parts will cause 
+      // invalid thread exceptions.
+      
+      Display.getDefault().asyncExec(new Runnable()
+      {
+        public void run()
+        {
+          ((DefinitionImpl)definition).reconcileReferences(true);
+        }
+      });
     }
   }
 }

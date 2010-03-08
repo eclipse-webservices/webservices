@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,10 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -118,9 +122,7 @@ public class WSDLEditorResourceChangeHandler
 
     public void resourceChanged(IResourceChangeEvent event)
     {      	
-      Display display = Display.getCurrent();
-      	     	
-      if (display != null && isListeningToResourceChanges() && !isUpdateRequired)
+      if (isListeningToResourceChanges() && !isUpdateRequired)
       {
         if (event.getType() == IResourceChangeEvent.POST_CHANGE)
         {
@@ -141,7 +143,7 @@ public class WSDLEditorResourceChangeHandler
           if (!isPending)
           {
             isPending = true;
-            display.timerExec(2000, new TimerEvent());
+            new ReloadDependenciesJob().schedule(2000);
           }
         }
       }
@@ -160,40 +162,45 @@ public class WSDLEditorResourceChangeHandler
       return true;
     }
 
-    class TimerEvent implements Runnable
+    class ReloadDependenciesJob extends Job
     {
-      public TimerEvent()
+      
+      public ReloadDependenciesJob()
       {
-        //System.out.println("NewTimerEvent(" + wsdlEditor.getDefinition().eResource().getURI() + ") " + count);      	
+        super("Reload WSDL dependencies"); //$NON-NLS-1$
+        setSystem(true);
+        setPriority(SHORT);
       }
-
-      public void run()
+      
+      protected IStatus run(IProgressMonitor monitor)
       {
-//        for (Iterator i = list.iterator(); i.hasNext();)
-//        {
-//          IResource resource = (IResource)i.next();
-//          String platformPath = URI.createPlatformResourceURI(resource.getFullPath().toString()).toString();
-//        }
-
-        Map dependencyMap = computeDependencyMap();
-
-        for (Iterator i = list.iterator(); i.hasNext();)
-        {
-          IResource resource = (IResource)i.next();
-          String platformPath = URI.createPlatformResourceURI(resource.getFullPath().toString()).toString();
-          if (dependencyMap.get(platformPath) != null)
+        Display.getDefault().asyncExec(new Runnable()
           {
-            isUpdateRequired = true;
-            if (wsdlEditor.getSite().getWorkbenchWindow().getPartService().getActivePart() == wsdlEditor)
+            
+            public void run()
             {
-              isUpdateRequired = false;
-              performReload();
-            }
-          }
-        }
+              Map dependencyMap = computeDependencyMap();
 
-        isPending = false;
-        list = new ArrayList();
+              for (Iterator i = list.iterator(); i.hasNext();)
+              {
+                IResource resource = (IResource)i.next();
+                String platformPath = URI.createPlatformResourceURI(resource.getFullPath().toString(), false).toString();
+                if (dependencyMap.get(platformPath) != null)
+                {
+                  isUpdateRequired = true;
+                  if (wsdlEditor.getSite().getWorkbenchWindow().getPartService().getActivePart() == wsdlEditor)
+                  {
+                    isUpdateRequired = false;
+                    performReload();
+                  }
+                }
+              }
+
+              isPending = false;
+              list = new ArrayList();
+            }
+          });
+        return Status.OK_STATUS;
       }
     }
   }
@@ -232,86 +239,3 @@ public class WSDLEditorResourceChangeHandler
 
 
 }
-
-/*
-class DependencyVisitor
-{
-	public void visitImport(Import theImport)
-	{
-		if (theImport.getEDefinition() != null)
-		{
-			visitDefinition(theImport.getEDefinition());
-		}
-		else if (theImport.getESchema() != null)
-		{
-			visitSchema(theImport.getESchema());
-		}
-	}
-
-	public void visitXSDSchemaDirective(XSDSchemaDirective directive)
-	{
-		XSDSchema referencedSchema = directive.getResolvedSchema();
-		if (referencedSchema != null)
-		{
-			visitSchema(referencedSchema);
-		}
-	}
-
-	public void visitDefinition(Definition definition)
-	{
-		if (definition != null)
-		{
-			for (Iterator i = definition.getEImports().iterator(); i.hasNext();)
-			{
-				visitImport((Import)i.next());
-			}
-			Types types = definition.getETypes();
-			if (types != null)
-			{
-
-				for (Iterator i = types.getEExtensibilityElements().iterator(); i.hasNext();)
-				{
-					Object o = i.next();
-					if (o instanceof XSDSchemaExtensibilityElement)
-					{
-						XSDSchemaExtensibilityElement e = (XSDSchemaExtensibilityElement)o;
-						if (e.getEXSDSchema() != null)
-						{
-							visitSchema(e.getEXSDSchema());
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void visitSchema(XSDSchema schema)
-	{
-		for (Iterator i = schema.getContents().iterator(); i.hasNext();)
-		{
-			Object o = i.next();
-			if (o instanceof XSDSchemaDirective)
-			{
-				visitXSDSchemaDirective((XSDSchemaDirective)o);
-			}
-		}
-	}
-}
-
-class ReloadDependencyVisitor extends DependencyVisitor
-{
-	public void visitImport(Import theImport)
-	{
-		ComponentHandler handler = WSDLReconciler.getReconciler(theImport);
-		Element element = WSDLUtil.getInstance().getElementForObject(theImport);
-		if (element != null && handler != null)
-		{
-			handler.reconcile(wsdlEditor.getDefinition(), theImport, element);
-		}
-	}
-
-	public void visitXSDSchemaDirective(XSDSchemaDirective directive)
-	{
-
-	}
-}*/
