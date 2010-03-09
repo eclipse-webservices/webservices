@@ -25,7 +25,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Base class for initializers contributed to the
+ * Abstract base class for initializers contributed to the
  * <code>org.eclipse.jst.ws.annotations.core.annotationInitializer</code> extension point.
  * <p>
  * Provides default implementations for all methods.
@@ -37,30 +37,34 @@ import org.eclipse.ui.PlatformUI;
  * almost certainly be broken (repeatedly) as the API evolves.
  * </p>
  *
-*/
-public class AnnotationAttributeInitializer implements IAnnotationAttributeInitializer {
+ */
+public abstract class AnnotationAttributeInitializer implements IAnnotationAttributeInitializer {
 
     protected static final String MISSING_IDENTIFER = "$missing$";
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
-	 */
+    protected AnnotationAttributeInitializer() {
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getMemberValuePairs(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.AST, java.lang.Class)
+     */
     public List<MemberValuePair> getMemberValuePairs(IJavaElement javaElement, AST ast,
             Class<? extends Annotation> annotationClass) {
         return Collections.emptyList();
     }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForMemberValuePair(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.MemberValuePair)
-	 */
+    /* (non-Javadoc)
+     * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForMemberValuePair(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.MemberValuePair)
+     */
     public List<ICompletionProposal> getCompletionProposalsForMemberValuePair(IJavaElement javaElement,
             MemberValuePair memberValuePair) {
         return Collections.emptyList();
     }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForSingleMemberAnnotation(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.SingleMemberAnnotation)
-	 */
+    /* (non-Javadoc)
+     * @see org.eclipse.jst.ws.annotations.core.initialization.IAnnotationAttributeInitializer#getCompletionProposalsForSingleMemberAnnotation(org.eclipse.jdt.core.IJavaElement, org.eclipse.jdt.core.dom.SingleMemberAnnotation)
+     */
     public List<ICompletionProposal> getCompletionProposalsForSingleMemberAnnotation(IJavaElement javaElement,
             SingleMemberAnnotation singleMemberAnnotation) {
         return Collections.emptyList();

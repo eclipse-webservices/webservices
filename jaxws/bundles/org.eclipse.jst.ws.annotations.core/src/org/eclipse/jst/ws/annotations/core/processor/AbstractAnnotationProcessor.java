@@ -29,7 +29,12 @@ import com.sun.mirror.util.SourcePosition;
  *
  */
 public abstract class AbstractAnnotationProcessor implements AnnotationProcessor {
+
     protected AnnotationProcessorEnvironment environment;
+
+    protected AbstractAnnotationProcessor() {
+
+    }
 
     /**
      * Set the {@link AnnotationProcessorEnvironment} environment to use during processing.
