@@ -10,13 +10,18 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator;
 
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -26,20 +31,19 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ISEIChildList;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.IWebServiceChildList;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.WebServiceProblemsDecorator;
 import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
-import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebParam;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMLoadCanceledException;
-import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMRuntimeManager;
-import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.Jee5WsDomRuntimeExtension;
+import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
 import org.eclipse.jst.ws.jaxws.testutils.IWaitCondition;
 import org.eclipse.jst.ws.jaxws.testutils.assertions.Assertions;
 import org.eclipse.jst.ws.jaxws.testutils.assertions.ConditionCheckException;
@@ -76,6 +80,8 @@ public class WebServiceDecoratorTest extends MockObjectTestCase
 
     private IType seiType;
     private IType wsImplType;
+    
+    private JaxWsWorkspaceResource jaxwsResource;
 
     private static final int NO_ERROR = 0;
 
@@ -97,6 +103,7 @@ public class WebServiceDecoratorTest extends MockObjectTestCase
         if (testProject != null)
         {
             testProject.dispose();
+    		jaxwsResource.stopSynchronizing();
         }
     }
 
@@ -105,102 +112,97 @@ public class WebServiceDecoratorTest extends MockObjectTestCase
         assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(new Object()));
     }
 
-    public void testComputeAdornmentNoValidationErrors() throws CoreException, WsDOMLoadCanceledException
+    public void testComputeAdornmentNoValidationErrors() throws CoreException, WsDOMLoadCanceledException, IOException
     {
         createWsContent("MyPort", "myMethod", "myParam", "MyService");
         initWsDomObjects();
         checkNoErrorsAdornment();
     }
 
-    //	public void testComputeAdornmentForSeiError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
-    //	{
-    //		createWsContent("", "myMethod", "myParam", "MyService");
-    //		waitForAptMarkersAppear();
-    //		initWsDomObjects();
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
-    //		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
-    //		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
-    //
-    //		fixAptErrors();
-    //		checkNoErrorsAdornment();
-    //	}
-    //
-    //	public void testComputeAdornmentForWebMethodError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
-    //	{
-    //		createWsContent("MyPort", "", "myParam", "MyService");
-    //		waitForAptMarkersAppear();
-    //		initWsDomObjects();
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
-    //		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
-    //
-    //		fixAptErrors();
-    //		checkNoErrorsAdornment();
-    //	}
-    //
-    //	public void testComputeAdornmentForWebParamError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
-    //	{
-    //		createWsContent("MyPort", "MyMethod", "", "MyService");
-    //		waitForAptMarkersAppear();
-    //		initWsDomObjects();
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
-    //		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webParam));
-    //
-    //		fixAptErrors();
-    //		checkNoErrorsAdornment();
-    //	}
+	public void testComputeAdornmentForSeiError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+	{
+		createWsContent("", "myMethod", "myParam", "MyService");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
 
-    //    public void testComputeAdornmentForWsImplError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException
-    //    {
-    //        createWsContent("MyPort", "MyMethod", "myParam", "");
-    //        waitForAptMarkersAppear();
-    //        initWsDomObjects();
-    //        assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-    //        assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-    //        assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-    //        assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(sei));
-    //        assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
-    //        assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
-    //
-    //        fixAptErrors();
-    //        checkNoErrorsAdornment();
-    //    }
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
 
-    private void createWsContent(final String seiName, final String webMethodName, final String paramName, final String serviceName) throws CoreException, WsDOMLoadCanceledException
-    {
-        final IProject webP = TestProjectsUtils.createWeb25Project("WebTester" + System.currentTimeMillis());
-        testProject = new TestProject(webP);
-        testProject.setAptProcessingEnabled(true, false);
-        testPackage = testProject.createPackage("test");
+	public void testComputeAdornmentForWebMethodError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+	{
+		createWsContent("MyPort", "", "myParam", "MyService");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
 
-        seiType = testProject.createType(testPackage, "ISei.java", MessageFormat.format(SEI_CONTENT, seiName, webMethodName, paramName));
-        wsImplType = testProject.createType(testPackage, "EndpointClass.java", MessageFormat.format(IMPL_CONTENT, serviceName));
-        testProject.build(IncrementalProjectBuilder.CLEAN_BUILD);
-    }
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
+
+	public void testComputeAdornmentForWebParamError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+	{
+		createWsContent("MyPort", "MyMethod", "", "MyService");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webParam));
+
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
+
+	public void testComputeAdornmentForWsImplError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+	{
+		createWsContent("MyPort", "MyMethod", "myParam", "");
+		waitForAptMarkersAppear();
+		initWsDomObjects();
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(sei));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
+		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+
+		fixAptErrors();
+		checkNoErrorsAdornment();
+	}
+
+	private void createWsContent(final String seiName, final String webMethodName, final String paramName, final String serviceName) throws CoreException, WsDOMLoadCanceledException, IOException
+	{
+		final IProject webP = TestProjectsUtils.createWeb25Project("WebTester" + System.currentTimeMillis());
+		testProject = new TestProject(webP);
+		testProject.setAptProcessingEnabled(true, false);
+
+		jaxwsResource = new JaxWsWorkspaceResource(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
+		jaxwsResource.load(null);
+		jaxwsResource.startSynchronizing();
+
+		testPackage = testProject.createPackage("test");
+		seiType = testProject.createType(testPackage, "ISei.java", MessageFormat.format(SEI_CONTENT, seiName, webMethodName, paramName));
+		wsImplType = testProject.createType(testPackage, "EndpointClass.java", MessageFormat.format(IMPL_CONTENT, serviceName));
+		testProject.build(IncrementalProjectBuilder.CLEAN_BUILD);
+	}
 
     private void initWsDomObjects() throws WsDOMLoadCanceledException
     {
-        final IDOM jaxwsDom = WsDOMRuntimeManager.instance().getDOMRuntime(Jee5WsDomRuntimeExtension.ID).getDOM();
-        wsProject = DomUtil.INSTANCE.findProjectByName(jaxwsDom, testProject.getProject().getName());
-        assertNotNull("Web service project not initialized", wsProject);
-
-        Assertions.waitAssert(new IWaitCondition()
-        {
-            public boolean checkCondition() throws ConditionCheckException
-            {
-                return wsProject.getWebServices().size() > 0 && wsProject.getWebServices().size() > 0;
-            }
-        }, "Web services did not appear in DOM");
+		this.wsProject = DomUtil.INSTANCE.findProjectByName(jaxwsResource.getDOM(), testProject.getProject().getName());
+		assertNotNull(this.wsProject);
 
         ws = wsProject.getWebServices().iterator().next();
         sei = wsProject.getServiceEndpointInterfaces().iterator().next();
@@ -221,13 +223,29 @@ public class WebServiceDecoratorTest extends MockObjectTestCase
             {
                 try
                 {
-                    return testProject.getProject().findMarkers(AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER, false, IResource.DEPTH_INFINITE).length > 0;
+                    return findAptMarkers().size() > 0;
                 } catch (CoreException e)
                 {
                     throw new ConditionCheckException(e);
                 }
             }
         }, "APT markers did not appear");
+    }
+    
+    private Collection<IMarker> findAptMarkers() throws CoreException
+    {
+		final Collection<IMarker> result = new ArrayList<IMarker>();
+		for(final IMarker m : testProject.getProject().findMarkers(AptPlugin.APT_COMPILATION_PROBLEM_MARKER, false, IResource.DEPTH_INFINITE))
+		{
+			result.add(m);
+		}
+		
+		for(final IMarker m : testProject.getProject().findMarkers(AptPlugin.APT_NONRECONCILE_COMPILATION_PROBLEM_MARKER, false, IResource.DEPTH_INFINITE))
+		{
+			result.add(m);
+		}
+		
+		return result;
     }
 
     private void waitForNoAptMarkers()

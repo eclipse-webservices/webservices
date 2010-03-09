@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxws.dom.integration.tests.navigator;
 
-import java.util.Iterator;
-
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IProject;
@@ -21,10 +19,11 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.DOMAdapterFactoryContentProvider;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject;
-import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ISEIChildList;
-import org.eclipse.jst.ws.jaxws.dom.integration.navigator.IWebServiceChildList;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingCanceled;
 import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ILoadingWsProject.ILoadingDummy;
+import org.eclipse.jst.ws.jaxws.dom.integration.navigator.ISEIChildList;
+import org.eclipse.jst.ws.jaxws.dom.integration.navigator.IWebServiceChildList;
+import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebMethod;
@@ -39,9 +38,9 @@ import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
 
 public class DOMAdapterFactoryContentProviderTest extends TestCase 
 {
-	private static TestProject testPrj1; 
+	private TestProject testPrj1; 
 	
-	private static IPackageFragment modelSync1;
+	private IPackageFragment modelSync1;
 	
 	private IWebServiceProject wsProject;
 	
@@ -51,36 +50,22 @@ public class DOMAdapterFactoryContentProviderTest extends TestCase
 	@Override
 	public void setUp() throws Exception
 	{
-		if(testPrj1==null)
-		{
-			IProject ejbProject = TestProjectsUtils.createEjb3Project("DOMCntProvTestProject1" + System.currentTimeMillis());
-			testPrj1 = new TestProject(ejbProject.getProject());
-			testPrj1.createSourceFolder("src");
-			modelSync1 = testPrj1.createPackage("org.eclipse.test.modelsync1");
-			testPrj1.createType(modelSync1, "Sei1.java", "@javax.jws.WebService(name=\"Sei1Name\") public interface Sei1{\n" +
-					"@javax.jws.WebMethod(name=\"parentMethod\") public void voidMethodWithNoArgsInParent();\n" +
-					"}");
-			testPrj1.createType(modelSync1, "Sei2.java", "@javax.jws.WebService(name=\"Sei2Name\") public interface Sei2 extends Sei1 {\n" +
-					"@javax.jws.WebMethod(name=\"voidMethodWithArgs\") public void voidMethodWithArgs(@javax.jws.WebParam(name=\"param1\") java.util.List<String> param1);\n" +
-					"}");
-			testPrj1.createType(modelSync1, "WS1.java", "@javax.jws.WebService(serviceName=\"WS1Name\", endpointInterface=\"org.eclipse.test.modelsync1.Sei2\") public class WS1 {}");
-			testPrj1.createType(modelSync1, "WS2.java", "@javax.jws.WebService(serviceName=\"WS2Name\") public class WS2 {}");
-		}
+		IProject ejbProject = TestProjectsUtils.createEjb3Project("DOMCntProvTestProject1" + System.currentTimeMillis());
+		testPrj1 = new TestProject(ejbProject.getProject());
+		modelSync1 = testPrj1.createPackage("org.eclipse.test.modelsync1");
+		testPrj1.createType(modelSync1, "Sei1.java", "@javax.jws.WebService(name=\"Sei1Name\") public interface Sei1{\n" +
+				"@javax.jws.WebMethod(name=\"parentMethod\") public void voidMethodWithNoArgsInParent();\n" +
+				"}");
+		testPrj1.createType(modelSync1, "Sei2.java", "@javax.jws.WebService(name=\"Sei2Name\") public interface Sei2 extends Sei1 {\n" +
+				"@javax.jws.WebMethod(name=\"voidMethodWithArgs\") public void voidMethodWithArgs(@javax.jws.WebParam(name=\"param1\") java.util.List<String> param1);\n" +
+				"}");
+		testPrj1.createType(modelSync1, "WS1.java", "@javax.jws.WebService(serviceName=\"WS1Name\", endpointInterface=\"org.eclipse.test.modelsync1.Sei2\") public class WS1 {}");
+		testPrj1.createType(modelSync1, "WS2.java", "@javax.jws.WebService(serviceName=\"WS2Name\") public class WS2 {}");
 		
 		targetResource = new JaxWsWorkspaceResource(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
 		targetResource.load(null);
-		Iterator<IWebServiceProject> wsProjects = targetResource.getDOM().getWebServiceProjects().iterator();
 		
-		while(wsProjects.hasNext())
-		{
-			IWebServiceProject wsProj = wsProjects.next();
-			
-			if(wsProj.getName().equals(testPrj1.getProject().getName()))
-			{
-				this.wsProject = wsProj;
-			}
-		}
-				
+		this.wsProject = DomUtil.INSTANCE.findProjectByName(targetResource.getDOM(), testPrj1.getProject().getName());
 		assertNotNull(this.wsProject);
 		
 		adapterFactory = new DOMAdapterFactoryContentProvider() 
@@ -98,6 +83,7 @@ public class DOMAdapterFactoryContentProviderTest extends TestCase
 	public void tearDown() throws CoreException
 	{
 		targetResource.stopSynchronizing();
+		testPrj1.dispose();
 	}
 	
 	public void testDOMAdapterFactoryContentProvider() 

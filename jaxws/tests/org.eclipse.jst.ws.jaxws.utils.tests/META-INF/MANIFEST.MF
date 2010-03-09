@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jst.ws.jaxws.utils,
  org.eclipse.jst.ws.jaxws.testutils,
  org.jmock,
- org.junit
+ org.junit,
+ org.eclipse.ui.workbench;bundle-version="3.6.0"
 Export-Package: org.eclipse.jst.ws.jaxws.utils.resources,
  org.eclipse.jst.ws.jaxws.utils.tests,
  org.eclipse.jst.ws.jaxws.utils.tests.internal,
