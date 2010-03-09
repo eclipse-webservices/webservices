@@ -78,8 +78,7 @@ public class ValidationTestsSetUp extends MockObjectTestCase
 	
 	protected TestProject[] createFixtureProjects() throws CoreException
 	{
-		testProject = new TestProject();
-		testProject.createSourceFolder("src");
+		testProject = new TestProject(TestProjectsUtils.createWeb25Project("ValidationTest" + System.currentTimeMillis()));
 		testPack = testProject.createPackage("test");
 		testProject.setAptProcessingEnabled(true, false);
 		testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD);

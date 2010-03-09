@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
 
@@ -27,6 +28,7 @@ public class WpValidationTest extends ValidationTestsSetUp
 		super.setUp();
 		seiType = testProject.createType(testPack, "Sei.java", "@javax.jws.WebService(name=\"SeiName\") public interface Sei {}");
 		assertNotNull("Could not find SEI", findSei(seiType.getFullyQualifiedName()));
+		testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD);
 	}
 	
 	public void testNameIsNCName() throws CoreException

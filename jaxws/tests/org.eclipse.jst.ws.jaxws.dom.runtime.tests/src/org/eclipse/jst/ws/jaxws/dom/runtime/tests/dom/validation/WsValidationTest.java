@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
@@ -107,38 +108,36 @@ public class WsValidationTest extends ValidationTestsSetUp
 		validateResourceMarkers(wsType.getResource(), markerData);
 	}	
 
-//	FIXME: Bug 304500
-//	public void testWsdlLocationInProject() throws CoreException
-//	{
-//		IFile file = testProject.getProject().getFile("Test.wsdl");
-//		file.create(new StringInputStreamAdapter(""), true, null);
-//		
-//		setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"Test.wsdl\") public class Ws {}");
-//		testProject.build(IncrementalProjectBuilder.CLEAN_BUILD);
-//		assertNoValidationErrors(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
-//		
-//		// wrong location
-//		setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"Test1.wsdl\") public class Ws {}");
-//		
-//		final Map<String, Object> markerAttributes = new HashMap<String, Object>();
-//		markerAttributes.put(IMarker.CHAR_START, 61);
-//		markerAttributes.put(IMarker.CHAR_END, 73);
-//		markerAttributes.put(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
-//		final MarkerData markerData =  new MarkerData(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes);
-//		validateResourceMarkers(wsType.getResource(), markerData);
-//	}
+	public void testWsdlLocationInProject() throws CoreException
+	{
+		IFile file = testProject.getProject().getFolder("WebContent").getFile("Test.wsdl");
+		file.create(new StringInputStreamAdapter(""), true, null);
+		
+		setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"Test.wsdl\") public class Ws {}");
+		testProject.build(IncrementalProjectBuilder.CLEAN_BUILD);
+		assertNoValidationErrors(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
+		
+		// wrong location
+		setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"Test1.wsdl\") public class Ws {}");
+		
+		final Map<String, Object> markerAttributes = new HashMap<String, Object>();
+		markerAttributes.put(IMarker.CHAR_START, 62);
+		markerAttributes.put(IMarker.CHAR_END, 74);
+		markerAttributes.put(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
+		markerAttributes.put(IMarker.MESSAGE, MessageFormat.format(JAXWSCoreMessages.WEBSERVICE_WSDL_LOCATION_UNABLE_TO_LOCATE, "Test1.wsdl"));
+		final MarkerData markerData =  new MarkerData(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID, markerAttributes);
+		validateResourceMarkers(wsType.getResource(), markerData);
+	}
 	
-//	FIXME: Bug 304500
-//	public void testWsdlLocationInMetaInfCorrect() throws CoreException
-//	{
-//		final IFolder metaInf = ((IFolder)testProject.getSourceFolder().getResource()).getFolder("META-INF");
-//		metaInf.create(true, true, null);
-//		IFile file = metaInf.getFile("Test.wsdl");
-//		file.create(new StringInputStreamAdapter(""), true, null);
-//		
-//		setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"META-INF/Test.wsdl\") public class Ws {}");
-//		assertNoValidationErrors(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
-//	}
+	public void testWsdlLocationInWebInfCorrect() throws CoreException
+	{
+		final IFolder webInf = testProject.getProject().getFolder("WebContent").getFolder("WEB-INF");
+		IFile file = webInf.getFile("Test.wsdl");
+		file.create(new StringInputStreamAdapter(""), true, null);
+		
+		setContents(wsType.getCompilationUnit(), "@javax.jws.WebService(name=\"Test\", wsdlLocation=\"WEB-INF/Test.wsdl\") public class Ws {}");
+		assertNoValidationErrors(wsType.getResource(), VALIDATION_PROBLEM_MARKER_ID);
+	}
 	
 	public void testWsdlLocationEmpty() throws CoreException
 	{

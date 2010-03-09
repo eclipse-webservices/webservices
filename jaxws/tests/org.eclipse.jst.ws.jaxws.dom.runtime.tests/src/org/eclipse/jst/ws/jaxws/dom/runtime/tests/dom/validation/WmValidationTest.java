@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jst.ws.internal.jaxws.core.JAXWSCoreMessages;
@@ -31,6 +32,7 @@ public class WmValidationTest extends ValidationTestsSetUp
 		seiType = testProject.createType(testPack, "Sei.java", "@javax.jws.WebService(name=\"SeiName\") public interface Sei {\n" +
 				"@javax.jws.WebMethod(operationName=\"test\") public void test();" +
 				"}");
+		testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD);
 	}
 	
 	public void testNameIsNCName() throws CoreException
