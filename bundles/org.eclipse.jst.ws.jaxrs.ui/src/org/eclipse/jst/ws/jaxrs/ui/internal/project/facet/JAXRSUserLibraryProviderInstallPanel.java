@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -34,19 +35,14 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderInstallPanel
 {
-  Button copyOnPublishCheckBox;
-  private Composite includeLibRadiosComposite;
-  private Button btnDeployJars;
-  private Button btnSharedLibrary;
+  private JAXRSFacetIncludeLibrariesGroup includeLibsGroup;
   private JAXRSLibraryConfigModel workingCopyModel = null;
   private IDataModel model;
 
@@ -69,55 +65,32 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
     gl.marginRight = 0;
     gl.marginLeft = 0;
     mainComp.setLayout(gl);
+    includeLibsGroup = new JAXRSFacetIncludeLibrariesGroup(mainComp, SWT.NONE);
+    includeLibsGroup.getCopyOnPublishCheckBox().setSelection(cfg.isIncludeWithApplicationEnabled());
 
-    copyOnPublishCheckBox = new Button(mainComp, SWT.CHECK);
-    copyOnPublishCheckBox.setText(Messages.JAXRSLibraryConfigControl_IncludeGroupLabel);
-    copyOnPublishCheckBox.setSelection(cfg.isIncludeWithApplicationEnabled());
 
-    includeLibRadiosComposite = new Composite(mainComp, SWT.NONE);
-    GridLayout gridlayout = new GridLayout();
-    gridlayout.numColumns = 1;
-    gridlayout.marginTop = 0;
-    gridlayout.marginBottom = 0;
-    gridlayout.marginRight = 0;
-    gridlayout.marginLeft = 10;
-
-    includeLibRadiosComposite.setLayout(gridlayout);
-    GridData griddata = new GridData(GridData.FILL_HORIZONTAL);
-    includeLibRadiosComposite.setLayoutData(griddata);
-
-    btnDeployJars = createRadioButton(includeLibRadiosComposite, Messages.JAXRSLibraryConfigControl_DeployButtonLabel, Messages.JAXRSLibraryConfigControl_DeployJAR, null);
-
-    btnSharedLibrary = createRadioButton(includeLibRadiosComposite, Messages.JAXRSLibraryConfigControl_SharedLibButtonLabel, Messages.JAXRSLibraryConfigControl_TooltipIncludeAsSharedLib, null);
-
-    copyOnPublishCheckBox.addSelectionListener(new SelectionAdapter()
+    includeLibsGroup.getCopyOnPublishCheckBox().addSelectionListener(new SelectionAdapter()
     {
       public void widgetSelected(final SelectionEvent event)
       {
-        cfg.setIncludeWithApplicationEnabled(copyOnPublishCheckBox.getSelection());
-        boolean selection = copyOnPublishCheckBox.getSelection();
-        btnDeployJars.setEnabled(selection);
-        btnSharedLibrary.setEnabled(selection);
-
+        cfg.setIncludeWithApplicationEnabled(includeLibsGroup.getCopyOnPublishCheckBox().getSelection());
       }
     });
 
-    // Need to initialize this properly
-    btnDeployJars.setSelection(true);
 
-    btnDeployJars.addSelectionListener(new SelectionAdapter()
+    includeLibsGroup.getBtnDeployJars().addSelectionListener(new SelectionAdapter()
     {
       public void widgetSelected(SelectionEvent e)
       {
         cfg.setIsDeploy(true);
         cfg.setSharedLibrary(false);
         IDataModel model = cfg.getModel();
-        model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, btnDeployJars.getSelection());
-        model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, btnSharedLibrary.getSelection());
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, includeLibsGroup.getBtnDeployJars().getSelection());
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, includeLibsGroup.getBtnDeployJars().getSelection());
       }
     });
 
-    btnSharedLibrary.addSelectionListener(new SelectionAdapter()
+    includeLibsGroup.getBtnSharedLibrary().addSelectionListener(new SelectionAdapter()
     {
       public void widgetSelected(SelectionEvent e)
       {
@@ -127,8 +100,8 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
         cfg.setIsDeploy(false);
         cfg.setSharedLibrary(true);
         IDataModel model = cfg.getModel();
-        model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, btnDeployJars.getSelection());
-        model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, btnSharedLibrary.getSelection());
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, includeLibsGroup.getBtnSharedLibrary().getSelection());
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, includeLibsGroup.getBtnSharedLibrary().getSelection());
       }
     });
 
@@ -145,7 +118,7 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
 
     cfg.addListener(listener, JAXRSUserLibraryProviderInstallOperationConfig.PROP_INCLUDE_WITH_APPLICATION_ENABLED);
 
-    copyOnPublishCheckBox.addDisposeListener(new DisposeListener()
+    includeLibsGroup.getCopyOnPublishCheckBox().addDisposeListener(new DisposeListener()
     {
       public void widgetDisposed(final DisposeEvent event)
       {
@@ -159,35 +132,11 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
   }
 
 
-  private Button createRadioButton(Composite parent, String labelName, String tooltip, String infopop)
-  {
-    return createButton(SWT.RADIO, parent, labelName, tooltip, infopop);
-  }
-
-  private Button createButton(int kind, Composite parent, String labelName, String tooltip, String infopop)
-  {
-    Button button = new Button(parent, kind);
-
-    tooltip = tooltip == null ? labelName : tooltip;
-    button.setText(labelName);
-    button.setToolTipText(tooltip);
-
-    if (infopop != null)
-      PlatformUI.getWorkbench().getHelpSystem().setHelp(button, JAXRSUIPlugin.PLUGIN_ID + "." + infopop);
-
-    return button;
-  }
-
-  private Button createCheckbox(Composite parent, String labelName, String tooltip, String infopop)
-  {
-    return createButton(SWT.CHECK, parent, labelName, tooltip, infopop);
-  }
-
   private void initialize()
   {
     // if shared lib not supported but shared lib setting was true, assume they
     // still want to include libraries
-    JAXRSLibraryConfiglModelSource source = new JAXRSLibraryConfigDialogSettingData(btnDeployJars.getSelection(), btnSharedLibrary.getSelection(), true);
+    JAXRSLibraryConfiglModelSource source = new JAXRSLibraryConfigDialogSettingData(includeLibsGroup.getBtnDeployJars().getSelection(), includeLibsGroup.getBtnSharedLibrary().getSelection(), true);
     if (source != null)
     {
       // never read persistentModel = source;
@@ -247,13 +196,13 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
 
   private void updateChildrenState(JAXRSLibraryInternalReference selected)
   {
-    btnDeployJars.setSelection(selected.isCheckedToBeDeployed() || (copyOnPublishCheckBox.getSelection() && (!selected.isSharedLibSupported() || (selected.isSharedLibSupported() && !selected.isCheckedToBeSharedLibrary()))));
-    // shared library has precedence
-    btnSharedLibrary.setSelection(selected.isSharedLibSupported() && selected.isCheckedToBeSharedLibrary());
-    btnSharedLibrary.setEnabled(copyOnPublishCheckBox.getSelection() && selected.isSharedLibSupported());
-    btnDeployJars.setEnabled(copyOnPublishCheckBox.getSelection());
-    selected.setToBeDeployed(copyOnPublishCheckBox.getSelection() && btnDeployJars.getSelection());
-    selected.setToBeSharedLibrary(copyOnPublishCheckBox.getSelection() && selected.isSharedLibSupported() && btnSharedLibrary.getSelection());
+//    btnDeployJars.setSelection(selected.isCheckedToBeDeployed() || (copyOnPublishCheckBox.getSelection() && (!selected.isSharedLibSupported() || (selected.isSharedLibSupported() && !selected.isCheckedToBeSharedLibrary()))));
+//    // shared library has precedence
+//    btnSharedLibrary.setSelection(selected.isSharedLibSupported() && selected.isCheckedToBeSharedLibrary());
+//    btnSharedLibrary.setEnabled(copyOnPublishCheckBox.getSelection() && selected.isSharedLibSupported());
+//    btnDeployJars.setEnabled(copyOnPublishCheckBox.getSelection());
+//    selected.setToBeDeployed(copyOnPublishCheckBox.getSelection() && btnDeployJars.getSelection());
+//    selected.setToBeSharedLibrary(copyOnPublishCheckBox.getSelection() && selected.isSharedLibSupported() && btnSharedLibrary.getSelection());
 
   }
 

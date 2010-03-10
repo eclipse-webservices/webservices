@@ -13,6 +13,7 @@
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100302   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1 (JSR 311)
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -27,6 +28,8 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
+import org.eclipse.jst.common.project.facet.core.libprov.user.UserLibraryProviderInstallOperationConfig;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.jst.j2ee.project.EarUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJ2EEModuleFacetInstallDataModelProperties;
@@ -35,6 +38,8 @@ import org.eclipse.jst.server.core.internal.J2EEUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfigurator;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfiguratorUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
+import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSSharedLibraryProviderInstallOperationConfig;
+import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSSharedLibraryProviderInstallOperationConfig;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
 import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
@@ -129,9 +134,15 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
     composite.setLayout(jaxrsCompositeLayout);
 
     final LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
-
-    JAXRSUserLibraryProviderInstallOperationConfig customConfig = (JAXRSUserLibraryProviderInstallOperationConfig) librariesInstallDelegate.getLibraryProviderOperationConfig();
-    customConfig.setModel(getDataModel());
+    LibraryProviderOperationConfig config = librariesInstallDelegate.getLibraryProviderOperationConfig();
+    if (config instanceof JAXRSUserLibraryProviderInstallOperationConfig) {
+    	JAXRSUserLibraryProviderInstallOperationConfig customConfig = (JAXRSUserLibraryProviderInstallOperationConfig) config ;
+    	customConfig.setModel(getDataModel());
+    } else if (config instanceof JAXRSSharedLibraryProviderInstallOperationConfig){
+    	JAXRSSharedLibraryProviderInstallOperationConfig customConfig = (JAXRSSharedLibraryProviderInstallOperationConfig) config ;
+    	customConfig.setModel(getDataModel());
+    }
+    
 
     final Control librariesComposite = LibraryProviderFrameworkUi.createInstallLibraryPanel(composite, librariesInstallDelegate, Messages.JAXRSFacetInstallPage_JAXRSImplementationLibrariesFrame);
 
@@ -464,6 +475,16 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
       {
         if (event.getProperty() != null) 
           model.setStringProperty(TARGETRUNTIME, event.getProperty().toString());
+      } else if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
+    	    LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+    	    LibraryProviderOperationConfig config = librariesInstallDelegate.getLibraryProviderOperationConfig();
+    	    if (config instanceof JAXRSUserLibraryProviderInstallOperationConfig) {
+    	    	JAXRSUserLibraryProviderInstallOperationConfig customConfig = (JAXRSUserLibraryProviderInstallOperationConfig) config ;
+    	    	customConfig.setModel(getDataModel());
+    	    } else if (config instanceof JAXRSSharedLibraryProviderInstallOperationConfig){
+    	    	JAXRSSharedLibraryProviderInstallOperationConfig customConfig = (JAXRSSharedLibraryProviderInstallOperationConfig) config ;
+    	    	customConfig.setModel(getDataModel());
+    	    }
       }
     }
     super.propertyChanged(event);

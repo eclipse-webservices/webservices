@@ -9,22 +9,14 @@
  * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
- * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
-import org.eclipse.jst.j2ee.internal.common.classpath.WtpUserLibraryProviderInstallOperationConfig;
+import org.eclipse.jst.common.project.facet.core.libprov.user.UserLibraryProviderInstallOperationConfig;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
-public class JAXRSUserLibraryProviderInstallOperationConfig extends
-	WtpUserLibraryProviderInstallOperationConfig implements IJAXRSSharedLibraryProviderInstallOperationConfig  {
-
-	public JAXRSUserLibraryProviderInstallOperationConfig() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	
+public class JAXRSSharedLibraryProviderInstallOperationConfig extends UserLibraryProviderInstallOperationConfig implements IJAXRSSharedLibraryProviderInstallOperationConfig  {
 	private boolean isSharedLibrary = true;
 	private boolean isDeploy = false;
 	private IDataModel model = null;
@@ -42,7 +34,6 @@ public class JAXRSUserLibraryProviderInstallOperationConfig extends
 
 	public void setIsDeploy(boolean isDeploy) {
 		this.isDeploy = isDeploy;
-		setIncludeWithApplicationEnabled(isDeploy);
 	}
 
 	public boolean isDeploy() {
@@ -56,7 +47,4 @@ public class JAXRSUserLibraryProviderInstallOperationConfig extends
 	public IDataModel getModel() {
 		return model;
 	}
-	
-	
-
 }
