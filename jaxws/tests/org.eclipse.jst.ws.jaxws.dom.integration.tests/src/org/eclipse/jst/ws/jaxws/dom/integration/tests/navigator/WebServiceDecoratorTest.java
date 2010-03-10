@@ -119,69 +119,73 @@ public class WebServiceDecoratorTest extends MockObjectTestCase
         checkNoErrorsAdornment();
     }
 
-	public void testComputeAdornmentForSeiError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
-	{
-		createWsContent("", "myMethod", "myParam", "MyService");
-		waitForAptMarkersAppear();
-		initWsDomObjects();
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
-		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
-		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+// Bug 305077
+//	public void testComputeAdornmentForSeiError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+//	{
+//		createWsContent("", "myMethod", "myParam", "MyService");
+//		waitForAptMarkersAppear();
+//		initWsDomObjects();
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+//		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
+//		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+//
+//		fixAptErrors();
+//		checkNoErrorsAdornment();
+//	}
 
-		fixAptErrors();
-		checkNoErrorsAdornment();
-	}
+ // Bug 305077
+//	public void testComputeAdornmentForWebMethodError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+//	{
+//		createWsContent("MyPort", "", "myParam", "MyService");
+//		waitForAptMarkersAppear();
+//		initWsDomObjects();
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
+//		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+//
+//		fixAptErrors();
+//		checkNoErrorsAdornment();
+//	}
 
-	public void testComputeAdornmentForWebMethodError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
-	{
-		createWsContent("MyPort", "", "myParam", "MyService");
-		waitForAptMarkersAppear();
-		initWsDomObjects();
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
-		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+ // Bug 305077
+//	public void testComputeAdornmentForWebParamError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+//	{
+//		createWsContent("MyPort", "MyMethod", "", "MyService");
+//		waitForAptMarkersAppear();
+//		initWsDomObjects();
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webParam));
+//
+//		fixAptErrors();
+//		checkNoErrorsAdornment();
+//	}
 
-		fixAptErrors();
-		checkNoErrorsAdornment();
-	}
-
-	public void testComputeAdornmentForWebParamError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
-	{
-		createWsContent("MyPort", "MyMethod", "", "MyService");
-		waitForAptMarkersAppear();
-		initWsDomObjects();
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(sei));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webMethod));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(webParam));
-
-		fixAptErrors();
-		checkNoErrorsAdornment();
-	}
-
-	public void testComputeAdornmentForWsImplError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
-	{
-		createWsContent("MyPort", "MyMethod", "myParam", "");
-		waitForAptMarkersAppear();
-		initWsDomObjects();
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
-		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
-		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
-		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(sei));
-		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
-		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
-
-		fixAptErrors();
-		checkNoErrorsAdornment();
-	}
+ // Bug 305077
+//	public void testComputeAdornmentForWsImplError() throws CoreException, WsDOMLoadCanceledException, AnnotationGeneratorException, IOException
+//	{
+//		createWsContent("MyPort", "MyMethod", "myParam", "");
+//		waitForAptMarkersAppear();
+//		initWsDomObjects();
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(wsChildList.proxy()));
+//		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(seiChildList.proxy()));
+//		assertEquals("Unexpected adornment", JavaElementImageDescriptor.ERROR, decorator.computeAdornmentFlags(ws));
+//		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(sei));
+//		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webMethod));
+//		assertEquals("Unexpected adornment", NO_ERROR, decorator.computeAdornmentFlags(webParam));
+//
+//		fixAptErrors();
+//		checkNoErrorsAdornment();
+//	}
 
 	private void createWsContent(final String seiName, final String webMethodName, final String paramName, final String serviceName) throws CoreException, WsDOMLoadCanceledException, IOException
 	{
