@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -30,7 +31,7 @@ import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
- * Utility file for Web 2.5 model
+ * Utility file for Web 2.5 or 3.0 model
  */
 public class JAXRSJEEUtils extends JAXRSUtils {
 
@@ -140,7 +141,20 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 	}
 
 	/**
-	 * Creates servlet-mappings for the servlet for 2.5 WebModules or greated
+	 * @param webAppObj
+	 *            as Object
+	 * @return true if webApp instanceof org.eclipse.jst.javaee.web.WebApp and
+	 *         WebAppVersionType._25 or WebAppVersionType._30
+	 */
+	public static boolean isWebApp25or30(final Object webAppObj) {
+		if (webAppObj instanceof WebApp
+				&& ((WebApp) webAppObj).getVersion() == WebAppVersionType._25_LITERAL || ((WebApp) webAppObj).getVersion() == WebAppVersionType._30_LITERAL)
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Creates servlet-mappings for the servlet for 2.5 WebModules or greater
 	 * 
 	 * @param webApp
 	 * @param urlMappingList

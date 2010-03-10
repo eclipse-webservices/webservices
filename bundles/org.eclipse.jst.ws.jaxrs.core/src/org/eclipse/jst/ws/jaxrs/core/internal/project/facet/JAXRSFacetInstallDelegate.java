@@ -12,12 +12,12 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -209,7 +209,7 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 
 		IModelProvider provider = JAXRSUtils.getModelProvider(project);
 		IPath webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-		if (JAXRSJEEUtils.isWebApp25(provider.getModelObject())) {
+		if (JAXRSJEEUtils.isWebApp25or30(provider.getModelObject())) {
 			provider.modify(new UpdateWebXMLForJavaEE(project, config),
 					doesDDFileExist(project, webXMLPath) ? webXMLPath
 							: IModelProvider.FORCESAVE);
