@@ -15,6 +15,7 @@
  * 20080521   231098 sandakith@wso2.com - Lahiru Sandakith, Fix for Axis2 1.4 dependency chenge
  * 20080604   193371 samindaw@wso2.com - Saminda Wijeratne, creating a function to validate services.xml
  * 20091207   192005 samindaw@wso2.com - merge the web.xml to have axis2 welcome file defined
+ * 20090307   196954 samindaw@wso2.com - Saminda Wijeratne, Support XMLBeans data binding
  * 20100308	  282466 samindaw@wso2.com - Saminda Wijeratne, support for axis2 1.5
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.constant;
@@ -63,6 +64,7 @@ public class Axis2Constants {
 	public static final String AXIS2_PROJECT="org.eclipse.jst.ws.axis2";		//$NON-NLS-1$
 	public static final String CODEGEN_RESULTS="codegen";						//$NON-NLS-1$
 	public static final String DATA_BINDING_ADB="ADB";							//$NON-NLS-1$
+	public static final String DATA_BINDING_XMLBEANS="XMLBEANS";						//$NON-NLS-1$
 	public static final String DATA_BINDING_NONE="NONE";						//$NON-NLS-1$
 	public static final String SKELETON_SUFFIX="Skeleton.java";					//$NON-NLS-1$
 	public static final String RESOURCE_FOLDER="resources";						//$NON-NLS-1$
@@ -95,6 +97,7 @@ public class Axis2Constants {
         "backport-util",
         "mex-impl",
         "mail",
+        "xmlbeans",
         "httpcore"
 	};
 }	

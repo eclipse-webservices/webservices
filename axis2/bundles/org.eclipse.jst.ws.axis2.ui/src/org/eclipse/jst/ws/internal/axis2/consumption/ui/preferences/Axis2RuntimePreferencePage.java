@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2010 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@
  * 20070827   188732 sandakith@wso2.com - Lahiru Sandakith, Restore defaults for preferences
  * 20071030	  207618 zina@ca.ibm.com - Zina Mostafia, Page GUI sequence using tab is not correct ( violates Accessibility)
  * 20080522   233154 samindaw@wso2.com - Saminda Wijeratne, UI rendering problem where textboxes used as labels had white background
+ * 20090307   196954 samindaw@wso2.com - Saminda Wijeratne, Support XMLBeans data binding
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.consumption.ui.preferences;
 
@@ -284,11 +285,19 @@ public class Axis2RuntimePreferencePage extends PreferencePage implements IWorkb
 	{
 		Axis2EmitterContext context = WebServiceAxis2CorePlugin.getDefault().getAxisEmitterContext();
 
-		String[] databindingItems = {context.getServiceDatabinding().toUpperCase()};
+		String[] databindingItems = {Axis2Constants.DATA_BINDING_ADB,Axis2Constants.DATA_BINDING_XMLBEANS};
 		serviceDatabindingCombo.setItems(databindingItems);
-		serviceDatabindingCombo.select(0);
+		int selected = serviceDatabindingCombo.indexOf(context.getServiceDatabinding().toUpperCase());
+		if (selected==-1)
+			serviceDatabindingCombo.select(0);
+		else
+			serviceDatabindingCombo.select(selected);
 		clientDatabindingCombo.setItems(databindingItems);
-		clientDatabindingCombo.select(0);
+		selected = clientDatabindingCombo.indexOf(context.getClientDatabinding().toUpperCase());
+		if (selected==-1)
+			clientDatabindingCombo.select(0);
+		else
+			clientDatabindingCombo.select(selected);
 
 		generateServerSideInterfaceCheckBoxButton.setSelection( context.isServiceInterfaceSkeleton());
 		generateAllCheckBoxButton.setSelection(context.isServiceGenerateAll());

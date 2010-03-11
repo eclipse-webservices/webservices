@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2010 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again 
  * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
  * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
+ * 20090307   196954 samindaw@wso2.com - Saminda Wijeratne, Support XMLBeans data binding
  * 20091207   193996 samindaw@wso2.com - Saminda Wijeratne, selecting a specific service/portname
 *******************************************************************************/
 package org.eclipse.jst.ws.axis2.consumption.core.command;
@@ -32,6 +33,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -225,7 +228,12 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 	    							currentDynamicWebProjectDir, 
 	    							monitor, 
 	    							statusHandler);
-      
+	    
+	    IProject project = FacetContainerUtils.getProjectName(model.getWebProjectName());
+	    IFolder folder = project.getFolder("resources");
+	    if (folder.exists()){
+	    	Axis2CoreUtils.addResourcesFolderAsClassPath(project);
+	    }
 	} catch (Exception e) {
 		status = StatusUtils.errorStatus(NLS.bind(
 											Axis2ConsumptionUIMessages.ERROR_CODEGEN_EXCEPTION,
@@ -245,5 +253,5 @@ public class Axis2ClientCodegenCommand extends AbstractDataModelOperation {
 
 		return status;
 	}
-
+	
 }

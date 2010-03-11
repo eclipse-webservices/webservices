@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2010 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20080319   207616 makandre@ca.ibm.com - Andrew Mak, Table in Axis2 Web Service Skeleton Java Bean Configuration Page not Accessible
  * 20080621   200069 samindaw@wso2.com - Saminda Wijeratne, saving the retrieved WSDL so no need to retrieve it again
+ * 20090307   196954 samindaw@wso2.com - Saminda Wijeratne, Support XMLBeans data binding
  * 20091207   193996 samindaw@wso2.com - Saminda Wijeratne, selecting a specific service/portname
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis2.creation.ui.widgets.skeleton;
@@ -156,7 +157,6 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 		databindingTypeCombo = new Combo(mainComp, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
 		databindingTypeCombo.setLayoutData(gd);
 		fillDatabinderCombo();
-		databindingTypeCombo.select(0);
 		databindingTypeCombo.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				model.setDatabindingType(databindingTypeCombo.getText());
@@ -470,8 +470,13 @@ public class WSDL2JAVASkelConfigWidget extends SimpleWidgetDataContributor
 	 */
 	private void fillDatabinderCombo() {
 		databindingTypeCombo.add(Axis2Constants.DATA_BINDING_ADB);
+		databindingTypeCombo.add(Axis2Constants.DATA_BINDING_XMLBEANS);
 		databindingTypeCombo.add(Axis2Constants.DATA_BINDING_NONE);
-		databindingTypeCombo.select(0);
+		int selected = databindingTypeCombo.indexOf(context.getServiceDatabinding().toUpperCase());
+		if (selected==-1)
+			databindingTypeCombo.select(0);
+		else
+			databindingTypeCombo.select(selected);
 	}
 	
 	

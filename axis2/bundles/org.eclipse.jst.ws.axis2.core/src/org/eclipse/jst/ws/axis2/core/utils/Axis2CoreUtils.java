@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 WSO2 Inc. and others.
+ * Copyright (c) 2007, 2010 WSO2 Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20080625   210817 samindaw@wso2.com - Saminda Wijeratne, Setting the proxyBean and proxyEndPoint values - Refactoring
  * 20080924   247929 samindaw@wso2.com - Saminda Wijeratne, source folder not correctly set
+ * 20090307   196954 samindaw@wso2.com - Saminda Wijeratne, Support XMLBeans data binding
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -28,11 +29,14 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -54,6 +58,30 @@ public class Axis2CoreUtils {
 	private static boolean alreadyComputedTempAxis2Directory = false;
 	private static String tempAxis2Dir = null;
 	
+	public static void addResourcesFolderAsClassPath(IProject project){
+		try {
+			IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
+			IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
+			List list = new LinkedList(java.util.Arrays.asList(rawClasspath));
+				String resourceName = "resources";
+				IFolder resourcesFolder = project.getFolder(resourceName);
+				boolean isAlreadyAdded=false;
+				for(IClasspathEntry cpe:rawClasspath){
+					isAlreadyAdded=cpe.getPath().toOSString().equals(resourcesFolder.getFullPath().toOSString());
+					if (isAlreadyAdded) break;
+				}
+				if (!isAlreadyAdded){
+					IClasspathEntry jarEntry = JavaCore.newLibraryEntry(resourcesFolder.getFullPath(),null,null);
+					list.add(jarEntry);
+				}
+			IClasspathEntry[] newClasspath = (IClasspathEntry[])list.toArray(new IClasspathEntry[0]);
+			javaProject.setRawClasspath(newClasspath,null);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public static String tempAxis2Directory() {
 		if (!alreadyComputedTempAxis2Directory){
 			String[] nodes = {Axis2Constants.DIR_DOT_METADATA,
