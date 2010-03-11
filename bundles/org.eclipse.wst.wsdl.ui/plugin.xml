@@ -335,6 +335,9 @@
    	           label="%command.wsdl.refactor.rename.element.label">
   	         <visibleWhen
   	               checkEnabled="true">
+	                <reference
+	                      definitionId="org.eclipse.wst.wsdl.ui.editor.active.sourceView.definition">
+	                </reference>
   	         </visibleWhen>
    	  	   </command>
  	   	</menuContribution>
