@@ -20,6 +20,7 @@
  * 20071011   205972 sandakith@wso2.com - Lahiru Sandakith, Axis2 Libraries License files fix
  * 20080528   186429 sandakith@wso2.com - Lahiru Sandakith, Axis2 webapp jsp's validation fix
  * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
+ * 20100308	  282466 samindaw@wso2.com - Saminda Wijeratne, support for axis2 1.5
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.commands;
 
@@ -120,12 +121,8 @@ AbstractDataModelOperation {
 		List<String> includeList = new ArrayList<String>();
 		contentCopyUtils.updateCheckList(loadIncludeListWithAxis2Libs(libPath.toOSString(),
 				includeList));
-		String[] nodes = {Axis2Constants.DIR_WEB_INF,Axis2Constants.DIR_LIB};
 		status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
-				libPath.toOSString(), 
-				FileUtils.addNodesToPath(
-						FacetContainerUtils.pathToWebProjectContainer(project.toString()), 
-						nodes), 
+				libPath.toOSString(), FacetContainerUtils.getAxis2WebContainerLibPath(project), 
 				monitor,
 				true
 		);

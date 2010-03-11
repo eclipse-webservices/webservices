@@ -16,6 +16,7 @@
  * 20070516   183147 sandakith@wso2.com - Lahiru Sandakith Fix for the persisting DBCS paths
  * 20070523   174876 sandakith@wso2.com - Lahiru Sandakith, Persist Preferences inside Framework
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20100308	  282466 samindaw@wso2.com - Saminda Wijeratne, support for axis2 1.5
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.facet.utils;
 
@@ -32,6 +33,9 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.tools.ant.AntClassLoader;
+import org.apache.tools.ant.Project;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -39,6 +43,7 @@ import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.context.Axis2EmitterContext;
 import org.eclipse.jst.ws.axis2.core.plugin.WebServiceAxis2CorePlugin;
 import org.eclipse.jst.ws.axis2.core.utils.Axis2CoreUtils;
+import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 
 public class Axis2RuntimeUtils {
@@ -196,6 +201,42 @@ public class Axis2RuntimeUtils {
 	public static void setOutputPath(String outputPath) {
 		Axis2RuntimeUtils.outputPath = outputPath;
 	}
-
+	
+	public static String getAxis2ServletAdminClass(IProject project){
+		String[] classNames=new String[]{"org.apache.axis2.transport.http.AxisAdminServlet" ,
+				"org.apache.axis2.webapp.AxisAdminServlet"};//$NON-NLS-1$
+		String defaultClassName=classNames[0];
+		String selectedClassName=null;
+		String axis2WCLibPath = FacetContainerUtils.getAxis2WebContainerLibPath(project);
+		File libFolder = new File(axis2WCLibPath);
+		File[] libs = libFolder.listFiles();
+		AntClassLoader antClassLoader = new AntClassLoader();
+		antClassLoader.setParentFirst(false);
+		org.apache.tools.ant.types.Path path = new org.apache.tools.ant.types.Path(new Project());
+		path.setPath(FacetContainerUtils.getAxis2WebContainerwebinfClassPath(project));
+		for (File lib : libs) {
+			if (lib.getName().toLowerCase().endsWith(".jar")){
+				path.setPath(lib.getAbsolutePath());
+				antClassLoader.setClassPath(path);
+				for(String className:classNames){
+					try{
+						Class.forName(className, false, antClassLoader);
+						selectedClassName=className;
+					}catch (NoClassDefFoundError e1){
+						if (!e1.getMessage().contains(className) && !e1.getCause().getMessage().contains(className)) //dependent class is not found
+							selectedClassName=className;
+						//class not found
+					}catch(Exception e){
+						//the class is not found
+					}
+					if (selectedClassName!=null) break;
+				}
+			}
+			if (selectedClassName!=null) break;
+		}
+		antClassLoader.cleanup();
+		if (selectedClassName==null) selectedClassName=defaultClassName;
+		return selectedClassName;
+	}
 		    
 }

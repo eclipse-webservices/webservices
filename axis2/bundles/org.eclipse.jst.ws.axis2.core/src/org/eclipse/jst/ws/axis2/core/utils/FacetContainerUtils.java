@@ -18,6 +18,7 @@
  * 20070612   192047 kathy@ca.ibm.com   - Kathy Chan
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
+ * 20100308	  282466 samindaw@wso2.com - Saminda Wijeratne, support for axis2 1.5
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.utils;
 
@@ -180,6 +181,35 @@ public class FacetContainerUtils {
 		}
 		String[] deployedWSDLURLParts = {Axis2Constants.SERVICES,serviceName};
 		return FileUtils.addNodesToURL(deployedWSDLURLpath, deployedWSDLURLParts)+"?wsdl";
+	}
+	
+	public static String getAxis2WebContainerLibPath(IProject project){
+		return getAxis2WebContainerLibPath(FacetContainerUtils.pathToWebProjectContainer(
+				project.toString()));
+	}
+	
+	public static String getAxis2WebContainerLibPath(String webcontainerPath){
+		return FileUtils.addAnotherNodeToPath(getAxis2WebContainerWEB_INFPath(webcontainerPath),
+				Axis2Constants.DIR_LIB);
+	}
+	
+	public static String getAxis2WebContainerwebinfClassPath(IProject project){
+		return getAxis2WebContainerwebinfClassPath(FacetContainerUtils.pathToWebProjectContainer(
+				project.toString()));
+	}
+	
+	public static String getAxis2WebContainerwebinfClassPath(String webcontainerPath){
+		return FileUtils.addAnotherNodeToPath(getAxis2WebContainerWEB_INFPath(webcontainerPath),
+				Axis2Constants.DIR_CLASSES);
+	}
+	
+	public static String getAxis2WebContainerRepositoryPath(String webcontainerPath){
+		return FileUtils.addAnotherNodeToPath(getAxis2WebContainerWEB_INFPath(webcontainerPath),
+				Axis2Constants.DIR_SERVICES);
+	}
+	
+	public static String getAxis2WebContainerWEB_INFPath(String webcontainerPath){
+		return  FileUtils.addAnotherNodeToPath(webcontainerPath,Axis2Constants.DIR_WEB_INF);
 	}
 	
 	

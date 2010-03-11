@@ -15,6 +15,7 @@
  * 20080521   231098 sandakith@wso2.com - Lahiru Sandakith, Fix for Axis2 1.4 dependency chenge
  * 20080604   193371 samindaw@wso2.com - Saminda Wijeratne, creating a function to validate services.xml
  * 20091207   192005 samindaw@wso2.com - merge the web.xml to have axis2 welcome file defined
+ * 20100308	  282466 samindaw@wso2.com - Saminda Wijeratne, support for axis2 1.5
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.core.constant;
 
@@ -93,7 +94,8 @@ public class Axis2Constants {
         "annogen",
         "backport-util",
         "mex-impl",
-        "mail"
+        "mail",
+        "httpcore"
 	};
 }	
 	

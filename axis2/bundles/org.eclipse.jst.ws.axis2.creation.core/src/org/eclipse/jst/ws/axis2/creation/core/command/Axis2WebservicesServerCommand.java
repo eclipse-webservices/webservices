@@ -15,10 +15,9 @@
  * 20070813   196173  sandakith@wso2.com - Lahiru Sandakith, Fix 196173, DWP custom location fix
  * 20070824   200515 sandakith@wso2.com - Lahiru Sandakith, NON-NLS move to seperate file
  * 20080616   237363 samindaw@wso2.com - Saminda Wijeratne, get ResourceContext from environment instead of preference
+ * 20100308	  282466 samindaw@wso2.com - Saminda Wijeratne, support for axis2 1.5
  *******************************************************************************/
 package org.eclipse.jst.ws.axis2.creation.core.command;
-
-import java.io.File;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -26,7 +25,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.ws.axis2.consumption.core.utils.ContentCopyUtils;
-import org.eclipse.jst.ws.axis2.core.constant.Axis2Constants;
 import org.eclipse.jst.ws.axis2.core.utils.FacetContainerUtils;
 import org.eclipse.jst.ws.axis2.core.utils.FileUtils;
 import org.eclipse.jst.ws.axis2.creation.core.data.DataModel;
@@ -52,34 +50,18 @@ public class Axis2WebservicesServerCommand extends AbstractDataModelOperation {
 		IEnvironment environment = getEnvironment();
 		IStatusHandler statusHandler = environment.getStatusHandler();	
 
-		String webContainerDirString = FacetContainerUtils.pathToWebProjectContainer(
-				model.getWebProjectName());
+
 
 		ContentCopyUtils contentCopyUtils = new ContentCopyUtils(getEnvironment());
 		
 		//Check for the server status
 		if (model.getServerStatus()){
-			if (scenario == WebServiceScenario.BOTTOMUP){
-				//Import the tempory webservices directory according to the Resources API of eclipse 
+			if (scenario == WebServiceScenario.BOTTOMUP || scenario == WebServiceScenario.TOPDOWN){
+				String webContainerDirString = FacetContainerUtils.pathToWebProjectContainer(
+						model.getWebProjectName());
+				String repositoryString = FacetContainerUtils.getAxis2WebContainerRepositoryPath(
+						webContainerDirString); 
 				String webserviceTempDirString = model.getPathToWebServicesTempDir();
-				String repositoryString = webContainerDirString 
-				+ File.separator + Axis2Constants.DIR_WEB_INF 
-				+ File.separator + Axis2Constants.DIR_SERVICES;
-				//Copy the existing services to the repository
-				status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
-											webserviceTempDirString, 
-											repositoryString, 
-											monitor, 
-											statusHandler);
-				FileUtils.deleteDirectories(webserviceTempDirString);
-
-
-			}else if (scenario == WebServiceScenario.TOPDOWN){
-				//Do topdown
-				String webserviceTempDirString = model.getPathToWebServicesTempDir();
-				String repositoryString = webContainerDirString 
-				+ File.separator + Axis2Constants.DIR_WEB_INF 
-				+ File.separator + Axis2Constants.DIR_SERVICES;
 				//Copy the existing services to the repository
 				status = contentCopyUtils.copyDirectoryRecursivelyIntoWorkspace(
 											webserviceTempDirString, 
