@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2009 by SAP AG, Walldorf.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -61,64 +61,64 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.WsValidationTes
 
 public class AllTestsSuite
 {
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite();
+    public static Test suite()
+    {
+        TestSuite suite = new TestSuite();
 
-		suite.addTestSuite(AnnotationFactoryTest.class);
-		suite.addTestSuite(AnnotationsTest.class);
-		suite.addTestSuite(ParamValuePairImplTest.class);
-		suite.addTestSuite(ComplexAnnotationImplTest.class);
-		suite.addTestSuite(QualifiedNameValueImplTest.class);
-		suite.addTestSuite(ArrayValueImplTest.class);
-		suite.addTestSuite(WsDOMRuntimeRegistryTest.class);
-		suite.addTestSuite(WsDOMRuntimeManagerTest.class);
-		suite.addTestSuite(Dom2ResourceMapperTest.class);
-		suite.addTestSuite(DomUtilTest.class);
-		
-		// DOM tests
-		suite.addTestSuite(Jee5WsDomRuntimeExtensionTest.class);
-		suite.addTestSuite(JaxWsWorkspaceResourceTests.class);
-		suite.addTestSuite(ProjectAddingTests.class);
-		suite.addTestSuite(WorkspaceCUFinderTest.class);
-		// DOM sync tests
-		suite.addTestSuite(AbstractModelSynchronizerTest.class);
-		suite.addTestSuite(OnEventModelSyncronizerTest.class);
-		suite.addTestSuite(ImplicitSeiMethodSynchronizationTests.class);
-		suite.addTestSuite(MethodParamsSynchronizationTests.class);		
-		suite.addTestSuite(ModelSynchronizationTests.class);
-		suite.addTestSuite(SeiMethodSyncronizationTest.class);
-		suite.addTestSuite(SeiSyncronizationTest.class);
-		suite.addTestSuite(WsSynchronizationTest.class);
-		suite.addTestSuite(JaxWsDefaultsCalculatorTest.class);
-		// state adapters tests
-		suite.addTestSuite(MethodPropertyStateAdapterTest.class);
-		suite.addTestSuite(PropertyStateAdapterFactoryTest.class);
-		suite.addTestSuite(SeiPropertyStateAdapterTest.class);
-		suite.addTestSuite(WsPropertyStateAdapterTest.class);
-		suite.addTestSuite(ParameterPropertyStateAdapterTest.class);
-		// serialize adapter tests
-		suite.addTestSuite(AbstractSerializerAdapterTest.class);
-		suite.addTestSuite(MethodSerializerAdapterTest.class);
-		suite.addTestSuite(SeiSerializerAdapterTest.class);
-		suite.addTestSuite(SerializerAdapterFactoryTest.class);
-		suite.addTestSuite(WsSerializerAdapterTest.class);
-		suite.addTestSuite(ParameterSerializerAdapterTest.class);
-		// default values adapter tests
-		suite.addTestSuite(MethodPropertyDefaultsAdapterTest.class);
-		suite.addTestSuite(WsPropertyDefaultsAdapterTest.class);
-		suite.addTestSuite(SeiPropertyDefaultsAdapterTest.class);
-		suite.addTestSuite(ParameterPropertyDefaultsAdapterTest.class);
-		// other adapters tests
-		suite.addTestSuite(AnnotationAdapterTest.class);
-		suite.addTestSuite(AnnotationAdapterFactoryTest.class);
-		// validation tests
-		suite.addTestSuite(SeiValidationTest.class);
-		suite.addTestSuite(WsValidationTest.class);
-		suite.addTestSuite(WmValidationTest.class);
-		suite.addTestSuite(WpValidationTest.class);
-		suite.addTestSuite(EndpointIsSessionBeanRuleTest.class);
-		
-		return suite;
-	}
+        suite.addTestSuite(AnnotationFactoryTest.class);
+        suite.addTestSuite(AnnotationsTest.class);
+        suite.addTestSuite(ParamValuePairImplTest.class);
+        suite.addTestSuite(ComplexAnnotationImplTest.class);
+        suite.addTestSuite(QualifiedNameValueImplTest.class);
+        suite.addTestSuite(ArrayValueImplTest.class);
+        suite.addTestSuite(WsDOMRuntimeRegistryTest.class);
+        suite.addTestSuite(WsDOMRuntimeManagerTest.class);
+        suite.addTestSuite(Dom2ResourceMapperTest.class);
+        suite.addTestSuite(DomUtilTest.class);
+
+        // DOM tests
+        suite.addTestSuite(Jee5WsDomRuntimeExtensionTest.class);
+        suite.addTestSuite(JaxWsWorkspaceResourceTests.class);
+        suite.addTestSuite(ProjectAddingTests.class);
+        suite.addTestSuite(WorkspaceCUFinderTest.class);
+        // DOM sync tests
+        suite.addTestSuite(AbstractModelSynchronizerTest.class);
+        suite.addTestSuite(OnEventModelSyncronizerTest.class);
+        suite.addTestSuite(ImplicitSeiMethodSynchronizationTests.class);
+        suite.addTestSuite(MethodParamsSynchronizationTests.class);
+        suite.addTestSuite(ModelSynchronizationTests.class);
+        suite.addTestSuite(SeiMethodSyncronizationTest.class);
+        suite.addTestSuite(SeiSyncronizationTest.class);
+        suite.addTestSuite(WsSynchronizationTest.class);
+        suite.addTestSuite(JaxWsDefaultsCalculatorTest.class);
+        // state adapters tests
+        suite.addTestSuite(MethodPropertyStateAdapterTest.class);
+        suite.addTestSuite(PropertyStateAdapterFactoryTest.class);
+        suite.addTestSuite(SeiPropertyStateAdapterTest.class);
+        suite.addTestSuite(WsPropertyStateAdapterTest.class);
+        suite.addTestSuite(ParameterPropertyStateAdapterTest.class);
+        // serialize adapter tests
+        suite.addTestSuite(AbstractSerializerAdapterTest.class);
+        suite.addTestSuite(MethodSerializerAdapterTest.class);
+        suite.addTestSuite(SeiSerializerAdapterTest.class);
+        suite.addTestSuite(SerializerAdapterFactoryTest.class);
+        suite.addTestSuite(WsSerializerAdapterTest.class);
+        suite.addTestSuite(ParameterSerializerAdapterTest.class);
+        // default values adapter tests
+        suite.addTestSuite(MethodPropertyDefaultsAdapterTest.class);
+        suite.addTestSuite(WsPropertyDefaultsAdapterTest.class);
+        suite.addTestSuite(SeiPropertyDefaultsAdapterTest.class);
+        suite.addTestSuite(ParameterPropertyDefaultsAdapterTest.class);
+        // other adapters tests
+        suite.addTestSuite(AnnotationAdapterTest.class);
+        suite.addTestSuite(AnnotationAdapterFactoryTest.class);
+        // validation tests
+        suite.addTestSuite(SeiValidationTest.class);
+        suite.addTestSuite(WsValidationTest.class);
+        suite.addTestSuite(WmValidationTest.class);
+        //	suite.addTestSuite(WpValidationTest.class);
+        suite.addTestSuite(EndpointIsSessionBeanRuleTest.class);
+
+        return suite;
+    }
 }
