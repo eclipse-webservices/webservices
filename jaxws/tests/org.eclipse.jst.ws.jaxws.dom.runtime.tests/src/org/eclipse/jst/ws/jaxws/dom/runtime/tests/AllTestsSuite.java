@@ -116,7 +116,7 @@ public class AllTestsSuite
         suite.addTestSuite(SeiValidationTest.class);
         suite.addTestSuite(WsValidationTest.class);
         suite.addTestSuite(WmValidationTest.class);
-        //	suite.addTestSuite(WpValidationTest.class);
+        suite.addTestSuite(WpValidationTest.class);
         suite.addTestSuite(EndpointIsSessionBeanRuleTest.class);
 
         return suite;
