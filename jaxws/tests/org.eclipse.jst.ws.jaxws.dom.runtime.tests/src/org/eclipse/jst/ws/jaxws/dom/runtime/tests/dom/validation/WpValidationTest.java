@@ -18,6 +18,8 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
 
+// The test has been excluded from the test suite. Include it again when fixed
+// FIXME: Bug 305772
 public class WpValidationTest extends ValidationTestsSetUp
 {
     protected IType seiType;
