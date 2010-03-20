@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -19,6 +20,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
 import org.eclipse.jst.j2ee.internal.common.classpath.WtpUserLibraryProviderInstallOperation;
 import org.eclipse.jst.j2ee.project.EarUtilities;
@@ -73,7 +75,7 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
     java.util.List<SharedLibraryConfigurator> configurators = SharedLibraryConfiguratorUtil.getConfigurators();
     Iterator<SharedLibraryConfigurator> sharedLibConfiguratorIterator = configurators.iterator();
 
-    if (cfg.isDeploy())
+    if (cfg.isDeploy() || (!cfg.isDeploy() && !cfg.isSharedLibrary()))
       return;
 
     while (sharedLibConfiguratorIterator.hasNext())
@@ -96,7 +98,7 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
             return;
           addToEar = new Boolean(true);
         }
-        if (thisConfigurator.getIsSharedLibSupported(project, earProject, addToEar, null)) // libref.getID()
+        if (thisConfigurator.getIsSharedLibSupported(project, earProject, addToEar,  ((LibraryInstallDelegate)config.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).getLibraryProvider().getId())) // libref.getID()
         {
           thisConfigurator.installSharedLibs(project, earProject, monitor, cfg.getLibraryNames()); // libref.getID()
           break;
