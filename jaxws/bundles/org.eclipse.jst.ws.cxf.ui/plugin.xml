@@ -11,7 +11,7 @@
    </extension>
    
    <!--<extension point="org.eclipse.ui.propertyPages">
-      <page
+      <pag e
          name="%PROPERTIES_CATEGORY_CXF_RUNTIME"
          class="org.eclipse.jst.ws.internal.cxf.ui.properties.CXFPropertyPage"
          id="org.eclipse.jst.ws.cxf.propertyPages.CXFPreferencePage">
