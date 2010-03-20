@@ -13,7 +13,6 @@
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
- * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -105,43 +104,12 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 			}
 
 			
-			if (((LibraryInstallDelegate) config
-					.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
-					.getLibraryProviderOperationConfig() instanceof JAXRSUserLibraryProviderInstallOperationConfig
-					// deploy is chosen
-					|| (config
-							.getProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION) != null && Boolean
-							.parseBoolean((config
-									.getProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION)
-									.toString())))
-					// don't include libraries
-					|| (config
-							.getProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION) != null
-							&& !Boolean
-									.parseBoolean((config
-											.getProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION)
-											.toString())) && (config
-							.getProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY) == null || (config
-							.getProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY) != null && !Boolean
-							.parseBoolean((config
-									.getProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY)
-									.toString())))))
-
-			) {
-				// either deploy is chosen, or user chosen not include
-				// libraries, or it is our shared library install delegate which
-				// handles both deploy & shared library options
-				((LibraryInstallDelegate) config
-						.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
-						.execute(new NullProgressMonitor());
-			} else {
-				// Create JAXRS libraries by calling Library installer then
-				// appropriate SharedLibraryConfigurator
-				((LibraryInstallDelegate) config
-						.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
-						.execute(new NullProgressMonitor());
-				createSharedLibraries(project, fv, monitor, config);
-			}			
+//			if (Boolean.parseBoolean((config.getProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY).toString())))
+//				 // Create JAXRS libraries as shared library entries
+				//createSharedLibraries(project, fv, monitor, config);
+			
+			//Configure libraries
+			( (LibraryInstallDelegate) config.getProperty( IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE ) ).execute( new NullProgressMonitor() );
 
 			// Update web model
 			createServletAndModifyWebXML(project, config, monitor);
@@ -162,6 +130,9 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 
 		String targetRuntimeID = config
 				.getStringProperty(IJAXRSFacetInstallDataModelProperties.TARGETRUNTIME);
+		JAXRSLibraryInternalReference libref = null; /*(JAXRSLibraryInternalReference) config
+				.getProperty(IJAXRSFacetInstallDataModelProperties.IMPLEMENTATION);*/
+
 		SharedLibraryConfiguratorUtil
 				.getInstance();
 		java.util.List<SharedLibraryConfigurator> configurators = SharedLibraryConfiguratorUtil.getConfigurators();
@@ -175,8 +146,7 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 				IProject earProject = getEARProject(config);
 				Boolean addToEar = getAddToEar(config);
 				if (thisConfigurator.getIsSharedLibSupported(project,
-						earProject, addToEar, ((LibraryInstallDelegate)config.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).getLibraryProvider().getId())) {  // libref.getID()
-					
+						earProject, addToEar, null)) {  // libref.getID()
 					thisConfigurator.installSharedLibs(project, earProject,
 							monitor, new ArrayList<String>());  //***ID Changed libref.getID()
 					break;

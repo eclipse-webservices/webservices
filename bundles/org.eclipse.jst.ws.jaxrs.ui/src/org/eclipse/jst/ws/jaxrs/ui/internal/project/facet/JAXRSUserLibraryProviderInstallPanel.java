@@ -11,12 +11,13 @@
  * -------- -------- -----------------------------------------------------------
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
- * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.user.UserLibraryProviderInstallPanel;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryConfigDialogSettingData;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryConfigModel;
@@ -26,14 +27,17 @@ import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryReg
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
+import org.eclipse.jst.ws.jaxrs.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderInstallPanel
@@ -65,80 +69,41 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
     includeLibsGroup.getCopyOnPublishCheckBox().setSelection(cfg.isIncludeWithApplicationEnabled());
 
 
-		includeLibsGroup.getCopyOnPublishCheckBox().addSelectionListener(
-				new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent event) {
-						cfg.setIncludeWithApplicationEnabled(includeLibsGroup
-								.getCopyOnPublishCheckBox().getSelection());
-						if (includeLibsGroup.getCopyOnPublishCheckBox()
-								.getSelection()) {
-							boolean deployLib = includeLibsGroup
-									.getBtnDeployJars().getSelection();
-							boolean shareLib = includeLibsGroup
-									.getBtnSharedLibrary().getSelection();
-							cfg.setIsDeploy(deployLib);
-							cfg.setSharedLibrary(shareLib);
-							IDataModel model = cfg.getModel();
-							model.setProperty(
-									IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION,
-									deployLib);
-							model.setProperty(
-									IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY,
-									shareLib);
-						} else {
-							boolean deployLib = false;
-							boolean shareLib = false;
-							cfg.setIsDeploy(deployLib);
-							cfg.setSharedLibrary(shareLib);
-							IDataModel model = cfg.getModel();
-							model.setProperty(
-									IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION,
-									deployLib);
-							model.setProperty(
-									IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY,
-									shareLib);
-						}
+    includeLibsGroup.getCopyOnPublishCheckBox().addSelectionListener(new SelectionAdapter()
+    {
+      public void widgetSelected(final SelectionEvent event)
+      {
+        cfg.setIncludeWithApplicationEnabled(includeLibsGroup.getCopyOnPublishCheckBox().getSelection());
+      }
+    });
 
-					}
-				});
 
-		includeLibsGroup.getBtnDeployJars().addSelectionListener(
-				new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent e) {
-						boolean deployLib = includeLibsGroup.getBtnDeployJars()
-								.getSelection();
-						boolean shareLib = includeLibsGroup
-								.getBtnSharedLibrary().getSelection();
-						cfg.setIsDeploy(deployLib);
-						cfg.setSharedLibrary(shareLib);
-						IDataModel model = cfg.getModel();
-						model.setProperty(
-								IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION,
-								deployLib);
-						model.setProperty(
-								IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY,
-								shareLib);
-					}
-				});
+    includeLibsGroup.getBtnDeployJars().addSelectionListener(new SelectionAdapter()
+    {
+      public void widgetSelected(SelectionEvent e)
+      {
+        cfg.setIsDeploy(true);
+        cfg.setSharedLibrary(false);
+        IDataModel model = cfg.getModel();
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, includeLibsGroup.getBtnDeployJars().getSelection());
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, includeLibsGroup.getBtnDeployJars().getSelection());
+      }
+    });
 
-		includeLibsGroup.getBtnSharedLibrary().addSelectionListener(
-				new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent e) {
-						boolean deployLib = includeLibsGroup.getBtnDeployJars()
-								.getSelection();
-						boolean shareLib = includeLibsGroup
-								.getBtnSharedLibrary().getSelection();
-						cfg.setIsDeploy(deployLib);
-						cfg.setSharedLibrary(shareLib);
-						IDataModel model = cfg.getModel();
-						model.setProperty(
-								IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION,
-								deployLib);
-						model.setProperty(
-								IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY,
-								shareLib);
-					}
-				});
+    includeLibsGroup.getBtnSharedLibrary().addSelectionListener(new SelectionAdapter()
+    {
+      public void widgetSelected(SelectionEvent e)
+      {
+        LibraryInstallDelegate liDelegate = cfg.getLibraryInstallDelegate();
+        ILibraryProvider prov = cfg.getLibraryProvider();
+        cfg.getFacetedProject().getProject();
+        cfg.setIsDeploy(false);
+        cfg.setSharedLibrary(true);
+        IDataModel model = cfg.getModel();
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION, includeLibsGroup.getBtnSharedLibrary().getSelection());
+        model.setProperty(IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY, includeLibsGroup.getBtnSharedLibrary().getSelection());
+      }
+    });
 
     final IPropertyChangeListener listener = new IPropertyChangeListener()
     {
