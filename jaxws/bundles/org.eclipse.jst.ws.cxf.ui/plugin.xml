@@ -7,7 +7,7 @@
          class="org.eclipse.jst.ws.internal.cxf.ui.preferences.CXFRuntimePreferencePage"
          id="org.eclipse.jst.ws.cxf.ui.CXFRuntimePreferencesPage"
          name="%PREFERENCE_CATEGORY_CXF_RUNTIME">
-      </page>
+      </page> 
    </extension>
    
    <!--<extension point="org.eclipse.ui.propertyPages">
