@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091109   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -154,7 +155,7 @@ implements IJAXRSFacetInstallDataModelProperties
     IPath webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
     List<String> listOfMappings = Arrays.asList(servletInfoGroup.lstJAXRSServletURLPatterns.getItems());
 
-    if (JAXRSJEEUtils.isWebApp25(provider.getModelObject()))
+    if (JAXRSJEEUtils.isWebApp25or30(provider.getModelObject()))
     {
       provider.modify(new UpdateWebXMLForJavaEE(project, this.servlet, this.servletMapping, servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
           doesDDFileExist(project, webXMLPath) ? webXMLPath : IModelProvider.FORCESAVE);

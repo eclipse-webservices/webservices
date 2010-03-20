@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -96,7 +97,7 @@ public final class JAXRSFacetUninstallDelegate implements IDelegate {
 		Object webAppObj = provider.getModelObject();
 		if (webAppObj != null) {
 			IPath ddPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-			if (isJavaEEWebApp(webAppObj)) {
+			if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
 				WebApp webApp = (WebApp) webAppObj;
 				Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);
 				if (servlet == null)
@@ -117,14 +118,6 @@ public final class JAXRSFacetUninstallDelegate implements IDelegate {
 								ddPath);
 			}
 		}
-	}
-
-	private boolean isJavaEEWebApp(final Object webAppObj) {
-		if (webAppObj instanceof WebApp)
-			return true;
-
-		return false;
-
 	}
 
 	static class RemoveJAXRSFromJavaEEWebAppOperation implements Runnable {

@@ -12,6 +12,7 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
+ * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -148,7 +149,7 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 	 */
 	public static boolean isWebApp25or30(final Object webAppObj) {
 		if (webAppObj instanceof WebApp
-				&& ((WebApp) webAppObj).getVersion() == WebAppVersionType._25_LITERAL || ((WebApp) webAppObj).getVersion() == WebAppVersionType._30_LITERAL)
+				&& (((WebApp) webAppObj).getVersion() == WebAppVersionType._25_LITERAL || ((WebApp) webAppObj).getVersion() == WebAppVersionType._30_LITERAL))
 			return true;
 		return false;
 	}
