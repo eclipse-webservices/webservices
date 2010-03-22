@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.cxf.core.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public final class CXFModelUtils {
         ANNOTATION_TYPENAME_MAP.put("ServiceMode", "javax.xml.ws.ServiceMode"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebFault", "javax.xml.ws.WebFault"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put(REQUEST_WRAPPER, "javax.xml.ws.RequestWrapper"); //$NON-NLS-1$
-        ANNOTATION_TYPENAME_MAP.put(RESPONSE_WRAPPER, "javax.xml.ws.ResponseWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
+        ANNOTATION_TYPENAME_MAP.put(RESPONSE_WRAPPER, "javax.xml.ws.ResponseWrapper"); //$NON-NLS-1$
         ANNOTATION_TYPENAME_MAP.put("WebServiceClient", "javax.xml.ws.WebServiceClient"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebEndpoint", "javax.xml.ws.WebEndpoint"); //$NON-NLS-1$ //$NON-NLS-2$
         ANNOTATION_TYPENAME_MAP.put("WebServiceProvider", "javax.xml.ws.WebServiceProvider"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -121,12 +122,16 @@ public final class CXFModelUtils {
                 textFileChange.addEdit(AnnotationUtils.createAddMemberValuePairTextEdit(webServiceAnnotation, endpointInterfacePair));
             }
         } else {
+            List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+
             IAnnotationAttributeInitializer annotationAttributeInitializer =
                 AnnotationsManager.getAnnotationDefinitionForClass(WebService.class).
-                    getAnnotationAttributeInitializer();
+                getAnnotationAttributeInitializer();
 
-            List<MemberValuePair> memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast,
-                    WebService.class);
+            if (annotationAttributeInitializer != null) {
+                memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(type, ast,
+                        WebService.class);
+            }
 
             if (model.isUseServiceEndpointInterface() && type.isClass()) {
                 MemberValuePair endpointInterfaceValuePair = AnnotationsCore.createStringMemberValuePair(ast,
@@ -197,7 +202,7 @@ public final class CXFModelUtils {
 
     public static void getWebParamAnnotationChange(IType type, final IMethod method,
             ILocalVariable parameter, TextFileChange textFileChange)
-            throws CoreException {
+    throws CoreException {
         ICompilationUnit source = type.getCompilationUnit();
         CompilationUnit compilationUnit = SharedASTProvider.getAST(source, SharedASTProvider.WAIT_YES, null);
 
@@ -209,13 +214,16 @@ public final class CXFModelUtils {
     }
 
     private static Annotation getAnnotation(IJavaElement javaElement, AST ast,
-                Class<? extends java.lang.annotation.Annotation> annotationClass) {
+            Class<? extends java.lang.annotation.Annotation> annotationClass) {
 
-        IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager.
-            getAnnotationDefinitionForClass(annotationClass).getAnnotationAttributeInitializer();
+        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 
-        List<MemberValuePair> memberValuePairs =
-                annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
+        IAnnotationAttributeInitializer annotationAttributeInitializer = AnnotationsManager
+        .getAnnotationDefinitionForClass(annotationClass).getAnnotationAttributeInitializer();
+
+        if (annotationAttributeInitializer != null) {
+            memberValuePairs = annotationAttributeInitializer.getMemberValuePairs(javaElement, ast, annotationClass);
+        }
 
         return AnnotationsCore.createNormalAnnotation(ast, annotationClass.getSimpleName(), memberValuePairs);
     }
@@ -242,8 +250,8 @@ public final class CXFModelUtils {
                 }
             }
             if (importRewrite.hasRecordedChanges()) {
-                    TextEdit importTextEdit = importRewrite.rewriteImports(null);
-                    textFileChange.addEdit(importTextEdit);
+                TextEdit importTextEdit = importRewrite.rewriteImports(null);
+                textFileChange.addEdit(importTextEdit);
             }
         } catch (CoreException ce) {
             CXFCorePlugin.log(ce.getStatus());
@@ -313,7 +321,7 @@ public final class CXFModelUtils {
             switch (featureID) {
             case CXFPackage.CXF_CONTEXT__EXPORT_CXF_CLASSPATH_CONTAINER:
                 defaultValue = CXFPackage.eINSTANCE.getCXFContext_ExportCXFClasspathContainer()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.CXF_CONTEXT__VERBOSE:
                 defaultValue = CXFPackage.eINSTANCE.getCXFContext_Verbose().getDefaultValue();
@@ -323,7 +331,7 @@ public final class CXFModelUtils {
                 break;
             case CXFPackage.CXF_CONTEXT__USE_SPRING_APPLICATION_CONTEXT:
                 defaultValue = CXFPackage.eINSTANCE.getCXFContext_UseSpringApplicationContext()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.CXF_CONTEXT__GENERATE_CLIENT:
                 defaultValue = CXFPackage.eINSTANCE.getCXFContext_GenerateClient().getDefaultValue();
@@ -338,7 +346,7 @@ public final class CXFModelUtils {
             switch (featureID) {
             case CXFPackage.JAVA2_WS_CONTEXT__ANNOTATION_PROCESSING_ENABLED:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_AnnotationProcessingEnabled()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.JAVA2_WS_CONTEXT__SOAP12_BINDING:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_Soap12Binding().getDefaultValue();
@@ -348,26 +356,26 @@ public final class CXFModelUtils {
                 break;
             case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WRAPPER_FAULT_BEANS:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWrapperFaultBeans()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WSDL:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWSDL().getDefaultValue();
                 break;
             case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_METHOD_ANNOTATION:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWebMethodAnnotation()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_WEB_PARAM_ANNOTATION:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateWebParamAnnotation()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_REQUEST_WRAPPER_ANNOTATION:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateRequestWrapperAnnotation()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.JAVA2_WS_CONTEXT__GENERATE_RESPONSE_WRAPPER_ANNOTATION:
                 defaultValue = CXFPackage.eINSTANCE.getJava2WSContext_GenerateResponseWrapperAnnotation()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             }
         }
@@ -382,15 +390,15 @@ public final class CXFModelUtils {
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__AUTO_NAME_RESOLUTION:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_AutoNameResolution()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__GENERATE_IMPLEMENTATION:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_GenerateImplementation()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__PROCESS_SOAP_HEADERS:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_ProcessSOAPHeaders()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__GENERATE_ANT_BUILD_FILE:
                 defaultValue = CXFPackage.eINSTANCE.getCXFContext_GenerateAntBuildFile().getDefaultValue();
@@ -400,22 +408,22 @@ public final class CXFModelUtils {
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_NAMESPACE_PACKAGE_NAME_MAPPING:
                 defaultValue = CXFPackage.eINSTANCE
-                        .getWSDL2JavaContext_LoadDefaultNamespacePackageNameMapping().getDefaultValue();
+                .getWSDL2JavaContext_LoadDefaultNamespacePackageNameMapping().getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__LOAD_DEFAULT_EXCLUDES_NAMEPSACE_MAPPING:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_LoadDefaultExcludesNamepsaceMapping()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_USE_DEFAULT_VALUES:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcUseDefaultValues()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToString().getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_MULTI_LINE:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToStringMultiLine()
-                        .getDefaultValue();
+                .getDefaultValue();
                 break;
             case CXFPackage.WSDL2_JAVA_CONTEXT__XJC_TO_STRING_SIMPLE:
                 defaultValue = CXFPackage.eINSTANCE.getWSDL2JavaContext_XjcToStringSimple().getDefaultValue();

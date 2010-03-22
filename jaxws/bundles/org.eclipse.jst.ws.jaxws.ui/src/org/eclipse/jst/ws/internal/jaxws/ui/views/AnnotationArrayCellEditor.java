@@ -66,6 +66,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
     private List<Object> updatedValues;
 
     private  AnnotationArrayDialog annotationArrayDialog;
+    private int browse_button_count = 0;
 
     boolean cancelled;
 
@@ -442,7 +443,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                     text.setText(classValue.getCanonicalName() + ".class"); //$NON-NLS-1$
                 }
                 Button browseClassButton = new Button(typeComposite, SWT.PUSH);
-                browseClassButton.setText(JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL);
+                browseClassButton.setText(getBrowseButtonLabel());
                 browseClassButton.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
@@ -460,6 +461,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                         }
                     }
                 });
+                browse_button_count++;
                 controls.put(method.getName(), text);
             }
 
@@ -473,6 +475,25 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                     checkbox.setSelection((Boolean)defaultValue);
                 }
                 controls.put(method.getName(), checkbox);
+            }
+        }
+
+        private String getBrowseButtonLabel() {
+            switch (browse_button_count) {
+            case 0:
+                return JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL0;
+            case 1:
+                return JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL1;
+            case 2:
+                return JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL2;
+            case 3:
+                return JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL3;
+            case 4:
+                return JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL4;
+            case 5:
+                return JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL5;
+            default:
+                return JAXWSUIMessages.ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL0;
             }
         }
 

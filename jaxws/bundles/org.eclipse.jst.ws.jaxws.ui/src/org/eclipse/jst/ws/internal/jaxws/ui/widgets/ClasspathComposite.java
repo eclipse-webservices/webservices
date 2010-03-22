@@ -20,9 +20,11 @@ import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
@@ -30,32 +32,33 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.FileEditorInput;
 
 public class ClasspathComposite extends Composite {
-    
+
     private String JRE_PREF_PAGE_ID = "org.eclipse.jdt.debug.ui.preferences.VMPreferencePage"; //$NON-NLS-1$
     private String PROP_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage"; //$NON-NLS-1$
     private Object DATA_REVEAL_ENTRY = "select_classpath_entry"; //$NON-NLS-1$
 
     private Label informationLabel;
-    
+
     public ClasspathComposite(Composite parent, int style) {
         super(parent, style);
         addControls();
     }
-    
+
     public void addControls() {
         GridLayout gridLayout = new GridLayout();
         this.setLayout(gridLayout);
         GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         this.setLayoutData(gridData);
-        this.setBackground(getParent().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        this.setBackground(getBackgroundColor());
         informationLabel = new Label(this, SWT.NONE);
-        informationLabel.setBackground(getParent().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        informationLabel.setBackground(getBackgroundColor());
         informationLabel.setText(JAXWSUIMessages.bind(
                 JAXWSUIMessages.ANNOTATIONS_VIEW_NO_SUITABLE_LIBRARY_FOUND, "JAX-WS")); //$NON-NLS-1$
         Link link = new Link(this, SWT.NONE);
-        link.setBackground(getParent().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        link.setBackground(getBackgroundColor());
         link.setText(JAXWSUIMessages.CONFIGURE_JAVA_1_6_LIBRARY);
         link.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent selectionEvent) {
                 if (selectionEvent.text.equals("1")) { //$NON-NLS-1$
                     PreferencesUtil.createPreferenceDialogOn(getShell(), JRE_PREF_PAGE_ID,
@@ -74,18 +77,25 @@ public class ClasspathComposite extends Composite {
         //otherLibrariesLabel.setBackground(getParent().getDisplay().getSystemColor(SWT.COLOR_WHITE));
         //otherLibrariesLabel.setText("Annotation Libraries currently supported: " + AnnotationsManager.getAnnotationCategories());
         //otherLibrariesLabel.setText(JAXWSUIMessages.ANNOTATIONS_VIEW_OTHER_ANNOTATION_LIBRARIES_USE);
+    }
 
+    private Color getBackgroundColor() {
+        if (Display.getDefault().getHighContrast()) {
+            return getParent().getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+        } else {
+            return getParent().getDisplay().getSystemColor(SWT.COLOR_WHITE);
+        }
     }
 
     private IProject getProject() {
         return ((FileEditorInput) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                 .getActiveEditor().getEditorInput()).getFile().getProject();
     }
-    
-    
+
+
     public void updateLibraryLabel(String libraryName) {
         informationLabel.setText(JAXWSUIMessages.bind(
                 JAXWSUIMessages.ANNOTATIONS_VIEW_NO_SUITABLE_LIBRARY_FOUND, libraryName));
     }
-    
- }
+
+}

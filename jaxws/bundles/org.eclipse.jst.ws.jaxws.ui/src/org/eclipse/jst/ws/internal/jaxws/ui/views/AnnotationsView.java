@@ -44,6 +44,7 @@ import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.internal.jaxws.ui.actions.AnnotationsViewFilterAction;
 import org.eclipse.jst.ws.internal.jaxws.ui.widgets.ClasspathComposite;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -127,16 +128,16 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         notAvaiableComposite.setLayout(gridLayout);
         GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         notAvaiableComposite.setLayoutData(gridData);
-        notAvaiableComposite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        notAvaiableComposite.setBackground(getBackgroundColor(parent));
         Label label = new Label(notAvaiableComposite, SWT.NONE);
-        label.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        label.setBackground(getBackgroundColor(parent));
         label.setText(JAXWSUIMessages.ANNOTATIONS_VIEW_ANNOTATIONS_NOT_AVAILABLE_ON_SELECTION);
 
         annotationTreeViewer.setComparator(new ViewerComparator() {
             @Override
             public int compare(Viewer viewer, Object obj1, Object obj2) {
-                if ((obj1 instanceof Class<?> && ((Class<?>) obj1).isAnnotation())
-                        && (obj2 instanceof Class<?> && ((Class<?>) obj2).isAnnotation())) {
+                if (obj1 instanceof Class<?> && ((Class<?>) obj1).isAnnotation()
+                        && obj2 instanceof Class<?> && ((Class<?>) obj2).isAnnotation()) {
                     return ((Class<? extends java.lang.annotation.Annotation>) obj1).getCanonicalName().compareTo(
                             ((Class<? extends java.lang.annotation.Annotation>) obj2).getCanonicalName());
                 }
@@ -151,6 +152,14 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         setupClasspathComposite = new ClasspathComposite(pageBook, SWT.NONE);
 
         pageBook.showPage(notAvaiableComposite);
+    }
+
+    private Color getBackgroundColor(Composite parent) {
+        if (Display.getDefault().getHighContrast()) {
+            return parent.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+        } else {
+            return parent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+        }
     }
 
     private void startListeningForSelectionChanges() {

@@ -90,7 +90,7 @@ public class CXFFacetInstallWizardPage extends AbstractFacetWizardPage {
         link.setLayoutData(gridData);
 
         Label label = new Label(composite, SWT.NONE);
-        label.setText("CXF runtime:");
+        label.setText(CXFUIMessages.CXF_PROPERTY_PAGE_RUNTIME_LABEL);
 
         installationsComboViewer = new ComboViewer(composite, SWT.BORDER | SWT.READ_ONLY);
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);

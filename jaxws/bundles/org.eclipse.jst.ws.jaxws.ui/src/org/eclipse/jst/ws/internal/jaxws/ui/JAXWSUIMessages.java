@@ -16,7 +16,12 @@ public class JAXWSUIMessages extends NLS {
     private static final String BUNDLE_NAME = "org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIMessages"; //$NON-NLS-1$
 
     public static String ANNOTATION_ARRAY_CELL_EDITOR_ADD_LABEL;
-    public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL;
+    public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL0;
+    public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL1;
+    public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL2;
+    public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL3;
+    public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL4;
+    public static String ANNOTATION_ARRAY_CELL_EDITOR_BROWSE_LABEL5;
     public static String ANNOTATION_ARRAY_CELL_EDITOR_DOWN_LABEL;
     public static String ANNOTATION_ARRAY_CELL_EDITOR_EDIT_ARRAY_VALUES_TITLE;
     public static String ANNOTATION_ARRAY_CELL_EDITOR_REMOVE_LABEL;
