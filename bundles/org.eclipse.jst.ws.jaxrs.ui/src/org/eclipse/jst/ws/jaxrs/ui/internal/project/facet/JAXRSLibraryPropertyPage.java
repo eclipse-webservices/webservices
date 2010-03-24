@@ -12,6 +12,7 @@
  * 20091109   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
+ * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -25,6 +26,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.core.libprov.internal.LibraryProvider;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
@@ -36,6 +40,8 @@ import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJEEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUtils;
+import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
+import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -67,12 +73,19 @@ implements IJAXRSFacetInstallDataModelProperties
   // J2EE
   private org.eclipse.jst.j2ee.webapplication.Servlet j2eeServlet = null;
   private org.eclipse.jst.j2ee.webapplication.ServletMapping j2eeServletMapping = null;
-
+  private String initialInstallDelegateLibraryProviderID =""; //$NON-NLS-1$
   @Override
   protected Control createPageContents(Composite parent)
   {
     Control c = super.createPageContents(parent);
-
+    LibraryInstallDelegate initialInstallDelegate = super.getLibraryInstallDelegate();
+    if ( initialInstallDelegate != null ) {
+    	ILibraryProvider initialLibraryProvider = initialInstallDelegate.getLibraryProvider();
+    	if (initialLibraryProvider != null) {
+    		String initID = initialLibraryProvider.getId();
+    		initialInstallDelegateLibraryProviderID = (initID == null) ? initialInstallDelegateLibraryProviderID : initID; 
+    	}
+    }
     servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
     initializeValues();
 
@@ -142,8 +155,19 @@ implements IJAXRSFacetInstallDataModelProperties
 
   public boolean performOk()
   {
-    // This will update the libraries by calling the library provider delegate
-    super.performOk();
+	    LibraryInstallDelegate installDelegate = super.getLibraryInstallDelegate();
+	    if ( installDelegate != null ) {
+	    	ILibraryProvider libraryProvider = installDelegate.getLibraryProvider();
+	    	if (libraryProvider != null) {
+	    		String id = libraryProvider.getId();
+	    		if (!initialInstallDelegateLibraryProviderID.equals(id) || IJAXRSUIConstants.USER_LIBRARY_ID.equals(id)) {
+	    			// This will update the libraries by calling the library provider delegate
+	    			  super.performOk();
+	    		}
+	    	}
+	    }
+
+	  
     // Update the servlet properties
     createServletAndModifyWebXML(getProject(), null, new NullProgressMonitor());
     return true;

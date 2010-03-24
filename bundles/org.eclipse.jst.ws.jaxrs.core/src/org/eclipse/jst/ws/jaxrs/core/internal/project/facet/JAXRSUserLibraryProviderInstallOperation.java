@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
+ * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -47,18 +48,16 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
     super.execute(libConfig, monitor);
 
     JAXRSUserLibraryProviderInstallOperationConfig cfg = (JAXRSUserLibraryProviderInstallOperationConfig) libConfig;
+    // If config is null, we are on the properties page
     IDataModel config = cfg.getModel();
-
-    // If config is null, we aren't in project creation mode.
 
     IRuntime runtime = cfg.getFacetedProject().getPrimaryRuntime();
     IProject project = cfg.getFacetedProject().getProject();
 
     String targetRuntimeID = runtime.getName();
-    if (config != null)
+    if (!onPropertiesPage(config)) {
       targetRuntimeID = config.getStringProperty(IJAXRSFacetInstallDataModelProperties.TARGETRUNTIME);
-    else
-    {
+    } else  {
       org.eclipse.wst.server.core.IRuntime iruntime = FacetUtil.getRuntime(runtime);
       if (iruntime != null)
       {
@@ -75,7 +74,7 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
     java.util.List<SharedLibraryConfigurator> configurators = SharedLibraryConfiguratorUtil.getConfigurators();
     Iterator<SharedLibraryConfigurator> sharedLibConfiguratorIterator = configurators.iterator();
 
-    if (cfg.isDeploy() || (!cfg.isDeploy() && !cfg.isSharedLibrary()))
+    if (onPropertiesPage(config) || cfg.isDeploy() || (!cfg.isDeploy() && !cfg.isSharedLibrary()))
       return;
 
     while (sharedLibConfiguratorIterator.hasNext())
@@ -85,7 +84,7 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
       {
         IProject earProject = null;
         Boolean addToEar = null;
-        if (config != null)
+        if (!onPropertiesPage(config))
         {
           earProject = getEARProject(config);
           addToEar = getAddToEar(config);
@@ -106,6 +105,10 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
       }
     }
   }
+
+private boolean onPropertiesPage(IDataModel config) {
+	return config == null;
+}
 
   private IProject getEARProject(IDataModel config)
   {

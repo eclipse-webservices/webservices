@@ -12,6 +12,7 @@
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
+ * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -41,7 +42,7 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
   private JAXRSFacetIncludeLibrariesGroup includeLibsGroup;
   private JAXRSLibraryConfigModel workingCopyModel = null;
   private IDataModel model;
-
+  private JAXRSUserLibraryProviderInstallOperationConfig cfg;;
   private ServletInformationGroup servletInfoGroup;
 
   public JAXRSUserLibraryProviderInstallPanel()
@@ -51,8 +52,7 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
 
   protected Control createControlNextToManageHyperlink(final Composite composite)
   {
-    final JAXRSUserLibraryProviderInstallOperationConfig cfg = (JAXRSUserLibraryProviderInstallOperationConfig) getOperationConfig();
-
+    cfg = (JAXRSUserLibraryProviderInstallOperationConfig) getOperationConfig();
     Composite mainComp = new Composite(composite, SWT.NONE);
     GridLayout gl = new GridLayout();
     gl.numColumns = 1;
@@ -61,8 +61,12 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
     gl.marginRight = 0;
     gl.marginLeft = 0;
     mainComp.setLayout(gl);
-    includeLibsGroup = new JAXRSFacetIncludeLibrariesGroup(mainComp, SWT.NONE);
-    includeLibsGroup.getCopyOnPublishCheckBox().setSelection(cfg.isIncludeWithApplicationEnabled());
+    if (!onPropertiesPage()) {
+    	//we are in facet install mode
+    	includeLibsGroup = new JAXRSFacetIncludeLibrariesGroup(mainComp, SWT.NONE);
+    	includeLibsGroup.getCopyOnPublishCheckBox().setSelection(cfg.isIncludeWithApplicationEnabled());
+    
+    
 
 
 		includeLibsGroup.getCopyOnPublishCheckBox().addSelectionListener(
@@ -160,18 +164,27 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
         cfg.removeListener(listener);
       }
     });
+    }
 
     setDownloadCommandEnabled(false);
     initialize();
     return mainComp;
   }
 
+	private boolean onPropertiesPage() {
+		return cfg.getModel() == null;
+	}
+
 
   private void initialize()
   {
     // if shared lib not supported but shared lib setting was true, assume they
     // still want to include libraries
-    JAXRSLibraryConfiglModelSource source = new JAXRSLibraryConfigDialogSettingData(includeLibsGroup.getBtnDeployJars().getSelection(), includeLibsGroup.getBtnSharedLibrary().getSelection(), true);
+	JAXRSLibraryConfiglModelSource source;
+	if (!onPropertiesPage()) 
+		source = new JAXRSLibraryConfigDialogSettingData(includeLibsGroup.getBtnDeployJars().getSelection(), includeLibsGroup.getBtnSharedLibrary().getSelection(), true);
+	else
+		source = new JAXRSLibraryConfigDialogSettingData(true, false, false);
     if (source != null)
     {
       // never read persistentModel = source;
