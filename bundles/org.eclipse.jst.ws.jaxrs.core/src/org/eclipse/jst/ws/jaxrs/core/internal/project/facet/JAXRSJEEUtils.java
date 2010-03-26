@@ -13,6 +13,7 @@
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
  * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
+ * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -113,6 +114,7 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 		} else {
 			updateServletMappings(webApp, servlet, displayName);
 			servlet.setServletName(displayName);
+			servlet.setServletClass(className);
 			servlet.setLoadOnStartup(Integer.valueOf(1));
 		}
 		return servlet;

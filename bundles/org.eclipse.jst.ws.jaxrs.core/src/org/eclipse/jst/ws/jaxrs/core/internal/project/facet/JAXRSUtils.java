@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,15 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
+import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
@@ -115,5 +118,19 @@ public abstract class JAXRSUtils {
 		public final String getPrefixMapping() {
 			return _prefixMapping;
 		}
+	}
+
+	static String getSavedServletName() {
+		IDialogSettings jaxrsUISettings = JAXRSCorePlugin.getDefault()
+				.getJaxrsUISettings();
+		if (jaxrsUISettings != null) {
+			String JAXRSUISettingsRoot = "org.eclipse.jst.ws.jaxrs.ui" + ".jaxrsFacetInstall"; //$NON-NLS-1$
+			IDialogSettings root = jaxrsUISettings
+					.getSection(JAXRSUISettingsRoot);
+	
+			if (root != null)
+				return root.get("servletClassname");
+		}
+		return null;
 	}
 }

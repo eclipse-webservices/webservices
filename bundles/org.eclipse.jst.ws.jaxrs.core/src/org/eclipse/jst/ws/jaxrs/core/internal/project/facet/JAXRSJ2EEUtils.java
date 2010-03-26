@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -84,15 +85,18 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 
 				if (servlet.getWebType().isServletType()) {
 					if (((ServletType) servlet.getWebType()).getClassName() != null
-							&& ((ServletType) servlet.getWebType())
+							&& ( ((ServletType) servlet.getWebType())
 									.getClassName().trim().equals(
-											JAXRS_SERVLET_CLASS)) {
+											JAXRS_SERVLET_CLASS) || ((ServletType) servlet.getWebType())
+											.getClassName().trim().equals(
+													getSavedServletName())) ) {
 						return servlet;
 					}
 				} else if (servlet.getWebType().isJspType()) {
 					if (((JSPType) servlet.getWebType()).getJspFile() != null
-							&& ((JSPType) servlet.getWebType()).getJspFile()
-									.trim().equals(JAXRS_SERVLET_CLASS)) {
+							&& ( ((JSPType) servlet.getWebType()).getJspFile()
+									.trim().equals(JAXRS_SERVLET_CLASS) || ((JSPType) servlet.getWebType()).getJspFile()
+									.trim().equals(getSavedServletName())) ) {
 						return servlet;
 					}
 				}
@@ -145,6 +149,10 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 			updateServletMappings(webApp, servlet, servlet.getServletName()
 					.trim(), displayName);
 			servlet.setServletName(displayName);
+			ServletType servletType = WebapplicationFactory.eINSTANCE
+			.createServletType();
+			servletType.setClassName(className);
+			servlet.setWebType(servletType);
 			servlet.setLoadOnStartup(Integer.valueOf(1));
 		}
 		return servlet;
@@ -220,17 +228,41 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 	public static void updateURLMappings(final WebApp webApp,
 			final List urlMappingList, final Servlet servlet) {
 		// TODO
-		Iterator it = urlMappingList.iterator();
-		while (it.hasNext()) {
-			String pattern = (String) it.next();
-			if (!(doesServletMappingExist(webApp, servlet, pattern))) {
-				ServletMapping mapping = WebapplicationFactory.eINSTANCE
-						.createServletMapping();
-				mapping.setServlet(servlet);
-				mapping.setName(servlet.getServletName());
-				mapping.setUrlPattern(pattern);
-				webApp.getServletMappings().add(mapping);
+		if (urlMappingList != null) {
+			List<ServletMapping> mappings = findServletMappings(webApp,
+					servlet, servlet.getServletName());
+			Iterator it = urlMappingList.iterator();
+			while (it.hasNext()) {
+				String pattern = (String) it.next();
+				if (!(doesServletMappingExist(webApp, servlet, pattern))) {
+					ServletMapping mapping = WebapplicationFactory.eINSTANCE
+							.createServletMapping();
+					mapping.setServlet(servlet);
+					mapping.setName(servlet.getServletName());
+					mapping.setUrlPattern(pattern);
+					webApp.getServletMappings().add(mapping);
+				}
+
 			}
+			// Now gather up the patterns that aren't defined in the UI...
+			List<ServletMapping> patternsToRemove = new ArrayList<ServletMapping>();
+			for (Iterator<ServletMapping> iter = mappings.iterator(); iter.hasNext();)
+			{
+			   ServletMapping next = iter.next();
+			   String patternTypeValue = next.getUrlPattern();
+			   if (patternTypeValue != null && !urlMappingList.contains(patternTypeValue))
+			   {
+			     patternsToRemove.add(next);
+			   }
+		    }
+			//...and remove them from the model
+			for (Iterator<ServletMapping> iter = patternsToRemove.iterator(); iter.hasNext(); )
+			{
+			   webApp.getServletMappings().remove(iter.next());
+			}
+			
+
+
 		}
 	}
 

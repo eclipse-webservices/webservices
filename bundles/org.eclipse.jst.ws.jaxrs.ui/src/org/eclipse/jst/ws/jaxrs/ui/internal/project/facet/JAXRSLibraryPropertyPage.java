@@ -13,13 +13,14 @@
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
  * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
+ * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -28,20 +29,18 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
-import org.eclipse.jst.common.project.facet.core.libprov.internal.LibraryProvider;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
 import org.eclipse.jst.j2ee.model.IModelProvider;
-import org.eclipse.jst.j2ee.model.ModelProviderManager;
 import org.eclipse.jst.javaee.core.UrlPatternType;
 import org.eclipse.jst.javaee.web.Servlet;
 import org.eclipse.jst.javaee.web.ServletMapping;
 import org.eclipse.jst.javaee.web.WebApp;
 import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
+import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJ2EEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJEEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUtils;
 import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
-import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -99,49 +98,57 @@ implements IJAXRSFacetInstallDataModelProperties
     return fproj.getInstalledVersion(jaxrsFacet);
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   protected void initializeValues()
   {
-//    LibraryInstallDelegate librariesInstallDelegate = getLibraryInstallDelegate();
-//    JAXRSUserLibraryProviderInstallOperationConfig customConfig = (JAXRSUserLibraryProviderInstallOperationConfig) librariesInstallDelegate.getLibraryProviderOperationConfig();
 
-    IFacetedProject facetedProject = getFacetedProject();
-    Set set = facetedProject.getProjectFacets();
+	IModelProvider provider = JAXRSUtils.getModelProvider(getProject());
+	Object webAppObj = provider.getModelObject();
+	List<ServletMapping> servletMappings = new ArrayList<ServletMapping>();
+    if (webAppObj != null)
+    {	
+    	String servletName = JAXRSUtils.JAXRS_DEFAULT_SERVLET_NAME; 
+    	String servletClass = ""; //$NON-NLS-1$
+		if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
+			WebApp webApp = (WebApp) webAppObj;
+			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);
+			if (servlet != null) {
+				this.servlet = servlet;
+				servletMappings = webApp.getServletMappings();
+				servletName = (servlet.getServletName() == null)  ?  servletName : servlet.getServletName();
+				servletClass =(servlet.getServletClass() == null) ? servletClass : servlet.getServletClass();
+			}
+		} else {
+			// 2.3 or 2.4 web app
+			org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) webAppObj;
+			org.eclipse.jst.j2ee.webapplication.Servlet servlet = JAXRSJ2EEUtils
+					.findJAXRSServlet(webApp);
+			if (servlet != null) {
+				this.j2eeServlet = servlet;
+				servletMappings = webApp.getServletMappings();
+				servletName = (servlet.getServletName() == null)  ?  servletName : servlet.getServletName();
+				if (servlet.getServletClass() != null) {
+					servletClass =(servlet.getServletClass().getQualifiedName() == null) ? servletClass : servlet.getServletClass().getQualifiedName();
+				}
+			}
 
-    IModelProvider provider = ModelProviderManager.getModelProvider(getProject());
-    Object object = provider.getModelObject();
-    if (object instanceof WebApp)
-    {
-      WebApp webApp = (WebApp) object;
-      List servletMappings = webApp.getServletMappings();
-      List servlets = webApp.getServlets();
-      // Find the first servlet for now. Our dialog only supports one servlet.
-      String servletName = null;
-      for (Iterator i = servlets.iterator(); i.hasNext();)
-      {
-        Object o = i.next();
-        if (o instanceof Servlet)
-        {
-          // init the servlet
-          this.servlet = (Servlet) o;
-          servletName = servlet.getServletName();
-          if (servletName == null)
-            servletName = "";
-          servletInfoGroup.txtJAXRSServletName.setText(servletName);
-          servletInfoGroup.txtJAXRSServletClassName.setText(servlet.getServletClass());
-          break;
-        }
-      }
+		}
+		servletInfoGroup.txtJAXRSServletName.setText(servletName);
+        servletInfoGroup.txtJAXRSServletClassName.setText(servletClass);
       // Find the servletMapping that corresponds to the servletName
-      for (Iterator i = servletMappings.iterator(); i.hasNext();)
+        if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
+            servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
+
+      for (Iterator<ServletMapping> i = servletMappings.iterator(); i.hasNext();)
       {
         Object o = i.next();
         if (o instanceof ServletMapping)
         {
           // init the servletMapping
-          this.servletMapping = (ServletMapping) o;
-          servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
-          if (servletName.equals(servletMapping.getServletName()))
+         		ServletMapping next = (ServletMapping) o;
+          if (servletName.equals(next.getServletName()))
           {
+         		  this.servletMapping = next;
             for (Iterator p = servletMapping.getUrlPatterns().iterator(); p.hasNext();)
             {
               UrlPatternType pattern = (UrlPatternType) p.next();
@@ -150,6 +157,28 @@ implements IJAXRSFacetInstallDataModelProperties
           }
         }
       }
+    } else {
+    	servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
+        for (Iterator<ServletMapping> i = servletMappings.iterator(); i.hasNext();)
+        {
+          Object o = i.next();
+          if (o instanceof org.eclipse.jst.j2ee.webapplication.ServletMapping)
+          {
+            // init the servletMapping
+        	  org.eclipse.jst.j2ee.webapplication.ServletMapping next = (org.eclipse.jst.j2ee.webapplication.ServletMapping) o;
+            
+            if (servletName.equals(next.getServlet().getServletName()))
+            {
+           		  this.j2eeServletMapping = next;
+           	
+           		
+                String pattern = next.getUrlPattern();
+                servletInfoGroup.lstJAXRSServletURLPatterns.add(new String(pattern));
+              
+            }
+          }
+        }
+    }
     }
   }
 
