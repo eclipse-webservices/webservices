@@ -17,6 +17,7 @@ import org.eclipse.jst.ws.internal.cxf.core.model.CXFFactory;
 import org.eclipse.jst.ws.internal.cxf.core.model.Java2WSDataModel;
 import org.eclipse.jst.ws.internal.cxf.core.model.WSDL2JavaDataModel;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.CXFDeployCommand;
+import org.eclipse.jst.ws.internal.cxf.creation.core.commands.CreateDeploymentDescriptorCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.JAXWSAnnotateJavaCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSCommand;
 import org.eclipse.jst.ws.internal.cxf.creation.core.commands.Java2WSDefaultingCommand;
@@ -44,13 +45,13 @@ public class CXFWebService extends AbstractWebService {
     }
 
     @Override
-    public ICommandFactory assemble(IEnvironment environment, IContext ctx, ISelection selection, 
+    public ICommandFactory assemble(IEnvironment environment, IContext ctx, ISelection selection,
             String projectName, String earProject) {
         return null;
     }
 
     @Override
-    public ICommandFactory deploy(IEnvironment environment, IContext ctx, ISelection selection, 
+    public ICommandFactory deploy(IEnvironment environment, IContext ctx, ISelection selection,
             String projectName, String earProject) {
         return null;
     }
@@ -69,6 +70,7 @@ public class CXFWebService extends AbstractWebService {
             java2WSDataModel.setProjectName(projectName);
             java2WSDataModel.setJavaStartingPoint(this.getWebServiceInfo().getImplURL());
             commands.add(new Java2WSValidateInputCommand(java2WSDataModel));
+            commands.add(new CreateDeploymentDescriptorCommand(projectName));
             commands.add(new Java2WSDefaultingCommand(java2WSDataModel));
             commands.add(new Java2WSSelectSEICommand(java2WSDataModel));
             commands.add(new JAXWSAnnotateJavaCommand(java2WSDataModel));
@@ -77,8 +79,9 @@ public class CXFWebService extends AbstractWebService {
             WSDL2JavaDataModel wsdl2JavaDataModel = CXFFactory.eINSTANCE.createWSDL2JavaDataModel();
             wsdl2JavaDataModel.setProjectName(projectName);
             commands.add(new WSDL2JavaProjectSelectionCommand(wsdl2JavaDataModel));
-            commands.add(new WSDL2JavaDefaultingCommand(wsdl2JavaDataModel, projectName, 
-            		getWebServiceInfo().getWsdlURL()));
+            commands.add(new CreateDeploymentDescriptorCommand(projectName));
+            commands.add(new WSDL2JavaDefaultingCommand(wsdl2JavaDataModel, projectName,
+                    getWebServiceInfo().getWsdlURL()));
             commands.add(new WSDL2JavaCommand(wsdl2JavaDataModel, this));
         } else {
             return null;
@@ -86,7 +89,7 @@ public class CXFWebService extends AbstractWebService {
 
         return new SimpleCommandFactory(commands);
     }
-    
+
     public void registerDataMappings(DataMappingRegistry dataRegistry) {
         dataRegistry.addMapping(Java2WSCommand.class, "CXFDataModel", CXFDeployCommand.class); //$NON-NLS-1$
         dataRegistry.addMapping(WSDL2JavaCommand.class, "CXFDataModel", CXFDeployCommand.class); //$NON-NLS-1$
@@ -95,14 +98,14 @@ public class CXFWebService extends AbstractWebService {
     }
 
     @Override
-    public ICommandFactory install(IEnvironment environment, IContext ctx, ISelection selection, 
+    public ICommandFactory install(IEnvironment environment, IContext ctx, ISelection selection,
             String projectName, String earProject) {
         return null;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public ICommandFactory run(IEnvironment environment, IContext ctx, ISelection selection, 
+    public ICommandFactory run(IEnvironment environment, IContext ctx, ISelection selection,
             String projectName, String earProject) {
         Vector commands = new Vector();
         commands.add(new CXFDeployCommand(projectName, this));
