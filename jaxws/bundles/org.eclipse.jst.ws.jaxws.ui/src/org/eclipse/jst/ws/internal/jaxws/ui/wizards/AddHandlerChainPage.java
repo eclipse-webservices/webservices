@@ -96,7 +96,7 @@ public class AddHandlerChainPage extends WizardPage {
         });
 
         Label createNewHandlerLabel = new Label(composite, SWT.NONE);
-        createNewHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH);
+        createNewHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH1);
 
         newHandlerChainText = new Text(composite, SWT.SINGLE | SWT.BORDER);
         newHandlerChainText.setFont(composite.getFont());
@@ -113,7 +113,7 @@ public class AddHandlerChainPage extends WizardPage {
         });
 
         browseNewHandlerChainButton = new Button(composite, SWT.PUSH);
-        browseNewHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE);
+        browseNewHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE1);
         gridData =  new GridData(SWT.END, SWT.FILL, false, false);
         browseNewHandlerChainButton.setLayoutData(gridData);
         browseNewHandlerChainButton.addSelectionListener(new SelectionAdapter() {
@@ -138,7 +138,7 @@ public class AddHandlerChainPage extends WizardPage {
         editHandlerChainButton.setLayoutData(gridData);
 
         Label addToHandlerLabel = new Label(composite, SWT.NONE);
-        addToHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH);
+        addToHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH3);
 
         editHandlerChainButton.addSelectionListener(new SelectionAdapter() {
 
@@ -164,7 +164,7 @@ public class AddHandlerChainPage extends WizardPage {
         });
 
         browseExistingHandlerChainButton = new Button(composite, SWT.PUSH);
-        browseExistingHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE);
+        browseExistingHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE2);
         gridData =  new GridData(SWT.FILL, SWT.FILL, false, false);
         browseExistingHandlerChainButton.setLayoutData(gridData);
 

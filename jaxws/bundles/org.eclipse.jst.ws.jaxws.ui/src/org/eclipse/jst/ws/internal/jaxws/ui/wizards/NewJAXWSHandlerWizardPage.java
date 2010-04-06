@@ -213,7 +213,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         });
 
         Label createNewHandlerLabel = new Label(innerGroup, SWT.NONE);
-        createNewHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH);
+        createNewHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH1);
 
         newHandlerChainText = new Text(innerGroup, SWT.SINGLE | SWT.BORDER);
         newHandlerChainText.setFont(innerGroup.getFont());
@@ -231,7 +231,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         });
 
         browseNewHandlerChainButton = new Button(innerGroup, SWT.PUSH);
-        browseNewHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE);
+        browseNewHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE1);
         gridData =  new GridData(SWT.END, SWT.FILL, false, false);
         browseNewHandlerChainButton.setLayoutData(gridData);
         browseNewHandlerChainButton.addSelectionListener(new SelectionAdapter() {
@@ -256,7 +256,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         editHandlerChainButton.setLayoutData(gridData);
 
         Label addToHandlerLabel = new Label(innerGroup, SWT.NONE);
-        addToHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH);
+        addToHandlerLabel.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_FILE_PATH2);
 
         editHandlerChainButton.addSelectionListener(new SelectionAdapter() {
 
@@ -282,7 +282,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         });
 
         browseExistingHandlerChainButton = new Button(innerGroup, SWT.PUSH);
-        browseExistingHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE);
+        browseExistingHandlerChainButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE2);
         gridData =  new GridData(SWT.FILL, SWT.FILL, false, false);
         browseExistingHandlerChainButton.setLayoutData(gridData);
 
@@ -341,7 +341,7 @@ public class NewJAXWSHandlerWizardPage extends NewTypeWizardPage {
         });
 
         browseWebServiceButton = new Button(innerGroup, SWT.PUSH);
-        browseWebServiceButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE);
+        browseWebServiceButton.setText(JAXWSUIMessages.JAXWS_HANDLER_CONFIGURATION_BROWSE3);
         gridData =  new GridData(SWT.FILL, SWT.FILL, false, false);
         browseWebServiceButton.setLayoutData(gridData);
 
