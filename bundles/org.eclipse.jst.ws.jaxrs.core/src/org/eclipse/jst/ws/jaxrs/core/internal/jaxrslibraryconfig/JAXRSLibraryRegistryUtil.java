@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100304   304732 ericdp@ca.ibm.com - Eric D. Peters, NPE loading library extensions
+ * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig;
 
@@ -207,9 +208,9 @@ public class JAXRSLibraryRegistryUtil {
 			Iterator it = libs.iterator();
 			while (it.hasNext()) {
 				jaxrsLib = (JAXRSLibrary) it.next();
-				// Set unselected , undeployed , unshared initially.
-				jaxrsLibDctr = new JAXRSLibraryInternalReference(jaxrsLib, // .getWorkingCopy(),
-						false, false, false);
+				// Set selected , deployed , unshared initially
+ 				jaxrsLibDctr = new JAXRSLibraryInternalReference(jaxrsLib, 
+						true, true, false);
 				list.add(jaxrsLibDctr);
 			}
 		}

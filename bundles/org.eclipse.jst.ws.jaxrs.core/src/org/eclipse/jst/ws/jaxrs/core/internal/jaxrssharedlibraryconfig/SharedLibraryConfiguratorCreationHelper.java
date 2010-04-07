@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig;
 
@@ -69,8 +70,8 @@ public final class SharedLibraryConfiguratorCreationHelper {
 			newSharedLibConfigurator = new SharedLibraryConfiguratorImpl(config_element);
 			newSharedLibConfigurator.setName(config_element.getAttribute(NAME));
 			newSharedLibConfigurator.setRuntimeID(config_element.getAttribute(SERVERRUNTIME));
-			newSharedLibConfigurator.setSelected(Boolean.getBoolean(config_element
-					.getAttribute(SELECTED)));
+			newSharedLibConfigurator.setSelected(Boolean.parseBoolean(config_element
+ 					.getAttribute(SELECTED)));
 			return newSharedLibConfigurator;
 		} catch (Exception e) {
 			JAXRSCorePlugin

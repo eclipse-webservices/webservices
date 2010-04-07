@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig;
 
@@ -72,7 +73,7 @@ public class JAXRSLibraryConfigModel {
 				if (srcLib != null) {
 					srcLib.setSelected(true);
 					srcLib.setToBeDeployed(targetLib.isCheckedToBeDeployed());
-					srcLib.setToBeSharedLibrary(targetLib.isCheckedToBeSharedLibrary());
+					srcLib.setToBeSharedLibrary(targetLib.isSharedLibSupported() && targetLib.isCheckedToBeSharedLibrary());
 					srcLib.setSharedLibSupported(targetLib.isSharedLibSupported());
 				}
 			}
@@ -130,7 +131,7 @@ public class JAXRSLibraryConfigModel {
 					crtjaxrslib.setSelected(true);
 					crtjaxrslib
 							.setToBeDeployed(library.isCheckedToBeDeployed());
-					crtjaxrslib.setToBeSharedLibrary(library.isCheckedToBeSharedLibrary());
+					crtjaxrslib.setToBeSharedLibrary(library.isSharedLibSupported() && library.isCheckedToBeSharedLibrary());
 					crtjaxrslib.setSharedLibSupported(library.isSharedLibSupported());
 				} else {
 					crtjaxrslib.setSelected(false);

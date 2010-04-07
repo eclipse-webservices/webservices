@@ -12,6 +12,7 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -91,16 +92,20 @@ public class JAXRSFacetInstallDataModelProvider extends
 		} else if (propertyName.equals(WEBCONTENT_DIR)) {
 			return "WebContent"; //$NON-NLS-1$
 		} else if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
-            return this.libraryInstallDelegate;
+			return this.libraryInstallDelegate;
 		} else if (propertyName.equals(DEPLOY_IMPLEMENTATION)) {
-		  return Boolean.TRUE;
-    } else if (propertyName.equals(CONFIGURATION_PRESET)) {
-      return null;
-    } else if (propertyName.equals(SERVER_IRUNTIME)) {
-      return null;
-    } else if (propertyName.equals(EARPROJECTS)) {
-      return null;
-    }
+			return Boolean.TRUE;
+		} else if (propertyName.equals(CONFIGURATION_PRESET)) {
+			return null;
+		} else if (propertyName.equals(SERVER_IRUNTIME)) {
+			return null;
+		} else if (propertyName.equals(EARPROJECTS)) {
+			return null;
+		} else if (propertyName.equals(SHAREDLIBRARY)) {
+			return false;
+		} else if (propertyName.equals(DEPLOY_IMPLEMENTATION)) {
+			return true;
+		}
 		return super.getDefaultProperty(propertyName);
 	}
 

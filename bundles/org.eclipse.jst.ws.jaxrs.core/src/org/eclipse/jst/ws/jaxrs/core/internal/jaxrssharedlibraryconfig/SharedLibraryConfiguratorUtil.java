@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig;
 
@@ -47,6 +48,28 @@ public class SharedLibraryConfiguratorUtil {
 	private SharedLibraryConfiguratorUtil() {
 		// nothing to do
 	}
+	
+	public static boolean isSharedLibSelectedByDefault(String targetRuntimeID) {
+		if (targetRuntimeID == null)
+			return false;
+
+		SharedLibraryConfiguratorUtil.getInstance();
+		java.util.List<SharedLibraryConfigurator> configurators = getConfigurators();
+
+		Iterator<SharedLibraryConfigurator> sharedLibConfiguratorIterator = configurators
+				.iterator();
+		while (sharedLibConfiguratorIterator.hasNext()) {
+			SharedLibraryConfigurator thisConfigurator = sharedLibConfiguratorIterator
+					.next();
+			if (targetRuntimeID.equals(thisConfigurator.getRuntimeID())) {
+				return thisConfigurator.getSelected();
+			}
+
+		}
+
+		return false;
+	}
+
 	public static boolean isSharedLibSupportAvailable(String libraryID,
 			String targetRuntimeID, IProject webProject, IProject earProject,
 			boolean addToEAR) {
