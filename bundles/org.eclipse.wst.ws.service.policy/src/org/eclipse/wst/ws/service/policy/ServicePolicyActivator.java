@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,11 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20071024   196997 pmoogk@ca.ibm.com - Peter Moogk
+ * 20100407 NPE in org.eclipse.wst.ws.service.policy.ServicePolicyActivator.logError(ServicePolicyActivator.java:75) ericdp@ca.ibm.com - Eric D. Peters, 308427
  *******************************************************************************/
 package org.eclipse.wst.ws.service.policy;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -72,6 +74,11 @@ public class ServicePolicyActivator extends Plugin {
   {
     IStatus status = new Status( IStatus.ERROR, PLUGIN_ID, 0, message, exc );
     
-    getDefault().getLog().log(status);
-  }
+    ServicePolicyActivator spa = getDefault();
+		if (spa != null) {
+			ILog iLog = spa.getLog();
+			if (iLog != null)
+				iLog.log(status);
+		}
+    }
 }
