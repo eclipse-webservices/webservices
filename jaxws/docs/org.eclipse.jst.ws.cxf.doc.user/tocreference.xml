@@ -7,9 +7,8 @@
         <topic label="WSDL2Java" href="reference/wsdl2java_tab.html"/>
         <topic label="JAX-WS" href="reference/jaxws_tab.html"/>
         <topic label="Endpoint Config" href="reference/endpoint_config_tab.html"/>
-        <topic href="reference/server_runtime.html" label="Server and runtime">
-        </topic>
+        <topic label="Server and runtime" href="reference/server_runtime.html"/>
     </topic>
- <topic href="reference/cxf_facet.html" label="CXF Project Facet">
+    <topic href="reference/cxf_facet.html" label="CXF Project Facet">
  </topic>
 </toc>

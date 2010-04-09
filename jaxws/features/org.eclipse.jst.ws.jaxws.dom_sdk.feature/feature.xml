@@ -30,4 +30,10 @@
          id="org.eclipse.jst.ws.jaxws.dom.feature.source"
          version="0.0.0"/>
 
+   <plugin
+         id="org.eclipse.jst.ws.jaxws.dom.doc.isv"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
