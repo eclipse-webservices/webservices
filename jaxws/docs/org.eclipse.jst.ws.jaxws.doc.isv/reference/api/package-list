@@ -1,0 +1,5 @@
+org.eclipse.jst.ws.annotations.core
+org.eclipse.jst.ws.annotations.core.initialization
+org.eclipse.jst.ws.annotations.core.processor
+org.eclipse.jst.ws.annotations.core.utils
+org.eclipse.jst.ws.jaxws.core.utils

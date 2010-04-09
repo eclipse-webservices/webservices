@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="../org.eclipse.jst.ws.jaxws.doc.user/tocreference.xml#api_reference">
+	<topic label="Annotations Framework API Reference" href="reference/api/overview-summary.html">
+       <topic href="reference/api/org/eclipse/jst/ws/annotations/core/package-summary.html" label="org.eclipse.jst.ws.annotations.core"/>
+       <topic href="reference/api/org/eclipse/jst/ws/annotations/core/initialization/package-summary.html" label="org.eclipse.jst.ws.annotations.core.initialization"/>
+       <topic href="reference/api/org/eclipse/jst/ws/annotations/core/processor/package-summary.html" label="org.eclipse.jst.ws.annotations.core.processor"/>
+       <topic href="reference/api/org/eclipse/jst/ws/annotations/core/utils/package-summary.html" label="org.eclipse.jst.ws.annotations.core.utils"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/core/utils/package-summary.html" label="org.eclipse.jst.ws.jaxws.core.utils"/>
+	</topic>
+</toc>
