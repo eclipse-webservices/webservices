@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="../org.eclipse.jst.ws.jaxws.doc.user/tocreference.xml#api_reference">
+	<topic label="JAX-WS DOM API Reference" href="reference/api/overview-summary.html">
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/integration/navigator/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.integration.navigator"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/integration/navigator/actions/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.integration.navigator.actions"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/api/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.api"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/persistence/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.persistence"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/persistence/annotation/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.persistence.annotation"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/persistence/annotation/impl/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.persistence.annotation.impl"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/persistence/defaults/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.persistence.defaults"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/persistence/serializer/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.persistence.serializer"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/persistence/state/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.persistence.state"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/persistence/sync/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.persistence.sync"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/provider/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.provider"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/registry/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.registry"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/runtime/util/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.runtime.util"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/dom/ui/package-summary.html" label="org.eclipse.jst.ws.jaxws.dom.ui"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/annotations/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils.annotations"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/clazz/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils.clazz"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/dom/validation/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils.dom.validation"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/exception/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils.exception"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/facets/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils.facets"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/logging/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils.logging"/>
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/utils/resources/package-summary.html" label="org.eclipse.jst.ws.jaxws.utils.resources"/>
+	</topic>
+
+</toc>

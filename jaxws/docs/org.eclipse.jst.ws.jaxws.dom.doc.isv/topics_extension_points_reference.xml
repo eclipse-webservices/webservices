@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="../org.eclipse.jst.ws.jaxws.doc.user/tocreference.xml#extension_points_reference">
+
+	<topic label="JAX-WS DOM Extension Points Reference" href="reference/extension-points/index.html">
+	     <topic label="org.eclipse.jst.ws.jaxws.dom.runtime.domruntimes" href="reference/extension-points/org_eclipse_jst_ws_jaxws_dom_runtime_runtimes.html"/>
+	</topic>
+</toc>
