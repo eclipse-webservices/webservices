@@ -56,7 +56,7 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 		    {
 		       Description desc = descIter.next();
 		       String value = desc.getValue();
-		       if (value != null && value.startsWith(JAXRS_SERVLET_IDENTIFIER))
+		       if (value != null && value.trim().startsWith(JAXRS_SERVLET_IDENTIFIER))
 		       {
 		    	   return servlet;
 		       }
