@@ -14,6 +14,7 @@
  * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
  * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -22,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jst.javaee.core.Description;
 import org.eclipse.jst.javaee.core.JavaeeFactory;
 import org.eclipse.jst.javaee.core.UrlPatternType;
 import org.eclipse.jst.javaee.web.Servlet;
@@ -49,6 +51,16 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 
 		while (it.hasNext()) {
 			Servlet servlet = it.next();
+		    Iterator <Description> descIter = servlet.getDescriptions().iterator();
+		    while (descIter.hasNext())
+		    {
+		       Description desc = descIter.next();
+		       String value = desc.getValue();
+		       if (value != null && value.startsWith(JAXRS_SERVLET_IDENTIFIER))
+		       {
+		    	   return servlet;
+		       }
+		    }
 			if (servlet.getServletClass() != null
 					&& (servlet.getServletClass().trim().equals(
 							getSavedServletClassName()) || servlet
@@ -108,6 +120,9 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 			servlet.setServletName(displayName);
 			servlet.setServletClass(className);
 			servlet.setLoadOnStartup(Integer.valueOf(1));
+			Description description = JavaeeFactory.eINSTANCE.createDescription();
+			description.setValue(JAXRS_SERVLET_IDENTIFIER_DESCRIPTION);
+			servlet.getDescriptions().add(description);
 			// Add the servlet to the web application model
 			webApp.getServlets().add(servlet);
 

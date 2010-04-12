@@ -12,6 +12,7 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -20,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jst.j2ee.common.Description;
 import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
 import org.eclipse.jst.j2ee.webapplication.JSPType;
 import org.eclipse.jst.j2ee.webapplication.Servlet;
@@ -81,6 +83,18 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 
 		while (it.hasNext()) {
 			Servlet servlet = it.next();
+			
+		    Iterator <Description> descIter = servlet.getDescriptions().iterator();
+		    while (descIter.hasNext())
+		    {
+		       Description desc = descIter.next();
+		       String value = desc.getValue();
+		       if (value != null && value.startsWith(JAXRS_SERVLET_IDENTIFIER))
+		       {
+		    	   return servlet;
+		       }
+		    }
+			
 			if (servlet != null && servlet.getWebType() != null) {
 
 				if (servlet.getWebType().isServletType()) {
@@ -136,6 +150,7 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 			// model
 			servlet = WebapplicationFactory.eINSTANCE.createServlet();
 			servlet.setServletName(displayName);
+			servlet.setDescription(JAXRS_SERVLET_IDENTIFIER_DESCRIPTION);
 
 			ServletType servletType = WebapplicationFactory.eINSTANCE
 					.createServletType();

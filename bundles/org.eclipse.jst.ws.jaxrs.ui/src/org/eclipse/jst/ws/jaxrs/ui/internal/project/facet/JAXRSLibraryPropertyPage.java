@@ -14,6 +14,7 @@
  * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
  * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -66,9 +67,10 @@ implements IJAXRSFacetInstallDataModelProperties
 
   private ServletInformationGroup servletInfoGroup;
 
-  // Java EE
-  private Servlet servlet = null;
-  private ServletMapping servletMapping = null;
+  private IPath webXMLPath;
+  private IModelProvider provider;
+  private Object webAppObj;
+  
   // J2EE
   private org.eclipse.jst.j2ee.webapplication.Servlet j2eeServlet = null;
   private org.eclipse.jst.j2ee.webapplication.ServletMapping j2eeServletMapping = null;
@@ -86,6 +88,10 @@ implements IJAXRSFacetInstallDataModelProperties
     	}
     }
     servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
+    
+    this.webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+    this.provider = JAXRSUtils.getModelProvider(getProject());
+    this.webAppObj = provider.getModelObject();
     initializeValues();
 
     return c;
@@ -101,9 +107,6 @@ implements IJAXRSFacetInstallDataModelProperties
   @SuppressWarnings({ "unchecked", "rawtypes" })
   protected void initializeValues()
   {
-
-	IModelProvider provider = JAXRSUtils.getModelProvider(getProject());
-	Object webAppObj = provider.getModelObject();
 	List<ServletMapping> servletMappings = new ArrayList<ServletMapping>();
     if (webAppObj != null)
     {	
@@ -113,7 +116,6 @@ implements IJAXRSFacetInstallDataModelProperties
 			WebApp webApp = (WebApp) webAppObj;
 			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);
 			if (servlet != null) {
-				this.servlet = servlet;
 				servletMappings = webApp.getServletMappings();
 				servletName = (servlet.getServletName() == null)  ?  servletName : servlet.getServletName();
 				servletClass =(servlet.getServletClass() == null) ? servletClass : servlet.getServletClass();
@@ -145,11 +147,10 @@ implements IJAXRSFacetInstallDataModelProperties
         if (o instanceof ServletMapping)
         {
           // init the servletMapping
-         		ServletMapping next = (ServletMapping) o;
+          ServletMapping next = (ServletMapping) o;
           if (servletName.equals(next.getServletName()))
           {
-         		  this.servletMapping = next;
-            for (Iterator p = servletMapping.getUrlPatterns().iterator(); p.hasNext();)
+            for (Iterator p = next.getUrlPatterns().iterator(); p.hasNext();)
             {
               UrlPatternType pattern = (UrlPatternType) p.next();
               servletInfoGroup.lstJAXRSServletURLPatterns.add(pattern.getValue());
@@ -165,16 +166,14 @@ implements IJAXRSFacetInstallDataModelProperties
           if (o instanceof org.eclipse.jst.j2ee.webapplication.ServletMapping)
           {
             // init the servletMapping
-        	  org.eclipse.jst.j2ee.webapplication.ServletMapping next = (org.eclipse.jst.j2ee.webapplication.ServletMapping) o;
-            
-            if (servletName.equals(next.getServlet().getServletName()))
+        	org.eclipse.jst.j2ee.webapplication.ServletMapping next = (org.eclipse.jst.j2ee.webapplication.ServletMapping) o;
+            org.eclipse.jst.j2ee.webapplication.Servlet aServlet = next.getServlet();
+            // the servlet mapping may not have an associated servlet since the user could have modified the file
+            if (aServlet != null && servletName.equals(aServlet.getServletName()))
             {
-           		  this.j2eeServletMapping = next;
-           	
-           		
+        		this.j2eeServletMapping = next;
                 String pattern = next.getUrlPattern();
                 servletInfoGroup.lstJAXRSServletURLPatterns.add(new String(pattern));
-              
             }
           }
         }
@@ -204,13 +203,10 @@ implements IJAXRSFacetInstallDataModelProperties
 
   private void createServletAndModifyWebXML(final IProject project, final IDataModel config, final IProgressMonitor monitor)
   {
-    IModelProvider provider = JAXRSUtils.getModelProvider(project);
-    IPath webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
     List<String> listOfMappings = Arrays.asList(servletInfoGroup.lstJAXRSServletURLPatterns.getItems());
-
-    if (JAXRSJEEUtils.isWebApp25or30(provider.getModelObject()))
+    if (JAXRSJEEUtils.isWebApp25or30(webAppObj))
     {
-      provider.modify(new UpdateWebXMLForJavaEE(project, this.servlet, this.servletMapping, servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
+      provider.modify(new UpdateWebXMLForJavaEE(project, servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
           doesDDFileExist(project, webXMLPath) ? webXMLPath : IModelProvider.FORCESAVE);
     }
     else

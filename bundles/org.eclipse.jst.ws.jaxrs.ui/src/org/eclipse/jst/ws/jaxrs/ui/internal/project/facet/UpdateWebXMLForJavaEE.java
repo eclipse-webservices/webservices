@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -24,24 +25,38 @@ import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJEEUtils;
 
 public class UpdateWebXMLForJavaEE extends UpdateWebXMLBase implements Runnable {
 	private IProject project;
-	private Servlet servlet;
-	private ServletMapping servletMapping;
 	private String newServletName, newServletClass;
 	private List<String> listOfMappings;
 
+	/**
+	 * @deprecated
+	 * @param project
+	 * @param servlet
+	 * @param servletMapping
+	 * @param newServletName
+	 * @param newServletClass
+	 * @param listOfMappings
+	 */
 	public UpdateWebXMLForJavaEE(final IProject project, Servlet servlet, ServletMapping servletMapping, String newServletName, String newServletClass, List<String> listOfMappings) {
 		this.project = project;
-		this.servlet = servlet;
-		this.servletMapping = servletMapping;
 		this.newServletName = newServletName;
 		this.newServletClass = newServletClass;
 		this.listOfMappings = listOfMappings;
 	}
 
+	public UpdateWebXMLForJavaEE(final IProject project, String newServletName, String newServletClass, List<String> listOfMappings) {
+		this.project = project;
+		this.newServletName = newServletName;
+		this.newServletClass = newServletClass;
+		this.listOfMappings = listOfMappings;
+	}
+	
 	public void run() {
 		WebApp webApp = (WebApp) ModelProviderManager.getModelProvider(project).getModelObject();
-  	    JAXRSJEEUtils.createOrUpdateServletRef(webApp, this.newServletName, this.newServletClass, this.servlet);
-		
-		JAXRSJEEUtils.updateURLMappings(webApp, listOfMappings, servlet);
+		Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);
+		if (servlet != null) {
+	  	    JAXRSJEEUtils.createOrUpdateServletRef(webApp, this.newServletName, this.newServletClass, servlet);
+			JAXRSJEEUtils.updateURLMappings(webApp, listOfMappings, servlet);
+		}
 	}
 }

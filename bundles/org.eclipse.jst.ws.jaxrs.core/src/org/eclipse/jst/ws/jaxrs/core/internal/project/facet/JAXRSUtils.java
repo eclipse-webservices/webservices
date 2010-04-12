@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
+ * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -43,6 +44,9 @@ public abstract class JAXRSUtils {
 	 * the key for implementation libraries in persistent properties 
 	 */
 	public static final String PP_JAXRS_IMPLEMENTATION_LIBRARIES = "jaxrs.implementation.libraries"; //$NON-NLS-1$
+	
+	public static final String JAXRS_SERVLET_IDENTIFIER = "JAX-RS Tools Generated"; //$NON-NLS-1$
+	public static final String JAXRS_SERVLET_IDENTIFIER_DESCRIPTION = "JAX-RS Tools Generated - Do not modify"; //$NON-NLS-1$
 
 	/**
 	 * @param config
