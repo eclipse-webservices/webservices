@@ -14,6 +14,7 @@
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
  * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
+ * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -143,9 +144,9 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 				createSharedLibraries(project, fv, monitor, config);
 			}			
 
-			// Update web model
-			createServletAndModifyWebXML(project, config, monitor);
-
+			// Update web model if necessary
+			if (config.getBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD))
+				createServletAndModifyWebXML(project, config, monitor);
 			if (monitor != null) {
 				monitor.worked(1);
 			}

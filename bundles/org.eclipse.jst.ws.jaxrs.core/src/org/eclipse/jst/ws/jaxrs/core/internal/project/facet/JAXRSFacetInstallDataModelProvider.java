@@ -13,6 +13,7 @@
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
+ * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -67,6 +68,7 @@ public class JAXRSFacetInstallDataModelProvider extends
 		names.add(CONFIGURATION_PRESET);
 		names.add(SERVER_IRUNTIME);
 		names.add(EARPROJECTS);
+		names.add(UPDATEDD);
 
 		return names;
 	}
@@ -104,6 +106,8 @@ public class JAXRSFacetInstallDataModelProvider extends
 		} else if (propertyName.equals(SHAREDLIBRARY)) {
 			return false;
 		} else if (propertyName.equals(DEPLOY_IMPLEMENTATION)) {
+			return true;
+		} else if (propertyName.equals(UPDATEDD)) {
 			return true;
 		}
 		return super.getDefaultProperty(propertyName);

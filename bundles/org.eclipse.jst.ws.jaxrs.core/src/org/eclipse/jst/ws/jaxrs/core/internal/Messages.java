@@ -1,5 +1,7 @@
+package org.eclipse.jst.ws.jaxrs.core.internal;
+
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +12,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
- *******************************************************************************/package org.eclipse.jst.ws.jaxrs.core.internal;
-
+ * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ *******************************************************************************/
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -75,7 +77,10 @@ public class Messages extends NLS {
 	 * see messages.properties
 	 */
 	public static String JAXRSSharedLibraryConfigurator_ErrorLoadingFromExtPt;
-
+	/**
+	 * see messages.properties
+	 */
+	public static String JAXRSLibraryProvider_ErrorLoadingFromExtPt;
 	/**
 	 * see messages.properties
 	 */
@@ -106,6 +111,11 @@ public class Messages extends NLS {
 	 * see messages.properties
 	 */
 	public static String PluginProvidedSharedLibraryConfiguratorCreationHelper_ErrorCreating;
+
+	/**
+	 * see messages.properties
+	 */
+	public static String JAXRSLibraryProviderCreationHelper_ErrorCreating;
 
 	/**
 	 * see messages.properties

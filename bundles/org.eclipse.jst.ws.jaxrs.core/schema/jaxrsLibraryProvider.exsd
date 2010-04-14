@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jst.ws.jaxrs.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.jst.ws.jaxrs.core" id="jaxrsLibraryProvider" name="jaxrsLibraryProvider"/>
+      </appInfo>
+      <documentation>
+         Used to provided additional information for JAX-RS facet library providers
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+         <documentation>
+            The id of the library provider, see extension point=&quot;org.eclipse.jst.common.project.facet.core.libraryProviders&quot;
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="jaxrsLibraryprovider" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="jaxrsLibraryprovider">
+      <complexType>
+         <attribute name="libraryProviderID" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The library provider id, see org.eclipse.jst.common.project.facet.core.libraryProviders
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="showUpdateDD" type="boolean">
+            <annotation>
+               <documentation>
+                  If value is true, show a checkbox on the JAX-RS facet wizard page to make the update of deployment descriptor optional (supports  JAX-RS v1.1 development with no web.xml)
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="updateDDSelected" type="boolean">
+            <annotation>
+               <documentation>
+                  Only has meaning if showUpdateDD is provided, if omitted then value is false- update DD checkbox is not selected in the JAX-RS facet wizard page. If true, then update DD checkbox is selected.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="sevletClassName" type="string">
+            <annotation>
+               <documentation>
+                  The JAX-RS servlet class name to use by this library provider
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiinfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

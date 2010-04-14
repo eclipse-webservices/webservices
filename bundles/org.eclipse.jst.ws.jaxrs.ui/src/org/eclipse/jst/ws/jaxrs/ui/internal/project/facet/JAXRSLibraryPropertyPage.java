@@ -15,6 +15,7 @@
  * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
+ * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -45,6 +46,8 @@ import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
@@ -87,13 +90,14 @@ implements IJAXRSFacetInstallDataModelProperties
     		initialInstallDelegateLibraryProviderID = (initID == null) ? initialInstallDelegateLibraryProviderID : initID; 
     	}
     }
-    servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
-    
     this.webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
     this.provider = JAXRSUtils.getModelProvider(getProject());
-    this.webAppObj = provider.getModelObject();
-    initializeValues();
-
+    if (provider != null)
+    	this.webAppObj = provider.getModelObject();
+	if (doesDDFileExist(getProject(), this.webXMLPath)) {
+	    servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
+	    initializeValues();
+	}
     return c;
   }
 
@@ -197,7 +201,9 @@ implements IJAXRSFacetInstallDataModelProperties
 
 	  
     // Update the servlet properties
-    createServletAndModifyWebXML(getProject(), null, new NullProgressMonitor());
+	if (doesDDFileExist(getProject(), webXMLPath)) {
+	    createServletAndModifyWebXML(getProject(), null, new NullProgressMonitor());
+	}
     return true;
   }
 
@@ -207,7 +213,7 @@ implements IJAXRSFacetInstallDataModelProperties
     if (JAXRSJEEUtils.isWebApp25or30(webAppObj))
     {
       provider.modify(new UpdateWebXMLForJavaEE(project, servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
-          doesDDFileExist(project, webXMLPath) ? webXMLPath : IModelProvider.FORCESAVE);
+          IModelProvider.FORCESAVE);
     }
     else
     // must be 2.3 or 2.4
@@ -217,8 +223,12 @@ implements IJAXRSFacetInstallDataModelProperties
   }
 
   private boolean doesDDFileExist(IProject project, IPath webXMLPath)
-  {
-    return project.getProjectRelativePath().append(webXMLPath).toFile().exists();
+  { 
+	  return getWebContentPath(project) == null ? false : project.getLocation().append(getWebContentPath(project).lastSegment()).append(webXMLPath).toFile().exists();
   }
-
+  private IPath getWebContentPath(IProject project){
+		IVirtualComponent component = ComponentCore.createComponent(project);
+		IPath modulePath = component.getRootFolder().getWorkspaceRelativePath();
+		return modulePath;
+  }
 }

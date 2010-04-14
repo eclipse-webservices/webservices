@@ -12,6 +12,7 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20091106   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -52,5 +53,7 @@ public interface IJAXRSFacetInstallDataModelProperties extends
   
   // Support post-project creation scenario.  If WAR is parked in multiple EARs, then we should update all the EARs
   public static final String EARPROJECTS = "IJAXRSFacetInstallDataModelProperties.EARPROJECTS"; //$NON-NLS-1$
+
+  public static final String UPDATEDD = "IJAXRSFacetInstallDataModelProperties.UPDATEDD"; //$NON-NLS-1$
 
 }

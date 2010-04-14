@@ -15,6 +15,7 @@
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
+ * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -31,8 +32,10 @@ import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperatio
 import org.eclipse.jst.common.project.facet.core.libprov.internal.LibraryProvider;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.jst.j2ee.project.EarUtilities;
+import org.eclipse.jst.j2ee.project.WebUtilities;
 import org.eclipse.jst.j2ee.project.facet.IJ2EEModuleFacetInstallDataModelProperties;
 import org.eclipse.jst.server.core.FacetUtil;
+import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryproviderconfig.JAXRSLibraryProviderUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfiguratorUtil;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSSharedLibraryProviderInstallOperationConfig;
@@ -41,8 +44,11 @@ import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
 import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 import org.eclipse.jst.ws.jaxrs.ui.internal.Messages;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
@@ -74,6 +80,7 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
   private IDataModel webAppDataModel;
   private String sEARProject = null;
   private String sWEBProject = null;
+  private IWizardContext context;
   private String sTargetRuntime = null;
   private IRuntime targetRuntime = null;
   private boolean bAddToEAR = false;
@@ -81,6 +88,7 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
   private static final String SETTINGS_SERVLET_CLASSNAME = "servletClassname"; //$NON-NLS-1$
   private static final String SETTINGS_URL_MAPPINGS = "urlMappings"; //$NON-NLS-1$
   private static final String SETTINGS_URL_PATTERN = "pattern"; //$NON-NLS-1$
+  private Button updateDDCheckBox;
   private Composite composite = null;
   private java.util.List<IProject> earProjects = null;
   private IPreset selectedPreset = null;
@@ -152,16 +160,79 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
     gd.horizontalSpan = 3;
 
     librariesComposite.setLayoutData(gd);
+	updateDDCheckBox = new Button(composite, SWT.CHECK);
+	updateDDCheckBox.setText(Messages.JAXRSFacetInstallPage_UpdateDD);
+	updateDDCheckBox.addSelectionListener(
+			new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent event) { 
+					servletInfoGroup.setVisible(updateDDCheckBox.getSelection());
+				}
+				});
 
     servletInfoGroup = new ServletInformationGroup(composite, SWT.NONE);
     servletInfoGroup.setDataModel(model);
+   	updateUpdateDDState(librariesInstallDelegate.getLibraryProvider().getId());
 
     addModificationListeners();
 
     return composite;
   }
 
-  private void initializeValues()
+private void updateUpdateDDState(String libraryProviderID) {
+	boolean bUserLibrary = libraryProviderID.equals(IJAXRSUIConstants.USER_LIBRARY_ID);
+	if (bUserLibrary) {
+		updateDDCheckBox.setVisible(isJEE6orGreater());
+	}  else
+		updateDDCheckBox.setVisible(showUpdateDDCheckBox(libraryProviderID));
+    if (updateDDCheckBox.getVisible()) {
+    		boolean selected;
+    		if (!bUserLibrary)
+    			selected = getUpdateDDCheckBoxSelected(libraryProviderID);
+    		else 
+    			selected = true;
+    		servletInfoGroup.setVisible(selected);
+    		updateDDCheckBox.setSelection(selected);
+    		updateDDCheckBox.getSelection();
+    }
+	if (updateDDCheckBox.getVisible())
+		model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD, updateDDCheckBox.getSelection());
+	else
+		model.setBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD, true);
+}
+
+	@SuppressWarnings("rawtypes")
+	private boolean isJEE6orGreater() {
+		sWEBProject = this.context.getProjectName();
+		Iterator it = this.context.getSelectedProjectFacets().iterator();
+		IProjectFacetVersion webFacetVersion = null;
+		while (it.hasNext()) {
+			// find Web facet
+			IProjectFacetVersion pfv = (IProjectFacetVersion) it.next();
+			if (pfv.getProjectFacet().getId().equals("jst.web")) { //$NON-NLS-1$
+				webFacetVersion = pfv;
+				break;
+			}
+		}
+		if (webFacetVersion != null) {
+			if (webFacetVersion.equals(WebUtilities.DYNAMIC_WEB_30)) 
+				return true;
+				
+		}
+
+		return false;
+	}
+
+private boolean getUpdateDDCheckBoxSelected(String libraryProviderID) {
+	return JAXRSLibraryProviderUtil.isUpdateDDCheckBoxSelectedByDefault(libraryProviderID);
+}
+
+private boolean showUpdateDDCheckBox(String libraryProviderID) {
+	if (libraryProviderID.equals(IJAXRSUIConstants.USER_LIBRARY_ID))
+		return true;
+	return JAXRSLibraryProviderUtil.isUpdateDDCheckBoxSupportAvailable(libraryProviderID);
+}
+
+private void initializeValues()
   {
     IDialogSettings root = dialogSettings.getSection(IJAXRSUIConstants.SETTINGS_ROOT);
 
@@ -226,10 +297,17 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
     servletInfoGroup.txtJAXRSServletName.setText(servletName);
 
     String servletClassname = null;
-    if (root != null)
-      servletClassname = root.get(SETTINGS_SERVLET_CLASSNAME);
-    if (servletClassname == null || servletClassname.equals("")) { //$NON-NLS-1$
-      servletClassname = (String) model.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_CLASSNAME);
+    String libraryProviderID = "";
+	LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+	if (librariesInstallDelegate != null && librariesInstallDelegate.getLibraryProvider() != null)
+		libraryProviderID = librariesInstallDelegate.getLibraryProvider().getId();
+    if (root != null) {
+        servletClassname = root.get(libraryProviderID + SETTINGS_SERVLET_CLASSNAME);
+    }
+    if (servletClassname == null) { 
+      servletClassname = JAXRSLibraryProviderUtil.getServletClassName(libraryProviderID);
+      if (servletClassname == null)
+    	  servletClassname = (String) model.getDefaultProperty(IJAXRSFacetInstallDataModelProperties.SERVLET_CLASSNAME);
     }
     servletInfoGroup.txtJAXRSServletClassName.setText(servletClassname);
 
@@ -240,9 +318,9 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
   {
     DialogSettings root = new DialogSettings(IJAXRSUIConstants.SETTINGS_ROOT);
     dialogSettings.addSection(root);
-
     root.put(SETTINGS_SERVLET, getJAXRSServletName());
-    root.put(SETTINGS_SERVLET_CLASSNAME, getJAXRSServletClassname());
+    LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+    root.put(librariesInstallDelegate.getLibraryProvider().getId() + SETTINGS_SERVLET_CLASSNAME, getJAXRSServletClassname());
     DialogSettings mappings = new DialogSettings(SETTINGS_URL_MAPPINGS);
     root.addSection(mappings);
     mappings.put(SETTINGS_URL_PATTERN, getJAXRSPatterns());
@@ -307,6 +385,7 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
     synchHelper.synchText(servletInfoGroup.txtJAXRSServletName, SERVLET_NAME, null);
     synchHelper.synchText(servletInfoGroup.txtJAXRSServletClassName, SERVLET_CLASSNAME, null);
     synchHelper.synchList(servletInfoGroup.lstJAXRSServletURLPatterns, SERVLET_URL_PATTERNS, null);
+    synchHelper.synchCheckbox(updateDDCheckBox, UPDATEDD, null);
   }
 
   private void loadURLMappingPatterns(IDialogSettings root)
@@ -377,6 +456,7 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
   public void setWizardContext(IWizardContext context)
   {
     // hook into web datamodel of new project wizard.
+	this.context = context;
     sWEBProject = context.getProjectName();
     Iterator it = context.getSelectedProjectFacets().iterator();
     IProjectFacetVersion webFacetVersion = null;
@@ -478,11 +558,32 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
         if (event.getProperty() != null) 
           model.setStringProperty(TARGETRUNTIME, event.getProperty().toString());
       }
+      else if (propertyName.equals(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
+      {
+        if (event.getProperty() != null) {
+
+        	LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+       		String libraryProviderID = librariesInstallDelegate.getLibraryProvider().getId();
+			try {
+				updateUpdateDDState(libraryProviderID);
+				updateServletClassName(libraryProviderID);
+			} catch (Exception e) {
+				//TODO exception as we are notified in non-UI thread and Invalid thread access exception,
+				//should find another way to get notified when library provider changes
+
+			}
+        	
+        }
+      }
     }
     super.propertyChanged(event);
   }
 
-  /*
+  private void updateServletClassName(String libraryProviderID) {
+	  servletInfoGroup.txtJAXRSServletClassName.setText(JAXRSLibraryProviderUtil.getServletClassName(libraryProviderID));
+  }
+
+/*
    * (non-Javadoc)
    * 
    * @see
@@ -523,5 +624,12 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
   {
     return true;
   }
+
+	private void setChildrenEnabled(Composite parentComposite, boolean enabled) {
+		Control[] wsdlControls = parentComposite.getChildren();
+		for (int i = 0; i < wsdlControls.length; i++) {
+			wsdlControls[i].setEnabled(enabled);
+		}
+	}
 
 }

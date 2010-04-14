@@ -24,6 +24,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.jst.ws.jaxrs.core.internal,
  org.eclipse.jst.ws.jaxrs.core.internal.jaxrsibraryregistry;x-friends:="org.eclipse.wst.jaxrs.ui",
  org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig,
+ org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryproviderconfig,
  org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryregistry.adapter;x-friends:="org.eclipse.wst.jaxrs.ui",
  org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryregistry.impl;x-friends:="org.eclipse.wst.jaxrs.ui",
  org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryregistry.util;x-friends:="org.eclipse.wst.jaxrs.ui",

@@ -33,7 +33,7 @@ public abstract class JAXRSUtils {
 	/**
 	 * The default name of the JAX-RS servlet class
 	 */
-	public static final String JAXRS_SERVLET_CLASS = "com.mycompany.web.rest.RestServlet"; //$NON-NLS-1$
+	public static final String JAXRS_SERVLET_CLASS = ""; //$NON-NLS-1$
 
 	/**
 	 * Default URL mapping to jaxrs servlet

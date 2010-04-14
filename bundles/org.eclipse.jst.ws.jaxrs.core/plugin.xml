@@ -3,6 +3,7 @@
 <plugin>
 
   <extension-point id="jaxrsSharedLibrarySupport" name="jaxrsSharedLibrarySupport" schema="schema/jaxrsSharedLibrarySupport.exsd"/>
+  <extension-point id="jaxrsLibraryProvider" name="jaxrsLibraryProvider" schema="schema/jaxrsLibraryProvider.exsd"/>
 
   <!-- JAXRS Project Facets -->
 	<extension
