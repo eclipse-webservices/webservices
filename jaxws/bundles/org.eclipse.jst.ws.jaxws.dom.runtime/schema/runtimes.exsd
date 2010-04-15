@@ -6,7 +6,8 @@
          <meta.schema plugin="org.eclipse.jst.ws.jaxws.dom.runtime" id="supportedruntimes" name="Supported Runtimes"/>
       </appInfo>
       <documentation>
-         Use this extension point to add support for a runtime in the WS DOM Tree.
+         This extension point allows contributing web service runtime extensions (implementations of the org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDOMRuntimeExtension inteface) per a given project facet version.
+Runtime extensions are responsible for providing artifacts for web services implemented via a given web service technology (JAX-WS, JAX-RPC, etc.)
       </documentation>
    </annotation>
 
@@ -49,11 +50,16 @@
    </element>
 
    <element name="implementation">
+      <annotation>
+         <documentation>
+            This element specifies the contributed runtime extension class
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The fully qualified name of the class which implements the runtime extension
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDOMRuntimeExtension"/>
@@ -64,18 +70,23 @@
    </element>
 
    <element name="project_facet">
+      <annotation>
+         <documentation>
+            This element specifies the project facet version this runtime extension is applicable for. A runtime extension may be applicable for one or more project facet versions
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The ID of the project facet
                </documentation>
             </annotation>
          </attribute>
          <attribute name="version" type="string">
             <annotation>
                <documentation>
-                  
+                  The version of the project facet
                </documentation>
             </annotation>
          </attribute>
@@ -87,7 +98,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         WTP 3.5M6
       </documentation>
    </annotation>
 
@@ -105,7 +116,8 @@
          <meta.section type="apiInfo"/>
       </appInfo>
       <documentation>
-         [Enter API information here.]
+         The interfaces of the web service model are located in the &quot;org.eclipse.jst.ws.jaxws.dom.runtime.api&quot; package.
+In order to access the contributed runtime extensions use org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMRuntimeManager
       </documentation>
    </annotation>
 
@@ -118,5 +130,17 @@
       </documentation>
    </annotation>
 
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2009 SAP AG, Walldorf.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made 
+available under the terms of the Eclipse Public License v1.0 which accompanies 
+this distribution, and is available at &lt;a
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
 
 </schema>
