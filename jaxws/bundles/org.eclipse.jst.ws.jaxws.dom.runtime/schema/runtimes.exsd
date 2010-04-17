@@ -98,7 +98,7 @@ Runtime extensions are responsible for providing artifacts for web services impl
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         WTP 3.5M6
+         1.0
       </documentation>
    </annotation>
 
@@ -107,7 +107,17 @@ Runtime extensions are responsible for providing artifacts for web services impl
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         &lt;p&gt;
+&lt;pre&gt;
+   &lt;extension
+      id=&quot;org.eclipse.jst.ws.jaxws.dom.jee5&quot; 
+      name=&quot;JEE5 DOM contribution&quot;
+      point=&quot;org.eclipse.jst.ws.jaxws.dom.runtime.domruntimes&quot;&gt;
+      &lt;implementation class=&quot;org.eclipse.jst.ws.jaxws.dom.runtime.persistence.Jee5WsDomRuntimeExtension&quot;/&gt;
+      &lt;project_facet id=&quot;jst.ejb&quot; version=&quot;3.0&quot;/&gt;
+      &lt;project_facet id=&quot;jst.web&quot; version=&quot;2.5&quot;/&gt;
+   &lt;/extension&gt;&lt;/pre&gt;
+&lt;/p&gt;
       </documentation>
    </annotation>
 

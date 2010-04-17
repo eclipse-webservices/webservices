@@ -7,6 +7,8 @@
        <topic href="reference/api/org/eclipse/jst/ws/annotations/core/initialization/package-summary.html" label="org.eclipse.jst.ws.annotations.core.initialization"/>
        <topic href="reference/api/org/eclipse/jst/ws/annotations/core/processor/package-summary.html" label="org.eclipse.jst.ws.annotations.core.processor"/>
        <topic href="reference/api/org/eclipse/jst/ws/annotations/core/utils/package-summary.html" label="org.eclipse.jst.ws.annotations.core.utils"/>
-       <topic href="reference/api/org/eclipse/jst/ws/jaxws/core/utils/package-summary.html" label="org.eclipse.jst.ws.jaxws.core.utils"/>
 	</topic>
+    <topic label="Utility Classes">
+       <topic href="reference/api/org/eclipse/jst/ws/jaxws/core/utils/package-summary.html" label="org.eclipse.jst.ws.jaxws.core.utils"/>
+    </topic>
 </toc>

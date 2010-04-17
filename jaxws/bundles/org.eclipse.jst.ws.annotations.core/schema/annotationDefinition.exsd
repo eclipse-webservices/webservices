@@ -134,6 +134,14 @@
       </complexType>
    </element>
 
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         1.0
+      </documentation>
+   </annotation>
 
    <annotation>
       <appInfo>

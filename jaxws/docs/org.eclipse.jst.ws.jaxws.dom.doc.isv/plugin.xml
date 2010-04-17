@@ -9,10 +9,7 @@
    
    <extension point="org.eclipse.pde.core.javadoc">
        <javadoc path="reference/api">
-           <plugin id="org.eclipse.jst.ws.jaxws.dom.integration"/>
            <plugin id="org.eclipse.jst.ws.jaxws.dom.runtime"/>
-           <plugin id="org.eclipse.jst.ws.jaxws.dom.ui"/>
-           <plugin id="org.eclipse.jst.ws.jaxws.utils"/>
        </javadoc>
    </extension>
    
