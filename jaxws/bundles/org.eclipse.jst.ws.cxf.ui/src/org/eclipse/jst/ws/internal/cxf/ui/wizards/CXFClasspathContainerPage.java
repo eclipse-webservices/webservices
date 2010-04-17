@@ -68,7 +68,7 @@ public class CXFClasspathContainerPage extends WizardPage implements IClasspathC
 
     public IClasspathEntry getSelection() {
         CXFInstall selectedInstall = getSelectedInstall();
-        if (selectedInstall != null && !selectedInstall.getVersion().equals(intalledVersion)) {
+        if (selectedInstall != null) {// && !selectedInstall.getVersion().equals(intalledVersion)) {
             CXFCorePlugin.getDefault().setCXFRuntimeVersion(project, selectedInstall.getVersion());
 
             IClasspathAttribute jstComponentDependency =
