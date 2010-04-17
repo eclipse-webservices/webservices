@@ -23,6 +23,7 @@ import org.eclipse.ui.IStartup;
  * Startup participant registered on IDE startup extension point
  * 
  * @author Georgi Vachkov
+ * @noextend This class is not intended to be extended by clients.
  */
 public class WsDomStartupParticipant implements IStartup 
 {

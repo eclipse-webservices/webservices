@@ -13,14 +13,27 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.wst.common.project.facet.core
-Export-Package: org.eclipse.jst.ws.jaxws.utils,
- org.eclipse.jst.ws.jaxws.utils.annotations,
- org.eclipse.jst.ws.jaxws.utils.clazz,
- org.eclipse.jst.ws.jaxws.utils.dom.validation,
- org.eclipse.jst.ws.jaxws.utils.exception,
- org.eclipse.jst.ws.jaxws.utils.facets,
- org.eclipse.jst.ws.jaxws.utils.internal.annotations.impl,
- org.eclipse.jst.ws.jaxws.utils.internal.text;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration.tests",
- org.eclipse.jst.ws.jaxws.utils.logging,
- org.eclipse.jst.ws.jaxws.utils.resources
+Export-Package: org.eclipse.jst.ws.jaxws.utils;
+  x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,
+   org.eclipse.jst.ws.jaxws.dom.runtime,
+   org.eclipse.jst.ws.jaxws.dom.runtime.tests,
+   org.eclipse.jst.ws.jaxws.testutils,
+   org.eclipse.jst.ws.jaxws.utils.tests",
+ org.eclipse.jst.ws.jaxws.utils.annotations;
+  x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,
+   org.eclipse.jst.ws.jaxws.dom.integration.tests,
+   org.eclipse.jst.ws.jaxws.dom.runtime,
+   org.eclipse.jst.ws.jaxws.dom.runtime.tests,
+   org.eclipse.jst.ws.jaxws.utils.tests",
+ org.eclipse.jst.ws.jaxws.utils.clazz;x-friends:="org.eclipse.jst.ws.jaxws.utils.tests",
+ org.eclipse.jst.ws.jaxws.utils.exception;x-friends:="org.eclipse.jst.ws.jaxws.testutils",
+ org.eclipse.jst.ws.jaxws.utils.facets;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,org.eclipse.jst.ws.jaxws.dom.runtime",
+ org.eclipse.jst.ws.jaxws.utils.internal.annotations.impl;x-friends:="org.eclipse.jst.ws.jaxws.dom.runtime.tests,org.eclipse.jst.ws.jaxws.utils.tests",
+ org.eclipse.jst.ws.jaxws.utils.logging;
+  x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,
+   org.eclipse.jst.ws.jaxws.dom.runtime,
+   org.eclipse.jst.ws.jaxws.dom.runtime.tests,
+   org.eclipse.jst.ws.jaxws.dom.ui,
+   org.eclipse.jst.ws.jaxws.testutils",
+ org.eclipse.jst.ws.jaxws.utils.resources;x-friends:="org.eclipse.jst.ws.jaxws.dom.integration,org.eclipse.jst.ws.jaxws.dom.runtime.tests,org.eclipse.jst.ws.jaxws.utils.tests"
 Bundle-Activator: org.eclipse.jst.ws.jaxws.utils.internal.plugin.JaxwsUtilsPlugin

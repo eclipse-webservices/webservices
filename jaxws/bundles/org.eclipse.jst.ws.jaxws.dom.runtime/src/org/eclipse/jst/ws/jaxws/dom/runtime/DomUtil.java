@@ -27,7 +27,11 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.util.DomSwitch;
 
-
+/**
+ * 
+ * @noextend This class is not intended to be extended by clients.
+ *
+ */
 public class DomUtil
 {
 	public static final DomUtil INSTANCE = new DomUtil();
