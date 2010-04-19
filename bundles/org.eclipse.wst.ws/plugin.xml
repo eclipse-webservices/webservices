@@ -34,7 +34,7 @@
    </extension>
 
    <!-- Extension to define a content type for WSIL files -->
-   <extension point="org.eclipse.core.runtime.contentTypes">
+   <extension point="org.eclipse.core.contenttype.contentTypes">
       <content-type
             priority="high"
             name="%X_WSIL_CONTENT_TYPE"

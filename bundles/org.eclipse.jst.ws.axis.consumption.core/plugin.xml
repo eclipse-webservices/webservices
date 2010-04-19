@@ -38,7 +38,7 @@
    </extension>
    
    <!-- define a wsdd content type for Axis Web Service Deployment Descriptors -->
-   <extension point="org.eclipse.core.runtime.contentTypes">
+   <extension point="org.eclipse.core.contenttype.contentTypes">
       <content-type
             priority="high"
             name="%xpWSDDContentType"
