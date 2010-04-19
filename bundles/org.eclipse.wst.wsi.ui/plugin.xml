@@ -62,7 +62,7 @@
    <!-- Extension point: org.eclipse.core.runtime.contentTypes  --> 
    <!-- Purpose: Specify file association for wsimsg.           -->
    <!-- ======================================================= -->
-   <extension point="org.eclipse.core.runtime.contentTypes"> 
+   <extension point="org.eclipse.core.contenttype.contentTypes"> 
       <file-association 
        content-type="org.eclipse.core.runtime.xml"
        file-extensions="wsimsg"/>
