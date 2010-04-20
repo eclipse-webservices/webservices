@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060509   125094 sengpl@ca.ibm.com - Seng Phung-Lu, Use WorkspaceModifyOperation
  * 20060515   115225 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20060517   142327 kathy@ca.ibm.com - Kathy Chan
+ * 20100420   307152 kchong@ca.ibm.com - Keith Chong, Web Service deployment fails without web.xml
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.creation.ui.command;
 
@@ -54,6 +55,10 @@ public class BUCodeGenOperation extends AbstractDataModelOperation {
 	
 	// RefreshProjectCommand
 	private RefreshProjectCommand refreshProjectCommand = null;
+	
+	// CreateDeploymentDescriptorCommand
+	private CreateDeploymentDescriptorCommand createDDCommand = null;
+
 
 	/**
 	 * This command runs the commands in the constructor in a WorkspaceModifyOperation.
@@ -70,6 +75,7 @@ public class BUCodeGenOperation extends AbstractDataModelOperation {
 		updateAxisWsddCommand = new UpdateAxisWSDDFileTask();
 		updateWebXMLCommand = new UpdateWEBXMLCommand();
 		refreshProjectCommand = new RefreshProjectCommand();
+		createDDCommand = new CreateDeploymentDescriptorCommand();
 	}
 
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) {
@@ -137,6 +143,14 @@ public class BUCodeGenOperation extends AbstractDataModelOperation {
 					throw new CoreException(status);
 				}
 				javaWSDLParam = updateAxisWsddCommand.getJavaWSDLParam();
+
+				// create the deployment descriptor if it doesn't exist
+				createDDCommand.setEnvironment(env);
+				createDDCommand.setServerProject(serviceProject);
+				status = createDDCommand.execute(monitor, info);
+				if (status.getSeverity() == Status.ERROR) {
+					throw new CoreException(status);
+				}
 				
 				// UpdateWebXMLCommand
 				updateWebXMLCommand.setEnvironment(env);
