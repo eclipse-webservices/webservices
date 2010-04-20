@@ -20,6 +20,7 @@
  * 20080122   216165 kathy@ca.ibm.com - Kathy Chan
  * 20080326   224148 makandre@ca.ibm.com - Andrew Mak, Web service scenarios broke in latest builds with Equinox p2
  * 20100304   304385 mahutch@ca.ibm.com - Mark Hutchinson, Allow users to disable copying axis jars
+ * 20100414   309040 mahutch@ca.ibm.com - Mark Hutchinson, update jar sizes
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.axis.consumption.ui.task;
 
@@ -75,12 +76,12 @@ public class CopyAxisJarCommand extends AbstractDataModelOperation {
 	public static String JAVAX_WSDL_JAR = "wsdl4j.jar"; //$NON-NLS-1$
 	public static String COMMON_LOGGING_PLUGIN_ID = "org.apache.commons.logging"; //$NON-NLS-1$
 	public static String COMMON_LOGGING_JAR = "commons-logging.jar"; //$NON-NLS-1$
-	private static long AXIS_JAR_SIZE = 1588063L;
-	private static long COMMON_DISCOVERY_JAR_SIZE = 71451L;
-	private static long JAVAX_XML_RPC_JAR_SIZE = 32361L;
-	private static long JAVAX_XML_SOAP_JAR_SIZE = 19582L;
-	private static long JAVAX_WSDL_JAR_SIZE = 134085L;
-	private static long COMMON_LOGGING_JAR_SIZE = 39353L;
+	private static long AXIS_JAR_SIZE = 1599570L;
+	private static long COMMON_DISCOVERY_JAR_SIZE = 71442L;
+	private static long JAVAX_XML_RPC_JAR_SIZE = 31191L;
+	private static long JAVAX_XML_SOAP_JAR_SIZE = 18979L;
+	private static long JAVAX_WSDL_JAR_SIZE = 168178L;
+	private static long COMMON_LOGGING_JAR_SIZE = 44210L;
 
 // Web Services Jars Used in previous Versions of WTP but now obsolete
 	private static String[] OBSOLETE_JARS = new String[]{"commons-discovery.jar", "commons-logging-1.0.4.jar", "log4j-1.2.4.jar", "log4j-1.2.8.jar", "wsdl4j-1.5.1.jar", "axis-ant.jar"};
