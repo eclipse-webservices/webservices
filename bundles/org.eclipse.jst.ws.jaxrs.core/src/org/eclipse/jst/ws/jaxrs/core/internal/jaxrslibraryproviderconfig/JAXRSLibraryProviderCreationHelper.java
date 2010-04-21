@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100420   309846 ericdp@ca.ibm.com - Eric D. Peters, Remove dead code related to e.p. pluginProvidedJaxrsLibraries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryproviderconfig;
 
@@ -24,6 +25,7 @@ import org.eclipse.osgi.util.NLS;
  * extension-point.
  * 
  */
+
 public final class JAXRSLibraryProviderCreationHelper {
 	private JAXRSLibraryProviderImpl newLibraryProvider;
 	private IConfigurationElement config_element;

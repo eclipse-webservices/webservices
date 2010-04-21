@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
+ * 20100420   309846 ericdp@ca.ibm.com - Eric D. Peters, Remove dead code related to e.p. pluginProvidedJaxrsLibraries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig;
 
@@ -26,7 +27,14 @@ import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
  * JAXRSLibraryConfigModel object is initialized from a source and updated with
  * selected implementation when selections are changed.
  * 
+ * 
+ * @deprecated
+ * 
+ * <p>
+ * <b>Provisional API - subject to change - do not use</b>
+ * </p>
  */
+
 public class JAXRSLibraryConfigModel {
 	final private JAXRSLibraryConfiglModelSource data;
 	final private JAXRSLibraryRegistryUtil jaxrsLibReg;

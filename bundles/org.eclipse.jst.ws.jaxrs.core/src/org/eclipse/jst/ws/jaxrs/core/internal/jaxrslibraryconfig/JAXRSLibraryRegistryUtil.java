@@ -12,6 +12,7 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100304   304732 ericdp@ca.ibm.com - Eric D. Peters, NPE loading library extensions
  * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
+ * 20100420   309846 ericdp@ca.ibm.com - Eric D. Peters, Remove dead code related to e.p. pluginProvidedJaxrsLibraries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig;
 
@@ -453,7 +454,7 @@ public class JAXRSLibraryRegistryUtil {
 				JAXRSLibraryRegistry = (JAXRSLibraryRegistry) JAXRSLibraryRegistryResource
 						.getContents().get(0);
 
-//				loadJAXRSLibraryExtensions();
+				loadJAXRSLibraryExtensions();
 
 			} catch (IOException ioe) {
 				// Create a new Registry instance
@@ -463,7 +464,7 @@ public class JAXRSLibraryRegistryUtil {
 						.createResource(jaxrsLibRegURI);
 				JAXRSLibraryRegistryResource.getContents().add(
 						JAXRSLibraryRegistry);
-//				loadJAXRSLibraryExtensions();
+				loadJAXRSLibraryExtensions();
 				saveJAXRSLibraryRegistry();
 			}
 			// add adapter to maintain default implementation

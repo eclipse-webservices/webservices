@@ -123,18 +123,7 @@
       </enablement>
     </provider>
   </extension>  
-  <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-    <provider id="legacy-jaxrs-library-provider" extends="legacy-library-provider" hidden="true">
-      <action type="UNINSTALL">
-        <operation class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.LegacyJAXRSLibraryProviderUninstallOperation"/>
-      </action>
-    </provider>
-  </extension>
-
-  <extension point="org.eclipse.jst.common.project.facet.core.legacyLibraryProviderDetectors">
-    <detector class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.LegacyJAXRSLibraryProviderDetector"/>
-  </extension>
-  
+  <extension-point id="pluginProvidedJaxrsLibraries" name="pluginProvidedJaxrsLibraries" schema="schema/pluginProvidedJaxrsLibraries.exsd"/>
 
    
 </plugin>

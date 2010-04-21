@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and others.
+ * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100420   309846 ericdp@ca.ibm.com - Eric D. Peters, Remove dead code related to e.p. pluginProvidedJaxrsLibraries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.jaxrslibraryregistry.internal;
 
@@ -28,6 +29,11 @@ import org.eclipse.osgi.util.NLS;
  * <code>org.eclipse.jst.ws.jaxrs.core.pluginProvidedJaxrsLibraries</code>
  * extension-point. <br>
  * 
+ * @deprecated
+ * 
+ * <p>
+ * <b>Provisional API - subject to change - do not use</b>
+ * </p>
  */
 public final class PluginProvidedJAXRSLibraryCreationHelper2 {
 	private PluginProvidedJAXRSLibrary newLib;
@@ -69,6 +75,22 @@ public final class PluginProvidedJAXRSLibraryCreationHelper2 {
 		if (!newLib.containsArchiveFile(jar.getSourceLocation()))
 			newLib.getArchiveFiles().add(jar);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void addArchiveFileFromFullPath(String path) throws Exception {
+		ArchiveFile jar = createArchiveFileFromFullPath(path);
+		if (!newLib.containsArchiveFile(jar.getSourceLocation()))
+			newLib.getArchiveFiles().add(jar);
+	}
+	
+	private ArchiveFile createArchiveFileFromFullPath(String path) {
+		ArchiveFile file = JAXRSLibraryRegistryFactory.eINSTANCE
+				.createArchiveFile();
+		file.setRelativeToWorkspace(false);
+		file.setSourceLocation(path);
+		file.setRelativeDestLocation(relativeDestLocation);
+		return file;
+	}
 
 	/**
 	 * Creates a new PluginProvidedJAXRSLibrary from the JAXRSLibrary extension
@@ -109,7 +131,7 @@ public final class PluginProvidedJAXRSLibraryCreationHelper2 {
 	 * @throws CoreException
 	 *             on core failure.
 	 */
-	private void addArchives() throws CoreException {
+	private void addArchives() throws Exception {
 		PluginProvidedJAXRSLibraryArchiveFilesDelegate jarCol = null;
 
 		jarCol = (PluginProvidedJAXRSLibraryArchiveFilesDelegate) config_element

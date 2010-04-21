@@ -10,6 +10,8 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100420   309846 ericdp@ca.ibm.com - Eric D. Peters, Remove dead code related to e.p. pluginProvidedJaxrsLibraries
+
  *******************************************************************************/package org.eclipse.jst.ws.jaxrs.core.internal;
 
 import org.eclipse.core.runtime.CoreException;
@@ -24,6 +26,11 @@ import org.eclipse.jst.ws.jaxrs.core.jaxrslibraryconfiguration.internal.JAXRSLib
 
 /**
  * Initialize JAXRS Libraries as classpath containers
+ * @deprecated
+ * 
+ * <p>
+ * <b>Provisional API - subject to change - do not use</b>
+ * </p>
  */
 public class JAXRSLibrariesContainerInitializer extends
 		ClasspathContainerInitializer {
