@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002-2005 IBM Corporation and others.
+ * Copyright (c) 2002, 2010 IBM Corporation and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -408,9 +408,13 @@ public abstract class BaseValidatorImpl
    */
   public void cleanup() throws WSIException
   {
-    // If no assertions were processed, then set all missingInput
-    if (assertionCount == 0)
-      setAllMissingInput();
+	  // If no assertions were processed, then set all missingInput
+	  if (assertionCount == 0)
+		  setAllMissingInput();
+	  analyzerContext = null;
+	  profileArtifact = null;
+	  reportArtifact = null;
+	  reporter = null;
   }
 
   /**

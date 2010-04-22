@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2009 IBM Corporation, Parasoft, Beacon Information Technology Inc. and others.
+ * Copyright (c) 2002, 2010 IBM Corporation, Parasoft, Beacon Information Technology Inc. and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -334,24 +334,30 @@ public class BasicProfileAnalyzer extends Analyzer
   private void validate(ReportArtifact reportArtifact, BaseValidator validator)
           throws WSIException 
   {
-    if (validator instanceof WSDLValidatorImpl)
-	{
-    	((WSDLValidatorImpl)validator).init(analyzerContext, profileAssertions, reportArtifact, getAnalyzerConfig(), reporter,
-    			getAnalyzerConfigIndex() == 0);
-	}
-    else
-    {
-      validator.init(analyzerContext, profileAssertions, reportArtifact, getAnalyzerConfig(), reporter);
-    }
+	  try
+	  {
+		  if (validator instanceof WSDLValidatorImpl)
+		  {
+			  ((WSDLValidatorImpl)validator).init(analyzerContext, profileAssertions, reportArtifact, getAnalyzerConfig(), reporter,
+					  getAnalyzerConfigIndex() == 0);
+		  }
+		  else
+		  {
+			  validator.init(analyzerContext, profileAssertions, reportArtifact, getAnalyzerConfig(), reporter);
+		  }
 
-    if (validator.runTests()) {
-        validator.validateArtifact();
-        validator.cleanup();
-    } 
-    else 
-    {
-      validator.setAllMissingInput();
-    }
+		  if (validator.runTests()) {
+			  validator.validateArtifact();
+		  } 
+		  else 
+		  {
+			  validator.setAllMissingInput();
+		  }
+	  }
+	  finally
+	  {
+		  validator.cleanup();
+	  }
   }
 
   /**

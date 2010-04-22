@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2009 IBM Corporation, Parasoft and others.
+ * Copyright (c) 2002, 2010 IBM Corporation, Parasoft and others.
  * All rights reserved.   This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1906,5 +1906,10 @@ public abstract class BaseMessageValidator
     public void processLogEntry(EntryContext entryContext) throws WSIException {
         validator.validate(entryContext);
     }
+  }
+
+  public void cleanup() throws WSIException {
+	  super.cleanup();
+	  wsdlDocument = null;
   }
 }
