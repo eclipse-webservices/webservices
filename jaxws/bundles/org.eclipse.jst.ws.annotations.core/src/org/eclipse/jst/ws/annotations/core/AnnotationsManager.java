@@ -138,8 +138,10 @@ public final class AnnotationsManager {
             annotationClassNameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
 
             for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
-                annotationClassNameToDefinitionMap.put(annotationDefinition.getAnnotationClass()
-                        .getCanonicalName(), annotationDefinition);
+            	if (annotationDefinition.getAnnotationClass() != null) {
+                    annotationClassNameToDefinitionMap.put(annotationDefinition.getAnnotationClass()
+                            .getCanonicalName(), annotationDefinition);
+            	}
             }
         }
         return annotationClassNameToDefinitionMap;

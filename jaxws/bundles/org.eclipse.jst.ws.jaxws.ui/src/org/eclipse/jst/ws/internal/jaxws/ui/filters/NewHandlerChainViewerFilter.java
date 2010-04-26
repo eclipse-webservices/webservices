@@ -58,9 +58,11 @@ public class NewHandlerChainViewerFilter extends ViewerFilter {
             }
 
             if (!filterCompilationUnits && element instanceof ICompilationUnit) {
-                ICompilationUnit compilationUnit = (ICompilationUnit) element;
+            	ICompilationUnit compilationUnit = (ICompilationUnit) element;
                 IType type = compilationUnit.findPrimaryType();
-                return type.isClass() || type.isInterface() && !type.isAnnotation();
+                if (type != null) {
+                    return type.isClass() || type.isInterface() && !type.isAnnotation();                	
+                }
             }
         } catch (JavaModelException jme) {
             JAXWSUIPlugin.log(jme);
