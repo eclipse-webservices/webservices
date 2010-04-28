@@ -15,6 +15,7 @@
  * 20100310   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1
  * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -35,6 +36,7 @@ import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
 import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
 import org.eclipse.jst.j2ee.model.IModelProvider;
+import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
 import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryInternalReference;
 import org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.SharedLibraryConfigurator;
@@ -141,7 +143,9 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 				((LibraryInstallDelegate) config
 						.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
 						.execute(new NullProgressMonitor());
-				createSharedLibraries(project, fv, monitor, config);
+				if (!disableLibraryConfigSelected((LibraryInstallDelegate) config
+						.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE)))
+					createSharedLibraries(project, fv, monitor, config);
 			}			
 
 			// Update web model if necessary
@@ -156,6 +160,12 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 				monitor.done();
 			}
 		}
+	}
+
+	private boolean disableLibraryConfigSelected(LibraryInstallDelegate property) {
+		return property.getLibraryProvider().getId() != null
+				&& property.getLibraryProvider().getId().equals(
+						IJAXRSCoreConstants.NO_OP_LIBRARY_ID) ? true : false;
 	}
 
 	private void createSharedLibraries(IProject project,

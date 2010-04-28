@@ -16,6 +16,7 @@
  * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -92,6 +93,7 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
   private Composite composite = null;
   private java.util.List<IProject> earProjects = null;
   private IPreset selectedPreset = null;
+  private ILibraryProvider currentlySelectedLibraryType;
   private boolean isProjectCreationMode = true; // project creation = true,
                                                 // add/remove facets mode =
                                                 // false
@@ -131,6 +133,8 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
     composite.setLayout(jaxrsCompositeLayout);
 
     final LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+    
+    currentlySelectedLibraryType = librariesInstallDelegate == null ? null : librariesInstallDelegate.getLibraryProvider();
 	librariesInstallDelegate.getLibraryProviders();
 	java.util.List<ILibraryProvider> providers = librariesInstallDelegate.getLibraryProviders();
 	if (providers != null) {
@@ -165,7 +169,7 @@ public class JAXRSFacetInstallPage extends DataModelWizardPage implements IJAXRS
 	updateDDCheckBox.addSelectionListener(
 			new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent event) { 
-					servletInfoGroup.setVisible(updateDDCheckBox.getSelection());
+					servletInfoGroup.setFieldsEnabled(updateDDCheckBox.getSelection());
 				}
 				});
 
@@ -190,7 +194,7 @@ private void updateUpdateDDState(String libraryProviderID) {
     			selected = getUpdateDDCheckBoxSelected(libraryProviderID);
     		else 
     			selected = true;
-    		servletInfoGroup.setVisible(selected);
+    		servletInfoGroup.setFieldsEnabled(selected);
     		updateDDCheckBox.setSelection(selected);
     		updateDDCheckBox.getSelection();
     }
@@ -553,20 +557,22 @@ private void initializeValues()
       {
         model.setStringProperty(EARPROJECT_NAME, event.getProperty().toString());
       }
-      else if (propertyName.equals(IJ2EEModuleFacetInstallDataModelProperties.FACET_RUNTIME))
-      {
-        if (event.getProperty() != null) 
-          model.setStringProperty(TARGETRUNTIME, event.getProperty().toString());
-      }
       else if (propertyName.equals(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE))
       {
         if (event.getProperty() != null) {
 
         	LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
        		String libraryProviderID = librariesInstallDelegate.getLibraryProvider().getId();
+       		ILibraryProvider thisProvider = librariesInstallDelegate.getLibraryProvider();
 			try {
-				updateUpdateDDState(libraryProviderID);
-				updateServletClassName(libraryProviderID);
+				//we are sometimes notified when the user has not actually changed the selected library type
+				if (currentlySelectedLibraryType != thisProvider) {
+					//only update servlet class name & update DD state when library 
+					//type has changed
+					currentlySelectedLibraryType = thisProvider;
+					updateUpdateDDState(libraryProviderID);
+					updateServletClassName(libraryProviderID);
+				} 
 			} catch (Exception e) {
 				//TODO exception as we are notified in non-UI thread and Invalid thread access exception,
 				//should find another way to get notified when library provider changes

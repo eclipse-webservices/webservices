@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100302   304405 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet : support JAX-RS 1.1 (JSR 311)
+ * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal;
 
@@ -44,6 +45,7 @@ public final class IJAXRSCoreConstants {
 	 * The constant id for a JAXRS 1.1 project
 	 */
 	public final static String JAXRS_VERSION_1_1 = FACET_VERSION_1_1;
+	public static final String NO_OP_LIBRARY_ID = "jaxrs-no-op-library-provider"; //$NON-NLS-1$
 
 	private IJAXRSCoreConstants() {
 		// no instantiation

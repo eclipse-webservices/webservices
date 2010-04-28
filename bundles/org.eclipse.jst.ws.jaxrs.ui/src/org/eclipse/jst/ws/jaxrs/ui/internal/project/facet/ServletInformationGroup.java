@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -197,5 +198,20 @@ public class ServletInformationGroup extends Composite {
 	public void setDataModel(IDataModel model)
 	{
 	   this.optionalModel = model;
+	}
+
+
+
+
+	public void setFieldsEnabled(boolean selection) {
+		btnAddPattern.setEnabled(selection);
+		btnRemovePattern.setEnabled(selection);
+		txtJAXRSServletClassName.setEnabled(selection);
+		txtJAXRSServletName.setEnabled(selection);
+		lblJAXRSServletClassName.setEnabled(selection);
+		lblJAXRSServletName.setEnabled(selection);
+		lblJAXRSServletURLPatterns.setEnabled(selection);
+		lstJAXRSServletURLPatterns.setEnabled(selection);
+		
 	}
 }

@@ -14,9 +14,11 @@
  * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
  * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
+ * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.user.UserLibraryProviderInstallPanel;
@@ -34,7 +36,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelListener;
 
 public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderInstallPanel
 {
@@ -44,7 +48,8 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
   private JAXRSUserLibraryProviderInstallOperationConfig cfg;;
   private ServletInformationGroup servletInfoGroup;
   private boolean sharedLibSupported;
-
+  IDataModelListener listener;
+  private ILibraryProvider currentlySelectedLibraryType;
   public JAXRSUserLibraryProviderInstallPanel()
   {
     super();
@@ -66,6 +71,56 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
     mainComp.setLayout(gl);
     if (!onPropertiesPage()) {
       	String libraryID = ((LibraryInstallDelegate)model.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).getLibraryProvider().getId();
+      	//listen for all changes in the model- if user changes addToEAR or library type we might need to
+      	//update the Deploy / Shared Library options
+		listener = new IDataModelListener() {
+		
+			public void propertyChanged(DataModelEvent arg0) {
+				DataModelEvent event = arg0;
+				if (event == null || event.getPropertyName() == null || (!event.getPropertyName().equals(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE) && !event.getPropertyName().equals(IJAXRSFacetInstallDataModelProperties.ADD_TO_EAR) ))
+					return;
+						LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) model
+								.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE);
+						ILibraryProvider thisProvider = librariesInstallDelegate
+						.getLibraryProvider();
+						if (currentlySelectedLibraryType == null)
+							currentlySelectedLibraryType = thisProvider;
+						else {
+							//we are sometimes notified when the user has not actually changed the selected library type
+							if (currentlySelectedLibraryType != thisProvider) {
+								//only update servlet class name & update DD state when library 
+								//type has changed
+								currentlySelectedLibraryType = thisProvider;
+							} else if (!event.getPropertyName().equals(IJAXRSFacetInstallDataModelProperties.ADD_TO_EAR)) {
+								return;
+							}
+						}
+						String libraryProviderID = librariesInstallDelegate
+								.getLibraryProvider().getId();
+				      	sharedLibSupported = SharedLibraryConfiguratorUtil
+						.isSharedLibSupportAvailable(
+								libraryProviderID,
+								model.getStringProperty(IJAXRSFacetInstallDataModelProperties.TARGETRUNTIME),
+								SharedLibraryConfiguratorUtil
+										.getWebProject(model),
+								SharedLibraryConfiguratorUtil
+										.getEARProject(model),
+								SharedLibraryConfiguratorUtil
+										.getAddToEar(model));
+						try {
+							model.removeListener(listener);
+							initializeControlValues();
+							model.addListener(listener);
+						} catch (Exception e) {
+							//TODO exception as we are notified in non-UI thread and Invalid thread access exception,
+							//should find another way to get notified when data model changes
+
+						}
+
+					}
+		
+		};
+		model.addListener(listener);
       	sharedLibSupported = SharedLibraryConfiguratorUtil
     						.isSharedLibSupportAvailable(
     								libraryID,
@@ -242,7 +297,10 @@ public class JAXRSUserLibraryProviderInstallPanel extends UserLibraryProviderIns
 				model.setBooleanProperty(
 						IJAXRSFacetInstallDataModelProperties.DEPLOY_IMPLEMENTATION,
 						bDeploy);
+				// set the properties on the configuration object as well
+				cfg.setIsDeploy(bDeploy);				
 				if (sharedLibSupported) {
+					cfg.setSharedLibrary(bSharedLib);
 					model.setBooleanProperty(
 							IJAXRSFacetInstallDataModelProperties.SHAREDLIBRARY,
 							bSharedLib);
