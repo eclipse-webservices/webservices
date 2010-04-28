@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-The location attribute is empty. A location must be specified for the location attribute. [7, 42]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
