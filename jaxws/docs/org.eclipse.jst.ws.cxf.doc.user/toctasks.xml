@@ -13,4 +13,18 @@
 	<topic label="Create a Web Service from a Java implementation bean using Apache CXF" href="tasks/create_bottomup.html"/>
     <topic label="Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF" href="tasks/create_topdown.html"/>
     <topic label="Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF" href="tasks/create_client.html"/>
+    <topic href="tasks/ant_tasks.html" label="Creating Web services and clients using Apache CXF and Ant tasks">
+       <topic href="tasks/cxf_ant_ws.html" label="Creating a Web service using Ant tasks">
+          <topic href="tasks/cxf_ant_td_prop_ref.html" label="Top-down CXF Web service Ant task properties file reference">
+          </topic>
+          <topic href="tasks/cxf_ant_bu_prop_ref.html" label="Bottom-up CXF Web service Ant task properties file reference">
+          </topic>
+       </topic>
+       <topic href="tasks/cxf_ant_ws_client.html" label="Creating a Web service client using Ant tasks">
+          <topic href="tasks/cxf_ant_client_prop_ref.html" label="CXF Web service client Ant task properties file reference">
+          </topic>
+       </topic>
+    </topic>
+    <topic href="tasks/create_jaxws_handler.html" label="Create a JAX-WS Handler">
+    </topic>
 </toc>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2010 Shane Clarke and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Bottom-up CXF Web service Ant task properties file reference</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body lang="EN-US">
+<h2>Bottom-up CXF Web service Ant task properties file reference</h2>
+
+<div>
+<p>The <kbd class="userinput">cxf_bujava.properties</kbd> file is
+used to pass data to the Web services Ant tasks when creating an CXF
+Web service . This file shows the available options.</p>
+
+<div class="section">
+<h4 class="sectiontitle">Parameters</h4>
+<dl>
+	<dt class="dlterm">ScenarioType</dt>
+	<dd><span class="synph"> Options: <samp class="codeph">service</samp>
+	</span></dd>
+
+	<dd class="ddexpand">This is a required element that tells the Ant
+	task if it is creating a Web service or a Web service client.</dd>
+
+
+	<dt class="dlterm">InitialSelection</dt>
+
+	<dd>Enter the workspace relative URI to the Java bean within your workspace.
+	For example <kbd class="userinput">/dynamicWebProjectName/src/myBean.java</kbd></dd>
+
+	<dt class="dlterm">ListRuntimes</dt>
+
+	<dd><span class="synph"> Options: <samp class="codeph">true</samp>
+	<samp class="codeph">false</samp></span></dd>
+
+	<dd class="ddexpand">If <samp class="codeph">true</samp> is
+	selected, the list of valid runtime options will be provided when the
+	Ant task is run.</dd>
+
+	<dt class="dlterm">ListServers</dt>
+
+	<dd><span class="synph"> Options: <samp class="codeph">true</samp>
+	<samp class="codeph">false</samp></span></dd>
+
+	<dd class="ddexpand">If <samp class="codeph">true</samp> is
+	selected, the list of valid server options will be provided when the
+	Ant task is run.</dd>
+
+	<dt class="dlterm">Service.RuntimeId</dt>
+
+    <dd>This is the ID of the CXF Web service runtime. This parameter should not modified.</dd>
+
+	<dt class="dlterm">Service.ServerId</dt>
+
+    <dd>Options:<ul class="simple">
+            <li><samp class="codeph">org.eclipse.jst.server.tomcat.x</samp> (where <samp class="codeph">x</samp> is <samp class="codeph">60</samp> or <samp class="codeph">70</samp>)</li>
+
+            <li><samp class="codeph">org.eclipse.jst.server.generic.jbossx</samp> (where <samp class="codeph">x</samp> is <samp class="codeph">42</samp> or <samp class="codeph">5</samp>)</li>
+        </ul>
+    </dd>
+    
+	<dd class="ddexpand">This is the ID of the target server. Delete
+	or comment out this parameter to have the Ant task select the correct
+	value based on the server settings of the Dynamic Web project.</dd>
+
+	<dt class="dlterm">ServiceProjectName</dt>
+
+	<dd>By default the service project is given the name of the Java bean from which it is created.
+	Use this parameter to create the service project with a different name.</dd>
+
+	<dt class="dlterm">ServiceEarProjectName</dt>
+
+	<dd>By default the service EAR project is given the name of the Java bean from which it is created.
+	Use this parameter to create the service EAR project with a different name.</dd>
+
+    <dt class="dlterm">GenClient</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+    
+    <dd class="ddexpand">If <samp class="codeph">true</samp> a
+    client mainline that uses JAX-WS APIs will be generated.</dd>
+    
+    <dt class="dlterm">GenServer</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> a
+    server mainline that uses JAX-WS APIs will be generated.</dd>
+    
+    <dt class="dlterm">GenWrapperFaultBeans</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    wrapper and fault beans will be generated.</dd>
+    
+    <dt class="dlterm">GenWSDL</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> a
+    WSDL file will be generated.</dd>
+    
+    <dt class="dlterm">GenXSDImports</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> schemas
+    will be output to separate files and imports will be used to load them
+    into the wsdl instead of inlining them.</dd>
+    
+    <dt class="dlterm">UseSOAP12Binding</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    generated WSDL file will include a SOAP 1.2 binding.</dd>
+    
+    <dt class="dlterm">WsdlFileName</dt>
+
+    <dd>Set the name of the generated WSDL file.</dd>
+
+</dl>
+</body>
+</html>

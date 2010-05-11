@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2010 Shane Clarke and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>CXF Web service client Ant task properties file reference</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body lang="EN-US">
+<h2>CXF Web service client Ant task properties file reference</h2>
+
+<div><p>The <kbd class="userinput">cxf_client.properties</kbd> file is used
+to pass data to the Web services Ant tasks when creating an CXF Web service
+client. This file shows the available options.</p>
+
+<div class="section"><h4 class="sectiontitle">Parameters</h4><dl>
+<dt class="dlterm">ScenarioType</dt>
+
+<dd><span class="synph"> Options: <samp class="codeph">client</samp></span></dd>
+
+<dd class="ddexpand">This is a required element that tells the Ant task if it is creating a
+Web service or a Web service client.</dd>
+
+    <dt class="dlterm">InitialSelection</dt>
+
+    <dd>Enter URI to the WSDL file. This URI may be a workspace relative URI or point to a remote URI. 
+    For example <kbd class="userinput">/dynamicWebProjectName/WebContent/myService.wsdl</dd> or <kbd class="userinput">http://localhost:8080/dynamicWebProjectName/services/MyServicePort?wsdl</dd>
+
+    <dt class="dlterm">ListRuntimes</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp> <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> is selected, the list of valid runtime options
+    will be provided when the Ant task is run.</dd>
+
+
+    <dt class="dlterm">ListServers</dt>
+
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp> <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> is selected, the list of valid server options
+    will be provided when the Ant task is run.</dd>
+
+    <dt class="dlterm">Client.RuntimeId</dt>
+
+    <dd>This is the ID of the CXF Web service runtime. This parameter should not modified.</dd>
+
+    <dt class="dlterm">Client.ServerId</dt>
+
+    <dd>Options:<ul class="simple">
+            <li><samp class="codeph">org.eclipse.jst.server.tomcat.x</samp> (where <samp class="codeph">x</samp> is <samp class="codeph">60</samp> or <samp class="codeph">70</samp>)</li>
+
+            <li><samp class="codeph">org.eclipse.jst.server.generic.jbossx</samp> (where <samp class="codeph">x</samp> is <samp class="codeph">42</samp> or <samp class="codeph">5</samp>)</li>
+        </ul>
+    </dd>
+
+    <dd class="ddexpand">This is the ID of the target server. Delete or comment out this parameter
+    to have the Ant task select the correct value based on the server settings of the Dynamic Web project.</dd>
+
+
+    <dt class="dlterm">ClientProjectName</dt>
+
+    <dd>By default the client project is given the name of the WSDL file from which it is created.
+    Use this parameter to create the service project with a different name.</dd>
+
+    <dt class="dlterm">ClientEarProjectName</dt>
+
+    <dd>By default the client EAR project is given the name of the WSDL file from which it is created.
+    Use this parameter to create the service EAR project with a different name.</dd>
+
+
+<   dt class="dlterm">ClientComponentType</dt>
+
+    <dd><p>Options: <kbd class="userinput">template.jst.web</kbd> <kbd class="userinput">template.cxf.core</kbd></p>
+    <p>Use this parameter to select the type of client project.</p>
+    </dd>
+
+    <dt class="dlterm">Mappings</dt>
+
+    <dd>Enter the workspace relative URI to a property file containing mappings.</dd>
+
+    <dd class="ddexpand">Mappings are used to override the WSDL namespace to package name mapping of the generated Java classes. 
+    The content of the properties file must be of the format wsdl-namespace=package. You will need to escape some special characters in the
+    properties files.  For example <samp class="codeph">http://someNamespace=somePackage</samp> should
+    be <samp class="codeph">http\://someNamespace=somePackage</samp>.  Otherwise, the colon
+    (:) would be treated as delimiter resulting in trying to map <samp class="codeph">http</samp> to <samp class="codeph">//someNamespace=somePackage</samp>.</dd>
+
+</dl>
+</body>
+</html>

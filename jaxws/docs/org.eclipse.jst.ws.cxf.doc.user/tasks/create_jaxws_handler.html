@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2010 Shane Clarke. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Create a JAX-WS Handler</title>
+    <link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+    <script type="text/javascript" language="JavaScript" src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+
+<body lang="EN-US">
+<h2>Create a JAX-WS Handler</h2>
+<p>JAX-WS handlers are message interceptors that may be used to carry out additional processing on inbound and outbound messages.</p>
+<p>Protocol handlers are specific to a protocol (e.g. SOAP) and they may access or change protocol specific aspects of a message while logical handlers are protocol agnostic and may only act on the message payload.</p>
+<h3>Prerequisites:</h3>
+<ul>
+<p>Complete one of the following tasks to generate a Web service:<p/>
+<li><a href="../tasks/create_topdown.html">Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF</a><br></li>
+<li><a href="../tasks/create_client.html">Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF</a><br></li>
+</ul>
+To create a JAX-WS Handler:
+<ol>
+    <li>Select <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.perspectives.showPerspective(org.eclipse.ui.perspectives.showPerspective.perspectiveId=org.eclipse.jst.j2ee.J2EEPerspective)")'>
+        <img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the Java EE perspective"><strong>Window &gt; Open Perspective &gt; Java EE</strong></a> from the top level menu to switch to the Java EE perspective.</li>
+    <li>Open the JAX-WS Handler wizard by selecting <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.newWizard(newWizardId=org.eclipse.jst.ws.internal.jaxws.ui.wizards.NewJAXWSHandlerWizard)")'>
+    <img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the new JAX-WS Handler wizard"><strong>File &gt; New &gt; Other... &gt; Web Services &gt; JAX-WS &gt; JAX-WS Handler</strong></a> from the top level menu.</li>
+    <li>JAX-WS Handler page:<p><img src="./images/jaxws_handler_wizard.png" alt="JAX-WS Handler Wizard" ></p>
+    <ol type="a">
+        <li>Browse to select the <b>Source folder.</b></li>
+        <li>Browse to select an existing <b>Package</b> or enter a new package name.</li>
+        <li>Enter a <b>Name</b> for the JAX-WS Handler.</li>
+        <li>Select the <b>Handler type</b>:</li>
+        <ul>
+            <li><b>Logical Handler</b></li>
+            <li><b>Protocol Handler (SOAP)</b></li>
+        </ul>
+        In the <b>Configuration</b> section:
+        <li>Select the <b>Add this handler to a handler chain</b> checkbox.</li>
+        <li><p>Select <b>Create a new handler chain file</b> and browse to select a location in the project where the handler chain file will be generated.<p/>
+        <p><i>Note</i>: To add this JAX-WS handler to an existing  handler-chain in the project select <b>Add this handler to an existing handler chain file</b> and browse to select the file location.</p>
+        <p>Selecting <b>Next</b> will then allow you to select the position of the new JAX-WS handler in the handler chain file.</p></li>
+        <li>Select <b>Associate this handler chain with a Web service</b> and browse to select the Web service implementation or service endpoint interface that was created in the prerequisites.</li>
+        Click <b>Finish</b>.
+        The wizard will generate a skeleton JAX-WS Handler, handler-chain file and annotate the Web service with the <samp class="codeph">@javax.jws.HandlerChain</samp> annotation.
+    </ol>
+</ol>
+<p><img src="../images/ngrelt.png" alt="Related tasks" border="0" ></p>
+<a href="../tasks/create_topdown.html">Generate an SEI and a skeleton implementation bean from a WSDL document using Apache CXF</a><br>
+<a href="../tasks/create_client.html">Generate a JAX-WS Web Service Client from a WSDL document using Apache CXF</a><br>
+</body>
+</html>
