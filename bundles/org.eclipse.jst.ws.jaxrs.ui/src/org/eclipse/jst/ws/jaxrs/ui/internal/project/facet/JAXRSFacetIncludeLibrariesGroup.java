@@ -10,10 +10,11 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20100310   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
+ * 20100512   312640 kchong@ca.ibm.com - JAX-RS facet - Extraneous spacing needs to be removed.
+ * 
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
-import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
 import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 import org.eclipse.jst.ws.jaxrs.ui.internal.Messages;
 import org.eclipse.swt.SWT;
@@ -24,7 +25,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class JAXRSFacetIncludeLibrariesGroup extends Composite {
 
@@ -35,9 +35,20 @@ public class JAXRSFacetIncludeLibrariesGroup extends Composite {
 
 	public JAXRSFacetIncludeLibrariesGroup(Composite parent, int style) {
 		super(parent, style);
-	    copyOnPublishCheckBox = new Button(parent, SWT.CHECK);
+		
+		// Set layout of this composite so its children will expand to fill available space.
+        GridLayout gridLayout = new GridLayout(1, true);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.verticalSpacing = 0;
+        gridLayout.horizontalSpacing = 0;
+        setLayout(gridLayout);
+        setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        // Children should have 'this' composite as their parent
+	    copyOnPublishCheckBox = new Button(this, SWT.CHECK);
 	    copyOnPublishCheckBox.setText(Messages.JAXRSLibraryConfigControl_IncludeGroupLabel);
-	    includeLibRadiosComposite = new Composite(parent, SWT.NONE);
+	    includeLibRadiosComposite = new Composite(this, SWT.NONE);
 	    GridLayout gridlayout = new GridLayout();
 	    gridlayout.numColumns = 1;
 	    gridlayout.marginTop = 0;
