@@ -1,18 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20070502  185208 sengpl@ca.ibm.com - Seng Phung-Lu      
  * 20070509  180567 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20070705  195553 sengpl@ca.ibm.com - Seng Phung-Lu
  * 20080313  126774 sengpl@ca.ibm.com - Seng Phung-Lu
+ * 20100507   312131 mahutch@ca.ibm.com - Mark Hutchinson, ws performance test JUnits can have inconsistent results due to background jobs running
  *******************************************************************************/
 package org.eclipse.jst.ws.tests.axis.tomcat.v50.perfmsr;
 
@@ -29,6 +30,7 @@ import org.eclipse.jst.ws.internal.common.J2EEUtils;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.jst.ws.tests.axis.tomcat.v50.WSWizardTomcat50Test;
 import org.eclipse.jst.ws.tests.performance.util.PerformanceJUnitUtils;
+import org.eclipse.jst.ws.tests.performance.util.PerformanceJobUtil;
 import org.eclipse.jst.ws.tests.unittest.WSJUnitConstants;
 import org.eclipse.jst.ws.tests.util.JUnitUtils;
 import org.eclipse.jst.ws.tests.util.ScenarioConstants;
@@ -95,6 +97,7 @@ public class PerfmsrClientAxisTC50 extends WSWizardTomcat50Test {
    */
 	public void testClientAxisTC50() throws Exception
 	{	
+		PerformanceJobUtil.waitForStartupJobs();
 	  	IStatus[] status;
 	  	
 		JUnitUtils.enableProxyGeneration(true);
