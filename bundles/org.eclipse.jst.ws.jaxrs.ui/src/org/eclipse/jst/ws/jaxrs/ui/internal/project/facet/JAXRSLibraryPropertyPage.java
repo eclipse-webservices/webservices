@@ -16,6 +16,7 @@
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100512   311032 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Property page- SWT exception when removing facet
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -188,17 +189,19 @@ implements IJAXRSFacetInstallDataModelProperties
   public boolean performOk()
   {
 	    LibraryInstallDelegate installDelegate = super.getLibraryInstallDelegate();
-	    if ( installDelegate != null ) {
-	    	ILibraryProvider libraryProvider = installDelegate.getLibraryProvider();
-	    	if (libraryProvider != null) {
-	    		String id = libraryProvider.getId();
-	    		if (!initialInstallDelegateLibraryProviderID.equals(id) || IJAXRSUIConstants.USER_LIBRARY_ID.equals(id)) {
-	    			// This will update the libraries by calling the library provider delegate
-	    			  super.performOk();
-	    		}
-	    	}
-	    }
-
+	    if (installDelegate == null)
+	    	//if null user has uninstalled the facet, no reason to update the project properties
+	    	return true;
+		ILibraryProvider libraryProvider = installDelegate.getLibraryProvider();
+		if (libraryProvider != null) {
+			String id = libraryProvider.getId();
+			if (!initialInstallDelegateLibraryProviderID.equals(id)
+					|| IJAXRSUIConstants.USER_LIBRARY_ID.equals(id)) {
+				// This will update the libraries by calling the library
+				// provider delegate
+				super.performOk();
+			}
+		}
 	  
     // Update the servlet properties
 	if (doesDDFileExist(getProject(), webXMLPath)) {
