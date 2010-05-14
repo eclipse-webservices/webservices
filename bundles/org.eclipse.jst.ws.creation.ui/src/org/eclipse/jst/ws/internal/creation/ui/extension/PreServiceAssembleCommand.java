@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 IBM Corporation and others.
+ * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
  * 20071220   213640 kathy@ca.ibm.com - Kathy Chan
  * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
  * 20090415   264683 danail.branekov@sap.com - Danail Branekov
+ * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -120,7 +121,7 @@ public class PreServiceAssembleCommand extends AbstractDataModelOperation
 
 		  //make sure the ear file has been created.
 		  
-		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)) {
+		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)  && context_.getScenario().getValue() == WebServiceScenario.BOTTOMUP) {
 			  IProject earProject = ResourcesPlugin.getWorkspace().getRoot().getProject(earProject_);
 			  addJavaProjectAsUtilityInModalCtx(initialProject_, earProject, monitor);
 		  }		 

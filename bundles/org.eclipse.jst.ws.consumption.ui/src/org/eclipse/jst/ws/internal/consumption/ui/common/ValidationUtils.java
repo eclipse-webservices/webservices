@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@
  * 20090121   261730 zhang@ca.ibm.com - Allan Zhang, WebService client runtime id return null
  * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
  * 20090401   269994 ericdp@ca.ibm.com - Eric D. Peters, NLS- Validation messages unclear when servers don't support runtime/project combo
+ * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -56,7 +57,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
-import org.eclipse.jst.j2ee.model.internal.validation.EARValidationMessageResourceHandler;
+import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
 import org.eclipse.jst.j2ee.webservice.internal.WebServiceConstants;
 import org.eclipse.jst.j2ee.webservice.wsdd.PortComponent;
 import org.eclipse.jst.j2ee.webservice.wsdd.WSDLPort;
@@ -516,6 +517,30 @@ public class ValidationUtils
    */
   public IStatus checkWarningStatus(int validationState, int scaleSetting, String serverId,
 			String serverInstanceId, boolean isClient) {
+	  return checkWarningStatus(validationState, scaleSetting, serverId, serverInstanceId, isClient, null, null, null);
+  }
+  
+  /**
+   * Returns IStatus resulting from checking for warnings. Used for validation of page 1 of the
+   * Web service/client wizards. 
+   * @param validationState one of VALIDATE_NONE, VALIDATE_ALL, VALIDATE_SERVER_RUNTIME_CHANGES, VALIDATE_PROJECT_CHANGES, VALIDATE_SCALE_CHANGES
+   * @param scaleSetting one of <BR/>
+   * ScenarioContext.WS_TEST<BR/>
+   * ScenarioContext.WS_START<BR/>
+   * ScenarioContext.WS_INSTALL<BR/>
+   * ScenarioContext.WS_DEPLOY<BR/>
+   * ScenarioContext.WS_ASSEMBLE<BR/>
+   * ScenarioContext.WS_DEVELOP<BR/>
+   * ScenarioContext.WS_NONE
+   * @param serverId server type id
+   * @param serverId server instance id
+   * @param isClient boolean <code>true</code> if the method is being called for client side validation, 
+   * <code>false</code> for service side validation.
+   * @return IStatus with severity IStatus.OK if no errors are present,
+   * IStatus with severity IStatus.WARNING otherwise.
+   */
+  public IStatus checkWarningStatus(int validationState, int scaleSetting, String serverId,
+			String serverInstanceId, boolean isClient, String projectName, IProject initialProject, String typeId) {
 		// Return a warning if there is no server selection and scale setting is
 		// anything beyond assemble.
 		if (validationState == VALIDATE_ALL || validationState == VALIDATE_SCALE_CHANGES
@@ -548,6 +573,11 @@ public class ValidationUtils
 				}
 
 			}
+		}
+		//return a warning in bottom up scenarios where the intial project will be converted into a java utility project
+		if (initialProject != null && projectName != null && !projectName.equals(initialProject.getName()) && !JavaEEProjectUtilities.isUtilityProject(initialProject) && FacetUtils.isJavaProject(initialProject) && 
+				(WebServiceRuntimeExtensionUtils2.getScenarioFromTypeId(typeId) == WebServiceScenario.BOTTOMUP)){ 			
+			return StatusUtils.warningStatus(NLS.bind(ConsumptionUIMessages.MSG_WARN_CONVERTED_TO_UTIL, initialProject.getName()));	
 		}
 
 		return Status.OK_STATUS;

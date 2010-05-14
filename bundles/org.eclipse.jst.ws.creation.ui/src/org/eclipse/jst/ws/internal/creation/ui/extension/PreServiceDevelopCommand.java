@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 IBM Corporation and others.
+ * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20080724   241275 pmoogk@ca.ibm.com - Peter Moogk, Validate WSDL before doing major Web service processing.
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090415   264683 danail.branekov@sap.com - Danail Branekov
+ * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.creation.ui.extension;
@@ -213,7 +214,7 @@ public class PreServiceDevelopCommand extends AbstractDataModelOperation
 		  }
 	  
 	  
-		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_)){
+		  if(initialProject_ != null && FacetUtils.isJavaProject(initialProject_) && scenarioInt == WebServiceScenario.BOTTOMUP){
 			  try{
 				addJavaProjectAsUtilityInModalCtx(initialProject_, project, monitor);
 			  } catch (CoreException ce){

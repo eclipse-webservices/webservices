@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,6 +63,7 @@
  * 20090302   242462 ericdp@ca.ibm.com - Eric D. Peters, Save Web services wizard settings
  * 20090313   268567 ericdp@ca.ibm.com - Eric D. Peters, persisted wizard settings gone unless launching on object
  * 20090326   269097 kchong@ca.ibm.com - Keith Chong, [Accessibility] Web services wizard dialog should be selected after canceling the Browse for class dialog
+ * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets;
 
@@ -1281,7 +1282,7 @@ private void handleTypeChange()
 		// 1. Check for warnings on the service side
 		int scaleSetting = getServiceGeneration();
 		String serverId = getServiceTypeRuntimeServer().getServerId();
-		IStatus serviceWarningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, getServiceTypeRuntimeServer().getServerInstanceId(), false);
+		IStatus serviceWarningStatus = valUtils.checkWarningStatus(validationState_, scaleSetting, serverId, getServiceTypeRuntimeServer().getServerInstanceId(), false, getServiceProjectName(), initialProject_, getServiceTypeRuntimeServer().getTypeId());
 		if (serviceWarningStatus.getSeverity() == IStatus.WARNING) {
 			return serviceWarningStatus;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@
  * 20080325   184761 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080416   215084 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080425   221232 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui;
 
@@ -401,6 +402,7 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_ERROR_MODULE_DEPENDENCY;
     public static String MSG_INFO_WSDL_OPERATION_TIMED_OUT;
     public static String MSG_SERVER_NOT_FOUND_WARNING;
+    public static String MSG_WARN_CONVERTED_TO_UTIL;
 
 
 	static {
