@@ -12,7 +12,7 @@
 <h2>CXF Web service client Ant task properties file reference</h2>
 
 <div><p>The <kbd class="userinput">cxf_client.properties</kbd> file is used
-to pass data to the Web services Ant tasks when creating an CXF Web service
+to pass data to the Web services Ant tasks when creating a CXF Web service
 client. This file shows the available options.</p>
 
 <div class="section"><h4 class="sectiontitle">Parameters</h4><dl>
@@ -86,6 +86,69 @@ Web service or a Web service client.</dd>
     properties files.  For example <samp class="codeph">http://someNamespace=somePackage</samp> should
     be <samp class="codeph">http\://someNamespace=somePackage</samp>.  Otherwise, the colon
     (:) would be treated as delimiter resulting in trying to map <samp class="codeph">http</samp> to <samp class="codeph">//someNamespace=somePackage</samp>.</dd>
+
+    <h3>XJC Args: Specify the arguments to be passed directly to the XJC</h3>
+
+    <dt class="dlterm">xjc_dv</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    fields will be initialised with their default values.</dd>
+
+    <dt class="dlterm">xjc_ts</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    a toString() method will be added to generated classes.</dd>
+
+    <dt class="dlterm">xjc_ts_multi</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    toString() method will produce multi line output.</dd>
+
+    <dt class="dlterm">xjc_ts_simple</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    toString() method will produce single line terse output.</dd>
+
+    <dt class="dlterm">xjc_locator</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp> the
+    source location support for generated code will be enabled.</dd>
+
+    <dt class="dlterm">xjc_sync_methods</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    accessor methods will be generated with the 'synchronized' keyword.</dd>
+
+    <dt class="dlterm">xjc_mark_generated</dt>
+    
+    <dd><span class="synph"> Options: <samp class="codeph">true</samp>
+    <samp class="codeph">false</samp></span></dd>
+
+    <dd class="ddexpand">If <samp class="codeph">true</samp>
+    @Generated annotations will be added to the generated code.</dd>
+
+    <dt class="dlterm">Bindings</dt>
+
+    <dd>Binding Files. Comma delimited string of absolute paths in the 
+    local file system of JAXWS or JAXB binding files.</dd>
 
 </dl>
 </body>
