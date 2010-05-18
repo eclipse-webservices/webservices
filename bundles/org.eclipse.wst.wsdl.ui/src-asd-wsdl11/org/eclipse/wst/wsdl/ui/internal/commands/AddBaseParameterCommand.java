@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.wst.sse.core.internal.format.IStructuredFormatProcessor;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Fault;
@@ -26,6 +28,7 @@ import org.eclipse.wst.wsdl.Output;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.wst.wsdl.PortType;
 import org.eclipse.wst.wsdl.WSDLElement;
+import org.eclipse.wst.wsdl.ui.internal.WSDLEditorPlugin;
 import org.eclipse.wst.wsdl.ui.internal.util.ComponentReferenceUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.NameUtil;
 import org.eclipse.wst.wsdl.ui.internal.util.XSDComponentHelper;
@@ -58,7 +61,17 @@ public abstract class AddBaseParameterCommand {
 	protected String newXSDElementName;
 	protected String newWSDLMessageName;
 	protected String newWSDLPartName;
-	
+    
+    /**
+     * The ID of the preference used to control the default part name.
+     */
+    private static final String DEFAULT_PARTNAME_PREFERENCE = "AddBaseParameterCommandDefaultPartname"; //$NON-NLS-1$
+
+    /**
+     * The default part name used when creating a message.
+     */
+    private static final String DEFAULT_PARTNAME = "parameters"; //$NON-NLS-1$
+    
 	public abstract void run();
 	public abstract MessageReference getMessageReference();
 	
@@ -249,7 +262,19 @@ public abstract class AddBaseParameterCommand {
 	}
 	
 	protected String getDocLitWrappedPartName() {
-		return "parameters"; //$NON-NLS-1$
+
+	    // According to the doc / lit wrapped authoring pattern, the name
+	    // of the only part in the message should be parameters. However, this
+	    // is causing some grief with other vendor tools in certain narrow scenarios.
+	    // This customization provides adopters with the ability to override the 
+	    // default value through the product customization file.
+	    // See https://bugs.eclipse.org/bugs/show_bug.cgi?id=281995
+	    
+	    IPreferencesService service = Platform.getPreferencesService();
+		String name = service.getString(WSDLEditorPlugin.PLUGIN_ID,
+				DEFAULT_PARTNAME_PREFERENCE,
+				DEFAULT_PARTNAME, null);
+		return name;
 	}
 
 	protected XSDElementDeclaration createXSDObjects(Part part) {
