@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-The input element is referencing an undefined message 'InvalidInput'. Check that the message name and namespace are correct and that the message has been defined. [17, 47]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
