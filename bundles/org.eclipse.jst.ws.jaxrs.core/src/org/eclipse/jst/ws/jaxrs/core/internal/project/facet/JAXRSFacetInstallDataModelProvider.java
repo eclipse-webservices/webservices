@@ -14,6 +14,7 @@
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100407   308401 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet wizard page - Shared-library option should be disabled
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -118,8 +119,11 @@ public class JAXRSFacetInstallDataModelProvider extends
 		if (name.equals(LIBRARY_PROVIDER_DELEGATE)) {
 			return ((LibraryInstallDelegate) getProperty(LIBRARY_PROVIDER_DELEGATE))
 					.validate();
-		} else if (name.equals(SERVLET_NAME)) {
-			return validateServletName(getStringProperty(SERVLET_NAME));
+		} else if (name.equals(SERVLET_NAME) || name.equals(SERVLET_CLASSNAME) || name.equals(UPDATEDD)) {
+			if (this.getBooleanProperty(IJAXRSFacetInstallDataModelProperties.UPDATEDD))
+				return validateServletInfo(getStringProperty(SERVLET_NAME), getStringProperty(SERVLET_CLASSNAME));
+			else 
+				return super.validate(name);
 		}
 		return super.validate(name);
 	}
@@ -173,9 +177,13 @@ public class JAXRSFacetInstallDataModelProvider extends
 		return new Status(IStatus.ERROR, JAXRSCorePlugin.PLUGIN_ID, msg);
 	}
 
-	private IStatus validateServletName(String servletName) {
+	private IStatus validateServletInfo(String servletName, String servletClassName) {
 		if (servletName == null || servletName.trim().length() == 0) {
 			errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletName;
+			return createErrorStatus(errorMessage);
+		}
+		if (servletClassName == null || servletClassName.trim().length() == 0) {
+			errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletClassName;
 			return createErrorStatus(errorMessage);
 		}
 

@@ -17,6 +17,7 @@
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  * 20100512   311032 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Property page- SWT exception when removing facet
+ * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -28,8 +29,10 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
@@ -39,14 +42,18 @@ import org.eclipse.jst.javaee.web.Servlet;
 import org.eclipse.jst.javaee.web.ServletMapping;
 import org.eclipse.jst.javaee.web.WebApp;
 import org.eclipse.jst.ws.jaxrs.core.internal.IJAXRSCoreConstants;
+import org.eclipse.jst.ws.jaxrs.core.internal.Messages;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.IJAXRSFacetInstallDataModelProperties;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJ2EEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSJEEUtils;
 import org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUtils;
 import org.eclipse.jst.ws.jaxrs.ui.internal.IJAXRSUIConstants;
+import org.eclipse.jst.ws.jaxrs.ui.internal.JAXRSUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -97,6 +104,18 @@ implements IJAXRSFacetInstallDataModelProperties
     	this.webAppObj = provider.getModelObject();
 	if (doesDDFileExist(getProject(), this.webXMLPath)) {
 	    servletInfoGroup = new ServletInformationGroup((Composite) c, SWT.NONE);
+			servletInfoGroup.txtJAXRSServletName.addListener(SWT.Modify,
+					new Listener() {
+						public void handleEvent(Event arg0) {
+							updateValidation();
+						}
+					});
+			servletInfoGroup.txtJAXRSServletClassName.addListener(SWT.Modify,
+					new Listener() {
+						public void handleEvent(Event arg0) {
+							updateValidation();
+						}
+					});
 	    initializeValues();
 	}
     return c;
@@ -234,4 +253,29 @@ implements IJAXRSFacetInstallDataModelProperties
 		IPath modulePath = component.getRootFolder().getWorkspaceRelativePath();
 		return modulePath;
   }
+	private IStatus validateServletInfo(String servletName, String ServletClassName) {
+		if (servletName == null || servletName.trim().length() == 0) {
+			String errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletName;
+			return createErrorStatus(errorMessage);
+		}
+		if (ServletClassName == null || ServletClassName.trim().length() == 0) {
+			String errorMessage = Messages.JAXRSFacetInstallDataModelProvider_ValidateServletClassName;
+			return createErrorStatus(errorMessage);
+		}
+		return Status.OK_STATUS;
+	}
+	private IStatus createErrorStatus(String msg) {
+		return new Status(IStatus.ERROR, JAXRSUIPlugin.PLUGIN_ID, msg);
+	}
+	protected IStatus performValidation() {
+		IStatus superValidation = super.performValidation();
+		if (superValidation.isOK())
+			if (doesDDFileExist(getProject(), this.webXMLPath))
+				return validateServletInfo(servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText());
+			else
+				return Status.OK_STATUS;
+		else {
+			return superValidation;
+		}
+	}
 }

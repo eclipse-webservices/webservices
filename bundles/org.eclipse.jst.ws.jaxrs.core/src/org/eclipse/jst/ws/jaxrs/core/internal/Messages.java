@@ -1,5 +1,3 @@
-package org.eclipse.jst.ws.jaxrs.core.internal;
-
 /*******************************************************************************
  * Copyright (c) 2009, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -13,7 +11,9 @@ package org.eclipse.jst.ws.jaxrs.core.internal;
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  *******************************************************************************/
+package org.eclipse.jst.ws.jaxrs.core.internal;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -85,6 +85,10 @@ public class Messages extends NLS {
 	 * see messages.properties
 	 */
 	public static String JAXRSFacetInstallDataModelProvider_ValidateServletName;
+	/**
+	 * see messages.properties
+	 */
+	public static String JAXRSFacetInstallDataModelProvider_ValidateServletClassName;
 	/**
 	 * see messages.properties
 	 */
