@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta name="copyright" content="Copyright (c) 2010 Shane Clarke and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Shane Clarke - initial API and implementation">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Using the Ant Tasks at the Command Line</title>
+	<link href="../book.css" rel="stylesheet" charset="ISO-8859-1" type="text/css">
+	<script type="text/javascript" language="JavaScript" src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"></script>
+</head>
+
+<body lang="EN-US">
+<h2>Using the Ant Tasks at the Command Line</h2>
+<h3>Prerequisites:</h3>
+<ol>
+    <li>Import the CXF Ant property file for the scenario being run into an Eclipse workspace before running the task from the command line
+    by selecting <a class="command-link" href='javascript:executeCommand("org.eclipse.ui.newWizard(newWizardId=org.eclipse.wst.command.env.ui.AntFileImportWizard)")'>
+    <img src="PLUGINS_ROOT/org.eclipse.help/command_link.png" alt="Open the ant files wizard"><strong>File &gt; New &gt; Other... &gt; Web Services &gt; Ant Files</strong></a> from the top level menu.    
+    </li>
+    <li>Edit the CXF Ant property file and set the <samp class="codeph">scenarioType</samp> and
+    <samp class="codeph">initialSelection</samp> parameters:
+        <ul>
+            <li><samp class="codeph">cxf_tdjava.properties</samp>. Ensure the scenarioType parameter is set to service and the initialSelection points to the location of your WSDL file.
+            See <a href="../tasks/cxf_ant_td_prop_ref.html">Top-down CXF Web service Ant task properties file reference</a> for additional information on setting these parameters.</li>
+            <li><samp class="codeph">cxf_bujava.properties</samp>. Ensure the scenarioType parameter is set to service and the initialSelection points to the location of your Java bean.
+            See <a href="../tasks/cxf_ant_bu_prop_ref.html">Bottom-up CXF Web service Ant task properties file reference</a> for additional information on setting these parameters.</li>
+            <li><samp class="codeph">cxf_client.properties</samp>. Ensure the scenarioType parameter is set to client and the initialSelection points to the location of your WSDL file.
+            See <a href="../tasks/cxf_ant_client_prop_ref.html">CXF Web service client Ant task properties file reference</a> for additional information on setting these parameters.</li>
+        </ul>
+    </li>
+</ol>
+To invoke the Ant tasks from the command line complete the following steps:
+<ol>
+    <li>Navigate to the plugins directory of your WTP installation and extract the contents of the 
+    <b>org.eclipse.wst.command.env</b> plug-in.</li>
+    <li>In the extracted plug-in go to the <b>ant</b> folder. The following files should exist there:
+        <ul>
+            <li><b>wsant.bat</b></li>
+            <li><b>wsgen.xml</b></li>
+        </ul>
+    </li>
+    <li>Copy the required CXF Ant property file that was imported in the prerequisites into the <b>ant</b> folder.</li>
+    <li>Edit the <b>wsgen.xml</b> file to point to the CXF Ant property file.</li>
+    <li>Edit the <b>wsant.bat</b> file and set the following local environment variables to reflect your system configuration:
+        <ul>
+            <li><samp class="codeph">JAVAEXE</samp> the location of a 1.5 or higher JDK.</li>
+            <li><samp class="codeph">INSTALL_DIRECTORY</samp> the Eclipse install directory.</li>
+            <li><samp class="codeph">LAUNCHER_JAR</samp> the location of the Eclipse Equinox Launcher jar.</li>
+            <li><samp class="codeph">WORKSPACE</samp> the location of the workspace that contains the Dynamic Web projects being used.</li>
+        </ul>
+    </li>
+    <li>To run the Ant task open a command line, navigate to the <b>ant</b> folder and type <i>wsant</i></li>
+    <li>Check the <b>wsgen.txt</b> file for output after the generation has completed.</li>
+    <li>Navigate to the Dynamic Web project in the file system or refresh the project in Eclipse to find the generated artifacts.</li>
+</ol>
+
+</body>
+</html>

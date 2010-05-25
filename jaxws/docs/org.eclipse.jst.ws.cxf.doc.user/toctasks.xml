@@ -24,6 +24,8 @@
           <topic href="tasks/cxf_ant_client_prop_ref.html" label="CXF Web service client Ant task properties file reference">
           </topic>
        </topic>
+       <topic href="tasks/cxf_ant_cmd.html" label="Using the Ant Tasks at the Command Line">
+       </topic>
     </topic>
     <topic href="tasks/create_jaxws_handler.html" label="Create a JAX-WS Handler">
     </topic>
