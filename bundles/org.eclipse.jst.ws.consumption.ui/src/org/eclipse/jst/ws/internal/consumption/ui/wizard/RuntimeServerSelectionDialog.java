@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@
  * 20080428   224726 pmoogk@ca.ibm.com - Peter Moogk
  * 20080527   234225 kathy@ca.ibm.com - Kathy Chan
  * 20090226	  266063 zina@ca.ibm.com - Zina Mostafia Error message truncated in the Service Deployment configuration dialog 
+ * 20100526   300725 ericdp@ca.ibm.com - Eric D. Peters, Web service wizard Service Deployment Configuration view options corrupt each other
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wizard;
 
@@ -423,9 +424,12 @@ public class RuntimeServerSelectionDialog extends TitleAreaDialog {
 		gl.numColumns = 2;
 		gl.makeColumnsEqualWidth = true;
 		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.heightHint = 200;
 		primaryGroup_.setLayout(gl);
 		primaryGroup_.setLayoutData(gd);
 		runtimesGroup_.moveAbove(serversGroup_);
+		GridData gd2 = (GridData) runtimesGroup_.getLayoutData();
+		gd2.heightHint = 200;
 		primaryGroup_.layout();
 
 		// TODO: Show all servers and runtimes from the type id
