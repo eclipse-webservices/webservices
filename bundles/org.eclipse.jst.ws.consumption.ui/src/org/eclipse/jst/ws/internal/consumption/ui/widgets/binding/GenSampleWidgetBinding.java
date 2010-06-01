@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@
  * 20080616   237298 gilberta@ca.ibm.com - Gilbert Andrews
  * 20080619   237797 gilberta@ca.ibm.com - Gilbert Andrews
  * 20090324   247535 mahutch@ca.ibm.com - Mark Hutchinson, Wrong server instance(s) is chosen during JAX-RPC sample generation
+ * 20100528   314934 mahutch@ca.ibm.com - Mark Hutchinson, Pressing "Launch" on service test page causes test client not to launch on "Client test" page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.binding;
 
@@ -459,7 +460,7 @@ public class GenSampleWidgetBinding implements CommandWidgetBinding
 	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", TestDefaultingFragment.class);
 	  dataRegistry.addMapping(InitializeProxyCommand.class, "CanGenerateProxy", ClientTestFragment.class);
 	  dataRegistry.addMapping(InitializeProxyCommand.class, "CanRunTestClient", ClientTestDelegateCommand.class);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", FinishTestFragment.class);
+	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", FinishTestFragment.class, "CanGenerateProxy", null);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "GenerateProxy", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ClientExtensionOutputCommand.class, "RunTestClient", ClientTestDelegateCommand.class);
 	  dataRegistry.addMapping(ClientExtensionOutputCommand.class, "ServerInstanceId", FinishDefaultCommand.class);

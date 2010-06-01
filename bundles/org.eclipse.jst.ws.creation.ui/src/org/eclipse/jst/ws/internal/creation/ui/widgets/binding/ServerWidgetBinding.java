@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@
  * 20080506   227848 makandre@ca.ibm.com - Andrew Mak, Disabled "Run on Server" checkbox is in checked state
  * 20080729   241275 ericdp@ca.ibm.com - Eric D. Peters, No Validation error generating Web Service client if dialog hidden
  * 20090724   284582 mahutch@ca.ibm.com - Mark Hutchinson, WS Test facility selection ignored when wizard completes. Default always chosen
+ * 20100528   314934 mahutch@ca.ibm.com - Mark Hutchinson, Pressing "Launch" on service test page causes test client not to launch on "Client test" page
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.binding;
 
@@ -601,7 +602,7 @@ public class ServerWidgetBinding implements CommandWidgetBinding
    	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", TestDefaultingFragment.class, "GenerateProxy", null);
    	  dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "ClientRuntimeId", TestDefaultingFragment.class);
       dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", ClientTestFragment.class, "GenerateProxy", null);
-      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", FinishTestFragment.class, "GenerateProxy", null);
+      dataRegistry.addMapping(ClientExtensionDefaultingCommand.class, "TestService", FinishTestFragment.class, "CanGenerateProxy", null);
 
       dataRegistry.addMapping(ServerExtensionDefaultingCommand.class, "ServerProject", ClientTestDelegateCommand.class);
       dataRegistry.addMapping(ServerExtensionOutputCommand.class, "WsdlURI", ClientTestDelegateCommand.class);
