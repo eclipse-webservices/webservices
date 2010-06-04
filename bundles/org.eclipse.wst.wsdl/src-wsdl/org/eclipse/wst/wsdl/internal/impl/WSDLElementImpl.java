@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1032,9 +1032,13 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     {
       int index = prefixedName.indexOf(":"); ////$NON-NLS-1$
       String prefix = (index == -1) ? "" : prefixedName.substring(0, index); //$NON-NLS-1$
-      String namespace = definition.getNamespace(prefix);
+      String namespace = null;
 
-      if (namespace == null && element != null)
+      if (element == null)
+      {
+        namespace = definition.getNamespace(prefix);
+      }
+      else
       {
         // Try to find a locally defined namespace prefix.
 
@@ -1067,6 +1071,11 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
     if (node == null || prefix == null)
     {
       return null;
+    }
+
+    if (prefix.length() == 0)
+    {
+      prefix = "xmlns"; //$NON-NLS-1$
     }
 
     Node currentNode = node;
