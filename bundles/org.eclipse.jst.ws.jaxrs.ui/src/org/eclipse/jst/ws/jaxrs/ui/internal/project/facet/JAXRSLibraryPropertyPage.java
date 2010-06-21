@@ -18,6 +18,7 @@
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  * 20100512   311032 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Property page- SWT exception when removing facet
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
+ * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
@@ -134,21 +135,32 @@ implements IJAXRSFacetInstallDataModelProperties
 	List<ServletMapping> servletMappings = new ArrayList<ServletMapping>();
     if (webAppObj != null)
     {	
+    	servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
+    	//set defaults- in the rare case we do not find the servlet we will create another servlet entry
     	String servletName = JAXRSUtils.JAXRS_DEFAULT_SERVLET_NAME; 
-    	String servletClass = ""; //$NON-NLS-1$
+    	String servletClass = JAXRSUtils.JAXRS_SERVLET_CLASS; 
+    	//get id ofthe library provider being used
+	    LibraryInstallDelegate installDelegate = super.getLibraryInstallDelegate();
+		ILibraryProvider libraryProvider = installDelegate.getLibraryProvider();
+		String id = "";
+		if (libraryProvider != null) 
+			id = libraryProvider.getId();
 		if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
 			WebApp webApp = (WebApp) webAppObj;
-			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp);
+			Servlet servlet = JAXRSJEEUtils.findJAXRSServlet(webApp, id);
 			if (servlet != null) {
 				servletMappings = webApp.getServletMappings();
 				servletName = (servlet.getServletName() == null)  ?  servletName : servlet.getServletName();
 				servletClass =(servlet.getServletClass() == null) ? servletClass : servlet.getServletClass();
+			} else {
+				//we did not find the servlet entry, set default value
+				servletInfoGroup.lstJAXRSServletURLPatterns.add(JAXRSUtils.JAXRS_DEFAULT_URL_MAPPING);
 			}
 		} else {
 			// 2.3 or 2.4 web app
 			org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) webAppObj;
 			org.eclipse.jst.j2ee.webapplication.Servlet servlet = JAXRSJ2EEUtils
-					.findJAXRSServlet(webApp);
+					.findJAXRSServlet(webApp, id);
 			if (servlet != null) {
 				this.j2eeServlet = servlet;
 				servletMappings = webApp.getServletMappings();
@@ -156,6 +168,9 @@ implements IJAXRSFacetInstallDataModelProperties
 				if (servlet.getServletClass() != null) {
 					servletClass =(servlet.getServletClass().getQualifiedName() == null) ? servletClass : servlet.getServletClass().getQualifiedName();
 				}
+			} else {
+				//we did not find the servlet entry, set default value
+				servletInfoGroup.lstJAXRSServletURLPatterns.add(JAXRSUtils.JAXRS_DEFAULT_URL_MAPPING);
 			}
 
 		}
@@ -163,7 +178,6 @@ implements IJAXRSFacetInstallDataModelProperties
         servletInfoGroup.txtJAXRSServletClassName.setText(servletClass);
       // Find the servletMapping that corresponds to the servletName
         if (JAXRSJEEUtils.isWebApp25or30(webAppObj)) {
-            servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
 
       for (Iterator<ServletMapping> i = servletMappings.iterator(); i.hasNext();)
       {
@@ -183,7 +197,6 @@ implements IJAXRSFacetInstallDataModelProperties
         }
       }
     } else {
-    	servletInfoGroup.lstJAXRSServletURLPatterns.removeAll();
         for (Iterator<ServletMapping> i = servletMappings.iterator(); i.hasNext();)
         {
           Object o = i.next();
@@ -234,7 +247,7 @@ implements IJAXRSFacetInstallDataModelProperties
     List<String> listOfMappings = Arrays.asList(servletInfoGroup.lstJAXRSServletURLPatterns.getItems());
     if (JAXRSJEEUtils.isWebApp25or30(webAppObj))
     {
-      provider.modify(new UpdateWebXMLForJavaEE(project, servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
+      provider.modify(new UpdateWebXMLForJavaEE(project, initialInstallDelegateLibraryProviderID , servletInfoGroup.txtJAXRSServletName.getText(), servletInfoGroup.txtJAXRSServletClassName.getText(), listOfMappings),
           IModelProvider.FORCESAVE);
     }
     else

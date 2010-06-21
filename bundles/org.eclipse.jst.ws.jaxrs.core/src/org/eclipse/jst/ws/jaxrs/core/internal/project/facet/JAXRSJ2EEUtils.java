@@ -13,6 +13,7 @@
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
+ * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -60,16 +61,10 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 			final IProject project) {
 		return WebArtifactEdit.getWebArtifactEditForRead(project);
 	}
-
-	/**
-	 * @param webApp
-	 *            as Object
-	 * @return Servlet - the JAXRS Servlet for the specified WebApp or null if
-	 *         not present
-	 */
 	@SuppressWarnings("unchecked")
-	public static Servlet findJAXRSServlet(final Object webApp) {
+	private static Servlet findJAXRSServletUsingLibraryProviderID(final Object webApp, String selectedLibraryProviderID) {
 		Iterator<Servlet> it = null;
+		Servlet toReturn = null;
 		if (webApp == null)
 			return null;
 		else if (webApp instanceof WebApp)
@@ -98,19 +93,36 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 			if (servlet != null && servlet.getWebType() != null) {
 
 				if (servlet.getWebType().isServletType()) {
-					if (((ServletType) servlet.getWebType()).getClassName() != null
-							&& ( ((ServletType) servlet.getWebType())
-									.getClassName().trim().equals(
-											JAXRS_SERVLET_CLASS) || ((ServletType) servlet.getWebType())
-											.getClassName().trim().equals(
-													getSavedServletName())) ) {
+					if (servlet.getServletName() != null
+							&& (servlet.getServletName().trim().equals(
+									getSavedservletName()) || servlet
+									.getServletName().trim().equals(
+											JAXRS_DEFAULT_SERVLET_NAME))) {
 						return servlet;
 					}
+
+					if (((ServletType) servlet.getWebType()).getClassName() != null
+							&& ((ServletType) servlet.getWebType()).getClassName().trim().equals(
+									getSavedServletClassName(selectedLibraryProviderID))) {
+						return servlet;
+					}
+					
+					if (((ServletType) servlet.getWebType()).getClassName() != null
+							&& facetKnowsServletClassName(((ServletType) servlet.getWebType()).getClassName().trim()))
+						return servlet;
+					if (((ServletType) servlet.getWebType()).getClassName() != null
+							&& ((ServletType) servlet.getWebType()).getClassName().trim().equals(JAXRS_SERVLET_CLASS)) {
+						if (toReturn == null)
+							//found a servlet with empty servlet class, return that if find nothing else 
+							toReturn = servlet;
+
+					}
+
 				} else if (servlet.getWebType().isJspType()) {
 					if (((JSPType) servlet.getWebType()).getJspFile() != null
 							&& ( ((JSPType) servlet.getWebType()).getJspFile()
 									.trim().equals(JAXRS_SERVLET_CLASS) || ((JSPType) servlet.getWebType()).getJspFile()
-									.trim().equals(getSavedServletName())) ) {
+									.trim().equals(getSavedservletName())) ) {
 						return servlet;
 					}
 				}
@@ -119,7 +131,21 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 
 		// if we get to here then we have finished the loop
 		// without finding the servlet we're looking for
-		return null;
+		return toReturn;
+
+	}
+	public static Servlet findJAXRSServlet(final Object webApp, String selectedLibraryProviderID) {
+		return findJAXRSServletUsingLibraryProviderID(webApp, selectedLibraryProviderID);
+	}
+	/**
+	 * @param webApp
+	 *            as Object
+	 * @return Servlet - the JAXRS Servlet for the specified WebApp or null if
+	 *         not present
+	 */
+	@SuppressWarnings("unchecked")
+	public static Servlet findJAXRSServlet(final Object webApp) {
+		return findJAXRSServletUsingLibraryProviderID(webApp, null);
 	}
 
 	/**
@@ -169,6 +195,26 @@ public class JAXRSJ2EEUtils extends JAXRSUtils {
 			servletType.setClassName(className);
 			servlet.setWebType(servletType);
 			servlet.setLoadOnStartup(Integer.valueOf(1));
+			Description jaxrsToolsDescription = null;
+			Description next = null;
+			List<Description> descriptions = servlet.getDescriptions();
+			if (descriptions != null) {
+				Iterator<Description> it = descriptions.iterator();
+				while (it.hasNext()) {
+					next = it.next();
+					if (JAXRS_SERVLET_IDENTIFIER_DESCRIPTION.equals(next
+							.getValue())) {
+						jaxrsToolsDescription = next;
+						break;
+					}
+				}
+
+			}
+			if (jaxrsToolsDescription == null) {
+				// add the description for our JAX-RS tools
+				servlet.setDescription(JAXRS_SERVLET_IDENTIFIER_DESCRIPTION);
+			}
+
 		}
 		return servlet;
 	}

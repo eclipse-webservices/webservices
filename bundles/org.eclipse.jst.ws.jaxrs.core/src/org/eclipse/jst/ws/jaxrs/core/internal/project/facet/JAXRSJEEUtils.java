@@ -15,6 +15,7 @@
  * 20100319   306594 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet install fails for Web 2.3 & 2.4
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
+ * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -39,6 +40,9 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  */
 public class JAXRSJEEUtils extends JAXRSUtils {
 
+	public static Servlet findJAXRSServlet(final WebApp webApp, String selectedLibraryProviderID) {
+		return findJAXRSServletUsingLibraryProviderID(webApp, selectedLibraryProviderID);
+	}
 	/**
 	 * @param webApp
 	 * @return Servlet - the JAXRS Servlet for the specified WebApp or null if
@@ -46,9 +50,11 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Servlet findJAXRSServlet(final WebApp webApp) {
-
+		return findJAXRSServletUsingLibraryProviderID(webApp, null);
+	}
+	private static Servlet findJAXRSServletUsingLibraryProviderID(final WebApp webApp, String selectedLibraryProviderID) {
 		Iterator<Servlet> it = webApp.getServlets().iterator();
-
+		Servlet toReturn = null;
 		while (it.hasNext()) {
 			Servlet servlet = it.next();
 		    Iterator <Description> descIter = servlet.getDescriptions().iterator();
@@ -61,18 +67,35 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 		    	   return servlet;
 		       }
 		    }
-			if (servlet.getServletClass() != null
-					&& (servlet.getServletClass().trim().equals(
-							getSavedServletClassName()) || servlet
-							.getServletClass().trim().equals(
-									JAXRS_SERVLET_CLASS))) {
+			if (servlet.getServletName() != null
+					&& (servlet.getServletName().trim().equals(
+							getSavedservletName()) || servlet
+							.getServletName().trim().equals(
+									JAXRS_DEFAULT_SERVLET_NAME))) {
 				return servlet;
 			}
+
+			if (servlet.getServletClass() != null
+					&& servlet.getServletClass().trim().equals(
+							getSavedServletClassName(selectedLibraryProviderID))) {
+				return servlet;
+			}
+			
+			if (servlet.getServletClass() != null
+					&& facetKnowsServletClassName(servlet.getServletClass().trim()))
+				return servlet;
+			if (servlet.getServletClass() != null
+					&& servlet.getServletClass().trim().equals(JAXRS_SERVLET_CLASS)) {
+				if (toReturn == null)
+					//found a servlet with empty servlet class, return that if find nothing else 
+					toReturn = servlet;
+			}
+
 		}
 
 		// if we get to here then we have finished the loop
 		// without finding the servlet we're looking for
-		return null;
+		return toReturn;
 	}
 
 	private static String getSavedServletClassName() {
@@ -131,6 +154,29 @@ public class JAXRSJEEUtils extends JAXRSUtils {
 			servlet.setServletName(displayName);
 			servlet.setServletClass(className);
 			servlet.setLoadOnStartup(Integer.valueOf(1));
+			Description jaxrsToolsDescription = null;
+			Description next = null;
+			List<Description> descriptions = servlet.getDescriptions();
+			if (descriptions != null) {
+				Iterator<Description> it = descriptions.iterator();
+				while (it.hasNext()) {
+					next = it.next();
+					if (JAXRS_SERVLET_IDENTIFIER_DESCRIPTION.equals(next
+							.getValue())) {
+						jaxrsToolsDescription = next;
+						break;
+					}
+				}
+
+			}
+			if (jaxrsToolsDescription == null) {
+				// add the description for our JAX-RS tools
+				Description description = JavaeeFactory.eINSTANCE
+						.createDescription();
+				description.setValue(JAXRS_SERVLET_IDENTIFIER_DESCRIPTION);
+				servlet.getDescriptions().add(description);
+			}
+		
 		}
 		return servlet;
 	}
