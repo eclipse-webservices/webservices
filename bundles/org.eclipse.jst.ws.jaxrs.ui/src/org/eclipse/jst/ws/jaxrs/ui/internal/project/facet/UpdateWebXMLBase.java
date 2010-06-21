@@ -13,8 +13,7 @@
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
-public abstract class UpdateWebXMLBase implements Runnable {
-
+public abstract class UpdateWebXMLBase implements Runnable
+{
 	public abstract void run();
-	
 }
