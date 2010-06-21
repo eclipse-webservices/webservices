@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
+ * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryproviderconfig;
 
@@ -91,7 +92,26 @@ public class JAXRSLibraryProviderUtil {
 
 		return false;
 	}
-	
+	public static boolean servletClassNameHasLibraryProvider(String servletClassName) {
+		if (servletClassName == null)
+			return false;
+
+		JAXRSLibraryProviderUtil.getInstance();
+		java.util.List<JAXRSLibraryProvider> libraryProviders = getLibraryProviders();
+
+		Iterator<JAXRSLibraryProvider> libraryProvidersIterator = libraryProviders
+				.iterator();
+		while (libraryProvidersIterator.hasNext()) {
+			JAXRSLibraryProvider thisLibraryProvider = libraryProvidersIterator
+					.next();
+			if (servletClassName.equals(thisLibraryProvider.getServletClassName())) {
+					return true;
+			}
+
+		}
+
+		return false;
+	}	
 	public static String getServletClassName(String libraryID) {
 		String toReturn = "";
 		if (libraryID == null || libraryID.length() == 0)

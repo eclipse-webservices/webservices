@@ -12,6 +12,7 @@
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100325   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100408   308565 kchong@ca.ibm.com - Keith Chong, JAX-RS: Servlet name and class not updated
+ * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -20,6 +21,7 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
 import org.eclipse.jst.ws.jaxrs.core.internal.JAXRSCorePlugin;
+import org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryproviderconfig.JAXRSLibraryProviderUtil;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
@@ -124,6 +126,31 @@ public abstract class JAXRSUtils {
 		}
 	}
 
+	static String getSavedServletClassName(String libraryProviderID) {
+		IDialogSettings jaxrsUISettings = JAXRSCorePlugin.getDefault()
+				.getJaxrsUISettings();
+		if (jaxrsUISettings != null) {
+			
+			String JAXRSUISettingsRoot = "org.eclipse.jst.ws.jaxrs.ui" + ".jaxrsFacetInstall"; //$NON-NLS-1$
+			IDialogSettings root = jaxrsUISettings
+					.getSection(JAXRSUISettingsRoot);
+
+			if (root != null) {
+				String toReturn = root.get(libraryProviderID + "servletClassname"); //$NON-NLS-1$
+				if (toReturn == null)
+					toReturn = root.get("servletClassname"); //$NON-NLS-1$
+				return toReturn;
+			}
+		}
+		return null;
+	}
+	static boolean facetKnowsServletClassName(String servletClassName) {
+		return JAXRSLibraryProviderUtil.servletClassNameHasLibraryProvider(servletClassName);
+	}
+	/** 
+	* @deprecated
+	* use org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSUtils.getSavedservletName()
+	*/
 	static String getSavedServletName() {
 		IDialogSettings jaxrsUISettings = JAXRSCorePlugin.getDefault()
 				.getJaxrsUISettings();
@@ -134,6 +161,20 @@ public abstract class JAXRSUtils {
 	
 			if (root != null)
 				return root.get("servletClassname");
+		}
+		return null;
+	}
+	
+	static String getSavedservletName() {
+		IDialogSettings jaxrsUISettings = JAXRSCorePlugin.getDefault()
+				.getJaxrsUISettings();
+		if (jaxrsUISettings != null) {
+			String JAXRSUISettingsRoot = "org.eclipse.jst.ws.jaxrs.ui" + ".jaxrsFacetInstall"; //$NON-NLS-1$
+			IDialogSettings root = jaxrsUISettings
+					.getSection(JAXRSUISettingsRoot);
+	
+			if (root != null)
+				return root.get("servletName"); //$NON-NLS-1$
 		}
 		return null;
 	}
