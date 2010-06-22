@@ -1,6 +1,6 @@
 <%
 /*******************************************************************************
- * Copyright (c) 2001, 2004 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * 20100414   309154 mahutch@ca.ibm.com - Mark Hutchinson, make session time out configurable
  *******************************************************************************/
 %>
 <%@ page contentType="text/html; charset=UTF-8" import="org.eclipse.wst.ws.internal.explorer.platform.perspective.*,
@@ -38,7 +39,7 @@
 	    application.setAttribute(sessionId,session);
     
 	    // Set Max inactivity time out value to 30mins.
-	    session.setMaxInactiveInterval(1800);
+	    session.setMaxInactiveInterval(controller.getSessionTimeoutInMinutes() * 60);
 	
 	    // LaunchOptionManager (below) handles most options,
 	    // but need to get state and install locations earlier,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2005 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,17 +7,21 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ * 20100414   309154 mahutch@ca.ibm.com - Mark Hutchinson, make session time out configurable
  *******************************************************************************/
 
 package org.eclipse.wst.ws.internal.explorer.platform.perspective;
 
 import javax.servlet.ServletContext;
+
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.ws.internal.explorer.platform.constants.ActionInputs;
 import org.eclipse.wst.ws.internal.explorer.platform.engine.ActionEngine;
 import org.eclipse.wst.ws.internal.explorer.platform.favorites.perspective.FavoritesPerspective;
 import org.eclipse.wst.ws.internal.explorer.platform.uddi.perspective.UDDIPerspective;
 import org.eclipse.wst.ws.internal.explorer.platform.wsdl.perspective.WSDLPerspective;
 import org.eclipse.wst.ws.internal.explorer.platform.wsil.perspective.WSILPerspective;
+import org.eclipse.wst.ws.internal.explorer.plugin.ExplorerPlugin;
 
 public class Controller extends MessageProvider
 {
@@ -220,5 +224,18 @@ public class Controller extends MessageProvider
   public final void dumpHistory()
   {
     history_.dump();
+  }
+  
+  public final int getSessionTimeoutInMinutes() {
+	  
+	  String property = System.getProperty("org.eclipse.wst.ws.exlorer.sessionTimeout");
+	  if (property!= null) {
+		  try {
+			  return Integer.parseInt(property);
+		  } catch (NumberFormatException e) {
+			  //do nothing, will check the preferences instead
+		  }
+	  }
+	  return Platform.getPreferencesService().getInt(ExplorerPlugin.ID,"sessionTimeout",30, null);
   }
 }
