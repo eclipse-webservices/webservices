@@ -13,6 +13,7 @@
  * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
  * 20100324   306937 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Properties page- NPE after pressing OK
  * 20100407   304749 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Facet: install fails when choosing <None> runtime
+ * 20100622   317306 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS Property page- RuntimeException when <None> runtime targeted
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
@@ -59,6 +60,7 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
     if (!onPropertiesPage(config)) {
       targetRuntimeID = config.getStringProperty(IJAXRSFacetInstallDataModelProperties.TARGETRUNTIME);
     } else  {
+      if (runtime != null) {
       org.eclipse.wst.server.core.IRuntime iruntime = FacetUtil.getRuntime(runtime);
       if (iruntime != null)
       {
@@ -67,6 +69,7 @@ public class JAXRSUserLibraryProviderInstallOperation extends WtpUserLibraryProv
         {
           targetRuntimeID = rtType.getId();
         }
+      }
       }
     }
 
