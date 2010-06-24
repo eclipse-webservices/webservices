@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 IBM Corporation and others.
+ * Copyright (c) 2006, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -335,6 +335,14 @@ public class BugFixesTest extends TestCase
       }
     });
 
+    suite.addTest(new BugFixesTest("LocalDefaultNamespace") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testSupportsLocalDefaultNamespace();
+      }
+    });
+    
     return suite;
   }
 
@@ -1968,4 +1976,57 @@ public class BugFixesTest extends TestCase
       fail();
     }      
   }
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=314929
+   */
+  public void testSupportsLocalDefaultNamespace()
+  {
+    Definition definition = null;
+
+    try
+    {
+      definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/LocalNamespace/LocalDefaultNamespace.wsdl"); //$NON-NLS-1$
+    }
+    catch (IOException e)
+    {
+      fail(e.getMessage());
+    }
+
+    String targetNamespace = "http://www.example.org/LocalDefaultNamespace"; //$NON-NLS-1$
+
+    // Check that the response message's part element is resolved OK.
+
+    QName responseMessageQName = new QName(targetNamespace, "TestResponseMessage"); //$NON-NLS-1$
+    javax.wsdl.Message responseMessage = definition.getMessage(responseMessageQName);
+
+    Part responsePart = (Part)responseMessage.getPart("parameters"); //$NON-NLS-1$
+
+    XSDElementDeclaration responseElementDeclaration = responsePart.getElementDeclaration();
+
+    assertNotNull(responseElementDeclaration);
+    assertNotNull(responseElementDeclaration.getContainer());
+
+    // Check that the request message's part element is resolved OK.
+
+    QName requestMessageQName = new QName(targetNamespace, "TestRequestMessage"); //$NON-NLS-1$
+    javax.wsdl.Message requestMessage = definition.getMessage(requestMessageQName);
+
+    Part requestPart = (Part)requestMessage.getPart("parameters"); //$NON-NLS-1$
+
+    XSDElementDeclaration requestElementDeclaration = requestPart.getElementDeclaration();
+
+    assertNotNull(requestElementDeclaration);
+
+    // Now to make sure the DOM is reconciled properly and uses the local namespace prefix, 
+    // let's try to change the part's element declaration. We'll use the response part element
+    // just because it is convenient.
+
+    requestPart.setElementDeclaration(responseElementDeclaration);
+
+    Element partElement = requestPart.getElement();
+    String elementAttributeValue = partElement.getAttribute(WSDLConstants.ELEMENT_ATTRIBUTE);
+
+    assertEquals(elementAttributeValue, responseElementDeclaration.getName());
+  }  
 }
