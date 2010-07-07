@@ -18,7 +18,6 @@
       %license
    </license>
 
-
    <includes
          id="org.eclipse.jst.ws.jaxws.feature"
          version="0.0.0"/>
@@ -31,6 +30,7 @@
          id="org.eclipse.jst.ws.jaxws.doc.isv"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
