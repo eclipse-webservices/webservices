@@ -53,7 +53,7 @@ public class ProjectAddingTests extends TestCase {
 		target.stopSynchronizing();
 	}
 	
-	//Bug #316376 Unit test failing intermittently
+	//FIXME Bug #316376 Unit test failing intermittently
 //	public void test_newWsProjectSynched() throws Exception
 //	{
 //		testPrj3 = new TestProject(new TestEjb3Project("TestEJBProject3").getProject());

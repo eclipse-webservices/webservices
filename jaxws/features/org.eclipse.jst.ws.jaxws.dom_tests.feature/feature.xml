@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jst.ws.jaxws.dom_tests.feature"
       label="%featureName"
-      version="1.0.0.qualifier"
+      version="1.0.1.qualifier"
       provider-name="%featureProvider"
       image="eclipse_update_120.jpg">
 
@@ -17,7 +17,6 @@
    <license url="%licenseURL">
       %license
    </license>
-
 
    <plugin
          id="org.eclipse.jst.ws.jaxws.dom.integration.tests"
