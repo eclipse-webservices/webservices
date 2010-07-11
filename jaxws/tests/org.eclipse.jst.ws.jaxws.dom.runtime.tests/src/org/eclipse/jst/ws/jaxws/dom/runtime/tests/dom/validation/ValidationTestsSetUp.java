@@ -32,6 +32,9 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
+import org.eclipse.jst.ws.jaxws.testutils.IWaitCondition;
+import org.eclipse.jst.ws.jaxws.testutils.assertions.Assertions;
+import org.eclipse.jst.ws.jaxws.testutils.assertions.ConditionCheckException;
 import org.eclipse.jst.ws.jaxws.testutils.jmock.MockObjectTestCase;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
@@ -100,16 +103,38 @@ public class ValidationTestsSetUp extends MockObjectTestCase
 		testProject.dispose();
 	}
 
-	protected IWebService findWs(String wsFQName)
+	protected IWebService findWs(final String wsFQName)
 	{
 		final IWebServiceProject wsProject = util.findProjectByName(target.getDOM(), testProject.getProject().getName());
-		return util.findWsByImplName(wsProject, wsFQName);			
+		final IWebService[] result = new IWebService[1];
+		// WS model might need some time (resource change events processing) to update itself with the web service specified. The code below 
+		// would wait some time in order to make sure that the web service is available in the model
+		Assertions.waitAssert(new IWaitCondition()
+		{
+			public boolean checkCondition() throws ConditionCheckException
+			{
+				result[0] = util.findWsByImplName(wsProject, wsFQName);
+				return result[0] != null;
+			}
+		}, MessageFormat.format("Web service {0} not found", wsFQName));
+		return result[0];
 	}
 
-	protected IServiceEndpointInterface findSei(String seiFQName) 
+	protected IServiceEndpointInterface findSei(final String seiFQName)
 	{
 		final IWebServiceProject wsProject = util.findProjectByName(target.getDOM(), testProject.getProject().getName());
-		return util.findSeiByImplName(wsProject, seiFQName);		
+		final IServiceEndpointInterface[] result = new IServiceEndpointInterface[1];
+		// WS model might need some time (resource change events processing) to update itself with the SEI specified. The code below 
+		// would wait some time in order to make sure that the SEI is available in the model
+		Assertions.waitAssert(new IWaitCondition()
+		{
+			public boolean checkCondition() throws ConditionCheckException
+			{
+				result[0] = util.findSeiByImplName(wsProject, seiFQName);
+				return result[0] != null;
+			}
+		}, MessageFormat.format("SEI {0} not found", seiFQName));
+		return result[0];
 	}
 	
 	protected void setContents(final ICompilationUnit cu, final String contents) throws CoreException
