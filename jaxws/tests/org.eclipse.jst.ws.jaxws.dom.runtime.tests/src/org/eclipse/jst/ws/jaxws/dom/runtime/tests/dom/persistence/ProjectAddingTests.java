@@ -11,6 +11,7 @@
 package org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 import junit.framework.TestCase;
 
@@ -22,8 +23,12 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
+import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
+import org.eclipse.jst.ws.jaxws.testutils.IWaitCondition;
+import org.eclipse.jst.ws.jaxws.testutils.assertions.Assertions;
+import org.eclipse.jst.ws.jaxws.testutils.assertions.ConditionCheckException;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestEjb3Project;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 import org.eclipse.ui.PlatformUI;
@@ -53,18 +58,17 @@ public class ProjectAddingTests extends TestCase {
 		target.stopSynchronizing();
 	}
 	
-	//FIXME Bug #316376 Unit test failing intermittently
-//	public void test_newWsProjectSynched() throws Exception
-//	{
-//		testPrj3 = new TestProject(new TestEjb3Project("TestEJBProject3").getProject());
-//		final IWebServiceProject wsPrj3 = util.findProjectByName(target.getDOM(), testPrj3.getProject().getName());
-//		assertNotNull("Newly added project not in dom",wsPrj3);
-//	}
+	public void test_newWsProjectSynched() throws Exception
+	{
+		testPrj3 = new TestProject(new TestEjb3Project("TestEJBProject3").getProject());
+		final IWebServiceProject wsPrj3 = findProjectByName(target.getDOM(), testPrj3.getProject().getName(), true);
+		assertNotNull("Newly added project not in dom",wsPrj3);
+	}
 	
 	public void test_newNonWsProjectNotAdded() throws Exception
 	{
 		testPrj3 = new TestProject("TestProject3");
-		final IWebServiceProject wsPrj3 = util.findProjectByName(target.getDOM(), testPrj3.getProject().getName());
+		final IWebServiceProject wsPrj3 = findProjectByName(target.getDOM(), testPrj3.getProject().getName(), false);
 		assertNull("Newly added project in dom",wsPrj3);
 	}
 	
@@ -84,7 +88,23 @@ public class ProjectAddingTests extends TestCase {
 		testPrj3 = new TestProject("TestEJBProject3");
 		testPrj3.getProject().close(null);
 		testPrj3.getProject().open(null);
-		final IWebServiceProject wsPrj3 = util.findProjectByName(target.getDOM(), testPrj3.getProject().getName());
+		final IWebServiceProject wsPrj3 = findProjectByName(target.getDOM(), testPrj3.getProject().getName(), false);
 		assertNull("Newly added project not in dom",wsPrj3);
+	}
+	
+	private IWebServiceProject findProjectByName(final IDOM dom, final String projectName, final boolean expectToFindIt)
+	{
+		final IWebServiceProject[] result = new IWebServiceProject[1];
+		Assertions.waitAssert(new IWaitCondition()
+		{
+
+			public boolean checkCondition() throws ConditionCheckException
+			{
+				result[0] = util.findProjectByName(dom, projectName);
+				return expectToFindIt == (result[0] != null);
+			}
+		}, MessageFormat.format("Project {0} not found in DOM", projectName));
+
+		return result[0];
 	}
 }
