@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 IBM Corporation and others.
+ * Copyright (c) 2007, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20080429   213730 trungha@ca.ibm.com - Trung Ha
  * 20080507   229532 kathy@ca.ibm.com - Kathy Chan
  * 20090818   286859 zina@ca.ibm.com - Zina Mostafia
+ * 20100712          kchong@ca.ibm.com - Keith Chong, Java Facet change
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -41,6 +42,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.common.project.facet.core.JavaFacet;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.EjbFacetInstallDataModelProvider;
@@ -1140,7 +1142,7 @@ public class FacetUtils
       }
     }
     
-    IProjectFacet javaFacet = ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_JAVA);
+    IProjectFacet javaFacet = ProjectFacetsManager.getProjectFacet(JavaFacet.ID);
     IProjectFacetVersion javaFacetVersion = null;
     if (jdkComplianceLevel.equals("1.3"))
     {
@@ -1152,11 +1154,11 @@ public class FacetUtils
     }
     else if (jdkComplianceLevel.equals("1.5"))
     {
-      javaFacetVersion = javaFacet.getVersion("5.0");
+      javaFacetVersion = JavaFacet.JAVA_50;
     }
     else if (jdkComplianceLevel.equals("1.6"))
     {
-      javaFacetVersion = javaFacet.getVersion("6.0");
+      javaFacetVersion = JavaFacet.JAVA_60;
     }
     else
     {
@@ -1380,13 +1382,13 @@ public class FacetUtils
   }
   
   /**
-   * Returns whether the provided facet has an id of "jst.java"
+   * Returns whether the provided facet has an id the same as that of the java facet
    * @param pf facet
-   * @return <code>true</code> if facet has an id of "jst.java", <code>false</code> otherwise.
+   * @return <code>true</code> if facet has an id the same as that of the java facet, <code>false</code> otherwise.
    */
   public static boolean isJavaFacet(IProjectFacet pf)
   {
-    if (pf != null && pf.getId().equals("jst.java"))
+	if (pf != null && pf.equals(JavaFacet.FACET))
       return true;
     else
       return false;

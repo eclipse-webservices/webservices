@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@
  * 20080229   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090114   261087 ericdp@ca.ibm.com - Eric D. Peters, No way to get meta-inf path for a project
+ * 20100712          kchong@ca.ibm.com - Keith Chong, Java Facet change
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -52,6 +53,7 @@ import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
+import org.eclipse.jst.common.project.facet.core.JavaFacet;
 import org.eclipse.jst.j2ee.application.internal.operations.AddComponentToEnterpriseApplicationDataModelProvider;
 import org.eclipse.jst.j2ee.commonarchivecore.internal.helpers.ArchiveManifest;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
@@ -1508,7 +1510,7 @@ public final class J2EEUtils {
               if (facets.size()==1)
               {
                 IProjectFacetVersion pfv = (IProjectFacetVersion)facets.iterator().next();
-                if (pfv.getProjectFacet().getId().equals(IModuleConstants.JST_JAVA))
+                if (pfv.getProjectFacet().equals(JavaFacet.FACET))
                 {
                   return true;
                 }
