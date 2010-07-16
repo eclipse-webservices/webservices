@@ -15,6 +15,7 @@
  * 20060503   126819 rsinha@ca.ibm.com - Rupam Kuehner
  * 20080122   215866 trungha@ca.ibm.com - Trung Ha
  * 20080303   218696 ericdp@ca.ibm.com - Eric D. Peters, APIs using EJBArtifactEdit not able to deal with some EJB 3.0 beans properly
+ * 20080626   236645 kathy@ca.ibm.com - Kathy Chan
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.common;
 
@@ -623,7 +624,6 @@ public final class ResourceUtils {
 	 *            The project.
 	 * @return The build output location of the <code>project</code> or null
 	 *         if the project has no Java nature.
-	 * @deprecated not used 
 	 */
 	public static IPath getJavaOutputLocation(IProject project) {
 		IPath outputLocation = null;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006 IBM Corporation and others.
+ * Copyright (c) 2004, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20060222   125574 zina@ca.ibm.com - Zina Mostafia
  * 20060222   225574 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20090310   242440 yenlu@ca.ibm.com - Yen Lu, Pluggable IFile to URI Converter
  *******************************************************************************/
 /*
  * Created on May 8, 2004
@@ -21,11 +22,15 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.j2ee.webservice.wsclient.ServiceRef;
+import org.eclipse.wst.ws.internal.converter.IIFile2UriConverter;
+import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.internal.impl.ServiceImpl;
 import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
@@ -35,14 +40,47 @@ import org.eclipse.wst.wsdl.util.WSDLResourceImpl;
  * @author gilberta
  */
 public class J2EEActionAdapterFactory {
-	
- 	
+	 	  
+  private static String getConvertedURIFromIFile(IFile file,String defaultURI)
+  {
+	String convertedLocation = null;
+	boolean allowBaseConversionOnFailure = true;
+	if (file != null && file.exists())
+	{	
+	  IIFile2UriConverter converter = WSPlugin.getInstance().getIFile2UriConverter();
+	  if (converter != null)
+	  {
+		convertedLocation = converter.convert(file);
+		allowBaseConversionOnFailure = converter.allowBaseConversionOnFailure();
+	  }
+	}
+	if (convertedLocation == null && allowBaseConversionOnFailure)
+	  return defaultURI;
+	return convertedLocation;
+  }
+  
+  private static String getConvertedURIFromURI(String originalURI)
+  {
+	IFile file = null;
+    if (originalURI != null)
+	{
+	  String platformResource = "platform:/resource";
+	  if (originalURI.startsWith(platformResource))
+	    file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(originalURI.substring(platformResource.length())));
+	  else if (originalURI.startsWith("file:"))
+	  {
+		String filePath = convertToRelative(originalURI);
+		file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
+	  }
+	}
+    return getConvertedURIFromIFile(file,originalURI);
+  }
+  
   public static String getWSDLURI(ServiceImpl serviceImpl)
   {
   	Definition definition = serviceImpl.getEnclosingDefinition();
   	String location = definition.getLocation();
-  	
-  	return location;
+  	return getConvertedURIFromURI(location);
   }
    
   //has to be under the webcontent
@@ -66,26 +104,28 @@ public class J2EEActionAdapterFactory {
 	 {
 	   moduleRoot = APPCLIENT_MODULE;
 	 }
-	 IPath path = project.getLocation().addTrailingSeparator();
-	 path = path.append(moduleRoot).addTrailingSeparator();
-	 path = path.append(serviceImpl.getWsdlFile());
-	 File file = new File(path.toString());
-	 try{
-	   URL url = file.toURL();
-	   return url.toString();
-	 }catch(MalformedURLException e){return null;}
-	 
-  
-	  
-	
+
+	 if (moduleRoot != null)
+	 {
+	   IPath path = project.getLocation().addTrailingSeparator();
+	   path = path.append(moduleRoot).addTrailingSeparator();
+	   path = path.append(serviceImpl.getWsdlFile());
+	   File file = new File(path.toString());
+	   try {
+	     URL url = file.toURL();
+	     return getConvertedURIFromURI(url.toString());
+	   }
+	   catch(MalformedURLException e) {		   
+	   }
+	 }
+	 return null;
  }
   
   public static String getWSDLURI(WSDLResourceImpl wsdlRI)
   {
   	Definition definition = wsdlRI.getDefinition();
   	String location = definition.getLocation();
-  	
-  	return location;
+  	return getConvertedURIFromURI(location);
   }
   
   public static String getWSILPath(WSDLResourceImpl wsdlRI)
@@ -116,7 +156,4 @@ public class J2EEActionAdapterFactory {
     }
     return uri;
   }
-
-
-
 }

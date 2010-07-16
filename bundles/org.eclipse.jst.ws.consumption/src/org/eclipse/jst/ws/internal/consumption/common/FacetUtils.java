@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,9 @@
  * 20071219   213356 kathy@ca.ibm.com - Kathy Chan
  * 20080325   222473 makandre@ca.ibm.com - Andrew Mak, Create EAR version based on the version of modules to be added
  * 20080429   213730 trungha@ca.ibm.com - Trung Ha
+ * 20080507   229532 kathy@ca.ibm.com - Kathy Chan
+ * 20090818   286859 zina@ca.ibm.com - Zina Mostafia
+ * 20100712          kchong@ca.ibm.com - Keith Chong, Java Facet change
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.common;
@@ -29,12 +32,17 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jst.common.project.facet.core.JavaFacet;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jst.j2ee.internal.common.J2EEVersionUtil;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.EjbFacetInstallDataModelProvider;
@@ -68,6 +76,7 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action.Type;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
+import org.osgi.framework.Bundle;
 
 import com.ibm.icu.util.StringTokenizer;
 
@@ -773,6 +782,7 @@ public class FacetUtils
         try
         {
           fproject.modify(actions, shellMonitor);
+		  fixEJBClassPath(fproject);
         } catch (CoreException e)
         {
           status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
@@ -780,8 +790,8 @@ public class FacetUtils
       }
     };    
         
-    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (Display.getCurrent() != null)
+    // Run the runnable in another thread unless there is no UI thread (Ant scenarios)    
+    if (displayPresent())
     {    	
 	    try
 	    {
@@ -799,6 +809,7 @@ public class FacetUtils
 		try
         {
           fproject.modify(actions, null);
+		  fixEJBClassPath(fproject);
         } catch (CoreException e)
         {
           status[0] = getErrorStatusForAddingFacets(fproject.getProject().getName(), projectFacetVersions, e);
@@ -808,7 +819,35 @@ public class FacetUtils
     return status[0];
   }
   
-  /**
+  protected static void fixEJBClassPath(IFacetedProject project) {
+			if (!J2EEUtils.isEJBComponent(project.getProject())) return;
+			IProject ejbProject = project.getProject();
+			IJavaProject javaProject = JavaCore.create(ejbProject);
+			Path projectRoot = new Path(Path.ROOT.append(new Path(ejbProject.getName())).toString());
+			IPath ejbModulePath = projectRoot.append("ejbModule");
+			try {
+				IClasspathEntry[] originalSet = javaProject.getRawClasspath();
+				boolean foundEJBModulEntry = false;
+				for (int i = 0; i < originalSet.length ; i++) {
+					if (originalSet[i].equals(ejbModulePath))
+						foundEJBModulEntry = true;
+				}
+				if (!foundEJBModulEntry) {
+					IClasspathEntry[] newSet = new IClasspathEntry[originalSet.length + 1];
+					for (int i = 0; i < originalSet.length ; i++) {
+						newSet[i] = originalSet[i];
+					}
+					newSet[originalSet.length] = JavaCore.newSourceEntry(ejbModulePath);
+					javaProject.setRawClasspath(newSet,null);
+				}
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}  		
+
+		}
+
+/**
    * Returns an error status indicating that the facet versions could not be
    * added to the faceted project
    * 
@@ -878,7 +917,7 @@ public class FacetUtils
     // Run the runnable in another thread unless there is no UI thread (Ant scenarios)    	  
       try
       {
-    	  if (Display.getCurrent() != null)
+    	  if (displayPresent())
     	  {
     		  PlatformUI.getWorkbench().getProgressService().run(true, false, runnable);    		  
     	  }
@@ -940,7 +979,7 @@ public class FacetUtils
     };
 
     // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (Display.getCurrent() != null)
+    if (displayPresent())
     {
     	try
         {
@@ -1021,7 +1060,7 @@ public class FacetUtils
     };
 
     // Run the runnable in another thread unless there is no UI thread (Ant scenarios)
-    if (Display.getCurrent() != null)
+    if (displayPresent())
     {
     	try
         {
@@ -1103,7 +1142,7 @@ public class FacetUtils
       }
     }
     
-    IProjectFacet javaFacet = ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_JAVA);
+    IProjectFacet javaFacet = ProjectFacetsManager.getProjectFacet(JavaFacet.ID);
     IProjectFacetVersion javaFacetVersion = null;
     if (jdkComplianceLevel.equals("1.3"))
     {
@@ -1115,11 +1154,11 @@ public class FacetUtils
     }
     else if (jdkComplianceLevel.equals("1.5"))
     {
-      javaFacetVersion = javaFacet.getVersion("5.0");
+      javaFacetVersion = JavaFacet.JAVA_50;
     }
     else if (jdkComplianceLevel.equals("1.6"))
     {
-      javaFacetVersion = javaFacet.getVersion("6.0");
+      javaFacetVersion = JavaFacet.JAVA_60;
     }
     else
     {
@@ -1343,13 +1382,13 @@ public class FacetUtils
   }
   
   /**
-   * Returns whether the provided facet has an id of "jst.java"
+   * Returns whether the provided facet has an id the same as that of the java facet
    * @param pf facet
-   * @return <code>true</code> if facet has an id of "jst.java", <code>false</code> otherwise.
+   * @return <code>true</code> if facet has an id the same as that of the java facet, <code>false</code> otherwise.
    */
   public static boolean isJavaFacet(IProjectFacet pf)
   {
-    if (pf != null && pf.getId().equals("jst.java"))
+	if (pf != null && pf.equals(JavaFacet.FACET))
       return true;
     else
       return false;
@@ -1467,4 +1506,27 @@ public class FacetUtils
   		
   		return rfv;
   	}
+	
+	// Check to see if SWT is active and the Display is present or not
+	private static boolean displayPresent() {
+		Bundle b = Platform.getBundle("org.eclipse.swt");
+	    if (b==null) {
+	    	return false;
+	    }
+	    if ((b.getState() != Bundle.RESOLVED && b.getState() != Bundle.ACTIVE) ) {
+	    	return false;
+	    }
+	    try {
+	    	if (Display.getCurrent() == null) {
+	    		return false;
+	    	} else {
+	    		return true;
+	    	}
+	    } catch (NoClassDefFoundError e1) {
+	    	return false;
+	    } catch (Exception e) {  // if the Display class cannot be loaded for whatever reason
+	    	return false;
+	    
+	    } 
+	}
 }

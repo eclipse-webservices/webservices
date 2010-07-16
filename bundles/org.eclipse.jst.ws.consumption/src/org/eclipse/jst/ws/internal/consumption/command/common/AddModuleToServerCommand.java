@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,18 +11,19 @@
  * -------- -------- -----------------------------------------------------------
  * 20060921 [158210] kathy@ca.ibm.com - Kathy Chan, Calling incremental build on the project before adding to server
  * 20080415   227237 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20090518 [252077] tangg@emc.com - Gary Tang, Fail to deploy an EAR project if it contains a module
+ *                   kchong@ca.ibm.com - Keith Chong, (updated patch)
+ * 20090929   250984 mahutch@ca.ibm.com - Mark Hutchinson, remove "wait for auto build" joins
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jst.ws.internal.common.J2EEUtils;
@@ -71,21 +72,15 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    //Ensure the module is not a Java utility
 	    IProject iproject = ProjectUtilities.getProject(project);
 	    if (!J2EEUtils.isJavaComponent(iproject))
-	    {      
-	    	IModule imodule = ServerUtils.getModule(iproject);
+	    {
+	    	// Get the IModule as specified by the module name
+	    	IModule imodule = ServerUtils.getModule(iproject, module);
+
 	    	// TODO:  This workaround for 156768 should be removed once the defect is fixed
 	    	if (imodule == null) {
 	    	    // calling incremental build on the project before trying again
 	    		iproject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,null);
-	    		// wait for the incremental build to complete before trying again
-	    		try 
-	    		{
-	    			Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
-	    		} 
-	    		catch( InterruptedException exc ) 
-	    		{
-	    			// Assuming that the autobuilder has actually completed.	
-	    		}
+	    			    		
 	    		imodule = ServerUtils.getModule(iproject);
 	    		if (imodule == null) {  
 	    			// return error if module is still null after 1 retry
@@ -144,6 +139,4 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	{
 		this.serverInstanceId = serverInstanceId;
 	}	
-
-	
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
  * 20060330   124667 kathy@ca.ibm.com - Kathy Chan
  * 20061004   159356 kathy@ca.ibm.com - Kathy Chan, Get correct module root URL based on server chosen
  * 20070119   159458 mahutch@ca.ibm.com - Mark Hutchinson
+ * 20090518 [252077] tangg@emc.com - Gary Tang, Fail to deploy an EAR project if it contains a module
+ *                   kchong@ca.ibm.com - Keith Chong, (updated patch)
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.common;
@@ -396,6 +398,27 @@ public final class ServerUtils {
 	public static IModule getModule(IProject project) {
 	return ServerUtil.getModule(project);
 }
+	/**
+	 * Find the specific module with module name in a project
+	 * @param project - the project
+	 * @param module - name of desired module
+	 * @return IModule
+	 */
+	public static IModule getModule(IProject project, String module) {
+		// If module is null, then just return the first one
+		if (module == null)
+			return getModule(project);
+		
+		IModule[] modules = ServerUtil.getModules(project);
+		int length = modules.length;
+		for (int i = 0; i < length; i++)
+		{
+			IModule aModule = modules[i];
+			if (module.equals(aModule.getName()))
+				return aModule;
+		}
+		return null;
+	}
 	
 // Workaround for 113621
 //public static IModule getModule(IProject project) {

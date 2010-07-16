@@ -1,12 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20080613   237116 makandre@ca.ibm.com - Andrew Mak, Web service monitoring fails on https endpoint
+ * 20080715   240722 makandre@ca.ibm.com - Andrew Mak, Cannot setup TCP/IP Monitor for soap12 endpoints
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.command.common;
 
@@ -24,6 +28,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
+import org.eclipse.wst.ws.internal.monitor.ExtensibilityElementTransformerRegistry;
 import org.eclipse.wst.ws.internal.parser.wsil.WebServicesParser;
 
 public class ComputeEndpointCommand extends AbstractDataModelOperation
@@ -82,9 +87,15 @@ public class ComputeEndpointCommand extends AbstractDataModelOperation
             for (Iterator it3 = port.getExtensibilityElements().iterator(); it3.hasNext();)
             {
               ExtensibilityElement ext = (ExtensibilityElement)it3.next();
+              String location = null;
               if (ext instanceof SOAPAddress)
+            	location = ((SOAPAddress)ext).getLocationURI();
+              else
+            	location = ExtensibilityElementTransformerRegistry.INSTANCE.transform(ext);
+              if (location != null)
               {
-                String location = ((SOAPAddress)ext).getLocationURI();
+                if (location.startsWith("https://"))
+                	location = "http://" + location.substring(8);
                 try
                 {
                   URL url = new URL(location);

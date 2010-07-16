@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20070509   182274 kathy@ca.ibm.com - Kathy Chan
  * 20080122   215048 kathy@ca.ibm.com - Kathy Chan
+ * 20080613   236523 makandre@ca.ibm.com - Andrew Mak, Overwrite setting on Web service wizard is coupled with preference
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.common;
 
@@ -34,11 +35,11 @@ import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.FacadeHelper;
 import org.eclipse.emf.codegen.util.CodeGenUtil;
 import org.eclipse.jst.ws.internal.consumption.ConsumptionMessages;
-import org.eclipse.jst.ws.internal.plugin.WebServicePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.command.internal.env.common.FileResourceUtils;
 import org.eclipse.wst.command.internal.env.core.common.StatusUtils;
 import org.eclipse.wst.command.internal.env.core.context.ResourceContext;
+import org.eclipse.wst.command.internal.env.core.context.TransientResourceContext;
 import org.eclipse.wst.common.environment.IStatusHandler;
 import org.eclipse.wst.ws.internal.plugin.WSPlugin;
 import org.eclipse.wst.ws.internal.preferences.PersistentMergeContext;
@@ -153,7 +154,10 @@ public class JavaMerger extends Merger implements IMerger {
 		
 		PersistentMergeContext mergeContext = WSPlugin.getInstance().getMergeContext();
 		if (mergeContext.isSkeletonMergeEnabled()) {
-			ResourceContext resourceContext = WebServicePlugin.getInstance().getResourceContext();
+			ResourceContext resourceContext = new TransientResourceContext();
+			resourceContext.setCheckoutFilesEnabled(true);
+			resourceContext.setCreateFoldersEnabled(true);
+			resourceContext.setOverwriteFilesEnabled(true);
 			for (int i = 0; i < size; i++) {
 				String mergedContent = null;
 				JMerger jMerger = null;
