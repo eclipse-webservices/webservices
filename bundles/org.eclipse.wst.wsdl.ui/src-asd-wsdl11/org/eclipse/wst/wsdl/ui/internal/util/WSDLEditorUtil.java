@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,11 +19,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.MessageReference;
@@ -170,21 +167,7 @@ public class WSDLEditorUtil extends WSDLConstants {
 
 	public static boolean isOrientationRightToLeft()
 	{
-	  int defaultOrientation = SWT.NONE;
-	  IWorkbench workbench = PlatformUI.getWorkbench();
-	  if (workbench != null)
-	  {
-	    IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
-
-	    // We could not find any known API to retrieve the active workbench
-	    // window orientation without using the internal class.
-
-	    if (activeWorkbenchWindow instanceof WorkbenchWindow)
-	    {
-	      WorkbenchWindow workbenchWindow = (WorkbenchWindow)activeWorkbenchWindow;
-	      defaultOrientation = workbenchWindow.getDefaultOrientation();
-	    }
-	  }      
+	  int defaultOrientation = Window.getDefaultOrientation();
 	  boolean isRightToLeft = SWT.RIGHT_TO_LEFT == defaultOrientation;
 	  return isRightToLeft;
 	}
