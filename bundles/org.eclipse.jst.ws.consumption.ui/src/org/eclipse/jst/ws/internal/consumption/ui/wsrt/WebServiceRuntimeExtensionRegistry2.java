@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
+ * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * yyyymmdd bug      Email and other contact information
  * -------- -------- -----------------------------------------------------------
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
+ * 20100811   322429 mahutch@ca.ibm.com - Mark Hutchinson, Improve performance of launching the Web Services Wizard
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -168,6 +169,32 @@ public class WebServiceRuntimeExtensionRegistry2
         updateWebServiceClientTypeList(rd);
           
       }        
+    }
+    
+    //Load clientRuntimeProperties and update client Runtimes
+    IConfigurationElement[] clientRuntimeProperties = reg.getConfigurationElementsFor(
+            "org.eclipse.jst.ws.consumption.ui", "clientRuntimeProperties");
+    for (IConfigurationElement elem : clientRuntimeProperties) {
+    	String clientRuntimeId = elem.getAttribute("clientRuntimeId");
+    	if (clientRuntimeId != null) {
+	    	ClientRuntimeDescriptor rd = (ClientRuntimeDescriptor)clientRuntimes_.get(clientRuntimeId);
+	    	if (rd!=null) {
+	    		rd.processClientRuntimeProperties(elem);
+	    	}
+    	}
+    }
+    
+  //Load serviceRuntimeProperties and update service Runtimes
+    IConfigurationElement[] serviceRuntimeProperties = reg.getConfigurationElementsFor(
+            "org.eclipse.jst.ws.consumption.ui", "serviceRuntimeProperties");
+    for (IConfigurationElement elem : serviceRuntimeProperties) {
+    	String serviceRuntimeId = elem.getAttribute("serviceRuntimeId");
+    	if (serviceRuntimeId != null) {
+	    	ServiceRuntimeDescriptor rd = (ServiceRuntimeDescriptor)serviceRuntimes_.get(serviceRuntimeId);
+	    	if (rd!=null) {
+	    		rd.processServiceRuntimeProperties(elem);
+	    	}
+    	}
     }
   }  
     
