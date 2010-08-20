@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="SOAPBodyForMIME" targetNamespace="http://www.examples.org/SOAPBodyForMIME"
+	xmlns:tns="http://www.examples.org/SOAPBodyForMIME" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.examples.org/SOAPBodyForMIME"
+			xmlns:tns="http://www.examples.org/SOAPBodyForMIME"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="stringParam" type="xsd:string" />
+			<xsd:element name="binaryParam" type="xsd:base64Binary" />
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="testOperationRequestMsg">
+		<wsdl:part element="tns:stringParam" name="part1" />
+		<wsdl:part element="tns:binaryParam" name="part2" />
+	</wsdl:message>
+	<wsdl:portType name="TestPortType">
+		<wsdl:operation name="testOperation">
+			<wsdl:input message="tns:testOperationRequestMsg" name="input" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="TestBinding" type="tns:TestPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="testOperation">
+			<soap:operation soapAction="" />
+			<wsdl:input name="input">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body parts="part1" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="part2" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="TestService">
+		<wsdl:port binding="tns:TestBinding" name="TestPort">
+			<soap:address location="http://localhost:9080/SOAPBodyForMIME" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

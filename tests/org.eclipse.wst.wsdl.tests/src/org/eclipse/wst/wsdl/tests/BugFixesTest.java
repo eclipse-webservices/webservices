@@ -343,6 +343,14 @@ public class BugFixesTest extends TestCase
       }
     });
     
+    suite.addTest(new BugFixesTest("SOAPBodyForMIME") //$NON-NLS-1$
+    {
+      protected void runTest()
+      {
+        testReconcilesSOAPBodyPartsInMIMEBinding();
+      }
+    });
+
     return suite;
   }
 
@@ -2029,4 +2037,63 @@ public class BugFixesTest extends TestCase
 
     assertEquals(elementAttributeValue, responseElementDeclaration.getName());
   }  
+  
+  /**
+   * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=322954
+   */
+  public void testReconcilesSOAPBodyPartsInMIMEBinding()
+  {
+    try
+    {
+      Definition definition = DefinitionLoader.load(PLUGIN_ABSOLUTE_PATH + "samples/BugFixes/SOAPBodyReconciliationForMIME/SOAPBodyForMIME.wsdl", true); //$NON-NLS-1$
+
+      checkSOAPBodyPartsInMIMEBinding(definition);
+
+      definition.updateElement(true);
+
+      checkSOAPBodyPartsInMIMEBinding(definition);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail();
+    }    
+  }
+
+  /**
+   * Called from {@link #testReconcilesSOAPBodyPartsInMIMEBinding()}
+   * @param definition the input WSDL definition.
+   */
+  private void checkSOAPBodyPartsInMIMEBinding(Definition definition)
+  {
+    // Navigate to the SOAP body element.
+
+    Binding binding = (Binding)definition.getEBindings().get(0);
+    List bindingOperations = binding.getBindingOperations();
+    BindingOperation bindingOperation = (BindingOperation)bindingOperations.get(0);
+    javax.wsdl.BindingInput bindingInput = bindingOperation.getBindingInput();
+    List extensibilityElements = bindingInput.getExtensibilityElements();
+    MIMEMultipartRelated multipartRelated = (MIMEMultipartRelated)extensibilityElements.get(0);
+    EList mimeParts = multipartRelated.getEMIMEPart();
+    MIMEPart mimePart = (MIMEPart)mimeParts.get(0);
+    List mimePartExtensibilityElements = mimePart.getExtensibilityElements();
+    SOAPBody soapBody = (SOAPBody) mimePartExtensibilityElements.get(0);
+
+    // The SOAP body has only one part
+
+    List parts = soapBody.getParts();
+    assertEquals(1, parts.size());
+
+    // The part name is part1
+
+    Part part = (Part)parts.get(0);
+    String expectedPartName = "part1"; //$NON-NLS-1$
+    assertEquals(expectedPartName, part.getName());
+
+    // The DOM reflects the model structure.
+
+    Element element = soapBody.getElement();
+    String partsAttributeValue = element.getAttribute(SOAPConstants.PARTS_ATTRIBUTE);
+    assertEquals(expectedPartName, partsAttributeValue); //$NON-NLS-1$
+  }
 }
