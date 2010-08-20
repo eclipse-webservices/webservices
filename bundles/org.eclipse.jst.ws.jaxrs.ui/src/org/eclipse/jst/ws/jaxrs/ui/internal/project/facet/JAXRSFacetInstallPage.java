@@ -632,6 +632,16 @@ private void initializeValues()
   {
     return true;
   }
+  @Override
+  public boolean isPageComplete()
+  {
+      final LibraryInstallDelegate librariesInstallDelegate = (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+      if (librariesInstallDelegate == null)
+          throw new IllegalArgumentException("LibraryInstallDelegate is expected to be non-null"); //$NON-NLS-1$
+
+      return super.isPageComplete() && (librariesInstallDelegate.validate().getSeverity() != IStatus.ERROR);
+  }
+
 
 	private void setChildrenEnabled(Composite parentComposite, boolean enabled) {
 		Control[] wsdlControls = parentComposite.getChildren();
