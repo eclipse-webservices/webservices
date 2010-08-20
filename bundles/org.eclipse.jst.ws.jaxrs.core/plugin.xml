@@ -57,6 +57,10 @@
 	 	<delegate
         class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetUninstallDelegate"/>
  	</action>
+ 	<action id="jst.jaxrs.v10.vchange" facet="jst.jaxrs" type="VERSION_CHANGE" version="1.0" >
+	 	<delegate
+        class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetVersionChangeDelegate"/>
+ 	</action>
     <action id="jst.jaxrs.v11.install" facet="jst.jaxrs" type="INSTALL" version="[1.1">
       	<delegate class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetInstallDelegate"/>
         <config-factory class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetInstallDataModelProvider"/>
@@ -67,6 +71,11 @@
 	 	<delegate
         class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetUninstallDelegate"/>
  	</action>	
+ 	<action id="jst.jaxrs.v11.vchange" facet="jst.jaxrs" type="VERSION_CHANGE" version="1.1" >
+	 	<delegate
+        class="org.eclipse.jst.ws.jaxrs.core.internal.project.facet.JAXRSFacetVersionChangeDelegate"/>
+ 	</action>
+ 	
   </extension> 
   
   
