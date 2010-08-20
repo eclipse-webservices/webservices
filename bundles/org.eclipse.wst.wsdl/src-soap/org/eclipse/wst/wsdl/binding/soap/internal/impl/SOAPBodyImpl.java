@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
@@ -548,22 +549,44 @@ public class SOAPBodyImpl extends ExtensibilityElementImpl implements SOAPBody
   {
     Message message = null;
 
-    if (eContainer() instanceof BindingInput)
+    EObject container = locateBindingInputOutputFault();
+    
+    if (container instanceof BindingInput)
     {
-      if (((BindingInput)eContainer()).getEInput() != null)
-        message = ((BindingInput)eContainer()).getEInput().getEMessage();
+      if (((BindingInput)container).getEInput() != null)
+        message = ((BindingInput)container).getEInput().getEMessage();
     }
-    if (eContainer() instanceof BindingOutput)
+    if (container instanceof BindingOutput)
     {
-      if (((BindingOutput)eContainer()).getEOutput() != null)
-        message = ((BindingOutput)eContainer()).getEOutput().getEMessage();
+      if (((BindingOutput)container).getEOutput() != null)
+        message = ((BindingOutput)container).getEOutput().getEMessage();
     }
-    if (eContainer() instanceof BindingFault)
+    if (container instanceof BindingFault)
     {
-      if (((BindingFault)eContainer()).getEFault() != null)
-        message = ((BindingFault)eContainer()).getEFault().getEMessage();
+      if (((BindingFault)container).getEFault() != null)
+        message = ((BindingFault)container).getEFault().getEMessage();
     }
     return message;
+  }
+
+  private EObject locateBindingInputOutputFault()
+  {
+    // A soap body may be used in other contexts, for example in MIME bindings.
+    // In the MIME bindings case the soap:body is nested deeper inside other
+    // extensibility elements and we need to walk up the containment hierarchy
+    // to find the binding input, output or fault.
+
+    EObject container = this;
+    boolean isBindingMessageReference = false;
+    do 
+    {
+      container = container.eContainer();
+      isBindingMessageReference = container != null && 
+          (container instanceof BindingInput ||
+          container instanceof BindingOutput ||
+          container instanceof BindingFault);
+    } while (container != null && !isBindingMessageReference);
+    return container;
   }
 
 } //SOAPBodyImpl
