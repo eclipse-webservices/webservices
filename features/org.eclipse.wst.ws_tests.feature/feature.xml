@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.wst.ws_tests.feature"
       label="%featureName"
-      version="3.0.402.qualifier"
+      version="3.0.403.qualifier"
       provider-name="%providerName">
 
    <description>
