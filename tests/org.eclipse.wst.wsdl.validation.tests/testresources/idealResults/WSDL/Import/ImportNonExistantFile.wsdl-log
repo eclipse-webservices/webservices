@@ -1,8 +1,0 @@
-number of errors      : 0
-number of warnings    : 1
-
-------------error list-------------------------------------------
-(none)
-------------warning list-----------------------------------------
-The 'ThisFileDoesntExist.wsdl' document could not be imported. Check that the document exists and that the location is correct. [3, 86]
------------------------------------------------------------------

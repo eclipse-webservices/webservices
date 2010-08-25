@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://tempuri.org/NewWSDLFile/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="NewWSDLFile" targetNamespace="http://tempuri.org/NewWSDLFile/">
-  <wsdl:types>
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://AC">
-  		<xsd:include schemaLocation="C.xsd"/>
-  		<xsd:import namespace="http://B" schemaLocation="B.xsd"/>
-		</xsd:schema>
-  </wsdl:types>
-</wsdl:definitions>
