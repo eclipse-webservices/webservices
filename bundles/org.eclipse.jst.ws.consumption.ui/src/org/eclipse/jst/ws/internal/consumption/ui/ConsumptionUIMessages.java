@@ -403,6 +403,7 @@ public final class ConsumptionUIMessages extends NLS {
     public static String MSG_INFO_WSDL_OPERATION_TIMED_OUT;
     public static String MSG_SERVER_NOT_FOUND_WARNING;
     public static String MSG_WARN_CONVERTED_TO_UTIL;
+    public static String MSG_LOADING_WEB_SERVICE;
 
 
 	static {
