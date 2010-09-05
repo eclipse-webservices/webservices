@@ -75,9 +75,6 @@
             activate="true"
             categoryId="org.eclipse.jst.ws.jaxws.ui.jaxwsProposalComputer"
             class="org.eclipse.jst.ws.internal.jaxws.ui.annotations.contentassist.AnnotationCompletionProposalComputer">
-        <!-- <partition
-               type="__dftl_partition_content_type">
-         </partition> -->
          <partition
                type="__java_string">
          </partition>
