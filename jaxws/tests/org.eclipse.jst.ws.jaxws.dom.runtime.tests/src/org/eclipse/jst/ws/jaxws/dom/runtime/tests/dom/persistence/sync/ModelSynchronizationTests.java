@@ -31,6 +31,7 @@ import org.eclipse.jdt.core.ISourceManipulation;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IServiceEndpointInterface;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
@@ -211,7 +212,7 @@ public class ModelSynchronizationTests extends SynchronizationTestFixture
 		final String testPrj2Name = testPrj2.getJavaProject().getElementName();
 		testPrj2.getProject().close(null);
 		JobUtils.waitForJobs();
-		assertNull(domUtil.findProjectByName(target.getDOM(), testPrj2Name));
+		assertNull(DomUtil.INSTANCE.findProjectByName(target.getDOM(), testPrj2Name));
 		assertNull("The web service returns a sei instance which is contained in a closed project", ws3.getServiceEndpoint());
 	}
 	

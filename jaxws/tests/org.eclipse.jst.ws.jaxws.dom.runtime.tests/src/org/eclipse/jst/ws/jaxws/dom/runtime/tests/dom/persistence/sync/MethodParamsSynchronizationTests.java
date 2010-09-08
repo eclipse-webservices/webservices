@@ -35,6 +35,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.sync.ParameterSynchroniz
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.DomTestUtils;
 import org.eclipse.jst.ws.jaxws.testutils.IWaitCondition;
 import org.eclipse.jst.ws.jaxws.testutils.assertions.Assertions;
+import org.eclipse.jst.ws.jaxws.testutils.dom.WaitingDomUtil;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestEjb3Project;
 import org.eclipse.jst.ws.jaxws.utils.annotations.IAnnotation;
@@ -51,13 +52,14 @@ public class MethodParamsSynchronizationTests extends TestCase
 	private IWebServiceProject wsPrj1;
 	private IServiceEndpointInterface sei1;
 
-	private DomUtil domUtil = new DomUtil();
+	private DomUtil domUtil;
 	private DomTestUtils testUtil = new DomTestUtils();
 
 	private static final String sei1ImplName = "com.sap.test.modelsync1.Sei1";
 
 	public void setUp() throws Exception
 	{
+		domUtil = new WaitingDomUtil();
 		javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
 		target = new JaxWsWorkspaceResource(javaModel) 
 		{

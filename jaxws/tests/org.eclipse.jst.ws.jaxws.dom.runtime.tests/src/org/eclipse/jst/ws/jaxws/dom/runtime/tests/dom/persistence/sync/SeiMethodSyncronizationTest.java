@@ -30,6 +30,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.SOAPBindingStyle;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.SOAPBindingUse;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.DomTestUtils;
+import org.eclipse.jst.ws.jaxws.testutils.dom.WaitingDomUtil;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 import org.eclipse.jst.ws.jaxws.utils.resources.FileUtils;
@@ -47,7 +48,7 @@ public class SeiMethodSyncronizationTest extends TestCase {
 	private IServiceEndpointInterface sei1;
 	
 	private DomTestUtils testUtil = new DomTestUtils();
-	private DomUtil domUtil = new DomUtil();
+	private DomUtil domUtil;
 		
 	private static final String ws1ImplName = "com.sap.test.modelsync1.WS1";
 //	private static final String someIntfImplName = "com.sap.test.modelsync1.SomeIntf";
@@ -56,6 +57,7 @@ public class SeiMethodSyncronizationTest extends TestCase {
 	
 	public void setUp() throws Exception
 	{
+		domUtil = new WaitingDomUtil();
 		javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
 		target = new JaxWsWorkspaceResource(javaModel) 
 		{

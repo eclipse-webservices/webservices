@@ -26,6 +26,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWsDOMRuntimeExtension;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.WsDOMRuntimeManager;
 import org.eclipse.jst.ws.jaxws.dom.runtime.util.Dom2ResourceMapper;
+import org.eclipse.jst.ws.jaxws.testutils.dom.WaitingDomUtil;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestEjb3Project;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 
@@ -43,10 +44,12 @@ public class Dom2ResourceMapperTest extends TestCase
     private IType seiType;
     private IType wsType;
     private IDOM dom;
+    private DomUtil domUtil;
 
     @Override
     public void setUp() throws Exception
     {
+    	domUtil = new WaitingDomUtil();
         testProject = prepareProject();
         IPackageFragment pck = testProject.createPackage("test");
         seiType = testProject.createType(pck, "Sei.java", "@javax.jws.WebService public interface Sei { \n" +
@@ -82,15 +85,15 @@ public class Dom2ResourceMapperTest extends TestCase
 
     public void testFindProject()
     {
-        IWebServiceProject wsProject = DomUtil.INSTANCE.findProjectByName(dom, testProject.getProject().getName());
+        IWebServiceProject wsProject = domUtil.findProjectByName(dom, testProject.getProject().getName());
         IProject project = mapper.findProject(wsProject);
         assertEquals(testProject.getProject(), project);
     }
 
     public void testFindResourceSei() throws JavaModelException
     {
-        IWebServiceProject wsProject = DomUtil.INSTANCE.findProjectByName(dom, testProject.getProject().getName());
-        IServiceEndpointInterface sei = DomUtil.INSTANCE.findSeiByImplName(wsProject, "test.Sei");
+        IWebServiceProject wsProject = domUtil.findProjectByName(dom, testProject.getProject().getName());
+        IServiceEndpointInterface sei = domUtil.findSeiByImplName(wsProject, "test.Sei");
         assertNotNull(sei);
 
         // find using SEI
@@ -101,8 +104,8 @@ public class Dom2ResourceMapperTest extends TestCase
 
 	public void testFindResourceWs() throws JavaModelException
 	{
-		IWebServiceProject wsProject = DomUtil.INSTANCE.findProjectByName(dom, testProject1.getProject().getName());
-		IWebService ws = DomUtil.INSTANCE.findWsByImplName(wsProject, "test.Ws");
+		IWebServiceProject wsProject = domUtil.findProjectByName(dom, testProject1.getProject().getName());
+		IWebService ws = domUtil.findWsByImplName(wsProject, "test.Ws");
 		assertNotNull(ws);
 
 		IType type = mapper.findType(ws);
@@ -112,8 +115,8 @@ public class Dom2ResourceMapperTest extends TestCase
 
     public void testFindResourceWebMethod() throws JavaModelException
     {
-        IWebServiceProject wsProject = DomUtil.INSTANCE.findProjectByName(dom, testProject.getProject().getName());
-        IServiceEndpointInterface sei = DomUtil.INSTANCE.findSeiByImplName(wsProject, "test.Sei");
+        IWebServiceProject wsProject = domUtil.findProjectByName(dom, testProject.getProject().getName());
+        IServiceEndpointInterface sei = domUtil.findSeiByImplName(wsProject, "test.Sei");
         assertNotNull(sei);
 
         IType type = mapper.findType(sei.getWebMethods().get(0));
@@ -127,8 +130,8 @@ public class Dom2ResourceMapperTest extends TestCase
 
     public void testFindResourceWebParam() throws JavaModelException
     {
-        IWebServiceProject wsProject = DomUtil.INSTANCE.findProjectByName(dom, testProject.getProject().getName());
-        IServiceEndpointInterface sei = DomUtil.INSTANCE.findSeiByImplName(wsProject, "test.Sei");
+        IWebServiceProject wsProject = domUtil.findProjectByName(dom, testProject.getProject().getName());
+        IServiceEndpointInterface sei = domUtil.findSeiByImplName(wsProject, "test.Sei");
         assertNotNull(sei);
 
         IType type = mapper.findType(sei.getWebMethods().get(0).getParameters().get(0));

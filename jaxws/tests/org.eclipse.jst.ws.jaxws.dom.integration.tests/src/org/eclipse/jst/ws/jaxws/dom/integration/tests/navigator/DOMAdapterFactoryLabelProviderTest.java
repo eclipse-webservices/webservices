@@ -22,6 +22,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.DomUtil;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IDOM;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
+import org.eclipse.jst.ws.jaxws.testutils.dom.WaitingDomUtil;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
 
@@ -34,10 +35,12 @@ public class DOMAdapterFactoryLabelProviderTest extends TestCase
 	protected DOMAdapterFactoryLabelProvider labelProvider;
 	
 	private IWebServiceProject wsProject;
+	private DomUtil domUtil;
 	
 	@Override
 	public void setUp() throws Exception 
 	{
+		domUtil = new WaitingDomUtil();
 		IProject ejbProject = TestProjectsUtils.createEjb3Project("DOMLblProvTestProject1" + System.currentTimeMillis());
 		testPrj1 = new TestProject(ejbProject.getProject());
 		final IPackageFragment modelSync1 = testPrj1.createPackage("org.eclipse.test.modelsync1");
@@ -52,9 +55,8 @@ public class DOMAdapterFactoryLabelProviderTest extends TestCase
 		
 		targetResource = new JaxWsWorkspaceResource(JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()));
 		targetResource.load(null);
-		this.wsProject = DomUtil.INSTANCE.findProjectByName(targetResource.getDOM(), testPrj1.getProject().getName());
+		this.wsProject = domUtil.findProjectByName(targetResource.getDOM(), testPrj1.getProject().getName());
 		assertNotNull(this.wsProject);
-		
 		
 		labelProvider = new DOMAdapterFactoryLabelProvider();
 		adapterFactory = new DOMAdapterFactoryContentProvider() 

@@ -29,6 +29,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebService;
 import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.DomTestUtils;
+import org.eclipse.jst.ws.jaxws.testutils.dom.WaitingDomUtil;
 import org.eclipse.jst.ws.jaxws.testutils.jmock.MockObjectTestCase;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestEjb3Project;
@@ -58,11 +59,12 @@ public class SynchronizationTestFixture extends MockObjectTestCase
 	protected IServiceEndpointInterface sei2;
 	protected Collection<String> allowedProjects;
 	
-	protected DomUtil domUtil =  new DomUtil();
+	protected DomUtil domUtil;
 	protected DomTestUtils testUtil =  new DomTestUtils();
 
 	public void setUp() throws Exception
 	{
+		domUtil = new WaitingDomUtil();
 		allowedProjects = new ArrayList<String>(3);
 		javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
 		target = createTarget();

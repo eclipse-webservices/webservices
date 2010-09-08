@@ -29,6 +29,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.api.IWebServiceProject;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.IProjectSelector;
 import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.DomTestUtils;
+import org.eclipse.jst.ws.jaxws.testutils.dom.WaitingDomUtil;
 import org.eclipse.jst.ws.jaxws.testutils.jobs.JobUtils;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 
@@ -52,12 +53,13 @@ public class ImplicitSeiMethodSynchronizationTests extends TestCase
 	private IWebService ws1;
 
 	private DomTestUtils util = new DomTestUtils();
-	private DomUtil domUtil = new DomUtil();
+	private DomUtil domUtil;
 
 	private static final String ws1ImplName = "com.sap.test.modelsync1.WS1";
 
 	public void setUp() throws Exception
 	{
+		domUtil = new WaitingDomUtil();
 		javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
 		target = new JaxWsWorkspaceResource(javaModel)
 		{

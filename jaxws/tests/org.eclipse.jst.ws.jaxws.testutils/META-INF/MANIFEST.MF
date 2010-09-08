@@ -15,9 +15,11 @@ Require-Bundle: org.jmock,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jst.ws.jaxws.utils,
  org.junit,
- org.eclipse.jdt.apt.core
+ org.eclipse.jdt.apt.core,
+ org.eclipse.jst.ws.jaxws.dom.runtime
 Export-Package: org.eclipse.jst.ws.jaxws.testutils,
  org.eclipse.jst.ws.jaxws.testutils.assertions,
+ org.eclipse.jst.ws.jaxws.testutils.dom,
  org.eclipse.jst.ws.jaxws.testutils.files,
  org.eclipse.jst.ws.jaxws.testutils.jmock,
  org.eclipse.jst.ws.jaxws.testutils.jmock.testcases,

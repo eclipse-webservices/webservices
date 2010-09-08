@@ -35,6 +35,7 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.persistence.JaxWsWorkspaceResource;
 import org.eclipse.jst.ws.jaxws.testutils.IWaitCondition;
 import org.eclipse.jst.ws.jaxws.testutils.assertions.Assertions;
 import org.eclipse.jst.ws.jaxws.testutils.assertions.ConditionCheckException;
+import org.eclipse.jst.ws.jaxws.testutils.dom.WaitingDomUtil;
 import org.eclipse.jst.ws.jaxws.testutils.jmock.MockObjectTestCase;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProject;
 import org.eclipse.jst.ws.jaxws.testutils.project.TestProjectsUtils;
@@ -51,11 +52,12 @@ public class ValidationTestsSetUp extends MockObjectTestCase
 	protected TestProject testProject;
 	protected JaxWsWorkspaceResource target;
 	protected IPackageFragment testPack;
-	protected DomUtil util = DomUtil.INSTANCE;
+	protected DomUtil util;
 	
 	@Override
 	public void setUp() throws Exception
 	{
+		util = new WaitingDomUtil();
 		final TestProject[] fixtureProjects = createFixtureProjects();
 		
 		IJavaModel javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
