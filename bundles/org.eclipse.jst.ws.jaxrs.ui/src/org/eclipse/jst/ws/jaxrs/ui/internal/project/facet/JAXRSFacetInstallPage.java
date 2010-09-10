@@ -19,7 +19,6 @@
  * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
- * 20100820   323192 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS- Not prompted to enter servlet class when adding JAX-RS facet to a new web project
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
