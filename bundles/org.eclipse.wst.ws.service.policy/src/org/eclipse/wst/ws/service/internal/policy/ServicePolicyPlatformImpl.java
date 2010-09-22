@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2008, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
  * 20080214   218996 pmoogk@ca.ibm.com - Peter Moogk, Concurrent exception fix
  * 20080325   222095 pmoogk@ca.ibm.com - Peter Moogk
  * 20080625   238482 pmoogk@ca.ibm.com - Peter Moogk, Adding thread safety to the service platform api.
+ * 20100922   308427 ericdp@ca.ibm.com - Eric D. Peters, NPE in org.eclipse.wst.ws.service.policy.ServicePolicyActivator.logError(ServicePolicyActivator.java:75)
  *******************************************************************************/
 package org.eclipse.wst.ws.service.internal.policy;
 
@@ -204,7 +205,10 @@ public class ServicePolicyPlatformImpl
     
     committedPolicyMap = new HashMap<String, ServicePolicyImpl>();
     committedPolicyMap.putAll( policyMap );
-    ServicePolicyActivator.getDefault().savePluginPreferences();
+    ServicePolicyActivator spa = ServicePolicyActivator.getDefault();
+	if (spa != null) {
+		spa.savePluginPreferences();
+	}
   }
   
   private void removeDeletedPreferenceData()
