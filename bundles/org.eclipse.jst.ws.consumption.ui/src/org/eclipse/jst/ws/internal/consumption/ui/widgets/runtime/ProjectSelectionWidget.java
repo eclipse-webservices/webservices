@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 IBM Corporation and others.
+ * Copyright (c) 2004, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@
  * 20081001   243869 ericdp@ca.ibm.com - Eric D. Peters, Web Service tools allowing mixed J2EE levels
  * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
  * 20090910   289113 ericdp@ca.ibm.com - Eric D. Peters -  Linux: usability issue when selecting a Java Project in the Specify Client Project Settings dialog
+ * 20100929   326549 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Wizard Can Default to invalid project type
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -361,11 +362,11 @@ public class ProjectSelectionWidget extends SimpleWidgetDataContributor {
     {
       if (isClient_)
       {
-        templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId());
+        templates = WebServiceRuntimeExtensionUtils2.getClientProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId(), trsIds_.getServerId());
       }
       else
       {
-        templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId());      
+        templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(trsIds_.getTypeId(), trsIds_.getRuntimeId(), trsIds_.getServerId());
       }
     
       String[] templateLabels = FacetUtils.getTemplateLabels(templates);

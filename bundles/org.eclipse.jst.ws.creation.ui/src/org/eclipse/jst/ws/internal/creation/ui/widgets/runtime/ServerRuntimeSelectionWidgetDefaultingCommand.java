@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and others.
+ * Copyright (c) 2004, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@
  * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
  * 20080730   242611 zhang@ca.ibm.com - Peter Moogk
  * 20080925   242312 ericdp@ca.ibm.com - Eric D. Peters, Cannot create BUJB WS from Bean in Java project using ANT tasks
+ * 20100929   326549 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Wizard Can Default to invalid project type
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.creation.ui.widgets.runtime;
 
@@ -458,7 +459,7 @@ public class ServerRuntimeSelectionWidgetDefaultingCommand extends ClientRuntime
   
   private String getDefaultServiceProjectTemplate()
   {
-    String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceIds_.getTypeId(), serviceIds_.getRuntimeId());    
+    String[] templates = WebServiceRuntimeExtensionUtils2.getServiceProjectTemplates(serviceIds_.getTypeId(), serviceIds_.getRuntimeId(), serviceIds_.getServerId());
     
     //Walk the list of service project types in the project topology preference
     ProjectTopologyContext ptc= WebServiceConsumptionUIPlugin.getInstance().getProjectTopologyContext();
