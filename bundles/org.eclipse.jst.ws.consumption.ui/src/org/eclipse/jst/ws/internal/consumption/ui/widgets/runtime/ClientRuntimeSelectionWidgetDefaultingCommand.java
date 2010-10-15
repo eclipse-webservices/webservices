@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and others.
+ * Copyright (c) 2007, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
  * 20080421   228054 makandre@ca.ibm.com - Andrew Mak, NPE in ClientRuntimeSelectionWidgetDefaultingCommand
  * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
  * 20080731   242721 kathy@ca.ibm.com - Kathy Chan
+ * 20100929   326549 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Wizard Can Default to invalid project type
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -1155,11 +1156,13 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
           boolean matches = false;
           if (isClient)
           {
-            matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId);            
+            matches = WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId) && 
+            			WebServiceRuntimeExtensionUtils2.doesClientRuntimeSupportServer(preferredRuntimeIds[m], runtimePreferredServer);            
           }
           else
           {
-            matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId);
+            matches = WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportTemplate(preferredRuntimeIds[m], preferredTemplateId) && 
+            			WebServiceRuntimeExtensionUtils2.doesServiceRuntimeSupportServer(preferredRuntimeIds[m], runtimePreferredServer);
           }
           
           if (matches)
