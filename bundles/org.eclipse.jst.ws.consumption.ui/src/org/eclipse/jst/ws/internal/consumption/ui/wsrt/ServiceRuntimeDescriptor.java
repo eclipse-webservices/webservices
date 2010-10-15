@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20071130   203826 kathy@ca.ibm.com - Kathy Chan
  * 20080326   221364 kathy@ca.ibm.com - Kathy Chan
  * 20080626   221364 kathy@ca.ibm.com - Kathy Chan
+ * 20100811   322429 mahutch@ca.ibm.com - Mark Hutchinson, Improve performance of launching the Web Services Wizard
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -49,6 +50,8 @@ public class ServiceRuntimeDescriptor
   private Set projectFacetVersions;
   private IWebServiceRuntimeChecker webServiceRuntimeChecker;
   private String runtimePreferredServerType;
+  private  Set<String> suitableProjectTemplates;
+  private  Set<String> unsuitableProjectTemplates;
   
   public ServiceRuntimeDescriptor(IConfigurationElement elem, Hashtable allWebServiceImpls, Hashtable allRuntimes)
   {
@@ -74,6 +77,43 @@ public class ServiceRuntimeDescriptor
     return id;
   }
   
+  
+  public void processServiceRuntimeProperties(IConfigurationElement elem) {
+	  if (suitableProjectTemplates == null) {
+		  suitableProjectTemplates = new HashSet<String>(5);
+	  }
+	  if (unsuitableProjectTemplates == null) {
+		  unsuitableProjectTemplates = new HashSet<String>(5);
+	  }
+	  IConfigurationElement[] elements = elem.getChildren("suitable-project-template");
+	  for (IConfigurationElement configElement : elements) {
+		  String templateId = configElement.getAttribute("id");
+		  if (templateId != null)
+			  suitableProjectTemplates.add(templateId);
+	  }
+	  elements = elem.getChildren("unsuitable-project-template");
+      for (IConfigurationElement configElement : elements) {
+    	  String templateId = configElement.getAttribute("id");
+    	  if (templateId != null)
+    		  unsuitableProjectTemplates.add(templateId);
+      }
+  }
+  
+  //this will return an empty list if no valid suitable-project-template elements found
+  public Set<String> getSuitableProjectTemplates() {
+	  if (suitableProjectTemplates == null) {
+		  suitableProjectTemplates = new HashSet<String>(5);
+	   }
+	   return suitableProjectTemplates;
+  }
+  
+  //this will return an empty list if no valid unsuitable-project-template elements found
+  public Set<String> getUnsuitableProjectTemplates() {
+	  if (unsuitableProjectTemplates == null) {
+		  unsuitableProjectTemplates = new HashSet<String>(5);
+	  }
+	  return unsuitableProjectTemplates;
+  }
   
   public RequiredFacetVersion[] getRequiredFacetVersions()
   {

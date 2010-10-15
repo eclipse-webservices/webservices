@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 IBM Corporation and others.
+ * Copyright (c) 2006, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
  * 20060426   138051 kathy@ca.ibm.com - Kathy Chan
  * 20060427   126780 rsinha@ca.ibm.com - Rupam Kuehner
  * 20080923   247525 mahutch@ca.ibm.com - Mark Hutchinson, cache not updated properly when project facet versions changed
+ * 20100811   322429 mahutch@ca.ibm.com - Mark Hutchinson, Improve performance of launching the Web Services Wizard
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
 
@@ -413,7 +414,24 @@ public class FacetMatchCache implements IResourceChangeListener
     {
       //Calculate the templates, cache them for later use, and return them.
       ClientRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getClientRuntimeDescriptorById(clientRuntimeId);
-      Set validTemplates = getTemplates(desc.getRequiredFacetVersions());
+      
+      Set validTemplates = null;
+      Set<String> suitableIds = desc.getSuitableProjectTemplates();
+      if (!suitableIds.isEmpty()) {
+    	  //If a list of suitable project templates is specified in the metadata, then use those project templates and do not search
+    	  validTemplates = new HashSet(1);
+    	  for (String s : suitableIds) {
+    		  IFacetedProjectTemplate t = ProjectFacetsManager.getTemplate(s);
+    		  if (t != null)
+    			  validTemplates.add(t);
+    	  }
+      }
+      
+      //if the set of valid templates is still empty, then search for valid templates based on required facet versions
+      if (validTemplates == null || validTemplates.isEmpty()) {
+    	  validTemplates = getTemplates(desc.getRequiredFacetVersions(), desc.getUnsuitableProjectTemplates());
+      }
+       
       templatesByClientRuntimeId_.put(clientRuntimeId, validTemplates);
       return validTemplates;
     }
@@ -436,44 +454,55 @@ public class FacetMatchCache implements IResourceChangeListener
     {
       //Calculate the templates, cache them for later use, and return them.
       ServiceRuntimeDescriptor desc = WebServiceRuntimeExtensionUtils2.getServiceRuntimeDescriptorById(serviceRuntimeId);
-      Set validTemplates = getTemplates(desc.getRequiredFacetVersions());
+      Set validTemplates = null;
+      Set<String> suitableIds = desc.getSuitableProjectTemplates();
+      if (!suitableIds.isEmpty()) {
+    	  //If a list of suitable project templates is specified in the metadata, then use those project templates and do not search
+    	  validTemplates = new HashSet(1);
+    	  for (String s : suitableIds) {
+    		  IFacetedProjectTemplate t = ProjectFacetsManager.getTemplate(s);
+    		  if (t != null)
+    			  validTemplates.add(t);
+    	  }
+      }
+      
+      //if the set of valid templates is still empty, then search for valid templates based on required facet versions
+      if (validTemplates == null || validTemplates.isEmpty()) {
+    	  validTemplates = getTemplates(desc.getRequiredFacetVersions(), desc.getUnsuitableProjectTemplates());
+      }
+      
       templatesByServiceRuntimeId_.put(serviceRuntimeId, validTemplates);
       return validTemplates;
     }
   }
  
-  
-  /**
+   /**
    * Returns the set of templates that supported the given required facet versions.
    * @param requiredFacetVersions
+   * @param unSuitableTemplates set of unsuitable template ids to exclude from the search for increased performance
    * @return Set containing elemets of type {@link IFacetedProjectTemplate}.
    */
-  private Set getTemplates(RequiredFacetVersion[] requiredFacetVersions)
-  {
+  private Set getTemplates(RequiredFacetVersion[] requiredFacetVersions, Set<String> unSuitableTemplates)  {
     Set templates = new HashSet();
-    
-    for( Iterator itr = ProjectFacetsManager.getTemplates().iterator(); itr.hasNext(); )
-    {
+    for( Iterator itr = ProjectFacetsManager.getTemplates().iterator(); itr.hasNext(); ) {    	
         final IFacetedProjectTemplate template = (IFacetedProjectTemplate) itr.next();
         String templateId = template.getId();
-        if (templateId.indexOf("ear") == -1 && templateId.indexOf("wst.web") == -1) //Don't include the EARs!!
-        {           
-          Set[] combinations = FacetSetsByTemplateCache.getInstance().getFacetVersionCombinationsFromTemplate(templateId);
-          for (int i=0; i<combinations.length; i++)
-          {
-            FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combinations[i]);
-            if (fm.isMatch())
-            {
-              //Found a combination that worked. Add the template to the list and move on.
-              templates.add(template);
-              break;
-            }
-          }
+        if (unSuitableTemplates == null || !unSuitableTemplates.contains(templateId)) { //if we know the template is unsuitable, then exclude it        	
+	        if (templateId.indexOf("ear") == -1 && templateId.indexOf("wst.web") == -1) { //Don't include the EARs!!
+	          Set[] combinations = FacetSetsByTemplateCache.getInstance().getFacetVersionCombinationsFromTemplate(templateId);
+	          
+	          for (int i=0; i<combinations.length; i++) {
+	            FacetMatcher fm = FacetUtils.match(requiredFacetVersions, combinations[i]);
+	            if (fm.isMatch()) {
+	              //Found a combination that worked. Add the template to the list and move on.
+	              templates.add(template);
+	              break;
+	            }
+	          }
+	        }
         }
-    }    
-    
+    }
     return templates;
-    
   }
   
   public synchronized void resourceChanged(IResourceChangeEvent event)

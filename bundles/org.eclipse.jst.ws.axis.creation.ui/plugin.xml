@@ -48,6 +48,35 @@
         serverRequired="false"/>
     </extension>
 
+
+	<extension point="org.eclipse.jst.ws.consumption.ui.serviceRuntimeProperties">
+    	<serviceRuntimeProperties serviceRuntimeId="org.eclipse.jst.ws.axis.creation.java">
+	        <unsuitable-project-template id="template.jst.connector" />
+	        <unsuitable-project-template id="template.jst.ejb" />
+	        <unsuitable-project-template id="template.jst.webfragment" />
+	        <unsuitable-project-template id="template.jst.appclient" />
+	        <unsuitable-project-template id="template.jst.utility" />
+	    </serviceRuntimeProperties>
+	</extension>
+
+	<extension point="org.eclipse.jst.ws.consumption.ui.clientRuntimeProperties">
+	    <clientRuntimeProperties clientRuntimeId="org.eclipse.jst.ws.axis.consumption.web">
+ 	        <unsuitable-project-template id="template.jst.connector" />
+ 	        <unsuitable-project-template id="template.jst.ejb" />
+ 	        <unsuitable-project-template id="template.jst.webfragment" />
+ 	        <unsuitable-project-template id="template.jst.appclient" />
+ 	        <unsuitable-project-template id="template.jst.utility" />
+	    </clientRuntimeProperties>
+	     <clientRuntimeProperties clientRuntimeId="org.eclipse.jst.ws.axis.consumption.java">
+ 	        <unsuitable-project-template id="template.jst.connector" />
+			<unsuitable-project-template id="template.jst.ejb" />
+			<unsuitable-project-template id="template.jst.webfragment" />
+			<unsuitable-project-template id="template.jst.web" />
+			<unsuitable-project-template id="template.jst.appclient" />      
+	    </clientRuntimeProperties>
+    </extension>    
+	
+
     <!-- define support for Axis Java bean bottom up and top-down support in web projects -->
     <extension point="org.eclipse.jst.ws.consumption.ui.serviceRuntimes">
       <serviceRuntime
