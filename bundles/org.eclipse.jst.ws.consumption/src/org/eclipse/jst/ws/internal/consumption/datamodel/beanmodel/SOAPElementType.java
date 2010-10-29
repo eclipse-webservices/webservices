@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20101027   328652  mahutch@ca.ibm.com - Mark Hutchinson, SOAPElement or Element parameters result in compile errors in sample
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.datamodel.beanmodel;
@@ -79,7 +82,7 @@ public class SOAPElementType implements DataType
   public String stringConversion(String typeName, String nodeName, String attributeName)
   {
      String conversion =  Generator.DOUBLE_TAB 
-                       + "javax.xml.soap.SOAPElement " + nodeName + "= org.eclipse.jst.ws.util.SoapElementHelper.createSOAPElementFromXMLString(" + attributeName + ");" 
+                       + nodeName + "= org.eclipse.jst.ws.util.SoapElementHelper.createSOAPElementFromXMLString(" + attributeName + ");" 
 	                   + StringUtils.NEWLINE;
      return conversion;
   }
