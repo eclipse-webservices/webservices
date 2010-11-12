@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@ package org.eclipse.wst.wsdl.internal.util;
 import javax.wsdl.WSDLException;
 import javax.wsdl.xml.WSDLReader;
 
+import org.eclipse.wst.wsdl.WSDLPackage;
 import org.eclipse.wst.wsdl.internal.impl.WSDLFactoryImpl;
-import org.eclipse.wst.wsdl.internal.impl.WSDLPackageImpl;
 
 import com.ibm.wsdl.xml.WSDLReaderImpl;
 
@@ -28,7 +28,7 @@ public class WSDLDefinitionFactory extends com.ibm.wsdl.factory.WSDLFactoryImpl
   public WSDLDefinitionFactory()
   {
     // Make sure the WSDL package is initialized.
-    WSDLPackageImpl.init();
+    WSDLPackage.eINSTANCE.eClass();
   }
 
   /**
