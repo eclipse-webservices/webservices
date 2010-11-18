@@ -39,7 +39,7 @@
           <requires facet="jst.web" version="[2.3"/>
           <requires
                 facet="jst.java"
-                version="[6.0">
+                version="[5.0">
           </requires>
           
         </and>
