@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.wst.common.core.search.pattern.QualifiedName;
 import org.eclipse.wst.common.core.search.pattern.SearchPattern;
 import org.eclipse.wst.xml.core.internal.search.ComponentSearchContributor;
 import org.eclipse.wst.xml.core.internal.search.XMLSearchPattern;
@@ -36,6 +37,11 @@ public class WSDLSearchContributor extends ComponentSearchContributor {
 		pattern = new XMLSearchPattern(ns, "binding", "name"); //$NON-NLS-1$ //$NON-NLS-2$
 		declarations.put(IWSDLSearchConstants.BINDING_META_NAME, pattern);
 
+        pattern = new XMLSearchPattern(ns, "service", "name"); //$NON-NLS-1$ //$NON-NLS-2$
+        declarations.put(new QualifiedName(IWSDLSearchConstants.WSDL_NAMESPACE, "service"), pattern); //$NON-NLS-1$
+        
+        pattern = new XMLSearchPattern(ns, "port", "name"); //$NON-NLS-1$ //$NON-NLS-2$
+        declarations.put(new QualifiedName(IWSDLSearchConstants.WSDL_NAMESPACE, "port"), pattern); //$NON-NLS-1$
 	}
 
 	protected void  initializeReferences() {
