@@ -16,11 +16,13 @@
  * 20100319   306595 ericdp@ca.ibm.com - Eric D. Peters, several install scenarios fail for both user library & non-user library
  * 20100413   307552 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS and Java EE 6 setup is incorrect
  * 20100428   310905 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS facet fails to install due to NPE or runtime exception due to duplicate cp entries
+ * 20101123   330916 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS - facet install should consider Web project associated with multiple EARs
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.project.facet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -32,6 +34,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
 import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
@@ -176,7 +179,7 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 		SharedLibraryConfiguratorUtil
 				.getInstance();
 		java.util.List<SharedLibraryConfigurator> configurators = SharedLibraryConfiguratorUtil.getConfigurators();
-
+		ILibraryProvider libref = ((LibraryInstallDelegate)config.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).getLibraryProvider();
 		Iterator<SharedLibraryConfigurator> sharedLibConfiguratorIterator = configurators
 				.iterator();
 		while (sharedLibConfiguratorIterator.hasNext()) {
@@ -185,13 +188,27 @@ public final class JAXRSFacetInstallDelegate implements IDelegate {
 			if (targetRuntimeID.equals(thisConfigurator.getRuntimeID())) {
 				IProject earProject = getEARProject(config);
 				Boolean addToEar = getAddToEar(config);
-				if (thisConfigurator.getIsSharedLibSupported(project,
-						earProject, addToEar, ((LibraryInstallDelegate)config.getProperty(IJAXRSFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).getLibraryProvider().getId())) {  // libref.getID()
-					
+		        List<IProject> earProjects = (List<IProject>)config.getProperty(IJAXRSFacetInstallDataModelProperties.EARPROJECTS);
+		        // Let's check the EARPROJECTS property first.  If it's not null, then we are in the post-project creation mode
+		        // and more than one EAR is referenced.
+		        if (earProjects != null) {
+		          // Iterate over all the referenced EAR projects and update them with shared library support
+		          for (IProject ear : earProjects)
+		          {
+		            if (thisConfigurator.getIsSharedLibSupported(project,
+		                ear, addToEar, libref.getId())) {
+					thisConfigurator.installSharedLibs(project, ear,
+							monitor, new ArrayList<String>());  
+		            }           
+		          }
+		        } else { // ....otherwise, business as usual, only one ear applies.
+						  if (thisConfigurator.getIsSharedLibSupported(project,
+								earProject, addToEar, libref.getId())) {
 					thisConfigurator.installSharedLibs(project, earProject,
-							monitor, new ArrayList<String>());  //***ID Changed libref.getID()
-					break;
-				}
+							monitor, new ArrayList<String>());  
+							  break;
+						  }
+						}
 			}
 
 		}

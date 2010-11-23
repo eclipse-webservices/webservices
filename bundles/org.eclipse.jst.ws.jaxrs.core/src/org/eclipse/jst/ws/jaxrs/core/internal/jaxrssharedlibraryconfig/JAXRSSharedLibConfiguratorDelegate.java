@@ -11,6 +11,7 @@
  * -------- -------- -----------------------------------------------------------
  * 20091021   291954 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS: Implement JAX-RS Facet
  * 20100303   291954 kchong@ca.ibm.com - Keith Chong, JAX-RS: Implement JAX-RS Facet
+ * 20101123   330916 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS - facet install should consider Web project associated with multiple EARs
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig;
 
@@ -28,11 +29,7 @@ public abstract class JAXRSSharedLibConfiguratorDelegate {
 		super();
 	}
 	/**
-	 * @param webProject to install shared libraries to
-	 * @param earProject to install shared libraries to
-	 * @param monitor to monitor progress
-	 * @param JAXRSLibraryID the ID of the library being used by the project (
-	 * @see org.eclipse.jst.ws.jaxrs.core.internal.jaxrslibraryconfig.JAXRSLibraryRegistryUtil#getJAXRSLibraryReferencebyID(String)
+	 * @deprecated - Use org.eclipse.jst.ws.jaxrs.core.internal.jaxrssharedlibraryconfig.JAXRSSharedLibConfiguratorDelegate.installSharedLibs(IProject, IProject, IProgressMonitor, List<String>)
 	 */
 	protected abstract void installSharedLibs(IProject webProject, IProject earProject, IProgressMonitor monitor, String JAXRSLibraryID);
 	/**
@@ -45,7 +42,12 @@ public abstract class JAXRSSharedLibConfiguratorDelegate {
 	 * @return true if shared library support is available
 	 */
 	protected abstract boolean sharedLibSupported(IProject webProject, IProject earProject, boolean addToEAR, String JAXRSLibraryID);
-	
+	 /**
+	 * @param webProject to install shared libraries to
+	 * @param earProject to install shared libraries to
+	 * @param monitor to monitor progress
+	 * @param JAXRSLibraryID the ID of the library being used by the project (
+	 */
 	protected abstract void installSharedLibs(IProject webProject, IProject earProject, IProgressMonitor monitor, List<String> libraryNames);
 	
 }
