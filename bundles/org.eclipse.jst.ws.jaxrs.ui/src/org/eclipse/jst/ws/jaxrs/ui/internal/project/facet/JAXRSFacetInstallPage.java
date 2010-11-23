@@ -20,12 +20,15 @@
  * 20100519   313576 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS tools- validation problems
  * 20100618   307059 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS properties page- fields empty or incorrect
  * 20100820   323192 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS- Not prompted to enter servlet class when adding JAX-RS facet to a new web project
+ * 20101123   330916 ericdp@ca.ibm.com - Eric D. Peters, JAX-RS - facet install should consider Web project associated with multiple EARs
  *******************************************************************************/
 package org.eclipse.jst.ws.jaxrs.ui.internal.project.facet;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.DialogSettings;
@@ -453,81 +456,122 @@ private void initializeValues()
   }
 
   /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setWizardContext
-   * (org.eclipse.wst.common.project.facet.ui.IWizardContext)
-   */
-  @SuppressWarnings("unchecked")
-  public void setWizardContext(IWizardContext context)
-  {
-    // hook into web datamodel of new project wizard.
-	this.context = context;
-    sWEBProject = context.getProjectName();
-    Iterator it = context.getSelectedProjectFacets().iterator();
-    IProjectFacetVersion webFacetVersion = null;
-    while (it.hasNext())
-    {
-      // find Web facet
-      IProjectFacetVersion pfv = (IProjectFacetVersion) it.next();
-      if (pfv.getProjectFacet().getId().equals("jst.web")) { //$NON-NLS-1$
-        webFacetVersion = pfv;
-        break;
-      }
-    }
-    if (webFacetVersion != null)
-    {
-      try
-      {
-        webAppDataModel = (IDataModel) context.getConfig(webFacetVersion, IFacetedProject.Action.Type.INSTALL, context.getProjectName());
-        if (webAppDataModel == null)
-        {
-          // This means the web facet has already been installed!
-          isProjectCreationMode = false;
-          return;
-        }
-        Object oAddToEAR = webAppDataModel.getProperty(IJ2EEModuleFacetInstallDataModelProperties.ADD_TO_EAR);
-        Object oTargetRuntime = webAppDataModel.getProperty(IJ2EEModuleFacetInstallDataModelProperties.FACET_RUNTIME);
-        if (oAddToEAR != null)
-        {
-          if (((Boolean) oAddToEAR).booleanValue() == true)
-          {
-            bAddToEAR = true;
-            Object oEARProjectName = webAppDataModel.getProperty(IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME);
-            if (oEARProjectName != null)
-            {
-              this.sEARProject = (String) oEARProjectName;
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setWizardContext
+	 * (org.eclipse.wst.common.project.facet.ui.IWizardContext)
+	 */
+	@SuppressWarnings("unchecked")
+	public void setWizardContext(IWizardContext context) {
+		// hook into web datamodel of new project wizard.
+		this.context = context;
+		sWEBProject = context.getProjectName();
+		Iterator it = context.getSelectedProjectFacets().iterator();
+		IProjectFacetVersion webFacetVersion = null;
+		while (it.hasNext()) {
+			// find Web facet
+			IProjectFacetVersion pfv = (IProjectFacetVersion) it.next();
+			if (pfv.getProjectFacet().getId().equals("jst.web")) { //$NON-NLS-1$
+				webFacetVersion = pfv;
+				break;
+			}
+		}
+		if (webFacetVersion != null) {
+			try {
+				webAppDataModel = (IDataModel) context.getConfig(
+						webFacetVersion, IFacetedProject.Action.Type.INSTALL,
+						context.getProjectName());
+				if (webAppDataModel == null) {
+					// This means the web facet has already been installed!
+					isProjectCreationMode = false;
+					IProject webProject = ResourcesPlugin.getWorkspace()
+							.getRoot().getProject(sWEBProject);
 
-            }
-          }
-        }
-        if (oTargetRuntime != null && oTargetRuntime instanceof BridgedRuntime)
-        {
-          BridgedRuntime br = (BridgedRuntime) oTargetRuntime;
-          if (br != null)
-          {
-            IRuntime runtime = FacetUtil.getRuntime(br);
-            if (runtime != null)
-            {
-              IRuntimeType rtType = runtime.getRuntimeType();
-              if (rtType != null)
-                sTargetRuntime = rtType.getId();
-            }
-          }
-        }
+					org.eclipse.wst.common.project.facet.core.runtime.IRuntime rt = ProjectFacetsManager
+							.create(webProject).getPrimaryRuntime();
+					IRuntime runtime = FacetUtil.getRuntime(rt);
+					if (runtime != null) {
+						targetRuntime = runtime;
+						IRuntimeType rtType = runtime.getRuntimeType();
+						if (rtType != null) {
+							sTargetRuntime = rtType.getId();
+						}
 
-        if (webAppDataModel != null)
-        {
-          webAppDataModel.addListener(this);
-        }
-      }
-      catch (CoreException e)
-      {
-        JAXRSUIPlugin.log(IStatus.ERROR, Messages.JAXRSFacetInstallPage_ErrorNoWebAppDataModel, e);
-      }
-    }
-  }
+						if (webProject != null) {
+							IProject[] referencingEARProjects = EarUtilities
+									.getReferencingEARProjects(webProject);
+							int size = referencingEARProjects.length;
+
+							if (size == 1) {
+								String earName = referencingEARProjects[0]
+										.getName();
+								// Since we do have only one EAR, let's use
+								// the existing 'support/variables' and
+								// continue as usual
+								// The two properties, ADD_TO_EAR and
+								// EARPROJECT_NAME will be set.
+								this.bAddToEAR = true;
+								this.sEARProject = earName;
+							} else if (size > 1) {
+								// On the other hand, if we have multiple
+								// ears, then we need to use the new
+								// property EARPROJECTS
+								// Perhaps we can just use this new property
+								// to handle the case for only one EAR.
+								this.bAddToEAR = true;
+								this.earProjects = new ArrayList<IProject>();
+								String earName = referencingEARProjects[0]
+										.getName();
+								this.sEARProject = earName;
+								for (int i = 0; i < size; i++) {
+									earProjects.add(referencingEARProjects[i]);
+								}
+							}
+						}
+					}
+
+				} else {
+					Object oAddToEAR = webAppDataModel
+							.getProperty(IJ2EEModuleFacetInstallDataModelProperties.ADD_TO_EAR);
+					Object oTargetRuntime = webAppDataModel
+							.getProperty(IJ2EEModuleFacetInstallDataModelProperties.FACET_RUNTIME);
+					if (oAddToEAR != null) {
+						if (((Boolean) oAddToEAR).booleanValue() == true) {
+							bAddToEAR = true;
+							Object oEARProjectName = webAppDataModel
+									.getProperty(IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME);
+							if (oEARProjectName != null) {
+								this.sEARProject = (String) oEARProjectName;
+
+							}
+						}
+					}
+					if (oTargetRuntime != null
+							&& oTargetRuntime instanceof BridgedRuntime) {
+						BridgedRuntime br = (BridgedRuntime) oTargetRuntime;
+						if (br != null) {
+							IRuntime runtime = FacetUtil.getRuntime(br);
+							if (runtime != null) {
+								IRuntimeType rtType = runtime.getRuntimeType();
+								if (rtType != null)
+									sTargetRuntime = rtType.getId();
+							}
+						}
+					}
+
+				}
+
+				if (webAppDataModel != null) {
+					webAppDataModel.addListener(this);
+				}
+			} catch (CoreException e) {
+				JAXRSUIPlugin.log(IStatus.ERROR,
+						Messages.JAXRSFacetInstallPage_ErrorNoWebAppDataModel,
+						e);
+			}
+		}
+	}
 
   /*
    * (non-Javadoc)
