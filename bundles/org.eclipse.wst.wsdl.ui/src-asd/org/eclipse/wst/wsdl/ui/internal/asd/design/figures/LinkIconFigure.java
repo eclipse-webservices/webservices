@@ -86,11 +86,5 @@ public class LinkIconFigure extends Polygon {
 	  
 	  public AbstractGraphicalEditPart getAssociatedEditPart() {
 		  return editPart;
-	  }
-	  
-	  // See bug 324884 - this method was removed from Polyline and cuased a hang in the WSDL Editor
-	  public void repaint() {
-		  bounds = null;
-		  super.repaint();
-	  }
+	  } 
 }
