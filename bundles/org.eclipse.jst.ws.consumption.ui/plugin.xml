@@ -592,10 +592,10 @@
    <extension-point id="tester" name="%XP_tester"/>
 
    <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
-   <extension-point id="clientRuntimeProperties" name="%XP_clientRuntimesProperties" />
+   <extension-point id="clientRuntimeProperties" name="%XP_clientRuntimesProperties" schema="schema/clientRuntimeProperties.exsd"/>
    
    <!-- The following extension point is internal, though likely to be made public with changes in a future release. -->
-   <extension-point id="serviceRuntimeProperties" name="%XP_serviceRuntimesProperties" />
+   <extension-point id="serviceRuntimeProperties" name="%XP_serviceRuntimesProperties" schema="schema/serviceRuntimeProperties.exsd"/>
 
 <!-- Test Extensions beginning  -->
 

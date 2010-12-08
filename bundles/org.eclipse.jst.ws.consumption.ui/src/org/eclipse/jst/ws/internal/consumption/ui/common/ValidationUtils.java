@@ -31,6 +31,7 @@
  * 20090302   249602 ericdp@ca.ibm.com - Eric D. Peters, PII- association warning message needs update
  * 20090401   269994 ericdp@ca.ibm.com - Eric D. Peters, NLS- Validation messages unclear when servers don't support runtime/project combo
  * 20100511   309395 mahutch@ca.ibm.com - Mark Hutchinson, WS Wizard Converting Java Project into Utility Project without any warning
+ * 20101207   332067 mahutch@ca.ibm.com - Mark Hutchinson, Consider server in web service wizard validation
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.common;
 
@@ -390,7 +391,7 @@ public class ValidationUtils
 				if (isClient) {
 					// Check if the runtime supports it.
 					if (!WebServiceRuntimeExtensionUtils2.doesClientTypeAndRuntimeSupportTemplate(
-							typeId, runtimeId, templateId)) {
+							typeId, runtimeId, templateId, serverId)) {
 
 						return StatusUtils.errorStatus(NLS.bind(
 								ConsumptionUIMessages.MSG_CLIENT_RUNTIME_DOES_NOT_SUPPORT_TEMPLATE,
@@ -417,7 +418,7 @@ public class ValidationUtils
 				} else {
 					// Check if the runtime supports it.
 					if (!WebServiceRuntimeExtensionUtils2.doesServiceTypeAndRuntimeSupportTemplate(
-							typeId, runtimeId, templateId)) {
+							typeId, runtimeId, templateId, serverId)) {
 						return StatusUtils
 								.errorStatus(NLS
 										.bind(
