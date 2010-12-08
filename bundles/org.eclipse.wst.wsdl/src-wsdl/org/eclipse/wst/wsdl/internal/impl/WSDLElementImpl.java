@@ -1004,7 +1004,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    */
   protected QName createQName(Definition definition, String prefixedName, Element element)
   {
-    return createQName(definition, prefixedName, element, false);
+    return createQName(definition, prefixedName, element, true);
   }
 
   /**
