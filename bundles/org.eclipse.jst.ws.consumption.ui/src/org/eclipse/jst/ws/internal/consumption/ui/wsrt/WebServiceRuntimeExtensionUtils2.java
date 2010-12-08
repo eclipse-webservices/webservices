@@ -22,6 +22,7 @@
  * 20080808   243623 mahutch@ca.ibm.com - Mark Hutchinson, Improve server defaulting performance
  * 20091207   295654 kchong@ca.ibm.com - Keith Chong, Project type defaulting is incorrect for a new project
  * 20100929   326549 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Wizard Can Default to invalid project type
+ * 20101207   332067 mahutch@ca.ibm.com - Mark Hutchinson, Consider server in web service wizard validation
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.ui.wsrt;
@@ -1208,6 +1209,44 @@ public class WebServiceRuntimeExtensionUtils2
     
     return (String[])templateIdList.toArray(new String[]{});    
   }
+  
+  /**
+   * Returns whether or not the given {@link IFacetedProjectTemplate} supports the given Web service type
+   * and Web service runtime.
+   * @param typeId must be a String of the format "0/implId"
+   * where the digit before the "/" represents the scenario
+   * (e.g. WebServiceScenario.BOTTOM_UP) and the implId is the Web service implementation type id.
+   * @param runtimeId id of a Web service runtime
+   * @param templateId id of a {@link IFacetedProjectTemplate}
+   * @param serverId id of server
+   * @return boolean <code>true</code> if the given {@link IFacetedProjectTemplate} supports the given 
+   * Web service type and Web service runtime. Returns <code>false</code> otherwise. 
+   */
+  public static boolean doesServiceTypeAndRuntimeSupportTemplate(String typeId, String runtimeId, String templateId, String serverId) {
+	  String[] srIds = getServiceRuntimesByServiceType(typeId);
+	  if (srIds == null) {
+		  return false;
+	  }
+	  for (int i = 0; i < srIds.length; i++) {
+		  if (serverId == null || doesServiceRuntimeSupportServer(srIds[i], serverId)) { 
+			  ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(srIds[i]);
+			  String thisRuntimeId = desc.getRuntime().getId();
+			  if (thisRuntimeId.equals(runtimeId)) {
+				  //Get the templates for this serviceRuntime
+				  Set templates = FacetMatchCache.getInstance().getTemplatesForServiceRuntime(srIds[i]);
+				  //Check if any of the template ids match the given one.
+				  Iterator itr = templates.iterator();
+				  while (itr.hasNext()) {
+					  IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
+					  if (template.getId().equals(templateId))  {
+						  return true;
+					  }
+				  }
+			  }
+		  }
+	  }  
+	  return false;    
+  }
 
   /**
    * Returns whether or not the given {@link IFacetedProjectTemplate} supports the given Web service type
@@ -1222,37 +1261,7 @@ public class WebServiceRuntimeExtensionUtils2
    */
   public static boolean doesServiceTypeAndRuntimeSupportTemplate(String typeId, String runtimeId, String templateId)
   {
-    String[] srIds = getServiceRuntimesByServiceType(typeId);
-    if (srIds == null)
-    {
-      return false;
-    }
-
-    for (int i = 0; i < srIds.length; i++)
-    {
-      ServiceRuntimeDescriptor desc = getServiceRuntimeDescriptorById(srIds[i]);
-      String thisRuntimeId = desc.getRuntime().getId();
-      if (thisRuntimeId.equals(runtimeId))
-      {
-        //Get the templates for this serviceRuntime
-        Set templates = FacetMatchCache.getInstance().getTemplatesForServiceRuntime(srIds[i]);
-        
-        //Check if any of the template ids match the given one.
-        Iterator itr = templates.iterator();
-        while (itr.hasNext())
-        {
-          IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
-          if (template.getId().equals(templateId))
-          {
-            return true;
-          }
-
-        }
-      }
-      
-    }  
-    
-    return false;    
+	  return doesServiceTypeAndRuntimeSupportTemplate(typeId, runtimeId, templateId, null);
   }
   
   /**
@@ -1806,7 +1815,46 @@ public class WebServiceRuntimeExtensionUtils2
   public static String[] getClientProjectTemplates(String clientImplId, String runtimeId)
   {
 	  return getClientProjectTemplates(clientImplId, runtimeId, null); 
-  }  
+  }
+  
+  /**
+   * Returns whether or not the given {@link IFacetedProjectTemplate} supports the given 
+   * Web service client implementation type and Web service runtime.
+   * 
+   * @param clientImplId id of a Web service client implementation type
+   * @param runtimeId id of a Web service runtime
+   * @param templateId id of a {@link IFacetedProjectTemplate}
+   * @param serverId id of server
+   * @return boolean <code>true</code> if the given {@link IFacetedProjectTemplate} supports the given 
+   * Web service client implementation type and Web service runtime. Returns <code>false</code> otherwise. 
+   */
+  public static boolean doesClientTypeAndRuntimeSupportTemplate(String clientImplId, String runtimeId, String templateId, String serverId) {
+	  String[] crIds = getClientRuntimesByType(clientImplId);
+	  if (crIds == null) {
+		  return false;
+	  }
+
+	  for (int i = 0; i < crIds.length; i++)  {
+		  if (serverId == null || doesClientRuntimeSupportServer(crIds[i], serverId)) { 
+			  ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(crIds[i]);
+			  String thisRuntimeId = desc.getRuntime().getId();
+			  if (thisRuntimeId.equals(runtimeId))  {
+				  //Get the templates for this clientRuntime
+				  Set templates = FacetMatchCache.getInstance().getTemplatesForClientRuntime(crIds[i]);
+	
+				  //Check if the template ids contains the template we're checking for
+				  Iterator itr = templates.iterator();
+				  while (itr.hasNext()) {
+					  IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
+					  if (template.getId().equals(templateId)) {
+						  return true;
+					  }
+				  }
+			  }
+		  }
+	  }  
+	  return false;    
+  }
   
   /**
    * Returns whether or not the given {@link IFacetedProjectTemplate} supports the given 
@@ -1820,36 +1868,7 @@ public class WebServiceRuntimeExtensionUtils2
    */
   public static boolean doesClientTypeAndRuntimeSupportTemplate(String clientImplId, String runtimeId, String templateId)
   {
-    String[] crIds = getClientRuntimesByType(clientImplId);
-    if (crIds == null)
-    {
-      return false;
-    }
-
-    for (int i = 0; i < crIds.length; i++)
-    {
-      ClientRuntimeDescriptor desc = getClientRuntimeDescriptorById(crIds[i]);
-      String thisRuntimeId = desc.getRuntime().getId();
-      if (thisRuntimeId.equals(runtimeId))
-      {
-        //Get the templates for this clientRuntime
-        Set templates = FacetMatchCache.getInstance().getTemplatesForClientRuntime(crIds[i]);
-        
-        //Check if the template ids contains the template we're checking for
-        Iterator itr = templates.iterator();
-        while (itr.hasNext())
-        {
-          IFacetedProjectTemplate template = (IFacetedProjectTemplate)itr.next();
-          if (template.getId().equals(templateId))
-          {
-            return true;
-          }
-        }
-      }
-      
-    }  
-    
-    return false;    
+    return doesClientTypeAndRuntimeSupportTemplate(clientImplId, runtimeId, templateId, null);
   }  
   
 
