@@ -31,15 +31,19 @@ public class SeiSynchronizer extends ElementSynchronizerImpl
 {
 	private final SeiMerger seiMerger; 
 
-	SeiSynchronizer(IModelElementSynchronizer parent)
+	public SeiSynchronizer(IModelElementSynchronizer parent)
 	{
 		super(parent);
 		seiMerger = new SeiMerger(this, new SeiMethodSynchronizer(this));
 	}
 
 	/* IServiceEndpointInterface */
-	void synchronizeInterface(IWebServiceProject wsProject, IAnnotation<IType> wsAnnotation, IAnnotationInspector inspector) throws JavaModelException
+	public void synchronizeInterface(IWebServiceProject wsProject, IAnnotation<IType> wsAnnotation, IAnnotationInspector inspector) throws JavaModelException
 	{
+		if(wsAnnotation.getAppliedElement().getFullyQualifiedName()==null) {
+			return;
+		}
+		
 		final IServiceEndpointInterface sei = obtainInstance(wsProject, wsAnnotation.getAppliedElement().getFullyQualifiedName());
 		seiMerger.merge(sei, wsAnnotation, inspector);
 		resolveWsRefsToThisSei(sei);

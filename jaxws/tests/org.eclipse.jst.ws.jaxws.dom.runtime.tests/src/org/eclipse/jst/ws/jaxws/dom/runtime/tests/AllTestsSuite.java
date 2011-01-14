@@ -49,8 +49,10 @@ import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.MethodPar
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.ModelSynchronizationTests;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.OnEventModelSyncronizerTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.SeiMethodSyncronizationTest;
+import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.SeiSynchronizerTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.SeiSyncronizationTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.WsSynchronizationTest;
+import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.persistence.sync.WsSynchronizerTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.util.Dom2ResourceMapperTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.util.DomUtilTest;
 import org.eclipse.jst.ws.jaxws.dom.runtime.tests.dom.validation.EndpointIsSessionBeanRuleTest;
@@ -91,6 +93,8 @@ public class AllTestsSuite
         suite.addTestSuite(SeiSyncronizationTest.class);
         suite.addTestSuite(WsSynchronizationTest.class);
         suite.addTestSuite(JaxWsDefaultsCalculatorTest.class);
+        suite.addTestSuite(SeiSynchronizerTest.class);
+        suite.addTestSuite(WsSynchronizerTest.class);
         // state adapters tests
         suite.addTestSuite(MethodPropertyStateAdapterTest.class);
         suite.addTestSuite(PropertyStateAdapterFactoryTest.class);

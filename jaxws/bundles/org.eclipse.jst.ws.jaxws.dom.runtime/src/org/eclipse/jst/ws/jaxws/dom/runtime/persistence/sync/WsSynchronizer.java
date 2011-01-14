@@ -58,6 +58,10 @@ public class WsSynchronizer extends ElementSynchronizerImpl
 
 	public IWebService synchronizeWebService(IWebServiceProject wsProject, IAnnotation<IType> wsAnnotation, IAnnotationInspector inspector) throws JavaModelException
 	{
+		if(wsAnnotation.getAppliedElement().getFullyQualifiedName()==null) {
+			return null;
+		}
+		
 		final IWebService ws = obtainInstance(wsProject, wsAnnotation.getAppliedElement().getFullyQualifiedName());
 		mergeWebService(ws, wsProject, wsAnnotation, inspector);
 		
