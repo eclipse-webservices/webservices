@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 IBM Corporation and others.
+ * Copyright (c) 2007, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@
  * 20080527   234226 kathy@ca.ibm.com - Kathy Chan
  * 20080731   242721 kathy@ca.ibm.com - Kathy Chan
  * 20100929   326549 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Wizard Can Default to invalid project type
+ * 20110118   334706 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Wizard: Error: Template has not been defined
  *******************************************************************************/
 package org.eclipse.jst.ws.internal.consumption.ui.widgets.runtime;
 
@@ -1317,7 +1318,7 @@ public class ClientRuntimeSelectionWidgetDefaultingCommand extends AbstractDataM
     if (clientProject.exists())
     {
       clientComponentType_ = "";
-      clientRuntimeId_ = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(testIds, serviceProjectName, clientComponentType_);
+      clientRuntimeId_ = WebServiceRuntimeExtensionUtils2.getClientRuntimeId(testIds, clientProjectName_, clientComponentType_);
       if (clientRuntimeId_ != null && clientRuntimeId_.length()>0)
       {
         clientIds_.setRuntimeId(serviceIds.getRuntimeId());
