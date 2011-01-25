@@ -142,7 +142,7 @@ public class OpenWSResourceAction extends SelectionListenerAction implements IAc
 			IEditorPart editor = page.openEditor(new FileEditorInput(file), desc.getId());
 			
 			IMarker marker = file.createMarker(IMarker.TEXT);
-			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put(IMarker.CHAR_START, getMarkerPosition(cu, webMethod, false));
 			map.put(IMarker.CHAR_END, getMarkerPosition(cu, webMethod, true));
