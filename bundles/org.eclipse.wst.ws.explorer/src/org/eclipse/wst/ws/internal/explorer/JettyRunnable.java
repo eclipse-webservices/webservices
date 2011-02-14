@@ -11,9 +11,6 @@
 
 package org.eclipse.wst.ws.internal.explorer;
 
-import org.eclipse.help.internal.appserver.AppserverPlugin;
-
-
 public class JettyRunnable {
 
 	private static JettyRunnable jettyRunnable_;
@@ -27,14 +24,6 @@ public class JettyRunnable {
 			jettyRunnable_.init();
 		}
 		return jettyRunnable_;
-	}
-
-	public boolean isJettyStarted() {
-		try {
-			return AppserverPlugin.getDefault().getAppServer().isRunning();
-		} catch (Throwable t) {
-			return false;
-		}
 	}
 
 	public int getJettyPort() {
