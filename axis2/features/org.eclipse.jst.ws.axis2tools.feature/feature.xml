@@ -4,7 +4,9 @@
       label="%featureName"
       version="1.1.100.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.jst.ws.axis2.ui">
+      plugin="org.eclipse.jst.ws.axis2.ui"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.0.qualifier">
 
    <description>
       %description
