@@ -1,8 +1,0 @@
-number of errors      : 1
-number of warnings    : 0
-
-------------error list-------------------------------------------
-The 'ServiceInvalidBindingSOAP' port has an invalid binding - 'IncorrectBindingRef'. Check that the 'IncorrectBindingRef' binding is defined. [34, 83]
-------------warning list-----------------------------------------
-(none)
------------------------------------------------------------------
