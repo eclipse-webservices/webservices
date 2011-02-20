@@ -5,7 +5,9 @@
       version="1.0.100.qualifier"
       provider-name="%featureProvider"
       plugin="org.eclipse.jst.ws.jaxws.core"
-      image="eclipse_update_120.jpg">
+      image="eclipse_update_120.jpg"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.0.qualifier">
 
    <description>
       %description
