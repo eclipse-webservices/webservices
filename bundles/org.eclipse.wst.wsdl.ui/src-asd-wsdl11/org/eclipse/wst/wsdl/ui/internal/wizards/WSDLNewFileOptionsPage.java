@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20110224   338128 mahutch@ca.ibm.com - Mark Hutchinson, NPE When Creating New WSDL File
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.wizards;
 
@@ -243,12 +246,12 @@ public class WSDLNewFileOptionsPage extends WizardPage implements ModifyListener
       String protocol = protocolCombo.getItem(defaultIndex);
       ContentGeneratorUIExtension ext = registry.getExtensionForLabel(protocol);
       ContentGeneratorOptionsPage page = ext.getBindingContentGeneratorOptionsPage();
-      page.init(generator);
-
-      protocolPageBook.showPage(page.getControl());
+      // page.init(generator);//this is not required, called by updatePageBook
+      // protocolPageBook.showPage(page.getControl()); //not needed, called in updatePageBook
       protocolPageBook.setVisible(true);
       protocolCombo.select(defaultIndex);
       updatePageBook(protocol);
+      
     }
 
     wsdlSkeletonGroup.setVisible(true);
