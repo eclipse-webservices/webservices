@@ -125,7 +125,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
  private void handleShowAllEvent ()
  {
     Enumeration e = checkBoxes_.elements();
- 	for (int i=0; e.hasMoreElements(); i++)
+ 	for (; e.hasMoreElements();)
     	{
     		Button dialog = (Button) e.nextElement();
     		dialog.setSelection( false );
@@ -135,7 +135,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
  private void handleHideAllEvent ()
  {
  	Enumeration e = checkBoxes_.elements();
- 	for (int i=0; e.hasMoreElements(); i++)
+ 	for (; e.hasMoreElements();)
     	{
     		Button dialog = (Button) e.nextElement();
     		dialog.setSelection( true );
@@ -206,7 +206,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
   {
     PersistentActionDialogsContext context = PersistentActionDialogsContext.getInstance();  
     Enumeration e = checkBoxes_.keys();
-    for (int i=0; e.hasMoreElements(); i++)
+    for (; e.hasMoreElements();)
     {
       String id = (String) e.nextElement();            	
       Button dialog = (Button) checkBoxes_.get(id);
@@ -221,7 +221,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
   {
     PersistentActionDialogsContext context = PersistentActionDialogsContext.getInstance();
     Enumeration e = checkBoxes_.keys();
-    for (int i=0; e.hasMoreElements(); i++)
+    for (; e.hasMoreElements();)
     {
       String id = (String) e.nextElement();
       Button button = (Button) checkBoxes_.get(id);
@@ -237,7 +237,7 @@ public class ActionDialogsPreferencePage extends PreferencePage implements IWork
     PersistentActionDialogsContext context = PersistentActionDialogsContext.getInstance();
 
     Enumeration e = checkBoxes_.keys();
-    for (int i=0; e.hasMoreElements(); i++)
+    for (; e.hasMoreElements();)
     {
       String id = (String) e.nextElement();
       context.setActionDialogEnabled(id, ((Button)checkBoxes_.get(id)).getSelection());
