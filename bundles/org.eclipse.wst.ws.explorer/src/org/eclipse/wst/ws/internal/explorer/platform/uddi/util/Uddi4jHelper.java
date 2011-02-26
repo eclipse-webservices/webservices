@@ -318,7 +318,7 @@ public class Uddi4jHelper
     Iterator it = values.iterator();
     
     Vector importsVec = new Vector();  
-    for(int i =0;it.hasNext();i++){
+    for(;it.hasNext();){
     	ArrayList aList = (ArrayList)it.next();
         Iterator itImports = aList.iterator();
         while(itImports.hasNext()){
