@@ -64,7 +64,7 @@ public class BindingColumnLayout extends AbstractLayout
     Rectangle r = new Rectangle();
     r.x = clientArea.x + 50;
     r.y = clientArea.y;
-    int used = 0;
+    //int used = 0;
 
     for (Iterator i = container.getChildren().iterator(); i.hasNext();)
     {
@@ -74,8 +74,8 @@ public class BindingColumnLayout extends AbstractLayout
       r.height = d.height;
       
       child.setBounds(r);
-      used += 30;
-      used += r.height;
+      //used += 30;
+      //used += r.height;
       
       IFigure intefaceFigure = getInterfaceFigureForExpandedEditPartFigure(child);
       if (intefaceFigure != null)
