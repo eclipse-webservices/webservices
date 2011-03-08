@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 IBM Corporation and others.
+ * Copyright (c) 2005, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@
  * 20080429   220985 trungha@ca.ibm.com - Trung Ha
  * 20080520   233065 makandre@ca.ibm.com - Andrew Mak, Server not found error in Web service generation
  * 20080722   240231 gilberta@ca.ibm.com - Gilbert Andrews
+ * 20110125   335246 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Client Wizard should not publish JPA projects to the server
  * 
  *******************************************************************************/
 
@@ -91,17 +92,11 @@ public class PreClientInstallCommand extends AbstractDataModelOperation
 	      
 	      AddModuleToServerCommand command = new AddModuleToServerCommand();
 	      command.setServerInstanceId(webServiceClient_.getWebServiceClientInfo().getServerInstanceId());
-	      if (earProject_ != null && earProject_.length()>0 && ear_!= null && ear_.length()>0)
-	      {
-	        command.setProject(earProject_);
-	        command.setModule(ear_);
-	      }
-	      else
-	      {
-	        command.setProject(project_);
-	        command.setModule(module_);       
-	      }
-	
+          command.setEarProject(earProject_);
+          command.setEarModule(ear_);
+          command.setProject(project_);
+          command.setModule(module_);
+
 	      command.setEnvironment( environment );
 	      IStatus status = command.execute( null, null );
 	      if (status.getSeverity()==Status.ERROR)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 IBM Corporation and others.
+ * Copyright (c) 2005, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
  * 20090311 250984   mahutch@ca.ibm.com - Mark Hutchinson, Use another mechanism to wait for build to be completed
  * 20090518 [252077] tangg@emc.com - Gary Tang, Fail to deploy an EAR project if it contains a module
  *                   kchong@ca.ibm.com - Keith Chong, (updated patch)
+ * 20110125   335246 mahutch@ca.ibm.com - Mark Hutchinson, Web Service Client Wizard should not publish JPA projects to the server
  *******************************************************************************/
 
 package org.eclipse.jst.ws.internal.consumption.command.common;
@@ -43,8 +44,10 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 {
   
   private String serverInstanceId;
-  private String project;
-  private String module;
+  private String moduleProjectName = null;
+  private String earProjectName = null;
+  private String module = null;
+  private String earModule = null;
 	
 	public AddModuleToServerCommand()
 	{
@@ -70,18 +73,30 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    try
 	    {
 	    //Ensure the module is not a Java utility
-	    IProject iproject = ProjectUtilities.getProject(project);
-	    if (!J2EEUtils.isJavaComponent(iproject))
-	    {      
-        // Get the IModule as specified by the module name
-        IModule imodule = ServerUtils.getModule(iproject, module);
-
+	    IProject moduleProject = ProjectUtilities.getProject(moduleProjectName);
+	    if (!J2EEUtils.isJavaComponent(moduleProject))
+	    {
+	    	IProject projectToAdd = null;
+	    	IModule moduleToAdd;
+	    	if (earProjectName != null && earModule != null && earProjectName.length() > 0 && earModule.length() > 0) 
+	    	{
+	    		//if there is an EAR, that is what we want to publish
+	    		projectToAdd = ProjectUtilities.getProject(earProjectName);
+	    		// Get the IModule as specified by the module name
+		        moduleToAdd = ServerUtils.getModule(projectToAdd, earModule);
+	    	} else {
+	    		//if there is no EAR then we try and publish the module
+	    		projectToAdd = moduleProject;
+	    		// Get the IModule as specified by the module name
+		        moduleToAdd = ServerUtils.getModule(projectToAdd, module);
+	    	}
+	    	
 	    	// TODO:  This workaround for 156768 should be removed once the defect is fixed
-	    	if (imodule == null) {
+	    	if (moduleToAdd == null) {
 	    	    // calling incremental build on the project before trying again
-	    		iproject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,null);
-	    		imodule = ServerUtils.getModule(iproject);
-	    		if (imodule == null) {  
+	    		projectToAdd.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,null);
+	    		moduleToAdd = ServerUtils.getModule(projectToAdd);
+	    		if (moduleToAdd == null) {  
 	    			// return error if module is still null after 1 retry
 	    			status = StatusUtils.errorStatus( NLS.bind(ConsumptionMessages.MSG_ERROR_ADD_MODULE, new String[]{module}) );
 	    			env.getStatusHandler().reportError(status);
@@ -90,13 +105,12 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    	}
 	    	// end of workaround for 156768
 	    	
-	      if (!ServerUtil.containsModule(server, imodule, null))
-	      {
-	        IModule[] imodules = new IModule[]{imodule};
-	        serverwc = server.createWorkingCopy();
-	        ServerUtil.modifyModules(serverwc, imodules, null, null);
-	      }
-
+		    if (!ServerUtil.containsModule(server, moduleToAdd, null))
+		    {
+		      IModule[] imodules = new IModule[]{moduleToAdd};
+		      serverwc = server.createWorkingCopy();
+		      ServerUtil.modifyModules(serverwc, imodules, null, null);
+		    }
 	    }
 	    } catch (CoreException e)
 	    {
@@ -120,8 +134,6 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 	    }
 	    
 		return status;
-	    
-		
 	}
 
 	public void setModule(String module)
@@ -131,7 +143,17 @@ public class AddModuleToServerCommand extends AbstractDataModelOperation
 
 	public void setProject(String project)
 	{
-		this.project = project;
+		this.moduleProjectName = project;
+	}
+	
+	public void setEarProject(String earProject)
+	{
+		this.earProjectName = earProject;
+	}
+	
+	public void setEarModule(String earModule)
+	{
+		this.earModule = earModule;
 	}
 
 	public void setServerInstanceId(String serverInstanceId)
