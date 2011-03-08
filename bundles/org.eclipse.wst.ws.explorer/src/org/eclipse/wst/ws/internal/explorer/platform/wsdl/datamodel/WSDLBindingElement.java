@@ -1,12 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2004, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+
+ * IBM Corporation - initial API and implementation
+ * yyyymmdd bug      Email and other contact information
+ * -------- -------- -----------------------------------------------------------
+ * 20110308 339270    mahutch@ca.ibm.com  - Mark Hutchinson, Test with Web Services Error when WSDL has more than one Operation 
+ * 
  *******************************************************************************/
 package org.eclipse.wst.ws.internal.explorer.platform.wsdl.datamodel;
 
@@ -16,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import javax.wsdl.Binding;
+import javax.wsdl.BindingOperation;
 import javax.wsdl.Input;
 import javax.wsdl.Operation;
 import javax.wsdl.Output;
@@ -201,11 +206,30 @@ public class WSDLBindingElement extends WSDLCommonElement
         }
         for (Iterator it = operationsMap.values().iterator();it.hasNext();) {
           Operation oper = (Operation)it.next();
-          WSDLOperationElement wsdlOperationElement = new WSDLOperationElement(oper.getName(), this, oper);
-          connect(wsdlOperationElement,WSDLModelConstants.REL_WSDL_OPERATION,ModelConstants.REL_OWNER);
+          if (isBindingOperation(oper)) {
+	          //if the operation is in the port type, but not in the binding then don't process the operation element
+	          //only operations that are in the binding should show in the WSE
+	          WSDLOperationElement wsdlOperationElement = new WSDLOperationElement(oper.getName(), this, oper);
+	          connect(wsdlOperationElement,WSDLModelConstants.REL_WSDL_OPERATION,ModelConstants.REL_OWNER);
+          }
         }
       }
     }
+  }
+  
+  private boolean isBindingOperation(Operation operation)  {
+    String operationInputName = null;
+    String operationOutputName = null;
+    Input operationInput = operation.getInput();
+    Output operationOutput = operation.getOutput();
+    if (operationInput != null)
+      operationInputName = operationInput.getName();
+    if (operationOutput != null)
+      operationOutputName = operationOutput.getName();
+    BindingOperation bindingOperation = binding_.getBindingOperation(operation.getName(),operationInputName,operationOutputName);
+    if (bindingOperation == null)
+      bindingOperation = binding_.getBindingOperation(operation.getName(),null,null);
+    return bindingOperation != null;
   }
 
   private String createOperationUniqueName(Operation operation)
