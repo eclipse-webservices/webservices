@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2006 IBM Corporation and others.
+ * Copyright (c) 2001, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.wsdl.ui.internal.asd.properties.sections;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
+import org.eclipse.wst.wsdl.ui.internal.adapters.WSDLBaseAdapter;
 
 public class ASDTabbedPropertySheetPage extends TabbedPropertySheetPage implements ISelectionChangedListener//, IElementListener
 {
@@ -39,6 +43,18 @@ public class ASDTabbedPropertySheetPage extends TabbedPropertySheetPage implemen
 		if (!event.getSelection().isEmpty()) {
 			selectionChanged(getSite().getWorkbenchWindow().getActivePage().getActivePart(), event.getSelection());
 		    //super.selectionChanged(getSite().getWorkbenchWindow().getActivePage().getActivePart(), event.getSelection());
+		}
+	}
+
+	// Bug 338126 - Properties view not synced with the design view
+	// Work around change to PropertySheet where it was changed to a Post Selection Listener
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		if (selection instanceof StructuredSelection) {
+			StructuredSelection structuredSelection = (StructuredSelection) selection;
+			Object object = structuredSelection.getFirstElement();
+			if (object instanceof WSDLBaseAdapter) {
+				super.selectionChanged(part, selection);
+			}
 		}
 	}
   
