@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://plainschema" xmlns:PlainSchema="http://www.example.com">
-	<simpleType name="NewSimpleType">
-    <restriction base="string">
-      <minLength value="1"/>
-    </restriction>
-  </simpleType>
-</schema>
