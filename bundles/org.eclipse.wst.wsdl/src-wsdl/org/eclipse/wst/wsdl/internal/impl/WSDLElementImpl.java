@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1004,7 +1004,7 @@ public abstract class WSDLElementImpl extends EObjectImpl implements WSDLElement
    */
   protected QName createQName(Definition definition, String prefixedName, Element element)
   {
-    return createQName(definition, prefixedName, element, false);
+    return createQName(definition, prefixedName, element, true);
   }
 
   /**
