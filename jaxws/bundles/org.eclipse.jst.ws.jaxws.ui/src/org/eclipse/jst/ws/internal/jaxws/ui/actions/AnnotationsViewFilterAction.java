@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright (c) 2009 Shane Clarke.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,13 +25,12 @@ import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 import org.eclipse.jst.ws.internal.jaxws.ui.views.AnnotationsView;
 import org.eclipse.jst.ws.internal.jaxws.ui.views.AnnotationsViewCategoryFilter;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.IMemento;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 public class AnnotationsViewFilterAction extends Action {
     private StructuredViewer viewer;
     private AnnotationsViewCategoryFilter categoryFilter;
-    
+
     public AnnotationsViewFilterAction(AnnotationsView annotationsView, StructuredViewer viewer, String text) {
         super(text);
         this.viewer = viewer;
@@ -43,31 +42,31 @@ public class AnnotationsViewFilterAction extends Action {
     public void run() {
         ListSelectionDialog listSelectionDialog = new ListSelectionDialog(viewer.getControl().getShell(),
                 AnnotationsManager.getAnnotationCategories(), new AnnotationsCategoryDialogContentProvider(),
-                new AnnotationsCategoryDialogLabelProvider(), 
+                new AnnotationsCategoryDialogLabelProvider(),
                 JAXWSUIMessages.ANNOTATIONS_VIEW_FILTER_ACTION_SELECT_CATEGORIES_MESSAGE);
-        
+
         listSelectionDialog.setInitialElementSelections(categoryFilter.getCategories());
-        
+
         int returnValue = listSelectionDialog.open();
         if (returnValue == Window.OK) {
             Object[] result = listSelectionDialog.getResult();
             categoryFilter.filterAnnotations(Arrays.asList(result));
         }
     }
-    
-    public void init(IMemento memento) {
-        categoryFilter.init(memento);
+
+    public void init() {
+        categoryFilter.init();
     }
-    
-    public void saveState(IMemento memento) {
-        categoryFilter.saveState(memento);
+
+    public void saveState() {
+        categoryFilter.saveState();
     }
-    
+
     private static class AnnotationsCategoryDialogContentProvider implements IStructuredContentProvider {
 
         public Object[] getElements(Object inputElement) {
             if (inputElement instanceof List) {
-                return ((List<String>)inputElement).toArray();
+                return ((List<?>)inputElement).toArray();
             }
             return new Object[] {};
         }
@@ -77,14 +76,16 @@ public class AnnotationsViewFilterAction extends Action {
 
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         }
-        
+
     }
-    
+
     private static class AnnotationsCategoryDialogLabelProvider extends LabelProvider {
+        @Override
         public String getText(Object element) {
             return element.toString();
         }
 
+        @Override
         public Image getImage(Object element) {
             return null;
         }

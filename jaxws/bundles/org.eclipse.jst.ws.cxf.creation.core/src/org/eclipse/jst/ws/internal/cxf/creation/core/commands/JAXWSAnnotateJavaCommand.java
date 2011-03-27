@@ -89,6 +89,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
 
+        CXFModelUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model, textFileChange, false);
         CXFModelUtils.getWebServiceAnnotationChange(javaInterfaceType, model, textFileChange);
 
         IMethod[] typeMethods = JDTUtils.getPublicMethods(javaInterfaceType);
@@ -119,9 +120,6 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
             }
         }
 
-        CXFModelUtils.getImportsChange(javaInterfaceType.getCompilationUnit(), model,
-                textFileChange, false);
-
         executeChange(monitor, textFileChange);
     }
 
@@ -135,6 +133,7 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
 
+        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, textFileChange, false);
         CXFModelUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
 
         IMethod[] typeMethods = JDTUtils.getPublicMethods(javaClassType);
@@ -165,9 +164,6 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
             }
         }
 
-        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model,
-                textFileChange, false);
-
         executeChange(monitor, textFileChange);
     }
 
@@ -181,10 +177,8 @@ public class JAXWSAnnotateJavaCommand extends AbstractDataModelOperation {
         MultiTextEdit multiTextEdit = new MultiTextEdit();
         textFileChange.setEdit(multiTextEdit);
 
+        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model, textFileChange, true);
         CXFModelUtils.getWebServiceAnnotationChange(javaClassType, model, textFileChange);
-
-        CXFModelUtils.getImportsChange(javaClassType.getCompilationUnit(), model,
-                textFileChange, true);
 
         executeChange(monitor, textFileChange);
     }

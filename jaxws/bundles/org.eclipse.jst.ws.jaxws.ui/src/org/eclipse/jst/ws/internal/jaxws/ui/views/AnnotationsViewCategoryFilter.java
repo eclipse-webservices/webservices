@@ -14,15 +14,15 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jst.ws.annotations.core.AnnotationDefinition;
 import org.eclipse.jst.ws.annotations.core.AnnotationsManager;
-import org.eclipse.ui.IMemento;
+import org.eclipse.jst.ws.internal.jaxws.ui.JAXWSUIPlugin;
 
 public class AnnotationsViewCategoryFilter extends ViewerFilter {
-    private static final String TAG_CATEGORY = "AnnotationCategoryFilterInfo"; //$NON-NLS-1$
     private static final String TAG_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$
 
     private AnnotationsView annotationsView;
@@ -40,7 +40,7 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
     public boolean select(Viewer viewer, Object parentElement, Object element) {
         if (element instanceof Class && ((Class<?>) element).isAnnotation()) {
             AnnotationDefinition annotationDefinition = AnnotationsManager.
-                getAnnotationDefinitionForClass((Class<? extends Annotation>)element);
+            getAnnotationDefinitionForClass((Class<? extends Annotation>) element);
             if (annotationDefinition != null) {
                 return !categories.contains(annotationDefinition.getCategory());
             }
@@ -62,29 +62,20 @@ public class AnnotationsViewCategoryFilter extends ViewerFilter {
         return categories;
     }
 
-    public void init(IMemento memento) {
-        IMemento catMemento = memento.getChild(TAG_CATEGORY);
-        if (catMemento == null) {
-            return;
-        }
-        for (int i = 0; i < AnnotationsManager.getAnnotationCategories().size(); i++) {
-            String category = catMemento.getString(TAG_CATEGORY_NAME + i);
-            if (category != null) {
+    public void init() {
+        IDialogSettings settings = JAXWSUIPlugin.getDefault().getDialogSettings();
+        String[] cat = settings.getArray(TAG_CATEGORY_NAME);
+        if (cat != null) {
+            for (String category : cat) {
                 categories.add(category);
             }
         }
         filterAnnotations(categories);
     }
 
-    public void saveState(IMemento memento) {
-        if (categories == null || categories.size() == 0) {
-            return;
-        }
-        IMemento catMemento = memento.createChild(TAG_CATEGORY);
-        int i = 0;
-        for (Object category : categories) {
-            catMemento.putString(TAG_CATEGORY_NAME + i, category.toString());
-            i++;
-        }
+    public void saveState() {
+        IDialogSettings settings = JAXWSUIPlugin.getDefault().getDialogSettings();
+        settings.put(TAG_CATEGORY_NAME, categories.toArray(new String[categories.size()]));
     }
+
 }

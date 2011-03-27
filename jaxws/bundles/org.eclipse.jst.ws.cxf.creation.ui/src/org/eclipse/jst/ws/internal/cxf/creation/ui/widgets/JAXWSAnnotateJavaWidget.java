@@ -408,6 +408,7 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
             textFileChange.setEdit(multiTextEdit);
             textFileChange.setKeepPreviewEdits(true);
 
+            CXFModelUtils.getImportsChange(compilationUnit, model, textFileChange, false);
             CXFModelUtils.getWebServiceAnnotationChange(type, model, textFileChange);
 
             IMethod[] typeMethods = JDTUtils.getPublicMethods(type);
@@ -432,7 +433,6 @@ public class JAXWSAnnotateJavaWidget extends SimpleWidgetDataContributor {
                 }
             }
 
-            CXFModelUtils.getImportsChange(compilationUnit, model, textFileChange, false);
             annotationPreviewViewer.getDocument().set(textFileChange.getPreviewContent(monitor));
 
             annotationPreviewViewer.setRedraw(true);

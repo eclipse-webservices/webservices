@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -27,7 +27,9 @@ import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -174,6 +176,12 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
     }
 
     private Object getValueForClass(Class<?> aClass, IAnnotatable annotatedElement) {
+        if (annotatedElement instanceof ILocalVariable) {
+            ILocalVariable localVariable = getLocalVariable(annotatedElement);
+            if (localVariable != null) {
+                annotatedElement = localVariable;
+            }
+        }
         try {
             IAnnotation[] annotations = annotatedElement.getAnnotations();
             for (IAnnotation annotation : annotations) {
@@ -203,6 +211,12 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
     }
 
     private Object getValueForMethod(Method method, IAnnotatable annotatedElement) throws JavaModelException {
+        if (annotatedElement instanceof ILocalVariable) {
+            ILocalVariable localVariable = getLocalVariable(annotatedElement);
+            if (localVariable != null) {
+                annotatedElement = localVariable;
+            }
+        }
         Class<?> returnType = method.getReturnType();
         IAnnotation[] annotations = annotatedElement.getAnnotations();
         for (IAnnotation annotation : annotations) {
@@ -273,6 +287,18 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
         }
         if (returnType.isArray()) {
             return new Object[] {};
+        }
+        return null;
+    }
+
+    private ILocalVariable getLocalVariable(IAnnotatable annotatedElement) {
+        ILocalVariable localVariable = (ILocalVariable) annotatedElement;
+        if (localVariable.getParent() instanceof IMethod) {
+            IMethod parent = (IMethod) localVariable.getParent();
+            localVariable = AnnotationUtils.getLocalVariable(parent, localVariable.getElementName());
+            if (localVariable != null) {
+                return localVariable;
+            }
         }
         return null;
     }
@@ -361,8 +387,8 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     || javaElement.getElementType() == IJavaElement.FIELD
                     || javaElement.getElementType() == IJavaElement.METHOD
                     || javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-                change.addEdit(AnnotationUtils.createAddAnnotationTextEdit(javaElement, annotation));
                 change.addEdit(AnnotationUtils.createAddImportTextEdit(javaElement, annotationClass.getCanonicalName()));
+                change.addEdit(AnnotationUtils.createAddAnnotationTextEdit(javaElement, annotation));
             }
         } else {
             if (javaElement.getElementType() == IJavaElement.PACKAGE_DECLARATION
@@ -370,8 +396,8 @@ public class AnnotationsValuesEditingSupport extends EditingSupport {
                     || javaElement.getElementType() == IJavaElement.FIELD
                     || javaElement.getElementType() == IJavaElement.METHOD
                     || javaElement.getElementType() == IJavaElement.LOCAL_VARIABLE) {
-                change.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(javaElement, annotation));
                 change.addEdit(AnnotationUtils.createRemoveImportTextEdit(javaElement, annotationClass.getCanonicalName()));
+                change.addEdit(AnnotationUtils.createRemoveAnnotationTextEdit(javaElement, annotation));
             }
         }
         executeChange(new NullProgressMonitor(), change);

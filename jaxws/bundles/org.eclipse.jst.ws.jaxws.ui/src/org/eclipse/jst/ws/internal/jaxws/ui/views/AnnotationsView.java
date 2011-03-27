@@ -57,10 +57,8 @@ import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -73,6 +71,8 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class AnnotationsView extends ViewPart implements INullSelectionListener, IPartListener2 {
+    private static final String VIEW_ID = "org.eclipse.jst.ws.jaxws.ui.views.AnnotationsView";
+
     private PageBook pageBook;
     private Tree annotationTree;
 
@@ -80,8 +80,6 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
     private ClasspathComposite setupClasspathComposite;
 
     private TreeViewer annotationTreeViewer;
-
-    private IMemento memento;
 
     private AnnotationsViewFilterAction annotationsViewFilterAction;
 
@@ -338,6 +336,9 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
     }
 
     public void partOpened(IWorkbenchPartReference partRef) {
+        if (partRef.getId().equals(VIEW_ID)) {
+            annotationsViewFilterAction.init();
+        }
     }
 
     public void partClosed(IWorkbenchPartReference partRef) {
@@ -362,6 +363,8 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
                     }
                 }
             }
+        } else if (partRef.getId().equals(VIEW_ID)) {
+            annotationsViewFilterAction.saveState();
         }
     }
 
@@ -413,18 +416,6 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
         getViewSite().getWorkbenchWindow().getPartService().removePartListener(this);
     }
 
-    @Override
-    public void init(IViewSite site, IMemento memento) throws PartInitException {
-        super.init(site, memento);
-        this.memento = memento;
-    }
-
-    @Override
-    public void saveState(IMemento memento) {
-        super.saveState(memento);
-        annotationsViewFilterAction.saveState(memento);
-    }
-
     private void contributeToActionBars() {
         IActionBars bars = getViewSite().getActionBars();
         fillLocalPullDown(bars.getMenuManager());
@@ -433,9 +424,6 @@ public class AnnotationsView extends ViewPart implements INullSelectionListener,
     private void fillLocalPullDown(IMenuManager manager) {
         annotationsViewFilterAction = new AnnotationsViewFilterAction(this, annotationTreeViewer,
                 JAXWSUIMessages.ANNOTATIONS_VIEW_FILTER_ACTION_NAME);
-        if (memento != null) {
-            annotationsViewFilterAction.init(memento);
-        }
         manager.add(annotationsViewFilterAction);
     }
 

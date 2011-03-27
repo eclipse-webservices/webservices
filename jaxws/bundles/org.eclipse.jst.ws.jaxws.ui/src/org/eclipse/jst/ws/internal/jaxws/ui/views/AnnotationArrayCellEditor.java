@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMemberValuePair;
@@ -427,7 +427,7 @@ public class AnnotationArrayCellEditor extends DialogCellEditor {
                         String[] values = (String[]) defaultValue;
                         text.setText(values[0]);
                     } else {
-                        text.setText(defaultValue.toString());
+                        text.setText(defaultValue.toString().trim());
                     }
                 }
                 controls.put(method.getName(), text);
